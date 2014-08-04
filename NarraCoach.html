@@ -104,6 +104,29 @@
 		parser.parse(); // tell dojo to check the DOM for widgets
 	});
   </script>
+  
+  <div id="questionsDiv"></div>
+  
+  <script>
+  var questionsDiv = document.getElementById('questionsDiv');
+  
+  var questions = [
+    {id: "name", type: "text", text: "Your Name", help: 'Please enter your full name, like "John Smith".'},
+    {id: "wantPuppy", type: "boolean", text: "Do you want a free puppy today?", help: "Enter yes or no"},
+    {id: "reason", type: "text", text: "If yes, why do you want a free puppy?"},
+  ];
+  
+  for (var questionIndex in questions) {
+    var question = questions[questionIndex];
+    // console.log("question", question);
+    var input = '<input type="text" name="' + question.id + '">';
+    if (question.type === "boolean") {
+      input = '<input type="radio" name="' + question.id + '" value="No"> No <input type="radio" name="' + question.id + '" value="Yes"> Yes ';
+    }
+    questionsDiv.innerHTML = questionsDiv.innerHTML + "  <b>" + questionIndex + ". </b>" + question.text + input + "<br>";
+  }
+  
+  </script>
 </body>
 
 </html>
