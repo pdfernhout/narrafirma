@@ -1,41 +1,43 @@
 <!DOCTYPE html>
 <html>
-<head>
 
+<head>
 <title>NarraCoach</title>
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojo/resources/dojo.css">
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dijit/themes/dijit.css">
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dijit/themes/claro/claro.css">
 <style type="text/css">
-@import "http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojox/grid/resources/claroGrid.css";
+  @import "http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojox/grid/resources/claroGrid.css";
 
-/*Grid needs an explicit height by default*/
-#gridDiv {
-    height: 20em;
-}
+  /*Grid needs an explicit height by default*/
+  #gridDiv {
+      height: 30em;
+  }
 </style>
-
 <script>dojoConfig = {async: true, parseOnLoad: false}</script>
 <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojo/dojo.js"></script>
- 
 <script>
   // Grid example from: http://dojotoolkit.org/reference-guide/1.10/dojox/grid/DataGrid.html
   require(['dojo/_base/lang', 'dojox/grid/DataGrid', 'dojo/data/ItemFileWriteStore', 'dojo/dom', 'dojo/domReady!'],
-    function(lang, DataGrid, ItemFileWriteStore, dom){
+  function(lang, DataGrid, ItemFileWriteStore, dom){
 
     /*set up data store*/
     var data = {
       identifier: "id",
       items: []
     };
+    
     var data_list = [
       { col1: "normal", col2: false, col3: 'But are not followed by two hexadecimal', col4: 29.91},
       { col1: "important", col2: false, col3: 'Because a % sign always indicates', col4: 9.33},
       { col1: "important", col2: false, col3: 'Signs can be selectively', col4: 19.34}
     ];
+    
     var rows = 60;
     for(var i = 0, l = data_list.length; i < rows; i++){
-        data.items.push(lang.mixin({ id: i+1 }, data_list[i%l]));
+        data.items.push(lang.mixin({id: i + 1}, data_list[i%l]));
     }
+    
     var store = new ItemFileWriteStore({data: data});
 
     /*set up layout*/
@@ -53,17 +55,35 @@
         structure: layout,
         rowSelector: '20px'});
 
-        /*append the new grid to the div*/
-        grid.placeAt("gridDiv");
+    /*append the new grid to the div*/
+    grid.placeAt("gridDiv");
 
-        /*Call startup() to render the grid*/
-        grid.startup();
+    /*Call startup() to render the grid*/
+    grid.startup();
 });
 </script>
-	
 </head>
+
 <body class="claro">
   <b>NarraCoach</b>
+  <button data-dojo-type='dijit/form/Button' type="button">Clicky
+    <script type="dojo/on" data-dojo-event="click" data-dojo-args="evt">
+	alert("NarraCoach!!");
+    </script>
+  </button>
+  
+  <br>
+  
   <div id="gridDiv"></div>
+  
+  <script>
+	require([
+		'dojo/parser',
+		'dojo/domReady!'
+	], function(parser){
+		parser.parse(); // tell dojo to check the DOM for widgets
+	});
+  </script>
 </body>
+
 </html>
