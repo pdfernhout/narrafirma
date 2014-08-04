@@ -35,7 +35,7 @@
     
     var rows = 60;
     for(var i = 0, l = data_list.length; i < rows; i++){
-        data.items.push(lang.mixin({id: i + 1}, data_list[i%l]));
+        data.items.push(lang.mixin({id: i + 1}, data_list[i % l]));
     }
     
     var store = new ItemFileWriteStore({data: data});
@@ -73,6 +73,26 @@
   </button>
   
   <br>
+  
+  <select name="character" id="characterNode"
+	data-dojo-type="dijit/form/FilteringSelect"
+	data-dojo-props='autoComplete:true, pageSize:10' >
+	<option value="">Select a character</option>
+	<option value="Leonard">Dr. Leonard Leakey Hofstadter</option>
+	<option value="Sheldon" selected="selected">Dr. Sheldon Lee Cooper</option>
+	<option value="Rajesh">Dr. Rajesh Ramayan Koothrappali</option>
+	<option value="Howard">Howard Joel Wolowitz</option>
+  </select>
+
+  <br>
+  
+  <label for="phone">Phone number, no spaces:</label>
+  <input type="text" name="phone" id="phone" value="someTestString" required="true"
+    data-dojo-type="dijit/form/ValidationTextBox"
+    data-dojo-props="regExp:'[\\w]+', invalidMessage:'Invalid Non-Space Text.'" />
+    
+  <br>
+  
   
   <div id="gridDiv"></div>
   
