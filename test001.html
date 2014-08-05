@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>NarraCoach</title>
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojo/resources/dojo.css">
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dijit/themes/dijit.css">
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dijit/themes/claro/claro.css">
+<style type="text/css">
+  @import "http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojox/grid/resources/claroGrid.css";
+
+  /*Grid needs an explicit height by default*/
+  #gridDiv {
+      height: 30em;
+  }
+</style>
+<script>dojoConfig = {async: true, parseOnLoad: false}</script>
+<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojo/dojo.js"></script>
+<script>
+  // Grid example from: http://dojotoolkit.org/reference-guide/1.10/dojox/grid/DataGrid.html
+  require(['dojo/_base/lang', 'dojox/grid/DataGrid', 'dojo/data/ItemFileWriteStore', 'dojo/dom', 'dojo/domReady!'],
+  function(lang, DataGrid, ItemFileWriteStore, dom){
+
+    /*set up data store*/
+    var data = {
+      identifier: "id",
+      items: []
+    };
+    
+    var data_list = [
+      { col1: "normal", col2: false, col3: 'But are not followed by two hexadecimal', col4: 29.91},
+      { col1: "important", col2: false, col3: 'Because a % sign always indicates', col4: 9.33},
+      { col1: "important", col2: false, col3: 'Signs can be selectively', col4: 19.34}
+    ];
+    
+    var rows = 60;
+    for(var i = 0, l = data_list.length; i < rows; i++){
+        data.items.push(lang.mixin({id: i + 1}, data_list[i % l]));
+    }
+    
+    var store = new ItemFileWriteStore({data: data});
+
+    /*set up layout*/
+    var layout = [[
+      {'name': 'Column 1', 'field': 'id', 'width': '100px'},
+      {'name': 'Column 2', 'field': 'col2', 'width': '100px'},
+      {'name': 'Column 3', 'field': 'col3', 'width': '200px'},
+      {'name': 'Column 4', 'field': 'col4', 'width': '150px'}
+    ]];
+
+    /*create a new grid*/
+    var grid = new DataGrid({
+        id: 'grid',
+        store: store,
+        structure: layout,
+        rowSelector: '20px'});
+
+    /*append the new grid to the div*/
+    grid.placeAt("gridDiv");
+
+    /*Call startup() to render the grid*/
+    grid.startup();
+});
+</script>
+</head>
+
+<body class="claro">
+  <b>NarraCoach</b>
+  <button data-dojo-type='dijit/form/Button' type="button">Clicky
+    <script type="dojo/on" data-dojo-event="click" data-dojo-args="evt">
+	alert("NarraCoach!!");
+    </script>
+  </button>
+  
+  <br>
+  
+  <select name="character" id="characterNode"
+	data-dojo-type="dijit/form/FilteringSelect"
+	data-dojo-props='autoComplete:true, pageSize:10' >
+	<option value="">Select a character</option>
+	<option value="Leonard">Dr. Leonard Leakey Hofstadter</option>
+	<option value="Sheldon" selected="selected">Dr. Sheldon Lee Cooper</option>
+	<option value="Rajesh">Dr. Rajesh Ramayan Koothrappali</option>
+	<option value="Howard">Howard Joel Wolowitz</option>
+  </select>
+
+  <br>
+  
+  <label for="phone">Phone number, no spaces:</label>
+  <input type="text" name="phone" id="phone" value="someTestString" required="true"
+    data-dojo-type="dijit/form/ValidationTextBox"
+    data-dojo-props="regExp:'[\\w]+', invalidMessage:'Invalid Non-Space Text.'" />
+    
+  <br>
+  
+  
+  <div id="gridDiv"></div>
+  
+  <script>
+	require([
+		'dojo/parser',
+		'dojo/domReady!'
+	], function(parser){
+		parser.parse(); // tell dojo to check the DOM for widgets
+	});
+  </script>
+  
+  <div id="questionsDiv"></div>
+  
+  <script>
+  var questionsDiv = document.getElementById('questionsDiv');
+  
+  var questions = [
+    {id: "name", type: "text", text: "Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},
+    {id: "wantPuppy", type: "boolean", text: "Do you want a free puppy today?", help: "Enter yes or no"},
+    {id: "reason", type: "text", text: "If yes, why do you want a free puppy?"},
+  ];
+  
+  for (var questionIndex in questions) {
+    var question = questions[questionIndex];
+    // console.log("question", question);
+    var input = '<input type="text" name="' + question.id + '">';
+    if (question.type === "boolean") {
+      input = '<input type="radio" name="' + question.id + '" value="No"> No <input type="radio" name="' + question.id + '" value="Yes"> Yes ';
+    }
+    var help = "";
+    if (question.help) {
+      var helpText = question.help.replace(/\"/g, '\\x22').replace(/\'/g, '\\x27');;
+      help = '<button onclick="alert(\'' + helpText + '\')">?</button>';
+    }
+    questionsDiv.innerHTML = questionsDiv.innerHTML + "  <b>" + questionIndex + ". </b>" + question.text + input + help + "<br>";
+  }
+  
+  </script>
+</body>
+
+</html>
