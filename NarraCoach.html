@@ -30,9 +30,9 @@
 		var help = "";
 		if (question.help) {
 		  var helpText = question.help.replace(/\"/g, '\\x22').replace(/\'/g, '\\x27');;
-		  help = '<button onclick="alert(\'' + helpText + '\')">?</button>';
+		  help = ' <button onclick="alert(\'' + helpText + '\')">?</button>';
 		}
-		questionsDiv.innerHTML = questionsDiv.innerHTML + "  <b>" + questionIndex + ". </b>" + question.text + input + help + "<br>";
+		questionsDiv.innerHTML = questionsDiv.innerHTML + "  <b>" + questionIndex + ". </b>" + question.text + " " + input + help + "<br>";
 	  }
   }
 </script>
