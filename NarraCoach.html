@@ -16,6 +16,26 @@
 </style>
 <script>dojoConfig = {async: true, parseOnLoad: false}</script>
 <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojo/dojo.js"></script>
+<script>
+  function insertQuestionsIntoDiv(questions, divName) {
+	  var questionsDiv = document.getElementById(divName);
+  
+	  for (var questionIndex in questions) {
+		var question = questions[questionIndex];
+		// console.log("question", question);
+		var input = '<input type="text" name="' + question.id + '">';
+		if (question.type === "boolean") {
+		  input = '<input type="radio" name="' + question.id + '" value="No"> No <input type="radio" name="' + question.id + '" value="Yes"> Yes ';
+		}
+		var help = "";
+		if (question.help) {
+		  var helpText = question.help.replace(/\"/g, '\\x22').replace(/\'/g, '\\x27');;
+		  help = '<button onclick="alert(\'' + helpText + '\')">?</button>';
+		}
+		questionsDiv.innerHTML = questionsDiv.innerHTML + "  <b>" + questionIndex + ". </b>" + question.text + input + help + "<br>";
+	  }
+  }
+</script>
 </head>
 
 <body class="claro">
@@ -33,29 +53,22 @@
   <div id="questionsDiv"></div>
   
   <script>
-  var questionsDiv = document.getElementById('questionsDiv');
-  
-  var questions = [
+
+  var testPuppyQuestions = [
     {id: "name", type: "text", text: "Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},
     {id: "wantPuppy", type: "boolean", text: "Do you want a free puppy today?", help: "Enter yes or no"},
     {id: "reason", type: "text", text: "If yes, why do you want a free puppy?"},
   ];
   
-  for (var questionIndex in questions) {
-    var question = questions[questionIndex];
-    // console.log("question", question);
-    var input = '<input type="text" name="' + question.id + '">';
-    if (question.type === "boolean") {
-      input = '<input type="radio" name="' + question.id + '" value="No"> No <input type="radio" name="' + question.id + '" value="Yes"> Yes ';
-    }
-    var help = "";
-    if (question.help) {
-      var helpText = question.help.replace(/\"/g, '\\x22').replace(/\'/g, '\\x27');;
-      help = '<button onclick="alert(\'' + helpText + '\')">?</button>';
-    }
-    questionsDiv.innerHTML = questionsDiv.innerHTML + "  <b>" + questionIndex + ". </b>" + question.text + input + help + "<br>";
-  }
+  var createSurveyQuestions = [
+    {id: "questionID", type: "text", text: "Question ID", help: 'TODO'},
+    {id: "questionType", type: "text", text: "Question Type", help: 'TODO'},
+    {id: "questionText", type: "text", text: "Question Text", help: 'TODO'},
+    {id: "questionHelp", type: "text", text: "Question Help", help: 'TODO'},
+  ];
   
+  insertQuestionsIntoDiv(testPuppyQuestions, 'questionsDiv');
+  //insertQuestionsIntoDiv(createSurveyQuestions, 'questionsDiv');
   </script>
 </body>
 
