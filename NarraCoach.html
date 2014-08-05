@@ -111,7 +111,7 @@
   var questionsDiv = document.getElementById('questionsDiv');
   
   var questions = [
-    {id: "name", type: "text", text: "Your Name", help: 'Please enter your full name, like "John Smith".'},
+    {id: "name", type: "text", text: "Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},
     {id: "wantPuppy", type: "boolean", text: "Do you want a free puppy today?", help: "Enter yes or no"},
     {id: "reason", type: "text", text: "If yes, why do you want a free puppy?"},
   ];
@@ -123,7 +123,12 @@
     if (question.type === "boolean") {
       input = '<input type="radio" name="' + question.id + '" value="No"> No <input type="radio" name="' + question.id + '" value="Yes"> Yes ';
     }
-    questionsDiv.innerHTML = questionsDiv.innerHTML + "  <b>" + questionIndex + ". </b>" + question.text + input + "<br>";
+    var help = "";
+    if (question.help) {
+      var helpText = question.help.replace(/\"/g, '\\x22').replace(/\'/g, '\\x27');;
+      help = '<button onclick="alert(\'' + helpText + '\')">?</button>';
+    }
+    questionsDiv.innerHTML = questionsDiv.innerHTML + "  <b>" + questionIndex + ". </b>" + question.text + input + help + "<br>";
   }
   
   </script>
