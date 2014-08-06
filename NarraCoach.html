@@ -63,7 +63,6 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
       var node = questionDiv.querySelector("#" + question.id);
       if (node && question.value) node.value = question.value;
     }
-    
   }
   
   function showQuestionEditDialog(question, questionsDiv) {
@@ -77,7 +76,7 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
     createSurveyQuestions[3].value = question.help;
     
     insertQuestionsIntoDiv(createSurveyQuestions, form);
-  
+
     var myDialog = new Dialog({
       title: "Edit question " + question.index,
       content: form,
@@ -86,24 +85,34 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
 
     myDialog.show();
   }
+  
+  function isString(something) {
+    return (typeof something == 'string' || something instanceof String);
+  }
+    
+  function newButton(label, addToDiv, callback) {
+    var button = new Button({
+      label: label,
+      type: "button",
+      onClick: callback
+    });
+    console.log("addToDiv", addToDiv);
+    if (isString(addToDiv)) {
+      addToDiv = document.getElementById(addToDiv);
+    }
+    console.log("addToDiv revised", addToDiv);
+    if (addToDiv) {
+      addToDiv.appendChild(button.domNode);
+    }
+    button.startup();
+    return button;
+  }
     
   function insertQuestionEditorIntoDiv(question, questionsDiv) {
     var questionEditorDiv = document.createElement("div");
-    var editButton = document.createElement("button");
-    editButton.setAttribute("type", "button");
-    editButton.appendChild(document.createTextNode("Edit question " + question.index));
-    /* var editButton = new Button({
-      label: "Edit question " + question.index, 
-      onClick: function() {
-        myDialog.show();
-      }
+    var editButton = newButton("Edit question " + question.index, questionEditorDiv, function() {
+      showQuestionEditDialog(question, questionsDiv);
     });
-    */
-    //editButton.startup();
-    //on(editButton, "click", myTest);
-    //editButton.placeAt(questionEditorDiv);
-    editButton.onclick = function() {showQuestionEditDialog(question, questionsDiv);};
-    questionEditorDiv.appendChild(editButton);
     questionEditorDiv.appendChild(document.createElement("br"));
     insertQuestionIntoDiv(question, questionEditorDiv);
     questionEditorDiv.appendChild(document.createElement("br"));
@@ -130,16 +139,14 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
   
   var questionIndex = 1;
   
-  // Create a button programmatically:
-  var myButton = new Button({
-    label: "Add question",
-    onClick: function(){
-      var question = {index: questionIndex, id: "Q" + questionIndex, type: "text", text: "Question text " + questionIndex, help: 'Question help ' + questionIndex};
-      questionIndex += 1;
-      insertQuestionEditorIntoDiv(question, questionsDiv);
-    }
-  }, "testDiv").startup();
+  function addQuestion() {
+    var question = {index: questionIndex, id: "Q" + questionIndex, type: "text", text: "Question text " + questionIndex, help: 'Question help ' + questionIndex};
+    questionIndex += 1;
+    insertQuestionEditorIntoDiv(question, questionsDiv);
+  }
   
+  // Create a button programmatically:
+  var addQuestionButton = newButton("Add question", "testDiv", addQuestion);
 });
   </script>
 </body>
