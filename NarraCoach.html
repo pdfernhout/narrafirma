@@ -16,7 +16,17 @@
 </style>
 <script>dojoConfig = {async: true, parseOnLoad: false}</script>
 <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojo/dojo.js"></script>
-<script>
+</head>
+
+<body class="claro">
+  <b>NarraCoach</b><br>
+  
+  <div id="questionsDiv"></div>
+  <div id="testDiv"></div>
+  
+  <script>
+require(["dijit/form/Button", "dojo/dom", "dojo/domReady!"], function(Button, dom){
+  
   function insertQuestionsIntoDiv(questions, divName) {
 	  var questionsDiv = document.getElementById(divName);
   
@@ -35,24 +45,6 @@
 		questionsDiv.innerHTML = questionsDiv.innerHTML + "  <b>" + questionIndex + ". </b>" + question.text + " " + input + help + "<br>";
 	  }
   }
-</script>
-</head>
-
-<body class="claro">
-  <b>NarraCoach</b><br>
-  
-  <script>
-	require([
-		'dojo/parser',
-		'dojo/domReady!'
-	], function(parser){
-		parser.parse(); // tell dojo to check the DOM for widgets
-	});
-  </script>
-  
-  <div id="questionsDiv"></div>
-  
-  <script>
 
   var testPuppyQuestions = [
     {id: "name", type: "text", text: "Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},
@@ -68,9 +60,20 @@
   ];
   
   //insertQuestionsIntoDiv(testPuppyQuestions, 'questionsDiv');
-  insertQuestionsIntoDiv(createSurveyQuestions, 'questionsDiv');
+  // insertQuestionsIntoDiv(createSurveyQuestions, 'questionsDiv');
   
   // TODO: Challenge of repeating sections....
+      
+  // Create a button programmatically:
+  var myButton = new Button({
+    label: "Click me!",
+    onClick: function(){
+      // Do something:
+      dom.byId("questionsDiv").innerHTML += "Button pressed at: " + Date.now() + "<br>";
+    }
+  }, "testDiv").startup();
+  
+});
   </script>
 </body>
 
