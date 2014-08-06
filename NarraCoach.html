@@ -26,14 +26,30 @@
   
   <script>
 require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domReady!"], function(Button, dom, Dialog, on){
+  
+  var testPuppyQuestions = [
+    {id: "name", type: "text", text: "Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},
+    {id: "wantPuppy", type: "boolean", text: "Do you want a free puppy today?", help: "Enter yes or no"},
+    {id: "reason", type: "text", text: "If yes, why do you want a free puppy?"},
+  ];
+  
+  var createSurveyQuestions = [
+    {id: "questionID", type: "text", text: "Question ID", help: 'TODO'},
+    {id: "questionType", type: "text", text: "Question Type", help: 'TODO'},
+    {id: "questionText", type: "text", text: "Question Text", help: 'TODO'},
+    {id: "questionHelp", type: "text", text: "Question Help", help: 'TODO'},
+  ];
 
   function insertQuestionIntoDiv(question, questionsDiv) {
     var questionDiv = document.createElement("div");
     // console.log("question", question);
-    var input = '<input type="text" name="' + question.id + '">';
+    var input;
     if (question.type === "boolean") {
-      input = '<input type="radio" name="' + question.id + '" value="No"> No <input type="radio" name="' + question.id + '" value="Yes"> Yes ';
+      input = '<input type="radio" id="' + question.id + '" value="No"> No <input type="radio" name="' + question.id + '" value="Yes"> Yes ';
+    } else {
+      input = '<input type="text" id="' + question.id + '">';
     }
+    
     var help = "";
     if (question.help) {
       var helpText = question.help.replace(/\"/g, '\\x22').replace(/\'/g, '\\x27');;
@@ -41,17 +57,31 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
     }
     questionDiv.innerHTML = "  <b>" + question.index + ". </b>" + question.text + " " + input + help + "<br>";
     questionsDiv.appendChild(questionDiv);
+    
+    console.log("question", question, question.value);
+    if (question.type === "text") {
+      var node = questionDiv.querySelector("#" + question.id);
+      if (node && question.value) node.value = question.value;
+    }
+    
   }
   
   function showQuestionEditDialog(question, questionsDiv) {
     var form = document.createElement("div");
     // "<pre>" + JSON.stringify(question) + "</pre>"
+    
+    // Fill in defaults
+    createSurveyQuestions[0].value = question.id;
+    createSurveyQuestions[1].value = question.type;
+    createSurveyQuestions[2].value = question.text;
+    createSurveyQuestions[3].value = question.help;
+    
     insertQuestionsIntoDiv(createSurveyQuestions, form);
   
     var myDialog = new Dialog({
-      title: "My Dialog",
+      title: "Edit question " + question.index,
       content: form,
-      style: "width: 300px"
+      style: "width: 600px"
     });
 
     myDialog.show();
@@ -87,19 +117,6 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
 		insertQuestionIntoDiv(question, questionsDiv)
 	  }
   }
-
-  var testPuppyQuestions = [
-    {id: "name", type: "text", text: "Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},
-    {id: "wantPuppy", type: "boolean", text: "Do you want a free puppy today?", help: "Enter yes or no"},
-    {id: "reason", type: "text", text: "If yes, why do you want a free puppy?"},
-  ];
-  
-  var createSurveyQuestions = [
-    {id: "questionID", type: "text", text: "Question ID", help: 'TODO'},
-    {id: "questionType", type: "text", text: "Question Type", help: 'TODO'},
-    {id: "questionText", type: "text", text: "Question Text", help: 'TODO'},
-    {id: "questionHelp", type: "text", text: "Question Help", help: 'TODO'},
-  ];
   
   var questionsDiv = document.getElementById("questionsDiv");
   //insertQuestionsIntoDiv(testPuppyQuestions, questionsDiv);
