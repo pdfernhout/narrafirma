@@ -49,8 +49,8 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
     questionsDiv.appendChild(questionDiv);
   }
   
-  function myTest() {
-    console.log("my test");
+  function showQuestionEditDialog() {
+    myDialog.show();
   }
     
   function insertQuestionEditorIntoDiv(question, questionsDiv) {
@@ -61,14 +61,14 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
     /* var editButton = new Button({
       label: "Edit question " + question.index, 
       onClick: function() {
-        console.log("test more");
+        myDialog.show();
       }
     });
     */
     //editButton.startup();
     //on(editButton, "click", myTest);
     //editButton.placeAt(questionEditorDiv);
-    editButton.onclick = myTest;
+    editButton.onclick = showQuestionEditDialog;
     questionEditorDiv.appendChild(editButton);
     questionEditorDiv.appendChild(document.createElement("br"));
     insertQuestionIntoDiv(question, questionEditorDiv);
