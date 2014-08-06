@@ -65,7 +65,41 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
     }
   }
   
-  function showQuestionEditDialog(question, questionsDiv) {
+  function questionEditDialogOK(question, questionEditorDiv, form) {
+      var changed = false;
+      
+      var questionID = form.querySelector("#questionID").value;
+      if (questionID !== question.id) {
+        changed = true;
+        question.id = questionID;
+      }
+      
+      var questionType = form.querySelector("#questionType").value;
+      if (questionType !== question.type) {
+        changed = true;
+        question.type = questionType;
+      }
+      
+      var questionText = form.querySelector("#questionText").value;
+      if (questionText !== question.text) {
+        changed = true;
+        question.text = questionText;
+      }
+      
+      var questionHelp = form.querySelector("#questionHelp").value;
+      if (questionHelp !== question.help) {
+        changed = true;
+        question.help = questionHelp;
+      }
+      
+      console.log("changed", changed);
+      if (changed) {
+        questionEditorDiv.innerHTML = "";
+        insertQuestionEditorIntoDiv(question, questionEditorDiv);
+      }
+  }
+  
+  function showQuestionEditDialog(question, questionEditorDiv) {
     var questionEditDialog;
     
     var form = document.createElement("div");
@@ -84,7 +118,7 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
     newButton("OK", form, function() {
       console.log("OK");
       questionEditDialog.hide();
-      console.log("questionID", form.querySelector("#questionID").value);
+      questionEditDialogOK(question, questionEditorDiv, form);
     });
     
     newButton("Cancel", form, function() {
@@ -120,15 +154,19 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
     button.startup();
     return button;
   }
-    
-  function insertQuestionEditorIntoDiv(question, questionsDiv) {
-    var questionEditorDiv = document.createElement("div");
+  
+  function insertQuestionEditorIntoDiv(question, questionEditorDiv) {
     var editButton = newButton("Edit question " + question.index, questionEditorDiv, function() {
-      showQuestionEditDialog(question, questionsDiv);
+      showQuestionEditDialog(question, questionEditorDiv);
     });
     questionEditorDiv.appendChild(document.createElement("br"));
     insertQuestionIntoDiv(question, questionEditorDiv);
     questionEditorDiv.appendChild(document.createElement("br"));
+  }
+    
+  function insertQuestionEditorDivIntoDiv(question, questionsDiv) {
+    var questionEditorDiv = document.createElement("div");
+    insertQuestionEditorIntoDiv(question, questionEditorDiv);
     questionsDiv.appendChild(questionEditorDiv);
   }
   
@@ -155,7 +193,7 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
   function addQuestion() {
     var question = {index: questionIndex, id: "Q" + questionIndex, type: "text", text: "Question text " + questionIndex, help: 'Question help ' + questionIndex};
     questionIndex += 1;
-    insertQuestionEditorIntoDiv(question, questionsDiv);
+    insertQuestionEditorDivIntoDiv(question, questionsDiv);
   }
   
   // Create a button programmatically:
