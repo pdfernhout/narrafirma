@@ -45,7 +45,7 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
     // console.log("question", question);
     var input;
     if (question.type === "boolean") {
-      input = '<input type="radio" id="' + question.id + '" value="No"> No <input type="radio" name="' + question.id + '" value="Yes"> Yes ';
+      input = '<input type="radio" name="' + question.id + '" value="No"> No <input type="radio" name="' + question.id + '" value="Yes"> Yes ';
     } else {
       input = '<input type="text" id="' + question.id + '">';
     }
