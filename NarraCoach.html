@@ -159,9 +159,15 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
     var editButton = newButton("Edit question " + question.index, questionEditorDiv, function() {
       showQuestionEditDialog(question, questionEditorDiv);
     });
+    var deleteButton = newButton("Delete question " + question.index, questionEditorDiv, function() {
+      if (confirm("Proceed to delete question " + question.index + "?")) {
+        questionEditorDiv.parentNode.removeChild(questionEditorDiv);
+        }
+    });
     questionEditorDiv.appendChild(document.createElement("br"));
     insertQuestionIntoDiv(question, questionEditorDiv);
     questionEditorDiv.appendChild(document.createElement("br"));
+    questionEditorDiv.setAttribute("data-narracoach-question", JSON.stringify(question));
   }
     
   function insertQuestionEditorDivIntoDiv(question, questionsDiv) {
