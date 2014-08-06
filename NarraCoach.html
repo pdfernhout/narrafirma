@@ -27,12 +27,6 @@
   <script>
 require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domReady!"], function(Button, dom, Dialog, on){
 
-  myDialog = new Dialog({
-    title: "My Dialog",
-    content: "Test content.",
-    style: "width: 300px"
-  });
-    
   function insertQuestionIntoDiv(question, questionsDiv) {
     var questionDiv = document.createElement("div");
     // console.log("question", question);
@@ -49,7 +43,17 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
     questionsDiv.appendChild(questionDiv);
   }
   
-  function showQuestionEditDialog() {
+  function showQuestionEditDialog(question, questionsDiv) {
+    var form = document.createElement("div");
+    // "<pre>" + JSON.stringify(question) + "</pre>"
+    insertQuestionsIntoDiv(createSurveyQuestions, form);
+  
+    var myDialog = new Dialog({
+      title: "My Dialog",
+      content: form,
+      style: "width: 300px"
+    });
+
     myDialog.show();
   }
     
@@ -68,7 +72,7 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
     //editButton.startup();
     //on(editButton, "click", myTest);
     //editButton.placeAt(questionEditorDiv);
-    editButton.onclick = showQuestionEditDialog;
+    editButton.onclick = function() {showQuestionEditDialog(question, questionsDiv);};
     questionEditorDiv.appendChild(editButton);
     questionEditorDiv.appendChild(document.createElement("br"));
     insertQuestionIntoDiv(question, questionEditorDiv);
@@ -79,7 +83,7 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
   function insertQuestionsIntoDiv(questions, questionsDiv) {
 	  for (var questionIndex in questions) {
 		var question = questions[questionIndex];
-		question.index = questionIndex + 1;
+		question.index = questionIndex;
 		insertQuestionIntoDiv(question, questionsDiv)
 	  }
   }
