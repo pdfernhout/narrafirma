@@ -25,27 +25,50 @@
   <div id="testDiv"></div>
   
   <script>
-require(["dijit/form/Button", "dojo/dom", "dojo/domReady!"], function(Button, dom){
+require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domReady!"], function(Button, dom, Dialog, on){
 
+  myDialog = new Dialog({
+    title: "My Dialog",
+    content: "Test content.",
+    style: "width: 300px"
+  });
+    
   function insertQuestionIntoDiv(question, questionsDiv) {
-	// console.log("question", question);
-	var input = '<input type="text" name="' + question.id + '">';
-	if (question.type === "boolean") {
-	  input = '<input type="radio" name="' + question.id + '" value="No"> No <input type="radio" name="' + question.id + '" value="Yes"> Yes ';
-	}
-	var help = "";
-	if (question.help) {
-	  var helpText = question.help.replace(/\"/g, '\\x22').replace(/\'/g, '\\x27');;
-	  help = ' <button onclick="alert(\'' + helpText + '\')">?</button>';
-	}
-	questionsDiv.innerHTML = questionsDiv.innerHTML + "  <b>" + question.index + ". </b>" + question.text + " " + input + help + "<br>";
+    var questionDiv = document.createElement("div");
+    // console.log("question", question);
+    var input = '<input type="text" name="' + question.id + '">';
+    if (question.type === "boolean") {
+      input = '<input type="radio" name="' + question.id + '" value="No"> No <input type="radio" name="' + question.id + '" value="Yes"> Yes ';
+    }
+    var help = "";
+    if (question.help) {
+      var helpText = question.help.replace(/\"/g, '\\x22').replace(/\'/g, '\\x27');;
+      help = ' <button onclick="alert(\'' + helpText + '\')">?</button>';
+    }
+    questionDiv.innerHTML = "  <b>" + question.index + ". </b>" + question.text + " " + input + help + "<br>";
+    questionsDiv.appendChild(questionDiv);
   }
   
+  function myTest() {
+    console.log("my test");
+  }
+    
   function insertQuestionEditorIntoDiv(question, questionsDiv) {
-    questionEditorDiv = document.createElement("div");
+    var questionEditorDiv = document.createElement("div");
     var editButton = document.createElement("button");
     editButton.setAttribute("type", "button");
     editButton.appendChild(document.createTextNode("Edit question " + question.index));
+    /* var editButton = new Button({
+      label: "Edit question " + question.index, 
+      onClick: function() {
+        console.log("test more");
+      }
+    });
+    */
+    //editButton.startup();
+    //on(editButton, "click", myTest);
+    //editButton.placeAt(questionEditorDiv);
+    editButton.onclick = myTest;
     questionEditorDiv.appendChild(editButton);
     questionEditorDiv.appendChild(document.createElement("br"));
     insertQuestionIntoDiv(question, questionEditorDiv);
