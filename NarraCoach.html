@@ -64,12 +64,15 @@ require(["dijit/form/Button", "dojo/dom", "dojo/domReady!"], function(Button, do
   
   // TODO: Challenge of repeating sections....
       
+  function addQuestion() {
+    dom.byId("questionsDiv").innerHTML += "Add question button pressed at: " + Date.now() + "<br>";
+  }
+  
   // Create a button programmatically:
   var myButton = new Button({
-    label: "Click me!",
+    label: "Add question",
     onClick: function(){
-      // Do something:
-      dom.byId("questionsDiv").innerHTML += "Button pressed at: " + Date.now() + "<br>";
+      addQuestion();
     }
   }, "testDiv").startup();
   
