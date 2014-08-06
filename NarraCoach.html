@@ -58,7 +58,7 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
     questionDiv.innerHTML = "  <b>" + question.index + ". </b>" + question.text + " " + input + help + "<br>";
     questionsDiv.appendChild(questionDiv);
     
-    console.log("question", question, question.value);
+    // console.log("question", question, question.value);
     if (question.type === "text") {
       var node = questionDiv.querySelector("#" + question.id);
       if (node && question.value) node.value = question.value;
@@ -66,6 +66,8 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
   }
   
   function showQuestionEditDialog(question, questionsDiv) {
+    var questionEditDialog;
+    
     var form = document.createElement("div");
     // "<pre>" + JSON.stringify(question) + "</pre>"
     
@@ -76,14 +78,27 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
     createSurveyQuestions[3].value = question.help;
     
     insertQuestionsIntoDiv(createSurveyQuestions, form);
+    
+    // TODO: Does the dialog have to be "destroyed"???
+    
+    newButton("OK", form, function() {
+      console.log("OK");
+      questionEditDialog.hide();
+      console.log("questionID", form.querySelector("#questionID").value);
+    });
+    
+    newButton("Cancel", form, function() {
+      console.log("Cancel");
+      questionEditDialog.hide();
+    });
 
-    var myDialog = new Dialog({
+    questionEditDialog = new Dialog({
       title: "Edit question " + question.index,
       content: form,
       style: "width: 600px"
     });
 
-    myDialog.show();
+    questionEditDialog.show();
   }
   
   function isString(something) {
@@ -96,11 +111,9 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
       type: "button",
       onClick: callback
     });
-    console.log("addToDiv", addToDiv);
     if (isString(addToDiv)) {
       addToDiv = document.getElementById(addToDiv);
     }
-    console.log("addToDiv revised", addToDiv);
     if (addToDiv) {
       addToDiv.appendChild(button.domNode);
     }
