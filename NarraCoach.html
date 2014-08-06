@@ -26,23 +26,38 @@
   
   <script>
 require(["dijit/form/Button", "dojo/dom", "dojo/domReady!"], function(Button, dom){
+
+  function insertQuestionIntoDiv(question, questionsDiv) {
+	// console.log("question", question);
+	var input = '<input type="text" name="' + question.id + '">';
+	if (question.type === "boolean") {
+	  input = '<input type="radio" name="' + question.id + '" value="No"> No <input type="radio" name="' + question.id + '" value="Yes"> Yes ';
+	}
+	var help = "";
+	if (question.help) {
+	  var helpText = question.help.replace(/\"/g, '\\x22').replace(/\'/g, '\\x27');;
+	  help = ' <button onclick="alert(\'' + helpText + '\')">?</button>';
+	}
+	questionsDiv.innerHTML = questionsDiv.innerHTML + "  <b>" + question.index + ". </b>" + question.text + " " + input + help + "<br>";
+  }
   
-  function insertQuestionsIntoDiv(questions, divName) {
-	  var questionsDiv = document.getElementById(divName);
+  function insertQuestionEditorIntoDiv(question, questionsDiv) {
+    questionEditorDiv = document.createElement("div");
+    var editButton = document.createElement("button");
+    editButton.setAttribute("type", "button");
+    editButton.appendChild(document.createTextNode("Edit question " + question.index));
+    questionEditorDiv.appendChild(editButton);
+    questionEditorDiv.appendChild(document.createElement("br"));
+    insertQuestionIntoDiv(question, questionEditorDiv);
+    questionEditorDiv.appendChild(document.createElement("br"));
+    questionsDiv.appendChild(questionEditorDiv);
+  }
   
+  function insertQuestionsIntoDiv(questions, questionsDiv) {
 	  for (var questionIndex in questions) {
 		var question = questions[questionIndex];
-		// console.log("question", question);
-		var input = '<input type="text" name="' + question.id + '">';
-		if (question.type === "boolean") {
-		  input = '<input type="radio" name="' + question.id + '" value="No"> No <input type="radio" name="' + question.id + '" value="Yes"> Yes ';
-		}
-		var help = "";
-		if (question.help) {
-		  var helpText = question.help.replace(/\"/g, '\\x22').replace(/\'/g, '\\x27');;
-		  help = ' <button onclick="alert(\'' + helpText + '\')">?</button>';
-		}
-		questionsDiv.innerHTML = questionsDiv.innerHTML + "  <b>" + questionIndex + ". </b>" + question.text + " " + input + help + "<br>";
+		question.index = questionIndex + 1;
+		insertQuestionIntoDiv(question, questionsDiv)
 	  }
   }
 
@@ -59,20 +74,25 @@ require(["dijit/form/Button", "dojo/dom", "dojo/domReady!"], function(Button, do
     {id: "questionHelp", type: "text", text: "Question Help", help: 'TODO'},
   ];
   
-  //insertQuestionsIntoDiv(testPuppyQuestions, 'questionsDiv');
-  // insertQuestionsIntoDiv(createSurveyQuestions, 'questionsDiv');
+  var questionsDiv = document.getElementById("questionsDiv");
+  //insertQuestionsIntoDiv(testPuppyQuestions, questionsDiv);
+  // insertQuestionsIntoDiv(createSurveyQuestions, questionsDiv);
   
   // TODO: Challenge of repeating sections....
       
   function addQuestion() {
-    dom.byId("questionsDiv").innerHTML += "Add question button pressed at: " + Date.now() + "<br>";
+    questionsDiv.innerHTML += "<div>Add question button pressed at: " + Date.now() + "</div>";
   }
+  
+  var questionIndex = 1;
   
   // Create a button programmatically:
   var myButton = new Button({
     label: "Add question",
     onClick: function(){
-      addQuestion();
+      var question = {index: questionIndex, id: "Q" + questionIndex, type: "text", text: "Question text " + questionIndex, help: 'Question help ' + questionIndex};
+      questionIndex += 1;
+      insertQuestionEditorIntoDiv(question, questionsDiv);
     }
   }, "testDiv").startup();
   
