@@ -23,6 +23,8 @@
   
   <div id="questionsDiv"></div>
   <div id="testDiv"></div>
+  <hr>
+  <div id="surveyDiv"></div>
   
   <script>
 require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query", "dojo/domReady!"], function(Button, dom, Dialog, on, query){
@@ -214,6 +216,9 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
       questions.push(question);
     });
     console.log("questions", JSON.stringify(questions));
+    var surveyDiv = document.getElementById("surveyDiv");
+    surveyDiv.innerHTML = "";
+    insertQuestionsIntoDiv(questions, surveyDiv);
   }
   
   // Create a button programmatically:
