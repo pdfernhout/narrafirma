@@ -79,6 +79,7 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
     
     var questionDiv = document.createElement("div");
     questionDiv.className = "narracoachQuestion";
+    questionDiv.setAttribute("data-narracoach-question-id", question.id);
     questionDiv.innerHTML = question.text + " " + input + help + "<br><br>";
     questionsDiv.appendChild(questionDiv);
     
@@ -96,6 +97,14 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
     //  var node = questionDiv.querySelector("#" + question.id);
     //  if (node && question.value) node.value = question.value;
     }
+  }
+  
+  function insertQuestionsIntoDiv(questions, questionsDiv) {
+	  for (var questionIndex in questions) {
+		var question = questions[questionIndex];
+		question.index = questionIndex;
+		insertQuestionIntoDiv(question, questionsDiv)
+	  }
   }
   
   function questionEditDialogOK(question, questionEditorDiv, form) {
@@ -219,14 +228,6 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
     questionsDiv.appendChild(questionEditorDiv);
   }
   
-  function insertQuestionsIntoDiv(questions, questionsDiv) {
-	  for (var questionIndex in questions) {
-		var question = questions[questionIndex];
-		question.index = questionIndex;
-		insertQuestionIntoDiv(question, questionsDiv)
-	  }
-  }
-  
   var questionsDiv = document.getElementById("questionsDiv");
   //insertQuestionsIntoDiv(testPuppyQuestions, questionsDiv);
   // insertQuestionsIntoDiv(createSurveyQuestions, questionsDiv);
@@ -250,12 +251,17 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
     console.log("submitSurvey pressed");
     var nodes = query(".narracoachQuestion", "surveyDiv");
     // console.log("nodes", nodes);
-    nodes.forEach(function(node) {
+    nodes.forEach(function(questionDiv) {
       // console.log("Node", node);
-      var questionID = "FIXME";
-      var questionValue = "FIXME";
-      // answers[
+      var questionID = questionDiv.getAttribute("data-narracoach-question-id");
+      var valueNode = questionDiv.querySelector("#" + questionID);
+      var questionValue = undefined;
+      if (valueNode) questionValue = valueNode.value;
+      console.log("answer", questionDiv, questionID, valueNode, questionValue);
+      answers[questionID] = questionValue;
     });
+    
+    console.log("answers", JSON.stringify(answers));
   }
   
   function exportSurveyQuestions() {
