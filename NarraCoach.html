@@ -77,7 +77,7 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
     }
     
     var questionDiv = document.createElement("div");
-    questionDiv.innerHTML = "  <b>" + question.index + ". </b>" + question.text + " " + input + help + "<br><br>";
+    questionDiv.innerHTML = question.text + " " + input + help + "<br><br>";
     questionsDiv.appendChild(questionDiv);
     
     // console.log("question", question, question.value);
@@ -193,10 +193,13 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
   }
   
   function insertQuestionEditorIntoDiv(question, questionEditorDiv) {
-    var editButton = newButton("Edit question " + question.id, questionEditorDiv, function() {
+    idLabel = document.createElement("span");
+    idLabel.innerHTML = "<b>" + question.id + "</b>";
+    questionEditorDiv.appendChild(idLabel);
+    var editButton = newButton("Edit", questionEditorDiv, function() {
       showQuestionEditDialog(question, questionEditorDiv);
     });
-    var deleteButton = newButton("Delete question " + question.id, questionEditorDiv, function() {
+    var deleteButton = newButton("Delete", questionEditorDiv, function() {
       if (confirm("Proceed to delete question " + question.id + "?")) {
         questionEditorDiv.parentNode.removeChild(questionEditorDiv);
         }
