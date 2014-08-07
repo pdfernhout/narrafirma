@@ -38,18 +38,22 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
   var createSurveyQuestions = [
     {id: "questionID", type: "text", text: "Question ID", help: 'TODO'},
     {id: "questionType", type: "text", text: "Question Type", help: 'TODO'},
-    {id: "questionText", type: "text", text: "Question Text", help: 'TODO'},
-    {id: "questionHelp", type: "text", text: "Question Help", help: 'TODO'},
+    {id: "questionText", type: "textarea", text: "Question Text", help: 'TODO'},
+    {id: "questionHelp", type: "textarea", text: "Question Help", help: 'TODO'},
   ];
 
   function insertQuestionIntoDiv(question, questionsDiv) {
-    var questionDiv = document.createElement("div");
     // console.log("question", question);
     var input;
     if (question.type === "boolean") {
       input = '<input type="radio" name="' + question.id + '" value="No"> No <input type="radio" name="' + question.id + '" value="Yes"> Yes ';
-    } else {
+    } else if (question.type === "text") {
       input = '<input type="text" id="' + question.id + '">';
+    } else if (question.type === "textarea") {
+      input = '<br><textarea id="' + question.id + '"></textarea>';
+    } else {
+      console.log("Unsupported question type: " + question.type);
+      return;
     }
     
     var help = "";
@@ -57,6 +61,8 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
       var helpText = question.help.replace(/\"/g, '\\x22').replace(/\'/g, '\\x27');;
       help = ' <button onclick="alert(\'' + helpText + '\')">?</button>';
     }
+    
+    var questionDiv = document.createElement("div");
     questionDiv.innerHTML = "  <b>" + question.index + ". </b>" + question.text + " " + input + help + "<br>";
     questionsDiv.appendChild(questionDiv);
     
@@ -64,6 +70,9 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
     if (question.type === "text") {
       var node = questionDiv.querySelector("#" + question.id);
       if (node && question.value) node.value = question.value;
+    } else if (question.type === "textarea") {
+      var node = questionDiv.querySelector("#" + question.id);
+      if (node && question.value) node.innerHTML = question.value;
     }
   }
   
