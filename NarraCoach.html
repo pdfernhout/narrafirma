@@ -27,7 +27,7 @@
   <div id="surveyDiv"></div>
   
   <script>
-require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query", "dojo/domReady!"], function(Button, dom, Dialog, on, query){
+require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query", "dojo/_base/array", "dojo/domReady!"], function(Button, dom, Dialog, on, query, array){
   
   var testPuppyQuestions = [
     {id: "name", type: "text", text: "Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},
@@ -37,9 +37,10 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
   
   var createSurveyQuestions = [
     {id: "questionID", type: "text", text: "Question ID", help: 'TODO'},
-    {id: "questionType", type: "text", text: "Question Type", help: 'TODO'},
+    {id: "questionType", type: "select", text: "Question Type", help: 'TODO', options: "text\ntextarea\nboolean\nselect"},
     {id: "questionText", type: "textarea", text: "Question Text", help: 'TODO'},
     {id: "questionHelp", type: "textarea", text: "Question Help", help: 'TODO'},
+    {id: "questionOptions", type: "textarea", text: "Question Options", help: 'Enter options here, one per line'},
   ];
 
   function insertQuestionIntoDiv(question, questionsDiv) {
@@ -51,6 +52,16 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
       input = '<input type="text" id="' + question.id + '">';
     } else if (question.type === "textarea") {
       input = '<br><textarea id="' + question.id + '"></textarea>';
+    } else if (question.type === "select") {
+      var options = "";
+      if (question.options) {
+        array.forEach(question.options.split("\n"), function(each) {
+          options += '<option value="' + each + '">' + each + '</option>';
+        });
+      } else {
+        console.log("No options specified");
+      }
+      input = '<select id="' + question.id + '">' + options + '</select>';
     } else {
       console.log("Unsupported question type: " + question.type);
       return;
@@ -73,6 +84,12 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
     } else if (question.type === "textarea") {
       var node = questionDiv.querySelector("#" + question.id);
       if (node && question.value) node.innerHTML = question.value;
+    } else if (question.type === "boolean") {
+      var node = questionDiv.querySelector("#" + question.id);
+      if (node && question.value) node.value = question.value;
+    } else if (question.type === "select") {
+      var node = questionDiv.querySelector("#" + question.id);
+      if (node && question.value) node.value = question.value;
     }
   }
   
@@ -101,6 +118,12 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
       if (questionHelp !== question.help) {
         changed = true;
         question.help = questionHelp;
+      }
+      
+      var questionOptions = form.querySelector("#questionOptions").value;
+      if (questionOptions !== question.options) {
+        changed = true;
+        question.options = questionOptions;
       }
       
       console.log("changed", changed);
