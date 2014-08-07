@@ -27,6 +27,7 @@
   <div id="surveyDiv"></div>
   
   <script>
+"use strict";
 require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query", "dojo/_base/array", "dojo/domReady!"], function(Button, dom, Dialog, on, query, array){
   
   var testPuppyQuestions = [
@@ -57,7 +58,7 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
       if (question.options) {
         if (!question.value) options += "<option disabled selected> -- select an option -- </option>";
         array.forEach(question.options.split("\n"), function(each) {
-          selected = "";
+          var selected = "";
           if (each === question.value) selected = " selected";
           options += '<option value="' + each + '"' + selected + '>' + each + '</option>';
         });
@@ -77,6 +78,7 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
     }
     
     var questionDiv = document.createElement("div");
+    questionDiv.className = "narracoachQuestion";
     questionDiv.innerHTML = question.text + " " + input + help + "<br><br>";
     questionsDiv.appendChild(questionDiv);
     
@@ -193,7 +195,7 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
   }
   
   function insertQuestionEditorIntoDiv(question, questionEditorDiv) {
-    idLabel = document.createElement("span");
+    var idLabel = document.createElement("span");
     idLabel.innerHTML = "<b>" + question.id + "</b>";
     questionEditorDiv.appendChild(idLabel);
     var editButton = newButton("Edit", questionEditorDiv, function() {
@@ -243,9 +245,22 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
     insertQuestionEditorDivIntoDiv(question, questionsDiv);
   }
   
+  function submitSurvey() {
+    var answers = {};
+    console.log("submitSurvey pressed");
+    var nodes = query(".narracoachQuestion", "surveyDiv");
+    // console.log("nodes", nodes);
+    nodes.forEach(function(node) {
+      // console.log("Node", node);
+      var questionID = "FIXME";
+      var questionValue = "FIXME";
+      // answers[
+    });
+  }
+  
   function exportSurveyQuestions() {
     var questions = [];
-    var nodes = query(".narracoachQuestionEditor");
+    var nodes = query(".narracoachQuestionEditor", "questionsDiv");
     // console.log("nodes", nodes);
     nodes.forEach(function(node) {
       // console.log("Node", node);
@@ -257,6 +272,7 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
     var surveyDiv = document.getElementById("surveyDiv");
     surveyDiv.innerHTML = "";
     insertQuestionsIntoDiv(questions, surveyDiv);
+    var submitSurveyButton = newButton("Submit survey", "surveyDiv", submitSurvey);
   }
   
   // Create a button programmatically:
