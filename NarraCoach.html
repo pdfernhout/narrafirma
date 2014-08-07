@@ -25,7 +25,7 @@
   <div id="testDiv"></div>
   
   <script>
-require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domReady!"], function(Button, dom, Dialog, on){
+require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query", "dojo/domReady!"], function(Button, dom, Dialog, on, query){
   
   var testPuppyQuestions = [
     {id: "name", type: "text", text: "Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},
@@ -172,6 +172,7 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
     
   function insertQuestionEditorDivIntoDiv(question, questionsDiv) {
     var questionEditorDiv = document.createElement("div");
+    questionEditorDiv.className = "narracoachQuestionEditor";
     insertQuestionEditorIntoDiv(question, questionEditorDiv);
     questionsDiv.appendChild(questionEditorDiv);
   }
@@ -202,8 +203,23 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/domRe
     insertQuestionEditorDivIntoDiv(question, questionsDiv);
   }
   
+  function exportSurveyQuestions() {
+    var questions = [];
+    var nodes = query(".narracoachQuestionEditor");
+    // console.log("nodes", nodes);
+    nodes.forEach(function(node) {
+      // console.log("Node", node);
+      var questionText = node.getAttribute("data-narracoach-question");
+      var question = JSON.parse(questionText);
+      questions.push(question);
+    });
+    console.log("questions", JSON.stringify(questions));
+  }
+  
   // Create a button programmatically:
   var addQuestionButton = newButton("Add question", "testDiv", addQuestion);
+  document.getElementById("testDiv").appendChild(document.createElement("br"));
+  var exportButton = newButton("Export survey questions", "testDiv", exportSurveyQuestions);
 });
   </script>
 </body>
