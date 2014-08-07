@@ -55,8 +55,11 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
     } else if (question.type === "select") {
       var options = "";
       if (question.options) {
+        if (!question.value) options += "<option disabled selected> -- select an option -- </option>";
         array.forEach(question.options.split("\n"), function(each) {
-          options += '<option value="' + each + '">' + each + '</option>';
+          selected = "";
+          if (each === question.value) selected = " selected";
+          options += '<option value="' + each + '"' + selected + '>' + each + '</option>';
         });
       } else {
         console.log("No options specified");
@@ -74,7 +77,7 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
     }
     
     var questionDiv = document.createElement("div");
-    questionDiv.innerHTML = "  <b>" + question.index + ". </b>" + question.text + " " + input + help + "<br>";
+    questionDiv.innerHTML = "  <b>" + question.index + ". </b>" + question.text + " " + input + help + "<br><br>";
     questionsDiv.appendChild(questionDiv);
     
     // console.log("question", question, question.value);
@@ -87,9 +90,9 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
     } else if (question.type === "boolean") {
       var node = questionDiv.querySelector("#" + question.id);
       if (node && question.value) node.value = question.value;
-    } else if (question.type === "select") {
-      var node = questionDiv.querySelector("#" + question.id);
-      if (node && question.value) node.value = question.value;
+    //} else if (question.type === "select") {
+    //  var node = questionDiv.querySelector("#" + question.id);
+    //  if (node && question.value) node.value = question.value;
     }
   }
   
@@ -190,11 +193,11 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
   }
   
   function insertQuestionEditorIntoDiv(question, questionEditorDiv) {
-    var editButton = newButton("Edit question " + question.index, questionEditorDiv, function() {
+    var editButton = newButton("Edit question " + question.id, questionEditorDiv, function() {
       showQuestionEditDialog(question, questionEditorDiv);
     });
-    var deleteButton = newButton("Delete question " + question.index, questionEditorDiv, function() {
-      if (confirm("Proceed to delete question " + question.index + "?")) {
+    var deleteButton = newButton("Delete question " + question.id, questionEditorDiv, function() {
+      if (confirm("Proceed to delete question " + question.id + "?")) {
         questionEditorDiv.parentNode.removeChild(questionEditorDiv);
         }
     });
