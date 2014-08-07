@@ -28,7 +28,20 @@
   
   <script>
 "use strict";
-require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query", "dojo/_base/array", "dojo/domReady!"], function(Button, dom, Dialog, on, query, array){
+
+require([
+  "dijit/form/Button",
+  "dojo/dom",
+  "dijit/Dialog",
+  "dojo/on",
+  "dojo/query",
+  "dojo/_base/array",
+  "dijit/form/Form",
+  "dijit/form/TextBox",
+  "dijit/form/SimpleTextarea",
+  "dijit/form/Select",
+  "dojo/domReady!"
+  ], function(Button, dom, Dialog, on, query, array, Form, TextBox, SimpleTextarea, Select){
   
   var testPuppyQuestions = [
     {id: "name", type: "text", text: "Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},
@@ -43,145 +56,6 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
     {id: "questionHelp", type: "textarea", text: "Question Help", help: 'TODO'},
     {id: "questionOptions", type: "textarea", text: "Question Options", help: 'Enter options here, one per line'},
   ];
-
-  function insertQuestionIntoDiv(question, questionsDiv) {
-    // console.log("question", question);
-    var input;
-    if (question.type === "boolean") {
-      input = '<input type="radio" name="' + question.id + '" value="No"> No <input type="radio" name="' + question.id + '" value="Yes"> Yes ';
-    } else if (question.type === "text") {
-      input = '<input type="text" id="' + question.id + '">';
-    } else if (question.type === "textarea") {
-      input = '<br><textarea id="' + question.id + '"></textarea>';
-    } else if (question.type === "select") {
-      var options = "";
-      if (question.options) {
-        if (!question.value) options += "<option disabled selected> -- select an option -- </option>";
-        array.forEach(question.options.split("\n"), function(each) {
-          var selected = "";
-          if (each === question.value) selected = " selected";
-          options += '<option value="' + each + '"' + selected + '>' + each + '</option>';
-        });
-      } else {
-        console.log("No options specified");
-      }
-      input = '<select id="' + question.id + '">' + options + '</select>';
-    } else {
-      console.log("Unsupported question type: " + question.type);
-      return;
-    }
-    
-    var help = "";
-    if (question.help) {
-      var helpText = question.help.replace(/\"/g, '\\x22').replace(/\'/g, '\\x27');;
-      help = ' <button onclick="alert(\'' + helpText + '\')">?</button>';
-    }
-    
-    var questionDiv = document.createElement("div");
-    questionDiv.className = "narracoachQuestion";
-    questionDiv.setAttribute("data-narracoach-question-id", question.id);
-    questionDiv.innerHTML = question.text + " " + input + help + "<br><br>";
-    questionsDiv.appendChild(questionDiv);
-    
-    // console.log("question", question, question.value);
-    if (question.type === "text") {
-      var node = questionDiv.querySelector("#" + question.id);
-      if (node && question.value) node.value = question.value;
-    } else if (question.type === "textarea") {
-      var node = questionDiv.querySelector("#" + question.id);
-      if (node && question.value) node.innerHTML = question.value;
-    } else if (question.type === "boolean") {
-      var node = questionDiv.querySelector("#" + question.id);
-      if (node && question.value) node.value = question.value;
-    //} else if (question.type === "select") {
-    //  var node = questionDiv.querySelector("#" + question.id);
-    //  if (node && question.value) node.value = question.value;
-    }
-  }
-  
-  function insertQuestionsIntoDiv(questions, questionsDiv) {
-	  for (var questionIndex in questions) {
-		var question = questions[questionIndex];
-		question.index = questionIndex;
-		insertQuestionIntoDiv(question, questionsDiv)
-	  }
-  }
-  
-  function questionEditDialogOK(question, questionEditorDiv, form) {
-      var changed = false;
-      
-      var questionID = form.querySelector("#questionID").value;
-      if (questionID !== question.id) {
-        changed = true;
-        question.id = questionID;
-      }
-      
-      var questionType = form.querySelector("#questionType").value;
-      if (questionType !== question.type) {
-        changed = true;
-        question.type = questionType;
-      }
-      
-      var questionText = form.querySelector("#questionText").value;
-      if (questionText !== question.text) {
-        changed = true;
-        question.text = questionText;
-      }
-      
-      var questionHelp = form.querySelector("#questionHelp").value;
-      if (questionHelp !== question.help) {
-        changed = true;
-        question.help = questionHelp;
-      }
-      
-      var questionOptions = form.querySelector("#questionOptions").value;
-      if (questionOptions !== question.options) {
-        changed = true;
-        question.options = questionOptions;
-      }
-      
-      console.log("changed", changed);
-      if (changed) {
-        questionEditorDiv.innerHTML = "";
-        insertQuestionEditorIntoDiv(question, questionEditorDiv);
-      }
-  }
-  
-  function showQuestionEditDialog(question, questionEditorDiv) {
-    var questionEditDialog;
-    
-    var form = document.createElement("div");
-    // "<pre>" + JSON.stringify(question) + "</pre>"
-    
-    // Fill in defaults
-    createSurveyQuestions[0].value = question.id;
-    createSurveyQuestions[1].value = question.type;
-    createSurveyQuestions[2].value = question.text;
-    createSurveyQuestions[3].value = question.help;
-    
-    insertQuestionsIntoDiv(createSurveyQuestions, form);
-    
-    // TODO: Does the dialog have to be "destroyed"???
-    
-    newButton("OK", form, function() {
-      console.log("OK");
-      questionEditDialog.hide();
-      questionEditDialogOK(question, questionEditorDiv, form);
-    });
-    
-    newButton("Cancel", form, function() {
-      console.log("Cancel");
-      questionEditDialog.hide();
-    });
-
-    questionEditDialog = new Dialog({
-      title: "Edit question " + question.index,
-      content: form,
-      style: "width: 600px"
-    });
-
-    questionEditDialog.show();
-  }
   
   function isString(something) {
     return (typeof something == 'string' || something instanceof String);
@@ -197,10 +71,218 @@ require(["dijit/form/Button", "dojo/dom", "dijit/Dialog", "dojo/on", "dojo/query
       addToDiv = document.getElementById(addToDiv);
     }
     if (addToDiv) {
-      addToDiv.appendChild(button.domNode);
+      button.placeAt(addToDiv);
     }
+    // TODO: Is startup call really needed here?
     button.startup();
     return button;
+  }
+  
+  function newTextBox(id, addToDiv) {
+    var textBox = new dijit.form.TextBox({
+      id: id,
+    });
+    if (isString(addToDiv)) {
+      addToDiv = document.getElementById(addToDiv);
+    }
+    if (addToDiv) {
+      textBox.placeAt(addToDiv);
+    }
+    // TODO: Is startup call really needed here?
+    textBox.startup();
+    return textBox;
+  }
+  
+  function newSimpleTextArea(id, addToDiv) {
+    var textarea = new SimpleTextarea({
+        id: id,
+        rows: "4",
+        cols: "50",
+        style: "width:auto;"
+    });
+    if (isString(addToDiv)) {
+      addToDiv = document.getElementById(addToDiv);
+    }
+    if (addToDiv) {
+      textarea.placeAt(addToDiv);
+    }
+    textarea.startup();
+    return textarea;
+  }
+  
+  function newSelect(id, optionsString, addToDiv) {
+    var options = [];
+    array.forEach(optionsString.split("\n"), function(each) {
+      options.push({label: each, value: each});
+    });
+    var select = new Select({
+        id: id,
+        options: options
+    });
+    if (isString(addToDiv)) {
+      addToDiv = document.getElementById(addToDiv);
+    }
+    if (addToDiv) {
+      select.placeAt(addToDiv);
+    }
+    select.startup();
+    return select;
+  }
+  
+  function insertQuestionIntoDiv(question, questionsDiv) {
+    // console.log("question", question);
+    var inputNode;
+    if (question.type === "boolean") {
+      inputNode = document.createElement("div");
+      inputNode.innerHTML = "TODO!!!";
+      // input = '<input type="radio" name="' + question.id + '" value="No"> No <input type="radio" name="' + question.id + '" value="Yes"> Yes ';
+    } else if (question.type === "text") {
+      inputNode = newTextBox(question.id);
+      if (question.value) inputNode.set("value", question.value);
+    } else if (question.type === "textarea") {
+      inputNode = newSimpleTextArea(question.id);
+      if (question.value) inputNode.set("value", question.value);
+    } else if (question.type === "select") {
+      inputNode = newSelect(question.id, question.options);
+      if (question.value) inputNode.set("value", question.value);
+    } else {
+      console.log("Unsupported question type: " + question.type);
+      return;
+    }
+    
+    var helpNode = null;
+    if (question.help) {
+      // var helpText = question.help.replace(/\"/g, '\\x22').replace(/\'/g, '\\x27');
+      helpNode = newButton("?", null, function() {
+        alert(question.help);
+      });
+      // help = ' <button onclick="alert(\'' + helpText + '\')">?</button>';
+    }
+    
+    var questionDiv = document.createElement("div");
+    questionDiv.className = "narracoachQuestion";
+    questionDiv.setAttribute("data-narracoach-question-id", question.id);
+    questionDiv.setAttribute("data-narracoach-question-type", question.type);
+    questionDiv.appendChild(document.createTextNode(question.text + " "));
+    if (question.type === "textarea") questionDiv.appendChild(document.createElement("br"));
+    inputNode.placeAt(questionDiv);
+    if (helpNode) helpNode.placeAt(questionDiv);
+    questionDiv.appendChild(document.createElement("br"));
+    questionDiv.appendChild(document.createElement("br"));
+    questionsDiv.appendChild(questionDiv);
+    
+    // console.log("question", question, question.value);
+    if (question.type === "text") {
+      // var node = questionDiv.querySelector("#" + question.id);
+      // if (node && question.value) node.value = question.value;
+    } else if (question.type === "textarea") {
+      //var node = questionDiv.querySelector("#" + question.id);
+      //if (node && question.value) node.innerHTML = question.value;
+    } else if (question.type === "boolean") {
+      var node = questionDiv.querySelector("#" + question.id);
+      if (node && question.value) node.value = question.value;
+    } else if (question.type === "select") {
+      // Value was set above, so do nothing here -- there is no single node anyway
+      // var node = questionDiv.querySelector("#" + question.id);
+      // if (node && question.value) node.value = question.value;
+    }
+  }
+  
+  function insertQuestionsIntoDiv(questions, questionsDiv) {
+	  for (var questionIndex in questions) {
+		var question = questions[questionIndex];
+		question.index = questionIndex;
+		insertQuestionIntoDiv(question, questionsDiv)
+	  }
+  }
+  
+  function questionEditDialogOK(question, questionEditorDiv, form) {
+      var changed = false;
+      
+      // TODO: Not reading data correctly
+      
+      console.log("query", query("#questionID", form));
+      var questionID = query("#questionID", form).get("value");
+      if (questionID !== question.id) {
+        changed = true;
+        question.id = questionID;
+      }
+      
+      var questionType = query("#questionType", form).get("value");
+      if (questionType !== question.type) {
+        changed = true;
+        question.type = questionType;
+      }
+      
+      var questionText = query("#questionText", form).get("value");
+      if (questionText !== question.text) {
+        changed = true;
+        question.text = questionText;
+      }
+      
+      var questionHelp = query("#questionHelp", form).get("value");
+      if (questionHelp !== question.help) {
+        changed = true;
+        question.help = questionHelp;
+      }
+      
+      var questionOptions = query("#questionOptions", form).get("value");
+      if (questionOptions !== question.options) {
+        changed = true;
+        question.options = questionOptions;
+      }
+      
+      console.log("changed", changed);
+      if (changed) {
+        questionEditorDiv.innerHTML = "";
+        insertQuestionEditorIntoDiv(question, questionEditorDiv);
+      }
+  }
+  
+  function showQuestionEditDialog(question, questionEditorDiv) {
+    var questionEditDialog;
+    
+    var form = new Form();
+
+    // Fill in defaults
+    createSurveyQuestions[0].value = question.id;
+    createSurveyQuestions[1].value = question.type;
+    createSurveyQuestions[2].value = question.text;
+    createSurveyQuestions[3].value = question.help;
+    
+    insertQuestionsIntoDiv(createSurveyQuestions, form.domNode);
+    
+    // TODO: Need to catch X close or disable it, as well as escape to close; see: 
+    // http://whatsthepointeh.blogspot.com/2009/03/catching-dijits-dialog-close-event.html
+    
+    // TODO: Does the dialog itself have to be "destroyed"???
+    
+    newButton("OK", form, function() {
+      console.log("OK");
+      questionEditDialog.hide();
+      questionEditDialogOK(question, questionEditorDiv, form);
+      // The next line is needed to get rid of duplicate IDs for next time open form:
+      form.destroyRecursive();
+    });
+    
+    newButton("Cancel", form, function() {
+      console.log("Cancel");
+      questionEditDialog.hide();
+      // The next line is needed to get rid of duplicate IDs for next time open form:
+      form.destroyRecursive();
+    });
+
+    questionEditDialog = new Dialog({
+      title: "Edit question " + question.index,
+      content: form,
+      style: "width: 600px",
+      onCancel: function() {
+        form.destroyRecursive();
+      }
+    });
+    
+    form.startup();
+    questionEditDialog.show();
   }
   
   function insertQuestionEditorIntoDiv(question, questionEditorDiv) {
