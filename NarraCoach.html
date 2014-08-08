@@ -389,11 +389,11 @@ require([
     var nodes = query(".narracoachQuestion", form.domNode);
     // console.log("nodes", nodes);
     nodes.forEach(function(questionDiv) {
-      // console.log("Node", node);
+      console.log("submitSurvey question Node", questionDiv);
       var questionID = questionDiv.getAttribute("data-narracoach-question-id");
-      var valueNode = questionDiv.querySelector("#" + questionID);
+      var valueNode = registry.byId(questionID);
       var questionValue = undefined;
-      if (valueNode) questionValue = valueNode.value;
+      if (valueNode) questionValue = valueNode.get("value");
       console.log("answer", questionDiv, questionID, valueNode, questionValue);
       answers[questionID] = questionValue;
     });
