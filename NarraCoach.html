@@ -32,6 +32,7 @@
   <hr>
   Survey Graph<br>
   <div id="surveyGraphDiv"></div>
+  <div id="chartDiv" style="width: 250px; height: 150px; margin: 5px auto 0px auto;"></div>
   
   <script>
 "use strict";
@@ -44,13 +45,17 @@ require([
   "dojo/query",
   "dijit/registry",
   "dijit/form/Button",
+  "dojox/charting/Chart",
+  "dojox/charting/axis2d/Default",
   "dijit/Dialog",
   "dijit/form/Form",
+  "dijit/form/HorizontalSlider",
+  "dojox/charting/plot2d/Lines",
   "dijit/form/Select",
   "dijit/form/SimpleTextarea",
   "dijit/form/TextBox",
   "dojo/domReady!"
-  ], function(array, dom, domConstruct, on, query, registry, Button, Dialog, Form, Select, SimpleTextarea, TextBox){
+  ], function(array, dom, domConstruct, on, query, registry, Button, Chart, Default, Dialog, Form, HorizontalSlider, Lines, Select, SimpleTextarea, TextBox){
   
   var testPuppyQuestions = [
     {id: "name", type: "text", text: "Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},
@@ -249,7 +254,8 @@ require([
       
       console.log("changed", changed);
       if (changed) {
-        // TODO: empty does not seem to destroy widgets (as get duplicate dijit id warning later), but that seems wrong of dojo...
+        // empty does not seem to destroy widgets (as get duplicate dijit id warning later), but that seems wrong of dojo...
+        // See: http://ibmmobiletipsntricks.com/2013/10/31/destroy-all-widgetsdijits-in-a-dom-node/
         var widgets = dijit.findWidgets(questionEditorDiv);
         array.forEach(widgets, function(widget) {
           widget.destroyRecursive(true);
@@ -429,12 +435,36 @@ require([
     surveyDialog.show();
   }
   
+  function updateGraph() {
+    console.log("updateGraph");
+    
+    var widgets = dijit.findWidgets("chartDiv");
+    array.forEach(widgets, function(widget) {
+      widget.destroyRecursive(true);
+    });
+    domConstruct.empty("chartDiv");
+    
+    
+    var chart1 = new Chart("chartDiv");
+    console.log("Made chart");
+    chart1.addPlot("default", {type: Lines});
+    chart1.addAxis("x");
+    chart1.addAxis("y", {vertical: true});
+    chart1.addSeries("Series 1", [1, 2, 2, 3, 4, 5, 5, 7]);
+    chart1.render();
+    
+    // var surveyGraphDiv = document.getElementById("surveyGraphDiv");
+    // chart1.placeAt(surveyGraphDiv);   
+  }
+  
   // Create a button programmatically:
   var addQuestionButton = newButton("Add question", "testDiv", addQuestion);
   document.getElementById("testDiv").appendChild(document.createElement("br"));
   var exportSurveyQuestionsButton = newButton("Export survey questions", "testDiv", exportSurveyQuestions);
   document.getElementById("testDiv").appendChild(document.createElement("br"));
   var takeSurveyButton = newButton("Take survey", "testDiv", takeSurvey);
+  document.getElementById("testDiv").appendChild(document.createElement("br"));
+  var takeSurveyButton = newButton("Update Graph", "testDiv", updateGraph);
 });
   </script>
 </body>
