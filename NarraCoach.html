@@ -49,13 +49,15 @@ require([
   "dojox/charting/axis2d/Default",
   "dijit/Dialog",
   "dijit/form/Form",
+  "dijit/form/HorizontalRule",
+  "dijit/form/HorizontalRuleLabels",
   "dijit/form/HorizontalSlider",
   "dojox/charting/plot2d/Lines",
   "dijit/form/Select",
   "dijit/form/SimpleTextarea",
   "dijit/form/TextBox",
   "dojo/domReady!"
-  ], function(array, dom, domConstruct, on, query, registry, Button, Chart, Default, Dialog, Form, HorizontalSlider, Lines, Select, SimpleTextarea, TextBox){
+  ], function(array, dom, domConstruct, on, query, registry, Button, Chart, Default, Dialog, Form, HorizontalRule, HorizontalRuleLabels, HorizontalSlider, Lines, Select, SimpleTextarea, TextBox){
   
   var testPuppyQuestions = [
     {id: "name", type: "text", text: "Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},
@@ -65,7 +67,7 @@ require([
   
   var createSurveyQuestions = [
     {id: "questionID", type: "text", text: "Question ID", help: 'TODO'},
-    {id: "questionType", type: "select", text: "Question Type", help: 'TODO', options: "text\ntextarea\nboolean\nselect"},
+    {id: "questionType", type: "select", text: "Question Type", help: 'TODO', options: "text\ntextarea\nboolean\nselect\nslider"},
     {id: "questionText", type: "textarea", text: "Question Text", help: 'TODO'},
     {id: "questionHelp", type: "textarea", text: "Question Help", help: 'TODO'},
     {id: "questionOptions", type: "textarea", text: "Question Options", help: 'Enter options here, one per line'},
@@ -143,10 +145,50 @@ require([
     return select;
   }
   
+  function newSlider(id, addToDiv) {           
+    var slider = new HorizontalSlider({
+        id: id,
+        minimum: 0,
+        maximum: 10,
+        discreteValues: 11,
+    });
+    if (isString(addToDiv)) {
+      addToDiv = document.getElementById(addToDiv);
+    }
+    
+    // TODO: Maybe these rules and labels need to go into a containing div?
+    // TODO: But then what to return for this function if want to return actual slider to get value?
+    /*
+    // Create the rules
+    var rulesNode = domConstruct.create("div", {}, slider.domNode, "first");
+    var sliderRules = new HorizontalRule({
+        container: "leftDecoration",
+        count: 11,
+        style: "width: 5px;"
+    }, rulesNode);
+
+    // Create the labels
+    var labelsNode = domConstruct.create("div", {}, slider.domNode, "first");
+    var sliderLabels = new HorizontalRuleLabels({
+        container: "rightDecoration",
+        labelStyle: "font-style: italic; font-size: 0.75em"
+    }, labelsNode);
+    */
+
+    if (addToDiv) {
+      slider.placeAt(addToDiv);
+    }
+    //sliderRules.startup();
+    //sliderLabels.startup();
+    slider.startup();
+    return slider;
+  }
+  
   function insertQuestionIntoDiv(question, questionsDiv) {
     // console.log("question", question);
     var inputNode;
     if (question.type === "boolean") {
+      // TODO: Fix this, including by setting value
       inputNode = document.createElement("div");
       inputNode.innerHTML = "TODO!!!";
       // input = '<input type="radio" name="' + question.id + '" value="No"> No <input type="radio" name="' + question.id + '" value="Yes"> Yes ';
@@ -158,6 +200,9 @@ require([
       if (question.value) inputNode.set("value", question.value);
     } else if (question.type === "select") {
       inputNode = newSelect(question.id, question.options);
+      if (question.value) inputNode.set("value", question.value);
+    } else if (question.type === "slider") {
+      inputNode = newSlider(question.id);
       if (question.value) inputNode.set("value", question.value);
     } else {
       console.log("Unsupported question type: " + question.type);
@@ -184,22 +229,6 @@ require([
     questionDiv.appendChild(document.createElement("br"));
     questionDiv.appendChild(document.createElement("br"));
     questionsDiv.appendChild(questionDiv);
-    
-    // console.log("question", question, question.value);
-    if (question.type === "text") {
-      // var node = questionDiv.querySelector("#" + question.id);
-      // if (node && question.value) node.value = question.value;
-    } else if (question.type === "textarea") {
-      //var node = questionDiv.querySelector("#" + question.id);
-      //if (node && question.value) node.innerHTML = question.value;
-    } else if (question.type === "boolean") {
-      var node = questionDiv.querySelector("#" + question.id);
-      if (node && question.value) node.value = question.value;
-    } else if (question.type === "select") {
-      // Value was set above, so do nothing here -- there is no single node anyway
-      // var node = questionDiv.querySelector("#" + question.id);
-      // if (node && question.value) node.value = question.value;
-    }
   }
   
   function insertQuestionsIntoDiv(questions, questionsDiv) {
