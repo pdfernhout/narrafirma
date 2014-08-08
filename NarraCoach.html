@@ -37,18 +37,19 @@
 "use strict";
 
 require([
-  "dijit/form/Button",
+  "dojo/_base/array",
   "dojo/dom",
-  "dijit/Dialog",
   "dojo/on",
   "dojo/query",
-  "dojo/_base/array",
+  "dijit/registry",
+  "dijit/form/Button",
+  "dijit/Dialog",
   "dijit/form/Form",
-  "dijit/form/TextBox",
-  "dijit/form/SimpleTextarea",
   "dijit/form/Select",
+  "dijit/form/SimpleTextarea",
+  "dijit/form/TextBox",
   "dojo/domReady!"
-  ], function(Button, dom, Dialog, on, query, array, Form, TextBox, SimpleTextarea, Select){
+  ], function(array, dom, on, query, registry, Button, Dialog, Form, Select, SimpleTextarea, TextBox){
   
   var testPuppyQuestions = [
     {id: "name", type: "text", text: "Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},
@@ -205,35 +206,36 @@ require([
   
   function questionEditDialogOK(question, questionEditorDiv, form) {
       var changed = false;
+      var queryFromNode = form.domNode;
       
       // TODO: Not reading data correctly
       
-      console.log("query", query("#questionID", form));
-      var questionID = query("#questionID", form).get("value");
+      console.log("test registry retrieval", registry.byId("questionID"));
+      var questionID = registry.byId("questionID").get("value");
       if (questionID !== question.id) {
         changed = true;
         question.id = questionID;
       }
       
-      var questionType = query("#questionType", form).get("value");
+      var questionType = registry.byId("questionType").get("value");
       if (questionType !== question.type) {
         changed = true;
         question.type = questionType;
       }
       
-      var questionText = query("#questionText", form).get("value");
+      var questionText = registry.byId("questionText").get("value");
       if (questionText !== question.text) {
         changed = true;
         question.text = questionText;
       }
       
-      var questionHelp = query("#questionHelp", form).get("value");
+      var questionHelp = registry.byId("questionHelp").get("value");
       if (questionHelp !== question.help) {
         changed = true;
         question.help = questionHelp;
       }
       
-      var questionOptions = query("#questionOptions", form).get("value");
+      var questionOptions = registry.byId("questionOptions").get("value");
       if (questionOptions !== question.options) {
         changed = true;
         question.options = questionOptions;
@@ -279,7 +281,7 @@ require([
     questionEditDialog = new Dialog({
       title: "Edit question " + question.index,
       content: form,
-      style: "width: 600px",
+      style: "width: 600px; height 800px; overflow: auto;",
       onCancel: function() {
         // Handles close X in corner or escape
         form.destroyRecursive();
