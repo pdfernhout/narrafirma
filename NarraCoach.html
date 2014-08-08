@@ -39,6 +39,7 @@
 require([
   "dojo/_base/array",
   "dojo/dom",
+  "dojo/dom-construct",
   "dojo/on",
   "dojo/query",
   "dijit/registry",
@@ -49,7 +50,7 @@ require([
   "dijit/form/SimpleTextarea",
   "dijit/form/TextBox",
   "dojo/domReady!"
-  ], function(array, dom, on, query, registry, Button, Dialog, Form, Select, SimpleTextarea, TextBox){
+  ], function(array, dom, domConstruct, on, query, registry, Button, Dialog, Form, Select, SimpleTextarea, TextBox){
   
   var testPuppyQuestions = [
     {id: "name", type: "text", text: "Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},
@@ -213,37 +214,47 @@ require([
       console.log("test registry retrieval", registry.byId("questionID"));
       var questionID = registry.byId("questionID").get("value");
       if (questionID !== question.id) {
+        console.log("changed questionID");
         changed = true;
         question.id = questionID;
       }
       
       var questionType = registry.byId("questionType").get("value");
       if (questionType !== question.type) {
+        console.log("changed questionType");
         changed = true;
         question.type = questionType;
       }
       
       var questionText = registry.byId("questionText").get("value");
       if (questionText !== question.text) {
+        console.log("changed questionText");
         changed = true;
         question.text = questionText;
       }
       
       var questionHelp = registry.byId("questionHelp").get("value");
       if (questionHelp !== question.help) {
+        console.log("changed questionHelp");
         changed = true;
         question.help = questionHelp;
       }
       
       var questionOptions = registry.byId("questionOptions").get("value");
-      if (questionOptions !== question.options) {
+      if (questionOptions !== question.options && (questionOptions || question.options)) {
+        console.log("changed questionOptions");
         changed = true;
         question.options = questionOptions;
       }
       
       console.log("changed", changed);
       if (changed) {
-        questionEditorDiv.innerHTML = "";
+        // TODO: empty does not seem to destroy widgets (as get duplicate dijit id warning later), but that seems wrong of dojo...
+        var widgets = dijit.findWidgets(questionEditorDiv);
+        array.forEach(widgets, function(widget) {
+          widget.destroyRecursive(true);
+        });
+        domConstruct.empty(questionEditorDiv);
         insertQuestionEditorIntoDiv(question, questionEditorDiv);
       }
   }
