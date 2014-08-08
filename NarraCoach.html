@@ -20,11 +20,18 @@
 
 <body class="claro">
   <b>NarraCoach</b><br>
-  
+  Survey Design<br>
   <div id="questionsDiv"></div>
   <div id="testDiv"></div>
   <hr>
+  Survey Definition<br>
   <div id="surveyDiv"></div>
+  <hr>
+  Survey Results<br>
+  <div id="surveyResultsDiv"></div>
+  <hr>
+  Survey Graph<br>
+  <div id="surveyGraphDiv"></div>
   
   <script>
 "use strict";
@@ -252,23 +259,20 @@ require([
     
     insertQuestionsIntoDiv(createSurveyQuestions, form.domNode);
     
-    // TODO: Need to catch X close or disable it, as well as escape to close; see: 
-    // http://whatsthepointeh.blogspot.com/2009/03/catching-dijits-dialog-close-event.html
-    
     // TODO: Does the dialog itself have to be "destroyed"???
     
     newButton("OK", form, function() {
       console.log("OK");
       questionEditDialog.hide();
       questionEditDialogOK(question, questionEditorDiv, form);
-      // The next line is needed to get rid of duplicate IDs for next time open form:
+      // The next line is needed to get rid of duplicate IDs for next time the form is opened:
       form.destroyRecursive();
     });
     
     newButton("Cancel", form, function() {
       console.log("Cancel");
       questionEditDialog.hide();
-      // The next line is needed to get rid of duplicate IDs for next time open form:
+      // The next line is needed to get rid of duplicate IDs for next time the form is opened:
       form.destroyRecursive();
     });
 
@@ -277,6 +281,7 @@ require([
       content: form,
       style: "width: 600px",
       onCancel: function() {
+        // Handles close X in corner or escape
         form.destroyRecursive();
       }
     });
@@ -328,10 +333,12 @@ require([
     insertQuestionEditorDivIntoDiv(question, questionsDiv);
   }
   
-  function submitSurvey() {
+  var surveyResults = [];
+  
+  function submitSurvey(form) {
     var answers = {};
     console.log("submitSurvey pressed");
-    var nodes = query(".narracoachQuestion", "surveyDiv");
+    var nodes = query(".narracoachQuestion", form.domNode);
     // console.log("nodes", nodes);
     nodes.forEach(function(questionDiv) {
       // console.log("Node", node);
@@ -344,7 +351,13 @@ require([
     });
     
     console.log("answers", JSON.stringify(answers));
+    surveyResults.push(answers);
+    
+    var surveyResultsDiv = document.getElementById("surveyResultsDiv");
+    surveyResultsDiv.innerHTML = JSON.stringify(surveyResults);
   }
+  
+  var exportedSurveyQuestions = [];
   
   function exportSurveyQuestions() {
     var questions = [];
@@ -354,19 +367,61 @@ require([
       // console.log("Node", node);
       var questionText = node.getAttribute("data-narracoach-question");
       var question = JSON.parse(questionText);
+      question.id = "survey_" + question.id;
       questions.push(question);
     });
     console.log("questions", JSON.stringify(questions));
     var surveyDiv = document.getElementById("surveyDiv");
-    surveyDiv.innerHTML = "";
-    insertQuestionsIntoDiv(questions, surveyDiv);
-    var submitSurveyButton = newButton("Submit survey", "surveyDiv", submitSurvey);
+    surveyDiv.innerHTML = JSON.stringify(questions);
+    exportedSurveyQuestions = questions;
+    // insertQuestionsIntoDiv(questions, surveyDiv);
+    // var submitSurveyButton = newButton("Submit survey", "surveyDiv", submitSurvey);
+  }
+
+  function takeSurvey() {
+    var surveyDialog;
+    
+    var form = new Form();
+    
+    insertQuestionsIntoDiv(exportedSurveyQuestions, form.domNode);
+    
+    // TODO: Does the dialog itself have to be "destroyed"???
+    
+    newButton("Submit survey", form, function() {
+      console.log("Submit survery");
+      surveyDialog.hide();
+      submitSurvey(form);
+      // The next line is needed to get rid of duplicate IDs for next time the form is opened:
+      form.destroyRecursive();
+    });
+    
+    newButton("Cancel", form, function() {
+      console.log("Cancel");
+      surveyDialog.hide();
+      // The next line is needed to get rid of duplicate IDs for next time the form is opened:
+      form.destroyRecursive();
+    });
+
+    surveyDialog = new Dialog({
+      title: "Take Survey",
+      content: form,
+      style: "width: 600px",
+      onCancel: function() {
+        // Handles close X in corner or escape
+        form.destroyRecursive();
+      }
+    });
+    
+    form.startup();
+    surveyDialog.show();
   }
   
   // Create a button programmatically:
   var addQuestionButton = newButton("Add question", "testDiv", addQuestion);
   document.getElementById("testDiv").appendChild(document.createElement("br"));
-  var exportButton = newButton("Export survey questions", "testDiv", exportSurveyQuestions);
+  var exportSurveyQuestionsButton = newButton("Export survey questions", "testDiv", exportSurveyQuestions);
+  document.getElementById("testDiv").appendChild(document.createElement("br"));
+  var takeSurveyButton = newButton("Take survey", "testDiv", takeSurvey);
 });
   </script>
 </body>
