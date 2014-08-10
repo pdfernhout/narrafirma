@@ -382,6 +382,7 @@ require([
   }
   
   var surveyResults = [];
+  var surveyItemPrefix = "survey_";
   
   function submitSurvey(form) {
     var answers = {};
@@ -395,6 +396,8 @@ require([
       var questionValue = undefined;
       if (valueNode) questionValue = valueNode.get("value");
       console.log("answer", questionDiv, questionID, valueNode, questionValue);
+      // trim off "survey_" part of id
+      var questionID = questionID.substring(surveyItemPrefix.length);
       answers[questionID] = questionValue;
     });
     
@@ -415,7 +418,7 @@ require([
       // console.log("Node", node);
       var questionText = node.getAttribute("data-narracoach-question");
       var question = JSON.parse(questionText);
-      question.id = "survey_" + question.id;
+      question.id = surveyItemPrefix + question.id;
       questions.push(question);
     });
     console.log("questions", JSON.stringify(questions));
