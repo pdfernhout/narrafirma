@@ -503,14 +503,25 @@ require([
     });
     domConstruct.empty("chartDiv");
     
+    var chart1Div = domConstruct.create("div", {}, "chartDiv");
     
-    var chart1 = new Chart("chartDiv");
+    var chart1 = new Chart(chart1Div);
     console.log("Made chart");
     chart1.addPlot("default", {type: Lines});
     chart1.addAxis("x");
     chart1.addAxis("y", {vertical: true});
     chart1.addSeries("Series 1", [1, 2, 2, 3, 4, 5, 5, 7]);
     chart1.render();
+    
+    var chart2Div = domConstruct.create("div", {}, "chartDiv");
+    
+    var chart2 = new Chart(chart2Div);
+    console.log("Made chart 2");
+    chart2.addPlot("default", {type: Lines});
+    chart2.addAxis("x");
+    chart2.addAxis("y", {vertical: true});
+    chart2.addSeries("Series 1", [10, 12, 2, 3, 4, 5, 5, 7]);
+    chart2.render();
     
     // var surveyGraphDiv = document.getElementById("surveyGraphDiv");
     // chart1.placeAt(surveyGraphDiv);   
