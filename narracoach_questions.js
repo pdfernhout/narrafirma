@@ -1,16 +1,16 @@
 
 var page_Introduction = {
     title: "Introduction",
-    pageText: "Hello and welcome to NarraCoach. This application will guide you through carrying out a participatory narrative inquiry (PNI) project.\
-\
-Your project will go through these steps:\
-\
-* Planning: Tell stories and make sense of your goals and hopes for your project.\
-* Collection: Set up your questions and collect stories in person or over the web.\
-* Catalysis: Prepare some “food for thought” for people to use in working with the stories you have collecteed.\
-* Sensemaking: Guide people through working with the stories you have collected.\
-* Intervention: Optionally, design one or more interventions to guide the flow of stories.\
-* Return: Gather information about your project’s impact and reflect on what you have learned.",
+    pageText:
+"Hello and welcome to NarraCoach. This application will guide you through carrying out a participatory narrative inquiry (PNI) project.\n\
+Your project will go through these steps:\n\
+\n\
+* Planning: Tell stories and make sense of your goals and hopes for your project.\n\
+* Collection: Set up your questions and collect stories in person or over the web.\n\
+* Catalysis: Prepare some “food for thought” for people to use in working with the stories you have collecteed.\n\
+* Sensemaking: Guide people through working with the stories you have collected.\n\
+* Intervention: Optionally, design one or more interventions to guide the flow of stories.\n\
+* Return: Gather information about your project’s impact and reflect on what you have learned."
 };
 
 var page_ProjectStoriesIntro = {
