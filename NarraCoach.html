@@ -508,11 +508,13 @@ require([
     var chart1Div = domConstruct.create("div", {}, "chartDiv");
     
     var chart1Data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    var chart1Title = "Title goes here";
     
     var theSlider = null;
     array.forEach(exportedSurveyQuestions, function(each) {
       if (each.type == "slider") {
         theSlider = each.id;
+        chart1Title = each.text;
       }
     });
     
@@ -526,15 +528,25 @@ require([
     
     // var chart1Data = [1, 2, 2, 3, 4, 5, 5, 2];
     
-    var chart1 = new Chart(chart1Div);
+    var chart1 = new Chart(chart1Div, {title: chart1Title});
     console.log("Made chart");
     chart1.addPlot("default", {
         type: Columns,
         markers: true,
         gap: 5
     });
-    chart1.addAxis("x");
-    chart1.addAxis("y", {vertical: true});
+    
+    // labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+    // includeZero: true,
+    
+    chart1.addAxis("x", { labels: [
+        {value: 1, text: "0"}, {value: 2, text: "1"},
+        {value: 3, text: "2"}, {value: 4, text: "3"},
+        {value: 5, text: "4"}, {value: 6, text: "5"},
+        {value: 7, text: "6"}, {value: 8, text: "7"},
+        {value: 9, text: "8"}, {value: 10, text: "9"},
+        {value: 11, text: "10"}]});
+    chart1.addAxis("y", {vertical: true, includeZero: true});
     chart1.addSeries("Series 1", chart1Data);
     chart1.render();
     
