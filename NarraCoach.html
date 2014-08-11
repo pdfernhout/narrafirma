@@ -44,9 +44,11 @@ require([
   "dojo/on",
   "dojo/query",
   "dijit/registry",
+  "dojox/charting/plot2d/Bars",
   "dijit/form/Button",
   "dojox/charting/Chart",
   "dijit/form/CheckBox",
+  "dojox/charting/plot2d/Columns",
   "dojox/charting/axis2d/Default",
   "dijit/Dialog",
   "dijit/form/Form",
@@ -58,7 +60,7 @@ require([
   "dijit/form/SimpleTextarea",
   "dijit/form/TextBox",
   "dojo/domReady!"
-  ], function(array, dom, domConstruct, on, query, registry, Button, Chart, CheckBox, Default, Dialog, Form, HorizontalRule, HorizontalRuleLabels, HorizontalSlider, Lines, Select, SimpleTextarea, TextBox){
+  ], function(array, dom, domConstruct, on, query, registry, Bars, Button, Chart, CheckBox, Columns, Default, Dialog, Form, HorizontalRule, HorizontalRuleLabels, HorizontalSlider, Lines, Select, SimpleTextarea, TextBox){
   
   var testPuppyQuestions = [
     {id: "name", type: "text", text: "Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},
@@ -423,7 +425,7 @@ require([
       if (valueNode) questionValue = valueNode.get("value");
       console.log("answer", questionDiv, questionID, valueNode, questionValue);
       // trim off "survey_" part of id
-      var questionID = questionID.substring(surveyItemPrefix.length);
+      // var questionID = questionID.substring(surveyItemPrefix.length);
       answers[questionID] = questionValue;
     });
     
@@ -505,14 +507,38 @@ require([
     
     var chart1Div = domConstruct.create("div", {}, "chartDiv");
     
+    var chart1Data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    
+    var theSlider = null;
+    array.forEach(exportedSurveyQuestions, function(each) {
+      if (each.type == "slider") {
+        theSlider = each.id;
+      }
+    });
+    
+    if (theSlider != null) {
+      array.forEach(surveyResults, function(each) {
+        var answer = each[theSlider];
+        console.log("answer", answer);
+        chart1Data[answer] += 1;
+      });
+    }
+    
+    // var chart1Data = [1, 2, 2, 3, 4, 5, 5, 2];
+    
     var chart1 = new Chart(chart1Div);
     console.log("Made chart");
-    chart1.addPlot("default", {type: Lines});
+    chart1.addPlot("default", {
+        type: Columns,
+        markers: true,
+        gap: 5
+    });
     chart1.addAxis("x");
     chart1.addAxis("y", {vertical: true});
-    chart1.addSeries("Series 1", [1, 2, 2, 3, 4, 5, 5, 7]);
+    chart1.addSeries("Series 1", chart1Data);
     chart1.render();
     
+    /*
     var chart2Div = domConstruct.create("div", {}, "chartDiv");
     
     var chart2 = new Chart(chart2Div);
@@ -522,6 +548,7 @@ require([
     chart2.addAxis("y", {vertical: true});
     chart2.addSeries("Series 1", [10, 12, 2, 3, 4, 5, 5, 7]);
     chart2.render();
+    */
     
     // var surveyGraphDiv = document.getElementById("surveyGraphDiv");
     // chart1.placeAt(surveyGraphDiv);   
