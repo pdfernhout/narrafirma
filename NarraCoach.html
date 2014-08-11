@@ -92,7 +92,7 @@ require([
     }
     // TODO: Is startup call really needed here?
     button.startup();
-    return button;
+    return button.domNode;
   }
   
   function newTextBox(id, addToDiv) {
@@ -250,7 +250,7 @@ require([
     questionDiv.appendChild(document.createTextNode(question.text + " "));
     if (question.type === "textarea") questionDiv.appendChild(document.createElement("br"));
     questionDiv.appendChild(inputNode);
-    if (helpNode) helpNode.placeAt(questionDiv);
+    if (helpNode) questionDiv.appendChild(helpNode);
     questionDiv.appendChild(document.createElement("br"));
     questionDiv.appendChild(document.createElement("br"));
     questionsDiv.appendChild(questionDiv);
