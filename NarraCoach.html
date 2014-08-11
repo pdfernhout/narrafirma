@@ -162,13 +162,13 @@ require([
         minimum: 0,
         maximum: 10,
         discreteValues: 11,
-        showButtons:false,
+        showButtons: true,
     });
     
     slider.placeAt(panelDiv);
      
     // Create the rules
-    var rulesNode = domConstruct.create("div", {}, panelDiv);
+    var rulesNode = domConstruct.create("div", {}, slider.containerNode);
     var sliderRules = new HorizontalRule({
         container: "bottomDecoration",
         count: 11,
@@ -176,10 +176,10 @@ require([
     }, rulesNode);
 
     // Create the labels
-    var labelsNode = domConstruct.create("div", {}, panelDiv);
+    var labelsNode = domConstruct.create("div", {}, slider.containerNode);
     var sliderLabels = new HorizontalRuleLabels({
         container: "bottomDecoration",
-        style: "height: 1.2em; font-weight: bold",
+        // style: "height: 1.2em; font-weight: bold",
         minimum: 0,
         maximum: 10,
         count: 11,
@@ -187,9 +187,9 @@ require([
         labels: [0,1,2,3,4,5,6,7,8,9,10],
     }, labelsNode);
 
+    slider.startup();
     sliderRules.startup();
     sliderLabels.startup();
-    slider.startup();
     
     if (isString(addToDiv)) {
       addToDiv = document.getElementById(addToDiv);
