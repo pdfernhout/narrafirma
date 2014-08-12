@@ -49,6 +49,7 @@ require([
   "dojox/charting/Chart",
   "dijit/form/CheckBox",
   "dojox/charting/plot2d/Columns",
+  "dijit/layout/ContentPane",
   "dojox/charting/axis2d/Default",
   "dijit/Dialog",
   "dijit/form/Form",
@@ -58,9 +59,46 @@ require([
   "dojox/charting/plot2d/Lines",
   "dijit/form/Select",
   "dijit/form/SimpleTextarea",
+  "dijit/layout/TabContainer",
   "dijit/form/TextBox",
   "dojo/domReady!"
-  ], function(array, dom, domConstruct, on, query, registry, Bars, Button, Chart, CheckBox, Columns, Default, Dialog, Form, HorizontalRule, HorizontalRuleLabels, HorizontalSlider, Lines, Select, SimpleTextarea, TextBox){
+  ], function(
+		  array,
+		  dom,
+		  domConstruct,
+		  on,
+		  query,
+		  registry,
+		  Bars,
+		  Button,
+		  Chart,
+		  CheckBox,
+		  Columns,
+		  ContentPane,
+		  Default,
+		  Dialog,
+		  Form,
+		  HorizontalRule,
+		  HorizontalRuleLabels,
+		  HorizontalSlider,
+		  Lines,
+		  Select,
+		  SimpleTextarea,
+		  TabContainer,
+		  TextBox
+	){
+	
+	createLayout();
+	
+	function createLayout() {
+	  var addQuestionButton = newButton("Add question", "testDiv", addQuestion);
+	  document.getElementById("testDiv").appendChild(document.createElement("br"));
+	  var exportSurveyQuestionsButton = newButton("Export survey questions", "testDiv", exportSurveyQuestions);
+	  document.getElementById("testDiv").appendChild(document.createElement("br"));
+	  var takeSurveyButton = newButton("Take survey", "testDiv", takeSurvey);
+	  document.getElementById("testDiv").appendChild(document.createElement("br"));
+	  var takeSurveyButton = newButton("Update Graph", "testDiv", updateGraph);
+	}
   
   var testPuppyQuestions = [
     {id: "name", type: "text", text: "Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},
@@ -565,15 +603,6 @@ require([
     // var surveyGraphDiv = document.getElementById("surveyGraphDiv");
     // chart1.placeAt(surveyGraphDiv);   
   }
-  
-  // Create a button programmatically:
-  var addQuestionButton = newButton("Add question", "testDiv", addQuestion);
-  document.getElementById("testDiv").appendChild(document.createElement("br"));
-  var exportSurveyQuestionsButton = newButton("Export survey questions", "testDiv", exportSurveyQuestions);
-  document.getElementById("testDiv").appendChild(document.createElement("br"));
-  var takeSurveyButton = newButton("Take survey", "testDiv", takeSurvey);
-  document.getElementById("testDiv").appendChild(document.createElement("br"));
-  var takeSurveyButton = newButton("Update Graph", "testDiv", updateGraph);
 });
   </script>
 </body>
