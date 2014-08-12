@@ -16,27 +16,13 @@
 </style>
 <script>dojoConfig = {async: true, parseOnLoad: false}</script>
 <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojo/dojo.js"></script>
-<script src="narracoach_questions.js"></script>
+<!-- <script src="narracoach_questions.js"></script>  -->
 </head>
 
 <body class="claro">
   <div id="tabContainerDiv"></div>
-  <b>NarraCoach</b><br>
-  Survey Design<br>
-  <div id="questionsDiv"></div>
-  <div id="testDiv"></div>
-  <hr>
-  Survey Definition<br>
-  <div id="surveyDiv"></div>
-  <hr>
-  Survey Results<br>
-  <div id="surveyResultsDiv"></div>
-  <hr>
-  Survey Graph<br>
-  <div id="surveyGraphDiv"></div>
-  <div id="chartDiv" style="width: 250px; height: 150px; margin: 5px auto 0px auto;"></div>
-  
-  <script>
+
+<script>
 "use strict";
 
 require([
@@ -96,33 +82,58 @@ require([
 		
 		var tabContainer = new TabContainer({
 			 tabPosition: "left-h",
-			 style: "width: 600px; height: 200px;"
+			 style: "width: 600px; height: 800px;"
+			 // style: "height: 100%; width: 100%;"
 	    }, "tabContainerDiv");
 		
-		var contentPane1 = new ContentPane({
-            title: "tab 1"
+		var designQuestionsPane = new ContentPane({
+            title: "Design questions"
         });
 		
-		tabContainer.addChild(contentPane1);
+		tabContainer.addChild(designQuestionsPane);
 		
-	  var contentPane2 = new ContentPane({
-            title: "tab 2"
+	  var exportSurveyPane = new ContentPane({
+            title: "Export survey"
         });
     
-    tabContainer.addChild(contentPane2);
+    tabContainer.addChild(exportSurveyPane);
     
+	  var takeSurveyPane = new ContentPane({
+            title: "Take survey"
+        });
+    
+    tabContainer.addChild(takeSurveyPane);
+    
+    var graphResultsPane = new ContentPane({
+        title: "Graph results"
+    });
+
+    tabContainer.addChild(graphResultsPane);
+
     tabContainer.startup();
 		
-    var panel = contentPane1.containerNode;
-    // var panel = document.getElementById("testDiv")
-    
-	  var addQuestionButton = newButton("Add question", panel, addQuestion);
-	  panel.appendChild(document.createElement("br"));
-	  var exportSurveyQuestionsButton = newButton("Export survey questions", panel, exportSurveyQuestions);
-	  panel.appendChild(document.createElement("br"));
-	  var takeSurveyButton = newButton("Take survey", panel, takeSurvey);
-	  panel.appendChild(document.createElement("br"));
-	  var takeSurveyButton = newButton("Update Graph", panel, updateGraph);
+    var pane = designQuestionsPane.containerNode;
+    pane.appendChild(domConstruct.toDom("<b>NarraCoach</b>"));
+    pane.appendChild(domConstruct.toDom("<br>"));
+    pane.appendChild(domConstruct.toDom("Survey Design"));
+    pane.appendChild(domConstruct.toDom("<br>"));
+    pane.appendChild(domConstruct.toDom('<div id="questionsDiv"/>'));
+	  var addQuestionButton = newButton("Add question", pane, addQuestion);
+	  pane.appendChild(document.createElement("br"));
+	  
+	  pane = exportSurveyPane.containerNode;
+	  var exportSurveyQuestionsButton = newButton("Export survey questions", pane, exportSurveyQuestions);
+	  pane.appendChild(document.createElement("br"));
+	  pane.appendChild(domConstruct.toDom('Survey Definition<br><div id="surveyDiv"></div>'));
+	  
+	  pane = takeSurveyPane.containerNode;
+	  var takeSurveyButton = newButton("Take survey", pane, takeSurvey);
+	  pane.appendChild(document.createElement("br"));
+	  pane.appendChild(domConstruct.toDom('Survey Results<br><div id="surveyResultsDiv"></div>'));
+	  
+	  pane = graphResultsPane.containerNode;
+	  var takeSurveyButton = newButton("Update Graph", pane, updateGraph);
+	  pane.appendChild(domConstruct.toDom('Survey Graph<br><div id="surveyGraphDiv"></div><div id="chartDiv" style="width: 250px; height: 150px; margin: 5px auto 0px auto;"></div>'));
 	}
   
   var testPuppyQuestions = [
