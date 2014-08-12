@@ -133,6 +133,7 @@ require([
 	  
 	  pane = graphResultsPane.containerNode;
 	  var takeSurveyButton = newButton("Update Graph", pane, updateGraph);
+	  pane.appendChild(document.createElement("br"));
 	  pane.appendChild(domConstruct.toDom('Survey Graph<br><div id="surveyGraphDiv"></div><div id="chartDiv" style="width: 250px; height: 150px; margin: 5px auto 0px auto;"></div>'));
 	}
   
