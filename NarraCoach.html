@@ -16,9 +16,11 @@
 </style>
 <script>dojoConfig = {async: true, parseOnLoad: false}</script>
 <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojo/dojo.js"></script>
+<script src="narracoach_questions.js"></script>
 </head>
 
 <body class="claro">
+  <div id="tabContainerDiv"></div>
   <b>NarraCoach</b><br>
   Survey Design<br>
   <div id="questionsDiv"></div>
@@ -91,13 +93,36 @@ require([
 	createLayout();
 	
 	function createLayout() {
-	  var addQuestionButton = newButton("Add question", "testDiv", addQuestion);
-	  document.getElementById("testDiv").appendChild(document.createElement("br"));
-	  var exportSurveyQuestionsButton = newButton("Export survey questions", "testDiv", exportSurveyQuestions);
-	  document.getElementById("testDiv").appendChild(document.createElement("br"));
-	  var takeSurveyButton = newButton("Take survey", "testDiv", takeSurvey);
-	  document.getElementById("testDiv").appendChild(document.createElement("br"));
-	  var takeSurveyButton = newButton("Update Graph", "testDiv", updateGraph);
+		
+		var tabContainer = new TabContainer({
+			 tabPosition: "left-h",
+			 style: "width: 600px; height: 200px;"
+	    }, "tabContainerDiv");
+		
+		var contentPane1 = new ContentPane({
+            title: "tab 1"
+        });
+		
+		tabContainer.addChild(contentPane1);
+		
+	  var contentPane2 = new ContentPane({
+            title: "tab 2"
+        });
+    
+    tabContainer.addChild(contentPane2);
+    
+    tabContainer.startup();
+		
+    var panel = contentPane1.containerNode;
+    // var panel = document.getElementById("testDiv")
+    
+	  var addQuestionButton = newButton("Add question", panel, addQuestion);
+	  panel.appendChild(document.createElement("br"));
+	  var exportSurveyQuestionsButton = newButton("Export survey questions", panel, exportSurveyQuestions);
+	  panel.appendChild(document.createElement("br"));
+	  var takeSurveyButton = newButton("Take survey", panel, takeSurvey);
+	  panel.appendChild(document.createElement("br"));
+	  var takeSurveyButton = newButton("Update Graph", panel, updateGraph);
 	}
   
   var testPuppyQuestions = [
@@ -136,7 +161,7 @@ require([
   }
   
   function newTextBox(id, addToDiv) {
-    var textBox = new dijit.form.TextBox({
+    var textBox = new TextBox({
       id: id,
     });
     if (isString(addToDiv)) {
