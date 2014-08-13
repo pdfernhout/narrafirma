@@ -16,6 +16,7 @@
 </style>
 <script>dojoConfig = {async: true, parseOnLoad: false}</script>
 <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojo/dojo.js"></script>
+<script src="translations.js"></script>
 <script src="narracoach_questions.js"></script>
 </head>
 
@@ -77,6 +78,13 @@ require([
     ){
     
     createLayout();
+
+    function translate(tag) {
+        console.log("translating", tag, translations, translations[tag]);
+        var result = translations[tag];
+        if (result === undefined) result = "ERROR: missing text for: " + tag;
+        return result;
+    }
     
     function createLayout() {
     
@@ -87,17 +95,26 @@ require([
         }, "tabContainerDiv");
 
         array.forEach(pageList, function(page) {
+            var pageTitle = translate(page.id + "_title");
+            if (!pageTitle) {
+                var errorMessage = "ERROR: No page title for " + page.id;
+                console.log(errorMessage);
+                pageTitle = errorMessage;
+            }
+            
             var pagePane = new ContentPane({
-                title: page.title
+                title: pageTitle
            });
 
-           if (page.pageText) {
-               pagePane.containerNode.appendChild(domConstruct.toDom(page.pageText));
+           var pageText = translate(page.id + "_text");
+                                    
+           if (pageText) {
+               pagePane.containerNode.appendChild(domConstruct.toDom(pageText));
                pagePane.containerNode.appendChild(domConstruct.toDom("<br><br>"));
            }
 
            if (page.questions) {
-               console.log("questions for page", page.questions);
+               console.log("questions for page", page.id, page.questions);
                insertQuestionsIntoDiv(page.questions, pagePane.containerNode);
            }
        
@@ -223,9 +240,14 @@ require([
         return textarea.domNode;
     }
     
-    function newSelect(id, optionsString, addToDiv) {
+    function newSelect(id, choices, optionsString, addToDiv) {
         var options = [];
-        if (optionsString) {
+        if (choices) {
+            array.forEach(choices, function(each) {
+                var label = translate(id + "_choice_" + each);
+                options.push({label: label, value: each});
+            });           
+        } else if (optionsString) {
             array.forEach(optionsString.split("\n"), function(each) {
                 options.push({label: each, value: each});
             });
@@ -321,7 +343,7 @@ require([
         } else if (question.type === "textarea") {
             inputNode = newSimpleTextArea(question.id);
         } else if (question.type === "select") {
-            inputNode = newSelect(question.id, question.options);
+            inputNode = newSelect(question.id, question.choices, question.options);
         } else if (question.type === "slider") {
             inputNode = newSlider(question.id);
         } else {
@@ -354,9 +376,11 @@ require([
     
     function insertQuestionsIntoDiv(questions, questionsDiv) {
         for (var questionIndex in questions) {
-        var question = questions[questionIndex];
-        question.index = questionIndex;
-        insertQuestionIntoDiv(question, questionsDiv)
+            var question = questions[questionIndex];
+            console.log("insert", questionIndex, question);
+            if (!question) console.log("ERROR in uestion definitions for ", questionsDiv, questionIndex, questions);
+            question.index = questionIndex;
+            insertQuestionIntoDiv(question, questionsDiv)
         }
     }
     
