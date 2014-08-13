@@ -1,3 +1,4 @@
+"use strict";
 
 var page_Introduction = {
     title: "Introduction",
@@ -20,9 +21,9 @@ var page_ProjectStoriesIntro = {
     // it will also have a button called "tell story" which will invoke the tell project story page
     questions: [
         {id: "q1", 
-        text:"Please add stories below",
-        type:"storyList",
-        options:"page_projectStoryEntry",
+        text: "Please add stories below",
+        type: "storyList",
+        options: "page_projectStoryEntry",
         }
     ],
     
@@ -68,11 +69,11 @@ var question_projectStoryScenarioType = {
     text: "Please choose one of these questions, which you will answer by describing a *scenario*.",
     type: "select",
     choices: [
-        projectStoryScenarioType_askMeAnything, 
-        projectStoryScenarioType_magicEars,
-        projectStoryScenarioType_flyOnTheWall,
-        projectStoryScenarioType_projectAspects,
-        projectStoryScenarioType_customQuestion
+        choice_projectStoryScenarioType_askMeAnything, 
+        //projectStoryScenarioType_magicEars,
+        //projectStoryScenarioType_flyOnTheWall,
+        //projectStoryScenarioType_projectAspects,
+        //projectStoryScenarioType_customQuestion
         ]
 }
 
@@ -90,12 +91,14 @@ var question_projectStoryScenarioCustomQuestion = {
 
 var page_ProjectStoryEntry = {
     title: "Project story entry",
-    questions: [projectStoryScenarioType, projectStoryScenarioCustomQuestion]
+    questions: [
+        question_projectStoryScenarioType,
+        question_projectStoryScenarioCustomQuestion
+    ]
 };
 
 var pageList = [
     page_Introduction,
     page_ProjectStoriesIntro,
     page_ProjectStoryEntry,
-
 ];
