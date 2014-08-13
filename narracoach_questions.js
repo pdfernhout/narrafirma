@@ -20,10 +20,12 @@ var page_ProjectStoriesIntro = {
     // this page will list stories the user has entered
     // it will also have a button called "tell story" which will invoke the tell project story page
     questions: [
-        {id: "q1", 
-        text: "Please add stories below",
-        type: "storyList",
-        options: "page_projectStoryEntry",
+        {
+            id: "q1", 
+            text: "Please add stories below",
+            // type: "storyList",
+            type: "textarea",
+            options: "page_projectStoryEntry",
         }
     ],
     
@@ -74,7 +76,15 @@ var question_projectStoryScenarioType = {
         //projectStoryScenarioType_flyOnTheWall,
         //projectStoryScenarioType_projectAspects,
         //projectStoryScenarioType_customQuestion
-        ]
+        ],
+    options: "askMeAnything\nmagicEars\nflyOnTheWall\nprojectAspects\ncustomQuestion",
+    help: "\
+Ask me anything: If you could ask any person any question and would be guaranteed to get an honest answer (magically), whom would you ask, about what, and why?\
+Magic ears: If you could overhear anyone talking to anyone at any time and in any place, whom would you want to listen to, where and when, and why?\
+Fly on the wall: If you could observe any situation or event, what situation would you want to witness, and why?\
+Project aspects: Consider an important aspect of your project: the people you will be asking to tell stories and/or the topic you will be exploring.\
+Describe a scenario that answers another question: You can make up your own question to answer.\
+"
 }
 
 function projectStoryScenarioType_customQuestion_enabled() {

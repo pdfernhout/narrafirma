@@ -85,9 +85,26 @@ require([
             style: "width: 600px; height: 800px;"
             // style: "height: 100%; width: 100%;"
         }, "tabContainerDiv");
+
+        array.forEach(pageList, function(page) {
+            var pagePane = new ContentPane({
+                title: page.title
+           });
+
+           if (page.pageText) {
+               pagePane.containerNode.appendChild(domConstruct.toDom(page.pageText));
+           }
+
+           if (page.questions) {
+               console.log("questions for page", page.questions);
+               insertQuestionsIntoDiv(page.questions, pagePane.containerNode);
+           }
+       
+           tabContainer.addChild(pagePane);            
+        });
     
         var designQuestionsPane = new ContentPane({
-                     title: "Design questions"
+             title: "Design questions"
         });
     
         tabContainer.addChild(designQuestionsPane);
