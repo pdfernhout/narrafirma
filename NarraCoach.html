@@ -82,7 +82,7 @@ require([
     
         var tabContainer = new TabContainer({
             tabPosition: "left-h",
-            style: "width: 600px; height: 800px;"
+            style: "width: 1000px; height: 800px;"
             // style: "height: 100%; width: 100%;"
         }, "tabContainerDiv");
 
@@ -93,6 +93,7 @@ require([
 
            if (page.pageText) {
                pagePane.containerNode.appendChild(domConstruct.toDom(page.pageText));
+               pagePane.containerNode.appendChild(domConstruct.toDom("<br><br>"));
            }
 
            if (page.questions) {

@@ -4,14 +4,14 @@ var page_Introduction = {
     title: "Introduction",
     pageText:
 "Hello and welcome to NarraCoach. This application will guide you through carrying out a participatory narrative inquiry (PNI) project.\n\
-Your project will go through these steps:\n\
-\n\
-* Planning: Tell stories and make sense of your goals and hopes for your project.\n\
-* Collection: Set up your questions and collect stories in person or over the web.\n\
-* Catalysis: Prepare some “food for thought” for people to use in working with the stories you have collecteed.\n\
-* Sensemaking: Guide people through working with the stories you have collected.\n\
-* Intervention: Optionally, design one or more interventions to guide the flow of stories.\n\
-* Return: Gather information about your project’s impact and reflect on what you have learned."
+Your project will go through these steps:<br>\
+<br>\
+* Planning: Tell stories and make sense of your goals and hopes for your project.<br>\
+* Collection: Set up your questions and collect stories in person or over the web.<br>\
+* Catalysis: Prepare some \"food for thought\" for people to use in working with the stories you have collecteed.<br>\
+* Sensemaking: Guide people through working with the stories you have collected.<br>\
+* Intervention: Optionally, design one or more interventions to guide the flow of stories.<br>\
+* Return: Gather information about your project -- impact and reflect on what you have learned."
 };
 
 var page_ProjectStoriesIntro = {
@@ -79,10 +79,10 @@ var question_projectStoryScenarioType = {
         ],
     options: "askMeAnything\nmagicEars\nflyOnTheWall\nprojectAspects\ncustomQuestion",
     help: "\
-Ask me anything: If you could ask any person any question and would be guaranteed to get an honest answer (magically), whom would you ask, about what, and why?\
-Magic ears: If you could overhear anyone talking to anyone at any time and in any place, whom would you want to listen to, where and when, and why?\
-Fly on the wall: If you could observe any situation or event, what situation would you want to witness, and why?\
-Project aspects: Consider an important aspect of your project: the people you will be asking to tell stories and/or the topic you will be exploring.\
+Ask me anything: If you could ask any person any question and would be guaranteed to get an honest answer (magically), whom would you ask, about what, and why?<br>\
+Magic ears: If you could overhear anyone talking to anyone at any time and in any place, whom would you want to listen to, where and when, and why?<br>\
+Fly on the wall: If you could observe any situation or event, what situation would you want to witness, and why?<br>\
+Project aspects: Consider an important aspect of your project: the people you will be asking to tell stories and/or the topic you will be exploring.<br>\
 Describe a scenario that answers another question: You can make up your own question to answer.\
 "
 }
