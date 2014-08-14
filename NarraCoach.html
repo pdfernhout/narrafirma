@@ -43,6 +43,7 @@ require([
     "dojox/charting/axis2d/Default",
     "dijit/Dialog",
     "dijit/form/Form",
+    "dijit/form/RadioButton",
     "dijit/form/HorizontalRule",
     "dijit/form/HorizontalRuleLabels",
     "dijit/form/HorizontalSlider",
@@ -69,6 +70,7 @@ require([
         Default,
         Dialog,
         Form,
+        RadioButton,
         HorizontalRule,
         HorizontalRuleLabels,
         HorizontalSlider,
@@ -95,14 +97,14 @@ require([
                 var children = div.childNodes;
                 for (var i = 0; i < children.length; i++) {
                     var node = children[i];
-                    console.log("node", node, node.tagName);
+                    // console.log("node", node, node.tagName);
                     if (node.tagName === "DIV") {
                         helpTexts[node.id] = node.innerHTML;
                         translations[node.id] = node.innerHTML;
-                        console.log("helptext", node.id, node.innerHTML);
+                        // console.log("helptext", node.id, node.innerHTML);
                     }
                 }
-                console.log("done with query", helpTexts);
+                // console.log("done with query", helpTexts);
                 createLayout();
             } else {
                 console.log("Problem loading helptexts.html");
@@ -308,6 +310,43 @@ require([
         select.startup();
         return select.domNode;
     }
+
+    
+    function newRadio(id, choices, optionsString, addToDiv) {
+        var radioButtonsDiv = domConstruct.create("div");
+        var options = [];
+        if (choices) {
+            array.forEach(choices, function(each) {
+                var label = translate(id + "_choice_" + each);
+                options.push({label: label, value: each});
+            });           
+        } else if (optionsString) {
+            array.forEach(optionsString.split("\n"), function(each) {
+                options.push({label: each, value: each});
+            });
+        }
+
+        array.forEach(options, function (option) {
+            var choiceID = id + "_choice_" + option.value;
+            var radioButton = new RadioButton({
+                checked: false,
+                value: option.value,
+                name: id,
+                id: choiceID,
+            });
+            radioButton.placeAt(radioButtonsDiv);
+            radioButton.startup();
+            radioButtonsDiv.appendChild(domConstruct.toDom('<label for="' + choiceID + '">' + option.label + '</label><br>'));
+        });
+        
+        if (isString(addToDiv)) {
+            addToDiv = document.getElementById(addToDiv);
+        }
+        if (addToDiv) {
+            addToDiv.appendChild(radioButtonsDiv);
+        }
+        return radioButtonsDiv;
+    }
     
     function newSlider(id, addToDiv) {                     
         // A div that contains rules, labels, and slider
@@ -387,6 +426,8 @@ require([
             inputNode = newSimpleTextArea(question.id);
         } else if (question.type === "select") {
             inputNode = newSelect(question.id, question.choices, question.options);
+        } else if (question.type === "radio") {
+            inputNode = newRadio(question.id, question.choices, question.options);
         } else if (question.type === "slider") {
             inputNode = newSlider(question.id);
         } else {
@@ -395,7 +436,8 @@ require([
         }
 
         var widget = registry.byId(question.id);
-        if (question.value) widget.set("value", question.value);
+        if (!widget) console.log("No widget found for: " + question.id);
+        if (question.value && widget) widget.set("value", question.value);
 
         var questionText;
         if (!question.text) {
@@ -414,7 +456,7 @@ require([
             // Otherwise, see if can translate the text if it is a tag
             helpText = translate(question.help, question.help);
         }
-        console.log("question help", question.id, question.help, helpText);
+        // console.log("question help", question.id, question.help, helpText);
         
         var helpNode = null;
         if (helpText) {
@@ -439,7 +481,7 @@ require([
         questionDiv.appendChild(document.createElement("br"));
         questionsDiv.appendChild(questionDiv);
 
-        if (question.changed) {
+        if (question.changed && widget) {
             widget.on("change", question.changed);
             //question.changed(widget.get("value"));
         }
