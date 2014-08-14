@@ -403,8 +403,8 @@ require([
         var slider = new HorizontalSlider({
             id: id,
             minimum: 0,
-            maximum: 10,
-            discreteValues: 11,
+            maximum: 100,
+            discreteValues: 101,
             showButtons: true,
         });
         
@@ -424,10 +424,10 @@ require([
             container: "bottomDecoration",
             // style: "height: 1.2em; font-weight: bold",
             minimum: 0,
-            maximum: 10,
+            maximum: 100,
             count: 11,
             numericMargin: 1,
-            labels: [0,1,2,3,4,5,6,7,8,9,10],
+            labels: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
         }, labelsNode);
 
         slider.startup();
@@ -801,7 +801,8 @@ require([
             array.forEach(surveyResults, function(each) {
                 var answer = each[theSlider];
                 console.log("answer", answer);
-                chart1Data[answer] += 1;
+                var slot = Math.round(answer / 10);
+                chart1Data[slot] += 1;
             });
         }
         
@@ -819,17 +820,17 @@ require([
         // includeZero: true,
         
         chart1.addAxis("x", { labels: [
-            {value: 1, text: "0"},
-            {value: 2, text: "1"},
-            {value: 3, text: "2"},
-            {value: 4, text: "3"},
-            {value: 5, text: "4"},
-            {value: 6, text: "5"},
-            {value: 7, text: "6"},
-            {value: 8, text: "7"},
-            {value: 9, text: "8"},
-            {value: 10, text: "9"},
-            {value: 11, text: "10"}
+            {value: 1, text: "0-9"},
+            {value: 2, text: "10"},
+            {value: 3, text: "20"},
+            {value: 4, text: "30"},
+            {value: 5, text: "40"},
+            {value: 6, text: "50"},
+            {value: 7, text: "60"},
+            {value: 8, text: "70"},
+            {value: 9, text: "80"},
+            {value: 10, text: "90"},
+            {value: 11, text: "100"}
         ]});
         chart1.addAxis("y", {vertical: true, includeZero: true});
         chart1.addSeries("Series 1", chart1Data);
