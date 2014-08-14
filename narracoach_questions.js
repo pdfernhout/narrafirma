@@ -40,7 +40,7 @@ function changeTest(value, more) {
 
 var question_projectStoryScenarioType = {
     id: "question_projectStoryScenarioType",
-    type: "select",
+    type: "radio",
     choices: ["askMeAnything", "magicEars", "flyOnTheWall", "projectAspects", "customQuestion"],
     help: "question_projectStoryScenarioType_help",
     changed: changeTest,

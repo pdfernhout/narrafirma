@@ -9,17 +9,11 @@ var translations = {
 
 	// question: project story scenario
 	"question_projectStoryScenarioType": "Please choose one of these questions, which you will answer by describing a <b>scenario</b>.",
-	"question_projectStoryScenarioType_choice_askMeAnything": "Ask me anything",
-	"question_projectStoryScenarioType_choice_magicEars": "Magic ears",
-	"question_projectStoryScenarioType_choice_flyOnTheWall": "Fly on the wall",
-	"question_projectStoryScenarioType_choice_projectAspects": "Project aspects",
-	"question_projectStoryScenarioType_choice_customQuestion": "Custom question",
-	// details displayed for those choices
-    "question_projectStoryScenarioType_choice_askMeAnything_detail": "Ask me anything: If you could ask any person any question and would be guaranteed to get an honest answer (magically), whom would you ask, about what, and why?",
-    "question_projectStoryScenarioType_choice_magicEars_detail": "Magic ears: If you could overhear anyone talking to anyone at any time and in any place, whom would you want to listen to, where and when, and why?",
-    "question_projectStoryScenarioType_choice_flyOnTheWall_detail": "Fly on the wall: If you could observe any situation or event, what situation would you want to witness, and why?",
-    "question_projectStoryScenarioType_choice_projectAspects_detail": "Project aspects: Consider an important aspect of your project: the people you will be asking to tell stories and/or the topic you will be exploring.",
-    "question_projectStoryScenarioType_choice_customQuestion_detail": "Your own question: You can make up your own question to answer.",
+    "question_projectStoryScenarioType_choice_askMeAnything": "Ask me anything: If you could ask any person any question and would be guaranteed to get an honest answer (magically), whom would you ask, about what, and why?",
+    "question_projectStoryScenarioType_choice_magicEars": "Magic ears: If you could overhear anyone talking to anyone at any time and in any place, whom would you want to listen to, where and when, and why?",
+    "question_projectStoryScenarioType_choice_flyOnTheWall": "Fly on the wall: If you could observe any situation or event, what situation would you want to witness, and why?",
+    "question_projectStoryScenarioType_choice_projectAspects": "Project aspects: Consider an important aspect of your project: the people you will be asking to tell stories and/or the topic you will be exploring.",
+    "question_projectStoryScenarioType_choice_customQuestion": "Your own question: You can make up your own question to answer.",
     "question_projectStoryScenarioType_help": null, // See helptexts.html
     
 	// question: custom scenario question (only asked if they chose custom question option above)
