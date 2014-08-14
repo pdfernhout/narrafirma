@@ -568,19 +568,20 @@ require([
         questionsDiv.appendChild(questionEditorDiv);
     }
     
-    var questionsDiv = document.getElementById("questionsDiv");
     //insertQuestionsIntoDiv(testPuppyQuestions, questionsDiv);
     // insertQuestionsIntoDiv(createSurveyQuestions, questionsDiv);
     
     // TODO: Challenge of repeating sections....
             
     function addQuestion() {
+        var questionsDiv = document.getElementById("questionsDiv");
         questionsDiv.innerHTML += "<div>Add question button pressed at: " + Date.now() + "</div>";
     }
     
     var questionIndex = 1;
     
     function addQuestion() {
+        var questionsDiv = document.getElementById("questionsDiv");
         var question = {index: questionIndex, id: "Q" + questionIndex, type: "text", text: "Question text " + questionIndex, help: 'Question help ' + questionIndex};
         questionIndex += 1;
         insertQuestionEditorDivIntoDiv(question, questionsDiv);
