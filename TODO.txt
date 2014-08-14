@@ -3,7 +3,7 @@
 Checkboxes for multiple choices
 Checkboxes limited by maximum choices as validation error
 
-Slide with labels and no ticks
+Slider with labels and no ticks
 
 Help window displaying HTML instead of alert
 
