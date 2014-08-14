@@ -33,6 +33,7 @@ require([
     "dojo/on",
     "dojo/query",
     "dijit/registry",
+    "dojo/_base/xhr",
     "dojox/charting/plot2d/Bars",
     "dijit/form/Button",
     "dojox/charting/Chart",
@@ -58,6 +59,7 @@ require([
         on,
         query,
         registry,
+        xhr,
         Bars,
         Button,
         Chart,
@@ -76,13 +78,51 @@ require([
         TabContainer,
         TextBox
     ){
-    
-    createLayout();
 
-    function translate(tag) {
-        console.log("translating", tag, translations, translations[tag]);
+    var helpTexts = {};
+
+    // Load the help texts; this is needed to know whether to put up help icons, and so must be done before creating pages
+    xhr.get({
+        url: "helptexts.html",
+        load: function(data) {
+            if (data && !data.error) {
+                //console.log("Got helptexts: ", data);
+                //var fragment = document.createDocumentFragment();
+                var div = document.createElement("div");
+                div.innerHTML = data;
+                console.log("div", div);
+                //console.log("fragment", fragment);
+                var children = div.childNodes;
+                for (var i = 0; i < children.length; i++) {
+                    var node = children[i];
+                    console.log("node", node, node.tagName);
+                    if (node.tagName === "DIV") {
+                        helpTexts[node.id] = node.innerHTML;
+                        translations[node.id] = node.innerHTML;
+                        console.log("helptext", node.id, node.innerHTML);
+                    }
+                }
+                console.log("done with query", helpTexts);
+                createLayout();
+            } else {
+                console.log("Problem loading helptexts.html");
+            }
+        },
+        error: function(error) {
+            alert("An unexpected error occurred loading helptexts.html: " + error);
+        },
+     });
+
+    function translate(tag, defaultText) {
+        // console.log("translating", tag, translations, translations[tag]);
         var result = translations[tag];
-        if (result === undefined) result = "ERROR: missing text for: " + tag;
+        if (result === undefined) {
+            if (typeof defaultText !== 'undefined') {
+                result = defaultText;
+            } else {
+                result = "ERROR: missing text for: " + tag;
+            }
+        }
         return result;
     }
     
@@ -114,7 +154,7 @@ require([
            }
 
            if (page.questions) {
-               console.log("questions for page", page.id, page.questions);
+               console.log("questions for page", page.id);
                insertQuestionsIntoDiv(page.questions, pagePane.containerNode);
            }
        
@@ -351,21 +391,41 @@ require([
             return;
         }
         if (question.value) registry.byId(question.id).set("value", question.value);
+
+        var questionText;
+        if (!question.text) {
+            // Try to retrieve question help if not defined and present in translations.js
+            questionText = translate(question.id);
+        } else {
+            // Otherwise, see if can translate the text if it is a tag
+            questionText = translate(question.text, question.text);
+        }
+
+        var helpText = "";
+        if (!question.help) {
+            // Try to retrieve question help if not defined and present in helptexts.html
+            helpText = translate(question.id + "_help", "");
+        } else {
+            // Otherwise, see if can translate the text if it is a tag
+            helpText = translate(question.help, question.help);
+        }
+        console.log("question help", question.id, question.help, helpText);
         
         var helpNode = null;
-        if (question.help) {
+        if (helpText) {
             // var helpText = question.help.replace(/\"/g, '\\x22').replace(/\'/g, '\\x27');
             helpNode = newButton("?", null, function() {
-                alert(question.help);
+                alert(helpText);
             });
             // help = ' <button onclick="alert(\'' + helpText + '\')">?</button>';
         }
-        
+
         var questionDiv = document.createElement("div");
         questionDiv.className = "narracoachQuestion";
         questionDiv.setAttribute("data-narracoach-question-id", question.id);
         questionDiv.setAttribute("data-narracoach-question-type", question.type);
-        questionDiv.appendChild(document.createTextNode(question.text + " "));
+        questionDiv.appendChild(domConstruct.toDom(questionText));
+        questionDiv.appendChild(document.createTextNode(" "));
         if (question.type === "textarea") questionDiv.appendChild(document.createElement("br"));
         questionDiv.appendChild(inputNode);
         if (helpNode) questionDiv.appendChild(helpNode);
@@ -377,7 +437,7 @@ require([
     function insertQuestionsIntoDiv(questions, questionsDiv) {
         for (var questionIndex in questions) {
             var question = questions[questionIndex];
-            console.log("insert", questionIndex, question);
+            // console.log("insert", questionIndex, question);
             if (!question) console.log("ERROR in uestion definitions for ", questionsDiv, questionIndex, questions);
             question.index = questionIndex;
             insertQuestionIntoDiv(question, questionsDiv)
@@ -390,7 +450,6 @@ require([
         
         // TODO: Not reading data correctly
         
-        console.log("test registry retrieval", registry.byId("questionID"));
         var questionID = registry.byId("questionID").get("value");
         if (questionID !== question.id) {
             console.log("changed questionID");

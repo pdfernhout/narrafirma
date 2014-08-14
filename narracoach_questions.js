@@ -29,7 +29,7 @@ var question_projectStoryScenarioType = {
     id: "question_projectStoryScenarioType",
     type: "select",
     choices: ["askMeAnything", "magicEars", "flyOnTheWall", "projectAspects", "customQuestion"],
-    help: "projectStoryScenarioType"
+    help: "question_projectStoryScenarioType_help"
 }
 
 function question_projectStoryScenarioTypeCustomQuestion_enabled() {
@@ -41,7 +41,7 @@ var question_projectStoryScenarioCustomQuestion = {
     id: "question_projectStoryScenarioCustomQuestion",
     enabled: question_projectStoryScenarioTypeCustomQuestion_enabled,
     text: "question_projectStoryScenarioTypeCustomQuestion",
-    type: "textArea",
+    type: "textarea",
 }
 
 var page_projectStoryEntry = {
