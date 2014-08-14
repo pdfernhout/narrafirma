@@ -54,15 +54,52 @@ function question_projectStoryScenarioTypeCustomQuestion_enabled() {
 var question_projectStoryScenarioCustomQuestion = {
     id: "question_projectStoryScenarioCustomQuestion",
     enabled: question_projectStoryScenarioTypeCustomQuestion_enabled,
-    text: "question_projectStoryScenarioTypeCustomQuestion",
-    type: "textarea",
+    type: "textarea"
+}
+
+var question_projectStoryOutcomeType = {
+	id: "question_projectStoryOutcomeType",
+	type: "select",
+	choices: ["success", "failure", "acceptable"]
+}
+
+var question_projectStory = {
+	id = "question_projectStory",
+	type: "textarea"
+}
+
+var question_projectStoryName = {
+		id = "question_projectStoryName",
+		type: "text"
+	}
+
+var question_projectStoryFeelAbout = {
+		id = "question_projectStoryFeelAbout",
+		type: "select",
+		choices = ["excited", "nervous", "hopeful", "resigned", "confident", "confused"],
+	}
+
+var question_projectStorySurprise = {
+		id = "question_projectStorySurprise",
+		type = "text"
+}
+
+var question_projectStoryOpportunitiesOrDangers = {
+		id = "question_projectStoryOpportunitiesOrDangers",
+		type = "text"
 }
 
 var page_projectStoryEntry = {
     id: "page_projectStoryEntry",
     questions: [
         question_projectStoryScenarioType,
-        question_projectStoryScenarioCustomQuestion
+        question_projectStoryScenarioCustomQuestion,
+        question_projectStoryOutcomeType,
+        question_projectStory,
+        question_projectStoryName,
+        question_projectStoryFeelAbout,
+        question_projectStorySurprise,
+        question_projectStoryOpportunitiesOrDangers
     ]
 };
 
