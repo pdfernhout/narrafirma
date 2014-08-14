@@ -16,7 +16,7 @@
 </style>
 <script>dojoConfig = {async: true, parseOnLoad: false}</script>
 <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojo/dojo.js"></script>
-<script src="translations.js"></script>
+<script src="strings_short.js"></script>
 <script src="narracoach_questions.js"></script>
 </head>
 
@@ -83,7 +83,7 @@ require([
 
     // Load the help texts; this is needed to know whether to put up help icons, and so must be done before creating pages
     xhr.get({
-        url: "helptexts.html",
+        url: "strings_long.html",
         load: function(data) {
             if (data && !data.error) {
                 //console.log("Got helptexts: ", data);
