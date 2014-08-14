@@ -233,7 +233,7 @@ require([
     
     var createSurveyQuestions = [
         {id: "questionID", type: "text", text: "Question ID", help: 'TODO'},
-        {id: "questionType", type: "select", text: "Question Type", help: 'TODO', options: "text\ntextarea\nboolean\nselect\nslider"},
+        {id: "questionType", type: "select", text: "Question Type", help: 'TODO', options: "text\ntextarea\nboolean\ncheckbox\nselect\nslider"},
         {id: "questionText", type: "textarea", text: "Question Text", help: 'TODO'},
         {id: "questionHelp", type: "textarea", text: "Question Help", help: 'TODO'},
         {id: "questionOptions", type: "textarea", text: "Question Options", help: 'Enter options here, one per line'},
@@ -337,8 +337,10 @@ require([
                 });           
             } else if (this.optionsString) {
                 array.forEach(this.optionsString.split("\n"), function(each) {
-                    // TODO???? var label = translate(id + "_choice_" + each);
-                    options.push({label: each, value: each});
+                    var translateID = id + "_choice_" + each;
+                    if (self.optionsString === "yes\nno") translateID = "boolean_choice_" + each;
+                    var label = translate(translateID);
+                    options.push({label: label, value: each});
                 });
             }
     
@@ -445,7 +447,23 @@ require([
     }
     
     function newBoolean(id, addToDiv) {
-        // TODO: Make into radio buttons? Issue with setting value then though...
+        var radioButtons = RadioButtonsWidget({
+            id: id,
+            choices: null,
+            optionsString: "yes\nno",
+        });
+         
+        if (isString(addToDiv)) {
+            addToDiv = document.getElementById(addToDiv);
+        }
+        if (addToDiv) {
+            addToDiv.appendChild(radioButtonsDiv);
+        }
+        radioButtons.startup();
+        return radioButtons.domNode;
+    }
+
+    function newCheckbox(id, addToDiv) {
         var checkbox = new CheckBox({
             id: id
         });
@@ -464,7 +482,9 @@ require([
         // console.log("question", question);
         var inputNode;
         if (question.type === "boolean") {
-             inputNode = newBoolean(question.id);
+           inputNode = newBoolean(question.id);
+        } else if (question.type === "checkbox") {
+           inputNode = newCheckbox(question.id);
         } else if (question.type === "text") {
             inputNode = newTextBox(question.id);
         } else if (question.type === "textarea") {

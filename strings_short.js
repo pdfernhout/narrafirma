@@ -1,4 +1,8 @@
 var translations = {
+    // Used for boolean choice widget
+    "boolean_choice_yes": "yes",
+    "boolean_choice_no": "no",
+    
 	// page: introduction 
 	"page_generalIntro_title": "Introduction",
 	"page_generalIntro_text": null, // See helptexts.html
