@@ -25,11 +25,25 @@ var page_projectStoriesIntro = {
     ],  
 };
 
+// TODO: Testing ability to respond to changes -- may change approach
+function changeTest(value, more) {
+    console.log("changed test", value);
+    console.log("window", window);
+    var trailer = document.getElementById("question_projectStoryScenarioType_trailer");
+    trailer.innerHTML = window.narracoach_translate("question_projectStoryScenarioType_choice_" + value + "_detail");
+    var disabled = (value !== "customQuestion");
+    console.log("disabled", disabled);
+    var otherQuestion = document.getElementById("question_projectStoryScenarioCustomQuestion");
+    console.log("otherQuestion", otherQuestion);
+    window.narracoach_registry_byId("question_projectStoryScenarioCustomQuestion").setAttribute('disabled', disabled);
+}
+
 var question_projectStoryScenarioType = {
     id: "question_projectStoryScenarioType",
     type: "select",
     choices: ["askMeAnything", "magicEars", "flyOnTheWall", "projectAspects", "customQuestion"],
-    help: "question_projectStoryScenarioType_help"
+    help: "question_projectStoryScenarioType_help",
+    changed: changeTest,
 }
 
 function question_projectStoryScenarioTypeCustomQuestion_enabled() {

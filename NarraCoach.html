@@ -127,7 +127,10 @@ require([
     }
     
     function createLayout() {
-    
+        // Store reference so can be used from inside narracoach_questions.js
+        window.narracoach_translate = translate;
+        window.narracoach_registry_byId = registry.byId;
+        
         var tabContainer = new TabContainer({
             tabPosition: "left-h",
             style: "width: 1000px; height: 800px;"
@@ -390,7 +393,9 @@ require([
             console.log("Unsupported question type: " + question.type);
             return;
         }
-        if (question.value) registry.byId(question.id).set("value", question.value);
+
+        var widget = registry.byId(question.id);
+        if (question.value) widget.set("value", question.value);
 
         var questionText;
         if (!question.text) {
@@ -430,8 +435,14 @@ require([
         questionDiv.appendChild(inputNode);
         if (helpNode) questionDiv.appendChild(helpNode);
         questionDiv.appendChild(document.createElement("br"));
+        questionDiv.appendChild(domConstruct.toDom('<div id="' + question.id + '_trailer"/>'));
         questionDiv.appendChild(document.createElement("br"));
         questionsDiv.appendChild(questionDiv);
+
+        if (question.changed) {
+            widget.on("change", question.changed);
+            //question.changed(widget.get("value"));
+        }
     }
     
     function insertQuestionsIntoDiv(questions, questionsDiv) {
