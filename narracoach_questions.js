@@ -59,34 +59,34 @@ var question_projectStoryScenarioCustomQuestion = {
 
 var question_projectStoryOutcomeType = {
 	id: "question_projectStoryOutcomeType",
-	type: "select",
+	type: "radio",
 	choices: ["success", "failure", "acceptable"]
 }
 
 var question_projectStory = {
-	id = "question_projectStory",
+	id: "question_projectStory",
 	type: "textarea"
 }
 
 var question_projectStoryName = {
-		id = "question_projectStoryName",
+		id: "question_projectStoryName",
 		type: "text"
 	}
 
 var question_projectStoryFeelAbout = {
-		id = "question_projectStoryFeelAbout",
+		id: "question_projectStoryFeelAbout",
 		type: "select",
-		choices = ["excited", "nervous", "hopeful", "resigned", "confident", "confused"],
+		choices: ["excited", "nervous", "hopeful", "resigned", "confident", "confused"],
 	}
 
 var question_projectStorySurprise = {
-		id = "question_projectStorySurprise",
-		type = "text"
+		id: "question_projectStorySurprise",
+		type: "text"
 }
 
 var question_projectStoryOpportunitiesOrDangers = {
-		id = "question_projectStoryOpportunitiesOrDangers",
-		type = "text"
+		id: "question_projectStoryOpportunitiesOrDangers",
+		type: "text"
 }
 
 var page_projectStoryEntry = {

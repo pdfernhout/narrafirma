@@ -17,7 +17,7 @@ var translations = {
     "question_projectStoryScenarioType_help": null, // See helptexts.html
     
 	// question: custom scenario question (only asked if they chose custom question option above)
-	"question_projectStoryScenarioTypeCustomQuestion": "Please enter the question to which this project story is an answer.",
+	"question_projectStoryScenarioCustomQuestion": "Please enter the question to which this project story is an answer.",
 	
 	// question: project story outcome type
 	"question_projectStoryOutcomeType": "Now choose one of these *outcomes* with which to create a story from your chosen scenario.",
