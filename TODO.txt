@@ -1,14 +1,44 @@
-NarraCoach TODO list
+==== NarraCoach TODO list:
 
 Checkboxes for multiple choices
 Checkboxes limited by maximum choices as validation error
 
 Slide with labels and no ticks
 
+Help window displaying HTML instead of alert
+
+Tab container sizing to full page
+
+Disabled or hidden tabs which are enabled as progress
+
 Story list widget with optional add button
-Page to enter themes for stories
-Page to cluster themes into final themes
+
 Story browser with two choices of questions and answers
 
-Saving data to a file server
+Page to enter themes for stories
+
+Page to cluster themes into final themes
+
+Write up sample NarraCoach product offering descriptions for review (Cynthia)
+
+==== Later:
+
+Saving NarraCoach data to a file server as make progress
+
+Survey taking part on file server
+
 Wordpress plugin
+
+==== Wish list:
+
+Better font size, maybe user adjustable
+
+User definable CSS themes for surveys
+
+Remaking narracoach_questions.js to be proper module
+
+Unit tests
+
+Continuous integration server that runs tests
+
+
