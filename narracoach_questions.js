@@ -26,16 +26,19 @@ var page_projectStoriesIntro = {
 };
 
 // TODO: Testing ability to respond to changes -- may change approach
-function changeTest(value, more) {
-    console.log("changed test", value);
-    console.log("window", window);
+function changeTest(change) {
+    var value = change.target.value;
+    console.log("selection changeTest", value, change);
     var trailer = document.getElementById("question_projectStoryScenarioType_trailer");
-    trailer.innerHTML = window.narracoach_translate("question_projectStoryScenarioType_choice_" + value + "_detail");
+    trailer.innerHTML = window.narracoach_translate("question_projectStoryScenarioType_choice_" + value);
     var disabled = (value !== "customQuestion");
     console.log("disabled", disabled);
     var otherQuestion = document.getElementById("question_projectStoryScenarioCustomQuestion");
     console.log("otherQuestion", otherQuestion);
-    window.narracoach_registry_byId("question_projectStoryScenarioCustomQuestion").setAttribute('disabled', disabled);
+    // window.narracoach_registry_byId("question_projectStoryScenarioCustomQuestion").setAttribute('disabled', disabled);
+    var displayStyle = "block";
+    if (disabled) displayStyle = "none";
+    window.narracoach_domStyle.set("question_projectStoryScenarioCustomQuestion_div", "display", displayStyle);
 }
 
 var question_projectStoryScenarioType = {
