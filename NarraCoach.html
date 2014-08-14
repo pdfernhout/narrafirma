@@ -784,7 +784,7 @@ require([
         });
         domConstruct.empty("chartDiv");
         
-        var chart1Div = domConstruct.create("div", {}, "chartDiv");
+        var chart1Div = domConstruct.create("div", {style: "width: 500px; height: 500px;"}, "chartDiv");
         
         var chart1Data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         var chart1Title = "Title goes here";
@@ -820,7 +820,7 @@ require([
         // includeZero: true,
         
         chart1.addAxis("x", { labels: [
-            {value: 1, text: "0-9"},
+            {value: 1, text: "0-4"},
             {value: 2, text: "10"},
             {value: 3, text: "20"},
             {value: 4, text: "30"},
@@ -830,7 +830,7 @@ require([
             {value: 8, text: "70"},
             {value: 9, text: "80"},
             {value: 10, text: "90"},
-            {value: 11, text: "100"}
+            {value: 11, text: "95-100"}
         ]});
         chart1.addAxis("y", {vertical: true, includeZero: true});
         chart1.addSeries("Series 1", chart1Data);
