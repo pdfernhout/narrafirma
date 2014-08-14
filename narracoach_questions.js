@@ -28,13 +28,13 @@ var page_projectStoriesIntro = {
 // TODO: Testing ability to respond to changes -- may change approach
 function changeTest(change) {
     var value = change.target.value;
-    console.log("selection changeTest", value, change);
-    var trailer = document.getElementById("question_projectStoryScenarioType_trailer");
-    trailer.innerHTML = window.narracoach_translate("question_projectStoryScenarioType_choice_" + value);
+    // console.log("selection changeTest", value, change);
+    //var trailer = document.getElementById("question_projectStoryScenarioType_trailer");
+    //trailer.innerHTML = window.narracoach_translate("question_projectStoryScenarioType_choice_" + value);
     var disabled = (value !== "customQuestion");
-    console.log("disabled", disabled);
-    var otherQuestion = document.getElementById("question_projectStoryScenarioCustomQuestion");
-    console.log("otherQuestion", otherQuestion);
+    //console.log("disabled", disabled);
+    //var otherQuestion = document.getElementById("question_projectStoryScenarioCustomQuestion");
+    //console.log("otherQuestion", otherQuestion);
     // window.narracoach_registry_byId("question_projectStoryScenarioCustomQuestion").setAttribute('disabled', disabled);
     var displayStyle = "block";
     if (disabled) displayStyle = "none";
@@ -49,14 +49,9 @@ var question_projectStoryScenarioType = {
     changed: changeTest,
 }
 
-function question_projectStoryScenarioTypeCustomQuestion_enabled() {
-    // TO DO
-    return true;
-}
-
 var question_projectStoryScenarioCustomQuestion = {
     id: "question_projectStoryScenarioCustomQuestion",
-    enabled: question_projectStoryScenarioTypeCustomQuestion_enabled,
+    visible: false,
     type: "textarea"
 }
 
@@ -78,7 +73,7 @@ var question_projectStoryName = {
 
 var question_projectStoryFeelAbout = {
 		id: "question_projectStoryFeelAbout",
-		type: "select",
+		type: "radio",
 		choices: ["excited", "nervous", "hopeful", "resigned", "confident", "confused"],
 	}
 

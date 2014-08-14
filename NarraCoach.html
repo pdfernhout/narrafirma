@@ -352,7 +352,7 @@ require([
                 });
                 radioButton.placeAt(radioButtonsDiv);
                 on(radioButton, "click", function(evt) {
-                    console.log("radio clicked", evt.target);
+                    // console.log("radio clicked", evt.target);
                     self.set("value", evt.target.value);
                 });
                 radioButton.startup();
@@ -531,6 +531,8 @@ require([
             widget.on("change", question.changed);
             //question.changed(widget.get("value"));
         }
+
+        if (question.visible !== undefined && !question.visible) domStyle.set(questionDiv, "display", "none");
     }
     
     function insertQuestionsIntoDiv(questions, questionsDiv) {
