@@ -29,6 +29,10 @@ Survey taking part on file server
 
 Wordpress plugin
 
+Backup/Export/Import
+
+Roles/Accounts & Security
+
 ==== Wish list:
 
 Better font size, maybe user adjustable
@@ -41,4 +45,9 @@ Unit tests
 
 Continuous integration server that runs tests
 
+Multi-user aspects
 
+Dashboard
+
+Generate PDF reports
+Generate CSV output
