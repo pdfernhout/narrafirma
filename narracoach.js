@@ -292,6 +292,26 @@ require([
         return select.domNode;
     }
 
+    function buildOptions(id, choices, optionsString){
+        var options = [];
+        
+        if (choices) {
+            array.forEach(choices, function(each) {
+                var label = translate(id + "_choice_" + each);
+                options.push({label: label, value: each});
+            });           
+        } else if (optionsString) {
+            array.forEach(optionsString.split("\n"), function(each) {
+                var translateID = id + "_choice_" + each;
+                if (optionsString === "yes\nno") translateID = "boolean_choice_" + each;
+                var label = translate(translateID, each);
+                options.push({label: label, value: each});
+            });
+        }
+        
+        return options;
+    }
+    
     declare("RadioButtonsWidget", [_WidgetBase], {
         value: null,
         choices: null,
@@ -302,21 +322,8 @@ require([
             // declare id var as "this" will not be defined inside array loop functions
             var id = this.id;
             var self = this;
-            var radioButtonsDiv = domConstruct.create("div");
-            var options = [];
-            if (this.choices) {
-                array.forEach(this.choices, function(each) {
-                    var label = translate(id + "_choice_" + each);
-                    options.push({label: label, value: each});
-                });           
-            } else if (this.optionsString) {
-                array.forEach(this.optionsString.split("\n"), function(each) {
-                    var translateID = id + "_choice_" + each;
-                    if (self.optionsString === "yes\nno") translateID = "boolean_choice_" + each;
-                    var label = translate(translateID);
-                    options.push({label: label, value: each});
-                });
-            }
+            var div = domConstruct.create("div");
+            var options = buildOptions(id, this.choices, this.optionsString);
     
             array.forEach(options, function (option) {
                 var choiceID = id + "_choice_" + option.value;
@@ -326,19 +333,20 @@ require([
                     name: id,
                     "id": choiceID,
                 });
-                radioButton.placeAt(radioButtonsDiv);
+                radioButton.placeAt(div);
                 on(radioButton, "click", function(evt) {
                     // console.log("radio clicked", evt.target);
                     self.set("value", evt.target.value);
                 });
                 radioButton.startup();
-                radioButtonsDiv.appendChild(domConstruct.toDom('<label for="' + choiceID + '">' + option.label + '</label><br>'));
+                div.appendChild(domConstruct.toDom('<label for="' + choiceID + '">' + option.label + '</label><br>'));
             });
             
-            this.domNode = radioButtonsDiv;
+            this.domNode = div;
         },
 
         _setValueAttr: function(value) {
+            // TODO: Need to select radio button when this is called, but not if call it from inside widget on change
             this.value = value;
         },
     });
@@ -354,10 +362,70 @@ require([
             addToDiv = document.getElementById(addToDiv);
         }
         if (addToDiv) {
-            addToDiv.appendChild(radioButtonsDiv);
+            addToDiv.appendChild(radioButtons.domNode);
         }
         radioButtons.startup();
         return radioButtons.domNode;
+    }
+    
+    // TODO: Very similar to RadioButtonsWidget
+    // TODO: Set an optional minimum and maximum number that may be checked and validate for that
+    declare("CheckBoxesWidget", [_WidgetBase], {
+        value: {},
+        choices: null,
+        optionsString: null,
+    
+        buildRendering: function() {
+            // create the DOM for this widget
+            // declare id var as "this" will not be defined inside array loop functions
+            var id = this.id;
+            var self = this;
+            var div = domConstruct.create("div");
+            var options = buildOptions(id, this.choices, this.optionsString);
+    
+            array.forEach(options, function (option) {
+                var choiceID = id + "_choice_" + option.value;
+                var checkBox = new CheckBox({
+                    value: option.value,
+                    "id": choiceID,
+                });
+                checkBox.placeAt(div);
+                self.value[option.value] = false;
+                on(checkBox, "click", function(evt) {
+                    var localChoiceID = evt.target.defaultValue;
+                    var checked = evt.target.checked;
+                    self.value[localChoiceID] = checked;
+                    // console.log("clicked checkbox", evt, localChoiceID, checked, self.value);
+                    // TODO: send changed message?
+                });
+                checkBox.startup();
+                div.appendChild(domConstruct.toDom('<label for="' + choiceID + '">' + option.label + '</label><br>'));
+            });
+            
+            this.domNode = div;
+        },
+        
+        _setValueAttr: function(value) {
+            // TODO: Need to select checkboxes when this is called, but not if call it from inside widget on change
+            this.value = value;
+        },
+    });
+
+    function newCheckBoxes(id, choices, optionsString, addToDiv) {
+        var checkBoxes = CheckBoxesWidget({
+            id: id,
+            choices: choices,
+            optionsString: optionsString
+        });
+         
+        if (isString(addToDiv)) {
+            addToDiv = document.getElementById(addToDiv);
+        }
+        if (addToDiv) {
+            addToDiv.appendChild(checkBoxes.domNode);
+        }
+        checkBoxes.startup();
+        return checkBoxes.domNode;
     }
     
     function newSlider(id, addToDiv) {                     
@@ -422,7 +490,7 @@ require([
             addToDiv = document.getElementById(addToDiv);
         }
         if (addToDiv) {
-            addToDiv.appendChild(radioButtonsDiv);
+            addToDiv.appendChild(radioButtons.domNode);
         }
         radioButtons.startup();
         return radioButtons.domNode;
@@ -450,6 +518,8 @@ require([
            inputNode = newBoolean(question.id);
         } else if (question.type === "checkbox") {
            inputNode = newCheckbox(question.id);
+        } else if (question.type === "checkboxes") {
+            inputNode = newCheckBoxes(question.id, question.choices, question.options);
         } else if (question.type === "text") {
             inputNode = newTextBox(question.id);
         } else if (question.type === "textarea") {
