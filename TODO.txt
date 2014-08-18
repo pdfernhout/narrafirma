@@ -1,6 +1,5 @@
 ==== NarraCoach TODO list:
 
-Checkboxes for multiple choices
 Checkboxes limited by maximum choices as validation error
 
 Slider with labels and no ticks
@@ -13,6 +12,10 @@ Disabled or hidden tabs which are enabled as progress
 
 Story list widget with optional add button
 
+Story browser with list of title and shows stories
+
+Way to tag question as story text, story title, question about story, question about participant
+
 Story browser with two choices of questions and answers
 
 Page to enter themes for stories
@@ -20,6 +23,8 @@ Page to enter themes for stories
 Page to cluster themes into final themes
 
 Write up sample NarraCoach product offering descriptions for review (Cynthia)
+
+DONE Checkboxes for multiple choices
 
 ==== Later:
 
