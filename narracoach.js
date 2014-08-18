@@ -116,8 +116,10 @@ require([
         
         var tabContainer = new TabContainer({
             tabPosition: "left-h",
-            style: "width: 1000px; height: 800px;"
-            // style: "height: 100%; width: 100%;"
+            //tabPosition: "top",
+            style: "width: 100%",
+            // have the tab container height change to match internal panel
+            doLayout: false,
         }, "tabContainerDiv");
 
         array.forEach(pageList, function(page) {
@@ -129,7 +131,8 @@ require([
             }
             
             var pagePane = new ContentPane({
-                title: pageTitle
+                title: pageTitle,
+                style: "width: 100%"
            });
 
            var pageText = translate(page.id + "_text");
@@ -144,7 +147,8 @@ require([
                insertQuestionsIntoDiv(page.questions, pagePane.containerNode);
            }
        
-           tabContainer.addChild(pagePane);            
+           tabContainer.addChild(pagePane); 
+           pagePane.startup();
         });
     
         var designQuestionsPane = new ContentPane({
@@ -152,26 +156,28 @@ require([
         });
     
         tabContainer.addChild(designQuestionsPane);
+        designQuestionsPane.startup();
         
         var exportSurveyPane = new ContentPane({
             title: "Export survey"
         });
         
         tabContainer.addChild(exportSurveyPane);
+        exportSurveyPane.startup();
         
         var takeSurveyPane = new ContentPane({
             title: "Take survey"
         });
         
         tabContainer.addChild(takeSurveyPane);
+        takeSurveyPane.startup();
         
         var graphResultsPane = new ContentPane({
             title: "Graph results"
         });
 
         tabContainer.addChild(graphResultsPane);
-
-        tabContainer.startup();
+        graphResultsPane.startup();
         
         var pane = designQuestionsPane.containerNode;
         pane.appendChild(domConstruct.toDom("<b>NarraCoach</b>"));
@@ -197,6 +203,8 @@ require([
         var takeSurveyButton = newButton("Update Graph", pane, updateGraph);
         pane.appendChild(document.createElement("br"));
         pane.appendChild(domConstruct.toDom('Survey Graph<br><div id="surveyGraphDiv"></div><div id="chartDiv" style="width: 250px; height: 150px; margin: 5px auto 0px auto;"></div>'));
+
+        tabContainer.startup();
     }
     
     var testPuppyQuestions = [

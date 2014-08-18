@@ -6,8 +6,6 @@ Slider with labels and no ticks
 
 Help window displaying HTML instead of alert
 
-Tab container sizing to full page
-
 Disabled or hidden tabs which are enabled as progress
 
 Story list widget with optional add button
@@ -24,7 +22,10 @@ Page to cluster themes into final themes
 
 Write up sample NarraCoach product offering descriptions for review (Cynthia)
 
+Resize Tab container when add Graph
+
 DONE Checkboxes for multiple choices
+DONE Tab container sizing to full page
 
 ==== Later:
 
