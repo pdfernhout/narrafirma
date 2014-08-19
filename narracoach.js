@@ -436,12 +436,28 @@ require([
         return checkBoxes.domNode;
     }
     
-    function newSlider(id, addToDiv) {                     
+    function newSlider(id, options, addToDiv) {                     
         // A div that contains rules, labels, and slider
         var panelDiv = domConstruct.create("div");
         
         // TODO: Maybe these rules and labels need to go into a containing div?
         // TODO: But then what to return for this function if want to return actual slider to get value?
+        
+        var hasTextLabels = false;
+        var labels = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+        if (options) {
+            var labels = options.split("\n");
+            if (labels.length != 2) {
+                console.log("Need to specify low and high labels for quesiton: ", id);
+            } else {
+                hasTextLabels = true;
+                var labelLow = labels[0].trim();
+                var labelHigh = labels[1].trim();
+                labels = [labelLow, labelHigh];
+            }
+        }
+        
+        console.log("labels", labels, labels.length);
         
         var slider = new HorizontalSlider({
             id: id,
@@ -449,31 +465,37 @@ require([
             maximum: 100,
             discreteValues: 101,
             showButtons: true,
+            // Doesn;t work: style: "align: center; width: 80%;"
+            style: "width: 80%;"
+
         });
         
         slider.placeAt(panelDiv);
          
+        //if (!hasTextLabels) {}
         // Create the rules
         var rulesNode = domConstruct.create("div", {}, slider.containerNode);
         var sliderRules = new HorizontalRule({
             container: "bottomDecoration",
-            count: 11,
+            count: labels.length,
             style: "height: 5px"
         }, rulesNode);
+        //}
 
         // Create the labels
         var labelsNode = domConstruct.create("div", {}, slider.containerNode);
         var sliderLabels = new HorizontalRuleLabels({
             container: "bottomDecoration",
-            // style: "height: 1.2em; font-weight: bold",
+            style: "height: 1.5em; font-weight: bold",
             minimum: 0,
             maximum: 100,
-            count: 11,
+            count: labels.length,
             numericMargin: 1,
-            labels: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+            labels: labels,
         }, labelsNode);
 
         slider.startup();
+        // if (!hasTextLabels)
         sliderRules.startup();
         sliderLabels.startup();
         
@@ -537,7 +559,7 @@ require([
         } else if (question.type === "radio") {
             inputNode = newRadioButtons(question.id, question.choices, question.options);
         } else if (question.type === "slider") {
-            inputNode = newSlider(question.id);
+            inputNode = newSlider(question.id, question.options);
         } else {
             console.log("Unsupported question type: " + question.type);
             return;
