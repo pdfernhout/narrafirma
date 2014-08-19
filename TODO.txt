@@ -10,7 +10,6 @@ Story list widget with optional add button
 Story browser with list of title and shows stories
 Story browser with two choices of questions and answers
 
-Way to tag question as story text, story title, question about story, question about participant
 
 Page to enter themes for stories
 
@@ -23,7 +22,7 @@ Resize Tab container when add Graph
 DONE Checkboxes for multiple choices
 DONE Tab container sizing to full page
 DONE Slider with labels and no ticks
-
+DONE Way to tag question as story text, story title, question about story, question about participant
 
 ==== Later:
 

@@ -215,6 +215,7 @@ require([
     
     var createSurveyQuestions = [
         {id: "questionID", type: "text", text: "Question ID", help: 'TODO'},
+        {id: "questionUse", type: "select", text: "Question Use", help: 'TODO', options: "story title\nstory text\nquestion about story\nquestion about participant"},
         {id: "questionType", type: "select", text: "Question Type", help: 'TODO', options: "text\ntextarea\nboolean\ncheckbox\nselect\nslider"},
         {id: "questionText", type: "textarea", text: "Question Text", help: 'TODO'},
         {id: "questionHelp", type: "textarea", text: "Question Help", help: 'TODO'},
@@ -650,6 +651,13 @@ require([
             question.type = questionType;
         }
         
+        var questionUse = registry.byId("questionUse").get("value");
+        if (questionUse !== question.use) {
+            console.log("changed questionUse");
+            changed = true;
+            question.use = questionUse;
+        }
+        
         var questionText = registry.byId("questionText").get("value");
         if (questionText !== question.text) {
             console.log("changed questionText");
@@ -691,9 +699,10 @@ require([
 
         // Fill in defaults
         createSurveyQuestions[0].value = question.id;
-        createSurveyQuestions[1].value = question.type;
-        createSurveyQuestions[2].value = question.text;
-        createSurveyQuestions[3].value = question.help;
+        createSurveyQuestions[1].value = question.use;
+        createSurveyQuestions[2].value = question.type;
+        createSurveyQuestions[3].value = question.text;
+        createSurveyQuestions[4].value = question.help;
         
         insertQuestionsIntoDiv(createSurveyQuestions, form.domNode);
         
