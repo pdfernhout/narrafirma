@@ -7,6 +7,7 @@ require([
     "dojo/dom-construct",
     "dojo/dom-style",
     "dojo/i18n!narracoach/nls/messages",
+    "narracoach/narracoach_questions",
     "dojo/on",
     "dojo/query",
     "dijit/registry",
@@ -41,6 +42,7 @@ require([
         domConstruct,
         domStyle,
         messages,
+        narracoach_questions,
         on,
         query,
         registry,
@@ -156,7 +158,7 @@ require([
 
         // Add pages defined in narracoach_questions.js
         
-        array.forEach(pageList, function(page) {
+        array.forEach(narracoach_questions.pageList, function(page) {
         	// This page is handled in a popup dialog for story entry
         	if (page.id !== "page_projectStoryEntry") addPage(tabContainer, page);
         });
@@ -292,7 +294,7 @@ require([
         
         var form = new Form();
         
-        var page = pageList[2];
+        var page = narracoach_questions.pageList[2];
         
         var pageText = translate(page.id + "_text");
         

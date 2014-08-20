@@ -1,5 +1,7 @@
 "use strict";
 
+define(function() {
+	
 // for questions and choices, id field is lookup field for text
 // for pages, two lookups: for title, append "_title"; for text, append "_text"
 // system should tell us if title and text strings are not defined for page
@@ -107,3 +109,7 @@ var pageList = [
     page_projectStoriesIntro,
     page_projectStoryEntry,
 ];
+
+return {"pageList": pageList};
+
+});
