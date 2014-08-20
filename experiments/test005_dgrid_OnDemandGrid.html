@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>grid test</title>
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojo/resources/dojo.css">
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dijit/themes/dijit.css">
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dijit/themes/claro/claro.css">
+<link rel="stylesheet" href="http://dojofoundation.org/packages/dgrid/js/dgrid/css/dgrid.css">
+<link rel="stylesheet" href="http://dojofoundation.org/packages/dgrid/js/dgrid/css/skins/claro.css">
+
+<style type="text/css">
+    
+    html {
+        height: 100%;
+    }
+    
+    body {
+        min-height: 100%;
+    }
+    
+</style>
+
+<script>
+	// Load dgrid from dojofoundation for now for testing -- replace for production!!!
+	var dojoConfig;
+	(function(){
+		var baseUrl = "http://dojofoundation.org/packages/dgrid/js/";
+		dojoConfig = {
+			async: true,
+			parseOnLoad: false,
+			// cacheBust: "1.10.0",
+			// Load dgrid and its dependencies from a local copy.
+			// If we were loading everything locally, this would not
+			// be necessary, since Dojo would automatically pick up
+			// dgrid, xstyle, and put-selector as siblings of the dojo folder.
+			packages: [
+				{ name: "dgrid", location: baseUrl + "dgrid" },
+				{ name: "xstyle", location: baseUrl + "xstyle" },
+				{ name: "put-selector", location: baseUrl + "put-selector" }
+			]
+		};
+	}());
+</script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojo/dojo.js"></script>
+
+</head>
+
+<body class="claro">
+    <noscript>
+    Please enable JavaScript to use NarraCoach.
+    </noscript>
+    <script>
+    require(["dgrid/OnDemandGrid",  "dojo/store/Memory", "dojo/domReady!"], function(Grid, Memory){
+        var data = [
+            { first: "Bob", last: "Barker", age: 89 },
+            { first: "Vanna", last: "White", age: 55 },
+            { first: "Pat", last: "Sajak", age: 65 }
+        ];
+        
+        var dataStore = new Memory({"data": data});
+     
+        var grid = new Grid({
+        	  store: dataStore,
+            columns: {
+                first: "First Name",
+                last: "Last Name",
+                age: "Age"
+            }
+        }, "grid");
+        // grid.renderArray(data);
+        
+        grid.startup();
+    });
+    </script>
+    
+    <div id="tabContainerDiv" style="width: 100%; height: 100%"></div>
+    
+    <div id="grid"></div>
+</body>
+</html>
