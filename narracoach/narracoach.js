@@ -6,6 +6,7 @@ require([
     "dojo/dom",
     "dojo/dom-construct",
     "dojo/dom-style",
+    "dojo/i18n!narracoach/nls/messages",
     "dojo/on",
     "dojo/query",
     "dijit/registry",
@@ -39,6 +40,7 @@ require([
         dom,
         domConstruct,
         domStyle,
+        messages,
         on,
         query,
         registry,
@@ -67,10 +69,10 @@ require([
         _WidgetBase
     ){
 
+	/*
     var helpTexts = {};
     var helpTextsURL = "narracoach/nls/en/strings_long.html";
 
-    /*
     function loadHTMLDivTexts(callback) {
         // Load the help texts; this is needed to know whether to put up help icons, and so must be done before creating pages
 	    xhr.get({
@@ -111,7 +113,7 @@ require([
     
     function translate(tag, defaultText) {
         // console.log("translating", tag, translations, translations[tag]);
-        var result = translations[tag];
+        var result = messages[tag];
         if (result === undefined) {
             if (typeof defaultText !== 'undefined') {
                 result = defaultText;

@@ -1,4 +1,7 @@
-var translations = {
+// Not indented correctly to make it easier to cut and paste to other language files
+// See: http://dojotoolkit.org/documentation/tutorials/1.9/i18n/
+define({
+	root: {
     // Used for boolean choice widget
     "boolean_choice_yes": "yes",
     "boolean_choice_no": "no",
@@ -64,3 +67,4 @@ var translations = {
 	"page_projectStoryEntry_title": "Project Story",
 	"page_projectStoryEntry_text": "Please describe your project with a <b>future history</b>, as though it had already taken place.",
 }
+});

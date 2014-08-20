@@ -38,7 +38,9 @@
 			packages: [
 				{ name: "dgrid", location: baseUrl + "dgrid" },
 				{ name: "xstyle", location: baseUrl + "xstyle" },
-				{ name: "put-selector", location: baseUrl + "put-selector" }
+				{ name: "put-selector", location: baseUrl + "put-selector" },
+				// TODO: Seems to need the "file:" part -- is this a bug in dojo? Need to change when run from webserver.
+				{ name: "narracoach", location: "file:narracoach"}
 			]
 		};
 	}());
@@ -46,7 +48,6 @@
 
 <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojo/dojo.js"></script>
 
-<script src="narracoach/nls/en/strings_short.js"></script>
 <script src="narracoach/narracoach_questions.js"></script>
 <script src="narracoach/narracoach.js"></script>
 
