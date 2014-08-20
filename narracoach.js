@@ -62,10 +62,11 @@ require([
     ){
 
     var helpTexts = {};
+    var helpTextsURL = "strings_long.html";
 
     // Load the help texts; this is needed to know whether to put up help icons, and so must be done before creating pages
     xhr.get({
-        url: "strings_long.html",
+        url: helpTextsURL,
         load: function(data) {
             if (data && !data.error) {
                 //console.log("Got helptexts: ", data);
@@ -85,13 +86,14 @@ require([
                     }
                 }
                 // console.log("done with query", helpTexts);
-                createLayout();
             } else {
-                console.log("Problem loading helptexts.html");
+                console.log("Problem loading " + helpTextsURL);
             }
+            createLayout();
         },
         error: function(error) {
-            alert("An unexpected error occurred loading helptexts.html: " + error);
+            alert("An unexpected error occurred loading: " + helpTextsURL + " error: " + error);
+            createLayout();
         },
      });
 
