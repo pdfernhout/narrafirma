@@ -129,32 +129,8 @@ require([
         // Add pages defined in narracoach_questions.js
         
         array.forEach(pageList, function(page) {
-            var pageTitle = translate(page.id + "_title");
-            if (!pageTitle) {
-                var errorMessage = "ERROR: No page title for " + page.id;
-                console.log(errorMessage);
-                pageTitle = errorMessage;
-            }
-            
-            var pagePane = new ContentPane({
-                title: pageTitle,
-                style: "width: 100%"
-           });
-
-           var pageText = translate(page.id + "_text");
-                                    
-           if (pageText) {
-               pagePane.containerNode.appendChild(domConstruct.toDom(pageText));
-               pagePane.containerNode.appendChild(domConstruct.toDom("<br><br>"));
-           }
-
-           if (page.questions) {
-               console.log("questions for page", page.id);
-               insertQuestionsIntoDiv(page.questions, pagePane.containerNode);
-           }
-       
-           tabContainer.addChild(pagePane); 
-           pagePane.startup();
+        	// This page is handled in a popup dialog for story entry
+        	if (page.id !== "page_projectStoryEntry") addPage(tabContainer, page);
         });
     
         // Project story list pane
@@ -165,23 +141,23 @@ require([
         
         var pane = projectStoryListPane.containerNode;
         
-        var data = [
-                    { first: "Bob", last: "Barker", age: 89 },
-                    { first: "Vanna", last: "White", age: 55 },
-                    { first: "Pat", last: "Sajak", age: 65 }
+        var stories = [
+                    { title: "The night the bed fell", body: "Story 1..." },
+                    { title: "The golden faucets", body: "Story 2..."},
+                    { title: "More pickles!", body: "Story 3...",}
                 ];
              
         var grid = new Grid({
             columns: {
-                first: "First Name",
-                last: "Last Name",
-                age: "Age"
+                title: "Story title",
+                body: "Story text",
             }
         });
         
-        grid.renderArray(data);
+        grid.renderArray(stories);
         
         pane.appendChild(grid.domNode);
+        var addStoryButton = newButton("Add story", pane, addProjectStory);
                 
         tabContainer.addChild(projectStoryListPane);
         projectStoryListPane.startup();
@@ -249,6 +225,87 @@ require([
         // Main startup
         
         tabContainer.startup();
+    }
+    
+    function addPage(tabContainer, page) {
+        var pageTitle = translate(page.id + "_title");
+        if (!pageTitle) {
+            var errorMessage = "ERROR: No page title for " + page.id;
+            console.log(errorMessage);
+            pageTitle = errorMessage;
+        }
+        
+        var pagePane = new ContentPane({
+            title: pageTitle,
+            style: "width: 100%"
+       });
+
+       var pageText = translate(page.id + "_text");
+                                
+       if (pageText) {
+           pagePane.containerNode.appendChild(domConstruct.toDom(pageText));
+           pagePane.containerNode.appendChild(domConstruct.toDom("<br><br>"));
+       }
+
+       if (page.questions) {
+           console.log("questions for page", page.id);
+           insertQuestionsIntoDiv(page.questions, pagePane.containerNode);
+       }
+   
+       tabContainer.addChild(pagePane); 
+       pagePane.startup();
+    }
+    
+    function addProjectStory() {
+    	console.log("addProjectStory pressed");
+        var addStoryDialog;
+        
+        var form = new Form();
+        
+        var page = pageList[2];
+        
+        var pageText = translate(page.id + "_text");
+        
+        if (pageText) {
+            form.domNode.appendChild(domConstruct.toDom(pageText));
+            form.domNode.appendChild(domConstruct.toDom("<br><br>"));
+        }
+
+        if (page.questions) {
+            console.log("questions for page", page.id);
+            insertQuestionsIntoDiv(page.questions, form.domNode);
+        }
+
+        // TODO: Does the dialog itself have to be "destroyed"???
+        
+        newButton("OK", form, function() {
+            console.log("OK");
+            addStoryDialog.hide();
+            // addStoryDialogOK(question, questionEditorDiv, form);
+            // The next line is needed to get rid of duplicate IDs for next time the form is opened:
+            form.destroyRecursive();
+        });
+        
+        newButton("Cancel", form, function() {
+            console.log("Cancel");
+            addStoryDialog.hide();
+            // The next line is needed to get rid of duplicate IDs for next time the form is opened:
+            form.destroyRecursive();
+        });
+
+        addStoryDialog = new Dialog({
+            title: "Add project story",
+            content: form,
+            style: "width: 600px; height 800px; overflow: auto;",
+            onCancel: function() {
+                // Handles close X in corner or escape
+                form.destroyRecursive();
+            }
+        });
+        
+        form.startup();
+        addStoryDialog.startup();
+        addStoryDialog.show();
     }
     
     var testPuppyQuestions = [
