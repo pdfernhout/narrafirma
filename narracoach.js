@@ -25,6 +25,8 @@ require([
     "dijit/form/HorizontalRuleLabels",
     "dijit/form/HorizontalSlider",
     "dojox/charting/plot2d/Lines",
+    "dojo/store/Memory",
+    "dgrid/OnDemandGrid",
     "dijit/form/Select",
     "dijit/form/SimpleTextarea",
     "dijit/layout/TabContainer",
@@ -56,6 +58,8 @@ require([
         HorizontalRuleLabels,
         HorizontalSlider,
         Lines,
+        Memory,
+        OnDemandGrid,
         Select,
         SimpleTextarea,
         TabContainer,
@@ -112,6 +116,20 @@ require([
         return result;
     }
     
+    var storyList = [
+	    { title: "The night the bed fell", body: "Story 1..." },
+	    { title: "The golden faucets", body: "Story 2..."},
+	    { title: "More pickles!", body: "Story 3...",}
+	];
+    
+    var projectStoriesStore = new Memory({
+    	data: storyList,
+		// TODO: title may not be unique
+        idProperty: "title",
+    });
+
+    var storyListGrid;
+    
     function createLayout() {
         // Store reference so can be used from inside narracoach_questions.js
         window.narracoach_translate = translate;
@@ -140,23 +158,21 @@ require([
         });
         
         var pane = projectStoryListPane.containerNode;
-        
-        var stories = [
-                    { title: "The night the bed fell", body: "Story 1..." },
-                    { title: "The golden faucets", body: "Story 2..."},
-                    { title: "More pickles!", body: "Story 3...",}
-                ];
              
-        var grid = new Grid({
+        var grid = new OnDemandGrid({
+        	store: projectStoriesStore,
             columns: {
                 title: "Story title",
                 body: "Story text",
             }
         });
         
-        grid.renderArray(stories);
+        // grid.renderArray(storyList);
+        storyListGrid = grid;
         
         pane.appendChild(grid.domNode);
+        grid.startup();
+        
         var addStoryButton = newButton("Add story", pane, addProjectStory);
                 
         tabContainer.addChild(projectStoryListPane);
@@ -256,6 +272,8 @@ require([
        pagePane.startup();
     }
     
+    var testCount = 0;
+    
     function addProjectStory() {
     	console.log("addProjectStory pressed");
         var addStoryDialog;
@@ -282,6 +300,12 @@ require([
             console.log("OK");
             addStoryDialog.hide();
             // addStoryDialogOK(question, questionEditorDiv, form);
+
+            var count = ++testCount;
+            var newStory = { title: "More pickles " + count + "!", body: "Story " + count + "...",};
+            projectStoriesStore.put(newStory);
+            storyListGrid.refresh();
+            
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
             form.destroyRecursive();
         });
