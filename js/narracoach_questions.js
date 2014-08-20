@@ -74,8 +74,8 @@ var question_projectStoryName = {
 var question_projectStoryFeelAbout = {
 		id: "question_projectStoryFeelAbout",
 		type: "text"
-		#type: "radio",
-		#choices: ["excited", "nervous", "hopeful", "resigned", "confident", "confused"],
+		// type: "radio",
+		// choices: ["excited", "nervous", "hopeful", "resigned", "confident", "confused"],
 	}
 
 var question_projectStorySurprise = {
