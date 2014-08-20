@@ -6,11 +6,11 @@ require([
     "dojo/dom",
     "dojo/dom-construct",
     "dojo/dom-style",
-    "dojo/i18n!narracoach/nls/messages",
     "narracoach/narracoach_questions",
     "dojo/on",
     "dojo/query",
     "dijit/registry",
+    "narracoach/translate",
     "dojo/_base/xhr",
     "dojox/charting/plot2d/Bars",
     "dijit/form/Button",
@@ -41,11 +41,11 @@ require([
         dom,
         domConstruct,
         domStyle,
-        messages,
         narracoach_questions,
         on,
         query,
         registry,
+        translate,
         xhr,
         Bars,
         Button,
@@ -112,19 +112,6 @@ require([
     
     loadHTMLDivTexts(createLayout);
     */
-    
-    function translate(tag, defaultText) {
-        // console.log("translating", tag, translations, translations[tag]);
-        var result = messages[tag];
-        if (result === undefined) {
-            if (typeof defaultText !== 'undefined') {
-                result = defaultText;
-            } else {
-                result = "ERROR: missing text for: " + tag;
-            }
-        }
-        return result;
-    }
     
     var storyList = [
 	    { title: "The night the bed fell", body: "Story 1..." },
