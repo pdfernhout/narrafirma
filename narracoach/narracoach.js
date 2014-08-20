@@ -2,7 +2,6 @@
 
 require([
     "dojo/_base/array",
-    "dojo/_base/declare",
     "dojo/dom",
     "dojo/dom-construct",
     "dojo/dom-style",
@@ -11,33 +10,23 @@ require([
     "dojo/query",
     "dijit/registry",
     "narracoach/translate",
+    "narracoach/widgets",
     "dojo/_base/xhr",
     "dojox/charting/plot2d/Bars",
-    "dijit/form/Button",
     "dojox/charting/Chart",
-    "dijit/form/CheckBox",
     "dojox/charting/plot2d/Columns",
     "dijit/layout/ContentPane",
     "dojox/charting/axis2d/Default",
     "dijit/Dialog",
     "dijit/form/Form",
     "dgrid/Grid",
-    "dijit/form/RadioButton",
-    "dijit/form/HorizontalRule",
-    "dijit/form/HorizontalRuleLabels",
-    "dijit/form/HorizontalSlider",
     "dojox/charting/plot2d/Lines",
     "dojo/store/Memory",
     "dgrid/OnDemandGrid",
-    "dijit/form/Select",
-    "dijit/form/SimpleTextarea",
     "dijit/layout/TabContainer",
-    "dijit/form/TextBox",
-    "dijit/_WidgetBase",
     "dojo/domReady!"
     ], function(
         array,
-        declare,
         dom,
         domConstruct,
         domStyle,
@@ -46,29 +35,20 @@ require([
         query,
         registry,
         translate,
+        widgets,
         xhr,
         Bars,
-        Button,
         Chart,
-        CheckBox,
         Columns,
         ContentPane,
         Default,
         Dialog,
         Form,
         Grid,
-        RadioButton,
-        HorizontalRule,
-        HorizontalRuleLabels,
-        HorizontalSlider,
         Lines,
         Memory,
         OnDemandGrid,
-        Select,
-        SimpleTextarea,
-        TabContainer,
-        TextBox,
-        _WidgetBase
+        TabContainer
     ){
 
 	/*
@@ -174,7 +154,7 @@ require([
         
         // console.log("grid startup with", storyList, projectStoriesStore);
         
-        var addStoryButton = newButton("Add story", pane, addProjectStory);
+        var addStoryButton = widgets.newButton("Add story", pane, addProjectStory);
                 
         tabContainer.addChild(projectStoryListPane);
         projectStoryListPane.startup();
@@ -191,7 +171,7 @@ require([
         pane.appendChild(domConstruct.toDom("Survey Design"));
         pane.appendChild(domConstruct.toDom("<br>"));
         pane.appendChild(domConstruct.toDom('<div id="questionsDiv"/>'));
-        var addQuestionButton = newButton("Add question", pane, addQuestion);
+        var addQuestionButton = widgets.newButton("Add question", pane, addQuestion);
         pane.appendChild(document.createElement("br"));
     
         tabContainer.addChild(designQuestionsPane);
@@ -204,7 +184,7 @@ require([
         });
         
         pane = exportSurveyPane.containerNode;
-        var exportSurveyQuestionsButton = newButton("Export survey questions", pane, exportSurveyQuestions);
+        var exportSurveyQuestionsButton = widgets.newButton("Export survey questions", pane, exportSurveyQuestions);
         pane.appendChild(document.createElement("br"));
         pane.appendChild(domConstruct.toDom('Survey Definition<br><div id="surveyDiv"></div>'));
         
@@ -218,7 +198,7 @@ require([
         });
         
         pane = takeSurveyPane.containerNode;
-        var takeSurveyButton = newButton("Take survey", pane, takeSurvey);
+        var takeSurveyButton = widgets.newButton("Take survey", pane, takeSurvey);
         pane.appendChild(document.createElement("br"));
         pane.appendChild(domConstruct.toDom('Survey Results<br><div id="surveyResultsDiv"></div>'));
         
@@ -232,7 +212,7 @@ require([
         });
         
         pane = graphResultsPane.containerNode;
-        var takeSurveyButton = newButton("Update Graph", pane, updateGraph);
+        var takeSurveyButton = widgets.newButton("Update Graph", pane, updateGraph);
         pane.appendChild(document.createElement("br"));
         pane.appendChild(domConstruct.toDom('Survey Graph<br><div id="surveyGraphDiv"></div><div id="chartDiv" style="width: 250px; height: 150px; margin: 5px auto 0px auto;"></div>'));
 
@@ -297,7 +277,7 @@ require([
 
         // TODO: Does the dialog itself have to be "destroyed"???
         
-        newButton("OK", form, function() {
+        widgets.newButton("OK", form, function() {
             console.log("OK");
             addStoryDialog.hide();
             // addStoryDialogOK(question, questionEditorDiv, form);
@@ -311,7 +291,7 @@ require([
             form.destroyRecursive();
         });
         
-        newButton("Cancel", form, function() {
+        widgets.newButton("Cancel", form, function() {
             console.log("Cancel");
             addStoryDialog.hide();
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
@@ -347,346 +327,26 @@ require([
         {id: "questionHelp", type: "textarea", text: "Question Help", help: 'TODO'},
         {id: "questionOptions", type: "textarea", text: "Question Options", help: 'Enter options here, one per line'},
     ];
-    
-    function isString(something) {
-        return (typeof something == 'string' || something instanceof String);
-    }
         
-    function newButton(label, addToDiv, callback) {
-        var button = new Button({
-            label: label,
-            type: "button",
-            onClick: callback
-        });
-        if (isString(addToDiv)) {
-            addToDiv = document.getElementById(addToDiv);
-        }
-        if (addToDiv) {
-            button.placeAt(addToDiv);
-        }
-        // TODO: Is startup call really needed here?
-        button.startup();
-        return button.domNode;
-    }
-    
-    function newTextBox(id, addToDiv) {
-        var textBox = new TextBox({
-            id: id,
-        });
-        if (isString(addToDiv)) {
-            addToDiv = document.getElementById(addToDiv);
-        }
-        if (addToDiv) {
-            textBox.placeAt(addToDiv);
-        }
-        // TODO: Is startup call really needed here?
-        textBox.startup();
-        return textBox.domNode;
-    }
-    
-    function newSimpleTextArea(id, addToDiv) {
-        var textarea = new SimpleTextarea({
-            id: id,
-            rows: "4",
-            cols: "50",
-            style: "width:auto;"
-        });
-        if (isString(addToDiv)) {
-            addToDiv = document.getElementById(addToDiv);
-        }
-        if (addToDiv) {
-            textarea.placeAt(addToDiv);
-        }
-        textarea.startup();
-        return textarea.domNode;
-    }
-    
-    function newSelect(id, choices, optionsString, addToDiv) {
-        var options = [];
-        if (choices) {
-            array.forEach(choices, function(each) {
-                var label = translate(id + "_choice_" + each);
-                options.push({label: label, value: each});
-            });           
-        } else if (optionsString) {
-            array.forEach(optionsString.split("\n"), function(each) {
-                options.push({label: each, value: each});
-            });
-        }
-        var select = new Select({
-                id: id,
-                options: options
-        });
-        if (isString(addToDiv)) {
-            addToDiv = document.getElementById(addToDiv);
-        }
-        if (addToDiv) {
-            select.placeAt(addToDiv);
-        }
-        select.startup();
-        return select.domNode;
-    }
-
-    function buildOptions(id, choices, optionsString){
-        var options = [];
-        
-        if (choices) {
-            array.forEach(choices, function(each) {
-                var label = translate(id + "_choice_" + each);
-                options.push({label: label, value: each});
-            });           
-        } else if (optionsString) {
-            array.forEach(optionsString.split("\n"), function(each) {
-                var translateID = id + "_choice_" + each;
-                if (optionsString === "yes\nno") translateID = "boolean_choice_" + each;
-                var label = translate(translateID, each);
-                options.push({label: label, value: each});
-            });
-        }
-        
-        return options;
-    }
-    
-    declare("RadioButtonsWidget", [_WidgetBase], {
-        value: null,
-        choices: null,
-        optionsString: null,
-    
-        buildRendering: function() {
-            // create the DOM for this widget
-            // declare id var as "this" will not be defined inside array loop functions
-            var id = this.id;
-            var self = this;
-            var div = domConstruct.create("div");
-            var options = buildOptions(id, this.choices, this.optionsString);
-    
-            array.forEach(options, function (option) {
-                var choiceID = id + "_choice_" + option.value;
-                var radioButton = new RadioButton({
-                    checked: false,
-                    value: option.value,
-                    name: id,
-                    "id": choiceID,
-                });
-                radioButton.placeAt(div);
-                on(radioButton, "click", function(evt) {
-                    // console.log("radio clicked", evt.target);
-                    self.set("value", evt.target.value);
-                });
-                radioButton.startup();
-                div.appendChild(domConstruct.toDom('<label for="' + choiceID + '">' + option.label + '</label><br>'));
-            });
-            
-            this.domNode = div;
-        },
-
-        _setValueAttr: function(value) {
-            // TODO: Need to select radio button when this is called, but not if call it from inside widget on change
-            this.value = value;
-        },
-    });
-
-    function newRadioButtons(id, choices, optionsString, addToDiv) {
-        var radioButtons = RadioButtonsWidget({
-            id: id,
-            choices: choices,
-            optionsString: optionsString
-        });
-         
-        if (isString(addToDiv)) {
-            addToDiv = document.getElementById(addToDiv);
-        }
-        if (addToDiv) {
-            addToDiv.appendChild(radioButtons.domNode);
-        }
-        radioButtons.startup();
-        return radioButtons.domNode;
-    }
-    
-    // TODO: Very similar to RadioButtonsWidget
-    // TODO: Set an optional minimum and maximum number that may be checked and validate for that
-    declare("CheckBoxesWidget", [_WidgetBase], {
-        value: {},
-        choices: null,
-        optionsString: null,
-    
-        buildRendering: function() {
-            // create the DOM for this widget
-            // declare id var as "this" will not be defined inside array loop functions
-            var id = this.id;
-            var self = this;
-            var div = domConstruct.create("div");
-            var options = buildOptions(id, this.choices, this.optionsString);
-    
-            array.forEach(options, function (option) {
-                var choiceID = id + "_choice_" + option.value;
-                var checkBox = new CheckBox({
-                    value: option.value,
-                    "id": choiceID,
-                });
-                checkBox.placeAt(div);
-                self.value[option.value] = false;
-                on(checkBox, "click", function(evt) {
-                    var localChoiceID = evt.target.defaultValue;
-                    var checked = evt.target.checked;
-                    self.value[localChoiceID] = checked;
-                    // console.log("clicked checkbox", evt, localChoiceID, checked, self.value);
-                    // TODO: send changed message?
-                });
-                checkBox.startup();
-                div.appendChild(domConstruct.toDom('<label for="' + choiceID + '">' + option.label + '</label><br>'));
-            });
-            
-            this.domNode = div;
-        },
-        
-        _setValueAttr: function(value) {
-            // TODO: Need to select checkboxes when this is called, but not if call it from inside widget on change
-            this.value = value;
-        },
-    });
-
-    function newCheckBoxes(id, choices, optionsString, addToDiv) {
-        var checkBoxes = CheckBoxesWidget({
-            id: id,
-            choices: choices,
-            optionsString: optionsString
-        });
-         
-        if (isString(addToDiv)) {
-            addToDiv = document.getElementById(addToDiv);
-        }
-        if (addToDiv) {
-            addToDiv.appendChild(checkBoxes.domNode);
-        }
-        checkBoxes.startup();
-        return checkBoxes.domNode;
-    }
-    
-    function newSlider(id, options, addToDiv) {                     
-        // A div that contains rules, labels, and slider
-        var panelDiv = domConstruct.create("div");
-        
-        // TODO: Maybe these rules and labels need to go into a containing div?
-        // TODO: But then what to return for this function if want to return actual slider to get value?
-        
-        var hasTextLabels = false;
-        var labels = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-        if (options) {
-            var labels = options.split("\n");
-            if (labels.length != 2) {
-                console.log("Need to specify low and high labels for quesiton: ", id);
-            } else {
-                hasTextLabels = true;
-                var labelLow = labels[0].trim();
-                var labelHigh = labels[1].trim();
-                labels = [labelLow, labelHigh];
-            }
-        }
-        
-        console.log("labels", labels, labels.length);
-        
-        var slider = new HorizontalSlider({
-            id: id,
-            minimum: 0,
-            maximum: 100,
-            discreteValues: 101,
-            showButtons: true,
-            // Doesn;t work: style: "align: center; width: 80%;"
-            style: "width: 80%;"
-
-        });
-        
-        slider.placeAt(panelDiv);
-         
-        //if (!hasTextLabels) {}
-        // Create the rules
-        var rulesNode = domConstruct.create("div", {}, slider.containerNode);
-        var sliderRules = new HorizontalRule({
-            container: "bottomDecoration",
-            count: labels.length,
-            style: "height: 5px"
-        }, rulesNode);
-        //}
-
-        // Create the labels
-        var labelsNode = domConstruct.create("div", {}, slider.containerNode);
-        var sliderLabels = new HorizontalRuleLabels({
-            container: "bottomDecoration",
-            style: "height: 1.5em; font-weight: bold",
-            minimum: 0,
-            maximum: 100,
-            count: labels.length,
-            numericMargin: 1,
-            labels: labels,
-        }, labelsNode);
-
-        slider.startup();
-        // if (!hasTextLabels)
-        sliderRules.startup();
-        sliderLabels.startup();
-        
-        if (isString(addToDiv)) {
-            addToDiv = document.getElementById(addToDiv);
-        }
-        if (addToDiv) {
-            addToDiv.appendChild(panelDiv);
-        }
-        
-        return panelDiv;
-    }
-    
-    function newBoolean(id, addToDiv) {
-        var radioButtons = RadioButtonsWidget({
-            id: id,
-            choices: null,
-            optionsString: "yes\nno",
-        });
-         
-        if (isString(addToDiv)) {
-            addToDiv = document.getElementById(addToDiv);
-        }
-        if (addToDiv) {
-            addToDiv.appendChild(radioButtons.domNode);
-        }
-        radioButtons.startup();
-        return radioButtons.domNode;
-    }
-
-    function newCheckbox(id, addToDiv) {
-        var checkbox = new CheckBox({
-            id: id
-        });
-        
-        if (isString(addToDiv)) {
-            addToDiv = document.getElementById(addToDiv);
-        }
-        if (addToDiv) {
-            addToDiv.appendChild(checkbox);
-        }
-        
-        return checkbox.domNode;
-    }
-    
     function insertQuestionIntoDiv(question, questionsDiv) {
         // console.log("question", question);
         var inputNode;
         if (question.type === "boolean") {
-           inputNode = newBoolean(question.id);
+           inputNode = widgets.newBoolean(question.id);
         } else if (question.type === "checkbox") {
-           inputNode = newCheckbox(question.id);
+           inputNode = widgets.newCheckbox(question.id);
         } else if (question.type === "checkboxes") {
-            inputNode = newCheckBoxes(question.id, question.choices, question.options);
+            inputNode = widgets.newCheckBoxes(question.id, question.choices, question.options);
         } else if (question.type === "text") {
-            inputNode = newTextBox(question.id);
+            inputNode = widgets.newTextBox(question.id);
         } else if (question.type === "textarea") {
-            inputNode = newSimpleTextArea(question.id);
+            inputNode = widgets.newSimpleTextArea(question.id);
         } else if (question.type === "select") {
-            inputNode = newSelect(question.id, question.choices, question.options);
+            inputNode = widgets.newSelect(question.id, question.choices, question.options);
         } else if (question.type === "radio") {
-            inputNode = newRadioButtons(question.id, question.choices, question.options);
+            inputNode = widgets.newRadioButtons(question.id, question.choices, question.options);
         } else if (question.type === "slider") {
-            inputNode = newSlider(question.id, question.options);
+            inputNode = widgets.newSlider(question.id, question.options);
         } else {
             console.log("Unsupported question type: " + question.type);
             return;
@@ -718,7 +378,7 @@ require([
         var helpNode = null;
         if (helpText) {
             // var helpText = question.help.replace(/\"/g, '\\x22').replace(/\'/g, '\\x27');
-            helpNode = newButton("?", null, function() {
+            helpNode = widgets.newButton("?", null, function() {
                 alert(helpText);
             });
             // help = ' <button onclick="alert(\'' + helpText + '\')">?</button>';
@@ -834,7 +494,7 @@ require([
         
         // TODO: Does the dialog itself have to be "destroyed"???
         
-        newButton("OK", form, function() {
+        widgets.newButton("OK", form, function() {
             console.log("OK");
             questionEditDialog.hide();
             questionEditDialogOK(question, questionEditorDiv, form);
@@ -842,7 +502,7 @@ require([
             form.destroyRecursive();
         });
         
-        newButton("Cancel", form, function() {
+        widgets.newButton("Cancel", form, function() {
             console.log("Cancel");
             questionEditDialog.hide();
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
@@ -868,10 +528,10 @@ require([
         var idLabel = document.createElement("span");
         idLabel.innerHTML = "<b>" + question.id + "</b>";
         questionEditorDiv.appendChild(idLabel);
-        var editButton = newButton("Edit", questionEditorDiv, function() {
+        var editButton = widgets.newButton("Edit", questionEditorDiv, function() {
             showQuestionEditDialog(question, questionEditorDiv);
         });
-        var deleteButton = newButton("Delete", questionEditorDiv, function() {
+        var deleteButton = widgets.newButton("Delete", questionEditorDiv, function() {
             if (confirm("Proceed to delete question " + question.id + "?")) {
                 questionEditorDiv.parentNode.removeChild(questionEditorDiv);
                 }
@@ -953,7 +613,7 @@ require([
         surveyDiv.innerHTML = JSON.stringify(questions);
         exportedSurveyQuestions = questions;
         // insertQuestionsIntoDiv(questions, surveyDiv);
-        // var submitSurveyButton = newButton("Submit survey", "surveyDiv", submitSurvey);
+        // var submitSurveyButton = widgets.newButton("Submit survey", "surveyDiv", submitSurvey);
     }
 
     function takeSurvey() {
@@ -965,7 +625,7 @@ require([
         
         // TODO: Does the dialog itself have to be "destroyed"???
         
-        newButton("Submit survey", form, function() {
+        widgets.newButton("Submit survey", form, function() {
             console.log("Submit survery");
             surveyDialog.hide();
             submitSurvey(form);
@@ -973,7 +633,7 @@ require([
             form.destroyRecursive();
         });
         
-        newButton("Cancel", form, function() {
+        widgets.newButton("Cancel", form, function() {
             console.log("Cancel");
             surveyDialog.hide();
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
