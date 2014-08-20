@@ -511,12 +511,7 @@ require([
     // insertQuestionsIntoDiv(createSurveyQuestions, questionsDiv);
     
     // TODO: Challenge of repeating sections....
-            
-    function addQuestion() {
-        var questionsDiv = document.getElementById("questionsDiv");
-        questionsDiv.innerHTML += "<div>Add question button pressed at: " + Date.now() + "</div>";
-    }
-    
+
     var questionIndex = 1;
     
     function addQuestion() {
