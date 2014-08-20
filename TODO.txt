@@ -1,13 +1,17 @@
 ==== NarraCoach TODO list:
 
-Checkboxes limited by maximum choices as validation error
-
 Help window displaying HTML instead of alert
 
+Buttons to progress through steps
 Disabled or hidden tabs which are enabled as progress
 
+Validation in general when progress through tabs and error reporting
+Validation of text fields for empty
+Validation of text fields for length
+Validation for checkboxes limited by maximum number of choices as validation error
+
 Getting dgrid to work alongside CDN
-dgrid story list with accordian for story
+Story list using dgrid with accordian for story
 Story list widget with optional add button
 Story browser with list of title and shows stories
 Story browser with two choices of questions and answers
@@ -17,6 +21,7 @@ Chart with hover for story
 Chart where can select a set of stories
 
 Write up sample NarraCoach product offering descriptions for review (Cynthia)
+Writing questions based on book (Cynthia)
 
 DONE Checkboxes for multiple choices
 DONE Tab container sizing to full page
