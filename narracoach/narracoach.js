@@ -68,7 +68,7 @@ require([
     ){
 
     var helpTexts = {};
-    var helpTextsURL = "resources/en/strings_long.html";
+    var helpTextsURL = "narracoach/nls/en/strings_long.html";
 
     // Load the help texts; this is needed to know whether to put up help icons, and so must be done before creating pages
     xhr.get({
