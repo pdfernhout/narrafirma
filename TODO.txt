@@ -6,18 +6,17 @@ Help window displaying HTML instead of alert
 
 Disabled or hidden tabs which are enabled as progress
 
+Getting dgrid to work alongside CDN
+dgrid story list with accordian for story
 Story list widget with optional add button
 Story browser with list of title and shows stories
 Story browser with two choices of questions and answers
 
-
-Page to enter themes for stories
-
-Page to cluster themes into final themes
+Resize Tab container when add Graph
+Chart with hover for story
+Chart where can select a set of stories
 
 Write up sample NarraCoach product offering descriptions for review (Cynthia)
-
-Resize Tab container when add Graph
 
 DONE Checkboxes for multiple choices
 DONE Tab container sizing to full page
@@ -35,6 +34,9 @@ Wordpress plugin
 Backup/Export/Import
 
 Roles/Accounts & Security
+
+Page to enter themes for stories
+Page to cluster themes into final themes
 
 ==== Wish list:
 
