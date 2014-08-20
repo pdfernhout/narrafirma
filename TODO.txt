@@ -10,7 +10,6 @@ Validation of text fields for empty
 Validation of text fields for length
 Validation for checkboxes limited by maximum number of choices as validation error
 
-Getting dgrid to work alongside CDN
 Story list using dgrid with accordian for story
 Story list widget with optional add button
 Story browser with list of title and shows stories
@@ -27,6 +26,7 @@ DONE Checkboxes for multiple choices
 DONE Tab container sizing to full page
 DONE Slider with labels and no ticks
 DONE Way to tag question as story text, story title, question about story, question about participant
+DONE Getting dgrid to work alongside CDN
 
 ==== Later:
 
