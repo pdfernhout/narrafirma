@@ -9,7 +9,7 @@ var page_generalIntro = {
 };
 
 var question_storyList = {
-    id: "widget_storyList", 
+    id: "widget_storyList",
     text: "Please add stories below", // cfk not putting this into translation as it will go away later
     // type: "storyList",
     type: "textarea",
@@ -22,7 +22,7 @@ var page_projectStoriesIntro = {
     // on the story list widget will be an "add story" button (which will not be seen in other uses of the widget)
     questions: [
         question_storyList
-    ],  
+    ],
 };
 
 // TODO: Testing ability to respond to changes -- may change approach
@@ -43,7 +43,7 @@ function changeTest(change) {
 
 var question_projectStoryScenarioType = {
     id: "question_projectStoryScenarioType",
-    type: "radio",
+    type: "checkboxes",
     choices: ["askMeAnything", "magicEars", "flyOnTheWall", "projectAspects", "customQuestion"],
     help: "question_projectStoryScenarioType_help",
     changed: changeTest,
@@ -73,8 +73,9 @@ var question_projectStoryName = {
 
 var question_projectStoryFeelAbout = {
 		id: "question_projectStoryFeelAbout",
-		type: "radio",
-		choices: ["excited", "nervous", "hopeful", "resigned", "confident", "confused"],
+		type: "text"
+		#type: "radio",
+		#choices: ["excited", "nervous", "hopeful", "resigned", "confident", "confused"],
 	}
 
 var question_projectStorySurprise = {
