@@ -27,6 +27,7 @@ DONE Tab container sizing to full page
 DONE Slider with labels and no ticks
 DONE Way to tag question as story text, story title, question about story, question about participant
 DONE Getting dgrid to work alongside CDN
+DONE Refactor NarraCoach pages into seperate AMD modules
 
 ==== Later:
 
@@ -49,8 +50,6 @@ Better font size, maybe user adjustable
 
 User definable CSS themes for surveys
 
-Remaking narracoach_questions.js to be proper module
-
 Unit tests
 
 Continuous integration server that runs tests
@@ -61,3 +60,6 @@ Dashboard
 
 Generate PDF reports
 Generate CSV output
+
+DONE Remaking narracoach_questions.js to be proper module
+

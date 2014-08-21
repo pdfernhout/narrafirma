@@ -1,6 +1,6 @@
 "use strict";
 
-define(function() {
+define(["dojo/dom-style"], function(domStyle) {
 	
 // for questions and choices, id field is lookup field for text
 // for pages, two lookups: for title, append "_title"; for text, append "_text"
@@ -19,7 +19,7 @@ function changeTest(change) {
     // window.narracoach_registry_byId("question_projectStoryScenarioCustomQuestion").setAttribute('disabled', disabled);
     var displayStyle = "block";
     if (disabled) displayStyle = "none";
-    window.narracoach_domStyle.set("question_projectStoryScenarioCustomQuestion_div", "display", displayStyle);
+    domStyle.set("question_projectStoryScenarioCustomQuestion_div", "display", displayStyle);
 }
 
 var question_projectStoryScenarioType = {
