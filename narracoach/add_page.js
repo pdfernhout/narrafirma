@@ -9,6 +9,20 @@ define([
         translate,
         ContentPane
     ){
+	
+	function addPageContents(node, page) {
+       var pageText = translate(page.id + "_text");
+                                
+       if (pageText) {
+           node.appendChild(domConstruct.toDom(pageText));
+           node.appendChild(domConstruct.toDom("<br><br>"));
+       }
+
+       if (page.questions) {
+           console.log("questions for page", page.id);
+           question_editor.insertQuestionsIntoDiv(page.questions, node);
+       }
+    }
     
 	function addPage(tabContainer, page) {
         var pageTitle = translate(page.id + "_title");
@@ -17,27 +31,20 @@ define([
             console.log(errorMessage);
             pageTitle = errorMessage;
         }
-        
+       
         var pagePane = new ContentPane({
             title: pageTitle,
             style: "width: 100%"
        });
 
-       var pageText = translate(page.id + "_text");
-                                
-       if (pageText) {
-           pagePane.containerNode.appendChild(domConstruct.toDom(pageText));
-           pagePane.containerNode.appendChild(domConstruct.toDom("<br><br>"));
-       }
-
-       if (page.questions) {
-           console.log("questions for page", page.id);
-           question_editor.insertQuestionsIntoDiv(page.questions, pagePane.containerNode);
-       }
+	   addPageContents(pagePane.containerNode, page);
    
        tabContainer.addChild(pagePane); 
        pagePane.startup();
     }
     
-	return addPage;
+	return {
+		"addPage": addPage,
+		"addPageContents": addPageContents
+	}
 });

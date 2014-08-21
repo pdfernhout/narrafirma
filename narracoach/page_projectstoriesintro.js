@@ -3,7 +3,7 @@
 define([
      "narracoach/add_page"
 ], function(
-     addPage
+     add_page
 ){
 	
 	var question_storyList = {
@@ -24,7 +24,7 @@ define([
 	};
 
 	function create_page(tabContainer) {
-		addPage(tabContainer, page_projectStoriesIntro);
+		add_page.addPage(tabContainer, page_projectStoriesIntro);
 	}
 	
 	return create_page;

@@ -30,7 +30,7 @@ require([
     "dijit/layout/TabContainer",
     "dojo/domReady!"
     ], function(
-        addPage,
+        add_page,
         array,
         dom,
         domConstruct,
@@ -58,6 +58,9 @@ require([
         OnDemandGrid,
         TabContainer
     ){
+	
+	var addPage = add_page.addPage;
+	var addPageContents = add_page.addPageContents;
     
     var storyList = [
 	    { title: "The night the bed fell", body: "Story 1..." },
@@ -196,18 +199,8 @@ require([
         
         var page = narracoach_questions.pageList[0];
         
-        var pageText = translate(page.id + "_text");
+        addPageContents(form.domNode, page);
         
-        if (pageText) {
-            form.domNode.appendChild(domConstruct.toDom(pageText));
-            form.domNode.appendChild(domConstruct.toDom("<br><br>"));
-        }
-
-        if (page.questions) {
-            console.log("questions for page", page.id);
-            question_editor.insertQuestionsIntoDiv(page.questions, form.domNode);
-        }
-
         // TODO: Does the dialog itself have to be "destroyed"???
         
         widgets.newButton("OK", form, function() {
