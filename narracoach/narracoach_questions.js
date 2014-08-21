@@ -6,27 +6,6 @@ define(function() {
 // for pages, two lookups: for title, append "_title"; for text, append "_text"
 // system should tell us if title and text strings are not defined for page
 
-var page_generalIntro = {
-	id: "page_generalIntro",
-};
-
-var question_storyList = {
-    id: "widget_storyList",
-    text: "Please add stories below", // cfk not putting this into translation as it will go away later
-    // type: "storyList",
-    type: "textarea",
-    options: "page_projectStoryEntry",
-};
-
-var page_projectStoriesIntro = {
-    id: "page_projectStoriesIntro",
-    // this page will list stories the user has entered
-    // on the story list widget will be an "add story" button (which will not be seen in other uses of the widget)
-    questions: [
-        question_storyList
-    ],
-};
-
 // TODO: Testing ability to respond to changes -- may change approach
 function changeTest(change) {
     var value = change.target.value;
@@ -105,8 +84,6 @@ var page_projectStoryEntry = {
 };
 
 var pageList = [
-    page_generalIntro,
-    page_projectStoriesIntro,
     page_projectStoryEntry,
 ];
 

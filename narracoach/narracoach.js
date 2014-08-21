@@ -1,12 +1,15 @@
 "use strict";
 
 require([
+    "narracoach/add_page",
     "dojo/_base/array",
     "dojo/dom",
     "dojo/dom-construct",
     "dojo/dom-style",
     "narracoach/narracoach_questions",
     "dojo/on",
+    "narracoach/page_introduction",
+    "narracoach/page_projectstoriesintro",
     "dojo/query",
     "narracoach/question_editor",
     "dijit/registry",
@@ -27,12 +30,15 @@ require([
     "dijit/layout/TabContainer",
     "dojo/domReady!"
     ], function(
+        addPage,
         array,
         dom,
         domConstruct,
         domStyle,
         narracoach_questions,
         on,
+        page_introduction,
+        page_projectstoriesintro,
         query,
         question_editor,
         registry,
@@ -82,14 +88,10 @@ require([
             // have the tab container height change to match internal panel
             doLayout: false,
         }, "tabContainerDiv");
-
-        // Add pages defined in narracoach_questions.js
         
-        array.forEach(narracoach_questions.pageList, function(page) {
-        	// This page is handled in a popup dialog for story entry
-        	if (page.id !== "page_projectStoryEntry") addPage(tabContainer, page);
-        });
-    
+        page_introduction(tabContainer);
+        page_projectstoriesintro(tabContainer);
+
         // Project story list pane
         
         var projectStoryListPane = new ContentPane({
@@ -184,35 +186,6 @@ require([
         tabContainer.startup();
     }
     
-    function addPage(tabContainer, page) {
-        var pageTitle = translate(page.id + "_title");
-        if (!pageTitle) {
-            var errorMessage = "ERROR: No page title for " + page.id;
-            console.log(errorMessage);
-            pageTitle = errorMessage;
-        }
-        
-        var pagePane = new ContentPane({
-            title: pageTitle,
-            style: "width: 100%"
-       });
-
-       var pageText = translate(page.id + "_text");
-                                
-       if (pageText) {
-           pagePane.containerNode.appendChild(domConstruct.toDom(pageText));
-           pagePane.containerNode.appendChild(domConstruct.toDom("<br><br>"));
-       }
-
-       if (page.questions) {
-           console.log("questions for page", page.id);
-           question_editor.insertQuestionsIntoDiv(page.questions, pagePane.containerNode);
-       }
-   
-       tabContainer.addChild(pagePane); 
-       pagePane.startup();
-    }
-    
     var testCount = 0;
     
     function addProjectStory() {
@@ -221,7 +194,7 @@ require([
         
         var form = new Form();
         
-        var page = narracoach_questions.pageList[2];
+        var page = narracoach_questions.pageList[0];
         
         var pageText = translate(page.id + "_text");
         
