@@ -6,26 +6,23 @@ define([
     "dojo/dom-construct",
     "dojo/dom-style",
     "dojo/on",
-    "dojo/query",
     "dijit/registry",
     "narracoach/translate",
     "narracoach/widgets",
     "dijit/Dialog",
     "dijit/form/Form",
-    "dojo/domReady!"
-    ], function(
-        array,
-        dom,
-        domConstruct,
-        domStyle,
-        on,
-        query,
-        registry,
-        translate,
-        widgets,
-        Dialog,
-        Form
-    ){
+], function(
+    array,
+    dom,
+    domConstruct,
+    domStyle,
+    on,
+    registry,
+    translate,
+    widgets,
+    Dialog,
+    Form
+){
         
     var testPuppyQuestions = [
         {id: "name", type: "text", text: "Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},

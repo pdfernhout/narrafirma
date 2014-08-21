@@ -83,10 +83,7 @@ var page_projectStoryEntry = {
     ]
 };
 
-var pageList = [
-    page_projectStoryEntry,
-];
-
-return {"pageList": pageList};
+// Returns the page for use in a popup and not a function...
+return page_projectStoryEntry;
 
 });

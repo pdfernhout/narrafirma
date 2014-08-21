@@ -7,7 +7,6 @@ define([
     "dojo/dom-construct",
     "dojo/dom-style",
     "dojo/on",
-    "dojo/query",
     "dijit/registry",
     "narracoach/translate",
     "dojox/charting/plot2d/Bars",
@@ -21,28 +20,27 @@ define([
     "dijit/form/SimpleTextarea",
     "dijit/form/TextBox",
     "dijit/_WidgetBase",
-    ], function(
-        array,
-        declare,
-        dom,
-        domConstruct,
-        domStyle,
-        on,
-        query,
-        registry,
-        translate,
-        Bars,
-        Button,
-        CheckBox,
-        RadioButton,
-        HorizontalRule,
-        HorizontalRuleLabels,
-        HorizontalSlider,
-        Select,
-        SimpleTextarea,
-        TextBox,
-        _WidgetBase
-    ){
+], function(
+    array,
+    declare,
+    dom,
+    domConstruct,
+    domStyle,
+    on,
+    registry,
+    translate,
+    Bars,
+    Button,
+    CheckBox,
+    RadioButton,
+    HorizontalRule,
+    HorizontalRuleLabels,
+    HorizontalSlider,
+    Select,
+    SimpleTextarea,
+    TextBox,
+    _WidgetBase
+){
     
     function isString(something) {
         return (typeof something == 'string' || something instanceof String);

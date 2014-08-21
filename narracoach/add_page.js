@@ -1,14 +1,16 @@
+"use strict";
+
 define([
     "dojo/dom-construct",
     "narracoach/question_editor",
     "narracoach/translate",
     "dijit/layout/ContentPane"
-    ], function(
-        domConstruct,
-        question_editor,
-        translate,
-        ContentPane
-    ){
+], function(
+    domConstruct,
+    question_editor,
+    translate,
+    ContentPane
+){
 	
 	function addPageContents(node, page) {
        var pageText = translate(page.id + "_text");
