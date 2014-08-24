@@ -26,6 +26,8 @@ define([
        }
     }
     
+	// TODO: Maybe should split this up so adding to tabContainer done in seperate function
+	// TODO: so can be called to start page as for general info about participtants?
 	function addPage(tabContainer, page) {
         var pageTitle = translate(page.id + "_title");
         if (!pageTitle) {
@@ -43,6 +45,8 @@ define([
    
        tabContainer.addChild(pagePane); 
        pagePane.startup();
+       
+       return pagePane;
     }
     
 	return {

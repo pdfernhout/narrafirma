@@ -8,6 +8,7 @@ var surveyResults = [];
 require([
     "narracoach/page_design-questions",
     "narracoach/page_export-survey",
+    "narracoach/page_general-information-about-project-participants",
     "narracoach/page_introduction",
     "narracoach/page_graph-results",
     "narracoach/page_project-stories-intro",
@@ -18,6 +19,7 @@ require([
 ], function(
     page_designQuestions,
     page_exportSurvey,
+    page_generalInformationAboutProjectParticipants,
     page_introduction,
     page_graphResults,
     page_projectStoriesIntro,
@@ -41,6 +43,9 @@ require([
         page_projectStoriesIntro(tabContainer);
 
         page_projectStoryList(tabContainer);
+        
+        page_generalInformationAboutProjectParticipants(tabContainer);
+        
         page_designQuestions(tabContainer);
         page_exportSurvey(tabContainer);
 		page_takeSurvey(tabContainer);
