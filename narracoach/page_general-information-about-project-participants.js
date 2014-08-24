@@ -115,6 +115,7 @@ define([
 		
 		var table = new dojox.layout.TableContainer({
 			cols: 4,
+			showLabels: false,
 		});
 		
 		var columunHeader1ContentPane = new ContentPane({"content": "<i>Question</i>", "colspan": 1});
