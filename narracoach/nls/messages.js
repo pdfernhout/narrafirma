@@ -69,6 +69,6 @@ define({
 	
 	// ???
 	"page_generalInformationAboutProjectParticipants_title": "General information about project participants.",
-	"page_generalInformationAboutProjectParticipants_text": "Please answer the questions below about the participants in the project. Enter up to three roles, leaving unused ones blank.",
+	"page_generalInformationAboutProjectParticipants_text": "Please answer the questions below about the participants in the project. Enter up to three different groups (or roles), leaving unused ones blank. Examples might be Doctors/Nurses/Patients or Staff/Volunteers or Management/Cashiers/Customer",
 }
 });

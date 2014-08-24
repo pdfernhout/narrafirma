@@ -84,21 +84,21 @@ define([
 	
 	var question_participantType1 = {
 	    id: "participantType1",
-	    text: "What is a name for participant type 1?", // TODO: pdf not putting this into translation as it will change or go away later
+	    text: "What is a name for the first group of participants?", // TODO: pdf not putting this into translation as it will change or go away later
 	    type: "text",
 	    changed: updateRole1,
 	};
 	
 	var question_participantType2 = {
 	    id: "participantType2",
-	    text: "What is a name for participant type 2?", // TODO: pdf not putting this into translation as it will change or go away later
+	    text: "What is a name for the second group of participants?", // TODO: pdf not putting this into translation as it will change or go away later
 	    type: "text",
 	    changed: updateRole2,
 	};
 	
 	var question_participantType3 = {
 	    id: "participantType3",
-	    text: "What is a name for participant type 3?", // TODO: pdf not putting this into translation as it will change or go away later
+	    text: "What is a name for the third group of participants?", // TODO: pdf not putting this into translation as it will change or go away later
 	    type: "text",
 	    changed: updateRole3,
 	};
