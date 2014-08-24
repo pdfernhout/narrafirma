@@ -114,8 +114,20 @@ define([
 		console.log("arrary", array);
 		
 		var table = new dojox.layout.TableContainer({
-			cols: 6,
+			cols: 4,
 		});
+		
+		var columunHeader1ContentPane = new ContentPane({"content": "<i>Question</i>", "colspan": 1});
+		table.addChild(columunHeader1ContentPane);
+		
+		var columunHeader2ContentPane = new ContentPane({"content": "<i>Role 1</i>", "colspan": 1});
+		table.addChild(columunHeader2ContentPane);
+		
+		var columunHeader3ContentPane = new ContentPane({"content": "<i>Role 2</i>", "colspan": 1});
+		table.addChild(columunHeader3ContentPane);
+		
+		var columunHeader4ContentPane = new ContentPane({"content": "<i>Role 3</i>", "colspan": 1});
+		table.addChild(columunHeader4ContentPane);
 		
 		var index = 0;
 		array.forEach(questions, function(questionText) {
@@ -124,13 +136,13 @@ define([
 				var content = "<b>" + questionText.substring(1) + "</b>";
 				// page.containerNode.appendChild(domConstruct.toDom(content));
 				// table.addChild(domConstruct.toDom(content));
-				var headerContentPane = new ContentPane({"content": content, "colspan": 6});
+				var headerContentPane = new ContentPane({"content": content, "colspan": 4});
 				table.addChild(headerContentPane);
 			} else {
 				//var question = {type: "select", options: "unknown\nlow\nmedium\nhigh\nmixed", text: questionText, id: "QP" + ++index};
 				//questionEditor.insertQuestionIntoDiv(question, page.containerNode);
 				
-				var questionContentPane = new ContentPane({"content": questionText, "colspan": 3});
+				var questionContentPane = new ContentPane({"content": questionText, "colspan": 1});
 				table.addChild(questionContentPane);
 				
 				table.addChild(newSpecialSelect("selectA" + ++index));
