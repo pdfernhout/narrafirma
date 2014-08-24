@@ -28,7 +28,7 @@ define([
     
 	// TODO: Maybe should split this up so adding to tabContainer done in seperate function
 	// TODO: so can be called to start page as for general info about participtants?
-	function addPage(tabContainer, page) {
+	function addPage(tabContainer, page, delayPageStartup) {
         var pageTitle = translate(page.id + "_title");
         if (!pageTitle) {
             var errorMessage = "ERROR: No page title for " + page.id;
@@ -44,7 +44,7 @@ define([
 	   addPageContents(pagePane.containerNode, page);
    
        tabContainer.addChild(pagePane); 
-       pagePane.startup();
+       if (delayPageStartup !== true) pagePane.startup();
        
        return pagePane;
     }

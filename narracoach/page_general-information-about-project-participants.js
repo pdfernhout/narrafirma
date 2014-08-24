@@ -4,12 +4,20 @@ define([
     "narracoach/add_page",
     "dojo/_base/array",
     "dojo/dom-construct",
-    "narracoach/question_editor"
+    "narracoach/question_editor",
+    "dijit/layout/ContentPane",
+    "dijit/form/Select",
+    "dojox/layout/TableContainer",
+    "dijit/form/TextBox"
 ], function(
     add_page,
     array,
     domConstruct,
-    questionEditor
+    questionEditor,
+    ContentPane,
+    Select,
+    TableContainer,
+    TextBox
 ){
 	
 	// TODO: Translate
@@ -87,20 +95,83 @@ define([
 	};
 	
 	function create_page(tabContainer) {
-		var page = add_page.addPage(tabContainer, page_generalInformationAboutParticipants);
+		var page = add_page.addPage(tabContainer, page_generalInformationAboutParticipants, true);
 		console.log("page", page);
 		console.log("arrary", array);
+		
+		var table = new dojox.layout.TableContainer({
+	        cols: 4,
+		});
+		
+		/*
+		// Create four text boxes
+		var text1 = new TextBox({label: "ProgText 1"});
+		var text2 = new TextBox({label: "ProgText 2"});
+		var text3 = new TextBox({label: "ProgText 3"});
+		var text4 = new TextBox({label: "ProgText 4"});
+
+		// Add the four text boxes to the TableContainer
+		table.addChild(text1);
+		table.addChild(text2);
+		table.addChild(text3);
+		table.addChild(text4);
+		*/
 		
 		var index = 0;
 		array.forEach(questions, function(questionText) {
 			console.log("question", questionText);
 			if (questionText[0] == "#") {
-				page.containerNode.appendChild(domConstruct.toDom("<br><b>" + questionText.substring(1) + "</b><br>"));
+				// page.containerNode.appendChild(domConstruct.toDom("<br><b>" + questionText.substring(1) + "</b><br>"));
+				// table.addChild(domConstruct.toDom("<br><b>" + questionText.substring(1) + "</b><br>"));
 			} else {
-				var question = {type: "select", options: "unknown\nlow\nmedium\nhigh\nmixed", text: questionText, id: "QP" + ++index};
-				questionEditor.insertQuestionIntoDiv(question, page.containerNode);
+				//var question = {type: "select", options: "unknown\nlow\nmedium\nhigh\nmixed", text: questionText, id: "QP" + ++index};
+				//questionEditor.insertQuestionIntoDiv(question, page.containerNode);
+				
+				var questionContentPane = new ContentPane({"content": questionText});
+				table.addChild(questionContentPane);
+				
+				var select = new Select({
+			        name: "selectA" + ++index,
+			        options: [
+			            { label: "Unknown", value: "unknown"},
+			            { label: "Low", value: "low"},
+			            { label: "Medium", value: "medium" },
+			            { label: "High", value: "high" },
+			            { label: "Mixed", value: "mixed" }
+			        ]
+			    });
+				table.addChild(select);
+				
+				var select = new Select({
+			        name: "selectB" + ++index,
+			        options: [
+			            { label: "Unknown", value: "unknown"},
+			            { label: "Low", value: "low"},
+			            { label: "Medium", value: "medium" },
+			            { label: "High", value: "high" },
+			            { label: "Mixed", value: "mixed" }
+			        ]
+			    });
+				table.addChild(select);
+				
+				var select = new Select({
+			        name: "selectC" + ++index,
+			        options: [
+			            { label: "Unknown", value: "unknown"},
+			            { label: "Low", value: "low"},
+			            { label: "Medium", value: "medium" },
+			            { label: "High", value: "high" },
+			            { label: "Mixed", value: "mixed" }
+			        ]
+			    });
+				table.addChild(select);
 			}
 		});
+		
+		page.addChild(table);
+		
+		table.startup();
+		page.startup();
 	}
 	
 	return create_page;
