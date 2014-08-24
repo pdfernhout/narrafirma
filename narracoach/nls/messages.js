@@ -68,7 +68,7 @@ define({
 	"page_projectStoryEntry_text": "Please describe your project with a <b>future history</b>, as though it had already taken place.",
 	
 	// ???
-	"page_generalInformationAboutProjectParticipants_title": "General information about project participants",
-	"page_generalInformationAboutProjectParticipants_text": "Please answer the questions below about the participants in the project",
+	"page_generalInformationAboutProjectParticipants_title": "General information about project participants.",
+	"page_generalInformationAboutProjectParticipants_text": "Please answer the questions below about the participants in the project. Enter up to three roles, leaving unused ones blank.",
 }
 });

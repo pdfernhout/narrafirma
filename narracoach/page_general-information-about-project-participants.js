@@ -67,22 +67,40 @@ define([
 		"How likely are these participants to feel hopeful about this topic?",
 	];
 	
+	function updateRole1(newValue) {
+		if (newValue === "") newValue = "N/A";
+		columnHeader2ContentPane.set("content", "<b><i>" + newValue + "</i></b>");
+	}
+
+	function updateRole2(newValue) {
+		if (newValue === "") newValue = "N/A";
+		columnHeader3ContentPane.set("content", "<b><i>" + newValue + "</i></b>");
+	}
+	
+	function updateRole3(newValue) {
+		if (newValue === "") newValue = "N/A";
+		columnHeader4ContentPane.set("content", "<b><i>" + newValue + "</i></b>");
+	}
+	
 	var question_participantType1 = {
 	    id: "participantType1",
 	    text: "What is a name for participant type 1?", // TODO: pdf not putting this into translation as it will change or go away later
 	    type: "text",
+	    changed: updateRole1,
 	};
 	
 	var question_participantType2 = {
 	    id: "participantType2",
 	    text: "What is a name for participant type 2?", // TODO: pdf not putting this into translation as it will change or go away later
 	    type: "text",
+	    changed: updateRole2,
 	};
 	
 	var question_participantType3 = {
 	    id: "participantType3",
 	    text: "What is a name for participant type 3?", // TODO: pdf not putting this into translation as it will change or go away later
 	    type: "text",
+	    changed: updateRole3,
 	};
 
 	var page_generalInformationAboutParticipants = {
@@ -108,6 +126,10 @@ define([
 		return select;
 	}
 	
+	var columnHeader2ContentPane = new ContentPane({"content": "<i>N/A</i>", "colspan": 1});
+	var columnHeader3ContentPane = new ContentPane({"content": "<i>N/A</i>", "colspan": 1});
+	var columnHeader4ContentPane = new ContentPane({"content": "<i>N/A</i>", "colspan": 1});
+
 	function create_page(tabContainer) {
 		var page = add_page.addPage(tabContainer, page_generalInformationAboutParticipants, true);
 		console.log("page", page);
@@ -118,17 +140,14 @@ define([
 			showLabels: false,
 		});
 		
-		var columunHeader1ContentPane = new ContentPane({"content": "<i>Question</i>", "colspan": 1});
-		table.addChild(columunHeader1ContentPane);
+		var columnHeader1ContentPane = new ContentPane({"content": "<i>Question</i>", "colspan": 1});
+		table.addChild(columnHeader1ContentPane);
 		
-		var columunHeader2ContentPane = new ContentPane({"content": "<i>Role 1</i>", "colspan": 1});
-		table.addChild(columunHeader2ContentPane);
+		table.addChild(columnHeader2ContentPane);
 		
-		var columunHeader3ContentPane = new ContentPane({"content": "<i>Role 2</i>", "colspan": 1});
-		table.addChild(columunHeader3ContentPane);
+		table.addChild(columnHeader3ContentPane);
 		
-		var columunHeader4ContentPane = new ContentPane({"content": "<i>Role 3</i>", "colspan": 1});
-		table.addChild(columunHeader4ContentPane);
+		table.addChild(columnHeader4ContentPane);
 		
 		var index = 0;
 		array.forEach(questions, function(questionText) {
