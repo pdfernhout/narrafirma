@@ -264,6 +264,7 @@ define([
     // insertQuestionsIntoDiv(createSurveyQuestions, questionsDiv);
     
     return {
+    	"insertQuestionIntoDiv": insertQuestionIntoDiv,
     	"insertQuestionsIntoDiv": insertQuestionsIntoDiv,
     	"insertQuestionEditorDivIntoDiv": insertQuestionEditorDivIntoDiv
     };

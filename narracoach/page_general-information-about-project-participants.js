@@ -2,10 +2,14 @@
 
 define([
     "narracoach/add_page",
-    "dojo/_base/array"
+    "dojo/_base/array",
+    "dojo/dom-construct",
+    "narracoach/question_editor"
 ], function(
     add_page,
-    array
+    array,
+    domConstruct,
+    questionEditor
 ){
 	
 	// TODO: Translate
@@ -85,10 +89,18 @@ define([
 	function create_page(tabContainer) {
 		var page = add_page.addPage(tabContainer, page_generalInformationAboutParticipants);
 		console.log("page", page);
+		console.log("arrary", array);
 		
-		//array.forEach(function(questionText) {
-		//	console.log("question", questionText);
-		//});
+		var index = 0;
+		array.forEach(questions, function(questionText) {
+			console.log("question", questionText);
+			if (questionText[0] == "#") {
+				page.containerNode.appendChild(domConstruct.toDom("<br><b>" + questionText.substring(1) + "</b><br>"));
+			} else {
+				var question = {type: "select", options: "unknown\nlow\nmedium\nhigh\nmixed", text: questionText, id: "QP" + ++index};
+				questionEditor.insertQuestionIntoDiv(question, page.containerNode);
+			}
+		});
 	}
 	
 	return create_page;
