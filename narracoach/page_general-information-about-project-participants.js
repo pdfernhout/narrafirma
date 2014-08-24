@@ -94,77 +94,48 @@ define([
 	    ],
 	};
 	
+	function newSpecialSelect(name) {
+		var select = new Select({
+	        name: name,
+	        options: [
+	            { label: "Unknown", value: "unknown"},
+	            { label: "Low", value: "low"},
+	            { label: "Medium", value: "medium" },
+	            { label: "High", value: "high" },
+	            { label: "Mixed", value: "mixed" }
+	        ]
+	    });
+		return select;
+	}
+	
 	function create_page(tabContainer) {
 		var page = add_page.addPage(tabContainer, page_generalInformationAboutParticipants, true);
 		console.log("page", page);
 		console.log("arrary", array);
 		
 		var table = new dojox.layout.TableContainer({
-	        cols: 4,
+			cols: 6,
 		});
-		
-		/*
-		// Create four text boxes
-		var text1 = new TextBox({label: "ProgText 1"});
-		var text2 = new TextBox({label: "ProgText 2"});
-		var text3 = new TextBox({label: "ProgText 3"});
-		var text4 = new TextBox({label: "ProgText 4"});
-
-		// Add the four text boxes to the TableContainer
-		table.addChild(text1);
-		table.addChild(text2);
-		table.addChild(text3);
-		table.addChild(text4);
-		*/
 		
 		var index = 0;
 		array.forEach(questions, function(questionText) {
 			console.log("question", questionText);
 			if (questionText[0] == "#") {
-				// page.containerNode.appendChild(domConstruct.toDom("<br><b>" + questionText.substring(1) + "</b><br>"));
-				// table.addChild(domConstruct.toDom("<br><b>" + questionText.substring(1) + "</b><br>"));
+				var content = "<b>" + questionText.substring(1) + "</b>";
+				// page.containerNode.appendChild(domConstruct.toDom(content));
+				// table.addChild(domConstruct.toDom(content));
+				var headerContentPane = new ContentPane({"content": content, "colspan": 6});
+				table.addChild(headerContentPane);
 			} else {
 				//var question = {type: "select", options: "unknown\nlow\nmedium\nhigh\nmixed", text: questionText, id: "QP" + ++index};
 				//questionEditor.insertQuestionIntoDiv(question, page.containerNode);
 				
-				var questionContentPane = new ContentPane({"content": questionText});
+				var questionContentPane = new ContentPane({"content": questionText, "colspan": 3});
 				table.addChild(questionContentPane);
 				
-				var select = new Select({
-			        name: "selectA" + ++index,
-			        options: [
-			            { label: "Unknown", value: "unknown"},
-			            { label: "Low", value: "low"},
-			            { label: "Medium", value: "medium" },
-			            { label: "High", value: "high" },
-			            { label: "Mixed", value: "mixed" }
-			        ]
-			    });
-				table.addChild(select);
-				
-				var select = new Select({
-			        name: "selectB" + ++index,
-			        options: [
-			            { label: "Unknown", value: "unknown"},
-			            { label: "Low", value: "low"},
-			            { label: "Medium", value: "medium" },
-			            { label: "High", value: "high" },
-			            { label: "Mixed", value: "mixed" }
-			        ]
-			    });
-				table.addChild(select);
-				
-				var select = new Select({
-			        name: "selectC" + ++index,
-			        options: [
-			            { label: "Unknown", value: "unknown"},
-			            { label: "Low", value: "low"},
-			            { label: "Medium", value: "medium" },
-			            { label: "High", value: "high" },
-			            { label: "Mixed", value: "mixed" }
-			        ]
-			    });
-				table.addChild(select);
+				table.addChild(newSpecialSelect("selectA" + ++index));
+				table.addChild(newSpecialSelect("selectB" + index));
+				table.addChild(newSpecialSelect("selectC" + index));
 			}
 		});
 		
