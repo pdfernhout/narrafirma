@@ -19,6 +19,10 @@ Resize Tab container when add Graph
 Chart with hover for story
 Chart where can select a set of stories
 
+Right-align questions in table of questions for project participtants
+Way to retrieve data aboun project participant groups
+Internationalization of strings related to page of questions on project participant groups
+
 Write up sample NarraCoach product offering descriptions for review (Cynthia)
 Writing questions based on book (Cynthia)
 
@@ -28,6 +32,7 @@ DONE Slider with labels and no ticks
 DONE Way to tag question as story text, story title, question about story, question about participant
 DONE Getting dgrid to work alongside CDN
 DONE Refactor NarraCoach pages into seperate AMD modules
+DONE Use table to have up to three sets of answers for general info questions about project participant groups
 
 ==== Later:
 
