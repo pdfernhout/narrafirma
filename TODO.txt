@@ -1,30 +1,24 @@
 ==== NarraCoach TODO list:
 
+Dashboard
+
+Tabs should be grouped based on PNI stages
+"skeleton" of program with named tabs for all steps from spreadsheet
+
 Help window displaying HTML instead of alert
 
 Buttons to progress through steps
 Disabled or hidden tabs which are enabled as progress
 
-Validation in general when progress through tabs and error reporting
-Validation of text fields for empty
-Validation of text fields for length
-Validation for checkboxes limited by maximum number of choices as validation error
+Participant questions need to have options and ids and translations
 
-Story list using dgrid with accordian for story
 Story list widget with optional add button
 Story browser with list of title and shows stories
 Story browser with two choices of questions and answers
 
-Resize Tab container when add Graph
-Chart with hover for story
-Chart where can select a set of stories
-
-Right-align questions in table of questions for project participtants
-Way to retrieve data aboun project participant groups
+Right-align questions in table of questions for project participants
+Way to retrieve data about project participant groups
 Internationalization of strings related to page of questions on project participant groups
-
-Write up sample NarraCoach product offering descriptions for review (Cynthia)
-Writing questions based on book (Cynthia)
 
 DONE Checkboxes for multiple choices
 DONE Tab container sizing to full page
@@ -34,7 +28,21 @@ DONE Getting dgrid to work alongside CDN
 DONE Refactor NarraCoach pages into seperate AMD modules
 DONE Use table to have up to three sets of answers for general info questions about project participant groups
 
+======= CYNTHIA
+
+Write up sample NarraCoach product offering descriptions for review (Cynthia)
+Writing questions based on book (Cynthia)
+
 ==== Later:
+
+Validation in general when progress through tabs and error reporting
+Validation of text fields for empty
+Validation of text fields for length
+Validation for checkboxes limited by maximum number of choices as validation error
+
+Resize Tab container when add Graph
+Chart with hover for story
+Chart where can select a set of stories
 
 Saving NarraCoach data to a file server as make progress
 
@@ -61,10 +69,11 @@ Continuous integration server that runs tests
 
 Multi-user aspects
 
-Dashboard
-
 Generate PDF reports
 Generate CSV output
 
 DONE Remaking narracoach_questions.js to be proper module
 
+==== Might not do
+
+Story list using dgrid with accordian for story
