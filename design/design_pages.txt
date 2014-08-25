@@ -1,0 +1,58 @@
+// pages for tabs
+// after dash is what to write on the page - as a reminder to us of what is to be on the page
+// if any page exists now we don't need the text
+// pages that already exist are marked with *
+
+#Dashboard - all checklists combined
+
+Project report - text summary (everything in the six stage reports appended)
+
+#Planning - checklist
+
+*Consider project aspects - answer questions about participants and topic (table with column for each group)
+*Tell project stories - tell stories about project, do offline exercise, report back (story list, story entry form, input story elements)
+Assess story sharing - answer questions about community/organization (just questions with score at end)
+Answer PNI Planning questions - answer questions about project goals, relations, focus, range, scope, emphasis (each question has large text and summary)
+Write project synopsis - write brief summary of project (just one large text question)
+Review planning report - text with all stuff entered
+
+#Collection - checklist
+
+Choose collection venues - choose ways to collect stories each group (questions with recommendations)
+Write story eliciting questions - write questions (question list, recommendations, copy from templates, review project aspects and story elements, reorder questions in list)
+*Write questions about stories - write questions (question list, recommendations, copy from templates, review project aspects and story elements, reorder questions in list)
+Write questions about people - write questions (question list, recommendations, copy from templates, review project aspects and story elements, reorder questions in list) 
+Design question form - add more elements to form than questions (add intro, disclaimers, help info, etc)
+*Enter stories - enter stories (show list of stories with add story button; if collecting stories over web participants will see only the "add story" window)
+// note: need way to show "menu" of eliciting questions, participants can choose which question to answer (this choice gets recorded)
+Review collection report - text with summary of venues and questions
+
+# Catalysis - checklist
+
+Review results - top trends list (most significant statistical differences; "add observation" button creates observation with image/text)
+*Review graphs - graph browser (pairwise comparison graph browser; "add observation" button)
+Review stories - story browser (smalltalk-like browser with question answers; "add observation" button)
+Interpret observations - edit observations in list ("edit" each to open form with title, text, interpretations (2 or more), graph result (from "add obs" button))
+Cluster interpretations - list of interps, cluster (space or grid, drag interps together, name groups)
+Review catalysis report - text with clustered interpretations and all info for them (including pictures)
+		
+# Sensemaking - checklist
+
+Plan sensemaking sessions - answer questions about how many, when, etc (with recommendations)
+Write session agenda - choose activities, rearrange (list of activities, copy from templates, rearrange, describe)
+Print story cards - choose how many per page, etc (goes to printable page)
+Review sessions - bunch of questions about what happened (all textareas, can be multiple for multiple sessions)
+Review sensemaking report - text with all stuff entered
+	
+#Intervention - checklist
+
+Design interventions - answer questions about which interventions to use
+Review interventions - answer questions about interventions used
+Review intervention report - text with all stuff entered
+
+#Return - checklist
+
+Gather feedback - enter what people said (mostly textareas)
+Review project - answer questions about project (mostly textareas)
+Present results - enter things you want to tell people about project (to be shown to steering committee)
+Review return report - text with all stuff entered
