@@ -3,7 +3,8 @@
 // if any page exists now we don't need the text
 // Single # for top level tabs
 // Double ## for second level tabs
-// Items with asterisk * are questions (double asterisks are question sections -- confusing)
+// Items with leading asterisk * are questions (double at signs @@ are question sections)
+// Question types are in brackets []
 
 #Dashboard - all checklists combined
 
@@ -17,20 +18,20 @@ Story sharing assessment - x of 20 questions answered
 Project synopsis - [ ] complete
 
 ##Enter project facts - answer questions about names of things (for reports)
-* What is the project's title? (text)
-* What is the name of your community or organization? (text)
-* Who is facilitating the project? (names and titles) (text)
-* What are the project's start and ending dates? (text)
-* Please enter any other information you want to appear at the top of project reports. (textarea)
-* Please enter any other information you want to appear at the botoom of project reports (as notes). (textarea)
+* What is the project's title? [text]
+* What is the name of your community or organization? [text]
+* Who is facilitating the project? (names and titles) [text]
+* What are the project's start and ending dates? [text]
+* Please enter any other information you want to appear at the top of project reports. [textarea]
+* Please enter any other information you want to appear at the botoom of project reports (as notes). [textarea]
 
 ##Answer PNI Planning questions - answer questions about project goals, relations, focus, range, scope, emphasis
-* What is the goal of the project? Why are you doing it? (textarea)
-* What relationships are important to the project? (textarea)
-* What is the focus of the project? What is it about? (textarea)
-* What range(s) of experience will the project cover? (textarea)
-* What is the project's scope? (number of people, number of stories, number of questions about stories) (textarea)
-* Which phases of PNI will be important to the project? (indicate most and least important phases) (textarea)
+* What is the goal of the project? Why are you doing it? [textarea]
+* What relationships are important to the project? [textarea]
+* What is the focus of the project? What is it about? [textarea]
+* What range(s) of experience will the project cover? [textarea]
+* What is the project's scope? (number of people, number of stories, number of questions about stories) [textarea]
+* Which phases of PNI will be important to the project? (indicate most and least important phases) [textarea]
 
 ##Consider project aspects - answer questions about participants and topic (table with column for each group)
 (already have these questions)
@@ -75,7 +76,7 @@ Conflicts: Who or what stands in opposition in this story?
 "
 
 // list of story elements with "add" button
-// for each, enter name (text), type (drop-down), description (textarea)
+// for each, enter name [text], type (drop-down), description [textarea]
 // can enter photo(s) and notes of session here also
 
 ##Assess story sharing - answer questions about community/organization (just questions with score at end)
@@ -119,9 +120,9 @@ Question form - [ ] designed [ ] committed
 - journaling
 - narrative incident reports
 - gleaned stories
-* Please describe your story collection plans for this group and venue. (textarea)
+* Please describe your story collection plans for this group and venue. [textarea]
 * If you want to collect stories in a second way for this same group, choose one of these options. (same options)
-* Please describe your secondary story collection for this group and venue. (textarea)
+* Please describe your secondary story collection for this group and venue. [textarea]
 // THIS REPEATS FOR EACH PREVIOUSLY IDENTIFIED GROUP
 
 ##Write story eliciting questions - write questions (question list, recommendations, copy from templates, review project aspects and story elements, reorder questions in list)
@@ -148,9 +149,9 @@ Question form - [ ] designed [ ] committed
 
 ##Design question form - add more elements to form than questions (add intro, disclaimers, help info, etc)
 
-* Please enter a title for the form. (text)
-* Please enter an introduction to be shown at the start of the form, after the title (textarea)
-* Please enter any text to be shown at the end of the form (textarea)
+* Please enter a title for the form. [text]
+* Please enter an introduction to be shown at the start of the form, after the title [textarea]
+* Please enter any text to be shown at the end of the form [textarea]
 
 ##Commit question forms - review and print forms to hand out in story sessions or use in interviews, or give out URL
 
@@ -166,13 +167,13 @@ Question form - [ ] designed [ ] committed
 
 // list of sessions with "add" button
 // for each session added:
-* How long will this session be? (text)
-* When will it take place? (text)
-* Where will it take place? (text)
-* How many people will be invited to this session? (text)
+* How long will this session be? [text]
+* When will it take place? [text]
+* Where will it take place? [text]
+* How many people will be invited to this session? [text]
 * From which participant group(s) will people be invited? (one or more) (drop down)
-* What materials will need to be made available?  (textarea)
-* Enter other details about this session. (textarea)
+* What materials will need to be made available?  [textarea]
+* Enter other details about this session. [textarea]
 
 ##Write session agenda(s) - choose activities, rearrange (list of activities, copy from templates, rearrange, describe)
 
@@ -188,11 +189,11 @@ Question form - [ ] designed [ ] committed
 - exercise: timelines
 - exercise: landscapes
 - other
-* How long will this activity take? (text)
-* What materials will be provided for this activity? (textarea)
-* What spaces will be used for this activity? (textarea)
-* Describe activity plan (textarea)
-* Describe optional elaborations you might or might not use (textarea)
+* How long will this activity take? [text]
+* What materials will be provided for this activity? [textarea]
+* What spaces will be used for this activity? [textarea]
+* Describe activity plan [textarea]
+* Describe optional elaborations you might or might not use [textarea]
 
 // ability to move activities up and down in list
 // button to print session agenda (simply) for facilitators
@@ -240,19 +241,19 @@ Perspectives - x
 
 ##Interpret observations - edit observations in list ("edit" each to open form with title, text, interpretations (2 or more), example stories or excerpts, graph result (from "add obs" button))
 
-* Observation name (text)
-* Observation (textarea)
+* Observation name [text]
+* Observation [textarea]
 * Result(s) - saved info from thing they clicked on 
 
-* First interpretation name (text)
-* First interpretation text (textarea)
-* Stories or excerpts for first interpretation (textarea) // to fill list, choose excerpts from saved list to copy to here
-* First idea (textarea)
+* First interpretation name [text]
+* First interpretation text [textarea]
+* Stories or excerpts for first interpretation [textarea] // to fill list, choose excerpts from saved list to copy to here
+* First idea [textarea]
 
 * Opposing interpretation name
-* Opposing interpretation (textarea)
-* Stories or excerpts for opposing interpretation (textarea)
-* Oppposing idea (textarea)
+* Opposing interpretation [textarea]
+* Stories or excerpts for opposing interpretation [textarea]
+* Oppposing idea [textarea]
 
 ##Cluster interpretations - list of interps, cluster (space or grid, drag interps together, name groups)
 // some kind of "are you really ready to cluster" confirmation before they do this, because adding new interps afterward will mess up clustering
@@ -274,13 +275,13 @@ Perspectives - x
 
 // list of sessions with "add" button
 // for each session added:
-* How long will this session be? (text)
-* When will it take place? (text)
-* Where will it take place? (text)
-* How many people will be invited to this session? (text)
+* How long will this session be? [text]
+* When will it take place? [text]
+* Where will it take place? [text]
+* How many people will be invited to this session? [text]
 * From which participant group(s) will people be invited? (one or more) (drop down)
-* What materials will need to be made available?  (textarea)
-* Enter other details about this session. (textarea)
+* What materials will need to be made available?  [textarea]
+* Enter other details about this session. [textarea]
 
 ##Write session agenda(s) - choose activities, rearrange (list of activities, copy from templates, rearrange, describe)
 
@@ -301,11 +302,11 @@ Perspectives - x
 - list making
 - wrap-up
 - other
-* How long will this activity take? (text)
-* What materials will be provided for this activity? (textarea)
-* What spaces will be used for this activity? (textarea)
-* Describe activity plan (textarea)
-* Describe optional elaborations you might or might not use (textarea)
+* How long will this activity take? [text]
+* What materials will be provided for this activity? [textarea]
+* What spaces will be used for this activity? [textarea]
+* Describe activity plan [textarea]
+* Describe optional elaborations you might or might not use [textarea]
 
 // ability to move activities up and down in list
 // button to print session agenda (simply) for facilitators
@@ -354,39 +355,39 @@ Perspectives - x
 
 // for each session in list, click "review" or something button
 
-**Change
+@@Change
 
-* How did the behavior of the participants change from the start to the end of the session? (textarea)
-* How did their emotions change? (textarea)
-* How did your emotions change? (textarea)
+* How did the behavior of the participants change from the start to the end of the session? [textarea]
+* How did their emotions change? [textarea]
+* How did your emotions change? [textarea]
 
-**Interactions
+@@Interactions
 
-* Describe the interactions between participants (including changes during the session). (textarea)
-* Describe interactions between participants and facilitators (including change). (textarea)
+* Describe the interactions between participants (including changes during the session). [textarea]
+* Describe interactions between participants and facilitators (including change). [textarea]
 
-**Stories
+@@Stories
 
-* What did you notice about the stories people told, retold, chose, worked with, and built during the session? (textarea)
+* What did you notice about the stories people told, retold, chose, worked with, and built during the session? [textarea]
 
-**Context
+@@Context
 
-* What is the story of what happened during this session? (textarea)
-* What was special about these people in this place on this day? (textarea)
+* What is the story of what happened during this session? [textarea]
+* What was special about these people in this place on this day? [textarea]
 
-**Methods
+@@Methods
 
-* What parts of your plans went as you expected? WHat parts didn't? (textarea)
-* What parts of your plans worked out well? WHat parts didn't work out well? (textarea)
-* What new ideas did you gain from the participants in this session? (textarea)
+* What parts of your plans went as you expected? WHat parts didn't? [textarea]
+* What parts of your plans worked out well? WHat parts didn't work out well? [textarea]
+* What new ideas did you gain from the participants in this session? [textarea]
 
-**Project
+@@Project
 
-* How has the project changed as a result of this session? (textarea)
+* How has the project changed as a result of this session? [textarea]
 
-**Summary
+@@Summary
 
-* What do you want most to remember about this session? (textarea)
+* What do you want most to remember about this session? [textarea]
 
 ##Read sensemaking report - text with all stuff entered
 	

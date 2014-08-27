@@ -117,7 +117,7 @@ function convert() {
     	  lastPage = {"name": name, "description": description, "isHeader": header};
     	  pages.push(lastPage)
       } else if (lastPage) {
-    	  lastPage.description += "<br>\n" + line;
+    	  lastPage.description += "\n" + line;
       }
    		// console.log("line", header, stuff, name, "::", description);
     });
