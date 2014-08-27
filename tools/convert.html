@@ -91,38 +91,38 @@ function convert() {
     // console.log(input);
     
     var lines = input.split("\n");
+    var lastPage = null;
+    var pages = [];
+    
     array.forEach(lines, function (line) {
     	line = string.trim(line);
-    	if (startsWith(line, "/")) {
-    		// comment
-    	} else if (!line) {
-    		// blank line
-    	} else {
-    		var name = line;
-        var description = "";
-        var splitPoint = line.indexOf('-');
-    		if (splitPoint !== -1) {
-    			  name = string.trim(line.substr(0, splitPoint)); 
-    			  description = string.trim(line.substr(splitPoint + 1));
-    		}
-    		
-    		var stuff = false;
-    		var header = false;
-    		// Remove initial informational star which means there is something already for that tab
-    		if (startsWith(name, "*")) {
-    			stuff = true;
-    			name = name.substring(1);
-    		}
-	      if (startsWith(name, "#")) {
-	          header = true;
-	          name = name.substring(1);
-	      }
-    		console.log("line", header, stuff, name, "::", description);
-    		
-    		var output = {"name": name, "description": description, "isHeader": header, "hasImplementation": stuff};
-    		addOutput(JSON.stringify(output) + ",\n");
-    	}
+
+   		var name = line;
+      var description = "";
+      var splitPoint = line.indexOf('-');
+   		if (splitPoint !== -1) {
+   			  name = string.trim(line.substr(0, splitPoint)); 
+   			  description = string.trim(line.substr(splitPoint + 1));
+   		}
+   		
+   		var header = false;
+
+      if (startsWith(name, "#")) {
+    	  if (startsWith(name, "##")) {
+          name = name.substring(2);
+        } else {
+          name = name.substring(1);
+          header = true;
+    	  }
+    	  lastPage = {"name": name, "description": description, "isHeader": header};
+    	  pages.push(lastPage)
+      } else if (lastPage) {
+    	  lastPage.description += "<br>\n" + line;
+      }
+   		// console.log("line", header, stuff, name, "::", description);
     });
+    
+    addOutput(JSON.stringify(pages, null, "    "));
 }
 
 function addOutput(output) {

@@ -1,7 +1,9 @@
 // pages for tabs
 // after dash is what to write on the page - as a reminder to us of what is to be on the page
 // if any page exists now we don't need the text
-// pages that already exist are marked with *
+// Single # for top level tabs
+// Double ## for second level tabs
+// Items with asterisk * are questions (double asterisks are question sections -- confusing)
 
 #Dashboard - all checklists combined
 
