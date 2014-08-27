@@ -1,0 +1,43 @@
+//////////////////////
+
+//new idea - NO rule based recommendations - instead show tables
+//with ALL rules - answers to questions marked out - they can
+//see the recommendatiosn for themselves
+
+//need fewer questions at start about each group
+//should be sliders
+
+position/personality
+* perceived status (low to high)
+* self-confidence (timid to confident)
+* conform to "normal" choices (low to high)
+* perform to expectations (low to high)
+
+availability
+* free time (little to much)
+* capability (low to high) (mentally physically and emotionally combined; any lack of education or mobility is combined into this question)
+* interest (indifferent to enthusiastic)
+
+feelings about project
+* hope for change (jaded to hopeful)
+* friendliness to project (hostile to friendly)
+* friendliness to you (hostile to friendly)
+* beliefs about stories (worthless to amazing)
+
+feelings about topic
+* emotional (low to high)
+* private (low to high)
+* positive (negative to positive)
+* do they know their feelings on it (deep down or close to surface)
+* how much of a time period do you need them to reflect on (short to long)
+
+TABLES FOR
+- venues
+- scope of story collection (kiosk volunteer commitment)
+- eliciting questions
+- questions about stories
+- questions about people
+- story collection exercises (agenda for collection session)
+- sensemaking session plans (how many, when, etc)
+- sensemaking agendas
+?more?

@@ -307,6 +307,7 @@ Perspectives - x
 
 // ability to move activities up and down in list
 // button to print session agenda (simply) for facilitators
+// button to print story cards - choose how many per page, etc
 
 // session 1 - friday 2 pm
 //      activity 1 - ice breaker
@@ -315,16 +316,13 @@ Perspectives - x
 //      activity 1 - encounter stories
 //      activity 2 - twice told stories
 
-##Print story cards - choose how many per page, etc (goes to printable page)
-
-(just a button)
-
-Enter session records - add pictures, audio, video, transcripts, lists of things people ended up with, pivot/voice/discovery stories
+##Enter session records - add pictures, audio, video, transcripts, lists of things people ended up with, pivot/voice/discovery stories
 
 // this is per session
 
 * Enter any lists of outcomes people arrived at during this session.
 // list with 'add" button
+// pg 375 in book
 // for each outcome, title, type and text (not complicated)
 // types are:
 - discovery
@@ -337,121 +335,79 @@ Enter session records - add pictures, audio, video, transcripts, lists of things
 
 * Enter any summaries prepared by session participants
 // text, audio, image, video
+// how to connect audio/video to content? link to it? 
+// if we host it, how much can people upload? how long will we keep it around?
+// limits on number and size of images 
 
-* Decribe any constructions created during the session.
+* Describe any constructions created during the session.
 // text, audio, image, video
 
 * Enter any notes you took during the session
-// text but could be audio or video or image also
+// textarea but could be audio or video or image also
 
 * Enter any additional info about the session
 // could be anything
 
-Answer questions about sessions - bunch of questions about what happened (all textareas, can be multiple for multiple sessions)
+##Answer questions about sessions - bunch of questions about what happened (all textareas, can be multiple for multiple sessions)
 
 // for each session in list, click "review" or something button
 
-#Change
+**Change
 
-* How did the behavior of the participants change from the start to the end of the session?
-* How did their emotions change?
-* How did your emotions change?
+* How did the behavior of the participants change from the start to the end of the session? (textarea)
+* How did their emotions change? (textarea)
+* How did your emotions change? (textarea)
 
-#Interactions
+**Interactions
 
-* Describe the interactions between participants (including changes during the session).
-* Describe interactions between participants and facilitators (including change).
+* Describe the interactions between participants (including changes during the session). (textarea)
+* Describe interactions between participants and facilitators (including change). (textarea)
 
-#Stories
+**Stories
 
-* What did you notice about the stories people told, retold, chose, worked with, and built during the session?
+* What did you notice about the stories people told, retold, chose, worked with, and built during the session? (textarea)
 
-#Context
+**Context
 
-* What is the story of what happened during this session?
-* What was special about these people in this place on this day?
+* What is the story of what happened during this session? (textarea)
+* What was special about these people in this place on this day? (textarea)
 
-#Methods
+**Methods
 
-* WHat parts of your plans went as you expected? WHat parts didn't?
-* What parts of your plans worked out well? WHat parts didn't work out well?
-* What new ideas did you gain from the participants in this session?
+* What parts of your plans went as you expected? WHat parts didn't? (textarea)
+* What parts of your plans worked out well? WHat parts didn't work out well? (textarea)
+* What new ideas did you gain from the participants in this session? (textarea)
 
-#Project
+**Project
 
-* How has the project changed as a result of this session?
+* How has the project changed as a result of this session? (textarea)
 
-#Summary
+**Summary
 
-* What do you want most to remember about this session?
+* What do you want most to remember about this session? (textarea)
 
-Read sensemaking report - text with all stuff entered
+##Read sensemaking report - text with all stuff entered
 	
 #Intervention - checklist
-
-Intervention checklist
 Choose interventions - x planned
 Answer questions about interventions - x questions answered
 
-Choose interventions - answer questions about which interventions to use
+##Choose interventions - answer questions about which interventions to use
 
 // recommendations based on groups in planning
 
 // questions help to choose interventions
 // cfk stopped here
 
-Answer questions about interventions - answer questions about interventions used
-Read intervention report - text with all stuff entered
+##Answer questions about interventions - answer questions about interventions used
+##Read intervention report - text with all stuff entered
 
 #Return - checklist
 
-Gather feedback - enter what people said (mostly textareas)
-Answer questions about project - answer questions about project (mostly textareas)
-Prepare project presentation - enter things you want to tell people about project (to be shown to steering committee)
-Read return report - text with all stuff entered
+##Gather feedback - enter what people said (mostly textareas)
+##Answer questions about project - answer questions about project (mostly textareas)
+##Prepare project presentation - enter things you want to tell people about project (to be shown to steering committee)
+##Read return report - text with all stuff entered
 
 #Project report - text summary (everything in the six stage reports appended)
 
-//////////////////////
-
-new idea - NO rule based recommendations - instead show tables
-with ALL rules - answers to questions marked out - they can
-see the recommendatiosn for themselves
-
-need fewer questions at start about each group
-should be sliders
-
-position/personality
-* perceived status (low to high)
-* self-confidence (timid to confident)
-* conform to "normal" choices (low to high)
-* perform to expectations (low to high)
-
-availability
-* free time (little to much)
-* capability (low to high) (mentally physically and emotionally combined; any lack of education or mobility is combined into this question)
-* interest (indifferent to enthusiastic)
-
-feelings about project
-* hope for change (jaded to hopeful)
-* friendliness to project (hostile to friendly)
-* friendliness to you (hostile to friendly)
-* beliefs about stories (worthless to amazing)
-
-feelings about topic
-* emotional (low to high)
-* private (low to high)
-* positive (negative to positive)
-* do they know their feelings on it (deep down or close to surface)
-* how much of a time period do you need them to reflect on (short to long)
-
-TABLES FOR
-- venues
-- scope of story collection (kiosk volunteer commitment)
-- eliciting questions
-- questions about stories
-- questions about people
-- story collection exercises (agenda for collection session)
-- sensemaking session plans (how many, when, etc)
-- sensemaking agendas
-?more?
