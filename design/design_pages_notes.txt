@@ -1,0 +1,412 @@
+// pages for tabs
+// after dash is what to write on the page - as a reminder to us of what is to be on the page
+// if any page exists now we don't need the text
+// pages that already exist are marked with *
+
+#Dashboard - all checklists combined
+
+#Planning - checklist
+
+Planning checklist
+Project facts - x of x questions answered
+Planning questions - [ ] draft [ ] completion
+Project aspects - x of x questions answered
+Project stories - x stories told
+Project story elements - x elements entered
+Story sharing assessment - x of 20 questions answered
+Project synopsis - [ ] complete
+
+Enter project facts - answer questions about names of things (for reports)
+* What is the project's title? (text)
+* What is the name of your community or organization? (text)
+* Who is facilitating the project? (names and titles) (text)
+* What are the project's start and ending dates? (text)
+* Please enter any other information you want to appear at the top of project reports. (textarea)
+* Please enter any other information you want to appear at the botoom of project reports (as notes). (textarea)
+
+Answer PNI Planning questions - answer questions about project goals, relations, focus, range, scope, emphasis
+* What is the goal of the project? Why are you doing it? (textarea)
+* What relationships are important to the project? (textarea)
+* What is the focus of the project? What is it about? (textarea)
+* What range(s) of experience will the project cover? (textarea)
+* What is the project's scope? (number of people, number of stories, number of questions about stories) (textarea)
+* Which phases of PNI will be important to the project? (indicate most and least important phases) (textarea)
+
+*Consider project aspects - answer questions about participants and topic (table with column for each group)
+(already have these questions)
+// NOTE that if the person changes the names of any of these
+// groups, the questions linked to them (here and later on
+// in the venues part) will REMAIN linked
+
+*Tell project stories - tell stories about project, do offline exercise, report back (story list, story entry form)
+(already have this)
+
+Create project story elements - follow instructions, input story elements
+Instructions text:
+
+"
+1. Choose one or two types of story element (characters, situations, values, themes, relationships, motivations, beliefs, conflicts).
+2. For each story, come up with as many answers to that element's question as you can. Write the answers on sticky notes.
+
+The questions are:
+
+Characters: Who is doing things in this story?
+Situations: What is going on in this story?
+Values: What matters to the characters in this story?
+Themes: What is this story about?
+Relationships: How are the characters related in this story?
+Motivations: Why do the characters do what they do in this story?
+Beliefs: What do people believe in this story?
+Conflicts: Who or what stands in opposition in this story?
+
+3. Once you have answered the question(s) you chose for each story, cluster the sticky notes into groups. Place like with like.
+
+4. Give each group of sticky notes a name.
+
+5. Clear a "halo" of space around each group's name.
+
+6. In the halo, write 2-5 good and bad attributes (advantages and disadvantages, opportunities and dangers) of each group of sticky notes.
+
+7. Copy or move the new good/bad attributes to a new space. Mix them all together.
+
+8. Cluster the attributes into groups.
+
+9. Name the groups. These are your story elements.
+"
+
+// list of story elements with "add" button
+// for each, enter name (text), type (drop-down), description (textarea)
+// can enter photo(s) of session here also
+
+Assess story sharing - answer questions about community/organization (just questions with score at end)
+
+// THIS WILL TAKE A LONG TIME and i think we should
+// leave it until version 2 - it is not very important
+
+Revise PNI Planning questions - answer questions about project goals, relations, focus, range, scope, emphasis
+
+"Please review and improve your draft answers based on your
+consideration of project aspects and your project stories."
+
+// same screen as before, with textareas populated with the same info
+// as entered before
+// but in this screeen, under each textarea is a text
+* Please summarize your project's X (goals, etc) in one sentence.
+// this is a long textarea, like 120 chars or something
+
+Write project synopsis - write brief summary of project (just one large text question)
+
+* Please summarize your project in one or two sentences. This
+text will appear at the start of all reports.
+
+Read planning report - text with all stuff entered
+
+#Collection design - checklist
+
+Collection design checklist
+Collection venues - X venues chosen
+Story eliciting questions - x questions written
+Questions about stories - x questions written
+Questions about people - x stories written
+Question form - [ ] designed [ ] committed
+
+Choose collection venues - choose ways to collect stories for each group (questions with recommendations)
+
+// paragraph of recommendations here
+
+* For the group "x" (from planning page), please enter your primary means of story collection.
+- one-on-one interviews
+- group interviews
+- peer interviews
+- group story sessions
+- surveys
+- journaling
+- narrative incident reports
+- gleaned stories
+* Please describe your story collection plans for this group and venue.
+* If you want to collect stories in a second way for this same group, choose one of these options. (same options)
+* Please describe your secondary story collection for this group and venue.
+// THIS REPEATS FOR EACH PREVIOUSLY IDENTIFIED GROUP
+
+Write story eliciting questions - write questions (question list, recommendations, copy from templates, review project aspects and story elements, reorder questions in list)
+
+// need to help them choose which TYPE of eliciting questions
+// they want to use - asking for times, directed and undirected, etc
+
+// note that the story eliciting questions dont need a lot of
+// extra info - they are just text strings, because all
+// story eliciting questions are of one type
+
+// template questions in separate file?
+
+*Write questions about stories - write questions (question list, recommendations, copy from templates, review project aspects and story elements, reorder questions in list)
+(already have this)
+
+Write questions about people - write questions (question list, recommendations, copy from templates, review project aspects and story elements, reorder questions in list)
+(same structure as what we already have)
+
+Design question form - add more elements to form than questions (add intro, disclaimers, help info, etc)
+
+* Please enter a title for the form. (text)
+* Please enter an introduction to be shown at the start of the form, after the title (textarea)
+* Please enter any text to be shown at the end of the form (textarea)
+
+Commit question forms - review and print forms to hand out in story sessions or use in interviews, or give out URL
+
+// buttons: [Finalize form] [Copy form URL] [Print forms]
+// buttons 2 and 3 are disabled until button 1 is clicked
+// and there should be a confirm dialog
+
+// SHOULD THERE BE A SECTION HERE ABOUT DESIGNING STORY COLLECTION SESSIONS? it would be the same as for sensemaking sessions
+
+Read collection design report - text with summary of venues and questions
+
+#Collection process - checklist
+
+Collection process checklist
+Online story collection is [ ] enabled
+Number of stories entered - x
+Number of participants who told stories - x
+
+Start story collection - make URL live
+(just a button)
+
+*Enter stories - enter stories (show list of stories with add story button; if collecting stories over web participants will see only the "add story" window)
+(already have this)
+// note: need way to show "menu" of eliciting questions, participants can choose which question to answer (this choice gets recorded)
+
+Review incoming stories - general story browser without catalysis functions
+// smalltalk like with answers to questions
+
+Stop story collection - stop URL working
+// just a button
+
+Read collection process report - text with summary of how many stories collected etc
+
+# Catalysis - checklist
+
+Catalysis checklist
+Observations - x
+Interpretations - x
+Ideas - x
+Perspectives - x
+
+Add observations about stories - story browser (smalltalk-like browser with question answers; "add observation" button)
+*Add observations about graphs - graph browser (pairwise comparison graph browser; "add observation" button)
+Add observations about trends - top trends list (most significant statistical differences; "add observation" button creates observation with image/text)
+
+// maybe transition this to one tab with three sub-tabs (on top) later
+// no questions in this part
+
+Interpret observations - edit observations in list ("edit" each to open form with title, text, interpretations (2 or more), example stories or excerpts, graph result (from "add obs" button))
+
+// fields for observations+interps
+
+* Observation name (text)
+* Observation (textarea)
+* Result(s) - saved info from thing they clicked on (it should be possible to add more than one result to an observation, so when they click "add observation" they should choose between an existing one (in a list) and a new one)
+* First interpretation name
+* First interpretation (textarea)
+* Stories or excerpts for first interpretation (textarea)
+* First idea (textarea)
+* Opposing interpretation name
+* Opposing interpretation (textarea)
+* Stories or excerpts for opposing interpretation (textarea)
+* Oppposing idea (textarea)
+
+Cluster interpretations - list of interps, cluster (space or grid, drag interps together, name groups)
+// no questions here
+// (if this works well we could copy it for the story elements
+// exercise in the planning stage...)
+
+Read catalysis report - text with clustered interpretations and all info for them (including pictures)
+		
+# Sensemaking - checklist
+
+Sensemaking checklist
+Planning sessions - x of x questions answered
+Write session agenda - x of x questions answered
+Print story cards - x cards printed (or checkmark)
+Post-session review - x of x questions answered
+
+Plan sensemaking sessions - answer questions about how many, when, etc (with recommendations)
+
+// recommendations based on descriptions of groups in planning
+
+// list of sessions with "add" button
+// for each session added:
+* How long will this session be?
+* WHen will it take place?
+* Where will it take place?
+* How many people will be invited to this session?
+* From which group(s) will people be invited? (one or more)
+* What materials will be provided?
+* Enter other details about this session.
+
+Write session agenda(s) - choose activities, rearrange (list of activities, copy from templates, rearrange, describe)
+
+// for each session in list
+// list of activities with "add" button
+// for each activity added:
+* Choose type of
+- ice breaker
+- encountering stories (no exercise)
+- encountering stories with task
+- exploring patterns in story cards
+- discussion of stories/patterns
+- exercise: twice-told stories
+- exercise: timelines
+- exercise: landscapes
+- exercise: story elements
+- exercise: composite stories
+- list making
+- wrap-up
+- other
+* How long will this activity take?
+* What materials will be provided for this activity?
+* What spaces will be used for this activity?
+* Describe activity plan (textarea)
+* Describe optional elaborations you might or might not use
+
+// button to print session agenda (simply) for facilitators
+
+Print story cards - choose how many per page, etc (goes to printable page)
+
+(just a button)
+
+Enter session records - add pictures, audio, video, transcripts, lists of things people ended up with, pivot/voice/discovery stories
+
+// this is per session
+
+* Enter any lists of outcomes people arrived at during this session.
+// list with 'add" button
+// for each outcome, title, type and text (not complicated)
+// types are:
+- discovery
+- opportunity
+- issue
+- idea
+- recommendation
+- perspective
+- dilemma
+
+* Enter any summaries prepared by session participants
+// text, audio, image, video
+
+* Decribe any constructions created during the session.
+// text, audio, image, video
+
+* Enter any notes you took during the session
+// text but could be audio or video or image also
+
+* Enter any additional info about the session
+// could be anything
+
+Answer questions about sessions - bunch of questions about what happened (all textareas, can be multiple for multiple sessions)
+
+// for each session in list, click "review" or something button
+
+#Change
+
+* How did the behavior of the participants change from the start to the end of the session?
+* How did their emotions change?
+* How did your emotions change?
+
+#Interactions
+
+* Describe the interactions between participants (including changes during the session).
+* Describe interactions between participants and facilitators (including change).
+
+#Stories
+
+* What did you notice about the stories people told, retold, chose, worked with, and built during the session?
+
+#Context
+
+* What is the story of what happened during this session?
+* What was special about these people in this place on this day?
+
+#Methods
+
+* WHat parts of your plans went as you expected? WHat parts didn't?
+* What parts of your plans worked out well? WHat parts didn't work out well?
+* What new ideas did you gain from the participants in this session?
+
+#Project
+
+* How has the project changed as a result of this session?
+
+#Summary
+
+* What do you want most to remember about this session?
+
+Read sensemaking report - text with all stuff entered
+	
+#Intervention - checklist
+
+Intervention checklist
+Choose interventions - x planned
+Answer questions about interventions - x questions answered
+
+Choose interventions - answer questions about which interventions to use
+
+// recommendations based on groups in planning
+
+// questions help to choose interventions
+// cfk stopped here
+
+Answer questions about interventions - answer questions about interventions used
+Read intervention report - text with all stuff entered
+
+#Return - checklist
+
+Gather feedback - enter what people said (mostly textareas)
+Answer questions about project - answer questions about project (mostly textareas)
+Prepare project presentation - enter things you want to tell people about project (to be shown to steering committee)
+Read return report - text with all stuff entered
+
+#Project report - text summary (everything in the six stage reports appended)
+
+//////////////////////
+
+new idea - NO rule based recommendations - instead show tables
+with ALL rules - answers to questions marked out - they can
+see the recommendatiosn for themselves
+
+need fewer questions at start about each group
+should be sliders
+
+position/personality
+* perceived status (low to high)
+* self-confidence (timid to confident)
+* conform to "normal" choices (low to high)
+* perform to expectations (low to high)
+
+availability
+* free time (little to much)
+* capability (low to high) (mentally physically and emotionally combined; any lack of education or mobility is combined into this question)
+* interest (indifferent to enthusiastic)
+
+feelings about project
+* hope for change (jaded to hopeful)
+* friendliness to project (hostile to friendly)
+* friendliness to you (hostile to friendly)
+* beliefs about stories (worthless to amazing)
+
+feelings about topic
+* emotional (low to high)
+* private (low to high)
+* positive (negative to positive)
+* do they know their feelings on it (deep down or close to surface)
+* how much of a time period do you need them to reflect on (short to long)
+
+TABLES FOR
+- venues
+- scope of story collection (kiosk etc)
+- eliciting questions
+- questions about stories
+- questions about people
+- story collection exercises (agenda for collection session)
+- sensemaking session plans (how many, when, etc)
+- sensemaking agendas
+?more?
