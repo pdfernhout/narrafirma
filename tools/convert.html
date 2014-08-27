@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>NarraCoach Conversion Tools</title>
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojo/resources/dojo.css">
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dijit/themes/dijit.css">
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dijit/themes/claro/claro.css">
+
+<style type="text/css">
+    
+    html {
+        height: 100%;
+    }
+    
+    body {
+        min-height: 100%;
+    }
+    
+</style>
+
+<script>
+  var dojoConfig;
+  (function(){
+    dojoConfig = {
+      async: true,
+      parseOnLoad: false,
+      // cacheBust: "1.10.0",
+    };
+  }());
+</script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojo/dojo.js"></script>
+
+</head>
+
+<body class="claro">
+    <noscript>
+      Please enable JavaScript to use this tool.
+    </noscript>
+    
+    <div id="input"></div>
+    <div id="buttons"></div>
+    <div id="output"></div>
+    
+<script>
+"use strict";
+
+require([
+    "dojo/_base/array",
+    "dojo/string",
+    "dijit/form/Button",
+    "dijit/form/SimpleTextarea",
+    "dojo/domReady!"
+], function(
+		array,
+		string,
+    Button,
+    SimpleTextarea
+){
+	
+function startsWith(str, prefix) {
+    return str.lastIndexOf(prefix, 0) === 0;
+}
+	
+function isString(something) {
+    return (typeof something == 'string' || something instanceof String);
+}
+
+function newButton(label, addToDiv, callback) {
+    var button = new Button({
+        label: label,
+        type: "button",
+        onClick: callback
+    });
+    if (isString(addToDiv)) {
+        addToDiv = document.getElementById(addToDiv);
+    }
+    if (addToDiv) {
+        button.placeAt(addToDiv);
+    }
+    // TODO: Is startup call really needed here?
+    button.startup();
+    return button.domNode;
+}
+
+function convert() {
+    console.log("convert", inputTextArea);
+    var input = inputTextArea.get("value");
+    // console.log(input);
+    
+    var lines = input.split("\n");
+    array.forEach(lines, function (line) {
+    	line = string.trim(line);
+    	if (startsWith(line, "/")) {
+    		// comment
+    	} else if (!line) {
+    		// blank line
+    	} else {
+    		var name = line;
+        var description = "";
+        var splitPoint = line.indexOf('-');
+    		if (splitPoint !== -1) {
+    			  name = string.trim(line.substr(0, splitPoint)); 
+    			  description = string.trim(line.substr(splitPoint + 1));
+    		}
+    		
+    		var stuff = false;
+    		var header = false;
+    		// Remove initial informational star which means there is something already for that tab
+    		if (startsWith(name, "*")) {
+    			stuff = true;
+    			name = name.substring(1);
+    		}
+	      if (startsWith(name, "#")) {
+	          header = true;
+	          name = name.substring(1);
+	      }
+    		console.log("line", header, stuff, name, "::", description);
+    		
+    		var output = {"name": name, "description": description, "isHeader": header, "hasImplementation": stuff};
+    		addOutput(JSON.stringify(output) + ",\n");
+    	}
+    });
+}
+
+function addOutput(output) {
+	var newValue = outputTextArea.get("value") + output;
+	outputTextArea.set("value", newValue);
+}
+
+var inputTextArea;
+var outputTextArea;
+
+function createLayout() {
+    inputTextArea = new SimpleTextarea({
+        name: "input",
+        value: "",
+        style: "width: 90%; height: 200px"
+    }, "input");
+    
+    inputTextArea.startup();  
+    
+    outputTextArea = new SimpleTextarea({
+        name: "output",
+        value: "",
+        style: "width: 90%; height: 200px"
+    }, "output");
+    
+    outputTextArea.startup();          
+  
+    newButton("Convert", "buttons", convert);
+}
+
+createLayout();
+
+});
+
+</script>
+</body>
+</html>
