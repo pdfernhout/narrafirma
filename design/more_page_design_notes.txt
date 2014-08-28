@@ -41,3 +41,35 @@ TABLES FOR
 - sensemaking session plans (how many, when, etc)
 - sensemaking agendas
 ?more?
+
+KEEP THIS for help text later - on deriving story elements
+
+"
+1. Choose one or two types of story element (characters, situations, values, themes, relationships, motivations, beliefs, conflicts).
+2. For each story, come up with as many answers to that element's question as you can. Write the answers on sticky notes.
+
+The questions are:
+
+Characters: Who is doing things in this story?
+Situations: What is going on in this story?
+Values: What matters to the characters in this story?
+Themes: What is this story about?
+Relationships: How are the characters related in this story?
+Motivations: Why do the characters do what they do in this story?
+Beliefs: What do people believe in this story?
+Conflicts: Who or what stands in opposition in this story?
+
+3. Once you have answered the question(s) you chose for each story, cluster the sticky notes into groups. Place like with like.
+
+4. Give each group of sticky notes a name.
+
+5. Clear a "halo" of space around each group's name.
+
+6. In the halo, write 2-5 good and bad attributes (advantages and disadvantages, opportunities and dangers) of each group of sticky notes.
+
+7. Copy or move the new good/bad attributes to a new space. Mix them all together.
+
+8. Cluster the attributes into groups.
+
+9. Name the groups. These are your story elements.
+"
