@@ -1,29 +1,40 @@
 // Single # for top level tabs
 // Double ## for second level tabs
-// Items with leading asterisk * are questions (double at signs @@ are question sections)
-// Question types are in brackets []
+// Single * for questions
+// Question types are in brackets [id|type|options]
+// question types are: label, header (bold label), text, textarea, select, grid, quizScoreResult
+// page types are: normal (no specification), popup, questionsTable, recommendationTable
 
-#Dashboard - all checklists combined
+// multiline labels are done by adding lines after the first label line; anything up to the next * or # is read
+// help texts are placed after questions (that are not labels). if there is no leading <p> in the help text, it is <p>text</p>
 
-#Planning [header_planning]
-Project facts - x of x questions answered
-Planning questions - [ ] draft [ ] completion
-Project aspects - x of x questions answered
-Project stories - x stories told
-Project story elements - x elements entered
-Story sharing assessment - x of 20 questions answered
-Project synopsis - [ ] complete
+# Dashboard 
+// all checklists combined
 
-##Enter project facts [page_projectFacts] - answer questions about names of things (for reports)
+# Planning [headerpage_planning]
+// Project facts - x of x questions answered
+// Planning questions - [ ] draft 
+// Project aspects - x of x questions answered
+// Project stories - x stories told
+// Project story elements - x elements entered
+// Story sharing assessment - x of 20 questions answered
+// Project synopsis - [ ] complete
 
-* What is the project's title? [projectTitle|text]
+## Enter project facts [page_projectFacts] 
+
+* On this page you will enter some facts about your project. The things you enter here will appear in your reports. [projectFacts|label]
+
+* What is the project's title? [projectTitle|text] 
 * What is the name of your community or organization? [communityOrOrganizationName|text]
 * Who is facilitating the project? (names and titles) [projectFacilitators|text]
 * What are the project's start and ending dates? [projectStartAndEndDates|text]
 * Please enter any other information you want to appear at the top of project reports. [reportStartText|textarea]
-* Please enter any other information you want to appear at the botoom of project reports (as notes). [reportEndText|textarea]
+* Please enter any other information you want to appear at the bottom of project reports (as notes). [reportEndText|textarea]
 
-##Answer PNI Planning questions [page_planningQuestionsDraft] - answer questions about project goals, relations, focus, range, scope, emphasis
+## Answer PNI Planning questions [page_planningQuestionsDraft] 
+
+* On this page you will answer some questions about your project's goals, relationships, focus, range, scope, and emphasis. [planning_draft|label]
+If you don't have good answers for these questions right now, don't worry; you will have a chance to come back and work on these answers again later.
 
 * What is the goal of the project? Why are you doing it? [planning_draft_goal|textarea]
 * What relationships are important to the project? [planning_draft_relationships|textarea]
@@ -32,50 +43,59 @@ Project synopsis - [ ] complete
 * What is the project's scope? (number of people, number of stories, number of questions about stories) [planning_draft_scope|textarea]
 * Which phases of PNI will be important to the project? (indicate most and least important phases) [planning_draft_emphasis|textarea]
 
-##Consider project aspects [page_projectAspects] - answer questions about participants and topic (table with column for each group)
+## Consider project aspects [page_projectAspects] 
+
+* On this page you will think about groups of participants you want to involve in your project. [aboutParticipantGroups|label]
+Examples might be: doctors and patients; staff and customers; natives, immigrants, and tourists.
+NarraCoach supports planning for up to three groups of project participants. 
 
 * Please name the group of participants from whom the project most needs to hear. [participants_firstGroupName|text]
 * Please describe this group of participants. [participants_firstGroupDescription|textarea]
+For example, you might want to record any observations you have made about this group.
+What do you know about them?
+
 * Please name the group of participants from whom the project needs to hear next. [participants_secondGroupName|text]
 * Please describe the second-most critical group of participants. [participants_secondGroupDescription|textarea]
 * If there is a third group of participants from whom the project needs to hear, please name them. [participants_thirdGroupName|text]
 * Please describe the third-most critical group of participants. [participants_thirdGroupDescription|textarea]
 
-// these questions are for each group separately - in a table
+* Please answer these questions about each participant group. [aspectsTable|page_aspectsTable|participants_firstGroupName,participants_secondGroupName,participants_thirdGroupName]
 
-@@Status
+## Aspects table [page_aspectsTable|questionsTable]
+
+* Status [aspects_statusHeader|header]
 * What is the status of these participants in the community or organization? [aspects_status|select|unknown;very low;low;moderate;high;very high;mixed]
 * How much self-confidence do these participants have? [aspects_confidence|select|unknown;very low;low;medium;high;very high;mixed]
 
-@@Ability
+* Ability [aspects_abilityHeader|header]
 * How much free time do these participants have? [aspects_time|select|unknown;very little;little;some;much;mixed]
 * What is the education level of these participants? [aspects_education|select|unknown;illiterate;minimal;moderate;high;very high;mixed]
 * Do these participants have physical limitations that will impact their participation? [aspects_physicalDisabilities|select|unknown;none;minimal;moderate;strong;mixed]
 * Do these participants have emotional impairments that will impact their participation (such as mental illness or traumatic stress)? [aspects_emotionalImpairments|select|unknown;none;minimal;moderate;strong;mixed]
 
-@@Expectations
-* To what extent is performing well (with "high marks") important to these participants? [aspects_performing|select|unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed]
-* To what extent is conforming (to what is "normal" or expected) important to these participants? [aspects_conforming|select|unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed]
-* To what extent is competing with others (self-promotion) important to these participants? [aspects_promoting|select|unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed]
-* To what extent is speaking out (having a say, venting, sounding off) important to these participants? [aspects_venting|select|unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed]
+* Expectations [aspects_expectationsHeader|header]
+* For these participants, how important is performing well (with "high marks")? [aspects_performing|select|unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed]
+* For these participants, how important is conforming (to what is "normal" or expected)? [aspects_conforming|select|unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed]
+* For these participants, how important is self-promotion (competing with others)? [aspects_promoting|select|unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed]
+* For these participants, how important is speaking out (having a say, venting, sounding off)? [aspects_venting|select|unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed]
 
-@@Feelings about project
+* Feelings about the project [aspects_feelingsHeader|header]
 * How motivated are these participants to participate in the project? [aspects_interest|select|unknown;very little;a little;some;a lot;extremely;mixed]
-* How do these participants feel about the project? [aspects_feelings_project|select|unknown;negative;neutral;positive;mixed]
+* How are these participants likely to feel about the project? [aspects_feelings_project|select|unknown;negative;neutral;positive;mixed]
 * How do these participants feel about you? [aspects_feelings_facilitator|select|unknown;negative;neutral;positive;mixed]
 * How do these participants feel about the idea of collecting stories? [aspects_feelings_stories|select|unknown;negative;neutral;positive;mixed]
 
-@@Feelings about topic
+* Feelings about the topic [aspects_topicHeader|header]
 * What experiences have these participants had with the project's topic? [aspects_topic_feeling|select|unknown;strongly negative;negative;neutral;positive;strongly positive;mixed]
 * How private do these participants consider the topic to be? [aspects_topic_private|select|unknown;very private;medium;not private;mixed]
 * How hard will it be for these participants to articulate their feelings about the topic? [aspects_topic_articulate|select|unknown;hard;medium;easy;mixed]
 * How long of a time period do you need these participants to look back on? [aspects_topic_timeframe|select|unknown;hours;days;months;years;decades;mixed]
 
-##Tell project stories [page_projectStories] - tell stories about project, do offline exercise, report back (story list, story entry form)
+## Tell project stories [page_projectStories] 
 
-* These are your project stories. Please add more. [projectStoryList|grid|add project story|page_projectStory]
+* Project story list [projectStoryList|grid|page_projectStory]
 
-##Project story [page_projectStory|popup]
+## Project story [page_projectStory|popup]
 
 * Start by choosing a scenario that starts your project story. [projectStory_scenario|select|ask me anything;magic ears;fly on the wall;project aspects;my own scenario type]
 * Now choose an outcome for your story. [projectStory_outcome|select|colossal success;miserable failure;acceptable outcome;my own outcome]
@@ -85,41 +105,69 @@ Project synopsis - [ ] complete
 * What surprised you about this story? [projectStory_surprise|textarea]
 * Describe any opportunities or dangers you see in this story. [projectStory_dangers|textarea]
 
-##Create project story elements - follow instructions, input story elements
+## Create project story elements [page_projectStoryElements] 
 
-* These are your project story elements. Please add more. [storyElements|grid|add element|page_addStoryElement]
+* Here are some instructions on how to create story elements from your project stories. [storyElementsInstructions|label]
+<ol>
+<li>Choose one or two types of story element (characters, situations, values, themes, relationships, motivations, beliefs, conflicts).</li>
+<li>For each story, come up with as many answers to that element's question as you can. Write the answers on sticky notes.</li>
+<li>The questions are:</li>
+	<ul>
+	<li>Characters: Who is doing things in this story?</li>
+	<li>Situations: What is going on in this story?</li>
+	<li>Values: What matters to the characters in this story?</li>
+	<li>Themes: What is this story about?</li>
+	<li>Relationships: How are the characters related in this story?</li>
+	<li>Motivations: Why do the characters do what they do in this story?</li>
+	<li>Beliefs: What do people believe in this story?</li>
+	<li>Conflicts: Who or what stands in opposition in this story?</li>
+	</ul>
+<li>Once you have answered the question(s) you chose for each story, cluster the sticky notes into groups. Place like with like.</li>
+<li>Give each group of sticky notes a name.</li>
+<li>Clear a "halo" of space around each group's name.</li>
+<li>In the halo, write 2-5 good and bad attributes (advantages and disadvantages, opportunities and dangers) of each group of sticky notes.</li>
+<li>Copy or move the new good/bad attributes to a new space. Mix them all together.</li>
+<li>Cluster the attributes into groups.</li>
+<li>Name the groups. These are your story elements.</li>
+</ol>
 
-##Add story element [page_addStoryElement|popup]
+* Project story elements [storyElements|grid|page_addStoryElement]
+
+## Add story element [page_addStoryElement|popup]
 
 * What is the name of the story element? [storyElementName|text]
 * What type of story element is this? [storyElementType|select|character;situation;value;theme;relationship;motivation;belief;conflict]
 * You can describe it more fully here. [storyElementDescription|textarea]
-* You can enter a photograph of the element here. [storyElementPhoto|image]
+* You can enter a photograph of the element here. [storyElementPhoto|imageUploader]
 
-##Assess story sharing - answer questions about community/organization (just questions with score at end)
+## Assess story sharing 
 
-@@Narrative freedom
+* On this page you can answer questions about your community or organization to assess its story sharing culture. [quiz_intro|label]
+Before you answer these questions, you should spend some time listening to people share stories together
+in the places where they normally gather.
+
+* Narrative freedom [quiz_narrativeFreedom|header]
 * As you listened to people talk, how often did you hear a person respond to a story with another story that countered it in some way? [quiz_counterStories|select|unknown;never;seldom;sometimes;often]
 * When someone who was obviously in authority was telling stories, how much time and attention did they get? [quiz_authority|select|unknown;enthrallment;strong listening;partial listening;nothing special]
 * How many times did you hear people tell stories about mistakes? [quiz_mistakes|select|unknown;never;seldom;sometimes;often]
 * When somebody started telling a story and another person stopped them, how did they stop them? [quiz_silencing|select|unknown;warning;caution;request;joke]
 * When somebody was telling a story and another person disagreed with the storyteller, how did they disagree? [quiz_conflict|select|unknown;demand;criticism;comment;joke]
 
-@@Narrative flow
+* Narrative flow [quiz_narrativeFlow|header]
 * When you listened to people telling stories, did you ever hear people say “that reminds me of the time” and then tell a story in response? [quiz_remindings|select|unknown;never;seldom;sometimes;often]
 * How often did you hear people pass on stories they heard from other people? [quiz_retellings|select|unknown;never;seldom;sometimes;often]
 * How much evidence did you find for a narrative folklore in your community or organization? [quiz_folklore|select|unknown;none;little;some;strong]
 * Did you hear comic stories, tragic stories, epic stories, and funny stories? [quiz_storyTypes|select|unknown;no;maybe;I think so;definitely]
 * Did you ever see people share stories as they prepared to make decisions? [quiz_sensemaking|select|unknown;never;seldom;sometimes;often]
 
-@@Narrative knowledge
+* Narrative knowledge [quiz_narrativeKnowledge|header]
 * Did you see people tell stories that were recountings of events based on emotional experiences from particular perspectives? [quiz_realStories|select|unknown;never;seldom;sometimes;often]
 * How lively were the negotiations you heard going on between storytellers and audiences? [quiz_negotiations|select|unknown;never;seldom;sometimes;often]
 * Did you ever see two or more people tell a story together? [quiz_cotelling|select|unknown;never;seldom;sometimes;often]
 * How often did you see someone start telling the wrong story to the wrong people at the wrong time? [quiz_blunders|select|unknown;often;sometimes;seldom;never]
 * Did you see people account for their actions and choices by telling each other stories? [quiz_accounting|select|unknown;never;seldom;sometimes;often]
 
-@@Narrative unity
+* Narrative unity [quiz_narrativeUnity|header]
 * How easy would it be to create a list of stories any member of your community or organization could be expected to know? [quiz_commonStories|select|unknown;impossible;difficult;doable;easy]
 * How easy would it be to create a list of sacred stories, those important to understanding the community or organization? [quiz_sacredStories|select|unknown;impossible;difficult;doable;easy]
 * How easy would it be to create a list of condensed stories, in the form of proverbs or references? [quiz_condensedStories|select|unknown;impossible;difficult;doable;easy]
@@ -131,9 +179,9 @@ Project synopsis - [ ] complete
 
 * Here you can record some notes or comments about this assessment. [quiz_notes|textarea]
 
-##Revise PNI Planning questions - answer questions about project goals, relations, focus, range, scope, emphasis
+## Revise PNI Planning questions
 
-* Please review and improve your draft answers based on your consideration of project aspects and your project stories. [improvePlanningDrafts|static]
+* Please review and improve your draft answers based on your consideration of project aspects and your project stories. [improvePlanningDrafts|label]
 
 * What is the goal of the project? Why are you doing it? [planning_goal|textarea|planning_goal]
 * What relationships are important to the project? [planning_draft_relationships|textarea|planning_relationships]
@@ -142,38 +190,35 @@ Project synopsis - [ ] complete
 * What is the project's scope? (number of people, number of stories, number of questions about stories) [planning_scope|textarea|planning_draft_scope]
 * Which phases of PNI will be important to the project? (indicate most and least important phases) [planning_emphasis|textarea|planning_draft_emphasis]
 
-##Write project synopsis - write brief summary of project (just one large textarea question)
+## Write project synopsis 
 
 * Please summarize your project in one or two sentences. [projectSynopsis|textarea]
 
 ##Read planning report - text with all stuff entered
 
-#Collection design - checklist
-Collection venues - X venues chosen
-Story eliciting questions - x questions written
-Questions about stories - x questions written
-Questions about people - x stories written
-Question form - [ ] designed [ ] committed
+# Collection design
+// Collection venues - X venues chosen
+// Story eliciting questions - x questions written
+// Questions about stories - x questions written
+// Questions about people - x stories written
+// Question form - [ ] designed [ ] committed
 
-##Choose collection venues - choose ways to collect stories for each group (questions with recommendations)
+## Choose collection venues 
 
-// table of recommendations here - up to three tables - but could be done with 3 buttons and popups
+* On this page you will choose story collection venues, or ways to collect stories. [venuesIntro|label]
 
-* For the group "x" (from planning page), please enter your primary means of story collection. (drop down)
-- one-on-one interviews
-- group interviews
-- peer interviews
-- group story sessions
-- surveys
-- journaling
-- narrative incident reports
-- gleaned stories
-* Please describe your story collection plans for this group and venue. [textarea]
-* If you want to collect stories in a second way for this same group, choose one of these options. (same options)
-* Please describe your secondary story collection for this group and venue. [textarea]
-// THIS REPEATS FOR EACH PREVIOUSLY IDENTIFIED GROUP
+* Venue recommendations [venueRecommendations|recommendationTable|venues]
 
-##Write story eliciting questions - write questions (question list, recommendations, copy from templates, review project aspects and story elements, reorder questions in list)
+* Please answer these questions about your collection venues for each participant group. [venuesTable|page_venuesTable|participants_firstGroupName,participants_secondGroupName,participants_thirdGroupName]
+
+## Aspects table [page_venuesTable|questionsTable]
+
+* Choose a primary means of story collection for this group. [primaryVenue|select|individual interviews;group interviews;peer interviews;group story sessions;surveys;journals;narrative incident reports;gleaned stories]
+* Describe your story collection plans for this group and venue. [primaryVenue_plans|textarea]
+* If you want to collect stories in a second way for this same group, choose one of these options. [secondaryVenue|select|individual interviews;group interviews;peer interviews;group story sessions;surveys;journals;narrative incident reports;gleaned stories]
+* Describe your secondary story collection for this group and venue. [secondaryVenue_plans|textarea]
+
+## Write story eliciting questions - write questions (question list, recommendations, copy from templates, review project aspects and story elements, reorder questions in list)
 
 // list of questions with "add" button, popup
 
