@@ -59,6 +59,12 @@
 # Dashboard [headerpage_dashboard]
 // all checklists combined
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                       PLANNING
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 # Planning [headerpage_planning]
 // Project facts - x of x questions answered
 // Planning questions - [ ] draft 
@@ -246,6 +252,12 @@ in the places where they normally gather.
 
 * Project planning report [planningReport|report|planning]
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                   COLLECTION DESIGN
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 # Collection design [headerpage_collectionDesign]
 // Collection venues - X venues chosen
 // Story eliciting questions - x questions written
@@ -315,7 +327,7 @@ in the places where they normally gather.
 
 * If you don't plan to collect stories in group sessions, you can skip this page. [collectionSessionIntro|label]
 
-* Recommendations for story collection sessions [storyQuestionRecommendations|recommendationTable|storyQuestions]
+* Recommendations for story collection sessions [collectionSessionRecommendations|recommendationTable|collectionSessions]
 
 * Story collection sessions [storyCollectionSessionsList|grid|page_addStoryCollectionSession]
 
@@ -348,6 +360,12 @@ in the places where they normally gather.
 ## Read collection design report [readCollectionDesignReport]
 
 * Collection design report [collectionDesignReport|report|collectionDesign]
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                  COLLECTION PROCESS
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 # Collection process [headerpage_collectionProcess]
 // Online story collection is [ ] enabled
@@ -397,9 +415,77 @@ unavailable to anyone but yourself.
 
 * Disable web story form [disableWebStoryForm|button] 
 
+## Enter story collection session records [page_enterCollectionSessionRecords]
+
+* Note: If you did not hold any story collection sessions, you can skip this page. [collectionRecordsLabel|label]
+
+* Story collection sessions [collectionSessions|grid|page_addCollectionSessionRecord]
+
+## Add story collection session record [page_addCollectionSessionRecord|popup]
+
+* Group constructions [collectionSessionConstructions|grid|page_newCollectionSessionConstruction]
+
+* Story collection session notes [collectionSessionNotes|page_newCollectionSessionNotes]
+
+## Story collection construction [page_newCollectionSessionConstruction|popup]
+
+* Name [collectionSessionConstructionName|text]
+* Description [collectionSessionContructionText|textarea]
+* Link to audio or video [collectionSessionConstructionLink|text]
+* Images [collectionSessionConstructionImages|grid|page_newCollectionConstructionImage]
+
+## Story collection construction image [page_newCollectionConstructionImage|popup]
+
+* Image [collectionSessionConstrucctionImage|imageUploader]
+* Name [collectionSessionConstructionImageName|text]
+* Notes on this image [collectionSessionConstructionImageNotes|textarea]
+
+## Story collection session notes [page_newCollectionSessionNotes|popup]
+
+* Name [collectionSessionNotesName|text]
+* Notes [collectionSessionNotesText|textarea]
+* Images [collectionSessionNotesImages|grid|page_newCollectionSessionImage]
+
+## Story collection session notes image [page_newCollectionSessionImage|popup]
+
+* Image [collectionSessionNotesImage|imageUploader]
+* Name [collectionSessionImageName|text]
+* Notes on this image [collectionSessionNotesImageNotes|textarea]
+
+## Reflect on story collection sessions [page_answerQuestionsAboutCollectionSessions]
+
+* Note: If there are no sessions in this list, enter them in the "Enter story collection session records" screen first. [collectionSessionQuestionsLabel|label]
+
+// this list should populate with names of sessions given in "enter story collection sessions records" screen.
+/// there should be NO add button... but the edit button should go to the popup specified here
+* Story collection sessions [collectionSessions|grid|page_answerQuestionsAboutCollectionSession]
+
+## Reflect on story collection session [page_answerQuestionsAboutCollectionSession|popup]
+
+* How did the behavior of the participants change from the start to the end of the session? [collectionReflectChangeBehavior|textarea]
+* How did their emotions change? [collectionReflectChangeEmotions|textarea]
+* How did your emotions change? [collectionReflectChangeYourEmotions|textarea]
+* Describe the interactions between participants (including changes during the session). [collectionReflectInteractionsParticipants|textarea]
+* Describe interactions between participants and facilitators (including change). [collectionReflectInteractionsFacilitators|textarea]
+* What did you notice about the stories people told, retold, chose, and worked with during the session? [collectionReflectStories|textarea]
+* What is the story of what happened during this session? [collectionReflectStoryOfSession|textarea]
+* What was special about these people in this place on this day? [collectionReflectSpecial|textarea]
+* What parts of your plans went as you expected? What parts didn't? [collectionReflectAsExpected|textarea]
+* What parts of your plans worked out well? [collectionReflectWorkedWell|textarea]
+* What parts didn't work out well? [collectionReflectWorkedBadly|textarea]
+* What new ideas did you gain from the participants in this session? [collectionReflectNewIdeas|textarea]
+* How has the project changed as a result of this session? [collectionReflectProjectChanged|textarea]
+* What else do you want most to remember about this session? [collectionReflectExtra|textarea]
+
 ## Read collection process report [page_readCollectionProcessReport]
 
 * Collection process report [collectionProcessReport|report|collectionProcess]
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                       CATALYSIS
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 # Catalysis [headerpage_catalysis]
 // Observations - x
@@ -514,137 +600,137 @@ all stories have been entered.
 //                result
 * Choose an observation result that exemplifies this perspective. [observationResultsList|grid] 
 
+// similarly, this should be a list of all the excerpts linked to interpretations linked to this perspective
+// perspective
+//     interpretation
+//         excerpt
 * Choose one or more excerpts to illustrate this perspective [excerptsList|grid]
 
 ## Read catalysis report [page_readCatalysisReport]
+
+* Catalysis report [catalysisReport|report|catalysis]
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                       SENSEMAKING
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
-# Sensemaking - checklist
-//Planning sessions - x of x questions answered
-//Write session agenda - x of x questions answered
-//Print story cards - x cards printed (or checkmark)
-//Post-session review - x of x questions answered
+# Sensemaking [headerpage_sensemaking]
+// Planning sessions - x of x questions answered
+// Write session agenda - x of x questions answered
+// Print story cards - x cards printed (or checkmark)
+// Post-session review - x of x questions answered
 
-##Plan sensemaking sessions - answer questions about how many, when, etc (with recommendations)
+## Plan sensemaking sessions [page_planSensemakingSessions]
 
-// recommendations table based on descriptions of groups in planning
+* Recommendations for sensemaking sessions [sensemakingSessionRecommendations|recommendationTable|sensemakingSessions]
 
-// list of sessions with "add" button
-// for each session added:
-* How long will this session be? [text]
-* When will it take place? [text]
-* Where will it take place? [text]
-* How many people will be invited to this session? [text]
-* From which participant group(s) will people be invited? (one or more) (drop down)
-* What materials will need to be made available?  [textarea]
-* Enter other details about this session. [textarea]
+* Sensemaking sessions [sensemakingSessions|grid|page_addSensemakingSessionPlan]
 
-##Write session agenda(s) - choose activities, rearrange (list of activities, copy from templates, rearrange, describe)
+## Enter sensemaking session plan [page_addSensemakingSessionPlan|popup]
 
-// for each session in list
-// list of activities with "add" button
-// for each activity added:
-* Choose type of (drop down)
-- ice breaker
-- encountering stories (no exercise)
-- encountering stories with task
-- exploring patterns in story cards
-- discussion of stories/patterns
-- exercise: twice-told stories
-- exercise: timelines
-- exercise: landscapes
-- exercise: story elements
-- exercise: composite stories
-- list making
-- wrap-up
-- other
-* How long will this activity take? [text]
-* What materials will be provided for this activity? [textarea]
-* What spaces will be used for this activity? [textarea]
-* Describe activity plan [textarea]
-* Describe optional elaborations you might or might not use [textarea]
+* How many repetitions of the session will there be? [sensemakingSessionRepetitions|text]
+* How long will this session be? [sensemakingSessionLength|text]
+* When will it take place? [sensemakingSessionTime|text]
+* Where will it take place? [sensemakingSessionLocation|text]
+* How many people will be invited to each repetition of this session? [sensemakingSessionSize|text]
+* From which participant group(s) will people be invited? [sensemakingSessionGroups|checkBoxesWithPull|participantGroups]
 
-// ability to move activities up and down in list
-// button to print session agenda (simply) for facilitators
-// button to print story cards - choose how many per page, etc
+* Session agenda [sensemakingSessionAgenda|grid|page_addSensemakingSessionActivity]
+* Print session agenda [printSensemakingSessionAgenda|button]
 
-// session 1 - friday 2 pm
-//      activity 1 - ice breaker
-//      activity 2 - encounter stories
-// session 2 - monday 2 pm
-//      activity 1 - encounter stories
-//      activity 2 - twice told stories
+* What materials will this session require? [sensemakingSessionMaterials|textarea]
+* Enter other details about this session. [sensemakingSessionDetails|textarea]
 
-##Enter session records - add pictures, audio, video, transcripts, lists of things people ended up with, pivot/voice/discovery stories
+## Add sensemaking session activity [page_addSensemakingSessionActivity|popup]
 
-// this is per session
+* What type of activity is this? [sensemakingSessionActivity|select|ice-breaker;encountering stories (no task);encountering stories (simple task);discussing stories;twice-told stories exercise;timeline exercise;landscape exercise;story elements exercise;composite stories exercise;my own exercise;other]
+* Describe the plan for this activity. [sensemakingActivityPlan|textarea]
+* Describe optional elaborations you might or might not use in this activity. [sensemakingActivityOptionalParts|textarea]
+* How long will this activity take? [sensemakingActivityTime|text]
+* Will new stories be recorded during this activity, and if so, how? [sensemakingActivityRecording|textarea]
+* What materials will be provided for this activity? [sensemakingActivityMaterials|textarea]
+* What spaces will be used for this activity? [sensemakingActivitySpaces|textarea]
+* What sort of facilitation will be necessary for this activity? [sensemakingActivityFacilitation|textarea]
 
-* Enter any lists of outcomes people arrived at during this session.
-// list with 'add" button
-// pg 375 in book
-// for each outcome, title, type and text (not complicated)
-// types are:
-- discovery
-- opportunity
-- issue
-- idea
-- recommendation
-- perspective
-- dilemma
+## Enter sensemaking session records [page_enterSensemakingSessionRecords]
 
-* Enter any summaries prepared by session participants
-// text, audio, image, video
-// how to connect audio/video to content? link to it? 
-// if we host it, how much can people upload? how long will we keep it around?
-// limits on number and size of images 
+* Sensemaking sessions [sensemakingSessions|grid|page_addSensemakingSessionRecord]
 
-* Describe any constructions created during the session.
-// text, audio, image, video
+## Add sensemaking session record [page_addSensemakingSessionRecord|popup]
 
-* Enter any notes you took during the session
-// textarea but could be audio or video or image also
+* Session outcomes (like discoveries and ideas) [sensemakingSessionOutcomes|grid|page_newSensemakingSessionOutcome]
 
-* Enter any additional info about the session
-// could be anything
+* Group constructions [sensemakingSessionSummaries|grid|page_newSensemakingSessionConstruction]
 
-##Answer questions about sessions - bunch of questions about what happened (all textareas, can be multiple for multiple sessions)
+* Session notes [sensemakingSessionImages|page_newSensemakingSessionNotes]
 
-// for each session in list, click "review" or something button
+## Sensemaking session outcome [page_newSensemakingSessionOutcome|popup]
 
-@@Change
+* Type [sensemakingSessionOutcomeType|select|discovery;opportunity;issue;idea;recommendation;perspective;dilemma;other]
+* Name [sensemakingSessionOutcomeName|text]
+* Description [sensemakingSessionOutcomeText|textarea]
 
-* How did the behavior of the participants change from the start to the end of the session? [textarea]
-* How did their emotions change? [textarea]
-* How did your emotions change? [textarea]
+## Sensemaking construction [page_newSensemakingSessionConstruction|popup]
 
-@@Interactions
+* Name [sensemakingSessionConstructionName|text]
+* Description [sensemakingSessionContructionText|textarea]
+* Link to audio or video [sensemakingSessionConstructionLink|text]
+* Images [sensemakingSessionConstructionImages|grid|page_newSensemakingConstructionImage]
 
-* Describe the interactions between participants (including changes during the session). [textarea]
-* Describe interactions between participants and facilitators (including change). [textarea]
+## Sensemaking construction image [page_newSensemakingConstructionImage|popup]
 
-@@Stories
+* Image [sensemakingSessionConstrucctionImage|imageUploader]
+* Name [sensemakingSessionConstructionImageName|text]
+* Notes on this image [sensemakingSessionConstructionImageNotes|textarea]
 
-* What did you notice about the stories people told, retold, chose, worked with, and built during the session? [textarea]
+## Sensemaking session notes [page_newSensemakingSessionNotes|popup]
 
-@@Context
+* Name [sensemakingSessionNotesName|text]
+* Notes [sensemakingSessionNotesText|textarea]
+* Images [sensemakingSessionNotesImages|grid|page_newSensemakingSessionImage]
 
-* What is the story of what happened during this session? [textarea]
-* What was special about these people in this place on this day? [textarea]
+## Sensemaking session notes image [page_newSensemakingSessionImage|popup]
 
-@@Methods
+* Image [sensemakingSessionNotesImage|imageUploader]
+* Name [sensemakingSessionImageName|text]
+* Notes on this image [sensemakingSessionNotesImageNotes|textarea]
 
-* What parts of your plans went as you expected? WHat parts didn't? [textarea]
-* What parts of your plans worked out well? WHat parts didn't work out well? [textarea]
-* What new ideas did you gain from the participants in this session? [textarea]
+## Reflect on sensemaking sessions [page_answerQuestionsAboutSensemakingSessions]
 
-@@Project
+* Note: If there are no sessions in this list, enter them in the "Enter sensemaking session records" screen first. [sensemakingSessionQuestionsLabel|label]
 
-* How has the project changed as a result of this session? [textarea]
+// this list should populate with names of sessions given in "enter sensemaking sessions records" screen.
+/// there should be NO add button... but the edit button should go to the popup specified here
+* Sensemaking sessions [sensemakingSessions|grid|page_answerQuestionsAboutSensemakingSession]
 
-@@Summary
+## Reflect on session [page_answerQuestionsAboutSensemakingSession|popup]
 
-* What do you want most to remember about this session? [textarea]
+* How did the behavior of the participants change from the start to the end of the session? [senseReflectChangeBehavior|textarea]
+* How did their emotions change? [senseReflectChangeEmotions|textarea]
+* How did your emotions change? [senseReflectChangeYourEmotions|textarea]
+* Describe the interactions between participants (including changes during the session). [senseReflectInteractionsParticipants|textarea]
+* Describe interactions between participants and facilitators (including change). [senseReflectInteractionsFacilitators|textarea]
+* What did you notice about the stories people told, retold, chose, worked with, and built during the session? [senseReflectStories|textarea]
+* What is the story of what happened during this session? [senseReflectStoryOfSession|textarea]
+* What was special about these people in this place on this day? [senseReflectSpecial|textarea]
+* What parts of your plans went as you expected? What parts didn't? [senseReflectAsExpected|textarea]
+* What parts of your plans worked out well? [senseReflectWorkedWell|textarea]
+* What parts didn't work out well? [senseReflectWorkedBadly|textarea]
+* What new ideas did you gain from the participants in this session? [senseReflectNewIdeas|textarea]
+* How has the project changed as a result of this session? [senseReflectProjectChanged|textarea]
+* What else do you want most to remember about this session? [senseReflectExtra|textarea]
 
-##Read sensemaking report - text with all stuff entered
+## Read sensemaking report [page_readSensemakingReport]
+
+* Sensemaking report [sensemakingReport|report|sensemaking]
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                       INTERVENTION
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 #Intervention - checklist
 Choose interventions - x planned
@@ -659,6 +745,12 @@ Answer questions about interventions - x questions answered
 
 ##Answer questions about interventions - answer questions about interventions used
 ##Read intervention report - text with all stuff entered
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                       RETURN
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #Return - checklist
 
