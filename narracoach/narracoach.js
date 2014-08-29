@@ -53,6 +53,12 @@ require([
         
         array.forEach(pages, function (page) {
         	var title = page.name;
+        	// TODO: Eventually remove legacy support for old way of defining pages
+        	var sections = title.split("-");
+        	if (sections.length >= 2) {
+        		title = sections[0];
+        		page.description = " " + sections + "<br>\n" + page.description;
+        	}
         	if (page.isHeader) {
         		title = "<b>" + title + "</b>";
         	} else {
