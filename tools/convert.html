@@ -61,7 +61,7 @@ require([
 ){
 	
 function startsWith(str, prefix) {
-	  console.log("startsWith", prefix, str.lastIndexOf(prefix, 0) === 0, str);
+	  // console.log("startsWith", prefix, str.lastIndexOf(prefix, 0) === 0, str);
     return str.lastIndexOf(prefix, 0) === 0;
 }
 	
@@ -86,7 +86,8 @@ function newButton(label, addToDiv, callback) {
     return button.domNode;
 }
 
-var acceptableTypes = ["text", "textarea", "label", "grid"];
+var acceptableTypes = ["text", "textarea", "label", "header", "select", "grid",
+                       "popup", "imageUploader", "page_aspectsTable", "recommendationTable", "page_venuesTable", "questionsTable", "quizScoreResult"];
 
 function extract(line, rest, lineNumber) {
     var lineSections = rest.split("[");
@@ -113,10 +114,14 @@ function extract(line, rest, lineNumber) {
     if (infoContentSplit.length >= 3) infoContent.options = infoContentSplit[2];
     if (infoContentSplit.length >= 4) console.log("FIX NEEDED: Expected only up to there sections in brackets for line: " + lineNumber + " :: " + line);
     
-    if (acceptableTypes.indexOf(infoContent.id)) {
+    if (acceptableTypes.indexOf(infoContent.id) !== -1) {
       console.log("FIX NEEDED: Expected valid ID as first entry in brackets for line: " + lineNumber + " :: " + line);
       if (!infoContent.type) infoContent.type = infoContent.id;
       infoContent.id = "FIXME_" + lineNumber;
+    }
+    
+    if (infoContent.type && acceptableTypes.indexOf(infoContent.type) === -1) {
+    	console.log("FIX NEEDED: Unknown type '" + infoContent.type + "' in brackets for line: " + lineNumber + " :: " + line);
     }
     
     return {"text": lineContent, "info": infoContent};
@@ -135,7 +140,7 @@ function convert() {
     
     array.forEach(lines, function (line) {
     	lineNumber++;
-    	console.log("line", lineNumber, line);
+    	// console.log("line", lineNumber, line);
     	line = string.trim(line);
 
       var header = false;
@@ -167,7 +172,7 @@ function convert() {
           lastPage.questions.push(lastQuestion)  
         }
       } else if (lastPage && startsWith(line, "//")) {
-    	  console.log("comment line", line);
+    	  // console.log("comment line", line);
     	  if (lastPage.description) lastPage.description += "\n";
         lastPage.description += line;
       } else if (lastQuestion && line) {
