@@ -61,6 +61,7 @@ require([
 ){
 	
 function startsWith(str, prefix) {
+	  console.log("startsWith", prefix, str.lastIndexOf(prefix, 0) === 0, str);
     return str.lastIndexOf(prefix, 0) === 0;
 }
 	
@@ -85,6 +86,42 @@ function newButton(label, addToDiv, callback) {
     return button.domNode;
 }
 
+var acceptableTypes = ["text", "textarea", "label", "grid"];
+
+function extract(line, rest, lineNumber) {
+    var lineSections = rest.split("[");
+    if (lineSections.length !== 2) {
+      console.log("FIX NEEDED: Expected two sections relating to opening bracket for line: " + lineNumber + " :: " + line);
+      lineSections = [rest, "]"];
+    }
+    
+    var lineContent = string.trim(lineSections[0]);
+    
+    var infoSections = lineSections[1].split("]");
+    if (infoSections.length !== 2) {
+      console.log("FIX NEEDED: Expected two sections relating to closing bracket for line: " + lineNumber + " :: " + line);
+      infoSections = null;
+    }
+    
+    if (!infoSections || !infoSections[0]) infoSections = ["FIXME_" + lineNumber];
+    
+    var infoContentString = string.trim(infoSections[0]);
+    var infoContentSplit = infoContentString.split("|");
+    var infoContent = {};
+    if (infoContentSplit.length >= 1) infoContent.id = infoContentSplit[0];
+    if (infoContentSplit.length >= 2) infoContent.type = infoContentSplit[1];
+    if (infoContentSplit.length >= 3) infoContent.options = infoContentSplit[2];
+    if (infoContentSplit.length >= 4) console.log("FIX NEEDED: Expected only up to there sections in brackets for line: " + lineNumber + " :: " + line);
+    
+    if (acceptableTypes.indexOf(infoContent.id)) {
+      console.log("FIX NEEDED: Expected valid ID as first entry in brackets for line: " + lineNumber + " :: " + line);
+      if (!infoContent.type) infoContent.type = infoContent.id;
+      infoContent.id = "FIXME_" + lineNumber;
+    }
+    
+    return {"text": lineContent, "info": infoContent};
+}
+
 function convert() {
     console.log("convert", inputTextArea);
     var input = inputTextArea.get("value");
@@ -92,33 +129,55 @@ function convert() {
     
     var lines = input.split("\n");
     var lastPage = null;
+    var lastQuestion = null;
     var pages = [];
+    var lineNumber = 0;
     
     array.forEach(lines, function (line) {
+    	lineNumber++;
+    	console.log("line", lineNumber, line);
     	line = string.trim(line);
 
-   		var name = line;
-      var description = "";
-      var splitPoint = line.indexOf('-');
-   		if (splitPoint !== -1) {
-   			  name = string.trim(line.substr(0, splitPoint)); 
-   			  description = string.trim(line.substr(splitPoint + 1));
-   		}
-   		
-   		var header = false;
-
-      if (startsWith(name, "#")) {
-    	  if (startsWith(name, "##")) {
-          name = name.substring(2);
+      var header = false;
+    	var rest = line;
+    	
+      if (startsWith(line, "#")) {
+    	  // A page or page section header
+    	  if (startsWith(line, "##")) {
+    		  // A page
+          rest = line.substring(2);
         } else {
-          name = name.substring(1);
+        	// A page as a section header
+          rest = line.substring(1);
           header = true;
     	  }
-    	  lastPage = {"name": name, "description": description, "isHeader": header};
-    	  pages.push(lastPage)
+    	  lastQuestion = null;
+    	  
+    	  var data = extract(line, rest, lineNumber);
+    	  if (data) {
+	        lastPage = {"id": data.info.id, "name": data.text, "description": "", "isHeader": header, "type": data.info.type, "options": data.info.options, "questions": []};
+	        pages.push(lastPage)
+    	  }
+      } else if (lastPage && startsWith(line, "*")) {
+    	  rest = line.substring(1);
+    	  // A question
+        var data = extract(line, rest, lineNumber);
+        if (data) {
+          lastQuestion = {"id": data.info.id, "text": data.text, "type": data.info.type, "options": data.info.options};
+          lastPage.questions.push(lastQuestion)  
+        }
+      } else if (lastPage && startsWith(line, "//")) {
+    	  console.log("comment line", line);
+    	  if (lastPage.description) lastPage.description += "\n";
+        lastPage.description += line;
+      } else if (lastQuestion && line) {
+    	  if (lastQuestion.text) lastQuestion.text += "\n";
+    	  lastQuestion.text += line;
       } else if (lastPage) {
-    	  lastPage.description += "\n" + line;
-      }
+          if (lastPage.description) lastPage.description += "\n";
+          lastPage.description += line;
+    	}
+
    		// console.log("line", header, stuff, name, "::", description);
     });
     

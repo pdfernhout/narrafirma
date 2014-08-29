@@ -44,6 +44,9 @@ define([
         var inputNode;
         if (question.type === "boolean") {
            inputNode = widgets.newBoolean(question.id);
+        } else if (question.type === "label" || question.type == "header") {
+        	// Not adding input node for these
+           //  inputNode = widgets.newLabel(question.id, question.text);
         } else if (question.type === "checkbox") {
            inputNode = widgets.newCheckbox(question.id);
         } else if (question.type === "checkboxes") {
@@ -75,6 +78,7 @@ define([
             // Otherwise, see if can translate the text if it is a tag
             questionText = translate(question.text, question.text);
         }
+        if (question.type === "header") questionText = "<b>" + questionText + "<b>";
 
         var helpText = "";
         if (!question.help) {
@@ -103,7 +107,7 @@ define([
         questionDiv.appendChild(domConstruct.toDom(questionText));
         questionDiv.appendChild(document.createTextNode(" "));
         if (question.type === "textarea") questionDiv.appendChild(document.createElement("br"));
-        questionDiv.appendChild(inputNode);
+        if (inputNode) questionDiv.appendChild(inputNode);
         if (helpNode) questionDiv.appendChild(helpNode);
         questionDiv.appendChild(document.createElement("br"));
         questionDiv.appendChild(domConstruct.toDom('<div id="' + question.id + '_trailer"/>'));

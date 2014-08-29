@@ -12,6 +12,7 @@ define([
     "dojox/charting/plot2d/Bars",
     "dijit/form/Button",
     "dijit/form/CheckBox",
+    "dijit/layout/ContentPane",
     "dijit/form/RadioButton",
     "dijit/form/HorizontalRule",
     "dijit/form/HorizontalRuleLabels",
@@ -32,6 +33,7 @@ define([
     Bars,
     Button,
     CheckBox,
+    ContentPane,
     RadioButton,
     HorizontalRule,
     HorizontalRuleLabels,
@@ -61,6 +63,22 @@ define([
         // TODO: Is startup call really needed here?
         button.startup();
         return button.domNode;
+    }
+    
+    function newLabel(id, text, addToDiv) {
+        var label = new ContentPane({
+            id: id,
+            content: text, 
+        });
+        if (isString(addToDiv)) {
+            addToDiv = document.getElementById(addToDiv);
+        }
+        if (addToDiv) {
+            label.placeAt(addToDiv);
+        }
+        // TODO: Is startup call really needed here?
+        label.startup();
+        return label.domNode;
     }
     
     function newTextBox(id, addToDiv) {
@@ -366,6 +384,7 @@ define([
     return {
     	// "isString": isString,
         "newButton": newButton,
+        "newLabel": newLabel,
 		"newTextBox": newTextBox,
 		"newSimpleTextArea": newSimpleTextArea,
 		"newSelect": newSelect,
