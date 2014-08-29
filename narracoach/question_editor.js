@@ -38,6 +38,20 @@ define([
         {id: "questionHelp", type: "textarea", text: "Question Help", help: 'TODO'},
         {id: "questionOptions", type: "textarea", text: "Question Options", help: 'Enter options here, one per line'},
     ];
+    
+    var supportedTypes = [
+        "boolean",
+        "label",
+        "header",
+        "checkbox",
+        "checkboxes",
+        "text",
+        "textarea", 
+        "select",
+        "radio",
+        "slider",
+     ];
+
         
     function insertQuestionIntoDiv(question, questionsDiv) {
         // console.log("question", question);
@@ -268,6 +282,7 @@ define([
     // insertQuestionsIntoDiv(createSurveyQuestions, questionsDiv);
     
     return {
+    	"supportedTypes": supportedTypes,
     	"insertQuestionIntoDiv": insertQuestionIntoDiv,
     	"insertQuestionsIntoDiv": insertQuestionsIntoDiv,
     	"insertQuestionEditorDivIntoDiv": insertQuestionEditorDivIntoDiv

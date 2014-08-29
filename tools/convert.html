@@ -87,7 +87,9 @@ function newButton(label, addToDiv, callback) {
 }
 
 var acceptableTypes = ["text", "textarea", "label", "header", "select", "grid",
-                       "popup", "imageUploader", "page_aspectsTable", "recommendationTable", "page_venuesTable", "questionsTable", "quizScoreResult"];
+                       "popup", "imageUploader", "recommendationTable", "questionsTable", "quizScoreResult"];
+
+var usedIDs = {};
 
 function extract(line, rest, lineNumber) {
     var lineSections = rest.split("[");
@@ -122,6 +124,14 @@ function extract(line, rest, lineNumber) {
     
     if (infoContent.type && acceptableTypes.indexOf(infoContent.type) === -1) {
     	console.log("FIX NEEDED: Unknown type '" + infoContent.type + "' in brackets for line: " + lineNumber + " :: " + line);
+    }
+    
+    var previousLineNumber = usedIDs[infoContent.id];
+    if (previousLineNumber) {
+    	console.log("FIX NEEDED: Widget ID '" + infoContent.id + "' was previously used on line " + previousLineNumber + " and is redeclared on line: " + lineNumber + " :: " + line);
+    	infoContent.id = "FIXME_" + lineNumber;
+    } else {
+    	usedIDs[infoContent.id] = lineNumber;
     }
     
     return {"text": lineContent, "info": infoContent};
@@ -160,7 +170,7 @@ function convert() {
     	  
     	  var data = extract(line, rest, lineNumber);
     	  if (data) {
-	        lastPage = {"id": data.info.id, "name": data.text, "description": "", "isHeader": header, "type": data.info.type, "options": data.info.options, "questions": []};
+	        lastPage = {"id": data.info.id, "name": data.text, "lineNumber": lineNumber, "description": "", "isHeader": header, "type": data.info.type, "options": data.info.options, "questions": []};
 	        pages.push(lastPage)
     	  }
       } else if (lastPage && startsWith(line, "*")) {
@@ -169,12 +179,16 @@ function convert() {
         var data = extract(line, rest, lineNumber);
         if (data) {
           lastQuestion = {"id": data.info.id, "text": data.text, "type": data.info.type, "options": data.info.options};
+          lastQuestion.lineNumber = lineNumber;
           lastPage.questions.push(lastQuestion)  
         }
       } else if (lastPage && startsWith(line, "//")) {
     	  // console.log("comment line", line);
-    	  if (lastPage.description) lastPage.description += "\n";
-        lastPage.description += line;
+    	  // if (lastPage.description) lastPage.description += "\n";
+        // lastPage.description += line;
+        lastQuestion = {"id": "FIXME_" + lineNumber, "text": line, "type": "label", "options": null};
+        lastQuestion.lineNumber = lineNumber;
+        lastPage.questions.push(lastQuestion)  
       } else if (lastQuestion && line) {
     	  if (lastQuestion.text) lastQuestion.text += "\n";
     	  lastQuestion.text += line;
