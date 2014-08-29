@@ -64,6 +64,9 @@ require([
         	} else {
         		title = "&nbsp;&nbsp;&nbsp;&nbsp;" + title;
         	}
+        	if (page.type) {
+        		title += " SPECIAL: " + page.type;
+        	}
             var pagePane = new ContentPane({
                 title: title,
                 content: page.description.replace(/\n/g, "<br>\n"),
