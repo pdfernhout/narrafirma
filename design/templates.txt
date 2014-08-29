@@ -1,0 +1,20 @@
+## Elicitation questions [elicitationQuestions]
+
+* Have you ever been mellow? 
+* Have you ever tried to find the comfort that's inside you?
+* Have you ever been happy just to hear your song?
+* Have you ever let someone else be strong?
+
+## Story questions [storyQuestions]
+
+* How do you feel about this story? [howFeel|"Feel about"|select|happy;sad;angry;relieved;indifferent;enthused;not sure]
+* Who or what was the main character in this story? Who was it about? [mainCharacter|"Main character"|select|management;staff;customers;not sure]
+* In this story, what did the main character want or need? [wantOrNeed|"Want or need"|select|help;support;information;respect]
+* Did the story's main character get what they wanted or needed? [gotWhatWanted|"Got what wanted"|slider|nothing at all;too much]
+* Who or what helped the story's main character get what they wanted or needed? [whoHelped|"Helped"|select|management;staff;customers;not sure]
+* Who or what hindered the story's main character in getting what they wanted or needed? [whoHindered|"Hindered"|select|management;staff;customers;not sure]
+
+## Participant questions [participantQuestions]
+
+* Which age range do you fall into? [ageRange|"Age"|select|<25;25-34;35-44;45-65;>65]
+* Do you rent or own your home? [rentOrOwn|"Rent or own"|select|rent;own]

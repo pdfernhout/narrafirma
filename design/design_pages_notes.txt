@@ -2,13 +2,61 @@
 // Double ## for second level tabs
 // Single * for questions
 // Question types are in brackets [id|type|options]
-// question types are: label, header (bold label), text, textarea, select, grid, quizScoreResult
-// page types are: normal (no specification), popup, questionsTable, recommendationTable
+// question types are: label, header (bold label), text, textarea, select, grid, checkBoxes,
+//                     quizScoreResult, templateList, checkBoxesWithPull, button, 
+//                     storyBrowser, report, 
+//                     observationsList, excerptsList, storyThemer, graphBrowser, trendsReport, clusterSpace
+// page types are: normal (no specification), popup, questionsTable, recommendationTable, participantStoryForm
+
+// a button does something when clicked
+
+// a checkBoxesWithPull is a set of check boxes where the display texts are drawn from a list entered previously 
+
+// a templateList is a list box with templates read in from a file (of a particular type)
+// it also has a "copy" button
+// if the user chooses a template and presses copy, the fields in the template copy into the fields on the page
+// (if there is anything there already there should be a confirmation dialog)
+
+// a participantStoryForm is the form everyone who comes to the URL can see
+// normally pages can only be seen by the admin person (how to enforce that? user id and password?)
+// but this page can be seen by anyone (and its data gets stored)
+// the page also does NOT show the left-side tabs (they are hidden)
+
+// grid widget should have these buttons:
+// add item (+ button)
+// remove selected item (- button)
+// edit button (uses same page as add button, but populates it with existing info)
+// move selected item up (up arrow)
+// move selected item down (down arrow)
+// duplicate item 
+// if in the grid specification there is no page specified, you cannot add a new item
+
+// storyBrowser is a smalltalk-like browser that shows two Q&A on top for filtering,
+// then a list of stories, then text+metadata of selected story
+// it has two optional buttons ("add to observation" and "add to excerpts") 
+// the browser without buttons is shown in the collection process phase while stories are coming in
+// the browser with buttons is shown in the catalysis phase when stories are done coming in
+
+// storyThemer is a widget where people look at each story, give it 1-3 themes,
+// then merge the themes into smaller numbers of themes
+// not sure how this will look yet
+// end result will be an ADDITION of a Q&A to the metadata for each story
+// the Q&A will show up in the graphs as a multiple-choice question
+
+// graphBrowser shows one graph at a time, with two question select drop-downs to choose which graph to show
+// has "add to observation" button
+
+// trendsReport shows text and graphs in report based on top differences in statistical tests
+// has "add to observation" button
+
+// clusterSpace is used in catalysis to cluster interpretations
+// it is a graphical OR grid way of putting like with like
+// the option tells you what is to be clustered
 
 // multiline labels are done by adding lines after the first label line; anything up to the next * or # is read
 // help texts are placed after questions (that are not labels). if there is no leading <p> in the help text, it is <p>text</p>
 
-# Dashboard 
+# Dashboard [headerpage_dashboard]
 // all checklists combined
 
 # Planning [headerpage_planning]
@@ -68,7 +116,7 @@ What do you know about them?
 * How much self-confidence do these participants have? [aspects_confidence|select|unknown;very low;low;medium;high;very high;mixed]
 
 * Ability [aspects_abilityHeader|header]
-* How much free time do these participants have? [aspects_time|select|unknown;very little;little;some;much;mixed]
+* How much free time do these participants have? [aspects_time|select|unknown;very little;little;some;a lot;mixed]
 * What is the education level of these participants? [aspects_education|select|unknown;illiterate;minimal;moderate;high;very high;mixed]
 * Do these participants have physical limitations that will impact their participation? [aspects_physicalDisabilities|select|unknown;none;minimal;moderate;strong;mixed]
 * Do these participants have emotional impairments that will impact their participation (such as mental illness or traumatic stress)? [aspects_emotionalImpairments|select|unknown;none;minimal;moderate;strong;mixed]
@@ -140,7 +188,7 @@ What do you know about them?
 * You can describe it more fully here. [storyElementDescription|textarea]
 * You can enter a photograph of the element here. [storyElementPhoto|imageUploader]
 
-## Assess story sharing 
+## Assess story sharing [page_assessStorySharing]
 
 * On this page you can answer questions about your community or organization to assess its story sharing culture. [quiz_intro|label]
 Before you answer these questions, you should spend some time listening to people share stories together
@@ -154,7 +202,7 @@ in the places where they normally gather.
 * When somebody was telling a story and another person disagreed with the storyteller, how did they disagree? [quiz_conflict|select|unknown;demand;criticism;comment;joke]
 
 * Narrative flow [quiz_narrativeFlow|header]
-* When you listened to people telling stories, did you ever hear people say “that reminds me of the time” and then tell a story in response? [quiz_remindings|select|unknown;never;seldom;sometimes;often]
+* When you listened to people telling stories, did you ever hear people say "that reminds me of the time" and then tell a story in response? [quiz_remindings|select|unknown;never;seldom;sometimes;often]
 * How often did you hear people pass on stories they heard from other people? [quiz_retellings|select|unknown;never;seldom;sometimes;often]
 * How much evidence did you find for a narrative folklore in your community or organization? [quiz_folklore|select|unknown;none;little;some;strong]
 * Did you hear comic stories, tragic stories, epic stories, and funny stories? [quiz_storyTypes|select|unknown;no;maybe;I think so;definitely]
@@ -179,7 +227,7 @@ in the places where they normally gather.
 
 * Here you can record some notes or comments about this assessment. [quiz_notes|textarea]
 
-## Revise PNI Planning questions
+## Revise PNI Planning questions [page_revisePNIPlanningQuestions]
 
 * Please review and improve your draft answers based on your consideration of project aspects and your project stories. [improvePlanningDrafts|label]
 
@@ -190,20 +238,22 @@ in the places where they normally gather.
 * What is the project's scope? (number of people, number of stories, number of questions about stories) [planning_scope|textarea|planning_draft_scope]
 * Which phases of PNI will be important to the project? (indicate most and least important phases) [planning_emphasis|textarea|planning_draft_emphasis]
 
-## Write project synopsis 
+## Write project synopsis [page_writeProjectSynopsis]
 
 * Please summarize your project in one or two sentences. [projectSynopsis|textarea]
 
-##Read planning report - text with all stuff entered
+## Read planning report [page_readPlanningReport]
 
-# Collection design
+* Project planning report [planningReport|report|planning]
+
+# Collection design [headerpage_collectionDesign]
 // Collection venues - X venues chosen
 // Story eliciting questions - x questions written
 // Questions about stories - x questions written
 // Questions about people - x stories written
 // Question form - [ ] designed [ ] committed
 
-## Choose collection venues 
+## Choose collection venues [page_chooseCollectionVenues]
 
 * On this page you will choose story collection venues, or ways to collect stories. [venuesIntro|label]
 
@@ -218,143 +268,255 @@ in the places where they normally gather.
 * If you want to collect stories in a second way for this same group, choose one of these options. [secondaryVenue|select|individual interviews;group interviews;peer interviews;group story sessions;surveys;journals;narrative incident reports;gleaned stories]
 * Describe your secondary story collection for this group and venue. [secondaryVenue_plans|textarea]
 
-## Write story eliciting questions - write questions (question list, recommendations, copy from templates, review project aspects and story elements, reorder questions in list)
+## Write story eliciting questions [page_writeStoryElicitingQuestions]
 
-// list of questions with "add" button, popup
+* Story eliciting questions [elicitingQuestionsList|grid|page_addElicitingQuestion]
 
-// need to help them choose which TYPE of eliciting questions
-// they want to use - asking for times, directed and undirected, etc
-// CFK write this list
+## Add story eliciting question [page_addElicitingQuestion|popup]
 
-// note that the story eliciting questions don't need a lot of
-// extra info - they are just text strings, because all
-// story eliciting questions are of one type
+* Recommendations for eliciting questions [elicitingQuestionRecommendations|recommendationTable|elicitingQuestions]
 
-// template questions in separate file?
+* Enter a question with which to ask people to tell stories. [elicitingQuestion|textarea]
 
-##Write questions about stories - write questions (question list, recommendations, copy from templates, review project aspects and story elements, reorder questions in list)
-(already have prototype of this)
-// need templates file for this
+* Or choose a question from this list. [elicitingQuestionTemplates|templateList|elicitingQuestions]
 
-##Write questions about people - write questions (question list, recommendations, copy from templates, review project aspects and story elements, reorder questions in list)
-(same structure as previous page, just calling up different data)
-// need templates file for this
+## Write questions about stories [page_writeQuestionsAboutStories]
 
-##Design question form - add more elements to form than questions (add intro, disclaimers, help info, etc)
+* Questions about stories [storyQuestionsList|grid|page_addStoryQuestion]
 
-* Please enter a title for the form. [text]
-* Please enter an introduction to be shown at the start of the form, after the title [textarea]
-* Please enter any text to be shown at the end of the form [textarea]
+## Add story question [page_addStoryQuestion|popup]
 
-##Commit question forms - review and print forms to hand out in story sessions or use in interviews, or give out URL
+* Recommendations for story questions [storyQuestionRecommendations|recommendationTable|storyQuestions]
 
-// buttons: [Finalize form] [Copy form URL] [Print forms]
-// buttons 2 and 3 are disabled until button 1 is clicked
-// and there should be a confirm dialog
-// once form is finalized quetsions cannot be changed - unless for typos - how to do that?
-// should they be able to fix typos? how to keep them from invalidating data?
+* Enter a question to ask people about their stories. [storyQuestion|textarea]
 
-##Design story collection sessions - same as for sensemaign sessions only different
+* Or choose a question from this list. [storyQuestionTemplates|templateList|storyQuestions]
 
-// recommendations table based on descriptions of groups in planning
+## Write questions about participants [page_writeQuestionsAboutParticipants]
 
-// list of sessions with "add" button
-// for each session added:
-* How long will this session be? [text]
-* When will it take place? [text]
-* Where will it take place? [text]
-* How many people will be invited to this session? [text]
-* From which participant group(s) will people be invited? (one or more) (drop down)
-* What materials will need to be made available?  [textarea]
-* Enter other details about this session. [textarea]
+* Questions about participants [participantQuestionsList|grid|page_addParticipantQuestion]
 
-##Write session agenda(s) - choose activities, rearrange (list of activities, copy from templates, rearrange, describe)
+## Add participant question [page_addParticipantQuestion|popup]
 
-// for each session in list
-// list of activities with "add" button
-// for each activity added:
-* Choose type of (drop down)
-- ice breaker
-- sharing stories (no exercise)
-- sharing stories with task
-- discussion of stories/patterns
-- exercise: twice-told stories
-- exercise: timelines
-- exercise: landscapes
-- other
-* How long will this activity take? [text]
-* What materials will be provided for this activity? [textarea]
-* What spaces will be used for this activity? [textarea]
-* Describe activity plan [textarea]
-* Describe optional elaborations you might or might not use [textarea]
+* Recommendations for participant questions [participantQuestionRecommendations|recommendationTable|participantQuestions]
 
-// ability to move activities up and down in list
-// button to print session agenda (simply) for facilitators
+* Enter a question to ask people about themselves. [participantQuestion|textarea]
 
-##Read collection design report - text with summary of venues and questions
+* Or choose a question from this list. [participantQuestionTemplates|templateList|participantQuestions]
 
-#Collection process - checklist
-Online story collection is [ ] enabled
-Number of stories entered - x
-Number of participants who told stories - x
+## Design question form [page_designQuestionForm]
 
-##Start story collection - make URL live
-(just a button)
+* Please enter a title for the form. [questionFormTitle|text]
+* You can upload a logo or ather image to show at the top of the form. [questionFormLogo|imageUploader]
+* Please enter an introduction to be shown at the start of the form, after the title [questionFormIntro|textarea]
+* Please enter any text to be shown at the end of the form [questionFormEndText|textarea]
 
-##Enter stories - enter stories (show list of stories with add story button; if collecting stories over web participants will see only the "add story" window)
-(already have this)
-// note: need way to show "menu" of eliciting questions, participants can choose which question to answer (this choice gets recorded and stored with data)
+## Plan story collection sessions [page_planStoryCollectionSessions]
 
-##Review incoming stories - general story browser without catalysis functions
-// smalltalk like with answers to questions
+* If you don't plan to collect stories in group sessions, you can skip this page. [collectionSessionIntro|label]
 
-##Stop story collection - stop URL working
-// just a button
+* Recommendations for story collection sessions [storyQuestionRecommendations|recommendationTable|storyQuestions]
 
-##Read collection process report - text with summary of how many stories collected etc
+* Story collection sessions [storyCollectionSessionsList|grid|page_addStoryCollectionSession]
 
-# Catalysis - checklist
-Observations - x
-Interpretations - x
-Ideas - x
-Perspectives - x
+## Design story collection session [page_addStoryCollectionSession|popup]
 
-##Add observations about stories - story browser (smalltalk-like browser with question answers; "add observation" button)
-##Add observations about graphs - graph browser (pairwise comparison graph browser; "add observation" button)
-##Add observations about trends - top trends list (most significant statistical differences; "add observation" button creates observation with image/text)
+* How many repetitions of the session will there be? [collectionSessionRepetitions|text]
+* How long will this session be? [collectionSessionLength|text]
+* When will it take place? [collectionSessionTime|text]
+* Where will it take place? [collectionSessionLocation|text]
+* How many people will be invited to each repetition of this session? [collectionSessionSize|text]
+* From which participant group(s) will people be invited? [collectionSessionGroups|checkBoxesWithPull|participantGroups]
 
-// when click "add observation" get popup where they enter title and text to go with saved result
-// "add excerpt" button - add selected text to list of excerpts
+* Session agenda [collectionSessionAgenda|grid|page_addCollectionSessionActivity]
+* Print session agenda [printCollectionSessionAgenda|button]
 
-// maybe transition this to one tab with three sub-tabs (on top) later
-// no questions in this part
+* What materials will this session require?  [collectionSessionMaterials|textarea]
+* Enter other details about this session. [collectionSessionDetails|textarea]
 
-// it should be possible to add more than one result to an observation, 
-// so when they click "add observation" they should choose between an existing one (in a list) and a new one)
+## Add story collection session activity [page_addCollectionSessionActivity|popup]
 
-##Interpret observations - edit observations in list ("edit" each to open form with title, text, interpretations (2 or more), example stories or excerpts, graph result (from "add obs" button))
+* What type of activity is this? [collectionSessionActivity|select|ice-breaker;sharing stories (no task);sharing stories (simple task);discussing stories;twice-told stories exercise;timeline exercise;landscape exercise;my own exercise;other]
+* Describe the plan for this activity. [collectionActivityPlan|textarea]
+* Describe optional elaborations you might or might not use in this activity. [collectionActivityOptionalParts|textarea]
+* How long will this activity take? [collectionActivityTime|text]
+* How will stories be recorded during this activity? [collectionActivityRecording|textarea]
+* What materials will be provided for this activity? [collectionActivityMaterials|textarea]
+* What spaces will be used for this activity? [collectionActivitySpaces|textarea]
+* What sort of facilitation will be necessary for this activity? [collectionActivityFacilitation|textarea]
 
-* Observation name [text]
-* Observation [textarea]
-* Result(s) - saved info from thing they clicked on 
+## Read collection design report [readCollectionDesignReport]
 
-* First interpretation name [text]
-* First interpretation text [textarea]
-* Stories or excerpts for first interpretation [textarea] // to fill list, choose excerpts from saved list to copy to here
-* First idea [textarea]
+* Collection design report [collectionDesignReport|report|collectionDesign]
 
-* Opposing interpretation name
-* Opposing interpretation [textarea]
-* Stories or excerpts for opposing interpretation [textarea]
-* Oppposing idea [textarea]
+# Collection process [headerpage_collectionProcess]
+// Online story collection is [ ] enabled
+// Number of stories entered - x
+// Number of participants who told stories - x
 
-##Cluster interpretations - list of interps, cluster (space or grid, drag interps together, name groups)
-// some kind of "are you really ready to cluster" confirmation before they do this, because adding new interps afterward will mess up clustering
-// no questions here
-// (if this works well we could copy it for the story elements
-// exercise in the planning stage...)
+## Finalize question forms [page_finalizeQuestionForms]
 
-##Read catalysis report - text with clustered interpretations and all info for them (including pictures)
+* On this page you will finalize your questions for story collection. Once you have started your story collection, [finalizeLabel|label]
+you should not make changes to your questions. You will still be able to make changes after you click the "Finalize" button,
+but the system will ask you to confirm each change.
+
+* Print story form [printStoryForm|button]
+
+* Copy story form web link [copyStoryFormURL|button]
+
+* Finalize story form [finalizeStoryForm|button]
+
+## Start story collection [page_startStoryCollection]
+
+* If you are doing story collection over the internet, click this button to make the web form "live" and able [startCollectionLabel|label]
+to be used by people other than yourself.
+
+* Enable web story form [enableWebStoryForm|button] 
+
+* Copy story form web link [copyStoryFormURL|button]
+
+## Participate in the story collection [page_storyCollectionFormForParticipants|participantStoryForm]
+
+// the info shown here is what was designed - how to specify that
+
+## Enter stories [page_enterStories]
+
+// this page is the same as the "participate" page above, but only the admin can see it
+// and the normal tabs are shown on the page
+
+// the info shown here is what was designed - how to specify that
+
+## Review incoming stories [page_reviewIncomingStories]
+
+* Collected stories [collectedStoriesDuringCollection|storyBrowser]
+
+## Stop story collection [page_stopStoryCollection]
+
+* If you are doing story collection over the internet, click this button to make the web form [stopCollectionLabel|label]
+unavailable to anyone but yourself.
+
+* Disable web story form [disableWebStoryForm|button] 
+
+## Read collection process report [page_readCollectionProcessReport]
+
+* Collection process report [collectionProcessReport|report|collectionProcess]
+
+# Catalysis [headerpage_catalysis]
+// Observations - x
+// Interpretations - x
+// Ideas - x
+// Perspectives - x
+
+## Browse stories [page_browseStories]
+
+* Collected stories [collectedStoriesAfterCollection|storyBrowser|addObservation:"page_addToObservation";addExcerpt:"page_addToExcerpt"]
+
+## Add to observation [page_addToObservation|popup]
+
+* Note: You should not add any observations that depend on patterns among stories until after [addObservationsLabel|label]
+all stories have been entered.
+
+* Choose an observation from this list to which to add the selected result, or create a new observation. [observationsList|observationsList]
+
+* Add result to selected observation [addResultToExistingObservation|button]
+* Create new observation with this result [createNewObservationWithResult|button|page_createNewObservation]
+
+## Create new observation [page_createNewObservation|popup]
+
+* Please give this observation a name. [observationName|text]
+
+## Add to excerpt [page_addToExcerpt|popup]
+
+* Choose an excerpt from this list to which to add the selected text, or create a new excerpt. [excerptsList|excerptsList]
+
+* Add text to selected excerpt [addTextToExistingExcerpt|button]
+* Create new excerpt with this text [createNewExcerptWithText|button|page_createNewExcerpt]
+
+## Create new excerpt [page_createNewExcerpt|popup]
+
+* Please give this excerpt a name. [excerptName|text]
+
+* You can edit the excerpt here. [excerptText|textarea]
+
+* You can enter some notes about the excerpt here. [excerptNotes|textarea]
+
+## Theme stories [page_themeStories]
+
+* Theme stories [themeStories|storyThemer]
+
+## Browse graphs [page_browseGraphs]
+
+* Graph browser [graphBrowser|graphBrowser]
+
+## Review trends [page_reviewTrends]
+
+* Which statistical tests do you want to consider? [statTests|checkBoxes|chi-squared (differences between counts);t-test (differences between means);correlation]
+* How large should subset counts be to be considered for comparison? [minSubsetSize|select|20;30;40;50]
+* What significance threshold do you want reported? [significanceThreshold|select|0.05;0.01]
+* How many results do you want to see per test type? [trendResults|select|5;10;15;20;25;30]
+
+// when user changes any of the options above, the trend report below should update
+* Trends report [trendsReport|trendsReport]
+
+## Review excerpts [page_reviewExcerpts]
+
+* Collected excerpts [excerptsList|grid|page_createNewExcerpt]
+
+## Interpret observations [page_interpretObservations]
+
+* Collected observations [observationsList|grid|page_editObservation]
+
+## Edit observation [page_editObservation|popup]
+
+* Observation name [observationName|text]
+* Observation [observation|textarea]
+
+* Results [observationResultsList|grid] 
+
+* First interpretation name [firstInterpName|text]
+* First interpretation text [firstInterpText|textarea]
+* First interpretation idea [firstInterpIdea|textarea]
+* Excerpts for first interpretation [excerptsList|grid|page_selectExcerpt]
+
+* Opposing interpretation name [opposingInterpName|text]
+* Opposing interpretation text [opposingInterpText|textarea]
+* Opposing interpretation idea [opposingInterpIdea|textarea]
+* Excerpts for opposing interpretation [excerptsList|grid|page_selectExcerpt]
+
+## Select excerpt [page_selectExcerpt|popup]
+
+* Collected excerpts [excerptsList|grid|page_createNewExcerpt]
+
+// when they click this button the selected excerpt should be added to the list whose "add" button they clicked
+* Add selected excerpt to interpretation [addExcerptToInterpretation|button]
+
+## Cluster interpretations [page_clusterInterpretations]
+
+* Note: Do not cluster your interpretations unless you are sure you have finished collecting them. [clusterInterpLabel|label]
+
+// ideally, when they are done with this, the circles marked as group names
+// will get copied into the perspectives list seen in the next page
+* Cluster interpretations into perspectives [clusterInterpretations|clusterSpace|interpretations]
+
+## Describe perspectives [page_describePerspectives]
+
+* Perspectives [perspectivesList|grid|page_addPerspective]
+
+## Add or change perspective [page_addPerspective|popup]
+
+* Perspective name [perspectiveName|text]
+* Describe this perspective. [perspectiveDescription|textarea]
+
+// note, this grid should combine all the results linked to observations linked to interpretations linked to this perspective
+// perspective
+//      interpretation
+//           observation
+//                result
+* Choose an observation result that exemplifies this perspective. [observationResultsList|grid] 
+
+* Choose one or more excerpts to illustrate this perspective [excerptsList|grid]
+
+## Read catalysis report [page_readCatalysisReport]
 		
 # Sensemaking - checklist
 //Planning sessions - x of x questions answered
