@@ -56,9 +56,11 @@ define([
     function insertQuestionIntoDiv(question, questionsDiv) {
         // console.log("question", question);
         var inputNode;
+        var hasWidget = true;
         if (question.type === "boolean") {
            inputNode = widgets.newBoolean(question.id);
         } else if (question.type === "label" || question.type == "header") {
+        	hasWidget = false;
         	// Not adding input node for these
            //  inputNode = widgets.newLabel(question.id, question.text);
         } else if (question.type === "checkbox") {
@@ -81,7 +83,7 @@ define([
         }
 
         var widget = registry.byId(question.id);
-        if (!widget) console.log("No widget found for: " + question.id);
+        if (hasWidget && !widget) console.log("No widget found for: " + question.id);
         if (question.value && widget) widget.set("value", question.value);
 
         var questionText;
