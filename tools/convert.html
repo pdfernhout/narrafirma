@@ -142,6 +142,10 @@ function convert() {
     var input = inputTextArea.get("value");
     // console.log(input);
     
+    // Reset the list of IDs and output area in case the button is pressed twice without reloading
+    usedIDs = {};
+    outputTextArea.set("value", "");
+    
     var lines = input.split("\n");
     var lastPage = null;
     var lastQuestion = null;
