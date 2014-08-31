@@ -49,17 +49,25 @@ require([
     ContentPane,
     TabContainer
 ){
+	// TODO: Add page validation
+	// TODO: Add translations for GUI strings used here
 	
     var pageDefinitions = {};
     var pageInstantiations = {};
     var currentPageID = null;
     var selectWidget = null;
+    var previousPageButton = null;
+    var nextPageButton = null;
 	
     function urlHashFragmentChanged(newHash) {
     	console.log("urlHashFragmentChanged", newHash);
     	if (currentPageID !== newHash && pageDefinitions[newHash]) {
-    		selectWidget.set("value", newHash);
+    		changePage(newHash);
     	}
+    }
+    
+    function changePage(id) {
+    	selectWidget.set("value", id);
     }
     
     function mainSelectChanged(event) {
@@ -111,6 +119,43 @@ require([
     	
     	currentPageID = id;
     	hash(currentPageID);
+    	
+    	previousPageButton.setDisabled(!page.previousPageID);
+    	nextPageButton.setDisabled(!page.nextPageID);
+    }
+    
+    function previousPageClicked(event) {
+    	console.log("previousPageClicked", event);
+    	if (!currentPageID) {
+    		// Should never get here
+    		alert("Something wrong with currentPageID");
+    		return;
+    	}
+    	var page = pageDefinitions[currentPageID];
+    	var previousPageID = page.previousPageID;
+    	if (previousPageID) {
+    		changePage(previousPageID)
+    	} else {
+    		// Should never get here based on button enabling
+    		alert("At first page");
+    	}
+    }
+    
+    function nextPageClicked(event) {
+    	console.log("nextPageClicked", event);
+    	if (!currentPageID) {
+    		// Should never get here
+    		alert("Something wrong with currentPageID");
+    		return;
+    	}
+    	var page = pageDefinitions[currentPageID];
+    	var nextPageID = page.nextPageID;
+    	if (nextPageID) {
+    		changePage(nextPageID)
+    	} else {
+    		// Should never get here based on button enabling
+    		alert("At last page");
+    	}
     }
     
 	// Make all NarraCoach pages and put them in a TabContainer
@@ -119,6 +164,7 @@ require([
     	var pageSelectOptions = [];
     	
         var questionIndex = 0;
+        var lastPageID = null;
         
         array.forEach(pages, function(page) {
         	var title = page.name;
@@ -143,6 +189,11 @@ require([
         	// so can't pass page in as value here and need indirect pageDefinitions lookup dictionary
         	pageSelectOptions.push({label: title, value: page.id});
         	pageDefinitions[page.id] = page;
+        	
+        	// Make it easy to lookup previous and next pages from a page
+        	if (lastPageID) pageDefinitions[lastPageID].nextPageID = page.id;
+        	page.previousPageID = lastPageID;
+        	lastPageID = page.id;
         });
         
         /* TODO: Delete these pages after making sure any needed functionality is moved elsewhere (into widgets or more general code)
@@ -164,7 +215,15 @@ require([
     	
     	selectWidget = registry.byId("mainSelect");
     	console.log("widget", selectWidget);
+    	// TODO: Width should be determined from contents of select options using font metrics etc.
+    	domStyle.set(selectWidget.domNode, "width", "400px");
     	selectWidget.on("change", mainSelectChanged);
+    	
+    	widgets.newButton("previousPage", "Previous Page", "navigationDiv", previousPageClicked);
+    	previousPageButton = registry.byId("previousPage");
+    		
+    	widgets.newButton("nextPage", "Next Page", "navigationDiv", nextPageClicked);
+    	nextPageButton = registry.byId("nextPage");
     	
     	// Setup the first page
     	createOrShowPage(pages[0].id);

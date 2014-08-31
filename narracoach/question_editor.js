@@ -109,7 +109,7 @@ define([
         var helpNode = null;
         if (helpText) {
             // var helpText = question.help.replace(/\"/g, '\\x22').replace(/\'/g, '\\x27');
-            helpNode = widgets.newButton("?", null, function() {
+            helpNode = widgets.newButton(question.id + "_help", "?", null, function() {
                 alert(helpText);
             });
             // help = ' <button onclick="alert(\'' + helpText + '\')">?</button>';
@@ -225,7 +225,7 @@ define([
         
         // TODO: Does the dialog itself have to be "destroyed"???
         
-        widgets.newButton("OK", form, function() {
+        widgets.newButton("questionEdit_ok", "OK", form, function() {
             console.log("OK");
             questionEditDialog.hide();
             questionEditDialogOK(question, questionEditorDiv, form);
@@ -233,7 +233,7 @@ define([
             form.destroyRecursive();
         });
         
-        widgets.newButton("Cancel", form, function() {
+        widgets.newButton("questionEdit_cancel", "Cancel", form, function() {
             console.log("Cancel");
             questionEditDialog.hide();
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
@@ -259,10 +259,10 @@ define([
         var idLabel = document.createElement("span");
         idLabel.innerHTML = "<b>" + question.id + "</b>";
         questionEditorDiv.appendChild(idLabel);
-        var editButton = widgets.newButton("Edit", questionEditorDiv, function() {
+        var editButton = widgets.newButton(question.id + "_edit", "Edit", questionEditorDiv, function() {
             showQuestionEditDialog(question, questionEditorDiv);
         });
-        var deleteButton = widgets.newButton("Delete", questionEditorDiv, function() {
+        var deleteButton = widgets.newButton(question.id + "_delete", "Delete", questionEditorDiv, function() {
             if (confirm("Proceed to delete question " + question.id + "?")) {
                 questionEditorDiv.parentNode.removeChild(questionEditorDiv);
                 }

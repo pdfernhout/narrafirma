@@ -1,10 +1,12 @@
 ==== NarraCoach TODO list:
 
-Dashboard
+Main Dashboard
+Dashboard for each section
 
 Help window displaying HTML instead of alert
 
-Buttons to progress through steps
+Some sort of continue button at bottom of page to progress through steps
+Validation of page data as progress through a step
 Disabled or hidden tabs which are enabled as progress
 
 Participant questions need to have options and ids and translations
@@ -41,6 +43,7 @@ DONE Tabs should be grouped based on PNI stages
 DONE Make "skeleton" of program with named tabs for all steps from spreadsheet
 DONE Write convert program that converts from design_page_notes to page specifications
 DONE Navigation using dropdown instead of tabs because too many tabs
+DONE Buttons to go backward and forward through pages
 
 ======= CYNTHIA
 

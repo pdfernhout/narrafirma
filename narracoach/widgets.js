@@ -48,8 +48,9 @@ define([
         return (typeof something == 'string' || something instanceof String);
     }
         
-    function newButton(label, addToDiv, callback) {
+    function newButton(id, label, addToDiv, callback) {
         var button = new Button({
+        	id: id,
             label: label,
             type: "button",
             onClick: callback
