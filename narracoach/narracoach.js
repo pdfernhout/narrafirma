@@ -14,9 +14,7 @@ require([
     "narracoach/page_design-questions",
     "narracoach/page_export-survey",
     "narracoach/page_general-information-about-project-participants",
-    "narracoach/page_introduction",
     "narracoach/page_graph-results",
-    "narracoach/page_project-stories-intro",
     "narracoach/page_project-story-list",
     "narracoach/page_take-survey",
     "narracoach/pages",
@@ -36,9 +34,7 @@ require([
     page_designQuestions,
     page_exportSurvey,
     page_generalInformationAboutProjectParticipants,
-    page_introduction,
     page_graphResults,
-    page_projectStoriesIntro,
     page_projectStoryList,
     page_takeSurvey,
     pages,
@@ -76,6 +72,11 @@ require([
     	createOrShowPage(id);
     }
     
+    function buttonUnfinishedClick(event) {
+    	console.log("buttunUnfinishedClick", event);
+    	alert("Unfinished");
+    }
+    
     function createOrShowPage(id) {
     	if (currentPageID === id) return;
     	if (currentPageID) {
@@ -100,7 +101,9 @@ require([
 	    	       question.options = question.options.replace(/;/g, "\n");
 	    	       // console.log("result of replacement", question.options);
 	    	   }
-	    	   if (questionEditor.supportedTypes.indexOf(question.type) === -1) {
+	    	   if (question.type === "button") {
+	    		   widgets.newButton(question.id, question.text, pagePane.domNode, buttonUnfinishedClick);
+	    	   } else if (questionEditor.supportedTypes.indexOf(question.type) === -1) {
 	    		   // Not supported yet
 	    		   question.text = "TODO: " + question.text;
 	    		   question.text += " UNSUPPORTED TYPE OF: " + question.type + " with options: " + question.options + " on line: " + question.lineNumber;
@@ -197,9 +200,6 @@ require([
         });
         
         /* TODO: Delete these pages after making sure any needed functionality is moved elsewhere (into widgets or more general code)
-        page_introduction(tabContainer);
-        page_projectStoriesIntro(tabContainer);
-
         page_projectStoryList(tabContainer);
         
         page_generalInformationAboutProjectParticipants(tabContainer);
