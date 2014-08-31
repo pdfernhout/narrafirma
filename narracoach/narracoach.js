@@ -114,14 +114,14 @@ require([
 	    	   } else if (question.type === "page_aspectsTable") {
 	    		   aspectsTable.insertAspectsTable(question, pagePane, pageDefinitions);
 	    	   } else {
+	    		   // console.log("question id & type", question.id, question.type, questionEditor.supportedTypes.indexOf(question.type));
 	    		   if (questionEditor.supportedTypes.indexOf(question.type) === -1) {
 		    		   // Not supported yet
 		    		   question.text = "TODO: " + question.text;
 		    		   question.text += " UNSUPPORTED TYPE OF: " + question.type + " with options: " + question.options + " on line: " + question.lineNumber;
 		    		   question.type = "header";
-	    		   } else {
-	    			   questionEditor.insertQuestionIntoDiv(question, pagePane.domNode);
 	    		   }
+	    		   questionEditor.insertQuestionIntoDiv(question, pagePane.domNode);
 	    	   }
 	       });
 	       
