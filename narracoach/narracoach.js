@@ -7,8 +7,10 @@ var surveyResults = [];
 
 require([
     "dojo/_base/array",
+    "dojo/_base/connect",
     "dojo/dom-construct",
     "dojo/dom-style",
+    "dojo/hash",
     "narracoach/page_design-questions",
     "narracoach/page_export-survey",
     "narracoach/page_general-information-about-project-participants",
@@ -27,8 +29,10 @@ require([
     "dojo/domReady!"
 ], function(
 	array,
+	connect,
 	domConstruct,
 	domStyle,
+	hash,
     page_designQuestions,
     page_exportSurvey,
     page_generalInformationAboutProjectParticipants,
@@ -49,14 +53,22 @@ require([
     var pageDefinitions = {};
     var pageInstantiations = {};
     var currentPageID = null;
+    var selectWidget = null;
 	
+    function urlHashFragmentChanged(newHash) {
+    	console.log("urlHashFragmentChanged", newHash);
+    	if (currentPageID !== newHash && pageDefinitions[newHash]) {
+    		selectWidget.set("value", newHash);
+    	}
+    }
+    
     function mainSelectChanged(event) {
     	var id = event;
     	console.log("mainSelectChanged", id);
-    	createPage(id);
+    	createOrShowPage(id);
     }
     
-    function createPage(id) {
+    function createOrShowPage(id) {
     	if (currentPageID === id) return;
     	if (currentPageID) {
     		// var previousPage = pageDefinitions[currentPageID];
@@ -98,6 +110,7 @@ require([
     	}
     	
     	currentPageID = id;
+    	hash(currentPageID);
     }
     
 	// Make all NarraCoach pages and put them in a TabContainer
@@ -149,14 +162,17 @@ require([
     	widgets.newSelect("mainSelect", pageSelectOptions, null, "navigationDiv");
        	//widgets.newSelect("mainSelect", null, "one\ntwo\nthree", "navigationDiv");
     	
-    	var widget = registry.byId("mainSelect");
-    	console.log("widget", widget);
-    	widget.on("change", mainSelectChanged);
+    	selectWidget = registry.byId("mainSelect");
+    	console.log("widget", selectWidget);
+    	selectWidget.on("change", mainSelectChanged);
     	
     	// Setup the first page
-    	createPage(pages[0].id);
+    	createOrShowPage(pages[0].id);
     	
     	console.log("createLayout end");
+    	
+    	// Update if the URL hash fragment changes
+    	connect.subscribe("/dojo/hashchange", urlHashFragmentChanged);
     }
     
     // TODO: Challenge of repeating sections....
