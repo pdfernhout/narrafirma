@@ -117,8 +117,14 @@ define([
         var options = [];
         if (choices) {
             array.forEach(choices, function(each) {
-                var label = translate(id + "_choice_" + each);
-                options.push({label: label, value: each});
+            	if (isString(each)) {
+            		var label = translate(id + "_choice_" + each);
+            		options.push({label: label, value: each});
+            	} else {
+                	// TODO: Maybe bug in dojo select that it does not handle values that are not strings
+                	// http://stackoverflow.com/questions/16205699/programatically-change-selected-option-of-a-dojo-form-select-that-is-populated-b
+            		options.push({label: each.label, value: each.value});
+            	}
             });           
         } else if (optionsString) {
             array.forEach(optionsString.split("\n"), function(each) {
