@@ -7,6 +7,7 @@ var surveyResults = [];
 
 require([
     "dojo/_base/array",
+    "narracoach/aspects-table",
     "dojo/_base/connect",
     "dojo/dom-construct",
     "dojo/dom-style",
@@ -28,6 +29,7 @@ require([
     "dojo/domReady!"
 ], function(
 	array,
+	aspectsTable,
 	connect,
 	domConstruct,
 	domStyle,
@@ -58,9 +60,13 @@ require([
     var nextPageButton = null;
 	
     function urlHashFragmentChanged(newHash) {
-    	console.log("urlHashFragmentChanged", newHash);
-    	if (currentPageID !== newHash && pageDefinitions[newHash]) {
+    	// console.log("urlHashFragmentChanged", newHash);
+    	if (currentPageID !== newHash) {
+    		if (pageDefinitions[newHash]) {
     		changePage(newHash);
+    		} else {
+    			console.log("unsupported url hash fragment", newHash);
+    		}
     	}
     }
     
@@ -70,7 +76,7 @@ require([
     
     function mainSelectChanged(event) {
     	var id = event;
-    	console.log("mainSelectChanged", id);
+    	console.log("changing page to:", id);
     	createOrShowPage(id);
     }
     
@@ -78,95 +84,6 @@ require([
     	console.log("buttunUnfinishedClick", event);
     	alert("Unfinished");
     }
-    
-    // page aspects table support -- start
-    
-	var groupHeader1 = new ContentPane({"content": "<i>N/A</i>", "colspan": 1});
-	var groupHeader2 = new ContentPane({"content": "<i>N/A</i>", "colspan": 1});
-	var groupHeader3 = new ContentPane({"content": "<i>N/A</i>", "colspan": 1});
-    
-	function updateRole1(newValue) {
-		if (newValue === "") newValue = "N/A";
-		groupHeader1.set("content", "<b><i>" + newValue + "</i></b>");
-	}
-
-	function updateRole2(newValue) {
-		if (newValue === "") newValue = "N/A";
-		groupHeader2.set("content", "<b><i>" + newValue + "</i></b>");
-	}
-	
-	function updateRole3(newValue) {
-		if (newValue === "") newValue = "N/A";
-		groupHeader3.set("content", "<b><i>" + newValue + "</i></b>");
-	}
-	
-	function newSpecialSelect(id, options) {
-		var theOptions = [];
-		array.forEach(options, function(option) {
-			theOptions.push({label: option, value: option});
-		});
-		var select = new Select({
-			id: id,
-	        options: theOptions,
-	        // TODO: Width should be determined from content using font metrics across all dropdowns
-	        width: "150px"
-	    });
-		return select;
-	}
-	
-    function insertPageAspectsTable(pseudoQuestion, pagePane) {
-    	console.log("insertPageAspectsTable", pseudoQuestion);
-    	
-    	var groupIDs = pseudoQuestion.options.split(",");
-    	
-    	registry.byId(groupIDs[0]).on("change", updateRole1);
-    	registry.byId(groupIDs[1]).on("change", updateRole2);
-    	registry.byId(groupIDs[2]).on("change", updateRole3);
-    	
-    	var questions = pageDefinitions["page_aspectsTable"].questions;
-    	
-		var table = new TableContainer({
-			cols: 4,
-			showLabels: false,
-		});
-		
-		var columnHeader1ContentPane = new ContentPane({"content": "<i>Question</i>", "colspan": 1, "align": "right"});
-		table.addChild(columnHeader1ContentPane);
-		
-		table.addChild(groupHeader1);
-		
-		table.addChild(groupHeader2);
-		
-		table.addChild(groupHeader3);
-		
-		var index = 0;
-		array.forEach(questions, function(question) {
-			console.log("question", question);
-			if (question.type === "header") {
-				var content = "<b>" + question.text + "</b>";
-				var headerContentPane = new ContentPane({"content": content, "colspan": 4, "align": "center"});
-				table.addChild(headerContentPane);
-			} else {
-				var questionContentPane = new ContentPane({"content": question.text, "colspan": 1, "align": "right"});
-				table.addChild(questionContentPane);
-				
-				// TODO: Translation
-				// var options = question.options.replace(/;/g, "\n");
-				var options = question.options.split(";");
-
-				// TODO: Maybe should do this to get styling and div id right? questionEditor.insertQuestionIntoDiv(question, page.containerNode);
-				table.addChild(newSpecialSelect(question.id + "_" + 1, options));
-				table.addChild(newSpecialSelect(question.id + "_" + 2, options));
-				table.addChild(newSpecialSelect(question.id + "_" + 3, options));
-			}
-		});
-		
-		pagePane.addChild(table);
-		
-		table.startup();
-    }
-    
- // page aspects table support -- end
     
     function createOrShowPage(id) {
     	if (currentPageID === id) return;
@@ -195,14 +112,17 @@ require([
 	    	   if (question.type === "button") {
 	    		   widgets.newButton(question.id, question.text, pagePane.domNode, buttonUnfinishedClick);
 	    	   } else if (question.type === "page_aspectsTable") {
-	    		   insertPageAspectsTable(question, pagePane);
-	    	   } else if (questionEditor.supportedTypes.indexOf(question.type) === -1) {
-	    		   // Not supported yet
-	    		   question.text = "TODO: " + question.text;
-	    		   question.text += " UNSUPPORTED TYPE OF: " + question.type + " with options: " + question.options + " on line: " + question.lineNumber;
-	    		   question.type = "header";
+	    		   aspectsTable.insertAspectsTable(question, pagePane, pageDefinitions);
+	    	   } else {
+	    		   if (questionEditor.supportedTypes.indexOf(question.type) === -1) {
+		    		   // Not supported yet
+		    		   question.text = "TODO: " + question.text;
+		    		   question.text += " UNSUPPORTED TYPE OF: " + question.type + " with options: " + question.options + " on line: " + question.lineNumber;
+		    		   question.type = "header";
+	    		   } else {
+	    			   questionEditor.insertQuestionIntoDiv(question, pagePane.domNode);
+	    		   }
 	    	   }
-	    	   questionEditor.insertQuestionIntoDiv(question, pagePane.domNode);
 	       });
 	       
 	       pageInstantiations[id] = pagePane;
@@ -221,7 +141,7 @@ require([
     }
     
     function previousPageClicked(event) {
-    	console.log("previousPageClicked", event);
+    	// console.log("previousPageClicked", event);
     	if (!currentPageID) {
     		// Should never get here
     		alert("Something wrong with currentPageID");
@@ -238,7 +158,7 @@ require([
     }
     
     function nextPageClicked(event) {
-    	console.log("nextPageClicked", event);
+    	// console.log("nextPageClicked", event);
     	if (!currentPageID) {
     		// Should never get here
     		alert("Something wrong with currentPageID");
