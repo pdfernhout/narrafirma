@@ -57,6 +57,16 @@ define([
         // console.log("question", question);
         var inputNode;
         var hasWidget = true;
+        
+	   if (supportedTypes.indexOf(question.type) === -1) {
+ 		   var newQuestion = {};
+	       // Not supported yet
+	       newQuestion.text = "TODO: " + question.text;
+	       newQuestion.text += " UNSUPPORTED TYPE OF: " + question.type + " with options: " + question.options + " on line: " + question.lineNumber;
+	       newQuestion.type = "header";
+	       question = newQuestion;
+ 		}
+		   
         if (question.type === "boolean") {
            inputNode = widgets.newBoolean(question.id);
         } else if (question.type === "label" || question.type == "header") {
@@ -79,6 +89,7 @@ define([
             inputNode = widgets.newSlider(question.id, question.options);
         } else {
             console.log("Unsupported question type: " + question.type);
+ 		    console.log("question id & type", question.id, question.type);
             return;
         }
 

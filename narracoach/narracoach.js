@@ -116,13 +116,6 @@ require([
 	    	   } else if (question.type === "grid") {
 	    		   var gridAndStore = gridEntry.insertGrid(question, pagePane, pageDefinitions);
 	    	   } else {
-	    		   // console.log("question id & type", question.id, question.type, questionEditor.supportedTypes.indexOf(question.type));
-	    		   if (questionEditor.supportedTypes.indexOf(question.type) === -1) {
-		    		   // Not supported yet
-		    		   question.text = "TODO: " + question.text;
-		    		   question.text += " UNSUPPORTED TYPE OF: " + question.type + " with options: " + question.options + " on line: " + question.lineNumber;
-		    		   question.type = "header";
-	    		   }
 	    		   questionEditor.insertQuestionIntoDiv(question, pagePane.domNode);
 	    	   }
 	       });
