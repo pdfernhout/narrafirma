@@ -82,6 +82,8 @@ define([
     	// Grid with list of objects
     	console.log("insertGrid");
     	
+    	var label = widgets.newLabel(pseudoQuestion.id + "label", pseudoQuestion.text, pagePane.domNode);
+    	
     	// TODO: Need to set better info for fields and meanings to display and index on
         
         var store = new Memory({
@@ -91,7 +93,7 @@ define([
         });
 
         var listContentPane = new ContentPane({
-            title: pseudoQuestion.text
+            // title: pseudoQuestion.text
         });
         
         var pane = listContentPane.containerNode;
