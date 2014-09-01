@@ -2,8 +2,10 @@
 
 define([
     "narracoach/add_page",
+    "dojo/_base/array",
     "dojo/dom-construct",
     "dojo/_base/lang",
+    "dijit/registry",
     "narracoach/translate",
     "narracoach/widgets",
     "dijit/layout/ContentPane",
@@ -13,8 +15,10 @@ define([
     "dgrid/OnDemandGrid"
 ], function(
     addPage,
+    array,
     domConstruct,
     lang,
+    registry,
     translate,
     widgets,
     ContentPane,
@@ -48,8 +52,14 @@ define([
 
             // TODO: Fix this
             var count = ++testCount;
-            var newStory = { title: "More pickles " + count + "!", body: "Story " + count + "...",};
-            store.put(newStory);
+            var newItem = {};
+            
+            array.forEach(popupPageDefinition.questions, function (question) {
+            	// TODO: This may not work for more complex question types or custom widgets?
+            	newItem[question.id] = registry.byId(question.id).get("value");
+            });
+            
+            store.put(newItem);
             grid.refresh();
             
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
@@ -82,14 +92,19 @@ define([
     	// Grid with list of objects
     	console.log("insertGrid");
     	
+        var popupPageDefinition = pageDefinitions[pseudoQuestion.options];
+        
     	var label = widgets.newLabel(pseudoQuestion.id + "label", pseudoQuestion.text, pagePane.domNode);
     	
     	// TODO: Need to set better info for fields and meanings to display and index on
         
+    	var list = [];
+    	
         var store = new Memory({
-            data: storyList,
+            // data: storyList,
+        	data: list,
             // TODO: title may not be unique
-            idProperty: "title",
+            idProperty: "uniqueID",
         });
 
         var listContentPane = new ContentPane({
@@ -98,20 +113,23 @@ define([
         
         var pane = listContentPane.containerNode;
         
+        var columns = {};
+        
+        array.forEach(popupPageDefinition.questions, function (question) {
+        	columns[question.id] = question.text;
+        });
+        
         console.log("making grid");
         // TODO: Fix columns
         var grid = new OnDemandGrid({
-        	store: store,
-            columns: {
-                title: "title",
-            }
+        	"store": store,
+            "columns": columns
         });
         
         pagePane.addChild(grid);
         grid.startup();
         
         // console.log("grid startup with", storyList, projectStoriesStore);
-        var popupPageDefinition = pageDefinitions[pseudoQuestion.options];
         
         // Bind first two arguments to function that will be callback recieving one extra arg
         // See: http://dojotoolkit.org/reference-guide/1.7/dojo/partial.html
