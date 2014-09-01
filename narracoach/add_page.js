@@ -13,7 +13,7 @@ define([
 ){
 	
 	function addPageContents(node, page) {
-       var pageText = translate(page.id + "_text");
+       var pageText = translate(page.id + "_text", "");
                                 
        if (pageText) {
            node.appendChild(domConstruct.toDom(pageText));
