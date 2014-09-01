@@ -115,9 +115,9 @@ What do you know about them?
 
 ## Consider project aspects [page_projectAspects] 
 
-* Please answer these questions about each participant group. [aspectsTable|page_aspectsTable|participants_firstGroupName,participants_secondGroupName,participants_thirdGroupName]
+* Please answer these questions about each participant group. [aspectsTable|page_aspectsTable|participants_firstGroupName;participants_secondGroupName;participants_thirdGroupName]
 
-## Aspects table [page_aspectsTable|questionsTable]
+## Project aspects [page_aspectsTable|questionsTable]
 
 * Status [aspects_statusHeader|header]
 * What is the status of these participants in the community or organization? [aspects_status|select|unknown;very low;low;moderate;high;very high;mixed]
@@ -763,26 +763,110 @@ all stories have been entered.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-# Intervention [pageheader_intervention]
+# Intervention [page_intervention]
 // Choose interventions - x planned
 // Answer questions about interventions - x questions answered
 
-## Choose interventions [page_chooseInterventions]
+## Answer questions about project outcomes [page_projectOutcomesForIntervention]
 
-// also need some questions to help to choose interventions
-// based on OUTCOMES of sensemaking
-// add outcome answers to table, then show
-// similar to other recommendations, only for these, instead of using the participant group questions,
-// these are questions about project outcomes (which are collected right here)
+* In order to choose interventions that will be useful in your project, it will be helpful to think about some [outcomesTable|page_outcomesTable|participants_firstGroupName;participants_secondGroupName;participants_thirdGroupName]
+of the issues (positive and negative) you discovered in your project. Please answer these questions in reference to 
+the participant groups you set up in the project planning phase. 
 
-* Intervention recommendations [interventionRecommendations|recommendationTable|interventions]
+## Project outcomes [page_outcomesTable|questionsTable]
 
-// after seeing all these recommendations, they should enter interventions they are doing
-// in a list with a popup window to record some basic info about each one
+* Hopes [outcomesHopesHeader|header]
+* During your project, did the people in this group say they felt heard for the first time? [outcomesHeard|select|never;occasionally;sometimes;often;mixed]
+* Did they say they felt involved for the first time? [outcomesInvolved|select|never;occasionally;sometimes;often;mixed]
+* Did they say they learned a lot about their community or organization? [outcomesLearnedAboutComm|select|never;occasionally;sometimes;often;mixed]
 
-## Answer questions about interventions - answer questions about interventions used
+* Voices [outcomesVoicesHeader|header]
+* During your story collection, did these people seem to want to tell more stories than you collected? [outcomesMoreStories|select|never;occasionally;sometimes;often;mixed]
+* Did you ever feel that they wanted to share more experiences with each other than they did? [outcomesWantedToShareMore|select|never;occasionally;sometimes;often;mixed]
+* Did these people feel that some of the stories you collected "needed to be heard" by anyone? [outcomesNeededToBeHeard|select|not at all;somewhat;definitely;mixed]
+* Were there any issues that these people thought "nobody cares" about? [outcomesNobodyCares|select|not at all;somewhat;definitely;mixed]
 
-// need to draw intevention names for this from previous page
+* Needs [outcomesNeedsHeader|header]
+* Do the people in this group have needs that <i>nobody</i> can meet? [outcomesNobodyCanMeetNeeds|select|not at all;somewhat;definitely;mixed]
+* Do these people need to start telling themselves <i>new</i> stories? [outcomesNeedNewStories|select|not at all;somewhat;definitely;mixed]
+* Were there any issues about which the people in this group seemed to want to keep exploring? [outcomesKeepExploring|select|not at all;somewhat;definitely;mixed]
+* Did you discover any "crisis points" where people in this group needed help and didn't get it? [outcomesCrisisPoints|select|not at all;somewhat;definitely;mixed]
+* Did you find any issues for this group that were beyond words, that no amount of discussion could resolve? [outcomesBeyondWords|select|not at all;somewhat;definitely;mixed]
+
+* Learning [outcomesLearningHeader|header]
+* Did these people say that they learned a lot about the topic by participating in the project? [outcomesLearnedAboutTopic|select|never;occasionally;sometimes;often;mixed]
+* Did you notice that new members of the community or organization were having a harder time making sense of things? [outcomesNewMembersStruggling|select|not at all;somewhat;definitely;mixed]
+* Were there any issues that these people found difficult to understand, even though abundant information was available? [outcomesInfoWithoutUnderstanding|select|not at all;somewhat;definitely;mixed]
+* Did you discover any areas in which these people had more confidence than skill? [outcomesOverConfident|select|not at all;somewhat;definitely;mixed]
+* Did any of these participants express an interest in learning more about story work? [outcomesCuriousAboutStoryWork|select|never;occasionally;sometimes;often;mixed]
+
+## Design interventions [page_designInterventions]
+
+* Recommendations for interventions [interventionRecommendations|recommendationTable|interventions]
+
+* These are the interventions you have designed so far. [interventionsList|grid|page_addIntervention]
+
+## Design an intervention [page_addIntervention|popup]
+
+* Name | Please name this intervention. [interventionName|text]
+* Type | What type of intervention will this be? [interventionType|select|narrative ombudsman;narrative suggestion box;story sharing space;narrative orientation;narrative learning resource;narrative simulation;narrative presentation;dramatic action;sensemaking space;sensemaking pyramid;narrative mentoring program;narrative therapy;participatory theatre;other]
+* Description | Please describe your plan for this intervention. [interventionText|text]
+
+* Length | Over what span of time will this intervention take place? [interventionLength|text]
+* Time | When will the intervention start and stop? [interventionTime|text]
+* Location | Where will the intervention take place? [interventionLocation|text]
+
+* Help | What sort of help will you need to carry out this intervention? [interventionHelp|textarea]
+* Permission | What sorts of permission will you need to carry out this intervention? [interventionPermission|textarea]
+* Participation | How will you get people to participate in this intervention? [interventionParticipation|textarea]
+
+* Materials | What physical materials will you need? [interventionMaterials|textarea]
+* Spaces | What spaces will you need to use? [interventionSpace|textarea]
+* Technology | What technological resources will you need? [interventionTech|textarea]
+* Recording | How will record the results of this intervention? [interventionRecording|textarea]
+
+## Enter intervention records [page_recordInterventions]
+
+* Interventions [interventionsListForRecording|grid|page_addInterventionRecord]
+
+## Add intervention notes [page_addInterventionRecord|popup]
+
+* Name | Please give this set of notes a name. [interventionNotesName|text]
+* Notes | Enter your notes here. [interventionNotesText|textarea]
+* Images | These are the images you have entered for this set of notes so far. [interventionNotesImages|grid|page_newInterventionImage]
+
+## Intervention notes image [page_newInterventionImage|popup]
+
+* Image | Upload your image here. [interventionNotesImage|imageUploader]
+* Name | Please give this image a name. [interventionImageName|text]
+* Notes | You can enter some notes about this image. [interventionNotesImageNotes|textarea]
+
+## Reflect on interventions [page_answerQuestionsAboutInterventions]
+
+* Note: If there are no interventions in this list, enter them in the "Enter intervention records" screen first. [interventionQuestionsLabel|label]
+
+// this list should populate with names of interventions given in "enter intervention records" screen.
+/// there should be NO add button... but the edit button should go to the popup specified here
+* Interventions [interventionsListForReflection|grid|page_answerQuestionsAboutIntervention]
+
+## Reflect on intervention [page_answerQuestionsAboutIntervention|popup]
+
+* Change [interventionReflectChangeLabel|header]
+* Change in participant perceptions | How did the perceptions of the participants change from the start to the end of the intervention? [interventionReflectChangeEmotions|textarea]
+* Change in facilitator perceptions | How did <i>your</i> perceptions change? [interventionReflectChangeYourEmotions|textarea]
+* Changes to the project | How has the overall project changed as a result of this intervention? [interventionReflectProjectChanged|textarea]
+
+* Interactions [interventionReflectInteractionsLabel|header]
+* Interactions among participants | Describe the interactions between participants during this intervention. [interventionReflectInteractionsParticipants|textarea]
+* Interactions between participants and facilitators | Describe interactions between participants and facilitators. [interventionReflectInteractionsFacilitators|textarea]
+* Stories | What did you notice about the stories people told, retold, chose, and worked with during the intervention? [interventionReflectStories|textarea]
+
+* Learning [interventionReflectLearningLabel|header]
+* Unique features | What was special about this intervention? [interventionReflectSpecial|textarea]
+* Surprise | What surprised you about this intervention? [interventionReflectSurprise|textarea]
+* Worked and didn't work | Which parts of your plans for this intervention worked out well? Which parts didn't? [interventionReflectWorkedWellAndNot|textarea]
+* New ideas | What new ideas did you gain from this intervention? What did you learn from it? [interventionReflectNewIdeas|textarea]
+* Other | What else do you want to remember about this intervention? [interventionReflectExtra|textarea]
 
 ## Read intervention report [page_interventionReport]
 
