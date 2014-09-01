@@ -3,6 +3,7 @@
 define([
     "narracoach/add_page",
     "dojo/_base/array",
+    "dojo/_base/declare",
     "dojo/dom-construct",
     "dojo/_base/lang",
     "dijit/registry",
@@ -10,12 +11,16 @@ define([
     "narracoach/widgets",
     "dijit/layout/ContentPane",
     "dijit/Dialog",
+    "dgrid/extensions/DijitRegistry",
     "dijit/form/Form",
+    "dgrid/Keyboard",
     "dojo/store/Memory",
+    "dgrid/Selection",
     "dgrid/OnDemandGrid"
 ], function(
     addPage,
     array,
+    declare,
     domConstruct,
     lang,
     registry,
@@ -23,8 +28,11 @@ define([
     widgets,
     ContentPane,
     Dialog,
+    DijitRegistry,
     Form,
+    Keyboard,
     Memory,
+    Selection,
     OnDemandGrid
 ){
     var storyList = [
@@ -66,6 +74,7 @@ define([
             
             store.put(newItem);
             grid.refresh();
+            grid.resize();
             
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
             form.destroyRecursive();
@@ -127,7 +136,8 @@ define([
         
         // console.log("making grid");
         // TODO: Fix columns
-        var grid = new OnDemandGrid({
+        // var grid = new OnDemandGrid({
+        var grid = new(declare([OnDemandGrid, DijitRegistry, Keyboard, Selection]))({
         	"store": store,
             "columns": columns
         });
