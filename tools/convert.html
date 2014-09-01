@@ -99,6 +99,14 @@ function extract(line, rest, lineNumber) {
     }
     
     var lineContent = string.trim(lineSections[0]);
+    var lineContentSections = lineContent.split('|');
+    var shortLineContent = undefined;
+    var longLineContent = lineContent;
+    if (lineContentSections.length == 2) {
+   		shortLineContent = string.trim(lineContentSections[0]);
+   		longLineContent = string.trim(lineContentSections[1]);
+   	}
+    if (lineContentSections.length >= 3) console.log("FIX NEEDED: Too many segments in line content: " + lineNumber + " :: " + line);
     
     var infoSections = lineSections[1].split("]");
     if (infoSections.length !== 2) {
@@ -134,7 +142,7 @@ function extract(line, rest, lineNumber) {
     	usedIDs[infoContent.id] = lineNumber;
     }
     
-    return {"text": lineContent, "info": infoContent};
+    return {"text": longLineContent, "shortText": shortLineContent, "info": infoContent};
 }
 
 function convert() {
@@ -182,7 +190,7 @@ function convert() {
     	  // A question
         var data = extract(line, rest, lineNumber);
         if (data) {
-          lastQuestion = {"id": data.info.id, "text": data.text, "type": data.info.type, "options": data.info.options};
+          lastQuestion = {"id": data.info.id, "text": data.text, "shortText": data.shortText, "type": data.info.type, "options": data.info.options};
           lastQuestion.lineNumber = lineNumber;
           lastPage.questions.push(lastQuestion)  
         }
@@ -204,7 +212,10 @@ function convert() {
    		// console.log("line", header, stuff, name, "::", description);
     });
     
+    addOutput('"use strict";\n');
+    addOutput('define(\n');
     addOutput(JSON.stringify(pages, null, "    "));
+    addOutput(');\n')
 }
 
 function addOutput(output) {

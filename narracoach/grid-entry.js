@@ -131,7 +131,9 @@ define([
         
         array.forEach(popupPageDefinition.questions, function (question) {
         	// TODO: Translate these texts
-        	columns[question.id] = question.text;
+        	var text = question.text
+        	if (question.shortText) text = question.shortText;
+        	columns[question.id] = text;
         });
         
         // console.log("making grid");

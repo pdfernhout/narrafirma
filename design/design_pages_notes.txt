@@ -477,20 +477,20 @@ unavailable to anyone but yourself.
 
 ## Reflect on story collection session [page_answerQuestionsAboutCollectionSession|popup]
 
-* How did the behavior of the participants change from the start to the end of the session? [collectionReflectChangeBehavior|textarea]
-* How did their emotions change? [collectionReflectChangeEmotions|textarea]
-* How did your emotions change? [collectionReflectChangeYourEmotions|textarea]
-* Describe the interactions between participants (including changes during the session). [collectionReflectInteractionsParticipants|textarea]
-* Describe interactions between participants and facilitators (including change). [collectionReflectInteractionsFacilitators|textarea]
-* What did you notice about the stories people told, retold, chose, and worked with during the session? [collectionReflectStories|textarea]
-* What is the story of what happened during this session? [collectionReflectStoryOfSession|textarea]
-* What was special about these people in this place on this day? [collectionReflectSpecial|textarea]
-* What parts of your plans went as you expected? What parts didn't? [collectionReflectAsExpected|textarea]
-* What parts of your plans worked out well? [collectionReflectWorkedWell|textarea]
-* What parts didn't work out well? [collectionReflectWorkedBadly|textarea]
-* What new ideas did you gain from the participants in this session? [collectionReflectNewIdeas|textarea]
-* How has the project changed as a result of this session? [collectionReflectProjectChanged|textarea]
-* What else do you want most to remember about this session? [collectionReflectExtra|textarea]
+* Participant behavior | How did the behavior of the participants change from the start to the end of the session? [collectionReflectChangeBehavior|textarea]
+* Participant emotions | How did their emotions change? [collectionReflectChangeEmotions|textarea]
+* Facilitator emotions | How did your emotions change? [collectionReflectChangeYourEmotions|textarea]
+* Interactions among participants | Describe the interactions between participants (including changes during the session). [collectionReflectInteractionsParticipants|textarea]
+* Interactions between participants and facilitators | Describe interactions between participants and facilitators (including change). [collectionReflectInteractionsFacilitators|textarea]
+* Stories | What did you notice about the stories people told, retold, chose, and worked with during the session? [collectionReflectStories|textarea]
+* Story of what happened | What is the story of what happened during this session? [collectionReflectStoryOfSession|textarea]
+* Unique features | What was special about these people in this place on this day? [collectionReflectSpecial|textarea]
+* Went as expected | What parts of your plans went as you expected? What parts didn't? [collectionReflectAsExpected|textarea]
+* Worked well | What parts of your plans worked out well? [collectionReflectWorkedWell|textarea]
+* Didn't work well | What parts didn't work out well? [collectionReflectWorkedBadly|textarea]
+* New ideas | What new ideas did you gain from the participants in this session? [collectionReflectNewIdeas|textarea]
+* Project changes | How has the project changed as a result of this session? [collectionReflectProjectChanged|textarea]
+* Other | What else do you want most to remember about this session? [collectionReflectExtra|textarea]
 
 ## Read collection process report [page_readCollectionProcessReport]
 
@@ -683,22 +683,23 @@ all stories have been entered.
 
 ## Sensemaking session outcome [page_newSensemakingSessionOutcome|popup]
 
-* Type [sensemakingSessionOutcomeType|select|discovery;opportunity;issue;idea;recommendation;perspective;dilemma;other]
-* Name [sensemakingSessionOutcomeName|text]
-* Description [sensemakingSessionOutcomeText|textarea]
+* What type of session outcome is this? [sensemakingSessionOutcomeType|select|discovery;opportunity;issue;idea;recommendation;perspective;dilemma;other]
+* Please give this outcome a name. [sensemakingSessionOutcomeName|text]
+* Describe the outcome. [sensemakingSessionOutcomeText|textarea]
 
 ## Sensemaking construction [page_newSensemakingSessionConstruction|popup]
 
-* Name [sensemakingSessionConstructionName|text]
-* Description [sensemakingSessionContructionText|textarea]
-* Link to audio or video [sensemakingSessionConstructionLink|text]
-* Images [sensemakingSessionConstructionImages|grid|page_newSensemakingConstructionImage]
+* Please give this construction a name. [sensemakingSessionConstructionName|text]
+* What type of construction is it? [sensemakingSessionConstructionType|select|timeline;landscape;story elements;composite story;other]
+* Please decribe the construction (or include a description given by participants). [sensemakingSessionContructionText|textarea]
+* You can include a link to an audio or video description here. [sensemakingSessionConstructionLink|text]
+* These are the images you have entered for the construction so far. [sensemakingSessionConstructionImages|grid|page_newSensemakingConstructionImage]
 
 ## Sensemaking construction image [page_newSensemakingConstructionImage|popup]
 
-* Image [sensemakingSessionConstrucctionImage|imageUploader]
-* Name [sensemakingSessionConstructionImageName|text]
-* Notes on this image [sensemakingSessionConstructionImageNotes|textarea]
+* Upload an image for this construction. [sensemakingSessionConstrucctionImage|imageUploader]
+* Please give this image a name. [sensemakingSessionConstructionImageName|text]
+* Make any notes you'd like to record on this image here. [sensemakingSessionConstructionImageNotes|textarea]
 
 ## Sensemaking session notes [page_newSensemakingSessionNotes|popup]
 
