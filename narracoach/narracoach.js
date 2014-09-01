@@ -109,6 +109,7 @@ require([
     }
 
     function createPage(id, visible) {
+    	console.log("createPage", id);
         var page = pageDefinitions[id];
         
         if (!page) {
@@ -123,7 +124,7 @@ require([
             style: "width: 100%",
        });
         
-       console.log("Made content pane", id);
+       // console.log("Made content pane", id);
        
        array.forEach(page.questions, function(question) {
     	   if (question.type === "select" && question.options.indexOf(";") != -1) {
@@ -144,10 +145,10 @@ require([
        
        pageInstantiations[id] = pagePane;
        
-       console.log("about to place pane", id);
+       // console.log("about to place pane", id);
        pagePane.placeAt("pageDiv");
        
-       console.log("about to set visibility", id);
+       // console.log("about to set visibility", id);
        
        if (visible) {
     	   domStyle.set(id, "display", "block");
@@ -194,14 +195,14 @@ require([
     
 	// Make all NarraCoach pages and put them in a TabContainer
     function createLayout() {
-    	console.log("createLayout start");
+    	// console.log("createLayout start");
     	var pageSelectOptions = [];
     	
         var questionIndex = 0;
         var lastPageID = null;
         
         array.forEach(pages, function(page) {
-        	console.log("defining page", page.name)
+        	// console.log("defining page", page.name)
         	var title = page.name;
         	// TODO: Eventually remove legacy support for old way of defining pages
         	// TODO: Eventually don't include popups or other special page types in list to display to user
@@ -223,7 +224,7 @@ require([
         	
         	pageDefinitions[page.id] = page;
         	
-        	console.log("about to make page");
+        	// console.log("about to make page");
         	// Skip over special page types
         	if (!page.type) {
             	// Make it easy to lookup previous and next pages from a page
@@ -239,7 +240,7 @@ require([
         
         // Now, premake pages only after all definitons are done (since some pages refer to others for question popups that may be defined later)
         array.forEach(pages, function(page) {
-        	console.log("creating page", page.name)
+        	// console.log("creating page", page.name)
         	// Skip over special page types
         	if (!page.type) {
         		// Pre-make base pages
@@ -258,7 +259,7 @@ require([
        	//widgets.newSelect("mainSelect", null, "one\ntwo\nthree", "navigationDiv");
     	
     	selectWidget = registry.byId("mainSelect");
-    	console.log("widget", selectWidget);
+    	// console.log("widget", selectWidget);
     	// TODO: Width should be determined from contents of select options using font metrics etc.
     	domStyle.set(selectWidget.domNode, "width", "400px");
     	selectWidget.on("change", mainSelectChanged);
