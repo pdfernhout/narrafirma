@@ -118,6 +118,7 @@ define([
         var options = [];
         if (choices) {
             array.forEach(choices, function(each) {
+            	// console.log("choice", id, each);
             	if (isString(each)) {
             		var label = translate(id + "_choice_" + each);
             		options.push({label: label, value: each});
@@ -129,8 +130,11 @@ define([
             });           
         } else if (optionsString) {
             array.forEach(optionsString.split("\n"), function(each) {
+            	// console.log("option", id, each);
                 options.push({label: each, value: each});
             });
+        } else {
+        	console.log("No choices or options defined for select", id);
         }
         var select = new Select({
                 id: id,
