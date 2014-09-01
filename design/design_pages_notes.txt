@@ -346,31 +346,31 @@ in the places where they normally gather.
 
 ## Design story collection session [page_addStoryCollectionSession|popup]
 
-* Please give this session a name. [collectionSessionName|text]
-* How many repetitions of the session will there be? [collectionSessionRepetitions|text]
-* How long will this session be? [collectionSessionLength|text]
-* When will it take place? [collectionSessionTime|text]
-* Where will it take place? [collectionSessionLocation|text]
-* How many people will be invited to each repetition of this session? [collectionSessionSize|text]
-* From which participant group(s) will people be invited? [collectionSessionGroups|checkBoxesWithPull|participantGroups]
+* Name | Please give this session plan a name. [collectionSessionName|text]
+* Repetitions | How many repetitions of the session will there be? [collectionSessionRepetitions|text]
+* Length | How long will this session be? [collectionSessionLength|text]
+* Time | When will it take place? [collectionSessionTime|text]
+* Location | Where will it take place? [collectionSessionLocation|text]
+* Number of people | How many people will be invited to each repetition of this session? [collectionSessionSize|text]
+* Participant groups | From which participant group(s) will people be invited? [collectionSessionGroups|checkBoxesWithPull|participantGroups]
+* Materials | What materials will this session require?  [collectionSessionMaterials|textarea]
+* Other | Enter other details about this session. [collectionSessionDetails|textarea]
 
-* These are the session agendas you have designed so far. [collectionSessionAgenda|grid|page_addCollectionSessionActivity]
+* These are the activities added to this session plan so far. [collectionSessionAgenda|grid|page_addCollectionSessionActivity]
+
 * Print session agenda [printCollectionSessionAgenda|button]
-
-* What materials will this session require?  [collectionSessionMaterials|textarea]
-* Enter other details about this session. [collectionSessionDetails|textarea]
 
 ## Add story collection session activity [page_addCollectionSessionActivity|popup]
 
-* Please give this activity a name. [collectionSessionActivityName|text]
-* What type of activity is this? [collectionSessionActivityType|select|ice-breaker;sharing stories (no task);sharing stories (simple task);discussing stories;twice-told stories exercise;timeline exercise;landscape exercise;my own exercise;other]
-* Describe the plan for this activity. [collectionActivityPlan|textarea]
-* Describe optional elaborations you might or might not use in this activity. [collectionActivityOptionalParts|textarea]
-* How long will this activity take? [collectionActivityTime|text]
-* How will stories be recorded during this activity? [collectionActivityRecording|textarea]
-* What materials will be provided for this activity? [collectionActivityMaterials|textarea]
-* What spaces will be used for this activity? [collectionActivitySpaces|textarea]
-* What sort of facilitation will be necessary for this activity? [collectionActivityFacilitation|textarea]
+* Name | Please give this activity a name. [collectionSessionActivityName|text]
+* Type | What type of activity is this? [collectionSessionActivityType|select|ice-breaker;sharing stories (no task);sharing stories (simple task);discussing stories;twice-told stories exercise;timeline exercise;landscape exercise;my own exercise;other]
+* Plan | Describe the plan for this activity. [collectionActivityPlan|textarea]
+* Optional elaborations | Describe optional elaborations you might or might not use in this activity. [collectionActivityOptionalParts|textarea]
+* Length | How long will this activity take? [collectionActivityTime|text]
+* Recording | How will stories be recorded during this activity? [collectionActivityRecording|textarea]
+* Materials | What materials will be provided for this activity? [collectionActivityMaterials|textarea]
+* Spaces | What spaces will be used for this activity? [collectionActivitySpaces|textarea]
+* Facilitation | What sort of facilitation will be necessary for this activity? [collectionActivityFacilitation|textarea]
 
 ## Read collection design report [readCollectionDesignReport]
 
@@ -440,32 +440,33 @@ unavailable to anyone but yourself.
 
 * These are the group constructions you have entered for this session so far. [collectionSessionConstructions|grid|page_newCollectionSessionConstruction]
 
-* Story collection session notes [collectionSessionNotes|page_newCollectionSessionNotes]
+* These are the notes you have entered for this story collection session so far. [collectionSessionNotes|page_newCollectionSessionNotes]
 
 ## Story collection construction [page_newCollectionSessionConstruction|popup]
 
-* Name [collectionSessionConstructionName|text]
-* Description [collectionSessionContructionText|textarea]
-* Link to audio or video [collectionSessionConstructionLink|text]
-* Images [collectionSessionConstructionImages|grid|page_newCollectionConstructionImage]
+* Please give this construction a name. [collectionSessionConstructionName|text]
+* What type of construction is it? [collectionSessionConstructionType|select|timeline;landscape;other]
+* Please describe the construction (or include a description given by participants). [collectionSessionContructionText|textarea]
+* You can include a link to an audio or video description here. [collectionSessionConstructionLink|text]
+* These are the images you have entered for the construction so far. [collectionSessionConstructionImages|grid|page_newCollectionConstructionImage]
 
-## Story collection construction image [page_newCollectionConstructionImage|popup]
+## Collection construction image [page_newCollectionConstructionImage|popup]
 
-* Image [collectionSessionConstrucctionImage|imageUploader]
-* Name [collectionSessionConstructionImageName|text]
-* Notes on this image [collectionSessionConstructionImageNotes|textarea]
+* Image | Upload an image for this construction. [collectionSessionConstrucctionImage|imageUploader]
+* Name | Please give this image a name. [collectionSessionConstructionImageName|text]
+* Notes | Make any notes you'd like to record on this image here. [collectionSessionConstructionImageNotes|textarea]
 
-## Story collection session notes [page_newCollectionSessionNotes|popup]
+## Collection session notes [page_newCollectionSessionNotes|popup]
 
-* Name [collectionSessionNotesName|text]
-* Notes [collectionSessionNotesText|textarea]
-* Images [collectionSessionNotesImages|grid|page_newCollectionSessionImage]
+* Name | Please give this set of notes a name. [collectionSessionNotesName|text]
+* Notes | Enter your notes here. [collectionSessionNotesText|textarea]
+* Images | These are the images you have entered for this set of notes so far. [collectionSessionNotesImages|grid|page_newCollectionSessionImage]
 
-## Story collection session notes image [page_newCollectionSessionImage|popup]
+## Collection session notes image [page_newCollectionSessionImage|popup]
 
-* Image [collectionSessionNotesImage|imageUploader]
-* Name [collectionSessionImageName|text]
-* Notes on this image [collectionSessionNotesImageNotes|textarea]
+* Image | Upload your image here. [collectionSessionNotesImage|imageUploader]
+* Name | Please give this image a name. [collectionSessionImageName|text]
+* Notes | You can enter some notes about this image. [collectionSessionNotesImageNotes|textarea]
 
 ## Reflect on story collection sessions [page_answerQuestionsAboutCollectionSessions]
 
@@ -477,20 +478,22 @@ unavailable to anyone but yourself.
 
 ## Reflect on story collection session [page_answerQuestionsAboutCollectionSession|popup]
 
-* Participant behavior | How did the behavior of the participants change from the start to the end of the session? [collectionReflectChangeBehavior|textarea]
-* Participant emotions | How did their emotions change? [collectionReflectChangeEmotions|textarea]
-* Facilitator emotions | How did your emotions change? [collectionReflectChangeYourEmotions|textarea]
-* Interactions among participants | Describe the interactions between participants (including changes during the session). [collectionReflectInteractionsParticipants|textarea]
-* Interactions between participants and facilitators | Describe interactions between participants and facilitators (including change). [collectionReflectInteractionsFacilitators|textarea]
+* Change [collectionReflectChangeLabel|header]
+* Change in participant perceptions | How did the perceptions of the participants change from the start to the end of the session? [collectionReflectChangeEmotions|textarea]
+* Change in facilitator perceptions | How did <i>your</i> perceptions change? [collectionReflectChangeYourEmotions|textarea]
+* Changes to the project | How has the overall project changed as a result of this session? [collectionReflectProjectChanged|textarea]
+
+* Interactions [collectionReflectInteractionsLabel|header]
+* Interactions among participants | Describe the interactions between participants in this session. [collectionReflectInteractionsParticipants|textarea]
+* Interactions between participants and facilitators | Describe interactions between participants and facilitators. [collectionReflectInteractionsFacilitators|textarea]
 * Stories | What did you notice about the stories people told, retold, chose, and worked with during the session? [collectionReflectStories|textarea]
-* Story of what happened | What is the story of what happened during this session? [collectionReflectStoryOfSession|textarea]
+
+* Learning [collectionReflectLearningLabel|header]
 * Unique features | What was special about these people in this place on this day? [collectionReflectSpecial|textarea]
-* Went as expected | What parts of your plans went as you expected? What parts didn't? [collectionReflectAsExpected|textarea]
-* Worked well | What parts of your plans worked out well? [collectionReflectWorkedWell|textarea]
-* Didn't work well | What parts didn't work out well? [collectionReflectWorkedBadly|textarea]
-* New ideas | What new ideas did you gain from the participants in this session? [collectionReflectNewIdeas|textarea]
-* Project changes | How has the project changed as a result of this session? [collectionReflectProjectChanged|textarea]
-* Other | What else do you want most to remember about this session? [collectionReflectExtra|textarea]
+* Surprise | What surprised you about this session? [collectionReflectSurprise|textarea]
+* Worked and didn't work | Which parts of your plans for this session worked out well? Which parts didn't? [collectionReflectWorkedWellAndNot|textarea]
+* New ideas | What new ideas did you gain from this session? What did you learn from it? [collectionReflectNewIdeas|textarea]
+* Other | What else do you want to remember about this session? [collectionReflectExtra|textarea]
 
 ## Read collection process report [page_readCollectionProcessReport]
 
@@ -569,26 +572,32 @@ all stories have been entered.
 
 ## Edit observation [page_editObservation|popup]
 
-* Observation name [observationName|text]
-* Observation [observation|textarea]
+* Observation name | Please give this observation a name. [observationName|text]
+* Observation | Please describe this observation. [observation|textarea]
 
-* Results [observationResultsList|grid] 
+* Results | These are the results you selected to include in this observation. [observationResultsList|grid] 
 
-* First interpretation name [firstInterpName|text]
-* First interpretation text [firstInterpText|textarea]
-* First interpretation idea [firstInterpIdea|textarea]
-* Excerpts for first interpretation [excerptsList|grid|page_selectExcerpt]
+* First interpretation | What is your first interpretation about this observation? [firstInterpText|textarea]
+* First interpretation name | Enter a name for this interpretation. [firstInterpName|text]
+* First interpretation idea | If you like, you can record an idea that follows from this interpretation. [firstInterpIdea|textarea]
+* Excerpts for first interpretation | You can add excerpts to this interpretation. [firstInterpExcerptsList|grid|page_selectExcerpt]
 
-* Opposing interpretation name [opposingInterpName|text]
-* Opposing interpretation text [opposingInterpText|textarea]
-* Opposing interpretation idea [opposingInterpIdea|textarea]
-* Excerpts for opposing interpretation [excerptsList|grid|page_selectExcerpt]
+* Opposing interpretation | Now enter an interpretation that does not agree with your first interpretation. [opposingInterpText|textarea]
+* Opposing interpretation name | Please name this interpretation. [opposingInterpName|text]
+* Opposing interpretation idea | You can record an idea that follows from this interpretation. [opposingInterpIdea|textarea]
+* Excerpts for opposing interpretation | Choose some excerpts to exemplify this interpretation.  [opposingInterpExcerptsList|grid|page_selectExcerpt]
+
+* Third interpretation | If you like, enter one more interpretation. [thirdInterpText|textarea]
+* Third interpretation name | Please name this interpretation. [thirdInterpName|text]
+* Third interpretation idea | You can record an idea that follows from this interpretation. [thirdInterpIdea|textarea]
+* Excerpts for third interpretation | Choose some excerpts to exemplify this interpretation.  [thirdInterpExcerptsList|grid|page_selectExcerpt]
 
 ## Select excerpt [page_selectExcerpt|popup]
 
 * Collected excerpts [excerptsList|grid|page_createNewExcerpt]
 
 // when they click this button the selected excerpt should be added to the list whose "add" button they clicked
+// it should know which interpretation to tie the excerpt to
 * Add selected excerpt to interpretation [addExcerptToInterpretation|button]
 
 ## Cluster interpretations [page_clusterInterpretations]
@@ -605,21 +614,21 @@ all stories have been entered.
 
 ## Add or change perspective [page_addPerspective|popup]
 
-* Perspective name [perspectiveName|text]
-* Describe this perspective. [perspectiveDescription|textarea]
+* Name | Please give this perspective a name. [perspectiveName|text]
+* Perspective | Describe this perspective. [perspectiveDescription|textarea]
 
 // note, this grid should combine all the results linked to observations linked to interpretations linked to this perspective
 // perspective
 //      interpretation
 //           observation
 //                result
-* Choose an observation result that exemplifies this perspective. [observationResultsList|grid] 
+* Observation | Choose an observation result that exemplifies this perspective. [observationResultsList|grid] 
 
 // similarly, this should be a list of all the excerpts linked to interpretations linked to this perspective
 // perspective
 //     interpretation
 //         excerpt
-* Choose one or more excerpts to illustrate this perspective [excerptsList|grid]
+* Excerpts | Choose one or more excerpts to illustrate this perspective [excerptsList|grid|page_selectExcerpt]
 
 ## Read catalysis report [page_readCatalysisReport]
 
@@ -645,29 +654,31 @@ all stories have been entered.
 
 ## Enter sensemaking session plan [page_addSensemakingSessionPlan|popup]
 
-* How many repetitions of the session will there be? [sensemakingSessionRepetitions|text]
-* How long will this session be? [sensemakingSessionLength|text]
-* When will it take place? [sensemakingSessionTime|text]
-* Where will it take place? [sensemakingSessionLocation|text]
-* How many people will be invited to each repetition of this session? [sensemakingSessionSize|text]
-* From which participant group(s) will people be invited? [sensemakingSessionGroups|checkBoxesWithPull|participantGroups]
+* Name | Please give this session plan a name. [sensemakingSessionName|text]
+* Repetitions | How many repetitions of the session will there be? [sensemakingSessionRepetitions|text]
+* Length | How long will this session be? [sensemakingSessionLength|text]
+* Time | When will it take place? [sensemakingSessionTime|text]
+* Location | Where will it take place? [sensemakingSessionLocation|text]
+* Number of people | How many people will be invited to each repetition of this session? [sensemakingSessionSize|text]
+* Participant groups | From which participant group(s) will people be invited? [sensemakingSessionGroups|checkBoxesWithPull|participantGroups]
+* Materials | What materials will this session require? [sensemakingSessionMaterials|textarea]
+* Other | Enter other details about this session. [sensemakingSessionDetails|textarea]
 
-* Session agenda [sensemakingSessionAgenda|grid|page_addSensemakingSessionActivity]
+* These are the activities added to this session plan so far. [sensemakingSessionAgenda|grid|page_addSensemakingSessionActivity]
+
 * Print session agenda [printSensemakingSessionAgenda|button]
-
-* What materials will this session require? [sensemakingSessionMaterials|textarea]
-* Enter other details about this session. [sensemakingSessionDetails|textarea]
 
 ## Add sensemaking session activity [page_addSensemakingSessionActivity|popup]
 
-* What type of activity is this? [sensemakingSessionActivity|select|ice-breaker;encountering stories (no task);encountering stories (simple task);discussing stories;twice-told stories exercise;timeline exercise;landscape exercise;story elements exercise;composite stories exercise;my own exercise;other]
-* Describe the plan for this activity. [sensemakingActivityPlan|textarea]
-* Describe optional elaborations you might or might not use in this activity. [sensemakingActivityOptionalParts|textarea]
-* How long will this activity take? [sensemakingActivityTime|text]
-* Will new stories be recorded during this activity, and if so, how? [sensemakingActivityRecording|textarea]
-* What materials will be provided for this activity? [sensemakingActivityMaterials|textarea]
-* What spaces will be used for this activity? [sensemakingActivitySpaces|textarea]
-* What sort of facilitation will be necessary for this activity? [sensemakingActivityFacilitation|textarea]
+* Name | Please give this activity a name. [sensemakingSessionActivityName|text]
+* Type | What type of activity is this? [sensemakingSessionActivity|select|ice-breaker;encountering stories (no task);encountering stories (simple task);discussing stories;twice-told stories exercise;timeline exercise;landscape exercise;story elements exercise;composite stories exercise;my own exercise;other]
+* Plan | Describe the plan for this activity. [sensemakingActivityPlan|textarea]
+* Optional elaborations | Describe optional elaborations you might or might not use in this activity. [sensemakingActivityOptionalParts|textarea]
+* Length | How long will this activity take? [sensemakingActivityTime|text]
+* New stories | Will new stories be recorded during this activity, and if so, how? [sensemakingActivityRecording|textarea]
+* Materials | What materials will be provided for this activity? [sensemakingActivityMaterials|textarea]
+* Spaces | What spaces will be used for this activity? [sensemakingActivitySpaces|textarea]
+* Facilitation | What sort of facilitation will be necessary for this activity? [sensemakingActivityFacilitation|textarea]
 
 ## Enter sensemaking session records [page_enterSensemakingSessionRecords]
 
@@ -683,35 +694,36 @@ all stories have been entered.
 
 ## Sensemaking session outcome [page_newSensemakingSessionOutcome|popup]
 
-* What type of session outcome is this? [sensemakingSessionOutcomeType|select|discovery;opportunity;issue;idea;recommendation;perspective;dilemma;other]
-* Please give this outcome a name. [sensemakingSessionOutcomeName|text]
-* Describe the outcome. [sensemakingSessionOutcomeText|textarea]
+* Type | What type of session outcome is this? [sensemakingSessionOutcomeType|select|discovery;opportunity;issue;idea;recommendation;perspective;dilemma;other]
+* Name | Please give this outcome a name. [sensemakingSessionOutcomeName|text]
+* Description | Describe the outcome. [sensemakingSessionOutcomeText|textarea]
 
 ## Sensemaking construction [page_newSensemakingSessionConstruction|popup]
 
-* Please give this construction a name. [sensemakingSessionConstructionName|text]
-* What type of construction is it? [sensemakingSessionConstructionType|select|timeline;landscape;story elements;composite story;other]
-* Please decribe the construction (or include a description given by participants). [sensemakingSessionContructionText|textarea]
-* You can include a link to an audio or video description here. [sensemakingSessionConstructionLink|text]
+* Name | Please give this construction a name. [sensemakingSessionConstructionName|text]
+* Type | What type of construction is it? [sensemakingSessionConstructionType|select|timeline;landscape;story elements;composite story;other]
+* Description | Please decribe the construction (or include a description given by participants). [sensemakingSessionContructionText|textarea]
+* Audio/video link | You can include a link to an audio or video description here. [sensemakingSessionConstructionLink|text]
+
 * These are the images you have entered for the construction so far. [sensemakingSessionConstructionImages|grid|page_newSensemakingConstructionImage]
 
 ## Sensemaking construction image [page_newSensemakingConstructionImage|popup]
 
-* Upload an image for this construction. [sensemakingSessionConstrucctionImage|imageUploader]
-* Please give this image a name. [sensemakingSessionConstructionImageName|text]
-* Make any notes you'd like to record on this image here. [sensemakingSessionConstructionImageNotes|textarea]
+* Image | Upload an image for this construction. [sensemakingSessionConstrucctionImage|imageUploader]
+* Name | Please give this image a name. [sensemakingSessionConstructionImageName|text]
+* Notes | Make any notes you'd like to record on this image here. [sensemakingSessionConstructionImageNotes|textarea]
 
 ## Sensemaking session notes [page_newSensemakingSessionNotes|popup]
 
-* Name [sensemakingSessionNotesName|text]
-* Notes [sensemakingSessionNotesText|textarea]
-* Images [sensemakingSessionNotesImages|grid|page_newSensemakingSessionImage]
+* Name | Please give this set of notes a name. [sensemakingSessionNotesName|text]
+* Notes | Enter your notes here. [sensemakingSessionNotesText|textarea]
+* Images | These are the images you have entered for this set of notes so far. [sensemakingSessionNotesImages|grid|page_newSensemakingSessionImage]
 
 ## Sensemaking session notes image [page_newSensemakingSessionImage|popup]
 
-* Image [sensemakingSessionNotesImage|imageUploader]
-* Name [sensemakingSessionImageName|text]
-* Notes on this image [sensemakingSessionNotesImageNotes|textarea]
+* Image | Upload your image here. [sensemakingSessionNotesImage|imageUploader]
+* Name | Please give this image a name. [sensemakingSessionImageName|text]
+* Notes | You can enter some notes about this image. [sensemakingSessionNotesImageNotes|textarea]
 
 ## Reflect on sensemaking sessions [page_answerQuestionsAboutSensemakingSessions]
 
@@ -723,20 +735,22 @@ all stories have been entered.
 
 ## Reflect on session [page_answerQuestionsAboutSensemakingSession|popup]
 
-* How did the behavior of the participants change from the start to the end of the session? [senseReflectChangeBehavior|textarea]
-* How did their emotions change? [senseReflectChangeEmotions|textarea]
-* How did your emotions change? [senseReflectChangeYourEmotions|textarea]
-* Describe the interactions between participants (including changes during the session). [senseReflectInteractionsParticipants|textarea]
-* Describe interactions between participants and facilitators (including change). [senseReflectInteractionsFacilitators|textarea]
-* What did you notice about the stories people told, retold, chose, worked with, and built during the session? [senseReflectStories|textarea]
-* What is the story of what happened during this session? [senseReflectStoryOfSession|textarea]
-* What was special about these people in this place on this day? [senseReflectSpecial|textarea]
-* What parts of your plans went as you expected? What parts didn't? [senseReflectAsExpected|textarea]
-* What parts of your plans worked out well? [senseReflectWorkedWell|textarea]
-* What parts didn't work out well? [senseReflectWorkedBadly|textarea]
-* What new ideas did you gain from the participants in this session? [senseReflectNewIdeas|textarea]
-* How has the project changed as a result of this session? [senseReflectProjectChanged|textarea]
-* What else do you want most to remember about this session? [senseReflectExtra|textarea]
+* Change [sensemakingReflectChangeLabel|header]
+* Change in participant perceptions | How did the perceptions of the participants change from the start to the end of the session? [sensemakingReflectChangeEmotions|textarea]
+* Change in facilitator perceptions | How did <i>your</i> perceptions change? [sensemakingReflectChangeYourEmotions|textarea]
+* Changes to the project | How has the overall project changed as a result of this session? [sensemakingReflectProjectChanged|textarea]
+
+* Interactions [sensemakingReflectInteractionsLabel|header]
+* Interactions among participants | Describe the interactions between participants in this session. [sensemakingReflectInteractionsParticipants|textarea]
+* Interactions between participants and facilitators | Describe interactions between participants and facilitators. [sensemakingReflectInteractionsFacilitators|textarea]
+* Stories | What did you notice about the stories people told, retold, chose, and worked with during the session? [sensemakingReflectStories|textarea]
+
+* Learning [sensemakingReflectLearningLabel|header]
+* Unique features | What was special about these people in this place on this day? [sensemakingReflectSpecial|textarea]
+* Surprise | What surprised you about this session? [sensemakingReflectSurprise|textarea]
+* Worked and didn't work | Which parts of your plans for this session worked out well? Which parts didn't? [sensemakingReflectWorkedWellAndNot|textarea]
+* New ideas | What new ideas did you gain from this session? What did you learn from it? [sensemakingReflectNewIdeas|textarea]
+* Other | What else do you want to remember about this session? [sensemakingReflectExtra|textarea]
 
 ## Read sensemaking report [page_readSensemakingReport]
 
