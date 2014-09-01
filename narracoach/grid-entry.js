@@ -56,7 +56,12 @@ define([
             
             array.forEach(popupPageDefinition.questions, function (question) {
             	// TODO: This may not work for more complex question types or custom widgets?
-            	newItem[question.id] = registry.byId(question.id).get("value");
+            	var widget = registry.byId(question.id);
+            	if (widget) {
+            		newItem[question.id] = widget.get("value");
+            	} else {
+            		console.log("ERROR: could not find widget for:", question.id);
+            	}
             });
             
             store.put(newItem);
@@ -90,7 +95,7 @@ define([
     
     function insertGrid(pseudoQuestion, pagePane, pageDefinitions) {
     	// Grid with list of objects
-    	console.log("insertGrid");
+    	// console.log("insertGrid");
     	
         var popupPageDefinition = pageDefinitions[pseudoQuestion.options];
         
@@ -116,10 +121,11 @@ define([
         var columns = {};
         
         array.forEach(popupPageDefinition.questions, function (question) {
+        	// TODO: Translate these texts
         	columns[question.id] = question.text;
         });
         
-        console.log("making grid");
+        // console.log("making grid");
         // TODO: Fix columns
         var grid = new OnDemandGrid({
         	"store": store,
