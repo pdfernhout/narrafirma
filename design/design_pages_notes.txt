@@ -56,7 +56,7 @@
 // multiline labels are done by adding lines after the first label line; anything up to the next * or # is read
 // help texts are placed after questions (that are not labels). if there is no leading <p> in the help text, it is <p>text</p>
 
-# Dashboard [headerpage_dashboard]
+# Dashboard [page_dashboard]
 // all checklists combined
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,7 +65,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-# Planning [headerpage_planning]
+# Planning [page_planning]
 // Project facts - x of x questions answered
 // Planning questions - [ ] draft 
 // Project aspects - x of x questions answered
@@ -97,7 +97,7 @@ If you don't have good answers for these questions right now, don't worry; you w
 * What is the project's scope? (number of people, number of stories, number of questions about stories) [planning_draft_scope|textarea]
 * Which phases of PNI will be important to the project? (indicate most and least important phases) [planning_draft_emphasis|textarea]
 
-## Consider project aspects [page_projectAspects] 
+## Describe participant groups [page_participantGroups] 
 
 * On this page you will think about groups of participants you want to involve in your project. [aboutParticipantGroups|label]
 Examples might be: doctors and patients; staff and customers; natives, immigrants, and tourists.
@@ -112,6 +112,8 @@ What do you know about them?
 * Please describe the second-most critical group of participants. [participants_secondGroupDescription|textarea]
 * If there is a third group of participants from whom the project needs to hear, please name them. [participants_thirdGroupName|text]
 * Please describe the third-most critical group of participants. [participants_thirdGroupDescription|textarea]
+
+## Consider project aspects [page_projectAspects] 
 
 * Please answer these questions about each participant group. [aspectsTable|page_aspectsTable|participants_firstGroupName,participants_secondGroupName,participants_thirdGroupName]
 
@@ -145,9 +147,14 @@ What do you know about them?
 * How hard will it be for these participants to articulate their feelings about the topic? [aspects_topic_articulate|select|unknown;hard;medium;easy;mixed]
 * How long of a time period do you need these participants to look back on? [aspects_topic_timeframe|select|unknown;hours;days;months;years;decades;mixed]
 
+* About you [aspects_youHeader|header]
+* How much experience do you have facilitating PNI projects? [aspects_you_experience|select|none;a little;some;a lot]
+* How much help will you have carrying out this project? [aspects_you_help|select|none;a little;some;a lot]
+* How many technological resources will you have for carrying out this project? [aspects_you_tech|select|none;a little;some;a lot]
+
 ## Tell project stories [page_projectStories] 
 
-* Project story list [projectStoryList|grid|page_projectStory]
+* These are the project stories you have told so far. [projectStoryList|grid|page_projectStory]
 
 ## Project story [page_projectStory|popup]
 
@@ -185,7 +192,7 @@ What do you know about them?
 <li>Name the groups. These are your story elements.</li>
 </ol>
 
-* Project story elements [storyElements|grid|page_addStoryElement]
+* These are the project story elements you have entered so far. [storyElements|grid|page_addStoryElement]
 
 ## Add story element [page_addStoryElement|popup]
 
@@ -258,7 +265,7 @@ in the places where they normally gather.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-# Collection design [headerpage_collectionDesign]
+# Collection design [page_collectionDesign]
 // Collection venues - X venues chosen
 // Story eliciting questions - x questions written
 // Questions about stories - x questions written
@@ -282,7 +289,7 @@ in the places where they normally gather.
 
 ## Write story eliciting questions [page_writeStoryElicitingQuestions]
 
-* Story eliciting questions [elicitingQuestionsList|grid|page_addElicitingQuestion]
+* These are the story eliciting questions you have entered so far. [elicitingQuestionsList|grid|page_addElicitingQuestion]
 
 ## Add story eliciting question [page_addElicitingQuestion|popup]
 
@@ -294,25 +301,31 @@ in the places where they normally gather.
 
 ## Write questions about stories [page_writeQuestionsAboutStories]
 
-* Questions about stories [storyQuestionsList|grid|page_addStoryQuestion]
+* These are the questions you will be asking people about stories. [storyQuestionsList|grid|page_addStoryQuestion]
 
 ## Add story question [page_addStoryQuestion|popup]
 
 * Recommendations for story questions [storyQuestionRecommendations|recommendationTable|storyQuestions]
 
-* Enter a question to ask people about their stories. [storyQuestion|textarea]
+* Enter a question to ask people about their stories. [storyQuestionText|textarea]
+* What type of question is this? [storyQuestionType|select|boolean;label;header;checkbox;checkboxes;text;textarea;select;radio;slider]
+* Enter a short name we can use to refer to the question. (This name must be unique to the project.) [storyQuestionShortName|text]
+* If you want to provide help to people ansewring the question, enter it here. [storyQuestionHelp|textarea]
 
 * Or choose a question from this list. [storyQuestionTemplates|templateList|storyQuestions]
 
 ## Write questions about participants [page_writeQuestionsAboutParticipants]
 
-* Questions about participants [participantQuestionsList|grid|page_addParticipantQuestion]
+* These are the questions you will be asking people about themselves. [participantQuestionsList|grid|page_addParticipantQuestion]
 
 ## Add participant question [page_addParticipantQuestion|popup]
 
 * Recommendations for participant questions [participantQuestionRecommendations|recommendationTable|participantQuestions]
 
-* Enter a question to ask people about themselves. [participantQuestion|textarea]
+* Enter a question to ask people about themselves. [participantQuestionText|textarea]
+* What type of question is this? [participantQuestionType|select|boolean;label;header;checkbox;checkboxes;text;textarea;select;radio;slider]
+* Enter a short name we can use to refer to the question. (This name must be unique to the project.) [participantQuestionShortName|text]
+* If you want to provide help to people ansewring the question, enter it here. [participantQuestionHelp|textarea]
 
 * Or choose a question from this list. [participantQuestionTemplates|templateList|participantQuestions]
 
@@ -329,10 +342,11 @@ in the places where they normally gather.
 
 * Recommendations for story collection sessions [collectionSessionRecommendations|recommendationTable|collectionSessions]
 
-* Story collection sessions [storyCollectionSessionsList|grid|page_addStoryCollectionSession]
+* These are the collection sessions you have designed so far. [storyCollectionSessionsList|grid|page_addStoryCollectionSession]
 
 ## Design story collection session [page_addStoryCollectionSession|popup]
 
+* Please give this session a name. [collectionSessionName|text]
 * How many repetitions of the session will there be? [collectionSessionRepetitions|text]
 * How long will this session be? [collectionSessionLength|text]
 * When will it take place? [collectionSessionTime|text]
@@ -340,7 +354,7 @@ in the places where they normally gather.
 * How many people will be invited to each repetition of this session? [collectionSessionSize|text]
 * From which participant group(s) will people be invited? [collectionSessionGroups|checkBoxesWithPull|participantGroups]
 
-* Session agenda [collectionSessionAgenda|grid|page_addCollectionSessionActivity]
+* These are the session agendas you have designed so far. [collectionSessionAgenda|grid|page_addCollectionSessionActivity]
 * Print session agenda [printCollectionSessionAgenda|button]
 
 * What materials will this session require?  [collectionSessionMaterials|textarea]
@@ -348,7 +362,8 @@ in the places where they normally gather.
 
 ## Add story collection session activity [page_addCollectionSessionActivity|popup]
 
-* What type of activity is this? [collectionSessionActivity|select|ice-breaker;sharing stories (no task);sharing stories (simple task);discussing stories;twice-told stories exercise;timeline exercise;landscape exercise;my own exercise;other]
+* Please give this activity a name. [collectionSessionActivityName|text]
+* What type of activity is this? [collectionSessionActivityType|select|ice-breaker;sharing stories (no task);sharing stories (simple task);discussing stories;twice-told stories exercise;timeline exercise;landscape exercise;my own exercise;other]
 * Describe the plan for this activity. [collectionActivityPlan|textarea]
 * Describe optional elaborations you might or might not use in this activity. [collectionActivityOptionalParts|textarea]
 * How long will this activity take? [collectionActivityTime|text]
@@ -367,7 +382,7 @@ in the places where they normally gather.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-# Collection process [headerpage_collectionProcess]
+# Collection process [page_collectionProcess]
 // Online story collection is [ ] enabled
 // Number of stories entered - x
 // Number of participants who told stories - x
@@ -419,11 +434,11 @@ unavailable to anyone but yourself.
 
 * Note: If you did not hold any story collection sessions, you can skip this page. [collectionRecordsLabel|label]
 
-* Story collection sessions [collectionSessions|grid|page_addCollectionSessionRecord]
+* These are the story collection sessions you planned to hold. [collectionSessions|grid|page_addCollectionSessionRecord]
 
 ## Add story collection session record [page_addCollectionSessionRecord|popup]
 
-* Group constructions [collectionSessionConstructions|grid|page_newCollectionSessionConstruction]
+* These are the group constructions you have entered for this session so far. [collectionSessionConstructions|grid|page_newCollectionSessionConstruction]
 
 * Story collection session notes [collectionSessionNotes|page_newCollectionSessionNotes]
 
@@ -487,7 +502,7 @@ unavailable to anyone but yourself.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-# Catalysis [headerpage_catalysis]
+# Catalysis [page_catalysis]
 // Observations - x
 // Interpretations - x
 // Ideas - x
@@ -616,7 +631,7 @@ all stories have been entered.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
-# Sensemaking [headerpage_sensemaking]
+# Sensemaking [page_sensemaking]
 // Planning sessions - x of x questions answered
 // Write session agenda - x of x questions answered
 // Print story cards - x cards printed (or checkmark)
@@ -732,19 +747,30 @@ all stories have been entered.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-#Intervention - checklist
-Choose interventions - x planned
-Answer questions about interventions - x questions answered
+# Intervention [pageheader_intervention]
+// Choose interventions - x planned
+// Answer questions about interventions - x questions answered
 
-##Choose interventions - answer questions about which interventions to use
+## Choose interventions [page_chooseInterventions]
 
-// recommendations based on groups in planning
+// also need some questions to help to choose interventions
+// based on OUTCOMES of sensemaking
+// add outcome answers to table, then show
+// similar to other recommendations, only for these, instead of using the participant group questions,
+// these are questions about project outcomes (which are collected right here)
 
-// questions help to choose interventions
-// cfk stopped here
+* Intervention recommendations [interventionRecommendations|recommendationTable|interventions]
 
-##Answer questions about interventions - answer questions about interventions used
-##Read intervention report - text with all stuff entered
+// after seeing all these recommendations, they should enter interventions they are doing
+// in a list with a popup window to record some basic info about each one
+
+## Answer questions about interventions - answer questions about interventions used
+
+// need to draw intevention names for this from previous page
+
+## Read intervention report [page_interventionReport]
+
+* Intervention report [interventionReport|report|intervention]
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
