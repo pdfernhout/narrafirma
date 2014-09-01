@@ -499,6 +499,7 @@ define(
             {
                 "id": "projectStory_scenario",
                 "text": "Start by choosing a scenario that starts your project story.",
+                "shortText": "Scenario",
                 "type": "select",
                 "options": "ask me anything;magic ears;fly on the wall;project aspects;my own scenario type",
                 "lineNumber": 161
@@ -506,6 +507,7 @@ define(
             {
                 "id": "projectStory_outcome",
                 "text": "Now choose an outcome for your story.",
+                "shortText": "Outcome",
                 "type": "select",
                 "options": "colossal success;miserable failure;acceptable outcome;my own outcome",
                 "lineNumber": 162
@@ -513,30 +515,35 @@ define(
             {
                 "id": "projectStory_text",
                 "text": "Now tell your project story as a future history (as though it has already happened).",
+                "shortText": "Story",
                 "type": "textarea",
                 "lineNumber": 163
             },
             {
                 "id": "projectStory_name",
                 "text": "Please name your project story.",
+                "shortText": "Name",
                 "type": "text",
                 "lineNumber": 164
             },
             {
                 "id": "projectStory_feelAbout",
                 "text": "How do you feel about this story?",
+                "shortText": "Feel about",
                 "type": "textarea",
                 "lineNumber": 165
             },
             {
                 "id": "projectStory_surprise",
                 "text": "What surprised you about this story?",
+                "shortText": "Surprised",
                 "type": "textarea",
                 "lineNumber": 166
             },
             {
                 "id": "projectStory_dangers",
                 "text": "Describe any opportunities or dangers you see in this story.",
+                "shortText": "Opportunities or dangers",
                 "type": "textarea",
                 "lineNumber": 167
             }
@@ -575,12 +582,14 @@ define(
             {
                 "id": "storyElementName",
                 "text": "What is the name of the story element?",
+                "shortText": "Name",
                 "type": "text",
                 "lineNumber": 199
             },
             {
                 "id": "storyElementType",
                 "text": "What type of story element is this?",
+                "shortText": "Type",
                 "type": "select",
                 "options": "character;situation;value;theme;relationship;motivation;belief;conflict",
                 "lineNumber": 200
@@ -588,12 +597,14 @@ define(
             {
                 "id": "storyElementDescription",
                 "text": "You can describe it more fully here.",
+                "shortText": "Description",
                 "type": "textarea",
                 "lineNumber": 201
             },
             {
                 "id": "storyElementPhoto",
                 "text": "You can enter a photograph of the element here.",
+                "shortText": "Image",
                 "type": "imageUploader",
                 "lineNumber": 202
             }
@@ -1063,6 +1074,7 @@ define(
             {
                 "id": "elicitingQuestion",
                 "text": "Enter a question with which to ask people to tell stories.",
+                "shortText": "Question",
                 "type": "textarea",
                 "lineNumber": 298
             },
@@ -1109,12 +1121,14 @@ define(
             {
                 "id": "storyQuestionText",
                 "text": "Enter a question to ask people about their stories.",
+                "shortText": "Question",
                 "type": "textarea",
                 "lineNumber": 310
             },
             {
                 "id": "storyQuestionType",
                 "text": "What type of question is this?",
+                "shortText": "Type",
                 "type": "select",
                 "options": "boolean;label;header;checkbox;checkboxes;text;textarea;select;radio;slider",
                 "lineNumber": 311
@@ -1122,12 +1136,14 @@ define(
             {
                 "id": "storyQuestionShortName",
                 "text": "Enter a short name we can use to refer to the question. (This name must be unique to the project.)",
+                "shortText": "Short name",
                 "type": "text",
                 "lineNumber": 312
             },
             {
                 "id": "storyQuestionHelp",
-                "text": "If you want to provide help to people ansewring the question, enter it here.",
+                "text": "If you want to provide help to people answering the question, enter it here.",
+                "shortText": "Help",
                 "type": "textarea",
                 "lineNumber": 313
             },
@@ -1174,12 +1190,14 @@ define(
             {
                 "id": "participantQuestionText",
                 "text": "Enter a question to ask people about themselves.",
+                "shortText": "Question",
                 "type": "textarea",
                 "lineNumber": 325
             },
             {
                 "id": "participantQuestionType",
                 "text": "What type of question is this?",
+                "shortText": "Type",
                 "type": "select",
                 "options": "boolean;label;header;checkbox;checkboxes;text;textarea;select;radio;slider",
                 "lineNumber": 326
@@ -1187,12 +1205,14 @@ define(
             {
                 "id": "participantQuestionShortName",
                 "text": "Enter a short name we can use to refer to the question. (This name must be unique to the project.)",
+                "shortText": "Short name",
                 "type": "text",
                 "lineNumber": 327
             },
             {
                 "id": "participantQuestionHelp",
-                "text": "If you want to provide help to people ansewring the question, enter it here.",
+                "text": "If you want to provide help to people answering the question, enter it here.",
+                "shortText": "Help",
                 "type": "textarea",
                 "lineNumber": 328
             },

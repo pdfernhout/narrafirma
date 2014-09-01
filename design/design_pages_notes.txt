@@ -85,7 +85,7 @@
 * Please enter any other information you want to appear at the top of project reports. [reportStartText|textarea]
 * Please enter any other information you want to appear at the bottom of project reports (as notes). [reportEndText|textarea]
 
-## Answer PNI Planning questions [page_planningQuestionsDraft] 
+## Answer PNI Planning questions [page_planningQuestionsDraft]
 
 * On this page you will answer some questions about your project's goals, relationships, focus, range, scope, and emphasis. [planning_draft|label]
 If you don't have good answers for these questions right now, don't worry; you will have a chance to come back and work on these answers again later.
@@ -158,13 +158,13 @@ What do you know about them?
 
 ## Project story [page_projectStory|popup]
 
-* Start by choosing a scenario that starts your project story. [projectStory_scenario|select|ask me anything;magic ears;fly on the wall;project aspects;my own scenario type]
-* Now choose an outcome for your story. [projectStory_outcome|select|colossal success;miserable failure;acceptable outcome;my own outcome]
-* Now tell your project story as a future history (as though it has already happened). [projectStory_text|textarea]
-* Please name your project story. [projectStory_name|text]
-* How do you feel about this story? [projectStory_feelAbout|textarea]
-* What surprised you about this story? [projectStory_surprise|textarea]
-* Describe any opportunities or dangers you see in this story. [projectStory_dangers|textarea]
+* Scenario | Start by choosing a scenario that starts your project story. [projectStory_scenario|select|ask me anything;magic ears;fly on the wall;project aspects;my own scenario type]
+* Outcome | Now choose an outcome for your story. [projectStory_outcome|select|colossal success;miserable failure;acceptable outcome;my own outcome]
+* Story | Now tell your project story as a future history (as though it has already happened). [projectStory_text|textarea]
+* Name | Please name your project story. [projectStory_name|text]
+* Feel about | How do you feel about this story? [projectStory_feelAbout|textarea]
+* Surprised | What surprised you about this story? [projectStory_surprise|textarea]
+* Opportunities or dangers | Describe any opportunities or dangers you see in this story. [projectStory_dangers|textarea]
 
 ## Create project story elements [page_projectStoryElements] 
 
@@ -196,10 +196,10 @@ What do you know about them?
 
 ## Add story element [page_addStoryElement|popup]
 
-* What is the name of the story element? [storyElementName|text]
-* What type of story element is this? [storyElementType|select|character;situation;value;theme;relationship;motivation;belief;conflict]
-* You can describe it more fully here. [storyElementDescription|textarea]
-* You can enter a photograph of the element here. [storyElementPhoto|imageUploader]
+* Name | What is the name of the story element? [storyElementName|text]
+* Type | What type of story element is this? [storyElementType|select|character;situation;value;theme;relationship;motivation;belief;conflict]
+* Description | You can describe it more fully here. [storyElementDescription|textarea]
+* Image | You can enter a photograph of the element here. [storyElementPhoto|imageUploader]
 
 ## Assess story sharing [page_assessStorySharing]
 
@@ -295,7 +295,7 @@ in the places where they normally gather.
 
 * Recommendations for eliciting questions [elicitingQuestionRecommendations|recommendationTable|elicitingQuestions]
 
-* Enter a question with which to ask people to tell stories. [elicitingQuestion|textarea]
+* Question | Enter a question with which to ask people to tell stories. [elicitingQuestion|textarea]
 
 * Or choose a question from this list. [elicitingQuestionTemplates|templateList|elicitingQuestions]
 
@@ -307,10 +307,10 @@ in the places where they normally gather.
 
 * Recommendations for story questions [storyQuestionRecommendations|recommendationTable|storyQuestions]
 
-* Enter a question to ask people about their stories. [storyQuestionText|textarea]
-* What type of question is this? [storyQuestionType|select|boolean;label;header;checkbox;checkboxes;text;textarea;select;radio;slider]
-* Enter a short name we can use to refer to the question. (This name must be unique to the project.) [storyQuestionShortName|text]
-* If you want to provide help to people ansewring the question, enter it here. [storyQuestionHelp|textarea]
+* Question | Enter a question to ask people about their stories. [storyQuestionText|textarea]
+* Type | What type of question is this? [storyQuestionType|select|boolean;label;header;checkbox;checkboxes;text;textarea;select;radio;slider]
+* Short name | Enter a short name we can use to refer to the question. (This name must be unique to the project.) [storyQuestionShortName|text]
+* Help | If you want to provide help to people answering the question, enter it here. [storyQuestionHelp|textarea]
 
 * Or choose a question from this list. [storyQuestionTemplates|templateList|storyQuestions]
 
@@ -322,10 +322,10 @@ in the places where they normally gather.
 
 * Recommendations for participant questions [participantQuestionRecommendations|recommendationTable|participantQuestions]
 
-* Enter a question to ask people about themselves. [participantQuestionText|textarea]
-* What type of question is this? [participantQuestionType|select|boolean;label;header;checkbox;checkboxes;text;textarea;select;radio;slider]
-* Enter a short name we can use to refer to the question. (This name must be unique to the project.) [participantQuestionShortName|text]
-* If you want to provide help to people ansewring the question, enter it here. [participantQuestionHelp|textarea]
+* Question | Enter a question to ask people about themselves. [participantQuestionText|textarea]
+* Type | What type of question is this? [participantQuestionType|select|boolean;label;header;checkbox;checkboxes;text;textarea;select;radio;slider]
+* Short name | Enter a short name we can use to refer to the question. (This name must be unique to the project.) [participantQuestionShortName|text]
+* Help | If you want to provide help to people answering the question, enter it here. [participantQuestionHelp|textarea]
 
 * Or choose a question from this list. [participantQuestionTemplates|templateList|participantQuestions]
 
