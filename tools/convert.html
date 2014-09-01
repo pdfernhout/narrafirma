@@ -145,6 +145,8 @@ function extract(line, rest, lineNumber) {
     return {"text": longLineContent, "shortText": shortLineContent, "info": infoContent};
 }
 
+var pages;
+
 function convert() {
     console.log("convert", inputTextArea);
     var input = inputTextArea.get("value");
@@ -157,7 +159,7 @@ function convert() {
     var lines = input.split("\n");
     var lastPage = null;
     var lastQuestion = null;
-    var pages = [];
+    pages = [];
     var lineNumber = 0;
     
     array.forEach(lines, function (line) {
@@ -218,6 +220,24 @@ function convert() {
     addOutput(');\n')
 }
 
+function generateRecommendationsTable() {
+	if (!pages) console.log('Run convert before generating recommendations table');
+	outputTextArea.set("value", "");
+	array.forEach(pages, function (page) {
+		array.forEach(page.questions, function (question) {
+			if (startsWith(question.id, 'aspects_') && (question.type === 'select')) {
+				addOutput('\n' + question.id + '\n');
+				array.forEach(question.options.split(';'), function (option) {
+					addOutput('\t' + option + '\n');
+					// console.log(option);
+				});
+			}
+		});
+		
+	});
+	
+}
+
 function addOutput(output) {
 	var newValue = outputTextArea.get("value") + output;
 	outputTextArea.set("value", newValue);
@@ -244,6 +264,7 @@ function createLayout() {
     outputTextArea.startup();          
   
     newButton("Convert", "buttons", convert);
+    newButton("Generate recommendations table", "buttons", generateRecommendationsTable);
 }
 
 createLayout();

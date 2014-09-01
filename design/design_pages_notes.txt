@@ -276,7 +276,7 @@ in the places where they normally gather.
 
 * On this page you will choose story collection venues, or ways to collect stories. [venuesIntro|label]
 
-* Venue recommendations [venueRecommendations|recommendationTable|venues]
+* Venue recommendations [venueRecommendations|recommendationTable|Venues]
 
 * Please answer these questions about your collection venues for each participant group. [venuesTable|page_venuesTable|participants_firstGroupName,participants_secondGroupName,participants_thirdGroupName]
 
@@ -293,9 +293,10 @@ in the places where they normally gather.
 
 ## Add story eliciting question [page_addElicitingQuestion|popup]
 
-* Recommendations for eliciting questions [elicitingQuestionRecommendations|recommendationTable|elicitingQuestions]
+* Recommendations for eliciting questions [elicitingQuestionRecommendations|recommendationTable|Eliciting questions]
 
 * Question | Enter a question with which to ask people to tell stories. [elicitingQuestion|textarea]
+* Type | What type of question is this? [elicitingQuestionType|checkboxes|what happened;directed question;undirected questions;point in time;event;extreme;surprise;people, places, things;fictional scenario;other]
 
 * Or choose a question from this list. [elicitingQuestionTemplates|templateList|elicitingQuestions]
 
