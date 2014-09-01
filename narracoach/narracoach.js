@@ -11,11 +11,11 @@ require([
     "dojo/_base/connect",
     "dojo/dom-construct",
     "dojo/dom-style",
+    "narracoach/grid-entry",
     "dojo/hash",
     "narracoach/page_design-questions",
     "narracoach/page_export-survey",
     "narracoach/page_graph-results",
-    "narracoach/page_project-story-list",
     "narracoach/page_take-survey",
     "narracoach/pages",
     "narracoach/question_editor",
@@ -33,11 +33,11 @@ require([
 	connect,
 	domConstruct,
 	domStyle,
+	gridEntry,
 	hash,
     page_designQuestions,
     page_exportSurvey,
     page_graphResults,
-    page_projectStoryList,
     page_takeSurvey,
     pages,
     questionEditor,
@@ -113,6 +113,8 @@ require([
 	    		   widgets.newButton(question.id, question.text, pagePane.domNode, buttonUnfinishedClick);
 	    	   } else if (question.type === "page_aspectsTable") {
 	    		   aspectsTable.insertAspectsTable(question, pagePane, pageDefinitions);
+	    	   } else if (question.type === "grid") {
+	    		   var gridAndStore = gridEntry.insertGrid(question, pagePane, pageDefinitions);
 	    	   } else {
 	    		   // console.log("question id & type", question.id, question.type, questionEditor.supportedTypes.indexOf(question.type));
 	    		   if (questionEditor.supportedTypes.indexOf(question.type) === -1) {
@@ -216,11 +218,7 @@ require([
             }
         });
         
-        /* TODO: Delete these pages after making sure any needed functionality is moved elsewhere (into widgets or more general code)
-        page_projectStoryList(tabContainer);
-        
-        page_generalInformationAboutProjectParticipants(tabContainer);
-        
+        /* TODO: Delete these pages after making sure any needed functionality is moved elsewhere (into widgets or more general code) 
         page_designQuestions(tabContainer);
         page_exportSurvey(tabContainer);
 		page_takeSurvey(tabContainer);
