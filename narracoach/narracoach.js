@@ -77,7 +77,7 @@ require([
     function mainSelectChanged(event) {
     	var id = event;
     	console.log("changing page to:", id);
-    	createOrShowPage(id);
+    	showPage(id);
     }
     
     function buttonUnfinishedClick(event) {
@@ -85,54 +85,77 @@ require([
     	alert("Unfinished");
     }
     
-    function createOrShowPage(id) {
+    function showPage(id) {
     	if (currentPageID === id) return;
+    	
+    	var page = pageDefinitions[id];
+    	if (!page) {
+    		console.log("no such page", id);
+    		alert("No such page: " + id);
+    		return;
+    	}
+    	
     	if (currentPageID) {
-    		// var previousPage = pageDefinitions[currentPageID];
     		domStyle.set(currentPageID, "display", "none");
     	}
     	
-    	var page = pageDefinitions[id];
-    	
-    	if (!pageInstantiations[id]) {
-
-	        var pagePane = new ContentPane({
-	        	"id": id,
-	            title: page.title,
-	            content: page.description.replace(/\n/g, "<br>\n"),
-	            style: "width: 100%",
-	       });
-	       
-	       array.forEach(page.questions, function(question) {
-	    	   if (question.type === "select" && question.options.indexOf(";") != -1) {
-	    		   // console.log("replacing select options", question.options);
-	    	       question.options = question.options.replace(/;/g, "\n");
-	    	       // console.log("result of replacement", question.options);
-	    	   }
-	    	   if (question.type === "button") {
-	    		   widgets.newButton(question.id, question.text, pagePane.domNode, buttonUnfinishedClick);
-	    	   } else if (question.type === "page_aspectsTable") {
-	    		   aspectsTable.insertAspectsTable(question, pagePane, pageDefinitions);
-	    	   } else if (question.type === "grid") {
-	    		   var gridAndStore = gridEntry.insertGrid(question, pagePane, pageDefinitions);
-	    	   } else {
-	    		   questionEditor.insertQuestionIntoDiv(question, pagePane.domNode);
-	    	   }
-	       });
-	       
-	       pageInstantiations[id] = pagePane;
-	       pagePane.placeAt("pageDiv");
-	       pagePane.startup();    
-    	} else {
-    		// var previousPage = pageDefinitions[id];
-    		domStyle.set(id, "display", "block");
-    	}
+    	domStyle.set(id, "display", "block");
     	
     	currentPageID = id;
     	hash(currentPageID);
     	
     	previousPageButton.setDisabled(!page.previousPageID);
     	nextPageButton.setDisabled(!page.nextPageID);
+    }
+
+    function createPage(id, visible) {
+        var page = pageDefinitions[id];
+        
+        if (!page) {
+        	console.log("ERROR: No definition for page: ", id);
+        	return;
+        }
+        
+        var pagePane = new ContentPane({
+        	"id": id,
+            title: page.title,
+            content: page.description.replace(/\n/g, "<br>\n"),
+            style: "width: 100%",
+       });
+        
+       console.log("Made content pane", id);
+       
+       array.forEach(page.questions, function(question) {
+    	   if (question.type === "select" && question.options.indexOf(";") != -1) {
+    		   // console.log("replacing select options", question.options);
+    	       question.options = question.options.replace(/;/g, "\n");
+    	       // console.log("result of replacement", question.options);
+    	   }
+    	   if (question.type === "button") {
+    		   widgets.newButton(question.id, question.text, pagePane.domNode, buttonUnfinishedClick);
+    	   } else if (question.type === "page_aspectsTable") {
+    		   aspectsTable.insertAspectsTable(question, pagePane, pageDefinitions);
+    	   } else if (question.type === "grid") {
+    		   var gridAndStore = gridEntry.insertGrid(question, pagePane, pageDefinitions);
+    	   } else {
+    		   questionEditor.insertQuestionIntoDiv(question, pagePane.domNode);
+    	   }
+       });
+       
+       pageInstantiations[id] = pagePane;
+       
+       console.log("about to place pane", id);
+       pagePane.placeAt("pageDiv");
+       
+       console.log("about to set visibility", id);
+       
+       if (visible) {
+    	   domStyle.set(id, "display", "block");
+       } else {
+    	   domStyle.set(id, "display", "none");
+       }
+       
+       pagePane.startup();
     }
     
     function previousPageClicked(event) {
@@ -178,6 +201,7 @@ require([
         var lastPageID = null;
         
         array.forEach(pages, function(page) {
+        	console.log("defining page", page.name)
         	var title = page.name;
         	// TODO: Eventually remove legacy support for old way of defining pages
         	// TODO: Eventually don't include popups or other special page types in list to display to user
@@ -197,19 +221,31 @@ require([
         	
         	page.title = title;
         	
-        	// Looks like Dojo select has a limitation where it can only take strings as values
-        	// so can't pass page in as value here and need indirect pageDefinitions lookup dictionary
-        	pageSelectOptions.push({label: title, value: page.id});
         	pageDefinitions[page.id] = page;
         	
-        	// Make it easy to lookup previous and next pages from a page
+        	console.log("about to make page");
         	// Skip over special page types
         	if (!page.type) {
+            	// Make it easy to lookup previous and next pages from a page
         		if (lastPageID) pageDefinitions[lastPageID].nextPageID = page.id;
         		page.previousPageID = lastPageID;
         		lastPageID = page.id;
+        		
+            	// Looks like Dojo select has a limitation where it can only take strings as values
+            	// so can't pass page in as value here and need indirect pageDefinitions lookup dictionary
+            	pageSelectOptions.push({label: title, value: page.id});
             }
         });
+        
+        // Now, premake pages only after all definitons are done (since some pages refer to others for question popups that may be defined later)
+        array.forEach(pages, function(page) {
+        	console.log("creating page", page.name)
+        	// Skip over special page types
+        	if (!page.type) {
+        		// Pre-make base pages
+        		createPage(page.id);
+            }
+        });        
         
         /* TODO: Delete these pages after making sure any needed functionality is moved elsewhere (into widgets or more general code) 
         page_designQuestions(tabContainer);
@@ -235,7 +271,7 @@ require([
     	nextPageButton = registry.byId("nextPage");
     	
     	// Setup the first page
-    	createOrShowPage(pages[0].id);
+    	showPage(pages[0].id);
     	
     	console.log("createLayout end");
     	
