@@ -127,11 +127,6 @@ require([
        // console.log("Made content pane", id);
        
        array.forEach(page.questions, function(question) {
-    	   if (question.type === "select" && question.options.indexOf(";") != -1) {
-    		   // console.log("replacing select options", question.options);
-    	       question.options = question.options.replace(/;/g, "\n");
-    	       // console.log("result of replacement", question.options);
-    	   }
     	   if (question.type === "button") {
     		   widgets.newButton(question.id, question.text, pagePane.domNode, buttonUnfinishedClick);
     	   } else if (question.type === "page_aspectsTable") {
@@ -222,7 +217,17 @@ require([
         	
         	page.title = title;
         	
-        	pageDefinitions[page.id] = page;
+        	// Cleanup options
+        	// TODO: Ensure options get translated
+            array.forEach(page.questions, function(question) {
+	      	   if (question.type === "select" && question.options.indexOf(";") != -1) {
+	    		   // console.log("replacing select options", question.options);
+	    	       question.options = question.options.replace(/;/g, "\n");
+	    	       // console.log("result of replacement", question.options);
+	    	   }
+            });
+        	
+        	pageDefinitions[page.id] = page;  	
         	
         	// console.log("about to make page");
         	// Skip over special page types

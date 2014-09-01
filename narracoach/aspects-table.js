@@ -55,6 +55,7 @@ define([
 	function newSpecialSelect(id, options) {
 		var theOptions = [];
 		array.forEach(options, function(option) {
+			//console.log("newSpecialSelect option", id, option);
 			theOptions.push({label: option, value: option});
 		});
 		var select = new Select({
@@ -103,8 +104,8 @@ define([
 				table.addChild(questionContentPane);
 				
 				// TODO: Translation
-				// var options = question.options.replace(/;/g, "\n");
-				var options = question.options.split(";");
+				var options = question.options.split("\n");
+				// console.log("aspectsTable options", question.id, options);
 
 				// TODO: Maybe should do this to get styling and div id right? questionEditor.insertQuestionIntoDiv(question, page.containerNode);
 				table.addChild(newSpecialSelect(question.id + "_" + 1, options));
