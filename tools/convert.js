@@ -3,12 +3,14 @@
 require([
     "dojo/_base/array",
     "dojo/string",
+    "dojo/text!../design/design_pages_notes.txt",
     "dijit/form/Button",
     "dijit/form/SimpleTextarea",
     "dojo/domReady!"
 ], function(
 	array,
 	string,
+	textOfDesign,
     Button,
     SimpleTextarea
 ){
@@ -200,9 +202,11 @@ var inputTextArea;
 var outputTextArea;
 
 function createLayout() {
+	var initialText = textOfDesign;
+	
     inputTextArea = new SimpleTextarea({
         name: "input",
-        value: "",
+        value: initialText,
         style: "width: 90%; height: 200px"
     }, "input");
     
