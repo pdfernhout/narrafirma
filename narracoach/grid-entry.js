@@ -9,6 +9,7 @@ define([
     "dijit/registry",
     "narracoach/translate",
     "narracoach/widgets",
+    "dgrid/extensions/ColumnResizer",
     "dijit/layout/ContentPane",
     "dijit/Dialog",
     "dgrid/extensions/DijitRegistry",
@@ -26,6 +27,7 @@ define([
     registry,
     translate,
     widgets,
+    ColumnResizer,
     ContentPane,
     Dialog,
     DijitRegistry,
@@ -140,7 +142,7 @@ define([
         // console.log("making grid");
         // TODO: Fix columns
         // var grid = new OnDemandGrid({
-        var grid = new(declare([OnDemandGrid, DijitRegistry, Keyboard, Selection]))({
+        var grid = new(declare([OnDemandGrid, DijitRegistry, Keyboard, Selection, ColumnResizer]))({
         	"store": store,
             "columns": columns
         });
