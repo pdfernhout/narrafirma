@@ -20,6 +20,7 @@ require([
     "narracoach/pages",
     "narracoach/question_editor",
     "dijit/registry",
+    "narracoach/story-browser",
     "dojo/string",
     "narracoach/widgets",
     "dojo/window",
@@ -43,6 +44,7 @@ require([
     pages,
     questionEditor,
     registry,
+    storyBrowser,
     string,
     widgets,
     windowDojo,
@@ -135,6 +137,8 @@ require([
     		   widgets.newButton(question.id, question.text, pagePane.domNode, buttonUnfinishedClick);
     	   } else if (question.type === "page_aspectsTable") {
     		   aspectsTable.insertAspectsTable(question, pagePane, pageDefinitions);
+    	   } else if (question.type === "storyBrowser") {
+    		   storyBrowser.insertStoryBrowser(question, pagePane, pageDefinitions);
     	   } else if (question.type === "grid") {
     		   var gridAndStore = gridEntry.insertGrid(question, pagePane, pageDefinitions);
     	   } else {
