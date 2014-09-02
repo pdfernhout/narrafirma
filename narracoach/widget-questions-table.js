@@ -66,8 +66,8 @@ define([
         return textarea;
 	}
 	
-    function insertAspectsTable(pseudoQuestion, pagePane, pageDefinitions) {
-    	// console.log("insertAspectsTable", pseudoQuestion);
+    function insertQuestionsTable(pseudoQuestion, pagePane, pageDefinitions) {
+    	// console.log("insertQuestionsTable start", pseudoQuestion);
     	
     	var groupHeader1 = new ContentPane({"content": "<i>N/A</i>", "colspan": 1});
     	var groupHeader2 = new ContentPane({"content": "<i>N/A</i>", "colspan": 1});
@@ -97,15 +97,15 @@ define([
     	// console.log("groupIDs", groupIDs);
     	
     	var widget1 = registry.byId(groupIDs[0])
-    	if (!widget1) return console.log("ERROR: insertAspectsTable widget 1 not found", groupIDs[0], pseudoQuestion);
+    	if (!widget1) return console.log("ERROR: insertQuestionsTable widget 1 not found", groupIDs[0], pseudoQuestion);
     	widget1.on("change", updateRole1);
     	
     	var widget2 = registry.byId(groupIDs[1]);
-    	if (!widget2) return console.log("ERROR: insertAspectsTable widget 2 not found", groupIDs[1], pseudoQuestion);
+    	if (!widget2) return console.log("ERROR: insertQuestionsTable widget 2 not found", groupIDs[1], pseudoQuestion);
     	widget2.on("change", updateRole2);
     	
     	var widget3 = registry.byId(groupIDs[2]);
-    	if (!widget3) return console.log("ERROR: insertAspectsTable widget 3 not found", groupIDs[2], pseudoQuestion);
+    	if (!widget3) return console.log("ERROR: insertQuestionsTable widget 3 not found", groupIDs[2], pseudoQuestion);
     	widget3.on("change", updateRole3);
     	
     	var questionDefinitionPage = pseudoQuestion.type;
@@ -139,7 +139,7 @@ define([
 				
 				// TODO: Translation
 				var options = question.options.split("\n");
-				// console.log("aspectsTable options", question.id, options);
+				// console.log("insertQuestionsTable options", question.id, options);
 
 				// TODO: Maybe should do this to get styling and div id right? questionEditor.insertQuestionIntoDiv(question, page.containerNode);
 				newSpecialSelect(table, question.id + "_" + 1, options);
@@ -161,11 +161,11 @@ define([
 		pagePane.addChild(table);
 		
 		table.startup();
-		// console.log("insertAspectsTable finished");
+		// console.log("insertQuestionsTable finished");
     }
     
     return {
-    	"insertAspectsTable": insertAspectsTable
+    	"insertQuestionsTable": insertQuestionsTable
     };
     
 });

@@ -90,7 +90,9 @@ define([
         });
 
         addDialog = new Dialog({
-            title: "Add project story",
+        	// TODO: Translate text
+        	// TODO: Make text specific to type of item
+            title: "Add Item",
             content: form,
             style: "width: 600px; height 800px; overflow: auto;",
             onCancel: function() {
@@ -104,7 +106,7 @@ define([
         addDialog.show();
     }
     
-    function insertGrid(pseudoQuestion, pagePane, pageDefinitions) {
+    function insertGridTable(pseudoQuestion, pagePane, pageDefinitions) {
     	// Grid with list of objects
     	// console.log("insertGrid");
     	
@@ -167,7 +169,7 @@ define([
 	}
 
 	return {
-		"insertGrid": insertGrid
+		"insertGridTable": insertGridTable
 	}
     
 });

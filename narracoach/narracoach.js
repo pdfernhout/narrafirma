@@ -7,11 +7,10 @@ var surveyResults = [];
 
 require([
     "dojo/_base/array",
-    "narracoach/aspects-table",
     "dojo/_base/connect",
     "dojo/dom-construct",
     "dojo/dom-style",
-    "narracoach/grid-entry",
+
     "dojo/hash",
     "narracoach/page_design-questions",
     "narracoach/page_export-survey",
@@ -20,9 +19,11 @@ require([
     "narracoach/pages",
     "narracoach/question_editor",
     "dijit/registry",
-    "narracoach/story-browser",
     "dojo/string",
     "narracoach/widgets",
+    "narracoach/widget-grid-table",
+    "narracoach/widget-questions-table",
+    "narracoach/widget-story-browser",
     "dojo/window",
     "dijit/layout/ContentPane",
     "dijit/form/Select",
@@ -31,11 +32,9 @@ require([
     "dojo/domReady!"
 ], function(
 	array,
-	aspectsTable,
 	connect,
 	domConstruct,
 	domStyle,
-	gridEntry,
 	hash,
     page_designQuestions,
     page_exportSurvey,
@@ -44,9 +43,11 @@ require([
     pages,
     questionEditor,
     registry,
-    storyBrowser,
     string,
     widgets,
+    widgetGridTable,
+    widgetQuestionsTable,
+    widgetStoryBrowser,
     windowDojo,
     ContentPane,
     Select,
@@ -142,11 +143,11 @@ require([
     	   if (question.type === "button") {
     		   widgets.newButton(question.id, question.text, pagePane.domNode, buttonUnfinishedClick);
     	   } else if (startsWith(question.type, "page_")) {
-    		   aspectsTable.insertAspectsTable(question, pagePane, pageDefinitions);
+    		   widgetQuestionsTable.insertQuestionsTable(question, pagePane, pageDefinitions);
     	   } else if (question.type === "storyBrowser") {
-    		   storyBrowser.insertStoryBrowser(question, pagePane, pageDefinitions);
+    		   widgetStoryBrowser.insertStoryBrowser(question, pagePane, pageDefinitions);
     	   } else if (question.type === "grid") {
-    		   var gridAndStore = gridEntry.insertGrid(question, pagePane, pageDefinitions);
+    		   var gridAndStore = widgetGridTable.insertGridTable(question, pagePane, pageDefinitions);
     	   } else {
     		   questionEditor.insertQuestionIntoDiv(question, pagePane.domNode);
     	   }
