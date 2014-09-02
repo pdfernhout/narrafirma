@@ -32,6 +32,37 @@ define([
     TableContainer
 ){
     // story browser support
+	
+	// Temporary test data
+    var testDogQuestions = [
+	    {id: "name", type: "text", text: "Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},
+	    {id: "ownDog", type: "boolean", text: "Do you currently have a dog?", help: "Enter yes or no"},
+	    {id: "broughtHome", type: "textarea", text: "What happened when you first brought your dog home?"},
+	    {id: "broughtHomeTitle", type: "text", text: "What is a good title for your story?"},
+	    {id: "feeling1", type: "slider", text: "How good did you feel the day you brought your dog home?"},
+	    {id: "feeling2", type: "slider", text: "How good did you feel the day after you brought your dog home?"},
+	    {id: "feeling3", type: "slider", text: "How good do you feel right now?"},
+	    {id: "feeling4", type: "select", text: "How good does your spouse feel right now?", options: "low\nmedium\nhigh"},
+	];
+    
+    var testDogStories = [];
+    
+    console.log("making test dog stories");
+    for (var i = 0; i < 100; i++) {
+    	var newStory = {
+    		name: "name " + i,
+    		ownDog: true,
+    		broughtHome: "Brought home " + i,
+    		broughtHomeTitle: "Brought Home Title " + i,
+    		feeling1: i % 100,
+    		feeling2: i % 100,
+    		feeling3: i % 100,
+    		feeling4: ["low", "medium", "high"][i % 3]
+    	};
+    	testDogStories.push(newStory);
+    }
+    
+    console.log("testDogStories", testDogStories);
    
 	function newSpecialSelect(id, options) {
 		var theOptions = [];
