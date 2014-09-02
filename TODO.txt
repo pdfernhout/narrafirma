@@ -1,5 +1,7 @@
 ==== NarraCoach TODO list:
 
+Startup wait progress
+
 Main Dashboard
 Dashboard for each section
 
@@ -12,7 +14,6 @@ Disabled or hidden tabs which are enabled as progress
 Participant questions need to have options and ids and translations
 
 Support storyBrowser -- a smalltalk-like browser for stories
-Story list widget with optional add button
 Story browser with list of title and shows stories
 Story browser with two choices of questions and answers
 
@@ -44,6 +45,9 @@ DONE Make "skeleton" of program with named tabs for all steps from spreadsheet
 DONE Write convert program that converts from design_page_notes to page specifications
 DONE Navigation using dropdown instead of tabs because too many tabs
 DONE Buttons to go backward and forward through pages
+DONE Story list widget with add button
+DONE Grid header resizing
+DONE Basic wait message when loading
 
 ======= CYNTHIA
 

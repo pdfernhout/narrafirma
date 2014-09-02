@@ -289,4 +289,5 @@ require([
 
     // Call the main function
     createLayout();
+    document.getElementById("startup").style.display = "none";
 });
