@@ -85,7 +85,7 @@ require([
     }
     
     function buttonUnfinishedClick(event) {
-    	console.log("buttunUnfinishedClick", event);
+    	console.log("buttonUnfinishedClick", event);
     	alert("Unfinished");
     }
     
@@ -113,6 +113,12 @@ require([
     	
     	windowDojo.scrollIntoView(selectWidget.domNode);
     }
+    
+    // TODO: Put this in utility
+    function startsWith(str, prefix) {
+  	  // console.log("startsWith", prefix, str.lastIndexOf(prefix, 0) === 0, str);
+      return str.lastIndexOf(prefix, 0) === 0;
+    }
 
     function createPage(id, visible) {
     	console.log("createPage", id);
@@ -135,7 +141,7 @@ require([
        array.forEach(page.questions, function(question) {
     	   if (question.type === "button") {
     		   widgets.newButton(question.id, question.text, pagePane.domNode, buttonUnfinishedClick);
-    	   } else if (question.type === "page_aspectsTable") {
+    	   } else if (startsWith(question.type, "page_")) {
     		   aspectsTable.insertAspectsTable(question, pagePane, pageDefinitions);
     	   } else if (question.type === "storyBrowser") {
     		   storyBrowser.insertStoryBrowser(question, pagePane, pageDefinitions);
@@ -268,7 +274,7 @@ require([
 		page_graphResults(tabContainer);
 		*/
 
-    	widgets.newSelect("mainSelect", pageSelectOptions, null, "navigationDiv");
+    	widgets.newSelect("mainSelect", pageSelectOptions, null, "navigationDiv", "NoUnselectedOption");
        	//widgets.newSelect("mainSelect", null, "one\ntwo\nthree", "navigationDiv");
     	
     	selectWidget = registry.byId("mainSelect");

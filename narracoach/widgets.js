@@ -114,8 +114,10 @@ define([
         return textarea.domNode;
     }
     
-    function newSelect(id, choices, optionsString, addToDiv) {
+    function newSelect(id, choices, optionsString, addToDiv, noSelectedOption) {
         var options = [];
+		// TODO: Translate label for no selection
+		if (!noSelectedOption) options.push({label: " -- select -- ", value: "", selected: true});
         if (choices) {
             array.forEach(choices, function(each) {
             	// console.log("choice", id, each);
