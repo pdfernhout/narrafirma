@@ -22,6 +22,7 @@ require([
     "dijit/registry",
     "dojo/string",
     "narracoach/widgets",
+    "dojo/window",
     "dijit/layout/ContentPane",
     "dijit/form/Select",
     "dijit/layout/TabContainer",
@@ -44,6 +45,7 @@ require([
     registry,
     string,
     widgets,
+    windowDojo,
     ContentPane,
     Select,
     TabContainer,
@@ -106,6 +108,8 @@ require([
     	
     	previousPageButton.setDisabled(!page.previousPageID);
     	nextPageButton.setDisabled(!page.nextPageID);
+    	
+    	windowDojo.scrollIntoView(selectWidget.domNode);
     }
 
     function createPage(id, visible) {
