@@ -222,7 +222,7 @@ require([
         		page.description = " " + sections + "<br>\n" + page.description;
         	}
         	if (page.isHeader) {
-        		title = "<b>" + title + "</b>";
+        		title = "<i>" + title + "</i>";
         	} else {
         		title = "&nbsp;&nbsp;&nbsp;&nbsp;" + title;
         	}
