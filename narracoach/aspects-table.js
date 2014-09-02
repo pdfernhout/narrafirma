@@ -70,7 +70,7 @@ define([
     function insertAspectsTable(pseudoQuestion, pagePane, pageDefinitions) {
     	// console.log("insertAspectsTable", pseudoQuestion);
     	
-    	var groupIDs = pseudoQuestion.options.split(",");
+    	var groupIDs = pseudoQuestion.options.split(";");
     	
     	registry.byId(groupIDs[0]).on("change", updateRole1);
     	registry.byId(groupIDs[1]).on("change", updateRole2);
@@ -117,6 +117,7 @@ define([
 		pagePane.addChild(table);
 		
 		table.startup();
+		// console.log("insertAspectsTable finished");
     }
     
     return {

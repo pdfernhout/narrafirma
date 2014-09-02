@@ -274,14 +274,14 @@ define(
                 "id": "aspectsTable",
                 "text": "Please answer these questions about each participant group.",
                 "type": "page_aspectsTable",
-                "options": "participants_firstGroupName,participants_secondGroupName,participants_thirdGroupName",
+                "options": "participants_firstGroupName;participants_secondGroupName;participants_thirdGroupName",
                 "lineNumber": 118
             }
         ]
     },
     {
         "id": "page_aspectsTable",
-        "name": "Aspects table",
+        "name": "Project aspects",
         "lineNumber": 120,
         "description": "",
         "isHeader": false,
@@ -992,7 +992,7 @@ define(
                 "id": "venueRecommendations",
                 "text": "Venue recommendations",
                 "type": "recommendationTable",
-                "options": "venues",
+                "options": "Venues",
                 "lineNumber": 279
             },
             {
@@ -1068,7 +1068,7 @@ define(
                 "id": "elicitingQuestionRecommendations",
                 "text": "Recommendations for eliciting questions",
                 "type": "recommendationTable",
-                "options": "elicitingQuestions",
+                "options": "Eliciting questions",
                 "lineNumber": 296
             },
             {
@@ -1079,18 +1079,26 @@ define(
                 "lineNumber": 298
             },
             {
+                "id": "elicitingQuestionType",
+                "text": "What type of question is this?",
+                "shortText": "Type",
+                "type": "checkboxes",
+                "options": "what happened;directed question;undirected questions;point in time;event;extreme;surprise;people, places, things;fictional scenario;other",
+                "lineNumber": 299
+            },
+            {
                 "id": "elicitingQuestionTemplates",
                 "text": "Or choose a question from this list.",
                 "type": "templateList",
                 "options": "elicitingQuestions",
-                "lineNumber": 300
+                "lineNumber": 301
             }
         ]
     },
     {
         "id": "page_writeQuestionsAboutStories",
         "name": "Write questions about stories",
-        "lineNumber": 302,
+        "lineNumber": 303,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -1099,14 +1107,14 @@ define(
                 "text": "These are the questions you will be asking people about stories.",
                 "type": "grid",
                 "options": "page_addStoryQuestion",
-                "lineNumber": 304
+                "lineNumber": 305
             }
         ]
     },
     {
         "id": "page_addStoryQuestion",
         "name": "Add story question",
-        "lineNumber": 306,
+        "lineNumber": 307,
         "description": "",
         "isHeader": false,
         "type": "popup",
@@ -1116,14 +1124,14 @@ define(
                 "text": "Recommendations for story questions",
                 "type": "recommendationTable",
                 "options": "storyQuestions",
-                "lineNumber": 308
+                "lineNumber": 309
             },
             {
                 "id": "storyQuestionText",
                 "text": "Enter a question to ask people about their stories.",
                 "shortText": "Question",
                 "type": "textarea",
-                "lineNumber": 310
+                "lineNumber": 311
             },
             {
                 "id": "storyQuestionType",
@@ -1131,35 +1139,35 @@ define(
                 "shortText": "Type",
                 "type": "select",
                 "options": "boolean;label;header;checkbox;checkboxes;text;textarea;select;radio;slider",
-                "lineNumber": 311
+                "lineNumber": 312
             },
             {
                 "id": "storyQuestionShortName",
                 "text": "Enter a short name we can use to refer to the question. (This name must be unique to the project.)",
                 "shortText": "Short name",
                 "type": "text",
-                "lineNumber": 312
+                "lineNumber": 313
             },
             {
                 "id": "storyQuestionHelp",
                 "text": "If you want to provide help to people answering the question, enter it here.",
                 "shortText": "Help",
                 "type": "textarea",
-                "lineNumber": 313
+                "lineNumber": 314
             },
             {
                 "id": "storyQuestionTemplates",
                 "text": "Or choose a question from this list.",
                 "type": "templateList",
                 "options": "storyQuestions",
-                "lineNumber": 315
+                "lineNumber": 316
             }
         ]
     },
     {
         "id": "page_writeQuestionsAboutParticipants",
         "name": "Write questions about participants",
-        "lineNumber": 317,
+        "lineNumber": 318,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -1168,14 +1176,14 @@ define(
                 "text": "These are the questions you will be asking people about themselves.",
                 "type": "grid",
                 "options": "page_addParticipantQuestion",
-                "lineNumber": 319
+                "lineNumber": 320
             }
         ]
     },
     {
         "id": "page_addParticipantQuestion",
         "name": "Add participant question",
-        "lineNumber": 321,
+        "lineNumber": 322,
         "description": "",
         "isHeader": false,
         "type": "popup",
@@ -1185,14 +1193,14 @@ define(
                 "text": "Recommendations for participant questions",
                 "type": "recommendationTable",
                 "options": "participantQuestions",
-                "lineNumber": 323
+                "lineNumber": 324
             },
             {
                 "id": "participantQuestionText",
                 "text": "Enter a question to ask people about themselves.",
                 "shortText": "Question",
                 "type": "textarea",
-                "lineNumber": 325
+                "lineNumber": 326
             },
             {
                 "id": "participantQuestionType",
@@ -1200,35 +1208,35 @@ define(
                 "shortText": "Type",
                 "type": "select",
                 "options": "boolean;label;header;checkbox;checkboxes;text;textarea;select;radio;slider",
-                "lineNumber": 326
+                "lineNumber": 327
             },
             {
                 "id": "participantQuestionShortName",
                 "text": "Enter a short name we can use to refer to the question. (This name must be unique to the project.)",
                 "shortText": "Short name",
                 "type": "text",
-                "lineNumber": 327
+                "lineNumber": 328
             },
             {
                 "id": "participantQuestionHelp",
                 "text": "If you want to provide help to people answering the question, enter it here.",
                 "shortText": "Help",
                 "type": "textarea",
-                "lineNumber": 328
+                "lineNumber": 329
             },
             {
                 "id": "participantQuestionTemplates",
                 "text": "Or choose a question from this list.",
                 "type": "templateList",
                 "options": "participantQuestions",
-                "lineNumber": 330
+                "lineNumber": 331
             }
         ]
     },
     {
         "id": "page_designQuestionForm",
         "name": "Design question form",
-        "lineNumber": 332,
+        "lineNumber": 333,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -1236,32 +1244,32 @@ define(
                 "id": "questionFormTitle",
                 "text": "Please enter a title for the form.",
                 "type": "text",
-                "lineNumber": 334
+                "lineNumber": 335
             },
             {
                 "id": "questionFormLogo",
                 "text": "You can upload a logo or ather image to show at the top of the form.",
                 "type": "imageUploader",
-                "lineNumber": 335
+                "lineNumber": 336
             },
             {
                 "id": "questionFormIntro",
                 "text": "Please enter an introduction to be shown at the start of the form, after the title",
                 "type": "textarea",
-                "lineNumber": 336
+                "lineNumber": 337
             },
             {
                 "id": "questionFormEndText",
                 "text": "Please enter any text to be shown at the end of the form",
                 "type": "textarea",
-                "lineNumber": 337
+                "lineNumber": 338
             }
         ]
     },
     {
         "id": "page_planStoryCollectionSessions",
         "name": "Plan story collection sessions",
-        "lineNumber": 339,
+        "lineNumber": 340,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -1269,106 +1277,115 @@ define(
                 "id": "collectionSessionIntro",
                 "text": "If you don't plan to collect stories in group sessions, you can skip this page.",
                 "type": "label",
-                "lineNumber": 341
+                "lineNumber": 342
             },
             {
                 "id": "collectionSessionRecommendations",
                 "text": "Recommendations for story collection sessions",
                 "type": "recommendationTable",
                 "options": "collectionSessions",
-                "lineNumber": 343
+                "lineNumber": 344
             },
             {
                 "id": "storyCollectionSessionsList",
                 "text": "These are the collection sessions you have designed so far.",
                 "type": "grid",
                 "options": "page_addStoryCollectionSession",
-                "lineNumber": 345
+                "lineNumber": 346
             }
         ]
     },
     {
         "id": "page_addStoryCollectionSession",
         "name": "Design story collection session",
-        "lineNumber": 347,
+        "lineNumber": 348,
         "description": "",
         "isHeader": false,
         "type": "popup",
         "questions": [
             {
                 "id": "collectionSessionName",
-                "text": "Please give this session a name.",
-                "type": "text",
-                "lineNumber": 349
-            },
-            {
-                "id": "collectionSessionRepetitions",
-                "text": "How many repetitions of the session will there be?",
+                "text": "Please give this session plan a name.",
+                "shortText": "Name",
                 "type": "text",
                 "lineNumber": 350
             },
             {
-                "id": "collectionSessionLength",
-                "text": "How long will this session be?",
+                "id": "collectionSessionRepetitions",
+                "text": "How many repetitions of the session will there be?",
+                "shortText": "Repetitions",
                 "type": "text",
                 "lineNumber": 351
             },
             {
-                "id": "collectionSessionTime",
-                "text": "When will it take place?",
+                "id": "collectionSessionLength",
+                "text": "How long will this session be?",
+                "shortText": "Length",
                 "type": "text",
                 "lineNumber": 352
             },
             {
-                "id": "collectionSessionLocation",
-                "text": "Where will it take place?",
+                "id": "collectionSessionTime",
+                "text": "When will it take place?",
+                "shortText": "Time",
                 "type": "text",
                 "lineNumber": 353
             },
             {
-                "id": "collectionSessionSize",
-                "text": "How many people will be invited to each repetition of this session?",
+                "id": "collectionSessionLocation",
+                "text": "Where will it take place?",
+                "shortText": "Location",
                 "type": "text",
                 "lineNumber": 354
             },
             {
-                "id": "collectionSessionGroups",
-                "text": "From which participant group(s) will people be invited?",
-                "type": "checkBoxesWithPull",
-                "options": "participantGroups",
+                "id": "collectionSessionSize",
+                "text": "How many people will be invited to each repetition of this session?",
+                "shortText": "Number of people",
+                "type": "text",
                 "lineNumber": 355
             },
             {
+                "id": "collectionSessionGroups",
+                "text": "From which participant group(s) will people be invited?",
+                "shortText": "Participant groups",
+                "type": "checkBoxesWithPull",
+                "options": "participantGroups",
+                "lineNumber": 356
+            },
+            {
+                "id": "collectionSessionMaterials",
+                "text": "What materials will this session require?",
+                "shortText": "Materials",
+                "type": "textarea",
+                "lineNumber": 357
+            },
+            {
+                "id": "collectionSessionDetails",
+                "text": "Enter other details about this session.",
+                "shortText": "Other",
+                "type": "textarea",
+                "lineNumber": 358
+            },
+            {
                 "id": "collectionSessionAgenda",
-                "text": "These are the session agendas you have designed so far.",
+                "text": "These are the activities added to this session plan so far.",
                 "type": "grid",
                 "options": "page_addCollectionSessionActivity",
-                "lineNumber": 357
+                "lineNumber": 360
             },
             {
                 "id": "printCollectionSessionAgenda",
                 "text": "Print session agenda",
                 "type": "button",
-                "lineNumber": 358
-            },
-            {
-                "id": "collectionSessionMaterials",
-                "text": "What materials will this session require?",
-                "type": "textarea",
-                "lineNumber": 360
-            },
-            {
-                "id": "collectionSessionDetails",
-                "text": "Enter other details about this session.",
-                "type": "textarea",
-                "lineNumber": 361
+                "lineNumber": 362
             }
         ]
     },
     {
         "id": "page_addCollectionSessionActivity",
         "name": "Add story collection session activity",
-        "lineNumber": 363,
+        "lineNumber": 364,
         "description": "",
         "isHeader": false,
         "type": "popup",
@@ -1376,64 +1393,73 @@ define(
             {
                 "id": "collectionSessionActivityName",
                 "text": "Please give this activity a name.",
+                "shortText": "Name",
                 "type": "text",
-                "lineNumber": 365
+                "lineNumber": 366
             },
             {
                 "id": "collectionSessionActivityType",
                 "text": "What type of activity is this?",
+                "shortText": "Type",
                 "type": "select",
                 "options": "ice-breaker;sharing stories (no task);sharing stories (simple task);discussing stories;twice-told stories exercise;timeline exercise;landscape exercise;my own exercise;other",
-                "lineNumber": 366
+                "lineNumber": 367
             },
             {
                 "id": "collectionActivityPlan",
                 "text": "Describe the plan for this activity.",
-                "type": "textarea",
-                "lineNumber": 367
-            },
-            {
-                "id": "collectionActivityOptionalParts",
-                "text": "Describe optional elaborations you might or might not use in this activity.",
+                "shortText": "Plan",
                 "type": "textarea",
                 "lineNumber": 368
             },
             {
+                "id": "collectionActivityOptionalParts",
+                "text": "Describe optional elaborations you might or might not use in this activity.",
+                "shortText": "Optional elaborations",
+                "type": "textarea",
+                "lineNumber": 369
+            },
+            {
                 "id": "collectionActivityTime",
                 "text": "How long will this activity take?",
+                "shortText": "Length",
                 "type": "text",
-                "lineNumber": 369
+                "lineNumber": 370
             },
             {
                 "id": "collectionActivityRecording",
                 "text": "How will stories be recorded during this activity?",
-                "type": "textarea",
-                "lineNumber": 370
-            },
-            {
-                "id": "collectionActivityMaterials",
-                "text": "What materials will be provided for this activity?",
+                "shortText": "Recording",
                 "type": "textarea",
                 "lineNumber": 371
             },
             {
-                "id": "collectionActivitySpaces",
-                "text": "What spaces will be used for this activity?",
+                "id": "collectionActivityMaterials",
+                "text": "What materials will be provided for this activity?",
+                "shortText": "Materials",
                 "type": "textarea",
                 "lineNumber": 372
             },
             {
-                "id": "collectionActivityFacilitation",
-                "text": "What sort of facilitation will be necessary for this activity?",
+                "id": "collectionActivitySpaces",
+                "text": "What spaces will be used for this activity?",
+                "shortText": "Spaces",
                 "type": "textarea",
                 "lineNumber": 373
+            },
+            {
+                "id": "collectionActivityFacilitation",
+                "text": "What sort of facilitation will be necessary for this activity?",
+                "shortText": "Facilitation",
+                "type": "textarea",
+                "lineNumber": 374
             }
         ]
     },
     {
         "id": "readCollectionDesignReport",
         "name": "Read collection design report",
-        "lineNumber": 375,
+        "lineNumber": 376,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -1442,14 +1468,7 @@ define(
                 "text": "Collection design report",
                 "type": "report",
                 "options": "collectionDesign",
-                "lineNumber": 377
-            },
-            {
-                "id": "FIXME_379",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null,
-                "lineNumber": 379
+                "lineNumber": 378
             },
             {
                 "id": "FIXME_380",
@@ -1460,14 +1479,14 @@ define(
             },
             {
                 "id": "FIXME_381",
-                "text": "//                                                  COLLECTION PROCESS",
+                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null,
                 "lineNumber": 381
             },
             {
                 "id": "FIXME_382",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
+                "text": "//                                                  COLLECTION PROCESS",
                 "type": "label",
                 "options": null,
                 "lineNumber": 382
@@ -1478,43 +1497,50 @@ define(
                 "type": "label",
                 "options": null,
                 "lineNumber": 383
+            },
+            {
+                "id": "FIXME_384",
+                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
+                "type": "label",
+                "options": null,
+                "lineNumber": 384
             }
         ]
     },
     {
         "id": "page_collectionProcess",
         "name": "Collection process",
-        "lineNumber": 385,
+        "lineNumber": 386,
         "description": "",
         "isHeader": true,
         "questions": [
             {
-                "id": "FIXME_386",
-                "text": "// Online story collection is [ ] enabled",
-                "type": "label",
-                "options": null,
-                "lineNumber": 386
-            },
-            {
                 "id": "FIXME_387",
-                "text": "// Number of stories entered - x",
+                "text": "// Online story collection is [ ] enabled",
                 "type": "label",
                 "options": null,
                 "lineNumber": 387
             },
             {
                 "id": "FIXME_388",
-                "text": "// Number of participants who told stories - x",
+                "text": "// Number of stories entered - x",
                 "type": "label",
                 "options": null,
                 "lineNumber": 388
+            },
+            {
+                "id": "FIXME_389",
+                "text": "// Number of participants who told stories - x",
+                "type": "label",
+                "options": null,
+                "lineNumber": 389
             }
         ]
     },
     {
         "id": "page_finalizeQuestionForms",
         "name": "Finalize question forms",
-        "lineNumber": 390,
+        "lineNumber": 391,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -1522,32 +1548,32 @@ define(
                 "id": "finalizeLabel",
                 "text": "On this page you will finalize your questions for story collection. Once you have started your story collection,\nyou should not make changes to your questions. You will still be able to make changes after you click the \"Finalize\" button,\nbut the system will ask you to confirm each change.",
                 "type": "label",
-                "lineNumber": 392
+                "lineNumber": 393
             },
             {
                 "id": "printStoryForm",
                 "text": "Print story form",
                 "type": "button",
-                "lineNumber": 396
+                "lineNumber": 397
             },
             {
                 "id": "copyStoryFormURL",
                 "text": "Copy story form web link",
                 "type": "button",
-                "lineNumber": 398
+                "lineNumber": 399
             },
             {
                 "id": "finalizeStoryForm",
                 "text": "Finalize story form",
                 "type": "button",
-                "lineNumber": 400
+                "lineNumber": 401
             }
         ]
     },
     {
         "id": "page_startStoryCollection",
         "name": "Start story collection",
-        "lineNumber": 402,
+        "lineNumber": 403,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -1555,73 +1581,73 @@ define(
                 "id": "startCollectionLabel",
                 "text": "If you are doing story collection over the internet, click this button to make the web form \"live\" and able\nto be used by people other than yourself.",
                 "type": "label",
-                "lineNumber": 404
+                "lineNumber": 405
             },
             {
                 "id": "enableWebStoryForm",
                 "text": "Enable web story form",
                 "type": "button",
-                "lineNumber": 407
+                "lineNumber": 408
             },
             {
-                "id": "FIXME_409",
+                "id": "FIXME_410",
                 "text": "Copy story form web link",
                 "type": "button",
-                "lineNumber": 409
+                "lineNumber": 410
             }
         ]
     },
     {
         "id": "page_storyCollectionFormForParticipants",
         "name": "Participate in the story collection",
-        "lineNumber": 411,
+        "lineNumber": 412,
         "description": "",
         "isHeader": false,
         "type": "participantStoryForm",
         "questions": [
             {
-                "id": "FIXME_413",
+                "id": "FIXME_414",
                 "text": "// the info shown here is what was designed - how to specify that",
                 "type": "label",
                 "options": null,
-                "lineNumber": 413
+                "lineNumber": 414
             }
         ]
     },
     {
         "id": "page_enterStories",
         "name": "Enter stories",
-        "lineNumber": 415,
+        "lineNumber": 416,
         "description": "",
         "isHeader": false,
         "questions": [
             {
-                "id": "FIXME_417",
-                "text": "// this page is the same as the \"participate\" page above, but only the admin can see it",
-                "type": "label",
-                "options": null,
-                "lineNumber": 417
-            },
-            {
                 "id": "FIXME_418",
-                "text": "// and the normal tabs are shown on the page",
+                "text": "// this page is the same as the \"participate\" page above, but only the admin can see it",
                 "type": "label",
                 "options": null,
                 "lineNumber": 418
             },
             {
-                "id": "FIXME_420",
+                "id": "FIXME_419",
+                "text": "// and the normal tabs are shown on the page",
+                "type": "label",
+                "options": null,
+                "lineNumber": 419
+            },
+            {
+                "id": "FIXME_421",
                 "text": "// the info shown here is what was designed - how to specify that",
                 "type": "label",
                 "options": null,
-                "lineNumber": 420
+                "lineNumber": 421
             }
         ]
     },
     {
         "id": "page_reviewIncomingStories",
         "name": "Review incoming stories",
-        "lineNumber": 422,
+        "lineNumber": 423,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -1629,14 +1655,14 @@ define(
                 "id": "collectedStoriesDuringCollection",
                 "text": "Collected stories",
                 "type": "storyBrowser",
-                "lineNumber": 424
+                "lineNumber": 425
             }
         ]
     },
     {
         "id": "page_stopStoryCollection",
         "name": "Stop story collection",
-        "lineNumber": 426,
+        "lineNumber": 427,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -1644,20 +1670,20 @@ define(
                 "id": "stopCollectionLabel",
                 "text": "If you are doing story collection over the internet, click this button to make the web form\nunavailable to anyone but yourself.",
                 "type": "label",
-                "lineNumber": 428
+                "lineNumber": 429
             },
             {
                 "id": "disableWebStoryForm",
                 "text": "Disable web story form",
                 "type": "button",
-                "lineNumber": 431
+                "lineNumber": 432
             }
         ]
     },
     {
         "id": "page_enterCollectionSessionRecords",
         "name": "Enter story collection session records",
-        "lineNumber": 433,
+        "lineNumber": 434,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -1665,21 +1691,21 @@ define(
                 "id": "collectionRecordsLabel",
                 "text": "Note: If you did not hold any story collection sessions, you can skip this page.",
                 "type": "label",
-                "lineNumber": 435
+                "lineNumber": 436
             },
             {
                 "id": "collectionSessions",
                 "text": "These are the story collection sessions you planned to hold.",
                 "type": "grid",
                 "options": "page_addCollectionSessionRecord",
-                "lineNumber": 437
+                "lineNumber": 438
             }
         ]
     },
     {
         "id": "page_addCollectionSessionRecord",
         "name": "Add story collection session record",
-        "lineNumber": 439,
+        "lineNumber": 440,
         "description": "",
         "isHeader": false,
         "type": "popup",
@@ -1689,140 +1715,156 @@ define(
                 "text": "These are the group constructions you have entered for this session so far.",
                 "type": "grid",
                 "options": "page_newCollectionSessionConstruction",
-                "lineNumber": 441
+                "lineNumber": 442
             },
             {
                 "id": "collectionSessionNotes",
-                "text": "Story collection session notes",
+                "text": "These are the notes you have entered for this story collection session so far.",
                 "type": "page_newCollectionSessionNotes",
-                "lineNumber": 443
+                "lineNumber": 444
             }
         ]
     },
     {
         "id": "page_newCollectionSessionConstruction",
         "name": "Story collection construction",
-        "lineNumber": 445,
+        "lineNumber": 446,
         "description": "",
         "isHeader": false,
         "type": "popup",
         "questions": [
             {
                 "id": "collectionSessionConstructionName",
-                "text": "Name",
+                "text": "Please give this construction a name.",
                 "type": "text",
-                "lineNumber": 447
-            },
-            {
-                "id": "collectionSessionContructionText",
-                "text": "Description",
-                "type": "textarea",
                 "lineNumber": 448
             },
             {
-                "id": "collectionSessionConstructionLink",
-                "text": "Link to audio or video",
-                "type": "text",
+                "id": "collectionSessionConstructionType",
+                "text": "What type of construction is it?",
+                "type": "select",
+                "options": "timeline;landscape;other",
                 "lineNumber": 449
             },
             {
+                "id": "collectionSessionContructionText",
+                "text": "Please describe the construction (or include a description given by participants).",
+                "type": "textarea",
+                "lineNumber": 450
+            },
+            {
+                "id": "collectionSessionConstructionLink",
+                "text": "You can include a link to an audio or video description here.",
+                "type": "text",
+                "lineNumber": 451
+            },
+            {
                 "id": "collectionSessionConstructionImages",
-                "text": "Images",
+                "text": "These are the images you have entered for the construction so far.",
                 "type": "grid",
                 "options": "page_newCollectionConstructionImage",
-                "lineNumber": 450
+                "lineNumber": 452
             }
         ]
     },
     {
         "id": "page_newCollectionConstructionImage",
-        "name": "Story collection construction image",
-        "lineNumber": 452,
+        "name": "Collection construction image",
+        "lineNumber": 454,
         "description": "",
         "isHeader": false,
         "type": "popup",
         "questions": [
             {
                 "id": "collectionSessionConstrucctionImage",
-                "text": "Image",
+                "text": "Upload an image for this construction.",
+                "shortText": "Image",
                 "type": "imageUploader",
-                "lineNumber": 454
+                "lineNumber": 456
             },
             {
                 "id": "collectionSessionConstructionImageName",
-                "text": "Name",
+                "text": "Please give this image a name.",
+                "shortText": "Name",
                 "type": "text",
-                "lineNumber": 455
+                "lineNumber": 457
             },
             {
                 "id": "collectionSessionConstructionImageNotes",
-                "text": "Notes on this image",
+                "text": "Make any notes you'd like to record on this image here.",
+                "shortText": "Notes",
                 "type": "textarea",
-                "lineNumber": 456
+                "lineNumber": 458
             }
         ]
     },
     {
         "id": "page_newCollectionSessionNotes",
-        "name": "Story collection session notes",
-        "lineNumber": 458,
+        "name": "Collection session notes",
+        "lineNumber": 460,
         "description": "",
         "isHeader": false,
         "type": "popup",
         "questions": [
             {
                 "id": "collectionSessionNotesName",
-                "text": "Name",
+                "text": "Please give this set of notes a name.",
+                "shortText": "Name",
                 "type": "text",
-                "lineNumber": 460
+                "lineNumber": 462
             },
             {
                 "id": "collectionSessionNotesText",
-                "text": "Notes",
+                "text": "Enter your notes here.",
+                "shortText": "Notes",
                 "type": "textarea",
-                "lineNumber": 461
+                "lineNumber": 463
             },
             {
                 "id": "collectionSessionNotesImages",
-                "text": "Images",
+                "text": "These are the images you have entered for this set of notes so far.",
+                "shortText": "Images",
                 "type": "grid",
                 "options": "page_newCollectionSessionImage",
-                "lineNumber": 462
+                "lineNumber": 464
             }
         ]
     },
     {
         "id": "page_newCollectionSessionImage",
-        "name": "Story collection session notes image",
-        "lineNumber": 464,
+        "name": "Collection session notes image",
+        "lineNumber": 466,
         "description": "",
         "isHeader": false,
         "type": "popup",
         "questions": [
             {
                 "id": "collectionSessionNotesImage",
-                "text": "Image",
+                "text": "Upload your image here.",
+                "shortText": "Image",
                 "type": "imageUploader",
-                "lineNumber": 466
+                "lineNumber": 468
             },
             {
                 "id": "collectionSessionImageName",
-                "text": "Name",
+                "text": "Please give this image a name.",
+                "shortText": "Name",
                 "type": "text",
-                "lineNumber": 467
+                "lineNumber": 469
             },
             {
                 "id": "collectionSessionNotesImageNotes",
-                "text": "Notes on this image",
+                "text": "You can enter some notes about this image.",
+                "shortText": "Notes",
                 "type": "textarea",
-                "lineNumber": 468
+                "lineNumber": 470
             }
         ]
     },
     {
         "id": "page_answerQuestionsAboutCollectionSessions",
         "name": "Reflect on story collection sessions",
-        "lineNumber": 470,
+        "lineNumber": 472,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -1830,143 +1872,140 @@ define(
                 "id": "collectionSessionQuestionsLabel",
                 "text": "Note: If there are no sessions in this list, enter them in the \"Enter story collection session records\" screen first.",
                 "type": "label",
-                "lineNumber": 472
-            },
-            {
-                "id": "FIXME_474",
-                "text": "// this list should populate with names of sessions given in \"enter story collection sessions records\" screen.",
-                "type": "label",
-                "options": null,
                 "lineNumber": 474
             },
             {
-                "id": "FIXME_475",
+                "id": "FIXME_476",
+                "text": "// this list should populate with names of sessions given in \"enter story collection sessions records\" screen.",
+                "type": "label",
+                "options": null,
+                "lineNumber": 476
+            },
+            {
+                "id": "FIXME_477",
                 "text": "/// there should be NO add button... but the edit button should go to the popup specified here",
                 "type": "label",
                 "options": null,
-                "lineNumber": 475
+                "lineNumber": 477
             },
             {
-                "id": "FIXME_476",
+                "id": "FIXME_478",
                 "text": "Story collection sessions",
                 "type": "grid",
                 "options": "page_answerQuestionsAboutCollectionSession",
-                "lineNumber": 476
+                "lineNumber": 478
             }
         ]
     },
     {
         "id": "page_answerQuestionsAboutCollectionSession",
         "name": "Reflect on story collection session",
-        "lineNumber": 478,
+        "lineNumber": 480,
         "description": "",
         "isHeader": false,
         "type": "popup",
         "questions": [
             {
-                "id": "collectionReflectChangeBehavior",
-                "text": "How did the behavior of the participants change from the start to the end of the session?",
-                "shortText": "Participant behavior",
-                "type": "textarea",
-                "lineNumber": 480
-            },
-            {
-                "id": "collectionReflectChangeEmotions",
-                "text": "How did their emotions change?",
-                "shortText": "Participant emotions",
-                "type": "textarea",
-                "lineNumber": 481
-            },
-            {
-                "id": "collectionReflectChangeYourEmotions",
-                "text": "How did your emotions change?",
-                "shortText": "Facilitator emotions",
-                "type": "textarea",
+                "id": "collectionReflectChangeLabel",
+                "text": "Change",
+                "type": "header",
                 "lineNumber": 482
             },
             {
-                "id": "collectionReflectInteractionsParticipants",
-                "text": "Describe the interactions between participants (including changes during the session).",
-                "shortText": "Interactions among participants",
+                "id": "collectionReflectChangeEmotions",
+                "text": "How did the perceptions of the participants change from the start to the end of the session?",
+                "shortText": "Change in participant perceptions",
                 "type": "textarea",
                 "lineNumber": 483
             },
             {
-                "id": "collectionReflectInteractionsFacilitators",
-                "text": "Describe interactions between participants and facilitators (including change).",
-                "shortText": "Interactions between participants and facilitators",
+                "id": "collectionReflectChangeYourEmotions",
+                "text": "How did <i>your</i> perceptions change?",
+                "shortText": "Change in facilitator perceptions",
                 "type": "textarea",
                 "lineNumber": 484
+            },
+            {
+                "id": "collectionReflectProjectChanged",
+                "text": "How has the overall project changed as a result of this session?",
+                "shortText": "Changes to the project",
+                "type": "textarea",
+                "lineNumber": 485
+            },
+            {
+                "id": "collectionReflectInteractionsLabel",
+                "text": "Interactions",
+                "type": "header",
+                "lineNumber": 487
+            },
+            {
+                "id": "collectionReflectInteractionsParticipants",
+                "text": "Describe the interactions between participants in this session.",
+                "shortText": "Interactions among participants",
+                "type": "textarea",
+                "lineNumber": 488
+            },
+            {
+                "id": "collectionReflectInteractionsFacilitators",
+                "text": "Describe interactions between participants and facilitators.",
+                "shortText": "Interactions between participants and facilitators",
+                "type": "textarea",
+                "lineNumber": 489
             },
             {
                 "id": "collectionReflectStories",
                 "text": "What did you notice about the stories people told, retold, chose, and worked with during the session?",
                 "shortText": "Stories",
                 "type": "textarea",
-                "lineNumber": 485
+                "lineNumber": 490
             },
             {
-                "id": "collectionReflectStoryOfSession",
-                "text": "What is the story of what happened during this session?",
-                "shortText": "Story of what happened",
-                "type": "textarea",
-                "lineNumber": 486
+                "id": "collectionReflectLearningLabel",
+                "text": "Learning",
+                "type": "header",
+                "lineNumber": 492
             },
             {
                 "id": "collectionReflectSpecial",
                 "text": "What was special about these people in this place on this day?",
                 "shortText": "Unique features",
                 "type": "textarea",
-                "lineNumber": 487
+                "lineNumber": 493
             },
             {
-                "id": "collectionReflectAsExpected",
-                "text": "What parts of your plans went as you expected? What parts didn't?",
-                "shortText": "Went as expected",
+                "id": "collectionReflectSurprise",
+                "text": "What surprised you about this session?",
+                "shortText": "Surprise",
                 "type": "textarea",
-                "lineNumber": 488
+                "lineNumber": 494
             },
             {
-                "id": "collectionReflectWorkedWell",
-                "text": "What parts of your plans worked out well?",
-                "shortText": "Worked well",
+                "id": "collectionReflectWorkedWellAndNot",
+                "text": "Which parts of your plans for this session worked out well? Which parts didn't?",
+                "shortText": "Worked and didn't work",
                 "type": "textarea",
-                "lineNumber": 489
-            },
-            {
-                "id": "collectionReflectWorkedBadly",
-                "text": "What parts didn't work out well?",
-                "shortText": "Didn't work well",
-                "type": "textarea",
-                "lineNumber": 490
+                "lineNumber": 495
             },
             {
                 "id": "collectionReflectNewIdeas",
-                "text": "What new ideas did you gain from the participants in this session?",
+                "text": "What new ideas did you gain from this session? What did you learn from it?",
                 "shortText": "New ideas",
                 "type": "textarea",
-                "lineNumber": 491
-            },
-            {
-                "id": "collectionReflectProjectChanged",
-                "text": "How has the project changed as a result of this session?",
-                "shortText": "Project changes",
-                "type": "textarea",
-                "lineNumber": 492
+                "lineNumber": 496
             },
             {
                 "id": "collectionReflectExtra",
-                "text": "What else do you want most to remember about this session?",
+                "text": "What else do you want to remember about this session?",
                 "shortText": "Other",
                 "type": "textarea",
-                "lineNumber": 493
+                "lineNumber": 497
             }
         ]
     },
     {
         "id": "page_readCollectionProcessReport",
         "name": "Read collection process report",
-        "lineNumber": 495,
+        "lineNumber": 499,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -1975,35 +2014,7 @@ define(
                 "text": "Collection process report",
                 "type": "report",
                 "options": "collectionProcess",
-                "lineNumber": 497
-            },
-            {
-                "id": "FIXME_499",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null,
-                "lineNumber": 499
-            },
-            {
-                "id": "FIXME_500",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null,
-                "lineNumber": 500
-            },
-            {
-                "id": "FIXME_501",
-                "text": "//                                                       CATALYSIS",
-                "type": "label",
-                "options": null,
                 "lineNumber": 501
-            },
-            {
-                "id": "FIXME_502",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null,
-                "lineNumber": 502
             },
             {
                 "id": "FIXME_503",
@@ -2011,50 +2022,78 @@ define(
                 "type": "label",
                 "options": null,
                 "lineNumber": 503
-            }
-        ]
-    },
-    {
-        "id": "page_catalysis",
-        "name": "Catalysis",
-        "lineNumber": 505,
-        "description": "",
-        "isHeader": true,
-        "questions": [
+            },
+            {
+                "id": "FIXME_504",
+                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
+                "type": "label",
+                "options": null,
+                "lineNumber": 504
+            },
+            {
+                "id": "FIXME_505",
+                "text": "//                                                       CATALYSIS",
+                "type": "label",
+                "options": null,
+                "lineNumber": 505
+            },
             {
                 "id": "FIXME_506",
-                "text": "// Observations - x",
+                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null,
                 "lineNumber": 506
             },
             {
                 "id": "FIXME_507",
-                "text": "// Interpretations - x",
+                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null,
                 "lineNumber": 507
+            }
+        ]
+    },
+    {
+        "id": "page_catalysis",
+        "name": "Catalysis",
+        "lineNumber": 509,
+        "description": "",
+        "isHeader": true,
+        "questions": [
+            {
+                "id": "FIXME_510",
+                "text": "// Observations - x",
+                "type": "label",
+                "options": null,
+                "lineNumber": 510
             },
             {
-                "id": "FIXME_508",
+                "id": "FIXME_511",
+                "text": "// Interpretations - x",
+                "type": "label",
+                "options": null,
+                "lineNumber": 511
+            },
+            {
+                "id": "FIXME_512",
                 "text": "// Ideas - x",
                 "type": "label",
                 "options": null,
-                "lineNumber": 508
+                "lineNumber": 512
             },
             {
-                "id": "FIXME_509",
+                "id": "FIXME_513",
                 "text": "// Perspectives - x",
                 "type": "label",
                 "options": null,
-                "lineNumber": 509
+                "lineNumber": 513
             }
         ]
     },
     {
         "id": "page_browseStories",
         "name": "Browse stories",
-        "lineNumber": 511,
+        "lineNumber": 515,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -2063,14 +2102,14 @@ define(
                 "text": "Collected stories",
                 "type": "storyBrowser",
                 "options": "addObservation:\"page_addToObservation\";addExcerpt:\"page_addToExcerpt\"",
-                "lineNumber": 513
+                "lineNumber": 517
             }
         ]
     },
     {
         "id": "page_addToObservation",
         "name": "Add to observation",
-        "lineNumber": 515,
+        "lineNumber": 519,
         "description": "",
         "isHeader": false,
         "type": "popup",
@@ -2079,33 +2118,33 @@ define(
                 "id": "addObservationsLabel",
                 "text": "Note: You should not add any observations that depend on patterns among stories until after\nall stories have been entered.",
                 "type": "label",
-                "lineNumber": 517
+                "lineNumber": 521
             },
             {
                 "id": "observationsList",
                 "text": "Choose an observation from this list to which to add the selected result, or create a new observation.",
                 "type": "observationsList",
-                "lineNumber": 520
+                "lineNumber": 524
             },
             {
                 "id": "addResultToExistingObservation",
                 "text": "Add result to selected observation",
                 "type": "button",
-                "lineNumber": 522
+                "lineNumber": 526
             },
             {
                 "id": "createNewObservationWithResult",
                 "text": "Create new observation with this result",
                 "type": "button",
                 "options": "page_createNewObservation",
-                "lineNumber": 523
+                "lineNumber": 527
             }
         ]
     },
     {
         "id": "page_createNewObservation",
         "name": "Create new observation",
-        "lineNumber": 525,
+        "lineNumber": 529,
         "description": "",
         "isHeader": false,
         "type": "popup",
@@ -2114,14 +2153,14 @@ define(
                 "id": "observationName",
                 "text": "Please give this observation a name.",
                 "type": "text",
-                "lineNumber": 527
+                "lineNumber": 531
             }
         ]
     },
     {
         "id": "page_addToExcerpt",
         "name": "Add to excerpt",
-        "lineNumber": 529,
+        "lineNumber": 533,
         "description": "",
         "isHeader": false,
         "type": "popup",
@@ -2130,27 +2169,27 @@ define(
                 "id": "excerptsList",
                 "text": "Choose an excerpt from this list to which to add the selected text, or create a new excerpt.",
                 "type": "excerptsList",
-                "lineNumber": 531
+                "lineNumber": 535
             },
             {
                 "id": "addTextToExistingExcerpt",
                 "text": "Add text to selected excerpt",
                 "type": "button",
-                "lineNumber": 533
+                "lineNumber": 537
             },
             {
                 "id": "createNewExcerptWithText",
                 "text": "Create new excerpt with this text",
                 "type": "button",
                 "options": "page_createNewExcerpt",
-                "lineNumber": 534
+                "lineNumber": 538
             }
         ]
     },
     {
         "id": "page_createNewExcerpt",
         "name": "Create new excerpt",
-        "lineNumber": 536,
+        "lineNumber": 540,
         "description": "",
         "isHeader": false,
         "type": "popup",
@@ -2159,26 +2198,26 @@ define(
                 "id": "excerptName",
                 "text": "Please give this excerpt a name.",
                 "type": "text",
-                "lineNumber": 538
+                "lineNumber": 542
             },
             {
                 "id": "excerptText",
                 "text": "You can edit the excerpt here.",
                 "type": "textarea",
-                "lineNumber": 540
+                "lineNumber": 544
             },
             {
                 "id": "excerptNotes",
                 "text": "You can enter some notes about the excerpt here.",
                 "type": "textarea",
-                "lineNumber": 542
+                "lineNumber": 546
             }
         ]
     },
     {
         "id": "page_themeStories",
         "name": "Theme stories",
-        "lineNumber": 544,
+        "lineNumber": 548,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -2186,14 +2225,14 @@ define(
                 "id": "themeStories",
                 "text": "Theme stories",
                 "type": "storyThemer",
-                "lineNumber": 546
+                "lineNumber": 550
             }
         ]
     },
     {
         "id": "page_browseGraphs",
         "name": "Browse graphs",
-        "lineNumber": 548,
+        "lineNumber": 552,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -2201,14 +2240,14 @@ define(
                 "id": "graphBrowser",
                 "text": "Graph browser",
                 "type": "graphBrowser",
-                "lineNumber": 550
+                "lineNumber": 554
             }
         ]
     },
     {
         "id": "page_reviewTrends",
         "name": "Review trends",
-        "lineNumber": 552,
+        "lineNumber": 556,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -2217,188 +2256,235 @@ define(
                 "text": "Which statistical tests do you want to consider?",
                 "type": "checkBoxes",
                 "options": "chi-squared (differences between counts);t-test (differences between means);correlation",
-                "lineNumber": 554
+                "lineNumber": 558
             },
             {
                 "id": "minSubsetSize",
                 "text": "How large should subset counts be to be considered for comparison?",
                 "type": "select",
                 "options": "20;30;40;50",
-                "lineNumber": 555
+                "lineNumber": 559
             },
             {
                 "id": "significanceThreshold",
                 "text": "What significance threshold do you want reported?",
                 "type": "select",
                 "options": "0.05;0.01",
-                "lineNumber": 556
+                "lineNumber": 560
             },
             {
                 "id": "trendResults",
                 "text": "How many results do you want to see per test type?",
                 "type": "select",
                 "options": "5;10;15;20;25;30",
-                "lineNumber": 557
+                "lineNumber": 561
             },
             {
-                "id": "FIXME_559",
+                "id": "FIXME_563",
                 "text": "// when user changes any of the options above, the trend report below should update",
                 "type": "label",
                 "options": null,
-                "lineNumber": 559
+                "lineNumber": 563
             },
             {
                 "id": "trendsReport",
                 "text": "Trends report",
                 "type": "trendsReport",
-                "lineNumber": 560
+                "lineNumber": 564
             }
         ]
     },
     {
         "id": "page_reviewExcerpts",
         "name": "Review excerpts",
-        "lineNumber": 562,
-        "description": "",
-        "isHeader": false,
-        "questions": [
-            {
-                "id": "FIXME_564",
-                "text": "Collected excerpts",
-                "type": "grid",
-                "options": "page_createNewExcerpt",
-                "lineNumber": 564
-            }
-        ]
-    },
-    {
-        "id": "page_interpretObservations",
-        "name": "Interpret observations",
         "lineNumber": 566,
         "description": "",
         "isHeader": false,
         "questions": [
             {
                 "id": "FIXME_568",
+                "text": "Collected excerpts",
+                "type": "grid",
+                "options": "page_createNewExcerpt",
+                "lineNumber": 568
+            }
+        ]
+    },
+    {
+        "id": "page_interpretObservations",
+        "name": "Interpret observations",
+        "lineNumber": 570,
+        "description": "",
+        "isHeader": false,
+        "questions": [
+            {
+                "id": "FIXME_572",
                 "text": "Collected observations",
                 "type": "grid",
                 "options": "page_editObservation",
-                "lineNumber": 568
+                "lineNumber": 572
             }
         ]
     },
     {
         "id": "page_editObservation",
         "name": "Edit observation",
-        "lineNumber": 570,
+        "lineNumber": 574,
         "description": "",
         "isHeader": false,
         "type": "popup",
         "questions": [
             {
-                "id": "FIXME_572",
-                "text": "Observation name",
+                "id": "FIXME_576",
+                "text": "Please give this observation a name.",
+                "shortText": "Observation name",
                 "type": "text",
-                "lineNumber": 572
+                "lineNumber": 576
             },
             {
                 "id": "observation",
-                "text": "Observation",
+                "text": "Please describe this observation.",
+                "shortText": "Observation",
                 "type": "textarea",
-                "lineNumber": 573
-            },
-            {
-                "id": "observationResultsList",
-                "text": "Results",
-                "type": "grid",
-                "lineNumber": 575
-            },
-            {
-                "id": "firstInterpName",
-                "text": "First interpretation name",
-                "type": "text",
                 "lineNumber": 577
             },
             {
-                "id": "firstInterpText",
-                "text": "First interpretation text",
-                "type": "textarea",
-                "lineNumber": 578
-            },
-            {
-                "id": "firstInterpIdea",
-                "text": "First interpretation idea",
-                "type": "textarea",
+                "id": "observationResultsList",
+                "text": "These are the results you selected to include in this observation.",
+                "shortText": "Results",
+                "type": "grid",
                 "lineNumber": 579
             },
             {
-                "id": "FIXME_580",
-                "text": "Excerpts for first interpretation",
-                "type": "grid",
-                "options": "page_selectExcerpt",
-                "lineNumber": 580
+                "id": "firstInterpText",
+                "text": "What is your first interpretation about this observation?",
+                "shortText": "First interpretation",
+                "type": "textarea",
+                "lineNumber": 581
             },
             {
-                "id": "opposingInterpName",
-                "text": "Opposing interpretation name",
+                "id": "firstInterpName",
+                "text": "Enter a name for this interpretation.",
+                "shortText": "First interpretation name",
                 "type": "text",
                 "lineNumber": 582
             },
             {
-                "id": "opposingInterpText",
-                "text": "Opposing interpretation text",
+                "id": "firstInterpIdea",
+                "text": "If you like, you can record an idea that follows from this interpretation.",
+                "shortText": "First interpretation idea",
                 "type": "textarea",
                 "lineNumber": 583
             },
             {
-                "id": "opposingInterpIdea",
-                "text": "Opposing interpretation idea",
-                "type": "textarea",
+                "id": "firstInterpExcerptsList",
+                "text": "You can add excerpts to this interpretation.",
+                "shortText": "Excerpts for first interpretation",
+                "type": "grid",
+                "options": "page_selectExcerpt",
                 "lineNumber": 584
             },
             {
-                "id": "FIXME_585",
-                "text": "Excerpts for opposing interpretation",
+                "id": "opposingInterpText",
+                "text": "Now enter an interpretation that does not agree with your first interpretation.",
+                "shortText": "Opposing interpretation",
+                "type": "textarea",
+                "lineNumber": 586
+            },
+            {
+                "id": "opposingInterpName",
+                "text": "Please name this interpretation.",
+                "shortText": "Opposing interpretation name",
+                "type": "text",
+                "lineNumber": 587
+            },
+            {
+                "id": "opposingInterpIdea",
+                "text": "You can record an idea that follows from this interpretation.",
+                "shortText": "Opposing interpretation idea",
+                "type": "textarea",
+                "lineNumber": 588
+            },
+            {
+                "id": "opposingInterpExcerptsList",
+                "text": "Choose some excerpts to exemplify this interpretation.",
+                "shortText": "Excerpts for opposing interpretation",
                 "type": "grid",
                 "options": "page_selectExcerpt",
-                "lineNumber": 585
+                "lineNumber": 589
+            },
+            {
+                "id": "thirdInterpText",
+                "text": "If you like, enter one more interpretation.",
+                "shortText": "Third interpretation",
+                "type": "textarea",
+                "lineNumber": 591
+            },
+            {
+                "id": "thirdInterpName",
+                "text": "Please name this interpretation.",
+                "shortText": "Third interpretation name",
+                "type": "text",
+                "lineNumber": 592
+            },
+            {
+                "id": "thirdInterpIdea",
+                "text": "You can record an idea that follows from this interpretation.",
+                "shortText": "Third interpretation idea",
+                "type": "textarea",
+                "lineNumber": 593
+            },
+            {
+                "id": "thirdInterpExcerptsList",
+                "text": "Choose some excerpts to exemplify this interpretation.",
+                "shortText": "Excerpts for third interpretation",
+                "type": "grid",
+                "options": "page_selectExcerpt",
+                "lineNumber": 594
             }
         ]
     },
     {
         "id": "page_selectExcerpt",
         "name": "Select excerpt",
-        "lineNumber": 587,
+        "lineNumber": 596,
         "description": "",
         "isHeader": false,
         "type": "popup",
         "questions": [
             {
-                "id": "FIXME_589",
+                "id": "FIXME_598",
                 "text": "Collected excerpts",
                 "type": "grid",
                 "options": "page_createNewExcerpt",
-                "lineNumber": 589
+                "lineNumber": 598
             },
             {
-                "id": "FIXME_591",
+                "id": "FIXME_600",
                 "text": "// when they click this button the selected excerpt should be added to the list whose \"add\" button they clicked",
                 "type": "label",
                 "options": null,
-                "lineNumber": 591
+                "lineNumber": 600
+            },
+            {
+                "id": "FIXME_601",
+                "text": "// it should know which interpretation to tie the excerpt to",
+                "type": "label",
+                "options": null,
+                "lineNumber": 601
             },
             {
                 "id": "addExcerptToInterpretation",
                 "text": "Add selected excerpt to interpretation",
                 "type": "button",
-                "lineNumber": 592
+                "lineNumber": 602
             }
         ]
     },
     {
         "id": "page_clusterInterpretations",
         "name": "Cluster interpretations",
-        "lineNumber": 594,
+        "lineNumber": 604,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -2406,35 +2492,35 @@ define(
                 "id": "clusterInterpLabel",
                 "text": "Note: Do not cluster your interpretations unless you are sure you have finished collecting them.",
                 "type": "label",
-                "lineNumber": 596
+                "lineNumber": 606
             },
             {
-                "id": "FIXME_598",
+                "id": "FIXME_608",
                 "text": "// ideally, when they are done with this, the circles marked as group names",
                 "type": "label",
                 "options": null,
-                "lineNumber": 598
+                "lineNumber": 608
             },
             {
-                "id": "FIXME_599",
+                "id": "FIXME_609",
                 "text": "// will get copied into the perspectives list seen in the next page",
                 "type": "label",
                 "options": null,
-                "lineNumber": 599
+                "lineNumber": 609
             },
             {
                 "id": "clusterInterpretations",
                 "text": "Cluster interpretations into perspectives",
                 "type": "clusterSpace",
                 "options": "interpretations",
-                "lineNumber": 600
+                "lineNumber": 610
             }
         ]
     },
     {
         "id": "page_describePerspectives",
         "name": "Describe perspectives",
-        "lineNumber": 602,
+        "lineNumber": 612,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -2443,111 +2529,116 @@ define(
                 "text": "Perspectives",
                 "type": "grid",
                 "options": "page_addPerspective",
-                "lineNumber": 604
+                "lineNumber": 614
             }
         ]
     },
     {
         "id": "page_addPerspective",
         "name": "Add or change perspective",
-        "lineNumber": 606,
+        "lineNumber": 616,
         "description": "",
         "isHeader": false,
         "type": "popup",
         "questions": [
             {
                 "id": "perspectiveName",
-                "text": "Perspective name",
+                "text": "Please give this perspective a name.",
+                "shortText": "Name",
                 "type": "text",
-                "lineNumber": 608
+                "lineNumber": 618
             },
             {
                 "id": "perspectiveDescription",
                 "text": "Describe this perspective.",
+                "shortText": "Perspective",
                 "type": "textarea",
-                "lineNumber": 609
-            },
-            {
-                "id": "FIXME_611",
-                "text": "// note, this grid should combine all the results linked to observations linked to interpretations linked to this perspective",
-                "type": "label",
-                "options": null,
-                "lineNumber": 611
-            },
-            {
-                "id": "FIXME_612",
-                "text": "// perspective",
-                "type": "label",
-                "options": null,
-                "lineNumber": 612
-            },
-            {
-                "id": "FIXME_613",
-                "text": "//      interpretation",
-                "type": "label",
-                "options": null,
-                "lineNumber": 613
-            },
-            {
-                "id": "FIXME_614",
-                "text": "//           observation",
-                "type": "label",
-                "options": null,
-                "lineNumber": 614
-            },
-            {
-                "id": "FIXME_615",
-                "text": "//                result",
-                "type": "label",
-                "options": null,
-                "lineNumber": 615
-            },
-            {
-                "id": "FIXME_616",
-                "text": "Choose an observation result that exemplifies this perspective.",
-                "type": "grid",
-                "lineNumber": 616
-            },
-            {
-                "id": "FIXME_618",
-                "text": "// similarly, this should be a list of all the excerpts linked to interpretations linked to this perspective",
-                "type": "label",
-                "options": null,
-                "lineNumber": 618
-            },
-            {
-                "id": "FIXME_619",
-                "text": "// perspective",
-                "type": "label",
-                "options": null,
                 "lineNumber": 619
             },
             {
-                "id": "FIXME_620",
-                "text": "//     interpretation",
-                "type": "label",
-                "options": null,
-                "lineNumber": 620
-            },
-            {
                 "id": "FIXME_621",
-                "text": "//         excerpt",
+                "text": "// note, this grid should combine all the results linked to observations linked to interpretations linked to this perspective",
                 "type": "label",
                 "options": null,
                 "lineNumber": 621
             },
             {
                 "id": "FIXME_622",
-                "text": "Choose one or more excerpts to illustrate this perspective",
-                "type": "grid",
+                "text": "// perspective",
+                "type": "label",
+                "options": null,
                 "lineNumber": 622
+            },
+            {
+                "id": "FIXME_623",
+                "text": "//      interpretation",
+                "type": "label",
+                "options": null,
+                "lineNumber": 623
+            },
+            {
+                "id": "FIXME_624",
+                "text": "//           observation",
+                "type": "label",
+                "options": null,
+                "lineNumber": 624
+            },
+            {
+                "id": "FIXME_625",
+                "text": "//                result",
+                "type": "label",
+                "options": null,
+                "lineNumber": 625
+            },
+            {
+                "id": "FIXME_626",
+                "text": "Choose an observation result that exemplifies this perspective.",
+                "shortText": "Observation",
+                "type": "grid",
+                "lineNumber": 626
+            },
+            {
+                "id": "FIXME_628",
+                "text": "// similarly, this should be a list of all the excerpts linked to interpretations linked to this perspective",
+                "type": "label",
+                "options": null,
+                "lineNumber": 628
+            },
+            {
+                "id": "FIXME_629",
+                "text": "// perspective",
+                "type": "label",
+                "options": null,
+                "lineNumber": 629
+            },
+            {
+                "id": "FIXME_630",
+                "text": "//     interpretation",
+                "type": "label",
+                "options": null,
+                "lineNumber": 630
+            },
+            {
+                "id": "FIXME_631",
+                "text": "//         excerpt",
+                "type": "label",
+                "options": null,
+                "lineNumber": 631
+            },
+            {
+                "id": "FIXME_632",
+                "text": "Choose one or more excerpts to illustrate this perspective",
+                "shortText": "Excerpts",
+                "type": "grid",
+                "options": "page_selectExcerpt",
+                "lineNumber": 632
             }
         ]
     },
     {
         "id": "page_readCatalysisReport",
         "name": "Read catalysis report",
-        "lineNumber": 624,
+        "lineNumber": 634,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -2556,86 +2647,86 @@ define(
                 "text": "Catalysis report",
                 "type": "report",
                 "options": "catalysis",
-                "lineNumber": 626
+                "lineNumber": 636
             },
             {
-                "id": "FIXME_628",
+                "id": "FIXME_638",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null,
-                "lineNumber": 628
+                "lineNumber": 638
             },
             {
-                "id": "FIXME_629",
+                "id": "FIXME_639",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null,
-                "lineNumber": 629
+                "lineNumber": 639
             },
             {
-                "id": "FIXME_630",
+                "id": "FIXME_640",
                 "text": "//                                                       SENSEMAKING",
                 "type": "label",
                 "options": null,
-                "lineNumber": 630
+                "lineNumber": 640
             },
             {
-                "id": "FIXME_631",
+                "id": "FIXME_641",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null,
-                "lineNumber": 631
+                "lineNumber": 641
             },
             {
-                "id": "FIXME_632",
+                "id": "FIXME_642",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null,
-                "lineNumber": 632
+                "lineNumber": 642
             }
         ]
     },
     {
         "id": "page_sensemaking",
         "name": "Sensemaking",
-        "lineNumber": 634,
+        "lineNumber": 644,
         "description": "",
         "isHeader": true,
         "questions": [
             {
-                "id": "FIXME_635",
+                "id": "FIXME_645",
                 "text": "// Planning sessions - x of x questions answered",
                 "type": "label",
                 "options": null,
-                "lineNumber": 635
+                "lineNumber": 645
             },
             {
-                "id": "FIXME_636",
+                "id": "FIXME_646",
                 "text": "// Write session agenda - x of x questions answered",
                 "type": "label",
                 "options": null,
-                "lineNumber": 636
+                "lineNumber": 646
             },
             {
-                "id": "FIXME_637",
+                "id": "FIXME_647",
                 "text": "// Print story cards - x cards printed (or checkmark)",
                 "type": "label",
                 "options": null,
-                "lineNumber": 637
+                "lineNumber": 647
             },
             {
-                "id": "FIXME_638",
+                "id": "FIXME_648",
                 "text": "// Post-session review - x of x questions answered",
                 "type": "label",
                 "options": null,
-                "lineNumber": 638
+                "lineNumber": 648
             }
         ]
     },
     {
         "id": "page_planSensemakingSessions",
         "name": "Plan sensemaking sessions",
-        "lineNumber": 640,
+        "lineNumber": 650,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -2644,168 +2735,198 @@ define(
                 "text": "Recommendations for sensemaking sessions",
                 "type": "recommendationTable",
                 "options": "sensemakingSessions",
-                "lineNumber": 642
+                "lineNumber": 652
             },
             {
                 "id": "sensemakingSessions",
                 "text": "Sensemaking sessions",
                 "type": "grid",
                 "options": "page_addSensemakingSessionPlan",
-                "lineNumber": 644
+                "lineNumber": 654
             }
         ]
     },
     {
         "id": "page_addSensemakingSessionPlan",
         "name": "Enter sensemaking session plan",
-        "lineNumber": 646,
+        "lineNumber": 656,
         "description": "",
         "isHeader": false,
         "type": "popup",
         "questions": [
             {
+                "id": "sensemakingSessionName",
+                "text": "Please give this session plan a name.",
+                "shortText": "Name",
+                "type": "text",
+                "lineNumber": 658
+            },
+            {
                 "id": "sensemakingSessionRepetitions",
                 "text": "How many repetitions of the session will there be?",
+                "shortText": "Repetitions",
                 "type": "text",
-                "lineNumber": 648
+                "lineNumber": 659
             },
             {
                 "id": "sensemakingSessionLength",
                 "text": "How long will this session be?",
+                "shortText": "Length",
                 "type": "text",
-                "lineNumber": 649
+                "lineNumber": 660
             },
             {
                 "id": "sensemakingSessionTime",
                 "text": "When will it take place?",
+                "shortText": "Time",
                 "type": "text",
-                "lineNumber": 650
+                "lineNumber": 661
             },
             {
                 "id": "sensemakingSessionLocation",
                 "text": "Where will it take place?",
+                "shortText": "Location",
                 "type": "text",
-                "lineNumber": 651
+                "lineNumber": 662
             },
             {
                 "id": "sensemakingSessionSize",
                 "text": "How many people will be invited to each repetition of this session?",
+                "shortText": "Number of people",
                 "type": "text",
-                "lineNumber": 652
+                "lineNumber": 663
             },
             {
                 "id": "sensemakingSessionGroups",
                 "text": "From which participant group(s) will people be invited?",
+                "shortText": "Participant groups",
                 "type": "checkBoxesWithPull",
                 "options": "participantGroups",
-                "lineNumber": 653
+                "lineNumber": 664
+            },
+            {
+                "id": "sensemakingSessionMaterials",
+                "text": "What materials will this session require?",
+                "shortText": "Materials",
+                "type": "textarea",
+                "lineNumber": 665
+            },
+            {
+                "id": "sensemakingSessionDetails",
+                "text": "Enter other details about this session.",
+                "shortText": "Other",
+                "type": "textarea",
+                "lineNumber": 666
             },
             {
                 "id": "sensemakingSessionAgenda",
-                "text": "Session agenda",
+                "text": "These are the activities added to this session plan so far.",
                 "type": "grid",
                 "options": "page_addSensemakingSessionActivity",
-                "lineNumber": 655
+                "lineNumber": 668
             },
             {
                 "id": "printSensemakingSessionAgenda",
                 "text": "Print session agenda",
                 "type": "button",
-                "lineNumber": 656
-            },
-            {
-                "id": "sensemakingSessionMaterials",
-                "text": "What materials will this session require?",
-                "type": "textarea",
-                "lineNumber": 658
-            },
-            {
-                "id": "sensemakingSessionDetails",
-                "text": "Enter other details about this session.",
-                "type": "textarea",
-                "lineNumber": 659
+                "lineNumber": 670
             }
         ]
     },
     {
         "id": "page_addSensemakingSessionActivity",
         "name": "Add sensemaking session activity",
-        "lineNumber": 661,
+        "lineNumber": 672,
         "description": "",
         "isHeader": false,
         "type": "popup",
         "questions": [
             {
+                "id": "sensemakingSessionActivityName",
+                "text": "Please give this activity a name.",
+                "shortText": "Name",
+                "type": "text",
+                "lineNumber": 674
+            },
+            {
                 "id": "sensemakingSessionActivity",
                 "text": "What type of activity is this?",
+                "shortText": "Type",
                 "type": "select",
                 "options": "ice-breaker;encountering stories (no task);encountering stories (simple task);discussing stories;twice-told stories exercise;timeline exercise;landscape exercise;story elements exercise;composite stories exercise;my own exercise;other",
-                "lineNumber": 663
+                "lineNumber": 675
             },
             {
                 "id": "sensemakingActivityPlan",
                 "text": "Describe the plan for this activity.",
+                "shortText": "Plan",
                 "type": "textarea",
-                "lineNumber": 664
+                "lineNumber": 676
             },
             {
                 "id": "sensemakingActivityOptionalParts",
                 "text": "Describe optional elaborations you might or might not use in this activity.",
+                "shortText": "Optional elaborations",
                 "type": "textarea",
-                "lineNumber": 665
+                "lineNumber": 677
             },
             {
                 "id": "sensemakingActivityTime",
                 "text": "How long will this activity take?",
+                "shortText": "Length",
                 "type": "text",
-                "lineNumber": 666
+                "lineNumber": 678
             },
             {
                 "id": "sensemakingActivityRecording",
                 "text": "Will new stories be recorded during this activity, and if so, how?",
+                "shortText": "New stories",
                 "type": "textarea",
-                "lineNumber": 667
+                "lineNumber": 679
             },
             {
                 "id": "sensemakingActivityMaterials",
                 "text": "What materials will be provided for this activity?",
+                "shortText": "Materials",
                 "type": "textarea",
-                "lineNumber": 668
+                "lineNumber": 680
             },
             {
                 "id": "sensemakingActivitySpaces",
                 "text": "What spaces will be used for this activity?",
+                "shortText": "Spaces",
                 "type": "textarea",
-                "lineNumber": 669
+                "lineNumber": 681
             },
             {
                 "id": "sensemakingActivityFacilitation",
                 "text": "What sort of facilitation will be necessary for this activity?",
+                "shortText": "Facilitation",
                 "type": "textarea",
-                "lineNumber": 670
+                "lineNumber": 682
             }
         ]
     },
     {
         "id": "page_enterSensemakingSessionRecords",
         "name": "Enter sensemaking session records",
-        "lineNumber": 672,
+        "lineNumber": 684,
         "description": "",
         "isHeader": false,
         "questions": [
             {
-                "id": "FIXME_674",
+                "id": "FIXME_686",
                 "text": "Sensemaking sessions",
                 "type": "grid",
                 "options": "page_addSensemakingSessionRecord",
-                "lineNumber": 674
+                "lineNumber": 686
             }
         ]
     },
     {
         "id": "page_addSensemakingSessionRecord",
         "name": "Add sensemaking session record",
-        "lineNumber": 676,
+        "lineNumber": 688,
         "description": "",
         "isHeader": false,
         "type": "popup",
@@ -2815,27 +2936,27 @@ define(
                 "text": "Session outcomes (like discoveries and ideas)",
                 "type": "grid",
                 "options": "page_newSensemakingSessionOutcome",
-                "lineNumber": 678
+                "lineNumber": 690
             },
             {
                 "id": "sensemakingSessionSummaries",
                 "text": "Group constructions",
                 "type": "grid",
                 "options": "page_newSensemakingSessionConstruction",
-                "lineNumber": 680
+                "lineNumber": 692
             },
             {
                 "id": "sensemakingSessionImages",
                 "text": "Session notes",
                 "type": "page_newSensemakingSessionNotes",
-                "lineNumber": 682
+                "lineNumber": 694
             }
         ]
     },
     {
         "id": "page_newSensemakingSessionOutcome",
         "name": "Sensemaking session outcome",
-        "lineNumber": 684,
+        "lineNumber": 696,
         "description": "",
         "isHeader": false,
         "type": "popup",
@@ -2843,28 +2964,31 @@ define(
             {
                 "id": "sensemakingSessionOutcomeType",
                 "text": "What type of session outcome is this?",
+                "shortText": "Type",
                 "type": "select",
                 "options": "discovery;opportunity;issue;idea;recommendation;perspective;dilemma;other",
-                "lineNumber": 686
+                "lineNumber": 698
             },
             {
                 "id": "sensemakingSessionOutcomeName",
                 "text": "Please give this outcome a name.",
+                "shortText": "Name",
                 "type": "text",
-                "lineNumber": 687
+                "lineNumber": 699
             },
             {
                 "id": "sensemakingSessionOutcomeText",
                 "text": "Describe the outcome.",
+                "shortText": "Description",
                 "type": "textarea",
-                "lineNumber": 688
+                "lineNumber": 700
             }
         ]
     },
     {
         "id": "page_newSensemakingSessionConstruction",
         "name": "Sensemaking construction",
-        "lineNumber": 690,
+        "lineNumber": 702,
         "description": "",
         "isHeader": false,
         "type": "popup",
@@ -2872,41 +2996,45 @@ define(
             {
                 "id": "sensemakingSessionConstructionName",
                 "text": "Please give this construction a name.",
+                "shortText": "Name",
                 "type": "text",
-                "lineNumber": 692
+                "lineNumber": 704
             },
             {
                 "id": "sensemakingSessionConstructionType",
                 "text": "What type of construction is it?",
+                "shortText": "Type",
                 "type": "select",
                 "options": "timeline;landscape;story elements;composite story;other",
-                "lineNumber": 693
+                "lineNumber": 705
             },
             {
                 "id": "sensemakingSessionContructionText",
                 "text": "Please decribe the construction (or include a description given by participants).",
+                "shortText": "Description",
                 "type": "textarea",
-                "lineNumber": 694
+                "lineNumber": 706
             },
             {
                 "id": "sensemakingSessionConstructionLink",
                 "text": "You can include a link to an audio or video description here.",
+                "shortText": "Audio/video link",
                 "type": "text",
-                "lineNumber": 695
+                "lineNumber": 707
             },
             {
                 "id": "sensemakingSessionConstructionImages",
                 "text": "These are the images you have entered for the construction so far.",
                 "type": "grid",
                 "options": "page_newSensemakingConstructionImage",
-                "lineNumber": 696
+                "lineNumber": 709
             }
         ]
     },
     {
         "id": "page_newSensemakingConstructionImage",
         "name": "Sensemaking construction image",
-        "lineNumber": 698,
+        "lineNumber": 711,
         "description": "",
         "isHeader": false,
         "type": "popup",
@@ -2914,84 +3042,93 @@ define(
             {
                 "id": "sensemakingSessionConstrucctionImage",
                 "text": "Upload an image for this construction.",
+                "shortText": "Image",
                 "type": "imageUploader",
-                "lineNumber": 700
+                "lineNumber": 713
             },
             {
                 "id": "sensemakingSessionConstructionImageName",
                 "text": "Please give this image a name.",
+                "shortText": "Name",
                 "type": "text",
-                "lineNumber": 701
+                "lineNumber": 714
             },
             {
                 "id": "sensemakingSessionConstructionImageNotes",
                 "text": "Make any notes you'd like to record on this image here.",
+                "shortText": "Notes",
                 "type": "textarea",
-                "lineNumber": 702
+                "lineNumber": 715
             }
         ]
     },
     {
         "id": "page_newSensemakingSessionNotes",
         "name": "Sensemaking session notes",
-        "lineNumber": 704,
+        "lineNumber": 717,
         "description": "",
         "isHeader": false,
         "type": "popup",
         "questions": [
             {
                 "id": "sensemakingSessionNotesName",
-                "text": "Name",
+                "text": "Please give this set of notes a name.",
+                "shortText": "Name",
                 "type": "text",
-                "lineNumber": 706
+                "lineNumber": 719
             },
             {
                 "id": "sensemakingSessionNotesText",
-                "text": "Notes",
+                "text": "Enter your notes here.",
+                "shortText": "Notes",
                 "type": "textarea",
-                "lineNumber": 707
+                "lineNumber": 720
             },
             {
                 "id": "sensemakingSessionNotesImages",
-                "text": "Images",
+                "text": "These are the images you have entered for this set of notes so far.",
+                "shortText": "Images",
                 "type": "grid",
                 "options": "page_newSensemakingSessionImage",
-                "lineNumber": 708
+                "lineNumber": 721
             }
         ]
     },
     {
         "id": "page_newSensemakingSessionImage",
         "name": "Sensemaking session notes image",
-        "lineNumber": 710,
+        "lineNumber": 723,
         "description": "",
         "isHeader": false,
         "type": "popup",
         "questions": [
             {
                 "id": "sensemakingSessionNotesImage",
-                "text": "Image",
+                "text": "Upload your image here.",
+                "shortText": "Image",
                 "type": "imageUploader",
-                "lineNumber": 712
+                "lineNumber": 725
             },
             {
                 "id": "sensemakingSessionImageName",
-                "text": "Name",
+                "text": "Please give this image a name.",
+                "shortText": "Name",
                 "type": "text",
-                "lineNumber": 713
+                "lineNumber": 726
             },
             {
                 "id": "sensemakingSessionNotesImageNotes",
-                "text": "Notes on this image",
+                "text": "You can enter some notes about this image.",
+                "shortText": "Notes",
                 "type": "textarea",
-                "lineNumber": 714
+                "lineNumber": 727
             }
         ]
     },
     {
         "id": "page_answerQuestionsAboutSensemakingSessions",
         "name": "Reflect on sensemaking sessions",
-        "lineNumber": 716,
+        "lineNumber": 729,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -2999,129 +3136,140 @@ define(
                 "id": "sensemakingSessionQuestionsLabel",
                 "text": "Note: If there are no sessions in this list, enter them in the \"Enter sensemaking session records\" screen first.",
                 "type": "label",
-                "lineNumber": 718
+                "lineNumber": 731
             },
             {
-                "id": "FIXME_720",
+                "id": "FIXME_733",
                 "text": "// this list should populate with names of sessions given in \"enter sensemaking sessions records\" screen.",
                 "type": "label",
                 "options": null,
-                "lineNumber": 720
+                "lineNumber": 733
             },
             {
-                "id": "FIXME_721",
+                "id": "FIXME_734",
                 "text": "/// there should be NO add button... but the edit button should go to the popup specified here",
                 "type": "label",
                 "options": null,
-                "lineNumber": 721
+                "lineNumber": 734
             },
             {
-                "id": "FIXME_722",
+                "id": "FIXME_735",
                 "text": "Sensemaking sessions",
                 "type": "grid",
                 "options": "page_answerQuestionsAboutSensemakingSession",
-                "lineNumber": 722
+                "lineNumber": 735
             }
         ]
     },
     {
         "id": "page_answerQuestionsAboutSensemakingSession",
         "name": "Reflect on session",
-        "lineNumber": 724,
+        "lineNumber": 737,
         "description": "",
         "isHeader": false,
         "type": "popup",
         "questions": [
             {
-                "id": "senseReflectChangeBehavior",
-                "text": "How did the behavior of the participants change from the start to the end of the session?",
-                "type": "textarea",
-                "lineNumber": 726
-            },
-            {
-                "id": "senseReflectChangeEmotions",
-                "text": "How did their emotions change?",
-                "type": "textarea",
-                "lineNumber": 727
-            },
-            {
-                "id": "senseReflectChangeYourEmotions",
-                "text": "How did your emotions change?",
-                "type": "textarea",
-                "lineNumber": 728
-            },
-            {
-                "id": "senseReflectInteractionsParticipants",
-                "text": "Describe the interactions between participants (including changes during the session).",
-                "type": "textarea",
-                "lineNumber": 729
-            },
-            {
-                "id": "senseReflectInteractionsFacilitators",
-                "text": "Describe interactions between participants and facilitators (including change).",
-                "type": "textarea",
-                "lineNumber": 730
-            },
-            {
-                "id": "senseReflectStories",
-                "text": "What did you notice about the stories people told, retold, chose, worked with, and built during the session?",
-                "type": "textarea",
-                "lineNumber": 731
-            },
-            {
-                "id": "senseReflectStoryOfSession",
-                "text": "What is the story of what happened during this session?",
-                "type": "textarea",
-                "lineNumber": 732
-            },
-            {
-                "id": "senseReflectSpecial",
-                "text": "What was special about these people in this place on this day?",
-                "type": "textarea",
-                "lineNumber": 733
-            },
-            {
-                "id": "senseReflectAsExpected",
-                "text": "What parts of your plans went as you expected? What parts didn't?",
-                "type": "textarea",
-                "lineNumber": 734
-            },
-            {
-                "id": "senseReflectWorkedWell",
-                "text": "What parts of your plans worked out well?",
-                "type": "textarea",
-                "lineNumber": 735
-            },
-            {
-                "id": "senseReflectWorkedBadly",
-                "text": "What parts didn't work out well?",
-                "type": "textarea",
-                "lineNumber": 736
-            },
-            {
-                "id": "senseReflectNewIdeas",
-                "text": "What new ideas did you gain from the participants in this session?",
-                "type": "textarea",
-                "lineNumber": 737
-            },
-            {
-                "id": "senseReflectProjectChanged",
-                "text": "How has the project changed as a result of this session?",
-                "type": "textarea",
-                "lineNumber": 738
-            },
-            {
-                "id": "senseReflectExtra",
-                "text": "What else do you want most to remember about this session?",
-                "type": "textarea",
+                "id": "sensemakingReflectChangeLabel",
+                "text": "Change",
+                "type": "header",
                 "lineNumber": 739
+            },
+            {
+                "id": "sensemakingReflectChangeEmotions",
+                "text": "How did the perceptions of the participants change from the start to the end of the session?",
+                "shortText": "Change in participant perceptions",
+                "type": "textarea",
+                "lineNumber": 740
+            },
+            {
+                "id": "sensemakingReflectChangeYourEmotions",
+                "text": "How did <i>your</i> perceptions change?",
+                "shortText": "Change in facilitator perceptions",
+                "type": "textarea",
+                "lineNumber": 741
+            },
+            {
+                "id": "sensemakingReflectProjectChanged",
+                "text": "How has the overall project changed as a result of this session?",
+                "shortText": "Changes to the project",
+                "type": "textarea",
+                "lineNumber": 742
+            },
+            {
+                "id": "sensemakingReflectInteractionsLabel",
+                "text": "Interactions",
+                "type": "header",
+                "lineNumber": 744
+            },
+            {
+                "id": "sensemakingReflectInteractionsParticipants",
+                "text": "Describe the interactions between participants in this session.",
+                "shortText": "Interactions among participants",
+                "type": "textarea",
+                "lineNumber": 745
+            },
+            {
+                "id": "sensemakingReflectInteractionsFacilitators",
+                "text": "Describe interactions between participants and facilitators.",
+                "shortText": "Interactions between participants and facilitators",
+                "type": "textarea",
+                "lineNumber": 746
+            },
+            {
+                "id": "sensemakingReflectStories",
+                "text": "What did you notice about the stories people told, retold, chose, and worked with during the session?",
+                "shortText": "Stories",
+                "type": "textarea",
+                "lineNumber": 747
+            },
+            {
+                "id": "sensemakingReflectLearningLabel",
+                "text": "Learning",
+                "type": "header",
+                "lineNumber": 749
+            },
+            {
+                "id": "sensemakingReflectSpecial",
+                "text": "What was special about these people in this place on this day?",
+                "shortText": "Unique features",
+                "type": "textarea",
+                "lineNumber": 750
+            },
+            {
+                "id": "sensemakingReflectSurprise",
+                "text": "What surprised you about this session?",
+                "shortText": "Surprise",
+                "type": "textarea",
+                "lineNumber": 751
+            },
+            {
+                "id": "sensemakingReflectWorkedWellAndNot",
+                "text": "Which parts of your plans for this session worked out well? Which parts didn't?",
+                "shortText": "Worked and didn't work",
+                "type": "textarea",
+                "lineNumber": 752
+            },
+            {
+                "id": "sensemakingReflectNewIdeas",
+                "text": "What new ideas did you gain from this session? What did you learn from it?",
+                "shortText": "New ideas",
+                "type": "textarea",
+                "lineNumber": 753
+            },
+            {
+                "id": "sensemakingReflectExtra",
+                "text": "What else do you want to remember about this session?",
+                "shortText": "Other",
+                "type": "textarea",
+                "lineNumber": 754
             }
         ]
     },
     {
         "id": "page_readSensemakingReport",
         "name": "Read sensemaking report",
-        "lineNumber": 741,
+        "lineNumber": 756,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -3130,153 +3278,586 @@ define(
                 "text": "Sensemaking report",
                 "type": "report",
                 "options": "sensemaking",
-                "lineNumber": 743
-            },
-            {
-                "id": "FIXME_745",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null,
-                "lineNumber": 745
-            },
-            {
-                "id": "FIXME_746",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null,
-                "lineNumber": 746
-            },
-            {
-                "id": "FIXME_747",
-                "text": "//                                                       INTERVENTION",
-                "type": "label",
-                "options": null,
-                "lineNumber": 747
-            },
-            {
-                "id": "FIXME_748",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null,
-                "lineNumber": 748
-            },
-            {
-                "id": "FIXME_749",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null,
-                "lineNumber": 749
-            }
-        ]
-    },
-    {
-        "id": "pageheader_intervention",
-        "name": "Intervention",
-        "lineNumber": 751,
-        "description": "",
-        "isHeader": true,
-        "questions": [
-            {
-                "id": "FIXME_752",
-                "text": "// Choose interventions - x planned",
-                "type": "label",
-                "options": null,
-                "lineNumber": 752
-            },
-            {
-                "id": "FIXME_753",
-                "text": "// Answer questions about interventions - x questions answered",
-                "type": "label",
-                "options": null,
-                "lineNumber": 753
-            }
-        ]
-    },
-    {
-        "id": "page_chooseInterventions",
-        "name": "Choose interventions",
-        "lineNumber": 755,
-        "description": "",
-        "isHeader": false,
-        "questions": [
-            {
-                "id": "FIXME_757",
-                "text": "// also need some questions to help to choose interventions",
-                "type": "label",
-                "options": null,
-                "lineNumber": 757
-            },
-            {
-                "id": "FIXME_758",
-                "text": "// based on OUTCOMES of sensemaking",
-                "type": "label",
-                "options": null,
                 "lineNumber": 758
             },
             {
-                "id": "FIXME_759",
-                "text": "// add outcome answers to table, then show",
-                "type": "label",
-                "options": null,
-                "lineNumber": 759
-            },
-            {
                 "id": "FIXME_760",
-                "text": "// similar to other recommendations, only for these, instead of using the participant group questions,",
+                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null,
                 "lineNumber": 760
             },
             {
                 "id": "FIXME_761",
-                "text": "// these are questions about project outcomes (which are collected right here)",
+                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null,
                 "lineNumber": 761
             },
             {
-                "id": "interventionRecommendations",
-                "text": "Intervention recommendations",
-                "type": "recommendationTable",
-                "options": "interventions",
+                "id": "FIXME_762",
+                "text": "//                                                       INTERVENTION",
+                "type": "label",
+                "options": null,
+                "lineNumber": 762
+            },
+            {
+                "id": "FIXME_763",
+                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
+                "type": "label",
+                "options": null,
                 "lineNumber": 763
             },
             {
-                "id": "FIXME_765",
-                "text": "// after seeing all these recommendations, they should enter interventions they are doing",
+                "id": "FIXME_764",
+                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null,
-                "lineNumber": 765
-            },
-            {
-                "id": "FIXME_766",
-                "text": "// in a list with a popup window to record some basic info about each one",
-                "type": "label",
-                "options": null,
-                "lineNumber": 766
+                "lineNumber": 764
             }
         ]
     },
     {
-        "id": "FIXME_768",
-        "name": "Answer questions about interventions - answer questions about interventions used",
-        "lineNumber": 768,
+        "id": "page_intervention",
+        "name": "Intervention",
+        "lineNumber": 766,
+        "description": "",
+        "isHeader": true,
+        "questions": [
+            {
+                "id": "FIXME_767",
+                "text": "// Choose interventions - x planned",
+                "type": "label",
+                "options": null,
+                "lineNumber": 767
+            },
+            {
+                "id": "FIXME_768",
+                "text": "// Answer questions about interventions - x questions answered",
+                "type": "label",
+                "options": null,
+                "lineNumber": 768
+            }
+        ]
+    },
+    {
+        "id": "page_projectOutcomesForIntervention",
+        "name": "Answer questions about project outcomes",
+        "lineNumber": 770,
         "description": "",
         "isHeader": false,
         "questions": [
             {
-                "id": "FIXME_770",
-                "text": "// need to draw intevention names for this from previous page",
+                "id": "outcomesTable",
+                "text": "In order to choose interventions that will be useful in your project, it will be helpful to think about some\nof the issues (positive and negative) you discovered in your project. Please answer these questions in reference to\nthe participant groups you set up in the project planning phase.",
+                "type": "page_outcomesTable",
+                "options": "participants_firstGroupName;participants_secondGroupName;participants_thirdGroupName",
+                "lineNumber": 772
+            }
+        ]
+    },
+    {
+        "id": "page_outcomesTable",
+        "name": "Project outcomes",
+        "lineNumber": 776,
+        "description": "",
+        "isHeader": false,
+        "type": "questionsTable",
+        "questions": [
+            {
+                "id": "outcomesHopesHeader",
+                "text": "Hopes",
+                "type": "header",
+                "lineNumber": 778
+            },
+            {
+                "id": "outcomesHeard",
+                "text": "During your project, did the people in this group say they felt heard for the first time?",
+                "type": "select",
+                "options": "never;occasionally;sometimes;often;mixed",
+                "lineNumber": 779
+            },
+            {
+                "id": "outcomesInvolved",
+                "text": "Did they say they felt involved for the first time?",
+                "type": "select",
+                "options": "never;occasionally;sometimes;often;mixed",
+                "lineNumber": 780
+            },
+            {
+                "id": "outcomesLearnedAboutComm",
+                "text": "Did they say they learned a lot about their community or organization?",
+                "type": "select",
+                "options": "never;occasionally;sometimes;often;mixed",
+                "lineNumber": 781
+            },
+            {
+                "id": "outcomesVoicesHeader",
+                "text": "Voices",
+                "type": "header",
+                "lineNumber": 783
+            },
+            {
+                "id": "outcomesMoreStories",
+                "text": "During your story collection, did these people seem to want to tell more stories than you collected?",
+                "type": "select",
+                "options": "never;occasionally;sometimes;often;mixed",
+                "lineNumber": 784
+            },
+            {
+                "id": "outcomesWantedToShareMore",
+                "text": "Did you ever feel that they wanted to share more experiences with each other than they did?",
+                "type": "select",
+                "options": "never;occasionally;sometimes;often;mixed",
+                "lineNumber": 785
+            },
+            {
+                "id": "outcomesNeededToBeHeard",
+                "text": "Did these people feel that some of the stories you collected \"needed to be heard\" by anyone?",
+                "type": "select",
+                "options": "not at all;somewhat;definitely;mixed",
+                "lineNumber": 786
+            },
+            {
+                "id": "outcomesNobodyCares",
+                "text": "Were there any issues that these people thought \"nobody cares\" about?",
+                "type": "select",
+                "options": "not at all;somewhat;definitely;mixed",
+                "lineNumber": 787
+            },
+            {
+                "id": "outcomesNeedsHeader",
+                "text": "Needs",
+                "type": "header",
+                "lineNumber": 789
+            },
+            {
+                "id": "outcomesNobodyCanMeetNeeds",
+                "text": "Do the people in this group have needs that <i>nobody</i> can meet?",
+                "type": "select",
+                "options": "not at all;somewhat;definitely;mixed",
+                "lineNumber": 790
+            },
+            {
+                "id": "outcomesNeedNewStories",
+                "text": "Do these people need to start telling themselves <i>new</i> stories?",
+                "type": "select",
+                "options": "not at all;somewhat;definitely;mixed",
+                "lineNumber": 791
+            },
+            {
+                "id": "outcomesKeepExploring",
+                "text": "Were there any issues about which the people in this group seemed to want to keep exploring?",
+                "type": "select",
+                "options": "not at all;somewhat;definitely;mixed",
+                "lineNumber": 792
+            },
+            {
+                "id": "outcomesCrisisPoints",
+                "text": "Did you discover any \"crisis points\" where people in this group needed help and didn't get it?",
+                "type": "select",
+                "options": "not at all;somewhat;definitely;mixed",
+                "lineNumber": 793
+            },
+            {
+                "id": "outcomesBeyondWords",
+                "text": "Did you find any issues for this group that were beyond words, that no amount of discussion could resolve?",
+                "type": "select",
+                "options": "not at all;somewhat;definitely;mixed",
+                "lineNumber": 794
+            },
+            {
+                "id": "outcomesLearningHeader",
+                "text": "Learning",
+                "type": "header",
+                "lineNumber": 796
+            },
+            {
+                "id": "outcomesLearnedAboutTopic",
+                "text": "Did these people say that they learned a lot about the topic by participating in the project?",
+                "type": "select",
+                "options": "never;occasionally;sometimes;often;mixed",
+                "lineNumber": 797
+            },
+            {
+                "id": "outcomesNewMembersStruggling",
+                "text": "Did you notice that new members of the community or organization were having a harder time making sense of things?",
+                "type": "select",
+                "options": "not at all;somewhat;definitely;mixed",
+                "lineNumber": 798
+            },
+            {
+                "id": "outcomesInfoWithoutUnderstanding",
+                "text": "Were there any issues that these people found difficult to understand, even though abundant information was available?",
+                "type": "select",
+                "options": "not at all;somewhat;definitely;mixed",
+                "lineNumber": 799
+            },
+            {
+                "id": "outcomesOverConfident",
+                "text": "Did you discover any areas in which these people had more confidence than skill?",
+                "type": "select",
+                "options": "not at all;somewhat;definitely;mixed",
+                "lineNumber": 800
+            },
+            {
+                "id": "outcomesCuriousAboutStoryWork",
+                "text": "Did any of these participants express an interest in learning more about story work?",
+                "type": "select",
+                "options": "never;occasionally;sometimes;often;mixed",
+                "lineNumber": 801
+            }
+        ]
+    },
+    {
+        "id": "page_designInterventions",
+        "name": "Design interventions",
+        "lineNumber": 803,
+        "description": "",
+        "isHeader": false,
+        "questions": [
+            {
+                "id": "interventionRecommendations",
+                "text": "Recommendations for interventions",
+                "type": "recommendationTable",
+                "options": "interventions",
+                "lineNumber": 805
+            },
+            {
+                "id": "interventionsList",
+                "text": "These are the interventions you have designed so far.",
+                "type": "grid",
+                "options": "page_addIntervention",
+                "lineNumber": 807
+            }
+        ]
+    },
+    {
+        "id": "page_addIntervention",
+        "name": "Design an intervention",
+        "lineNumber": 809,
+        "description": "",
+        "isHeader": false,
+        "type": "popup",
+        "questions": [
+            {
+                "id": "interventionName",
+                "text": "Please name this intervention.",
+                "shortText": "Name",
+                "type": "text",
+                "lineNumber": 811
+            },
+            {
+                "id": "interventionType",
+                "text": "What type of intervention will this be?",
+                "shortText": "Type",
+                "type": "select",
+                "options": "narrative ombudsman;narrative suggestion box;story sharing space;narrative orientation;narrative learning resource;narrative simulation;narrative presentation;dramatic action;sensemaking space;sensemaking pyramid;narrative mentoring program;narrative therapy;participatory theatre;other",
+                "lineNumber": 812
+            },
+            {
+                "id": "interventionText",
+                "text": "Please describe your plan for this intervention.",
+                "shortText": "Description",
+                "type": "text",
+                "lineNumber": 813
+            },
+            {
+                "id": "interventionLength",
+                "text": "Over what span of time will this intervention take place?",
+                "shortText": "Length",
+                "type": "text",
+                "lineNumber": 815
+            },
+            {
+                "id": "interventionTime",
+                "text": "When will the intervention start and stop?",
+                "shortText": "Time",
+                "type": "text",
+                "lineNumber": 816
+            },
+            {
+                "id": "interventionLocation",
+                "text": "Where will the intervention take place?",
+                "shortText": "Location",
+                "type": "text",
+                "lineNumber": 817
+            },
+            {
+                "id": "interventionHelp",
+                "text": "What sort of help will you need to carry out this intervention?",
+                "shortText": "Help",
+                "type": "textarea",
+                "lineNumber": 819
+            },
+            {
+                "id": "interventionPermission",
+                "text": "What sorts of permission will you need to carry out this intervention?",
+                "shortText": "Permission",
+                "type": "textarea",
+                "lineNumber": 820
+            },
+            {
+                "id": "interventionParticipation",
+                "text": "How will you get people to participate in this intervention?",
+                "shortText": "Participation",
+                "type": "textarea",
+                "lineNumber": 821
+            },
+            {
+                "id": "interventionMaterials",
+                "text": "What physical materials will you need?",
+                "shortText": "Materials",
+                "type": "textarea",
+                "lineNumber": 823
+            },
+            {
+                "id": "interventionSpace",
+                "text": "What spaces will you need to use?",
+                "shortText": "Spaces",
+                "type": "textarea",
+                "lineNumber": 824
+            },
+            {
+                "id": "interventionTech",
+                "text": "What technological resources will you need?",
+                "shortText": "Technology",
+                "type": "textarea",
+                "lineNumber": 825
+            },
+            {
+                "id": "interventionRecording",
+                "text": "How will record the results of this intervention?",
+                "shortText": "Recording",
+                "type": "textarea",
+                "lineNumber": 826
+            }
+        ]
+    },
+    {
+        "id": "page_recordInterventions",
+        "name": "Enter intervention records",
+        "lineNumber": 828,
+        "description": "",
+        "isHeader": false,
+        "questions": [
+            {
+                "id": "interventionsListForRecording",
+                "text": "Interventions",
+                "type": "grid",
+                "options": "page_addInterventionRecord",
+                "lineNumber": 830
+            }
+        ]
+    },
+    {
+        "id": "page_addInterventionRecord",
+        "name": "Add intervention notes",
+        "lineNumber": 832,
+        "description": "",
+        "isHeader": false,
+        "type": "popup",
+        "questions": [
+            {
+                "id": "interventionNotesName",
+                "text": "Please give this set of notes a name.",
+                "shortText": "Name",
+                "type": "text",
+                "lineNumber": 834
+            },
+            {
+                "id": "interventionNotesText",
+                "text": "Enter your notes here.",
+                "shortText": "Notes",
+                "type": "textarea",
+                "lineNumber": 835
+            },
+            {
+                "id": "interventionNotesImages",
+                "text": "These are the images you have entered for this set of notes so far.",
+                "shortText": "Images",
+                "type": "grid",
+                "options": "page_newInterventionImage",
+                "lineNumber": 836
+            }
+        ]
+    },
+    {
+        "id": "page_newInterventionImage",
+        "name": "Intervention notes image",
+        "lineNumber": 838,
+        "description": "",
+        "isHeader": false,
+        "type": "popup",
+        "questions": [
+            {
+                "id": "interventionNotesImage",
+                "text": "Upload your image here.",
+                "shortText": "Image",
+                "type": "imageUploader",
+                "lineNumber": 840
+            },
+            {
+                "id": "interventionImageName",
+                "text": "Please give this image a name.",
+                "shortText": "Name",
+                "type": "text",
+                "lineNumber": 841
+            },
+            {
+                "id": "interventionNotesImageNotes",
+                "text": "You can enter some notes about this image.",
+                "shortText": "Notes",
+                "type": "textarea",
+                "lineNumber": 842
+            }
+        ]
+    },
+    {
+        "id": "page_answerQuestionsAboutInterventions",
+        "name": "Reflect on interventions",
+        "lineNumber": 844,
+        "description": "",
+        "isHeader": false,
+        "questions": [
+            {
+                "id": "interventionQuestionsLabel",
+                "text": "Note: If there are no interventions in this list, enter them in the \"Enter intervention records\" screen first.",
+                "type": "label",
+                "lineNumber": 846
+            },
+            {
+                "id": "FIXME_848",
+                "text": "// this list should populate with names of interventions given in \"enter intervention records\" screen.",
                 "type": "label",
                 "options": null,
-                "lineNumber": 770
+                "lineNumber": 848
+            },
+            {
+                "id": "FIXME_849",
+                "text": "/// there should be NO add button... but the edit button should go to the popup specified here",
+                "type": "label",
+                "options": null,
+                "lineNumber": 849
+            },
+            {
+                "id": "interventionsListForReflection",
+                "text": "Interventions",
+                "type": "grid",
+                "options": "page_answerQuestionsAboutIntervention",
+                "lineNumber": 850
+            }
+        ]
+    },
+    {
+        "id": "page_answerQuestionsAboutIntervention",
+        "name": "Reflect on intervention",
+        "lineNumber": 852,
+        "description": "",
+        "isHeader": false,
+        "type": "popup",
+        "questions": [
+            {
+                "id": "interventionReflectChangeLabel",
+                "text": "Change",
+                "type": "header",
+                "lineNumber": 854
+            },
+            {
+                "id": "interventionReflectChangeEmotions",
+                "text": "How did the perceptions of the participants change from the start to the end of the intervention?",
+                "shortText": "Change in participant perceptions",
+                "type": "textarea",
+                "lineNumber": 855
+            },
+            {
+                "id": "interventionReflectChangeYourEmotions",
+                "text": "How did <i>your</i> perceptions change?",
+                "shortText": "Change in facilitator perceptions",
+                "type": "textarea",
+                "lineNumber": 856
+            },
+            {
+                "id": "interventionReflectProjectChanged",
+                "text": "How has the overall project changed as a result of this intervention?",
+                "shortText": "Changes to the project",
+                "type": "textarea",
+                "lineNumber": 857
+            },
+            {
+                "id": "interventionReflectInteractionsLabel",
+                "text": "Interactions",
+                "type": "header",
+                "lineNumber": 859
+            },
+            {
+                "id": "interventionReflectInteractionsParticipants",
+                "text": "Describe the interactions between participants during this intervention.",
+                "shortText": "Interactions among participants",
+                "type": "textarea",
+                "lineNumber": 860
+            },
+            {
+                "id": "interventionReflectInteractionsFacilitators",
+                "text": "Describe interactions between participants and facilitators.",
+                "shortText": "Interactions between participants and facilitators",
+                "type": "textarea",
+                "lineNumber": 861
+            },
+            {
+                "id": "interventionReflectStories",
+                "text": "What did you notice about the stories people told, retold, chose, and worked with during the intervention?",
+                "shortText": "Stories",
+                "type": "textarea",
+                "lineNumber": 862
+            },
+            {
+                "id": "interventionReflectLearningLabel",
+                "text": "Learning",
+                "type": "header",
+                "lineNumber": 864
+            },
+            {
+                "id": "interventionReflectSpecial",
+                "text": "What was special about this intervention?",
+                "shortText": "Unique features",
+                "type": "textarea",
+                "lineNumber": 865
+            },
+            {
+                "id": "interventionReflectSurprise",
+                "text": "What surprised you about this intervention?",
+                "shortText": "Surprise",
+                "type": "textarea",
+                "lineNumber": 866
+            },
+            {
+                "id": "interventionReflectWorkedWellAndNot",
+                "text": "Which parts of your plans for this intervention worked out well? Which parts didn't?",
+                "shortText": "Worked and didn't work",
+                "type": "textarea",
+                "lineNumber": 867
+            },
+            {
+                "id": "interventionReflectNewIdeas",
+                "text": "What new ideas did you gain from this intervention? What did you learn from it?",
+                "shortText": "New ideas",
+                "type": "textarea",
+                "lineNumber": 868
+            },
+            {
+                "id": "interventionReflectExtra",
+                "text": "What else do you want to remember about this intervention?",
+                "shortText": "Other",
+                "type": "textarea",
+                "lineNumber": 869
             }
         ]
     },
     {
         "id": "page_interventionReport",
         "name": "Read intervention report",
-        "lineNumber": 772,
+        "lineNumber": 871,
         "description": "",
         "isHeader": false,
         "questions": [
@@ -3285,89 +3866,89 @@ define(
                 "text": "Intervention report",
                 "type": "report",
                 "options": "intervention",
-                "lineNumber": 774
+                "lineNumber": 873
             },
             {
-                "id": "FIXME_776",
+                "id": "FIXME_875",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null,
-                "lineNumber": 776
+                "lineNumber": 875
             },
             {
-                "id": "FIXME_777",
+                "id": "FIXME_876",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null,
-                "lineNumber": 777
+                "lineNumber": 876
             },
             {
-                "id": "FIXME_778",
+                "id": "FIXME_877",
                 "text": "//                                                       RETURN",
                 "type": "label",
                 "options": null,
-                "lineNumber": 778
+                "lineNumber": 877
             },
             {
-                "id": "FIXME_779",
+                "id": "FIXME_878",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null,
-                "lineNumber": 779
+                "lineNumber": 878
             },
             {
-                "id": "FIXME_780",
+                "id": "FIXME_879",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null,
-                "lineNumber": 780
+                "lineNumber": 879
             }
         ]
     },
     {
-        "id": "FIXME_782",
+        "id": "FIXME_881",
         "name": "Return - checklist",
-        "lineNumber": 782,
+        "lineNumber": 881,
         "description": "",
         "isHeader": true,
         "questions": []
     },
     {
-        "id": "FIXME_784",
+        "id": "FIXME_883",
         "name": "Gather feedback - enter what people said (mostly textareas)",
-        "lineNumber": 784,
+        "lineNumber": 883,
         "description": "",
         "isHeader": false,
         "questions": []
     },
     {
-        "id": "FIXME_785",
+        "id": "FIXME_884",
         "name": "Answer questions about project - answer questions about project (mostly textareas)",
-        "lineNumber": 785,
+        "lineNumber": 884,
         "description": "",
         "isHeader": false,
         "questions": []
     },
     {
-        "id": "FIXME_786",
+        "id": "FIXME_885",
         "name": "Prepare project presentation - enter things you want to tell people about project (to be shown to steering committee)",
-        "lineNumber": 786,
+        "lineNumber": 885,
         "description": "",
         "isHeader": false,
         "questions": []
     },
     {
-        "id": "FIXME_787",
+        "id": "FIXME_886",
         "name": "Read return report - text with all stuff entered",
-        "lineNumber": 787,
+        "lineNumber": 886,
         "description": "",
         "isHeader": false,
         "questions": []
     },
     {
-        "id": "FIXME_789",
+        "id": "FIXME_888",
         "name": "Project report - text summary (everything in the six stage reports appended)",
-        "lineNumber": 789,
+        "lineNumber": 888,
         "description": "",
         "isHeader": true,
         "questions": []
