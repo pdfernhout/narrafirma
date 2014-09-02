@@ -59,6 +59,7 @@ define([
         var hasWidget = true;
         
 	   if (supportedTypes.indexOf(question.type) === -1) {
+	       console.log("insertQuestionIntoDiv unsupportedType", question.type, question);
  		   var newQuestion = {};
 	       // Not supported yet
 	       newQuestion.text = "TODO: " + question.text;
@@ -69,7 +70,7 @@ define([
 		   
         if (question.type === "boolean") {
            inputNode = widgets.newBoolean(question.id);
-        } else if (question.type === "label" || question.type == "header") {
+        } else if (question.type === "label" || question.type === "header") {
         	hasWidget = false;
         	// Not adding input node for these
            //  inputNode = widgets.newLabel(question.id, question.text);
