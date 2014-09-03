@@ -1,5 +1,8 @@
 "use strict";
 
+// if get error loading file see this:
+// http://stackoverflow.com/questions/10111864/dojo-require-not-working
+
 require([
     "dojo/_base/array",
     "dojo/string",
