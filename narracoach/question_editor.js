@@ -58,21 +58,21 @@ define([
         var inputNode;
         var hasWidget = true;
         
-	   if (supportedTypes.indexOf(question.type) === -1) {
-	       console.log("insertQuestionIntoDiv unsupportedType", question.type, question);
- 		   var newQuestion = {};
-	       // Not supported yet
-	       newQuestion.text = "TODO: " + question.text;
-	       newQuestion.text += " UNSUPPORTED TYPE OF: " + question.type + " with options: " + question.options + " on line: " + question.lineNumber;
-	       newQuestion.type = "header";
-	       question = newQuestion;
- 		}
-		   
+       if (supportedTypes.indexOf(question.type) === -1) {
+           console.log("insertQuestionIntoDiv unsupportedType", question.type, question);
+            var newQuestion = {};
+           // Not supported yet
+           newQuestion.text = "TODO: UNSUPPORTED TYPE OF: " + question.type + " FOR ID: " + question.id + " TEXT: " + question.text;
+           newQuestion.text += " OPTIONS: " + question.options;
+           newQuestion.type = "header";
+           question = newQuestion;
+         }
+           
         if (question.type === "boolean") {
            inputNode = widgets.newBoolean(question.id);
         } else if (question.type === "label" || question.type === "header") {
-        	hasWidget = false;
-        	// Not adding input node for these
+            hasWidget = false;
+            // Not adding input node for these
            //  inputNode = widgets.newLabel(question.id, question.text);
         } else if (question.type === "checkbox") {
            inputNode = widgets.newCheckbox(question.id);
@@ -90,7 +90,7 @@ define([
             inputNode = widgets.newSlider(question.id, question.options);
         } else {
             console.log("Unsupported question type: " + question.type);
- 		    console.log("question id & type", question.id, question.type);
+             console.log("question id & type", question.id, question.type);
             return;
         }
 
@@ -296,10 +296,10 @@ define([
     // insertQuestionsIntoDiv(createSurveyQuestions, questionsDiv);
     
     return {
-    	"supportedTypes": supportedTypes,
-    	"insertQuestionIntoDiv": insertQuestionIntoDiv,
-    	"insertQuestionsIntoDiv": insertQuestionsIntoDiv,
-    	"insertQuestionEditorDivIntoDiv": insertQuestionEditorDivIntoDiv
+        "supportedTypes": supportedTypes,
+        "insertQuestionIntoDiv": insertQuestionIntoDiv,
+        "insertQuestionsIntoDiv": insertQuestionsIntoDiv,
+        "insertQuestionEditorDivIntoDiv": insertQuestionEditorDivIntoDiv
     };
 
 });
