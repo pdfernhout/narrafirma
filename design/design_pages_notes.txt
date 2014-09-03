@@ -3,14 +3,14 @@
 // Single * for questions
 // Question types are in brackets [id|type|options]
 // question types are: label, header (bold label), text, textarea, select, grid, checkBoxes,
-//                     quizScoreResult, templateList, checkBoxesWithPull, button, 
-//                     storyBrowser, report, 
+//                     quizScoreResult, templateList, checkBoxesWithPull, button,
+//                     storyBrowser, report,
 //                     observationsList, excerptsList, storyThemer, graphBrowser, trendsReport, clusterSpace
 // page types are: normal (no specification), popup, questionsTable, recommendationTable, participantStoryForm
 
 // a button does something when clicked
 
-// a checkBoxesWithPull is a set of check boxes where the display texts are drawn from a list entered previously 
+// a checkBoxesWithPull is a set of check boxes where the display texts are drawn from a list entered previously
 
 // a templateList is a list box with templates read in from a file (of a particular type)
 // it also has a "copy" button
@@ -28,12 +28,12 @@
 // edit button (uses same page as add button, but populates it with existing info)
 // move selected item up (up arrow)
 // move selected item down (down arrow)
-// duplicate item 
+// duplicate item
 // if in the grid specification there is no page specified, you cannot add a new item
 
 // storyBrowser is a smalltalk-like browser that shows two Q&A on top for filtering,
 // then a list of stories, then text+metadata of selected story
-// it has two optional buttons ("add to observation" and "add to excerpts") 
+// it has two optional buttons ("add to observation" and "add to excerpts")
 // the browser without buttons is shown in the collection process phase while stories are coming in
 // the browser with buttons is shown in the catalysis phase when stories are done coming in
 
@@ -67,18 +67,18 @@
 
 # Planning [page_planning]
 // Project facts - x of x questions answered
-// Planning questions - [ ] draft 
+// Planning questions - [ ] draft
 // Project aspects - x of x questions answered
 // Project stories - x stories told
 // Project story elements - x elements entered
 // Story sharing assessment - x of 20 questions answered
 // Project synopsis - [ ] complete
 
-## Enter project facts [page_projectFacts] 
+## Enter project facts [page_projectFacts]
 
 * On this page you will enter some facts about your project. The things you enter here will appear in your reports. [projectFacts|label]
 
-* What is the project's title? [projectTitle|text] 
+* What is the project's title? [projectTitle|text]
 * What is the name of your community or organization? [communityOrOrganizationName|text]
 * Who is facilitating the project? (names and titles) [projectFacilitators|text]
 * What are the project's start and ending dates? [projectStartAndEndDates|text]
@@ -97,11 +97,11 @@ If you don't have good answers for these questions right now, don't worry; you w
 * What is the project's scope? (number of people, number of stories, number of questions about stories) [planning_draft_scope|textarea]
 * Which phases of PNI will be important to the project? (indicate most and least important phases) [planning_draft_emphasis|textarea]
 
-## Describe participant groups [page_participantGroups] 
+## Describe participant groups [page_participantGroups]
 
 * On this page you will think about groups of participants you want to involve in your project. [aboutParticipantGroups|label]
 Examples might be: doctors and patients; staff and customers; natives, immigrants, and tourists.
-NarraCoach supports planning for up to three groups of project participants. 
+NarraCoach supports planning for up to three groups of project participants.
 
 * Please name the group of participants from whom the project most needs to hear. [participants_firstGroupName|text]
 * Please describe this group of participants. [participants_firstGroupDescription|textarea]
@@ -113,7 +113,7 @@ What do you know about them?
 * If there is a third group of participants from whom the project needs to hear, please name them. [participants_thirdGroupName|text]
 * Please describe the third-most critical group of participants. [participants_thirdGroupDescription|textarea]
 
-## Consider project aspects [page_projectAspects] 
+## Consider project aspects [page_projectAspects]
 
 * Please answer these questions about each participant group. [aspectsTable|page_aspectsTable|participants_firstGroupName;participants_secondGroupName;participants_thirdGroupName]
 
@@ -152,7 +152,7 @@ What do you know about them?
 * How much help will you have carrying out this project? [aspects_you_help|select|none;a little;some;a lot]
 * How many technological resources will you have for carrying out this project? [aspects_you_tech|select|none;a little;some;a lot]
 
-## Tell project stories [page_projectStories] 
+## Tell project stories [page_projectStories]
 
 * These are the project stories you have told so far. [projectStoryList|grid|page_projectStory]
 
@@ -166,7 +166,7 @@ What do you know about them?
 * Surprised | What surprised you about this story? [projectStory_surprise|textarea]
 * Opportunities or dangers | Describe any opportunities or dangers you see in this story. [projectStory_dangers|textarea]
 
-## Create project story elements [page_projectStoryElements] 
+## Create project story elements [page_projectStoryElements]
 
 * Here are some instructions on how to create story elements from your project stories. [storyElementsInstructions|label]
 <ol>
@@ -192,7 +192,7 @@ What do you know about them?
 <li>Name the groups. These are your story elements.</li>
 </ol>
 
-* These are the project story elements you have entered so far. [storyElements|grid|page_addStoryElement]
+* These are the project story elements you have entered so far. [projectStoryElementsList|grid|page_addStoryElement]
 
 ## Add story element [page_addStoryElement|popup]
 
@@ -357,7 +357,7 @@ in the places where they normally gather.
 * Materials | What materials will this session require?  [collectionSessionMaterials|textarea]
 * Other | Enter other details about this session. [collectionSessionDetails|textarea]
 
-* These are the activities added to this session plan so far. [collectionSessionAgenda|grid|page_addCollectionSessionActivity]
+* These are the activities added to this session plan so far. [collectionSessionActivitiesList|grid|page_addCollectionSessionActivity]
 
 * Print session agenda [printCollectionSessionAgenda|button]
 
@@ -405,7 +405,7 @@ but the system will ask you to confirm each change.
 * If you are doing story collection over the internet, click this button to make the web form "live" and able [startCollectionLabel|label]
 to be used by people other than yourself.
 
-* Enable web story form [enableWebStoryForm|button] 
+* Enable web story form [enableWebStoryForm|button]
 
 * Copy story form web link [copyStoryFormURL|button]
 
@@ -429,19 +429,19 @@ to be used by people other than yourself.
 * If you are doing story collection over the internet, click this button to make the web form [stopCollectionLabel|label]
 unavailable to anyone but yourself.
 
-* Disable web story form [disableWebStoryForm|button] 
+* Disable web story form [disableWebStoryForm|button]
 
 ## Enter story collection session records [page_enterCollectionSessionRecords]
 
 * Note: If you did not hold any story collection sessions, you can skip this page. [collectionRecordsLabel|label]
 
-* These are the story collection sessions you planned to hold. [collectionSessions|grid|page_addCollectionSessionRecord]
+* These are the story collection sessions you planned to hold. [storyCollectionSessionsList|grid|page_addCollectionSessionRecord]
 
 ## Add story collection session record [page_addCollectionSessionRecord|popup]
 
-* These are the group constructions you have entered for this session so far. [collectionSessionConstructions|grid|page_newCollectionSessionConstruction]
+* These are the group constructions you have entered for this session so far. [collectionSessionConstructionsList|grid|page_newCollectionSessionConstruction]
 
-* These are the notes you have entered for this story collection session so far. [collectionSessionNotes|page_newCollectionSessionNotes]
+* These are the notes you have entered for this story collection session so far. [collectionSessionNotesList|grid|page_newCollectionSessionNotes]
 
 ## Story collection construction [page_newCollectionSessionConstruction|popup]
 
@@ -449,11 +449,11 @@ unavailable to anyone but yourself.
 * What type of construction is it? [collectionSessionConstructionType|select|timeline;landscape;other]
 * Please describe the construction (or include a description given by participants). [collectionSessionContructionText|textarea]
 * You can include a link to an audio or video description here. [collectionSessionConstructionLink|text]
-* These are the images you have entered for the construction so far. [collectionSessionConstructionImages|grid|page_newCollectionConstructionImage]
+* These are the images you have entered for the construction so far. [collectionSessionConstructionImagesList|grid|page_newCollectionConstructionImage]
 
 ## Collection construction image [page_newCollectionConstructionImage|popup]
 
-* Image | Upload an image for this construction. [collectionSessionConstrucctionImage|imageUploader]
+* Image | Upload an image for this construction. [collectionSessionConstructionImage|imageUploader]
 * Name | Please give this image a name. [collectionSessionConstructionImageName|text]
 * Notes | Make any notes you'd like to record on this image here. [collectionSessionConstructionImageNotes|textarea]
 
@@ -461,7 +461,7 @@ unavailable to anyone but yourself.
 
 * Name | Please give this set of notes a name. [collectionSessionNotesName|text]
 * Notes | Enter your notes here. [collectionSessionNotesText|textarea]
-* Images | These are the images you have entered for this set of notes so far. [collectionSessionNotesImages|grid|page_newCollectionSessionImage]
+* Images | These are the images you have entered for this set of notes so far. [collectionSessionNoteImagesList|grid|page_newCollectionSessionImage]
 
 ## Collection session notes image [page_newCollectionSessionImage|popup]
 
@@ -475,7 +475,7 @@ unavailable to anyone but yourself.
 
 // this list should populate with names of sessions given in "enter story collection sessions records" screen.
 /// there should be NO add button... but the edit button should go to the popup specified here
-* Story collection sessions [collectionSessions|grid|page_answerQuestionsAboutCollectionSession]
+* Story collection sessions [storyCollectionSessionsList|grid|page_answerQuestionsAboutCollectionSession]
 
 ## Reflect on story collection session [page_answerQuestionsAboutCollectionSession|popup]
 
@@ -576,22 +576,16 @@ all stories have been entered.
 * Observation name | Please give this observation a name. [observationName|text]
 * Observation | Please describe this observation. [observation|textarea]
 
-* Results | These are the results you selected to include in this observation. [observationResultsList|grid] 
+* Results | These are the results you selected to include in this observation. [observationResultsList|grid]
 
-* First interpretation | What is your first interpretation about this observation? [firstInterpText|textarea]
-* First interpretation name | Enter a name for this interpretation. [firstInterpName|text]
-* First interpretation idea | If you like, you can record an idea that follows from this interpretation. [firstInterpIdea|textarea]
-* Excerpts for first interpretation | You can add excerpts to this interpretation. [firstInterpExcerptsList|grid|page_selectExcerpt]
+* Interpretations | These are the interpretations you have created for this observation. [observationInterpretationsList|grid|page_addInterpretation]
 
-* Opposing interpretation | Now enter an interpretation that does not agree with your first interpretation. [opposingInterpText|textarea]
-* Opposing interpretation name | Please name this interpretation. [opposingInterpName|text]
-* Opposing interpretation idea | You can record an idea that follows from this interpretation. [opposingInterpIdea|textarea]
-* Excerpts for opposing interpretation | Choose some excerpts to exemplify this interpretation.  [opposingInterpExcerptsList|grid|page_selectExcerpt]
+## Create interpretation [page_addInterpretation]
 
-* Third interpretation | If you like, enter one more interpretation. [thirdInterpText|textarea]
-* Third interpretation name | Please name this interpretation. [thirdInterpName|text]
-* Third interpretation idea | You can record an idea that follows from this interpretation. [thirdInterpIdea|textarea]
-* Excerpts for third interpretation | Choose some excerpts to exemplify this interpretation.  [thirdInterpExcerptsList|grid|page_selectExcerpt]
+* Interpretation | What is your interpretation about this observation? [interpretationText|textarea]
+* Name | Enter a name for this interpretation. [interpretationName|text]
+* Idea | If you like, you can record an idea that follows from this interpretation. [firstInterpIdea|textarea]
+* Excerpts | You can add excerpts to this interpretation. [interpretationExcerptsList|grid|page_selectExcerpt]
 
 ## Select excerpt [page_selectExcerpt|popup]
 
@@ -618,18 +612,34 @@ all stories have been entered.
 * Name | Please give this perspective a name. [perspectiveName|text]
 * Perspective | Describe this perspective. [perspectiveDescription|textarea]
 
-// note, this grid should combine all the results linked to observations linked to interpretations linked to this perspective
+* Results linked to this perspective [perspectiveResultsList|grid|page_addResultToPerspective]
+
+* Excerpts linked to this perspective [perspectiveExcerptsList|grid|page_addExcerptToPerspective]
+
+* Interpretations linked to this perspective [perspectiveInterpretationsList|grid|page_annotateInterpretationForPerspective]
+
+## Add result to perspective [page_addResultToPerspective|popup]
+
+// this popup should show all the results linked to observations linked to interpretations linked to this perspective
 // perspective
 //      interpretation
 //           observation
 //                result
-* Observation | Choose an observation result that exemplifies this perspective. [observationResultsList|grid] 
+* Choose a result that exemplifies this perspective. [resultsForThisPerspectiveList|grid]
+* Enter any notes you want to remember about this result here. [resultLinkedToPerspectiveNotes|textarea]
+
+## Add excerpt to perspective [page_addExcerptToPerspective|popup]
 
 // similarly, this should be a list of all the excerpts linked to interpretations linked to this perspective
 // perspective
 //     interpretation
 //         excerpt
-* Excerpts | Choose one or more excerpts to illustrate this perspective [excerptsList|grid|page_selectExcerpt]
+* Choose an excerpt that exemplifies this perspective. [excerptsForThisPerspectiveList|grid]
+* Enter any notes you want to remember about this excerpt. [excerptLinkedToPerspectiveNotes|textarea]
+
+## Annotate interpretation for perspective [page_annotateInterpretationForPerspective]
+
+* Enter any notes you want to remember about this interpretation as it is linked to this perspective. [interpretationLinkedToPerspectiveNotes|textarea]
 
 ## Read catalysis report [page_readCatalysisReport]
 
@@ -651,7 +661,7 @@ all stories have been entered.
 
 * Recommendations for sensemaking sessions [sensemakingSessionRecommendations|recommendationTable|sensemakingSessions]
 
-* Sensemaking sessions [sensemakingSessions|grid|page_addSensemakingSessionPlan]
+* Sensemaking sessions [sensemakingSessionsList|grid|page_addSensemakingSessionPlan]
 
 ## Enter sensemaking session plan [page_addSensemakingSessionPlan|popup]
 
@@ -665,7 +675,7 @@ all stories have been entered.
 * Materials | What materials will this session require? [sensemakingSessionMaterials|textarea]
 * Other | Enter other details about this session. [sensemakingSessionDetails|textarea]
 
-* These are the activities added to this session plan so far. [sensemakingSessionAgenda|grid|page_addSensemakingSessionActivity]
+* These are the activities added to this session plan so far. [sensemakingSessionActivitiesList|grid|page_addSensemakingSessionActivity]
 
 * Print session agenda [printSensemakingSessionAgenda|button]
 
@@ -683,15 +693,28 @@ all stories have been entered.
 
 ## Enter sensemaking session records [page_enterSensemakingSessionRecords]
 
-* Sensemaking sessions [sensemakingSessions|grid|page_addSensemakingSessionRecord]
+* Sensemaking sessions [sensemakingSessionsList|grid|page_addSensemakingSessionRecord]
 
 ## Add sensemaking session record [page_addSensemakingSessionRecord|popup]
 
-* Session outcomes (like discoveries and ideas) [sensemakingSessionOutcomes|grid|page_newSensemakingSessionOutcome]
+// no add button on this grid, must add from story browser below
+* Resonant stories (pivot, voice, discovery) [sensemakingSessionResonantStoriesList|grid]
 
-* Group constructions [sensemakingSessionSummaries|grid|page_newSensemakingSessionConstruction]
+* Show|hide collected stories [showHideCollectedStories|toggleButton|showCollectedStoriesInSensemakingSessionRecordScreen]
+* Collected stories [storiesToMarkAsResonantDuringSensemaking|storyBrowser|addResonantStory:"page_addResonantStory"]
 
-* Session notes [sensemakingSessionImages|page_newSensemakingSessionNotes]
+* Session outcomes (like discoveries and ideas) [sensemakingSessionOutcomesList|grid|page_newSensemakingSessionOutcome]
+
+* Group constructions [sensemakingSessionConstructionsList|grid|page_newSensemakingSessionConstruction]
+
+* Session notes [sensemakingSessionNotesList|grid|page_newSensemakingSessionNotes]
+
+## Add resonant story [page_addResonantStory]
+
+* Which type of resonant story is this? [resonantStoryType|select|pivot;voice;discovery;other]
+* Why did this story stand out? [resonantStoryReason|textarea]
+* For which participant groups was this story important? [resonantStoryWhom|checkBoxesWithPull|participantGroups]
+* Would you like to make any other notes about this story? [resonantStoryNotes|textarea]
 
 ## Sensemaking session outcome [page_newSensemakingSessionOutcome|popup]
 
@@ -710,7 +733,7 @@ all stories have been entered.
 
 ## Sensemaking construction image [page_newSensemakingConstructionImage|popup]
 
-* Image | Upload an image for this construction. [sensemakingSessionConstrucctionImage|imageUploader]
+* Image | Upload an image for this construction. [sensemakingSessionConstructionImage|imageUploader]
 * Name | Please give this image a name. [sensemakingSessionConstructionImageName|text]
 * Notes | Make any notes you'd like to record on this image here. [sensemakingSessionConstructionImageNotes|textarea]
 
@@ -718,7 +741,7 @@ all stories have been entered.
 
 * Name | Please give this set of notes a name. [sensemakingSessionNotesName|text]
 * Notes | Enter your notes here. [sensemakingSessionNotesText|textarea]
-* Images | These are the images you have entered for this set of notes so far. [sensemakingSessionNotesImages|grid|page_newSensemakingSessionImage]
+* Images | These are the images you have entered for this set of notes so far. [sensemakingSessionNoteImages|grid|page_newSensemakingSessionImage]
 
 ## Sensemaking session notes image [page_newSensemakingSessionImage|popup]
 
@@ -732,7 +755,7 @@ all stories have been entered.
 
 // this list should populate with names of sessions given in "enter sensemaking sessions records" screen.
 /// there should be NO add button... but the edit button should go to the popup specified here
-* Sensemaking sessions [sensemakingSessions|grid|page_answerQuestionsAboutSensemakingSession]
+* Sensemaking sessions [sensemakingSessionsList|grid|page_answerQuestionsAboutSensemakingSession]
 
 ## Reflect on session [page_answerQuestionsAboutSensemakingSession|popup]
 
@@ -767,11 +790,19 @@ all stories have been entered.
 // Choose interventions - x planned
 // Answer questions about interventions - x questions answered
 
-## Answer questions about project outcomes [page_projectOutcomesForIntervention]
+* You can enter some general notes on intervention in this project here. [interventionGeneralNotes|textarea]
 
-* In order to choose interventions that will be useful in your project, it will be helpful to think about some [outcomesTable|page_outcomesTable|participants_firstGroupName;participants_secondGroupName;participants_thirdGroupName]
-of the issues (positive and negative) you discovered in your project. Please answer these questions in reference to 
-the participant groups you set up in the project planning phase. 
+* The intervention section is [interventionOpenOrClosedLabel|label]
+
+* open|closed [interventionOpenOrClosedState|lookupLabel|interventionOpen]
+
+* Open the intervention section|Close the intervention section [toggleButton|interventionOpen]
+
+## Answer questions about project outcomes [page_projectOutcomesForIntervention;interventionOpen]
+
+* In order to choose interventions that will be useful in your project, it will be helpful to think about some [outcomesTable|questionsTable|page_outcomesTable|participants_firstGroupName;participants_secondGroupName;participants_thirdGroupName]
+of the issues (positive and negative) you discovered in your project. Please answer these questions in reference to
+the participant groups you set up in the project planning phase.
 
 ## Project outcomes [page_outcomesTable|questionsTable]
 
@@ -827,13 +858,13 @@ the participant groups you set up in the project planning phase.
 
 ## Enter intervention records [page_recordInterventions]
 
-* Interventions [interventionsListForRecording|grid|page_addInterventionRecord]
+* Interventions [interventionsList|grid|page_addInterventionRecord]
 
 ## Add intervention notes [page_addInterventionRecord|popup]
 
 * Name | Please give this set of notes a name. [interventionNotesName|text]
 * Notes | Enter your notes here. [interventionNotesText|textarea]
-* Images | These are the images you have entered for this set of notes so far. [interventionNotesImages|grid|page_newInterventionImage]
+* Images | These are the images you have entered for this set of notes so far. [interventionRecordImages|grid|page_newInterventionImage]
 
 ## Intervention notes image [page_newInterventionImage|popup]
 
@@ -847,7 +878,7 @@ the participant groups you set up in the project planning phase.
 
 // this list should populate with names of interventions given in "enter intervention records" screen.
 /// there should be NO add button... but the edit button should go to the popup specified here
-* Interventions [interventionsListForReflection|grid|page_answerQuestionsAboutIntervention]
+* Interventions [interventionsList|grid|page_answerQuestionsAboutIntervention]
 
 ## Reflect on intervention [page_answerQuestionsAboutIntervention|popup]
 
@@ -878,12 +909,118 @@ the participant groups you set up in the project planning phase.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#Return - checklist
+# Return [page_return]
 
-##Gather feedback - enter what people said (mostly textareas)
-##Answer questions about project - answer questions about project (mostly textareas)
-##Prepare project presentation - enter things you want to tell people about project (to be shown to steering committee)
-##Read return report - text with all stuff entered
+## Gather feedback [page_gatherFeedback]
 
-#Project report - text summary (everything in the six stage reports appended)
+* These are the pieces of feedback you have gathered so far. [feedbackList|grid|page_enterFeedbackPiece]
 
+* If you would like to enter any general notes on the feedback you've seen to the project, write them here. [generalFeedback|textarea]
+
+## Enter piece of feedback on project [page_enterFeedbackPiece|popup]
+
+* Feedback | What did someone say or do? [feedbackText|textarea]
+* Name | Please give this piece of feedback a name. [feedbackName|text]
+* Type | What type of feedback is this? [feedbackType|select|a story;a reference to something that came up in the project;a wish about the future;an opinion;a complaint;an action;other]
+* Source | Who said or did this? [feedbackWho|text]
+* Prompt | What did you say or do (if anything) that led to this feedback? [feedbackQuestion|text]
+* Notes | Please enter any other notes you have about this feedback. [feedbackNotes|textarea]
+* Image | You can upload an image to accompany your notes here. [feedbackImage|imageUploader]
+
+## Reflect on the project [page_reflectOnProject]
+
+* What have you learned from the stories you heard in this project? [reflectProjectStories|textarea]
+* What did you learn about your facilitation practice in this project? [reflectProjectFacilitation|textarea]
+* What did you learn about project planning? [reflectProjectPlanning|textarea]
+* How has this project changed your own version of PNI? [reflectProjectOwnPNI|textarea]
+* What have you learned about your community or organization because of this project? [reflectProjectCommunity|textarea]
+* What did this project teach you about your personal strengths and weaknesses? [reflectProjectPersonalStrengths|textarea]
+* What did this project teach you about your team? [reflectProjectTeam|textarea]
+* Describe any new ideas that came up during this project. [reflectProjectIdeas|textarea]
+* Enter any additional notes you'd like to remember about the project. [reflectProjectNotes|textarea]
+* You can upload an image to accompany your notes here. [reflectProjectImage|imageUploader]
+
+## Prepare project presentation [page_prepareProjectPresentation]
+
+* These are the elements in your presentation so far. [projectPresentationElementsList|grid|page_addPresentationElement]
+
+## Add element to project presentation [page_addPresentationElement|popup]
+
+* Which type of element would you like to add? [presentationElementType|select|CFK THE WHOLE THING BELOW
+
+id:"projectStoryList", name:"project stories";
+id:"projectStoryElementsList", name:"project story elements";
+id:"elicitingQuestionsList", name:"eliciting questions";
+id:"storyQuestionsList", name:"story questions";
+id:"participantQuestionsList", name:"participant questions";
+id:"storyCollectionSessionsList", name:"story collection sessions";
+  id:"collectionSessionActivitiesList", name:"story collection session activities", parents:"storyCollectionSessionsList";
+  id:"collectionSessionConstructionsList", name:"story collection session constructions", parents:"storyCollectionSessionsList";
+    id:"collectionSessionConstructionImagesList", name:"story collection session construction images", parents:"storyCollectionSessionsList|collectionSessionConstructionsList";
+  id:"collectionSessionNotesList", name:"story collection session notes", parents:"collectionSessionsList";
+    id:"collectionSessionNoteImagesList", name:"story collection session note images", parents:"collectionSessionsList|collectionSessionNotesList";
+id:"excerptsList", name:"excerpts";
+id:"observationsList", name:"observations";
+  id:"observationResultsList", name:"observation results", parents:"observationsList";
+  id:"observationInterpretationsList", name:"observation interpretations", parents:"observationsList";
+id:"perspectivesList", name:"perspectives";
+  id:"perspectiveResultsList", name:"perspective results", parents:"perspectivesList";
+  id:"perspectiveExcerptsList", name:"perspective excerpts", parents:"perspectivesList";
+  id:"perspectiveInterpretationsList", name":perspective interpretations", parents:"perspectivesList";
+id:"sensemakingSessionsList", name:"sensemaking sessions";
+  id:"sensemakingSessionResonantStoriesList", name:"sensemaking session resonant stories", parents:"sensemakingSessionsList";
+  id:"sensemakingSessionConstructionsList", name:"sensemaking session constructions", parents:"sensemakingSessionsList";
+    id:"sensemakingSessionConstructionImagesList", name:"sensemaking session construction images", parents:"sensemakingSessionsList|sensemakingSessionConstructionsList";
+  id:"sensemakingSessionNotesList", name:"sensemaking session notes", parents:"sensemakingSessionsList";
+    id:"sensemakingSessionNoteImagesList", name:"sensemaking session note images":, parents: "sensemakingSessionsList|sensemakingSessionNotesList";
+id:"interventionsList", name:"interventions";
+  id:"interventionRecordImagesList", name:"intervention images", parents:"interventionsList";
+id:"feedbackList", name:"feedback";
+
+// these are ALL the grids in the program (or this list could be programmatically created on the fly which is probably better)
+// they should pick which grid they want to draw from (with a drop down)
+// after they pick the grid from the dropdown, the grid they picked should appear below it
+// and they can pick one (or more?) item in the grid, then click OK, then the grid item should appear in the "presentation elements" grid
+// the "elements" grid should not have any grid columns FROM the original lists
+// for grids within grids, show all of them together in one grid, but add a column (or two) giving the name of the parent item(s)
+
+* Name | What name would you like to give this element in your presentation? [presentationElementName|text]
+* Description | How would you like to describe this element in your presentation? [presentationElementStatement|textarea]
+* Evidence | What evidence does this element present that your project met its goals? [presentationElementEvidence|textarea]
+* Q&A | What questions do you anticipate about this element, and how would you like to answer them? [presentationElementQA|textarea]
+* Notes | Enter any other notes you want to remember about this element as you present it. [presentationElementNotes|textarea]
+
+// should we have a section where you can make the presentation look pretty?
+// should it be able to look like a powerpoint presentation? version 2? how hard would this be?
+// people would like to have a PDF they can show as a PPT
+
+## Interested people [page_interestedPeople]
+
+* These are the people who have said they are interested in future projects. [interestedPeopleList|grid|page_addInterestedPerson]
+
+## Add person interested in project [page_addInterestedPerson]
+
+* Name | What is the person's name (and position if applicable)? [interestedPersonName|text]
+* Contact details | Enter any contact details here. [interestedPersonContactDetails|textarea]
+* Preference | How do they want to be connected to future projects? [interestedPersonType|select|they want to be informed;they want to be consulted;they want to collaborate;other]
+* Notes | Enter any notes about this person's interest in future projects here. [interestedPersonNotes|textarea]
+
+## Respond to requests for post-project support [page_projectRequests]
+
+* These are the requests you have entered so far. [projectRequestsList|grid|page_addNewProjectRequest]
+
+## Enter project request [page_addNewProjectRequest|popup]
+
+* Request | What was the request? [requestText|textarea]
+* Type | What type of request is this? [requestType|select|help with their own projects;help with sustaining story exchange;help with examining this project's stories and results;help learning about story work;other]
+* Satisfied | Do you consider this request to have been satisfied? [requestMet|boolean]
+* What happened | What has happened in relation to this request? [requestWhatHappened|textarea]
+* Notes | Enter any notes about the request here. [requestNotes|textarea]
+
+## Read return report [page_returnReport]
+
+* Return report [returnReport|report|return]
+
+# Project report [page_projectReport]
+
+* Project report [projectReport|report|project]
