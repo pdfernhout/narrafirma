@@ -343,7 +343,7 @@ in the places where they normally gather.
 
 * Recommendations for story collection sessions [collectionSessionRecommendations|recommendationTable|collectionSessions]
 
-* These are the collection sessions you have designed so far. [storyCollectionSessionsList|grid|page_addStoryCollectionSession]
+* These are the collection sessions you have designed so far. [storyCollectionSessionPlansList|grid|page_addStoryCollectionSession]
 
 ## Design story collection session [page_addStoryCollectionSession|popup]
 
@@ -435,7 +435,7 @@ unavailable to anyone but yourself.
 
 * Note: If you did not hold any story collection sessions, you can skip this page. [collectionRecordsLabel|label]
 
-* These are the story collection sessions you planned to hold. [storyCollectionSessionsList|grid|page_addCollectionSessionRecord]
+* These are the story collection records you have entered so far. [storyCollectionSessionRecordsList|grid|page_addCollectionSessionRecord]
 
 ## Add story collection session record [page_addCollectionSessionRecord|popup]
 
@@ -471,11 +471,7 @@ unavailable to anyone but yourself.
 
 ## Reflect on story collection sessions [page_answerQuestionsAboutCollectionSessions]
 
-* Note: If there are no sessions in this list, enter them in the "Enter story collection session records" screen first. [collectionSessionQuestionsLabel|label]
-
-// this list should populate with names of sessions given in "enter story collection sessions records" screen.
-/// there should be NO add button... but the edit button should go to the popup specified here
-* Story collection sessions [storyCollectionSessionsList|grid|page_answerQuestionsAboutCollectionSession]
+* These are session reflections you have entered so far. [storyCollectionSessionReflectionsList|grid|page_answerQuestionsAboutCollectionSession]
 
 ## Reflect on story collection session [page_answerQuestionsAboutCollectionSession|popup]
 
@@ -661,7 +657,7 @@ all stories have been entered.
 
 * Recommendations for sensemaking sessions [sensemakingSessionRecommendations|recommendationTable|sensemakingSessions]
 
-* Sensemaking sessions [sensemakingSessionsList|grid|page_addSensemakingSessionPlan]
+* Sensemaking sessions [sensemakingSessionPlansList|grid|page_addSensemakingSessionPlan]
 
 ## Enter sensemaking session plan [page_addSensemakingSessionPlan|popup]
 
@@ -693,9 +689,11 @@ all stories have been entered.
 
 ## Enter sensemaking session records [page_enterSensemakingSessionRecords]
 
-* Sensemaking sessions [sensemakingSessionsList|grid|page_addSensemakingSessionRecord]
+* Sensemaking sessions [sensemakingSessionRecordsList|grid|page_addSensemakingSessionRecord]
 
 ## Add sensemaking session record [page_addSensemakingSessionRecord|popup]
+
+* Name | Please give this session record a name. [sensemakingSessionName|text]
 
 // no add button on this grid, must add from story browser below
 * Resonant stories (pivot, voice, discovery) [sensemakingSessionResonantStoriesList|grid]
@@ -751,11 +749,9 @@ all stories have been entered.
 
 ## Reflect on sensemaking sessions [page_answerQuestionsAboutSensemakingSessions]
 
-* Note: If there are no sessions in this list, enter them in the "Enter sensemaking session records" screen first. [sensemakingSessionQuestionsLabel|label]
+* Name | Please give this set of reflections a name. [sensemakingSessionName|text]
 
-// this list should populate with names of sessions given in "enter sensemaking sessions records" screen.
-/// there should be NO add button... but the edit button should go to the popup specified here
-* Sensemaking sessions [sensemakingSessionsList|grid|page_answerQuestionsAboutSensemakingSession]
+* Sensemaking session reflections [sensemakingSessionReflectionsList|grid|page_answerQuestionsAboutSensemakingSession]
 
 ## Reflect on session [page_answerQuestionsAboutSensemakingSession|popup]
 
@@ -862,7 +858,7 @@ the participant groups you set up in the project planning phase.
 
 ## Add intervention notes [page_addInterventionRecord|popup]
 
-* Name | Please give this set of notes a name. [interventionNotesName|text]
+* Name | Please give this intervention record a name. [interventionNotesName|text]
 * Notes | Enter your notes here. [interventionNotesText|textarea]
 * Images | These are the images you have entered for this set of notes so far. [interventionRecordImages|grid|page_newInterventionImage]
 
@@ -881,6 +877,8 @@ the participant groups you set up in the project planning phase.
 * Interventions [interventionsList|grid|page_answerQuestionsAboutIntervention]
 
 ## Reflect on intervention [page_answerQuestionsAboutIntervention|popup]
+
+* Name | Please name this set of reflections on an intervention. [interventionName|text]
 
 * Change [interventionReflectChangeLabel|header]
 * Change in participant perceptions | How did the perceptions of the participants change from the start to the end of the intervention? [interventionReflectChangeEmotions|textarea]
