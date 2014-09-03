@@ -36,7 +36,7 @@ define([
     }
 
     function createPage(tabContainer) {
-    	// Export survey pane
+        // Export survey pane
         
         var exportSurveyPane = new ContentPane({
             title: "Export survey"

@@ -44,7 +44,7 @@ define([
         var surveyResultsDiv = document.getElementById("surveyResultsDiv");
         surveyResultsDiv.innerHTML = JSON.stringify(surveyResults);
     }
-	
+    
     function takeSurvey() {
         var surveyDialog;
         
@@ -85,7 +85,7 @@ define([
     }
     
     function createPage(tabContainer) {
-    	// Take survey pane
+        // Take survey pane
         
         var takeSurveyPane = new ContentPane({
             title: "Take survey"
@@ -98,8 +98,8 @@ define([
         
         tabContainer.addChild(takeSurveyPane);
         takeSurveyPane.startup();
-	}
+    }
 
-	return createPage;
+    return createPage;
     
 });

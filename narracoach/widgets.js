@@ -50,7 +50,7 @@ define([
         
     function newButton(id, label, addToDiv, callback) {
         var button = new Button({
-        	id: id,
+            id: id,
             label: label,
             type: "button",
             onClick: callback
@@ -116,27 +116,27 @@ define([
     
     function newSelect(id, choices, optionsString, addToDiv, noSelectedOption) {
         var options = [];
-		// TODO: Translate label for no selection
-		if (!noSelectedOption) options.push({label: " -- select -- ", value: "", selected: true});
+        // TODO: Translate label for no selection
+        if (!noSelectedOption) options.push({label: " -- select -- ", value: "", selected: true});
         if (choices) {
             array.forEach(choices, function(each) {
-            	// console.log("choice", id, each);
-            	if (isString(each)) {
-            		var label = translate(id + "_choice_" + each);
-            		options.push({label: label, value: each});
-            	} else {
-                	// TODO: Maybe bug in dojo select that it does not handle values that are not strings
-                	// http://stackoverflow.com/questions/16205699/programatically-change-selected-option-of-a-dojo-form-select-that-is-populated-b
-            		options.push({label: each.label, value: each.value});
-            	}
+                // console.log("choice", id, each);
+                if (isString(each)) {
+                    var label = translate(id + "_choice_" + each);
+                    options.push({label: label, value: each});
+                } else {
+                    // TODO: Maybe bug in dojo select that it does not handle values that are not strings
+                    // http://stackoverflow.com/questions/16205699/programatically-change-selected-option-of-a-dojo-form-select-that-is-populated-b
+                    options.push({label: each.label, value: each.value});
+                }
             });           
         } else if (optionsString) {
             array.forEach(optionsString.split("\n"), function(each) {
-            	// console.log("option", id, each);
+                // console.log("option", id, each);
                 options.push({label: each, value: each});
             });
         } else {
-        	console.log("No choices or options defined for select", id);
+            console.log("No choices or options defined for select", id);
         }
         var select = new Select({
                 id: id,
@@ -395,17 +395,17 @@ define([
     
     
     return {
-    	// "isString": isString,
+        // "isString": isString,
         "newButton": newButton,
         "newLabel": newLabel,
-		"newTextBox": newTextBox,
-		"newSimpleTextArea": newSimpleTextArea,
-		"newSelect": newSelect,
-		"newRadioButtons": newRadioButtons,
-		"newCheckBoxes": newCheckBoxes,
-		"newSlider": newSlider,
-		"newBoolean": newBoolean,
-		"newCheckbox": newCheckbox,
+        "newTextBox": newTextBox,
+        "newSimpleTextArea": newSimpleTextArea,
+        "newSelect": newSelect,
+        "newRadioButtons": newRadioButtons,
+        "newCheckBoxes": newCheckBoxes,
+        "newSlider": newSlider,
+        "newBoolean": newBoolean,
+        "newCheckbox": newCheckbox,
     };
 
 });

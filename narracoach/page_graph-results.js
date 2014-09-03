@@ -10,7 +10,7 @@
     "dojox/charting/axis2d/Default",
     "dojox/charting/plot2d/Lines",
 ], function(
-	array,
+    array,
     domConstruct,
     translate,
     widgets,
@@ -98,7 +98,7 @@
         // var surveyGraphDiv = document.getElementById("surveyGraphDiv");
         // chart1.placeAt(surveyGraphDiv);     
     }
-	    
+        
     function createPage(tabContainer) {       
         // Graph results pane
         
@@ -113,8 +113,8 @@
 
         tabContainer.addChild(graphResultsPane);
         graphResultsPane.startup();
-	}
+    }
 
-	return createPage;
+    return createPage;
     
 });

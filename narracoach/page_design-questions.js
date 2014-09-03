@@ -21,27 +21,27 @@ define([
         questionIndex += 1;
         question_editor.insertQuestionEditorDivIntoDiv(question, questionsDiv);
     }
-	
+    
     function createPage(tabContainer) {
-    	// Design questions pane
+        // Design questions pane
 
-	    var designQuestionsPane = new ContentPane({
-	         title: "Design questions"
-	    });
-	    
-	    var pane = designQuestionsPane.containerNode;
-	    pane.appendChild(domConstruct.toDom("<b>NarraCoach</b>"));
-	    pane.appendChild(domConstruct.toDom("<br>"));
-	    pane.appendChild(domConstruct.toDom("Survey Design"));
-	    pane.appendChild(domConstruct.toDom("<br>"));
-	    pane.appendChild(domConstruct.toDom('<div id="questionsDiv"/>'));
-	    var addQuestionButton = widgets.newButton("Add question", pane, addQuestion);
-	    pane.appendChild(document.createElement("br"));
-	
-	    tabContainer.addChild(designQuestionsPane);
-	    designQuestionsPane.startup();
-	}
+        var designQuestionsPane = new ContentPane({
+             title: "Design questions"
+        });
+        
+        var pane = designQuestionsPane.containerNode;
+        pane.appendChild(domConstruct.toDom("<b>NarraCoach</b>"));
+        pane.appendChild(domConstruct.toDom("<br>"));
+        pane.appendChild(domConstruct.toDom("Survey Design"));
+        pane.appendChild(domConstruct.toDom("<br>"));
+        pane.appendChild(domConstruct.toDom('<div id="questionsDiv"/>'));
+        var addQuestionButton = widgets.newButton("Add question", pane, addQuestion);
+        pane.appendChild(document.createElement("br"));
+    
+        tabContainer.addChild(designQuestionsPane);
+        designQuestionsPane.startup();
+    }
 
-	return createPage;
+    return createPage;
     
 });

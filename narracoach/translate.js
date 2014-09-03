@@ -3,7 +3,7 @@
 define([
         "dojo/i18n!narracoach/nls/messages"
 ], function(messages) {
-	
+    
     function translate(tag, defaultText) {
         // console.log("translating", tag, translations, translations[tag]);
         var result = messages[tag];
