@@ -8,18 +8,18 @@ require([
     "dijit/form/SimpleTextarea",
     "dojo/domReady!"
 ], function(
-	array,
-	string,
-	textOfDesign,
+    array,
+    string,
+    textOfDesign,
     Button,
     SimpleTextarea
 ){
-	
+    
 function startsWith(str, prefix) {
-	  // console.log("startsWith", prefix, str.lastIndexOf(prefix, 0) === 0, str);
+      // console.log("startsWith", prefix, str.lastIndexOf(prefix, 0) === 0, str);
     return str.lastIndexOf(prefix, 0) === 0;
 }
-	
+    
 function isString(something) {
     return (typeof something == 'string' || something instanceof String);
 }
@@ -41,14 +41,15 @@ function newButton(label, addToDiv, callback) {
     return button.domNode;
 }
 
-var acceptableTypes = ["text", "textarea", "label", "header", "select", "grid", "button",
-                       "popup", "imageUploader", "recommendationTable", "questionsTable", "quizScoreResult",
-                       "report", "checkboxes", "templateList", "checkBoxesWithPull", "participantStoryForm", "storyBrowser", "observationList", 
-                       "excerptsList", "storyThemer", "graphBrowser", "trendsReport", "clusterSpace", "listCount",
-                       "questionAnswer", "questionAnswerCountOfTotalOnPage", "toggleButton", "boolean",
-                       
-                       // Mispelled duplicates?
-                       "checkBoxes", "observationsList"];
+var acceptableTypes = [
+    "text", "textarea", "label", "header", "select", "grid", "button",
+    "popup", "imageUploader", "recommendationTable", "questionsTable", "quizScoreResult",
+    "report", "checkboxes", "templateList", "checkBoxesWithPull", "participantStoryForm", "storyBrowser", "observationList", 
+    "excerptsList", "storyThemer", "graphBrowser", "trendsReport", "clusterSpace", "listCount",
+    "questionAnswer", "questionAnswerCountOfTotalOnPage", "toggleButton", "boolean",
+    // Mispelled duplicates?
+    "checkBoxes", "observationsList"
+];
 
 var usedIDs = {};
 
@@ -64,9 +65,9 @@ function extract(line, rest, lineNumber) {
     var shortLineContent = undefined;
     var longLineContent = lineContent;
     if (lineContentSections.length == 2) {
-   		shortLineContent = string.trim(lineContentSections[0]);
-   		longLineContent = string.trim(lineContentSections[1]);
-   	}
+           shortLineContent = string.trim(lineContentSections[0]);
+           longLineContent = string.trim(lineContentSections[1]);
+       }
     if (lineContentSections.length >= 3) console.log("FIX NEEDED: Too many segments in line content: " + lineNumber + " :: " + line);
     
     var infoSections = lineSections[1].split("]");
@@ -76,11 +77,11 @@ function extract(line, rest, lineNumber) {
     }
     
     if (!infoSections) {
-    	console.log("FIX NEEDED: Expected some content in brackets for line: " + lineNumber + " :: " + line);
-    	infoSections = ["FIXME_" + lineNumber];
+        console.log("FIX NEEDED: Expected some content in brackets for line: " + lineNumber + " :: " + line);
+        infoSections = ["FIXME_" + lineNumber];
     } else if (!infoSections[0]) {
-    	console.log("FIX NEEDED: Expected a non-empty id for line: " + lineNumber + " :: " + line);
-    	infoSections = ["FIXME_" + lineNumber];    	
+        console.log("FIX NEEDED: Expected a non-empty id for line: " + lineNumber + " :: " + line);
+        infoSections = ["FIXME_" + lineNumber];        
     }
     
     var infoContentString = string.trim(infoSections[0]);
@@ -98,15 +99,15 @@ function extract(line, rest, lineNumber) {
     }
     
     if (infoContent.type && acceptableTypes.indexOf(infoContent.type) === -1) {
-    	console.log("FIX NEEDED: Unknown type '" + infoContent.type + "' in brackets for line: " + lineNumber + " :: " + line);
+        console.log("FIX NEEDED: Unknown type '" + infoContent.type + "' in brackets for line: " + lineNumber + " :: " + line);
     }
     
     var previousLineNumber = usedIDs[infoContent.id];
     if (previousLineNumber) {
-    	console.log("FIX NEEDED: Widget ID '" + infoContent.id + "' was previously used on line " + previousLineNumber + " and is redeclared on line: " + lineNumber + " :: " + line);
-    	infoContent.id = "FIXME_" + lineNumber;
+        console.log("FIX NEEDED: Widget ID '" + infoContent.id + "' was previously used on line " + previousLineNumber + " and is redeclared on line: " + lineNumber + " :: " + line);
+        infoContent.id = "FIXME_" + lineNumber;
     } else {
-    	usedIDs[infoContent.id] = lineNumber;
+        usedIDs[infoContent.id] = lineNumber;
     }
     
     return {"text": longLineContent, "shortText": shortLineContent, "info": infoContent};
@@ -130,55 +131,52 @@ function convert() {
     var lineNumber = 0;
     
     array.forEach(lines, function (line) {
-    	lineNumber++;
-    	// console.log("line", lineNumber, line);
-    	line = string.trim(line);
+        lineNumber++;
+        // console.log("line", lineNumber, line);
+        line = string.trim(line);
 
-      var header = false;
-    	var rest = line;
-    	
-      if (startsWith(line, "#")) {
-    	  // A page or page section header
-    	  if (startsWith(line, "##")) {
-    		  // A page
-          rest = line.substring(2);
-        } else {
-        	// A page as a section header
-          rest = line.substring(1);
-          header = true;
-    	  }
-    	  lastQuestion = null;
-    	  
-    	  var data = extract(line, rest, lineNumber);
-    	  if (data) {
-	        lastPage = {"id": data.info.id, "name": data.text, "lineNumber": lineNumber, "description": "", "isHeader": header, "type": data.info.type, "options": data.info.options, "questions": []};
-	        pages.push(lastPage)
-    	  }
-      } else if (lastPage && startsWith(line, "*")) {
-    	  rest = line.substring(1);
-    	  // A question
-        var data = extract(line, rest, lineNumber);
-        if (data) {
-          lastQuestion = {"id": data.info.id, "text": data.text, "shortText": data.shortText, "type": data.info.type, "options": data.info.options};
-          lastQuestion.lineNumber = lineNumber;
-          lastPage.questions.push(lastQuestion)  
+        var header = false;
+        var rest = line;
+        
+        if (startsWith(line, "#")) {
+            // A page or page section header
+            if (startsWith(line, "##")) {
+                // A page
+                rest = line.substring(2);
+            } else {
+                // A page as a section header
+                rest = line.substring(1);
+                header = true;
+            }
+            lastQuestion = null;
+            
+            var data = extract(line, rest, lineNumber);
+            if (data) {
+              lastPage = {"id": data.info.id, "name": data.text, "description": "", "isHeader": header, "type": data.info.type, "options": data.info.options, "questions": []};
+              pages.push(lastPage)
+            }
+        } else if (lastPage && startsWith(line, "*")) {
+            rest = line.substring(1);
+            // A question
+            var data = extract(line, rest, lineNumber);
+            if (data) {
+              lastQuestion = {"id": data.info.id, "text": data.text, "shortText": data.shortText, "type": data.info.type, "options": data.info.options};
+              lastPage.questions.push(lastQuestion)  
+            }
+        } else if (lastPage && startsWith(line, "//")) {
+            // console.log("comment line", line);
+            // if (lastPage.description) lastPage.description += "\n";
+            // lastPage.description += line;
+            lastQuestion = {"id": "COMMENT_" + lineNumber, "text": line, "type": "label", "options": null};
+            lastPage.questions.push(lastQuestion)  
+        } else if (lastQuestion && line) {
+            if (lastQuestion.text) lastQuestion.text += "\n";
+            lastQuestion.text += line;
+        } else if (lastPage) {
+            if (lastPage.description) lastPage.description += "\n";
+            lastPage.description += line;
         }
-      } else if (lastPage && startsWith(line, "//")) {
-    	  // console.log("comment line", line);
-    	  // if (lastPage.description) lastPage.description += "\n";
-        // lastPage.description += line;
-        lastQuestion = {"id": "COMMENT_" + lineNumber, "text": line, "type": "label", "options": null};
-        lastQuestion.lineNumber = lineNumber;
-        lastPage.questions.push(lastQuestion)  
-      } else if (lastQuestion && line) {
-    	  if (lastQuestion.text) lastQuestion.text += "\n";
-    	  lastQuestion.text += line;
-      } else if (lastPage) {
-          if (lastPage.description) lastPage.description += "\n";
-          lastPage.description += line;
-    	}
-
-   		// console.log("line", header, stuff, name, "::", description);
+        // console.log("line", header, stuff, name, "::", description);
     });
     
     addOutput('"use strict";\n');
@@ -188,34 +186,34 @@ function convert() {
 }
 
 function generateRecommendationsTable() {
-	if (!pages) console.log('Run convert before generating recommendations table');
-	outputTextArea.set("value", "");
-	array.forEach(pages, function (page) {
-		array.forEach(page.questions, function (question) {
-			if (startsWith(question.id, 'aspects_') && (question.type === 'select')) {
-				addOutput('\n' + question.id + '\n');
-				array.forEach(question.options.split(';'), function (option) {
-					addOutput('\t' + option + '\n');
-					// console.log(option);
-				});
-			}
-		});
-		
-	});
-	
+    if (!pages) console.log('Run convert before generating recommendations table');
+    outputTextArea.set("value", "");
+    array.forEach(pages, function (page) {
+        array.forEach(page.questions, function (question) {
+            if (startsWith(question.id, 'aspects_') && (question.type === 'select')) {
+                addOutput('\n' + question.id + '\n');
+                array.forEach(question.options.split(';'), function (option) {
+                    addOutput('\t' + option + '\n');
+                    // console.log(option);
+                });
+            }
+        });
+        
+    });
+    
 }
 
 function addOutput(output) {
-	var newValue = outputTextArea.get("value") + output;
-	outputTextArea.set("value", newValue);
+    var newValue = outputTextArea.get("value") + output;
+    outputTextArea.set("value", newValue);
 }
 
 var inputTextArea;
 var outputTextArea;
 
 function createLayout() {
-	var initialText = textOfDesign;
-	
+    var initialText = textOfDesign;
+    
     inputTextArea = new SimpleTextarea({
         name: "input",
         value: initialText,
@@ -231,7 +229,7 @@ function createLayout() {
     }, "output");
     
     outputTextArea.startup();          
-  
+    
     newButton("Convert", "buttons", convert);
     newButton("Generate recommendations table", "buttons", generateRecommendationsTable);
 }
