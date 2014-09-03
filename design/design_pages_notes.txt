@@ -790,13 +790,13 @@ all stories have been entered.
 // Choose interventions - x planned
 // Answer questions about interventions - x questions answered
 
-* You can enter some general notes on intervention in this project here. [interventionGeneralNotes|textarea]
+//* You can enter some general notes on intervention in this project here. [interventionGeneralNotes|textarea]
 
-* The intervention section is [interventionOpenOrClosedLabel|label]
+//* The intervention section is [interventionOpenOrClosedLabel|label]
 
-* open|closed [interventionOpenOrClosedState|lookupLabel|interventionOpen]
+//* open|closed [interventionOpenOrClosedState|lookupLabel|interventionOpen]
 
-* Open the intervention section|Close the intervention section [toggleButton|interventionOpen]
+//* Open the intervention section|Close the intervention section [toggleButton|interventionOpen]
 
 ## Answer questions about project outcomes [page_projectOutcomesForIntervention;interventionOpen]
 
@@ -910,6 +910,12 @@ the participant groups you set up in the project planning phase.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 # Return [page_return]
+* Pieces of feedback entered: [piecesOfFeedbackEntered|listCount|feedbackList]
+* Questions answered about project: [questionsAnsweredAboutProject|questionAnswerCountOfTotalOnPage|page_reflectOnProject]
+* Elements in project presentation: [elementsInProjectPresentation|listCount|projectPresentationElementsList]
+* Presentation report finished: [presentationReportFinished|questionAnswer|presentationReportFinished]
+* Number of people interested in future projects: [numberOfPeopleInterestedInFutureProjects|listCount|interestedPeopleList]
+* Requests received about project: [requestsForHelp|listCount|projectRequestsList]
 
 ## Gather feedback [page_gatherFeedback]
 
@@ -940,49 +946,11 @@ the participant groups you set up in the project planning phase.
 * Enter any additional notes you'd like to remember about the project. [reflectProjectNotes|textarea]
 * You can upload an image to accompany your notes here. [reflectProjectImage|imageUploader]
 
-## Prepare project presentation [page_prepareProjectPresentation]
+## Prepare outline of project presentation [page_prepareProjectPresentation]
 
-* These are the elements in your presentation so far. [projectPresentationElementsList|grid|page_addPresentationElement]
+* These are the elements in your presentation outline so far. [projectPresentationElementsList|grid|page_addPresentationElement]
 
-## Add element to project presentation [page_addPresentationElement|popup]
-
-* Which type of element would you like to add? [presentationElementType|select|CFK THE WHOLE THING BELOW
-
-id:"projectStoryList", name:"project stories";
-id:"projectStoryElementsList", name:"project story elements";
-id:"elicitingQuestionsList", name:"eliciting questions";
-id:"storyQuestionsList", name:"story questions";
-id:"participantQuestionsList", name:"participant questions";
-id:"storyCollectionSessionsList", name:"story collection sessions";
-  id:"collectionSessionActivitiesList", name:"story collection session activities", parents:"storyCollectionSessionsList";
-  id:"collectionSessionConstructionsList", name:"story collection session constructions", parents:"storyCollectionSessionsList";
-    id:"collectionSessionConstructionImagesList", name:"story collection session construction images", parents:"storyCollectionSessionsList|collectionSessionConstructionsList";
-  id:"collectionSessionNotesList", name:"story collection session notes", parents:"collectionSessionsList";
-    id:"collectionSessionNoteImagesList", name:"story collection session note images", parents:"collectionSessionsList|collectionSessionNotesList";
-id:"excerptsList", name:"excerpts";
-id:"observationsList", name:"observations";
-  id:"observationResultsList", name:"observation results", parents:"observationsList";
-  id:"observationInterpretationsList", name:"observation interpretations", parents:"observationsList";
-id:"perspectivesList", name:"perspectives";
-  id:"perspectiveResultsList", name:"perspective results", parents:"perspectivesList";
-  id:"perspectiveExcerptsList", name:"perspective excerpts", parents:"perspectivesList";
-  id:"perspectiveInterpretationsList", name":perspective interpretations", parents:"perspectivesList";
-id:"sensemakingSessionsList", name:"sensemaking sessions";
-  id:"sensemakingSessionResonantStoriesList", name:"sensemaking session resonant stories", parents:"sensemakingSessionsList";
-  id:"sensemakingSessionConstructionsList", name:"sensemaking session constructions", parents:"sensemakingSessionsList";
-    id:"sensemakingSessionConstructionImagesList", name:"sensemaking session construction images", parents:"sensemakingSessionsList|sensemakingSessionConstructionsList";
-  id:"sensemakingSessionNotesList", name:"sensemaking session notes", parents:"sensemakingSessionsList";
-    id:"sensemakingSessionNoteImagesList", name:"sensemaking session note images":, parents: "sensemakingSessionsList|sensemakingSessionNotesList";
-id:"interventionsList", name:"interventions";
-  id:"interventionRecordImagesList", name:"intervention images", parents:"interventionsList";
-id:"feedbackList", name:"feedback";
-
-// these are ALL the grids in the program (or this list could be programmatically created on the fly which is probably better)
-// they should pick which grid they want to draw from (with a drop down)
-// after they pick the grid from the dropdown, the grid they picked should appear below it
-// and they can pick one (or more?) item in the grid, then click OK, then the grid item should appear in the "presentation elements" grid
-// the "elements" grid should not have any grid columns FROM the original lists
-// for grids within grids, show all of them together in one grid, but add a column (or two) giving the name of the parent item(s)
+## Add element to project presentation outline [page_addPresentationElement|popup]
 
 * Name | What name would you like to give this element in your presentation? [presentationElementName|text]
 * Description | How would you like to describe this element in your presentation? [presentationElementStatement|textarea]
@@ -990,9 +958,12 @@ id:"feedbackList", name:"feedback";
 * Q&A | What questions do you anticipate about this element, and how would you like to answer them? [presentationElementQA|textarea]
 * Notes | Enter any other notes you want to remember about this element as you present it. [presentationElementNotes|textarea]
 
-// should we have a section where you can make the presentation look pretty?
-// should it be able to look like a powerpoint presentation? version 2? how hard would this be?
-// people would like to have a PDF they can show as a PPT
+* Now you can export your outline, open it in your word processor, and add material to it [presentationLabel|label]
+from any of the stage reports (or the final project report).
+
+* Export this outline [exportPresentationOutline|button]
+
+* Have you finished your presentation report? [presentationReportFinished|select|yes;no;I'm not making a project presentation]
 
 ## Interested people [page_interestedPeople]
 

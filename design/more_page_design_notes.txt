@@ -73,3 +73,54 @@ Conflicts: Who or what stands in opposition in this story?
 
 9. Name the groups. These are your story elements.
 "
+
+EXTRA things for project presentation part - not using anymore
+
+* Which type of element would you like to add? [presentationElementType|select|=
+[
+{id:"projectStoryList", name:"project stories"},
+{id:"projectStoryElementsList", name:"project story elements"},
+{id:"elicitingQuestionsList", name:"eliciting questions"},
+{id:"storyQuestionsList", name:"story questions"},
+{id:"participantQuestionsList", name:"participant questions"},
+{id:"storyCollectionSessionsList", name:"story collection sessions", children: [
+  {id:"collectionSessionActivitiesList", name:"story collection session activities"},
+  {id:"collectionSessionConstructionsList", name:"story collection session constructions", children: [
+    {id:"collectionSessionConstructionImagesList", name:"story collection session construction images"}
+  ]},
+  {id:"collectionSessionNotesList", name:"story collection session notes", children: [
+    {id:"collectionSessionNoteImagesList", name:"story collection session note images"}
+  ]},
+]},
+{id:"excerptsList", name:"excerpts"},
+{id:"observationsList", name:"observations", children: [
+  {id:"observationResultsList", name:"observation results"},
+  {id:"observationInterpretationsList", name:"observation interpretations"}
+]},
+{id:"perspectivesList", name:"perspectives", children: [
+  {id:"perspectiveResultsList", name:"perspective results"},
+  {id:"perspectiveExcerptsList", name:"perspective excerpts"},
+  {id:"perspectiveInterpretationsList", name":perspective interpretations"}
+]};
+{id:"sensemakingSessionsList", name:"sensemaking sessions", children: [
+  {id:"sensemakingSessionResonantStoriesList", name:"sensemaking session resonant stories"},
+  {id:"sensemakingSessionConstructionsList", name:"sensemaking session constructions", children: [
+    {id:"sensemakingSessionConstructionImagesList", name:"sensemaking session construction images"}
+  ]},
+  {id:"sensemakingSessionNotesList", name:"sensemaking session notes", children: [
+    {id:"sensemakingSessionNoteImagesList", name:"sensemaking session note images"}
+  ]},
+]},
+{id:"interventionsList", name:"interventions", children: [
+  {id:"interventionRecordImagesList", name:"intervention images"}
+]};
+{id:"feedbackList", name:"feedback"}
+]
+
+// these are ALL the grids in the program (or this list could be programmatically created on the fly which is probably better)
+// they should pick which grid they want to draw from (with a drop down)
+// after they pick the grid from the dropdown, the grid they picked should appear below it
+// and they can pick one (or more?) item in the grid, then click OK, then the grid item should appear in the "presentation elements" grid
+// the "elements" grid should not have any grid columns FROM the original lists
+// for grids within grids, show all of them together in one grid, but add a column (or two) giving the name of the parent item(s)
+
