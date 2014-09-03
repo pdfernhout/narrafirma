@@ -8,37 +8,37 @@ define(
         "isHeader": true,
         "questions": [
             {
-                "id": "COMMENT_60",
+                "id": "COMMENT_page_dashboard_1",
                 "text": "// all checklists combined",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_62",
+                "id": "COMMENT_page_dashboard_2",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_63",
+                "id": "COMMENT_page_dashboard_3",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_64",
+                "id": "COMMENT_page_dashboard_4",
                 "text": "//                                                       PLANNING",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_65",
+                "id": "COMMENT_page_dashboard_5",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_66",
+                "id": "COMMENT_page_dashboard_6",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
@@ -52,43 +52,43 @@ define(
         "isHeader": true,
         "questions": [
             {
-                "id": "COMMENT_69",
+                "id": "COMMENT_page_planning_1",
                 "text": "// Project facts - x of x questions answered",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_70",
+                "id": "COMMENT_page_planning_2",
                 "text": "// Planning questions - [ ] draft",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_71",
+                "id": "COMMENT_page_planning_3",
                 "text": "// Project aspects - x of x questions answered",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_72",
+                "id": "COMMENT_page_planning_4",
                 "text": "// Project stories - x stories told",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_73",
+                "id": "COMMENT_page_planning_5",
                 "text": "// Project story elements - x elements entered",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_74",
+                "id": "COMMENT_page_planning_6",
                 "text": "// Story sharing assessment - x of 20 questions answered",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_75",
+                "id": "COMMENT_page_planning_7",
                 "text": "// Project synopsis - [ ] complete",
                 "type": "label",
                 "options": null
@@ -675,7 +675,7 @@ define(
                 "options": "unknown;impossible;difficult;doable;easy"
             },
             {
-                "id": "COMMENT_238",
+                "id": "COMMENT_page_assessStorySharing_1",
                 "text": "// should have results overall and for each category of question",
                 "type": "label",
                 "options": null
@@ -767,31 +767,31 @@ define(
                 "options": "planning"
             },
             {
-                "id": "COMMENT_262",
+                "id": "COMMENT_page_readPlanningReport_1",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_263",
+                "id": "COMMENT_page_readPlanningReport_2",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_264",
+                "id": "COMMENT_page_readPlanningReport_3",
                 "text": "//                                                   COLLECTION DESIGN",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_265",
+                "id": "COMMENT_page_readPlanningReport_4",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_266",
+                "id": "COMMENT_page_readPlanningReport_5",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
@@ -805,31 +805,31 @@ define(
         "isHeader": true,
         "questions": [
             {
-                "id": "COMMENT_269",
+                "id": "COMMENT_page_collectionDesign_1",
                 "text": "// Collection venues - X venues chosen",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_270",
+                "id": "COMMENT_page_collectionDesign_2",
                 "text": "// Story eliciting questions - x questions written",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_271",
+                "id": "COMMENT_page_collectionDesign_3",
                 "text": "// Questions about stories - x questions written",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_272",
+                "id": "COMMENT_page_collectionDesign_4",
                 "text": "// Questions about people - x stories written",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_273",
+                "id": "COMMENT_page_collectionDesign_5",
                 "text": "// Question form - [ ] designed [ ] committed",
                 "type": "label",
                 "options": null
@@ -1265,31 +1265,31 @@ define(
                 "options": "collectionDesign"
             },
             {
-                "id": "COMMENT_380",
+                "id": "COMMENT_readCollectionDesignReport_1",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_381",
+                "id": "COMMENT_readCollectionDesignReport_2",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_382",
+                "id": "COMMENT_readCollectionDesignReport_3",
                 "text": "//                                                  COLLECTION PROCESS",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_383",
+                "id": "COMMENT_readCollectionDesignReport_4",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_384",
+                "id": "COMMENT_readCollectionDesignReport_5",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
@@ -1303,19 +1303,19 @@ define(
         "isHeader": true,
         "questions": [
             {
-                "id": "COMMENT_387",
+                "id": "COMMENT_page_collectionProcess_1",
                 "text": "// Online story collection is [ ] enabled",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_388",
+                "id": "COMMENT_page_collectionProcess_2",
                 "text": "// Number of stories entered - x",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_389",
+                "id": "COMMENT_page_collectionProcess_3",
                 "text": "// Number of participants who told stories - x",
                 "type": "label",
                 "options": null
@@ -1381,7 +1381,7 @@ define(
         "type": "participantStoryForm",
         "questions": [
             {
-                "id": "COMMENT_414",
+                "id": "COMMENT_page_storyCollectionFormForParticipants_1",
                 "text": "// the info shown here is what was designed - how to specify that",
                 "type": "label",
                 "options": null
@@ -1395,19 +1395,19 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "COMMENT_418",
+                "id": "COMMENT_page_enterStories_1",
                 "text": "// this page is the same as the \"participate\" page above, but only the admin can see it",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_419",
+                "id": "COMMENT_page_enterStories_2",
                 "text": "// and the normal tabs are shown on the page",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_421",
+                "id": "COMMENT_page_enterStories_3",
                 "text": "// the info shown here is what was designed - how to specify that",
                 "type": "label",
                 "options": null
@@ -1720,31 +1720,31 @@ define(
                 "options": "collectionProcess"
             },
             {
-                "id": "COMMENT_499",
+                "id": "COMMENT_page_readCollectionProcessReport_1",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_500",
+                "id": "COMMENT_page_readCollectionProcessReport_2",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_501",
+                "id": "COMMENT_page_readCollectionProcessReport_3",
                 "text": "//                                                       CATALYSIS",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_502",
+                "id": "COMMENT_page_readCollectionProcessReport_4",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_503",
+                "id": "COMMENT_page_readCollectionProcessReport_5",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
@@ -1758,25 +1758,25 @@ define(
         "isHeader": true,
         "questions": [
             {
-                "id": "COMMENT_506",
+                "id": "COMMENT_page_catalysis_1",
                 "text": "// Observations - x",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_507",
+                "id": "COMMENT_page_catalysis_2",
                 "text": "// Interpretations - x",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_508",
+                "id": "COMMENT_page_catalysis_3",
                 "text": "// Ideas - x",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_509",
+                "id": "COMMENT_page_catalysis_4",
                 "text": "// Perspectives - x",
                 "type": "label",
                 "options": null
@@ -1947,7 +1947,7 @@ define(
                 "options": "5;10;15;20;25;30"
             },
             {
-                "id": "COMMENT_559",
+                "id": "COMMENT_page_reviewTrends_1",
                 "text": "// when user changes any of the options above, the trend report below should update",
                 "type": "label",
                 "options": null
@@ -2068,13 +2068,13 @@ define(
                 "options": "page_createNewExcerpt"
             },
             {
-                "id": "COMMENT_590",
+                "id": "COMMENT_page_selectExcerpt_1",
                 "text": "// when they click this button the selected excerpt should be added to the list whose \"add\" button they clicked",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_591",
+                "id": "COMMENT_page_selectExcerpt_2",
                 "text": "// it should know which interpretation to tie the excerpt to",
                 "type": "label",
                 "options": null
@@ -2098,13 +2098,13 @@ define(
                 "type": "label"
             },
             {
-                "id": "COMMENT_598",
+                "id": "COMMENT_page_clusterInterpretations_1",
                 "text": "// ideally, when they are done with this, the circles marked as group names",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_599",
+                "id": "COMMENT_page_clusterInterpretations_2",
                 "text": "// will get copied into the perspectives list seen in the next page",
                 "type": "label",
                 "options": null
@@ -2178,31 +2178,31 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "COMMENT_619",
+                "id": "COMMENT_page_addResultToPerspective_1",
                 "text": "// this popup should show all the results linked to observations linked to interpretations linked to this perspective",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_620",
+                "id": "COMMENT_page_addResultToPerspective_2",
                 "text": "// perspective",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_621",
+                "id": "COMMENT_page_addResultToPerspective_3",
                 "text": "//      interpretation",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_622",
+                "id": "COMMENT_page_addResultToPerspective_4",
                 "text": "//           observation",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_623",
+                "id": "COMMENT_page_addResultToPerspective_5",
                 "text": "//                result",
                 "type": "label",
                 "options": null
@@ -2227,25 +2227,25 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "COMMENT_629",
+                "id": "COMMENT_page_addExcerptToPerspective_1",
                 "text": "// similarly, this should be a list of all the excerpts linked to interpretations linked to this perspective",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_630",
+                "id": "COMMENT_page_addExcerptToPerspective_2",
                 "text": "// perspective",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_631",
+                "id": "COMMENT_page_addExcerptToPerspective_3",
                 "text": "//     interpretation",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_632",
+                "id": "COMMENT_page_addExcerptToPerspective_4",
                 "text": "//         excerpt",
                 "type": "label",
                 "options": null
@@ -2288,31 +2288,31 @@ define(
                 "options": "catalysis"
             },
             {
-                "id": "COMMENT_644",
+                "id": "COMMENT_page_readCatalysisReport_1",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_645",
+                "id": "COMMENT_page_readCatalysisReport_2",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_646",
+                "id": "COMMENT_page_readCatalysisReport_3",
                 "text": "//                                                       SENSEMAKING",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_647",
+                "id": "COMMENT_page_readCatalysisReport_4",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_648",
+                "id": "COMMENT_page_readCatalysisReport_5",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
@@ -2326,25 +2326,25 @@ define(
         "isHeader": true,
         "questions": [
             {
-                "id": "COMMENT_651",
+                "id": "COMMENT_page_sensemaking_1",
                 "text": "// Planning sessions - x of x questions answered",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_652",
+                "id": "COMMENT_page_sensemaking_2",
                 "text": "// Write session agenda - x of x questions answered",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_653",
+                "id": "COMMENT_page_sensemaking_3",
                 "text": "// Print story cards - x cards printed (or checkmark)",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_654",
+                "id": "COMMENT_page_sensemaking_4",
                 "text": "// Post-session review - x of x questions answered",
                 "type": "label",
                 "options": null
@@ -2538,7 +2538,7 @@ define(
                 "type": "text"
             },
             {
-                "id": "COMMENT_698",
+                "id": "COMMENT_page_addSensemakingSessionRecord_1",
                 "text": "// no add button on this grid, must add from story browser below",
                 "type": "label",
                 "options": null
@@ -2884,31 +2884,31 @@ define(
                 "options": "sensemaking"
             },
             {
-                "id": "COMMENT_779",
+                "id": "COMMENT_page_readSensemakingReport_1",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_780",
+                "id": "COMMENT_page_readSensemakingReport_2",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_781",
+                "id": "COMMENT_page_readSensemakingReport_3",
                 "text": "//                                                       INTERVENTION",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_782",
+                "id": "COMMENT_page_readSensemakingReport_4",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_783",
+                "id": "COMMENT_page_readSensemakingReport_5",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
@@ -2922,37 +2922,37 @@ define(
         "isHeader": true,
         "questions": [
             {
-                "id": "COMMENT_786",
+                "id": "COMMENT_page_intervention_1",
                 "text": "// Choose interventions - x planned",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_787",
+                "id": "COMMENT_page_intervention_2",
                 "text": "// Answer questions about interventions - x questions answered",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_789",
+                "id": "COMMENT_page_intervention_3",
                 "text": "//* You can enter some general notes on intervention in this project here. [interventionGeneralNotes|textarea]",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_791",
+                "id": "COMMENT_page_intervention_4",
                 "text": "//* The intervention section is [interventionOpenOrClosedLabel|label]",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_793",
+                "id": "COMMENT_page_intervention_5",
                 "text": "//* open|closed [interventionOpenOrClosedState|lookupLabel|interventionOpen]",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_795",
+                "id": "COMMENT_page_intervention_6",
                 "text": "//* Open the intervention section|Close the intervention section [toggleButton|interventionOpen]",
                 "type": "label",
                 "options": null
@@ -3293,13 +3293,13 @@ define(
                 "type": "label"
             },
             {
-                "id": "COMMENT_875",
+                "id": "COMMENT_page_answerQuestionsAboutInterventions_1",
                 "text": "// this list should populate with names of interventions given in \"enter intervention records\" screen.",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_876",
+                "id": "COMMENT_page_answerQuestionsAboutInterventions_2",
                 "text": "/// there should be NO add button... but the edit button should go to the popup specified here",
                 "type": "label",
                 "options": null
@@ -3421,31 +3421,31 @@ define(
                 "options": "intervention"
             },
             {
-                "id": "COMMENT_904",
+                "id": "COMMENT_page_interventionReport_1",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_905",
+                "id": "COMMENT_page_interventionReport_2",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_906",
+                "id": "COMMENT_page_interventionReport_3",
                 "text": "//                                                       RETURN",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_907",
+                "id": "COMMENT_page_interventionReport_4",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null
             },
             {
-                "id": "COMMENT_908",
+                "id": "COMMENT_page_interventionReport_5",
                 "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
                 "type": "label",
                 "options": null

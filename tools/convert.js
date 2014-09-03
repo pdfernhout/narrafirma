@@ -129,6 +129,7 @@ function convert() {
     var lastQuestion = null;
     pages = [];
     var lineNumber = 0;
+    var commentNumberInPage = 0;
     
     array.forEach(lines, function (line) {
         lineNumber++;
@@ -153,7 +154,8 @@ function convert() {
             var data = extract(line, rest, lineNumber);
             if (data) {
               lastPage = {"id": data.info.id, "name": data.text, "description": "", "isHeader": header, "type": data.info.type, "options": data.info.options, "questions": []};
-              pages.push(lastPage)
+              pages.push(lastPage);
+              commentNumberInPage = 0;
             }
         } else if (lastPage && startsWith(line, "*")) {
             rest = line.substring(1);
@@ -167,7 +169,7 @@ function convert() {
             // console.log("comment line", line);
             // if (lastPage.description) lastPage.description += "\n";
             // lastPage.description += line;
-            lastQuestion = {"id": "COMMENT_" + lineNumber, "text": line, "type": "label", "options": null};
+            lastQuestion = {"id": "COMMENT_" + lastPage.id + "_" + ++commentNumberInPage, "text": line, "type": "label", "options": null};
             lastPage.questions.push(lastQuestion)  
         } else if (lastQuestion && line) {
             if (lastQuestion.text) lastQuestion.text += "\n";
