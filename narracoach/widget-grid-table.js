@@ -106,24 +106,22 @@ define([
         addDialog.show();
     }
     
-    function insertGridTable(pseudoQuestion, pagePane, pageDefinitions) {
+    function insertGridTableBasic(id, pagePane, popupPageDefinition, dataStore, includeAddButton) {
     	// Grid with list of objects
-    	// console.log("insertGrid");
+    	// console.log("insertGridTableBasic");
     	
-        var popupPageDefinition = pageDefinitions[pseudoQuestion.options];
-        
-    	var label = widgets.newLabel(pseudoQuestion.id + "label", pseudoQuestion.text, pagePane.domNode);
-    	
-    	// TODO: Need to set better info for fields and meanings to display and index on
-        
-    	var list = [];
-    	
-        var store = new Memory({
-            // data: storyList,
-        	data: list,
-            // TODO: title may not be unique
-            idProperty: "uniqueID",
-        });
+    	if (!dataStore) {
+        	// TODO: Need to set better info for fields and meanings to display and index on
+            
+        	var list = [];
+        	
+            dataStore = new Memory({
+                // data: storyList,
+            	data: list,
+                // TODO: title may not be unique
+                idProperty: "uniqueID",
+            });    		
+    	}
 
         var listContentPane = new ContentPane({
             // title: pseudoQuestion.text
@@ -136,8 +134,7 @@ define([
         array.forEach(popupPageDefinition.questions, function (question) {
         	// TODO: Translate these texts
         	if (question.shortText) {
-        		var text = question.shortText;
-        		columns[question.id] = text;
+        		columns[question.id] = question.shortText;
         	}
         });
         
@@ -145,7 +142,7 @@ define([
         // TODO: Fix columns
         // var grid = new OnDemandGrid({
         var grid = new(declare([OnDemandGrid, DijitRegistry, Keyboard, Selection, ColumnResizer]))({
-        	"store": store,
+        	"store": dataStore,
             "columns": columns
         });
         
@@ -157,19 +154,34 @@ define([
         // Bind first two arguments to function that will be callback recieving one extra arg
         // See: http://dojotoolkit.org/reference-guide/1.7/dojo/partial.html
         // TODO: Translate text of label
-        var addButton = widgets.newButton(pseudoQuestion.id + "add", "Add", pane, lang.partial(addButtonClicked, grid, store, popupPageDefinition));
+        if (includeAddButton) {
+        	var addButton = widgets.newButton(id + "add", "Add", pane, lang.partial(addButtonClicked, grid, dataStore, popupPageDefinition));
+        }
         
         pagePane.addChild(listContentPane);
         listContentPane.startup();
         
         return {
-        	"store": store,
+        	"store": dataStore,
         	"listContentPane": listContentPane
         };
 	}
+    
+    function insertGridTable(pseudoQuestion, pagePane, pageDefinitions) {
+    	// Grid with list of objects
+    	// console.log("insertGridTable");
+    	
+        var popupPageDefinition = pageDefinitions[pseudoQuestion.options];
+        
+        // TODO: Need to translate
+    	var label = widgets.newLabel(pseudoQuestion.id + "label", pseudoQuestion.text, pagePane.domNode);
+        
+        return insertGridTableBasic(pseudoQuestion.id, pagePane, popupPageDefinition, null, true);
+	}
 
 	return {
-		"insertGridTable": insertGridTable
+		"insertGridTable": insertGridTable,
+		"insertGridTableBasic": insertGridTableBasic
 	}
     
 });
