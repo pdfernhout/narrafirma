@@ -42,7 +42,13 @@ function newButton(label, addToDiv, callback) {
 }
 
 var acceptableTypes = ["text", "textarea", "label", "header", "select", "grid", "button",
-                       "popup", "imageUploader", "recommendationTable", "questionsTable", "quizScoreResult"];
+                       "popup", "imageUploader", "recommendationTable", "questionsTable", "quizScoreResult",
+                       "report", "checkboxes", "templateList", "checkBoxesWithPull", "participantStoryForm", "storyBrowser", "observationList", 
+                       "excerptsList", "storyThemer", "graphBrowser", "trendsReport", "clusterSpace", "listCount",
+                       "questionAnswer", "questionAnswerCountOfTotalOnPage", "toggleButton", "boolean",
+                       
+                       // Mispelled duplicates?
+                       "checkBoxes", "observationsList"];
 
 var usedIDs = {};
 
@@ -69,7 +75,13 @@ function extract(line, rest, lineNumber) {
       infoSections = null;
     }
     
-    if (!infoSections || !infoSections[0]) infoSections = ["FIXME_" + lineNumber];
+    if (!infoSections) {
+    	console.log("FIX NEEDED: Expected some content in brackets for line: " + lineNumber + " :: " + line);
+    	infoSections = ["FIXME_" + lineNumber];
+    } else if (!infoSections[0]) {
+    	console.log("FIX NEEDED: Expected a non-empty id for line: " + lineNumber + " :: " + line);
+    	infoSections = ["FIXME_" + lineNumber];    	
+    }
     
     var infoContentString = string.trim(infoSections[0]);
     var infoContentSplit = infoContentString.split("|");
@@ -77,12 +89,12 @@ function extract(line, rest, lineNumber) {
     if (infoContentSplit.length >= 1) infoContent.id = infoContentSplit[0];
     if (infoContentSplit.length >= 2) infoContent.type = infoContentSplit[1];
     if (infoContentSplit.length >= 3) infoContent.options = infoContentSplit[2];
-    if (infoContentSplit.length >= 4) console.log("FIX NEEDED: Expected only up to there sections in brackets for line: " + lineNumber + " :: " + line);
+    if (infoContentSplit.length >= 4) console.log("FIX NEEDED: Expected only up to three sections in brackets for line: " + lineNumber + " :: " + line);
     
     if (acceptableTypes.indexOf(infoContent.id) !== -1) {
-      console.log("FIX NEEDED: Expected valid ID as first entry in brackets for line: " + lineNumber + " :: " + line);
-      if (!infoContent.type) infoContent.type = infoContent.id;
-      infoContent.id = "FIXME_" + lineNumber;
+      console.log("WARNING: Using widget type as question ID for line: " + lineNumber + " :: " + line);
+      //if (!infoContent.type) infoContent.type = infoContent.id;
+      //infoContent.id = "FIXME_" + lineNumber;
     }
     
     if (infoContent.type && acceptableTypes.indexOf(infoContent.type) === -1) {
@@ -155,7 +167,7 @@ function convert() {
     	  // console.log("comment line", line);
     	  // if (lastPage.description) lastPage.description += "\n";
         // lastPage.description += line;
-        lastQuestion = {"id": "FIXME_" + lineNumber, "text": line, "type": "label", "options": null};
+        lastQuestion = {"id": "COMMENT_" + lineNumber, "text": line, "type": "label", "options": null};
         lastQuestion.lineNumber = lineNumber;
         lastPage.questions.push(lastQuestion)  
       } else if (lastQuestion && line) {
