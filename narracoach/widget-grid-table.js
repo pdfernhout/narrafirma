@@ -43,11 +43,12 @@ define([
          { title: "More pickles!", body: "Story 3...",}
      ];
 
-    var testCount = 0;
+    // TODO: Maybe rethink how unique item IDs work? Setting to start at 1000 becaues of test data created in story browser
+    var uniqueItemIDCounter = 1000;
     
     function addButtonClicked(grid, store, popupPageDefinition, event) {
         console.log("add button pressed");
-        var addDialog;
+        var dialog;
         
         var form = new Form();
         
@@ -57,12 +58,11 @@ define([
         
         widgets.newButton("list_dialog_ok", "OK", form, function() {
             console.log("OK");
-            addDialog.hide();
-            // addDialogOK(question, questionEditorDiv, form);
+            dialog.hide();
+            // dialogOK(question, questionEditorDiv, form);
 
-            // TODO: Fix this
-            var count = ++testCount;
-            var newItem = {};
+            var uniqueItemID = ++uniqueItemIDCounter;
+            var newItem = {id: uniqueItemID};
             
             array.forEach(popupPageDefinition.questions, function (question) {
                 // TODO: This may not work for more complex question types or custom widgets?
@@ -76,7 +76,6 @@ define([
             
             store.put(newItem);
             grid.refresh();
-            grid.resize();
             
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
             form.destroyRecursive();
@@ -84,12 +83,12 @@ define([
         
         widgets.newButton("list_dialog_cancel", "Cancel", form, function() {
             console.log("Cancel");
-            addDialog.hide();
+            dialog.hide();
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
             form.destroyRecursive();
         });
 
-        addDialog = new Dialog({
+        dialog = new Dialog({
             // TODO: Translate text
             // TODO: Make text specific to type of item
             title: "Add Item",
@@ -102,8 +101,67 @@ define([
         });
         
         form.startup();
-        addDialog.startup();
-        addDialog.show();
+        dialog.startup();
+        dialog.show();
+    }
+    
+    // TODO: Button should only be enabled if a selection
+    function viewButtonClicked(grid, store, popupPageDefinition, event) {
+        console.log("view button pressed");
+        var dialog;
+        
+        var form = new Form();
+        
+        addPage.addPageContents(form.domNode, popupPageDefinition);
+
+        console.log("grid", grid, grid.selection);
+        // var item = grid
+        
+        // TODO: Should only do for one of these... Need to break...
+        // TODO: Need to search on unique field...
+        for(var selection in grid.selection) {
+            console.log("selection", selection);
+            var matches = store.query({id: selection});
+            console.log("matches", matches);
+            array.forEach(matches, function (item) {
+                console.log("item", item);
+                array.forEach(popupPageDefinition.questions, function (question) {
+                    // TODO: This may not work for more complex question types or custom widgets?
+                    var widget = registry.byId(question.id);
+                    if (widget) {
+                        widget.set("value", item[question.id]);
+                    } else {
+                        console.log("ERROR: could not find widget for:", question.id);
+                    }
+                }); 
+            });
+        }
+
+        // TODO: Does the dialog itself have to be "destroyed"???
+        
+        widgets.newButton("list_dialog_ok", "Done", form, function() {
+            console.log("Done");
+            dialog.hide();
+
+            // The next line is needed to get rid of duplicate IDs for next time the form is opened:
+            form.destroyRecursive();
+        });
+
+        dialog = new Dialog({
+            // TODO: Translate text
+            // TODO: Make text specific to type of item
+            title: "Add Item",
+            content: form,
+            style: "width: 600px; height 800px; overflow: auto;",
+            onCancel: function() {
+                // Handles close X in corner or escape
+                form.destroyRecursive();
+            }
+        });
+        
+        form.startup();
+        dialog.startup();
+        dialog.show();
     }
     
     function insertGridTableBasic(id, pagePane, popupPageDefinition, dataStore, includeAddButton) {
@@ -119,13 +177,16 @@ define([
                 // data: storyList,
                 data: list,
                 // TODO: title may not be unique
-                idProperty: "uniqueID",
+                // idProperty: "uniqueID",
             });            
         }
 
         var listContentPane = new ContentPane({
             // title: pseudoQuestion.text
         });
+        
+        pagePane.addChild(listContentPane);
+        listContentPane.startup();
         
         var pane = listContentPane.containerNode;
         
@@ -139,8 +200,6 @@ define([
         });
         
         // console.log("making grid");
-        // TODO: Fix columns
-        // var grid = new OnDemandGrid({
         var grid = new(declare([OnDemandGrid, DijitRegistry, Keyboard, Selection, ColumnResizer]))({
             "store": dataStore,
             "columns": columns
@@ -154,12 +213,26 @@ define([
         // Bind first two arguments to function that will be callback recieving one extra arg
         // See: http://dojotoolkit.org/reference-guide/1.7/dojo/partial.html
         // TODO: Translate text of label
+        var viewButtonID = id + "view";
+        var viewButtonNode = widgets.newButton(viewButtonID, "View", pane, lang.partial(viewButtonClicked, grid, dataStore, popupPageDefinition));
+
+        var selected = 0;
+        var viewButton = registry.byId(viewButtonID);
+        viewButton.set("disabled", true);
+        
+        grid.on("dgrid-select", function(e){
+            selected += e.rows.length;
+            viewButton.set("disabled", !selected);
+        });
+        
+        grid.on("dgrid-deselect", function(e){
+            selected -= e.rows.length;
+            viewButton.set("disabled", !selected);
+        });
+        
         if (includeAddButton) {
             var addButton = widgets.newButton(id + "add", "Add", pane, lang.partial(addButtonClicked, grid, dataStore, popupPageDefinition));
         }
-        
-        pagePane.addChild(listContentPane);
-        listContentPane.startup();
         
         return {
             "store": dataStore,
