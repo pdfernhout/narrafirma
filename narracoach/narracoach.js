@@ -135,7 +135,14 @@ require([
             title: page.title,
             content: page.description.replace(/\n/g, "<br>\n"),
             style: "width: 100%",
+            display: "none",
        });
+        
+       // console.log("about to place pane", id);
+        // Dojo seems to require these pages be in the visual hierarchy before some components like grid that are added to them are have startUp called.
+        // Otherwise the grid header is not sized correctly and will be overvritten by data
+        // This is as opposed to what one might think would reduce resizing and redrawing by adding the page only after components are added
+       pagePane.placeAt("pageDiv");
         
        // console.log("Made content pane", id);
        
@@ -155,15 +162,11 @@ require([
        
        pageInstantiations[id] = pagePane;
        
-       // console.log("about to place pane", id);
-       pagePane.placeAt("pageDiv");
-       
        // console.log("about to set visibility", id);
-       
        if (visible) {
-           domStyle.set(id, "display", "block");
+            domStyle.set(id, "display", "block");
        } else {
-           domStyle.set(id, "display", "none");
+            domStyle.set(id, "display", "none");
        }
        
        pagePane.startup();
