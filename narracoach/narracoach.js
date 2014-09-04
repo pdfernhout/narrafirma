@@ -279,7 +279,6 @@ require([
         */
 
         widgets.newSelect("mainSelect", pageSelectOptions, null, "navigationDiv", "NoUnselectedOption");
-           //widgets.newSelect("mainSelect", null, "one\ntwo\nthree", "navigationDiv");
         
         selectWidget = registry.byId("mainSelect");
         // console.log("widget", selectWidget);
