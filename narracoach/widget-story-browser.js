@@ -16,6 +16,7 @@ define([
     "narracoach/widgets",
     "narracoach/widget-grid-table",
     "dijit/layout/ContentPane",
+    "dojo/store/Memory",
     "dijit/form/Select",
     "dojox/layout/TableContainer",
     "dojo/domReady!"
@@ -30,6 +31,7 @@ define([
     widgets,
     widgetGridTable,
     ContentPane,
+    Memory,
     Select,
     TableContainer
 ){
@@ -37,21 +39,28 @@ define([
     
     // Temporary test data
     var testDogQuestions = [
-        {id: "name", type: "text", text: "Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},
-        {id: "ownDog", type: "boolean", text: "Do you currently have a dog?", help: "Enter yes or no"},
-        {id: "broughtHome", type: "textarea", text: "What happened when you first brought your dog home?"},
-        {id: "broughtHomeTitle", type: "text", text: "What is a good title for your story?"},
-        {id: "feeling1", type: "slider", text: "How good did you feel the day you brought your dog home?"},
-        {id: "feeling2", type: "slider", text: "How good did you feel the day after you brought your dog home?"},
-        {id: "feeling3", type: "slider", text: "How good do you feel right now?"},
-        {id: "feeling4", type: "select", text: "How good does your spouse feel right now?", options: "low\nmedium\nhigh"},
+        {id: "name", type: "text", text: "Name | Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},
+        {id: "ownDog", type: "boolean", text: "Owner? | Do you currently have a dog?", help: "Enter yes or no"},
+        {id: "broughtHome", type: "textarea", text: "Story | What happened when you first brought your dog home?"},
+        {id: "broughtHomeTitle", type: "text", text: "Title | What is a good title for your story?"},
+        {id: "feeling1", type: "slider", text: "Day Feeling | How good did you feel the day you brought your dog home?"},
+        {id: "feeling2", type: "slider", text: "Next Day Feeling| How good did you feel the day after you brought your dog home?"},
+        {id: "feeling3", type: "slider", text: "Now Feeling | How good do you feel right now?"},
+        {id: "feeling4", type: "select", text: "Now Spouse Feeling | How good does your spouse feel right now?", options: "low\nmedium\nhigh"},
     ];
+    
+    array.forEach(testDogQuestions, function (question) {
+        var split = question.text.split("|");
+        question.text = string.trim(split[1]);
+        question.shortText = string.trim(split[0]);
+    });
     
     var testDogStories = [];
     
     console.log("making test dog stories");
     for (var i = 0; i < 100; i++) {
         var newStory = {
+            id: i,
             name: "name " + i,
             ownDog: true,
             broughtHome: "Brought home " + i,
@@ -89,6 +98,20 @@ define([
         var unfinished = widgets.newLabel(pseudoQuestion.id + "unfinished", "<b>UNFINISHED</b>", pagePane.domNode);
 
         // TODO: do something here
+        
+        var popupPageDefinition = {
+             "id": "testDogQuestions",
+             "questions": testDogQuestions   
+        };
+        
+        var dataStore = new Memory({
+            // data: [],
+            data: testDogStories,
+            // TODO: what should this be, if anything?
+            // idProperty: "name",
+        }); 
+        
+        var something = widgetGridTable.insertGridTableBasic(pseudoQuestion.id + "grid", pagePane, popupPageDefinition, dataStore, true);
         
         // First choice
         // Second choice
