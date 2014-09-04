@@ -14,8 +14,9 @@ Disabled or hidden tabs which are enabled as progress
 Participant questions need to have options and ids and translations
 
 Support storyBrowser -- a smalltalk-like browser for stories
-Story browser with list of title and shows stories
 Story browser with two choices of questions and answers
+Replace fake story data in story browser with a way that real data is loaded and stored
+Fix issue when two items selected and click view and get NS_ERROR_UNEXPECTED
 
 Right-align questions in table of questions for project participants
 Way to retrieve data about project participant groups
@@ -33,6 +34,8 @@ Support graphBrowser -- shows one graph at a time, with two question select drop
 Support trendsReport -- shows text and graphs in report based on top differences in statistical tests,  has "add to observation" button
 Support clusterSpace -- used in catalysis to cluster interpretations it is a graphical OR grid way of putting like with like, the option tells you what is to be clustered
 
+Fix boolean so it can get disabled and value gets set (probably make it a widget)
+
 DONE Checkboxes for multiple choices
 DONE Tab container sizing to full page
 DONE Slider with labels and no ticks
@@ -48,6 +51,7 @@ DONE Buttons to go backward and forward through pages
 DONE Story list widget with add button
 DONE Grid header resizing
 DONE Basic wait message when loading
+DONE Story browser with list of title and shows stories
 
 ======= CYNTHIA
 
