@@ -130,6 +130,7 @@ define([
                     var widget = registry.byId(question.id);
                     if (widget) {
                         widget.set("value", item[question.id]);
+                        widget.set("disabled", true);
                     } else {
                         console.log("ERROR: could not find widget for:", question.id);
                     }
@@ -150,7 +151,7 @@ define([
         dialog = new Dialog({
             // TODO: Translate text
             // TODO: Make text specific to type of item
-            title: "Add Item",
+            title: "View Item",
             content: form,
             style: "width: 600px; height 800px; overflow: auto;",
             onCancel: function() {
