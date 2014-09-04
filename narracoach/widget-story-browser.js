@@ -10,13 +10,17 @@ define([
     "dojo/_base/connect",
     "dojo/dom-construct",
     "dojo/dom-style",
+    "dojo/_base/lang",
+    "dojo/query",
     "narracoach/question_editor",
     "dijit/registry",
     "dojo/string",
     "narracoach/widgets",
     "narracoach/widget-grid-table",
+    "dojo/_base/window",
     "dijit/layout/ContentPane",
     "dojo/store/Memory",
+    "dijit/form/MultiSelect",
     "dijit/form/Select",
     "dojox/layout/TableContainer",
     "dojo/domReady!"
@@ -25,13 +29,17 @@ define([
     connect,
     domConstruct,
     domStyle,
+    lang,
+    query,
     questionEditor,
     registry,
     string,
     widgets,
     widgetGridTable,
+    win,
     ContentPane,
     Memory,
+    MultiSelect,
     Select,
     TableContainer
 ){
@@ -90,6 +98,58 @@ define([
         return select;
     }
     
+    function setOptionsInMultiSelect(widget, options) {
+        console.log("setOptionsInMultiSelect", widget, options);
+        query('option', widget.domNode).forEach(function(node, index, arr) {
+            console.log("node", node);
+            domConstruct.destroy(node);
+        }); 
+        
+        for (var i in options){
+            var c = win.doc.createElement('option');
+            c.innerHTML = options[i].label;
+            c.value = options[i].value;
+            widget.domNode.appendChild(c);
+        }
+        console.log("done");
+    }
+    
+    function newMultiSelect(id, options) {
+        var widget = new MultiSelect({
+            "id": id + "answers1",
+            //"options": options
+        });
+        
+        setOptionsInMultiSelect(widget, options);
+        
+        // selectWidget.on("change", mainSelectChanged);
+        
+        return widget;
+    }
+    
+    function questionChanged(questionsById, multiSelect, newValue) {
+        console.log("event", newValue);
+        var question = questionsById[newValue];
+        var options = optionsFromQuestion(question);
+        setOptionsInMultiSelect(multiSelect, options);
+    }
+    
+    function optionsFromQuestion(question) {
+        var options = [];
+        if (question.type === "select") {
+            console.log("select", question, question.options);
+            array.forEach(question.options.split("\n"), function(each) {
+                // console.log("option", id, each);
+                options.push({label: each, value: each});
+            });
+            //lang.extend(result, question.options);
+        } else {
+            options.push({"label": "a", "value": "b"});
+            options.push({"label": "c", "value": "d"});
+        }
+        return options;
+    }
+    
     function insertStoryBrowser(pseudoQuestion, pagePane, pageDefinitions) {
         console.log("insertStoryBrowser", pseudoQuestion);
 
@@ -111,7 +171,28 @@ define([
             // idProperty: "name",
         }); 
         
-        var something = widgetGridTable.insertGridTableBasic(pseudoQuestion.id + "grid", pagePane, popupPageDefinition, dataStore, true);
+        var questionOptions = [];
+        var questionsById = {};
+        array.forEach(popupPageDefinition.questions, function (question) {
+            questionOptions.push({label: question.text, value: question.id});
+            questionsById[question.id] = question;
+        });
+        
+        var question1 = widgets.newSelect(pseudoQuestion.id + "questions1", questionOptions, null);
+        pagePane.addChild(registry.byId(pseudoQuestion.id + "questions1"));
+        
+        pagePane.domNode.appendChild(domConstruct.toDom('<br>'));
+        
+        var answers1 = newMultiSelect(pseudoQuestion.id + "answer1", []);
+        pagePane.addChild(answers1);
+        answers1.startup();
+
+        registry.byId(pseudoQuestion.id + "questions1").on("change", lang.partial(questionChanged, questionsById, answers1));
+        
+        // var question2  = widgets.newSelect(pseudoQuestion.id + "questions2", questionOptions, null);
+        // pagePane.addChild(registry.byId(pseudoQuestion.id + "questions2"));
+            
+        var storyList = widgetGridTable.insertGridTableBasic(pseudoQuestion.id + "grid", pagePane, popupPageDefinition, dataStore, true);
         
         // First choice
         // Second choice
