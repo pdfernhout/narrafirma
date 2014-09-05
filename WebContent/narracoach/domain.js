@@ -47,7 +47,7 @@ define([
         var newStory = {
             id: i,
             name: "name " + i,
-            ownDog: true,
+            ownDog: (i % 2 === 0),
             broughtHome: "Story " + i + lorumText,
             broughtHomeTitle: "Brought Home Title " + i,
             feeling1: i % 100,
