@@ -1,16 +1,10 @@
 "use strict";
 
-// TODO: How to handle these two globals shared by modules?
-
-var exportedSurveyQuestions = [];
-var surveyResults = [];
-
 require([
     "dojo/_base/array",
     "dojo/_base/connect",
     "dojo/dom-construct",
     "dojo/dom-style",
-
     "dojo/hash",
     "narracoach/page_design-questions",
     "narracoach/page_export-survey",

@@ -2,6 +2,7 @@
 
 define([
     "dojo/_base/array",
+    "narracoach/domain",
     "dojo/dom-construct",
     "narracoach/translate",
     "narracoach/widgets",
@@ -13,6 +14,7 @@ define([
     "dojox/charting/plot2d/Lines",
 ], function(
     array,
+    domain,
     domConstruct,
     translate,
     widgets,
@@ -39,7 +41,7 @@ define([
         var chart1Title = "Title goes here";
         
         var theSlider = null;
-        array.forEach(exportedSurveyQuestions, function(each) {
+        array.forEach(domain.exportedSurveyQuestions, function(each) {
             if (each.type == "slider") {
                 theSlider = each.id;
                 chart1Title = each.text;
@@ -47,7 +49,7 @@ define([
         });
         
         if (theSlider !== null) {
-            array.forEach(surveyResults, function(each) {
+            array.forEach(domain.surveyResults, function(each) {
                 var answer = each[theSlider];
                 console.log("answer", answer);
                 var slot = Math.round(answer / 10);

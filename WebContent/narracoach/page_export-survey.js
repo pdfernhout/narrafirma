@@ -1,12 +1,14 @@
 "use strict";
 
 define([
+    "narracoach/domain",
     "dojo/dom-construct",
     "dojo/query",
     "narracoach/translate",
     "narracoach/widgets",
     "dijit/layout/ContentPane"
 ], function(
+    domain,
     domConstruct,
     query,
     translate,
@@ -30,7 +32,7 @@ define([
         console.log("questions", JSON.stringify(questions));
         var surveyDiv = document.getElementById("surveyDiv");
         surveyDiv.innerHTML = JSON.stringify(questions);
-        exportedSurveyQuestions = questions;
+        domain.exportedSurveyQuestions = questions;
         // question_editor.insertQuestionsIntoDiv(questions, surveyDiv);
         // var submitSurveyButton = widgets.newButton("Submit survey", "surveyDiv", submitSurvey);
     }

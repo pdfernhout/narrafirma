@@ -1,6 +1,7 @@
 "use strict";
 
 define([
+    "narracoach/domain",
     "dojo/dom-construct",
     "dojo/query",
     "narracoach/question_editor",
@@ -11,6 +12,7 @@ define([
     "dijit/Dialog",
     "dijit/form/Form"
 ], function(
+    domain,
     domConstruct,
     query,
     question_editor,
@@ -39,10 +41,10 @@ define([
         });
         
         console.log("answers", JSON.stringify(answers));
-        surveyResults.push(answers);
+        domain.surveyResults.push(answers);
         
         var surveyResultsDiv = document.getElementById("surveyResultsDiv");
-        surveyResultsDiv.innerHTML = JSON.stringify(surveyResults);
+        surveyResultsDiv.innerHTML = JSON.stringify(domain.surveyResults);
     }
     
     function takeSurvey() {
@@ -50,7 +52,7 @@ define([
         
         var form = new Form();
         
-        question_editor.insertQuestionsIntoDiv(exportedSurveyQuestions, form.domNode);
+        question_editor.insertQuestionsIntoDiv(domain.exportedSurveyQuestions, form.domNode);
         
         // TODO: Does the dialog itself have to be "destroyed"???
         
