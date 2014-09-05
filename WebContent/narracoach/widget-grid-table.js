@@ -119,10 +119,15 @@ define([
         
         // TODO: Should only do for one of these... Need to break...
         // TODO: Need to search on unique field...
-        for (var selection in grid.selection) {
+        var selection;
+        for (var theSelection in grid.selection) {
+            selection = theSelection;
+        }
+        if (theSelection) {
             console.log("selection", selection);
             var matches = store.query({id: selection});
             console.log("matches", matches);
+            // Should only be one match
             array.forEach(matches, function (item) {
                 console.log("item", item);
                 array.forEach(popupPageDefinition.questions, function (question) {
