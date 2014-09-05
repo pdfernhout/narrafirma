@@ -241,7 +241,8 @@ define([
         
         return {
             "store": dataStore,
-            "listContentPane": listContentPane
+            "listContentPane": listContentPane,
+            "grid": grid
         };
     }
     

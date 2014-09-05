@@ -186,8 +186,21 @@ define([
         
         // var question2  = widgets.newSelect(pseudoQuestion.id + "questions2", questionOptions, null);
         // pagePane.addChild(question2);
+        
+        pagePane.domNode.appendChild(domConstruct.toDom('<br>'));
+        
+        var storyList;
+        
+        // TODO: Translate
+        var filterButton = widgets.newButton(pseudoQuestion.id + "_filter", "Filter", pagePane, function () {
+            console.log("filter pressed");
+            var question1Value = question1.get("value");
+            var answers1Value = answers1.get("value");
+            console.log("question", question1Value, "answers", answers1Value);
+            storyList.grid.set("query", {ownDog: true});
+        });
             
-        var storyList = widgetGridTable.insertGridTableBasic(pseudoQuestion.id + "grid", pagePane, popupPageDefinition, dataStore, true);
+        storyList = widgetGridTable.insertGridTableBasic(pseudoQuestion.id + "grid", pagePane, popupPageDefinition, dataStore, true);
         
         // First choice
         // Second choice
