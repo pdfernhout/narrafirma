@@ -197,7 +197,14 @@ define([
             var question1Value = question1.get("value");
             var answers1Value = answers1.get("value");
             console.log("question", question1Value, "answers", answers1Value);
-            storyList.grid.set("query", {ownDog: true});
+            storyList.grid.set("query", function (item) {
+                var questionValue = "" + item[question1Value];
+                // TODO: Booleans
+                // if (question1Value == "false")
+                console.log("matching on", questionValue);
+                var match = answers1Value.indexOf(questionValue) != -1;
+                return match;
+            });
         });
             
         storyList = widgetGridTable.insertGridTableBasic(pseudoQuestion.id + "grid", pagePane, popupPageDefinition, dataStore, true);
