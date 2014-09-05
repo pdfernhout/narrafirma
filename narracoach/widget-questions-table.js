@@ -96,7 +96,7 @@ define([
         }
         // console.log("groupIDs", groupIDs);
         
-        var widget1 = registry.byId(groupIDs[0])
+        var widget1 = registry.byId(groupIDs[0]);
         if (!widget1) return console.log("ERROR: insertQuestionsTable widget 1 not found", groupIDs[0], pseudoQuestion);
         widget1.on("change", updateRole1);
         
@@ -126,7 +126,6 @@ define([
         
         table.addChild(groupHeader3);
         
-        var index = 0;
         array.forEach(questions, function(question) {
             // console.log("question", question);
             if (question.type === "header") {
@@ -154,7 +153,7 @@ define([
                 newSpecialTextArea(table, question.id + "_" + 3);
                 
             } else {
-                console.log("ERROR: unsupported type for questionsTable:", question.type)
+                console.log("ERROR: unsupported type for questionsTable:", question.type);
             }
         });
         

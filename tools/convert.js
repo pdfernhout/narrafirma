@@ -166,7 +166,7 @@ function convert() {
             var data = extract(line, rest, lineNumber);
             if (data) {
               lastQuestion = {"id": data.info.id, "text": data.text, "shortText": data.shortText, "type": data.info.type, "options": data.info.options};
-              lastPage.questions.push(lastQuestion)  
+              lastPage.questions.push(lastQuestion);
             }
         } else if (lastPage && startsWith(line, "//")) {
             // console.log("comment line", line);

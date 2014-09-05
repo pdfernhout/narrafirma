@@ -52,5 +52,5 @@ define([
     return {
         "addPage": addPage,
         "addPageContents": addPageContents
-    }
+    };
 });

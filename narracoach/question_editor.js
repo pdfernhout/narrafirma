@@ -156,7 +156,7 @@ define([
             // console.log("insert", questionIndex, question);
             if (!question) console.log("ERROR in uestion definitions for ", questionsDiv, questionIndex, questions);
             question.index = questionIndex;
-            insertQuestionIntoDiv(question, questionsDiv)
+            insertQuestionIntoDiv(question, questionsDiv);
         }
     }
     
