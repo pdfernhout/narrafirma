@@ -15,8 +15,6 @@ Participant questions need to have options and ids and translations
 
 Story browser with two choices of questions and answers
 Replace fake story data in story browser with a way that real data is loaded and stored
-Fix issue when two items selected and click view and get NS_ERROR_UNEXPECTED
-Ad hoc questions (or tags) that can be added to stories when noticing trends (e.g. Did they talk about XYZ in the story?)
 
 Right-align questions in table of questions for project participants
 Way to retrieve data about project participant groups
@@ -33,8 +31,11 @@ Support storyThemer -- a widget where people look at each story, give it 1-3 the
 Support graphBrowser -- shows one graph at a time, with two question select drop-downs to choose which graph to show, has "add to observation" button
 Support trendsReport -- shows text and graphs in report based on top differences in statistical tests,  has "add to observation" button
 Support clusterSpace -- used in catalysis to cluster interpretations it is a graphical OR grid way of putting like with like, the option tells you what is to be clustered
+Support new types added for Dashboard widgets
 
 Fix boolean so it can get disabled and value gets set (probably make it a widget)
+
+Fix popup dialog background when scroll and shows content beneath it
 
 DONE Checkboxes for multiple choices
 DONE Tab container sizing to full page
@@ -54,6 +55,8 @@ DONE Basic wait message when loading
 DONE Remove all JSHint warnings (as of 2014-09-05)
 DONE Story browser with list of title and shows stories
 DONE Support storyBrowser -- a smalltalk-like browser for stories (basic support)
+DONE Fix issue when two items selected and click view and get NS_ERROR_UNEXPECTED
+DONE Moved styling into seperate css style sheet
 
 ======= CYNTHIA
 
@@ -86,6 +89,8 @@ Page to enter themes for stories
 Page to cluster themes into final themes
 
 ==== Wish list:
+
+Ad hoc questions (or tags) that can be added to stories when noticing trends (e.g. Did they talk about XYZ in the story?)
 
 Better font size, maybe user adjustable
 
