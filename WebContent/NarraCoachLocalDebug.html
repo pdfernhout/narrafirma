@@ -4,11 +4,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>NarraCoach</title>
-<link rel="stylesheet" href="../NarraCoachLibraries/dojo-release-1.10.0-src/dojo/resources/dojo.css">
-<link rel="stylesheet" href="../NarraCoachLibraries/dojo-release-1.10.0-src/dijit/themes/dijit.css">
-<link rel="stylesheet" href="../NarraCoachLibraries/dojo-release-1.10.0-src/dijit/themes/claro/claro.css">
-<link rel="stylesheet" href="../NarraCoachLibraries/dgrid-0.3.16/css/dgrid.css">
-<link rel="stylesheet" href="../NarraCoachLibraries/dgrid-0.3.16/css/skins/claro.css">
+<link rel="stylesheet" href="../../NarraCoachLibraries/dojo-release-1.10.0-src/dojo/resources/dojo.css">
+<link rel="stylesheet" href="../../NarraCoachLibraries/dojo-release-1.10.0-src/dijit/themes/dijit.css">
+<link rel="stylesheet" href="../../NarraCoachLibraries/dojo-release-1.10.0-src/dijit/themes/claro/claro.css">
+<link rel="stylesheet" href="../../NarraCoachLibraries/dgrid-0.3.16/css/dgrid.css">
+<link rel="stylesheet" href="../../NarraCoachLibraries/dgrid-0.3.16/css/skins/claro.css">
 
 <style type="text/css">
     
@@ -26,19 +26,21 @@
 	// Load dgrid from dojofoundation for now for testing -- replace with local copy for production!!!
 	var dojoConfig;
 	(function(){
-		var baseUrl = "file:../NarraCoachLibraries/";
+		// var baseUrl = "../../NarraCoachLibraries/";
 		dojoConfig = {
 			async: true,
 			parseOnLoad: false,
+			// basePath: "..",
 			// cacheBust: "1.10.0",
 			// Load dgrid and its dependencies from a local copy.
 			// If we were loading everything locally, this would not
 			// be necessary, since Dojo would automatically pick up
 			// dgrid, xstyle, and put-selector as siblings of the dojo folder.
 			packages: [
-				{ name: "dgrid", location: baseUrl + "dgrid-0.3.16" },
-				{ name: "xstyle", location: baseUrl + "xstyle-0.2.1" },
-				{ name: "put-selector", location: baseUrl + "put-selector-0.3.5" },
+			    // Packages relative to where dojo is being loaded from in NarraCoachLibraries
+				{ name: "dgrid", location: "../../dgrid-0.3.16" },
+				{ name: "xstyle", location: "../../xstyle-0.2.1" },
+				{ name: "put-selector", location: "../../put-selector-0.3.5" },
 				// TODO: Seems to need the "file:" part -- is this a bug in dojo? Need to change when run from webserver.
 				{ name: "narracoach", location: "file:narracoach"}
 			]
@@ -46,7 +48,7 @@
 	}());
 </script>
 
-<script src="../NarraCoachLibraries/dojo-release-1.10.0-src/dojo/dojo.js"></script>
+<script src="../../NarraCoachLibraries/dojo-release-1.10.0-src/dojo/dojo.js"></script>
 
 <script src="narracoach/narracoach.js"></script>
 
