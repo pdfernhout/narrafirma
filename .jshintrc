@@ -1,0 +1,6 @@
+{
+  "globalstrict": true,
+  "browser": true,
+  "devel": true,
+  "dojo": true
+}
