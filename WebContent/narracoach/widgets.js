@@ -63,7 +63,7 @@ define([
         }
         // TODO: Is startup call really needed here?
         button.startup();
-        return button.domNode;
+        return button;
     }
     
     function newLabel(id, text, addToDiv) {
@@ -79,7 +79,7 @@ define([
         }
         // TODO: Is startup call really needed here?
         label.startup();
-        return label.domNode;
+        return label;
     }
     
     function newTextBox(id, addToDiv) {
@@ -94,7 +94,7 @@ define([
         }
         // TODO: Is startup call really needed here?
         textBox.startup();
-        return textBox.domNode;
+        return textBox;
     }
     
     function newSimpleTextArea(id, addToDiv) {
@@ -111,7 +111,7 @@ define([
             textarea.placeAt(addToDiv);
         }
         textarea.startup();
-        return textarea.domNode;
+        return textarea;
     }
     
     function newSelect(id, choices, optionsString, addToDiv, noSelectedOption) {
@@ -149,7 +149,7 @@ define([
             select.placeAt(addToDiv);
         }
         select.startup();
-        return select.domNode;
+        return select;
     }
 
     function buildOptions(id, choices, optionsString){
@@ -227,7 +227,7 @@ define([
             addToDiv.appendChild(radioButtons.domNode);
         }
         radioButtons.startup();
-        return radioButtons.domNode;
+        return radioButtons;
     }
     
     /* global CheckBoxesWidget */
@@ -289,7 +289,7 @@ define([
             addToDiv.appendChild(checkBoxes.domNode);
         }
         checkBoxes.startup();
-        return checkBoxes.domNode;
+        return checkBoxes;
     }
     
     function newSlider(id, options, addToDiv) {                     
@@ -350,11 +350,6 @@ define([
             labels: labels,
         }, labelsNode);
 
-        slider.startup();
-        // if (!hasTextLabels)
-        sliderRules.startup();
-        sliderLabels.startup();
-        
         if (isString(addToDiv)) {
             addToDiv = document.getElementById(addToDiv);
         }
@@ -362,7 +357,17 @@ define([
             addToDiv.appendChild(panelDiv);
         }
         
-        return panelDiv;
+        slider.startup();
+        // if (!hasTextLabels)
+        sliderRules.startup();
+        sliderLabels.startup();
+        
+        // TODO: Issue -- should return a new sort of component that can be placed an includes the slider and the rules and labels
+        var contentPane = new ContentPane({
+            id: id + "_content",
+            content: panelDiv, 
+        });
+        return contentPane;
     }
     
     function newBoolean(id, addToDiv) {
@@ -379,7 +384,7 @@ define([
             addToDiv.appendChild(radioButtons.domNode);
         }
         radioButtons.startup();
-        return radioButtons.domNode;
+        return radioButtons;
     }
 
     function newCheckbox(id, addToDiv) {
@@ -394,7 +399,7 @@ define([
             addToDiv.appendChild(checkbox);
         }
         
-        return checkbox.domNode;
+        return checkbox;
     }
     
     

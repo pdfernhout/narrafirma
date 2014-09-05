@@ -220,10 +220,9 @@ define([
         // See: http://dojotoolkit.org/reference-guide/1.7/dojo/partial.html
         // TODO: Translate text of label
         var viewButtonID = id + "view";
-        var viewButtonNode = widgets.newButton(viewButtonID, "View", pane, lang.partial(viewButtonClicked, grid, dataStore, popupPageDefinition));
+        var viewButton = widgets.newButton(viewButtonID, "View", pane, lang.partial(viewButtonClicked, grid, dataStore, popupPageDefinition));
 
         var selected = 0;
-        var viewButton = registry.byId(viewButtonID);
         viewButton.set("disabled", true);
         
         grid.on("dgrid-select", function(e){

@@ -152,10 +152,6 @@ define([
 
         var label = widgets.newLabel(pseudoQuestion.id + "label", pseudoQuestion.text, pagePane.domNode);
 
-        var unfinished = widgets.newLabel(pseudoQuestion.id + "unfinished", "<b>UNFINISHED</b>", pagePane.domNode);
-
-        // TODO: do something here
-        
         var popupPageDefinition = {
              "id": "testDogQuestions",
              "questions": domain.testDogQuestions   
@@ -178,7 +174,7 @@ define([
         // console.log("questionsById", questionsById);
         
         var question1 = widgets.newSelect(pseudoQuestion.id + "questions1", questionOptions, null);
-        pagePane.addChild(registry.byId(pseudoQuestion.id + "questions1"));
+        pagePane.addChild(question1);
         
         pagePane.domNode.appendChild(domConstruct.toDom('<br>'));
         
@@ -186,10 +182,10 @@ define([
         pagePane.addChild(answers1);
         answers1.startup();
 
-        registry.byId(pseudoQuestion.id + "questions1").on("change", lang.partial(questionChanged, questionsById, answers1, data));
+        question1.on("change", lang.partial(questionChanged, questionsById, answers1, data));
         
         // var question2  = widgets.newSelect(pseudoQuestion.id + "questions2", questionOptions, null);
-        // pagePane.addChild(registry.byId(pseudoQuestion.id + "questions2"));
+        // pagePane.addChild(question2);
             
         var storyList = widgetGridTable.insertGridTableBasic(pseudoQuestion.id + "grid", pagePane, popupPageDefinition, dataStore, true);
         

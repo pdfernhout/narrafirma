@@ -55,8 +55,6 @@ define([
         
     function insertQuestionIntoDiv(question, questionsDiv) {
         // console.log("question", question);
-        var inputNode;
-        var hasWidget = true;
         
        if (supportedTypes.indexOf(question.type) === -1) {
            console.log("insertQuestionIntoDiv unsupportedType", question.type, question);
@@ -67,35 +65,38 @@ define([
            newQuestion.type = "header";
            question = newQuestion;
          }
-           
+        
+        var widgetToPlace = null;
+        
         if (question.type === "boolean") {
-           inputNode = widgets.newBoolean(question.id);
+           widgetToPlace = widgets.newBoolean(question.id);
         } else if (question.type === "label" || question.type === "header") {
-            hasWidget = false;
             // Not adding input node for these
-           //  inputNode = widgets.newLabel(question.id, question.text);
+           //  widget = widgets.newLabel(question.id, question.text);
         } else if (question.type === "checkbox") {
-           inputNode = widgets.newCheckbox(question.id);
+            widgetToPlace = widgets.newCheckbox(question.id);
         } else if (question.type === "checkboxes") {
-            inputNode = widgets.newCheckBoxes(question.id, question.choices, question.options);
+            widgetToPlace = widgets.newCheckBoxes(question.id, question.choices, question.options);
         } else if (question.type === "text") {
-            inputNode = widgets.newTextBox(question.id);
+            widgetToPlace = widgets.newTextBox(question.id);
         } else if (question.type === "textarea") {
-            inputNode = widgets.newSimpleTextArea(question.id);
+            widgetToPlace = widgets.newSimpleTextArea(question.id);
         } else if (question.type === "select") {
-            inputNode = widgets.newSelect(question.id, question.choices, question.options);
+            widgetToPlace = widgets.newSelect(question.id, question.choices, question.options);
         } else if (question.type === "radio") {
-            inputNode = widgets.newRadioButtons(question.id, question.choices, question.options);
+            widgetToPlace = widgets.newRadioButtons(question.id, question.choices, question.options);
         } else if (question.type === "slider") {
-            inputNode = widgets.newSlider(question.id, question.options);
+            widgetToPlace = widgets.newSlider(question.id, question.options);
         } else {
             console.log("Unsupported question type: " + question.type);
-             console.log("question id & type", question.id, question.type);
+            console.log("question id & type", question.id, question.type);
             return;
         }
+        
+        var widget = widgetToPlace;
+        // TODO: Slider is special case for now
+        if (question.type === "slider") widget = registry.byId(question.id);
 
-        var widget = registry.byId(question.id);
-        if (hasWidget && !widget) console.log("No widget found for: " + question.id);
         if (question.value && widget) widget.set("value", question.value);
 
         var questionText;
@@ -118,10 +119,10 @@ define([
         }
         // console.log("question help", question.id, question.help, helpText);
         
-        var helpNode = null;
+        var helpWidget = null;
         if (helpText) {
             // var helpText = question.help.replace(/\"/g, '\\x22').replace(/\'/g, '\\x27');
-            helpNode = widgets.newButton(question.id + "_help", "?", null, function() {
+            helpWidget = widgets.newButton(question.id + "_help", "?", null, function() {
                 alert(helpText);
             });
             // help = ' <button onclick="alert(\'' + helpText + '\')">?</button>';
@@ -135,8 +136,8 @@ define([
         questionDiv.appendChild(domConstruct.toDom(questionText));
         questionDiv.appendChild(document.createTextNode(" "));
         if (question.type === "textarea") questionDiv.appendChild(document.createElement("br"));
-        if (inputNode) questionDiv.appendChild(inputNode);
-        if (helpNode) questionDiv.appendChild(helpNode);
+        if (widgetToPlace) questionDiv.appendChild(widgetToPlace.domNode);
+        if (helpWidget) questionDiv.appendChild(helpWidget.domNode);
         questionDiv.appendChild(document.createElement("br"));
         questionDiv.appendChild(domConstruct.toDom('<div id="' + question.id + '_trailer"/>'));
         questionDiv.appendChild(document.createElement("br"));
@@ -148,6 +149,8 @@ define([
         }
 
         if (question.visible !== undefined && !question.visible) domStyle.set(questionDiv, "display", "none");
+        
+        return widget;
     }
     
     function insertQuestionsIntoDiv(questions, questionsDiv) {

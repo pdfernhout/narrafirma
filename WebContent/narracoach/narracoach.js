@@ -273,20 +273,17 @@ require([
         page_graphResults(tabContainer);
         */
 
-        widgets.newSelect("mainSelect", pageSelectOptions, null, "navigationDiv", "NoUnselectedOption");
+        selectWidget = widgets.newSelect("mainSelect", pageSelectOptions, null, "navigationDiv", "NoUnselectedOption");
         
-        selectWidget = registry.byId("mainSelect");
         // console.log("widget", selectWidget);
         // TODO: Width should be determined from contents of select options using font metrics etc.
         domStyle.set(selectWidget.domNode, "width", "400px");
         selectWidget.on("change", mainSelectChanged);
         
         // TODO: Translation of buttons
-        widgets.newButton("previousPage", "Previous Page", "navigationDiv", previousPageClicked);
-        previousPageButton = registry.byId("previousPage");
+        previousPageButton = widgets.newButton("previousPage", "Previous Page", "navigationDiv", previousPageClicked);
             
-        widgets.newButton("nextPage", "Next Page", "navigationDiv", nextPageClicked);
-        nextPageButton = registry.byId("nextPage");
+        nextPageButton =widgets.newButton("nextPage", "Next Page", "navigationDiv", nextPageClicked);
         
         // Setup the first page
         showPage(pages[0].id);
