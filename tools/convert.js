@@ -55,6 +55,9 @@ var acceptableTypes = [
 ];
 
 var usedIDs = {};
+var pages;
+var inputTextArea;
+var outputTextArea;
 
 function extract(line, rest, lineNumber) {
     var lineSections = rest.split("[");
@@ -115,8 +118,6 @@ function extract(line, rest, lineNumber) {
     
     return {"text": longLineContent, "shortText": shortLineContent, "info": infoContent};
 }
-
-var pages;
 
 function convert() {
     console.log("convert", inputTextArea);
@@ -212,9 +213,6 @@ function addOutput(output) {
     var newValue = outputTextArea.get("value") + output;
     outputTextArea.set("value", newValue);
 }
-
-var inputTextArea;
-var outputTextArea;
 
 function createLayout() {
     var initialText = textOfDesign;
