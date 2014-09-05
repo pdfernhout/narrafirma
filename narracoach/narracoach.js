@@ -134,7 +134,8 @@ require([
             "id": id,
             title: page.title,
             content: page.description.replace(/\n/g, "<br>\n"),
-            style: "width: 100%",
+            // Set to 99% so grid scroll bar shows up not clipped
+            style: "width: 99%",
             display: "none",
        });
         
