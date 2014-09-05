@@ -30,7 +30,7 @@ define([
             console.log("submitSurvey question Node", questionDiv);
             var questionID = questionDiv.getAttribute("data-narracoach-question-id");
             var valueNode = registry.byId(questionID);
-            var questionValue = undefined;
+            var questionValue;
             if (valueNode) questionValue = valueNode.get("value");
             console.log("answer", questionDiv, questionID, valueNode, questionValue);
             // trim off "survey_" part of id

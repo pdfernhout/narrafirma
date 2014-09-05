@@ -212,7 +212,7 @@ define([
     });
 
     function newRadioButtons(id, choices, optionsString, addToDiv) {
-        var radioButtons = RadioButtonsWidget({
+        var radioButtons = new RadioButtonsWidget({
             id: id,
             choices: choices,
             optionsString: optionsString
@@ -272,7 +272,7 @@ define([
     });
 
     function newCheckBoxes(id, choices, optionsString, addToDiv) {
-        var checkBoxes = CheckBoxesWidget({
+        var checkBoxes = new CheckBoxesWidget({
             id: id,
             choices: choices,
             optionsString: optionsString
@@ -298,7 +298,7 @@ define([
         var hasTextLabels = false;
         var labels = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
         if (options) {
-            var labels = options.split("\n");
+            labels = options.split("\n");
             if (labels.length != 2) {
                 console.log("Need to specify low and high labels for quesiton: ", id);
             } else {
@@ -362,7 +362,7 @@ define([
     }
     
     function newBoolean(id, addToDiv) {
-        var radioButtons = RadioButtonsWidget({
+        var radioButtons = new RadioButtonsWidget({
             id: id,
             choices: null,
             optionsString: "yes\nno",

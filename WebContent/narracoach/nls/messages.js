@@ -8,15 +8,15 @@ define({
     
     // page: introduction 
     "page_generalIntro_title": "Introduction",
-    "page_generalIntro_text": "<p>Hello and welcome to NarraCoach.</p>"
-       + "<p>This application will guide you through carrying out a participatory narrative inquiry (PNI) project.</p>"
-       + "<p>Your project will go through these steps:</p>"
-       + "<ul><li>Planning: Tell stories and make sense of your goals and hopes for your project.</li>"
-       + "<li>Collection: Set up your questions and collect stories in person or over the web.</li>"
-       + "<li>Catalysis: Prepare some \"food for thought\" for people to use in working with the stories you have collected.</li>"
-       + "<li>Sensemaking: Guide people through working with the stories you have collected.</li>"
-       + "<li>Intervention: Optionally, design one or more interventions to guide the flow of stories.</li>"
-       + "<li>Return: Gather information about your project -- impact and reflect on what you have learned.",
+    "page_generalIntro_text": "<p>Hello and welcome to NarraCoach.</p>" +
+       "<p>This application will guide you through carrying out a participatory narrative inquiry (PNI) project.</p>" +
+       "<p>Your project will go through these steps:</p>" +
+       "<ul><li>Planning: Tell stories and make sense of your goals and hopes for your project.</li>" +
+       "<li>Collection: Set up your questions and collect stories in person or over the web.</li>" +
+       "<li>Catalysis: Prepare some \"food for thought\" for people to use in working with the stories you have collected.</li>" +
+       "<li>Sensemaking: Guide people through working with the stories you have collected.</li>" +
+       "<li>Intervention: Optionally, design one or more interventions to guide the flow of stories.</li>" +
+       "<li>Return: Gather information about your project -- impact and reflect on what you have learned.",
     
     // page: project stories
     "page_projectStoriesIntro_title": "Project Stories Introduction",

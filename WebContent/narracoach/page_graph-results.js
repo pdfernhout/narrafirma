@@ -1,4 +1,6 @@
- define([
+"use strict";
+
+define([
     "dojo/_base/array",
     "dojo/dom-construct",
     "narracoach/translate",
@@ -44,7 +46,7 @@
             }
         });
         
-        if (theSlider != null) {
+        if (theSlider !== null) {
             array.forEach(surveyResults, function(each) {
                 var answer = each[theSlider];
                 console.log("answer", answer);

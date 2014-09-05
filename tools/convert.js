@@ -68,7 +68,7 @@ function extract(line, rest, lineNumber) {
     
     var lineContent = string.trim(lineSections[0]);
     var lineContentSections = lineContent.split('|');
-    var shortLineContent = undefined;
+    var shortLineContent;
     var longLineContent = lineContent;
     if (lineContentSections.length == 2) {
            shortLineContent = string.trim(lineContentSections[0]);
@@ -134,6 +134,7 @@ function convert() {
     pages = [];
     var lineNumber = 0;
     var commentNumberInPage = 0;
+    var data;
     
     array.forEach(lines, function (line) {
         lineNumber++;
@@ -155,7 +156,7 @@ function convert() {
             }
             lastQuestion = null;
             
-            var data = extract(line, rest, lineNumber);
+            data = extract(line, rest, lineNumber);
             if (data) {
               lastPage = {"id": data.info.id, "name": data.text, "description": "", "isHeader": header, "type": data.info.type, "options": data.info.options, "questions": []};
               pages.push(lastPage);
@@ -164,7 +165,7 @@ function convert() {
         } else if (lastPage && startsWith(line, "*")) {
             rest = line.substring(1);
             // A question
-            var data = extract(line, rest, lineNumber);
+            data = extract(line, rest, lineNumber);
             if (data) {
               lastQuestion = {"id": data.info.id, "text": data.text, "shortText": data.shortText, "type": data.info.type, "options": data.info.options};
               lastPage.questions.push(lastQuestion);
@@ -173,7 +174,7 @@ function convert() {
             // console.log("comment line", line);
             // if (lastPage.description) lastPage.description += "\n";
             // lastPage.description += line;
-            lastQuestion = {"id": "COMMENT_" + lastPage.id + "_" + ++commentNumberInPage, "text": line, "type": "label", "options": null};
+            lastQuestion = {"id": "COMMENT_" + lastPage.id + "_" + (++commentNumberInPage), "text": line, "type": "label", "options": null};
             lastPage.questions.push(lastQuestion);
         } else if (lastQuestion && line) {
             if (lastQuestion.text) lastQuestion.text += "\n";

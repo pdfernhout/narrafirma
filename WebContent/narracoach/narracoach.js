@@ -200,7 +200,7 @@ require([
         var page = pageDefinitions[currentPageID];
         var nextPageID = page.nextPageID;
         if (nextPageID) {
-            changePage(nextPageID)
+            changePage(nextPageID);
         } else {
             // Should never get here based on button enabling
             alert("At last page");

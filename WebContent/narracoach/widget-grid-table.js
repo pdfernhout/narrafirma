@@ -119,7 +119,7 @@ define([
         
         // TODO: Should only do for one of these... Need to break...
         // TODO: Need to search on unique field...
-        for(var selection in grid.selection) {
+        for (var selection in grid.selection) {
             console.log("selection", selection);
             var matches = store.query({id: selection});
             console.log("matches", matches);
@@ -256,6 +256,6 @@ define([
     return {
         "insertGridTable": insertGridTable,
         "insertGridTableBasic": insertGridTableBasic
-    }
+    };
     
 });

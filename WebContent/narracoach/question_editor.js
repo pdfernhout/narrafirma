@@ -212,7 +212,7 @@ define([
         if (changed) {
             // empty does not seem to destroy widgets (as get duplicate dijit id warning later), but that seems wrong of dojo...
             // See: http://ibmmobiletipsntricks.com/2013/10/31/destroy-all-widgetsdijits-in-a-dom-node/
-            var widgets = dijit.findWidgets(questionEditorDiv);
+            var widgets = registry.findWidgets(questionEditorDiv);
             array.forEach(widgets, function(widget) {
                 widget.destroyRecursive(true);
             });
