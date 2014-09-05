@@ -13,10 +13,10 @@ Disabled or hidden tabs which are enabled as progress
 
 Participant questions need to have options and ids and translations
 
-Support storyBrowser -- a smalltalk-like browser for stories
 Story browser with two choices of questions and answers
 Replace fake story data in story browser with a way that real data is loaded and stored
 Fix issue when two items selected and click view and get NS_ERROR_UNEXPECTED
+Ad hoc questions (or tags) that can be added to stories when noticing trends (e.g. Did they talk about XYZ in the story?)
 
 Right-align questions in table of questions for project participants
 Way to retrieve data about project participant groups
@@ -51,7 +51,9 @@ DONE Buttons to go backward and forward through pages
 DONE Story list widget with add button
 DONE Grid header resizing
 DONE Basic wait message when loading
+DONE Remove all JSHint warnings (as of 2014-09-05)
 DONE Story browser with list of title and shows stories
+DONE Support storyBrowser -- a smalltalk-like browser for stories (basic support)
 
 ======= CYNTHIA
 
