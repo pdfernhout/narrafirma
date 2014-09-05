@@ -5,3 +5,15 @@ html {
 body {
     min-height: 100%;
 }
+
+/* See http://www.sitepen.com/blog/2012/05/03/css-styling-of-dgrid/ */
+/* Make sure grid rows are just one line high and the text is limited with an ellipsis */
+
+.dgrid-row {
+    height: 22px;
+}
+
+.dgrid-cell {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
