@@ -172,6 +172,8 @@ define([
         return options;
     }
     
+    /* global RadioButtonsWidget */
+    
     declare("RadioButtonsWidget", [_WidgetBase], {
         value: null,
         choices: null,
@@ -227,6 +229,8 @@ define([
         radioButtons.startup();
         return radioButtons.domNode;
     }
+    
+    /* global CheckBoxesWidget */
     
     // TODO: Very similar to RadioButtonsWidget
     // TODO: Set an optional minimum and maximum number that may be checked and validate for that
