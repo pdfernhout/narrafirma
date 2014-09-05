@@ -76,6 +76,7 @@ define([
     function newMultiSelect(id, options) {
         var widget = new MultiSelect({
             "id": id + "answers1",
+            "size": 12
             //"options": options
         });
         
@@ -86,25 +87,62 @@ define([
         return widget;
     }
     
-    function questionChanged(questionsById, multiSelect, newValue) {
+    function questionChanged(questionsById, multiSelect, data, newValue) {
         console.log("event", newValue);
         var question = questionsById[newValue];
-        var options = optionsFromQuestion(question);
+        //console.log("question", question);
+        var options = optionsFromQuestion(question, data);
         setOptionsInMultiSelect(multiSelect, options);
     }
     
-    function optionsFromQuestion(question) {
+    function optionsFromQuestion(question, data) {
         var options = [];
+        
+        // Compute how many of each answer -- assumes typically less than 200-1000 stories
+        var totals = {};
+        array.forEach(data, function(item) {
+            var oldValue = totals[item[question.id]];
+            if (!oldValue) oldValue = 0;
+            totals[item[question.id]] = oldValue + 1;
+        });
+        
+        var count;
+        var each;
+        
         if (question.type === "select") {
             console.log("select", question, question.options);
             array.forEach(question.options.split("\n"), function(each) {
                 // console.log("option", id, each);
-                options.push({label: each, value: each});
+                count = totals[each];
+                if (!count) count = 0;
+                options.push({label: each + " (" +  count + ")", value: each});
             });
-            //lang.extend(result, question.options);
+        } else if (question.type === "slider") {
+            console.log("slider", question, question.options);
+            for (each = 0; each <= 100; each++) {
+                count = totals[each];
+                if (!count) count = 0;
+                options.push({label: each + " (" +  count + ")", value: each});
+            }
+        } else if (question.type === "boolean") {
+            // TODO; Not sure this will really be right with true/false as booleans instead of strings
+            array.forEach([true, false], function(each) {
+                // console.log("option", id, each);
+                count = totals[each];
+                if (!count) count = 0;
+                options.push({label: each + " (" +  count + ")", value: each});
+            });
+        } else if (question.type === "text") {
+            for (each in totals){
+                if (totals.hasOwnProperty(each)) {
+                    count = totals[each];
+                    if (!count) count = 0;
+                    options.push({label: each + " (" +  count + ")", value: each});                    
+                }
+            }
         } else {
-            options.push({"label": "a", "value": "b"});
-            options.push({"label": "c", "value": "d"});
+            // not supported
+            options.push({label: "*ALL*" + " (" +  data.length + ")", value: "*ALL*"});
         }
         return options;
     }
@@ -123,9 +161,10 @@ define([
              "questions": domain.testDogQuestions   
         };
         
+        var data = domain.testDogStories;
         var dataStore = new Memory({
-            // data: [],
-            data: domain.testDogStories,
+            // "data": [],
+            "data": data,
             // TODO: what should this be, if anything?
             // idProperty: "name",
         }); 
@@ -136,6 +175,7 @@ define([
             questionOptions.push({label: question.text, value: question.id});
             questionsById[question.id] = question;
         });
+        // console.log("questionsById", questionsById);
         
         var question1 = widgets.newSelect(pseudoQuestion.id + "questions1", questionOptions, null);
         pagePane.addChild(registry.byId(pseudoQuestion.id + "questions1"));
@@ -146,7 +186,7 @@ define([
         pagePane.addChild(answers1);
         answers1.startup();
 
-        registry.byId(pseudoQuestion.id + "questions1").on("change", lang.partial(questionChanged, questionsById, answers1));
+        registry.byId(pseudoQuestion.id + "questions1").on("change", lang.partial(questionChanged, questionsById, answers1, data));
         
         // var question2  = widgets.newSelect(pseudoQuestion.id + "questions2", questionOptions, null);
         // pagePane.addChild(registry.byId(pseudoQuestion.id + "questions2"));
