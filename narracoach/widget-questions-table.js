@@ -1,10 +1,5 @@
 "use strict";
 
-// TODO: How to handle these two globals shared by modules?
-
-var exportedSurveyQuestions = [];
-var surveyResults = [];
-
 define([
     "dojo/_base/array",
     "dojo/_base/connect",
