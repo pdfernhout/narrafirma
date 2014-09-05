@@ -183,7 +183,7 @@ require([
         var page = pageDefinitions[currentPageID];
         var previousPageID = page.previousPageID;
         if (previousPageID) {
-            changePage(previousPageID)
+            changePage(previousPageID);
         } else {
             // Should never get here based on button enabling
             alert("At first page");

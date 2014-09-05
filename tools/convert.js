@@ -174,7 +174,7 @@ function convert() {
             // if (lastPage.description) lastPage.description += "\n";
             // lastPage.description += line;
             lastQuestion = {"id": "COMMENT_" + lastPage.id + "_" + ++commentNumberInPage, "text": line, "type": "label", "options": null};
-            lastPage.questions.push(lastQuestion)  
+            lastPage.questions.push(lastQuestion);
         } else if (lastQuestion && line) {
             if (lastQuestion.text) lastQuestion.text += "\n";
             lastQuestion.text += line;
@@ -188,7 +188,7 @@ function convert() {
     addOutput('"use strict";\n');
     addOutput('define(\n');
     addOutput(JSON.stringify(pages, null, "    "));
-    addOutput(');\n')
+    addOutput(');\n');
 }
 
 function generateRecommendationsTable() {
