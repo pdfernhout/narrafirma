@@ -19,11 +19,10 @@
 <script>
 require(["dijit/form/Select", "dojox/layout/TableContainer", "dojo/domReady!"], function(Select, TableContainer){
     
-    // Why do the sizes of the selects change when an option is chosen?
+    // Why do the sizes of the selects change when an option is chosen in Firefox and Safari, but not in Chromium?
             
-    function newSelect(id, options, containerPane) {
+    function newSelect(options, containerPane) {
         var select = new Select({
-            id: id,
             options: options,
             style: "width: 100%;"
         });
@@ -34,10 +33,8 @@ require(["dijit/form/Select", "dojox/layout/TableContainer", "dojo/domReady!"], 
     }
     
     var table = new TableContainer({
-        id: "testTable",
         cols: 2,
         showLabels: false,
-        customClass: "storyFilterTable",
         style: "width: 100%;"
     }, "testDiv");
     
@@ -46,8 +43,8 @@ require(["dijit/form/Select", "dojox/layout/TableContainer", "dojo/domReady!"], 
         {label: "long ---------------------------------------------", value: "2"}
     ];
     
-    newSelect("select1", options, table);
-    newSelect("select2", options, table);
+    newSelect(options, table);
+    newSelect(options, table);
     
     table.startup();
 });
