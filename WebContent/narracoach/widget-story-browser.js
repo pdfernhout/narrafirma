@@ -42,21 +42,6 @@ define([
 ){
     // story browser support
     
-    function newSpecialSelect(id, options, containerPane) {
-        // Maybe need to do? http://dojo-toolkit.33424.n3.nabble.com/Dijit-Form-Select-disable-auto-resizing-td2241131.html
-        
-        var select = new Select({
-            id: id,
-            options: options,
-            // TODO: Width should be determined from content using font metrics across all dropdowns
-            style: "width: 100%;"
-        });
-        
-        containerPane.addChild(select);
-        select.startup();
-        return select;
-    }
-    
     function setOptionsInMultiSelect(widget, options) {
         // console.log("setOptionsInMultiSelect", widget, options);
         query('option', widget.domNode).forEach(function(node, index, arr) {
@@ -160,9 +145,8 @@ define([
         
         containerPane.addChild(contentPane);
          
-        // var question = widgets.newSelect(id + "_question", questionOptions, null, contentPane);
-        var question = newSpecialSelect(id + "_question", questionOptions, contentPane);
-        // question.set("width", "100%");
+        var question = widgets.newSelect(id + "_question", questionOptions, null, contentPane);
+        question.set("style", "width: 100%");
         
         contentPane.domNode.appendChild(domConstruct.toDom('<br>'));
         
