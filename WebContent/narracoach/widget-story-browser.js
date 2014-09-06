@@ -147,6 +147,28 @@ define([
         return options;
     }
     
+    function createFilterPane(id, questionsById, questionOptions, data, pagePane) {
+        var contentPane = new ContentPane({
+            id: id + "_content",
+        });
+        
+        pagePane.addChild(contentPane);
+        
+        contentPane.startup();
+        
+        var question = widgets.newSelect(id + "_question", questionOptions, null, contentPane);
+        
+        contentPane.domNode.appendChild(domConstruct.toDom('<br>'));
+        
+        var answers = newMultiSelect(id + "_answers", []);
+        contentPane.addChild(answers);
+        answers.startup();
+
+        question.on("change", lang.partial(questionChanged, questionsById, answers, data)); 
+        
+        return {"contentPane": contentPane, "question": question, "answers": answers};
+    }
+    
     function insertStoryBrowser(pseudoQuestion, pagePane, pageDefinitions) {
         console.log("insertStoryBrowser", pseudoQuestion);
 
@@ -171,48 +193,28 @@ define([
             questionOptions.push({label: question.text, value: question.id});
             questionsById[question.id] = question;
         });
-        // console.log("questionsById", questionsById);
-        
-        var question1 = widgets.newSelect(pseudoQuestion.id + "questions1", questionOptions, null);
-        pagePane.addChild(question1);
-        
-        pagePane.domNode.appendChild(domConstruct.toDom('<br>'));
-        
-        var answers1 = newMultiSelect(pseudoQuestion.id + "answer1", []);
-        pagePane.addChild(answers1);
-        answers1.startup();
+       
+        var firstFilter = createFilterPane(pseudoQuestion.id + "_1", questionsById, questionOptions, data, pagePane);
+        // var secondFilter = createFilterPane(pseudoQuestion.id + "_2", questionsById, questionOptions, data, pagePane);
 
-        question1.on("change", lang.partial(questionChanged, questionsById, answers1, data));
-        
-        // var question2  = widgets.newSelect(pseudoQuestion.id + "questions2", questionOptions, null);
-        // pagePane.addChild(question2);
-        
-        pagePane.domNode.appendChild(domConstruct.toDom('<br>'));
+        // pagePane.domNode.appendChild(domConstruct.toDom('<br>'));
         
         var storyList;
         
         // TODO: Translate
         var filterButton = widgets.newButton(pseudoQuestion.id + "_filter", "Filter", pagePane, function () {
             console.log("filter pressed");
-            var question1Value = question1.get("value");
-            var answers1Value = answers1.get("value");
+            var question1Value = firstFilter.question.get("value");
+            var answers1Value = firstFilter.answers.get("value");
             console.log("question", question1Value, "answers", answers1Value);
             storyList.grid.set("query", function (item) {
                 var questionValue = "" + item[question1Value];
-                // TODO: Booleans
-                // if (question1Value == "false")
-                console.log("matching on", questionValue);
                 var match = answers1Value.indexOf(questionValue) != -1;
                 return match;
             });
         });
             
         storyList = widgetGridTable.insertGridTableBasic(pseudoQuestion.id + "grid", pagePane, popupPageDefinition, dataStore, true);
-        
-        // First choice
-        // Second choice
-        // List of results
-        // Actual selected story
         
         console.log("insertStoryBrowser finished");
     }
