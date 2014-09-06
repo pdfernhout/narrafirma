@@ -13,8 +13,9 @@ Disabled or hidden tabs which are enabled as progress
 
 Participant questions need to have options and ids and translations
 
-Story browser with two choices of questions and answers
 Replace fake story data in story browser with a way that real data is loaded and stored
+Fix issue for story browser textarea where probably should not be in questions list and *ALL* does not work right
+Resolve issue with story browser filter selects causing table cells to resize
 
 Right-align questions in table of questions for project participants
 Way to retrieve data about project participant groups
@@ -57,6 +58,7 @@ DONE Story browser with list of title and shows stories
 DONE Support storyBrowser -- a smalltalk-like browser for stories (basic support)
 DONE Fix issue when two items selected and click view and get NS_ERROR_UNEXPECTED
 DONE Moved styling into seperate css style sheet
+DONE Story browser with two choices of questions and answers
 
 ======= CYNTHIA
 
@@ -90,7 +92,11 @@ Page to cluster themes into final themes
 
 ==== Wish list:
 
+Remember previous filtering options for any question in story browser
+
 Ad hoc questions (or tags) that can be added to stories when noticing trends (e.g. Did they talk about XYZ in the story?)
+Or, saving sets of filtered and/or selected questions
+Describe the filtering choices as a string, including detecting ranges for sliders to do dashed range for value
 
 Better font size, maybe user adjustable
 
