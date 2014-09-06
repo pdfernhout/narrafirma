@@ -42,18 +42,18 @@ define([
 ){
     // story browser support
     
-    function newSpecialSelect(id, options) {
-        var theOptions = [];
-        array.forEach(options, function(option) {
-            //console.log("newSpecialSelect option", id, option);
-            theOptions.push({label: option, value: option});
-        });
+    function newSpecialSelect(id, options, containerPane) {
+        // Maybe need to do? http://dojo-toolkit.33424.n3.nabble.com/Dijit-Form-Select-disable-auto-resizing-td2241131.html
+        
         var select = new Select({
             id: id,
-            options: theOptions,
+            options: options,
             // TODO: Width should be determined from content using font metrics across all dropdowns
-            width: "150px"
+            style: "width: 100%;"
         });
+        
+        containerPane.addChild(select);
+        select.startup();
         return select;
     }
     
@@ -154,11 +154,15 @@ define([
     function createFilterPane(id, questionsById, questionOptions, data, containerPane) {
         var contentPane = new ContentPane({
             id: id + "_content",
+            style: "width: 100%;"
+            // doLayout: false
         });
         
         containerPane.addChild(contentPane);
          
-        var question = widgets.newSelect(id + "_question", questionOptions, null, contentPane);
+        // var question = widgets.newSelect(id + "_question", questionOptions, null, contentPane);
+        var question = newSpecialSelect(id + "_question", questionOptions, contentPane);
+        // question.set("width", "100%");
         
         contentPane.domNode.appendChild(domConstruct.toDom('<br>'));
         
@@ -202,6 +206,8 @@ define([
             id: pseudoQuestion.id + "_table",
             cols: 2,
             showLabels: false,
+            customClass: "storyFilterTable",
+            style: "width: 100%;"
         });
         
         pagePane.addChild(table);
