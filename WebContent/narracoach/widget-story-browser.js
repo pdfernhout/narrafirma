@@ -197,8 +197,8 @@ define([
             questionsById[question.id] = question;
         });
        
-        var firstFilter = createFilterPane(pseudoQuestion.id + "_1", questionsById, questionOptions, data, pagePane);
-        var secondFilter = createFilterPane(pseudoQuestion.id + "_2", questionsById, questionOptions, data, pagePane);
+        var filter1 = createFilterPane(pseudoQuestion.id + "_1", questionsById, questionOptions, data, pagePane);
+        var filter2 = createFilterPane(pseudoQuestion.id + "_2", questionsById, questionOptions, data, pagePane);
 
         // pagePane.domNode.appendChild(domConstruct.toDom('<br>'));
         
@@ -207,16 +207,24 @@ define([
         // TODO: Translate text for button
         var filterButton = widgets.newButton(pseudoQuestion.id + "_filter", "Filter", pagePane, function () {
             console.log("filter pressed");
-            var question1Choice = firstFilter.question.get("value");
-            var answers1Choices = firstFilter.answers.get("value");
-            console.log("question", question1Choice, "answers", answers1Choices);
+            var question1Choice = filter1.question.get("value");
+            var answers1Choices = filter1.answers.get("value");
+            console.log("question1", question1Choice, "answers1", answers1Choices);
+            var question2Choice = filter2.question.get("value");
+            var answers2Choices = filter2.answers.get("value");
+            console.log("question2", question2Choice, "answers2", answers2Choices);
             storyList.grid.set("query", function (item) {
                 var match1 = true;
                 if (question1Choice) {
                     var question1Value = "" + item[question1Choice];
                     match1 = answers1Choices.indexOf(question1Value) != -1;
                 }
-                return match1;
+                var match2 = true;
+                if (question2Choice) {
+                    var question2Value = "" + item[question2Choice];
+                    match2 = answers2Choices.indexOf(question2Value) != -1;
+                }
+                return match1 & match2;
             });
         });
             
