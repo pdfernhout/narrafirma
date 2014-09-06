@@ -58,9 +58,9 @@ define([
     }
     
     function setOptionsInMultiSelect(widget, options) {
-        console.log("setOptionsInMultiSelect", widget, options);
+        // console.log("setOptionsInMultiSelect", widget, options);
         query('option', widget.domNode).forEach(function(node, index, arr) {
-            console.log("node", node);
+            // console.log("node", node);
             domConstruct.destroy(node);
         }); 
         
@@ -70,13 +70,14 @@ define([
             c.value = options[i].value;
             widget.domNode.appendChild(c);
         }
-        console.log("done");
+        // console.log("done");
     }
     
     function newMultiSelect(id, options) {
         var widget = new MultiSelect({
             "id": id + "answers1",
-            "size": 12
+            "size": 12,
+            "style": "width: 100%;"
             //"options": options
         });
         
@@ -150,15 +151,13 @@ define([
         return options;
     }
     
-    function createFilterPane(id, questionsById, questionOptions, data, pagePane) {
+    function createFilterPane(id, questionsById, questionOptions, data, containerPane) {
         var contentPane = new ContentPane({
             id: id + "_content",
         });
         
-        pagePane.addChild(contentPane);
-        
-        contentPane.startup();
-        
+        containerPane.addChild(contentPane);
+         
         var question = widgets.newSelect(id + "_question", questionOptions, null, contentPane);
         
         contentPane.domNode.appendChild(domConstruct.toDom('<br>'));
@@ -169,12 +168,14 @@ define([
 
         question.on("change", lang.partial(questionChanged, questionsById, answers, data)); 
         
+        contentPane.startup();
+
         return {"contentPane": contentPane, "question": question, "answers": answers};
     }
     
     function insertStoryBrowser(pseudoQuestion, pagePane, pageDefinitions) {
         console.log("insertStoryBrowser", pseudoQuestion);
-
+        
         var label = widgets.newLabel(pseudoQuestion.id + "label", pseudoQuestion.text, pagePane.domNode);
 
         var popupPageDefinition = {
@@ -196,16 +197,26 @@ define([
             questionOptions.push({label: question.text, value: question.id});
             questionsById[question.id] = question;
         });
-       
-        var filter1 = createFilterPane(pseudoQuestion.id + "_1", questionsById, questionOptions, data, pagePane);
-        var filter2 = createFilterPane(pseudoQuestion.id + "_2", questionsById, questionOptions, data, pagePane);
+        
+        var table = new TableContainer({
+            id: pseudoQuestion.id + "_table",
+            cols: 2,
+            showLabels: false,
+        });
+        
+        pagePane.addChild(table);
+        
+        var filter1 = createFilterPane(pseudoQuestion.id + "_1", questionsById, questionOptions, data, table);
+        var filter2 = createFilterPane(pseudoQuestion.id + "_2", questionsById, questionOptions, data, table);
 
         // pagePane.domNode.appendChild(domConstruct.toDom('<br>'));
+        
+        table.startup();
         
         var storyList;
         
         // TODO: Translate text for button
-        var filterButton = widgets.newButton(pseudoQuestion.id + "_filter", "Filter", pagePane, function () {
+        var filterButton = widgets.newButton(pseudoQuestion.id + "_filter", "Filter -- show only stories where both questions have the selected values", pagePane, function () {
             console.log("filter pressed");
             var question1Choice = filter1.question.get("value");
             var answers1Choices = filter1.answers.get("value");
