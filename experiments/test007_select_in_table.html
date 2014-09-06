@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Test of select in a table</title>
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojo/resources/dojo.css">
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dijit/themes/dijit.css">
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dijit/themes/claro/claro.css">
+
+<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojo/dojo.js"></script>
+
+</head>
+
+<body class="claro">
+
+<div id="testDiv"></div>
+
+<script>
+require(["dijit/form/Select", "dojox/layout/TableContainer", "dojo/domReady!"], function(Select, TableContainer){
+    
+    // Why do the sizes of the selects change when an option is chosen?
+            
+    function newSelect(id, options, containerPane) {
+        var select = new Select({
+            id: id,
+            options: options,
+            style: "width: 100%;"
+        });
+        
+        containerPane.addChild(select);
+        select.startup();
+        return select;
+    }
+    
+    var table = new TableContainer({
+        id: "testTable",
+        cols: 2,
+        showLabels: false,
+        customClass: "storyFilterTable",
+        style: "width: 100%;"
+    }, "testDiv");
+    
+    options = [
+        {label: "short", value: "1"},
+        {label: "long ---------------------------------------------", value: "2"}
+    ];
+    
+    newSelect("select1", options, table);
+    newSelect("select2", options, table);
+    
+    table.startup();
+});
+</script>
+
+</body>
+</html>
