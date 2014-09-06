@@ -96,7 +96,10 @@ define([
     }
     
     function optionsFromQuestion(question, data) {
+        // TODO: Translate text for options, at least booleans?
         var options = [];
+        
+        if (!question) return options;
         
         // Compute how many of each answer -- assumes typically less than 200-1000 stories
         var totals = {};
@@ -195,22 +198,25 @@ define([
         });
        
         var firstFilter = createFilterPane(pseudoQuestion.id + "_1", questionsById, questionOptions, data, pagePane);
-        // var secondFilter = createFilterPane(pseudoQuestion.id + "_2", questionsById, questionOptions, data, pagePane);
+        var secondFilter = createFilterPane(pseudoQuestion.id + "_2", questionsById, questionOptions, data, pagePane);
 
         // pagePane.domNode.appendChild(domConstruct.toDom('<br>'));
         
         var storyList;
         
-        // TODO: Translate
+        // TODO: Translate text for button
         var filterButton = widgets.newButton(pseudoQuestion.id + "_filter", "Filter", pagePane, function () {
             console.log("filter pressed");
-            var question1Value = firstFilter.question.get("value");
-            var answers1Value = firstFilter.answers.get("value");
-            console.log("question", question1Value, "answers", answers1Value);
+            var question1Choice = firstFilter.question.get("value");
+            var answers1Choices = firstFilter.answers.get("value");
+            console.log("question", question1Choice, "answers", answers1Choices);
             storyList.grid.set("query", function (item) {
-                var questionValue = "" + item[question1Value];
-                var match = answers1Value.indexOf(questionValue) != -1;
-                return match;
+                var match1 = true;
+                if (question1Choice) {
+                    var question1Value = "" + item[question1Choice];
+                    match1 = answers1Choices.indexOf(question1Value) != -1;
+                }
+                return match1;
             });
         });
             
