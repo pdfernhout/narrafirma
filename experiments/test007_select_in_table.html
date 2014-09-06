@@ -18,9 +18,10 @@
 
 <script>
 require(["dijit/form/Select", "dojox/layout/TableContainer", "dojo/domReady!"], function(Select, TableContainer){
+    // Posted question on this to the Dojo-interest list: http://mail.dojotoolkit.org/pipermail/dojo-interest/2014-September/082218.html
+    // My intent here is to have a table with two side-by-side selects, where the selects do not change size when selections are chosen.
+    // Why do the sizes of the selects change when an option is chosen in Firefox 31.0 and Safari 5.1.10 but not in Chromium 34.0.1847.137?
     
-    // Why do the sizes of the selects change when an option is chosen in Firefox and Safari, but not in Chromium?
-            
     function newSelect(options, containerPane) {
         var select = new Select({
             options: options,
