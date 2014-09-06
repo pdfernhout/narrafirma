@@ -350,23 +350,26 @@ define([
             labels: labels,
         }, labelsNode);
 
+        // TODO: Issue -- should return a new sort of component that can be placed an includes the slider and the rules and labels
+        var contentPane = new ContentPane({
+            id: id + "_content",
+            content: panelDiv, 
+        });
+        
         if (isString(addToDiv)) {
             addToDiv = document.getElementById(addToDiv);
         }
         if (addToDiv) {
-            addToDiv.appendChild(panelDiv);
+            addToDiv.appendChild(contentPane.domNode);
         }
+        
+        contentPane.startup();
         
         slider.startup();
         // if (!hasTextLabels)
         sliderRules.startup();
         sliderLabels.startup();
         
-        // TODO: Issue -- should return a new sort of component that can be placed an includes the slider and the rules and labels
-        var contentPane = new ContentPane({
-            id: id + "_content",
-            content: panelDiv, 
-        });
         return contentPane;
     }
     
