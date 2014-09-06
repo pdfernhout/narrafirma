@@ -192,7 +192,6 @@ define([
         });
         
         pagePane.addChild(listContentPane);
-        listContentPane.startup();
         
         var pane = listContentPane.containerNode;
         
@@ -239,6 +238,8 @@ define([
             var addButton = widgets.newButton(id + "add", "Add", pane, lang.partial(addButtonClicked, grid, dataStore, popupPageDefinition));
         }
         
+        listContentPane.startup();
+
         return {
             "store": dataStore,
             "listContentPane": listContentPane,
