@@ -114,12 +114,16 @@ define([
         
         var columnHeader1ContentPane = new ContentPane({"content": "<i>Question</i>", "colspan": 1, "align": "right"});
         table.addChild(columnHeader1ContentPane);
+        columnHeader1ContentPane.startup();
         
         table.addChild(groupHeader1);
+        groupHeader1.startup();
         
         table.addChild(groupHeader2);
+        groupHeader2.startup();
         
         table.addChild(groupHeader3);
+        groupHeader3.startup();
         
         array.forEach(questions, function(question) {
             // console.log("question", question);
@@ -127,9 +131,11 @@ define([
                 var content = "<b>" + question.text + "</b>";
                 var headerContentPane = new ContentPane({"content": content, "colspan": 4, "align": "center"});
                 table.addChild(headerContentPane);
+                headerContentPane.startup();
             } else if (question.type === "select"){
                 var questionContentPane = new ContentPane({"content": question.text, "colspan": 1, "align": "right"});
                 table.addChild(questionContentPane);
+                questionContentPane.startup();
                 
                 // TODO: Translation
                 var options = question.options.split("\n");
@@ -142,6 +148,7 @@ define([
             } else if (question.type === "textarea") {
                 var textAreaContentPane = new ContentPane({"content": question.text, "colspan": 1, "align": "right"});
                 table.addChild(textAreaContentPane);
+                textAreaContentPane.startup();
                 
                 newSpecialTextArea(table, question.id + "_" + 1);
                 newSpecialTextArea(table, question.id + "_" + 2);
