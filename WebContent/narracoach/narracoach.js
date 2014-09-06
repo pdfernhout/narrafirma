@@ -283,10 +283,15 @@ require([
         // TODO: Translation of buttons
         previousPageButton = widgets.newButton("previousPage", "Previous Page", "navigationDiv", previousPageClicked);
             
-        nextPageButton =widgets.newButton("nextPage", "Next Page", "navigationDiv", nextPageClicked);
+        nextPageButton = widgets.newButton("nextPage", "Next Page", "navigationDiv", nextPageClicked);
         
         // Setup the first page
-        showPage(pages[0].id);
+        var fragment = hash();
+        if (fragment) {
+            showPage(fragment);
+        } else {
+          showPage(pages[0].id);
+        }
         
         console.log("createLayout end");
         
