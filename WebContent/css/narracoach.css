@@ -4,7 +4,10 @@ html {
 
 body {
     min-height: 100%;
-    font-size: 120%;
+    font-size: 100%;
+    margin: 0em;
+    padding: 0em;
+    padding-left: 1em;
 }
 
 /* See http://www.sitepen.com/blog/2012/05/03/css-styling-of-dgrid/ */
@@ -19,3 +22,31 @@ body {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.dijitMultiSelect {
+	font-size: 100%;
+}
+
+.narracoachQuestion {
+}
+
+.claro .dijitContentPane {
+	padding-left: 2em;
+}
+
+.dijitDownArrowButton {
+	width: 1em;
+	margin-right: 0.5em;
+}
+
+#navigationDiv {
+	background-color: #E0EEEE;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	padding-left: 4em;
+    border-bottom: 2px solid #ccc;
+    background-image: url(../images/WWS_BookCover_front_tiny.png);
+    background-repeat: no-repeat;
+    background-position: 10px 2px;
+}
+
