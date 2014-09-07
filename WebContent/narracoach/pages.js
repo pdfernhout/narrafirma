@@ -52,46 +52,63 @@ define(
         "isHeader": true,
         "questions": [
             {
-                "id": "COMMENT_page_planning_1",
-                "text": "// Project facts - x of x questions answered",
-                "type": "label",
-                "options": null
+                "id": "checklist_projectFactsEntered",
+                "text": "Project facts entered:",
+                "type": "questionAnswerCountOfTotalOnPage",
+                "options": "page_projectFacts"
             },
             {
-                "id": "COMMENT_page_planning_2",
-                "text": "// Planning questions - [ ] draft",
-                "type": "label",
-                "options": null
+                "id": "checklist_planningQuestionsAnsweredDraft",
+                "text": "PNI planning questions answered (draft):",
+                "type": "questionAnswerCountOfTotalOnPage",
+                "options": "page_planningQuestionsDraft"
             },
             {
-                "id": "COMMENT_page_planning_3",
-                "text": "// Project aspects - x of x questions answered",
-                "type": "label",
-                "options": null
+                "id": "checklist_participantGroupsDescribed",
+                "text": "Participant groups defined:",
+                "type": "questionAnswerCountOfTotalOnPage",
+                "options": "page_participantGroups"
             },
             {
-                "id": "COMMENT_page_planning_4",
-                "text": "// Project stories - x stories told",
-                "type": "label",
-                "options": null
+                "id": "checklist_projectAspects",
+                "text": "Questions answered about project aspects:",
+                "type": "questionAnswerCountOfTotalOnPage",
+                "options": "page_projectAspects"
             },
             {
-                "id": "COMMENT_page_planning_5",
-                "text": "// Project story elements - x elements entered",
-                "type": "label",
-                "options": null
+                "id": "checklist_projectStoriesEntered",
+                "text": "Project stories entered:",
+                "type": "listCount",
+                "options": "projectStoryList"
             },
             {
-                "id": "COMMENT_page_planning_6",
-                "text": "// Story sharing assessment - x of 20 questions answered",
-                "type": "label",
-                "options": null
+                "id": "checklist_projectStoryElementsCreated",
+                "text": "Project story elements created:",
+                "type": "listCount",
+                "options": "projectStoryElementsList"
             },
             {
-                "id": "COMMENT_page_planning_7",
-                "text": "// Project synopsis - [ ] complete",
-                "type": "label",
-                "options": null
+                "id": "checklist_assessmentQuestionsAnswered",
+                "text": "Story sharing assessment questions answered:",
+                "type": "questionAnswerCountOfTotalOnPage",
+                "options": "page_assessStorySharing"
+            },
+            {
+                "id": "checklist_planningQuestionsAnsweredFinal",
+                "text": "PNI planning questions answered (final):",
+                "type": "questionAnswerCountOfTotalOnPage",
+                "options": "page_revisePNIPlanningQuestions"
+            },
+            {
+                "id": "checklist_projectSynopsisComplete",
+                "text": "Project synopsis complete:",
+                "type": "questionAnswer",
+                "options": "projectSynopsisComplete"
+            },
+            {
+                "id": "planningGeneralNotes",
+                "text": "You can enter some general notes on planning in this project here.",
+                "type": "textarea"
             }
         ]
     },
@@ -145,37 +162,43 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "planning_draft",
+                "id": "planning_final",
                 "text": "On this page you will answer some questions about your project's goals, relationships, focus, range, scope, and emphasis.\nIf you don't have good answers for these questions right now, don't worry; you will have a chance to come back and work on these answers again later.",
                 "type": "label"
             },
             {
-                "id": "planning_draft_goal",
+                "id": "COMMENT_page_planningQuestionsDraft_1",
+                "text": "// these fields need to be populated with the original draft versions",
+                "type": "label",
+                "options": null
+            },
+            {
+                "id": "planning_final_goal",
                 "text": "What is the goal of the project? Why are you doing it?",
                 "type": "textarea"
             },
             {
-                "id": "planning_draft_relationships",
+                "id": "planning_final_relationships",
                 "text": "What relationships are important to the project?",
                 "type": "textarea"
             },
             {
-                "id": "planning_draft_focus",
+                "id": "planning_final_focus",
                 "text": "What is the focus of the project? What is it about?",
                 "type": "textarea"
             },
             {
-                "id": "planning_draft_range",
+                "id": "planning_final_range",
                 "text": "What range(s) of experience will the project cover?",
                 "type": "textarea"
             },
             {
-                "id": "planning_draft_scope",
+                "id": "planning_final_scope",
                 "text": "What is the project's scope? (number of people, number of stories, number of questions about stories)",
                 "type": "textarea"
             },
             {
-                "id": "planning_draft_emphasis",
+                "id": "planning_final_emphasis",
                 "text": "Which phases of PNI will be important to the project? (indicate most and least important phases)",
                 "type": "textarea"
             }
@@ -233,8 +256,8 @@ define(
             {
                 "id": "aspectsTable",
                 "text": "Please answer these questions about each participant group.",
-                "type": "page_aspectsTable",
-                "options": "participants_firstGroupName;participants_secondGroupName;participants_thirdGroupName"
+                "type": "questionsTable",
+                "options": "page_aspectsTable;participants_firstGroupName;participants_secondGroupName;participants_thirdGroupName"
             }
         ]
     },
@@ -710,19 +733,19 @@ define(
                 "options": "planning_goal"
             },
             {
-                "id": "FIXME_248",
+                "id": "planning_draft_relationships",
                 "text": "What relationships are important to the project?",
                 "type": "textarea",
                 "options": "planning_relationships"
             },
             {
-                "id": "FIXME_249",
+                "id": "planning_draft_focus",
                 "text": "What is the focus of the project? What is it about?",
                 "type": "textarea",
                 "options": "planning_focus"
             },
             {
-                "id": "FIXME_250",
+                "id": "planning_draft_range",
                 "text": "What range(s) of experience will the project cover?",
                 "type": "textarea",
                 "options": "planning_range"
@@ -751,6 +774,11 @@ define(
                 "id": "projectSynopsis",
                 "text": "Please summarize your project in one or two sentences.",
                 "type": "textarea"
+            },
+            {
+                "id": "projectSynopsisComplete",
+                "text": "Do you consider this synopsis to be complete?",
+                "type": "boolean"
             }
         ]
     },
@@ -805,34 +833,75 @@ define(
         "isHeader": true,
         "questions": [
             {
-                "id": "COMMENT_page_collectionDesign_1",
-                "text": "// Collection venues - X venues chosen",
-                "type": "label",
-                "options": null
+                "id": "checklist_venuesChosen",
+                "text": "Venues chosen:",
+                "type": "function",
+                "options": "countNumberOfVenuesChosen"
             },
             {
-                "id": "COMMENT_page_collectionDesign_2",
-                "text": "// Story eliciting questions - x questions written",
-                "type": "label",
-                "options": null
+                "id": "checklist_elicitingQuestionsWritten",
+                "text": "Eliciting questions written:",
+                "type": "listCount",
+                "options": "elicitingQuestionsList"
             },
             {
-                "id": "COMMENT_page_collectionDesign_3",
-                "text": "// Questions about stories - x questions written",
-                "type": "label",
-                "options": null
+                "id": "checklist_finishedWritingElicitingQuestions",
+                "text": "Finished writing eliciting questions:",
+                "type": "questionAnswer",
+                "options": "elicitingQuestionsAreFinal"
             },
             {
-                "id": "COMMENT_page_collectionDesign_4",
-                "text": "// Questions about people - x stories written",
-                "type": "label",
-                "options": null
+                "id": "checklist_storyQuestionsWritten",
+                "text": "Story questions written:",
+                "type": "listCount",
+                "options": "storyQuestionsList"
             },
             {
-                "id": "COMMENT_page_collectionDesign_5",
-                "text": "// Question form - [ ] designed [ ] committed",
-                "type": "label",
-                "options": null
+                "id": "checklist_finishedWritingStoryQuestions",
+                "text": "Finished writing story questions:",
+                "type": "questionAnswer",
+                "options": "storyQuestionsAreFinal"
+            },
+            {
+                "id": "checklist_participantQuestionsWritten",
+                "text": "Participant questions written:",
+                "type": "listCount",
+                "options": "participantQuestionsList"
+            },
+            {
+                "id": "checklist_finishedWritingParticipantQuestions",
+                "text": "Finished writing participant questions:",
+                "type": "questionAnswer",
+                "options": "participantQuestionsAreFinal"
+            },
+            {
+                "id": "checklist_questionsFormComplete",
+                "text": "Questions form complete:",
+                "type": "questionAnswer",
+                "options": "questionFormIsComplete"
+            },
+            {
+                "id": "checklist_usingStoryCollectionSessions",
+                "text": "Using story collection sessions?",
+                "type": "questionAnswer",
+                "options": "willBeUsingStoryCollectionSessions"
+            },
+            {
+                "id": "checklist_collectionSessionsDesigned",
+                "text": "Story collection sessions designed:",
+                "type": "listCount",
+                "options": "storyCollectionSessionPlansList"
+            },
+            {
+                "id": "checklist_finishedDesigningCollectionSessions",
+                "text": "Finished designing story collection sessions:",
+                "type": "questionAnswer",
+                "options": "collectionSessionPlansAreFinal"
+            },
+            {
+                "id": "collectionDesignGeneralNotes",
+                "text": "You can enter some general notes on collection design in this project here.",
+                "type": "textarea"
             }
         ]
     },
@@ -856,8 +925,8 @@ define(
             {
                 "id": "venuesTable",
                 "text": "Please answer these questions about your collection venues for each participant group.",
-                "type": "page_venuesTable",
-                "options": "participants_firstGroupName,participants_secondGroupName,participants_thirdGroupName"
+                "type": "questionsTable",
+                "options": "page_venuesTable;participants_firstGroupName,participants_secondGroupName,participants_thirdGroupName"
             }
         ]
     },
@@ -872,7 +941,7 @@ define(
                 "id": "primaryVenue",
                 "text": "Choose a primary means of story collection for this group.",
                 "type": "select",
-                "options": "individual interviews;group interviews;peer interviews;group story sessions;surveys;journals;narrative incident reports;gleaned stories"
+                "options": "individual interviews;group interviews;peer interviews;group story sessions;surveys;journals;narrative incident reports;gleaned stories;other"
             },
             {
                 "id": "primaryVenue_plans",
@@ -883,11 +952,11 @@ define(
                 "id": "secondaryVenue",
                 "text": "If you want to collect stories in a second way for this same group, choose one of these options.",
                 "type": "select",
-                "options": "individual interviews;group interviews;peer interviews;group story sessions;surveys;journals;narrative incident reports;gleaned stories"
+                "options": "individual interviews;group interviews;peer interviews;group story sessions;surveys;journals;narrative incident reports;gleaned stories;other"
             },
             {
                 "id": "secondaryVenue_plans",
-                "text": "Describe your secondary story collection for this group and venue.",
+                "text": "Describe your secondary story collection plans for this group and venue.",
                 "type": "textarea"
             }
         ]
@@ -903,6 +972,11 @@ define(
                 "text": "These are the story eliciting questions you have entered so far.",
                 "type": "grid",
                 "options": "page_addElicitingQuestion"
+            },
+            {
+                "id": "elicitingQuestionsAreFinal",
+                "text": "Do you consider these eliciting questions to be final?",
+                "type": "boolean"
             }
         ]
     },
@@ -929,7 +1003,7 @@ define(
                 "id": "elicitingQuestionType",
                 "text": "What type of question is this?",
                 "shortText": "Type",
-                "type": "checkboxes",
+                "type": "checkBoxes",
                 "options": "what happened;directed question;undirected questions;point in time;event;extreme;surprise;people, places, things;fictional scenario;other"
             },
             {
@@ -951,6 +1025,11 @@ define(
                 "text": "These are the questions you will be asking people about stories.",
                 "type": "grid",
                 "options": "page_addStoryQuestion"
+            },
+            {
+                "id": "storyQuestionsAreFinal",
+                "text": "Do you consider these story questions to be final?",
+                "type": "boolean"
             }
         ]
     },
@@ -978,7 +1057,7 @@ define(
                 "text": "What type of question is this?",
                 "shortText": "Type",
                 "type": "select",
-                "options": "boolean;label;header;checkbox;checkboxes;text;textarea;select;radio;slider"
+                "options": "boolean;label;header;checkbox;checkBoxes;text;textarea;select;radio;slider"
             },
             {
                 "id": "storyQuestionShortName",
@@ -1011,6 +1090,11 @@ define(
                 "text": "These are the questions you will be asking people about themselves.",
                 "type": "grid",
                 "options": "page_addParticipantQuestion"
+            },
+            {
+                "id": "participantQuestionsAreFinal",
+                "text": "Do you consider these participant questions to be final?",
+                "type": "boolean"
             }
         ]
     },
@@ -1038,7 +1122,7 @@ define(
                 "text": "What type of question is this?",
                 "shortText": "Type",
                 "type": "select",
-                "options": "boolean;label;header;checkbox;checkboxes;text;textarea;select;radio;slider"
+                "options": "boolean;label;header;checkbox;checkBoxes;text;textarea;select;radio;slider"
             },
             {
                 "id": "participantQuestionShortName",
@@ -1068,12 +1152,12 @@ define(
         "questions": [
             {
                 "id": "questionFormTitle",
-                "text": "Please enter a title for the form.",
+                "text": "Please enter a title for the question form.",
                 "type": "text"
             },
             {
                 "id": "questionFormLogo",
-                "text": "You can upload a logo or ather image to show at the top of the form.",
+                "text": "You can upload a logo or other image to show at the top of the form.",
                 "type": "imageUploader"
             },
             {
@@ -1085,6 +1169,11 @@ define(
                 "id": "questionFormEndText",
                 "text": "Please enter any text to be shown at the end of the form",
                 "type": "textarea"
+            },
+            {
+                "id": "questionFormIsComplete",
+                "text": "Do you consider this question form to be complete?",
+                "type": "boolean"
             }
         ]
     },
@@ -1095,9 +1184,9 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "collectionSessionIntro",
-                "text": "If you don't plan to collect stories in group sessions, you can skip this page.",
-                "type": "label"
+                "id": "willBeUsingStoryCollectionSessions",
+                "text": "Do you plan to collect stories in group sessions? (If not, you can skip the rest of this page.)",
+                "type": "boolean"
             },
             {
                 "id": "collectionSessionRecommendations",
@@ -1110,6 +1199,11 @@ define(
                 "text": "These are the collection sessions you have designed so far.",
                 "type": "grid",
                 "options": "page_addStoryCollectionSession"
+            },
+            {
+                "id": "collectionSessionPlansAreFinal",
+                "text": "Do you consider these session plans to be complete?",
+                "type": "boolean"
             }
         ]
     },
@@ -1303,22 +1397,39 @@ define(
         "isHeader": true,
         "questions": [
             {
-                "id": "COMMENT_page_collectionProcess_1",
-                "text": "// Online story collection is [ ] enabled",
-                "type": "label",
-                "options": null
+                "id": "checklist_questionFormInFinalForm",
+                "text": "Question form in final form:",
+                "type": "questionAnswer",
+                "options": "questionFormInFinalForm"
             },
             {
-                "id": "COMMENT_page_collectionProcess_2",
-                "text": "// Number of stories entered - x",
-                "type": "label",
-                "options": null
+                "id": "checklist_webStoryCollectionEnabled",
+                "text": "Web story collection enabled:",
+                "type": "toggleButtonState",
+                "options": "webStoryCollectionEnabled"
             },
             {
-                "id": "COMMENT_page_collectionProcess_3",
-                "text": "// Number of participants who told stories - x",
-                "type": "label",
-                "options": null
+                "id": "checklist_storiesEntered",
+                "text": "Stories collected/entered:",
+                "type": "storyBrowserCount",
+                "options": "collectedStoriesDuringCollection"
+            },
+            {
+                "id": "checklist_storyCollectionSessionsRecorded",
+                "text": "Session records created:",
+                "type": "listCount",
+                "options": "storyCollectionSessionRecordsList"
+            },
+            {
+                "id": "checklist_storyCollectionSessionsReflectedOn",
+                "text": "Sessions reflected on:",
+                "type": "listCount",
+                "options": "storyCollectionSessionReflectionsList"
+            },
+            {
+                "id": "collectionProcessGeneralNotes",
+                "text": "You can enter some general notes on your collection process in this project here.",
+                "type": "textarea"
             }
         ]
     },
@@ -1339,14 +1450,14 @@ define(
                 "type": "button"
             },
             {
-                "id": "copyStoryFormURL",
+                "id": "copyStoryFormURLDuringFinalize",
                 "text": "Copy story form web link",
                 "type": "button"
             },
             {
-                "id": "finalizeStoryForm",
-                "text": "Finalize story form",
-                "type": "button"
+                "id": "questionFormInFinalForm",
+                "text": "Do you consider the question form to be in its final form?",
+                "type": "boolean"
             }
         ]
     },
@@ -1363,28 +1474,15 @@ define(
             },
             {
                 "id": "enableWebStoryForm",
-                "text": "Enable web story form",
-                "type": "button"
+                "text": "Disable web story collection",
+                "shortText": "Enable web story collection",
+                "type": "toggleButton",
+                "options": "webStoryCollectionEnabled"
             },
             {
-                "id": "FIXME_410",
+                "id": "copyStoryFormURLDuringStart",
                 "text": "Copy story form web link",
                 "type": "button"
-            }
-        ]
-    },
-    {
-        "id": "page_storyCollectionFormForParticipants",
-        "name": "Participate in the story collection",
-        "description": "",
-        "isHeader": false,
-        "type": "participantStoryForm",
-        "questions": [
-            {
-                "id": "COMMENT_page_storyCollectionFormForParticipants_1",
-                "text": "// the info shown here is what was designed - how to specify that",
-                "type": "label",
-                "options": null
             }
         ]
     },
@@ -1396,18 +1494,6 @@ define(
         "questions": [
             {
                 "id": "COMMENT_page_enterStories_1",
-                "text": "// this page is the same as the \"participate\" page above, but only the admin can see it",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_enterStories_2",
-                "text": "// and the normal tabs are shown on the page",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_enterStories_3",
                 "text": "// the info shown here is what was designed - how to specify that",
                 "type": "label",
                 "options": null
@@ -1435,13 +1521,15 @@ define(
         "questions": [
             {
                 "id": "stopCollectionLabel",
-                "text": "If you are doing story collection over the internet, click this button to make the web form\nunavailable to anyone but yourself.",
+                "text": "If you are doing story collection over the internet, click this button to make the web form\nunavailable (to anyone but yourself).",
                 "type": "label"
             },
             {
-                "id": "disableWebStoryForm",
-                "text": "Disable web story form",
-                "type": "button"
+                "id": "disableWebStoryFormAfterStoryCollection",
+                "text": "Disable web story collection",
+                "shortText": "Enable web story collection",
+                "type": "toggleButton",
+                "options": "webStoryCollectionEnabled"
             }
         ]
     },
@@ -1611,7 +1699,7 @@ define(
         "questions": [
             {
                 "id": "storyCollectionSessionReflectionsList",
-                "text": "These are session reflections you have entered so far.",
+                "text": "These are the session reflections you have entered so far.",
                 "type": "grid",
                 "options": "page_answerQuestionsAboutCollectionSession"
             }
@@ -1758,28 +1846,27 @@ define(
         "isHeader": true,
         "questions": [
             {
-                "id": "COMMENT_page_catalysis_1",
-                "text": "// Observations - x",
-                "type": "label",
-                "options": null
+                "id": "checklist_observationsAccumulated",
+                "text": "Observations accumulated:",
+                "type": "listCount",
+                "options": "observationsListDisplay"
             },
             {
-                "id": "COMMENT_page_catalysis_2",
-                "text": "// Interpretations - x",
-                "type": "label",
-                "options": null
+                "id": "checklist_excerptsSaved",
+                "text": "Excerpts saved:",
+                "type": "listCount",
+                "options": "savedExcerptsList"
             },
             {
-                "id": "COMMENT_page_catalysis_3",
-                "text": "// Ideas - x",
-                "type": "label",
-                "options": null
+                "id": "checklist_perspectivesCreated",
+                "text": "Perspectives created:",
+                "type": "listCount",
+                "options": "perspectivesList"
             },
             {
-                "id": "COMMENT_page_catalysis_4",
-                "text": "// Perspectives - x",
-                "type": "label",
-                "options": null
+                "id": "catalysisGeneralNotes",
+                "text": "You can enter some general notes on catalysis in this project here.",
+                "type": "textarea"
             }
         ]
     },
@@ -1798,6 +1885,87 @@ define(
         ]
     },
     {
+        "id": "page_themeStories",
+        "name": "Theme stories",
+        "description": "",
+        "isHeader": false,
+        "questions": [
+            {
+                "id": "themeStories",
+                "text": "Theme stories",
+                "type": "storyThemer"
+            }
+        ]
+    },
+    {
+        "id": "page_browseGraphs",
+        "name": "Browse graphs",
+        "description": "",
+        "isHeader": false,
+        "questions": [
+            {
+                "id": "COMMENT_page_browseGraphs_1",
+                "text": "// graph browser has button to add result to observation (existing or new)",
+                "type": "label",
+                "options": null
+            },
+            {
+                "id": "graphBrowserDisplay",
+                "text": "Graph browser",
+                "type": "graphBrowser"
+            }
+        ]
+    },
+    {
+        "id": "page_reviewTrends",
+        "name": "Review trends",
+        "description": "",
+        "isHeader": false,
+        "questions": [
+            {
+                "id": "statTests",
+                "text": "Which statistical tests do you want to consider?",
+                "type": "checkBoxes",
+                "options": "chi-squared (differences between counts);t-test (differences between means);correlation"
+            },
+            {
+                "id": "minSubsetSize",
+                "text": "How large should subsets of stories be to be considered for comparison?",
+                "type": "select",
+                "options": "20;30;40;50"
+            },
+            {
+                "id": "significanceThreshold",
+                "text": "What significance threshold do you want reported?",
+                "type": "select",
+                "options": "0.05;0.01"
+            },
+            {
+                "id": "trendResults",
+                "text": "How many results do you want to see per test type?",
+                "type": "select",
+                "options": "5;10;15;20;25;30"
+            },
+            {
+                "id": "COMMENT_page_reviewTrends_1",
+                "text": "// when user changes any of the options above, the trend report below should update",
+                "type": "label",
+                "options": null
+            },
+            {
+                "id": "COMMENT_page_reviewTrends_2",
+                "text": "// trends report has button to add result to observation (existing or new)",
+                "type": "label",
+                "options": null
+            },
+            {
+                "id": "trendsReportDisplay",
+                "text": "Trends report",
+                "type": "trendsReport"
+            }
+        ]
+    },
+    {
         "id": "page_addToObservation",
         "name": "Add to observation",
         "description": "",
@@ -1810,7 +1978,7 @@ define(
                 "type": "label"
             },
             {
-                "id": "observationsList",
+                "id": "observationsListChoose",
                 "text": "Choose an observation from this list to which to add the selected result, or create a new observation.",
                 "type": "observationsList"
             },
@@ -1828,7 +1996,7 @@ define(
         ]
     },
     {
-        "id": "page_createNewObservation",
+        "id": "page_createOrEditObservation",
         "name": "Create new observation",
         "description": "",
         "isHeader": false,
@@ -1838,18 +2006,94 @@ define(
                 "id": "observationName",
                 "text": "Please give this observation a name.",
                 "type": "text"
+            },
+            {
+                "id": "observation",
+                "text": "Please describe this observation.",
+                "shortText": "Observation",
+                "type": "textarea"
+            },
+            {
+                "id": "observationResultsList",
+                "text": "These are the results you have selected to include in this observation.",
+                "shortText": "Results",
+                "type": "grid"
+            },
+            {
+                "id": "observationInterpretationsList",
+                "text": "These are the interpretations you have created for this observation.\nRemember that you should create at least two interpretations for each observation.",
+                "shortText": "Interpretations",
+                "type": "grid",
+                "options": "page_addInterpretation"
+            },
+            {
+                "id": "observationFullyExplored",
+                "text": "Do you consider this observation to be fully explored?",
+                "type": "boolean"
             }
         ]
     },
     {
-        "id": "page_addToExcerpt",
-        "name": "Add to excerpt",
+        "id": "page_addInterpretation",
+        "name": "Create interpretation",
+        "description": "",
+        "isHeader": false,
+        "questions": [
+            {
+                "id": "interpretationText",
+                "text": "What is your interpretation about this observation?",
+                "shortText": "Interpretation",
+                "type": "textarea"
+            },
+            {
+                "id": "interpretationName",
+                "text": "Enter a name for this interpretation.",
+                "shortText": "Name",
+                "type": "text"
+            },
+            {
+                "id": "firstInterpIdea",
+                "text": "If you like, you can record an idea that follows from this interpretation.",
+                "shortText": "Idea",
+                "type": "textarea"
+            },
+            {
+                "id": "interpretationExcerptsList",
+                "text": "You can add excerpts to this interpretation.",
+                "shortText": "Excerpts",
+                "type": "grid",
+                "options": "page_selectExcerpt"
+            }
+        ]
+    },
+    {
+        "id": "page_selectExcerpt",
+        "name": "Add excerpt to interpretation",
         "description": "",
         "isHeader": false,
         "type": "popup",
         "questions": [
             {
-                "id": "excerptsList",
+                "id": "excerptsListDisplay",
+                "text": "Collected excerpts",
+                "type": "excerptsList"
+            },
+            {
+                "id": "addExcerptToInterpretation",
+                "text": "Add selected excerpt to interpretation",
+                "type": "button"
+            }
+        ]
+    },
+    {
+        "id": "page_addToExcerpt",
+        "name": "Add text to excerpt",
+        "description": "",
+        "isHeader": false,
+        "type": "popup",
+        "questions": [
+            {
+                "id": "excerptsListChoose",
                 "text": "Choose an excerpt from this list to which to add the selected text, or create a new excerpt.",
                 "type": "excerptsList"
             },
@@ -1891,83 +2135,14 @@ define(
         ]
     },
     {
-        "id": "page_themeStories",
-        "name": "Theme stories",
-        "description": "",
-        "isHeader": false,
-        "questions": [
-            {
-                "id": "themeStories",
-                "text": "Theme stories",
-                "type": "storyThemer"
-            }
-        ]
-    },
-    {
-        "id": "page_browseGraphs",
-        "name": "Browse graphs",
-        "description": "",
-        "isHeader": false,
-        "questions": [
-            {
-                "id": "graphBrowser",
-                "text": "Graph browser",
-                "type": "graphBrowser"
-            }
-        ]
-    },
-    {
-        "id": "page_reviewTrends",
-        "name": "Review trends",
-        "description": "",
-        "isHeader": false,
-        "questions": [
-            {
-                "id": "statTests",
-                "text": "Which statistical tests do you want to consider?",
-                "type": "checkBoxes",
-                "options": "chi-squared (differences between counts);t-test (differences between means);correlation"
-            },
-            {
-                "id": "minSubsetSize",
-                "text": "How large should subset counts be to be considered for comparison?",
-                "type": "select",
-                "options": "20;30;40;50"
-            },
-            {
-                "id": "significanceThreshold",
-                "text": "What significance threshold do you want reported?",
-                "type": "select",
-                "options": "0.05;0.01"
-            },
-            {
-                "id": "trendResults",
-                "text": "How many results do you want to see per test type?",
-                "type": "select",
-                "options": "5;10;15;20;25;30"
-            },
-            {
-                "id": "COMMENT_page_reviewTrends_1",
-                "text": "// when user changes any of the options above, the trend report below should update",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "trendsReport",
-                "text": "Trends report",
-                "type": "trendsReport"
-            }
-        ]
-    },
-    {
         "id": "page_reviewExcerpts",
         "name": "Review excerpts",
         "description": "",
         "isHeader": false,
         "questions": [
             {
-                "id": "FIXME_564",
-                "text": "Collected excerpts",
+                "id": "savedExcerptsList",
+                "text": "These are the excerpts you have saved so far.",
                 "type": "grid",
                 "options": "page_createNewExcerpt"
             }
@@ -1975,114 +2150,15 @@ define(
     },
     {
         "id": "page_interpretObservations",
-        "name": "Interpret observations",
+        "name": "Review and interpret observations",
         "description": "",
         "isHeader": false,
         "questions": [
             {
-                "id": "FIXME_568",
+                "id": "observationsListDisplay",
                 "text": "Collected observations",
                 "type": "grid",
-                "options": "page_editObservation"
-            }
-        ]
-    },
-    {
-        "id": "page_editObservation",
-        "name": "Edit observation",
-        "description": "",
-        "isHeader": false,
-        "type": "popup",
-        "questions": [
-            {
-                "id": "FIXME_572",
-                "text": "Please give this observation a name.",
-                "shortText": "Observation name",
-                "type": "text"
-            },
-            {
-                "id": "observation",
-                "text": "Please describe this observation.",
-                "shortText": "Observation",
-                "type": "textarea"
-            },
-            {
-                "id": "observationResultsList",
-                "text": "These are the results you selected to include in this observation.",
-                "shortText": "Results",
-                "type": "grid"
-            },
-            {
-                "id": "observationInterpretationsList",
-                "text": "These are the interpretations you have created for this observation.",
-                "shortText": "Interpretations",
-                "type": "grid",
-                "options": "page_addInterpretation"
-            }
-        ]
-    },
-    {
-        "id": "page_addInterpretation",
-        "name": "Create interpretation",
-        "description": "",
-        "isHeader": false,
-        "questions": [
-            {
-                "id": "interpretationText",
-                "text": "What is your interpretation about this observation?",
-                "shortText": "Interpretation",
-                "type": "textarea"
-            },
-            {
-                "id": "interpretationName",
-                "text": "Enter a name for this interpretation.",
-                "shortText": "Name",
-                "type": "text"
-            },
-            {
-                "id": "firstInterpIdea",
-                "text": "If you like, you can record an idea that follows from this interpretation.",
-                "shortText": "Idea",
-                "type": "textarea"
-            },
-            {
-                "id": "interpretationExcerptsList",
-                "text": "You can add excerpts to this interpretation.",
-                "shortText": "Excerpts",
-                "type": "grid",
-                "options": "page_selectExcerpt"
-            }
-        ]
-    },
-    {
-        "id": "page_selectExcerpt",
-        "name": "Select excerpt",
-        "description": "",
-        "isHeader": false,
-        "type": "popup",
-        "questions": [
-            {
-                "id": "FIXME_588",
-                "text": "Collected excerpts",
-                "type": "grid",
-                "options": "page_createNewExcerpt"
-            },
-            {
-                "id": "COMMENT_page_selectExcerpt_1",
-                "text": "// when they click this button the selected excerpt should be added to the list whose \"add\" button they clicked",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_selectExcerpt_2",
-                "text": "// it should know which interpretation to tie the excerpt to",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "addExcerptToInterpretation",
-                "text": "Add selected excerpt to interpretation",
-                "type": "button"
+                "options": "page_createOrEditObservation"
             }
         ]
     },
@@ -2096,6 +2172,11 @@ define(
                 "id": "clusterInterpLabel",
                 "text": "Note: Do not cluster your interpretations unless you are sure you have finished collecting them.",
                 "type": "label"
+            },
+            {
+                "id": "finishedCollectingObservations",
+                "text": "Have you finished collecting observations?",
+                "type": "boolean"
             },
             {
                 "id": "COMMENT_page_clusterInterpretations_1",
@@ -2167,6 +2248,11 @@ define(
                 "text": "Interpretations linked to this perspective",
                 "type": "grid",
                 "options": "page_annotateInterpretationForPerspective"
+            },
+            {
+                "id": "perspectiveComplete",
+                "text": "Do you consider this perspective to be complete?",
+                "type": "boolean"
             }
         ]
     },
@@ -2326,28 +2412,33 @@ define(
         "isHeader": true,
         "questions": [
             {
-                "id": "COMMENT_page_sensemaking_1",
-                "text": "// Planning sessions - x of x questions answered",
-                "type": "label",
-                "options": null
+                "id": "checklist_sensemakingSessionsDesigned",
+                "text": "Sensemaking sessions designed:",
+                "type": "listCount",
+                "options": "sensemakingSessionPlansList"
             },
             {
-                "id": "COMMENT_page_sensemaking_2",
-                "text": "// Write session agenda - x of x questions answered",
-                "type": "label",
-                "options": null
+                "id": "checklist_finishedDesigningSensemakingSessions",
+                "text": "Finished designing sensemaking sessions:",
+                "type": "questionAnswer",
+                "options": "sensemakingSessionPlansAreFinal"
             },
             {
-                "id": "COMMENT_page_sensemaking_3",
-                "text": "// Print story cards - x cards printed (or checkmark)",
-                "type": "label",
-                "options": null
+                "id": "checklist_sensemakingSessionRecordsEntered",
+                "text": "Sensemaking session records entered:",
+                "type": "listCount",
+                "options": "sensemakingSessionRecordsList"
             },
             {
-                "id": "COMMENT_page_sensemaking_4",
-                "text": "// Post-session review - x of x questions answered",
-                "type": "label",
-                "options": null
+                "id": "checklist_finishedRecordinSessions",
+                "text": "Finished recording sessions:",
+                "type": "questionAnswer",
+                "options": "sensemakingSessionRecordsAreFinal"
+            },
+            {
+                "id": "sensemakingGeneralNotes",
+                "text": "You can enter some general notes on sensemaking in this project here.",
+                "type": "textarea"
             }
         ]
     },
@@ -2368,6 +2459,11 @@ define(
                 "text": "Sensemaking sessions",
                 "type": "grid",
                 "options": "page_addSensemakingSessionPlan"
+            },
+            {
+                "id": "sensemakingSessionPlansAreFinal",
+                "text": "Do you consider these session plans to be complete?",
+                "type": "boolean"
             }
         ]
     },
@@ -2379,25 +2475,25 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "sensemakingSessionName",
+                "id": "sensemakingSessionPlanName",
                 "text": "Please give this session plan a name.",
                 "shortText": "Name",
                 "type": "text"
             },
             {
-                "id": "sensemakingSessionRepetitions",
+                "id": "sensemakingSessionPlanRepetitions",
                 "text": "How many repetitions of the session will there be?",
                 "shortText": "Repetitions",
                 "type": "text"
             },
             {
-                "id": "sensemakingSessionLength",
+                "id": "sensemakingSessionPlanLength",
                 "text": "How long will this session be?",
                 "shortText": "Length",
                 "type": "text"
             },
             {
-                "id": "sensemakingSessionTime",
+                "id": "sensemakingSessionPlanTime",
                 "text": "When will it take place?",
                 "shortText": "Time",
                 "type": "text"
@@ -2409,32 +2505,32 @@ define(
                 "type": "text"
             },
             {
-                "id": "sensemakingSessionSize",
+                "id": "sensemakingSessionPlanSize",
                 "text": "How many people will be invited to each repetition of this session?",
                 "shortText": "Number of people",
                 "type": "text"
             },
             {
-                "id": "sensemakingSessionGroups",
+                "id": "sensemakingSessionPlanGroups",
                 "text": "From which participant group(s) will people be invited?",
                 "shortText": "Participant groups",
                 "type": "checkBoxesWithPull",
                 "options": "participantGroups"
             },
             {
-                "id": "sensemakingSessionMaterials",
+                "id": "sensemakingSessionPlanMaterials",
                 "text": "What materials will this session require?",
                 "shortText": "Materials",
                 "type": "textarea"
             },
             {
-                "id": "sensemakingSessionDetails",
+                "id": "sensemakingSessionPlanDetails",
                 "text": "Enter other details about this session.",
                 "shortText": "Other",
                 "type": "textarea"
             },
             {
-                "id": "sensemakingSessionActivitiesList",
+                "id": "sensemakingSessionPlanActivitiesList",
                 "text": "These are the activities added to this session plan so far.",
                 "type": "grid",
                 "options": "page_addSensemakingSessionActivity"
@@ -2518,9 +2614,14 @@ define(
         "questions": [
             {
                 "id": "sensemakingSessionRecordsList",
-                "text": "Sensemaking sessions",
+                "text": "Sensemaking sessions records",
                 "type": "grid",
                 "options": "page_addSensemakingSessionRecord"
+            },
+            {
+                "id": "sensemakingSessionRecordsAreFinal",
+                "text": "Do you consider these session records to be complete?",
+                "type": "boolean"
             }
         ]
     },
@@ -2532,7 +2633,7 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "FIXME_696",
+                "id": "sensemakingSessionRecordName",
                 "text": "Please give this session record a name.",
                 "shortText": "Name",
                 "type": "text"
@@ -2544,7 +2645,7 @@ define(
                 "options": null
             },
             {
-                "id": "sensemakingSessionResonantStoriesList",
+                "id": "sensemakingSessionRecordResonantStoriesList",
                 "text": "Resonant stories (pivot, voice, discovery)",
                 "type": "grid"
             },
@@ -2562,22 +2663,28 @@ define(
                 "options": "addResonantStory:\"page_addResonantStory\""
             },
             {
-                "id": "sensemakingSessionOutcomesList",
+                "id": "sensemakingSessionRecordOutcomesList",
                 "text": "Session outcomes (like discoveries and ideas)",
                 "type": "grid",
                 "options": "page_newSensemakingSessionOutcome"
             },
             {
-                "id": "sensemakingSessionConstructionsList",
+                "id": "sensemakingSessionRecordConstructionsList",
                 "text": "Group constructions",
                 "type": "grid",
                 "options": "page_newSensemakingSessionConstruction"
             },
             {
-                "id": "sensemakingSessionNotesList",
+                "id": "sensemakingSessionRecordNotesList",
                 "text": "Session notes",
                 "type": "grid",
                 "options": "page_newSensemakingSessionNotes"
+            },
+            {
+                "id": "sensemakingSessionReflectionsList",
+                "text": "Session reflections",
+                "type": "grid",
+                "options": "page_answerQuestionsAboutSensemakingSession"
             }
         ]
     },
@@ -2768,16 +2875,10 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "FIXME_752",
+                "id": "sensemakingSessionName",
                 "text": "Please give this set of reflections a name.",
                 "shortText": "Name",
                 "type": "text"
-            },
-            {
-                "id": "sensemakingSessionReflectionsList",
-                "text": "Sensemaking session reflections",
-                "type": "grid",
-                "options": "page_answerQuestionsAboutSensemakingSession"
             }
         ]
     },
@@ -2922,40 +3023,38 @@ define(
         "isHeader": true,
         "questions": [
             {
-                "id": "COMMENT_page_intervention_1",
-                "text": "// Choose interventions - x planned",
-                "type": "label",
-                "options": null
+                "id": "checklist_questionsAnsweredAboutProjectOutcomes",
+                "text": "Questions answered about project outcomes:",
+                "type": "questionAnswerCountOfTotalOnPage",
+                "options": "page_projectOutcomesForIntervention"
             },
             {
-                "id": "COMMENT_page_intervention_2",
-                "text": "// Answer questions about interventions - x questions answered",
-                "type": "label",
-                "options": null
+                "id": "checklist_interventionPlansCreated",
+                "text": "Intervention plans created:",
+                "type": "listCount",
+                "options": "interventionPlansList"
             },
             {
-                "id": "COMMENT_page_intervention_3",
-                "text": "//* You can enter some general notes on intervention in this project here. [interventionGeneralNotes|textarea]",
-                "type": "label",
-                "options": null
+                "id": "checklist_finishedInterventionPlans",
+                "text": "Finished intervention plans:",
+                "type": "questionAnswer",
+                "options": "interventionPlansAreFinal"
             },
             {
-                "id": "COMMENT_page_intervention_4",
-                "text": "//* The intervention section is [interventionOpenOrClosedLabel|label]",
-                "type": "label",
-                "options": null
+                "id": "checklist_interventionRecordsEntered",
+                "text": "Intervention records entered:",
+                "type": "listCountinterventionRecordsList"
             },
             {
-                "id": "COMMENT_page_intervention_5",
-                "text": "//* open|closed [interventionOpenOrClosedState|lookupLabel|interventionOpen]",
-                "type": "label",
-                "options": null
+                "id": "checklist_finishedInterventionRecords",
+                "text": "Finished intervention records:",
+                "type": "questionAnswer",
+                "options": "interventionRecordsAreFinal"
             },
             {
-                "id": "COMMENT_page_intervention_6",
-                "text": "//* Open the intervention section|Close the intervention section [toggleButton|interventionOpen]",
-                "type": "label",
-                "options": null
+                "id": "interventionGeneralNotes",
+                "text": "You can enter some general notes on intervention in this project here.",
+                "type": "textarea"
             }
         ]
     },
@@ -2969,7 +3068,7 @@ define(
                 "id": "outcomesTable",
                 "text": "In order to choose interventions that will be useful in your project, it will be helpful to think about some\nof the issues (positive and negative) you discovered in your project. Please answer these questions in reference to\nthe participant groups you set up in the project planning phase.",
                 "type": "questionsTable",
-                "options": "page_outcomesTable"
+                "options": "page_outcomesTable;participants_firstGroupName;participants_secondGroupName;participants_thirdGroupName"
             }
         ]
     },
@@ -3117,10 +3216,15 @@ define(
                 "options": "interventions"
             },
             {
-                "id": "interventionsList",
+                "id": "interventionPlansList",
                 "text": "These are the interventions you have designed so far.",
                 "type": "grid",
                 "options": "page_addIntervention"
+            },
+            {
+                "id": "interventionPlansAreFinal",
+                "text": "Do you consider your intervention plans for this project complete?",
+                "type": "boolean"
             }
         ]
     },
@@ -3132,80 +3236,80 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "interventionName",
-                "text": "Please name this intervention.",
+                "id": "interventionPlansName",
+                "text": "Please name this intervention plan.",
                 "shortText": "Name",
                 "type": "text"
             },
             {
-                "id": "interventionType",
+                "id": "interventionPlansType",
                 "text": "What type of intervention will this be?",
                 "shortText": "Type",
                 "type": "select",
                 "options": "narrative ombudsman;narrative suggestion box;story sharing space;narrative orientation;narrative learning resource;narrative simulation;narrative presentation;dramatic action;sensemaking space;sensemaking pyramid;narrative mentoring program;narrative therapy;participatory theatre;other"
             },
             {
-                "id": "interventionText",
+                "id": "interventionPlansText",
                 "text": "Please describe your plan for this intervention.",
                 "shortText": "Description",
                 "type": "text"
             },
             {
-                "id": "interventionLength",
+                "id": "interventionPlansLength",
                 "text": "Over what span of time will this intervention take place?",
                 "shortText": "Length",
                 "type": "text"
             },
             {
-                "id": "interventionTime",
+                "id": "interventionPlansTime",
                 "text": "When will the intervention start and stop?",
                 "shortText": "Time",
                 "type": "text"
             },
             {
-                "id": "interventionLocation",
+                "id": "interventionPlansLocation",
                 "text": "Where will the intervention take place?",
                 "shortText": "Location",
                 "type": "text"
             },
             {
-                "id": "interventionHelp",
+                "id": "interventionPlansHelp",
                 "text": "What sort of help will you need to carry out this intervention?",
                 "shortText": "Help",
                 "type": "textarea"
             },
             {
-                "id": "interventionPermission",
+                "id": "interventionPlansPermission",
                 "text": "What sorts of permission will you need to carry out this intervention?",
                 "shortText": "Permission",
                 "type": "textarea"
             },
             {
-                "id": "interventionParticipation",
+                "id": "interventionPlansParticipation",
                 "text": "How will you get people to participate in this intervention?",
                 "shortText": "Participation",
                 "type": "textarea"
             },
             {
-                "id": "interventionMaterials",
+                "id": "interventionPlansMaterials",
                 "text": "What physical materials will you need?",
                 "shortText": "Materials",
                 "type": "textarea"
             },
             {
-                "id": "interventionSpace",
+                "id": "interventionPlansSpace",
                 "text": "What spaces will you need to use?",
                 "shortText": "Spaces",
                 "type": "textarea"
             },
             {
-                "id": "interventionTech",
+                "id": "interventionPlansTech",
                 "text": "What technological resources will you need?",
                 "shortText": "Technology",
                 "type": "textarea"
             },
             {
-                "id": "interventionRecording",
+                "id": "interventionPlansRecording",
                 "text": "How will record the results of this intervention?",
                 "shortText": "Recording",
                 "type": "textarea"
@@ -3219,10 +3323,15 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "FIXME_857",
-                "text": "Interventions",
+                "id": "interventionRecordsList",
+                "text": "Intervention records",
                 "type": "grid",
                 "options": "page_addInterventionRecord"
+            },
+            {
+                "id": "interventionRecordsAreFinal",
+                "text": "Do you consider your intervention records for this project to be complete?",
+                "type": "boolean"
             }
         ]
     },
@@ -3305,7 +3414,7 @@ define(
                 "options": null
             },
             {
-                "id": "FIXME_877",
+                "id": "interventionsList",
                 "text": "Interventions",
                 "type": "grid",
                 "options": "page_answerQuestionsAboutIntervention"
@@ -3320,7 +3429,7 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "FIXME_881",
+                "id": "interventionName",
                 "text": "Please name this set of reflections on an intervention.",
                 "shortText": "Name",
                 "type": "text"
@@ -3459,40 +3568,45 @@ define(
         "isHeader": true,
         "questions": [
             {
-                "id": "piecesOfFeedbackEntered",
+                "id": "checklist_piecesOfFeedbackEntered",
                 "text": "Pieces of feedback entered:",
                 "type": "listCount",
                 "options": "feedbackList"
             },
             {
-                "id": "questionsAnsweredAboutProject",
+                "id": "checklist_questionsAnsweredAboutProject",
                 "text": "Questions answered about project:",
                 "type": "questionAnswerCountOfTotalOnPage",
                 "options": "page_reflectOnProject"
             },
             {
-                "id": "elementsInProjectPresentation",
+                "id": "checklist_elementsInProjectPresentation",
                 "text": "Elements in project presentation:",
                 "type": "listCount",
                 "options": "projectPresentationElementsList"
             },
             {
-                "id": "presentationReportFinished",
+                "id": "checklist_presentationReportFinished",
                 "text": "Presentation report finished:",
                 "type": "questionAnswer",
                 "options": "presentationReportFinished"
             },
             {
-                "id": "numberOfPeopleInterestedInFutureProjects",
+                "id": "checklist_numberOfPeopleInterestedInFutureProjects",
                 "text": "Number of people interested in future projects:",
                 "type": "listCount",
                 "options": "interestedPeopleList"
             },
             {
-                "id": "requestsForHelp",
+                "id": "checklist_requestsForHelp",
                 "text": "Requests received about project:",
                 "type": "listCount",
                 "options": "projectRequestsList"
+            },
+            {
+                "id": "returnGeneralNotes",
+                "text": "You can enter some general notes on the return phase of this project here.",
+                "type": "textarea"
             }
         ]
     },
@@ -3687,7 +3801,7 @@ define(
                 "type": "button"
             },
             {
-                "id": "FIXME_964",
+                "id": "presentationReportFinished",
                 "text": "Have you finished your presentation report?",
                 "type": "select",
                 "options": "yes;no;I'm not making a project presentation"
