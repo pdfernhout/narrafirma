@@ -62,7 +62,7 @@ require([
         // console.log("urlHashFragmentChanged", newHash);
         if (currentPageID !== newHash) {
             if (pageDefinitions[newHash]) {
-            changePage(newHash);
+                changePage(newHash);
             } else {
                 console.log("unsupported url hash fragment", newHash);
             }
@@ -288,9 +288,9 @@ require([
         // Setup the first page
         var fragment = hash();
         if (fragment) {
-            showPage(fragment);
+            urlHashFragmentChanged(fragment);
         } else {
-          showPage(pages[0].id);
+            showPage(pages[0].id);
         }
         
         // Log all the unspported types together at end
