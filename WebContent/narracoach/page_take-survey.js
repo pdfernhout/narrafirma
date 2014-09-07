@@ -51,6 +51,7 @@ define([
         var surveyDialog;
         
         var form = new Form();
+        form.set("style", "width: 800px; height 800px; overflow: auto;");
         
         question_editor.insertQuestionsIntoDiv(domain.exportedSurveyQuestions, form.domNode);
         
@@ -74,7 +75,6 @@ define([
         surveyDialog = new Dialog({
             title: "Take Survey",
             content: form,
-            style: "width: 600px",
             onCancel: function() {
                 // Handles close X in corner or escape
                 form.destroyRecursive();

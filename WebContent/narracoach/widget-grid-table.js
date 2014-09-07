@@ -51,6 +51,7 @@ define([
         var dialog;
         
         var form = new Form();
+        form.set("style", "width: 800px; height 800px; overflow: auto;");
         
         addPage.addPageContents(form.domNode, popupPageDefinition);
         
@@ -93,7 +94,6 @@ define([
             // TODO: Make text specific to type of item
             title: "Add Item",
             content: form,
-            style: "width: 600px; height 800px; overflow: auto;",
             onCancel: function() {
                 // Handles close X in corner or escape
                 form.destroyRecursive();
@@ -110,7 +110,8 @@ define([
         console.log("view button pressed");
         var dialog;
         
-        var form = new Form();
+        var form = new Form(); 
+        form.set("style", "width: 800px; height 800px; overflow: auto;");
         
         addPage.addPageContents(form.domNode, popupPageDefinition);
 
@@ -158,7 +159,7 @@ define([
             // TODO: Make text specific to type of item
             title: "View Item",
             content: form,
-            style: "width: 600px; height 800px; overflow: auto;",
+            style: "overflow: auto;",
             onCancel: function() {
                 // Handles close X in corner or escape
                 form.destroyRecursive();

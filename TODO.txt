@@ -54,8 +54,6 @@ Support listCountinterventionRecordsList
 
 Fix boolean so it can get disabled and value gets set (probably make it a widget)
 
-Fix popup dialog background when scroll and shows content beneath it
-
 DONE Checkboxes for multiple choices
 DONE Tab container sizing to full page
 DONE Slider with labels and no ticks
@@ -78,6 +76,7 @@ DONE Fix issue when two items selected and click view and get NS_ERROR_UNEXPECTE
 DONE Moved styling into seperate css style sheet
 DONE Story browser with two choices of questions and answers
 DONE Improve error logging to construct a list of new types added for Dashboard widgets and otherwise
+DONE Fix popup dialog background when scroll and shows content beneath it
 
 ======= CYNTHIA
 

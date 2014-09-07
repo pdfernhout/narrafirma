@@ -231,7 +231,8 @@ define([
         var questionEditDialog;
         
         var form = new Form();
-
+        form.set("style", "width: 800px; height 800px; overflow: auto;");
+        
         // Fill in defaults
         createSurveyQuestions[0].value = question.id;
         createSurveyQuestions[1].value = question.use;
@@ -261,7 +262,6 @@ define([
         questionEditDialog = new Dialog({
             title: "Edit question " + question.index,
             content: form,
-            style: "width: 600px; height 800px; overflow: auto;",
             onCancel: function() {
                 // Handles close X in corner or escape
                 form.destroyRecursive();
