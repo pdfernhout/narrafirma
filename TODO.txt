@@ -23,16 +23,34 @@ Internationalization of strings related to page of questions on project particip
 
 Support all page types: normal (no specification), popup, questionsTable, recommendationTable, participantStoryForm
 Support a button does something when clicked
-Support checkBoxesWithPull -- a set of check boxes where the display texts are drawn from a list entered previously 
+
 Support a templateList -- a list box with templates read in from a file (of a particular type) with a "copy" button
+
 Support a participantStoryForm -- the form everyone who comes to the URL can see
+
 Support grid widget with various buttons (add, remove, edit, move up/down, duplicate)
 Grid widget option specification to control button availability
+
+Support checkBoxesWithPull -- a set of check boxes where the display texts are drawn from a list entered previously 
 Support storyThemer -- a widget where people look at each story, give it 1-3 themes, then merge the themes into smaller numbers of themes
 Support graphBrowser -- shows one graph at a time, with two question select drop-downs to choose which graph to show, has "add to observation" button
 Support trendsReport -- shows text and graphs in report based on top differences in statistical tests,  has "add to observation" button
 Support clusterSpace -- used in catalysis to cluster interpretations it is a graphical OR grid way of putting like with like, the option tells you what is to be clustered
-Support new types added for Dashboard widgets
+
+Support questionAnswerCountOfTotalOnPage
+Support listCount
+Support questionAnswer
+Support questionsTable
+Support quizScoreResult
+Support report
+Support function
+Support recommendationTable
+Support imageUploader
+Support toggleButton
+Support toggleButtonState
+Support storyBrowserCount
+Support checkBoxes
+Support listCountinterventionRecordsList
 
 Fix boolean so it can get disabled and value gets set (probably make it a widget)
 
@@ -59,6 +77,7 @@ DONE Support storyBrowser -- a smalltalk-like browser for stories (basic support
 DONE Fix issue when two items selected and click view and get NS_ERROR_UNEXPECTED
 DONE Moved styling into seperate css style sheet
 DONE Story browser with two choices of questions and answers
+DONE Improve error logging to construct a list of new types added for Dashboard widgets and otherwise
 
 ======= CYNTHIA
 
