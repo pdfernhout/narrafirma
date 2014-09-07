@@ -41,12 +41,20 @@ body {
 
 #navigationDiv {
 	background-color: #E0EEEE;
-	padding-top: 1em;
-	padding-bottom: 1em;
-	padding-left: 4em;
+	padding-top: 0.25em;
+	padding-bottom: 0.25em;
+	padding-left: 0em; 
+	padding-right: 0em; 
     border-bottom: 2px solid #ccc;
-    background-image: url(../images/WWS_BookCover_front_tiny.png);
+}
+
+.wwsButtonImage {
+	background-image: url(../images/WWS_BookCover_front_tiny.png);
     background-repeat: no-repeat;
-    background-position: 10px 2px;
+    /* background-position: 10px 2px; */
+    background-repeat: no-repeat;
+	width: 43px;
+	height: 60px;
+	text-align: center;
 }
 

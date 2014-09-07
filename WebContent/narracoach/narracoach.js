@@ -57,6 +57,7 @@ require([
     var selectWidget = null;
     var previousPageButton = null;
     var nextPageButton = null;
+    var startPage = "page_dashboard";
     
     function urlHashFragmentChanged(newHash) {
         // console.log("urlHashFragmentChanged", newHash);
@@ -106,7 +107,8 @@ require([
         previousPageButton.setDisabled(!page.previousPageID);
         nextPageButton.setDisabled(!page.nextPageID);
         
-        windowDojo.scrollIntoView(selectWidget.domNode);
+       //  windowDojo.scrollIntoView(selectWidget.domNode);
+        window.scrollTo(0, 0);
     }
     
     // TODO: Put this in utility
@@ -201,6 +203,17 @@ require([
         }
     }
     
+
+    function wwsButtonClicked() {
+        console.log("wwsButtonClicked");
+        location.href = "http://www.workingwithstories.org/";
+    }
+    
+    function homeButtonClicked() {
+        console.log("homeButtonClicked");
+        urlHashFragmentChanged(startPage);
+    }
+    
     // Make all NarraCoach pages and put them in a TabContainer
     function createLayout() {
         // console.log("createLayout start");
@@ -208,6 +221,14 @@ require([
         
         var questionIndex = 0;
         var lastPageID = null;
+        
+        var imageButton = widgets.newButton("wwsImageButton", "Working With Stories image button", "navigationDiv", wwsButtonClicked);
+        imageButton.set("showLabel", false);
+        imageButton.set("iconClass", "wwsButtonImage");
+        
+        var homeButton = widgets.newButton("homeImageButton", "Home image button", "navigationDiv", homeButtonClicked);
+        homeButton.set("showLabel", false);
+        homeButton.set("iconClass", "dijitEditorIcon dijitEditorIconOutdent");
         
         array.forEach(pages, function(page) {
             // console.log("defining page", page.name)
@@ -287,10 +308,13 @@ require([
         
         // Setup the first page
         var fragment = hash();
-        if (fragment) {
+        console.log("startup fragment", fragment);
+        if (fragment && fragment !== startPage) {
             urlHashFragmentChanged(fragment);
         } else {
+            urlHashFragmentChanged(startPage);
             showPage(pages[0].id);
+            currentPageID = startPage;
         }
         
         // Log all the unspported types together at end
