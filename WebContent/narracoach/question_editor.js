@@ -52,13 +52,16 @@ define([
         "slider",
      ];
 
+    var unsupportedTypes = {};
         
     function insertQuestionIntoDiv(question, questionsDiv) {
         // console.log("question", question);
         
        if (supportedTypes.indexOf(question.type) === -1) {
            console.log("insertQuestionIntoDiv unsupportedType", question.type, question);
-            var newQuestion = {};
+           if (!unsupportedTypes[question.type]) unsupportedTypes[question.type] = [];
+           unsupportedTypes[question.type].push({"id": question.id, "options": question.options});
+           var newQuestion = {};
            // Not supported yet
            newQuestion.text = "TODO: UNSUPPORTED TYPE OF: " + question.type + " FOR ID: " + question.id + " TEXT: " + question.text;
            newQuestion.text += " OPTIONS: " + question.options;
@@ -300,6 +303,7 @@ define([
     
     return {
         "supportedTypes": supportedTypes,
+        "unsupportedTypes": unsupportedTypes,
         "insertQuestionIntoDiv": insertQuestionIntoDiv,
         "insertQuestionsIntoDiv": insertQuestionsIntoDiv,
         "insertQuestionEditorDivIntoDiv": insertQuestionEditorDivIntoDiv

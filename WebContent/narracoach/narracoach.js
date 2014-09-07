@@ -293,6 +293,16 @@ require([
           showPage(pages[0].id);
         }
         
+        // Log all the unspported types together at end
+        console.log("unsupportedTypes: ", questionEditor.unsupportedTypes);
+        var unsupported = "";
+        for (var key in questionEditor.unsupportedTypes) {
+            console.log("unsupportedType", key);
+            if (unsupported) unsupported += " ";
+            unsupported += key;
+        }
+        console.log("all unsupported types:", unsupported);
+        
         console.log("createLayout end");
         
         // Update if the URL hash fragment changes
