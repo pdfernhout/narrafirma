@@ -58,7 +58,7 @@ define([
         // console.log("question", question);
         
        if (supportedTypes.indexOf(question.type) === -1) {
-           console.log("insertQuestionIntoDiv unsupportedType", question.type, question);
+           console.log("insertQuestionIntoDiv unsupportedType", question.type);
            if (!unsupportedTypes[question.type]) unsupportedTypes[question.type] = [];
            unsupportedTypes[question.type].push({"id": question.id, "options": question.options});
            var newQuestion = {};

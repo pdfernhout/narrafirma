@@ -146,7 +146,7 @@ require([
        array.forEach(page.questions, function(question) {
            if (question.type === "button") {
                widgets.newButton(question.id, question.text, pagePane.domNode, buttonUnfinishedClick);
-           } else if (startsWith(question.type, "page_")) {
+           } else if (startsWith(question.type, "questionsTable")) {
                widgetQuestionsTable.insertQuestionsTable(question, pagePane, pageDefinitions);
            } else if (question.type === "storyBrowser") {
                widgetStoryBrowser.insertStoryBrowser(question, pagePane, pageDefinitions);

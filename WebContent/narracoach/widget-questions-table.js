@@ -91,19 +91,21 @@ define([
         }
         // console.log("groupIDs", groupIDs);
         
-        var widget1 = registry.byId(groupIDs[0]);
+        var widget1 = registry.byId(groupIDs[1]);
         if (!widget1) return console.log("ERROR: insertQuestionsTable widget 1 not found", groupIDs[0], pseudoQuestion);
         widget1.on("change", updateRole1);
         
-        var widget2 = registry.byId(groupIDs[1]);
+        var widget2 = registry.byId(groupIDs[2]);
         if (!widget2) return console.log("ERROR: insertQuestionsTable widget 2 not found", groupIDs[1], pseudoQuestion);
         widget2.on("change", updateRole2);
         
-        var widget3 = registry.byId(groupIDs[2]);
+        var widget3 = registry.byId(groupIDs[3]);
         if (!widget3) return console.log("ERROR: insertQuestionsTable widget 3 not found", groupIDs[2], pseudoQuestion);
         widget3.on("change", updateRole3);
         
-        var questionDefinitionPage = pseudoQuestion.type;
+        var questionDefinitionPage = groupIDs[0];
+        
+        if (!pageDefinitions[questionDefinitionPage]) return console.log("ERROR: no page definitions found for referenced page", questionDefinitionPage, pseudoQuestion);
         // console.log("questionDefinitionPage", questionDefinitionPage);
         var questions = pageDefinitions[questionDefinitionPage].questions;
         
