@@ -246,9 +246,9 @@ require([
     }
     
     var questionDiv = document.createElement("div");
-    questionDiv.className = "narracoachQuestion";
-    questionDiv.setAttribute("data-narracoach-question-id", question.id);
-    questionDiv.setAttribute("data-narracoach-question-type", question.type);
+    questionDiv.className = "question";
+    questionDiv.setAttribute("data-question-id", question.id);
+    questionDiv.setAttribute("data-question-type", question.type);
     questionDiv.appendChild(document.createTextNode(question.text + " "));
     if (question.type === "textarea") questionDiv.appendChild(document.createElement("br"));
     questionDiv.appendChild(inputNode);
@@ -381,12 +381,12 @@ require([
     questionEditorDiv.appendChild(document.createElement("br"));
     insertQuestionIntoDiv(question, questionEditorDiv);
     questionEditorDiv.appendChild(document.createElement("br"));
-    questionEditorDiv.setAttribute("data-narracoach-question", JSON.stringify(question));
+    questionEditorDiv.setAttribute("data-question", JSON.stringify(question));
   }
     
   function insertQuestionEditorDivIntoDiv(question, questionsDiv) {
     var questionEditorDiv = document.createElement("div");
-    questionEditorDiv.className = "narracoachQuestionEditor";
+    questionEditorDiv.className = "questionEditor";
     insertQuestionEditorIntoDiv(question, questionEditorDiv);
     questionsDiv.appendChild(questionEditorDiv);
   }
@@ -415,11 +415,11 @@ require([
   function submitSurvey(form) {
     var answers = {};
     console.log("submitSurvey pressed");
-    var nodes = query(".narracoachQuestion", form.domNode);
+    var nodes = query(".question", form.domNode);
     // console.log("nodes", nodes);
     nodes.forEach(function(questionDiv) {
       console.log("submitSurvey question Node", questionDiv);
-      var questionID = questionDiv.getAttribute("data-narracoach-question-id");
+      var questionID = questionDiv.getAttribute("data-question-id");
       var valueNode = registry.byId(questionID);
       var questionValue = undefined;
       if (valueNode) questionValue = valueNode.get("value");
@@ -440,11 +440,11 @@ require([
   
   function exportSurveyQuestions() {
     var questions = [];
-    var nodes = query(".narracoachQuestionEditor", "questionsDiv");
+    var nodes = query(".questionEditor", "questionsDiv");
     // console.log("nodes", nodes);
     nodes.forEach(function(node) {
       // console.log("Node", node);
-      var questionText = node.getAttribute("data-narracoach-question");
+      var questionText = node.getAttribute("data-question");
       var question = JSON.parse(questionText);
       question.id = surveyItemPrefix + question.id;
       questions.push(question);

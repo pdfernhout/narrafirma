@@ -2,9 +2,9 @@
 
 define([
     "dojo/dom-construct",
-    "narracoach/question_editor",
-    "narracoach/translate",
-    "narracoach/widgets",
+    "js/question_editor",
+    "js/translate",
+    "js/widgets",
     "dijit/layout/ContentPane"
 ], function(
     domConstruct,

@@ -8,7 +8,7 @@ define([
     "dojo/dom-style",
     "dojo/on",
     "dijit/registry",
-    "narracoach/translate",
+    "js/translate",
     "dojox/charting/plot2d/Bars",
     "dijit/form/Button",
     "dijit/form/CheckBox",

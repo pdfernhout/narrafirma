@@ -3,7 +3,7 @@
 
 /*
     var helpTexts = {};
-    var helpTextsURL = "narracoach/nls/en/strings_long.html";
+    var helpTextsURL = "js/nls/en/strings_long.html";
 
     function loadHTMLDivTexts(callback) {
         // Load the help texts; this is needed to know whether to put up help icons, and so must be done before creating pages

@@ -1,11 +1,11 @@
 "use strict";
 
 define([
-    "narracoach/domain",
+    "js/domain",
     "dojo/dom-construct",
     "dojo/query",
-    "narracoach/translate",
-    "narracoach/widgets",
+    "js/translate",
+    "js/widgets",
     "dijit/layout/ContentPane"
 ], function(
     domain,
@@ -20,11 +20,11 @@ define([
     
     function exportSurveyQuestions() {
         var questions = [];
-        var nodes = query(".narracoachQuestionEditor", "questionsDiv");
+        var nodes = query(".questionEditor", "questionsDiv");
         // console.log("nodes", nodes);
         nodes.forEach(function(node) {
             // console.log("Node", node);
-            var questionText = node.getAttribute("data-narracoach-question");
+            var questionText = node.getAttribute("data-js-question");
             var question = JSON.parse(questionText);
             question.id = surveyItemPrefix + question.id;
             questions.push(question);

@@ -7,8 +7,8 @@ define([
     "dojo/dom-style",
     "dojo/on",
     "dijit/registry",
-    "narracoach/translate",
-    "narracoach/widgets",
+    "js/translate",
+    "js/widgets",
     "dijit/Dialog",
     "dijit/form/Form",
 ], function(
@@ -139,9 +139,9 @@ define([
 
         var questionDiv = document.createElement("div");
         questionDiv.id = question.id + "_div";
-        questionDiv.className = "narracoachQuestion";
-        questionDiv.setAttribute("data-narracoach-question-id", question.id);
-        questionDiv.setAttribute("data-narracoach-question-type", question.type);
+        questionDiv.className = "question";
+        questionDiv.setAttribute("data-js-question-id", question.id);
+        questionDiv.setAttribute("data-js-question-type", question.type);
         questionDiv.appendChild(domConstruct.toDom(questionText));
         questionDiv.appendChild(document.createTextNode(" "));
         if (question.type === "textarea") questionDiv.appendChild(document.createElement("br"));
@@ -295,12 +295,12 @@ define([
         questionEditorDiv.appendChild(document.createElement("br"));
         insertQuestionIntoDiv(question, questionEditorDiv);
         questionEditorDiv.appendChild(document.createElement("br"));
-        questionEditorDiv.setAttribute("data-narracoach-question", JSON.stringify(question));
+        questionEditorDiv.setAttribute("data-js-question", JSON.stringify(question));
     }
         
     function insertQuestionEditorDivIntoDiv(question, questionsDiv) {
         var questionEditorDiv = document.createElement("div");
-        questionEditorDiv.className = "narracoachQuestionEditor";
+        questionEditorDiv.className = "questionEditor";
         insertQuestionEditorIntoDiv(question, questionEditorDiv);
         questionsDiv.appendChild(questionEditorDiv);
     }

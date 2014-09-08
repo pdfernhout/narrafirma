@@ -1,7 +1,7 @@
 "use strict";
 
 define([
-        "dojo/i18n!narracoach/nls/messages"
+        "dojo/i18n!js/nls/messages"
 ], function(messages) {
     
     function translate(tag, defaultText) {

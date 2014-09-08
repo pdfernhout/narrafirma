@@ -1,13 +1,13 @@
 "use strict";
 
 define([
-    "narracoach/domain",
+    "js/domain",
     "dojo/dom-construct",
     "dojo/query",
-    "narracoach/question_editor",
+    "js/question_editor",
     "dijit/registry",
-    "narracoach/translate",
-    "narracoach/widgets",
+    "js/translate",
+    "js/widgets",
     "dijit/layout/ContentPane",
     "dijit/Dialog",
     "dijit/form/Form"
@@ -26,11 +26,11 @@ define([
     function submitSurvey(form) {
         var answers = {};
         console.log("submitSurvey pressed");
-        var nodes = query(".narracoachQuestion", form.domNode);
+        var nodes = query(".question", form.domNode);
         // console.log("nodes", nodes);
         nodes.forEach(function(questionDiv) {
             console.log("submitSurvey question Node", questionDiv);
-            var questionID = questionDiv.getAttribute("data-narracoach-question-id");
+            var questionID = questionDiv.getAttribute("data-js-question-id");
             var valueNode = registry.byId(questionID);
             var questionValue;
             if (valueNode) questionValue = valueNode.get("value");

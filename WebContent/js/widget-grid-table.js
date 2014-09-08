@@ -1,14 +1,14 @@
 "use strict";
 
 define([
-    "narracoach/add_page",
+    "js/add_page",
     "dojo/_base/array",
     "dojo/_base/declare",
     "dojo/dom-construct",
     "dojo/_base/lang",
     "dijit/registry",
-    "narracoach/translate",
-    "narracoach/widgets",
+    "js/translate",
+    "js/widgets",
     "dgrid/extensions/ColumnResizer",
     "dijit/layout/ContentPane",
     "dijit/Dialog",

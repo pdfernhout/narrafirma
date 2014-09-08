@@ -2,10 +2,10 @@
 
 define([
     "dojo/_base/array",
-    "narracoach/domain",
+    "js/domain",
     "dojo/dom-construct",
-    "narracoach/translate",
-    "narracoach/widgets",
+    "js/translate",
+    "js/widgets",
     "dojox/charting/plot2d/Bars",
     "dojox/charting/Chart",
     "dojox/charting/plot2d/Columns",
