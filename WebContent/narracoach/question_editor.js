@@ -50,6 +50,7 @@ define([
         "select",
         "radio",
         "slider",
+        "questionAnswer"
      ];
 
     var unsupportedTypes = {};
@@ -76,6 +77,11 @@ define([
         } else if (question.type === "label" || question.type === "header") {
             // Not adding input node for these
            //  widget = widgets.newLabel(question.id, question.text);
+        } else if (question.type === "questionAnswer") {
+            // TODO; How does this get updated???
+           console.log("questionAnswer", question, question.options);
+           widgetToPlace = widgets.newLabel(question.id + "_value", question.options);
+           console.log("widget", widget);
         } else if (question.type === "checkbox") {
             widgetToPlace = widgets.newCheckbox(question.id);
         } else if (question.type === "checkboxes") {
@@ -142,6 +148,7 @@ define([
         if (widgetToPlace) questionDiv.appendChild(widgetToPlace.domNode);
         if (helpWidget) questionDiv.appendChild(helpWidget.domNode);
         questionDiv.appendChild(document.createElement("br"));
+        // TODO: Probably remove the trailer as no longer being used? Could it be useful? Need to adjust CSS margins if remove
         questionDiv.appendChild(domConstruct.toDom('<div id="' + question.id + '_trailer"/>'));
         questionDiv.appendChild(document.createElement("br"));
         questionsDiv.appendChild(questionDiv);
