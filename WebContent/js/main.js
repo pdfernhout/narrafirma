@@ -214,7 +214,7 @@ require([
         urlHashFragmentChanged(startPage);
     }
     
-    // Make all NarraCoach pages and put them in a TabContainer
+    // Make all of the application pages selectable from the dropdown list and back/next buttons and put them in a TabContainer
     function createLayout() {
         // console.log("createLayout start");
         var pageSelectOptions = [];

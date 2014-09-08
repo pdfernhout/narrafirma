@@ -30,7 +30,7 @@ define([
         });
         
         var pane = designQuestionsPane.containerNode;
-        pane.appendChild(domConstruct.toDom("<b>NarraCoach</b>"));
+        pane.appendChild(domConstruct.toDom("<b>Question Designer</b>"));
         pane.appendChild(domConstruct.toDom("<br>"));
         pane.appendChild(domConstruct.toDom("Survey Design"));
         pane.appendChild(domConstruct.toDom("<br>"));
