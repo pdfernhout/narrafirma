@@ -1,4 +1,4 @@
-==== NarraCoach TODO list:
+==== PNI Notebook TODO list:
 
 Startup wait progress
 
@@ -77,11 +77,12 @@ DONE Moved styling into seperate css style sheet
 DONE Story browser with two choices of questions and answers
 DONE Improve error logging to construct a list of new types added for Dashboard widgets and otherwise
 DONE Fix popup dialog background when scroll and shows content beneath it
+DONE Remove references to NarraCoach in code and content and replace them with references to PNI Notebook or other appropriate generic references.
 
 ======= CYNTHIA
 
-Write up sample NarraCoach product offering descriptions for review (Cynthia)
-Writing questions based on book (Cynthia)
+Write up sample PNI Notebook product offering descriptions for review (Cynthia)
+DONE Writing questions based on book (Cynthia)
 
 ==== Later:
 
@@ -94,8 +95,8 @@ Resize Tab container when add Graph
 Chart with hover for story
 Chart where can select a set of stories
 
-Saving NarraCoach data to a file server as make progress
-Think about what happens to data if questions change somehow in NarraCoach
+Saving project data to a file server as make progress
+Think about what happens to data if questions change somehow in future versions of the software
 
 Survey taking system on web server
 
