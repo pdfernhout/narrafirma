@@ -1,12 +1,12 @@
-// Single # for top level tabs
-// Double ## for second level tabs
+// Single # for top level pages
+// Double ## for second level pages
 // Single * for questions
 // Question types are in brackets [id|type|options]
 // question types are: label, header (bold label), text, textarea, select, grid, checkBoxes,
 //                     quizScoreResult, templateList, checkBoxesWithPull, button,
 //                     storyBrowser, report,
 //                     observationsList, excerptsList, storyThemer, graphBrowser, trendsReport, clusterSpace
-// page types are: normal (no specification), popup, questionsTable, recommendationTable, participantStoryForm
+// page types are: normal (no specification), popup, questionsTable, recommendationTable
 
 // a button does something when clicked
 
@@ -59,7 +59,7 @@
 // dashboard/checklist types are:
 // listCount (x), questionAnswerCountOfTotalOnPage (x of y), questionAnswer (actual answer entered)
 // "function" means the parameter is the name of a function to be called (outputting what is to be displayed)
-// note that on pages with a questionTable, the questionAnswerCountOfTotalOnPage should include all possible answers 
+// note that on pages with a questionTable, the questionAnswerCountOfTotalOnPage should include all possible answers
 
 # Dashboard [page_dashboard]
 // all checklists combined
@@ -71,6 +71,10 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 # Planning [page_planning]
+
+* In the planning phase you will make decisions about how your project will proceed. [projectPlanningLabel|label]
+You will think about your goals, your topic, your participants, and opportunities and dangers you might encounter during the project.
+
 * Project facts entered: [checklist_projectFactsEntered|questionAnswerCountOfTotalOnPage|page_projectFacts]
 * PNI planning questions answered (draft): [checklist_planningQuestionsAnsweredDraft|questionAnswerCountOfTotalOnPage|page_planningQuestionsDraft]
 * Participant groups defined: [checklist_participantGroupsDescribed|questionAnswerCountOfTotalOnPage|page_participantGroups]
@@ -85,14 +89,15 @@
 
 ## Enter project facts [page_projectFacts]
 
-* On this page you will enter some facts about your project. The things you enter here will appear in your reports. [projectFacts|label]
+* On this page you will enter some facts about your project. The information you enter here will appear in your reports. [projectFacts|label]
 
 * What is the project's title? [projectTitle|text]
 * What is the name of your community or organization? [communityOrOrganizationName|text]
-* Who is facilitating the project? (names and titles) [projectFacilitators|text]
-* What are the project's start and ending dates? [projectStartAndEndDates|text]
-* Please enter any other information you want to appear at the top of project reports. [reportStartText|textarea]
-* Please enter any other information you want to appear at the bottom of project reports (as notes). [reportEndText|textarea]
+* What is a brief name for the project's primary topic? [projectPrimaryTopicName|text]
+* What are the project's starting and ending dates? [projectStartAndEndDates|text]
+* Who is funding, facilitating, or or otherwise supporting the project? [projectFacilitators|textarea]
+* Enter any other information you want to appear at the top of project reports. [reportStartText|textarea]
+* Enter any other information you want to appear at the bottom of project reports (as notes). [reportEndText|textarea]
 
 ## Answer PNI Planning questions [page_planningQuestionsDraft]
 

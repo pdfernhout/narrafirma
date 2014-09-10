@@ -1,20 +1,159 @@
 ## Elicitation questions [elicitationQuestions]
 
-* Have you ever been mellow? 
-* Have you ever tried to find the comfort that's inside you?
-* Have you ever been happy just to hear your song?
-* Have you ever let someone else be strong?
+* Topic | Was there ever a time when you felt _____? What happened then?
+* Topic | Have you ever thought ____? What happened that made you think that?
+* Topic | Was there ever a change in your ___ about ___? What happened that caused the change?
+* Topic | Can you remember ever ____ because you felt ___? What happened that made you feel that way?
+* Topic |
+
+* Point in time (specific) | What happened the (first, last, most recent) time you ____?
+* Point in time (specific) | Tell me about your ___. What happened during it?
+* Point in time (specific) | What just happened? Can you tell us about it?
+
+* Point in time (memorable) | What was the most memorable ___ during ____?
+* Point in time (memorable) | Was there a time during ___ that stands out in your memory?
+* Point in time (memorable) | What moment during ___ was most ____ to you? What happened in that moment?
+
+* Point in time (emotion) | During ____, did anything happen that made you feel ___? What was it that happened?
+* Point in time (emotion) | What has been your (most, least) ___ hour as a ____?
+* Point in time (emotion) | Was there ever a time during ____ when you felt ___? What happened that made you feel that way?
+
+* Point in time (topic) | Was there ever a moment when you felt that (a project topic) was ___?
+* Point in time (topic) | At what point during ____ did you find yourself the most (project topic)?
+* Point in time (topic) | Recall for us a moment when ____ was ____ during ____.
+
+* Event (memorable) | What event most stands out in your mind during ____?
+* Event (memorable) | Did anything happen (today, this week, etc) that you will remember for a long time?
+* Event (memorable) | Can you describe an incident in the past (day, week, etc) that is important to you?
+
+* Event (emotion) | Did any particular event or incident cause you to feel ___ during ____?
+* Event (emotion) | Tell me about a time when you felt ____. What happened?
+* Event (emotion) | Can you recall a situation when you felt ____?
+
+* Event (topic) | When you consider the (motto, saying, proverb) ____, was there a moment during ____ when you felt that this (motto, saying, proverb) was especially ____?
+* Event (topic) | Could you tell us about a situation in which ___?
+* Event (topic) | Did you ever experience anything that made you think ____? What happened?
+
+* Extreme (in general) | Can you recall the (highlight, lowest point) of ___?
+* Extreme (in general) | What was the ___ thing that ever happened during ____?
+* Extreme (in general) | What was the (best, worst) moment of ____?
+
+* Extreme (emotion) | During ____ when did you feel the most ___? What happened that made you feel that way?
+* Extreme (emotion) | What was the ____ you ever felt during ____?
+* Extreme (emotion) | Can you remember the ____ you ever felt during ____?
+
+* Extreme (topic) | Think back over ___. When did you feel ___ the most ____? What happened then?
+* Extreme (topic) | Did you ever think, "I've never seen such ___"? What happened that made you think that?
+* Extreme (topic) | As you look back on ____, what is the ____ moment you can recall with respect to ____? What happened during that moment?
+
+* Surprise | Can you remember a time when you were surprised at how ____?
+* Surprise | As you remember ____, can you think of a time when ___ surprised you?
+* Surprise | Can you tell us about a surprising ____ during ____?
+
+* Change | Was there ever a moment during ___ when ___ changed? What happened?
+* Change | Did you ever feel a change in ____? What caused you to feel that a change was taking place?
+* Change | Looking back over ____, can you pick out a turning point in ____? What happened during that turning point?
+
+* Person | What was it like the ____ time you met ___? What happened?
+* Person | Can you tell us about the ___ when you ___ with ___?
+* Person | What experience with ____ best explains ____?
+
+* Group | Do you remember the ___ when you (joined, left, did something with) ___? What happened during that ___?
+* Group | Can you remember making the decision to ___ with ____? What were you thinking about at the time?
+* Group | When  you
+
+* Place | Do you remember the ___ time you ___ at ___? What happened?
+* Place | When you arrived at ____, what do you remember happening?
+* Place | Did anything ever happen at ___ that made you think: that's what this place is like? What was it?
+
+* Object | When you look at this ___, what moments spring to mind?
+* Object | When you first saw ____, what were you thinking? What happened during that encounter?
+* Object | Can you recall any especially _____ moments (using, holding, etc) this ____?
+
+* Fictional scenario | If someone told you that they were about to ___, what story about your experiences with ___ would you tell them?
+* Fictional scenario | Say someone tells you that ___. Say you want to ___. What would you tell them about your experiences with ___ to ___ them?
+* Fictional scenario | If you found yourself suddenly ____ years in the ___, what would you tell people about your experiences with ____ that would help them understand?
 
 ## Story questions [storyQuestions]
 
-* How do you feel about this story? [howFeel|"Feel about"|select|happy;sad;angry;relieved;indifferent;enthused;not sure]
-* Who or what was the main character in this story? Who was it about? [mainCharacter|"Main character"|select|management;staff;customers;not sure]
-* In this story, what did the main character want or need? [wantOrNeed|"Want or need"|select|help;support;information;respect]
-* Did the story's main character get what they wanted or needed? [gotWhatWanted|"Got what wanted"|slider|nothing at all;too much]
-* Who or what helped the story's main character get what they wanted or needed? [whoHelped|"Helped"|select|management;staff;customers;not sure]
-* Who or what hindered the story's main character in getting what they wanted or needed? [whoHindered|"Hindered"|select|management;staff;customers;not sure]
+* Value | How do you feel about this story? [howFeel|"Feel about"|select|happy;sad;angry;relieved;enthused;indifferent;not sure]
+* Value | How would you rate the emotional intensity of this story? [emotionalIntensity|"Emotional intensity"|slider|strongly negative;strongly positive]
+* Value | How long do you think you will remember this story? [howMemorable|"How memorable"|slider|I've already forgotten it;I'll remember it all my life]
+* Value | How important is this story to you? How much does it matter? [howImportantToMe|"How important to me"|slider|trivial;huge]
+* Value | How important do you think this story is to (other people, another group) in (the community or organization)? How much does it matter to them? [howImportantToOthers|"How important to others"|slider|trivial;huge]
+* Value | How important would you like this story to be to (other people, another group) in (the community or organization)? How much do you want it to matter to them? [desiredImportanceToOthers|"Desired importance to others"|slider|trivial;huge]
+
+* Setting | How long ago did the events in this story take place? [howLongAgo|"How long ago"|slider|ten years;it just happened]
+* Setting | At what point during the history of your interaction with (the topic) did the events in this story happen? [duringHistory|"When during history"|select|fill in your own relevant choices;choice 2;choice 3;not sure]
+* Setting | Where did the events of this story take place? [whereTookPlace|"Where took place"|select|fill in your own relevant choices; choice 2; choice 3; not sure]
+* Setting | Over what period of time did the events in this story take place? [timePeriod|"Time period"|slider|moments;decades]
+
+* Change | What changed in this story? [whatChanged|"What changed"|select|fill in your own relevant choices; choice 2; choice 3; not sure]
+* Change | What did not change in this story? [whatDidNotChange|"What did not change|select|fill in your own relevant choices;choice 2; choice 3;not sure]
+* Change | Who was affected by the changes in this story? [whoWasAffectedByChanges|"Who was affected by changes"|select|fill in your own relevant choices;choice 2;choice 3;not sure]
+* Change | Who was unaffected by the changes in this story? [whoWasUnaffectedByChanges|"Who was unaffected by changes"|select|fill in your own relevant choices;choice 2;choice 3;not sure]
+
+* Evaluation | How well would you say this story holds together? If it were a machine, how well would it work? [storyHoldsTogether|"Story holds together"|slider|horribly;perfectly]
+* Evaluation | Is there anything missing from this story? Does it have any holes in it? [storyHasHoles|"Story has holes"|slider|nothing is missing;there are large gaps in the story]
+* Evaluation | Does this story ring true? Does it match with other stories you know about? [storyRingsTrue|"Story rings true"|slider|it connects perfectly with all other experience;something about it doesn't seem right]
+
+* Elements | How much conflict do you see in this story?
+* Elements | Describe any conflicts you see in this story.
+* Elements | How much cooperation do you see in this story?
+* Elements | Describe any cooperation you see in this story.
+* Elements | How much danger do you see in this story?
+* Elements | Describe any dangers you see in this story.
+* Elements | How much opportunity do you see in this story?
+* Elements | Describe any opportunities you see in this story.
+
+* Origin | Why was this story told? [whyTold|"Why told"|select|to educate;to explain;to inform;to persuade;to reminisce;to complain;to entertain;not sure]
+* Origin | Where did this story come from? [whereCameFrom|"Where came from"|select|it happened to me;it happened to someone I know;it happened to someone I don't know;I heard about it;it's a rumor;it's made up;not sure]
+* Origin | How factually true is this story? [howTrue|"How true"|slider|it happened just as it was told;it's totally made up]
+* Origin | Why do you think this particular story was chosen to be told just when it was? [whyStoryChosen|"Why story chosen"|it seemed to fit;it followed another story;it needed to be told;the teller wanted to tell it;it seemed helpful;not sure]
+
+* Community | Based on what you know of (the community or organization or topic), do you consider the events described in this story to be common or rare? [commonOrRare|"Common or rare"|slider|happens to everyone;happens to one in a million]
+* Community | What scope of (the community or organization) is involved in this story? [scopeInvolved|"Scope involved"|slider|one person;everyone]
+* Community | Which of these roles were involved in this story? [rolesInvolved|"Roles involved"|checkBoxes|fill in your own relevant choices;choice 2;choice 3;not sure]
+* Community | Which groups of people were involved in this story? [groupsInvolved|"Groups involved"|checkBoxes|fill in your own relevant choices; choice 2; choice 3;not sure]
+* Community | If this story was more widely heard, how strong would its impact be on (the community or organization)? [strengthOfImpactIfHeard|"Strength of impact if heard"|slider|no impact;it would change everything]
+* Community | If this story was more widely heard, what impact would that have on (the comunity or organization)? [impactIfHeard|"Impact if heard"|textarea]
+* Community | Which of these groups particularly need to hear this story? [groupsNeedToHearStory|"Groups need to hear story"|fill in your own relevant choices;choice 2;choice 3;not sure]
+* Community | Which of these groups is not likely to have ever heard this type of story before? [groupsHaveNotHeardStory|"Groups have never heard story"|fill in your own relevant choices;choice 2;choice 3;not sure]
+* Community | In which of these groups will people refuse to hear this story? [groupsWillNotHearStory|"Groups will not hear story"|fill in your own relevant choices;choice 2;choice 3;not sure]
+* Community | To which of these groups will this story give new energy to solve problems? [groupsWillGetNewEnergy|"Groups will get new energy"|fill in your own relevant choices;choice 2;choice 3;not sure]
+* Community | For which of these groups will this story drain their energy? [groupsWillLoseEnergy|"Groups will lose energy"|fill in your own relevant choices;choice 2;choice 3;not sure]
+* Community | What does this story say to you about (rules, cooperation, trust, power, etc)? [storySaysAbout|"Story says about"|textarea]
+* What do you think this story says to (other people, another group) about (rules, cooperation, trust, power, etc)? [storySaysToOthersAbout|"Story says to others about"|textarea]
+
+* Other views | Do you think (other people, another group) in (the community or organization) would say that this story turned out well? [otherViewsOnValue|"Other views on value"|slider|they would say it turned out horribly;they would say it turned out perfectly]
+* Other views | Do you think (other people, another group) in (the community or organization) would say the events in this story were common? [otherViewsOnCommonality|"Other views on commonality"|slider|they would say it was common;they would say it was rare]
+* Other views | Why do you think (other people, another group) in (the community or organization) would say this story was told? [otherViewsOnWhyTold|"Other views on why told"|select|to educate;to explain;to inform;to persuade;to reminisce;to complain;to entertain;not sure]
+* Other views | How long do you think (other people, another group) in (the community or organization) would remember this story? [otherViewsOnMemorability|"Other views on memorability"|slider|they would have forgotten it already;they would remember it all of their lives]
+
+* Feelings about other views | Would you like (other people, another group) in (the community or organization) to say that this story turned out well? [feelingsAboutOtherViewsOnValue|"Feelings about other views on value"|slider|I would like them to say that it turned out horribly;I would like them to say that it turned out perfectly]
+* Feelings about other views | Would you like (other people, another group) in (the community or organization) to say that the events in this story were common? [feelingsAboutOtherViewsOnCommonality|"Feelings about other views on commonality"|slider|I would like them to say it was common;I would like them to say it was rare]
+* Feelings about other views | What would you like (other people, another group) in (the community or organization) to say about why this story was told? [feelingsaboutOtherViewsOnWhyTold|"Feelings about other views on why told"|select|to educate;to explain;to inform;to persuade;to reminisce;to complain;to entertain;not sure]
+* Feelings about other views | How long would you like (other people, another group) in (the community or organization) to remember this story? [feelingsAboutOtherViewsOnMemorability|"Feelings about other views on memorability"|slider|I would like them have forgotten it already;I would like them to remember it all of their lives]
+
+* Project topics | Would you say that the people in this story ____?
+* Project topics | What do you think the people in this story felt about ____?
+* Project topics | Did this story make you feel more or less ___ about ___?
+* Project topics | What does this story say to you about ____?
+* Project topics | Does this story change how you see ___? If so, how?
+* Project topics | If you were to choose a story to tell about ____, would you choose this one? Why or why not?
+
+* Main character | Who (or what) was the main character in this story? Who was it about? [mainCharacter|"Main character"|select|fill in your own relevant choices;choice 2 choice 3;not sure]
+* Main character | From the perspective of this story's main character, would you say the story ended well or badly? [endedWell|"Ended well"|slider|horribly;perfectly]
+* Main character | In this story, what did the main character want or need? [wantOrNeed|"Want or need"|select|resources;help;support;information;respect;trust;not sure]
+* Main character | How much did the story's main character want or need what they wanted or needed? [strengthOfWant|"Strength of want"|slider|not at all;too much]
+* Main character | Did the story's main character get what they wanted or needed? [gotWhatWanted|"Got what wanted"|slider|nothing at all;too much]
+* Main character | Who or what helped the story's main character get what they wanted or needed? [whoHelped|"Helped"|select|fill in your own relevant choices;choice 2 choice 3;not;not sure]
+* Main character | How much help did the main character get? [amountOfHelp|"Amount of help"|slider|none;more than they needed]
+* Main character | Who or what hindered the story's main character in getting what they wanted or needed? [whoHindered|"Hindered"|select|fill in your own relevant choices;choice 2 choice 3;not;not sure]
+* Main character | How much hindrance did the main character face in getting what they needed? [amountOfHindrance|"Amount of hindrance"|slider|none;a crushing amount]
+* Main character | Which of these things, if they had been available to the main character of the story, would have helped them to get what they wanted or needed? [thingsThatWouldHaveHelped|"Would have helped"|select|fill in your own relevant choices;not sure]
 
 ## Participant questions [participantQuestions]
 
-* Which age range do you fall into? [ageRange|"Age"|select|<25;25-34;35-44;45-65;>65]
+* Which age range do you fall into? [ageRange|"Age"|select|<25;25-34;35-44;45-64;65-74;75+]
 * Do you rent or own your home? [rentOrOwn|"Rent or own"|select|rent;own]
