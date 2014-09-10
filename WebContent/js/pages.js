@@ -52,6 +52,11 @@ define(
         "isHeader": true,
         "questions": [
             {
+                "id": "projectPlanningLabel",
+                "text": "In the planning phase you will make decisions about how your project will proceed.\nYou will think about your goals, your topic, your participants, and opportunities and dangers you might encounter during the project.",
+                "type": "label"
+            },
+            {
                 "id": "checklist_projectFactsEntered",
                 "text": "Project facts entered:",
                 "type": "questionAnswerCountOfTotalOnPage",
@@ -120,7 +125,7 @@ define(
         "questions": [
             {
                 "id": "projectFacts",
-                "text": "On this page you will enter some facts about your project. The things you enter here will appear in your reports.",
+                "text": "On this page you will enter some facts about your project. The information you enter here will appear in your reports.",
                 "type": "label"
             },
             {
@@ -134,23 +139,28 @@ define(
                 "type": "text"
             },
             {
-                "id": "projectFacilitators",
-                "text": "Who is facilitating the project? (names and titles)",
+                "id": "projectPrimaryTopicName",
+                "text": "What is a brief name for the project's primary topic?",
                 "type": "text"
             },
             {
                 "id": "projectStartAndEndDates",
-                "text": "What are the project's start and ending dates?",
+                "text": "What are the project's starting and ending dates?",
                 "type": "text"
             },
             {
+                "id": "projectFacilitators",
+                "text": "Who is funding, facilitating, or or otherwise supporting the project?",
+                "type": "textarea"
+            },
+            {
                 "id": "reportStartText",
-                "text": "Please enter any other information you want to appear at the top of project reports.",
+                "text": "Enter any other information you want to appear at the top of project reports.",
                 "type": "textarea"
             },
             {
                 "id": "reportEndText",
-                "text": "Please enter any other information you want to appear at the bottom of project reports (as notes).",
+                "text": "Enter any other information you want to appear at the bottom of project reports (as notes).",
                 "type": "textarea"
             }
         ]
