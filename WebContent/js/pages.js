@@ -3069,7 +3069,7 @@ define(
         ]
     },
     {
-        "id": "page_projectOutcomesForIntervention;interventionOpen",
+        "id": "page_projectOutcomesForIntervention",
         "name": "Answer questions about project outcomes",
         "description": "",
         "isHeader": false,

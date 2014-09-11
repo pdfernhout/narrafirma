@@ -821,7 +821,7 @@ Remember that you should create at least two interpretations for each observatio
 
 * You can enter some general notes on intervention in this project here. [interventionGeneralNotes|textarea]
 
-## Answer questions about project outcomes [page_projectOutcomesForIntervention;interventionOpen]
+## Answer questions about project outcomes [page_projectOutcomesForIntervention]
 
 * In order to choose interventions that will be useful in your project, it will be helpful to think about some [outcomesTable|questionsTable|page_outcomesTable;participants_firstGroupName;participants_secondGroupName;participants_thirdGroupName]
 of the issues (positive and negative) you discovered in your project. Please answer these questions in reference to
