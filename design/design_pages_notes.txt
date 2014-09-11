@@ -816,7 +816,7 @@ Remember that you should create at least two interpretations for each observatio
 * Questions answered about project outcomes: [checklist_questionsAnsweredAboutProjectOutcomes|questionAnswerCountOfTotalOnPage|page_projectOutcomesForIntervention]
 * Intervention plans created: [checklist_interventionPlansCreated|listCount|interventionPlansList]
 * Finished intervention plans: [checklist_finishedInterventionPlans|questionAnswer|interventionPlansAreFinal]
-* Intervention records entered: [checklist_interventionRecordsEntered|listCountinterventionRecordsList]
+* Intervention records entered: [checklist_interventionRecordsEntered|listCount|interventionRecordsList]
 * Finished intervention records: [checklist_finishedInterventionRecords|questionAnswer|interventionRecordsAreFinal]
 
 * You can enter some general notes on intervention in this project here. [interventionGeneralNotes|textarea]

@@ -3053,7 +3053,8 @@ define(
             {
                 "id": "checklist_interventionRecordsEntered",
                 "text": "Intervention records entered:",
-                "type": "listCountinterventionRecordsList"
+                "type": "listCount",
+                "options": "interventionRecordsList"
             },
             {
                 "id": "checklist_finishedInterventionRecords",
