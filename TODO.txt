@@ -80,6 +80,7 @@ DONE Right-align questions in table of questions for project participants
 DONE Resolve issue with story browser filter selects causing table cells to resize
 DONE Fix issue for story browser textarea where probably should not be in questions list and *ALL* does not work right
 DONE Startup wait progress
+DONE Add icons for home, left arrow, and right arrow to buttons in navigation bar.
 
 ======= CYNTHIA
 
