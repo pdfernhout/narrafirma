@@ -40,10 +40,10 @@ Support toggleButton
 Support checkBoxes
 Support quizScoreResult
 
-Support listCount
 Support function
 Support toggleButtonState
 Support storyBrowserCount
+Fix questionAnswerCountOfTotalOnPages so it can handle a questionsTable
 
 Fix boolean so it can get disabled and value gets set (probably make it a widget)
 
@@ -80,6 +80,7 @@ DONE Startup wait progress
 DONE Add icons for home, left arrow, and right arrow to buttons in navigation bar.
 DONE Support questionAnswer
 DONE Support questionAnswerCountOfTotalOnPage
+DONE Support listCount
 
 ======= CYNTHIA
 

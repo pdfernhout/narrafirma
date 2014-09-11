@@ -98,12 +98,12 @@ define([
             widget = registry.byId(question.options);
             // console.log("options & widget", question.options, widget);
             if (widget) {
-                var actualSize = "FAILED!!!";
                 // Because this is a Memory store, this call is synchronous; this will not work with other stores
                 var store = widget.get("store");
-                console.log("store for grid", question.options, store);
-                store.query({onBegin: function(size, request) {actualSize = size;}, start: 0, count: 0});
-                return "" + actualSize;
+                // console.log("store for grid", question.options, store);
+                var result = store.query(function () {return true;});
+                // console.log("result of query", result);
+                return "" + result.total;
             } else {
                 console.log("ERROR: missing grid widget: ", question.options, question);
                 return "ERROR: missing grid widget: " + question.options;
@@ -131,10 +131,11 @@ define([
                     }
                 }
             }
-            var percentComplete = Math.round(100 * questionAnsweredCount / questionAskedCount);
-            if (questionAskedCount === 0) percentComplete = 0;
+            // var percentComplete = Math.round(100 * questionAnsweredCount / questionAskedCount);
+            // if (questionAskedCount === 0) percentComplete = 0;
             // TODO: Translate
-            return "Answered " + questionAnsweredCount + " of " + questionAskedCount + " questions (" + percentComplete + "%)";
+            //return "Answered " + questionAnsweredCount + " of " + questionAskedCount + " questions (" + percentComplete + "%)";
+            return "answered " + questionAnsweredCount + " of " + questionAskedCount + " questions";
         }
         return "UNFINISHED type: " + question.type + " calculated " + Date();
     }
