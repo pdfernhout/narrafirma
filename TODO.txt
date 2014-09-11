@@ -1,7 +1,5 @@
 ==== PNI Workbook TODO list:
 
-Startup wait progress
-
 Main Dashboard
 Dashboard for each section
 
@@ -81,6 +79,7 @@ DONE Change name again from PNI Notebook to PNI Workbook
 DONE Right-align questions in table of questions for project participants
 DONE Resolve issue with story browser filter selects causing table cells to resize
 DONE Fix issue for story browser textarea where probably should not be in questions list and *ALL* does not work right
+DONE Startup wait progress
 
 ======= CYNTHIA
 
@@ -129,6 +128,8 @@ Unit tests
 Continuous integration server that runs tests
 
 Multi-user aspects
+
+Improve startup wait progress
 
 Generate PDF reports
 Generate CSV output
