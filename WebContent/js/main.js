@@ -316,8 +316,10 @@ require([
         
         // TODO: Translation of buttons
         previousPageButton = widgets.newButton("previousPage", "Previous Page", "navigationDiv", previousPageClicked);
-            
+        previousPageButton.set("iconClass", "leftButtonImage");
+        
         nextPageButton = widgets.newButton("nextPage", "Next Page", "navigationDiv", nextPageClicked);
+        nextPageButton.set("iconClass", "rightButtonImage");
         
         // Setup the first page
         var fragment = hash();

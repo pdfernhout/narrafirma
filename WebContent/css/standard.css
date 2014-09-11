@@ -66,6 +66,28 @@ body {
     text-align: center;
 }
 
+.leftButtonImage {
+    // display: block;
+    background-image: url(../images/ionicicons/arrow-left-a.svg);
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    width: 20px;
+    height: 20px;
+    // text-align: left;
+}
+
+.rightButtonImage {
+    // display: block;
+    background-image: url(../images/ionicicons/arrow-right-a.svg);
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    width: 20px;
+    height: 20px;
+    // text-align: right;
+    /* Next line may not work correctly in IE6 & IE7? Also does not work right in safari 5.1 with button a bit high. https://bugs.dojotoolkit.org/ticket/5170 */
+    float: right;
+}
+
 /* This ensures that the story filter table columns are both one half of the space available */
 .storyFilterTable-valueCell {
     width: 48%;
