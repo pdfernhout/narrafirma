@@ -88,6 +88,7 @@ define([
             widgetToPlace = widgets.newCheckBoxes(question.id, question.choices, question.options);
         } else if (question.type === "text") {
             widgetToPlace = widgets.newTextBox(question.id);
+            widgetToPlace.set("style", "width: 98%");
         } else if (question.type === "textarea") {
             widgetToPlace = widgets.newSimpleTextArea(question.id);
         } else if (question.type === "select") {
@@ -144,7 +145,7 @@ define([
         questionDiv.setAttribute("data-js-question-type", question.type);
         questionDiv.appendChild(domConstruct.toDom(questionText));
         questionDiv.appendChild(document.createTextNode(" "));
-        if (question.type === "textarea") questionDiv.appendChild(document.createElement("br"));
+        if (question.type === "textarea" || question.type === "text") questionDiv.appendChild(document.createElement("br"));
         if (widgetToPlace) questionDiv.appendChild(widgetToPlace.domNode);
         if (helpWidget) questionDiv.appendChild(helpWidget.domNode);
         questionDiv.appendChild(document.createElement("br"));
