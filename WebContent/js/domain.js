@@ -9,6 +9,8 @@ define([
     array,
     string
 ) {
+    var pageDefinitions = {};
+    var pageInstantiations = {};
     
     var exportedSurveyQuestions = [];
     var surveyResults = [];
@@ -64,6 +66,8 @@ define([
         "testDogQuestions": testDogQuestions,
         "testDogStories": testDogStories,
         "exportedSurveyQuestions": exportedSurveyQuestions,
-        "surveyResults": surveyResults
+        "surveyResults": surveyResults,
+        "pageInstantiations": pageInstantiations,
+        "pageDefinitions": pageDefinitions
     };
 });

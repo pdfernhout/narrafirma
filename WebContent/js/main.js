@@ -3,6 +3,7 @@
 require([
     "dojo/_base/array",
     "dojo/_base/connect",
+    "js/domain",
     "dojo/dom-construct",
     "dojo/dom-style",
     "dojo/hash",
@@ -27,6 +28,7 @@ require([
 ], function(
     array,
     connect,
+    domain,
     domConstruct,
     domStyle,
     hash,
@@ -51,8 +53,6 @@ require([
     // TODO: Add page validation
     // TODO: Add translations for GUI strings used here
     
-    var pageDefinitions = {};
-    var pageInstantiations = {};
     var currentPageID = null;
     var selectWidget = null;
     var previousPageButton = null;
@@ -62,7 +62,7 @@ require([
     function urlHashFragmentChanged(newHash) {
         // console.log("urlHashFragmentChanged", newHash);
         if (currentPageID !== newHash) {
-            if (pageDefinitions[newHash]) {
+            if (domain.pageDefinitions[newHash]) {
                 changePage(newHash);
             } else {
                 console.log("unsupported url hash fragment", newHash);
@@ -88,7 +88,7 @@ require([
     function showPage(id) {
         if (currentPageID === id) return;
         
-        var page = pageDefinitions[id];
+        var page = domain.pageDefinitions[id];
         if (!page) {
             console.log("no such page", id);
             alert("No such page: " + id);
@@ -121,7 +121,7 @@ require([
 
     function createPage(id, visible) {
         console.log("createPage", id);
-        var page = pageDefinitions[id];
+        var page = domain.pageDefinitions[id];
         
         if (!page) {
             console.log("ERROR: No definition for page: ", id);
@@ -150,17 +150,17 @@ require([
            if (question.type === "button") {
                widgets.newButton(question.id, question.text, pagePane.domNode, buttonUnfinishedClick);
            } else if (startsWith(question.type, "questionsTable")) {
-               widgetQuestionsTable.insertQuestionsTable(question, pagePane, pageDefinitions);
+               widgetQuestionsTable.insertQuestionsTable(question, pagePane, domain.pageDefinitions);
            } else if (question.type === "storyBrowser") {
-               widgetStoryBrowser.insertStoryBrowser(question, pagePane, pageDefinitions);
+               widgetStoryBrowser.insertStoryBrowser(question, pagePane, domain.pageDefinitions);
            } else if (question.type === "grid") {
-               var gridAndStore = widgetGridTable.insertGridTable(question, pagePane, pageDefinitions);
+               var gridAndStore = widgetGridTable.insertGridTable(question, pagePane, domain.pageDefinitions);
            } else {
                questionEditor.insertQuestionIntoDiv(question, pagePane.domNode);
            }
        });
        
-       pageInstantiations[id] = pagePane;
+       domain.pageInstantiations[id] = pagePane;
        
        // console.log("about to set visibility", id);
        if (visible) {
@@ -179,7 +179,7 @@ require([
             alert("Something wrong with currentPageID");
             return;
         }
-        var page = pageDefinitions[currentPageID];
+        var page = domain.pageDefinitions[currentPageID];
         var previousPageID = page.previousPageID;
         if (previousPageID) {
             changePage(previousPageID);
@@ -196,7 +196,7 @@ require([
             alert("Something wrong with currentPageID");
             return;
         }
-        var page = pageDefinitions[currentPageID];
+        var page = domain.pageDefinitions[currentPageID];
         var nextPageID = page.nextPageID;
         if (nextPageID) {
             changePage(nextPageID);
@@ -276,13 +276,13 @@ require([
                }
             });
             
-            pageDefinitions[page.id] = page;      
+            domain.pageDefinitions[page.id] = page;      
             
             // console.log("about to make page");
             // Skip over special page types
             if (!page.type) {
                 // Make it easy to lookup previous and next pages from a page
-                if (lastPageID) pageDefinitions[lastPageID].nextPageID = page.id;
+                if (lastPageID) domain.pageDefinitions[lastPageID].nextPageID = page.id;
                 page.previousPageID = lastPageID;
                 lastPageID = page.id;
                 
