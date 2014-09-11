@@ -3,6 +3,7 @@
 define([
     "dojo/_base/array",
     "dojo/dom",
+    "js/domain",
     "dojo/dom-construct",
     "dojo/dom-style",
     "dojo/on",
@@ -14,6 +15,7 @@ define([
 ], function(
     array,
     dom,
+    domain,
     domConstruct,
     domStyle,
     on,
@@ -39,6 +41,17 @@ define([
         {id: "questionOptions", type: "textarea", text: "Question Options", help: 'Enter options here, one per line'},
     ];
     
+    var entryTypes = [
+        "boolean",
+        "checkbox",
+        "checkboxes",
+        "text",
+        "textarea", 
+        "select",
+        "radio",
+        "slider"
+    ];
+ 
     var supportedTypes = [
         "boolean",
         "label",
@@ -50,17 +63,18 @@ define([
         "select",
         "radio",
         "slider",
-        "questionAnswer"
+        "questionAnswer",
+        "questionAnswerCountOfTotalOnPage"
      ];
 
     var unsupportedTypes = {};
     var questionsRequiringRecalculationOnPageChanges = {};
     
-    function updateQuestionsForPageChange() {
+    function updateQuestionsForPageChange(domain) {
         for (var questionID in questionsRequiringRecalculationOnPageChanges) {
             console.log("recalculating question: ", questionID);
             var data = questionsRequiringRecalculationOnPageChanges[questionID];
-            console.log("textNode", data.textNode);
+            // console.log("textNode", data.textNode);
             data.textNode.nodeValue = data.baseText + " " + calculateTextForQuestion(data.question);
         }
     }
@@ -68,18 +82,45 @@ define([
     function calculateTextForQuestion(question) {
         if (question.type === "questionAnswer") {
             var widget = registry.byId(question.options);
-            console.log("options & widget", question.options, widget);
+            // console.log("options & widget", question.options, widget);
             if (widget) {
                 var value = widget.get("value");
                 // TODO: Change or Translate
-                if (value === null) value = "<Unfinished>";
+                if (value === null) value = "<Not Yet Entered>";
                 return value;
             } else {
                 console.log("ERROR: missing widget: ", question.options, question);
                 return "ERROR: missing widget: " + question.options;
             }
+        } else if (question.type === "questionAnswerCountOfTotalOnPage") {
+            var page = domain.pageDefinitions[question.options];
+            if (!page) {
+                console.log("ERROR: page not found for: ", question.options, question);
+                return "ERROR: page not found for: " + question.options + " at: " + Date();
+            }
+            console.log("found page", page);
+            var questionAskedCount = 0;
+            var questionAnsweredCount = 0;
+            for (var pageQuestionIndex in page.questions) {
+                var pageQuestion = page.questions[pageQuestionIndex];
+                console.log("pageQuestion", pageQuestion);
+                if (array.indexOf(entryTypes, pageQuestion.type) !== -1) {
+                    questionAskedCount++;
+                }
+                var pageQuestionWidget = registry.byId(pageQuestion.id);
+                if (!pageQuestionWidget) {
+                    console.log("ERROR: could not find widget for page question", pageQuestion);
+                } else {
+                    var pageQuestionValue = pageQuestionWidget.get("value");
+                    if (pageQuestionValue !== "" && pageQuestionValue !== null) questionAnsweredCount++;
+                }
+            }
+            var percentComplete = Math.round(100 * questionAnsweredCount / questionAskedCount);
+            if (questionAskedCount === 0) percentComplete = 0;
+            // TODO: Translate
+            return "Answered " + questionAnsweredCount + " of " + questionAskedCount + " questions (" + percentComplete + "%)";
         }
-        return "This was calculated " + Date();
+        return "UNFINISHED type: " + question.type + " calculated " + Date();
     }
         
     function insertQuestionIntoDiv(question, questionsDiv) {
@@ -105,9 +146,9 @@ define([
         } else if (question.type === "label" || question.type === "header") {
             // Not adding input node for these
            //  widget = widgets.newLabel(question.id, question.text);
-        } else if (question.type === "questionAnswer") {
+        } else if (question.type === "questionAnswer" || question.type === "questionAnswerCountOfTotalOnPage") {
             // TODO; How does this get updated???
-           console.log("questionAnswer", question, question.options);
+           console.log("dynamic", question.type, question, question.options);
            calculatedText = calculateTextForQuestion(question);
            //widgetToPlace = widgets.newLabel(question.id + "_value", question.options);
            // console.log("widget", widget);
