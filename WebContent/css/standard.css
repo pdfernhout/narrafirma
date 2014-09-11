@@ -51,11 +51,19 @@ body {
 .wwsButtonImage {
 	background-image: url(../images/WWS_BookCover_front_tiny.png);
     background-repeat: no-repeat;
-    /* background-position: 10px 2px; */
-    background-repeat: no-repeat;
 	width: 43px;
 	height: 60px;
 	text-align: center;
+}
+
+.homeButtonImage {
+	display: block;
+    background-image: url(../images/ionicicons/home.svg);
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
 }
 
 /* This ensures that the story filter table columns are both one half of the space available */

@@ -234,13 +234,14 @@ require([
         var questionIndex = 0;
         var lastPageID = null;
         
-        var imageButton = widgets.newButton("wwsImageButton", "Working With Stories image button", "navigationDiv", wwsButtonClicked);
-        imageButton.set("showLabel", false);
-        imageButton.set("iconClass", "wwsButtonImage");
+        // var imageButton = widgets.newButton("wwsImageButton", "Working With Stories image button", "navigationDiv", wwsButtonClicked);
+        // imageButton.set("showLabel", false);
+        // imageButton.set("iconClass", "wwsButtonImage");
         
         var homeButton = widgets.newButton("homeImageButton", "Home image button", "navigationDiv", homeButtonClicked);
         homeButton.set("showLabel", false);
-        homeButton.set("iconClass", "dijitEditorIcon dijitEditorIconOutdent");
+        // homeButton.set("iconClass", "dijitEditorIcon dijitEditorIconOutdent");
+        homeButton.set("iconClass", "homeButtonImage");
         
         array.forEach(pages, function(page) {
             // console.log("defining page", page.name)
