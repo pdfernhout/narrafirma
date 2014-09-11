@@ -88,7 +88,7 @@ define([
             widgetToPlace = widgets.newCheckBoxes(question.id, question.choices, question.options);
         } else if (question.type === "text") {
             widgetToPlace = widgets.newTextBox(question.id);
-            widgetToPlace.set("style", "width: 98%");
+            widgetToPlace.set("style", "width: 40em");
         } else if (question.type === "textarea") {
             widgetToPlace = widgets.newSimpleTextArea(question.id);
         } else if (question.type === "select") {
