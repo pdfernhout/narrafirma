@@ -173,7 +173,7 @@ define([
     
     function insertGridTableBasic(id, pagePane, popupPageDefinition, dataStore, includeAddButton) {
         // Grid with list of objects
-        // console.log("insertGridTableBasic");
+        console.log("insertGridTableBasic", id);
         
         if (!dataStore) {
             // TODO: Need to set better info for fields and meanings to display and index on

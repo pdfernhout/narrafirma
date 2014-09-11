@@ -98,7 +98,12 @@ define([
             widget = registry.byId(question.options);
             // console.log("options & widget", question.options, widget);
             if (widget) {
-                return "UNFINISHED!!!!";
+                var actualSize = "FAILED!!!";
+                // Because this is a Memory store, this call is synchronous; this will not work with other stores
+                var store = widget.get("store");
+                console.log("store for grid", question.options, store);
+                store.query({onBegin: function(size, request) {actualSize = size;}, start: 0, count: 0});
+                return "" + actualSize;
             } else {
                 console.log("ERROR: missing grid widget: ", question.options, question);
                 return "ERROR: missing grid widget: " + question.options;
@@ -109,21 +114,21 @@ define([
                 console.log("ERROR: page not found for: ", question.options, question);
                 return "ERROR: page not found for: " + question.options + " at: " + Date();
             }
-            console.log("found page", page);
+            // console.log("found page", page);
             var questionAskedCount = 0;
             var questionAnsweredCount = 0;
             for (var pageQuestionIndex in page.questions) {
                 var pageQuestion = page.questions[pageQuestionIndex];
-                console.log("pageQuestion", pageQuestion);
+                // console.log("pageQuestion", pageQuestion);
                 if (array.indexOf(entryTypes, pageQuestion.type) !== -1) {
                     questionAskedCount++;
-                }
-                var pageQuestionWidget = registry.byId(pageQuestion.id);
-                if (!pageQuestionWidget) {
-                    console.log("ERROR: could not find widget for page question", pageQuestion);
-                } else {
-                    var pageQuestionValue = pageQuestionWidget.get("value");
-                    if (pageQuestionValue !== "" && pageQuestionValue !== null) questionAnsweredCount++;
+                    var pageQuestionWidget = registry.byId(pageQuestion.id);
+                    if (!pageQuestionWidget) {
+                        console.log("ERROR: could not find widget for page question", pageQuestion.id, pageQuestion, registry);
+                    } else {
+                        var pageQuestionValue = pageQuestionWidget.get("value");
+                        if (pageQuestionValue !== "" && pageQuestionValue !== null) questionAnsweredCount++;
+                    }
                 }
             }
             var percentComplete = Math.round(100 * questionAnsweredCount / questionAskedCount);
@@ -160,7 +165,9 @@ define([
         } else if (question.type === "questionAnswer" || question.type === "questionAnswerCountOfTotalOnPage" || question.type === "listCount") {
             // TODO; How does this get updated???
            console.log("dynamic", question.type, question, question.options);
-           calculatedText = calculateTextForQuestion(question);
+           // Can not calculate all items at this point because they may depend on other questions not yet defined
+           // need to ensure the calculation method is called at startup
+           calculatedText = "(Initializing...)";
            //widgetToPlace = widgets.newLabel(question.id + "_value", question.options);
            // console.log("widget", widget);
         } else if (question.type === "checkbox") {
