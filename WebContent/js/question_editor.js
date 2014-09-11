@@ -64,7 +64,8 @@ define([
         "radio",
         "slider",
         "questionAnswer",
-        "questionAnswerCountOfTotalOnPage"
+        "questionAnswerCountOfTotalOnPage",
+        "listCount"
      ];
 
     var unsupportedTypes = {};
@@ -80,8 +81,9 @@ define([
     }
     
     function calculateTextForQuestion(question) {
+        var widget;
         if (question.type === "questionAnswer") {
-            var widget = registry.byId(question.options);
+            widget = registry.byId(question.options);
             // console.log("options & widget", question.options, widget);
             if (widget) {
                 var value = widget.get("value");
@@ -91,6 +93,15 @@ define([
             } else {
                 console.log("ERROR: missing widget: ", question.options, question);
                 return "ERROR: missing widget: " + question.options;
+            }
+        } else if (question.type === "listCount") {
+            widget = registry.byId(question.options);
+            // console.log("options & widget", question.options, widget);
+            if (widget) {
+                return "UNFINISHED!!!!";
+            } else {
+                console.log("ERROR: missing grid widget: ", question.options, question);
+                return "ERROR: missing grid widget: " + question.options;
             }
         } else if (question.type === "questionAnswerCountOfTotalOnPage") {
             var page = domain.pageDefinitions[question.options];
@@ -146,7 +157,7 @@ define([
         } else if (question.type === "label" || question.type === "header") {
             // Not adding input node for these
            //  widget = widgets.newLabel(question.id, question.text);
-        } else if (question.type === "questionAnswer" || question.type === "questionAnswerCountOfTotalOnPage") {
+        } else if (question.type === "questionAnswer" || question.type === "questionAnswerCountOfTotalOnPage" || question.type === "listCount") {
             // TODO; How does this get updated???
            console.log("dynamic", question.type, question, question.options);
            calculatedText = calculateTextForQuestion(question);

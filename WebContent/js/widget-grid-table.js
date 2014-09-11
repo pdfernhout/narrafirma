@@ -207,6 +207,7 @@ define([
         
         // console.log("making grid");
         var grid = new(declare([OnDemandGrid, DijitRegistry, Keyboard, Selection, ColumnResizer]))({
+            "id": id,
             "store": dataStore,
             "columns": columns
         });
