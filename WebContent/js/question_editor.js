@@ -66,11 +66,19 @@ define([
     }
     
     function calculateTextForQuestion(question) {
-        //if (question.type === "questionAnswer") {
-        //    var widget = registry.byId(question.options);
-       //     console.log("options & widget", question.options, widget);
-        //    return widget.get("value");
-        //}
+        if (question.type === "questionAnswer") {
+            var widget = registry.byId(question.options);
+            console.log("options & widget", question.options, widget);
+            if (widget) {
+                var value = widget.get("value");
+                // TODO: Change or Translate
+                if (value === null) value = "<Unfinished>";
+                return value;
+            } else {
+                console.log("ERROR: missing widget: ", question.options, question);
+                return "ERROR: missing widget: " + question.options;
+            }
+        }
         return "This was calculated " + Date();
     }
         
