@@ -38,12 +38,9 @@ Support recommendationTable
 Support imageUploader
 Support toggleButton
 Support checkBoxes
-Support interventionRecordsList
-
-Support questionAnswerCountOfTotalOnPage
-Support listCount
-Support questionAnswer
 Support quizScoreResult
+
+Support listCount
 Support function
 Support toggleButtonState
 Support storyBrowserCount
@@ -81,6 +78,8 @@ DONE Resolve issue with story browser filter selects causing table cells to resi
 DONE Fix issue for story browser textarea where probably should not be in questions list and *ALL* does not work right
 DONE Startup wait progress
 DONE Add icons for home, left arrow, and right arrow to buttons in navigation bar.
+DONE Support questionAnswer
+DONE Support questionAnswerCountOfTotalOnPage
 
 ======= CYNTHIA
 
