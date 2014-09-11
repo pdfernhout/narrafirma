@@ -1,4 +1,4 @@
-==== PNI Notebook TODO list:
+==== PNI Workbook TODO list:
 
 Startup wait progress
 
@@ -78,10 +78,12 @@ DONE Story browser with two choices of questions and answers
 DONE Improve error logging to construct a list of new types added for Dashboard widgets and otherwise
 DONE Fix popup dialog background when scroll and shows content beneath it
 DONE Remove references to NarraCoach in code and content and replace them with references to PNI Notebook or other appropriate generic references.
+DONE Fix issue with the way selects resize inside tables, especially for the story browser question filters
+DONE Change name again from PNI Notebook to PNI Workbook
 
 ======= CYNTHIA
 
-Write up sample PNI Notebook product offering descriptions for review (Cynthia)
+Write up sample PNI Workbook product offering descriptions for review (Cynthia)
 DONE Writing questions based on book (Cynthia)
 
 ==== Later:

@@ -8,7 +8,7 @@ define({
     
     // page: introduction 
     "page_generalIntro_title": "Introduction",
-    "page_generalIntro_text": "<p>Hello and welcome to the PNI Notebook for Working with Stories.</p>" +
+    "page_generalIntro_text": "<p>Hello and welcome to the PNI Workbook for Working with Stories.</p>" +
        "<p>This application will guide you through carrying out a participatory narrative inquiry (PNI) project.</p>" +
        "<p>Your project will go through these steps:</p>" +
        "<ul><li>Planning: Tell stories and make sense of your goals and hopes for your project.</li>" +

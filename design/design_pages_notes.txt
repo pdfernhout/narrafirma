@@ -116,7 +116,7 @@ If you don't have good answers for these questions right now, don't worry; you w
 
 * On this page you will think about groups of participants you want to involve in your project. [aboutParticipantGroups|label]
 Examples might be: doctors and patients; staff and customers; natives, immigrants, and tourists.
-The PNI Notebook supports planning for up to three groups of project participants.
+The PNI Workbook supports planning for up to three groups of project participants.
 
 * Please name the group of participants from whom the project most needs to hear. [participants_firstGroupName|text]
 * Please describe this group of participants. [participants_firstGroupDescription|textarea]

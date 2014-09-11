@@ -3,19 +3,19 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>PNI Notebook for Working with Stories</title>
-<link rel="stylesheet" href="../../PNINotebookLibraries/dojo-release-1.10.0-src/dojo/resources/dojo.css">
-<link rel="stylesheet" href="../../PNINotebookLibraries/dojo-release-1.10.0-src/dijit/themes/dijit.css">
-<link rel="stylesheet" href="../../PNINotebookLibraries/dojo-release-1.10.0-src/dijit/themes/claro/claro.css">
-<link rel="stylesheet" href="../../PNINotebookLibraries/dgrid-0.3.16/css/dgrid.css">
-<link rel="stylesheet" href="../../PNINotebookLibraries/dgrid-0.3.16/css/skins/claro.css">
-<link rel="stylesheet" href="../../PNINotebookLibraries/dgrid-0.3.16/css/extensions/ColumnResizer.css">
+<title>PNI Workbook for Working with Stories</title>
+<link rel="stylesheet" href="../../PNIWorkbookLibraries/dojo-release-1.10.0-src/dojo/resources/dojo.css">
+<link rel="stylesheet" href="../../PNIWorkbookLibraries/dojo-release-1.10.0-src/dijit/themes/dijit.css">
+<link rel="stylesheet" href="../../PNIWorkbookLibraries/dojo-release-1.10.0-src/dijit/themes/claro/claro.css">
+<link rel="stylesheet" href="../../PNIWorkbookLibraries/dgrid-0.3.16/css/dgrid.css">
+<link rel="stylesheet" href="../../PNIWorkbookLibraries/dgrid-0.3.16/css/skins/claro.css">
+<link rel="stylesheet" href="../../PNIWorkbookLibraries/dgrid-0.3.16/css/extensions/ColumnResizer.css">
 
 <script>
 	// Load dgrid from dojofoundation for now for testing -- replace with local copy for production!!!
 	var dojoConfig;
 	(function(){
-		// var baseUrl = "../../PNINotebookLibraries/";
+		// var baseUrl = "../../PNIWorkbookLibraries/";
 		dojoConfig = {
 			async: true,
 			parseOnLoad: false,
@@ -26,7 +26,7 @@
 			// be necessary, since Dojo would automatically pick up
 			// dgrid, xstyle, and put-selector as siblings of the dojo folder.
 			packages: [
-			    // Packages relative to where dojo is being loaded from in PNINotebookLibraries
+			    // Packages relative to where dojo is being loaded from in PNIWorkbookLibraries
 				{ name: "dgrid", location: "../../dgrid-0.3.16" },
 				{ name: "xstyle", location: "../../xstyle-0.2.1" },
 				{ name: "put-selector", location: "../../put-selector-0.3.5" },
@@ -37,7 +37,7 @@
 	}());
 </script>
 
-<script src="../../PNINotebookLibraries/dojo-release-1.10.0-src/dojo/dojo.js"></script>
+<script src="../../PNIWorkbookLibraries/dojo-release-1.10.0-src/dojo/dojo.js"></script>
 
 <link rel="stylesheet" href="css/standard.css">
 
@@ -46,8 +46,8 @@
 </head>
 
 <body class="claro">
-    <noscript>Please enable JavaScript to use the PNI Notebook for Working with Stories.</noscript>
-    <div id="startup" style="display: none"><b>Starting up PNI Notebook; please wait...</b></div>
+    <noscript>Please enable JavaScript to use the PNI Workbook for Working with Stories.</noscript>
+    <div id="startup" style="display: none"><b>Starting up PNI Workbook; please wait...</b></div>
     <script>console.log("started loading..."); document.getElementById("startup").style.display="block";</script>
         
     <div id="navigationDiv" style="width: 100%; height: 100%"></div>

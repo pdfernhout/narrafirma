@@ -222,7 +222,7 @@ define(
         "questions": [
             {
                 "id": "aboutParticipantGroups",
-                "text": "On this page you will think about groups of participants you want to involve in your project.\nExamples might be: doctors and patients; staff and customers; natives, immigrants, and tourists.\nThe PNI Notebook supports planning for up to three groups of project participants.",
+                "text": "On this page you will think about groups of participants you want to involve in your project.\nExamples might be: doctors and patients; staff and customers; natives, immigrants, and tourists.\nThe PNI Workbook supports planning for up to three groups of project participants.",
                 "type": "label"
             },
             {
