@@ -58,3 +58,17 @@ body {
 	text-align: center;
 }
 
+/* This ensures that the story filter table columns are both one half of the space available */
+.storyFilterTable-valueCell {
+    width: 48%;
+    max-width: 48%;
+}
+
+// Suggestion from: https://bugs.dojotoolkit.org/ticket/17044 and: http://jsfiddle.net/ondrek/3FjLJ/9/
+.dijitTextBox .dijitInputInner { 
+    white-space: nowrap; 
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    -ms-text-overflow: ellipsis; 
+    overflow: hidden;
+}

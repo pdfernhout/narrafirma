@@ -20,7 +20,7 @@ define([
         {id: "broughtHome", type: "textarea", text: "Story | What happened when you first brought your dog home?"},
         {id: "broughtHomeTitle", type: "text", text: "Title | What is a good title for your story?"},
         {id: "feeling1", type: "slider", text: "Day Feeling | How good did you feel the day you brought your dog home?"},
-        {id: "feeling2", type: "slider", text: "Next Day Feeling| How good did you feel the day after you brought your dog home?"},
+        {id: "feeling2", type: "slider", text: "Next Day Feeling| How good did you feel the day after you brought your dog home? ----- just making this question really long for testing -------------------------------------------------------------- ???"},
         {id: "feeling3", type: "slider", text: "Now Feeling | How good do you feel right now?"},
         {id: "feeling4", type: "select", text: "Now Spouse Feeling | How good does your spouse feel right now?", options: "low\nmedium\nhigh"},
     ];

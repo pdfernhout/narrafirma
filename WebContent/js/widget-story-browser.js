@@ -191,7 +191,8 @@ define([
             cols: 2,
             showLabels: false,
             customClass: "storyFilterTable",
-            style: "width: 100%;"
+            style: "width: 100%;",
+            spacing: 10
         });
         
         pagePane.addChild(table);

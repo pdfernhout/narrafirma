@@ -112,6 +112,7 @@ define([
         var table = new TableContainer({
             cols: 4,
             showLabels: false,
+            spacing: 10
         });
         
         var columnHeader1ContentPane = new ContentPane({"content": "<i>Question</i>", "colspan": 1, "align": "right"});
@@ -131,9 +132,13 @@ define([
             // console.log("question", question);
             if (question.type === "header") {
                 var content = "<b>" + question.text + "</b>";
-                var headerContentPane = new ContentPane({"content": content, "colspan": 4, "align": "center"});
+                var headerContentPane = new ContentPane({"content": content, "colspan": 1, "align": "right"});
                 table.addChild(headerContentPane);
                 headerContentPane.startup();
+                // Add three blank panes to fill out row
+                table.addChild(new ContentPane());
+                table.addChild(new ContentPane());
+                table.addChild(new ContentPane());
             } else if (question.type === "select"){
                 var questionContentPane = new ContentPane({"content": question.text, "colspan": 1, "align": "right"});
                 table.addChild(questionContentPane);
@@ -144,9 +149,15 @@ define([
                 // console.log("insertQuestionsTable options", question.id, options);
 
                 // TODO: Maybe should do this to get styling and div id right? questionEditor.insertQuestionIntoDiv(question, page.containerNode);
-                newSpecialSelect(table, question.id + "_" + 1, options);
-                newSpecialSelect(table, question.id + "_" + 2, options);
-                newSpecialSelect(table, question.id + "_" + 3, options);
+                //newSpecialSelect(table, question.id + "_" + 1, options);
+                // newSpecialSelect(table, question.id + "_" + 2, options);
+                // newSpecialSelect(table, question.id + "_" + 3, options);
+                var select1 = widgets.newSelect(question.id + "_" + 1, null, question.options);
+                table.addChild(select1);
+                var select2 = widgets.newSelect(question.id + "_" + 2, null, question.options);
+                table.addChild(select2);
+                var select3 = widgets.newSelect(question.id + "_" + 3, null, question.options);
+                table.addChild(select3);
             } else if (question.type === "textarea") {
                 var textAreaContentPane = new ContentPane({"content": question.text, "colspan": 1, "align": "right"});
                 table.addChild(textAreaContentPane);

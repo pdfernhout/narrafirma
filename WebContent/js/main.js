@@ -130,8 +130,9 @@ require([
             "id": id,
             title: page.title,
             content: page.description.replace(/\n/g, "<br>\n"),
-            // Set to 99% so grid scroll bar shows up not clipped
-            style: "width: 99%",
+            // Shorten width so grid scroll bar shows up not clipped
+            // Also, looks like nested ContentPanes tend to walk off the right side of the page for some reason
+            style: "width: 96%",
             display: "none",
        });
         
@@ -214,6 +215,17 @@ require([
         urlHashFragmentChanged(startPage);
     }
     
+    // TODO: somehow unify this with code in widget-questions-table?
+    function newSpecialSelect(id, options, addToDiv) {
+        var select = new Select({
+            id: id,
+            options: options,
+        });
+        select.placeAt(document.getElementById(addToDiv));
+        select.startup();
+        return select;
+    }
+    
     // Make all of the application pages selectable from the dropdown list and back/next buttons and put them in a TabContainer
     function createLayout() {
         // console.log("createLayout start");
@@ -294,7 +306,7 @@ require([
         page_graphResults(tabContainer);
         */
 
-        selectWidget = widgets.newSelect("mainSelect", pageSelectOptions, null, "navigationDiv", "NoUnselectedOption");
+        selectWidget = newSpecialSelect("mainSelect", pageSelectOptions, "navigationDiv");
         
         // console.log("widget", selectWidget);
         // TODO: Width should be determined from contents of select options using font metrics etc.

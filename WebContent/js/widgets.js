@@ -13,10 +13,12 @@ define([
     "dijit/form/Button",
     "dijit/form/CheckBox",
     "dijit/layout/ContentPane",
-    "dijit/form/RadioButton",
+    "dijit/form/FilteringSelect",
     "dijit/form/HorizontalRule",
     "dijit/form/HorizontalRuleLabels",
     "dijit/form/HorizontalSlider",
+    "dojo/store/Memory",
+    "dijit/form/RadioButton",
     "dijit/form/Select",
     "dijit/form/SimpleTextarea",
     "dijit/form/TextBox",
@@ -34,10 +36,12 @@ define([
     Button,
     CheckBox,
     ContentPane,
-    RadioButton,
+    FilteringSelect,
     HorizontalRule,
     HorizontalRuleLabels,
     HorizontalSlider,
+    Memory,
+    RadioButton,
     Select,
     SimpleTextarea,
     TextBox,
@@ -114,33 +118,40 @@ define([
         return textarea;
     }
     
-    function newSelect(id, choices, optionsString, addToDiv, noSelectedOption) {
+    function newSelect(id, choices, optionsString, addToDiv, addNoSelectionOption) {
         var options = [];
         // TODO: Translate label for no selection
-        if (!noSelectedOption) options.push({label: " -- select -- ", value: "", selected: true});
+        if (addNoSelectionOption) options.push({name: " -- select -- ", id: "", selected: true});
         if (choices) {
             array.forEach(choices, function(each) {
                 // console.log("choice", id, each);
                 if (isString(each)) {
                     var label = translate(id + "_choice_" + each);
-                    options.push({label: label, value: each});
+                    options.push({name: label, id: each});
                 } else {
                     // TODO: Maybe bug in dojo select that it does not handle values that are not strings
                     // http://stackoverflow.com/questions/16205699/programatically-change-selected-option-of-a-dojo-form-select-that-is-populated-b
-                    options.push({label: each.label, value: each.value});
+                    options.push({name: each.label, id: each.value});
                 }
             });           
         } else if (optionsString) {
             array.forEach(optionsString.split("\n"), function(each) {
                 // console.log("option", id, each);
-                options.push({label: each, value: each});
+                options.push({name: each, id: each});
             });
         } else {
             console.log("No choices or options defined for select", id);
         }
-        var select = new Select({
+        
+        var dataStore = new Memory({"data": options});
+        
+        var select = new FilteringSelect({
                 id: id,
-                options: options
+                store: dataStore,
+                searchAttr: "name",
+                // TODO: Work on validation...
+                required: false
+                // style: "width: 100%"
         });
         if (isString(addToDiv)) {
             addToDiv = document.getElementById(addToDiv);
