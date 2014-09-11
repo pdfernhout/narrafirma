@@ -15,9 +15,7 @@ Participant questions need to have options and ids and translations
 
 Replace fake story data in story browser with a way that real data is loaded and stored
 Fix issue for story browser textarea where probably should not be in questions list and *ALL* does not work right
-Resolve issue with story browser filter selects causing table cells to resize
 
-Right-align questions in table of questions for project participants
 Way to retrieve data about project participant groups
 Internationalization of strings related to page of questions on project participant groups
 
@@ -37,20 +35,21 @@ Support graphBrowser -- shows one graph at a time, with two question select drop
 Support trendsReport -- shows text and graphs in report based on top differences in statistical tests,  has "add to observation" button
 Support clusterSpace -- used in catalysis to cluster interpretations it is a graphical OR grid way of putting like with like, the option tells you what is to be clustered
 
-Support questionAnswerCountOfTotalOnPage
-Support listCount
-Support questionAnswer
 Support questionsTable
-Support quizScoreResult
 Support report
-Support function
 Support recommendationTable
 Support imageUploader
 Support toggleButton
+Support checkBoxes
+Support interventionRecordsList
+
+Support questionAnswerCountOfTotalOnPage
+Support listCount
+Support questionAnswer
+Support quizScoreResult
+Support function
 Support toggleButtonState
 Support storyBrowserCount
-Support checkBoxes
-Support listCountinterventionRecordsList
 
 Fix boolean so it can get disabled and value gets set (probably make it a widget)
 
@@ -80,6 +79,8 @@ DONE Fix popup dialog background when scroll and shows content beneath it
 DONE Remove references to NarraCoach in code and content and replace them with references to PNI Notebook or other appropriate generic references.
 DONE Fix issue with the way selects resize inside tables, especially for the story browser question filters
 DONE Change name again from PNI Notebook to PNI Workbook
+DONE Right-align questions in table of questions for project participants
+DONE Resolve issue with story browser filter selects causing table cells to resize
 
 ======= CYNTHIA
 
