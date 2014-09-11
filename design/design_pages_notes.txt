@@ -979,6 +979,13 @@ the participant groups you set up in the project planning phase.
 
 * These are the elements in your presentation outline so far. [projectPresentationElementsList|grid|page_addPresentationElement]
 
+* Now you can export your outline, open it in your word processor, and add material to it [presentationLabel|label]
+from any of the stage reports (or the final project report).
+
+* Export this outline [exportPresentationOutline|button]
+
+* Have you finished your presentation report? [presentationReportFinished|select|yes;no;I'm not making a project presentation]
+
 ## Add element to project presentation outline [page_addPresentationElement|popup]
 
 * Name | What name would you like to give this element in your presentation? [presentationElementName|text]
@@ -986,13 +993,6 @@ the participant groups you set up in the project planning phase.
 * Evidence | What evidence does this element present that your project met its goals? [presentationElementEvidence|textarea]
 * Q&A | What questions do you anticipate about this element, and how would you like to answer them? [presentationElementQA|textarea]
 * Notes | Enter any other notes you want to remember about this element as you present it. [presentationElementNotes|textarea]
-
-* Now you can export your outline, open it in your word processor, and add material to it [presentationLabel|label]
-from any of the stage reports (or the final project report).
-
-* Export this outline [exportPresentationOutline|button]
-
-* Have you finished your presentation report? [presentationReportFinished|select|yes;no;I'm not making a project presentation]
 
 ## Interested people [page_interestedPeople]
 

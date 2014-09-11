@@ -3761,6 +3761,22 @@ define(
                 "text": "These are the elements in your presentation outline so far.",
                 "type": "grid",
                 "options": "page_addPresentationElement"
+            },
+            {
+                "id": "presentationLabel",
+                "text": "Now you can export your outline, open it in your word processor, and add material to it\nfrom any of the stage reports (or the final project report).",
+                "type": "label"
+            },
+            {
+                "id": "exportPresentationOutline",
+                "text": "Export this outline",
+                "type": "button"
+            },
+            {
+                "id": "presentationReportFinished",
+                "text": "Have you finished your presentation report?",
+                "type": "select",
+                "options": "yes;no;I'm not making a project presentation"
             }
         ]
     },
@@ -3800,22 +3816,6 @@ define(
                 "text": "Enter any other notes you want to remember about this element as you present it.",
                 "shortText": "Notes",
                 "type": "textarea"
-            },
-            {
-                "id": "presentationLabel",
-                "text": "Now you can export your outline, open it in your word processor, and add material to it\nfrom any of the stage reports (or the final project report).",
-                "type": "label"
-            },
-            {
-                "id": "exportPresentationOutline",
-                "text": "Export this outline",
-                "type": "button"
-            },
-            {
-                "id": "presentationReportFinished",
-                "text": "Have you finished your presentation report?",
-                "type": "select",
-                "options": "yes;no;I'm not making a project presentation"
             }
         ]
     },
