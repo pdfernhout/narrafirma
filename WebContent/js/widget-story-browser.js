@@ -130,7 +130,7 @@ define([
                 }
             }
         } else {
-            // not supported
+            console.log("ERROR: question type not supported: ", question.type, question);
             options.push({label: "*ALL*" + " (" +  data.length + ")", value: "*ALL*"});
         }
         return options;
@@ -146,7 +146,7 @@ define([
         containerPane.addChild(contentPane);
          
         var question = widgets.newSelect(id + "_question", questionOptions, null, contentPane);
-        question.set("style", "width: 100%");
+        question.set("style", "width: 98%; max-width: 98%");
         
         contentPane.domNode.appendChild(domConstruct.toDom('<br>'));
         
@@ -160,6 +160,8 @@ define([
 
         return {"contentPane": contentPane, "question": question, "answers": answers};
     }
+    
+    var filterableQuestionTypes = ["select", "slider", "boolean", "text"];
     
     function insertStoryBrowser(pseudoQuestion, pagePane, pageDefinitions) {
         console.log("insertStoryBrowser", pseudoQuestion);
@@ -182,8 +184,10 @@ define([
         var questionOptions = [];
         var questionsById = {};
         array.forEach(popupPageDefinition.questions, function (question) {
-            questionOptions.push({label: question.text, value: question.id});
-            questionsById[question.id] = question;
+            if (array.indexOf(filterableQuestionTypes, question.type) != -1) {
+                questionOptions.push({label: question.shortText, value: question.id});
+                questionsById[question.id] = question;
+            }
         });
         
         var table = new TableContainer({
@@ -191,7 +195,7 @@ define([
             cols: 2,
             showLabels: false,
             customClass: "storyFilterTable",
-            style: "width: 100%;",
+            style: "width: 98%;",
             spacing: 10
         });
         

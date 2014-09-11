@@ -14,7 +14,6 @@ Disabled or hidden tabs which are enabled as progress
 Participant questions need to have options and ids and translations
 
 Replace fake story data in story browser with a way that real data is loaded and stored
-Fix issue for story browser textarea where probably should not be in questions list and *ALL* does not work right
 
 Way to retrieve data about project participant groups
 Internationalization of strings related to page of questions on project participant groups
@@ -81,6 +80,7 @@ DONE Fix issue with the way selects resize inside tables, especially for the sto
 DONE Change name again from PNI Notebook to PNI Workbook
 DONE Right-align questions in table of questions for project participants
 DONE Resolve issue with story browser filter selects causing table cells to resize
+DONE Fix issue for story browser textarea where probably should not be in questions list and *ALL* does not work right
 
 ======= CYNTHIA
 
