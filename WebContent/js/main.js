@@ -132,7 +132,7 @@ require([
             content: page.description.replace(/\n/g, "<br>\n"),
             // Shorten width so grid scroll bar shows up not clipped
             // Also, looks like nested ContentPanes tend to walk off the right side of the page for some reason
-            style: "width: 96%",
+            style: "width: 94%",
             display: "none",
        });
         
