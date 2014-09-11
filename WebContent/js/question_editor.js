@@ -86,7 +86,7 @@ define([
             if (widget) {
                 var value = widget.get("value");
                 // TODO: Change or Translate
-                if (value === null) value = "<Not Yet Entered>";
+                if (value === null) value = "(Not Yet Entered)";
                 return value;
             } else {
                 console.log("ERROR: missing widget: ", question.options, question);
