@@ -3838,6 +3838,7 @@ define(
         "name": "Add person interested in project",
         "description": "",
         "isHeader": false,
+        "type": "popup",
         "questions": [
             {
                 "id": "interestedPersonName",

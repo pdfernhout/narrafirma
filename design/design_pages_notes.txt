@@ -998,7 +998,7 @@ from any of the stage reports (or the final project report).
 
 * These are the people who have said they are interested in future projects. [interestedPeopleList|grid|page_addInterestedPerson]
 
-## Add person interested in project [page_addInterestedPerson]
+## Add person interested in project [page_addInterestedPerson|popup]
 
 * Name | What is the person's name (and position if applicable)? [interestedPersonName|text]
 * Contact details | Enter any contact details here. [interestedPersonContactDetails|textarea]
