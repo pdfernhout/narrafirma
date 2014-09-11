@@ -105,7 +105,7 @@ define([
         var textarea = new SimpleTextarea({
             id: id,
             rows: "4",
-            cols: "50",
+            cols: "80",
             style: "width:auto;"
         });
         if (isString(addToDiv)) {
