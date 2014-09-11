@@ -139,7 +139,7 @@ define([
     function createFilterPane(id, questionsById, questionOptions, data, containerPane) {
         var contentPane = new ContentPane({
             id: id + "_content",
-            style: "width: 100%;"
+            style: "width: 95%;"
             // doLayout: false
         });
         
