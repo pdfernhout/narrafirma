@@ -54,6 +54,25 @@ define([
      ];
 
     var unsupportedTypes = {};
+    var questionsRequiringRecalculationOnPageChanges = {};
+    
+    function updateQuestionsForPageChange() {
+        for (var questionID in questionsRequiringRecalculationOnPageChanges) {
+            console.log("recalculating question: ", questionID);
+            var data = questionsRequiringRecalculationOnPageChanges[questionID];
+            console.log("textNode", data.textNode);
+            data.textNode.nodeValue = data.baseText + " " + calculateTextForQuestion(data.question);
+        }
+    }
+    
+    function calculateTextForQuestion(question) {
+        //if (question.type === "questionAnswer") {
+        //    var widget = registry.byId(question.options);
+       //     console.log("options & widget", question.options, widget);
+        //    return widget.get("value");
+        //}
+        return "This was calculated " + Date();
+    }
         
     function insertQuestionIntoDiv(question, questionsDiv) {
         // console.log("question", question);
@@ -71,6 +90,7 @@ define([
          }
         
         var widgetToPlace = null;
+        var calculatedText = null;
         
         if (question.type === "boolean") {
            widgetToPlace = widgets.newBoolean(question.id);
@@ -80,8 +100,9 @@ define([
         } else if (question.type === "questionAnswer") {
             // TODO; How does this get updated???
            console.log("questionAnswer", question, question.options);
-           widgetToPlace = widgets.newLabel(question.id + "_value", question.options);
-           console.log("widget", widget);
+           calculatedText = calculateTextForQuestion(question);
+           //widgetToPlace = widgets.newLabel(question.id + "_value", question.options);
+           // console.log("widget", widget);
         } else if (question.type === "checkbox") {
             widgetToPlace = widgets.newCheckbox(question.id);
         } else if (question.type === "checkboxes") {
@@ -117,7 +138,12 @@ define([
             // Otherwise, see if can translate the text if it is a tag
             questionText = translate(question.text, question.text);
         }
+        
         if (question.type === "header") questionText = "<b>" + questionText + "<b>";
+        
+        var baseText = questionText;
+        
+        if (calculatedText !== null) questionText += " " + calculatedText;
 
         var helpText = "";
         if (!question.help) {
@@ -143,7 +169,12 @@ define([
         questionDiv.className = "question";
         questionDiv.setAttribute("data-js-question-id", question.id);
         questionDiv.setAttribute("data-js-question-type", question.type);
-        questionDiv.appendChild(domConstruct.toDom(questionText));
+        
+        // Save this div for updating later
+        var questionTextNode = domConstruct.toDom(questionText);
+        if (calculatedText !== null) questionsRequiringRecalculationOnPageChanges[question.id] = {"textNode": questionTextNode, "question": question, "baseText": baseText};
+        questionDiv.appendChild(questionTextNode);
+        
         questionDiv.appendChild(document.createTextNode(" "));
         if (question.type === "textarea" || question.type === "text") questionDiv.appendChild(document.createElement("br"));
         if (widgetToPlace) questionDiv.appendChild(widgetToPlace.domNode);
@@ -314,7 +345,9 @@ define([
         "unsupportedTypes": unsupportedTypes,
         "insertQuestionIntoDiv": insertQuestionIntoDiv,
         "insertQuestionsIntoDiv": insertQuestionsIntoDiv,
-        "insertQuestionEditorDivIntoDiv": insertQuestionEditorDivIntoDiv
+        "insertQuestionEditorDivIntoDiv": insertQuestionEditorDivIntoDiv,
+        "questionsRequiringRecalculationOnPageChanges": questionsRequiringRecalculationOnPageChanges,
+        "updateQuestionsForPageChange": updateQuestionsForPageChange
     };
 
 });

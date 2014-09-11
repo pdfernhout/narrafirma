@@ -108,7 +108,9 @@ require([
         nextPageButton.setDisabled(!page.nextPageID);
         
        //  windowDojo.scrollIntoView(selectWidget.domNode);
-        window.scrollTo(0, 0);
+        window.scrollTo(0, 0); 
+        
+        questionEditor.updateQuestionsForPageChange();
     }
     
     // TODO: Put this in utility
