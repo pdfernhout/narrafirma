@@ -49,7 +49,8 @@ define([
         "textarea", 
         "select",
         "radio",
-        "slider"
+        "slider",
+        "toggleButton"
     ];
  
     var supportedTypes = [
@@ -66,7 +67,8 @@ define([
         "questionAnswer",
         "questionAnswerCountOfTotalOnPage",
         "listCount",
-        "function"
+        "function",
+        "toggleButton"
      ];
 
     var unsupportedTypes = {};
@@ -74,10 +76,11 @@ define([
     
     function updateQuestionsForPageChange(domain) {
         for (var questionID in questionsRequiringRecalculationOnPageChanges) {
-            console.log("recalculating question: ", questionID);
             var data = questionsRequiringRecalculationOnPageChanges[questionID];
             // console.log("textNode", data.textNode);
-            data.textNode.nodeValue = data.baseText + " " + calculateTextForQuestion(data.question);
+            var calculatedText = calculateTextForQuestion(data.question);
+            data.textNode.nodeValue = data.baseText + " " + calculatedText;
+            console.log("recalculated question: ", questionID, calculatedText);
         }
     }
     
@@ -177,6 +180,8 @@ define([
            // console.log("widget", widget);
         } else if (question.type === "checkbox") {
             widgetToPlace = widgets.newCheckbox(question.id);
+        } else if (question.type === "toggleButton") {
+            widgetToPlace = widgets.newToggleButton(question.id);
         } else if (question.type === "checkboxes") {
             widgetToPlace = widgets.newCheckBoxes(question.id, question.choices, question.options);
         } else if (question.type === "text") {

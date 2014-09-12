@@ -4,8 +4,10 @@ define([
     "dojo/_base/array",
     "dojo/_base/declare",
     "dojo/dom",
+    "js/domain",
     "dojo/dom-construct",
     "dojo/dom-style",
+    "dojo/_base/lang",
     "dojo/on",
     "dijit/registry",
     "js/translate",
@@ -22,13 +24,16 @@ define([
     "dijit/form/Select",
     "dijit/form/SimpleTextarea",
     "dijit/form/TextBox",
+    "dijit/form/ToggleButton",
     "dijit/_WidgetBase",
 ], function(
     array,
     declare,
     dom,
+    domain,
     domConstruct,
     domStyle,
+    lang,
     on,
     registry,
     translate,
@@ -45,6 +50,7 @@ define([
     Select,
     SimpleTextarea,
     TextBox,
+    ToggleButton,
     _WidgetBase
 ){
     
@@ -416,6 +422,24 @@ define([
         return checkbox;
     }
     
+    // TODO: Need to translate true/false
+    function newToggleButton(id, label, addToDiv) {
+        var toggleButton = new ToggleButton({
+            id: id,
+            label: "false",
+            value: false,
+            onChange: function(value) {this.set('label', value); domain.buttonClicked(id, value);},
+        });
+        
+        if (isString(addToDiv)) {
+            addToDiv = document.getElementById(addToDiv);
+        }
+        if (addToDiv) {
+            addToDiv.appendChild(toggleButton);
+        }
+        
+        return toggleButton;
+    }
     
     return {
         // "isString": isString,
@@ -429,6 +453,7 @@ define([
         "newSlider": newSlider,
         "newBoolean": newBoolean,
         "newCheckbox": newCheckbox,
+        "newToggleButton": newToggleButton
     };
 
 });

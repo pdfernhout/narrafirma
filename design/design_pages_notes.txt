@@ -414,7 +414,7 @@ in the places where they normally gather.
 
 # Collection process [page_collectionProcess]
 * Question form in final form: [checklist_questionFormInFinalForm|questionAnswer|questionFormInFinalForm]
-* Web story collection enabled: [checklist_webStoryCollectionEnabled|toggleButtonState|webStoryCollectionEnabled]
+* Web story collection enabled: [checklist_webStoryCollectionEnabled|answerValue|webStoryCollectionEnabled]
 * Stories collected/entered: [checklist_storiesEntered|storyBrowserCount|collectedStoriesDuringCollection]
 * Session records created: [checklist_storyCollectionSessionsRecorded|listCount|storyCollectionSessionRecordsList]
 * Sessions reflected on: [checklist_storyCollectionSessionsReflectedOn|listCount|storyCollectionSessionReflectionsList]
@@ -435,10 +435,11 @@ but the system will ask you to confirm each change.
 
 ## Start story collection [page_startStoryCollection]
 
-* If you are doing story collection over the internet, click this button to make the web form "live" and able [startCollectionLabel|label]
-to be used by people other than yourself.
+* If you are doing story collection over the internet, click this button to make the web form "live" and able to be used by people other than yourself.[startCollectionLabel|label]
 
-* Enable web story collection | Disable web story collection [enableWebStoryForm|toggleButton|webStoryCollectionEnabled]
+* Enable web story collection | Enable web story collection [enableWebStoryForm|toggleButton|webStoryCollectionEnabled]
+
+* Web story collection enabled: [webStoryCollectionEnabled_tracker1|questionAnswer|enableWebStoryForm]
 
 * Copy story form web link [copyStoryFormURLDuringStart|button]
 
@@ -452,10 +453,11 @@ to be used by people other than yourself.
 
 ## Stop story collection [page_stopStoryCollection]
 
-* If you are doing story collection over the internet, click this button to make the web form [stopCollectionLabel|label]
-unavailable (to anyone but yourself).
+* If you are doing story collection over the internet, click this button to make the web form unavailable (to anyone but yourself). You can re-enable story collection later by going back to a previous page. [stopCollectionLabel|label]
 
-* Enable web story collection | Disable web story collection [disableWebStoryFormAfterStoryCollection|toggleButton|webStoryCollectionEnabled]
+* Disable web story collection | Disable web story collection [disableWebStoryFormAfterStoryCollection|button]
+
+* Web story collection enabled: [webStoryCollectionEnabled_tracker2|questionAnswer|enableWebStoryForm]
 
 ## Enter story collection session records [page_enterCollectionSessionRecords]
 

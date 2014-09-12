@@ -1415,7 +1415,7 @@ define(
             {
                 "id": "checklist_webStoryCollectionEnabled",
                 "text": "Web story collection enabled:",
-                "type": "toggleButtonState",
+                "type": "answerValue",
                 "options": "webStoryCollectionEnabled"
             },
             {
@@ -1479,15 +1479,21 @@ define(
         "questions": [
             {
                 "id": "startCollectionLabel",
-                "text": "If you are doing story collection over the internet, click this button to make the web form \"live\" and able\nto be used by people other than yourself.",
+                "text": "If you are doing story collection over the internet, click this button to make the web form \"live\" and able to be used by people other than yourself.",
                 "type": "label"
             },
             {
                 "id": "enableWebStoryForm",
-                "text": "Disable web story collection",
+                "text": "Enable web story collection",
                 "shortText": "Enable web story collection",
                 "type": "toggleButton",
                 "options": "webStoryCollectionEnabled"
+            },
+            {
+                "id": "webStoryCollectionEnabled_tracker1",
+                "text": "Web story collection enabled:",
+                "type": "questionAnswer",
+                "options": "enableWebStoryForm"
             },
             {
                 "id": "copyStoryFormURLDuringStart",
@@ -1531,15 +1537,20 @@ define(
         "questions": [
             {
                 "id": "stopCollectionLabel",
-                "text": "If you are doing story collection over the internet, click this button to make the web form\nunavailable (to anyone but yourself).",
+                "text": "If you are doing story collection over the internet, click this button to make the web form unavailable (to anyone but yourself). You can re-enable story collection later by going back to a previous page.",
                 "type": "label"
             },
             {
                 "id": "disableWebStoryFormAfterStoryCollection",
                 "text": "Disable web story collection",
-                "shortText": "Enable web story collection",
-                "type": "toggleButton",
-                "options": "webStoryCollectionEnabled"
+                "shortText": "Disable web story collection",
+                "type": "button"
+            },
+            {
+                "id": "webStoryCollectionEnabled_tracker2",
+                "text": "Web story collection enabled:",
+                "type": "questionAnswer",
+                "options": "enableWebStoryForm"
             }
         ]
     },

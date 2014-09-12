@@ -74,6 +74,12 @@ define([
         }
     }
     
+    // questionOrValue will be value for toggleButtons, question for other types
+    function buttonClicked(id, questionOrValue) {
+         console.log("buttonClicked", id, questionOrValue);
+         alert("Unfinished handling for: " + id);
+    }
+    
     return {
         "testDogQuestions": testDogQuestions,
         "testDogStories": testDogStories,
@@ -81,6 +87,7 @@ define([
         "surveyResults": surveyResults,
         "pageInstantiations": pageInstantiations,
         "pageDefinitions": pageDefinitions,
-        "callDashboardFunction": callDashboardFunction
+        "callDashboardFunction": callDashboardFunction,
+        "buttonClicked": buttonClicked
     };
 });

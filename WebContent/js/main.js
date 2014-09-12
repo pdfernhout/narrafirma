@@ -7,6 +7,7 @@ require([
     "dojo/dom-construct",
     "dojo/dom-style",
     "dojo/hash",
+    "dojo/_base/lang",
     "js/page_design-questions",
     "js/page_export-survey",
     "js/page_graph-results",
@@ -32,6 +33,7 @@ require([
     domConstruct,
     domStyle,
     hash,
+    lang,
     page_designQuestions,
     page_exportSurvey,
     page_graphResults,
@@ -78,11 +80,6 @@ require([
         var id = event;
         console.log("changing page to:", id);
         showPage(id);
-    }
-    
-    function buttonUnfinishedClick(event) {
-        console.log("buttonUnfinishedClick", event);
-        alert("Unfinished");
     }
     
     function showPage(id) {
@@ -148,7 +145,7 @@ require([
        
        array.forEach(page.questions, function(question) {
            if (question.type === "button") {
-               widgets.newButton(question.id, question.text, pagePane.domNode, buttonUnfinishedClick);
+               widgets.newButton(question.id, question.text, pagePane.domNode, lang.partial(domain.buttonClicked, question.id, question));
            } else if (startsWith(question.type, "questionsTable")) {
                widgetQuestionsTable.insertQuestionsTable(question, pagePane, domain.pageDefinitions);
            } else if (question.type === "storyBrowser") {
