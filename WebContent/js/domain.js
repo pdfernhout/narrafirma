@@ -62,12 +62,25 @@ define([
     
     // console.log("testDogStories", testDogStories);
     
+    function countNumberOfVenuesChosen(question) {
+        return "countNumberOfVenuesChosen UNFINISHED";
+    }
+    
+    function callDashboardFunction(functionName, question) {
+        if (functionName === "countNumberOfVenuesChosen") {
+            return countNumberOfVenuesChosen(question);
+        } else {
+            return "callDashboardFunction UNFINISHED: " + functionName + " for: " + question.id;
+        }
+    }
+    
     return {
         "testDogQuestions": testDogQuestions,
         "testDogStories": testDogStories,
         "exportedSurveyQuestions": exportedSurveyQuestions,
         "surveyResults": surveyResults,
         "pageInstantiations": pageInstantiations,
-        "pageDefinitions": pageDefinitions
+        "pageDefinitions": pageDefinitions,
+        "callDashboardFunction": callDashboardFunction
     };
 });

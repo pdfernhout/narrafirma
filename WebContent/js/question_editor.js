@@ -65,7 +65,8 @@ define([
         "slider",
         "questionAnswer",
         "questionAnswerCountOfTotalOnPage",
-        "listCount"
+        "listCount",
+        "function"
      ];
 
     var unsupportedTypes = {};
@@ -108,6 +109,9 @@ define([
                 console.log("ERROR: missing grid widget: ", question.options, question);
                 return "ERROR: missing grid widget: " + question.options;
             }
+        } else if (question.type === "function") {
+            var functionName = question.options;
+            return domain.callDashboardFunction(functionName, question);
         } else if (question.type === "questionAnswerCountOfTotalOnPage") {
             var page = domain.pageDefinitions[question.options];
             if (!page) {
@@ -163,7 +167,7 @@ define([
         } else if (question.type === "label" || question.type === "header") {
             // Not adding input node for these
            //  widget = widgets.newLabel(question.id, question.text);
-        } else if (question.type === "questionAnswer" || question.type === "questionAnswerCountOfTotalOnPage" || question.type === "listCount") {
+        } else if (question.type === "questionAnswer" || question.type === "questionAnswerCountOfTotalOnPage" || question.type === "listCount" || question.type === "function") {
             // TODO; How does this get updated???
            console.log("dynamic", question.type, question, question.options);
            // Can not calculate all items at this point because they may depend on other questions not yet defined
