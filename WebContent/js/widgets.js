@@ -252,34 +252,56 @@ define([
     // TODO: Very similar to RadioButtonsWidget
     // TODO: Set an optional minimum and maximum number that may be checked and validate for that
     declare("CheckBoxesWidget", [_WidgetBase], {
-        value: {},
+        value: null,
         choices: null,
         optionsString: null,
+        checkBoxes: null,
+        options: null,
+        
+        constructor: function(args) {
+            console.log("Constructor", this, args);
+            declare.safeMixin(this, args);
+            // These need to be created here so that the instances do not share one copy if made above
+            this.checkBoxes = {};
+            this.options = buildOptions(this.id, this.choices, this.optionsString);
+            var self = this;
+            if (!this.value) {
+                this.value = {};
+                array.forEach(this.options, function (option) {
+                    self.value[option.value] = false;
+                });
+            }
+        },
     
         buildRendering: function() {
+            //this.inherited(arguments);
+            _WidgetBase.prototype.buildRendering.call(this); 
+            
             // create the DOM for this widget
             // declare id var as "this" will not be defined inside array loop functions
             var id = this.id;
             var self = this;
             var div = domConstruct.create("div");
-            var options = buildOptions(id, this.choices, this.optionsString);
-    
-            array.forEach(options, function (option) {
+            // var options = buildOptions(id, this.choices, this.optionsString);
+            
+            array.forEach(this.options, function (option) {
                 var choiceID = id + "_choice_" + option.value;
+                console.log("creating checkbox", choiceID);
                 var checkBox = new CheckBox({
                     value: option.value,
                     "id": choiceID,
                 });
                 checkBox.placeAt(div);
-                self.value[option.value] = false;
+                checkBox.set("checked", self.value[option.value]);
                 on(checkBox, "click", function(evt) {
                     var localChoiceID = evt.target.defaultValue;
                     var checked = evt.target.checked;
                     self.value[localChoiceID] = checked;
-                    // console.log("clicked checkbox", evt, localChoiceID, checked, self.value);
+                    console.log("clicked checkbox", evt, localChoiceID, checked, self.value);
                     // TODO: send changed message?
                 });
                 checkBox.startup();
+                self.checkBoxes[option.value] = checkBox;
                 div.appendChild(domConstruct.toDom('<label for="' + choiceID + '">' + option.label + '</label><br>'));
             });
             
@@ -288,7 +310,23 @@ define([
         
         _setValueAttr: function(value) {
             // TODO: Need to select checkBoxes when this is called, but not if call it from inside widget on change
+            console.log("setting value of checkboxes", value);
             this.value = value;
+            var self = this;
+            array.forEach(this.options, function (option) {
+                // self.value[option.value] = false;
+                self.checkBoxes[option.value].set("checked", self.value[option.value]);
+            });
+        },
+        
+        _setDisabledAttr: function(/*Boolean*/ value){
+            this.disabled = value;
+            console.log("CheckBoxes", this.checkBoxes);
+            for (var itemID in this.checkBoxes) {
+                console.log("Disabling", value, itemID);
+                var item = this.checkBoxes[itemID];
+                item.attr("disabled", value);
+            }
         },
     });
 
