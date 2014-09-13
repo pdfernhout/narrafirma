@@ -424,12 +424,17 @@ define([
     
     // TODO: Need to translate true/false
     function newToggleButton(id, label, addToDiv) {
+        
+        // Toggle button maintains a "checked" flag, so we need to set value ourselves
         var toggleButton = new ToggleButton({
             id: id,
             label: "false",
             value: false,
-            onChange: function(value) {this.set('label', value); domain.buttonClicked(id, value);},
+            onChange: function(value) {this.set("label", value); this.set("value", value); domain.buttonClicked(id, value);},
         });
+        
+        //toggleButton.set("value", true);
+       // toggleButton.set("onChange", function(value) {this.set("label", value); this.set("value", value); domain.buttonClicked(id, value);});
         
         if (isString(addToDiv)) {
             addToDiv = document.getElementById(addToDiv);

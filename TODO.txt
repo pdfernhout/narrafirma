@@ -36,14 +36,19 @@ Support questionsTable
 Support report
 Support recommendationTable
 Support imageUploader
-Support toggleButton
 Support checkBoxes
 Support quizScoreResult
 
-Support function
-Support toggleButtonState
 Support storyBrowserCount
 Fix questionAnswerCountOfTotalOnPages so it can handle a questionsTable
+
+Implement countNumberOfVenuesChosen in domain
+Implement startup and shutdown of web data collection in domain buttonClicked
+Implement printStoryForm in domain buttonClicked
+Implement copyStoryFormURLDuringFinalize in domain buttonClicked
+Umplement copyStoryFormURLDuringStart in domain buttonClicked
+Implement exportPresentationOutline in domain buttonClicked
+Implement showHideCollectedStories in domain buttonClicked
 
 Fix boolean so it can get disabled and value gets set (probably make it a widget)
 
@@ -81,6 +86,8 @@ DONE Add icons for home, left arrow, and right arrow to buttons in navigation ba
 DONE Support questionAnswer
 DONE Support questionAnswerCountOfTotalOnPage
 DONE Support listCount
+DONE Support function
+DONE Support toggleButton
 
 ======= CYNTHIA
 

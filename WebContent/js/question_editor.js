@@ -80,7 +80,7 @@ define([
             // console.log("textNode", data.textNode);
             var calculatedText = calculateTextForQuestion(data.question);
             data.textNode.nodeValue = data.baseText + " " + calculatedText;
-            console.log("recalculated question: ", questionID, calculatedText);
+            // console.log("recalculated question: ", questionID, calculatedText);
         }
     }
     
@@ -88,11 +88,12 @@ define([
         var widget;
         if (question.type === "questionAnswer") {
             widget = registry.byId(question.options);
-            // console.log("options & widget", question.options, widget);
+            // if (question.options === "webStoryCollectionEnabled") console.log("options & widget", question.options, widget);
             if (widget) {
                 var value = widget.get("value");
                 // TODO: Change or Translate
                 if (value === null) value = "(Not Yet Entered)";
+                // if (question.options === "webStoryCollectionEnabled") console.log("value", value);
                 return value;
             } else {
                 console.log("ERROR: missing widget: ", question.options, question);
@@ -172,7 +173,7 @@ define([
            //  widget = widgets.newLabel(question.id, question.text);
         } else if (question.type === "questionAnswer" || question.type === "questionAnswerCountOfTotalOnPage" || question.type === "listCount" || question.type === "function") {
             // TODO; How does this get updated???
-           console.log("dynamic", question.type, question, question.options);
+           // console.log("dynamic", question.type, question.id, question.options);
            // Can not calculate all items at this point because they may depend on other questions not yet defined
            // need to ensure the calculation method is called at startup
            calculatedText = "(Initializing...)";

@@ -1483,17 +1483,10 @@ define(
                 "type": "label"
             },
             {
-                "id": "enableWebStoryForm",
-                "text": "Enable web story collection",
+                "id": "webStoryCollectionEnabled",
+                "text": "Enable web story collection:",
                 "shortText": "Enable web story collection",
-                "type": "toggleButton",
-                "options": "webStoryCollectionEnabled"
-            },
-            {
-                "id": "webStoryCollectionEnabled_tracker1",
-                "text": "Web story collection enabled:",
-                "type": "questionAnswer",
-                "options": "enableWebStoryForm"
+                "type": "toggleButton"
             },
             {
                 "id": "copyStoryFormURLDuringStart",
@@ -1550,7 +1543,7 @@ define(
                 "id": "webStoryCollectionEnabled_tracker2",
                 "text": "Web story collection enabled:",
                 "type": "questionAnswer",
-                "options": "enableWebStoryForm"
+                "options": "webStoryCollectionEnabled"
             }
         ]
     },

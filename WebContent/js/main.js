@@ -115,6 +115,8 @@ require([
         // console.log("startsWith", prefix, str.lastIndexOf(prefix, 0) === 0, str);
       return str.lastIndexOf(prefix, 0) === 0;
     }
+    
+    var allButtons = [];
 
     function createPage(id, visible) {
         console.log("createPage", id);
@@ -146,6 +148,7 @@ require([
        array.forEach(page.questions, function(question) {
            if (question.type === "button") {
                widgets.newButton(question.id, question.text, pagePane.domNode, lang.partial(domain.buttonClicked, question.id, question));
+               allButtons.push([question.id, question.args]);
            } else if (startsWith(question.type, "questionsTable")) {
                widgetQuestionsTable.insertQuestionsTable(question, pagePane, domain.pageDefinitions);
            } else if (question.type === "storyBrowser") {
@@ -202,7 +205,6 @@ require([
             alert("At last page");
         }
     }
-    
 
     function wwsButtonClicked() {
         console.log("wwsButtonClicked");
@@ -341,15 +343,20 @@ require([
         }
         console.log("all unsupported types:", unsupported);
         
+        console.log("all buttons", allButtons);
+        
         console.log("createLayout end");
         
         // Update if the URL hash fragment changes
         connect.subscribe("/dojo/hashchange", urlHashFragmentChanged);
     }
     
-    // TODO: Challenge of repeating sections....
-
+    // Setup important callback for page changes
+    domain.setPageChangeCallback(questionEditor.updateQuestionsForPageChange);
+    
     // Call the main function
     createLayout();
+    
+    // turn off startup "please wait" display
     document.getElementById("startup").style.display = "none";
 });

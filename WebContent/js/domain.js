@@ -4,9 +4,11 @@
 
 define([
     "dojo/_base/array",
+    "dijit/registry",
     "dojo/string"
 ], function(
     array,
+    registry,
     string
 ) {
     var pageDefinitions = {};
@@ -70,13 +72,53 @@ define([
         if (functionName === "countNumberOfVenuesChosen") {
             return countNumberOfVenuesChosen(question);
         } else {
+            console.log("TODO: callDashboardFunction ", functionName, question);
             return "callDashboardFunction UNFINISHED: " + functionName + " for: " + question.id;
         }
+    }
+    
+    
+    // Store page change callback to prevent circular reference when loading domain and question editor
+    var pageChangeCallback = null;
+    
+    function setPageChangeCallback(pageChangeCallbackNewValue) {
+        pageChangeCallback = pageChangeCallbackNewValue;
     }
     
     // questionOrValue will be value for toggleButtons, question for other types
     function buttonClicked(id, questionOrValue) {
          console.log("buttonClicked", id, questionOrValue);
+         if (id === "printStoryForm") {
+             // TODO
+         } else if (id === "copyStoryFormURLDuringFinalize") {
+             // TODO
+         } else if (id === "copyStoryFormURLDuringStart") {
+             // TODO
+         } else if (id === "webStoryCollectionEnabled") {
+             // TODO: Overkill to recalculate them all...
+             pageChangeCallback();
+             // TODO
+             console.log("TODO webStoryCollectionEnabled");
+             return;
+         } else if (id === "disableWebStoryFormAfterStoryCollection") {
+             // TODO; Shut down the process....
+             registry.byId("webStoryCollectionEnabled").set("checked", false);
+             registry.byId("webStoryCollectionEnabled").set("value", false);
+             console.log("updated webStoryCollectionEnabled to false", registry.byId("webStoryCollectionEnabled").get("value"));
+             // TODO: Overkill to recalculate them all...
+             pageChangeCallback();
+             // TODO
+             console.log("TODO webStoryCollectionEnabled");
+             return;
+         } else if (id === "exportPresentationOutline") {
+             // TODO
+         } else if (id === "showHideCollectedStories") {
+             // This is in a popup...
+             // TODO
+         } else {
+             console.log("unknown button id: ", id, questionOrValue);
+             return alert("unknown button id: " + id);
+         }
          alert("Unfinished handling for: " + id);
     }
     
@@ -88,6 +130,7 @@ define([
         "pageInstantiations": pageInstantiations,
         "pageDefinitions": pageDefinitions,
         "callDashboardFunction": callDashboardFunction,
-        "buttonClicked": buttonClicked
+        "buttonClicked": buttonClicked,
+        "setPageChangeCallback": setPageChangeCallback
     };
 });
