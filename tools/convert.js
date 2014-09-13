@@ -47,10 +47,9 @@ function newButton(label, addToDiv, callback) {
 var acceptableTypes = [
     "text", "textarea", "label", "header", "select", "grid", "button",
     "popup", "imageUploader", "recommendationTable", "questionsTable", "quizScoreResult",
-    "report", "checkBoxes", "templateList", "checkBoxesWithPull", "participantStoryForm", "storyBrowser", "observationList", 
+    "report", "checkBoxes", "templateList", "checkBoxesWithPull", "participantStoryForm", "storyBrowser",
     "excerptsList", "storyThemer", "graphBrowser", "trendsReport", "clusterSpace", "listCount",
     "questionAnswer", "questionAnswerCountOfTotalOnPage", "toggleButton", "boolean",
-    // Mispelled duplicates?
     "observationsList"
 ];
 
