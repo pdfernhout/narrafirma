@@ -59,6 +59,11 @@ define([
             feeling3: i % 100,
             feeling4: ["low", "medium", "high"][i % 3]
         };
+        if (newStory.ownDog) {
+            newStory.ownDog = "yes";
+        } else {
+            newStory.ownDog = "no";
+        }
         testDogStories.push(newStory);
     }
     

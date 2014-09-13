@@ -195,19 +195,29 @@ define([
         value: null,
         choices: null,
         optionsString: null,
+        
+        constructor: function(args) {
+            // console.log("Constructor", this, args);
+            declare.safeMixin(this, args);
+            // These need to be created here so that the instances do not share one copy if made above
+            this.radioButtons = {};
+            this.options = buildOptions(this.id, this.choices, this.optionsString);
+            var self = this;
+        },
     
         buildRendering: function() {
+            _WidgetBase.prototype.buildRendering.call(this); 
+            
             // create the DOM for this widget
             // declare id var as "this" will not be defined inside array loop functions
             var id = this.id;
             var self = this;
             var div = domConstruct.create("div");
-            var options = buildOptions(id, this.choices, this.optionsString);
     
-            array.forEach(options, function (option) {
+            array.forEach(this.options, function (option) {
                 var choiceID = id + "_choice_" + option.value;
                 var radioButton = new RadioButton({
-                    checked: false,
+                    checked: (self.value === option.value),
                     value: option.value,
                     name: id,
                     "id": choiceID,
@@ -218,6 +228,7 @@ define([
                     self.set("value", evt.target.value);
                 });
                 radioButton.startup();
+                self.radioButtons[option.value] = radioButton;
                 div.appendChild(domConstruct.toDom('<label for="' + choiceID + '">' + option.label + '</label><br>'));
             });
             
@@ -225,8 +236,26 @@ define([
         },
 
         _setValueAttr: function(value) {
-            // TODO: Need to select radio button when this is called, but not if call it from inside widget on change
+            // TODO: (Maybe good enough?) Need to select radio button when this is called, but not if call it from inside widget on change
             this.value = value;
+            var self = this;
+            // console.log("set radio", value);
+            array.forEach(this.options, function (option) {
+                // self.value[option.value] = false;
+                // console.log("radio button value", self.value, option.value);
+                var radioButton = self.radioButtons[option.value];
+                radioButton.set("checked", self.value === option.value);
+            });
+        },
+        
+        _setDisabledAttr: function(/*Boolean*/ value){
+            this.disabled = value;
+            // console.log("RadioButtons", this.radioButtons);
+            for (var itemID in this.radioButtons) {
+                // console.log("Disabling", value, itemID);
+                var item = this.radioButtons[itemID];
+                item.attr("disabled", value);
+            }
         },
     });
 
@@ -259,7 +288,7 @@ define([
         options: null,
         
         constructor: function(args) {
-            console.log("Constructor", this, args);
+            // console.log("Constructor", this, args);
             declare.safeMixin(this, args);
             // These need to be created here so that the instances do not share one copy if made above
             this.checkBoxes = {};
@@ -286,7 +315,7 @@ define([
             
             array.forEach(this.options, function (option) {
                 var choiceID = id + "_choice_" + option.value;
-                console.log("creating checkbox", choiceID);
+                // console.log("creating checkbox", choiceID);
                 var checkBox = new CheckBox({
                     value: option.value,
                     "id": choiceID,
@@ -297,7 +326,7 @@ define([
                     var localChoiceID = evt.target.defaultValue;
                     var checked = evt.target.checked;
                     self.value[localChoiceID] = checked;
-                    console.log("clicked checkbox", evt, localChoiceID, checked, self.value);
+                    // console.log("clicked checkbox", evt, localChoiceID, checked, self.value);
                     // TODO: send changed message?
                 });
                 checkBox.startup();
@@ -309,8 +338,8 @@ define([
         },
         
         _setValueAttr: function(value) {
-            // TODO: Need to select checkBoxes when this is called, but not if call it from inside widget on change
-            console.log("setting value of checkboxes", value);
+            // TODO: (Maybe good enough?) Need to select checkBoxes when this is called, but not if call it from inside widget on change
+            // console.log("setting value of checkboxes", value);
             this.value = value;
             var self = this;
             array.forEach(this.options, function (option) {
@@ -321,9 +350,9 @@ define([
         
         _setDisabledAttr: function(/*Boolean*/ value){
             this.disabled = value;
-            console.log("CheckBoxes", this.checkBoxes);
+            // console.log("CheckBoxes", this.checkBoxes);
             for (var itemID in this.checkBoxes) {
-                console.log("Disabling", value, itemID);
+                // console.log("Disabling", value, itemID);
                 var item = this.checkBoxes[itemID];
                 item.attr("disabled", value);
             }
@@ -359,7 +388,7 @@ define([
         if (options) {
             labels = options.split("\n");
             if (labels.length != 2) {
-                console.log("Need to specify low and high labels for quesiton: ", id);
+                console.log("Need to specify low and high labels for question: ", id);
             } else {
                 hasTextLabels = true;
                 var labelLow = labels[0].trim();
@@ -368,7 +397,7 @@ define([
             }
         }
         
-        console.log("labels", labels, labels.length);
+        // console.log("labels", labels, labels.length);
         
         var slider = new HorizontalSlider({
             id: id,
@@ -433,6 +462,7 @@ define([
             id: id,
             choices: null,
             optionsString: "yes\nno",
+            // value: "no"
         });
          
         if (isString(addToDiv)) {
