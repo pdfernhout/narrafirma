@@ -1,7 +1,6 @@
 ==== PNI Workbook TODO list:
 
 Main Dashboard
-Dashboard for each section
 
 Help window displaying HTML instead of alert
 
@@ -32,7 +31,6 @@ Support graphBrowser -- shows one graph at a time, with two question select drop
 Support trendsReport -- shows text and graphs in report based on top differences in statistical tests,  has "add to observation" button
 Support clusterSpace -- used in catalysis to cluster interpretations it is a graphical OR grid way of putting like with like, the option tells you what is to be clustered
 
-Support questionsTable
 Support report
 Support recommendationTable
 Support imageUploader
@@ -68,6 +66,7 @@ DONE Story list widget with add button
 DONE Grid header resizing
 DONE Basic wait message when loading
 DONE Remove all JSHint warnings (as of 2014-09-05)
+DONE Support questionsTable
 DONE Story browser with list of title and shows stories
 DONE Support storyBrowser -- a smalltalk-like browser for stories (basic support)
 DONE Fix issue when two items selected and click view and get NS_ERROR_UNEXPECTED
@@ -88,11 +87,15 @@ DONE Support questionAnswerCountOfTotalOnPage
 DONE Support listCount
 DONE Support function
 DONE Support toggleButton
+DONE Dashboard for each section
 
 ======= CYNTHIA
 
 Write up sample PNI Workbook product offering descriptions for review (Cynthia)
+Create templates (Cynthia)
+
 DONE Writing questions based on book (Cynthia)
+DONE Create dashboard definitions (Cynthia)
 
 ==== Later:
 
@@ -120,6 +123,8 @@ Page to enter themes for stories
 Page to cluster themes into final themes
 
 ==== Wish list:
+
+Improve dashboards, perhaps with green checkmarks and thinking through completion feedback to be better
 
 Remember previous filtering options for any question in story browser
 
