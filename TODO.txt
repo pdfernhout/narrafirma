@@ -34,7 +34,6 @@ Support clusterSpace -- used in catalysis to cluster interpretations it is a gra
 Support report
 Support recommendationTable
 Support imageUploader
-Support checkBoxes
 Support quizScoreResult
 
 Support storyBrowserCount
@@ -88,6 +87,7 @@ DONE Support listCount
 DONE Support function
 DONE Support toggleButton
 DONE Dashboard for each section
+DONE Support checkBoxes
 
 ======= CYNTHIA
 
@@ -102,7 +102,7 @@ DONE Create dashboard definitions (Cynthia)
 Validation in general when progress through tabs and error reporting
 Validation of text fields for empty
 Validation of text fields for length
-Validation for checkboxes limited by maximum number of choices as validation error
+Validation for checkBoxes limited by maximum number of choices as validation error
 
 Resize Tab container when add Graph
 Chart with hover for story

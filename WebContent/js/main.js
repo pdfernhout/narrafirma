@@ -268,7 +268,7 @@ require([
             // Cleanup options
             // TODO: Ensure options get translated
             array.forEach(page.questions, function(question) {
-                 if (question.type === "select" && question.options.indexOf(";") != -1) {
+                 if ((question.type === "select" || question.type === "checkBoxes") && question.options.indexOf(";") != -1) {
                    // console.log("replacing select options", question.options);
                    question.options = question.options.replace(/;/g, "\n");
                    // console.log("result of replacement", question.options);

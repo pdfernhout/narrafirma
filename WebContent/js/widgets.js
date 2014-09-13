@@ -287,7 +287,7 @@ define([
         },
         
         _setValueAttr: function(value) {
-            // TODO: Need to select checkboxes when this is called, but not if call it from inside widget on change
+            // TODO: Need to select checkBoxes when this is called, but not if call it from inside widget on change
             this.value = value;
         },
     });

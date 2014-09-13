@@ -44,7 +44,7 @@ define([
     var entryTypes = [
         "boolean",
         "checkbox",
-        "checkboxes",
+        "checkBoxes",
         "text",
         "textarea", 
         "select",
@@ -58,7 +58,7 @@ define([
         "label",
         "header",
         "checkbox",
-        "checkboxes",
+        "checkBoxes",
         "text",
         "textarea", 
         "select",
@@ -183,7 +183,7 @@ define([
             widgetToPlace = widgets.newCheckbox(question.id);
         } else if (question.type === "toggleButton") {
             widgetToPlace = widgets.newToggleButton(question.id);
-        } else if (question.type === "checkboxes") {
+        } else if (question.type === "checkBoxes") {
             widgetToPlace = widgets.newCheckBoxes(question.id, question.choices, question.options);
         } else if (question.type === "text") {
             widgetToPlace = widgets.newTextBox(question.id);
