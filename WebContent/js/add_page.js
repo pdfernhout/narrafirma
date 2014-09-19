@@ -7,7 +7,7 @@ define([
     "dijit/layout/ContentPane"
 ], function(
     domConstruct,
-    question_editor,
+    questionEditor,
     translate,
     ContentPane
 ){
@@ -21,8 +21,8 @@ define([
        }
 
        if (page.questions) {
-           console.log("questions for page", page.id);
-           question_editor.insertQuestionsIntoDiv(page.questions, node);
+           console.log("questions for page", page.id, questionEditor);
+           questionEditor.insertQuestionsIntoDiv(page.questions, node);
        }
     }
     
