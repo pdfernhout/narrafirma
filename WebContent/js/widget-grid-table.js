@@ -53,11 +53,11 @@ define([
         var form = new Form();
         form.set("style", "width: 800px; height 800px; overflow: auto;");
         
-        addPage.addPageContents(form.domNode, popupPageDefinition);
+        addPage.addPageContents(form, popupPageDefinition);
         
         // TODO: Does the dialog itself have to be "destroyed"???
         
-        widgets.newButton("list_dialog_ok", "OK", form, function() {
+        widgets.newButton("list_dialog_ok_" + grid.id, "OK", form, function() {
             console.log("OK");
             dialog.hide();
             // dialogOK(question, questionEditorDiv, form);
@@ -82,7 +82,7 @@ define([
             form.destroyRecursive();
         });
         
-        widgets.newButton("list_dialog_cancel", "Cancel", form, function() {
+        widgets.newButton("list_dialog_cancel_" + grid.id, "Cancel", form, function() {
             console.log("Cancel");
             dialog.hide();
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
@@ -113,7 +113,7 @@ define([
         var form = new Form(); 
         form.set("style", "width: 800px; height 800px; overflow: auto;");
         
-        addPage.addPageContents(form.domNode, popupPageDefinition);
+        addPage.addPageContents(form, popupPageDefinition);
 
         console.log("grid", grid, grid.selection);
         // var item = grid
@@ -192,11 +192,20 @@ define([
             // title: pseudoQuestion.text
         });
         
-        pagePane.addChild(listContentPane);
+        if (!pagePane.addChild) {
+            // console.log("trouble -- does not have addChild method!", pagePane);
+            pagePane.domNode.appendChild(listContentPane.domNode);
+        } else {
+            pagePane.addChild(listContentPane);
+        }
         
         var pane = listContentPane.containerNode;
         
         var columns = {};
+        
+        if (!popupPageDefinition) {
+            console.log("Trouble: no popupPageDefinition", id, pagePane);
+        }
         
         array.forEach(popupPageDefinition.questions, function (question) {
             // TODO: Translate these texts
@@ -212,7 +221,12 @@ define([
             "columns": columns
         });
         
-        pagePane.addChild(grid);
+        if (!pagePane.addChild) {
+            // console.log("trouble -- does not have addChild method!", pagePane);
+            pagePane.domNode.appendChild(grid.domNode);
+        } else {
+            pagePane.addChild(grid);
+        }
         grid.startup();
         
         // console.log("grid startup with", storyList, projectStoriesStore);
@@ -254,6 +268,10 @@ define([
         // console.log("insertGridTable");
         
         var popupPageDefinition = pageDefinitions[pseudoQuestion.options];
+        
+        if (!popupPageDefinition) {
+            console.log("Trouble: no popupPageDefinition for options: ", pseudoQuestion.options, pseudoQuestion);
+        }
         
         // TODO: Need to translate
         var label = widgets.newLabel(pseudoQuestion.id + "label", pseudoQuestion.text, pagePane.domNode);

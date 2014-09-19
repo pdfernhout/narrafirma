@@ -6,10 +6,16 @@ define([
     "js/domain",
     "dojo/dom-construct",
     "dojo/dom-style",
+    "exports",
+    "dojo/_base/lang",
     "dojo/on",
     "dijit/registry",
     "js/translate",
+    "js/utility",
     "js/widgets",
+    "js/widget-grid-table",
+    "js/widget-questions-table",
+    "js/widget-story-browser",
     "dijit/Dialog",
     "dijit/form/Form",
 ], function(
@@ -18,10 +24,16 @@ define([
     domain,
     domConstruct,
     domStyle,
+    exports,
+    lang,
     on,
     registry,
     translate,
+    utility,
     widgets,
+    widgetGridTable,
+    widgetQuestionsTable,
+    widgetStoryBrowser,
     Dialog,
     Form
 ){
@@ -148,7 +160,35 @@ define([
         return "UNFINISHED type: " + question.type + " calculated " + Date();
     }
         
-    function insertQuestionIntoDiv(question, questionsDiv) {
+    
+    //
+    var allButtons = [];
+    
+    function insertQuestionIntoDiv(question, questionsPaneOrDiv) {
+        console.log("questionsPaneOrDiv", questionsPaneOrDiv);
+        var questionsDiv = questionsPaneOrDiv;
+        var questionsPane = null;
+        // questionsPaneOrDiv.baseClass && questionsPaneOrDiv.baseClass === "dijitContentPane") || 
+        if (questionsPaneOrDiv.domNode) {
+            console.log("It is a dojo pane!!");
+            questionsPane = questionsPaneOrDiv;
+            questionsDiv = questionsPane.domNode;
+        }
+        if (question.type === "button") {
+            var button = widgets.newButton(question.id, question.text, questionsDiv, lang.partial(domain.buttonClicked, question.id, question));
+            allButtons.push([question.id, question.args]);
+            return button;
+        } else if (utility.startsWith(question.type, "questionsTable")) {
+            var questionsTable = widgetQuestionsTable.insertQuestionsTable(question, questionsPane, domain.pageDefinitions);
+            return questionsTable;
+        } else if (question.type === "storyBrowser") {
+            var storyBrowser = widgetStoryBrowser.insertStoryBrowser(question, questionsPane, domain.pageDefinitions);
+            return storyBrowser;
+        } else if (question.type === "grid") {
+            var gridAndStore = widgetGridTable.insertGridTable(question, questionsPane, domain.pageDefinitions);
+            return gridAndStore;
+        }
+        
         // console.log("question", question);
         
        if (supportedTypes.indexOf(question.type) === -1) {
@@ -418,14 +458,17 @@ define([
     //insertQuestionsIntoDiv(testPuppyQuestions, questionsDiv);
     // insertQuestionsIntoDiv(createSurveyQuestions, questionsDiv);
     
-    return {
+    var addToExports = {
         "supportedTypes": supportedTypes,
         "unsupportedTypes": unsupportedTypes,
         "insertQuestionIntoDiv": insertQuestionIntoDiv,
         "insertQuestionsIntoDiv": insertQuestionsIntoDiv,
         "insertQuestionEditorDivIntoDiv": insertQuestionEditorDivIntoDiv,
         "questionsRequiringRecalculationOnPageChanges": questionsRequiringRecalculationOnPageChanges,
-        "updateQuestionsForPageChange": updateQuestionsForPageChange
+        "updateQuestionsForPageChange": updateQuestionsForPageChange,
+        "allButtons": allButtons
     };
+    
+    lang.mixin(exports, addToExports);
 
 });

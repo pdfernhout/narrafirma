@@ -7,7 +7,6 @@ require([
     "dojo/dom-construct",
     "dojo/dom-style",
     "dojo/hash",
-    "dojo/_base/lang",
     "js/page_design-questions",
     "js/page_export-survey",
     "js/page_graph-results",
@@ -17,9 +16,6 @@ require([
     "dijit/registry",
     "dojo/string",
     "js/widgets",
-    "js/widget-grid-table",
-    "js/widget-questions-table",
-    "js/widget-story-browser",
     "dojo/window",
     "dijit/layout/ContentPane",
     "dijit/form/Select",
@@ -33,7 +29,6 @@ require([
     domConstruct,
     domStyle,
     hash,
-    lang,
     page_designQuestions,
     page_exportSurvey,
     page_graphResults,
@@ -43,9 +38,6 @@ require([
     registry,
     string,
     widgets,
-    widgetGridTable,
-    widgetQuestionsTable,
-    widgetStoryBrowser,
     windowDojo,
     ContentPane,
     Select,
@@ -110,14 +102,6 @@ require([
         questionEditor.updateQuestionsForPageChange();
     }
     
-    // TODO: Put this in utility
-    function startsWith(str, prefix) {
-        // console.log("startsWith", prefix, str.lastIndexOf(prefix, 0) === 0, str);
-      return str.lastIndexOf(prefix, 0) === 0;
-    }
-    
-    var allButtons = [];
-
     function createPage(id, visible) {
         console.log("createPage", id);
         var page = domain.pageDefinitions[id];
@@ -146,18 +130,7 @@ require([
        // console.log("Made content pane", id);
        
        array.forEach(page.questions, function(question) {
-           if (question.type === "button") {
-               widgets.newButton(question.id, question.text, pagePane.domNode, lang.partial(domain.buttonClicked, question.id, question));
-               allButtons.push([question.id, question.args]);
-           } else if (startsWith(question.type, "questionsTable")) {
-               widgetQuestionsTable.insertQuestionsTable(question, pagePane, domain.pageDefinitions);
-           } else if (question.type === "storyBrowser") {
-               widgetStoryBrowser.insertStoryBrowser(question, pagePane, domain.pageDefinitions);
-           } else if (question.type === "grid") {
-               var gridAndStore = widgetGridTable.insertGridTable(question, pagePane, domain.pageDefinitions);
-           } else {
-               questionEditor.insertQuestionIntoDiv(question, pagePane.domNode);
-           }
+           questionEditor.insertQuestionIntoDiv(question, pagePane);
        });
        
        domain.pageInstantiations[id] = pagePane;
@@ -343,7 +316,7 @@ require([
         }
         console.log("all unsupported types:", unsupported);
         
-        console.log("all buttons", allButtons);
+        console.log("all buttons", questionEditor.allButtons);
         
         console.log("createLayout end");
         

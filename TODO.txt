@@ -88,6 +88,7 @@ DONE Support toggleButton
 DONE Dashboard for each section
 DONE Support checkBoxes
 DONE Fix boolean so it can get disabled and value gets set (also fixed radio buttons which uses same widget)
+DONE Move question creation code from main.js into question_editor.js and generalize so popups can have special types of components (buttons, grids, storyLists)
 
 ======= CYNTHIA
 
