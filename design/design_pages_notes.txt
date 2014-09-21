@@ -390,6 +390,7 @@ in the places where they normally gather.
 
 * Print session agenda [printCollectionSessionAgenda|button]
 
+// cfk move to one level with one activities list (with templates), draw from for session
 ## Add story collection session activity [page_addCollectionSessionActivity|popup]
 
 * Name | Please give this activity a name. [collectionSessionActivityName|text]
@@ -537,7 +538,7 @@ but the system will ask you to confirm each change.
 
 ## Browse stories [page_browseStories]
 
-* Collected stories [collectedStoriesAfterCollection|storyBrowser|addObservation:"page_addToObservation";addExcerpt:"page_addToExcerpt"]
+* Collected stories [collectedStoriesAfterCollection|storyBrowser|addToObservation:"page_addToObservation";addToExcerpt:"page_addToExcerpt"]
 
 ## Theme stories [page_themeStories]
 
@@ -573,7 +574,7 @@ all stories have been entered.
 
 * Please give this observation a name. [observationName|text]
 * Observation | Please describe this observation. [observation|textarea]
-* Results | These are the results you have selected to include in this observation. [observationResultsList|grid]
+* Results | These are the results you have selected to include in this observation. [observationResultsList|accumulatedItemsGrid|collectedStoriesAfterCollection]
 * Interpretations | These are the interpretations you have created for this observation. [observationInterpretationsList|grid|page_addInterpretation]
 Remember that you should create at least two interpretations for each observation.
 * Do you consider this observation to be fully explored? [observationFullyExplored|boolean]
@@ -632,32 +633,22 @@ Remember that you should create at least two interpretations for each observatio
 * Name | Please give this perspective a name. [perspectiveName|text]
 * Perspective | Describe this perspective. [perspectiveDescription|textarea]
 
-* Results linked to this perspective [perspectiveResultsList|grid|page_addResultToPerspective]
+* Results linked to this perspective [perspectiveResultsList|annotationsGrid|page_annotateResultForPerspective]
 
-* Excerpts linked to this perspective [perspectiveExcerptsList|grid|page_addExcerptToPerspective]
+* Excerpts linked to this perspective [perspectiveExcerptsList|annotationsGrid|page_annotateExcerptForPerspective]
 
-* Interpretations linked to this perspective [perspectiveInterpretationsList|grid|page_annotateInterpretationForPerspective]
+* Interpretations linked to this perspective [perspectiveInterpretationsList|annotationsGrid|page_annotateInterpretationForPerspective]
 
 * Do you consider this perspective to be complete? [perspectiveComplete|boolean]
 
-## Add result to perspective [page_addResultToPerspective|popup]
+// all of these popups could go away if there is an editable field on the grid
+## Annotate result for perspective [page_annotateResultForPerspective|popup]
 
-// this popup should show all the results linked to observations linked to interpretations linked to this perspective
-// perspective
-//      interpretation
-//           observation
-//                result
-* Choose a result that exemplifies this perspective. [resultsForThisPerspectiveList|grid]
-* Enter any notes you want to remember about this result here. [resultLinkedToPerspectiveNotes|textarea]
+* Enter any notes you want to remember about this result with respect to this perspective. [resultLinkedToPerspectiveNotes|textarea]
 
-## Add excerpt to perspective [page_addExcerptToPerspective|popup]
+## Annotate excerpt for perspective [page_annotateExcerptForPerspective|popup]
 
-// similarly, this should be a list of all the excerpts linked to interpretations linked to this perspective
-// perspective
-//     interpretation
-//         excerpt
-* Choose an excerpt that exemplifies this perspective. [excerptsForThisPerspectiveList|grid]
-* Enter any notes you want to remember about this excerpt. [excerptLinkedToPerspectiveNotes|textarea]
+* Enter any notes you want to remember about this excerpt with respect to this perspective. [excerptLinkedToPerspectiveNotes|textarea]
 
 ## Annotate interpretation for perspective [page_annotateInterpretationForPerspective]
 
@@ -726,7 +717,7 @@ Remember that you should create at least two interpretations for each observatio
 * Name | Please give this session record a name. [sensemakingSessionRecordName|text]
 
 // no add button on this grid, must add from story browser below
-* Resonant stories (pivot, voice, discovery) [sensemakingSessionRecordResonantStoriesList|grid]
+* Resonant stories (pivot, voice, discovery) [sensemakingSessionRecordResonantStoriesList|accumulatedItemsGrid|storiesToMarkAsResonantDuringSensemaking]
 
 * Show|hide collected stories [showHideCollectedStories|toggleButton|showCollectedStoriesInSensemakingSessionRecordScreen]
 * Collected stories [storiesToMarkAsResonantDuringSensemaking|storyBrowser|addResonantStory:"page_addResonantStory"]
