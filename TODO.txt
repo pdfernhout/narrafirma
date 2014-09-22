@@ -4,19 +4,23 @@ Main Dashboard
 
 Help window displaying HTML instead of alert
 
+Save data as move from page to page
+Restore data when load page
+
+Create new pages when add new participant groups
+
 Some sort of continue button at bottom of page to progress through steps
 Validation of page data as progress through a step
 Disabled or hidden tabs which are enabled as progress
+Tabs created for new pages as add participants or session plans or session records
 
 Participant questions need to have options and ids and translations
-
-Replace fake story data in story browser with a way that real data is loaded and stored
-
 Way to retrieve data about project participant groups
 Internationalization of strings related to page of questions on project participant groups
 
+Replace fake story data in story browser with a way that real data is loaded and stored
+
 Support all page types: normal (no specification), popup, questionsTable, recommendationTable, participantStoryForm
-Support a button does something when clicked
 
 Support a templateList -- a list box with templates read in from a file (of a particular type) with a "copy" button
 
@@ -64,6 +68,7 @@ DONE Story list widget with add button
 DONE Grid header resizing
 DONE Basic wait message when loading
 DONE Remove all JSHint warnings (as of 2014-09-05)
+DONE Remaking narracoach_questions.js to be proper module
 DONE Support questionsTable
 DONE Story browser with list of title and shows stories
 DONE Support storyBrowser -- a smalltalk-like browser for stories (basic support)
@@ -80,23 +85,24 @@ DONE Resolve issue with story browser filter selects causing table cells to resi
 DONE Fix issue for story browser textarea where probably should not be in questions list and *ALL* does not work right
 DONE Startup wait progress
 DONE Add icons for home, left arrow, and right arrow to buttons in navigation bar.
+DONE Writing questions based on book (Cynthia)
 DONE Support questionAnswer
 DONE Support questionAnswerCountOfTotalOnPage
 DONE Support listCount
 DONE Support function
 DONE Support toggleButton
 DONE Dashboard for each section
+DONE Create dashboard definitions (Cynthia)
 DONE Support checkBoxes
 DONE Fix boolean so it can get disabled and value gets set (also fixed radio buttons which uses same widget)
 DONE Move question creation code from main.js into question_editor.js and generalize so popups can have special types of components (buttons, grids, storyLists)
+DONE Support a button does something when clicked
 
 ======= CYNTHIA
 
 Write up sample PNI Workbook product offering descriptions for review (Cynthia)
 Create templates (Cynthia)
-
-DONE Writing questions based on book (Cynthia)
-DONE Create dashboard definitions (Cynthia)
+Create help (Cynthia)
 
 ==== Later:
 
@@ -147,8 +153,6 @@ Improve startup wait progress
 
 Generate PDF reports
 Generate CSV output
-
-DONE Remaking narracoach_questions.js to be proper module
 
 ==== Might not do
 
