@@ -1,0 +1,52 @@
+
+$ grep -i grid design_pages_notes.txt 
+
+// question types are: label, header (bold label), text, textarea, select, grid, checkBoxes,
+// grid widget should have these buttons:
+// if in the grid specification there is no page specified, you cannot add a new item
+// it is a graphical OR grid way of putting like with like
+* Please add participant groups in the list below (typically up to three groups). More details for each group will be added later.[participantGroups|grid|page_addParticipantGroup]
+* These are the project stories you have told so far. [projectStoryList|grid|page_projectStory]
+* These are the project story elements you have entered so far. [projectStoryElementsList|grid|page_addStoryElement]
+* These are the story eliciting questions you have entered so far. [elicitingQuestionsList|grid|page_addElicitingQuestion]
+* These are the questions you will be asking people about stories. [storyQuestionsList|grid|page_addStoryQuestion]
+* These are the questions you will be asking people about themselves. [participantQuestionsList|grid|page_addParticipantQuestion]
+* These are the collection sessions you have designed so far. [storyCollectionSessionPlansList|grid|page_addStoryCollectionSession]
+  * These are the activities added to this session plan so far. [collectionSessionActivitiesList|grid|page_addCollectionSessionActivity]
+* These are the story collection records you have entered so far. [storyCollectionSessionRecordsList|grid|page_addCollectionSessionRecord]
+  * These are the group constructions you have entered for this session so far. [collectionSessionConstructionsList|grid|page_newCollectionSessionConstruction]
+  * These are the notes you have entered for this story collection session so far. [collectionSessionNotesList|grid|page_newCollectionSessionNotes]
+    * These are the images you have entered for the construction so far. [collectionSessionConstructionImagesList|grid|page_newCollectionConstructionImage]
+    * Images | These are the images you have entered for this set of notes so far. [collectionSessionNoteImagesList|grid|page_newCollectionSessionImage]
+  * These are the session reflections you have entered so far. [storyCollectionSessionReflectionsList|grid|page_answerQuestionsAboutCollectionSession]
+* Results | These are the results you have selected to include in this observation. [observationResultsList|accumulatedItemsGrid|collectedStoriesAfterCollection]
+* Interpretations | These are the interpretations you have created for this observation. [observationInterpretationsList|grid|page_addInterpretation]
+  * Excerpts | You can add excerpts to this interpretation. [interpretationExcerptsList|grid|page_selectExcerpt]
+* These are the excerpts you have saved so far. [savedExcerptsList|grid|page_createNewExcerpt]
+* Collected observations [observationsListDisplay|grid|page_createOrEditObservation]
+* Perspectives [perspectivesList|grid|page_addPerspective]
+  * Results linked to this perspective [perspectiveResultsList|annotationsGrid|page_annotateResultForPerspective]
+  * Excerpts linked to this perspective [perspectiveExcerptsList|annotationsGrid|page_annotateExcerptForPerspective]
+  * Interpretations linked to this perspective [perspectiveInterpretationsList|annotationsGrid|page_annotateInterpretationForPerspective]
+// all of these popups could go away if there is an editable field on the grid
+* Sensemaking sessions [sensemakingSessionPlansList|grid|page_addSensemakingSessionPlan]
+  * These are the activities added to this session plan so far. [sensemakingSessionPlanActivitiesList|grid|page_addSensemakingSessionActivity]
+* Sensemaking sessions records [sensemakingSessionRecordsList|grid|page_addSensemakingSessionRecord]
+// no add button on this grid, must add from story browser below
+* Resonant stories (pivot, voice, discovery) [sensemakingSessionRecordResonantStoriesList|accumulatedItemsGrid|storiesToMarkAsResonantDuringSensemaking]
+* Session outcomes (like discoveries and ideas) [sensemakingSessionRecordOutcomesList|grid|page_newSensemakingSessionOutcome]
+* Group constructions [sensemakingSessionRecordConstructionsList|grid|page_newSensemakingSessionConstruction]
+* Session notes [sensemakingSessionRecordNotesList|grid|page_newSensemakingSessionNotes]
+* Session reflections [sensemakingSessionReflectionsList|grid|page_answerQuestionsAboutSensemakingSession]
+  * These are the images you have entered for the construction so far. [sensemakingSessionConstructionImages|grid|page_newSensemakingConstructionImage]
+  * Images | These are the images you have entered for this set of notes so far. [sensemakingSessionNoteImages|grid|page_newSensemakingSessionImage]
+* These are the interventions you have designed so far. [interventionPlansList|grid|page_addIntervention]
+* Intervention records [interventionRecordsList|grid|page_addInterventionRecord]
+  * Images | These are the images you have entered for this set of notes so far. [interventionRecordImages|grid|page_newInterventionImage]
+* Interventions [interventionsList|grid|page_answerQuestionsAboutIntervention]
+* These are the pieces of feedback you have gathered so far. [feedbackList|grid|page_enterFeedbackPiece]
+* These are the elements in your presentation outline so far. [projectPresentationElementsList|grid|page_addPresentationElement]
+* These are the people who have said they are interested in future projects. [interestedPeopleList|grid|page_addInterestedPerson]
+* These are the requests you have entered so far. [projectRequestsList|grid|page_addNewProjectRequest]
+
+
