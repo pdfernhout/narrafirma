@@ -4,45 +4,33 @@ require([
     "dojo/_base/array",
     "dojo/_base/connect",
     "js/domain",
-    "dojo/dom-construct",
     "dojo/dom-style",
     "dojo/hash",
-    "js/page_design-questions",
-    "js/page_export-survey",
-    "js/page_graph-results",
-    "js/page_take-survey",
+    //"js/page_design-questions",
+    //"js/page_export-survey",
+    //"js/page_graph-results",
+    //"js/page_take-survey",
     "js/pages",
     "js/question_editor",
-    "dijit/registry",
-    "dojo/string",
     "js/widgets",
-    "dojo/window",
     "dijit/layout/ContentPane",
     "dijit/form/Select",
-    "dijit/layout/TabContainer",
-    "dojox/layout/TableContainer",
     "dojo/domReady!"
 ], function(
     array,
     connect,
     domain,
-    domConstruct,
     domStyle,
     hash,
-    page_designQuestions,
-    page_exportSurvey,
-    page_graphResults,
-    page_takeSurvey,
+    //page_designQuestions,
+    //page_exportSurvey,
+    //page_graphResults,
+    //page_takeSurvey,
     pages,
     questionEditor,
-    registry,
-    string,
     widgets,
-    windowDojo,
     ContentPane,
-    Select,
-    TabContainer,
-    TableContainer
+    Select
 ){
     // TODO: Add page validation
     // TODO: Add translations for GUI strings used here
@@ -96,7 +84,6 @@ require([
         previousPageButton.setDisabled(!page.previousPageID);
         nextPageButton.setDisabled(!page.nextPageID);
         
-       //  windowDojo.scrollIntoView(selectWidget.domNode);
         window.scrollTo(0, 0); 
         
         questionEditor.updateQuestionsForPageChange();
