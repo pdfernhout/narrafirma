@@ -4,6 +4,7 @@ require([
     "dojo/_base/array",
     "dojo/_base/connect",
     "js/domain",
+    "dojo/dom-construct",
     "dojo/dom-style",
     "dojo/hash",
     //"js/page_design-questions",
@@ -20,6 +21,7 @@ require([
     array,
     connect,
     domain,
+    domConstruct,
     domStyle,
     hash,
     //page_designQuestions,
@@ -35,6 +37,7 @@ require([
     // TODO: Add page validation
     // TODO: Add translations for GUI strings used here
     
+    var currentPage = null;
     var currentPageID = null;
     var selectWidget = null;
     var previousPageButton = null;
@@ -72,17 +75,28 @@ require([
             return;
         }
         
-        if (currentPageID) {
-            domStyle.set(currentPageID, "display", "none");
+        domStyle.set("pageDiv", "display", "none");
+        // domStyle.set("startup", "display", "block");
+        
+        if (currentPageID && currentPage) {
+            // domStyle.set(currentPageID, "display", "none");
+            console.log("destroying", currentPageID, currentPage);
+            currentPage.destroyRecursive();
+            domConstruct.destroy(currentPage);
         }
         
-        domStyle.set(id, "display", "block");
+        // domStyle.set(id, "display", "block");
+        
+        currentPage = createPage(id, true);
         
         currentPageID = id;
         hash(currentPageID);
         
         previousPageButton.setDisabled(!page.previousPageID);
         nextPageButton.setDisabled(!page.nextPageID);
+        
+        // domStyle.set("startup", "display", "none");
+        domStyle.set("pageDiv", "display", "block");
         
         window.scrollTo(0, 0); 
         
@@ -130,6 +144,8 @@ require([
        }
        
        pagePane.startup();
+       
+       return pagePane;
     }
     
     function previousPageClicked(event) {
@@ -251,6 +267,7 @@ require([
             }
         });
         
+        /*
         // Now, premake pages only after all definitons are done (since some pages refer to others for question popups that may be defined later)
         array.forEach(pages, function(page) {
             // console.log("creating page", page.name)
@@ -259,7 +276,8 @@ require([
                 // Pre-make base pages
                 createPage(page.id);
             }
-        });        
+        });  
+        */      
         
         /* TODO: Delete these pages after making sure any needed functionality is moved elsewhere (into widgets or more general code) 
         page_designQuestions(tabContainer);
