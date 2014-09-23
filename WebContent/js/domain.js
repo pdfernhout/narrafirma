@@ -127,7 +127,13 @@ define([
          alert("Unfinished handling for: " + id);
     }
     
+    // All the data collected by the project
+    var data = {
+            
+    };
+    
     return {
+        "data": data,
         "testDogQuestions": testDogQuestions,
         "testDogStories": testDogStories,
         "exportedSurveyQuestions": exportedSurveyQuestions,
