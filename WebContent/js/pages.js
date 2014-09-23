@@ -222,37 +222,34 @@ define(
         "questions": [
             {
                 "id": "aboutParticipantGroups",
-                "text": "On this page you will think about groups of participants you want to involve in your project.\nExamples might be: doctors and patients; staff and customers; natives, immigrants, and tourists.\nThe PNI Workbook supports planning for up to three groups of project participants.",
+                "text": "On this page you will think about groups of participants you want to involve in your project.\nExamples might be: doctors and patients; staff and customers; natives, immigrants, and tourists.",
                 "type": "label"
             },
             {
-                "id": "participants_firstGroupName",
-                "text": "Please name the group of participants from whom the project most needs to hear.",
+                "id": "participantGroups",
+                "text": "Please add particant groups in the list below (typically up to three groups). More details for each group will be added later.",
+                "type": "grid",
+                "options": "page_addParticipantGroup"
+            }
+        ]
+    },
+    {
+        "id": "page_addParticipantGroup",
+        "name": "Participant group",
+        "description": "",
+        "isHeader": false,
+        "type": "popup",
+        "questions": [
+            {
+                "id": "participants_groupName",
+                "text": "Please name this group of participants from whom the project needs to hear (such as \"doctors\", \"students\", or \"staff\").",
+                "shortText": "Name",
                 "type": "text"
             },
             {
-                "id": "participants_firstGroupDescription",
+                "id": "participants_groupDescription",
                 "text": "Please describe this group of participants.\nFor example, you might want to record any observations you have made about this group.\nWhat do you know about them?",
-                "type": "textarea"
-            },
-            {
-                "id": "participants_secondGroupName",
-                "text": "Please name the group of participants from whom the project needs to hear next.",
-                "type": "text"
-            },
-            {
-                "id": "participants_secondGroupDescription",
-                "text": "Please describe the second-most critical group of participants.",
-                "type": "textarea"
-            },
-            {
-                "id": "participants_thirdGroupName",
-                "text": "If there is a third group of participants from whom the project needs to hear, please name them.",
-                "type": "text"
-            },
-            {
-                "id": "participants_thirdGroupDescription",
-                "text": "Please describe the third-most critical group of participants.",
+                "shortText": "Description",
                 "type": "textarea"
             }
         ]
@@ -1289,6 +1286,12 @@ define(
                 "id": "printCollectionSessionAgenda",
                 "text": "Print session agenda",
                 "type": "button"
+            },
+            {
+                "id": "COMMENT_page_addStoryCollectionSession_1",
+                "text": "// cfk move to one level with one activities list (with templates), draw from for session",
+                "type": "label",
+                "options": null
             }
         ]
     },
@@ -1894,7 +1897,7 @@ define(
                 "id": "collectedStoriesAfterCollection",
                 "text": "Collected stories",
                 "type": "storyBrowser",
-                "options": "addObservation:\"page_addToObservation\";addExcerpt:\"page_addToExcerpt\""
+                "options": "addToObservation:\"page_addToObservation\";addToExcerpt:\"page_addToExcerpt\""
             }
         ]
     },
@@ -2031,7 +2034,8 @@ define(
                 "id": "observationResultsList",
                 "text": "These are the results you have selected to include in this observation.",
                 "shortText": "Results",
-                "type": "grid"
+                "type": "accumulatedItemsGrid",
+                "options": "collectedStoriesAfterCollection"
             },
             {
                 "id": "observationInterpretationsList",
@@ -2248,116 +2252,58 @@ define(
             {
                 "id": "perspectiveResultsList",
                 "text": "Results linked to this perspective",
-                "type": "grid",
-                "options": "page_addResultToPerspective"
+                "type": "annotationsGrid",
+                "options": "page_annotateResultForPerspective"
             },
             {
                 "id": "perspectiveExcerptsList",
                 "text": "Excerpts linked to this perspective",
-                "type": "grid",
-                "options": "page_addExcerptToPerspective"
+                "type": "annotationsGrid",
+                "options": "page_annotateExcerptForPerspective"
             },
             {
                 "id": "perspectiveInterpretationsList",
                 "text": "Interpretations linked to this perspective",
-                "type": "grid",
+                "type": "annotationsGrid",
                 "options": "page_annotateInterpretationForPerspective"
             },
             {
                 "id": "perspectiveComplete",
                 "text": "Do you consider this perspective to be complete?",
                 "type": "boolean"
+            },
+            {
+                "id": "COMMENT_page_addPerspective_1",
+                "text": "// all of these popups could go away if there is an editable field on the grid",
+                "type": "label",
+                "options": null
             }
         ]
     },
     {
-        "id": "page_addResultToPerspective",
-        "name": "Add result to perspective",
+        "id": "page_annotateResultForPerspective",
+        "name": "Annotate result for perspective",
         "description": "",
         "isHeader": false,
         "type": "popup",
         "questions": [
             {
-                "id": "COMMENT_page_addResultToPerspective_1",
-                "text": "// this popup should show all the results linked to observations linked to interpretations linked to this perspective",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_addResultToPerspective_2",
-                "text": "// perspective",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_addResultToPerspective_3",
-                "text": "//      interpretation",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_addResultToPerspective_4",
-                "text": "//           observation",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_addResultToPerspective_5",
-                "text": "//                result",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "resultsForThisPerspectiveList",
-                "text": "Choose a result that exemplifies this perspective.",
-                "type": "grid"
-            },
-            {
                 "id": "resultLinkedToPerspectiveNotes",
-                "text": "Enter any notes you want to remember about this result here.",
+                "text": "Enter any notes you want to remember about this result with respect to this perspective.",
                 "type": "textarea"
             }
         ]
     },
     {
-        "id": "page_addExcerptToPerspective",
-        "name": "Add excerpt to perspective",
+        "id": "page_annotateExcerptForPerspective",
+        "name": "Annotate excerpt for perspective",
         "description": "",
         "isHeader": false,
         "type": "popup",
         "questions": [
             {
-                "id": "COMMENT_page_addExcerptToPerspective_1",
-                "text": "// similarly, this should be a list of all the excerpts linked to interpretations linked to this perspective",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_addExcerptToPerspective_2",
-                "text": "// perspective",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_addExcerptToPerspective_3",
-                "text": "//     interpretation",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_addExcerptToPerspective_4",
-                "text": "//         excerpt",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "excerptsForThisPerspectiveList",
-                "text": "Choose an excerpt that exemplifies this perspective.",
-                "type": "grid"
-            },
-            {
                 "id": "excerptLinkedToPerspectiveNotes",
-                "text": "Enter any notes you want to remember about this excerpt.",
+                "text": "Enter any notes you want to remember about this excerpt with respect to this perspective.",
                 "type": "textarea"
             }
         ]
@@ -2661,7 +2607,8 @@ define(
             {
                 "id": "sensemakingSessionRecordResonantStoriesList",
                 "text": "Resonant stories (pivot, voice, discovery)",
-                "type": "grid"
+                "type": "accumulatedItemsGrid",
+                "options": "storiesToMarkAsResonantDuringSensemaking"
             },
             {
                 "id": "showHideCollectedStories",
