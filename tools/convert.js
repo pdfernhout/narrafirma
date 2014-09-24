@@ -281,6 +281,78 @@ function processRecommendationsCSV() {
 
 }
 
+var modelTypes = {
+        text: 1,
+        textarea: 1,
+        boolean: 1,
+        select: 1,
+        grid: 1,
+        imageUploader: 1,
+        toggleButton: 1,
+        checkBoxes: 1,
+        checkBoxesWithPull: 1
+};
+
+function generateModel() {
+    var unusedTypes = {};
+    var model = {};
+    array.forEach(pages, function (page) {
+        if (!page.type) {
+            // console.log("page", page);
+            array.forEach(page.questions, function (question) {
+                if (modelTypes[question.type]) {
+                    console.log("question", question.id, question.type);
+                    if (question.type === "grid") {
+                        model[question.id] = [];
+                    } else if (question.type === "text" || question.type === "textarea") {
+                        model[question.id] = "";
+                    } else {
+                        model[question.id] = null;
+                    }
+                } else {
+                    unusedTypes[question.type] = 1;
+                }
+            });
+        }
+    });
+    for (var key in unusedTypes) {
+        console.log("unusedType: ", key);
+    }
+    console.log("Output", JSON.stringify(model, null, "  "));
+    
+    var unusedTypes2 = {};
+    
+    var moreModels = [];
+    array.forEach(pages, function (page) {
+        if (page.type) {
+            var model2 = {};
+            moreModels.push(model2);
+            model2.__id = page.id;
+            model2.__type = page.type;
+            console.log("page", page.type, page);
+            array.forEach(page.questions, function (question) {
+                if (modelTypes[question.type]) {
+                    console.log("question", question.id, question.type);
+                    if (question.type === "grid") {
+                        model2[question.id] = [];
+                    } else if (question.type === "text" || question.type === "textarea") {
+                        model2[question.id] = "";
+                    } else {
+                        model2[question.id] = null;
+                    }
+                } else {
+                    unusedTypes2[question.type] = 1;
+                }
+            });
+        }
+    });
+    for (var key2 in unusedTypes2) {
+        console.log("unusedType2: ", key2);
+    }
+    console.log("Output", JSON.stringify(moreModels, null, "  "));
+
+}
+
 function createLayout() {
     var initialText = textOfDesign;
     
@@ -304,6 +376,8 @@ function createLayout() {
     newButton("Generate recommendations table", "buttons", generateRecommendationsTable);
     
     newButton("Load recommendations.csv", "buttons", loadRecommendationsCSV);
+    
+    newButton("Generate model", "buttons", generateModel);
 }
 
 createLayout();
