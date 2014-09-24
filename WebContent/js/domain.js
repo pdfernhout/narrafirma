@@ -127,7 +127,484 @@ define([
          alert("Unfinished handling for: " + id);
     }
     
+    // All the data collected by the project
+    var data = {
+        "planningGeneralNotes": "",
+        "projectTitle": "",
+        "communityOrOrganizationName": "",
+        "projectPrimaryTopicName": "",
+        "projectStartAndEndDates": "",
+        "projectFacilitators": "",
+        "reportStartText": "",
+        "reportEndText": "",
+        "planning_final_goal": "",
+        "planning_final_relationships": "",
+        "planning_final_focus": "",
+        "planning_final_range": "",
+        "planning_final_scope": "",
+        "planning_final_emphasis": "",
+        "participantGroups": [],
+        "projectStoryList": [],
+        "projectStoryElementsList": [],
+        "quiz_counterStories": null,
+        "quiz_authority": null,
+        "quiz_mistakes": null,
+        "quiz_silencing": null,
+        "quiz_conflict": null,
+        "quiz_remindings": null,
+        "quiz_retellings": null,
+        "quiz_folklore": null,
+        "quiz_storyTypes": null,
+        "quiz_sensemaking": null,
+        "quiz_realStories": null,
+        "quiz_negotiations": null,
+        "quiz_cotelling": null,
+        "quiz_blunders": null,
+        "quiz_accounting": null,
+        "quiz_commonStories": null,
+        "quiz_sacredStories": null,
+        "quiz_condensedStories": null,
+        "quiz_intermingling": null,
+        "quiz_culture": null,
+        "quiz_notes": "",
+        "planning_goal": "",
+        "planning_draft_relationships": "",
+        "planning_draft_focus": "",
+        "planning_draft_range": "",
+        "planning_scope": "",
+        "planning_emphasis": "",
+        "projectSynopsis": "",
+        "projectSynopsisComplete": null,
+        "collectionDesignGeneralNotes": "",
+        "elicitingQuestionsList": [],
+        "elicitingQuestionsAreFinal": null,
+        "storyQuestionsList": [],
+        "storyQuestionsAreFinal": null,
+        "participantQuestionsList": [],
+        "participantQuestionsAreFinal": null,
+        "questionFormTitle": "",
+        "questionFormLogo": null,
+        "questionFormIntro": "",
+        "questionFormEndText": "",
+        "questionFormIsComplete": null,
+        "willBeUsingStoryCollectionSessions": null,
+        "storyCollectionSessionPlansList": [],
+        "collectionSessionPlansAreFinal": null,
+        "collectionProcessGeneralNotes": "",
+        "questionFormInFinalForm": null,
+        "webStoryCollectionEnabled": null,
+        "storyCollectionSessionRecordsList": [],
+        "storyCollectionSessionReflectionsList": [],
+        "catalysisGeneralNotes": "",
+        "statTests": null,
+        "minSubsetSize": null,
+        "significanceThreshold": null,
+        "trendResults": null,
+        "interpretationText": "",
+        "interpretationName": "",
+        "firstInterpIdea": "",
+        "interpretationExcerptsList": [],
+        "savedExcerptsList": [],
+        "observationsListDisplay": [],
+        "finishedCollectingObservations": null,
+        "perspectivesList": [],
+        "interpretationLinkedToPerspectiveNotes": "",
+        "sensemakingGeneralNotes": "",
+        "sensemakingSessionPlansList": [],
+        "sensemakingSessionPlansAreFinal": null,
+        "sensemakingSessionRecordsList": [],
+        "sensemakingSessionRecordsAreFinal": null,
+        "resonantStoryType": null,
+        "resonantStoryReason": "",
+        "resonantStoryWhom": null,
+        "resonantStoryNotes": "",
+        "sensemakingSessionName": "",
+        "interventionGeneralNotes": "",
+        "interventionPlansList": [],
+        "interventionPlansAreFinal": null,
+        "interventionRecordsList": [],
+        "interventionRecordsAreFinal": null,
+        "interventionsList": [],
+        "returnGeneralNotes": "",
+        "feedbackList": [],
+        "generalFeedback": "",
+        "reflectProjectStories": "",
+        "reflectProjectFacilitation": "",
+        "reflectProjectPlanning": "",
+        "reflectProjectOwnPNI": "",
+        "reflectProjectCommunity": "",
+        "reflectProjectPersonalStrengths": "",
+        "reflectProjectTeam": "",
+        "reflectProjectIdeas": "",
+        "reflectProjectNotes": "",
+        "reflectProjectImage": null,
+        "projectPresentationElementsList": [],
+        "presentationReportFinished": null,
+        "interestedPeopleList": [],
+        "projectRequestsList": []
+    };
+    
+
+    var other = [
+        {
+            "__id" : "page_addParticipantGroup",
+            "__type" : "popup",
+            "participants_groupName" : "",
+            "participants_groupDescription" : ""
+        }, {
+            "__id" : "page_projectAspects",
+            "__type" : "repeating",
+            "aspects_status" : null,
+            "aspects_confidence" : null,
+            "aspects_time" : null,
+            "aspects_education" : null,
+            "aspects_physicalDisabilities" : null,
+            "aspects_emotionalImpairments" : null,
+            "aspects_performing" : null,
+            "aspects_conforming" : null,
+            "aspects_promoting" : null,
+            "aspects_venting" : null,
+            "aspects_interest" : null,
+            "aspects_feelings_project" : null,
+            "aspects_feelings_facilitator" : null,
+            "aspects_feelings_stories" : null,
+            "aspects_topic_feeling" : null,
+            "aspects_topic_private" : null,
+            "aspects_topic_articulate" : null,
+            "aspects_topic_timeframe" : null,
+            "aspects_you_experience" : null,
+            "aspects_you_help" : null,
+            "aspects_you_tech" : null
+        }, {
+            "__id" : "page_projectStory",
+            "__type" : "popup",
+            "projectStory_scenario" : null,
+            "projectStory_outcome" : null,
+            "projectStory_text" : "",
+            "projectStory_name" : "",
+            "projectStory_feelAbout" : "",
+            "projectStory_surprise" : "",
+            "projectStory_dangers" : ""
+        }, {
+            "__id" : "page_addStoryElement",
+            "__type" : "popup",
+            "storyElementName" : "",
+            "storyElementType" : null,
+            "storyElementDescription" : "",
+            "storyElementPhoto" : null
+        }, {
+            "__id" : "page_venuesTable",
+            "__type" : "questionsTable",
+            "primaryVenue" : null,
+            "primaryVenue_plans" : "",
+            "secondaryVenue" : null,
+            "secondaryVenue_plans" : ""
+        }, {
+            "__id" : "page_addElicitingQuestion",
+            "__type" : "popup",
+            "elicitingQuestion" : "",
+            "elicitingQuestionType" : null
+        }, {
+            "__id" : "page_addStoryQuestion",
+            "__type" : "popup",
+            "storyQuestionText" : "",
+            "storyQuestionType" : null,
+            "storyQuestionShortName" : "",
+            "storyQuestionHelp" : ""
+        }, {
+            "__id" : "page_addParticipantQuestion",
+            "__type" : "popup",
+            "participantQuestionText" : "",
+            "participantQuestionType" : null,
+            "participantQuestionShortName" : "",
+            "participantQuestionHelp" : ""
+        }, {
+            "__id" : "page_addStoryCollectionSession",
+            "__type" : "popup",
+            "collectionSessionName" : "",
+            "collectionSessionRepetitions" : "",
+            "collectionSessionLength" : "",
+            "collectionSessionTime" : "",
+            "collectionSessionLocation" : "",
+            "collectionSessionSize" : "",
+            "collectionSessionGroups" : null,
+            "collectionSessionMaterials" : "",
+            "collectionSessionDetails" : "",
+            "collectionSessionActivitiesList" : []
+        }, {
+            "__id" : "page_addCollectionSessionActivity",
+            "__type" : "popup",
+            "collectionSessionActivityName" : "",
+            "collectionSessionActivityType" : null,
+            "collectionActivityPlan" : "",
+            "collectionActivityOptionalParts" : "",
+            "collectionActivityTime" : "",
+            "collectionActivityRecording" : "",
+            "collectionActivityMaterials" : "",
+            "collectionActivitySpaces" : "",
+            "collectionActivityFacilitation" : ""
+        }, {
+            "__id" : "page_addCollectionSessionRecord",
+            "__type" : "popup",
+            "collectionSessionConstructionsList" : [],
+            "collectionSessionNotesList" : []
+        }, {
+            "__id" : "page_newCollectionSessionConstruction",
+            "__type" : "popup",
+            "collectionSessionConstructionName" : "",
+            "collectionSessionConstructionType" : null,
+            "collectionSessionContructionText" : "",
+            "collectionSessionConstructionLink" : "",
+            "collectionSessionConstructionImagesList" : []
+        }, {
+            "__id" : "page_newCollectionConstructionImage",
+            "__type" : "popup",
+            "collectionSessionConstructionImage" : null,
+            "collectionSessionConstructionImageName" : "",
+            "collectionSessionConstructionImageNotes" : ""
+        }, {
+            "__id" : "page_newCollectionSessionNotes",
+            "__type" : "popup",
+            "collectionSessionNotesName" : "",
+            "collectionSessionNotesText" : "",
+            "collectionSessionNoteImagesList" : []
+        }, {
+            "__id" : "page_newCollectionSessionImage",
+            "__type" : "popup",
+            "collectionSessionNotesImage" : null,
+            "collectionSessionImageName" : "",
+            "collectionSessionNotesImageNotes" : ""
+        }, {
+            "__id" : "page_answerQuestionsAboutCollectionSession",
+            "__type" : "popup",
+            "collectionReflectChangeEmotions" : "",
+            "collectionReflectChangeYourEmotions" : "",
+            "collectionReflectProjectChanged" : "",
+            "collectionReflectInteractionsParticipants" : "",
+            "collectionReflectInteractionsFacilitators" : "",
+            "collectionReflectStories" : "",
+            "collectionReflectSpecial" : "",
+            "collectionReflectSurprise" : "",
+            "collectionReflectWorkedWellAndNot" : "",
+            "collectionReflectNewIdeas" : "",
+            "collectionReflectExtra" : ""
+        }, {
+            "__id" : "page_addToObservation",
+            "__type" : "popup"
+        }, {
+            "__id" : "page_createOrEditObservation",
+            "__type" : "popup",
+            "observationName" : "",
+            "observation" : "",
+            "observationInterpretationsList" : [],
+            "observationFullyExplored" : null
+        }, {
+            "__id" : "page_selectExcerpt",
+            "__type" : "popup"
+        }, {
+            "__id" : "page_addToExcerpt",
+            "__type" : "popup"
+        }, {
+            "__id" : "page_createNewExcerpt",
+            "__type" : "popup",
+            "excerptName" : "",
+            "excerptText" : "",
+            "excerptNotes" : ""
+        }, {
+            "__id" : "page_addPerspective",
+            "__type" : "popup",
+            "perspectiveName" : "",
+            "perspectiveDescription" : "",
+            "perspectiveComplete" : null
+        }, {
+            "__id" : "page_annotateResultForPerspective",
+            "__type" : "popup",
+            "resultLinkedToPerspectiveNotes" : ""
+        }, {
+            "__id" : "page_annotateExcerptForPerspective",
+            "__type" : "popup",
+            "excerptLinkedToPerspectiveNotes" : ""
+        }, {
+            "__id" : "page_addSensemakingSessionPlan",
+            "__type" : "popup",
+            "sensemakingSessionPlanName" : "",
+            "sensemakingSessionPlanRepetitions" : "",
+            "sensemakingSessionPlanLength" : "",
+            "sensemakingSessionPlanTime" : "",
+            "sensemakingSessionLocation" : "",
+            "sensemakingSessionPlanSize" : "",
+            "sensemakingSessionPlanGroups" : null,
+            "sensemakingSessionPlanMaterials" : "",
+            "sensemakingSessionPlanDetails" : "",
+            "sensemakingSessionPlanActivitiesList" : []
+        }, {
+            "__id" : "page_addSensemakingSessionActivity",
+            "__type" : "popup",
+            "sensemakingSessionActivityName" : "",
+            "sensemakingSessionActivity" : null,
+            "sensemakingActivityPlan" : "",
+            "sensemakingActivityOptionalParts" : "",
+            "sensemakingActivityTime" : "",
+            "sensemakingActivityRecording" : "",
+            "sensemakingActivityMaterials" : "",
+            "sensemakingActivitySpaces" : "",
+            "sensemakingActivityFacilitation" : ""
+        }, {
+            "__id" : "page_addSensemakingSessionRecord",
+            "__type" : "popup",
+            "sensemakingSessionRecordName" : "",
+            "showHideCollectedStories" : null,
+            "sensemakingSessionRecordOutcomesList" : [],
+            "sensemakingSessionRecordConstructionsList" : [],
+            "sensemakingSessionRecordNotesList" : [],
+            "sensemakingSessionReflectionsList" : []
+        }, {
+            "__id" : "page_newSensemakingSessionOutcome",
+            "__type" : "popup",
+            "sensemakingSessionOutcomeType" : null,
+            "sensemakingSessionOutcomeName" : "",
+            "sensemakingSessionOutcomeText" : ""
+        }, {
+            "__id" : "page_newSensemakingSessionConstruction",
+            "__type" : "popup",
+            "sensemakingSessionConstructionName" : "",
+            "sensemakingSessionConstructionType" : null,
+            "sensemakingSessionContructionText" : "",
+            "sensemakingSessionConstructionLink" : "",
+            "sensemakingSessionConstructionImages" : []
+        }, {
+            "__id" : "page_newSensemakingConstructionImage",
+            "__type" : "popup",
+            "sensemakingSessionConstructionImage" : null,
+            "sensemakingSessionConstructionImageName" : "",
+            "sensemakingSessionConstructionImageNotes" : ""
+        }, {
+            "__id" : "page_newSensemakingSessionNotes",
+            "__type" : "popup",
+            "sensemakingSessionNotesName" : "",
+            "sensemakingSessionNotesText" : "",
+            "sensemakingSessionNoteImages" : []
+        }, {
+            "__id" : "page_newSensemakingSessionImage",
+            "__type" : "popup",
+            "sensemakingSessionNotesImage" : null,
+            "sensemakingSessionImageName" : "",
+            "sensemakingSessionNotesImageNotes" : ""
+        }, {
+            "__id" : "page_answerQuestionsAboutSensemakingSession",
+            "__type" : "popup",
+            "sensemakingReflectChangeEmotions" : "",
+            "sensemakingReflectChangeYourEmotions" : "",
+            "sensemakingReflectProjectChanged" : "",
+            "sensemakingReflectInteractionsParticipants" : "",
+            "sensemakingReflectInteractionsFacilitators" : "",
+            "sensemakingReflectStories" : "",
+            "sensemakingReflectSpecial" : "",
+            "sensemakingReflectSurprise" : "",
+            "sensemakingReflectWorkedWellAndNot" : "",
+            "sensemakingReflectNewIdeas" : "",
+            "sensemakingReflectExtra" : ""
+        }, {
+            "__id" : "page_outcomesTable",
+            "__type" : "questionsTable",
+            "outcomesHeard" : null,
+            "outcomesInvolved" : null,
+            "outcomesLearnedAboutComm" : null,
+            "outcomesMoreStories" : null,
+            "outcomesWantedToShareMore" : null,
+            "outcomesNeededToBeHeard" : null,
+            "outcomesNobodyCares" : null,
+            "outcomesNobodyCanMeetNeeds" : null,
+            "outcomesNeedNewStories" : null,
+            "outcomesKeepExploring" : null,
+            "outcomesCrisisPoints" : null,
+            "outcomesBeyondWords" : null,
+            "outcomesLearnedAboutTopic" : null,
+            "outcomesNewMembersStruggling" : null,
+            "outcomesInfoWithoutUnderstanding" : null,
+            "outcomesOverConfident" : null,
+            "outcomesCuriousAboutStoryWork" : null
+        }, {
+            "__id" : "page_addIntervention",
+            "__type" : "popup",
+            "interventionPlansName" : "",
+            "interventionPlansType" : null,
+            "interventionPlansText" : "",
+            "interventionPlansLength" : "",
+            "interventionPlansTime" : "",
+            "interventionPlansLocation" : "",
+            "interventionPlansHelp" : "",
+            "interventionPlansPermission" : "",
+            "interventionPlansParticipation" : "",
+            "interventionPlansMaterials" : "",
+            "interventionPlansSpace" : "",
+            "interventionPlansTech" : "",
+            "interventionPlansRecording" : ""
+        }, {
+            "__id" : "page_addInterventionRecord",
+            "__type" : "popup",
+            "interventionNotesName" : "",
+            "interventionNotesText" : "",
+            "interventionRecordImages" : []
+        }, {
+            "__id" : "page_newInterventionImage",
+            "__type" : "popup",
+            "interventionNotesImage" : null,
+            "interventionImageName" : "",
+            "interventionNotesImageNotes" : ""
+        }, {
+            "__id" : "page_answerQuestionsAboutIntervention",
+            "__type" : "popup",
+            "interventionName" : "",
+            "interventionReflectChangeEmotions" : "",
+            "interventionReflectChangeYourEmotions" : "",
+            "interventionReflectProjectChanged" : "",
+            "interventionReflectInteractionsParticipants" : "",
+            "interventionReflectInteractionsFacilitators" : "",
+            "interventionReflectStories" : "",
+            "interventionReflectSpecial" : "",
+            "interventionReflectSurprise" : "",
+            "interventionReflectWorkedWellAndNot" : "",
+            "interventionReflectNewIdeas" : "",
+            "interventionReflectExtra" : ""
+        }, {
+            "__id" : "page_enterFeedbackPiece",
+            "__type" : "popup",
+            "feedbackText" : "",
+            "feedbackName" : "",
+            "feedbackType" : null,
+            "feedbackWho" : "",
+            "feedbackQuestion" : "",
+            "feedbackNotes" : "",
+            "feedbackImage" : null
+        }, {
+            "__id" : "page_addPresentationElement",
+            "__type" : "popup",
+            "presentationElementName" : "",
+            "presentationElementStatement" : "",
+            "presentationElementEvidence" : "",
+            "presentationElementQA" : "",
+            "presentationElementNotes" : ""
+        }, {
+            "__id" : "page_addInterestedPerson",
+            "__type" : "popup",
+            "interestedPersonName" : "",
+            "interestedPersonContactDetails" : "",
+            "interestedPersonType" : null,
+            "interestedPersonNotes" : ""
+        }, {
+            "__id" : "page_addNewProjectRequest",
+            "__type" : "popup",
+            "requestText" : "",
+            "requestType" : null,
+            "requestMet" : null,
+            "requestWhatHappened" : "",
+            "requestNotes" : ""
+        }
+    ];
+    
     return {
+        "data": data,
         "testDogQuestions": testDogQuestions,
         "testDogStories": testDogStories,
         "exportedSurveyQuestions": exportedSurveyQuestions,

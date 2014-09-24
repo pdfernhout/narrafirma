@@ -61,6 +61,10 @@
 // "function" means the parameter is the name of a function to be called (outputting what is to be displayed)
 // note that on pages with a questionTable, the questionAnswerCountOfTotalOnPage should include all possible answers
 
+// @participants
+// @projectStories
+// @userStories
+
 # Dashboard [page_dashboard]
 // all checklists combined
 
@@ -116,23 +120,25 @@ If you don't have good answers for these questions right now, don't worry; you w
 
 * On this page you will think about groups of participants you want to involve in your project. [aboutParticipantGroups|label]
 Examples might be: doctors and patients; staff and customers; natives, immigrants, and tourists.
-The PNI Workbook supports planning for up to three groups of project participants.
 
-* Please name the group of participants from whom the project most needs to hear. [participants_firstGroupName|text]
-* Please describe this group of participants. [participants_firstGroupDescription|textarea]
+* Please add participant groups in the list below (typically up to three groups). More details for each group will be added later.[participantGroups|grid|page_addParticipantGroup]
+
+## Participant group [page_addParticipantGroup|popup]
+
+* Name | Please name this group of participants from whom the project needs to hear (such as "doctors", "students", or "staff"). [participants_groupName|text]
+* Description | Please describe this group of participants. [participants_groupDescription|textarea]
 For example, you might want to record any observations you have made about this group.
 What do you know about them?
 
-* Please name the group of participants from whom the project needs to hear next. [participants_secondGroupName|text]
-* Please describe the second-most critical group of participants. [participants_secondGroupDescription|textarea]
-* If there is a third group of participants from whom the project needs to hear, please name them. [participants_thirdGroupName|text]
-* Please describe the third-most critical group of participants. [participants_thirdGroupDescription|textarea]
+// ## Consider project aspects [page_projectAspects|repeating|participantGroups]
 
-## Consider project aspects [page_projectAspects]
+// * Please answer these questions about each participant group. [aspectsTable|questionsTable|page_aspectsTable;participants_firstGroupName;participants_secondGroupName;participants_thirdGroupName]
 
-* Please answer these questions about each participant group. [aspectsTable|questionsTable|page_aspectsTable;participants_firstGroupName;participants_secondGroupName;participants_thirdGroupName]
+// ## Project aspects [page_aspectsTable|questionsTable]
 
-## Project aspects [page_aspectsTable|questionsTable]
+## Participant group details for: {{participants_groupName}} [page_projectAspects|repeating|participantGroups]
+
+* On this page you will add details for the particant group called: "{{participants_groupName}}". [detailsAboutParticipantGroup|label]
 
 * Status [aspects_statusHeader|header]
 * What is the status of these participants in the community or organization? [aspects_status|select|unknown;very low;low;moderate;high;very high;mixed]

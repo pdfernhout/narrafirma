@@ -7,20 +7,15 @@ require([
     "dojo/dom-construct",
     "dojo/dom-style",
     "dojo/hash",
-    "js/page_design-questions",
-    "js/page_export-survey",
-    "js/page_graph-results",
-    "js/page_take-survey",
+    //"js/page_design-questions",
+    //"js/page_export-survey",
+    //"js/page_graph-results",
+    //"js/page_take-survey",
     "js/pages",
     "js/question_editor",
-    "dijit/registry",
-    "dojo/string",
     "js/widgets",
-    "dojo/window",
     "dijit/layout/ContentPane",
     "dijit/form/Select",
-    "dijit/layout/TabContainer",
-    "dojox/layout/TableContainer",
     "dojo/domReady!"
 ], function(
     array,
@@ -29,24 +24,20 @@ require([
     domConstruct,
     domStyle,
     hash,
-    page_designQuestions,
-    page_exportSurvey,
-    page_graphResults,
-    page_takeSurvey,
+    //page_designQuestions,
+    //page_exportSurvey,
+    //page_graphResults,
+    //page_takeSurvey,
     pages,
     questionEditor,
-    registry,
-    string,
     widgets,
-    windowDojo,
     ContentPane,
-    Select,
-    TabContainer,
-    TableContainer
+    Select
 ){
     // TODO: Add page validation
     // TODO: Add translations for GUI strings used here
     
+    var currentPage = null;
     var currentPageID = null;
     var selectWidget = null;
     var previousPageButton = null;
@@ -84,11 +75,19 @@ require([
             return;
         }
         
-        if (currentPageID) {
-            domStyle.set(currentPageID, "display", "none");
+        domStyle.set("pageDiv", "display", "none");
+        // domStyle.set("startup", "display", "block");
+        
+        if (currentPageID && currentPage) {
+            // domStyle.set(currentPageID, "display", "none");
+            console.log("destroying", currentPageID, currentPage);
+            currentPage.destroyRecursive();
+            domConstruct.destroy(currentPage);
         }
         
-        domStyle.set(id, "display", "block");
+        // domStyle.set(id, "display", "block");
+        
+        currentPage = createPage(id, true);
         
         currentPageID = id;
         hash(currentPageID);
@@ -96,7 +95,9 @@ require([
         previousPageButton.setDisabled(!page.previousPageID);
         nextPageButton.setDisabled(!page.nextPageID);
         
-       //  windowDojo.scrollIntoView(selectWidget.domNode);
+        // domStyle.set("startup", "display", "none");
+        domStyle.set("pageDiv", "display", "block");
+        
         window.scrollTo(0, 0); 
         
         questionEditor.updateQuestionsForPageChange();
@@ -143,6 +144,8 @@ require([
        }
        
        pagePane.startup();
+       
+       return pagePane;
     }
     
     function previousPageClicked(event) {
@@ -264,6 +267,7 @@ require([
             }
         });
         
+        /*
         // Now, premake pages only after all definitons are done (since some pages refer to others for question popups that may be defined later)
         array.forEach(pages, function(page) {
             // console.log("creating page", page.name)
@@ -272,7 +276,8 @@ require([
                 // Pre-make base pages
                 createPage(page.id);
             }
-        });        
+        });  
+        */      
         
         /* TODO: Delete these pages after making sure any needed functionality is moved elsewhere (into widgets or more general code) 
         page_designQuestions(tabContainer);

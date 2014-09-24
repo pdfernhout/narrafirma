@@ -102,3 +102,14 @@ body {
     -ms-text-overflow: ellipsis; 
     overflow: hidden;
 }
+
+/* So the dgrids always show all data */
+.dgrid {
+    height: auto;
+    min-height: 3em;
+}
+
+.dgrid .dgrid-scroller {
+    position: relative;
+    overflow: visible;
+}
