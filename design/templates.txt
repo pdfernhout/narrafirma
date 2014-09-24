@@ -169,15 +169,41 @@
 * What is your position? [position|select|put in your own choices here]
 * What is your ethnic background? [ethnicBackground|select|put in your own choices here]
 
-// personality
+// personality - big five
 
+* Do you like trying new things?
+[opennessToExperience|slider|I like things to stay the same;if it's new I'm for it]
+* Would you call yourself self-disciplined?
+[selfDisciplined|slider|I always do exactly what I should;I have no control over myself]
 * Are you more of an extravert or an introvert? [introvertOrExtravert|slider|introverted;extraverted]
-* Do you tend to look at the "big picture" or at details? [bigPictureOrDetails|slider|big picture;details]
+* How do you feel about other people? [agreeableness|slider|heaven is other people;hell is other people]
+* How much do you worry? [neuroticism|slider|constantly;me? never]
 
+// personality - myers-briggs
 
+// extravert/introvert already done in big five
+* Do you prefer to think of abstract, "big picture" ideas, or do you like concrete, practical applications? [sensingVsIntuition|slider|I like the big picture;give me concrete details]
+* Does logic or emotion have more impact on your decisions? [thinkingVsFeeling|slider|logic and reason only;my values and feelings are my guide]
+* How do you feel about rules? [judgingVsPerceiving|slider|rules keep life working;rules are for breaking]
+
+// personality - other
+
+* ambiguity
+* patience
+* chaos ok?
+* learning: reading vs listening vs kinesthetic
+* flexibility: always have a plan or see what happens
+* tidy or sloppy
+* how emotional- close to the surface or cold
+* how decisive - make decisions quickly or waffle over options
+* do you finish what you start? always vs rarely
+* volatility of mood-alwaysthe same or always different
+* like attention?
 
 // role
-
+* time scope (lots of things fast vs long term projects)
+* scope of purview
+// look at projects that asked these questions
 
 // issue view
 
