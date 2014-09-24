@@ -3,14 +3,12 @@
 // Single * for questions
 // Question types are in brackets [id|type|options]
 // question types are: label, header (bold label), text, textarea, select, grid, checkBoxes,
-//                     quizScoreResult, templateList, checkBoxesWithPull, button,
+//                     quizScoreResult, templateList, button,
 //                     storyBrowser, report,
 //                     observationsList, excerptsList, storyThemer, graphBrowser, trendsReport, clusterSpace
 // page types are: normal (no specification), popup, questionsTable, recommendationTable
 
 // a button does something when clicked
-
-// a checkBoxesWithPull is a set of check boxes where the display texts are drawn from a list entered previously
 
 // a templateList is a list box with templates read in from a file (of a particular type)
 // it also has a "copy" button
@@ -108,7 +106,6 @@ You will think about your goals, your topic, your participants, and opportunitie
 * On this page you will answer some questions about your project's goals, relationships, focus, range, scope, and emphasis. [project_draftQuestionsLabel|label]
 If you don't have good answers for these questions right now, don't worry; you will have a chance to come back and work on these answers again later.
 
-// these fields need to be populated with the original draft versions
 * What is the goal of the project? Why are you doing it? [project_PNIquestions_goal_draft|textarea]
 * What relationships are important to the project? [project_PNIquestions_relationships_draft|textarea]
 * What is the focus of the project? What is it about? [project_PNIquestions_focus_draft|textarea]
@@ -140,11 +137,11 @@ What do you know about them?
 
 * On this page you will add details for the participant group called: "{{participants_groupName}}". [detailsAboutParticipantGroup|label]
 
-* Status [participantGroupAspects__statusHeader|header]
+* Status [participantGroupAspects_statusHeader|header]
 * What is the status of these participants in the community or organization? [participantGroupAspects__status|select|unknown;very low;low;moderate;high;very high;mixed]
 * How much self-confidence do these participants have? [participantGroupAspects__confidence|select|unknown;very low;low;medium;high;very high;mixed]
 
-* Ability [participantGroupAspects___abilityHeader|header]
+* Ability [participantGroupAspects_abilityHeader|header]
 * How much free time do these participants have? [participantGroupAspects__time|select|unknown;very little;little;some;a lot;mixed]
 * What is the education level of these participants? [participantGroupAspects__education|select|unknown;illiterate;minimal;moderate;high;very high;mixed]
 * Do these participants have physical limitations that will impact their participation? [participantGroupAspects__physicalDisabilities|select|unknown;none;minimal;moderate;strong;mixed]
@@ -187,7 +184,7 @@ What do you know about them?
 * Surprised | What surprised you about this story? [projectStory_surprise|textarea]
 * Opportunities or dangers | Describe any opportunities or dangers you see in this story. [projectStory_dangers|textarea]
 
-## Create project story elements [page_projectStoryElements]
+## Create project story elements [page_createProjectStoryElements]
 
 * Here are some instructions on how to create story elements from your project stories. [storyElementsInstructions|label]
 <ol>
@@ -213,6 +210,10 @@ What do you know about them?
 <li>Name the groups. These are your story elements.</li>
 </ol>
 
+* Have you finished the project story elements exercise? [project_projectStoryElementsComplete|boolean]
+
+## Enter project story elements [page_enterProjectStoryElements]
+
 * These are the project story elements you have entered so far. [list_projectStoryElements|grid|page_addStoryElement]
 
 ## Add story element [page_addStoryElement|popup]
@@ -220,7 +221,6 @@ What do you know about them?
 * Name | What is the name of the story element? [storyElement_name|text]
 * Type | What type of story element is this? [storyElement_type|select|character;situation;value;theme;relationship;motivation;belief;conflict]
 * Description | You can describe it more fully here. [storyElement_description|textarea]
-* Image | You can enter an image of the element here. [storyElement_image|imageUploader]
 
 ## Assess story sharing [page_assessStorySharing]
 
@@ -264,6 +264,8 @@ in the places where they normally gather.
 ## Revise PNI Planning questions [page_revisePNIPlanningQuestions]
 
 * Please review and improve your draft answers based on your consideration of project aspects and your project stories. [improvePlanningDrafts|label]
+
+* Copy the original draft versions into the answers below [project_PNIquestions_copyDrafts|button]
 
 * What is the goal of the project? Why are you doing it? [project_PNIquestions_goal_final|textarea|planning_goal]
 * What relationships are important to the project? [project_PNIquestions_relationships_final|textarea|planning_relationships]
@@ -366,7 +368,7 @@ in the places where they normally gather.
 ## Design question form [page_designQuestionForm]
 
 * Please enter a title for the question form. [questionForm_title|text]
-* You can upload a logo or other image to show at the top of the form. [questionForm_image|imageUploader]
+* You can link to a logo or other image to show at the top of the form. [questionForm_image|text]
 * Please enter an introduction to be shown at the start of the form, after the title [questionForm_startText|textarea]
 * Please enter any text to be shown at the end of the form [questionForm_endText|textarea]
 * Do you consider this question form to be complete? [final_questionForm|boolean]
@@ -388,7 +390,7 @@ in the places where they normally gather.
 * Time | At what dates and times will the session take place? [collectionSessionPlan_times|text]
 * Location | Where will these sessions take place? [collectionSessionPlan_location|text]
 * Number of people | How many people will be invited to each repetition of this session? [collectionSessionPlan_numPeople|text]
-* Participant groups | From which participant groups will people be invited? [collectionSessionPlan_groups|checkBoxesWithPull|participantGroups]
+* Participant groups | From which participant groups will people be invited? [collectionSessionPlan_groups|text]
 * Materials | What materials will this session require?  [collectionSessionPlan_materials|textarea]
 * Other | Enter other details about this session. [collectionSessionPlan_details|textarea]
 
@@ -404,7 +406,7 @@ in the places where they normally gather.
 * Optional elaborations | Describe optional elaborations you might or might not use in this activity. [collectionSessionPlan_activity_optionalParts|textarea]
 * Length | How long will this activity take? [collectionSessionPlan_activity_duration|text]
 * Recording | How will stories be recorded during this activity? [collectionSessionPlan_activity_recording|textarea]
-* Materials | What materials will be provided for this activity? collectionSessionPlan_activity_materials|textarea]
+* Materials | What materials will be provided for this activity? [collectionSessionPlan_activity_materials|textarea]
 * Spaces | What spaces will be used for this activity? [collectionSessionPlan_activity_spaces|textarea]
 * Facilitation | What sort of facilitation will be necessary for this activity? [collectionSessionPlan_activity_facilitation|textarea]
 
@@ -681,7 +683,7 @@ Is there anything else this pattern could mean?
 * Time | At what dates and times will the session take place? [sensemakingSessionPlan_times|text]
 * Location | Where will these sessions take place? [sensemakingSessionPlan_location|text]
 * Number of people | How many people will be invited to each repetition of this session? [sensemakingSessionPlan_numPeople|text]
-* Participant groups | From which participant group(s) will people be invited? [sensemakingSessionPlan_groups|checkBoxesWithPull|participantGroups]
+* Participant groups | From which participant group(s) will people be invited? [sensemakingSessionPlan_groups|text]
 * Materials | What materials will this session require? [sensemakingSessionPlan_materials|textarea]
 * Other | Enter other details about this session. [sensemakingSessionPlan_details|textarea]
 
@@ -750,7 +752,7 @@ Your notes can include links to images or other documents.
 
 * Which type of resonant story is this? [sensemakingSessionRecord_resonantStory_type|select|pivot;voice;discovery;other]
 * Why did this story stand out? [sensemakingSessionRecord_resonantStory_reason|textarea]
-* For which participant groups was this story important? [sensemakingSessionRecord_resonantStory_groups|checkBoxesWithPull|participantGroups]
+* For which participant groups was this story important? [sensemakingSessionRecord_resonantStory_groups|text]
 * Would you like to make any other notes about this story? [sensemakingSessionRecord_resonantStory_notes|textarea]
 
 ## Sensemaking session outcome [page_newSensemakingSessionOutcome|popup]
