@@ -111,7 +111,7 @@ define(
                 "options": "projectSynopsisComplete"
             },
             {
-                "id": "planningGeneralNotes",
+                "id": "project_generalNotes_planning",
                 "text": "You can enter some general notes on planning in this project here.",
                 "type": "textarea"
             }
@@ -129,37 +129,37 @@ define(
                 "type": "label"
             },
             {
-                "id": "projectTitle",
+                "id": "project_title",
                 "text": "What is the project's title?",
                 "type": "text"
             },
             {
-                "id": "communityOrOrganizationName",
+                "id": "project_communityOrOrganizationName",
                 "text": "What is the name of your community or organization?",
                 "type": "text"
             },
             {
-                "id": "projectPrimaryTopicName",
+                "id": "project_topic",
                 "text": "What is a brief name for the project's primary topic?",
                 "type": "text"
             },
             {
-                "id": "projectStartAndEndDates",
+                "id": "project_startAndEndDates",
                 "text": "What are the project's starting and ending dates?",
                 "type": "text"
             },
             {
-                "id": "projectFacilitators",
+                "id": "project_fundersAndFacilitators",
                 "text": "Who is funding, facilitating, or or otherwise supporting the project?",
                 "type": "textarea"
             },
             {
-                "id": "reportStartText",
+                "id": "project_reportStartText",
                 "text": "Enter any other information you want to appear at the top of project reports.",
                 "type": "textarea"
             },
             {
-                "id": "reportEndText",
+                "id": "project_reportEndText",
                 "text": "Enter any other information you want to appear at the bottom of project reports (as notes).",
                 "type": "textarea"
             }
@@ -172,7 +172,7 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "planning_final",
+                "id": "project_draftQuestionsLabel",
                 "text": "On this page you will answer some questions about your project's goals, relationships, focus, range, scope, and emphasis.\nIf you don't have good answers for these questions right now, don't worry; you will have a chance to come back and work on these answers again later.",
                 "type": "label"
             },
@@ -183,32 +183,32 @@ define(
                 "options": null
             },
             {
-                "id": "planning_final_goal",
+                "id": "project_PNIquestions_goal_draft",
                 "text": "What is the goal of the project? Why are you doing it?",
                 "type": "textarea"
             },
             {
-                "id": "planning_final_relationships",
+                "id": "project_PNIquestions_relationships_draft",
                 "text": "What relationships are important to the project?",
                 "type": "textarea"
             },
             {
-                "id": "planning_final_focus",
+                "id": "project_PNIquestions_focus_draft",
                 "text": "What is the focus of the project? What is it about?",
                 "type": "textarea"
             },
             {
-                "id": "planning_final_range",
+                "id": "project_PNIquestions_range_draft",
                 "text": "What range(s) of experience will the project cover?",
                 "type": "textarea"
             },
             {
-                "id": "planning_final_scope",
+                "id": "project_PNIquestions_scope_draft",
                 "text": "What is the project's scope? (number of people, number of stories, number of questions about stories)",
                 "type": "textarea"
             },
             {
-                "id": "planning_final_emphasis",
+                "id": "project_PNIquestions_emphasis_draft",
                 "text": "Which phases of PNI will be important to the project? (indicate most and least important phases)",
                 "type": "textarea"
             }
@@ -226,8 +226,8 @@ define(
                 "type": "label"
             },
             {
-                "id": "participantGroups",
-                "text": "Please add particant groups in the list below (typically up to three groups). More details for each group will be added later.",
+                "id": "list_participantGroups",
+                "text": "Please add participant groups in the list below (typically up to three groups). More details for each group will be added later.",
                 "type": "grid",
                 "options": "page_addParticipantGroup"
             }
@@ -241,82 +241,92 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "participants_groupName",
+                "id": "participantGroup_name",
                 "text": "Please name this group of participants from whom the project needs to hear (such as \"doctors\", \"students\", or \"staff\").",
                 "shortText": "Name",
                 "type": "text"
             },
             {
-                "id": "participants_groupDescription",
+                "id": "participantGroup_description",
                 "text": "Please describe this group of participants.\nFor example, you might want to record any observations you have made about this group.\nWhat do you know about them?",
                 "shortText": "Description",
                 "type": "textarea"
+            },
+            {
+                "id": "COMMENT_page_addParticipantGroup_1",
+                "text": "// ## Consider project aspects [page_projectAspects|repeating|participantGroups]",
+                "type": "label",
+                "options": null
+            },
+            {
+                "id": "COMMENT_page_addParticipantGroup_2",
+                "text": "// * Please answer these questions about each participant group. [list_participantGroupAspects|questionsTable|page_aspectsTable;participants_firstGroupName;participants_secondGroupName;participants_thirdGroupName]",
+                "type": "label",
+                "options": null
+            },
+            {
+                "id": "COMMENT_page_addParticipantGroup_3",
+                "text": "// ## Project aspects [page_aspectsTable|questionsTable]",
+                "type": "label",
+                "options": null
             }
         ]
     },
     {
         "id": "page_projectAspects",
-        "name": "Consider project aspects",
+        "name": "Participant group details for: {{participants_groupName}}",
         "description": "",
         "isHeader": false,
+        "type": "repeating",
+        "options": "participantGroups",
         "questions": [
             {
-                "id": "aspectsTable",
-                "text": "Please answer these questions about each participant group.",
-                "type": "questionsTable",
-                "options": "page_aspectsTable;participants_firstGroupName;participants_secondGroupName;participants_thirdGroupName"
-            }
-        ]
-    },
-    {
-        "id": "page_aspectsTable",
-        "name": "Project aspects",
-        "description": "",
-        "isHeader": false,
-        "type": "questionsTable",
-        "questions": [
+                "id": "detailsAboutParticipantGroup",
+                "text": "On this page you will add details for the participant group called: \"{{participants_groupName}}\".",
+                "type": "label"
+            },
             {
-                "id": "aspects_statusHeader",
+                "id": "participantGroupAspects__statusHeader",
                 "text": "Status",
                 "type": "header"
             },
             {
-                "id": "aspects_status",
+                "id": "participantGroupAspects__status",
                 "text": "What is the status of these participants in the community or organization?",
                 "type": "select",
                 "options": "unknown;very low;low;moderate;high;very high;mixed"
             },
             {
-                "id": "aspects_confidence",
+                "id": "participantGroupAspects__confidence",
                 "text": "How much self-confidence do these participants have?",
                 "type": "select",
                 "options": "unknown;very low;low;medium;high;very high;mixed"
             },
             {
-                "id": "aspects_abilityHeader",
+                "id": "participantGroupAspects___abilityHeader",
                 "text": "Ability",
                 "type": "header"
             },
             {
-                "id": "aspects_time",
+                "id": "participantGroupAspects__time",
                 "text": "How much free time do these participants have?",
                 "type": "select",
                 "options": "unknown;very little;little;some;a lot;mixed"
             },
             {
-                "id": "aspects_education",
+                "id": "participantGroupAspects__education",
                 "text": "What is the education level of these participants?",
                 "type": "select",
                 "options": "unknown;illiterate;minimal;moderate;high;very high;mixed"
             },
             {
-                "id": "aspects_physicalDisabilities",
+                "id": "participantGroupAspects__physicalDisabilities",
                 "text": "Do these participants have physical limitations that will impact their participation?",
                 "type": "select",
                 "options": "unknown;none;minimal;moderate;strong;mixed"
             },
             {
-                "id": "aspects_emotionalImpairments",
+                "id": "participantGroupAspects__emotionalImpairments",
                 "text": "Do these participants have emotional impairments that will impact their participation (such as mental illness or traumatic stress)?",
                 "type": "select",
                 "options": "unknown;none;minimal;moderate;strong;mixed"
@@ -327,25 +337,25 @@ define(
                 "type": "header"
             },
             {
-                "id": "aspects_performing",
+                "id": "participantGroupAspects__performing",
                 "text": "For these participants, how important is performing well (with \"high marks\")?",
                 "type": "select",
                 "options": "unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed"
             },
             {
-                "id": "aspects_conforming",
+                "id": "participantGroupAspects__conforming",
                 "text": "For these participants, how important is conforming (to what is \"normal\" or expected)?",
                 "type": "select",
                 "options": "unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed"
             },
             {
-                "id": "aspects_promoting",
+                "id": "participantGroupAspects__promoting",
                 "text": "For these participants, how important is self-promotion (competing with others)?",
                 "type": "select",
                 "options": "unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed"
             },
             {
-                "id": "aspects_venting",
+                "id": "participantGroupAspects__venting",
                 "text": "For these participants, how important is speaking out (having a say, venting, sounding off)?",
                 "type": "select",
                 "options": "unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed"
@@ -356,25 +366,25 @@ define(
                 "type": "header"
             },
             {
-                "id": "aspects_interest",
+                "id": "participantGroupAspects__interest",
                 "text": "How motivated are these participants to participate in the project?",
                 "type": "select",
                 "options": "unknown;very little;a little;some;a lot;extremely;mixed"
             },
             {
-                "id": "aspects_feelings_project",
+                "id": "participantGroupAspects__feelings_project",
                 "text": "How are these participants likely to feel about the project?",
                 "type": "select",
                 "options": "unknown;negative;neutral;positive;mixed"
             },
             {
-                "id": "aspects_feelings_facilitator",
+                "id": "participantGroupAspects__feelings_facilitator",
                 "text": "How do these participants feel about you?",
                 "type": "select",
                 "options": "unknown;negative;neutral;positive;mixed"
             },
             {
-                "id": "aspects_feelings_stories",
+                "id": "participantGroupAspects__feelings_stories",
                 "text": "How do these participants feel about the idea of collecting stories?",
                 "type": "select",
                 "options": "unknown;negative;neutral;positive;mixed"
@@ -385,25 +395,25 @@ define(
                 "type": "header"
             },
             {
-                "id": "aspects_topic_feeling",
+                "id": "participantGroupAspects__topic_feeling",
                 "text": "What experiences have these participants had with the project's topic?",
                 "type": "select",
                 "options": "unknown;strongly negative;negative;neutral;positive;strongly positive;mixed"
             },
             {
-                "id": "aspects_topic_private",
+                "id": "participantGroupAspects__topic_private",
                 "text": "How private do these participants consider the topic to be?",
                 "type": "select",
                 "options": "unknown;very private;medium;not private;mixed"
             },
             {
-                "id": "aspects_topic_articulate",
+                "id": "participantGroupAspects__topic_articulate",
                 "text": "How hard will it be for these participants to articulate their feelings about the topic?",
                 "type": "select",
                 "options": "unknown;hard;medium;easy;mixed"
             },
             {
-                "id": "aspects_topic_timeframe",
+                "id": "participantGroupAspects__topic_timeframe",
                 "text": "How long of a time period do you need these participants to look back on?",
                 "type": "select",
                 "options": "unknown;hours;days;months;years;decades;mixed"
@@ -414,19 +424,19 @@ define(
                 "type": "header"
             },
             {
-                "id": "aspects_you_experience",
+                "id": "participantGroupAspects__you_experience",
                 "text": "How much experience do you have facilitating PNI projects?",
                 "type": "select",
                 "options": "none;a little;some;a lot"
             },
             {
-                "id": "aspects_you_help",
+                "id": "participantGroupAspects__you_help",
                 "text": "How much help will you have carrying out this project?",
                 "type": "select",
                 "options": "none;a little;some;a lot"
             },
             {
-                "id": "aspects_you_tech",
+                "id": "participantGroupAspects__you_tech",
                 "text": "How many technological resources will you have for carrying out this project?",
                 "type": "select",
                 "options": "none;a little;some;a lot"
@@ -440,7 +450,7 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "projectStoryList",
+                "id": "list_projectStories",
                 "text": "These are the project stories you have told so far.",
                 "type": "grid",
                 "options": "page_projectStory"
@@ -512,7 +522,7 @@ define(
                 "type": "label"
             },
             {
-                "id": "projectStoryElementsList",
+                "id": "list_projectStoryElements",
                 "text": "These are the project story elements you have entered so far.",
                 "type": "grid",
                 "options": "page_addStoryElement"
@@ -527,27 +537,27 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "storyElementName",
+                "id": "storyElement_name",
                 "text": "What is the name of the story element?",
                 "shortText": "Name",
                 "type": "text"
             },
             {
-                "id": "storyElementType",
+                "id": "storyElement_type",
                 "text": "What type of story element is this?",
                 "shortText": "Type",
                 "type": "select",
                 "options": "character;situation;value;theme;relationship;motivation;belief;conflict"
             },
             {
-                "id": "storyElementDescription",
+                "id": "storyElement_description",
                 "text": "You can describe it more fully here.",
                 "shortText": "Description",
                 "type": "textarea"
             },
             {
-                "id": "storyElementPhoto",
-                "text": "You can enter a photograph of the element here.",
+                "id": "storyElement_image",
+                "text": "You can enter an image of the element here.",
                 "shortText": "Image",
                 "type": "imageUploader"
             }
@@ -560,146 +570,146 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "quiz_intro",
+                "id": "assessment_intro",
                 "text": "On this page you can answer questions about your community or organization to assess its story sharing culture.\nBefore you answer these questions, you should spend some time listening to people share stories together\nin the places where they normally gather.",
                 "type": "label"
             },
             {
-                "id": "quiz_narrativeFreedom",
+                "id": "assessment_narrativeFreedom",
                 "text": "Narrative freedom",
                 "type": "header"
             },
             {
-                "id": "quiz_counterStories",
+                "id": "assessment_counterStories",
                 "text": "As you listened to people talk, how often did you hear a person respond to a story with another story that countered it in some way?",
                 "type": "select",
                 "options": "unknown;never;seldom;sometimes;often"
             },
             {
-                "id": "quiz_authority",
+                "id": "assessment_authority",
                 "text": "When someone who was obviously in authority was telling stories, how much time and attention did they get?",
                 "type": "select",
                 "options": "unknown;enthrallment;strong listening;partial listening;nothing special"
             },
             {
-                "id": "quiz_mistakes",
+                "id": "assessment_mistakes",
                 "text": "How many times did you hear people tell stories about mistakes?",
                 "type": "select",
                 "options": "unknown;never;seldom;sometimes;often"
             },
             {
-                "id": "quiz_silencing",
+                "id": "assessment_silencing",
                 "text": "When somebody started telling a story and another person stopped them, how did they stop them?",
                 "type": "select",
                 "options": "unknown;warning;caution;request;joke"
             },
             {
-                "id": "quiz_conflict",
+                "id": "assessment_conflict",
                 "text": "When somebody was telling a story and another person disagreed with the storyteller, how did they disagree?",
                 "type": "select",
                 "options": "unknown;demand;criticism;comment;joke"
             },
             {
-                "id": "quiz_narrativeFlow",
+                "id": "assessment_narrativeFlow",
                 "text": "Narrative flow",
                 "type": "header"
             },
             {
-                "id": "quiz_remindings",
+                "id": "assessment_remindings",
                 "text": "When you listened to people telling stories, did you ever hear people say \"that reminds me of the time\" and then tell a story in response?",
                 "type": "select",
                 "options": "unknown;never;seldom;sometimes;often"
             },
             {
-                "id": "quiz_retellings",
+                "id": "assessment_retellings",
                 "text": "How often did you hear people pass on stories they heard from other people?",
                 "type": "select",
                 "options": "unknown;never;seldom;sometimes;often"
             },
             {
-                "id": "quiz_folklore",
+                "id": "assessment_folklore",
                 "text": "How much evidence did you find for a narrative folklore in your community or organization?",
                 "type": "select",
                 "options": "unknown;none;little;some;strong"
             },
             {
-                "id": "quiz_storyTypes",
+                "id": "assessment_storyTypes",
                 "text": "Did you hear comic stories, tragic stories, epic stories, and funny stories?",
                 "type": "select",
                 "options": "unknown;no;maybe;I think so;definitely"
             },
             {
-                "id": "quiz_sensemaking",
+                "id": "assessment_sensemaking",
                 "text": "Did you ever see people share stories as they prepared to make decisions?",
                 "type": "select",
                 "options": "unknown;never;seldom;sometimes;often"
             },
             {
-                "id": "quiz_narrativeKnowledge",
+                "id": "assessment_narrativeKnowledge",
                 "text": "Narrative knowledge",
                 "type": "header"
             },
             {
-                "id": "quiz_realStories",
+                "id": "assessment_realStories",
                 "text": "Did you see people tell stories that were recountings of events based on emotional experiences from particular perspectives?",
                 "type": "select",
                 "options": "unknown;never;seldom;sometimes;often"
             },
             {
-                "id": "quiz_negotiations",
+                "id": "assessment_negotiations",
                 "text": "How lively were the negotiations you heard going on between storytellers and audiences?",
                 "type": "select",
                 "options": "unknown;never;seldom;sometimes;often"
             },
             {
-                "id": "quiz_cotelling",
+                "id": "assessment_cotelling",
                 "text": "Did you ever see two or more people tell a story together?",
                 "type": "select",
                 "options": "unknown;never;seldom;sometimes;often"
             },
             {
-                "id": "quiz_blunders",
+                "id": "assessment_blunders",
                 "text": "How often did you see someone start telling the wrong story to the wrong people at the wrong time?",
                 "type": "select",
                 "options": "unknown;often;sometimes;seldom;never"
             },
             {
-                "id": "quiz_accounting",
+                "id": "assessment_accounting",
                 "text": "Did you see people account for their actions and choices by telling each other stories?",
                 "type": "select",
                 "options": "unknown;never;seldom;sometimes;often"
             },
             {
-                "id": "quiz_narrativeUnity",
+                "id": "assessment_narrativeUnity",
                 "text": "Narrative unity",
                 "type": "header"
             },
             {
-                "id": "quiz_commonStories",
+                "id": "assessment_commonStories",
                 "text": "How easy would it be to create a list of stories any member of your community or organization could be expected to know?",
                 "type": "select",
                 "options": "unknown;impossible;difficult;doable;easy"
             },
             {
-                "id": "quiz_sacredStories",
+                "id": "assessment_sacredStories",
                 "text": "How easy would it be to create a list of sacred stories, those important to understanding the community or organization?",
                 "type": "select",
                 "options": "unknown;impossible;difficult;doable;easy"
             },
             {
-                "id": "quiz_condensedStories",
+                "id": "assessment_condensedStories",
                 "text": "How easy would it be to create a list of condensed stories, in the form of proverbs or references?",
                 "type": "select",
                 "options": "unknown;impossible;difficult;doable;easy"
             },
             {
-                "id": "quiz_intermingling",
+                "id": "assessment_intermingling",
                 "text": "How often were the stories you heard intermingled with each other?",
                 "type": "select",
                 "options": "unknown;never;seldom;sometimes;often"
             },
             {
-                "id": "quiz_culture",
+                "id": "assessment_culture",
                 "text": "How easy would it be to describe the unique storytelling culture of your community or organization?",
                 "type": "select",
                 "options": "unknown;impossible;difficult;doable;easy"
@@ -711,12 +721,12 @@ define(
                 "options": null
             },
             {
-                "id": "quiz_result",
+                "id": "assessment_result",
                 "text": "This is your combined test result.",
                 "type": "quizScoreResult"
             },
             {
-                "id": "quiz_notes",
+                "id": "assessment_notes",
                 "text": "Here you can record some notes or comments about this assessment.",
                 "type": "textarea"
             }
@@ -734,37 +744,37 @@ define(
                 "type": "label"
             },
             {
-                "id": "planning_goal",
+                "id": "project_PNIquestions_goal_final",
                 "text": "What is the goal of the project? Why are you doing it?",
                 "type": "textarea",
                 "options": "planning_goal"
             },
             {
-                "id": "planning_draft_relationships",
+                "id": "project_PNIquestions_relationships_final",
                 "text": "What relationships are important to the project?",
                 "type": "textarea",
                 "options": "planning_relationships"
             },
             {
-                "id": "planning_draft_focus",
+                "id": "project_PNIquestions_focus_final",
                 "text": "What is the focus of the project? What is it about?",
                 "type": "textarea",
                 "options": "planning_focus"
             },
             {
-                "id": "planning_draft_range",
+                "id": "project_PNIquestions_range_final",
                 "text": "What range(s) of experience will the project cover?",
                 "type": "textarea",
                 "options": "planning_range"
             },
             {
-                "id": "planning_scope",
+                "id": "project_PNIquestions_scope_final",
                 "text": "What is the project's scope? (number of people, number of stories, number of questions about stories)",
                 "type": "textarea",
                 "options": "planning_draft_scope"
             },
             {
-                "id": "planning_emphasis",
+                "id": "project_PNIquestions_emphasis_final",
                 "text": "Which phases of PNI will be important to the project? (indicate most and least important phases)",
                 "type": "textarea",
                 "options": "planning_draft_emphasis"
@@ -778,12 +788,12 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "projectSynopsis",
+                "id": "project_synopsis",
                 "text": "Please summarize your project in one or two sentences.",
                 "type": "textarea"
             },
             {
-                "id": "projectSynopsisComplete",
+                "id": "project_synopsisComplete",
                 "text": "Do you consider this synopsis to be complete?",
                 "type": "boolean"
             }
@@ -906,7 +916,7 @@ define(
                 "options": "collectionSessionPlansAreFinal"
             },
             {
-                "id": "collectionDesignGeneralNotes",
+                "id": "project_generalNotes_collectionDesign",
                 "text": "You can enter some general notes on collection design in this project here.",
                 "type": "textarea"
             }
@@ -945,24 +955,24 @@ define(
         "type": "questionsTable",
         "questions": [
             {
-                "id": "primaryVenue",
+                "id": "venue_primaryForGroup_type",
                 "text": "Choose a primary means of story collection for this group.",
                 "type": "select",
                 "options": "individual interviews;group interviews;peer interviews;group story sessions;surveys;journals;narrative incident reports;gleaned stories;other"
             },
             {
-                "id": "primaryVenue_plans",
+                "id": "venue_primaryForGroup_plans",
                 "text": "Describe your story collection plans for this group and venue.",
                 "type": "textarea"
             },
             {
-                "id": "secondaryVenue",
+                "id": "venue_secondaryForGroup_type",
                 "text": "If you want to collect stories in a second way for this same group, choose one of these options.",
                 "type": "select",
                 "options": "individual interviews;group interviews;peer interviews;group story sessions;surveys;journals;narrative incident reports;gleaned stories;other"
             },
             {
-                "id": "secondaryVenue_plans",
+                "id": "venue_secondaryForGroup_plans",
                 "text": "Describe your secondary story collection plans for this group and venue.",
                 "type": "textarea"
             }
@@ -975,13 +985,13 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "elicitingQuestionsList",
+                "id": "list_elicitingQuestions",
                 "text": "These are the story eliciting questions you have entered so far.",
                 "type": "grid",
                 "options": "page_addElicitingQuestion"
             },
             {
-                "id": "elicitingQuestionsAreFinal",
+                "id": "final_elicitingQuestions",
                 "text": "Do you consider these eliciting questions to be final?",
                 "type": "boolean"
             }
@@ -1001,20 +1011,20 @@ define(
                 "options": "Eliciting questions"
             },
             {
-                "id": "elicitingQuestion",
+                "id": "elicitingQuestion_text",
                 "text": "Enter a question with which to ask people to tell stories.",
                 "shortText": "Question",
                 "type": "textarea"
             },
             {
-                "id": "elicitingQuestionType",
+                "id": "elicitingQuestion_type",
                 "text": "What type of question is this?",
                 "shortText": "Type",
                 "type": "checkBoxes",
                 "options": "what happened;directed question;undirected questions;point in time;event;extreme;surprise;people, places, things;fictional scenario;other"
             },
             {
-                "id": "elicitingQuestionTemplates",
+                "id": "templates_elicitingQuestions",
                 "text": "Or choose a question from this list.",
                 "type": "templateList",
                 "options": "elicitingQuestions"
@@ -1028,13 +1038,13 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "storyQuestionsList",
+                "id": "list_storyQuestions",
                 "text": "These are the questions you will be asking people about stories.",
                 "type": "grid",
                 "options": "page_addStoryQuestion"
             },
             {
-                "id": "storyQuestionsAreFinal",
+                "id": "final_storyQuestions",
                 "text": "Do you consider these story questions to be final?",
                 "type": "boolean"
             }
@@ -1054,32 +1064,32 @@ define(
                 "options": "storyQuestions"
             },
             {
-                "id": "storyQuestionText",
+                "id": "storyQuestion_text",
                 "text": "Enter a question to ask people about their stories.",
                 "shortText": "Question",
                 "type": "textarea"
             },
             {
-                "id": "storyQuestionType",
+                "id": "storyQuestion_type",
                 "text": "What type of question is this?",
                 "shortText": "Type",
                 "type": "select",
                 "options": "boolean;label;header;checkbox;checkBoxes;text;textarea;select;radio;slider"
             },
             {
-                "id": "storyQuestionShortName",
+                "id": "storyQuestion_shortName",
                 "text": "Enter a short name we can use to refer to the question. (This name must be unique to the project.)",
                 "shortText": "Short name",
                 "type": "text"
             },
             {
-                "id": "storyQuestionHelp",
+                "id": "storyQuestion_help",
                 "text": "If you want to provide help to people answering the question, enter it here.",
                 "shortText": "Help",
                 "type": "textarea"
             },
             {
-                "id": "storyQuestionTemplates",
+                "id": "templates_storyQuestions",
                 "text": "Or choose a question from this list.",
                 "type": "templateList",
                 "options": "storyQuestions"
@@ -1093,13 +1103,13 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "participantQuestionsList",
+                "id": "list_participantQuestions",
                 "text": "These are the questions you will be asking people about themselves.",
                 "type": "grid",
                 "options": "page_addParticipantQuestion"
             },
             {
-                "id": "participantQuestionsAreFinal",
+                "id": "final_participantQuestions",
                 "text": "Do you consider these participant questions to be final?",
                 "type": "boolean"
             }
@@ -1119,32 +1129,32 @@ define(
                 "options": "participantQuestions"
             },
             {
-                "id": "participantQuestionText",
+                "id": "participantQuestion_text",
                 "text": "Enter a question to ask people about themselves.",
                 "shortText": "Question",
                 "type": "textarea"
             },
             {
-                "id": "participantQuestionType",
+                "id": "participantQuestion_type",
                 "text": "What type of question is this?",
                 "shortText": "Type",
                 "type": "select",
                 "options": "boolean;label;header;checkbox;checkBoxes;text;textarea;select;radio;slider"
             },
             {
-                "id": "participantQuestionShortName",
+                "id": "participantQuestion_shortName",
                 "text": "Enter a short name we can use to refer to the question. (This name must be unique to the project.)",
                 "shortText": "Short name",
                 "type": "text"
             },
             {
-                "id": "participantQuestionHelp",
+                "id": "participantQuestion_help",
                 "text": "If you want to provide help to people answering the question, enter it here.",
                 "shortText": "Help",
                 "type": "textarea"
             },
             {
-                "id": "participantQuestionTemplates",
+                "id": "templates_participantQuestions",
                 "text": "Or choose a question from this list.",
                 "type": "templateList",
                 "options": "participantQuestions"
@@ -1158,27 +1168,27 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "questionFormTitle",
+                "id": "questionForm_title",
                 "text": "Please enter a title for the question form.",
                 "type": "text"
             },
             {
-                "id": "questionFormLogo",
+                "id": "questionForm_image",
                 "text": "You can upload a logo or other image to show at the top of the form.",
                 "type": "imageUploader"
             },
             {
-                "id": "questionFormIntro",
+                "id": "questionForm_startText",
                 "text": "Please enter an introduction to be shown at the start of the form, after the title",
                 "type": "textarea"
             },
             {
-                "id": "questionFormEndText",
+                "id": "questionForm_endText",
                 "text": "Please enter any text to be shown at the end of the form",
                 "type": "textarea"
             },
             {
-                "id": "questionFormIsComplete",
+                "id": "final_questionForm",
                 "text": "Do you consider this question form to be complete?",
                 "type": "boolean"
             }
@@ -1202,13 +1212,13 @@ define(
                 "options": "collectionSessions"
             },
             {
-                "id": "storyCollectionSessionPlansList",
+                "id": "list_collectionSessionPlans",
                 "text": "These are the collection sessions you have designed so far.",
                 "type": "grid",
                 "options": "page_addStoryCollectionSession"
             },
             {
-                "id": "collectionSessionPlansAreFinal",
+                "id": "final_collectionSessionPlans",
                 "text": "Do you consider these session plans to be complete?",
                 "type": "boolean"
             }
@@ -1222,62 +1232,62 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "collectionSessionName",
+                "id": "collectionSessionPlan_name",
                 "text": "Please give this session plan a name.",
                 "shortText": "Name",
                 "type": "text"
             },
             {
-                "id": "collectionSessionRepetitions",
+                "id": "collectionSessionPlan_repetitions",
                 "text": "How many repetitions of the session will there be?",
                 "shortText": "Repetitions",
                 "type": "text"
             },
             {
-                "id": "collectionSessionLength",
+                "id": "collectionSessionPlan_duration",
                 "text": "How long will this session be?",
                 "shortText": "Length",
                 "type": "text"
             },
             {
-                "id": "collectionSessionTime",
-                "text": "When will it take place?",
+                "id": "collectionSessionPlan_times",
+                "text": "At what dates and times will the session take place?",
                 "shortText": "Time",
                 "type": "text"
             },
             {
-                "id": "collectionSessionLocation",
-                "text": "Where will it take place?",
+                "id": "collectionSessionPlan_location",
+                "text": "Where will these sessions take place?",
                 "shortText": "Location",
                 "type": "text"
             },
             {
-                "id": "collectionSessionSize",
+                "id": "collectionSessionPlan_numPeople",
                 "text": "How many people will be invited to each repetition of this session?",
                 "shortText": "Number of people",
                 "type": "text"
             },
             {
-                "id": "collectionSessionGroups",
-                "text": "From which participant group(s) will people be invited?",
+                "id": "collectionSessionPlan_groups",
+                "text": "From which participant groups will people be invited?",
                 "shortText": "Participant groups",
                 "type": "checkBoxesWithPull",
                 "options": "participantGroups"
             },
             {
-                "id": "collectionSessionMaterials",
+                "id": "collectionSessionPlan_materials",
                 "text": "What materials will this session require?",
                 "shortText": "Materials",
                 "type": "textarea"
             },
             {
-                "id": "collectionSessionDetails",
+                "id": "collectionSessionPlan_details",
                 "text": "Enter other details about this session.",
                 "shortText": "Other",
                 "type": "textarea"
             },
             {
-                "id": "collectionSessionActivitiesList",
+                "id": "list_collectionSessionActivities",
                 "text": "These are the activities added to this session plan so far.",
                 "type": "grid",
                 "options": "page_addCollectionSessionActivity"
@@ -1286,12 +1296,6 @@ define(
                 "id": "printCollectionSessionAgenda",
                 "text": "Print session agenda",
                 "type": "button"
-            },
-            {
-                "id": "COMMENT_page_addStoryCollectionSession_1",
-                "text": "// cfk move to one level with one activities list (with templates), draw from for session",
-                "type": "label",
-                "options": null
             }
         ]
     },
@@ -1303,56 +1307,54 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "collectionSessionActivityName",
+                "id": "collectionSessionPlan_activity_name",
                 "text": "Please give this activity a name.",
                 "shortText": "Name",
                 "type": "text"
             },
             {
-                "id": "collectionSessionActivityType",
+                "id": "collectionSessionPlan_activity_type",
                 "text": "What type of activity is this?",
                 "shortText": "Type",
                 "type": "select",
                 "options": "ice-breaker;sharing stories (no task);sharing stories (simple task);discussing stories;twice-told stories exercise;timeline exercise;landscape exercise;my own exercise;other"
             },
             {
-                "id": "collectionActivityPlan",
+                "id": "collectionSessionPlan_activity_plan",
                 "text": "Describe the plan for this activity.",
                 "shortText": "Plan",
                 "type": "textarea"
             },
             {
-                "id": "collectionActivityOptionalParts",
+                "id": "collectionSessionPlan_activity_optionalParts",
                 "text": "Describe optional elaborations you might or might not use in this activity.",
                 "shortText": "Optional elaborations",
                 "type": "textarea"
             },
             {
-                "id": "collectionActivityTime",
+                "id": "collectionSessionPlan_activity_duration",
                 "text": "How long will this activity take?",
                 "shortText": "Length",
                 "type": "text"
             },
             {
-                "id": "collectionActivityRecording",
+                "id": "collectionSessionPlan_activity_recording",
                 "text": "How will stories be recorded during this activity?",
                 "shortText": "Recording",
                 "type": "textarea"
             },
             {
-                "id": "collectionActivityMaterials",
-                "text": "What materials will be provided for this activity?",
-                "shortText": "Materials",
-                "type": "textarea"
+                "id": "FIXME_407",
+                "text": "Materials | What materials will be provided for this activity? collectionSessionPlan_activity_materials|textarea]"
             },
             {
-                "id": "collectionActivitySpaces",
+                "id": "collectionSessionPlan_activity_spaces",
                 "text": "What spaces will be used for this activity?",
                 "shortText": "Spaces",
                 "type": "textarea"
             },
             {
-                "id": "collectionActivityFacilitation",
+                "id": "collectionSessionPlan_activity_facilitation",
                 "text": "What sort of facilitation will be necessary for this activity?",
                 "shortText": "Facilitation",
                 "type": "textarea"
@@ -1440,7 +1442,7 @@ define(
                 "options": "storyCollectionSessionReflectionsList"
             },
             {
-                "id": "collectionProcessGeneralNotes",
+                "id": "project_generalNotes_collectionProcess",
                 "text": "You can enter some general notes on your collection process in this project here.",
                 "type": "textarea"
             }
@@ -1562,7 +1564,7 @@ define(
                 "type": "label"
             },
             {
-                "id": "storyCollectionSessionRecordsList",
+                "id": "list_collectionSessionRecords",
                 "text": "These are the story collection records you have entered so far.",
                 "type": "grid",
                 "options": "page_addCollectionSessionRecord"
@@ -1577,16 +1579,126 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "collectionSessionConstructionsList",
+                "id": "collectionSessionRecord_name",
+                "text": "Please give this session record a name.",
+                "shortText": "Name",
+                "type": "text"
+            },
+            {
+                "id": "collectionSessionRecord_whenWhere",
+                "text": "When and where did this session take place?",
+                "shortText": "When and where",
+                "type": "textarea"
+            },
+            {
+                "id": "collectionSessionRecord_participants",
+                "text": "Describe the participants at this session.",
+                "shortText": "Who attended",
+                "type": "textarea"
+            },
+            {
+                "id": "collectionSessionRecord_plan",
+                "text": "Which of your collection session plans did you follow in this session? (And did you stick to the plan?)",
+                "shortText": "Plan",
+                "type": "textarea"
+            },
+            {
+                "id": "collectionSessionRecord_notes",
+                "text": "Enter additional notes on the session here.\nYour notes can include links to images or other documents.",
+                "shortText": "Notes",
+                "type": "textarea"
+            },
+            {
+                "id": "list_collectionSessionRecord_constructions",
                 "text": "These are the group constructions you have entered for this session so far.",
                 "type": "grid",
                 "options": "page_newCollectionSessionConstruction"
             },
             {
-                "id": "collectionSessionNotesList",
-                "text": "These are the notes you have entered for this story collection session so far.",
-                "type": "grid",
-                "options": "page_newCollectionSessionNotes"
+                "id": "collectionSessionRecord_reflectionsLabel",
+                "text": "Please answer these questions about the session.",
+                "type": "label"
+            },
+            {
+                "id": "collectionSessionRecord_reflectionsOnChangeHeader",
+                "text": "Change",
+                "type": "header"
+            },
+            {
+                "id": "collectionSessionRecord_reflections_change_participantPerceptions",
+                "text": "How did the perceptions of the participants change from the start to the end of the session?",
+                "shortText": "Change in participant perceptions",
+                "type": "textarea"
+            },
+            {
+                "id": "collectionSessionRecord_reflections_change_yourPerceptions",
+                "text": "How did <i>your</i> perceptions change?",
+                "shortText": "Change in facilitator perceptions",
+                "type": "textarea"
+            },
+            {
+                "id": "collectionSessionRecord_reflections_change_project",
+                "text": "How has the overall project changed as a result of this session?",
+                "shortText": "Changes to the project",
+                "type": "textarea"
+            },
+            {
+                "id": "collectionSessionRecord_interactionsHeader",
+                "text": "Interactions",
+                "type": "header"
+            },
+            {
+                "id": "collectionSessionRecord_reflections_interaction_participants",
+                "text": "Describe the interactions between participants in this session.",
+                "shortText": "Interactions among participants",
+                "type": "textarea"
+            },
+            {
+                "id": "collectionSessionRecord_reflections_interaction_participantsAndFacilitator",
+                "text": "Describe interactions between participants and facilitators.",
+                "shortText": "Interactions between participants and facilitators",
+                "type": "textarea"
+            },
+            {
+                "id": "collectionSessionRecord_reflections_interaction_stories",
+                "text": "What did you notice about the stories people told, retold, chose, and worked with during the session?",
+                "shortText": "Stories",
+                "type": "textarea"
+            },
+            {
+                "id": "collectionSessionRecord_learningHeader",
+                "text": "Learning",
+                "type": "header"
+            },
+            {
+                "id": "collectionSessionRecord_reflections_learning_special",
+                "text": "What was special about these people in this place on this day?",
+                "shortText": "Unique features",
+                "type": "textarea"
+            },
+            {
+                "id": "collectionSessionRecord_reflections_learning_surprise",
+                "text": "What surprised you about this session?",
+                "shortText": "Surprise",
+                "type": "textarea"
+            },
+            {
+                "id": "collectionSessionRecord_reflections_learning_workedWell",
+                "text": "Which parts of your plans for this session worked out well? Which parts didn't?",
+                "shortText": "Worked and didn't work",
+                "type": "textarea"
+            },
+            {
+                "id": "collectionSessionRecord_reflections_learning_newIdeas",
+                "text": "What new ideas did you gain from this session? What did you learn from it?",
+                "shortText": "New ideas",
+                "type": "textarea"
+            },
+            {
+                "id": "collectionSessionRecord_reflections_learning_wantToRemember",
+                "text": "What else do you want to remember about this session?",
+                "shortText": "Other",
+                "type": "textarea"
             }
         ]
     },
@@ -1598,216 +1710,19 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "collectionSessionConstructionName",
+                "id": "collectionSessionRecord_construction_name",
                 "text": "Please give this construction a name.",
                 "type": "text"
             },
             {
-                "id": "collectionSessionConstructionType",
+                "id": "collectionSessionRecord_construction_type",
                 "text": "What type of construction is it?",
                 "type": "select",
                 "options": "timeline;landscape;other"
             },
             {
-                "id": "collectionSessionContructionText",
-                "text": "Please describe the construction (or include a description given by participants).",
-                "type": "textarea"
-            },
-            {
-                "id": "collectionSessionConstructionLink",
-                "text": "You can include a link to an audio or video description here.",
-                "type": "text"
-            },
-            {
-                "id": "collectionSessionConstructionImagesList",
-                "text": "These are the images you have entered for the construction so far.",
-                "type": "grid",
-                "options": "page_newCollectionConstructionImage"
-            }
-        ]
-    },
-    {
-        "id": "page_newCollectionConstructionImage",
-        "name": "Collection construction image",
-        "description": "",
-        "isHeader": false,
-        "type": "popup",
-        "questions": [
-            {
-                "id": "collectionSessionConstructionImage",
-                "text": "Upload an image for this construction.",
-                "shortText": "Image",
-                "type": "imageUploader"
-            },
-            {
-                "id": "collectionSessionConstructionImageName",
-                "text": "Please give this image a name.",
-                "shortText": "Name",
-                "type": "text"
-            },
-            {
-                "id": "collectionSessionConstructionImageNotes",
-                "text": "Make any notes you'd like to record on this image here.",
-                "shortText": "Notes",
-                "type": "textarea"
-            }
-        ]
-    },
-    {
-        "id": "page_newCollectionSessionNotes",
-        "name": "Collection session notes",
-        "description": "",
-        "isHeader": false,
-        "type": "popup",
-        "questions": [
-            {
-                "id": "collectionSessionNotesName",
-                "text": "Please give this set of notes a name.",
-                "shortText": "Name",
-                "type": "text"
-            },
-            {
-                "id": "collectionSessionNotesText",
-                "text": "Enter your notes here.",
-                "shortText": "Notes",
-                "type": "textarea"
-            },
-            {
-                "id": "collectionSessionNoteImagesList",
-                "text": "These are the images you have entered for this set of notes so far.",
-                "shortText": "Images",
-                "type": "grid",
-                "options": "page_newCollectionSessionImage"
-            }
-        ]
-    },
-    {
-        "id": "page_newCollectionSessionImage",
-        "name": "Collection session notes image",
-        "description": "",
-        "isHeader": false,
-        "type": "popup",
-        "questions": [
-            {
-                "id": "collectionSessionNotesImage",
-                "text": "Upload your image here.",
-                "shortText": "Image",
-                "type": "imageUploader"
-            },
-            {
-                "id": "collectionSessionImageName",
-                "text": "Please give this image a name.",
-                "shortText": "Name",
-                "type": "text"
-            },
-            {
-                "id": "collectionSessionNotesImageNotes",
-                "text": "You can enter some notes about this image.",
-                "shortText": "Notes",
-                "type": "textarea"
-            }
-        ]
-    },
-    {
-        "id": "page_answerQuestionsAboutCollectionSessions",
-        "name": "Reflect on story collection sessions",
-        "description": "",
-        "isHeader": false,
-        "questions": [
-            {
-                "id": "storyCollectionSessionReflectionsList",
-                "text": "These are the session reflections you have entered so far.",
-                "type": "grid",
-                "options": "page_answerQuestionsAboutCollectionSession"
-            }
-        ]
-    },
-    {
-        "id": "page_answerQuestionsAboutCollectionSession",
-        "name": "Reflect on story collection session",
-        "description": "",
-        "isHeader": false,
-        "type": "popup",
-        "questions": [
-            {
-                "id": "collectionReflectChangeLabel",
-                "text": "Change",
-                "type": "header"
-            },
-            {
-                "id": "collectionReflectChangeEmotions",
-                "text": "How did the perceptions of the participants change from the start to the end of the session?",
-                "shortText": "Change in participant perceptions",
-                "type": "textarea"
-            },
-            {
-                "id": "collectionReflectChangeYourEmotions",
-                "text": "How did <i>your</i> perceptions change?",
-                "shortText": "Change in facilitator perceptions",
-                "type": "textarea"
-            },
-            {
-                "id": "collectionReflectProjectChanged",
-                "text": "How has the overall project changed as a result of this session?",
-                "shortText": "Changes to the project",
-                "type": "textarea"
-            },
-            {
-                "id": "collectionReflectInteractionsLabel",
-                "text": "Interactions",
-                "type": "header"
-            },
-            {
-                "id": "collectionReflectInteractionsParticipants",
-                "text": "Describe the interactions between participants in this session.",
-                "shortText": "Interactions among participants",
-                "type": "textarea"
-            },
-            {
-                "id": "collectionReflectInteractionsFacilitators",
-                "text": "Describe interactions between participants and facilitators.",
-                "shortText": "Interactions between participants and facilitators",
-                "type": "textarea"
-            },
-            {
-                "id": "collectionReflectStories",
-                "text": "What did you notice about the stories people told, retold, chose, and worked with during the session?",
-                "shortText": "Stories",
-                "type": "textarea"
-            },
-            {
-                "id": "collectionReflectLearningLabel",
-                "text": "Learning",
-                "type": "header"
-            },
-            {
-                "id": "collectionReflectSpecial",
-                "text": "What was special about these people in this place on this day?",
-                "shortText": "Unique features",
-                "type": "textarea"
-            },
-            {
-                "id": "collectionReflectSurprise",
-                "text": "What surprised you about this session?",
-                "shortText": "Surprise",
-                "type": "textarea"
-            },
-            {
-                "id": "collectionReflectWorkedWellAndNot",
-                "text": "Which parts of your plans for this session worked out well? Which parts didn't?",
-                "shortText": "Worked and didn't work",
-                "type": "textarea"
-            },
-            {
-                "id": "collectionReflectNewIdeas",
-                "text": "What new ideas did you gain from this session? What did you learn from it?",
-                "shortText": "New ideas",
-                "type": "textarea"
-            },
-            {
-                "id": "collectionReflectExtra",
-                "text": "What else do you want to remember about this session?",
-                "shortText": "Other",
+                "id": "collectionSessionRecord_construction_description",
+                "text": "Please describe the construction (or include a description given by participants).\nYour description can include links to images or other documents.",
                 "type": "textarea"
             }
         ]
@@ -1881,7 +1796,7 @@ define(
                 "options": "perspectivesList"
             },
             {
-                "id": "catalysisGeneralNotes",
+                "id": "project_generalNotes_catalysis",
                 "text": "You can enter some general notes on catalysis in this project here.",
                 "type": "textarea"
             }
@@ -1940,25 +1855,25 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "statTests",
+                "id": "reviewTrends_statTests",
                 "text": "Which statistical tests do you want to consider?",
                 "type": "checkBoxes",
                 "options": "chi-squared (differences between counts);t-test (differences between means);correlation"
             },
             {
-                "id": "minSubsetSize",
+                "id": "reviewTrends_minSubsetSize",
                 "text": "How large should subsets of stories be to be considered for comparison?",
                 "type": "select",
                 "options": "20;30;40;50"
             },
             {
-                "id": "significanceThreshold",
+                "id": "reviewTrends_significanceThreshold",
                 "text": "What significance threshold do you want reported?",
                 "type": "select",
                 "options": "0.05;0.01"
             },
             {
-                "id": "trendResults",
+                "id": "reviewTrends_trendResults",
                 "text": "How many results do you want to see per test type?",
                 "type": "select",
                 "options": "5;10;15;20;25;30"
@@ -1976,7 +1891,7 @@ define(
                 "options": null
             },
             {
-                "id": "trendsReportDisplay",
+                "id": "reviewTrends_display",
                 "text": "Trends report",
                 "type": "trendsReport"
             }
@@ -2020,65 +1935,100 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "observationName",
+                "id": "observation_name",
                 "text": "Please give this observation a name.",
                 "type": "text"
             },
             {
-                "id": "observation",
+                "id": "observation_text",
                 "text": "Please describe this observation.",
                 "shortText": "Observation",
                 "type": "textarea"
             },
             {
-                "id": "observationResultsList",
+                "id": "list_observationResults",
                 "text": "These are the results you have selected to include in this observation.",
                 "shortText": "Results",
                 "type": "accumulatedItemsGrid",
                 "options": "collectedStoriesAfterCollection"
             },
             {
-                "id": "observationInterpretationsList",
-                "text": "These are the interpretations you have created for this observation.\nRemember that you should create at least two interpretations for each observation.",
-                "shortText": "Interpretations",
-                "type": "grid",
-                "options": "page_addInterpretation"
-            },
-            {
-                "id": "observationFullyExplored",
+                "id": "final_observationFullyExplored",
                 "text": "Do you consider this observation to be fully explored?",
                 "type": "boolean"
-            }
-        ]
-    },
-    {
-        "id": "page_addInterpretation",
-        "name": "Create interpretation",
-        "description": "",
-        "isHeader": false,
-        "questions": [
+            },
             {
-                "id": "interpretationText",
-                "text": "What is your interpretation about this observation?",
-                "shortText": "Interpretation",
+                "id": "firstInterpretation_text",
+                "text": "Enter an interpretation of this observation.\nWhat does it mean?",
+                "shortText": "First interpretation",
                 "type": "textarea"
             },
             {
-                "id": "interpretationName",
-                "text": "Enter a name for this interpretation.",
-                "shortText": "Name",
+                "id": "firstInterpretation_name",
+                "text": "Please give this interpretation a name (so you can refer to it later).",
+                "shortText": "First interpretation name",
                 "type": "text"
             },
             {
-                "id": "firstInterpIdea",
+                "id": "firstInterpretation_idea",
                 "text": "If you like, you can record an idea that follows from this interpretation.",
-                "shortText": "Idea",
+                "shortText": "First interpretation idea",
                 "type": "textarea"
             },
             {
-                "id": "interpretationExcerptsList",
+                "id": "list_firstInterpretation_excerpts",
                 "text": "You can add excerpts to this interpretation.",
-                "shortText": "Excerpts",
+                "shortText": "First interpretation excerpts",
+                "type": "grid",
+                "options": "page_selectExcerpt"
+            },
+            {
+                "id": "competingInterpretation_text",
+                "text": "Enter an interpretation that competes with the first one.\nWhat else could this pattern mean?",
+                "shortText": "Competing interpretation",
+                "type": "textarea"
+            },
+            {
+                "id": "competingInterpretation_name",
+                "text": "Please give this competing interpretation a name.",
+                "shortText": "Competing interpretation name",
+                "type": "text"
+            },
+            {
+                "id": "competingInterpretation_idea",
+                "text": "Enter an idea that follows from your competing interpretation.",
+                "shortText": "Competing interpretation idea",
+                "type": "textarea"
+            },
+            {
+                "id": "list_competingInterpretation_excerpts",
+                "text": "You can add excerpts to the competing interpretation.",
+                "shortText": "Competing interpretation excerpts",
+                "type": "grid",
+                "options": "page_selectExcerpt"
+            },
+            {
+                "id": "thirdInterpretation_text",
+                "text": "If a third interpretation of the pattern comes to mind, enter it here.\nIs there anything else this pattern could mean?",
+                "shortText": "Third interpretation",
+                "type": "textarea"
+            },
+            {
+                "id": "thirdnterpretation_name",
+                "text": "Please give this third interpretation a name.",
+                "shortText": "Third interpretation name",
+                "type": "text"
+            },
+            {
+                "id": "thirdInterpretation_idea",
+                "text": "Enter an idea that follows from your third interpretation.",
+                "shortText": "Third interpretation idea",
+                "type": "textarea"
+            },
+            {
+                "id": "list_thirdInterpretation_excerpts",
+                "text": "You can add excerpts to the third interpretation.",
+                "shortText": "Third interpretation excerpts",
                 "type": "grid",
                 "options": "page_selectExcerpt"
             }
@@ -2136,17 +2086,17 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "excerptName",
+                "id": "excerpt_name",
                 "text": "Please give this excerpt a name.",
                 "type": "text"
             },
             {
-                "id": "excerptText",
+                "id": "excerpt_text",
                 "text": "You can edit the excerpt here.",
                 "type": "textarea"
             },
             {
-                "id": "excerptNotes",
+                "id": "excerpt_notes",
                 "text": "You can enter some notes about the excerpt here.",
                 "type": "textarea"
             }
@@ -2159,7 +2109,7 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "savedExcerptsList",
+                "id": "list_savedExcerpts",
                 "text": "These are the excerpts you have saved so far.",
                 "type": "grid",
                 "options": "page_createNewExcerpt"
@@ -2173,7 +2123,7 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "observationsListDisplay",
+                "id": "list_observationsDisplay",
                 "text": "Collected observations",
                 "type": "grid",
                 "options": "page_createOrEditObservation"
@@ -2187,12 +2137,12 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "clusterInterpLabel",
+                "id": "clusterInterpretationsLabel",
                 "text": "Note: Do not cluster your interpretations unless you are sure you have finished collecting them.",
                 "type": "label"
             },
             {
-                "id": "finishedCollectingObservations",
+                "id": "final_finishedCollectingObservations",
                 "text": "Have you finished collecting observations?",
                 "type": "boolean"
             },
@@ -2223,7 +2173,7 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "perspectivesList",
+                "id": "list_perspectives",
                 "text": "Perspectives",
                 "type": "grid",
                 "options": "page_addPerspective"
@@ -2238,37 +2188,37 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "perspectiveName",
+                "id": "perspective_name",
                 "text": "Please give this perspective a name.",
                 "shortText": "Name",
                 "type": "text"
             },
             {
-                "id": "perspectiveDescription",
+                "id": "perspective_description",
                 "text": "Describe this perspective.",
                 "shortText": "Perspective",
                 "type": "textarea"
             },
             {
-                "id": "perspectiveResultsList",
+                "id": "list_perspectiveResults",
                 "text": "Results linked to this perspective",
                 "type": "annotationsGrid",
                 "options": "page_annotateResultForPerspective"
             },
             {
-                "id": "perspectiveExcerptsList",
+                "id": "list_perspectiveExcerpts",
                 "text": "Excerpts linked to this perspective",
                 "type": "annotationsGrid",
                 "options": "page_annotateExcerptForPerspective"
             },
             {
-                "id": "perspectiveInterpretationsList",
+                "id": "list_perspectiveInterpretations",
                 "text": "Interpretations linked to this perspective",
                 "type": "annotationsGrid",
                 "options": "page_annotateInterpretationForPerspective"
             },
             {
-                "id": "perspectiveComplete",
+                "id": "final_perspectiveComplete",
                 "text": "Do you consider this perspective to be complete?",
                 "type": "boolean"
             },
@@ -2288,7 +2238,7 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "resultLinkedToPerspectiveNotes",
+                "id": "perspective_resultLinkageNotes",
                 "text": "Enter any notes you want to remember about this result with respect to this perspective.",
                 "type": "textarea"
             }
@@ -2302,7 +2252,7 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "excerptLinkedToPerspectiveNotes",
+                "id": "perspective_excerptLinkageNotes",
                 "text": "Enter any notes you want to remember about this excerpt with respect to this perspective.",
                 "type": "textarea"
             }
@@ -2315,7 +2265,7 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "interpretationLinkedToPerspectiveNotes",
+                "id": "perspective_interpretationLinkageNotes",
                 "text": "Enter any notes you want to remember about this interpretation as it is linked to this perspective.",
                 "type": "textarea"
             }
@@ -2396,7 +2346,7 @@ define(
                 "options": "sensemakingSessionRecordsAreFinal"
             },
             {
-                "id": "sensemakingGeneralNotes",
+                "id": "project_generalNotes_sensemaking",
                 "text": "You can enter some general notes on sensemaking in this project here.",
                 "type": "textarea"
             }
@@ -2415,13 +2365,13 @@ define(
                 "options": "sensemakingSessions"
             },
             {
-                "id": "sensemakingSessionPlansList",
+                "id": "list_sensemakingSessionPlans",
                 "text": "Sensemaking sessions",
                 "type": "grid",
                 "options": "page_addSensemakingSessionPlan"
             },
             {
-                "id": "sensemakingSessionPlansAreFinal",
+                "id": "final_sensemakingSessionPlans",
                 "text": "Do you consider these session plans to be complete?",
                 "type": "boolean"
             }
@@ -2435,62 +2385,62 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "sensemakingSessionPlanName",
+                "id": "sensemakingSessionPlan_name",
                 "text": "Please give this session plan a name.",
                 "shortText": "Name",
                 "type": "text"
             },
             {
-                "id": "sensemakingSessionPlanRepetitions",
+                "id": "sensemakingSessionPlan_repetitions",
                 "text": "How many repetitions of the session will there be?",
                 "shortText": "Repetitions",
                 "type": "text"
             },
             {
-                "id": "sensemakingSessionPlanLength",
+                "id": "sensemakingSessionPlan_duration",
                 "text": "How long will this session be?",
                 "shortText": "Length",
                 "type": "text"
             },
             {
-                "id": "sensemakingSessionPlanTime",
-                "text": "When will it take place?",
+                "id": "sensemakingSessionPlan_times",
+                "text": "At what dates and times will the session take place?",
                 "shortText": "Time",
                 "type": "text"
             },
             {
-                "id": "sensemakingSessionLocation",
-                "text": "Where will it take place?",
+                "id": "sensemakingSessionPlan_location",
+                "text": "Where will these sessions take place?",
                 "shortText": "Location",
                 "type": "text"
             },
             {
-                "id": "sensemakingSessionPlanSize",
+                "id": "sensemakingSessionPlan_numPeople",
                 "text": "How many people will be invited to each repetition of this session?",
                 "shortText": "Number of people",
                 "type": "text"
             },
             {
-                "id": "sensemakingSessionPlanGroups",
+                "id": "sensemakingSessionPlan_groups",
                 "text": "From which participant group(s) will people be invited?",
                 "shortText": "Participant groups",
                 "type": "checkBoxesWithPull",
                 "options": "participantGroups"
             },
             {
-                "id": "sensemakingSessionPlanMaterials",
+                "id": "sensemakingSessionPlan_materials",
                 "text": "What materials will this session require?",
                 "shortText": "Materials",
                 "type": "textarea"
             },
             {
-                "id": "sensemakingSessionPlanDetails",
+                "id": "sensemakingSessionPlan_details",
                 "text": "Enter other details about this session.",
                 "shortText": "Other",
                 "type": "textarea"
             },
             {
-                "id": "sensemakingSessionPlanActivitiesList",
+                "id": "list_sensemakingSessionPlanActivities",
                 "text": "These are the activities added to this session plan so far.",
                 "type": "grid",
                 "options": "page_addSensemakingSessionActivity"
@@ -2510,56 +2460,56 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "sensemakingSessionActivityName",
+                "id": "sensemakingSessionPlan_activity_name",
                 "text": "Please give this activity a name.",
                 "shortText": "Name",
                 "type": "text"
             },
             {
-                "id": "sensemakingSessionActivity",
+                "id": "sensemakingSessionPlan_activity_type",
                 "text": "What type of activity is this?",
                 "shortText": "Type",
                 "type": "select",
                 "options": "ice-breaker;encountering stories (no task);encountering stories (simple task);discussing stories;twice-told stories exercise;timeline exercise;landscape exercise;story elements exercise;composite stories exercise;my own exercise;other"
             },
             {
-                "id": "sensemakingActivityPlan",
+                "id": "sensemakingSessionPlan_activity_plan",
                 "text": "Describe the plan for this activity.",
                 "shortText": "Plan",
                 "type": "textarea"
             },
             {
-                "id": "sensemakingActivityOptionalParts",
+                "id": "sensemakingSessionPlan_activity_optionalParts",
                 "text": "Describe optional elaborations you might or might not use in this activity.",
                 "shortText": "Optional elaborations",
                 "type": "textarea"
             },
             {
-                "id": "sensemakingActivityTime",
+                "id": "sensemakingSessionPlan_activity_duration",
                 "text": "How long will this activity take?",
                 "shortText": "Length",
                 "type": "text"
             },
             {
-                "id": "sensemakingActivityRecording",
+                "id": "sensemakingSessionPlan_activity_recording",
                 "text": "Will new stories be recorded during this activity, and if so, how?",
                 "shortText": "New stories",
                 "type": "textarea"
             },
             {
-                "id": "sensemakingActivityMaterials",
+                "id": "sensemakingSessionPlan_activity_materials",
                 "text": "What materials will be provided for this activity?",
                 "shortText": "Materials",
                 "type": "textarea"
             },
             {
-                "id": "sensemakingActivitySpaces",
+                "id": "sensemakingSessionPlan_activity_spaces",
                 "text": "What spaces will be used for this activity?",
                 "shortText": "Spaces",
                 "type": "textarea"
             },
             {
-                "id": "sensemakingActivityFacilitation",
+                "id": "sensemakingSessionPlan_activity_facilitation",
                 "text": "What sort of facilitation will be necessary for this activity?",
                 "shortText": "Facilitation",
                 "type": "textarea"
@@ -2573,13 +2523,13 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "sensemakingSessionRecordsList",
+                "id": "list_sensemakingSessionRecords",
                 "text": "Sensemaking sessions records",
                 "type": "grid",
                 "options": "page_addSensemakingSessionRecord"
             },
             {
-                "id": "sensemakingSessionRecordsAreFinal",
+                "id": "final_sensemakingSessionRecords",
                 "text": "Do you consider these session records to be complete?",
                 "type": "boolean"
             }
@@ -2593,7 +2543,7 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "sensemakingSessionRecordName",
+                "id": "sensemakingSessionRecord_name",
                 "text": "Please give this session record a name.",
                 "shortText": "Name",
                 "type": "text"
@@ -2605,7 +2555,7 @@ define(
                 "options": null
             },
             {
-                "id": "sensemakingSessionRecordResonantStoriesList",
+                "id": "list_sensemakingSessionRecord_resonantStories",
                 "text": "Resonant stories (pivot, voice, discovery)",
                 "type": "accumulatedItemsGrid",
                 "options": "storiesToMarkAsResonantDuringSensemaking"
@@ -2624,28 +2574,132 @@ define(
                 "options": "addResonantStory:\"page_addResonantStory\""
             },
             {
-                "id": "sensemakingSessionRecordOutcomesList",
+                "id": "list_sensemakingSessionRecordOutcomes",
                 "text": "Session outcomes (like discoveries and ideas)",
                 "type": "grid",
                 "options": "page_newSensemakingSessionOutcome"
             },
             {
-                "id": "sensemakingSessionRecordConstructionsList",
+                "id": "list_sensemakingSessionRecord_constructions",
                 "text": "Group constructions",
                 "type": "grid",
                 "options": "page_newSensemakingSessionConstruction"
             },
             {
-                "id": "sensemakingSessionRecordNotesList",
-                "text": "Session notes",
-                "type": "grid",
-                "options": "page_newSensemakingSessionNotes"
+                "id": "FIXME_723",
+                "text": "Please give this session record a name.",
+                "shortText": "Name",
+                "type": "text"
             },
             {
-                "id": "sensemakingSessionReflectionsList",
-                "text": "Session reflections",
-                "type": "grid",
-                "options": "page_answerQuestionsAboutSensemakingSession"
+                "id": "sensemakingSessionRecord_whenWhere",
+                "text": "When and where did this session take place?",
+                "shortText": "When and where",
+                "type": "textarea"
+            },
+            {
+                "id": "sensemakingSessionRecord_participants",
+                "text": "Describe the participants at this session.",
+                "shortText": "Who attended",
+                "type": "textarea"
+            },
+            {
+                "id": "sensemakingSessionRecord_plan",
+                "text": "Which of your collection session plans did you follow in this session? (And did you stick to the plan?)",
+                "shortText": "Plan",
+                "type": "textarea"
+            },
+            {
+                "id": "sensemakingSessionRecord_notes",
+                "text": "Enter additional notes on the session here.\nYour notes can include links to images or other documents.",
+                "shortText": "Notes",
+                "type": "textarea"
+            },
+            {
+                "id": "sensemakingSessionRecord_reflectionsLabel",
+                "text": "Please answer these questions about the session.",
+                "type": "label"
+            },
+            {
+                "id": "sensemakingSessionRecord_reflectionsOnChangeHeader",
+                "text": "Change",
+                "type": "header"
+            },
+            {
+                "id": "sensemakingSessionRecord_reflections_change_participantPerceptions",
+                "text": "How did the perceptions of the participants change from the start to the end of the session?",
+                "shortText": "Change in participant perceptions",
+                "type": "textarea"
+            },
+            {
+                "id": "sensemakingSessionRecord_reflections_change_yourPerceptions",
+                "text": "How did <i>your</i> perceptions change?",
+                "shortText": "Change in facilitator perceptions",
+                "type": "textarea"
+            },
+            {
+                "id": "sensemakingSessionRecord_reflections_change_project",
+                "text": "How has the overall project changed as a result of this session?",
+                "shortText": "Changes to the project",
+                "type": "textarea"
+            },
+            {
+                "id": "sensemakingSessionRecord_interactionsHeader",
+                "text": "Interactions",
+                "type": "header"
+            },
+            {
+                "id": "sensemakingSessionRecord_reflections_interaction_participants",
+                "text": "Describe the interactions between participants in this session.",
+                "shortText": "Interactions among participants",
+                "type": "textarea"
+            },
+            {
+                "id": "sensemakingSessionRecord_reflections_interaction_participantsAndFacilitator",
+                "text": "Describe interactions between participants and facilitators.",
+                "shortText": "Interactions between participants and facilitators",
+                "type": "textarea"
+            },
+            {
+                "id": "sensemakingSessionRecord_reflections_interaction_stories",
+                "text": "What did you notice about the stories people told, retold, chose, and worked with during the session?",
+                "shortText": "Stories",
+                "type": "textarea"
+            },
+            {
+                "id": "sensemakingSessionRecord_learningHeader",
+                "text": "Learning",
+                "type": "header"
+            },
+            {
+                "id": "sensemakingSessionRecord_reflections_learning_special",
+                "text": "What was special about these people in this place on this day?",
+                "shortText": "Unique features",
+                "type": "textarea"
+            },
+            {
+                "id": "sensemakingSessionRecord_reflections_learning_surprise",
+                "text": "What surprised you about this session?",
+                "shortText": "Surprise",
+                "type": "textarea"
+            },
+            {
+                "id": "sensemakingSessionRecord_reflections_learning_workedWell",
+                "text": "Which parts of your plans for this session worked out well? Which parts didn't?",
+                "shortText": "Worked and didn't work",
+                "type": "textarea"
+            },
+            {
+                "id": "sensemakingSessionRecord_reflections_learning_newIdeas",
+                "text": "What new ideas did you gain from this session? What did you learn from it?",
+                "shortText": "New ideas",
+                "type": "textarea"
+            },
+            {
+                "id": "sensemakingSessionRecord_reflections_learning_wantToRemember",
+                "text": "What else do you want to remember about this session?",
+                "shortText": "Other",
+                "type": "textarea"
             }
         ]
     },
@@ -2656,24 +2710,24 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "resonantStoryType",
+                "id": "sensemakingSessionRecord_resonantStory_type",
                 "text": "Which type of resonant story is this?",
                 "type": "select",
                 "options": "pivot;voice;discovery;other"
             },
             {
-                "id": "resonantStoryReason",
+                "id": "sensemakingSessionRecord_resonantStory_reason",
                 "text": "Why did this story stand out?",
                 "type": "textarea"
             },
             {
-                "id": "resonantStoryWhom",
+                "id": "sensemakingSessionRecord_resonantStory_groups",
                 "text": "For which participant groups was this story important?",
                 "type": "checkBoxesWithPull",
                 "options": "participantGroups"
             },
             {
-                "id": "resonantStoryNotes",
+                "id": "sensemakingSessionRecord_resonantStory_notes",
                 "text": "Would you like to make any other notes about this story?",
                 "type": "textarea"
             }
@@ -2687,20 +2741,20 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "sensemakingSessionOutcomeType",
+                "id": "sensemakingSessionRecord_outcome_type",
                 "text": "What type of session outcome is this?",
                 "shortText": "Type",
                 "type": "select",
                 "options": "discovery;opportunity;issue;idea;recommendation;perspective;dilemma;other"
             },
             {
-                "id": "sensemakingSessionOutcomeName",
+                "id": "sensemakingSessionRecord_outcome_name",
                 "text": "Please give this outcome a name.",
                 "shortText": "Name",
                 "type": "text"
             },
             {
-                "id": "sensemakingSessionOutcomeText",
+                "id": "sensemakingSessionRecord_outcome_description",
                 "text": "Describe the outcome.",
                 "shortText": "Description",
                 "type": "textarea"
@@ -2715,220 +2769,22 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "sensemakingSessionConstructionName",
+                "id": "sensemakingSessionRecord_construction_name",
                 "text": "Please give this construction a name.",
                 "shortText": "Name",
                 "type": "text"
             },
             {
-                "id": "sensemakingSessionConstructionType",
+                "id": "sensemakingSessionRecord_construction_type",
                 "text": "What type of construction is it?",
                 "shortText": "Type",
                 "type": "select",
                 "options": "timeline;landscape;story elements;composite story;other"
             },
             {
-                "id": "sensemakingSessionContructionText",
-                "text": "Please decribe the construction (or include a description given by participants).",
+                "id": "sensemakingSessionRecord_construction_description",
+                "text": "Please decribe the construction (or include a description given by participants).\nYour description can include links to images or documents.",
                 "shortText": "Description",
-                "type": "textarea"
-            },
-            {
-                "id": "sensemakingSessionConstructionLink",
-                "text": "You can include a link to an audio or video description here.",
-                "shortText": "Audio/video link",
-                "type": "text"
-            },
-            {
-                "id": "sensemakingSessionConstructionImages",
-                "text": "These are the images you have entered for the construction so far.",
-                "type": "grid",
-                "options": "page_newSensemakingConstructionImage"
-            }
-        ]
-    },
-    {
-        "id": "page_newSensemakingConstructionImage",
-        "name": "Sensemaking construction image",
-        "description": "",
-        "isHeader": false,
-        "type": "popup",
-        "questions": [
-            {
-                "id": "sensemakingSessionConstructionImage",
-                "text": "Upload an image for this construction.",
-                "shortText": "Image",
-                "type": "imageUploader"
-            },
-            {
-                "id": "sensemakingSessionConstructionImageName",
-                "text": "Please give this image a name.",
-                "shortText": "Name",
-                "type": "text"
-            },
-            {
-                "id": "sensemakingSessionConstructionImageNotes",
-                "text": "Make any notes you'd like to record on this image here.",
-                "shortText": "Notes",
-                "type": "textarea"
-            }
-        ]
-    },
-    {
-        "id": "page_newSensemakingSessionNotes",
-        "name": "Sensemaking session notes",
-        "description": "",
-        "isHeader": false,
-        "type": "popup",
-        "questions": [
-            {
-                "id": "sensemakingSessionNotesName",
-                "text": "Please give this set of notes a name.",
-                "shortText": "Name",
-                "type": "text"
-            },
-            {
-                "id": "sensemakingSessionNotesText",
-                "text": "Enter your notes here.",
-                "shortText": "Notes",
-                "type": "textarea"
-            },
-            {
-                "id": "sensemakingSessionNoteImages",
-                "text": "These are the images you have entered for this set of notes so far.",
-                "shortText": "Images",
-                "type": "grid",
-                "options": "page_newSensemakingSessionImage"
-            }
-        ]
-    },
-    {
-        "id": "page_newSensemakingSessionImage",
-        "name": "Sensemaking session notes image",
-        "description": "",
-        "isHeader": false,
-        "type": "popup",
-        "questions": [
-            {
-                "id": "sensemakingSessionNotesImage",
-                "text": "Upload your image here.",
-                "shortText": "Image",
-                "type": "imageUploader"
-            },
-            {
-                "id": "sensemakingSessionImageName",
-                "text": "Please give this image a name.",
-                "shortText": "Name",
-                "type": "text"
-            },
-            {
-                "id": "sensemakingSessionNotesImageNotes",
-                "text": "You can enter some notes about this image.",
-                "shortText": "Notes",
-                "type": "textarea"
-            }
-        ]
-    },
-    {
-        "id": "page_answerQuestionsAboutSensemakingSessions",
-        "name": "Reflect on sensemaking sessions",
-        "description": "",
-        "isHeader": false,
-        "questions": [
-            {
-                "id": "sensemakingSessionName",
-                "text": "Please give this set of reflections a name.",
-                "shortText": "Name",
-                "type": "text"
-            }
-        ]
-    },
-    {
-        "id": "page_answerQuestionsAboutSensemakingSession",
-        "name": "Reflect on session",
-        "description": "",
-        "isHeader": false,
-        "type": "popup",
-        "questions": [
-            {
-                "id": "sensemakingReflectChangeLabel",
-                "text": "Change",
-                "type": "header"
-            },
-            {
-                "id": "sensemakingReflectChangeEmotions",
-                "text": "How did the perceptions of the participants change from the start to the end of the session?",
-                "shortText": "Change in participant perceptions",
-                "type": "textarea"
-            },
-            {
-                "id": "sensemakingReflectChangeYourEmotions",
-                "text": "How did <i>your</i> perceptions change?",
-                "shortText": "Change in facilitator perceptions",
-                "type": "textarea"
-            },
-            {
-                "id": "sensemakingReflectProjectChanged",
-                "text": "How has the overall project changed as a result of this session?",
-                "shortText": "Changes to the project",
-                "type": "textarea"
-            },
-            {
-                "id": "sensemakingReflectInteractionsLabel",
-                "text": "Interactions",
-                "type": "header"
-            },
-            {
-                "id": "sensemakingReflectInteractionsParticipants",
-                "text": "Describe the interactions between participants in this session.",
-                "shortText": "Interactions among participants",
-                "type": "textarea"
-            },
-            {
-                "id": "sensemakingReflectInteractionsFacilitators",
-                "text": "Describe interactions between participants and facilitators.",
-                "shortText": "Interactions between participants and facilitators",
-                "type": "textarea"
-            },
-            {
-                "id": "sensemakingReflectStories",
-                "text": "What did you notice about the stories people told, retold, chose, and worked with during the session?",
-                "shortText": "Stories",
-                "type": "textarea"
-            },
-            {
-                "id": "sensemakingReflectLearningLabel",
-                "text": "Learning",
-                "type": "header"
-            },
-            {
-                "id": "sensemakingReflectSpecial",
-                "text": "What was special about these people in this place on this day?",
-                "shortText": "Unique features",
-                "type": "textarea"
-            },
-            {
-                "id": "sensemakingReflectSurprise",
-                "text": "What surprised you about this session?",
-                "shortText": "Surprise",
-                "type": "textarea"
-            },
-            {
-                "id": "sensemakingReflectWorkedWellAndNot",
-                "text": "Which parts of your plans for this session worked out well? Which parts didn't?",
-                "shortText": "Worked and didn't work",
-                "type": "textarea"
-            },
-            {
-                "id": "sensemakingReflectNewIdeas",
-                "text": "What new ideas did you gain from this session? What did you learn from it?",
-                "shortText": "New ideas",
-                "type": "textarea"
-            },
-            {
-                "id": "sensemakingReflectExtra",
-                "text": "What else do you want to remember about this session?",
-                "shortText": "Other",
                 "type": "textarea"
             }
         ]
@@ -3014,7 +2870,7 @@ define(
                 "options": "interventionRecordsAreFinal"
             },
             {
-                "id": "interventionGeneralNotes",
+                "id": "project_generalNotes_intervention",
                 "text": "You can enter some general notes on intervention in this project here.",
                 "type": "textarea"
             }
@@ -3042,123 +2898,123 @@ define(
         "type": "questionsTable",
         "questions": [
             {
-                "id": "outcomesHopesHeader",
+                "id": "outcomes_hopesHeader",
                 "text": "Hopes",
                 "type": "header"
             },
             {
-                "id": "outcomesHeard",
+                "id": "outcomes_peopleFeltHeard",
                 "text": "During your project, did the people in this group say they felt heard for the first time?",
                 "type": "select",
                 "options": "never;occasionally;sometimes;often;mixed"
             },
             {
-                "id": "outcomesInvolved",
+                "id": "outcomes_peopleFeltInvolved",
                 "text": "Did they say they felt involved for the first time?",
                 "type": "select",
                 "options": "never;occasionally;sometimes;often;mixed"
             },
             {
-                "id": "outcomesLearnedAboutComm",
+                "id": "outcomes_peopleLearnedAboutCommOrg",
                 "text": "Did they say they learned a lot about their community or organization?",
                 "type": "select",
                 "options": "never;occasionally;sometimes;often;mixed"
             },
             {
-                "id": "outcomesVoicesHeader",
+                "id": "outcomes_voicesHeader",
                 "text": "Voices",
                 "type": "header"
             },
             {
-                "id": "outcomesMoreStories",
+                "id": "outcomes_peopleWantedToTellMoreStories",
                 "text": "During your story collection, did these people seem to want to tell more stories than you collected?",
                 "type": "select",
                 "options": "never;occasionally;sometimes;often;mixed"
             },
             {
-                "id": "outcomesWantedToShareMore",
+                "id": "outcomes_peopleWantedToShareMoreStoriesWithEachOther",
                 "text": "Did you ever feel that they wanted to share more experiences with each other than they did?",
                 "type": "select",
                 "options": "never;occasionally;sometimes;often;mixed"
             },
             {
-                "id": "outcomesNeededToBeHeard",
+                "id": "outcomes_peopleFeltStoriesNeededToBeHeard",
                 "text": "Did these people feel that some of the stories you collected \"needed to be heard\" by anyone?",
                 "type": "select",
                 "options": "not at all;somewhat;definitely;mixed"
             },
             {
-                "id": "outcomesNobodyCares",
+                "id": "outcomes_peopleFeltNobodyCares",
                 "text": "Were there any issues that these people thought \"nobody cares\" about?",
                 "type": "select",
                 "options": "not at all;somewhat;definitely;mixed"
             },
             {
-                "id": "outcomesNeedsHeader",
+                "id": "outcomes_needsHeader",
                 "text": "Needs",
                 "type": "header"
             },
             {
-                "id": "outcomesNobodyCanMeetNeeds",
+                "id": "outcomes_peopleFeltNobodyCanMeetNeeds",
                 "text": "Do the people in this group have needs that <i>nobody</i> can meet?",
                 "type": "select",
                 "options": "not at all;somewhat;definitely;mixed"
             },
             {
-                "id": "outcomesNeedNewStories",
+                "id": "outcomes_peopleFeltTheyNeedNewStories",
                 "text": "Do these people need to start telling themselves <i>new</i> stories?",
                 "type": "select",
                 "options": "not at all;somewhat;definitely;mixed"
             },
             {
-                "id": "outcomesKeepExploring",
+                "id": "outcomes_peopleWantedToKeepExploring",
                 "text": "Were there any issues about which the people in this group seemed to want to keep exploring?",
                 "type": "select",
                 "options": "not at all;somewhat;definitely;mixed"
             },
             {
-                "id": "outcomesCrisisPoints",
+                "id": "outcomes_crisisPointsWereFound",
                 "text": "Did you discover any \"crisis points\" where people in this group needed help and didn't get it?",
                 "type": "select",
                 "options": "not at all;somewhat;definitely;mixed"
             },
             {
-                "id": "outcomesBeyondWords",
+                "id": "outcomes_issuesWereBeyondWords",
                 "text": "Did you find any issues for this group that were beyond words, that no amount of discussion could resolve?",
                 "type": "select",
                 "options": "not at all;somewhat;definitely;mixed"
             },
             {
-                "id": "outcomesLearningHeader",
+                "id": "outcomes_learningHeader",
                 "text": "Learning",
                 "type": "header"
             },
             {
-                "id": "outcomesLearnedAboutTopic",
+                "id": "outcomes_peopleLarnedAboutTopic",
                 "text": "Did these people say that they learned a lot about the topic by participating in the project?",
                 "type": "select",
                 "options": "never;occasionally;sometimes;often;mixed"
             },
             {
-                "id": "outcomesNewMembersStruggling",
+                "id": "outcomes_issuesNewMembersStruggleWith",
                 "text": "Did you notice that new members of the community or organization were having a harder time making sense of things?",
                 "type": "select",
                 "options": "not at all;somewhat;definitely;mixed"
             },
             {
-                "id": "outcomesInfoWithoutUnderstanding",
+                "id": "outcomes_foundInfoWithoutUnderstanding",
                 "text": "Were there any issues that these people found difficult to understand, even though abundant information was available?",
                 "type": "select",
                 "options": "not at all;somewhat;definitely;mixed"
             },
             {
-                "id": "outcomesOverConfident",
+                "id": "outcomes_foundOverConfidence",
                 "text": "Did you discover any areas in which these people had more confidence than skill?",
                 "type": "select",
                 "options": "not at all;somewhat;definitely;mixed"
             },
             {
-                "id": "outcomesCuriousAboutStoryWork",
+                "id": "outcomes_peopleCuriousAboutStoryWork",
                 "text": "Did any of these participants express an interest in learning more about story work?",
                 "type": "select",
                 "options": "never;occasionally;sometimes;often;mixed"
@@ -3178,13 +3034,13 @@ define(
                 "options": "interventions"
             },
             {
-                "id": "interventionPlansList",
+                "id": "list_interventionPlans",
                 "text": "These are the interventions you have designed so far.",
                 "type": "grid",
                 "options": "page_addIntervention"
             },
             {
-                "id": "interventionPlansAreFinal",
+                "id": "final_interventionPlans",
                 "text": "Do you consider your intervention plans for this project complete?",
                 "type": "boolean"
             }
@@ -3192,86 +3048,86 @@ define(
     },
     {
         "id": "page_addIntervention",
-        "name": "Design an intervention",
+        "name": "Plan an intervention",
         "description": "",
         "isHeader": false,
         "type": "popup",
         "questions": [
             {
-                "id": "interventionPlansName",
+                "id": "interventionPlan_name",
                 "text": "Please name this intervention plan.",
                 "shortText": "Name",
                 "type": "text"
             },
             {
-                "id": "interventionPlansType",
+                "id": "interventionPlan_type",
                 "text": "What type of intervention will this be?",
                 "shortText": "Type",
                 "type": "select",
                 "options": "narrative ombudsman;narrative suggestion box;story sharing space;narrative orientation;narrative learning resource;narrative simulation;narrative presentation;dramatic action;sensemaking space;sensemaking pyramid;narrative mentoring program;narrative therapy;participatory theatre;other"
             },
             {
-                "id": "interventionPlansText",
+                "id": "interventionPlan_description",
                 "text": "Please describe your plan for this intervention.",
                 "shortText": "Description",
                 "type": "text"
             },
             {
-                "id": "interventionPlansLength",
+                "id": "interventionPlan_duration",
                 "text": "Over what span of time will this intervention take place?",
                 "shortText": "Length",
                 "type": "text"
             },
             {
-                "id": "interventionPlansTime",
+                "id": "interventionPlan_times",
                 "text": "When will the intervention start and stop?",
                 "shortText": "Time",
                 "type": "text"
             },
             {
-                "id": "interventionPlansLocation",
+                "id": "interventionPlan_locations",
                 "text": "Where will the intervention take place?",
                 "shortText": "Location",
                 "type": "text"
             },
             {
-                "id": "interventionPlansHelp",
+                "id": "interventionPlan_help",
                 "text": "What sort of help will you need to carry out this intervention?",
                 "shortText": "Help",
                 "type": "textarea"
             },
             {
-                "id": "interventionPlansPermission",
+                "id": "interventionPlan_permission",
                 "text": "What sorts of permission will you need to carry out this intervention?",
                 "shortText": "Permission",
                 "type": "textarea"
             },
             {
-                "id": "interventionPlansParticipation",
+                "id": "interventionPlan_participation",
                 "text": "How will you get people to participate in this intervention?",
                 "shortText": "Participation",
                 "type": "textarea"
             },
             {
-                "id": "interventionPlansMaterials",
+                "id": "interventionPlan_materials",
                 "text": "What physical materials will you need?",
                 "shortText": "Materials",
                 "type": "textarea"
             },
             {
-                "id": "interventionPlansSpace",
+                "id": "interventionPlan_space",
                 "text": "What spaces will you need to use?",
                 "shortText": "Spaces",
                 "type": "textarea"
             },
             {
-                "id": "interventionPlansTech",
+                "id": "interventionPlan_techResources",
                 "text": "What technological resources will you need?",
                 "shortText": "Technology",
                 "type": "textarea"
             },
             {
-                "id": "interventionPlansRecording",
+                "id": "interventionPlan_recording",
                 "text": "How will record the results of this intervention?",
                 "shortText": "Recording",
                 "type": "textarea"
@@ -3285,13 +3141,13 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "interventionRecordsList",
+                "id": "list_interventionRecords",
                 "text": "Intervention records",
                 "type": "grid",
                 "options": "page_addInterventionRecord"
             },
             {
-                "id": "interventionRecordsAreFinal",
+                "id": "final_interventionRecords",
                 "text": "Do you consider your intervention records for this project to be complete?",
                 "type": "boolean"
             }
@@ -3299,180 +3155,105 @@ define(
     },
     {
         "id": "page_addInterventionRecord",
-        "name": "Add intervention notes",
+        "name": "Add intervention record",
         "description": "",
         "isHeader": false,
         "type": "popup",
         "questions": [
             {
-                "id": "interventionNotesName",
+                "id": "interventionRecord_name",
                 "text": "Please give this intervention record a name.",
                 "shortText": "Name",
                 "type": "text"
             },
             {
-                "id": "interventionNotesText",
+                "id": "interventionRecord_notes",
                 "text": "Enter your notes here.",
                 "shortText": "Notes",
                 "type": "textarea"
             },
             {
-                "id": "interventionRecordImages",
-                "text": "These are the images you have entered for this set of notes so far.",
-                "shortText": "Images",
-                "type": "grid",
-                "options": "page_newInterventionImage"
-            }
-        ]
-    },
-    {
-        "id": "page_newInterventionImage",
-        "name": "Intervention notes image",
-        "description": "",
-        "isHeader": false,
-        "type": "popup",
-        "questions": [
-            {
-                "id": "interventionNotesImage",
-                "text": "Upload your image here.",
-                "shortText": "Image",
-                "type": "imageUploader"
-            },
-            {
-                "id": "interventionImageName",
-                "text": "Please give this image a name.",
-                "shortText": "Name",
-                "type": "text"
-            },
-            {
-                "id": "interventionNotesImageNotes",
-                "text": "You can enter some notes about this image.",
-                "shortText": "Notes",
-                "type": "textarea"
-            }
-        ]
-    },
-    {
-        "id": "page_answerQuestionsAboutInterventions",
-        "name": "Reflect on interventions",
-        "description": "",
-        "isHeader": false,
-        "questions": [
-            {
-                "id": "interventionQuestionsLabel",
-                "text": "Note: If there are no interventions in this list, enter them in the \"Enter intervention records\" screen first.",
+                "id": "interventionRecord_reflectLabel",
+                "text": "Please reflect on this intervention.",
                 "type": "label"
             },
             {
-                "id": "COMMENT_page_answerQuestionsAboutInterventions_1",
-                "text": "// this list should populate with names of interventions given in \"enter intervention records\" screen.",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_answerQuestionsAboutInterventions_2",
-                "text": "/// there should be NO add button... but the edit button should go to the popup specified here",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "interventionsList",
-                "text": "Interventions",
-                "type": "grid",
-                "options": "page_answerQuestionsAboutIntervention"
-            }
-        ]
-    },
-    {
-        "id": "page_answerQuestionsAboutIntervention",
-        "name": "Reflect on intervention",
-        "description": "",
-        "isHeader": false,
-        "type": "popup",
-        "questions": [
-            {
-                "id": "interventionName",
-                "text": "Please name this set of reflections on an intervention.",
-                "shortText": "Name",
-                "type": "text"
-            },
-            {
-                "id": "interventionReflectChangeLabel",
+                "id": "interventionRecord_reflectionsOnChangeHeader",
                 "text": "Change",
                 "type": "header"
             },
             {
-                "id": "interventionReflectChangeEmotions",
+                "id": "interventionRecord_reflections_change_participantPerceptions",
                 "text": "How did the perceptions of the participants change from the start to the end of the intervention?",
                 "shortText": "Change in participant perceptions",
                 "type": "textarea"
             },
             {
-                "id": "interventionReflectChangeYourEmotions",
+                "id": "interventionRecord_reflections_change_yourPerceptions",
                 "text": "How did <i>your</i> perceptions change?",
                 "shortText": "Change in facilitator perceptions",
                 "type": "textarea"
             },
             {
-                "id": "interventionReflectProjectChanged",
+                "id": "interventionRecord_reflections_change_project",
                 "text": "How has the overall project changed as a result of this intervention?",
                 "shortText": "Changes to the project",
                 "type": "textarea"
             },
             {
-                "id": "interventionReflectInteractionsLabel",
+                "id": "interventionRecord_interactionsHeader",
                 "text": "Interactions",
                 "type": "header"
             },
             {
-                "id": "interventionReflectInteractionsParticipants",
-                "text": "Describe the interactions between participants during this intervention.",
+                "id": "interventionRecord_reflections_interaction_participants",
+                "text": "Describe the interactions between participants in this intervention.",
                 "shortText": "Interactions among participants",
                 "type": "textarea"
             },
             {
-                "id": "interventionReflectInteractionsFacilitators",
+                "id": "interventionRecord_reflections_interaction_participantsAndFacilitator",
                 "text": "Describe interactions between participants and facilitators.",
                 "shortText": "Interactions between participants and facilitators",
                 "type": "textarea"
             },
             {
-                "id": "interventionReflectStories",
+                "id": "interventionRecord_reflections_interaction_stories",
                 "text": "What did you notice about the stories people told, retold, chose, and worked with during the intervention?",
                 "shortText": "Stories",
                 "type": "textarea"
             },
             {
-                "id": "interventionReflectLearningLabel",
+                "id": "interventionRecord_learningHeader",
                 "text": "Learning",
                 "type": "header"
             },
             {
-                "id": "interventionReflectSpecial",
+                "id": "interventionRecord_reflections_learning_special",
                 "text": "What was special about this intervention?",
                 "shortText": "Unique features",
                 "type": "textarea"
             },
             {
-                "id": "interventionReflectSurprise",
+                "id": "interventionRecord_reflections_learning_surprise",
                 "text": "What surprised you about this intervention?",
                 "shortText": "Surprise",
                 "type": "textarea"
             },
             {
-                "id": "interventionReflectWorkedWellAndNot",
+                "id": "interventionRecord_reflections_learning_workedWell",
                 "text": "Which parts of your plans for this intervention worked out well? Which parts didn't?",
                 "shortText": "Worked and didn't work",
                 "type": "textarea"
             },
             {
-                "id": "interventionReflectNewIdeas",
+                "id": "interventionRecord_reflections_learning_newIdeas",
                 "text": "What new ideas did you gain from this intervention? What did you learn from it?",
                 "shortText": "New ideas",
                 "type": "textarea"
             },
             {
-                "id": "interventionReflectExtra",
+                "id": "interventionRecord_reflections_learning_wantToRemember",
                 "text": "What else do you want to remember about this intervention?",
                 "shortText": "Other",
                 "type": "textarea"
@@ -3566,7 +3347,7 @@ define(
                 "options": "projectRequestsList"
             },
             {
-                "id": "returnGeneralNotes",
+                "id": "project_generalNotes_return",
                 "text": "You can enter some general notes on the return phase of this project here.",
                 "type": "textarea"
             }
@@ -3579,13 +3360,13 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "feedbackList",
+                "id": "list_feedback",
                 "text": "These are the pieces of feedback you have gathered so far.",
                 "type": "grid",
                 "options": "page_enterFeedbackPiece"
             },
             {
-                "id": "generalFeedback",
+                "id": "feedback_generalNotes",
                 "text": "If you would like to enter any general notes on the feedback you've seen to the project, write them here.",
                 "type": "textarea"
             }
@@ -3599,19 +3380,19 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "feedbackText",
+                "id": "feedback_text",
                 "text": "What did someone say or do?",
                 "shortText": "Feedback",
                 "type": "textarea"
             },
             {
-                "id": "feedbackName",
+                "id": "feedback_name",
                 "text": "Please give this piece of feedback a name.",
                 "shortText": "Name",
                 "type": "text"
             },
             {
-                "id": "feedbackType",
+                "id": "feedback_type",
                 "text": "What type of feedback is this?",
                 "shortText": "Type",
                 "type": "select",
@@ -3624,22 +3405,16 @@ define(
                 "type": "text"
             },
             {
-                "id": "feedbackQuestion",
+                "id": "feedback_prompt",
                 "text": "What did you say or do (if anything) that led to this feedback?",
                 "shortText": "Prompt",
                 "type": "text"
             },
             {
-                "id": "feedbackNotes",
+                "id": "feedback_notes",
                 "text": "Please enter any other notes you have about this feedback.",
                 "shortText": "Notes",
                 "type": "textarea"
-            },
-            {
-                "id": "feedbackImage",
-                "text": "You can upload an image to accompany your notes here.",
-                "shortText": "Image",
-                "type": "imageUploader"
             }
         ]
     },
@@ -3650,54 +3425,49 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "reflectProjectStories",
+                "id": "project_reflect_stories",
                 "text": "What have you learned from the stories you heard in this project?",
                 "type": "textarea"
             },
             {
-                "id": "reflectProjectFacilitation",
+                "id": "project_reflect_facilitation",
                 "text": "What did you learn about your facilitation practice in this project?",
                 "type": "textarea"
             },
             {
-                "id": "reflectProjectPlanning",
+                "id": "project_reflect_planning",
                 "text": "What did you learn about project planning?",
                 "type": "textarea"
             },
             {
-                "id": "reflectProjectOwnPNI",
+                "id": "project_reflect_ownPNI",
                 "text": "How has this project changed your own version of PNI?",
                 "type": "textarea"
             },
             {
-                "id": "reflectProjectCommunity",
+                "id": "project_reflect_community",
                 "text": "What have you learned about your community or organization because of this project?",
                 "type": "textarea"
             },
             {
-                "id": "reflectProjectPersonalStrengths",
+                "id": "project_reflect_personalStrengths",
                 "text": "What did this project teach you about your personal strengths and weaknesses?",
                 "type": "textarea"
             },
             {
-                "id": "reflectProjectTeam",
+                "id": "project_reflect_teamStrengths",
                 "text": "What did this project teach you about your team?",
                 "type": "textarea"
             },
             {
-                "id": "reflectProjectIdeas",
+                "id": "project_reflect_newIdeas",
                 "text": "Describe any new ideas that came up during this project.",
                 "type": "textarea"
             },
             {
-                "id": "reflectProjectNotes",
+                "id": "project_reflect_notes",
                 "text": "Enter any additional notes you'd like to remember about the project.",
                 "type": "textarea"
-            },
-            {
-                "id": "reflectProjectImage",
-                "text": "You can upload an image to accompany your notes here.",
-                "type": "imageUploader"
             }
         ]
     },
@@ -3708,7 +3478,7 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "projectPresentationElementsList",
+                "id": "list_projectPresentationElements",
                 "text": "These are the elements in your presentation outline so far.",
                 "type": "grid",
                 "options": "page_addPresentationElement"
@@ -3724,7 +3494,7 @@ define(
                 "type": "button"
             },
             {
-                "id": "presentationReportFinished",
+                "id": "final_presentationReport",
                 "text": "Have you finished your presentation report?",
                 "type": "select",
                 "options": "yes;no;I'm not making a project presentation"
@@ -3739,80 +3509,32 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "presentationElementName",
+                "id": "projectPresentationElement_name",
                 "text": "What name would you like to give this element in your presentation?",
                 "shortText": "Name",
                 "type": "text"
             },
             {
-                "id": "presentationElementStatement",
+                "id": "projectPresentationElement_statement",
                 "text": "How would you like to describe this element in your presentation?",
                 "shortText": "Description",
                 "type": "textarea"
             },
             {
-                "id": "presentationElementEvidence",
+                "id": "projectPresentationElement_evidence",
                 "text": "What evidence does this element present that your project met its goals?",
                 "shortText": "Evidence",
                 "type": "textarea"
             },
             {
-                "id": "presentationElementQA",
+                "id": "projectPresentationElement_QA",
                 "text": "What questions do you anticipate about this element, and how would you like to answer them?",
                 "shortText": "Q&A",
                 "type": "textarea"
             },
             {
-                "id": "presentationElementNotes",
+                "id": "projectPresentationElement_notes",
                 "text": "Enter any other notes you want to remember about this element as you present it.",
-                "shortText": "Notes",
-                "type": "textarea"
-            }
-        ]
-    },
-    {
-        "id": "page_interestedPeople",
-        "name": "Interested people",
-        "description": "",
-        "isHeader": false,
-        "questions": [
-            {
-                "id": "interestedPeopleList",
-                "text": "These are the people who have said they are interested in future projects.",
-                "type": "grid",
-                "options": "page_addInterestedPerson"
-            }
-        ]
-    },
-    {
-        "id": "page_addInterestedPerson",
-        "name": "Add person interested in project",
-        "description": "",
-        "isHeader": false,
-        "type": "popup",
-        "questions": [
-            {
-                "id": "interestedPersonName",
-                "text": "What is the person's name (and position if applicable)?",
-                "shortText": "Name",
-                "type": "text"
-            },
-            {
-                "id": "interestedPersonContactDetails",
-                "text": "Enter any contact details here.",
-                "shortText": "Contact details",
-                "type": "textarea"
-            },
-            {
-                "id": "interestedPersonType",
-                "text": "How do they want to be connected to future projects?",
-                "shortText": "Preference",
-                "type": "select",
-                "options": "they want to be informed;they want to be consulted;they want to collaborate;other"
-            },
-            {
-                "id": "interestedPersonNotes",
-                "text": "Enter any notes about this person's interest in future projects here.",
                 "shortText": "Notes",
                 "type": "textarea"
             }
@@ -3825,47 +3547,47 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "projectRequestsList",
+                "id": "list_returnRequests",
                 "text": "These are the requests you have entered so far.",
                 "type": "grid",
-                "options": "page_addNewProjectRequest"
+                "options": "page_addNewReturnRequest"
             }
         ]
     },
     {
-        "id": "page_addNewProjectRequest",
+        "id": "page_addNewReturnRequest",
         "name": "Enter project request",
         "description": "",
         "isHeader": false,
         "type": "popup",
         "questions": [
             {
-                "id": "requestText",
+                "id": "returnRequest_text",
                 "text": "What was the request?",
                 "shortText": "Request",
                 "type": "textarea"
             },
             {
-                "id": "requestType",
+                "id": "returnRequest_type",
                 "text": "What type of request is this?",
                 "shortText": "Type",
                 "type": "select",
                 "options": "help with their own projects;help with sustaining story exchange;help with examining this project's stories and results;help learning about story work;other"
             },
             {
-                "id": "requestMet",
+                "id": "returnRequest_isMet",
                 "text": "Do you consider this request to have been satisfied?",
                 "shortText": "Satisfied",
                 "type": "boolean"
             },
             {
-                "id": "requestWhatHappened",
+                "id": "returnRequest_whatHappened",
                 "text": "What has happened in relation to this request?",
                 "shortText": "What happened",
                 "type": "textarea"
             },
             {
-                "id": "requestNotes",
+                "id": "returnRequest_notes",
                 "text": "Enter any notes about the request here.",
                 "shortText": "Notes",
                 "type": "textarea"
