@@ -240,47 +240,47 @@ define(
                 "type": "label"
             },
             {
-                "id": "participantGroupAspects__statusHeader",
+                "id": "participantGroupAspects_statusHeader",
                 "text": "Status",
                 "type": "header"
             },
             {
-                "id": "participantGroupAspects__status",
+                "id": "participantGroupAspects_status",
                 "text": "What is the status of these participants in the community or organization?",
                 "type": "select",
                 "options": "unknown;very low;low;moderate;high;very high;mixed"
             },
             {
-                "id": "participantGroupAspects__confidence",
+                "id": "participantGroupAspects_confidence",
                 "text": "How much self-confidence do these participants have?",
                 "type": "select",
                 "options": "unknown;very low;low;medium;high;very high;mixed"
             },
             {
-                "id": "participantGroupAspects___abilityHeader",
+                "id": "participantGroupAspects_abilityHeader",
                 "text": "Ability",
                 "type": "header"
             },
             {
-                "id": "participantGroupAspects__time",
+                "id": "participantGroupAspects_time",
                 "text": "How much free time do these participants have?",
                 "type": "select",
                 "options": "unknown;very little;little;some;a lot;mixed"
             },
             {
-                "id": "participantGroupAspects__education",
+                "id": "participantGroupAspects_education",
                 "text": "What is the education level of these participants?",
                 "type": "select",
                 "options": "unknown;illiterate;minimal;moderate;high;very high;mixed"
             },
             {
-                "id": "participantGroupAspects__physicalDisabilities",
+                "id": "participantGroupAspects_physicalDisabilities",
                 "text": "Do these participants have physical limitations that will impact their participation?",
                 "type": "select",
                 "options": "unknown;none;minimal;moderate;strong;mixed"
             },
             {
-                "id": "participantGroupAspects__emotionalImpairments",
+                "id": "participantGroupAspects_emotionalImpairments",
                 "text": "Do these participants have emotional impairments that will impact their participation (such as mental illness or traumatic stress)?",
                 "type": "select",
                 "options": "unknown;none;minimal;moderate;strong;mixed"
@@ -291,25 +291,25 @@ define(
                 "type": "header"
             },
             {
-                "id": "participantGroupAspects__performing",
+                "id": "participantGroupAspects_performing",
                 "text": "For these participants, how important is performing well (with \"high marks\")?",
                 "type": "select",
                 "options": "unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed"
             },
             {
-                "id": "participantGroupAspects__conforming",
+                "id": "participantGroupAspects_conforming",
                 "text": "For these participants, how important is conforming (to what is \"normal\" or expected)?",
                 "type": "select",
                 "options": "unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed"
             },
             {
-                "id": "participantGroupAspects__promoting",
+                "id": "participantGroupAspects_promoting",
                 "text": "For these participants, how important is self-promotion (competing with others)?",
                 "type": "select",
                 "options": "unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed"
             },
             {
-                "id": "participantGroupAspects__venting",
+                "id": "participantGroupAspects_venting",
                 "text": "For these participants, how important is speaking out (having a say, venting, sounding off)?",
                 "type": "select",
                 "options": "unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed"
@@ -320,25 +320,25 @@ define(
                 "type": "header"
             },
             {
-                "id": "participantGroupAspects__interest",
+                "id": "participantGroupAspects_interest",
                 "text": "How motivated are these participants to participate in the project?",
                 "type": "select",
                 "options": "unknown;very little;a little;some;a lot;extremely;mixed"
             },
             {
-                "id": "participantGroupAspects__feelings_project",
+                "id": "participantGroupAspects_feelings_project",
                 "text": "How are these participants likely to feel about the project?",
                 "type": "select",
                 "options": "unknown;negative;neutral;positive;mixed"
             },
             {
-                "id": "participantGroupAspects__feelings_facilitator",
+                "id": "participantGroupAspects_feelings_facilitator",
                 "text": "How do these participants feel about you?",
                 "type": "select",
                 "options": "unknown;negative;neutral;positive;mixed"
             },
             {
-                "id": "participantGroupAspects__feelings_stories",
+                "id": "participantGroupAspects_feelings_stories",
                 "text": "How do these participants feel about the idea of collecting stories?",
                 "type": "select",
                 "options": "unknown;negative;neutral;positive;mixed"
@@ -349,25 +349,25 @@ define(
                 "type": "header"
             },
             {
-                "id": "participantGroupAspects__topic_feeling",
+                "id": "participantGroupAspects_topic_feeling",
                 "text": "What experiences have these participants had with the project's topic?",
                 "type": "select",
                 "options": "unknown;strongly negative;negative;neutral;positive;strongly positive;mixed"
             },
             {
-                "id": "participantGroupAspects__topic_private",
+                "id": "participantGroupAspects_topic_private",
                 "text": "How private do these participants consider the topic to be?",
                 "type": "select",
                 "options": "unknown;very private;medium;not private;mixed"
             },
             {
-                "id": "participantGroupAspects__topic_articulate",
+                "id": "participantGroupAspects_topic_articulate",
                 "text": "How hard will it be for these participants to articulate their feelings about the topic?",
                 "type": "select",
                 "options": "unknown;hard;medium;easy;mixed"
             },
             {
-                "id": "participantGroupAspects__topic_timeframe",
+                "id": "participantGroupAspects_topic_timeframe",
                 "text": "How long of a time period do you need these participants to look back on?",
                 "type": "select",
                 "options": "unknown;hours;days;months;years;decades;mixed"
@@ -378,19 +378,19 @@ define(
                 "type": "header"
             },
             {
-                "id": "participantGroupAspects__you_experience",
+                "id": "participantGroupAspects_you_experience",
                 "text": "How much experience do you have facilitating PNI projects?",
                 "type": "select",
                 "options": "none;a little;some;a lot"
             },
             {
-                "id": "participantGroupAspects__you_help",
+                "id": "participantGroupAspects_you_help",
                 "text": "How much help will you have carrying out this project?",
                 "type": "select",
                 "options": "none;a little;some;a lot"
             },
             {
-                "id": "participantGroupAspects__you_tech",
+                "id": "participantGroupAspects_you_tech",
                 "text": "How many technological resources will you have for carrying out this project?",
                 "type": "select",
                 "options": "none;a little;some;a lot"
@@ -1212,8 +1212,10 @@ define(
                 "type": "textarea"
             },
             {
-                "id": "FIXME_385",
-                "text": "Materials | What materials will be provided for this activity? collectionSessionPlan_activity_materials|textarea]"
+                "id": "collectionSessionPlan_activity_materials",
+                "text": "What materials will be provided for this activity?",
+                "shortText": "Materials",
+                "type": "textarea"
             },
             {
                 "id": "collectionSessionPlan_activity_spaces",
@@ -2370,8 +2372,7 @@ define(
             },
             {
                 "id": "showHideCollectedStories",
-                "text": "hide collected stories",
-                "shortText": "Show",
+                "text": "Show or hide collected stories",
                 "type": "toggleButton",
                 "options": "showCollectedStoriesInSensemakingSessionRecordScreen"
             },
@@ -2394,10 +2395,10 @@ define(
                 "options": "page_newSensemakingSessionConstruction"
             },
             {
-                "id": "FIXME_701",
-                "text": "Please give this session record a name.",
-                "shortText": "Name",
-                "type": "text"
+                "id": "COMMENT_page_addSensemakingSessionRecord_2",
+                "text": "// * Name | Please give this session record a name. [sensemakingSessionRecord_name|text]",
+                "type": "label",
+                "options": null
             },
             {
                 "id": "sensemakingSessionRecord_whenWhere",
