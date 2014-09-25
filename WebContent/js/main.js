@@ -138,11 +138,21 @@ require([
        // TODO: Translate
        var pageStatusQuestion = {
            "id": id + "_pageStatus",
-           "text": "The status of this page is: ",
+           "text": "The dashboard status of this page is: ",
            "type": "select",
            "options": "intentionally skipped\npartially done\ncompletely finished"
        };
        if (!page.isHeader) questionEditor.insertQuestionIntoDiv(pageStatusQuestion, pagePane);
+       
+       /*
+       var nextPageButtonQuestion = {
+           "id": id + "_nextPageButton",
+           "text": "Mark page complete and proceed to next page",
+           "type": "button"
+       };
+       
+       questionEditor.insertQuestionIntoDiv(nextPageButtonQuestion, pagePane);
+       */
        
        domain.pageInstantiations[id] = pagePane;
        
