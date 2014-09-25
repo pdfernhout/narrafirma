@@ -5,11 +5,13 @@
 define([
     "dojo/_base/array",
     "dijit/registry",
-    "dojo/string"
+    "dojo/string",
+    "dojo/Stateful"
 ], function(
     array,
     registry,
-    string
+    string,
+    Stateful
 ) {
     var pageDefinitions = {};
     var pageInstantiations = {};
@@ -700,8 +702,19 @@ define([
         }
     ];
     
+    for (var headerPageID in pagesToGoWithHeaders) {
+        var pages = pagesToGoWithHeaders[headerPageID];
+        for (var pageIndex in pages) {
+            var pageID = pages[pageIndex];
+            data[pageID + "_pageStatus"] = null;
+        }
+    }
+    
+    data = new Stateful(data);
+    
     return {
         "data": data,
+        "pagesToGoWithHeaders": pagesToGoWithHeaders,
         "testDogQuestions": testDogQuestions,
         "testDogStories": testDogStories,
         "exportedSurveyQuestions": exportedSurveyQuestions,

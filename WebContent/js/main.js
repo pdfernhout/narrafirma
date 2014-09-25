@@ -2,6 +2,7 @@
 
 require([
     "dojo/_base/array",
+    "dojox/mvc/at",
     "dojo/_base/connect",
     "js/domain",
     "dojo/dom-construct",
@@ -19,6 +20,7 @@ require([
     "dojo/domReady!"
 ], function(
     array,
+    at,
     connect,
     domain,
     domConstruct,
@@ -140,9 +142,26 @@ require([
            "id": id + "_pageStatus",
            "text": "The dashboard status of this page is: ",
            "type": "select",
-           "options": "intentionally skipped\npartially done\ncompletely finished"
+           "options": "intentionally skipped\npartially done\ncompletely finished",
+           "value": at(domain.data, id + "_pageStatus")
        };
-       if (!page.isHeader) questionEditor.insertQuestionIntoDiv(pageStatusQuestion, pagePane);
+       if (!page.isHeader) {
+           questionEditor.insertQuestionIntoDiv(pageStatusQuestion, pagePane);
+       } else {
+           // Put in dashboard
+           var pages = domain.pagesToGoWithHeaders[id];
+           for (var pageIndex in pages) {
+               var pageID = pages[pageIndex];
+               pageStatusQuestion = {
+                   "id": pageID + "_pageStatus_dashboard",
+                   "text": domain.pageDefinitions[pageID].name,
+                   "type": "select",
+                   "options": "intentionally skipped\npartially done\ncompletely finished",
+                   "value": at(domain.data, pageID + "_pageStatus")
+               };               
+               questionEditor.insertQuestionIntoDiv(pageStatusQuestion, pagePane);
+           }
+       }
        
        /*
        var nextPageButtonQuestion = {
