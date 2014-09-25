@@ -134,6 +134,16 @@ require([
            questionEditor.insertQuestionIntoDiv(question, pagePane);
        });
        
+       // TODO: Fix this to store data
+       // TODO: Translate
+       var pageStatusQuestion = {
+           "id": id + "_pageStatus",
+           "text": "The status of this page is: ",
+           "type": "select",
+           "options": "intentionally skipped\npartially done\ncompletely finished"
+       };
+       if (!page.isHeader) questionEditor.insertQuestionIntoDiv(pageStatusQuestion, pagePane);
+       
        domain.pageInstantiations[id] = pagePane;
        
        // console.log("about to set visibility", id);
