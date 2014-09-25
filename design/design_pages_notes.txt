@@ -3,12 +3,14 @@
 // Single * for questions
 // Question types are in brackets [id|type|options]
 // question types are: label, header (bold label), text, textarea, select, grid, checkBoxes,
-//                     quizScoreResult, templateList, button,
+//                     quizScoreResult, templateList, checkBoxesWithPull, button,
 //                     storyBrowser, report,
 //                     observationsList, excerptsList, storyThemer, graphBrowser, trendsReport, clusterSpace
 // page types are: normal (no specification), popup, questionsTable, recommendationTable
 
 // a button does something when clicked
+
+// a checkBoxesWithPull is a set of check boxes where the display texts are drawn from a list entered previously
 
 // a templateList is a list box with templates read in from a file (of a particular type)
 // it also has a "copy" button
@@ -54,17 +56,11 @@
 // multiline labels are done by adding lines after the first label line; anything up to the next * or # is read
 // help texts are placed after questions (that are not labels). if there is no leading <p> in the help text, it is <p>text</p>
 
-// dashboard/checklist types are:
-// listCount (x), questionAnswerCountOfTotalOnPage (x of y), questionAnswer (actual answer entered)
-// "function" means the parameter is the name of a function to be called (outputting what is to be displayed)
-// note that on pages with a questionTable, the questionAnswerCountOfTotalOnPage should include all possible answers
-
 // @participants
 // @projectStories
 // @userStories
 
 # Dashboard [page_dashboard]
-// all checklists combined
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,35 +73,27 @@
 * In the planning phase you will make decisions about how your project will proceed. [projectPlanningLabel|label]
 You will think about your goals, your topic, your participants, and opportunities and dangers you might encounter during the project.
 
-* Project facts entered: [checklist_projectFactsEntered|questionAnswerCountOfTotalOnPage|page_projectFacts]
-* PNI planning questions answered (draft): [checklist_planningQuestionsAnsweredDraft|questionAnswerCountOfTotalOnPage|page_planningQuestionsDraft]
-* Participant groups defined: [checklist_participantGroupsDescribed|questionAnswerCountOfTotalOnPage|page_participantGroups]
-* Questions answered about project aspects: [checklist_projectAspects|questionAnswerCountOfTotalOnPage|page_projectAspects]
-* Project stories entered: [checklist_projectStoriesEntered|listCount|projectStoryList]
-* Project story elements created: [checklist_projectStoryElementsCreated|listCount|projectStoryElementsList]
-* Story sharing assessment questions answered: [checklist_assessmentQuestionsAnswered|questionAnswerCountOfTotalOnPage|page_assessStorySharing]
-* PNI planning questions answered (final): [checklist_planningQuestionsAnsweredFinal|questionAnswerCountOfTotalOnPage|page_revisePNIPlanningQuestions]
-* Project synopsis complete: [checklist_projectSynopsisComplete|questionAnswer|projectSynopsisComplete]
-
-* You can enter some general notes on planning in this project here. [project_generalNotes_planning|textarea]
+* Project general notes | You can enter some general notes on planning in this project here. [project_generalNotes_planning|textarea]
 
 ## Enter project facts [page_projectFacts]
 
 * On this page you will enter some facts about your project. The information you enter here will appear in your reports. [projectFacts|label]
 
-* What is the project's title? [project_title|text]
-* What is the name of your community or organization? [project_communityOrOrganizationName|text]
-* What is a brief name for the project's primary topic? [project_topic|text]
-* What are the project's starting and ending dates? [project_startAndEndDates|text]
-* Who is funding, facilitating, or or otherwise supporting the project? [project_fundersAndFacilitators|textarea]
-* Enter any other information you want to appear at the top of project reports. [project_reportStartText|textarea]
-* Enter any other information you want to appear at the bottom of project reports (as notes). [project_reportEndText|textarea]
+* Project title | What is the project's title? [project_title|text]
+* Community/organization name | What is the name of your community or organization? [project_communityOrOrganizationName|text]
+* Project topic | What is a brief name for the project's primary topic? [project_topic|text]
+* Project start and end | What are the project's starting and ending dates? [project_startAndEndDates|text]
+* Project funders | Who is funding or otherwise supporting the project? [project_funders|textarea]
+* Project facilitators | Who is facilitating the project? [project_facilitators|textarea]
+* Report start text | Enter any other information you want to appear at the top of project reports. [project_reportStartText|textarea]
+* Report end text | Enter any other information you want to appear at the bottom of project reports (as notes). [project_reportEndText|textarea]
 
 ## Answer PNI Planning questions [page_planningQuestionsDraft]
 
 * On this page you will answer some questions about your project's goals, relationships, focus, range, scope, and emphasis. [project_draftQuestionsLabel|label]
 If you don't have good answers for these questions right now, don't worry; you will have a chance to come back and work on these answers again later.
 
+// these fields need to be populated with the original draft versions
 * What is the goal of the project? Why are you doing it? [project_PNIquestions_goal_draft|textarea]
 * What relationships are important to the project? [project_PNIquestions_relationships_draft|textarea]
 * What is the focus of the project? What is it about? [project_PNIquestions_focus_draft|textarea]
@@ -118,7 +106,7 @@ If you don't have good answers for these questions right now, don't worry; you w
 * On this page you will think about groups of participants you want to involve in your project. [aboutParticipantGroups|label]
 Examples might be: doctors and patients; staff and customers; natives, immigrants, and tourists.
 
-* Please add participant groups in the list below (typically up to three groups). More details for each group will be added later.[list_participantGroups|grid|page_addParticipantGroup]
+* Please add participant groups in the list below (typically up to three groups). More details for each group will be added later.[project_participantGroupsList|grid|page_addParticipantGroup]
 
 ## Participant group [page_addParticipantGroup|popup]
 
@@ -129,7 +117,7 @@ What do you know about them?
 
 // ## Consider project aspects [page_projectAspects|repeating|participantGroups]
 
-// * Please answer these questions about each participant group. [list_participantGroupAspects|questionsTable|page_aspectsTable;participants_firstGroupName;participants_secondGroupName;participants_thirdGroupName]
+// * Please answer these questions about each participant group. [participantGroup_aspectsList|questionsTable|page_aspectsTable;participants_firstGroupName;participants_secondGroupName;participants_thirdGroupName]
 
 // ## Project aspects [page_aspectsTable|questionsTable]
 
@@ -137,11 +125,11 @@ What do you know about them?
 
 * On this page you will add details for the participant group called: "{{participants_groupName}}". [detailsAboutParticipantGroup|label]
 
-* Status [participantGroupAspects_statusHeader|header]
+* Status [participantGroupAspects__statusHeader|header]
 * What is the status of these participants in the community or organization? [participantGroupAspects__status|select|unknown;very low;low;moderate;high;very high;mixed]
 * How much self-confidence do these participants have? [participantGroupAspects__confidence|select|unknown;very low;low;medium;high;very high;mixed]
 
-* Ability [participantGroupAspects_abilityHeader|header]
+* Ability [participantGroupAspects___abilityHeader|header]
 * How much free time do these participants have? [participantGroupAspects__time|select|unknown;very little;little;some;a lot;mixed]
 * What is the education level of these participants? [participantGroupAspects__education|select|unknown;illiterate;minimal;moderate;high;very high;mixed]
 * Do these participants have physical limitations that will impact their participation? [participantGroupAspects__physicalDisabilities|select|unknown;none;minimal;moderate;strong;mixed]
@@ -172,7 +160,8 @@ What do you know about them?
 
 ## Tell project stories [page_projectStories]
 
-* These are the project stories you have told so far. [list_projectStories|grid|page_projectStory]
+* Project stories are stories you tell yourself about your project [project_projectStoriesList|grid|page_projectStory]
+in order to think about what might happen in it (so you can plan it better). 
 
 ## Project story [page_projectStory|popup]
 
@@ -184,7 +173,7 @@ What do you know about them?
 * Surprised | What surprised you about this story? [projectStory_surprise|textarea]
 * Opportunities or dangers | Describe any opportunities or dangers you see in this story. [projectStory_dangers|textarea]
 
-## Create project story elements [page_createProjectStoryElements]
+## Create project story elements [page_projectStoryElements]
 
 * Here are some instructions on how to create story elements from your project stories. [storyElementsInstructions|label]
 <ol>
@@ -210,17 +199,15 @@ What do you know about them?
 <li>Name the groups. These are your story elements.</li>
 </ol>
 
-* Have you finished the project story elements exercise? [project_projectStoryElementsComplete|boolean]
-
-## Enter project story elements [page_enterProjectStoryElements]
-
-* These are the project story elements you have entered so far. [list_projectStoryElements|grid|page_addStoryElement]
+* You can create story elements from the project stories you have told [project_projectStoryElementsList|grid|page_addStoryElement]
+in order to think about what those stories mean about how you should plan your project.
 
 ## Add story element [page_addStoryElement|popup]
 
 * Name | What is the name of the story element? [storyElement_name|text]
 * Type | What type of story element is this? [storyElement_type|select|character;situation;value;theme;relationship;motivation;belief;conflict]
 * Description | You can describe it more fully here. [storyElement_description|textarea]
+* Image | You can enter an image of the element here. [storyElement_image|imageUploader]
 
 ## Assess story sharing [page_assessStorySharing]
 
@@ -265,8 +252,6 @@ in the places where they normally gather.
 
 * Please review and improve your draft answers based on your consideration of project aspects and your project stories. [improvePlanningDrafts|label]
 
-* Copy the original draft versions into the answers below [project_PNIquestions_copyDrafts|button]
-
 * What is the goal of the project? Why are you doing it? [project_PNIquestions_goal_final|textarea|planning_goal]
 * What relationships are important to the project? [project_PNIquestions_relationships_final|textarea|planning_relationships]
 * What is the focus of the project? What is it about? [project_PNIquestions_focus_final|textarea|planning_focus]
@@ -281,6 +266,8 @@ in the places where they normally gather.
 
 ## Read planning report [page_readPlanningReport]
 
+* This report shows all of the information entered in the pages grouped under "Planning." [planningReportLabel|label]
+
 * Project planning report [planningReport|report|planning]
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -290,17 +277,9 @@ in the places where they normally gather.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 # Collection design [page_collectionDesign]
-* Venues chosen: [checklist_venuesChosen|function|countNumberOfVenuesChosen]
-* Eliciting questions written: [checklist_elicitingQuestionsWritten|listCount|elicitingQuestionsList]
-* Finished writing eliciting questions: [checklist_finishedWritingElicitingQuestions|questionAnswer|elicitingQuestionsAreFinal]
-* Story questions written: [checklist_storyQuestionsWritten|listCount|storyQuestionsList]
-* Finished writing story questions: [checklist_finishedWritingStoryQuestions|questionAnswer|storyQuestionsAreFinal]
-* Participant questions written: [checklist_participantQuestionsWritten|listCount|participantQuestionsList]
-* Finished writing participant questions: [checklist_finishedWritingParticipantQuestions|questionAnswer|participantQuestionsAreFinal]
-* Questions form complete: [checklist_questionsFormComplete|questionAnswer|questionFormIsComplete]
-* Using story collection sessions? [checklist_usingStoryCollectionSessions|questionAnswer|willBeUsingStoryCollectionSessions]
-* Story collection sessions designed: [checklist_collectionSessionsDesigned|listCount|storyCollectionSessionPlansList]
-* Finished designing story collection sessions: [checklist_finishedDesigningCollectionSessions|questionAnswer|collectionSessionPlansAreFinal]
+
+* In the collection design phase, you will decide on story collection venues, create some story eliciting and [collectionDesignStartLabel|label]
+story interpretation questions, design your story collection form, and plan any story collection sessions you want to hold.
 
 * You can enter some general notes on collection design in this project here. [project_generalNotes_collectionDesign|textarea]
 
@@ -321,8 +300,8 @@ in the places where they normally gather.
 
 ## Write story eliciting questions [page_writeStoryElicitingQuestions]
 
-* These are the story eliciting questions you have entered so far. [list_elicitingQuestions|grid|page_addElicitingQuestion]
-* Do you consider these eliciting questions to be final? [final_elicitingQuestions|boolean]
+* Eliciting questions ask people to tell stories. [project_elicitingQuestionsList|grid|page_addElicitingQuestion]
+You need at least one, and preferably three to five questions people can pick from to answer.
 
 ## Add story eliciting question [page_addElicitingQuestion|popup]
 
@@ -335,8 +314,7 @@ in the places where they normally gather.
 
 ## Write questions about stories [page_writeQuestionsAboutStories]
 
-* These are the questions you will be asking people about stories. [list_storyQuestions|grid|page_addStoryQuestion]
-* Do you consider these story questions to be final? [final_storyQuestions|boolean]
+* These are the questions you will be asking people about stories. [project_storyQuestionsList|grid|page_addStoryQuestion]
 
 ## Add story question [page_addStoryQuestion|popup]
 
@@ -351,8 +329,7 @@ in the places where they normally gather.
 
 ## Write questions about participants [page_writeQuestionsAboutParticipants]
 
-* These are the questions you will be asking people about themselves. [list_participantQuestions|grid|page_addParticipantQuestion]
-* Do you consider these participant questions to be final? [final_participantQuestions|boolean]
+* These are the questions you will be asking people about themselves. [project_participantQuestionsList|grid|page_addParticipantQuestion]
 
 ## Add participant question [page_addParticipantQuestion|popup]
 
@@ -368,10 +345,9 @@ in the places where they normally gather.
 ## Design question form [page_designQuestionForm]
 
 * Please enter a title for the question form. [questionForm_title|text]
-* You can link to a logo or other image to show at the top of the form. [questionForm_image|text]
+* You can upload a logo or other image to show at the top of the form. [questionForm_image|imageUploader]
 * Please enter an introduction to be shown at the start of the form, after the title [questionForm_startText|textarea]
 * Please enter any text to be shown at the end of the form [questionForm_endText|textarea]
-* Do you consider this question form to be complete? [final_questionForm|boolean]
 
 ## Plan story collection sessions [page_planStoryCollectionSessions]
 
@@ -379,8 +355,8 @@ in the places where they normally gather.
 
 * Recommendations for story collection sessions [collectionSessionRecommendations|recommendationTable|collectionSessions]
 
-* These are the collection sessions you have designed so far. [list_collectionSessionPlans|grid|page_addStoryCollectionSession]
-* Do you consider these session plans to be complete? [final_collectionSessionPlans|boolean]
+* Plans for story collection sessions lay out what you will do and how. [project_collectionSessionPlansList|grid|page_addStoryCollectionSession]
+Each plan can be used in multiple sessions.
 
 ## Design story collection session [page_addStoryCollectionSession|popup]
 
@@ -390,11 +366,12 @@ in the places where they normally gather.
 * Time | At what dates and times will the session take place? [collectionSessionPlan_times|text]
 * Location | Where will these sessions take place? [collectionSessionPlan_location|text]
 * Number of people | How many people will be invited to each repetition of this session? [collectionSessionPlan_numPeople|text]
-* Participant groups | From which participant groups will people be invited? [collectionSessionPlan_groups|text]
+* Participant groups | From which participant groups will people be invited? [collectionSessionPlan_groups|checkBoxesWithPull|participantGroups]
 * Materials | What materials will this session require?  [collectionSessionPlan_materials|textarea]
 * Other | Enter other details about this session. [collectionSessionPlan_details|textarea]
 
-* These are the activities added to this session plan so far. [list_collectionSessionActivities|grid|page_addCollectionSessionActivity]
+* Activities within story collection sessions can be simple instructions [project_collectionSessionActivitiesList|grid|page_addCollectionSessionActivity]
+or complicated exercises (like the creation of timelines).
 
 * Print session agenda [printCollectionSessionAgenda|button]
 
@@ -406,11 +383,15 @@ in the places where they normally gather.
 * Optional elaborations | Describe optional elaborations you might or might not use in this activity. [collectionSessionPlan_activity_optionalParts|textarea]
 * Length | How long will this activity take? [collectionSessionPlan_activity_duration|text]
 * Recording | How will stories be recorded during this activity? [collectionSessionPlan_activity_recording|textarea]
-* Materials | What materials will be provided for this activity? [collectionSessionPlan_activity_materials|textarea]
+* Materials | What materials will be provided for this activity? collectionSessionPlan_activity_materials|textarea]
 * Spaces | What spaces will be used for this activity? [collectionSessionPlan_activity_spaces|textarea]
 * Facilitation | What sort of facilitation will be necessary for this activity? [collectionSessionPlan_activity_facilitation|textarea]
 
+* Or choose an activity from this list. [templates_storyCollectionActivities|templateList|storyCollectionActivities]
+
 ## Read collection design report [readCollectionDesignReport]
+
+* This report shows all of the information entered in the pages grouped under "Collection design." [collectionDesignReportLabel|label]
 
 * Collection design report [collectionDesignReport|report|collectionDesign]
 
@@ -421,11 +402,8 @@ in the places where they normally gather.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 # Collection process [page_collectionProcess]
-* Question form in final form: [checklist_questionFormInFinalForm|questionAnswer|questionFormInFinalForm]
-* Web story collection enabled: [checklist_webStoryCollectionEnabled|answerValue|webStoryCollectionEnabled]
-* Stories collected/entered: [checklist_storiesEntered|storyBrowserCount|collectedStoriesDuringCollection]
-* Session records created: [checklist_storyCollectionSessionsRecorded|listCount|storyCollectionSessionRecordsList]
-* Sessions reflected on: [checklist_storyCollectionSessionsReflectedOn|listCount|storyCollectionSessionReflectionsList]
+
+* In the collection process phase, you will review incoming stories and enter records of story collection sessions. [collectionProcessIntro|label]
 
 * You can enter some general notes on your collection process in this project here. [project_generalNotes_collectionProcess|textarea]
 
@@ -469,7 +447,7 @@ but the system will ask you to confirm each change.
 
 * Note: If you did not hold any story collection sessions, you can skip this page. [collectionRecordsLabel|label]
 
-* These are the story collection records you have entered so far. [list_collectionSessionRecords|grid|page_addCollectionSessionRecord]
+* Here you can record what went on in your story collection sessions. [project_collectionSessionRecordsList|grid|page_addCollectionSessionRecord]
 
 ## Add story collection session record [page_addCollectionSessionRecord|popup]
 
@@ -480,7 +458,8 @@ but the system will ask you to confirm each change.
 * Notes | Enter additional notes on the session here. [collectionSessionRecord_notes|textarea]
 Your notes can include links to images or other documents.
 
-* These are the group constructions you have entered for this session so far. [list_collectionSessionRecord_constructions|grid|page_newCollectionSessionConstruction]
+* People in your story collection sessions might have created constructions [collectionSessionRecord_constructionsList|grid|page_newCollectionSessionConstruction]
+such as timelines or landscapes. You can enter details about those here.
 
 * Please answer these questions about the session. [collectionSessionRecord_reflectionsLabel|label]
 
@@ -510,6 +489,8 @@ Your description can include links to images or other documents.
 
 ## Read collection process report [page_readCollectionProcessReport]
 
+* This report shows all of the information entered in the pages grouped under "Collection process." [collectionProcessReportLabel|label]
+
 * Collection process report [collectionProcessReport|report|collectionProcess]
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -519,9 +500,9 @@ Your description can include links to images or other documents.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 # Catalysis [page_catalysis]
-* Observations accumulated: [checklist_observationsAccumulated|listCount|observationsListDisplay]
-* Excerpts saved: [checklist_excerptsSaved|listCount|savedExcerptsList]
-* Perspectives created: [checklist_perspectivesCreated|listCount|perspectivesList]
+
+* In the catalysis phase you will look for patterns in stories and answer to questions about them, [catalysisIntro|label]
+and pepare materials for people to use in sensemaking.
 
 * You can enter some general notes on catalysis in this project here. [project_generalNotes_catalysis|textarea]
 
@@ -563,26 +544,25 @@ all stories have been entered.
 
 * Please give this observation a name. [observation_name|text]
 * Observation | Please describe this observation. [observation_text|textarea]
-* Results | These are the results you have selected to include in this observation. [list_observationResults|accumulatedItemsGrid|collectedStoriesAfterCollection]
-* Do you consider this observation to be fully explored? [final_observationFullyExplored|boolean]
+* Results | These are the results you have selected to include in this observation. [project_observationResultsList|accumulatedItemsGrid|collectedStoriesAfterCollection]
 
 * First interpretation | Enter an interpretation of this observation. [firstInterpretation_text|textarea]
 What does it mean?
 * First interpretation name | Please give this interpretation a name (so you can refer to it later). [firstInterpretation_name|text]
 * First interpretation idea | If you like, you can record an idea that follows from this interpretation. [firstInterpretation_idea|textarea]
-* First interpretation excerpts | You can add excerpts to this interpretation. [list_firstInterpretation_excerpts|grid|page_selectExcerpt]
+* First interpretation excerpts | You can add excerpts to this interpretation. [firstInterpretation_excerptsList|grid|page_selectExcerpt]
 
 * Competing interpretation | Enter an interpretation that competes with the first one. [competingInterpretation_text|textarea]
 What else could this pattern mean?
 * Competing interpretation name | Please give this competing interpretation a name. [competingInterpretation_name|text]
 * Competing interpretation idea | Enter an idea that follows from your competing interpretation. [competingInterpretation_idea|textarea]
-* Competing interpretation excerpts | You can add excerpts to the competing interpretation. [list_competingInterpretation_excerpts|grid|page_selectExcerpt]
+* Competing interpretation excerpts | You can add excerpts to the competing interpretation. [competingInterpretation_excerptsList|grid|page_selectExcerpt]
 
 * Third interpretation | If a third interpretation of the pattern comes to mind, enter it here. [thirdInterpretation_text|textarea]
 Is there anything else this pattern could mean?
 * Third interpretation name | Please give this third interpretation a name. [thirdnterpretation_name|text]
 * Third interpretation idea | Enter an idea that follows from your third interpretation. [thirdInterpretation_idea|textarea]
-* Third interpretation excerpts | You can add excerpts to the third interpretation. [list_thirdInterpretation_excerpts|grid|page_selectExcerpt]
+* Third interpretation excerpts | You can add excerpts to the third interpretation. [thirdInterpretation_excerptsList|grid|page_selectExcerpt]
 
 ## Add excerpt to interpretation [page_selectExcerpt|popup]
 
@@ -605,16 +585,16 @@ Is there anything else this pattern could mean?
 
 ## Review excerpts [page_reviewExcerpts]
 
-* These are the excerpts you have saved so far. [list_savedExcerpts|grid|page_createNewExcerpt]
+* These are the excerpts you have saved from stories as you looked at them [project_savedExcerptsList|grid|page_createNewExcerpt]
+on the browse, graph, and review pages. 
 
 ## Review and interpret observations [page_interpretObservations]
 
-* Collected observations [list_observationsDisplay|grid|page_createOrEditObservation]
+* Collected observations [project_observationsDisplayList|grid|page_createOrEditObservation]
 
 ## Cluster interpretations [page_clusterInterpretations]
 
 * Note: Do not cluster your interpretations unless you are sure you have finished collecting them. [clusterInterpretationsLabel|label]
-* Have you finished collecting observations? [final_finishedCollectingObservations|boolean]
 
 // ideally, when they are done with this, the circles marked as group names
 // will get copied into the perspectives list seen in the next page
@@ -622,20 +602,18 @@ Is there anything else this pattern could mean?
 
 ## Describe perspectives [page_describePerspectives]
 
-* Perspectives [list_perspectives|grid|page_addPerspective]
+* Perspectives [project_perspectivesList|grid|page_addPerspective]
 
 ## Add or change perspective [page_addPerspective|popup]
 
 * Name | Please give this perspective a name. [perspective_name|text]
 * Perspective | Describe this perspective. [perspective_description|textarea]
 
-* Results linked to this perspective [list_perspectiveResults|annotationsGrid|page_annotateResultForPerspective]
+* Results linked to this perspective [perspective_linkedResultsList|annotationsGrid|page_annotateResultForPerspective]
 
-* Excerpts linked to this perspective [list_perspectiveExcerpts|annotationsGrid|page_annotateExcerptForPerspective]
+* Excerpts linked to this perspective [perspective_linkedExcerptsList|annotationsGrid|page_annotateExcerptForPerspective]
 
-* Interpretations linked to this perspective [list_perspectiveInterpretations|annotationsGrid|page_annotateInterpretationForPerspective]
-
-* Do you consider this perspective to be complete? [final_perspectiveComplete|boolean]
+* Interpretations linked to this perspective [perspective_linkedInterpretationsList|annotationsGrid|page_annotateInterpretationForPerspective]
 
 // all of these popups could go away if there is an editable field on the grid
 ## Annotate result for perspective [page_annotateResultForPerspective|popup]
@@ -652,6 +630,8 @@ Is there anything else this pattern could mean?
 
 ## Read catalysis report [page_readCatalysisReport]
 
+* This report shows all of the information entered in the pages grouped under "Catalysis." [catalysisReportLabel|label]
+
 * Catalysis report [catalysisReport|report|catalysis]
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -661,10 +641,8 @@ Is there anything else this pattern could mean?
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 # Sensemaking [page_sensemaking]
-* Sensemaking sessions designed: [checklist_sensemakingSessionsDesigned|listCount|sensemakingSessionPlansList]
-* Finished designing sensemaking sessions: [checklist_finishedDesigningSensemakingSessions|questionAnswer|sensemakingSessionPlansAreFinal]
-* Sensemaking session records entered: [checklist_sensemakingSessionRecordsEntered|listCount|sensemakingSessionRecordsList]
-* Finished recording sessions: [checklist_finishedRecordinSessions|questionAnswer|sensemakingSessionRecordsAreFinal]
+
+* In the sensemaking phase, you will plan sensemaking sessions and record what happened in them. [sensemakingIntroLabel|label]
 
 * You can enter some general notes on sensemaking in this project here. [project_generalNotes_sensemaking|textarea]
 
@@ -672,8 +650,7 @@ Is there anything else this pattern could mean?
 
 * Recommendations for sensemaking sessions [sensemakingSessionRecommendations|recommendationTable|sensemakingSessions]
 
-* Sensemaking sessions [list_sensemakingSessionPlans|grid|page_addSensemakingSessionPlan]
-* Do you consider these session plans to be complete? [final_sensemakingSessionPlans|boolean]
+* Sensemaking sessions [project_sensemakingSessionPlansList|grid|page_addSensemakingSessionPlan]
 
 ## Enter sensemaking session plan [page_addSensemakingSessionPlan|popup]
 
@@ -683,11 +660,12 @@ Is there anything else this pattern could mean?
 * Time | At what dates and times will the session take place? [sensemakingSessionPlan_times|text]
 * Location | Where will these sessions take place? [sensemakingSessionPlan_location|text]
 * Number of people | How many people will be invited to each repetition of this session? [sensemakingSessionPlan_numPeople|text]
-* Participant groups | From which participant group(s) will people be invited? [sensemakingSessionPlan_groups|text]
+* Participant groups | From which participant group(s) will people be invited? [sensemakingSessionPlan_groups|checkBoxesWithPull|participantGroups]
 * Materials | What materials will this session require? [sensemakingSessionPlan_materials|textarea]
 * Other | Enter other details about this session. [sensemakingSessionPlan_details|textarea]
 
-* These are the activities added to this session plan so far. [list_sensemakingSessionPlanActivities|grid|page_addSensemakingSessionActivity]
+* Activities within sensemaking sessions can be simple instructions [sensemakingSessionPlan_activitiesList|grid|page_addSensemakingSessionActivity]
+or complicated exercises (like the construction of composite stories).
 
 * Print session agenda [printSensemakingSessionAgenda|button]
 
@@ -703,24 +681,25 @@ Is there anything else this pattern could mean?
 * Spaces | What spaces will be used for this activity? [sensemakingSessionPlan_activity_spaces|textarea]
 * Facilitation | What sort of facilitation will be necessary for this activity? [sensemakingSessionPlan_activity_facilitation|textarea]
 
+* Or choose an activity from this list. [templates_sensemakingActivities|templateList|sensemakingActivities]
+
 ## Enter sensemaking session records [page_enterSensemakingSessionRecords]
 
-* Sensemaking sessions records [list_sensemakingSessionRecords|grid|page_addSensemakingSessionRecord]
-* Do you consider these session records to be complete? [final_sensemakingSessionRecords|boolean]
+* Sensemaking sessions records [project_sensemakingSessionRecordsList|grid|page_addSensemakingSessionRecord]
 
 ## Add sensemaking session record [page_addSensemakingSessionRecord|popup]
 
 * Name | Please give this session record a name. [sensemakingSessionRecord_name|text]
 
 // no add button on this grid, must add from story browser below
-* Resonant stories (pivot, voice, discovery) [list_sensemakingSessionRecord_resonantStories|accumulatedItemsGrid|storiesToMarkAsResonantDuringSensemaking]
+* Resonant stories (pivot, voice, discovery) [sensemakingSessionRecord_resonantStoriesList|accumulatedItemsGrid|storiesToMarkAsResonantDuringSensemaking]
 
 * Show|hide collected stories [showHideCollectedStories|toggleButton|showCollectedStoriesInSensemakingSessionRecordScreen]
 * Collected stories [storiesToMarkAsResonantDuringSensemaking|storyBrowser|addResonantStory:"page_addResonantStory"]
 
-* Session outcomes (like discoveries and ideas) [list_sensemakingSessionRecordOutcomes|grid|page_newSensemakingSessionOutcome]
+* Session outcomes (like discoveries and ideas) [sensemakingSessionRecord_outcomesList|grid|page_newSensemakingSessionOutcome]
 
-* Group constructions [list_sensemakingSessionRecord_constructions|grid|page_newSensemakingSessionConstruction]
+* Group constructions [sensemakingSessionRecord_constructionsList|grid|page_newSensemakingSessionConstruction]
 
 * Name | Please give this session record a name. [sensemakingSessionRecord_name|text]
 * When and where | When and where did this session take place? [sensemakingSessionRecord_whenWhere|textarea]
@@ -752,7 +731,7 @@ Your notes can include links to images or other documents.
 
 * Which type of resonant story is this? [sensemakingSessionRecord_resonantStory_type|select|pivot;voice;discovery;other]
 * Why did this story stand out? [sensemakingSessionRecord_resonantStory_reason|textarea]
-* For which participant groups was this story important? [sensemakingSessionRecord_resonantStory_groups|text]
+* For which participant groups was this story important? [sensemakingSessionRecord_resonantStory_groups|checkBoxesWithPull|participantGroups]
 * Would you like to make any other notes about this story? [sensemakingSessionRecord_resonantStory_notes|textarea]
 
 ## Sensemaking session outcome [page_newSensemakingSessionOutcome|popup]
@@ -770,6 +749,8 @@ Your description can include links to images or documents.
 
 ## Read sensemaking report [page_readSensemakingReport]
 
+* This report shows all of the information entered in the pages grouped under "Sensemaking." [sensemakingReportLabel|label]
+
 * Sensemaking report [sensemakingReport|report|sensemaking]
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -779,11 +760,8 @@ Your description can include links to images or documents.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 # Intervention [page_intervention]
-* Questions answered about project outcomes: [checklist_questionsAnsweredAboutProjectOutcomes|questionAnswerCountOfTotalOnPage|page_projectOutcomesForIntervention]
-* Intervention plans created: [checklist_interventionPlansCreated|listCount|interventionPlansList]
-* Finished intervention plans: [checklist_finishedInterventionPlans|questionAnswer|interventionPlansAreFinal]
-* Intervention records entered: [checklist_interventionRecordsEntered|listCount|interventionRecordsList]
-* Finished intervention records: [checklist_finishedInterventionRecords|questionAnswer|interventionRecordsAreFinal]
+
+* In the intervention phase, you will plan interventions and record information about them. [interventionIntroLabel|label]
 
 * You can enter some general notes on intervention in this project here. [project_generalNotes_intervention|textarea]
 
@@ -824,8 +802,8 @@ the participant groups you set up in the project planning phase.
 
 * Recommendations for interventions [interventionRecommendations|recommendationTable|interventions]
 
-* These are the interventions you have designed so far. [list_interventionPlans|grid|page_addIntervention]
-* Do you consider your intervention plans for this project complete? [final_interventionPlans|boolean]
+* On this page you can design interventions that change the stories people tell [project_interventionPlansList|grid|page_addIntervention]
+in your community or organization.
 
 ## Plan an intervention [page_addIntervention|popup]
 
@@ -848,8 +826,7 @@ the participant groups you set up in the project planning phase.
 
 ## Enter intervention records [page_recordInterventions]
 
-* Intervention records [list_interventionRecords|grid|page_addInterventionRecord]
-* Do you consider your intervention records for this project to be complete? [final_interventionRecords|boolean]
+* Intervention records [project_interventionRecordsList|grid|page_addInterventionRecord]
 
 ## Add intervention record [page_addInterventionRecord|popup]
 
@@ -877,6 +854,8 @@ the participant groups you set up in the project planning phase.
 
 ## Read intervention report [page_interventionReport]
 
+* This report shows all of the information entered in the pages grouped under "Intervention." [interventionReportLabel|label]
+
 * Intervention report [interventionReport|report|intervention]
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -886,18 +865,15 @@ the participant groups you set up in the project planning phase.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 # Return [page_return]
-* Pieces of feedback entered: [checklist_piecesOfFeedbackEntered|listCount|feedbackList]
-* Questions answered about project: [checklist_questionsAnsweredAboutProject|questionAnswerCountOfTotalOnPage|page_reflectOnProject]
-* Elements in project presentation: [checklist_elementsInProjectPresentation|listCount|projectPresentationElementsList]
-* Presentation report finished: [checklist_presentationReportFinished|questionAnswer|presentationReportFinished]
-* Number of people interested in future projects: [checklist_numberOfPeopleInterestedInFutureProjects|listCount|interestedPeopleList]
-* Requests received about project: [checklist_requestsForHelp|listCount|projectRequestsList]
+
+* In the return phase, you will gather feedback, reflect on the project, possibly present [returnIntroLabel|label]
+the project to someone, and help people with requests about the project.
 
 * You can enter some general notes on the return phase of this project here. [project_generalNotes_return|textarea]
 
 ## Gather feedback [page_gatherFeedback]
 
-* These are the pieces of feedback you have gathered so far. [list_feedback|grid|page_enterFeedbackPiece]
+* You can enter feedback you have gathered on your project here. [project_feedbackItemsList|grid|page_enterFeedbackPiece]
 
 * If you would like to enter any general notes on the feedback you've seen to the project, write them here. [feedback_generalNotes|textarea]
 
@@ -924,14 +900,13 @@ the participant groups you set up in the project planning phase.
 
 ## Prepare outline of project presentation [page_prepareProjectPresentation]
 
-* These are the elements in your presentation outline so far. [list_projectPresentationElements|grid|page_addPresentationElement]
+* You can build your presentation about your project from elements [project_presentationElementsList|grid|page_addPresentationElement]
+(or points of discussion) you want to tell people about.
 
 * Now you can export your outline, open it in your word processor, and add material to it [presentationLabel|label]
 from any of the stage reports (or the final project report).
 
 * Export this outline [exportPresentationOutline|button]
-
-* Have you finished your presentation report? [final_presentationReport|select|yes;no;I'm not making a project presentation]
 
 ## Add element to project presentation outline [page_addPresentationElement|popup]
 
@@ -943,7 +918,7 @@ from any of the stage reports (or the final project report).
 
 ## Respond to requests for post-project support [page_projectRequests]
 
-* These are the requests you have entered so far. [list_returnRequests|grid|page_addNewReturnRequest]
+* You can enter requests for information or help as your project winds down here. [project_returnRequestsList|grid|page_addNewReturnRequest]
 
 ## Enter project request [page_addNewReturnRequest|popup]
 
@@ -955,8 +930,12 @@ from any of the stage reports (or the final project report).
 
 ## Read return report [page_returnReport]
 
+* This report shows all of the information entered in the pages grouped under "Return." [returnReportLabel|label]
+
 * Return report [returnReport|report|return]
 
 # Project report [page_projectReport]
+
+* This report shows all of the information entered in all of the pages of this software. [wholeProjectReportLabel|label]
 
 * Project report [projectReport|report|project]

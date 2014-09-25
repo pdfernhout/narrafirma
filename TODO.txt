@@ -108,14 +108,14 @@ Write up sample PNI Workbook product offering descriptions for review (Cynthia)
 Create templates (Cynthia)
 Create help (Cynthia)
 
-Change dashboards to a special widget with list of pages in options [id|dashboard|page1;page2]
-Change all items that start with "list_"
-Remove all "I'm done with this" checkboxes
-Fix all things that say "These are the project stories you have told so far." with explanation of task
-Intro for reports
-Templates for activities
+NOT DOING Change dashboards to a special widget with list of pages in options [id|dashboard|page1;page2]
+DONE Change all items that start with "list_"
+DONE Remove all "I'm done with this" checkboxes
+DONE Fix all things that say "These are the project stories you have told so far." with explanation of task
+DONE Templates for activities
+DONE Figure out what to do with finalize your questions
+DONE Intro for reports
 Every question must have short name
-Figure out what to do with finalize your questions
 
 ==== Later:
 
