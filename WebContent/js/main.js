@@ -138,28 +138,31 @@ require([
        
        // TODO: Fix this to store data
        // TODO: Translate
-       var pageStatusQuestion = {
-           "id": id + "_pageStatus",
-           "text": "The dashboard status of this page is: ",
-           "type": "select",
-           "options": "intentionally skipped\npartially done\ncompletely finished",
-           "value": at(domain.data, id + "_pageStatus")
-       };
        if (!page.isHeader) {
+           var pageStatusQuestion = {
+               "id": id + "_pageStatus",
+               "text": "The dashboard status of this page is: ",
+               "type": "select",
+               "options": "intentionally skipped\npartially done\ncompletely finished",
+               "value": at(domain.data, id + "_pageStatus")
+           };
            questionEditor.insertQuestionIntoDiv(pageStatusQuestion, pagePane);
-       } else if (!page.type) {
+       } else {
+           // console.log("page dashboard", page.id, page.type, page);
            // Put in dashboard
            var pages = domain.pagesToGoWithHeaders[id];
            for (var pageIndex in pages) {
                var pageID = pages[pageIndex];
-               pageStatusQuestion = {
-                   "id": pageID + "_pageStatus_dashboard",
-                   "text": domain.pageDefinitions[pageID].name,
-                   "type": "select",
-                   "options": "intentionally skipped\npartially done\ncompletely finished",
-                   "value": at(domain.data, pageID + "_pageStatus")
-               };               
-               questionEditor.insertQuestionIntoDiv(pageStatusQuestion, pagePane);
+               if (!domain.pageDefinitions[pageID].type) {
+                   var pageStatusQuestion2 = {
+                       "id": pageID + "_pageStatus_dashboard",
+                       "text": domain.pageDefinitions[pageID].name,
+                       "type": "select",
+                       "options": "intentionally skipped\npartially done\ncompletely finished",
+                       "value": at(domain.data, pageID + "_pageStatus")
+                   };               
+                   questionEditor.insertQuestionIntoDiv(pageStatusQuestion2, pagePane);
+               }
            }
        }
        
