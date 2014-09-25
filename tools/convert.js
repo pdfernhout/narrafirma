@@ -296,7 +296,15 @@ var modelTypes = {
 function generateModel() {
     var unusedTypes = {};
     var model = {};
+    var pagesToGoWithHeaders = {};
+    var lastHeader = null;
     array.forEach(pages, function (page) {
+        if (page.isHeader) {
+            pagesToGoWithHeaders[page.id] = [];
+            lastHeader = page.id;
+        } else {
+            pagesToGoWithHeaders[lastHeader].push(page.id);
+        }
         if (!page.type) {
             // console.log("page", page);
             array.forEach(page.questions, function (question) {
@@ -319,6 +327,8 @@ function generateModel() {
         console.log("unusedType: ", key);
     }
     console.log("Output", JSON.stringify(model, null, "  "));
+    
+    console.log("Pages to go with headers", JSON.stringify(pagesToGoWithHeaders, null, "  "));
     
     var unusedTypes2 = {};
     
