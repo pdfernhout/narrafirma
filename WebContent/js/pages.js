@@ -745,11 +745,6 @@ define(
                 "id": "project_synopsis",
                 "text": "Please summarize your project in one or two sentences.",
                 "type": "textarea"
-            },
-            {
-                "id": "project_synopsisComplete",
-                "text": "Do you consider this synopsis to be complete?",
-                "type": "boolean"
             }
         ]
     },
@@ -1217,7 +1212,7 @@ define(
                 "type": "textarea"
             },
             {
-                "id": "FIXME_386",
+                "id": "FIXME_385",
                 "text": "Materials | What materials will be provided for this activity? collectionSessionPlan_activity_materials|textarea]"
             },
             {
@@ -1327,11 +1322,6 @@ define(
                 "id": "copyStoryFormURLDuringFinalize",
                 "text": "Copy story form web link",
                 "type": "button"
-            },
-            {
-                "id": "questionFormInFinalForm",
-                "text": "Do you consider the question form to be in its final form?",
-                "type": "boolean"
             }
         ]
     },
@@ -2404,7 +2394,7 @@ define(
                 "options": "page_newSensemakingSessionConstruction"
             },
             {
-                "id": "FIXME_704",
+                "id": "FIXME_701",
                 "text": "Please give this session record a name.",
                 "shortText": "Name",
                 "type": "text"

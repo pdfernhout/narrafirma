@@ -262,7 +262,6 @@ in the places where they normally gather.
 ## Write project synopsis [page_writeProjectSynopsis]
 
 * Please summarize your project in one or two sentences. [project_synopsis|textarea]
-* Do you consider this synopsis to be complete? [project_synopsisComplete|boolean]
 
 ## Read planning report [page_readPlanningReport]
 
@@ -416,8 +415,6 @@ but the system will ask you to confirm each change.
 * Print story form [printStoryForm|button]
 
 * Copy story form web link [copyStoryFormURLDuringFinalize|button]
-
-* Do you consider the question form to be in its final form? [questionFormInFinalForm|boolean]
 
 ## Start story collection [page_startStoryCollection]
 
