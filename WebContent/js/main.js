@@ -147,7 +147,7 @@ require([
        };
        if (!page.isHeader) {
            questionEditor.insertQuestionIntoDiv(pageStatusQuestion, pagePane);
-       } else {
+       } else if (!page.type) {
            // Put in dashboard
            var pages = domain.pagesToGoWithHeaders[id];
            for (var pageIndex in pages) {
