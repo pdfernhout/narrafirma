@@ -199,7 +199,12 @@ define([
             spacing: 10
         });
         
-        pagePane.addChild(table);
+        if (!pagePane.addChild) {
+            // console.log("trouble -- does not have addChild method!", pagePane);
+            pagePane.domNode.appendChild(table.domNode);
+        } else {
+            pagePane.addChild(table);
+        }
         
         var filter1 = createFilterPane(pseudoQuestion.id + "_1", questionsById, questionOptions, data, table);
         var filter2 = createFilterPane(pseudoQuestion.id + "_2", questionsById, questionOptions, data, table);
