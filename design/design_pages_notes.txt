@@ -382,7 +382,7 @@ or complicated exercises (like the creation of timelines).
 * Optional elaborations | Describe optional elaborations you might or might not use in this activity. [collectionSessionPlan_activity_optionalParts|textarea]
 * Length | How long will this activity take? [collectionSessionPlan_activity_duration|text]
 * Recording | How will stories be recorded during this activity? [collectionSessionPlan_activity_recording|textarea]
-* Materials | What materials will be provided for this activity? collectionSessionPlan_activity_materials|textarea]
+* Materials | What materials will be provided for this activity? [collectionSessionPlan_activity_materials|textarea]
 * Spaces | What spaces will be used for this activity? [collectionSessionPlan_activity_spaces|textarea]
 * Facilitation | What sort of facilitation will be necessary for this activity? [collectionSessionPlan_activity_facilitation|textarea]
 
@@ -691,14 +691,14 @@ or complicated exercises (like the construction of composite stories).
 // no add button on this grid, must add from story browser below
 * Resonant stories (pivot, voice, discovery) [sensemakingSessionRecord_resonantStoriesList|accumulatedItemsGrid|storiesToMarkAsResonantDuringSensemaking]
 
-* Show|hide collected stories [showHideCollectedStories|toggleButton|showCollectedStoriesInSensemakingSessionRecordScreen]
+* Show or hide collected stories [showHideCollectedStories|toggleButton|showCollectedStoriesInSensemakingSessionRecordScreen]
 * Collected stories [storiesToMarkAsResonantDuringSensemaking|storyBrowser|addResonantStory:"page_addResonantStory"]
 
 * Session outcomes (like discoveries and ideas) [sensemakingSessionRecord_outcomesList|grid|page_newSensemakingSessionOutcome]
 
 * Group constructions [sensemakingSessionRecord_constructionsList|grid|page_newSensemakingSessionConstruction]
 
-* Name | Please give this session record a name. [sensemakingSessionRecord_name|text]
+// * Name | Please give this session record a name. [sensemakingSessionRecord_name|text]
 * When and where | When and where did this session take place? [sensemakingSessionRecord_whenWhere|textarea]
 * Who attended | Describe the participants at this session. [sensemakingSessionRecord_participants|textarea]
 * Plan | Which of your collection session plans did you follow in this session? (And did you stick to the plan?) [sensemakingSessionRecord_plan|textarea]
