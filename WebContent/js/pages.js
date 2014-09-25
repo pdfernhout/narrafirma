@@ -131,12 +131,6 @@ define(
                 "type": "label"
             },
             {
-                "id": "COMMENT_page_planningQuestionsDraft_1",
-                "text": "// these fields need to be populated with the original draft versions",
-                "type": "label",
-                "options": null
-            },
-            {
                 "id": "project_PNIquestions_goal_draft",
                 "text": "What is the goal of the project? Why are you doing it?",
                 "type": "textarea"
@@ -465,7 +459,7 @@ define(
         ]
     },
     {
-        "id": "page_projectStoryElements",
+        "id": "page_createProjectStoryElements",
         "name": "Create project story elements",
         "description": "",
         "isHeader": false,
@@ -474,7 +468,15 @@ define(
                 "id": "storyElementsInstructions",
                 "text": "Here are some instructions on how to create story elements from your project stories.\n<ol>\n<li>Choose one or two types of story element (characters, situations, values, themes, relationships, motivations, beliefs, conflicts).</li>\n<li>For each story, come up with as many answers to that element's question as you can. Write the answers on sticky notes.</li>\n<li>The questions are:</li>\n<ul>\n<li>Characters: Who is doing things in this story?</li>\n<li>Situations: What is going on in this story?</li>\n<li>Values: What matters to the characters in this story?</li>\n<li>Themes: What is this story about?</li>\n<li>Relationships: How are the characters related in this story?</li>\n<li>Motivations: Why do the characters do what they do in this story?</li>\n<li>Beliefs: What do people believe in this story?</li>\n<li>Conflicts: Who or what stands in opposition in this story?</li>\n</ul>\n<li>Once you have answered the question(s) you chose for each story, cluster the sticky notes into groups. Place like with like.</li>\n<li>Give each group of sticky notes a name.</li>\n<li>Clear a \"halo\" of space around each group's name.</li>\n<li>In the halo, write 2-5 good and bad attributes (advantages and disadvantages, opportunities and dangers) of each group of sticky notes.</li>\n<li>Copy or move the new good/bad attributes to a new space. Mix them all together.</li>\n<li>Cluster the attributes into groups.</li>\n<li>Name the groups. These are your story elements.</li>\n</ol>",
                 "type": "label"
-            },
+            }
+        ]
+    },
+    {
+        "id": "page_enterProjectStoryElements",
+        "name": "Enter project story elements",
+        "description": "",
+        "isHeader": false,
+        "questions": [
             {
                 "id": "project_projectStoryElementsList",
                 "text": "You can create story elements from the project stories you have told\nin order to think about what those stories mean about how you should plan your project.",
@@ -508,12 +510,6 @@ define(
                 "text": "You can describe it more fully here.",
                 "shortText": "Description",
                 "type": "textarea"
-            },
-            {
-                "id": "storyElement_image",
-                "text": "You can enter an image of the element here.",
-                "shortText": "Image",
-                "type": "imageUploader"
             }
         ]
     },
@@ -696,6 +692,11 @@ define(
                 "id": "improvePlanningDrafts",
                 "text": "Please review and improve your draft answers based on your consideration of project aspects and your project stories.",
                 "type": "label"
+            },
+            {
+                "id": "project_PNIquestions_copyDrafts",
+                "text": "Copy the original draft versions into the answers below",
+                "type": "button"
             },
             {
                 "id": "project_PNIquestions_goal_final",
@@ -1052,8 +1053,8 @@ define(
             },
             {
                 "id": "questionForm_image",
-                "text": "You can upload a logo or other image to show at the top of the form.",
-                "type": "imageUploader"
+                "text": "You can link to a logo or other image to show at the top of the form.",
+                "type": "text"
             },
             {
                 "id": "questionForm_startText",
@@ -1139,8 +1140,7 @@ define(
                 "id": "collectionSessionPlan_groups",
                 "text": "From which participant groups will people be invited?",
                 "shortText": "Participant groups",
-                "type": "checkBoxesWithPull",
-                "options": "participantGroups"
+                "type": "text"
             },
             {
                 "id": "collectionSessionPlan_materials",
@@ -2233,8 +2233,7 @@ define(
                 "id": "sensemakingSessionPlan_groups",
                 "text": "From which participant group(s) will people be invited?",
                 "shortText": "Participant groups",
-                "type": "checkBoxesWithPull",
-                "options": "participantGroups"
+                "type": "text"
             },
             {
                 "id": "sensemakingSessionPlan_materials",
@@ -2532,8 +2531,7 @@ define(
             {
                 "id": "sensemakingSessionRecord_resonantStory_groups",
                 "text": "For which participant groups was this story important?",
-                "type": "checkBoxesWithPull",
-                "options": "participantGroups"
+                "type": "text"
             },
             {
                 "id": "sensemakingSessionRecord_resonantStory_notes",
