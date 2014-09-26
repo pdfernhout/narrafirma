@@ -406,15 +406,11 @@ or complicated exercises (like the creation of timelines).
 
 * You can enter some general notes on your collection process in this project here. [project_generalNotes_collectionProcess|textarea]
 
-## Finalize question forms [page_finalizeQuestionForms]
+## Print question forms [page_finalizeQuestionForms]
 
-* On this page you will finalize your questions for story collection. Once you have started your story collection, [finalizeLabel|label]
-you should not make changes to your questions. You will still be able to make changes after you click the "Finalize" button,
-but the system will ask you to confirm each change.
+* Here you can print your story form for distribution to participants.
 
 * Print story form [printStoryForm|button]
-
-* Copy story form web link [copyStoryFormURLDuringFinalize|button]
 
 ## Start story collection [page_startStoryCollection]
 
@@ -426,7 +422,8 @@ but the system will ask you to confirm each change.
 
 ## Enter stories [page_enterStories]
 
-// the info shown here is what was designed - how to specify that
+// the info shown here is what was designed for a story form - how to specify that
+// User can enter data here for stories received via paper forms
 
 ## Review incoming stories [page_reviewIncomingStories]
 
@@ -621,7 +618,7 @@ on the browse, graph, and review pages.
 
 * Enter any notes you want to remember about this excerpt with respect to this perspective. [perspective_excerptLinkageNotes|textarea]
 
-## Annotate interpretation for perspective [page_annotateInterpretationForPerspective]
+## Annotate interpretation for perspective [page_annotateInterpretationForPerspective|popup]
 
 * Enter any notes you want to remember about this interpretation as it is linked to this perspective. [perspective_interpretationLinkageNotes|textarea]
 
@@ -688,17 +685,12 @@ or complicated exercises (like the construction of composite stories).
 
 * Name | Please give this session record a name. [sensemakingSessionRecord_name|text]
 
-// no add button on this grid, must add from story browser below
-* Resonant stories (pivot, voice, discovery) [sensemakingSessionRecord_resonantStoriesList|accumulatedItemsGrid|storiesToMarkAsResonantDuringSensemaking]
-
-* Show or hide collected stories [showHideCollectedStories|toggleButton|showCollectedStoriesInSensemakingSessionRecordScreen]
-* Collected stories [storiesToMarkAsResonantDuringSensemaking|storyBrowser|addResonantStory:"page_addResonantStory"]
+* Resonant stories (pivot, voice, discovery) [sensemakingSessionRecord_resonantStoriesList|grid|page_addResonantStory]
 
 * Session outcomes (like discoveries and ideas) [sensemakingSessionRecord_outcomesList|grid|page_newSensemakingSessionOutcome]
 
 * Group constructions [sensemakingSessionRecord_constructionsList|grid|page_newSensemakingSessionConstruction]
 
-// * Name | Please give this session record a name. [sensemakingSessionRecord_name|text]
 * When and where | When and where did this session take place? [sensemakingSessionRecord_whenWhere|textarea]
 * Who attended | Describe the participants at this session. [sensemakingSessionRecord_participants|textarea]
 * Plan | Which of your collection session plans did you follow in this session? (And did you stick to the plan?) [sensemakingSessionRecord_plan|textarea]
@@ -724,8 +716,10 @@ Your notes can include links to images or other documents.
 * New ideas | What new ideas did you gain from this session? What did you learn from it? [sensemakingSessionRecord_reflections_learning_newIdeas|textarea]
 * Other | What else do you want to remember about this session? [sensemakingSessionRecord_reflections_learning_wantToRemember|textarea]
 
-## Add resonant story [page_addResonantStory]
+## Add resonant story [page_addResonantStory|popup]
 
+// this is not a story browser, it is a list of all stories, and the one selected will be copied to the resonant stories list for this session when they click ok on this popup
+* Choose a story to mark as a resonant story for this sensemaking session. [storiesListChoose|storiesList]
 * Which type of resonant story is this? [sensemakingSessionRecord_resonantStory_type|select|pivot;voice;discovery;other]
 * Why did this story stand out? [sensemakingSessionRecord_resonantStory_reason|textarea]
 * For which participant groups was this story important? [sensemakingSessionRecord_resonantStory_groups|text]
@@ -795,9 +789,9 @@ the participant groups you set up in the project planning phase.
 * Did you discover any areas in which these people had more confidence than skill? [outcomes_foundOverConfidence|select|not at all;somewhat;definitely;mixed]
 * Did any of these participants express an interest in learning more about story work? [outcomes_peopleCuriousAboutStoryWork|select|never;occasionally;sometimes;often;mixed]
 
-## Design interventions [page_designInterventions]
+## Design intervention plans [page_designInterventions]
 
-* Recommendations for interventions [interventionRecommendations|recommendationTable|interventions]
+* Recommendations for intervention plans [interventionRecommendations|recommendationTable|interventions]
 
 * On this page you can design interventions that change the stories people tell [project_interventionPlansList|grid|page_addIntervention]
 in your community or organization.

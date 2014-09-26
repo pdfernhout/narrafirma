@@ -52,9 +52,28 @@ Implement copyStoryFormURLDuringStart in domain buttonClicked
 Implement exportPresentationOutline in domain buttonClicked
 Implement showHideCollectedStories in domain buttonClicked
 
-Dynamic pages for participant groups
+Test dynamic pages vs. inline page sections for grid items
+Dynamic pages for participant group aspects
 Dynamic pages for collection session plans
+Dynamic pages for collection session records
+Dynamic pages for venues
 Dynamic pages for sensemaking session plans
+Dynamic pages for sensemaking session records
+Dynamic pages for project outcomes
+Dynamic pages for intervention plans?
+Dynamic pages for intervention records?
+
+Venues table needs fixing -- one for each participant group
+Popup for add item  -- should have better label in title as to what type of thing is added
+General notes should go after dashboard for each section
+Generate story form for data entry from paper form -- or have it work with story browser to review/add stories
+Bug with scrolling and story browser -- only showing entries in initial page size and rest are blank
+webStoryCollectionEnabled toggle status to turn off seems broken
+Catalysis -- story browser needs two buttons that pull up pages to put things in lists: addToObservation:"page_addToObservation";addToExcerpt:"page_addToExcerpt"
+Need to be able to select text in existing story to AddToExcerpts
+Need to figure out some way to represent RESULTS in observations (story browser queries/results, graphs, statistical tests)
+Observations list should not have "add" button, because observations can only be added using "add to observation" button on story browser, graph browser, trends report (but it should have an edit button)
+Think more about catalysis part
 
 DONE Checkboxes for multiple choices
 DONE Tab container sizing to full page
@@ -116,6 +135,8 @@ DONE Templates for activities
 DONE Figure out what to do with finalize your questions
 DONE Intro for reports
 Every question must have short name
+Story collection sessions -- change question to label
+Change "Sensemaking sessions" and all other too short labels for lists near end of file
 
 ==== Later:
 
