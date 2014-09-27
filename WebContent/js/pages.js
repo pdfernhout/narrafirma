@@ -1306,23 +1306,17 @@ define(
     },
     {
         "id": "page_finalizeQuestionForms",
-        "name": "Finalize question forms",
+        "name": "Print question forms",
         "description": "",
         "isHeader": false,
         "questions": [
             {
-                "id": "finalizeLabel",
-                "text": "On this page you will finalize your questions for story collection. Once you have started your story collection,\nyou should not make changes to your questions. You will still be able to make changes after you click the \"Finalize\" button,\nbut the system will ask you to confirm each change.",
-                "type": "label"
+                "id": "FIXME_411",
+                "text": "Here you can print your story form for distribution to participants."
             },
             {
                 "id": "printStoryForm",
                 "text": "Print story form",
-                "type": "button"
-            },
-            {
-                "id": "copyStoryFormURLDuringFinalize",
-                "text": "Copy story form web link",
                 "type": "button"
             }
         ]
@@ -1359,7 +1353,13 @@ define(
         "questions": [
             {
                 "id": "COMMENT_page_enterStories_1",
-                "text": "// the info shown here is what was designed - how to specify that",
+                "text": "// the info shown here is what was designed for a story form - how to specify that",
+                "type": "label",
+                "options": null
+            },
+            {
+                "id": "COMMENT_page_enterStories_2",
+                "text": "// User can enter data here for stories received via paper forms",
                 "type": "label",
                 "options": null
             }
@@ -2091,6 +2091,7 @@ define(
         "name": "Annotate interpretation for perspective",
         "description": "",
         "isHeader": false,
+        "type": "popup",
         "questions": [
             {
                 "id": "perspective_interpretationLinkageNotes",
@@ -2358,28 +2359,10 @@ define(
                 "type": "text"
             },
             {
-                "id": "COMMENT_page_addSensemakingSessionRecord_1",
-                "text": "// no add button on this grid, must add from story browser below",
-                "type": "label",
-                "options": null
-            },
-            {
                 "id": "sensemakingSessionRecord_resonantStoriesList",
                 "text": "Resonant stories (pivot, voice, discovery)",
-                "type": "accumulatedItemsGrid",
-                "options": "storiesToMarkAsResonantDuringSensemaking"
-            },
-            {
-                "id": "showHideCollectedStories",
-                "text": "Show or hide collected stories",
-                "type": "toggleButton",
-                "options": "showCollectedStoriesInSensemakingSessionRecordScreen"
-            },
-            {
-                "id": "storiesToMarkAsResonantDuringSensemaking",
-                "text": "Collected stories",
-                "type": "storyBrowser",
-                "options": "addResonantStory:\"page_addResonantStory\""
+                "type": "grid",
+                "options": "page_addResonantStory"
             },
             {
                 "id": "sensemakingSessionRecord_outcomesList",
@@ -2392,12 +2375,6 @@ define(
                 "text": "Group constructions",
                 "type": "grid",
                 "options": "page_newSensemakingSessionConstruction"
-            },
-            {
-                "id": "COMMENT_page_addSensemakingSessionRecord_2",
-                "text": "// * Name | Please give this session record a name. [sensemakingSessionRecord_name|text]",
-                "type": "label",
-                "options": null
             },
             {
                 "id": "sensemakingSessionRecord_whenWhere",
@@ -2516,7 +2493,19 @@ define(
         "name": "Add resonant story",
         "description": "",
         "isHeader": false,
+        "type": "popup",
         "questions": [
+            {
+                "id": "COMMENT_page_addResonantStory_1",
+                "text": "// this is not a story browser, it is a list of all stories, and the one selected will be copied to the resonant stories list for this session when they click ok on this popup",
+                "type": "label",
+                "options": null
+            },
+            {
+                "id": "storiesListChoose",
+                "text": "Choose a story to mark as a resonant story for this sensemaking session.",
+                "type": "storiesList"
+            },
             {
                 "id": "sensemakingSessionRecord_resonantStory_type",
                 "text": "Which type of resonant story is this?",
@@ -2810,13 +2799,13 @@ define(
     },
     {
         "id": "page_designInterventions",
-        "name": "Design interventions",
+        "name": "Design intervention plans",
         "description": "",
         "isHeader": false,
         "questions": [
             {
                 "id": "interventionRecommendations",
-                "text": "Recommendations for interventions",
+                "text": "Recommendations for intervention plans",
                 "type": "recommendationTable",
                 "options": "interventions"
             },

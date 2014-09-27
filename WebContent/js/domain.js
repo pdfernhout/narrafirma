@@ -295,14 +295,9 @@ define([
         "project_savedExcerptsList": [],
         "project_observationsDisplayList": [],
         "project_perspectivesList": [],
-        "perspective_interpretationLinkageNotes": "",
         "project_generalNotes_sensemaking": "",
         "project_sensemakingSessionPlansList": [],
         "project_sensemakingSessionRecordsList": [],
-        "sensemakingSessionRecord_resonantStory_type": null,
-        "sensemakingSessionRecord_resonantStory_reason": "",
-        "sensemakingSessionRecord_resonantStory_groups": "",
-        "sensemakingSessionRecord_resonantStory_notes": "",
         "project_generalNotes_intervention": "",
         "project_interventionPlansList": [],
         "project_interventionRecordsList": [],
@@ -320,11 +315,11 @@ define([
         "project_reflect_notes": "",
         "project_presentationElementsList": [],
         "project_returnRequestsList": []
-      };
+    };
     
 
     var other = [
-      {
+       {
          "__id": "page_addParticipantGroup",
          "__type": "popup",
          "participantGroup_name": "",
@@ -512,6 +507,11 @@ define([
          "perspective_excerptLinkageNotes": ""
        },
        {
+         "__id": "page_annotateInterpretationForPerspective",
+         "__type": "popup",
+         "perspective_interpretationLinkageNotes": ""
+       },
+       {
          "__id": "page_addSensemakingSessionPlan",
          "__type": "popup",
          "sensemakingSessionPlan_name": "",
@@ -542,7 +542,7 @@ define([
          "__id": "page_addSensemakingSessionRecord",
          "__type": "popup",
          "sensemakingSessionRecord_name": "",
-         "showHideCollectedStories": null,
+         "sensemakingSessionRecord_resonantStoriesList": [],
          "sensemakingSessionRecord_outcomesList": [],
          "sensemakingSessionRecord_constructionsList": [],
          "sensemakingSessionRecord_whenWhere": "",
@@ -560,6 +560,14 @@ define([
          "sensemakingSessionRecord_reflections_learning_workedWell": "",
          "sensemakingSessionRecord_reflections_learning_newIdeas": "",
          "sensemakingSessionRecord_reflections_learning_wantToRemember": ""
+       },
+       {
+         "__id": "page_addResonantStory",
+         "__type": "popup",
+         "sensemakingSessionRecord_resonantStory_type": null,
+         "sensemakingSessionRecord_resonantStory_reason": "",
+         "sensemakingSessionRecord_resonantStory_groups": "",
+         "sensemakingSessionRecord_resonantStory_notes": ""
        },
        {
          "__id": "page_newSensemakingSessionOutcome",
