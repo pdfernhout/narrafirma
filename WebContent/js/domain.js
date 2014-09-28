@@ -700,12 +700,15 @@ define([
         }
     }
     
+    /*
     for (var fieldName in data) {
         var fieldValue = data[fieldName];
         if (fieldValue instanceof Array) {
             data[fieldName] = new StatefulArray(fieldValue);
         }
     }
+    */
+    
     // data = getStateful(data);
     data = new Stateful(data);
     console.log("domain data", data);

@@ -206,16 +206,16 @@ define([
         console.log("insertGridTableBasic", id, dataStore);
         
         // Check if using dojo at to wrap a domain value
-        if (!dataStore || dataStore.declaredClass === "dojo.Stateful") {
+        if (!dataStore || dataStore instanceof Array) {
             // TODO: Need to set better info for fields and meanings to display and index on
             
             var list = [];
-            /*
-            if (dataStore.declaredClass === "dojo.Stateful") {
-                list = dataStore.get("value");
+           
+            if (dataStore instanceof Array) {
+                list = dataStore;
                 console.log("datastore list", dataStore, list);
             }
-            */
+            
                 
             dataStore = new Memory({
                 // data: storyList,
