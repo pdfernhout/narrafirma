@@ -286,11 +286,20 @@ var modelTypes = {
         textarea: 1,
         boolean: 1,
         select: 1,
-        grid: 1,
         imageUploader: 1,
         toggleButton: 1,
         checkBoxes: 1,
-        checkBoxesWithPull: 1
+        checkBoxesWithPull: 1,
+        excerptsList: 1,
+        grid: 1,
+        annotationsGrid: 1,
+        accumulatedItemsGrid: 1,
+        storyBrowser: 1,
+        storyThemer: 1,
+        graphBrowser: 1,
+        clusterSpace: 1,
+        quizScoreResult: 1,
+        report: 1,
 };
 
 function generateModel() {
@@ -310,7 +319,7 @@ function generateModel() {
             array.forEach(page.questions, function (question) {
                 if (modelTypes[question.type]) {
                     console.log("question", question.id, question.type);
-                    if (question.type === "grid") {
+                    if (question.type === "grid" || question.type === "annotationsGrid" || question.type === "accumulatedItemsGrid") {
                         model[question.id] = [];
                     } else if (question.type === "text" || question.type === "textarea") {
                         model[question.id] = "";

@@ -1155,7 +1155,7 @@ define(
                 "type": "textarea"
             },
             {
-                "id": "project_collectionSessionActivitiesList",
+                "id": "collectionSessionPlan_activitiesList",
                 "text": "Activities within story collection sessions can be simple instructions\nor complicated exercises (like the creation of timelines).",
                 "type": "grid",
                 "options": "page_addCollectionSessionActivity"
@@ -1790,82 +1790,82 @@ define(
                 "type": "textarea"
             },
             {
-                "id": "project_observationResultsList",
+                "id": "observation__observationResultsList",
                 "text": "These are the results you have selected to include in this observation.",
                 "shortText": "Results",
                 "type": "accumulatedItemsGrid",
                 "options": "collectedStoriesAfterCollection"
             },
             {
-                "id": "firstInterpretation_text",
+                "id": "observation_firstInterpretation_text",
                 "text": "Enter an interpretation of this observation.\nWhat does it mean?",
                 "shortText": "First interpretation",
                 "type": "textarea"
             },
             {
-                "id": "firstInterpretation_name",
+                "id": "observation_firstInterpretation_name",
                 "text": "Please give this interpretation a name (so you can refer to it later).",
                 "shortText": "First interpretation name",
                 "type": "text"
             },
             {
-                "id": "firstInterpretation_idea",
+                "id": "observation_firstInterpretation_idea",
                 "text": "If you like, you can record an idea that follows from this interpretation.",
                 "shortText": "First interpretation idea",
                 "type": "textarea"
             },
             {
-                "id": "firstInterpretation_excerptsList",
+                "id": "observation_firstInterpretation_excerptsList",
                 "text": "You can add excerpts to this interpretation.",
                 "shortText": "First interpretation excerpts",
                 "type": "grid",
                 "options": "page_selectExcerpt"
             },
             {
-                "id": "competingInterpretation_text",
+                "id": "observation_competingInterpretation_text",
                 "text": "Enter an interpretation that competes with the first one.\nWhat else could this pattern mean?",
                 "shortText": "Competing interpretation",
                 "type": "textarea"
             },
             {
-                "id": "competingInterpretation_name",
+                "id": "observation_competingInterpretation_name",
                 "text": "Please give this competing interpretation a name.",
                 "shortText": "Competing interpretation name",
                 "type": "text"
             },
             {
-                "id": "competingInterpretation_idea",
+                "id": "observation_competingInterpretation_idea",
                 "text": "Enter an idea that follows from your competing interpretation.",
                 "shortText": "Competing interpretation idea",
                 "type": "textarea"
             },
             {
-                "id": "competingInterpretation_excerptsList",
+                "id": "observation_competingInterpretation_excerptsList",
                 "text": "You can add excerpts to the competing interpretation.",
                 "shortText": "Competing interpretation excerpts",
                 "type": "grid",
                 "options": "page_selectExcerpt"
             },
             {
-                "id": "thirdInterpretation_text",
+                "id": "observation_thirdInterpretation_text",
                 "text": "If a third interpretation of the pattern comes to mind, enter it here.\nIs there anything else this pattern could mean?",
                 "shortText": "Third interpretation",
                 "type": "textarea"
             },
             {
-                "id": "thirdnterpretation_name",
+                "id": "observation_thirdInterpretation_name",
                 "text": "Please give this third interpretation a name.",
                 "shortText": "Third interpretation name",
                 "type": "text"
             },
             {
-                "id": "thirdInterpretation_idea",
+                "id": "observation_thirdInterpretation_idea",
                 "text": "Enter an idea that follows from your third interpretation.",
                 "shortText": "Third interpretation idea",
                 "type": "textarea"
             },
             {
-                "id": "thirdInterpretation_excerptsList",
+                "id": "observation_thirdInterpretation_excerptsList",
                 "text": "You can add excerpts to the third interpretation.",
                 "shortText": "Third interpretation excerpts",
                 "type": "grid",
@@ -3140,7 +3140,7 @@ define(
                 "options": "a story;a reference to something that came up in the project;a wish about the future;an opinion;a complaint;an action;other"
             },
             {
-                "id": "feedbackWho",
+                "id": "feedback_who",
                 "text": "Who said or did this?",
                 "shortText": "Source",
                 "type": "text"

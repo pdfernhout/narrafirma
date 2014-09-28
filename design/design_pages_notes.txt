@@ -369,7 +369,7 @@ Each plan can be used in multiple sessions.
 * Materials | What materials will this session require?  [collectionSessionPlan_materials|textarea]
 * Other | Enter other details about this session. [collectionSessionPlan_details|textarea]
 
-* Activities within story collection sessions can be simple instructions [project_collectionSessionActivitiesList|grid|page_addCollectionSessionActivity]
+* Activities within story collection sessions can be simple instructions [collectionSessionPlan_activitiesList|grid|page_addCollectionSessionActivity]
 or complicated exercises (like the creation of timelines).
 
 * Print session agenda [printCollectionSessionAgenda|button]
@@ -538,25 +538,25 @@ all stories have been entered.
 
 * Please give this observation a name. [observation_name|text]
 * Observation | Please describe this observation. [observation_text|textarea]
-* Results | These are the results you have selected to include in this observation. [project_observationResultsList|accumulatedItemsGrid|collectedStoriesAfterCollection]
+* Results | These are the results you have selected to include in this observation. [observation__observationResultsList|accumulatedItemsGrid|collectedStoriesAfterCollection]
 
-* First interpretation | Enter an interpretation of this observation. [firstInterpretation_text|textarea]
+* First interpretation | Enter an interpretation of this observation. [observation_firstInterpretation_text|textarea]
 What does it mean?
-* First interpretation name | Please give this interpretation a name (so you can refer to it later). [firstInterpretation_name|text]
-* First interpretation idea | If you like, you can record an idea that follows from this interpretation. [firstInterpretation_idea|textarea]
-* First interpretation excerpts | You can add excerpts to this interpretation. [firstInterpretation_excerptsList|grid|page_selectExcerpt]
+* First interpretation name | Please give this interpretation a name (so you can refer to it later). [observation_firstInterpretation_name|text]
+* First interpretation idea | If you like, you can record an idea that follows from this interpretation. [observation_firstInterpretation_idea|textarea]
+* First interpretation excerpts | You can add excerpts to this interpretation. [observation_firstInterpretation_excerptsList|grid|page_selectExcerpt]
 
-* Competing interpretation | Enter an interpretation that competes with the first one. [competingInterpretation_text|textarea]
+* Competing interpretation | Enter an interpretation that competes with the first one. [observation_competingInterpretation_text|textarea]
 What else could this pattern mean?
-* Competing interpretation name | Please give this competing interpretation a name. [competingInterpretation_name|text]
-* Competing interpretation idea | Enter an idea that follows from your competing interpretation. [competingInterpretation_idea|textarea]
-* Competing interpretation excerpts | You can add excerpts to the competing interpretation. [competingInterpretation_excerptsList|grid|page_selectExcerpt]
+* Competing interpretation name | Please give this competing interpretation a name. [observation_competingInterpretation_name|text]
+* Competing interpretation idea | Enter an idea that follows from your competing interpretation. [observation_competingInterpretation_idea|textarea]
+* Competing interpretation excerpts | You can add excerpts to the competing interpretation. [observation_competingInterpretation_excerptsList|grid|page_selectExcerpt]
 
-* Third interpretation | If a third interpretation of the pattern comes to mind, enter it here. [thirdInterpretation_text|textarea]
+* Third interpretation | If a third interpretation of the pattern comes to mind, enter it here. [observation_thirdInterpretation_text|textarea]
 Is there anything else this pattern could mean?
-* Third interpretation name | Please give this third interpretation a name. [thirdnterpretation_name|text]
-* Third interpretation idea | Enter an idea that follows from your third interpretation. [thirdInterpretation_idea|textarea]
-* Third interpretation excerpts | You can add excerpts to the third interpretation. [thirdInterpretation_excerptsList|grid|page_selectExcerpt]
+* Third interpretation name | Please give this third interpretation a name. [observation_thirdInterpretation_name|text]
+* Third interpretation idea | Enter an idea that follows from your third interpretation. [observation_thirdInterpretation_idea|textarea]
+* Third interpretation excerpts | You can add excerpts to the third interpretation. [observation_thirdInterpretation_excerptsList|grid|page_selectExcerpt]
 
 ## Add excerpt to interpretation [page_selectExcerpt|popup]
 
@@ -873,7 +873,7 @@ the project to someone, and help people with requests about the project.
 * Feedback | What did someone say or do? [feedback_text|textarea]
 * Name | Please give this piece of feedback a name. [feedback_name|text]
 * Type | What type of feedback is this? [feedback_type|select|a story;a reference to something that came up in the project;a wish about the future;an opinion;a complaint;an action;other]
-* Source | Who said or did this? [feedbackWho|text]
+* Source | Who said or did this? [feedback_who|text]
 * Prompt | What did you say or do (if anything) that led to this feedback? [feedback_prompt|text]
 * Notes | Please enter any other notes you have about this feedback. [feedback_notes|textarea]
 

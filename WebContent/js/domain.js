@@ -266,6 +266,7 @@ define([
         "assessment_condensedStories": null,
         "assessment_intermingling": null,
         "assessment_culture": null,
+        "assessment_result": null,
         "assessment_notes": "",
         "project_PNIquestions_goal_final": "",
         "project_PNIquestions_relationships_final": "",
@@ -274,6 +275,7 @@ define([
         "project_PNIquestions_scope_final": "",
         "project_PNIquestions_emphasis_final": "",
         "project_synopsis": "",
+        "planningReport": null,
         "project_generalNotes_collectionDesign": "",
         "project_elicitingQuestionsList": [],
         "project_storyQuestionsList": [],
@@ -284,23 +286,33 @@ define([
         "questionForm_endText": "",
         "willBeUsingStoryCollectionSessions": null,
         "project_collectionSessionPlansList": [],
+        "collectionDesignReport": null,
         "project_generalNotes_collectionProcess": "",
         "webStoryCollectionEnabled": null,
+        "collectedStoriesDuringCollection": null,
         "project_collectionSessionRecordsList": [],
+        "collectionProcessReport": null,
         "project_generalNotes_catalysis": "",
+        "collectedStoriesAfterCollection": null,
+        "themeStories": null,
+        "graphBrowserDisplay": null,
         "reviewTrends_statTests": null,
         "reviewTrends_minSubsetSize": null,
         "reviewTrends_significanceThreshold": null,
         "reviewTrends_trendResults": null,
         "project_savedExcerptsList": [],
         "project_observationsDisplayList": [],
+        "clusterInterpretations": null,
         "project_perspectivesList": [],
+        "catalysisReport": null,
         "project_generalNotes_sensemaking": "",
         "project_sensemakingSessionPlansList": [],
         "project_sensemakingSessionRecordsList": [],
+        "sensemakingReport": null,
         "project_generalNotes_intervention": "",
         "project_interventionPlansList": [],
         "project_interventionRecordsList": [],
+        "interventionReport": null,
         "project_generalNotes_return": "",
         "project_feedbackItemsList": [],
         "feedback_generalNotes": "",
@@ -314,7 +326,9 @@ define([
         "project_reflect_newIdeas": "",
         "project_reflect_notes": "",
         "project_presentationElementsList": [],
-        "project_returnRequestsList": []
+        "project_returnRequestsList": [],
+        "returnReport": null,
+        "projectReport": null
     };
     
 
@@ -410,7 +424,7 @@ define([
          "collectionSessionPlan_groups": "",
          "collectionSessionPlan_materials": "",
          "collectionSessionPlan_details": "",
-         "project_collectionSessionActivitiesList": []
+         "collectionSessionPlan_activitiesList": []
        },
        {
          "__id": "page_addCollectionSessionActivity",
@@ -462,26 +476,29 @@ define([
          "__type": "popup",
          "observation_name": "",
          "observation_text": "",
-         "firstInterpretation_text": "",
-         "firstInterpretation_name": "",
-         "firstInterpretation_idea": "",
-         "firstInterpretation_excerptsList": [],
-         "competingInterpretation_text": "",
-         "competingInterpretation_name": "",
-         "competingInterpretation_idea": "",
-         "competingInterpretation_excerptsList": [],
-         "thirdInterpretation_text": "",
-         "thirdnterpretation_name": "",
-         "thirdInterpretation_idea": "",
-         "thirdInterpretation_excerptsList": []
+         "observation__observationResultsList": null,
+         "observation_firstInterpretation_text": "",
+         "observation_firstInterpretation_name": "",
+         "observation_firstInterpretation_idea": "",
+         "observation_firstInterpretation_excerptsList": [],
+         "observation_competingInterpretation_text": "",
+         "observation_competingInterpretation_name": "",
+         "observation_competingInterpretation_idea": "",
+         "observation_competingInterpretation_excerptsList": [],
+         "observation_thirdInterpretation_text": "",
+         "observation_thirdInterpretation_name": "",
+         "observation_thirdInterpretation_idea": "",
+         "observation_thirdInterpretation_excerptsList": []
        },
        {
          "__id": "page_selectExcerpt",
-         "__type": "popup"
+         "__type": "popup",
+         "excerptsListDisplay": null
        },
        {
          "__id": "page_addToExcerpt",
-         "__type": "popup"
+         "__type": "popup",
+         "excerptsListChoose": null
        },
        {
          "__id": "page_createNewExcerpt",
@@ -494,7 +511,10 @@ define([
          "__id": "page_addPerspective",
          "__type": "popup",
          "perspective_name": "",
-         "perspective_description": ""
+         "perspective_description": "",
+         "perspective_linkedResultsList": null,
+         "perspective_linkedExcerptsList": null,
+         "perspective_linkedInterpretationsList": null
        },
        {
          "__id": "page_annotateResultForPerspective",
@@ -644,7 +664,7 @@ define([
          "feedback_text": "",
          "feedback_name": "",
          "feedback_type": null,
-         "feedbackWho": "",
+         "feedback_who": "",
          "feedback_prompt": "",
          "feedback_notes": ""
        },
