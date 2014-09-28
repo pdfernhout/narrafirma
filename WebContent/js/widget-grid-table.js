@@ -46,12 +46,14 @@ define([
     // TODO: Maybe rethink how unique item IDs work? Setting to start at 1000 becaues of test data created in story browser
     var uniqueItemIDCounter = 1000;
     
-    function addButtonClicked(grid, store, popupPageDefinition, event) {
+    function addButtonClicked(grid, store, popupPageDefinition, itemContentPane, event) {
         console.log("add button pressed");
         var dialog;
         
         var form = new Form();
         form.set("style", "width: 800px; height 800px; overflow: auto;");
+        
+        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.5em solid red; display: block");
         
         addPage.addPageContents(form, popupPageDefinition);
         
@@ -59,7 +61,7 @@ define([
         
         widgets.newButton("list_dialog_ok_" + grid.id, "OK", form, function() {
             console.log("OK");
-            dialog.hide();
+            // itemContentPane.hide();
             // dialogOK(question, questionEditorDiv, form);
 
             var uniqueItemID = ++uniqueItemIDCounter;
@@ -78,17 +80,24 @@ define([
             store.put(newItem);
             grid.refresh();
             
+            itemContentPane.set("style", "display: none");
+            
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
             form.destroyRecursive();
+            
         });
         
         widgets.newButton("list_dialog_cancel_" + grid.id, "Cancel", form, function() {
             console.log("Cancel");
-            dialog.hide();
+            
+            // itemContentPane.hide();
+            itemContentPane.set("style", "display: none");
+            
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
             form.destroyRecursive();
         });
 
+        /*
         dialog = new Dialog({
             // TODO: Translate text
             // TODO: Make text specific to type of item
@@ -99,19 +108,25 @@ define([
                 form.destroyRecursive();
             }
         });
+        */
+        
+        itemContentPane.addChild(form);
         
         form.startup();
-        dialog.startup();
-        dialog.show();
+        //dialog.startup();
+        //dialog.show();
+        //itemContentPane.show();
     }
     
     // TODO: Button should only be enabled if a selection
-    function viewButtonClicked(grid, store, popupPageDefinition, event) {
+    function viewButtonClicked(grid, store, popupPageDefinition, itemContentPane, event) {
         console.log("view button pressed");
         var dialog;
         
         var form = new Form(); 
         form.set("style", "width: 800px; height 800px; overflow: auto;");
+        
+        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.5em solid red; display: block");
         
         addPage.addPageContents(form, popupPageDefinition);
 
@@ -148,12 +163,15 @@ define([
         
         widgets.newButton("list_dialog_ok", "Done", form, function() {
             console.log("Done");
-            dialog.hide();
-
+            
+            // dialog.hide();
+            itemContentPane.set("style", "display: none");
+            
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
             form.destroyRecursive();
         });
 
+        /*
         dialog = new Dialog({
             // TODO: Translate text
             // TODO: Make text specific to type of item
@@ -165,10 +183,13 @@ define([
                 form.destroyRecursive();
             }
         });
+        */
+        
+        itemContentPane.addChild(form);
         
         form.startup();
-        dialog.startup();
-        dialog.show();
+        //dialog.startup();
+        //dialog.show();
     }
     
     function insertGridTableBasic(id, pagePane, popupPageDefinition, dataStore, includeAddButton) {
@@ -200,6 +221,18 @@ define([
         }
         
         var pane = listContentPane.containerNode;
+        
+        var itemContentPane = new ContentPane({
+        });
+        
+        if (!pagePane.addChild) {
+            // console.log("trouble -- does not have addChild method!", pagePane);
+            pagePane.domNode.appendChild(itemContentPane.domNode);
+        } else {
+            pagePane.addChild(itemContentPane);
+        } 
+        
+        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.5em solid red; display: none");
         
         var columns = {};
         
@@ -235,7 +268,7 @@ define([
         // See: http://dojotoolkit.org/reference-guide/1.7/dojo/partial.html
         // TODO: Translate text of label
         var viewButtonID = id + "view";
-        var viewButton = widgets.newButton(viewButtonID, "View", pane, lang.partial(viewButtonClicked, grid, dataStore, popupPageDefinition));
+        var viewButton = widgets.newButton(viewButtonID, "View", pane, lang.partial(viewButtonClicked, grid, dataStore, popupPageDefinition, itemContentPane));
 
         var selected = 0;
         viewButton.set("disabled", true);
@@ -251,7 +284,7 @@ define([
         });
         
         if (includeAddButton) {
-            var addButton = widgets.newButton(id + "add", "Add", pane, lang.partial(addButtonClicked, grid, dataStore, popupPageDefinition));
+            var addButton = widgets.newButton(id + "add", "Add", pane, lang.partial(addButtonClicked, grid, dataStore, popupPageDefinition, itemContentPane));
         }
         
         listContentPane.startup();
