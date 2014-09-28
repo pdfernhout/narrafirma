@@ -694,7 +694,7 @@ define(
                 "type": "label"
             },
             {
-                "id": "project_PNIquestions_copyDrafts",
+                "id": "project_PNIquestions_copyDraftsButton",
                 "text": "Copy the original draft versions into the answers below",
                 "type": "button"
             },
@@ -1161,7 +1161,7 @@ define(
                 "options": "page_addCollectionSessionActivity"
             },
             {
-                "id": "printCollectionSessionAgenda",
+                "id": "collectionSessionPlan_printCollectionSessionAgendaButton",
                 "text": "Print session agenda",
                 "type": "button"
             }
@@ -1311,12 +1311,12 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "printStoryFormIntroduction",
-                "text": "Here you can print your story form for distribution to participants.",
+                "id": "printQuestionsForm_introduction",
+                "text": "Here you can print your story questions form for distribution to participants.",
                 "type": "label"
             },
             {
-                "id": "printStoryForm",
+                "id": "printQuestionsForm_printFormButton",
                 "text": "Print story form",
                 "type": "button"
             }
@@ -1334,14 +1334,14 @@ define(
                 "type": "label"
             },
             {
-                "id": "webStoryCollectionEnabled",
+                "id": "webStoryCollection_enableDisableButton",
                 "text": "Enable web story collection:",
                 "shortText": "Enable web story collection",
                 "type": "toggleButton"
             },
             {
-                "id": "copyStoryFormURLDuringStart",
-                "text": "Copy story form web link",
+                "id": "webStoryCollection_copyStoryFormURLButton",
+                "text": "Copy story form web URL link",
                 "type": "button"
             }
         ]
@@ -1391,16 +1391,16 @@ define(
                 "type": "label"
             },
             {
-                "id": "disableWebStoryFormAfterStoryCollection",
+                "id": "storyCollection_disableWebStoryFormAfterStoryCollectionButton",
                 "text": "Disable web story collection",
                 "shortText": "Disable web story collection",
                 "type": "button"
             },
             {
-                "id": "webStoryCollectionEnabled_tracker2",
+                "id": "storyCollection_enabledTracker",
                 "text": "Web story collection enabled:",
                 "type": "questionAnswer",
-                "options": "webStoryCollectionEnabled"
+                "options": "webStoryCollection_enableDisableButton"
             }
         ]
     },
@@ -1749,7 +1749,7 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "addObservationsLabel",
+                "id": "addToObservation_introduction",
                 "text": "Note: You should not add any observations that depend on patterns among stories until after\nall stories have been entered.",
                 "type": "label"
             },
@@ -1759,12 +1759,12 @@ define(
                 "type": "observationsList"
             },
             {
-                "id": "addResultToExistingObservation",
+                "id": "addToObservation_addResultToExistingObservationButton",
                 "text": "Add result to selected observation",
                 "type": "button"
             },
             {
-                "id": "createNewObservationWithResult",
+                "id": "addToObservation_createNewObservationWithResultButton",
                 "text": "Create new observation with this result",
                 "type": "button",
                 "options": "page_createNewObservation"
@@ -1881,12 +1881,12 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "excerptsListDisplay",
+                "id": "selectExcerpt_excerptsListDisplay",
                 "text": "Collected excerpts",
                 "type": "excerptsList"
             },
             {
-                "id": "addExcerptToInterpretation",
+                "id": "selectExcerpt_addExcerptToInterpretationButton",
                 "text": "Add selected excerpt to interpretation",
                 "type": "button"
             }
@@ -1900,17 +1900,17 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "excerptsListChoose",
+                "id": "addToExcerpt_excerptsListChoose",
                 "text": "Choose an excerpt from this list to which to add the selected text, or create a new excerpt.",
                 "type": "excerptsList"
             },
             {
-                "id": "addTextToExistingExcerpt",
+                "id": "addToExcerpt_addTextToExistingExcerptButton",
                 "text": "Add text to selected excerpt",
                 "type": "button"
             },
             {
-                "id": "createNewExcerptWithText",
+                "id": "addToExcerpt_createNewExcerptWithTextButton",
                 "text": "Create new excerpt with this text",
                 "type": "button",
                 "options": "page_createNewExcerpt"
@@ -2256,7 +2256,7 @@ define(
                 "options": "page_addSensemakingSessionActivity"
             },
             {
-                "id": "printSensemakingSessionAgenda",
+                "id": "sensemakingSessionPlan_printSensemakingSessionAgendaButton",
                 "text": "Print session agenda",
                 "type": "button"
             }
@@ -3225,12 +3225,12 @@ define(
                 "options": "page_addPresentationElement"
             },
             {
-                "id": "presentationLabel",
+                "id": "projectPresentation_presentationLabel",
                 "text": "Now you can export your outline, open it in your word processor, and add material to it\nfrom any of the stage reports (or the final project report).",
                 "type": "label"
             },
             {
-                "id": "exportPresentationOutline",
+                "id": "projectPresentation_exportPresentationOutlineButton",
                 "text": "Export this outline",
                 "type": "button"
             }

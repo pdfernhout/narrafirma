@@ -250,7 +250,7 @@ in the places where they normally gather.
 
 * Please review and improve your draft answers based on your consideration of project aspects and your project stories. [improvePlanningDrafts|label]
 
-* Copy the original draft versions into the answers below [project_PNIquestions_copyDrafts|button]
+* Copy the original draft versions into the answers below [project_PNIquestions_copyDraftsButton|button]
 
 * What is the goal of the project? Why are you doing it? [project_PNIquestions_goal_final|textarea|planning_goal]
 * What relationships are important to the project? [project_PNIquestions_relationships_final|textarea|planning_relationships]
@@ -372,7 +372,7 @@ Each plan can be used in multiple sessions.
 * Activities within story collection sessions can be simple instructions [collectionSessionPlan_activitiesList|grid|page_addCollectionSessionActivity]
 or complicated exercises (like the creation of timelines).
 
-* Print session agenda [printCollectionSessionAgenda|button]
+* Print session agenda [collectionSessionPlan_printCollectionSessionAgendaButton|button]
 
 ## Add story collection session activity [page_addCollectionSessionActivity|popup]
 
@@ -408,17 +408,17 @@ or complicated exercises (like the creation of timelines).
 
 ## Print question forms [page_finalizeQuestionForms]
 
-* Here you can print your story form for distribution to participants. [printStoryFormIntroduction|label]
+* Here you can print your story questions form for distribution to participants. [printQuestionsForm_introduction|label]
 
-* Print story form [printStoryForm|button]
+* Print story form [printQuestionsForm_printFormButton|button]
 
 ## Start story collection [page_startStoryCollection]
 
 * If you are doing story collection over the internet, click this button to make the web form "live" and able to be used by people other than yourself.[startCollectionLabel|label]
 
-* Enable web story collection | Enable web story collection: [webStoryCollectionEnabled|toggleButton]
+* Enable web story collection | Enable web story collection: [webStoryCollection_enableDisableButton|toggleButton]
 
-* Copy story form web link [copyStoryFormURLDuringStart|button]
+* Copy story form web URL link [webStoryCollection_copyStoryFormURLButton|button]
 
 ## Enter stories [page_enterStories]
 
@@ -433,9 +433,9 @@ or complicated exercises (like the creation of timelines).
 
 * If you are doing story collection over the internet, click this button to make the web form unavailable (to anyone but yourself). You can re-enable story collection later by going back to a previous page. [stopCollectionLabel|label]
 
-* Disable web story collection | Disable web story collection [disableWebStoryFormAfterStoryCollection|button]
+* Disable web story collection | Disable web story collection [storyCollection_disableWebStoryFormAfterStoryCollectionButton|button]
 
-* Web story collection enabled: [webStoryCollectionEnabled_tracker2|questionAnswer|webStoryCollectionEnabled]
+* Web story collection enabled: [storyCollection_enabledTracker|questionAnswer|webStoryCollection_enableDisableButton]
 
 ## Enter story collection session records [page_enterCollectionSessionRecords]
 
@@ -526,13 +526,13 @@ and pepare materials for people to use in sensemaking.
 
 ## Add to observation [page_addToObservation|popup]
 
-* Note: You should not add any observations that depend on patterns among stories until after [addObservationsLabel|label]
+* Note: You should not add any observations that depend on patterns among stories until after [addToObservation_introduction|label]
 all stories have been entered.
 
 * Choose an observation from this list to which to add the selected result, or create a new observation. [observationsListChoose|observationsList]
 
-* Add result to selected observation [addResultToExistingObservation|button]
-* Create new observation with this result [createNewObservationWithResult|button|page_createNewObservation]
+* Add result to selected observation [addToObservation_addResultToExistingObservationButton|button]
+* Create new observation with this result [addToObservation_createNewObservationWithResultButton|button|page_createNewObservation]
 
 ## Create new observation [page_createOrEditObservation|popup]
 
@@ -560,16 +560,16 @@ Is there anything else this pattern could mean?
 
 ## Add excerpt to interpretation [page_selectExcerpt|popup]
 
-* Collected excerpts [excerptsListDisplay|excerptsList]
+* Collected excerpts [selectExcerpt_excerptsListDisplay|excerptsList]
 
-* Add selected excerpt to interpretation [addExcerptToInterpretation|button]
+* Add selected excerpt to interpretation [selectExcerpt_addExcerptToInterpretationButton|button]
 
 ## Add text to excerpt [page_addToExcerpt|popup]
 
-* Choose an excerpt from this list to which to add the selected text, or create a new excerpt. [excerptsListChoose|excerptsList]
+* Choose an excerpt from this list to which to add the selected text, or create a new excerpt. [addToExcerpt_excerptsListChoose|excerptsList]
 
-* Add text to selected excerpt [addTextToExistingExcerpt|button]
-* Create new excerpt with this text [createNewExcerptWithText|button|page_createNewExcerpt]
+* Add text to selected excerpt [addToExcerpt_addTextToExistingExcerptButton|button]
+* Create new excerpt with this text [addToExcerpt_createNewExcerptWithTextButton|button|page_createNewExcerpt]
 
 ## Create new excerpt [page_createNewExcerpt|popup]
 
@@ -661,7 +661,7 @@ on the browse, graph, and review pages.
 * Activities within sensemaking sessions can be simple instructions [sensemakingSessionPlan_activitiesList|grid|page_addSensemakingSessionActivity]
 or complicated exercises (like the construction of composite stories).
 
-* Print session agenda [printSensemakingSessionAgenda|button]
+* Print session agenda [sensemakingSessionPlan_printSensemakingSessionAgendaButton|button]
 
 ## Add sensemaking session activity [page_addSensemakingSessionActivity|popup]
 
@@ -894,10 +894,10 @@ the project to someone, and help people with requests about the project.
 * You can build your presentation about your project from elements [project_presentationElementsList|grid|page_addPresentationElement]
 (or points of discussion) you want to tell people about.
 
-* Now you can export your outline, open it in your word processor, and add material to it [presentationLabel|label]
+* Now you can export your outline, open it in your word processor, and add material to it [projectPresentation_presentationLabel|label]
 from any of the stage reports (or the final project report).
 
-* Export this outline [exportPresentationOutline|button]
+* Export this outline [projectPresentation_exportPresentationOutlineButton|button]
 
 ## Add element to project presentation outline [page_addPresentationElement|popup]
 
