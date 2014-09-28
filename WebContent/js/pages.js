@@ -46,7 +46,7 @@ define(
         "isHeader": true,
         "questions": [
             {
-                "id": "projectPlanningLabel",
+                "id": "project_projectPlanningLabel",
                 "text": "In the planning phase you will make decisions about how your project will proceed.\nYou will think about your goals, your topic, your participants, and opportunities and dangers you might encounter during the project.",
                 "type": "label"
             },
@@ -756,7 +756,7 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "planningReportLabel",
+                "id": "project_readPlanningReportIntroductionLabel",
                 "text": "This report shows all of the information entered in the pages grouped under \"Planning.\"",
                 "type": "label"
             },
@@ -805,7 +805,7 @@ define(
         "isHeader": true,
         "questions": [
             {
-                "id": "collectionDesignStartLabel",
+                "id": "project_collectionDesignStartLabel",
                 "text": "In the collection design phase, you will decide on story collection venues, create some story eliciting and\nstory interpretation questions, design your story collection form, and plan any story collection sessions you want to hold.",
                 "type": "label"
             },
@@ -1244,7 +1244,7 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "collectionDesignReportLabel",
+                "id": "project_readCollectionDesignReportIntroductionLabel",
                 "text": "This report shows all of the information entered in the pages grouped under \"Collection design.\"",
                 "type": "label"
             },
@@ -1329,7 +1329,7 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "startCollectionLabel",
+                "id": "webStoryCollection_startCollectionLabel",
                 "text": "If you are doing story collection over the internet, click this button to make the web form \"live\" and able to be used by people other than yourself.",
                 "type": "label"
             },
@@ -1386,18 +1386,18 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "stopCollectionLabel",
+                "id": "webStoryCollection_stopCollectionLabel",
                 "text": "If you are doing story collection over the internet, click this button to make the web form unavailable (to anyone but yourself). You can re-enable story collection later by going back to a previous page.",
                 "type": "label"
             },
             {
-                "id": "storyCollection_disableWebStoryFormAfterStoryCollectionButton",
+                "id": "webStoryCollection_disableWebStoryFormAfterStoryCollectionButton",
                 "text": "Disable web story collection",
                 "shortText": "Disable web story collection",
                 "type": "button"
             },
             {
-                "id": "storyCollection_enabledTracker",
+                "id": "webStoryCollection_enabledTracker",
                 "text": "Web story collection enabled:",
                 "type": "questionAnswer",
                 "options": "webStoryCollection_enableDisableButton"
@@ -1411,7 +1411,7 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "collectionRecordsLabel",
+                "id": "project_collectionRecordsIntroductionLabel",
                 "text": "Note: If you did not hold any story collection sessions, you can skip this page.",
                 "type": "label"
             },
@@ -1586,12 +1586,12 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "collectionProcessReportLabel",
+                "id": "project_collectionProcessReportLabel",
                 "text": "This report shows all of the information entered in the pages grouped under \"Collection process.\"",
                 "type": "label"
             },
             {
-                "id": "collectionProcessReport",
+                "id": "project_collectionProcessReport",
                 "text": "Collection process report",
                 "type": "report",
                 "options": "collectionProcess"
@@ -1976,7 +1976,7 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "clusterInterpretationsLabel",
+                "id": "clusterInterpretations_introductionLabel",
                 "text": "Note: Do not cluster your interpretations unless you are sure you have finished collecting them.",
                 "type": "label"
             },
@@ -1993,7 +1993,7 @@ define(
                 "options": null
             },
             {
-                "id": "clusterInterpretations",
+                "id": "clusterInterpretations_clusterSpace",
                 "text": "Cluster interpretations into perspectives",
                 "type": "clusterSpace",
                 "options": "interpretations"
@@ -2108,7 +2108,7 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "catalysisReportLabel",
+                "id": "catalysisReport_introductionLabel",
                 "text": "This report shows all of the information entered in the pages grouped under \"Catalysis.\"",
                 "type": "label"
             },
