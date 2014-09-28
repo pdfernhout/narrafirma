@@ -69,21 +69,30 @@ define([
             
             array.forEach(popupPageDefinition.questions, function (question) {
                 // TODO: This may not work for more complex question types or custom widgets?
-                var widget = registry.byId(question.id);
-                if (widget) {
-                    newItem[question.id] = widget.get("value");
-                } else {
-                    console.log("ERROR: could not find widget for:", question.id);
+                console.log("question type", question, question.type);
+                if (question.type !== "label" && question.type !== "header") {
+                    var widget = registry.byId(question.id);
+                    if (widget) {
+                        newItem[question.id] = widget.get("value");
+                    } else {
+                        console.log("ERROR: could not find widget for:", question.id);
+                    }
                 }
             });
             
+            console.log("got data for add form", store, newItem);
+            
             store.put(newItem);
+            
+            console.log("put store for add form");
+            
             grid.refresh();
             
             itemContentPane.set("style", "display: none");
             
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
             form.destroyRecursive();
+            console.log("shut down add form");
             
         });
         
@@ -194,13 +203,18 @@ define([
     
     function insertGridTableBasic(id, pagePane, popupPageDefinition, dataStore, includeAddButton) {
         // Grid with list of objects
-        console.log("insertGridTableBasic", id);
+        console.log("insertGridTableBasic", id, dataStore);
         
-        if (!dataStore) {
+        // Check if using dojo at to wrap a domain value
+        if (!dataStore || dataStore.declaredClass === "dojo.Stateful") {
             // TODO: Need to set better info for fields and meanings to display and index on
             
             var list = [];
-            
+            if (dataStore.declaredClass === "dojo.Stateful") {
+                list = dataStore.get("value");
+                console.log("datastore list", dataStore, list);
+            }
+                
             dataStore = new Memory({
                 // data: storyList,
                 data: list,
@@ -309,7 +323,7 @@ define([
         // TODO: Need to translate
         var label = widgets.newLabel(pseudoQuestion.id + "label", pseudoQuestion.text, pagePane.domNode);
         
-        return insertGridTableBasic(pseudoQuestion.id, pagePane, popupPageDefinition, null, true);
+        return insertGridTableBasic(pseudoQuestion.id, pagePane, popupPageDefinition, pseudoQuestion.value, true);
     }
 
     return {

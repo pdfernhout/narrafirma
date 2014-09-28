@@ -247,7 +247,7 @@ require([
     
     // Make all of the application pages selectable from the dropdown list and back/next buttons and put them in a TabContainer
     function createLayout() {
-        // console.log("createLayout start");
+        console.log("createLayout start");
         var pageSelectOptions = [];
         
         var questionIndex = 0;
@@ -286,11 +286,22 @@ require([
             // Cleanup options
             // TODO: Ensure options get translated
             array.forEach(page.questions, function(question) {
-                 if ((question.type === "select" || question.type === "checkBoxes") && question.options.indexOf(";") != -1) {
-                   // console.log("replacing select options", question.options);
-                   question.options = question.options.replace(/;/g, "\n");
-                   // console.log("result of replacement", question.options);
-               }
+                if ((question.type === "select" || question.type === "checkBoxes") && question.options.indexOf(";") != -1) {
+                    // console.log("replacing select options", question.options);
+                    question.options = question.options.replace(/;/g, "\n");
+                    // console.log("result of replacement", question.options);
+                }
+                // Hook up question to domain for top level pages
+                if (!page.type) {
+                    // TODO: Other types of grid
+                    if (question.type !== "grid") {
+                        question.value = at(domain.data, question.id);
+                    } else {
+                        // question.value = at(domain.data, question.id);
+                        question.value = domain.data[question.id];
+                    }
+                    console.log("question.value set to", question.id, question.value);
+                }
             });
             
             domain.pageDefinitions[page.id] = page;      
