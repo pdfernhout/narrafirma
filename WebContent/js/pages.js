@@ -1311,8 +1311,9 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "FIXME_411",
-                "text": "Here you can print your story form for distribution to participants."
+                "id": "printStoryFormIntroduction",
+                "text": "Here you can print your story form for distribution to participants.",
+                "type": "label"
             },
             {
                 "id": "printStoryForm",

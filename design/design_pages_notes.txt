@@ -408,7 +408,7 @@ or complicated exercises (like the creation of timelines).
 
 ## Print question forms [page_finalizeQuestionForms]
 
-* Here you can print your story form for distribution to participants.
+* Here you can print your story form for distribution to participants. [printStoryFormIntroduction|label]
 
 * Print story form [printStoryForm|button]
 
