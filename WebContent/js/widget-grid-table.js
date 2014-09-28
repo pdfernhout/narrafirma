@@ -210,10 +210,12 @@ define([
             // TODO: Need to set better info for fields and meanings to display and index on
             
             var list = [];
+            /*
             if (dataStore.declaredClass === "dojo.Stateful") {
                 list = dataStore.get("value");
                 console.log("datastore list", dataStore, list);
             }
+            */
                 
             dataStore = new Memory({
                 // data: storyList,
