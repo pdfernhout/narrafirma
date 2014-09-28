@@ -52,7 +52,6 @@ Implement copyStoryFormURLDuringStart in domain buttonClicked
 Implement exportPresentationOutline in domain buttonClicked
 Implement showHideCollectedStories in domain buttonClicked
 
-Test dynamic pages vs. inline page sections for grid items
 Dynamic pages for participant group aspects
 Dynamic pages for collection session plans
 Dynamic pages for collection session records
@@ -120,12 +119,17 @@ DONE Support checkBoxes
 DONE Fix boolean so it can get disabled and value gets set (also fixed radio buttons which uses same widget)
 DONE Move question creation code from main.js into question_editor.js and generalize so popups can have special types of components (buttons, grids, storyLists)
 DONE Support a button does something when clicked
+DONE Test dynamic pages vs. inline page sections for grid items
 
 ======= CYNTHIA
 
 Write up sample PNI Workbook product offering descriptions for review (Cynthia)
 Create templates (Cynthia)
 Create help (Cynthia)
+
+Every question must have short name
+Story collection sessions -- change question to label
+Change "Sensemaking sessions" and all other too short labels for lists near end of file
 
 NOT DOING Change dashboards to a special widget with list of pages in options [id|dashboard|page1;page2]
 DONE Change all items that start with "list_"
@@ -134,9 +138,6 @@ DONE Fix all things that say "These are the project stories you have told so far
 DONE Templates for activities
 DONE Figure out what to do with finalize your questions
 DONE Intro for reports
-Every question must have short name
-Story collection sessions -- change question to label
-Change "Sensemaking sessions" and all other too short labels for lists near end of file
 
 ==== Later:
 
