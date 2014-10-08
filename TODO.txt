@@ -1,5 +1,23 @@
 ==== PNI Workbook TODO list:
 
+PRIORITY:
+
+- questionsTable working again
+- recommendations table working
+- view and add buttons after grid, nested box appears under grid
+- make unsupported functionality look better (with explanations of what it will do)
+- make quizScoreResult work
+- make whole planning phase work
+- make "copy draft answers" in planning phase work
+- don't display commented lines from design file
+
+if time
+- make templates work
+- print story form
+- one bar graph in graph browser
+- make report work
+- styling of nested box
+
 Main Dashboard
 
 Help window displaying HTML instead of alert
@@ -7,15 +25,9 @@ Help window displaying HTML instead of alert
 Save data as move from page to page
 Restore data when load page
 
-Create new pages when add new participant groups
-
 Some sort of continue button at bottom of page to progress through steps
-Add select at bottom of each page -- this page has been: intentionally skipped;partially completed;completed
 Validation of page data as progress through a step
-Disabled or hidden tabs which are enabled as progress
-Tabs created for new pages as add participants or session plans or session records
 
-Participant questions need to have options and ids and translations
 Way to retrieve data about project participant groups
 Internationalization of strings related to page of questions on project participant groups
 
@@ -61,6 +73,8 @@ Dynamic pages for sensemaking session records
 Dynamic pages for project outcomes
 Dynamic pages for intervention plans?
 Dynamic pages for intervention records?
+Disabled or hidden tabs which are enabled as progress
+Tabs created for new pages as add participants or session plans or session records
 
 Venues table needs fixing -- one for each participant group
 Popup for add item  -- should have better label in title as to what type of thing is added
@@ -120,6 +134,12 @@ DONE Fix boolean so it can get disabled and value gets set (also fixed radio but
 DONE Move question creation code from main.js into question_editor.js and generalize so popups can have special types of components (buttons, grids, storyLists)
 DONE Support a button does something when clicked
 DONE Test dynamic pages vs. inline page sections for grid items
+NOT DOING Create new pages when add new participant groups
+DONE Add select at bottom of each page -- this page has been: intentionally skipped;partially completed;completed
+DONE Participant questions need to have options and ids and translations
+
+
+
 
 ======= CYNTHIA
 
