@@ -322,6 +322,7 @@ You need at least one, and preferably three to five questions people can pick fr
 * Question | Enter a question to ask people about their stories. [storyQuestion_text|textarea]
 * Type | What type of question is this? [storyQuestion_type|select|boolean;label;header;checkbox;checkBoxes;text;textarea;select;radio;slider]
 * Short name | Enter a short name we can use to refer to the question. (This name must be unique to the project.) [storyQuestion_shortName|text]
+* Options | If your question has choices, enter them here (one per line). [storyQuestion_options|textarea]
 * Help | If you want to provide help to people answering the question, enter it here. [storyQuestion_help|textarea]
 
 * Or choose a question from this list. [templates_storyQuestions|templateList|storyQuestions]
@@ -337,6 +338,7 @@ You need at least one, and preferably three to five questions people can pick fr
 * Question | Enter a question to ask people about themselves. [participantQuestion_text|textarea]
 * Type | What type of question is this? [participantQuestion_type|select|boolean;label;header;checkbox;checkBoxes;text;textarea;select;radio;slider]
 * Short name | Enter a short name we can use to refer to the question. (This name must be unique to the project.) [participantQuestion_shortName|text]
+* Options | If your question has choices, enter them here (one per line). [participantQuestion_options|textarea]
 * Help | If you want to provide help to people answering the question, enter it here. [participantQuestion_help|textarea]
 
 * Or choose a question from this list. [templates_participantQuestions|templateList|participantQuestions]
