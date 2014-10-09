@@ -121,13 +121,13 @@ require([
             // Shorten width so grid scroll bar shows up not clipped
             // Also, looks like nested ContentPanes tend to walk off the right side of the page for some reason
             style: "width: 94%",
-            display: "none",
+            display: "none"
        });
         
        // console.log("about to place pane", id);
-        // Dojo seems to require these pages be in the visual hierarchy before some components like grid that are added to them are have startUp called.
-        // Otherwise the grid header is not sized correctly and will be overvritten by data
-        // This is as opposed to what one might think would reduce resizing and redrawing by adding the page only after components are added
+       // Dojo seems to require these pages be in the visual hierarchy before some components like grid that are added to them are have startUp called.
+       // Otherwise the grid header is not sized correctly and will be overvritten by data
+       // This is as opposed to what one might think would reduce resizing and redrawing by adding the page only after components are added
        pagePane.placeAt("pageDiv");
         
        // console.log("Made content pane", id);
@@ -239,7 +239,7 @@ require([
     function newSpecialSelect(id, options, addToDiv) {
         var select = new Select({
             id: id,
-            options: options,
+            options: options
         });
         select.placeAt(document.getElementById(addToDiv));
         select.startup();
