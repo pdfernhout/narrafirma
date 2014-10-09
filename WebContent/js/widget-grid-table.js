@@ -219,36 +219,11 @@ define([
                 
             dataStore = new Memory({
                 // data: storyList,
-                data: list,
+                data: list
                 // TODO: title may not be unique
                 // idProperty: "uniqueID",
             });            
         }
-
-        var listContentPane = new ContentPane({
-            // title: pseudoQuestion.text
-        });
-        
-        if (!pagePane.addChild) {
-            // console.log("trouble -- does not have addChild method!", pagePane);
-            pagePane.domNode.appendChild(listContentPane.domNode);
-        } else {
-            pagePane.addChild(listContentPane);
-        }
-        
-        var pane = listContentPane.containerNode;
-        
-        var itemContentPane = new ContentPane({
-        });
-        
-        if (!pagePane.addChild) {
-            // console.log("trouble -- does not have addChild method!", pagePane);
-            pagePane.domNode.appendChild(itemContentPane.domNode);
-        } else {
-            pagePane.addChild(itemContentPane);
-        } 
-        
-        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.5em solid red; display: none");
         
         var columns = {};
         
@@ -276,7 +251,26 @@ define([
         } else {
             pagePane.addChild(grid);
         }
+        
         grid.startup();
+        
+        var listContentPane = new ContentPane({
+            // title: pseudoQuestion.text
+        });
+        
+        if (!pagePane.addChild) {
+            // console.log("trouble -- does not have addChild method!", pagePane);
+            pagePane.domNode.appendChild(listContentPane.domNode);
+        } else {
+            pagePane.addChild(listContentPane);
+        }
+        
+        listContentPane.startup();
+        
+        var pane = listContentPane.containerNode;
+        
+        var itemContentPane = new ContentPane({
+        });
         
         // console.log("grid startup with", storyList, projectStoriesStore);
         
@@ -303,7 +297,16 @@ define([
             var addButton = widgets.newButton(id + "add", "Add", pane, lang.partial(addButtonClicked, grid, dataStore, popupPageDefinition, itemContentPane));
         }
         
-        listContentPane.startup();
+        if (!pagePane.addChild) {
+            // console.log("trouble -- does not have addChild method!", pagePane);
+            pagePane.domNode.appendChild(itemContentPane.domNode);
+        } else {
+            pagePane.addChild(itemContentPane);
+        } 
+        
+        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.5em solid red; display: none");
+        
+        itemContentPane.startup();
 
         return {
             "store": dataStore,

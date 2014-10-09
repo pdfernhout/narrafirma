@@ -4,7 +4,6 @@ PRIORITY:
 
 - questionsTable working again
 - recommendations table working
-- view and add buttons after grid, nested box appears under grid
 - make unsupported functionality look better (with explanations of what it will do)
 - make quizScoreResult work
 - make whole planning phase work
@@ -137,8 +136,7 @@ DONE Test dynamic pages vs. inline page sections for grid items
 NOT DOING Create new pages when add new participant groups
 DONE Add select at bottom of each page -- this page has been: intentionally skipped;partially completed;completed
 DONE Participant questions need to have options and ids and translations
-
-
+DONE view and add buttons after grid, nested box appears under grid
 
 
 ======= CYNTHIA
