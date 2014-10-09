@@ -68,8 +68,8 @@
 
 # Planning [page_planning]
 
-* In the planning phase you will make decisions about how your project will proceed. [project_projectPlanningLabel|label]
-You will think about your goals, your topic, your participants, and opportunities and dangers you might encounter during the project.
+* In the planning phase of your PNI project, you will make decisions about how your project will proceed. [project_projectPlanningLabel|label]
+You will think about your goals, your topic, your participants, and any opportunities and dangers you might encounter during the project.
 
 * Project general notes | You can enter some general notes on planning in this project here. [project_generalNotes_planning|textarea]
 
@@ -79,17 +79,17 @@ You will think about your goals, your topic, your participants, and opportunitie
 
 * Project title | What is the project's title? [project_title|text]
 * Community/organization name | What is the name of your community or organization? [project_communityOrOrganizationName|text]
-* Project topic | What is a brief name for the project's primary topic? [project_topic|text]
+* Project topic | Enter a brief name for the project's primary topic. [project_topic|text]
 * Project start and end | What are the project's starting and ending dates? [project_startAndEndDates|text]
 * Project funders | Who is funding or otherwise supporting the project? [project_funders|textarea]
 * Project facilitators | Who is facilitating the project? [project_facilitators|textarea]
 * Report start text | Enter any other information you want to appear at the top of project reports. [project_reportStartText|textarea]
-* Report end text | Enter any other information you want to appear at the bottom of project reports (as notes). [project_reportEndText|textarea]
+* Report end text | Enter any other information you want to appear at the bottom of project reports. [project_reportEndText|textarea]
 
 ## Answer PNI Planning questions [page_planningQuestionsDraft]
 
 * On this page you will answer some questions about your project's goals, relationships, focus, range, scope, and emphasis. [project_draftQuestionsLabel|label]
-If you don't have good answers for these questions right now, don't worry; you will have a chance to come back and work on these answers again later.
+If you don't have good answers for these questions right now, don't worry; you will have a chance to work on these answers again later.
 
 * What is the goal of the project? Why are you doing it? [project_PNIquestions_goal_draft|textarea]
 * What relationships are important to the project? [project_PNIquestions_relationships_draft|textarea]
@@ -103,18 +103,14 @@ If you don't have good answers for these questions right now, don't worry; you w
 * On this page you will think about groups of participants you want to involve in your project. [aboutParticipantGroups|label]
 Examples might be: doctors and patients; staff and customers; natives, immigrants, and tourists.
 
-* Please add participant groups in the list below (typically up to three groups). More details for each group will be added later.[project_participantGroupsList|grid|page_addParticipantGroup]
+* Please add participant groups in the list below (typically up to three groups). [project_participantGroupsList|grid|page_addParticipantGroup]
 
 ## Participant group [page_addParticipantGroup|popup]
 
-* Name | Please name this group of participants from whom the project needs to hear (such as "doctors", "students", or "staff"). [participantGroup_name|text]
+* Name | Please name this group of participants (for example, "doctors", "students", "staff"). [participantGroup_name|text]
 * Description | Please describe this group of participants. [participantGroup_description|textarea]
 For example, you might want to record any observations you have made about this group.
 What do you know about them?
-
-// ## Consider project aspects [page_projectAspects|repeating|participantGroups]
-
-// * Please answer these questions about each participant group. [participantGroup_aspectsList|questionsTable|page_aspectsTable;participants_firstGroupName;participants_secondGroupName;participants_thirdGroupName]
 
 // ## Project aspects [page_aspectsTable|questionsTable]
 
@@ -157,12 +153,12 @@ What do you know about them?
 
 ## Tell project stories [page_projectStories]
 
-* Project stories are stories you tell yourself about your project [project_projectStoriesList|grid|page_projectStory]
-in order to think about what might happen in it (so you can plan it better). 
+* On this page you will tell yourself some stories about how your project might play out. [project_projectStoriesList|grid|page_projectStory]
+These "project stories" will help you think about how best to plan the project.
 
 ## Project story [page_projectStory|popup]
 
-* Scenario | Start by choosing a scenario that starts your project story. [projectStory_scenario|select|ask me anything;magic ears;fly on the wall;project aspects;my own scenario type]
+* Scenario | Start by choosing a scenario for your project story. [projectStory_scenario|select|ask me anything;magic ears;fly on the wall;project aspects;my own scenario type]
 * Outcome | Now choose an outcome for your story. [projectStory_outcome|select|colossal success;miserable failure;acceptable outcome;my own outcome]
 * Story | Now tell your project story as a future history (as though it has already happened). [projectStory_text|textarea]
 * Name | Please name your project story. [projectStory_name|text]
@@ -173,6 +169,8 @@ in order to think about what might happen in it (so you can plan it better).
 ## Create project story elements [page_createProjectStoryElements]
 
 * Here are some instructions on how to create story elements from your project stories. [storyElementsInstructions|label]
+Creating story elements helps you think about what is going on in the stories you told.
+You can enter your story elements on the next page.
 <ol>
 <li>Choose one or two types of story element (characters, situations, values, themes, relationships, motivations, beliefs, conflicts).</li>
 <li>For each story, come up with as many answers to that element's question as you can. Write the answers on sticky notes.</li>
@@ -198,14 +196,13 @@ in order to think about what might happen in it (so you can plan it better).
 
 ## Enter project story elements [page_enterProjectStoryElements]
 
-* You can create story elements from the project stories you have told [project_projectStoryElementsList|grid|page_addStoryElement]
-in order to think about what those stories mean about how you should plan your project.
+* On this page you can enter the story elements you created on the previous page. [project_projectStoryElementsList|grid|page_addStoryElement]
 
 ## Add story element [page_addStoryElement|popup]
 
 * Name | What is the name of the story element? [storyElement_name|text]
 * Type | What type of story element is this? [storyElement_type|select|character;situation;value;theme;relationship;motivation;belief;conflict]
-* Description | You can describe it more fully here. [storyElement_description|textarea]
+* Description | You can describe the story element more fully here. [storyElement_description|textarea]
 
 ## Assess story sharing [page_assessStorySharing]
 
@@ -248,7 +245,8 @@ in the places where they normally gather.
 
 ## Revise PNI Planning questions [page_revisePNIPlanningQuestions]
 
-* Please review and improve your draft answers based on your consideration of project aspects and your project stories. [improvePlanningDrafts|label]
+* On this page you can review and improve your draft answers to the PNI planning questions [improvePlanningDrafts|label]
+based on your consideration of project aspects and your project stories. 
 
 * Copy the original draft versions into the answers below [project_PNIquestions_copyDraftsButton|button]
 
@@ -261,7 +259,7 @@ in the places where they normally gather.
 
 ## Write project synopsis [page_writeProjectSynopsis]
 
-* Please summarize your project in one or two sentences. [project_synopsis|textarea]
+* On this page you can write your project synopsis, a one or two sentence summary of what matters most about your project. [project_synopsis|textarea]
 
 ## Read planning report [page_readPlanningReport]
 
@@ -277,8 +275,8 @@ in the places where they normally gather.
 
 # Collection design [page_collectionDesign]
 
-* In the collection design phase, you will decide on story collection venues, create some story eliciting and [project_collectionDesignStartLabel|label]
-story interpretation questions, design your story collection form, and plan any story collection sessions you want to hold.
+* In the collection design phase of your PNI project, you will decide on story collection venues, [project_collectionDesignStartLabel|label]
+create some story eliciting and story interpretation questions, design your story collection form, and plan any story collection sessions you want to hold.
 
 * You can enter some general notes on collection design in this project here. [project_generalNotes_collectionDesign|textarea]
 
@@ -299,45 +297,66 @@ story interpretation questions, design your story collection form, and plan any 
 
 ## Write story eliciting questions [page_writeStoryElicitingQuestions]
 
-* Eliciting questions ask people to tell stories. [project_elicitingQuestionsList|grid|page_addElicitingQuestion]
-You need at least one, and preferably three to five questions people can pick from to answer.
+* On this page you will design the eliciting questions you use to ask people to tell stories. [project_elicitingQuestionsLabel|label]
+You need at least one question for people to answer. Giving people more than one question to choose from
+is recommended. 
 
-## Add story eliciting question [page_addElicitingQuestion|popup]
+* These are the questions you will be asking. [project_elicitingQuestionsList|grid|page_addElicitingQuestion]
 
 * Recommendations for eliciting questions [elicitingQuestionRecommendations|recommendationTable|Eliciting questions]
 
-* Question | Enter a question with which to ask people to tell stories. [elicitingQuestion_text|textarea]
+## Add story eliciting question [page_addElicitingQuestion|popup]
+
+* Question | Enter a story-eliciting question. [elicitingQuestion_text|textarea]
 * Type | What type of question is this? [elicitingQuestion_type|checkBoxes|what happened;directed question;undirected questions;point in time;event;extreme;surprise;people, places, things;fictional scenario;other]
 
 * Or choose a question from this list. [templates_elicitingQuestions|templateList|elicitingQuestions]
 
 ## Write questions about stories [page_writeQuestionsAboutStories]
 
-* These are the questions you will be asking people about stories. [project_storyQuestionsList|grid|page_addStoryQuestion]
+* On this page you will write your questions to ask people about their stories. [project_storyQuestionsLabel|label]
 
-## Add story question [page_addStoryQuestion|popup]
+* These are the questions you will be asking about stories. [project_storyQuestionsList|grid|page_addStoryQuestion]
 
 * Recommendations for story questions [storyQuestionRecommendations|recommendationTable|storyQuestions]
 
+## Add story question [page_addStoryQuestion|popup]
+
 * Question | Enter a question to ask people about their stories. [storyQuestion_text|textarea]
 * Type | What type of question is this? [storyQuestion_type|select|boolean;label;header;checkbox;checkBoxes;text;textarea;select;radio;slider]
-* Short name | Enter a short name we can use to refer to the question. (This name must be unique to the project.) [storyQuestion_shortName|text]
-* Options | If your question has choices, enter them here (one per line). [storyQuestion_options|textarea]
-* Help | If you want to provide help to people answering the question, enter it here. [storyQuestion_help|textarea]
+The question types are:
+<ul>
+<li>boolean: yes and no choices</li>
+<li>label: not a question, just text</li>
+<li>header: same as a label, only in bold</li>
+<li>checkbox: one check box (enter label in options)</li>
+<li>checkBoxes: a series of checkboxes (enter label in options)</li>
+<li>text: a one-line free text field</li>
+<li>textarea: a multi-line free text field</li>
+<li>select: a drop-down box (enter choices in options)</li>
+<li>radio: a set of mutually-exclusive radio buttons (enter choices in options)</li>
+<li>slider: a range from 0 to 100 (enter end labels in options)</li>
+</ul>
+
+* Short name | Enter a short name we can use to refer to the question. (It must be unique within the project.) [storyQuestion_shortName|text]
+* Options | If your question requires choices, enter them here (one per line). [storyQuestion_options|textarea]
+* Help | If you want to provide popup help to people answering the question, enter it here. [storyQuestion_help|textarea]
 
 * Or choose a question from this list. [templates_storyQuestions|templateList|storyQuestions]
 
 ## Write questions about participants [page_writeQuestionsAboutParticipants]
 
-* These are the questions you will be asking people about themselves. [project_participantQuestionsList|grid|page_addParticipantQuestion]
+* On this page you will write questions to ask people about themselves. [project_participantQuestionsLabel|label]
 
-## Add participant question [page_addParticipantQuestion|popup]
+* These are the questions you will be asking people about themselves. [project_participantQuestionsList|grid|page_addParticipantQuestion]
 
 * Recommendations for participant questions [participantQuestionRecommendations|recommendationTable|participantQuestions]
 
+## Add participant question [page_addParticipantQuestion|popup]
+
 * Question | Enter a question to ask people about themselves. [participantQuestion_text|textarea]
 * Type | What type of question is this? [participantQuestion_type|select|boolean;label;header;checkbox;checkBoxes;text;textarea;select;radio;slider]
-* Short name | Enter a short name we can use to refer to the question. (This name must be unique to the project.) [participantQuestion_shortName|text]
+* Short name | Enter a short name we can use to refer to the question. (It must be unique within the project.) [participantQuestion_shortName|text]
 * Options | If your question has choices, enter them here (one per line). [participantQuestion_options|textarea]
 * Help | If you want to provide help to people answering the question, enter it here. [participantQuestion_help|textarea]
 
@@ -345,14 +364,17 @@ You need at least one, and preferably three to five questions people can pick fr
 
 ## Design question form [page_designQuestionForm]
 
+* On this page you will add any information you want to place on your question form other than the questions on it. [questionFormLabel|label]
+
 * Please enter a title for the question form. [questionForm_title|text]
 * You can link to a logo or other image to show at the top of the form. [questionForm_image|text]
-* Please enter an introduction to be shown at the start of the form, after the title [questionForm_startText|textarea]
-* Please enter any text to be shown at the end of the form [questionForm_endText|textarea]
+* Please enter an introduction to be shown at the start of the form, after the title. [questionForm_startText|textarea]
+* Please enter any text to be shown at the end of the form. [questionForm_endText|textarea]
 
 ## Plan story collection sessions [page_planStoryCollectionSessions]
 
-* Do you plan to collect stories in group sessions? (If not, you can skip the rest of this page.) [willBeUsingStoryCollectionSessions|boolean]
+* On this page you will design group sessions in which you will collect stories. [collectionSessionsLabel|label]
+If you don't plan to collect stories using group sessions, you can skip this page.
 
 * Recommendations for story collection sessions [collectionSessionRecommendations|recommendationTable|collectionSessions]
 
@@ -363,16 +385,16 @@ Each plan can be used in multiple sessions.
 
 * Name | Please give this session plan a name. [collectionSessionPlan_name|text]
 * Repetitions | How many repetitions of the session will there be? [collectionSessionPlan_repetitions|text]
-* Length | How long will this session be? [collectionSessionPlan_duration|text]
-* Time | At what dates and times will the session take place? [collectionSessionPlan_times|text]
+* Length | How long will each session be? [collectionSessionPlan_duration|text]
+* Time | At what dates and times will these sessions take place? [collectionSessionPlan_times|text]
 * Location | Where will these sessions take place? [collectionSessionPlan_location|text]
 * Number of people | How many people will be invited to each repetition of this session? [collectionSessionPlan_numPeople|text]
 * Participant groups | From which participant groups will people be invited? [collectionSessionPlan_groups|text]
 * Materials | What materials will this session require?  [collectionSessionPlan_materials|textarea]
 * Other | Enter other details about this session. [collectionSessionPlan_details|textarea]
 
-* Activities within story collection sessions can be simple instructions [collectionSessionPlan_activitiesList|grid|page_addCollectionSessionActivity]
-or complicated exercises (like the creation of timelines).
+* Here you can enter some activities you plan for the session. [collectionSessionPlan_activitiesList|grid|page_addCollectionSessionActivity]
+Activities within story collection sessions can be simple instructions or complicated exercises (like the creation of timelines).
 
 * Print session agenda [collectionSessionPlan_printCollectionSessionAgendaButton|button]
 
@@ -381,7 +403,7 @@ or complicated exercises (like the creation of timelines).
 * Name | Please give this activity a name. [collectionSessionPlan_activity_name|text]
 * Type | What type of activity is this? [collectionSessionPlan_activity_type|select|ice-breaker;sharing stories (no task);sharing stories (simple task);discussing stories;twice-told stories exercise;timeline exercise;landscape exercise;my own exercise;other]
 * Plan | Describe the plan for this activity. [collectionSessionPlan_activity_plan|textarea]
-* Optional elaborations | Describe optional elaborations you might or might not use in this activity. [collectionSessionPlan_activity_optionalParts|textarea]
+* Optional elaborations | Describe any optional elaborations you might or might not use in this activity. [collectionSessionPlan_activity_optionalParts|textarea]
 * Length | How long will this activity take? [collectionSessionPlan_activity_duration|text]
 * Recording | How will stories be recorded during this activity? [collectionSessionPlan_activity_recording|textarea]
 * Materials | What materials will be provided for this activity? [collectionSessionPlan_activity_materials|textarea]
@@ -404,13 +426,13 @@ or complicated exercises (like the creation of timelines).
 
 # Collection process [page_collectionProcess]
 
-* In the collection process phase, you will review incoming stories and enter records of story collection sessions. [collectionProcessIntro|label]
+* In the collection process phase of your PNI project, you will review incoming stories and enter records of story collection sessions. [collectionProcessIntro|label]
 
 * You can enter some general notes on your collection process in this project here. [project_generalNotes_collectionProcess|textarea]
 
 ## Print question forms [page_finalizeQuestionForms]
 
-* Here you can print your story questions form for distribution to participants. [printQuestionsForm_introduction|label]
+* On this page you can print your story questions form for distribution to participants. [printQuestionsForm_introduction|label]
 
 * Print story form [printQuestionsForm_printFormButton|button]
 
@@ -429,6 +451,8 @@ or complicated exercises (like the creation of timelines).
 
 ## Review incoming stories [page_reviewIncomingStories]
 
+* On this page you can see your collected stories as they come in. [collectedStoriesDuringCollectionLabel|label]
+
 * Collected stories [collectedStoriesDuringCollection|storyBrowser]
 
 ## Stop story collection [page_stopStoryCollection]
@@ -441,14 +465,15 @@ or complicated exercises (like the creation of timelines).
 
 ## Enter story collection session records [page_enterCollectionSessionRecords]
 
-* Note: If you did not hold any story collection sessions, you can skip this page. [project_collectionRecordsIntroductionLabel|label]
+* On this page you can enter records for the group story sessions you held. [project_collectionRecordsIntroductionLabel|label]
+If you did not hold any group story sessions, you can skip this page. 
 
-* Here you can record what went on in your story collection sessions. [project_collectionSessionRecordsList|grid|page_addCollectionSessionRecord]
+* Enter here what went on in your story collection sessions. [project_collectionSessionRecordsList|grid|page_addCollectionSessionRecord]
 
 ## Add story collection session record [page_addCollectionSessionRecord|popup]
 
 * Name | Please give this session record a name. [collectionSessionRecord_name|text]
-* When and where | When and where did this session take place? [collectionSessionRecord_whenWhere|textarea]
+* When and where | When and where did the session take place? [collectionSessionRecord_whenWhere|textarea]
 * Who attended | Describe the participants at this session. [collectionSessionRecord_participants|textarea]
 * Plan | Which of your collection session plans did you follow in this session? (And did you stick to the plan?) [collectionSessionRecord_plan|textarea]
 * Notes | Enter additional notes on the session here. [collectionSessionRecord_notes|textarea]
@@ -457,7 +482,7 @@ Your notes can include links to images or other documents.
 * People in your story collection sessions might have created constructions [collectionSessionRecord_constructionsList|grid|page_newCollectionSessionConstruction]
 such as timelines or landscapes. You can enter details about those here.
 
-* Please answer these questions about the session. [collectionSessionRecord_reflectionsLabel|label]
+* Use the questions below to reflect on the session. [collectionSessionRecord_reflectionsLabel|label]
 
 * Change [collectionSessionRecord_reflectionsOnChangeHeader|header]
 * Change in participant perceptions | How did the perceptions of the participants change from the start to the end of the session? [collectionSessionRecord_reflections_change_participantPerceptions|textarea]
@@ -497,25 +522,38 @@ Your description can include links to images or other documents.
 
 # Catalysis [page_catalysis]
 
-* In the catalysis phase you will look for patterns in stories and answer to questions about them, [catalysisIntro|label]
-and pepare materials for people to use in sensemaking.
+* In the catalysis phase of your PNI project, you will look for patterns [catalysisIntro|label]
+and pepare materials for use in sensemaking.
 
 * You can enter some general notes on catalysis in this project here. [project_generalNotes_catalysis|textarea]
 
 ## Browse stories [page_browseStories]
 
+* On this page you will review your collected stories. [collectedStoriesAfterCollectionLabel|label]
+You can save stories (or groups of stories) to observations for later use.
+You can also save excerpts (parts of stories) for later use.
+
 * Collected stories [collectedStoriesAfterCollection|storyBrowser|addToObservation:"page_addToObservation";addToExcerpt:"page_addToExcerpt"]
 
 ## Theme stories [page_themeStories]
+
+* On this page you will derive emergent themes from the collected stories. [themeStoriesLabel|label]
+The themes will appear in your data as answers to a "Theme" question, creating patterns you can use.
 
 * Theme stories [themeStories|storyThemer]
 
 ## Browse graphs [page_browseGraphs]
 
+* On this page you can look at patterns in the answers people gave about their stories, [graphBrowserLabel|label]
+and save patterns to observations for later use.
+
 // graph browser has button to add result to observation (existing or new)
 * Graph browser [graphBrowserDisplay|graphBrowser]
 
 ## Review trends [page_reviewTrends]
+
+* On this page you will look over the most significant statistical results [reviewTrendsLabel|label]
+and save some to observations for later use.
 
 * Which statistical tests do you want to consider? [reviewTrends_statTests|checkBoxes|chi-squared (differences between counts);t-test (differences between means);correlation]
 * How large should subsets of stories be to be considered for comparison? [reviewTrends_minSubsetSize|select|20;30;40;50]
@@ -544,20 +582,20 @@ all stories have been entered.
 
 * First interpretation | Enter an interpretation of this observation. [observation_firstInterpretation_text|textarea]
 What does it mean?
-* First interpretation name | Please give this interpretation a name (so you can refer to it later). [observation_firstInterpretation_name|text]
+* First interpretation name | Please give this interpretation a short name (so you can refer to it later). [observation_firstInterpretation_name|text]
 * First interpretation idea | If you like, you can record an idea that follows from this interpretation. [observation_firstInterpretation_idea|textarea]
 * First interpretation excerpts | You can add excerpts to this interpretation. [observation_firstInterpretation_excerptsList|grid|page_selectExcerpt]
 
-* Competing interpretation | Enter an interpretation that competes with the first one. [observation_competingInterpretation_text|textarea]
-What else could this pattern mean?
-* Competing interpretation name | Please give this competing interpretation a name. [observation_competingInterpretation_name|text]
-* Competing interpretation idea | Enter an idea that follows from your competing interpretation. [observation_competingInterpretation_idea|textarea]
+* Competing interpretation | Now enter an interpretation that competes with the first one. [observation_competingInterpretation_text|textarea]
+What <i>else</i> could this pattern mean?
+* Competing interpretation name | Please give this competing interpretation a short name. [observation_competingInterpretation_name|text]
+* Competing interpretation idea | If you like, enter an idea that follows from your competing interpretation. [observation_competingInterpretation_idea|textarea]
 * Competing interpretation excerpts | You can add excerpts to the competing interpretation. [observation_competingInterpretation_excerptsList|grid|page_selectExcerpt]
 
 * Third interpretation | If a third interpretation of the pattern comes to mind, enter it here. [observation_thirdInterpretation_text|textarea]
-Is there anything else this pattern could mean?
-* Third interpretation name | Please give this third interpretation a name. [observation_thirdInterpretation_name|text]
-* Third interpretation idea | Enter an idea that follows from your third interpretation. [observation_thirdInterpretation_idea|textarea]
+Is there a third thing this pattern could mean?
+* Third interpretation name | Please give this third interpretation a short name. [observation_thirdInterpretation_name|text]
+* Third interpretation idea | If you like, enter an idea that follows from your third interpretation. [observation_thirdInterpretation_idea|textarea]
 * Third interpretation excerpts | You can add excerpts to the third interpretation. [observation_thirdInterpretation_excerptsList|grid|page_selectExcerpt]
 
 ## Add excerpt to interpretation [page_selectExcerpt|popup]
@@ -577,20 +615,22 @@ Is there anything else this pattern could mean?
 
 * Please give this excerpt a name. [excerpt_name|text]
 * You can edit the excerpt here. [excerpt_text|textarea]
-* You can enter some notes about the excerpt here. [excerpt_notes|textarea]
+* Enter some notes about the excerpt. [excerpt_notes|textarea]
 
 ## Review excerpts [page_reviewExcerpts]
 
-* These are the excerpts you have saved from stories as you looked at them [project_savedExcerptsList|grid|page_createNewExcerpt]
-on the browse, graph, and review pages. 
+* These are the story excerpts you have saved. [project_savedExcerptsList|grid|page_createNewExcerpt]
 
 ## Review and interpret observations [page_interpretObservations]
 
-* Collected observations [project_observationsDisplayList|grid|page_createOrEditObservation]
+* These are the observations you have collected from the [project_observationsDisplayList|grid|page_createOrEditObservation]
+browse, graph, and trends pages.
 
 ## Cluster interpretations [page_clusterInterpretations]
 
-* Note: Do not cluster your interpretations unless you are sure you have finished collecting them. [clusterInterpretations_introductionLabel|label]
+* On this page you will cluster together the interpretations you have collected (based on observations) [clusterInterpretationsLabel|label]
+to create perspectives for your catalysis report.
+Note: Do not cluster your interpretations unless you are sure you have finished collecting them.
 
 // ideally, when they are done with this, the circles marked as group names
 // will get copied into the perspectives list seen in the next page
@@ -598,7 +638,10 @@ on the browse, graph, and review pages.
 
 ## Describe perspectives [page_describePerspectives]
 
-* Perspectives [project_perspectivesList|grid|page_addPerspective]
+* On this page you will describe the perspectives that resulted from clustering [project_perspectivesLabel|label]
+your interpretations.
+
+* These are the perspectives you have created from interpretations. [project_perspectivesList|grid|page_addPerspective]
 
 ## Add or change perspective [page_addPerspective|popup]
 
@@ -638,11 +681,13 @@ on the browse, graph, and review pages.
 		
 # Sensemaking [page_sensemaking]
 
-* In the sensemaking phase, you will plan sensemaking sessions and record what happened in them. [sensemakingIntroLabel|label]
+* In the sensemaking phase of your PNI project, you will plan sensemaking sessions and record what happened in them. [sensemakingIntroLabel|label]
 
 * You can enter some general notes on sensemaking in this project here. [project_generalNotes_sensemaking|textarea]
 
 ## Plan sensemaking sessions [page_planSensemakingSessions]
+
+* On this page you create plans for your sensemaking sessions. [project_sensemakingSessionPlansLabel|label]
 
 * Recommendations for sensemaking sessions [sensemakingSessionRecommendations|recommendationTable|sensemakingSessions]
 
@@ -652,7 +697,7 @@ on the browse, graph, and review pages.
 
 * Name | Please give this session plan a name. [sensemakingSessionPlan_name|text]
 * Repetitions | How many repetitions of the session will there be? [sensemakingSessionPlan_repetitions|text]
-* Length | How long will this session be? [sensemakingSessionPlan_duration|text]
+* Length | How long will this session last? [sensemakingSessionPlan_duration|text]
 * Time | At what dates and times will the session take place? [sensemakingSessionPlan_times|text]
 * Location | Where will these sessions take place? [sensemakingSessionPlan_location|text]
 * Number of people | How many people will be invited to each repetition of this session? [sensemakingSessionPlan_numPeople|text]
@@ -660,8 +705,8 @@ on the browse, graph, and review pages.
 * Materials | What materials will this session require? [sensemakingSessionPlan_materials|textarea]
 * Other | Enter other details about this session. [sensemakingSessionPlan_details|textarea]
 
-* Activities within sensemaking sessions can be simple instructions [sensemakingSessionPlan_activitiesList|grid|page_addSensemakingSessionActivity]
-or complicated exercises (like the construction of composite stories).
+* Here you can enter some activities you plan for the session. [sensemakingSessionPlan_activitiesList|grid|page_addSensemakingSessionActivity]
+Activities within story collection sessions can be simple instructions or complicated exercises (like the creation of timelines).
 
 * Print session agenda [sensemakingSessionPlan_printSensemakingSessionAgendaButton|button]
 
@@ -670,7 +715,7 @@ or complicated exercises (like the construction of composite stories).
 * Name | Please give this activity a name. [sensemakingSessionPlan_activity_name|text]
 * Type | What type of activity is this? [sensemakingSessionPlan_activity_type|select|ice-breaker;encountering stories (no task);encountering stories (simple task);discussing stories;twice-told stories exercise;timeline exercise;landscape exercise;story elements exercise;composite stories exercise;my own exercise;other]
 * Plan | Describe the plan for this activity. [sensemakingSessionPlan_activity_plan|textarea]
-* Optional elaborations | Describe optional elaborations you might or might not use in this activity. [sensemakingSessionPlan_activity_optionalParts|textarea]
+* Optional elaborations | Describe any optional elaborations you might or might not use in this activity. [sensemakingSessionPlan_activity_optionalParts|textarea]
 * Length | How long will this activity take? [sensemakingSessionPlan_activity_duration|text]
 * New stories | Will new stories be recorded during this activity, and if so, how? [sensemakingSessionPlan_activity_recording|textarea]
 * Materials | What materials will be provided for this activity? [sensemakingSessionPlan_activity_materials|textarea]
@@ -681,25 +726,29 @@ or complicated exercises (like the construction of composite stories).
 
 ## Enter sensemaking session records [page_enterSensemakingSessionRecords]
 
-* Sensemaking sessions records [project_sensemakingSessionRecordsList|grid|page_addSensemakingSessionRecord]
+* On this page you will enter records of what happened at your sensemaking sessions. [project_sensemakingSessionRecordsLabel|label]
+
+* Enter your sensemaking session records here. [project_sensemakingSessionRecordsList|grid|page_addSensemakingSessionRecord]
 
 ## Add sensemaking session record [page_addSensemakingSessionRecord|popup]
 
 * Name | Please give this session record a name. [sensemakingSessionRecord_name|text]
-
-* Resonant stories (pivot, voice, discovery) [sensemakingSessionRecord_resonantStoriesList|grid|page_addResonantStory]
-
-* Session outcomes (like discoveries and ideas) [sensemakingSessionRecord_outcomesList|grid|page_newSensemakingSessionOutcome]
-
-* Group constructions [sensemakingSessionRecord_constructionsList|grid|page_newSensemakingSessionConstruction]
-
 * When and where | When and where did this session take place? [sensemakingSessionRecord_whenWhere|textarea]
 * Who attended | Describe the participants at this session. [sensemakingSessionRecord_participants|textarea]
 * Plan | Which of your collection session plans did you follow in this session? (And did you stick to the plan?) [sensemakingSessionRecord_plan|textarea]
-* Notes | Enter additional notes on the session here. [sensemakingSessionRecord_notes|textarea]
+* Notes | Enter general notes on the session here. [sensemakingSessionRecord_notes|textarea]
 Your notes can include links to images or other documents.
 
-* Please answer these questions about the session. [sensemakingSessionRecord_reflectionsLabel|label]
+* If you discovered any resonant stories (pivot, voice, discovery) in this session, [sensemakingSessionRecord_resonantStoriesList|grid|page_addResonantStory]
+enter them here.
+
+* If your session ended with creating lists of outcomes (like discoveries and ideas), [sensemakingSessionRecord_outcomesList|grid|page_newSensemakingSessionOutcome]
+you can enter them here.
+
+* If your session involve creating any group constructions (like landscapes or timelines), [sensemakingSessionRecord_constructionsList|grid|page_newSensemakingSessionConstruction]
+you can describe them here.
+
+* Use the questions below to reflect on the session. [sensemakingSessionRecord_reflectionsLabel|label]
 
 * Change [sensemakingSessionRecord_reflectionsOnChangeHeader|header]
 * Change in participant perceptions | How did the perceptions of the participants change from the start to the end of the session? [sensemakingSessionRecord_reflections_change_participantPerceptions|textarea]
@@ -754,7 +803,7 @@ Your description can include links to images or documents.
 	
 # Intervention [page_intervention]
 
-* In the intervention phase, you will plan interventions and record information about them. [interventionIntroLabel|label]
+* In the intervention phase of your PNI project, you will plan interventions and record information about them. [interventionIntroLabel|label]
 
 * You can enter some general notes on intervention in this project here. [project_generalNotes_intervention|textarea]
 
@@ -795,38 +844,41 @@ the participant groups you set up in the project planning phase.
 
 * Recommendations for intervention plans [interventionRecommendations|recommendationTable|interventions]
 
-* On this page you can design interventions that change the stories people tell [project_interventionPlansList|grid|page_addIntervention]
+* On this page you can design interventions that change the stories people tell [project_interventionLabel|label]
 in your community or organization.
+
+* Enter your intervention plans here. [project_interventionPlansList|grid|page_addIntervention]
 
 ## Plan an intervention [page_addIntervention|popup]
 
 * Name | Please name this intervention plan. [interventionPlan_name|text]
 * Type | What type of intervention will this be? [interventionPlan_type|select|narrative ombudsman;narrative suggestion box;story sharing space;narrative orientation;narrative learning resource;narrative simulation;narrative presentation;dramatic action;sensemaking space;sensemaking pyramid;narrative mentoring program;narrative therapy;participatory theatre;other]
-* Description | Please describe your plan for this intervention. [interventionPlan_description|text]
+* Description | Please describe your plan for this intervention. [interventionPlan_description|textarea]
 
-* Length | Over what span of time will this intervention take place? [interventionPlan_duration|text]
-* Time | When will the intervention start and stop? [interventionPlan_times|text]
+* Time | When will the intervention start and end? [interventionPlan_times|text]
 * Location | Where will the intervention take place? [interventionPlan_locations|text]
 
 * Help | What sort of help will you need to carry out this intervention? [interventionPlan_help|textarea]
-* Permission | What sorts of permission will you need to carry out this intervention? [interventionPlan_permission|textarea]
+* Permission | Describe any permissions you will need to carry out this intervention. [interventionPlan_permission|textarea]
 * Participation | How will you get people to participate in this intervention? [interventionPlan_participation|textarea]
 
 * Materials | What physical materials will you need? [interventionPlan_materials|textarea]
-* Spaces | What spaces will you need to use? [interventionPlan_space|textarea]
+* Spaces | What spaces will you use? [interventionPlan_space|textarea]
 * Technology | What technological resources will you need? [interventionPlan_techResources|textarea]
-* Recording | How will record the results of this intervention? [interventionPlan_recording|textarea]
+* Recording | How will you record the results of this intervention? [interventionPlan_recording|textarea]
 
 ## Enter intervention records [page_recordInterventions]
 
-* Intervention records [project_interventionRecordsList|grid|page_addInterventionRecord]
+* On this page you will enter records of your interventions. [project_interventionRecordsLabel|label]
+
+* Enter your intervention records here. [project_interventionRecordsList|grid|page_addInterventionRecord]
 
 ## Add intervention record [page_addInterventionRecord|popup]
 
 * Name | Please give this intervention record a name. [interventionRecord_name|text]
-* Notes | Enter your notes here. [interventionRecord_notes|textarea]
+* Notes | Enter any general notes on the intervention here. [interventionRecord_notes|textarea]
 
-* Please reflect on this intervention. [interventionRecord_reflectLabel|label]
+* Use the questions below to reflect on the intervention. [interventionRecord_reflectLabel|label]
 
 * Change [interventionRecord_reflectionsOnChangeHeader|header]
 * Change in participant perceptions | How did the perceptions of the participants change from the start to the end of the intervention? [interventionRecord_reflections_change_participantPerceptions|textarea]
@@ -859,14 +911,16 @@ in your community or organization.
 
 # Return [page_return]
 
-* In the return phase, you will gather feedback, reflect on the project, possibly present [returnIntroLabel|label]
+* In the return phase of your PNI project, you will gather feedback, reflect on the project, possibly present [returnIntroLabel|label]
 the project to someone, and help people with requests about the project.
 
 * You can enter some general notes on the return phase of this project here. [project_generalNotes_return|textarea]
 
 ## Gather feedback [page_gatherFeedback]
 
-* You can enter feedback you have gathered on your project here. [project_feedbackItemsList|grid|page_enterFeedbackPiece]
+* On this page you will enter any feedback you gather about your project. [project_feedbackLabel|label]
+
+* You can enter specific pieces of feedback you have gathered here. [project_feedbackItemsList|grid|page_enterFeedbackPiece]
 
 * If you would like to enter any general notes on the feedback you've seen to the project, write them here. [feedback_generalNotes|textarea]
 
@@ -877,9 +931,12 @@ the project to someone, and help people with requests about the project.
 * Type | What type of feedback is this? [feedback_type|select|a story;a reference to something that came up in the project;a wish about the future;an opinion;a complaint;an action;other]
 * Source | Who said or did this? [feedback_who|text]
 * Prompt | What did you say or do (if anything) that led to this feedback? [feedback_prompt|text]
-* Notes | Please enter any other notes you have about this feedback. [feedback_notes|textarea]
+* Responpse | What did you say or do (if anything) in response? [feedback_response|text]
+* Notes | Please enter any other notes you have about this piece of feedback. [feedback_notes|textarea]
 
 ## Reflect on the project [page_reflectOnProject]
+
+* On this page you will answer some questions to reflect in general on the entire project. [project_reflectLabel|label]
 
 * What have you learned from the stories you heard in this project? [project_reflect_stories|textarea]
 * What did you learn about your facilitation practice in this project? [project_reflect_facilitation|textarea]
@@ -893,13 +950,14 @@ the project to someone, and help people with requests about the project.
 
 ## Prepare outline of project presentation [page_prepareProjectPresentation]
 
-* You can build your presentation about your project from elements [project_presentationElementsList|grid|page_addPresentationElement]
-(or points of discussion) you want to tell people about.
+* On this page you can build a presentation about your project to show to others. [project_presentationLabel|label]
 
-* Now you can export your outline, open it in your word processor, and add material to it [projectPresentation_presentationLabel|label]
+* There are elements (points of discussion) to present about your project. [project_presentationElementsList|grid|page_addPresentationElement]
+
+* After you finish adding elements for your presentation, you can export the elements, open them in your word processor, and add material [projectPresentation_presentationLabel|label]
 from any of the stage reports (or the final project report).
 
-* Export this outline [projectPresentation_exportPresentationOutlineButton|button]
+* Export these elements [projectPresentation_exportPresentationOutlineButton|button]
 
 ## Add element to project presentation outline [page_addPresentationElement|popup]
 
@@ -911,11 +969,13 @@ from any of the stage reports (or the final project report).
 
 ## Respond to requests for post-project support [page_projectRequests]
 
-* You can enter requests for information or help as your project winds down here. [project_returnRequestsList|grid|page_addNewReturnRequest]
+* On this page you can keep track of requests for help as your project winds down.
+
+* Enter requests for help here. [project_returnRequestsList|grid|page_addNewReturnRequest]
 
 ## Enter project request [page_addNewReturnRequest|popup]
 
-* Request | What was the request? [returnRequest_text|textarea]
+* Request | What is the request? [returnRequest_text|textarea]
 * Type | What type of request is this? [returnRequest_type|select|help with their own projects;help with sustaining story exchange;help with examining this project's stories and results;help learning about story work;other]
 * Satisfied | Do you consider this request to have been satisfied? [returnRequest_isMet|boolean]
 * What happened | What has happened in relation to this request? [returnRequest_whatHappened|textarea]
