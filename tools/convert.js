@@ -177,8 +177,8 @@ function convert() {
             // console.log("comment line", line);
             // if (lastPage.description) lastPage.description += "\n";
             // lastPage.description += line;
-            lastQuestion = {"id": "COMMENT_" + lastPage.id + "_" + (++commentNumberInPage), "text": line, "type": "label", "options": null};
-            lastPage.questions.push(lastQuestion);
+            // lastQuestion = {"id": "COMMENT_" + lastPage.id + "_" + (++commentNumberInPage), "text": line, "type": "label", "options": null};
+            // lastPage.questions.push(lastQuestion);
         } else if (lastQuestion && line) {
             if (lastQuestion.text) lastQuestion.text += "\n";
             lastQuestion.text += line;
@@ -299,7 +299,7 @@ var modelTypes = {
         graphBrowser: 1,
         clusterSpace: 1,
         quizScoreResult: 1,
-        report: 1,
+        report: 1
 };
 
 function generateModel() {
@@ -369,7 +369,6 @@ function generateModel() {
         console.log("unusedType2: ", key2);
     }
     console.log("Output", JSON.stringify(moreModels, null, "  "));
-
 }
 
 function createLayout() {

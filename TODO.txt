@@ -8,7 +8,6 @@ PRIORITY:
 - make quizScoreResult work
 - make whole planning phase work
 - make "copy draft answers" in planning phase work
-- don't display commented lines from design file
 
 if time
 - make templates work
@@ -137,7 +136,7 @@ NOT DOING Create new pages when add new participant groups
 DONE Add select at bottom of each page -- this page has been: intentionally skipped;partially completed;completed
 DONE Participant questions need to have options and ids and translations
 DONE view and add buttons after grid, nested box appears under grid
-
+DONE don't display commented lines from design file
 
 ======= CYNTHIA
 

@@ -6,38 +6,7 @@ define(
         "name": "Dashboard",
         "description": "",
         "isHeader": true,
-        "questions": [
-            {
-                "id": "COMMENT_page_dashboard_1",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_dashboard_2",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_dashboard_3",
-                "text": "//                                                       PLANNING",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_dashboard_4",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_dashboard_5",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
-            }
-        ]
+        "questions": []
     },
     {
         "id": "page_planning",
@@ -199,12 +168,6 @@ define(
                 "text": "Please describe this group of participants.\nFor example, you might want to record any observations you have made about this group.\nWhat do you know about them?",
                 "shortText": "Description",
                 "type": "textarea"
-            },
-            {
-                "id": "COMMENT_page_addParticipantGroup_1",
-                "text": "// ## Project aspects [page_aspectsTable|questionsTable]",
-                "type": "label",
-                "options": null
             }
         ]
     },
@@ -653,12 +616,6 @@ define(
                 "options": "unknown;impossible;difficult;doable;easy"
             },
             {
-                "id": "COMMENT_page_assessStorySharing_1",
-                "text": "// should have results overall and for each category of question",
-                "type": "label",
-                "options": null
-            },
-            {
                 "id": "assessment_result",
                 "text": "This is your combined test result.",
                 "type": "quizScoreResult"
@@ -753,36 +710,6 @@ define(
                 "text": "Project planning report",
                 "type": "report",
                 "options": "planning"
-            },
-            {
-                "id": "COMMENT_page_readPlanningReport_1",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_readPlanningReport_2",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_readPlanningReport_3",
-                "text": "//                                                   COLLECTION DESIGN",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_readPlanningReport_4",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_readPlanningReport_5",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
             }
         ]
     },
@@ -1273,36 +1200,6 @@ define(
                 "text": "Collection design report",
                 "type": "report",
                 "options": "collectionDesign"
-            },
-            {
-                "id": "COMMENT_readCollectionDesignReport_1",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_readCollectionDesignReport_2",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_readCollectionDesignReport_3",
-                "text": "//                                                  COLLECTION PROCESS",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_readCollectionDesignReport_4",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_readCollectionDesignReport_5",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
             }
         ]
     },
@@ -1371,20 +1268,7 @@ define(
         "name": "Enter stories",
         "description": "",
         "isHeader": false,
-        "questions": [
-            {
-                "id": "COMMENT_page_enterStories_1",
-                "text": "// the info shown here is what was designed for a story form - how to specify that",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_enterStories_2",
-                "text": "// User can enter data here for stories received via paper forms",
-                "type": "label",
-                "options": null
-            }
-        ]
+        "questions": []
     },
     {
         "id": "page_reviewIncomingStories",
@@ -1620,36 +1504,6 @@ define(
                 "text": "Collection process report",
                 "type": "report",
                 "options": "collectionProcess"
-            },
-            {
-                "id": "COMMENT_page_readCollectionProcessReport_1",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_readCollectionProcessReport_2",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_readCollectionProcessReport_3",
-                "text": "//                                                       CATALYSIS",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_readCollectionProcessReport_4",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_readCollectionProcessReport_5",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
             }
         ]
     },
@@ -1720,12 +1574,6 @@ define(
                 "type": "label"
             },
             {
-                "id": "COMMENT_page_browseGraphs_1",
-                "text": "// graph browser has button to add result to observation (existing or new)",
-                "type": "label",
-                "options": null
-            },
-            {
                 "id": "graphBrowserDisplay",
                 "text": "Graph browser",
                 "type": "graphBrowser"
@@ -1766,18 +1614,6 @@ define(
                 "text": "How many results do you want to see per test type?",
                 "type": "select",
                 "options": "5;10;15;20;25;30"
-            },
-            {
-                "id": "COMMENT_page_reviewTrends_1",
-                "text": "// when user changes any of the options above, the trend report below should update",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_reviewTrends_2",
-                "text": "// trends report has button to add result to observation (existing or new)",
-                "type": "label",
-                "options": null
             },
             {
                 "id": "reviewTrends_display",
@@ -2026,18 +1862,6 @@ define(
                 "type": "label"
             },
             {
-                "id": "COMMENT_page_clusterInterpretations_1",
-                "text": "// ideally, when they are done with this, the circles marked as group names",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_clusterInterpretations_2",
-                "text": "// will get copied into the perspectives list seen in the next page",
-                "type": "label",
-                "options": null
-            },
-            {
                 "id": "clusterInterpretations_clusterSpace",
                 "text": "Cluster interpretations into perspectives",
                 "type": "clusterSpace",
@@ -2100,12 +1924,6 @@ define(
                 "text": "Interpretations linked to this perspective",
                 "type": "annotationsGrid",
                 "options": "page_annotateInterpretationForPerspective"
-            },
-            {
-                "id": "COMMENT_page_addPerspective_1",
-                "text": "// all of these popups could go away if there is an editable field on the grid",
-                "type": "label",
-                "options": null
             }
         ]
     },
@@ -2167,36 +1985,6 @@ define(
                 "text": "Catalysis report",
                 "type": "report",
                 "options": "catalysis"
-            },
-            {
-                "id": "COMMENT_page_readCatalysisReport_1",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_readCatalysisReport_2",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_readCatalysisReport_3",
-                "text": "//                                                       SENSEMAKING",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_readCatalysisReport_4",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_readCatalysisReport_5",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
             }
         ]
     },
@@ -2557,12 +2345,6 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "COMMENT_page_addResonantStory_1",
-                "text": "// this is not a story browser, it is a list of all stories, and the one selected will be copied to the resonant stories list for this session when they click ok on this popup",
-                "type": "label",
-                "options": null
-            },
-            {
                 "id": "storiesListChoose",
                 "text": "Choose a story to mark as a resonant story for this sensemaking session.",
                 "type": "storiesList"
@@ -2662,36 +2444,6 @@ define(
                 "text": "Sensemaking report",
                 "type": "report",
                 "options": "sensemaking"
-            },
-            {
-                "id": "COMMENT_page_readSensemakingReport_1",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_readSensemakingReport_2",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_readSensemakingReport_3",
-                "text": "//                                                       INTERVENTION",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_readSensemakingReport_4",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_readSensemakingReport_5",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
             }
         ]
     },
@@ -3107,36 +2859,6 @@ define(
                 "text": "Intervention report",
                 "type": "report",
                 "options": "intervention"
-            },
-            {
-                "id": "COMMENT_page_interventionReport_1",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_interventionReport_2",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_interventionReport_3",
-                "text": "//                                                       RETURN",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_interventionReport_4",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_interventionReport_5",
-                "text": "/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
-                "type": "label",
-                "options": null
             }
         ]
     },
