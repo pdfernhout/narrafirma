@@ -317,7 +317,7 @@ define([
         for (var questionIndex in questions) {
             var question = questions[questionIndex];
             // console.log("insert", questionIndex, question);
-            if (!question) console.log("ERROR in uestion definitions for ", questionsDiv, questionIndex, questions);
+            if (!question) console.log("ERROR in question definitions for ", questionsDiv, questionIndex, questions);
             question.index = questionIndex;
             insertQuestionIntoDiv(question, questionsDiv);
         }
