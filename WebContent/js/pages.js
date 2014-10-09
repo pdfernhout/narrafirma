@@ -47,7 +47,7 @@ define(
         "questions": [
             {
                 "id": "project_projectPlanningLabel",
-                "text": "In the planning phase you will make decisions about how your project will proceed.\nYou will think about your goals, your topic, your participants, and opportunities and dangers you might encounter during the project.",
+                "text": "In the planning phase of your PNI project, you will make decisions about how your project will proceed.\nYou will think about your goals, your topic, your participants, and any opportunities and dangers you might encounter during the project.",
                 "type": "label"
             },
             {
@@ -83,7 +83,7 @@ define(
             },
             {
                 "id": "project_topic",
-                "text": "What is a brief name for the project's primary topic?",
+                "text": "Enter a brief name for the project's primary topic.",
                 "shortText": "Project topic",
                 "type": "text"
             },
@@ -113,7 +113,7 @@ define(
             },
             {
                 "id": "project_reportEndText",
-                "text": "Enter any other information you want to appear at the bottom of project reports (as notes).",
+                "text": "Enter any other information you want to appear at the bottom of project reports.",
                 "shortText": "Report end text",
                 "type": "textarea"
             }
@@ -127,7 +127,7 @@ define(
         "questions": [
             {
                 "id": "project_draftQuestionsLabel",
-                "text": "On this page you will answer some questions about your project's goals, relationships, focus, range, scope, and emphasis.\nIf you don't have good answers for these questions right now, don't worry; you will have a chance to come back and work on these answers again later.",
+                "text": "On this page you will answer some questions about your project's goals, relationships, focus, range, scope, and emphasis.\nIf you don't have good answers for these questions right now, don't worry; you will have a chance to work on these answers again later.",
                 "type": "label"
             },
             {
@@ -175,7 +175,7 @@ define(
             },
             {
                 "id": "project_participantGroupsList",
-                "text": "Please add participant groups in the list below (typically up to three groups). More details for each group will be added later.",
+                "text": "Please add participant groups in the list below (typically up to three groups).",
                 "type": "grid",
                 "options": "page_addParticipantGroup"
             }
@@ -190,7 +190,7 @@ define(
         "questions": [
             {
                 "id": "participantGroup_name",
-                "text": "Please name this group of participants from whom the project needs to hear (such as \"doctors\", \"students\", or \"staff\").",
+                "text": "Please name this group of participants (for example, \"doctors\", \"students\", \"staff\").",
                 "shortText": "Name",
                 "type": "text"
             },
@@ -202,18 +202,6 @@ define(
             },
             {
                 "id": "COMMENT_page_addParticipantGroup_1",
-                "text": "// ## Consider project aspects [page_projectAspects|repeating|participantGroups]",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_addParticipantGroup_2",
-                "text": "// * Please answer these questions about each participant group. [participantGroup_aspectsList|questionsTable|page_aspectsTable;participants_firstGroupName;participants_secondGroupName;participants_thirdGroupName]",
-                "type": "label",
-                "options": null
-            },
-            {
-                "id": "COMMENT_page_addParticipantGroup_3",
                 "text": "// ## Project aspects [page_aspectsTable|questionsTable]",
                 "type": "label",
                 "options": null
@@ -399,7 +387,7 @@ define(
         "questions": [
             {
                 "id": "project_projectStoriesList",
-                "text": "Project stories are stories you tell yourself about your project\nin order to think about what might happen in it (so you can plan it better).",
+                "text": "On this page you will tell yourself some stories about how your project might play out.\nThese \"project stories\" will help you think about how best to plan the project.",
                 "type": "grid",
                 "options": "page_projectStory"
             }
@@ -414,7 +402,7 @@ define(
         "questions": [
             {
                 "id": "projectStory_scenario",
-                "text": "Start by choosing a scenario that starts your project story.",
+                "text": "Start by choosing a scenario for your project story.",
                 "shortText": "Scenario",
                 "type": "select",
                 "options": "ask me anything;magic ears;fly on the wall;project aspects;my own scenario type"
@@ -466,7 +454,7 @@ define(
         "questions": [
             {
                 "id": "storyElementsInstructions",
-                "text": "Here are some instructions on how to create story elements from your project stories.\n<ol>\n<li>Choose one or two types of story element (characters, situations, values, themes, relationships, motivations, beliefs, conflicts).</li>\n<li>For each story, come up with as many answers to that element's question as you can. Write the answers on sticky notes.</li>\n<li>The questions are:</li>\n<ul>\n<li>Characters: Who is doing things in this story?</li>\n<li>Situations: What is going on in this story?</li>\n<li>Values: What matters to the characters in this story?</li>\n<li>Themes: What is this story about?</li>\n<li>Relationships: How are the characters related in this story?</li>\n<li>Motivations: Why do the characters do what they do in this story?</li>\n<li>Beliefs: What do people believe in this story?</li>\n<li>Conflicts: Who or what stands in opposition in this story?</li>\n</ul>\n<li>Once you have answered the question(s) you chose for each story, cluster the sticky notes into groups. Place like with like.</li>\n<li>Give each group of sticky notes a name.</li>\n<li>Clear a \"halo\" of space around each group's name.</li>\n<li>In the halo, write 2-5 good and bad attributes (advantages and disadvantages, opportunities and dangers) of each group of sticky notes.</li>\n<li>Copy or move the new good/bad attributes to a new space. Mix them all together.</li>\n<li>Cluster the attributes into groups.</li>\n<li>Name the groups. These are your story elements.</li>\n</ol>",
+                "text": "Here are some instructions on how to create story elements from your project stories.\nCreating story elements helps you think about what is going on in the stories you told.\nYou can enter your story elements on the next page.\n<ol>\n<li>Choose one or two types of story element (characters, situations, values, themes, relationships, motivations, beliefs, conflicts).</li>\n<li>For each story, come up with as many answers to that element's question as you can. Write the answers on sticky notes.</li>\n<li>The questions are:</li>\n<ul>\n<li>Characters: Who is doing things in this story?</li>\n<li>Situations: What is going on in this story?</li>\n<li>Values: What matters to the characters in this story?</li>\n<li>Themes: What is this story about?</li>\n<li>Relationships: How are the characters related in this story?</li>\n<li>Motivations: Why do the characters do what they do in this story?</li>\n<li>Beliefs: What do people believe in this story?</li>\n<li>Conflicts: Who or what stands in opposition in this story?</li>\n</ul>\n<li>Once you have answered the question(s) you chose for each story, cluster the sticky notes into groups. Place like with like.</li>\n<li>Give each group of sticky notes a name.</li>\n<li>Clear a \"halo\" of space around each group's name.</li>\n<li>In the halo, write 2-5 good and bad attributes (advantages and disadvantages, opportunities and dangers) of each group of sticky notes.</li>\n<li>Copy or move the new good/bad attributes to a new space. Mix them all together.</li>\n<li>Cluster the attributes into groups.</li>\n<li>Name the groups. These are your story elements.</li>\n</ol>",
                 "type": "label"
             }
         ]
@@ -479,7 +467,7 @@ define(
         "questions": [
             {
                 "id": "project_projectStoryElementsList",
-                "text": "You can create story elements from the project stories you have told\nin order to think about what those stories mean about how you should plan your project.",
+                "text": "On this page you can enter the story elements you created on the previous page.",
                 "type": "grid",
                 "options": "page_addStoryElement"
             }
@@ -507,7 +495,7 @@ define(
             },
             {
                 "id": "storyElement_description",
-                "text": "You can describe it more fully here.",
+                "text": "You can describe the story element more fully here.",
                 "shortText": "Description",
                 "type": "textarea"
             }
@@ -690,7 +678,7 @@ define(
         "questions": [
             {
                 "id": "improvePlanningDrafts",
-                "text": "Please review and improve your draft answers based on your consideration of project aspects and your project stories.",
+                "text": "On this page you can review and improve your draft answers to the PNI planning questions\nbased on your consideration of project aspects and your project stories.",
                 "type": "label"
             },
             {
@@ -744,7 +732,7 @@ define(
         "questions": [
             {
                 "id": "project_synopsis",
-                "text": "Please summarize your project in one or two sentences.",
+                "text": "On this page you can write your project synopsis, a one or two sentence summary of what matters most about your project.",
                 "type": "textarea"
             }
         ]
@@ -806,7 +794,7 @@ define(
         "questions": [
             {
                 "id": "project_collectionDesignStartLabel",
-                "text": "In the collection design phase, you will decide on story collection venues, create some story eliciting and\nstory interpretation questions, design your story collection form, and plan any story collection sessions you want to hold.",
+                "text": "In the collection design phase of your PNI project, you will decide on story collection venues,\ncreate some story eliciting and story interpretation questions, design your story collection form, and plan any story collection sessions you want to hold.",
                 "type": "label"
             },
             {
@@ -879,10 +867,21 @@ define(
         "isHeader": false,
         "questions": [
             {
+                "id": "project_elicitingQuestionsLabel",
+                "text": "On this page you will design the eliciting questions you use to ask people to tell stories.\nYou need at least one question for people to answer. Giving people more than one question to choose from\nis recommended.",
+                "type": "label"
+            },
+            {
                 "id": "project_elicitingQuestionsList",
-                "text": "Eliciting questions ask people to tell stories.\nYou need at least one, and preferably three to five questions people can pick from to answer.",
+                "text": "These are the questions you will be asking.",
                 "type": "grid",
                 "options": "page_addElicitingQuestion"
+            },
+            {
+                "id": "elicitingQuestionRecommendations",
+                "text": "Recommendations for eliciting questions",
+                "type": "recommendationTable",
+                "options": "Eliciting questions"
             }
         ]
     },
@@ -894,14 +893,8 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "elicitingQuestionRecommendations",
-                "text": "Recommendations for eliciting questions",
-                "type": "recommendationTable",
-                "options": "Eliciting questions"
-            },
-            {
                 "id": "elicitingQuestion_text",
-                "text": "Enter a question with which to ask people to tell stories.",
+                "text": "Enter a story-eliciting question.",
                 "shortText": "Question",
                 "type": "textarea"
             },
@@ -927,10 +920,21 @@ define(
         "isHeader": false,
         "questions": [
             {
+                "id": "project_storyQuestionsLabel",
+                "text": "On this page you will write your questions to ask people about their stories.",
+                "type": "label"
+            },
+            {
                 "id": "project_storyQuestionsList",
-                "text": "These are the questions you will be asking people about stories.",
+                "text": "These are the questions you will be asking about stories.",
                 "type": "grid",
                 "options": "page_addStoryQuestion"
+            },
+            {
+                "id": "storyQuestionRecommendations",
+                "text": "Recommendations for story questions",
+                "type": "recommendationTable",
+                "options": "storyQuestions"
             }
         ]
     },
@@ -942,12 +946,6 @@ define(
         "type": "popup",
         "questions": [
             {
-                "id": "storyQuestionRecommendations",
-                "text": "Recommendations for story questions",
-                "type": "recommendationTable",
-                "options": "storyQuestions"
-            },
-            {
                 "id": "storyQuestion_text",
                 "text": "Enter a question to ask people about their stories.",
                 "shortText": "Question",
@@ -955,20 +953,26 @@ define(
             },
             {
                 "id": "storyQuestion_type",
-                "text": "What type of question is this?",
+                "text": "What type of question is this?\nThe question types are:\n<ul>\n<li>boolean: yes and no choices</li>\n<li>label: not a question, just text</li>\n<li>header: same as a label, only in bold</li>\n<li>checkbox: one check box (enter label in options)</li>\n<li>checkBoxes: a series of checkboxes (enter label in options)</li>\n<li>text: a one-line free text field</li>\n<li>textarea: a multi-line free text field</li>\n<li>select: a drop-down box (enter choices in options)</li>\n<li>radio: a set of mutually-exclusive radio buttons (enter choices in options)</li>\n<li>slider: a range from 0 to 100 (enter end labels in options)</li>\n</ul>",
                 "shortText": "Type",
                 "type": "select",
                 "options": "boolean;label;header;checkbox;checkBoxes;text;textarea;select;radio;slider"
             },
             {
                 "id": "storyQuestion_shortName",
-                "text": "Enter a short name we can use to refer to the question. (This name must be unique to the project.)",
+                "text": "Enter a short name we can use to refer to the question. (It must be unique within the project.)",
                 "shortText": "Short name",
                 "type": "text"
             },
             {
+                "id": "storyQuestion_options",
+                "text": "If your question requires choices, enter them here (one per line).",
+                "shortText": "Options",
+                "type": "textarea"
+            },
+            {
                 "id": "storyQuestion_help",
-                "text": "If you want to provide help to people answering the question, enter it here.",
+                "text": "If you want to provide popup help to people answering the question, enter it here.",
                 "shortText": "Help",
                 "type": "textarea"
             },
@@ -987,10 +991,21 @@ define(
         "isHeader": false,
         "questions": [
             {
+                "id": "project_participantQuestionsLabel",
+                "text": "On this page you will write questions to ask people about themselves.",
+                "type": "label"
+            },
+            {
                 "id": "project_participantQuestionsList",
                 "text": "These are the questions you will be asking people about themselves.",
                 "type": "grid",
                 "options": "page_addParticipantQuestion"
+            },
+            {
+                "id": "participantQuestionRecommendations",
+                "text": "Recommendations for participant questions",
+                "type": "recommendationTable",
+                "options": "participantQuestions"
             }
         ]
     },
@@ -1001,12 +1016,6 @@ define(
         "isHeader": false,
         "type": "popup",
         "questions": [
-            {
-                "id": "participantQuestionRecommendations",
-                "text": "Recommendations for participant questions",
-                "type": "recommendationTable",
-                "options": "participantQuestions"
-            },
             {
                 "id": "participantQuestion_text",
                 "text": "Enter a question to ask people about themselves.",
@@ -1022,9 +1031,15 @@ define(
             },
             {
                 "id": "participantQuestion_shortName",
-                "text": "Enter a short name we can use to refer to the question. (This name must be unique to the project.)",
+                "text": "Enter a short name we can use to refer to the question. (It must be unique within the project.)",
                 "shortText": "Short name",
                 "type": "text"
+            },
+            {
+                "id": "participantQuestion_options",
+                "text": "If your question has choices, enter them here (one per line).",
+                "shortText": "Options",
+                "type": "textarea"
             },
             {
                 "id": "participantQuestion_help",
@@ -1047,6 +1062,11 @@ define(
         "isHeader": false,
         "questions": [
             {
+                "id": "questionFormLabel",
+                "text": "On this page you will add any information you want to place on your question form other than the questions on it.",
+                "type": "label"
+            },
+            {
                 "id": "questionForm_title",
                 "text": "Please enter a title for the question form.",
                 "type": "text"
@@ -1058,12 +1078,12 @@ define(
             },
             {
                 "id": "questionForm_startText",
-                "text": "Please enter an introduction to be shown at the start of the form, after the title",
+                "text": "Please enter an introduction to be shown at the start of the form, after the title.",
                 "type": "textarea"
             },
             {
                 "id": "questionForm_endText",
-                "text": "Please enter any text to be shown at the end of the form",
+                "text": "Please enter any text to be shown at the end of the form.",
                 "type": "textarea"
             }
         ]
@@ -1075,9 +1095,9 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "willBeUsingStoryCollectionSessions",
-                "text": "Do you plan to collect stories in group sessions? (If not, you can skip the rest of this page.)",
-                "type": "boolean"
+                "id": "collectionSessionsLabel",
+                "text": "On this page you will design group sessions in which you will collect stories.\nIf you don't plan to collect stories using group sessions, you can skip this page.",
+                "type": "label"
             },
             {
                 "id": "collectionSessionRecommendations",
@@ -1114,13 +1134,13 @@ define(
             },
             {
                 "id": "collectionSessionPlan_duration",
-                "text": "How long will this session be?",
+                "text": "How long will each session be?",
                 "shortText": "Length",
                 "type": "text"
             },
             {
                 "id": "collectionSessionPlan_times",
-                "text": "At what dates and times will the session take place?",
+                "text": "At what dates and times will these sessions take place?",
                 "shortText": "Time",
                 "type": "text"
             },
@@ -1156,7 +1176,7 @@ define(
             },
             {
                 "id": "collectionSessionPlan_activitiesList",
-                "text": "Activities within story collection sessions can be simple instructions\nor complicated exercises (like the creation of timelines).",
+                "text": "Here you can enter some activities you plan for the session.\nActivities within story collection sessions can be simple instructions or complicated exercises (like the creation of timelines).",
                 "type": "grid",
                 "options": "page_addCollectionSessionActivity"
             },
@@ -1195,7 +1215,7 @@ define(
             },
             {
                 "id": "collectionSessionPlan_activity_optionalParts",
-                "text": "Describe optional elaborations you might or might not use in this activity.",
+                "text": "Describe any optional elaborations you might or might not use in this activity.",
                 "shortText": "Optional elaborations",
                 "type": "textarea"
             },
@@ -1294,7 +1314,7 @@ define(
         "questions": [
             {
                 "id": "collectionProcessIntro",
-                "text": "In the collection process phase, you will review incoming stories and enter records of story collection sessions.",
+                "text": "In the collection process phase of your PNI project, you will review incoming stories and enter records of story collection sessions.",
                 "type": "label"
             },
             {
@@ -1312,7 +1332,7 @@ define(
         "questions": [
             {
                 "id": "printQuestionsForm_introduction",
-                "text": "Here you can print your story questions form for distribution to participants.",
+                "text": "On this page you can print your story questions form for distribution to participants.",
                 "type": "label"
             },
             {
@@ -1373,6 +1393,11 @@ define(
         "isHeader": false,
         "questions": [
             {
+                "id": "collectedStoriesDuringCollectionLabel",
+                "text": "On this page you can see your collected stories as they come in.",
+                "type": "label"
+            },
+            {
                 "id": "collectedStoriesDuringCollection",
                 "text": "Collected stories",
                 "type": "storyBrowser"
@@ -1412,12 +1437,12 @@ define(
         "questions": [
             {
                 "id": "project_collectionRecordsIntroductionLabel",
-                "text": "Note: If you did not hold any story collection sessions, you can skip this page.",
+                "text": "On this page you can enter records for the group story sessions you held.\nIf you did not hold any group story sessions, you can skip this page.",
                 "type": "label"
             },
             {
                 "id": "project_collectionSessionRecordsList",
-                "text": "Here you can record what went on in your story collection sessions.",
+                "text": "Enter here what went on in your story collection sessions.",
                 "type": "grid",
                 "options": "page_addCollectionSessionRecord"
             }
@@ -1438,7 +1463,7 @@ define(
             },
             {
                 "id": "collectionSessionRecord_whenWhere",
-                "text": "When and where did this session take place?",
+                "text": "When and where did the session take place?",
                 "shortText": "When and where",
                 "type": "textarea"
             },
@@ -1468,7 +1493,7 @@ define(
             },
             {
                 "id": "collectionSessionRecord_reflectionsLabel",
-                "text": "Please answer these questions about the session.",
+                "text": "Use the questions below to reflect on the session.",
                 "type": "label"
             },
             {
@@ -1636,7 +1661,7 @@ define(
         "questions": [
             {
                 "id": "catalysisIntro",
-                "text": "In the catalysis phase you will look for patterns in stories and answer to questions about them,\nand pepare materials for people to use in sensemaking.",
+                "text": "In the catalysis phase of your PNI project, you will look for patterns\nand pepare materials for use in sensemaking.",
                 "type": "label"
             },
             {
@@ -1653,6 +1678,11 @@ define(
         "isHeader": false,
         "questions": [
             {
+                "id": "collectedStoriesAfterCollectionLabel",
+                "text": "On this page you will review your collected stories.\nYou can save stories (or groups of stories) to observations for later use.\nYou can also save excerpts (parts of stories) for later use.",
+                "type": "label"
+            },
+            {
                 "id": "collectedStoriesAfterCollection",
                 "text": "Collected stories",
                 "type": "storyBrowser",
@@ -1667,6 +1697,11 @@ define(
         "isHeader": false,
         "questions": [
             {
+                "id": "themeStoriesLabel",
+                "text": "On this page you will derive emergent themes from the collected stories.\nThe themes will appear in your data as answers to a \"Theme\" question, creating patterns you can use.",
+                "type": "label"
+            },
+            {
                 "id": "themeStories",
                 "text": "Theme stories",
                 "type": "storyThemer"
@@ -1679,6 +1714,11 @@ define(
         "description": "",
         "isHeader": false,
         "questions": [
+            {
+                "id": "graphBrowserLabel",
+                "text": "On this page you can look at patterns in the answers people gave about their stories,\nand save patterns to observations for later use.",
+                "type": "label"
+            },
             {
                 "id": "COMMENT_page_browseGraphs_1",
                 "text": "// graph browser has button to add result to observation (existing or new)",
@@ -1698,6 +1738,11 @@ define(
         "description": "",
         "isHeader": false,
         "questions": [
+            {
+                "id": "reviewTrendsLabel",
+                "text": "On this page you will look over the most significant statistical results\nand save some to observations for later use.",
+                "type": "label"
+            },
             {
                 "id": "reviewTrends_statTests",
                 "text": "Which statistical tests do you want to consider?",
@@ -1804,7 +1849,7 @@ define(
             },
             {
                 "id": "observation_firstInterpretation_name",
-                "text": "Please give this interpretation a name (so you can refer to it later).",
+                "text": "Please give this interpretation a short name (so you can refer to it later).",
                 "shortText": "First interpretation name",
                 "type": "text"
             },
@@ -1823,19 +1868,19 @@ define(
             },
             {
                 "id": "observation_competingInterpretation_text",
-                "text": "Enter an interpretation that competes with the first one.\nWhat else could this pattern mean?",
+                "text": "Now enter an interpretation that competes with the first one.\nWhat <i>else</i> could this pattern mean?",
                 "shortText": "Competing interpretation",
                 "type": "textarea"
             },
             {
                 "id": "observation_competingInterpretation_name",
-                "text": "Please give this competing interpretation a name.",
+                "text": "Please give this competing interpretation a short name.",
                 "shortText": "Competing interpretation name",
                 "type": "text"
             },
             {
                 "id": "observation_competingInterpretation_idea",
-                "text": "Enter an idea that follows from your competing interpretation.",
+                "text": "If you like, enter an idea that follows from your competing interpretation.",
                 "shortText": "Competing interpretation idea",
                 "type": "textarea"
             },
@@ -1848,19 +1893,19 @@ define(
             },
             {
                 "id": "observation_thirdInterpretation_text",
-                "text": "If a third interpretation of the pattern comes to mind, enter it here.\nIs there anything else this pattern could mean?",
+                "text": "If a third interpretation of the pattern comes to mind, enter it here.\nIs there a third thing this pattern could mean?",
                 "shortText": "Third interpretation",
                 "type": "textarea"
             },
             {
                 "id": "observation_thirdInterpretation_name",
-                "text": "Please give this third interpretation a name.",
+                "text": "Please give this third interpretation a short name.",
                 "shortText": "Third interpretation name",
                 "type": "text"
             },
             {
                 "id": "observation_thirdInterpretation_idea",
-                "text": "Enter an idea that follows from your third interpretation.",
+                "text": "If you like, enter an idea that follows from your third interpretation.",
                 "shortText": "Third interpretation idea",
                 "type": "textarea"
             },
@@ -1936,7 +1981,7 @@ define(
             },
             {
                 "id": "excerpt_notes",
-                "text": "You can enter some notes about the excerpt here.",
+                "text": "Enter some notes about the excerpt.",
                 "type": "textarea"
             }
         ]
@@ -1949,7 +1994,7 @@ define(
         "questions": [
             {
                 "id": "project_savedExcerptsList",
-                "text": "These are the excerpts you have saved from stories as you looked at them\non the browse, graph, and review pages.",
+                "text": "These are the story excerpts you have saved.",
                 "type": "grid",
                 "options": "page_createNewExcerpt"
             }
@@ -1963,7 +2008,7 @@ define(
         "questions": [
             {
                 "id": "project_observationsDisplayList",
-                "text": "Collected observations",
+                "text": "These are the observations you have collected from the\nbrowse, graph, and trends pages.",
                 "type": "grid",
                 "options": "page_createOrEditObservation"
             }
@@ -1976,8 +2021,8 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "clusterInterpretations_introductionLabel",
-                "text": "Note: Do not cluster your interpretations unless you are sure you have finished collecting them.",
+                "id": "clusterInterpretationsLabel",
+                "text": "On this page you will cluster together the interpretations you have collected (based on observations)\nto create perspectives for your catalysis report.\nNote: Do not cluster your interpretations unless you are sure you have finished collecting them.",
                 "type": "label"
             },
             {
@@ -2007,8 +2052,13 @@ define(
         "isHeader": false,
         "questions": [
             {
+                "id": "project_perspectivesLabel",
+                "text": "On this page you will describe the perspectives that resulted from clustering\nyour interpretations.",
+                "type": "label"
+            },
+            {
                 "id": "project_perspectivesList",
-                "text": "Perspectives",
+                "text": "These are the perspectives you have created from interpretations.",
                 "type": "grid",
                 "options": "page_addPerspective"
             }
@@ -2158,7 +2208,7 @@ define(
         "questions": [
             {
                 "id": "sensemakingIntroLabel",
-                "text": "In the sensemaking phase, you will plan sensemaking sessions and record what happened in them.",
+                "text": "In the sensemaking phase of your PNI project, you will plan sensemaking sessions and record what happened in them.",
                 "type": "label"
             },
             {
@@ -2174,6 +2224,11 @@ define(
         "description": "",
         "isHeader": false,
         "questions": [
+            {
+                "id": "project_sensemakingSessionPlansLabel",
+                "text": "On this page you create plans for your sensemaking sessions.",
+                "type": "label"
+            },
             {
                 "id": "sensemakingSessionRecommendations",
                 "text": "Recommendations for sensemaking sessions",
@@ -2209,7 +2264,7 @@ define(
             },
             {
                 "id": "sensemakingSessionPlan_duration",
-                "text": "How long will this session be?",
+                "text": "How long will this session last?",
                 "shortText": "Length",
                 "type": "text"
             },
@@ -2251,7 +2306,7 @@ define(
             },
             {
                 "id": "sensemakingSessionPlan_activitiesList",
-                "text": "Activities within sensemaking sessions can be simple instructions\nor complicated exercises (like the construction of composite stories).",
+                "text": "Here you can enter some activities you plan for the session.\nActivities within story collection sessions can be simple instructions or complicated exercises (like the creation of timelines).",
                 "type": "grid",
                 "options": "page_addSensemakingSessionActivity"
             },
@@ -2290,7 +2345,7 @@ define(
             },
             {
                 "id": "sensemakingSessionPlan_activity_optionalParts",
-                "text": "Describe optional elaborations you might or might not use in this activity.",
+                "text": "Describe any optional elaborations you might or might not use in this activity.",
                 "shortText": "Optional elaborations",
                 "type": "textarea"
             },
@@ -2339,8 +2394,13 @@ define(
         "isHeader": false,
         "questions": [
             {
+                "id": "project_sensemakingSessionRecordsLabel",
+                "text": "On this page you will enter records of what happened at your sensemaking sessions.",
+                "type": "label"
+            },
+            {
                 "id": "project_sensemakingSessionRecordsList",
-                "text": "Sensemaking sessions records",
+                "text": "Enter your sensemaking session records here.",
                 "type": "grid",
                 "options": "page_addSensemakingSessionRecord"
             }
@@ -2358,24 +2418,6 @@ define(
                 "text": "Please give this session record a name.",
                 "shortText": "Name",
                 "type": "text"
-            },
-            {
-                "id": "sensemakingSessionRecord_resonantStoriesList",
-                "text": "Resonant stories (pivot, voice, discovery)",
-                "type": "grid",
-                "options": "page_addResonantStory"
-            },
-            {
-                "id": "sensemakingSessionRecord_outcomesList",
-                "text": "Session outcomes (like discoveries and ideas)",
-                "type": "grid",
-                "options": "page_newSensemakingSessionOutcome"
-            },
-            {
-                "id": "sensemakingSessionRecord_constructionsList",
-                "text": "Group constructions",
-                "type": "grid",
-                "options": "page_newSensemakingSessionConstruction"
             },
             {
                 "id": "sensemakingSessionRecord_whenWhere",
@@ -2397,13 +2439,31 @@ define(
             },
             {
                 "id": "sensemakingSessionRecord_notes",
-                "text": "Enter additional notes on the session here.\nYour notes can include links to images or other documents.",
+                "text": "Enter general notes on the session here.\nYour notes can include links to images or other documents.",
                 "shortText": "Notes",
                 "type": "textarea"
             },
             {
+                "id": "sensemakingSessionRecord_resonantStoriesList",
+                "text": "If you discovered any resonant stories (pivot, voice, discovery) in this session,\nenter them here.",
+                "type": "grid",
+                "options": "page_addResonantStory"
+            },
+            {
+                "id": "sensemakingSessionRecord_outcomesList",
+                "text": "If your session ended with creating lists of outcomes (like discoveries and ideas),\nyou can enter them here.",
+                "type": "grid",
+                "options": "page_newSensemakingSessionOutcome"
+            },
+            {
+                "id": "sensemakingSessionRecord_constructionsList",
+                "text": "If your session involve creating any group constructions (like landscapes or timelines),\nyou can describe them here.",
+                "type": "grid",
+                "options": "page_newSensemakingSessionConstruction"
+            },
+            {
                 "id": "sensemakingSessionRecord_reflectionsLabel",
-                "text": "Please answer these questions about the session.",
+                "text": "Use the questions below to reflect on the session.",
                 "type": "label"
             },
             {
@@ -2643,7 +2703,7 @@ define(
         "questions": [
             {
                 "id": "interventionIntroLabel",
-                "text": "In the intervention phase, you will plan interventions and record information about them.",
+                "text": "In the intervention phase of your PNI project, you will plan interventions and record information about them.",
                 "type": "label"
             },
             {
@@ -2811,8 +2871,13 @@ define(
                 "options": "interventions"
             },
             {
-                "id": "project_interventionPlansList",
+                "id": "project_interventionLabel",
                 "text": "On this page you can design interventions that change the stories people tell\nin your community or organization.",
+                "type": "label"
+            },
+            {
+                "id": "project_interventionPlansList",
+                "text": "Enter your intervention plans here.",
                 "type": "grid",
                 "options": "page_addIntervention"
             }
@@ -2842,17 +2907,11 @@ define(
                 "id": "interventionPlan_description",
                 "text": "Please describe your plan for this intervention.",
                 "shortText": "Description",
-                "type": "text"
-            },
-            {
-                "id": "interventionPlan_duration",
-                "text": "Over what span of time will this intervention take place?",
-                "shortText": "Length",
-                "type": "text"
+                "type": "textarea"
             },
             {
                 "id": "interventionPlan_times",
-                "text": "When will the intervention start and stop?",
+                "text": "When will the intervention start and end?",
                 "shortText": "Time",
                 "type": "text"
             },
@@ -2870,7 +2929,7 @@ define(
             },
             {
                 "id": "interventionPlan_permission",
-                "text": "What sorts of permission will you need to carry out this intervention?",
+                "text": "Describe any permissions you will need to carry out this intervention.",
                 "shortText": "Permission",
                 "type": "textarea"
             },
@@ -2888,7 +2947,7 @@ define(
             },
             {
                 "id": "interventionPlan_space",
-                "text": "What spaces will you need to use?",
+                "text": "What spaces will you use?",
                 "shortText": "Spaces",
                 "type": "textarea"
             },
@@ -2900,7 +2959,7 @@ define(
             },
             {
                 "id": "interventionPlan_recording",
-                "text": "How will record the results of this intervention?",
+                "text": "How will you record the results of this intervention?",
                 "shortText": "Recording",
                 "type": "textarea"
             }
@@ -2913,8 +2972,13 @@ define(
         "isHeader": false,
         "questions": [
             {
+                "id": "project_interventionRecordsLabel",
+                "text": "On this page you will enter records of your interventions.",
+                "type": "label"
+            },
+            {
                 "id": "project_interventionRecordsList",
-                "text": "Intervention records",
+                "text": "Enter your intervention records here.",
                 "type": "grid",
                 "options": "page_addInterventionRecord"
             }
@@ -2935,13 +2999,13 @@ define(
             },
             {
                 "id": "interventionRecord_notes",
-                "text": "Enter your notes here.",
+                "text": "Enter any general notes on the intervention here.",
                 "shortText": "Notes",
                 "type": "textarea"
             },
             {
                 "id": "interventionRecord_reflectLabel",
-                "text": "Please reflect on this intervention.",
+                "text": "Use the questions below to reflect on the intervention.",
                 "type": "label"
             },
             {
@@ -3084,7 +3148,7 @@ define(
         "questions": [
             {
                 "id": "returnIntroLabel",
-                "text": "In the return phase, you will gather feedback, reflect on the project, possibly present\nthe project to someone, and help people with requests about the project.",
+                "text": "In the return phase of your PNI project, you will gather feedback, reflect on the project, possibly present\nthe project to someone, and help people with requests about the project.",
                 "type": "label"
             },
             {
@@ -3101,8 +3165,13 @@ define(
         "isHeader": false,
         "questions": [
             {
+                "id": "project_feedbackLabel",
+                "text": "On this page you will enter any feedback you gather about your project.",
+                "type": "label"
+            },
+            {
                 "id": "project_feedbackItemsList",
-                "text": "You can enter feedback you have gathered on your project here.",
+                "text": "You can enter specific pieces of feedback you have gathered here.",
                 "type": "grid",
                 "options": "page_enterFeedbackPiece"
             },
@@ -3152,8 +3221,14 @@ define(
                 "type": "text"
             },
             {
+                "id": "feedback_response",
+                "text": "What did you say or do (if anything) in response?",
+                "shortText": "Responpse",
+                "type": "text"
+            },
+            {
                 "id": "feedback_notes",
-                "text": "Please enter any other notes you have about this feedback.",
+                "text": "Please enter any other notes you have about this piece of feedback.",
                 "shortText": "Notes",
                 "type": "textarea"
             }
@@ -3165,6 +3240,11 @@ define(
         "description": "",
         "isHeader": false,
         "questions": [
+            {
+                "id": "project_reflectLabel",
+                "text": "On this page you will answer some questions to reflect in general on the entire project.",
+                "type": "label"
+            },
             {
                 "id": "project_reflect_stories",
                 "text": "What have you learned from the stories you heard in this project?",
@@ -3219,19 +3299,24 @@ define(
         "isHeader": false,
         "questions": [
             {
+                "id": "project_presentationLabel",
+                "text": "On this page you can build a presentation about your project to show to others.",
+                "type": "label"
+            },
+            {
                 "id": "project_presentationElementsList",
-                "text": "You can build your presentation about your project from elements\n(or points of discussion) you want to tell people about.",
+                "text": "There are elements (points of discussion) to present about your project.",
                 "type": "grid",
                 "options": "page_addPresentationElement"
             },
             {
                 "id": "projectPresentation_presentationLabel",
-                "text": "Now you can export your outline, open it in your word processor, and add material to it\nfrom any of the stage reports (or the final project report).",
+                "text": "After you finish adding elements for your presentation, you can export the elements, open them in your word processor, and add material\nfrom any of the stage reports (or the final project report).",
                 "type": "label"
             },
             {
                 "id": "projectPresentation_exportPresentationOutlineButton",
-                "text": "Export this outline",
+                "text": "Export these elements",
                 "type": "button"
             }
         ]
@@ -3282,8 +3367,12 @@ define(
         "isHeader": false,
         "questions": [
             {
+                "id": "FIXME_972",
+                "text": "On this page you can keep track of requests for help as your project winds down."
+            },
+            {
                 "id": "project_returnRequestsList",
-                "text": "You can enter requests for information or help as your project winds down here.",
+                "text": "Enter requests for help here.",
                 "type": "grid",
                 "options": "page_addNewReturnRequest"
             }
@@ -3298,7 +3387,7 @@ define(
         "questions": [
             {
                 "id": "returnRequest_text",
-                "text": "What was the request?",
+                "text": "What is the request?",
                 "shortText": "Request",
                 "type": "textarea"
             },
