@@ -60,6 +60,25 @@
 
 # Dashboard [page_dashboard]
 
+* Welcome to PNI Workbook. You can use this software to: [mainDashboardLabel|label]
+<ul>
+<li>plan your PNI project</li>
+<li>decide how you will collect stories</li>
+<li>write questions about stories</li>
+<li>plan group story sessions (and record what went on in them)</li>
+<li>collect or enter stories (and answers to questions)</li>
+<li>look at patterns in collected stories and answers</li>
+<li>build catalytic material</li>
+<li>plan sensemaking sessions (and record what went on in them)</li>
+<li>plan interventions (and record what went on in them)</li>
+<li>gather project feedback</li>
+<li>reflect on the project</li>
+<li>present the project to others</li>
+<li>preserve what you learned so you can use it on the next project</li>
+</ul>
+<p>Note: When finished, this page will bring together all of the dashboard pages from
+the phases of the project.</p>
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                       PLANNING
@@ -192,6 +211,7 @@ You can enter your story elements on the next page.
 <li>Copy or move the new good/bad attributes to a new space. Mix them all together.</li>
 <li>Cluster the attributes into groups.</li>
 <li>Name the groups. These are your story elements.</li>
+<li>You can enter your story elements on the next page.</li>
 </ol>
 
 ## Enter project story elements [page_enterProjectStoryElements]
