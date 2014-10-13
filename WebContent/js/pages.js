@@ -6,7 +6,14 @@ define(
         "name": "Dashboard",
         "description": "",
         "isHeader": true,
-        "questions": []
+        "questions": [
+            {
+                "id": "project_testImage",
+                "text": "A test image:",
+                "type": "image",
+                "options": "http://www.kurtz-fernhout.com/PlantStudio/featuresArrange.gif"
+            }
+        ]
     },
     {
         "id": "page_planning",
@@ -3089,7 +3096,7 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "FIXME_972",
+                "id": "FIXME_974",
                 "text": "On this page you can keep track of requests for help as your project winds down."
             },
             {
