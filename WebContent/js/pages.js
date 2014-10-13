@@ -14,9 +14,9 @@ define(
             },
             {
                 "id": "project_testImage",
-                "text": "A test image:",
+                "text": "This software is a companion for the book \"Working with Stories in  Your Community or Organization\" by Cynthia F. Kurtz",
                 "type": "image",
-                "options": "http://www.kurtz-fernhout.com/PlantStudio/featuresArrange.gif"
+                "options": "http://www.workingwithstories.org/WWS_BookCover_front.png"
             }
         ]
     },

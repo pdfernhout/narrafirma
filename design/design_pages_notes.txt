@@ -79,7 +79,7 @@
 <p>Note: When finished, this page will bring together all of the dashboard pages from
 the phases of the project.</p>
 
-* A test image: [project_testImage|image|http://www.kurtz-fernhout.com/PlantStudio/featuresArrange.gif]
+* This software is a companion for the book "Working with Stories in  Your Community or Organization" by Cynthia F. Kurtz [project_testImage|image|http://www.workingwithstories.org/WWS_BookCover_front.png]
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
