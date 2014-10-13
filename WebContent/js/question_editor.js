@@ -80,7 +80,8 @@ define([
         "questionAnswerCountOfTotalOnPage",
         "listCount",
         "function",
-        "toggleButton"
+        "toggleButton",
+        "image"
      ];
 
     var unsupportedTypes = {};
@@ -208,7 +209,7 @@ define([
         
         if (question.type === "boolean") {
            widgetToPlace = widgets.newBoolean(question.id);
-        } else if (question.type === "label" || question.type === "header") {
+        } else if (question.type === "label" || question.type === "header" || question.type === "image") {
             // Not adding input node for these
            //  widget = widgets.newLabel(question.id, question.text);
         } else if (question.type === "questionAnswer" || question.type === "questionAnswerCountOfTotalOnPage" || question.type === "listCount" || question.type === "function") {
@@ -259,6 +260,11 @@ define([
         
         if (question.type === "header") questionText = "<b>" + questionText + "<b>";
         
+        if (question.type === "image") {
+            var imageSource = question.options;
+            questionText = questionText + "<br>" + '<img src="' + imageSource + '" alt="Image for question: ' + questionText + '">';
+        }
+        
         var baseText = questionText;
         
         if (calculatedText !== null) questionText += " " + calculatedText;
@@ -299,7 +305,7 @@ define([
         if (helpWidget) questionDiv.appendChild(helpWidget.domNode);
         questionDiv.appendChild(document.createElement("br"));
         // TODO: Probably remove the trailer as no longer being used? Could it be useful? Need to adjust CSS margins if remove
-        questionDiv.appendChild(domConstruct.toDom('<div id="' + question.id + '_trailer"/>'));
+        // questionDiv.appendChild(domConstruct.toDom('<div id="' + question.id + '_trailer"/>'));
         questionDiv.appendChild(document.createElement("br"));
         questionsDiv.appendChild(questionDiv);
 

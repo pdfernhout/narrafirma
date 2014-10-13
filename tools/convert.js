@@ -54,7 +54,7 @@ var acceptableTypes = [
     "report", "checkBoxes", "templateList", "checkBoxesWithPull", "participantStoryForm", "storyBrowser",
     "excerptsList", "storyThemer", "graphBrowser", "trendsReport", "clusterSpace", "listCount",
     "questionAnswer", "questionAnswerCountOfTotalOnPage", "toggleButton", "boolean",
-    "observationsList"
+    "observationsList", "image"
 ];
 
 var usedIDs = {};
