@@ -53,7 +53,7 @@ define([
         var form = new Form();
         form.set("style", "width: 800px; height 800px; overflow: auto;");
         
-        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.5em solid red; display: block");
+        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.25em solid blue; display: block");
         
         addPage.addPageContents(form, popupPageDefinition);
         
