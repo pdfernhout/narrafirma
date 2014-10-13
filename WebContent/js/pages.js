@@ -755,10 +755,15 @@ define(
                 "type": "label"
             },
             {
-                "id": "venueRecommendations",
-                "text": "Venue recommendations",
-                "type": "recommendationTable",
-                "options": "Venues"
+                "id": "venueRecommendationsTable",
+                "text": "(Unfinished: This will be a table of venue recommendations\nrelated to the questions answered about participant groups.",
+                "type": "label"
+            },
+            {
+                "id": "mockup_recTable_venues",
+                "text": "It will look something like this.)",
+                "type": "image",
+                "options": "images/mockups/mockupRecTable.png"
             },
             {
                 "id": "venuesTable",
@@ -817,10 +822,15 @@ define(
                 "options": "page_addElicitingQuestion"
             },
             {
-                "id": "elicitingQuestionRecommendations",
-                "text": "Recommendations for eliciting questions",
-                "type": "recommendationTable",
-                "options": "Eliciting questions"
+                "id": "elicitingRecommendationsTable",
+                "text": "(Unfinished: This will be a table of recommendations for eliciting questions\nrelated to the questions answered about participant groups.",
+                "type": "label"
+            },
+            {
+                "id": "mockup_recTable_eliciting",
+                "text": "It will look something like this.)",
+                "type": "image",
+                "options": "images/mockups/mockupRecTable.png"
             }
         ]
     },
@@ -845,10 +855,8 @@ define(
                 "options": "what happened;directed question;undirected questions;point in time;event;extreme;surprise;people, places, things;fictional scenario;other"
             },
             {
-                "id": "templates_elicitingQuestions",
-                "text": "Or choose a question from this list.",
-                "type": "templateList",
-                "options": "elicitingQuestions"
+                "id": "FIXME_342",
+                "text": "(Unfinished: This will be a list of template questions the user can copy.)"
             }
         ]
     },
@@ -870,10 +878,15 @@ define(
                 "options": "page_addStoryQuestion"
             },
             {
-                "id": "storyQuestionRecommendations",
-                "text": "Recommendations for story questions",
-                "type": "recommendationTable",
-                "options": "storyQuestions"
+                "id": "storyQRecommendationsTable",
+                "text": "(Unfinished: This will be a table of recommendations for story questions\nrelated to the questions answered about participant groups.",
+                "type": "label"
+            },
+            {
+                "id": "mockup_recTable_storyQ",
+                "text": "It will look something like this.)",
+                "type": "image",
+                "options": "images/mockups/mockupRecTable.png"
             }
         ]
     },
@@ -916,10 +929,8 @@ define(
                 "type": "textarea"
             },
             {
-                "id": "templates_storyQuestions",
-                "text": "Or choose a question from this list.",
-                "type": "templateList",
-                "options": "storyQuestions"
+                "id": "FIXME_379",
+                "text": "(Unfinished: This will be a list of template questions the user can copy.)"
             }
         ]
     },
@@ -941,10 +952,15 @@ define(
                 "options": "page_addParticipantQuestion"
             },
             {
-                "id": "participantQuestionRecommendations",
-                "text": "Recommendations for participant questions",
-                "type": "recommendationTable",
-                "options": "participantQuestions"
+                "id": "partQRecommendationsTable",
+                "text": "(Unfinished: This will be a table of recommendations for participant questions\nrelated to the questions answered about participant groups.",
+                "type": "label"
+            },
+            {
+                "id": "mockup_recTable_partQ",
+                "text": "It will look something like this.)",
+                "type": "image",
+                "options": "images/mockups/mockupRecTable.png"
             }
         ]
     },
@@ -987,10 +1003,8 @@ define(
                 "type": "textarea"
             },
             {
-                "id": "templates_participantQuestions",
-                "text": "Or choose a question from this list.",
-                "type": "templateList",
-                "options": "participantQuestions"
+                "id": "FIXME_401",
+                "text": "(Unfinished: This will be a list of template questions the user can copy.)"
             }
         ]
     },
@@ -1039,10 +1053,15 @@ define(
                 "type": "label"
             },
             {
-                "id": "collectionSessionRecommendations",
-                "text": "Recommendations for story collection sessions",
-                "type": "recommendationTable",
-                "options": "collectionSessions"
+                "id": "collectionRecommendationsTable",
+                "text": "(Unfinished: This will be a table of recommendations for collection sessions\nrelated to the questions answered about participant groups.",
+                "type": "label"
+            },
+            {
+                "id": "mockup_recTable_collection",
+                "text": "It will look something like this.)",
+                "type": "image",
+                "options": "images/mockups/mockupRecTable.png"
             },
             {
                 "id": "project_collectionSessionPlansList",
@@ -1189,10 +1208,8 @@ define(
                 "type": "textarea"
             },
             {
-                "id": "templates_storyCollectionActivities",
-                "text": "Or choose an activity from this list.",
-                "type": "templateList",
-                "options": "storyCollectionActivities"
+                "id": "FIXME_455",
+                "text": "(Unfinished: This will be a list of template activities the user can copy.)"
             }
         ]
     },
@@ -1568,9 +1585,15 @@ define(
                 "type": "label"
             },
             {
-                "id": "themeStories",
-                "text": "Theme stories",
-                "type": "storyThemer"
+                "id": "mockupThemingLabel",
+                "text": "(Unfinished: The user will use this area to theme stories.",
+                "type": "label"
+            },
+            {
+                "id": "mockup_theming",
+                "text": "It will look something like this.)",
+                "type": "image",
+                "options": "images/mockups/mockupTheming.png"
             }
         ]
     },
@@ -1586,9 +1609,15 @@ define(
                 "type": "label"
             },
             {
-                "id": "graphBrowserDisplay",
-                "text": "Graph browser",
-                "type": "graphBrowser"
+                "id": "graphBrowserMockupLabel",
+                "text": "(Unfinished: This area will show graphs of patterns in the data.",
+                "type": "label"
+            },
+            {
+                "id": "mockup_graphBrowser",
+                "text": "It will look something like this.)",
+                "type": "image",
+                "options": "images/mockups/mockupGraphs.png"
             }
         ]
     },
@@ -1604,12 +1633,6 @@ define(
                 "type": "label"
             },
             {
-                "id": "reviewTrends_statTests",
-                "text": "Which statistical tests do you want to consider?",
-                "type": "checkBoxes",
-                "options": "chi-squared (differences between counts);t-test (differences between means);correlation"
-            },
-            {
                 "id": "reviewTrends_minSubsetSize",
                 "text": "How large should subsets of stories be to be considered for comparison?",
                 "type": "select",
@@ -1622,15 +1645,15 @@ define(
                 "options": "0.05;0.01"
             },
             {
-                "id": "reviewTrends_trendResults",
-                "text": "How many results do you want to see per test type?",
-                "type": "select",
-                "options": "5;10;15;20;25;30"
+                "id": "mockupTrendsLabel",
+                "text": "(Unfinished: This area will show the most significant statistical trends.",
+                "type": "label"
             },
             {
-                "id": "reviewTrends_display",
-                "text": "Trends report",
-                "type": "trendsReport"
+                "id": "mockup_trends",
+                "text": "It will look something like this.)",
+                "type": "image",
+                "options": "images/mockups/mockupTrends.png"
             }
         ]
     },
@@ -2030,10 +2053,15 @@ define(
                 "type": "label"
             },
             {
-                "id": "sensemakingSessionRecommendations",
-                "text": "Recommendations for sensemaking sessions",
-                "type": "recommendationTable",
-                "options": "sensemakingSessions"
+                "id": "sensemakingRecommendationsTable",
+                "text": "(Unfinished: This will be a table of recommendations for sensemaking sessions\nrelated to the questions answered about participant groups.",
+                "type": "label"
+            },
+            {
+                "id": "mockup_recTable_sensemaking",
+                "text": "It will look something like this.)",
+                "type": "image",
+                "options": "images/mockups/mockupRecTable.png"
             },
             {
                 "id": "project_sensemakingSessionPlansList",
@@ -2180,10 +2208,8 @@ define(
                 "type": "textarea"
             },
             {
-                "id": "templates_sensemakingActivities",
-                "text": "Or choose an activity from this list.",
-                "type": "templateList",
-                "options": "sensemakingActivities"
+                "id": "FIXME_778",
+                "text": "(Unfinished: This will be a list of template activities the user can copy.)"
             }
         ]
     },
@@ -2629,10 +2655,15 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "interventionRecommendations",
-                "text": "Recommendations for intervention plans",
-                "type": "recommendationTable",
-                "options": "interventions"
+                "id": "interventionRecommendationsTable",
+                "text": "(Unfinished: This will be a table of recommendations for this section\nrelated to the questions answered about participant groups.",
+                "type": "label"
+            },
+            {
+                "id": "mockup_recTable_intervention",
+                "text": "It will look something like this.)",
+                "type": "image",
+                "options": "images/mockups/mockupRecTable.png"
             },
             {
                 "id": "project_interventionLabel",
@@ -3101,7 +3132,7 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "FIXME_994",
+                "id": "FIXME_1028",
                 "text": "On this page you can keep track of requests for help as your project winds down."
             },
             {
