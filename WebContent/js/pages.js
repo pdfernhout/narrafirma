@@ -856,7 +856,8 @@ define(
             },
             {
                 "id": "FIXME_342",
-                "text": "(Unfinished: This will be a list of template questions the user can copy.)"
+                "text": "(Unfinished: This will be a list of template questions the user can copy.)",
+                "type": "label"
             }
         ]
     },
@@ -930,7 +931,8 @@ define(
             },
             {
                 "id": "FIXME_379",
-                "text": "(Unfinished: This will be a list of template questions the user can copy.)"
+                "text": "(Unfinished: This will be a list of template questions the user can copy.)",
+                "type": "label"
             }
         ]
     },
@@ -1004,7 +1006,8 @@ define(
             },
             {
                 "id": "FIXME_401",
-                "text": "(Unfinished: This will be a list of template questions the user can copy.)"
+                "text": "(Unfinished: This will be a list of template questions the user can copy.)",
+                "type": "label"
             }
         ]
     },
@@ -1209,7 +1212,8 @@ define(
             },
             {
                 "id": "FIXME_455",
-                "text": "(Unfinished: This will be a list of template activities the user can copy.)"
+                "text": "(Unfinished: This will be a list of template activities the user can copy.)",
+                "type": "label"
             }
         ]
     },
@@ -2214,7 +2218,8 @@ define(
             },
             {
                 "id": "FIXME_781",
-                "text": "(Unfinished: This will be a list of template activities the user can copy.)"
+                "text": "(Unfinished: This will be a list of template activities the user can copy.)",
+                "type": "label"
             }
         ]
     },
@@ -3138,7 +3143,8 @@ define(
         "questions": [
             {
                 "id": "FIXME_1031",
-                "text": "On this page you can keep track of requests for help as your project winds down."
+                "text": "On this page you can keep track of requests for help as your project winds down.",
+                "type": "label"
             },
             {
                 "id": "project_returnRequestsList",

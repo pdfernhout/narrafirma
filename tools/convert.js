@@ -111,6 +111,11 @@ function extract(line, rest, lineNumber) {
         console.log("FIX NEEDED: Unknown type '" + infoContent.type + "' in brackets for line: " + lineNumber + " :: " + line);
     }
     
+    if (!infoContent.id) {
+        console.log("WARNING: No id for line: " + lineNumber + " :: " + line);
+        infoContent.id = "FIXME_" + lineNumber;
+    }
+    
     var previousLineNumber = usedIDs[infoContent.id];
     if (previousLineNumber) {
         console.log("FIX NEEDED: Widget ID '" + infoContent.id + "' was previously used on line " + previousLineNumber + " and is redeclared on line: " + lineNumber + " :: " + line);
@@ -161,17 +166,25 @@ function convert() {
             
             data = extract(line, rest, lineNumber);
             if (data) {
-              lastPage = {"id": data.info.id, "name": data.text, "description": "", "isHeader": header, "type": data.info.type, "options": data.info.options, "questions": []};
-              pages.push(lastPage);
-              commentNumberInPage = 0;
+                lastPage = {"id": data.info.id, "name": data.text, "description": "", "isHeader": header, "type": data.info.type, "options": data.info.options, "questions": []};
+                pages.push(lastPage);
+                commentNumberInPage = 0;
             }
         } else if (lastPage && startsWith(line, "*")) {
             rest = line.substring(1);
             // A question
             data = extract(line, rest, lineNumber);
             if (data) {
-              lastQuestion = {"id": data.info.id, "text": data.text, "shortText": data.shortText, "type": data.info.type, "options": data.info.options};
-              lastPage.questions.push(lastQuestion);
+                if (!data.info.type) {
+                    console.log("WARNING: no type for line: " + lineNumber + " :: " + line);
+                    data.info.type = "label";
+                }
+                
+                if (acceptableTypes.indexOf(data.info.type) === -1) {
+                    console.log("WARNING: Unexpected type for line: " + lineNumber + " :: " + line);
+                }
+                lastQuestion = {"id": data.info.id, "text": data.text, "shortText": data.shortText, "type": data.info.type, "options": data.info.options};
+                lastPage.questions.push(lastQuestion);
             }
         } else if (lastPage && startsWith(line, "//")) {
             // console.log("comment line", line);
