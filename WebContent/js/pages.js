@@ -1897,10 +1897,15 @@ define(
                 "type": "label"
             },
             {
-                "id": "clusterInterpretations_clusterSpace",
-                "text": "Cluster interpretations into perspectives",
-                "type": "clusterSpace",
-                "options": "interpretations"
+                "id": "mockupClusteringLabel",
+                "text": "(Unfinished: This will be a space where perspectives can be clustered\nrelated to the questions answered about participant groups.",
+                "type": "label"
+            },
+            {
+                "id": "mockup_clusters",
+                "text": "It will look something like this.)",
+                "type": "image",
+                "options": "images/mockups/mockupClusters.png"
             }
         ]
     },
@@ -2208,7 +2213,7 @@ define(
                 "type": "textarea"
             },
             {
-                "id": "FIXME_778",
+                "id": "FIXME_781",
                 "text": "(Unfinished: This will be a list of template activities the user can copy.)"
             }
         ]
@@ -2655,6 +2660,11 @@ define(
         "isHeader": false,
         "questions": [
             {
+                "id": "project_interventionLabel",
+                "text": "On this page you can design interventions that change the stories people tell\nin your community or organization.",
+                "type": "label"
+            },
+            {
                 "id": "interventionRecommendationsTable",
                 "text": "(Unfinished: This will be a table of recommendations for this section\nrelated to the questions answered about participant groups.",
                 "type": "label"
@@ -2664,11 +2674,6 @@ define(
                 "text": "It will look something like this.)",
                 "type": "image",
                 "options": "images/mockups/mockupRecTable.png"
-            },
-            {
-                "id": "project_interventionLabel",
-                "text": "On this page you can design interventions that change the stories people tell\nin your community or organization.",
-                "type": "label"
             },
             {
                 "id": "project_interventionPlansList",
@@ -3132,7 +3137,7 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "FIXME_1028",
+                "id": "FIXME_1031",
                 "text": "On this page you can keep track of requests for help as your project winds down."
             },
             {
