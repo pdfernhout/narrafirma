@@ -30,8 +30,7 @@
 				{ name: "dgrid", location: "../../dgrid-0.3.16" },
 				{ name: "xstyle", location: "../../xstyle-0.2.1" },
 				{ name: "put-selector", location: "../../put-selector-0.3.5" },
-				// TODO: Seems to need the "file:" part -- is this a bug in dojo? Need to change when run from webserver.
-				{ name: "js", location: "file:js"}
+				{ name: "js", location: location.pathname.replace(/\/[^/]+$/, '') + "/js"}
 			]
 		};
 	}());
