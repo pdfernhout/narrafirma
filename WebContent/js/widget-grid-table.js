@@ -86,9 +86,11 @@ define([
             
             console.log("put store for add form");
             
-            grid.refresh();
-            
             itemContentPane.set("style", "display: none");
+            
+            // TODO: Works, but seems wrong; resize ensures the header is there; refresh ensures the data is there; bad side-effect of losing scroll position in grid
+            grid.resize();
+            grid.refresh();
             
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
             form.destroyRecursive();
@@ -307,7 +309,7 @@ define([
         itemContentPane.set("style", "background-color: #C0C0C0; border: 0.5em solid red; display: none");
         
         itemContentPane.startup();
-
+        
         return {
             "store": dataStore,
             "listContentPane": listContentPane,
