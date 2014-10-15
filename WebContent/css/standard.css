@@ -111,5 +111,6 @@ body {
 
 .dgrid .dgrid-scroller {
     position: relative;
-    overflow: visible;
+    max-height: 400px;
+    overflow: auto;
 }
