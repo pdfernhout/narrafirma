@@ -261,7 +261,7 @@ in the places where they normally gather.
 * How easy would it be to describe the unique storytelling culture of your community or organization? [assessment_culture|select|unknown;impossible;difficult;doable;easy]
 
 // should have results overall and for each category of question
-* This is your combined test result. [assessment_result|quizScoreResult]
+* This is your combined test result: [assessment_result|quizScoreResult|assessment_counterStories;assessment_authority;assessment_mistakes;assessment_silencing;assessment_conflict;assessment_remindings;assessment_retellings;assessment_folklore;assessment_storyTypes;assessment_sensemaking;assessment_realStories;assessment_negotiations;assessment_cotelling;assessment_blunders;assessment_accounting;assessment_commonStories;assessment_sacredStories;assessment_condensedStories;assessment_intermingling;assessment_culture]
 
 * Here you can record some notes or comments about this assessment. [assessment_notes|textarea]
 

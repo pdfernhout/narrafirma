@@ -629,8 +629,9 @@ define(
             },
             {
                 "id": "assessment_result",
-                "text": "This is your combined test result.",
-                "type": "quizScoreResult"
+                "text": "This is your combined test result:",
+                "type": "quizScoreResult",
+                "options": "assessment_counterStories;assessment_authority;assessment_mistakes;assessment_silencing;assessment_conflict;assessment_remindings;assessment_retellings;assessment_folklore;assessment_storyTypes;assessment_sensemaking;assessment_realStories;assessment_negotiations;assessment_cotelling;assessment_blunders;assessment_accounting;assessment_commonStories;assessment_sacredStories;assessment_condensedStories;assessment_intermingling;assessment_culture"
             },
             {
                 "id": "assessment_notes",
