@@ -628,7 +628,36 @@ define(
                 "options": "unknown;impossible;difficult;doable;easy"
             },
             {
-                "id": "assessment_result",
+                "id": "assessment_result_header",
+                "text": "Narrative score results",
+                "type": "header"
+            },
+            {
+                "id": "assessment_result_freedomSubscore",
+                "text": "Narrative freedom subscore:",
+                "type": "quizScoreResult",
+                "options": "assessment_counterStories;assessment_authority;assessment_mistakes;assessment_silencing;assessment_conflict"
+            },
+            {
+                "id": "assessment_result_flowSubscore",
+                "text": "Narrative flow subscore:",
+                "type": "quizScoreResult",
+                "options": "assessment_remindings;assessment_retellings;assessment_folklore;assessment_storyTypes;assessment_sensemaking"
+            },
+            {
+                "id": "assessment_result_knowledgeSubscore",
+                "text": "Narrative knowledge subscore:",
+                "type": "quizScoreResult",
+                "options": "assessment_realStories;assessment_negotiations;assessment_cotelling;assessment_blunders;assessment_accounting"
+            },
+            {
+                "id": "assessment_result_unitySubscore",
+                "text": "Narrative unity subscore:",
+                "type": "quizScoreResult",
+                "options": "assessment_commonStories;assessment_sacredStories;assessment_condensedStories;assessment_intermingling;assessment_culture"
+            },
+            {
+                "id": "assessment_result_grandTotal",
                 "text": "This is your combined test result:",
                 "type": "quizScoreResult",
                 "options": "assessment_counterStories;assessment_authority;assessment_mistakes;assessment_silencing;assessment_conflict;assessment_remindings;assessment_retellings;assessment_folklore;assessment_storyTypes;assessment_sensemaking;assessment_realStories;assessment_negotiations;assessment_cotelling;assessment_blunders;assessment_accounting;assessment_commonStories;assessment_sacredStories;assessment_condensedStories;assessment_intermingling;assessment_culture"
@@ -856,7 +885,7 @@ define(
                 "options": "what happened;directed question;undirected questions;point in time;event;extreme;surprise;people, places, things;fictional scenario;other"
             },
             {
-                "id": "FIXME_342",
+                "id": "FIXME_346",
                 "text": "(Unfinished: This will be a list of template questions the user can copy.)",
                 "type": "label"
             }
@@ -931,7 +960,7 @@ define(
                 "type": "textarea"
             },
             {
-                "id": "FIXME_379",
+                "id": "FIXME_383",
                 "text": "(Unfinished: This will be a list of template questions the user can copy.)",
                 "type": "label"
             }
@@ -1006,7 +1035,7 @@ define(
                 "type": "textarea"
             },
             {
-                "id": "FIXME_401",
+                "id": "FIXME_405",
                 "text": "(Unfinished: This will be a list of template questions the user can copy.)",
                 "type": "label"
             }
@@ -1212,7 +1241,7 @@ define(
                 "type": "textarea"
             },
             {
-                "id": "FIXME_455",
+                "id": "FIXME_459",
                 "text": "(Unfinished: This will be a list of template activities the user can copy.)",
                 "type": "label"
             }
@@ -2218,7 +2247,7 @@ define(
                 "type": "textarea"
             },
             {
-                "id": "FIXME_781",
+                "id": "FIXME_785",
                 "text": "(Unfinished: This will be a list of template activities the user can copy.)",
                 "type": "label"
             }
@@ -3143,7 +3172,7 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "FIXME_1031",
+                "id": "FIXME_1035",
                 "text": "On this page you can keep track of requests for help as your project winds down.",
                 "type": "label"
             },
