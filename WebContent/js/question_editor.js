@@ -132,23 +132,23 @@ define([
             return domain.callDashboardFunction(functionName, question);
         } else if (question.type === "quizScoreResult") {
             var dependsOn = question.options.split(";");
-            console.log("quiz score result", dependsOn);
+            // console.log("quiz score result", dependsOn);
             var total = 0;
             for (var dependsOnIndex in dependsOn) {
                 var questionID = dependsOn[dependsOnIndex];
-                console.log("domain.data", domain.data);
+                // console.log("domain.data", domain.data);
                 var questionAnswer = domain.data[questionID];
                 var answerWeight = 0;
                 if (questionAnswer) {
-                    console.log("questionAnswer", questionAnswer);
+                    // console.log("questionAnswer", questionAnswer);
                     answerWeight = domain.questions[questionID].options.split("\n").indexOf(questionAnswer) - 1;
-                    console.log("answerWeight", answerWeight);
+                    // console.log("answerWeight", answerWeight);
                     if (answerWeight < 0) answerWeight = 0;
                     total += answerWeight;
                 } else {
                    // Nothing 
                 }
-                console.log("questionAnswer", questionID, questionAnswer, answerWeight, total);
+                // console.log("questionAnswer", questionID, questionAnswer, answerWeight, total);
             }
             var possibleTotal = dependsOn.length * 3;
             var percent = Math.round(100 * total / possibleTotal);
@@ -321,16 +321,19 @@ define([
         
         // Save this div for updating later
         var questionTextNode = domConstruct.toDom(questionText);
-        if (calculatedText !== null) questionsRequiringRecalculationOnPageChanges[question.id] = {"textNode": questionTextNode, "question": question, "baseText": baseText};
-        questionDiv.appendChild(questionTextNode);
-        
-        if (question.type === "quizScoreResult") {
-            var dependsOn = question.options.split(";");
-            for (var dependsOnIndex in dependsOn) {
-                var questionID = dependsOn[dependsOnIndex];
-                // TODO: domain.data[questionID].
+
+        if (calculatedText !== null) {
+            var updateInfo = {"textNode": questionTextNode, "question": question, "baseText": baseText};
+            questionsRequiringRecalculationOnPageChanges[question.id] = updateInfo;
+            if (question.type === "quizScoreResult") {
+                var dependsOn = question.options.split(";");
+                for (var dependsOnIndex in dependsOn) {
+                    var questionID = dependsOn[dependsOnIndex];
+                    domain.data.watch(questionID, lang.partial(updateQuizScoreResult, updateInfo));
+                }
             }
         }
+        questionDiv.appendChild(questionTextNode);
         
         questionDiv.appendChild(document.createTextNode(" "));
         if (question.type === "textarea" || question.type === "text") questionDiv.appendChild(document.createElement("br"));
@@ -350,6 +353,12 @@ define([
         if (question.visible !== undefined && !question.visible) domStyle.set(questionDiv, "display", "none");
         
         return widget;
+    }
+    
+    function updateQuizScoreResult(updateInfo) {
+        console.log("updateQuizScoreResult updateInfo", updateInfo);
+        var calculatedText = calculateTextForQuestion(updateInfo.question);
+        updateInfo.textNode.nodeValue = updateInfo.baseText + " " + calculatedText; 
     }
     
     function insertQuestionsIntoDiv(questions, questionsDiv) {
