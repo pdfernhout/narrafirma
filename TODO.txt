@@ -157,6 +157,7 @@ DONE Fix all things that say "These are the project stories you have told so far
 DONE Templates for activities
 DONE Figure out what to do with finalize your questions
 DONE Intro for reports
+DONE Prototype concept images for demo
 
 ==== Later:
 
