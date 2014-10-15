@@ -19,6 +19,7 @@ define([
 ) {
     var pageDefinitions = {};
     var pageInstantiations = {};
+    var questions = {};
     
     var exportedSurveyQuestions = [];
     var surveyResults = [];
@@ -716,6 +717,7 @@ define([
     return {
         "data": data,
         "pagesToGoWithHeaders": pagesToGoWithHeaders,
+        "questions": questions,
         "testDogQuestions": testDogQuestions,
         "testDogStories": testDogStories,
         "exportedSurveyQuestions": exportedSurveyQuestions,
