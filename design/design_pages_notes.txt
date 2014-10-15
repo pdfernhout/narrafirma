@@ -133,11 +133,7 @@ Examples might be: doctors and patients; staff and customers; natives, immigrant
 For example, you might want to record any observations you have made about this group.
 What do you know about them?
 
-// ## Project aspects [page_aspectsTable|questionsTable]
-
-## Participant group details for: {{participants_groupName}} [page_projectAspects|repeating|participantGroups]
-
-* On this page you will add details for the participant group called: "{{participants_groupName}}". [detailsAboutParticipantGroup|label]
+* Details for the participant group. [detailsAboutParticipantGroup|label]
 
 * Status [participantGroupAspects_statusHeader|header]
 * What is the status of these participants in the community or organization? [participantGroupAspects_status|select|unknown;very low;low;moderate;high;very high;mixed]

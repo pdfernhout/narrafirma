@@ -180,20 +180,10 @@ define(
                 "text": "Please describe this group of participants.\nFor example, you might want to record any observations you have made about this group.\nWhat do you know about them?",
                 "shortText": "Description",
                 "type": "textarea"
-            }
-        ]
-    },
-    {
-        "id": "page_projectAspects",
-        "name": "Participant group details for: {{participants_groupName}}",
-        "description": "",
-        "isHeader": false,
-        "type": "repeating",
-        "options": "participantGroups",
-        "questions": [
+            },
             {
                 "id": "detailsAboutParticipantGroup",
-                "text": "On this page you will add details for the participant group called: \"{{participants_groupName}}\".",
+                "text": "Details for the participant group.",
                 "type": "label"
             },
             {
@@ -885,7 +875,7 @@ define(
                 "options": "what happened;directed question;undirected questions;point in time;event;extreme;surprise;people, places, things;fictional scenario;other"
             },
             {
-                "id": "FIXME_346",
+                "id": "FIXME_342",
                 "text": "(Unfinished: This will be a list of template questions the user can copy.)",
                 "type": "label"
             }
@@ -960,7 +950,7 @@ define(
                 "type": "textarea"
             },
             {
-                "id": "FIXME_383",
+                "id": "FIXME_379",
                 "text": "(Unfinished: This will be a list of template questions the user can copy.)",
                 "type": "label"
             }
@@ -1035,7 +1025,7 @@ define(
                 "type": "textarea"
             },
             {
-                "id": "FIXME_405",
+                "id": "FIXME_401",
                 "text": "(Unfinished: This will be a list of template questions the user can copy.)",
                 "type": "label"
             }
@@ -1241,7 +1231,7 @@ define(
                 "type": "textarea"
             },
             {
-                "id": "FIXME_459",
+                "id": "FIXME_455",
                 "text": "(Unfinished: This will be a list of template activities the user can copy.)",
                 "type": "label"
             }
@@ -2247,7 +2237,7 @@ define(
                 "type": "textarea"
             },
             {
-                "id": "FIXME_785",
+                "id": "FIXME_781",
                 "text": "(Unfinished: This will be a list of template activities the user can copy.)",
                 "type": "label"
             }
@@ -3172,7 +3162,7 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "FIXME_1035",
+                "id": "FIXME_1031",
                 "text": "On this page you can keep track of requests for help as your project winds down.",
                 "type": "label"
             },
