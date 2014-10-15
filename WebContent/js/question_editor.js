@@ -81,7 +81,8 @@ define([
         "listCount",
         "function",
         "toggleButton",
-        "image"
+        "image",
+        "quizScoreResult"
      ];
 
     var unsupportedTypes = {};
@@ -129,6 +130,30 @@ define([
         } else if (question.type === "function") {
             var functionName = question.options;
             return domain.callDashboardFunction(functionName, question);
+        } else if (question.type === "quizScoreResult") {
+            var dependsOn = question.options.split(";");
+            console.log("quiz score result", dependsOn);
+            var total = 0;
+            for (var dependsOnIndex in dependsOn) {
+                var questionID = dependsOn[dependsOnIndex];
+                console.log("domain.data", domain.data);
+                var questionAnswer = domain.data[questionID];
+                var answerWeight = 0;
+                if (questionAnswer) {
+                    console.log("questionAnswer", questionAnswer);
+                    answerWeight = domain.questions[questionID].options.split("\n").indexOf(questionAnswer) - 1;
+                    console.log("answerWeight", answerWeight);
+                    if (answerWeight < 0) answerWeight = 0;
+                    total += answerWeight;
+                } else {
+                   // Nothing 
+                }
+                console.log("questionAnswer", questionID, questionAnswer, answerWeight, total);
+            }
+            var possibleTotal = dependsOn.length * 3;
+            var percent = Math.round(100 * total / possibleTotal);
+            // TODO: Translate
+            return "" + total + " of a possible " + possibleTotal + " (" + percent + "%)";
         } else if (question.type === "questionAnswerCountOfTotalOnPage") {
             var page = domain.pageDefinitions[question.options];
             if (!page) {
@@ -212,7 +237,7 @@ define([
         } else if (question.type === "label" || question.type === "header" || question.type === "image") {
             // Not adding input node for these
            //  widget = widgets.newLabel(question.id, question.text);
-        } else if (question.type === "questionAnswer" || question.type === "questionAnswerCountOfTotalOnPage" || question.type === "listCount" || question.type === "function") {
+        } else if (question.type === "questionAnswer" || question.type === "questionAnswerCountOfTotalOnPage" || question.type === "listCount" || question.type === "function" || question.type === "quizScoreResult") {
             // TODO; How does this get updated???
            // console.log("dynamic", question.type, question.id, question.options);
            // Can not calculate all items at this point because they may depend on other questions not yet defined
@@ -298,6 +323,14 @@ define([
         var questionTextNode = domConstruct.toDom(questionText);
         if (calculatedText !== null) questionsRequiringRecalculationOnPageChanges[question.id] = {"textNode": questionTextNode, "question": question, "baseText": baseText};
         questionDiv.appendChild(questionTextNode);
+        
+        if (question.type === "quizScoreResult") {
+            var dependsOn = question.options.split(";");
+            for (var dependsOnIndex in dependsOn) {
+                var questionID = dependsOn[dependsOnIndex];
+                // TODO: domain.data[questionID].
+            }
+        }
         
         questionDiv.appendChild(document.createTextNode(" "));
         if (question.type === "textarea" || question.type === "text") questionDiv.appendChild(document.createElement("br"));
