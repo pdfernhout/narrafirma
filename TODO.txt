@@ -62,8 +62,8 @@ Implement copyStoryFormURLDuringStart in domain buttonClicked
 Implement exportPresentationOutline in domain buttonClicked
 Implement showHideCollectedStories in domain buttonClicked
 
-Dynamic pages for participant group aspects
-Dynamic pages for collection session plans
+CHANGED to inline -- Dynamic pages for participant group aspects
+CHANGED to inline -- Dynamic pages for collection session plans
 Dynamic pages for collection session records
 Dynamic pages for venues
 Dynamic pages for sensemaking session plans

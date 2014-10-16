@@ -154,7 +154,9 @@ require([
            var pages = domain.pagesToGoWithHeaders[id];
            for (var pageIndex in pages) {
                var pageID = pages[pageIndex];
-               if (!domain.pageDefinitions[pageID].type) {
+               // console.log("pageID", page, pageID, domain.pageDefinitions, domain.pageDefinitions[pageID]);
+               if (!domain.pageDefinitions[pageID]) console.log("Error: problem finding page definition for", pageID, " -- Could the domain be out of date relative to the design and pages.js?");
+               if (domain.pageDefinitions[pageID] && !domain.pageDefinitions[pageID].type) {
                    var pageStatusQuestion2 = {
                        "id": pageID + "_pageStatus_dashboard",
                        "text": domain.pageDefinitions[pageID].name,
