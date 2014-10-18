@@ -40,7 +40,7 @@ define([
     var storyList = [
          { title: "The night the bed fell", body: "Story 1..." },
          { title: "The golden faucets", body: "Story 2..."},
-         { title: "More pickles!", body: "Story 3...",}
+         { title: "More pickles!", body: "Story 3..."}
      ];
 
     // TODO: Maybe rethink how unique item IDs work? Setting to start at 1000 becaues of test data created in story browser
