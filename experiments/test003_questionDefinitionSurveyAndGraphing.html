@@ -332,7 +332,7 @@ require([
     createSurveyQuestions[2].value = question.text;
     createSurveyQuestions[3].value = question.help;
     
-    insertQuestionsIntoDiv(createSurveyQuestions, form.domNode);
+    insertQuestionsIntoDiv(createSurveyQuestions, form.containerNode);
     
     // TODO: Does the dialog itself have to be "destroyed"???
     
@@ -415,7 +415,7 @@ require([
   function submitSurvey(form) {
     var answers = {};
     console.log("submitSurvey pressed");
-    var nodes = query(".question", form.domNode);
+    var nodes = query(".question", form.containerNode);
     // console.log("nodes", nodes);
     nodes.forEach(function(questionDiv) {
       console.log("submitSurvey question Node", questionDiv);
@@ -462,7 +462,7 @@ require([
     
     var form = new Form();
     
-    insertQuestionsIntoDiv(exportedSurveyQuestions, form.domNode);
+    insertQuestionsIntoDiv(exportedSurveyQuestions, form.containerNode);
     
     // TODO: Does the dialog itself have to be "destroyed"???
     

@@ -195,10 +195,10 @@ define([
         var questionsDiv = questionsPaneOrDiv;
         var questionsPane = null;
         // questionsPaneOrDiv.baseClass && questionsPaneOrDiv.baseClass === "dijitContentPane") || 
-        if (questionsPaneOrDiv.domNode) {
+        if (questionsPaneOrDiv.containerNode) {
             console.log("It is a dojo pane!!");
             questionsPane = questionsPaneOrDiv;
-            questionsDiv = questionsPane.domNode;
+            questionsDiv = questionsPane.containerNode;
         }
         if (question.type === "button") {
             var button = widgets.newButton(question.id, question.text, questionsDiv, lang.partial(domain.buttonClicked, question.id, question));
@@ -373,7 +373,6 @@ define([
     
     function questionEditDialogOK(question, questionEditorDiv, form) {
         var changed = false;
-        var queryFromNode = form.domNode;
         
         // TODO: Not reading data correctly
         
@@ -445,7 +444,7 @@ define([
         createSurveyQuestions[3].value = question.text;
         createSurveyQuestions[4].value = question.help;
         
-        insertQuestionsIntoDiv(createSurveyQuestions, form.domNode);
+        insertQuestionsIntoDiv(createSurveyQuestions, form.containerNode);
         
         // TODO: Does the dialog itself have to be "destroyed"???
         

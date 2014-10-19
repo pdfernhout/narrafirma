@@ -148,7 +148,7 @@ define([
         var question = widgets.newSelect(id + "_question", questionOptions, null, contentPane);
         question.set("style", "width: 98%; max-width: 98%");
         
-        contentPane.domNode.appendChild(domConstruct.toDom('<br>'));
+        contentPane.containerNode.appendChild(domConstruct.toDom('<br>'));
         
         var answers = newMultiSelect(id + "_answers", []);
         contentPane.addChild(answers);
@@ -166,7 +166,7 @@ define([
     function insertStoryBrowser(pseudoQuestion, pagePane, pageDefinitions) {
         console.log("insertStoryBrowser", pseudoQuestion);
         
-        var label = widgets.newLabel(pseudoQuestion.id + "label", pseudoQuestion.text, pagePane.domNode);
+        var label = widgets.newLabel(pseudoQuestion.id + "label", pseudoQuestion.text, pagePane.containerNode);
 
         var popupPageDefinition = {
              "id": "testDogQuestions",
@@ -176,7 +176,7 @@ define([
         var data = domain.testDogStories;
         var dataStore = new Memory({
             // "data": [],
-            "data": data,
+            "data": data
             // TODO: what should this be, if anything?
             // idProperty: "name",
         }); 
@@ -201,7 +201,7 @@ define([
         
         if (!pagePane.addChild) {
             // console.log("trouble -- does not have addChild method!", pagePane);
-            pagePane.domNode.appendChild(table.domNode);
+            pagePane.containerNode.appendChild(table.domNode);
         } else {
             pagePane.addChild(table);
         }
@@ -209,7 +209,7 @@ define([
         var filter1 = createFilterPane(pseudoQuestion.id + "_1", questionsById, questionOptions, data, table);
         var filter2 = createFilterPane(pseudoQuestion.id + "_2", questionsById, questionOptions, data, table);
 
-        // pagePane.domNode.appendChild(domConstruct.toDom('<br>'));
+        // pagePane.containerNode.appendChild(domConstruct.toDom('<br>'));
         
         table.startup();
         

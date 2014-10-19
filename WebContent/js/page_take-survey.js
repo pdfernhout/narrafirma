@@ -26,7 +26,7 @@ define([
     function submitSurvey(form) {
         var answers = {};
         console.log("submitSurvey pressed");
-        var nodes = query(".question", form.domNode);
+        var nodes = query(".question", form.containerNode);
         // console.log("nodes", nodes);
         nodes.forEach(function(questionDiv) {
             console.log("submitSurvey question Node", questionDiv);
@@ -53,7 +53,7 @@ define([
         var form = new Form();
         form.set("style", "width: 800px; height 800px; overflow: auto;");
         
-        question_editor.insertQuestionsIntoDiv(domain.exportedSurveyQuestions, form.domNode);
+        question_editor.insertQuestionsIntoDiv(domain.exportedSurveyQuestions, form.containerNode);
         
         // TODO: Does the dialog itself have to be "destroyed"???
         

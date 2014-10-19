@@ -248,21 +248,21 @@ define([
         });
         
         if (!pagePane.addChild) {
-            // console.log("trouble -- does not have addChild method!", pagePane);
-            pagePane.domNode.appendChild(grid.domNode);
+            console.log("trouble -- does not have addChild method!", pagePane);
+            pagePane.containerNode.appendChild(grid.domNode);
         } else {
             pagePane.addChild(grid);
         }
         
         grid.startup();
-        
+                
         var listContentPane = new ContentPane({
             // title: pseudoQuestion.text
         });
         
         if (!pagePane.addChild) {
-            // console.log("trouble -- does not have addChild method!", pagePane);
-            pagePane.domNode.appendChild(listContentPane.domNode);
+            console.log("trouble -- does not have addChild method!", pagePane);
+            pagePane.containerNode.appendChild(listContentPane.domNode);
         } else {
             pagePane.addChild(listContentPane);
         }
@@ -300,8 +300,8 @@ define([
         }
         
         if (!pagePane.addChild) {
-            // console.log("trouble -- does not have addChild method!", pagePane);
-            pagePane.domNode.appendChild(itemContentPane.domNode);
+            console.log("trouble -- does not have addChild method!", pagePane);
+            pagePane.containerNode.appendChild(itemContentPane.domNode);
         } else {
             pagePane.addChild(itemContentPane);
         } 
@@ -309,6 +309,8 @@ define([
         itemContentPane.set("style", "background-color: #C0C0C0; border: 0.5em solid red; display: none");
         
         itemContentPane.startup();
+        
+        grid.resize();
         
         return {
             "store": dataStore,
@@ -328,7 +330,7 @@ define([
         }
         
         // TODO: Need to translate
-        var label = widgets.newLabel(pseudoQuestion.id + "label", pseudoQuestion.text, pagePane.domNode);
+        var label = widgets.newLabel(pseudoQuestion.id + "label", pseudoQuestion.text, pagePane.containerNode);
         
         return insertGridTableBasic(pseudoQuestion.id, pagePane, popupPageDefinition, pseudoQuestion.value, true);
     }
