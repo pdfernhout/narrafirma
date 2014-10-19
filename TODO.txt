@@ -139,6 +139,7 @@ DONE view and add buttons after grid, nested box appears under grid
 DONE don't display commented lines from design file
 DONE display images
 DONE make quizScoreResult work (not entered 0, unknown 0, first 0, then 1, 2, 3). ideally total in each category
+DONE Get grid headers to work reliably everywhere
 
 ======= CYNTHIA
 
