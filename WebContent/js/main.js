@@ -121,7 +121,7 @@ require([
             // Shorten width so grid scroll bar shows up not clipped
             // Also, looks like nested ContentPanes tend to walk off the right side of the page for some reason
             style: "width: 94%",
-            display: "none"
+            display: "none" // "block" // 
        });
         
        // console.log("about to place pane", id);
@@ -181,15 +181,15 @@ require([
        
        domain.pageInstantiations[id] = pagePane;
        
+       pagePane.startup();
+       
        // console.log("about to set visibility", id);
        if (visible) {
             domStyle.set(id, "display", "block");
        } else {
             domStyle.set(id, "display", "none");
        }
-       
-       pagePane.startup();
-       
+                     
        return pagePane;
     }
     

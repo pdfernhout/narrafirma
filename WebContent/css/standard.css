@@ -87,13 +87,7 @@ body {
     /* Next line may not work correctly in IE6 & IE7? Also does not work right in safari 5.1 with button a bit high. https://bugs.dojotoolkit.org/ticket/5170 */
     float: right;
 }
-
-/* This ensures that the story filter table columns are both one half of the space available */
-.storyFilterTable-valueCell {
-    width: 48%;
-    max-width: 48%;
-}
-
+ 
 // Suggestion from: https://bugs.dojotoolkit.org/ticket/17044 and: http://jsfiddle.net/ondrek/3FjLJ/9/
 .dijitTextBox .dijitInputInner { 
     white-space: nowrap; 
@@ -103,7 +97,8 @@ body {
     overflow: hidden;
 }
 
-/* So the dgrids always show all data */
+/* So the dgrids show all data up to 400px and then scroll;
+   seems issue if try to get show all data where doesn't refresh as scroll window*/
 .dgrid {
     height: auto;
     min-height: 3em;
