@@ -42,6 +42,24 @@ define([
          { title: "The golden faucets", body: "Story 2..."},
          { title: "More pickles!", body: "Story 3..."}
      ];
+    
+    // Kludge because dgrid seems to need to be resized after shown to ensure header displayed correctly -- reset to [] for each new page
+    var allGrids = [];
+    
+    function resizeGridsKludge() {
+        // Kludge for dgrid header issue
+        console.log("Kludge allGrids", allGrids);
+        for (var gridIndex in allGrids) {
+            console.log("resizing dgrid", gridIndex, allGrids);
+            allGrids[gridIndex].resize();
+            // allGrids[gridIndex].refresh();
+            console.log("resize done");
+        }
+    }
+    
+    function clearGridsKludge() {
+        while (allGrids.length) allGrids.pop();
+    }
 
     // TODO: Maybe rethink how unique item IDs work? Setting to start at 1000 becaues of test data created in story browser
     var uniqueItemIDCounter = 1000;
@@ -55,6 +73,7 @@ define([
         
         itemContentPane.set("style", "background-color: #C0C0C0; border: 0.25em solid blue; display: block");
         
+        clearGridsKludge();
         addPage.addPageContents(form, popupPageDefinition);
         
         // TODO: Does the dialog itself have to be "destroyed"???
@@ -88,8 +107,7 @@ define([
             
             itemContentPane.set("style", "display: none");
             
-            // TODO: Works, but seems wrong; resize ensures the header is there; refresh ensures the data is there; bad side-effect of losing scroll position in grid
-            grid.resize();
+            // refresh ensures the new data is displayed
             grid.refresh();
             
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
@@ -124,6 +142,7 @@ define([
         itemContentPane.addChild(form);
         
         form.startup();
+        resizeGridsKludge();
         //dialog.startup();
         //dialog.show();
         //itemContentPane.show();
@@ -139,8 +158,9 @@ define([
         
         itemContentPane.set("style", "background-color: #C0C0C0; border: 0.25em solid blue; display: block");
         
+        clearGridsKludge();
         addPage.addPageContents(form, popupPageDefinition);
-
+        
         console.log("grid", grid, grid.selection);
         // var item = grid
         
@@ -199,6 +219,7 @@ define([
         itemContentPane.addChild(form);
         
         form.startup();
+        resizeGridsKludge();
         //dialog.startup();
         //dialog.show();
     }
@@ -309,8 +330,10 @@ define([
         itemContentPane.set("style", "background-color: #C0C0C0; border: 0.5em solid red; display: none");
         
         itemContentPane.startup();
-        
-        grid.resize();
+
+        // Kludge to support dgrid header fix as otherwise header not always sized correctly
+        allGrids.push(grid);
+        console.log("adding grid to kludge array", grid, allGrids);
         
         return {
             "store": dataStore,
@@ -337,7 +360,9 @@ define([
 
     return {
         "insertGridTable": insertGridTable,
-        "insertGridTableBasic": insertGridTableBasic
+        "insertGridTableBasic": insertGridTableBasic,
+        "clearGridsKludge": clearGridsKludge,
+        "resizeGridsKludge": resizeGridsKludge
     };
     
 });

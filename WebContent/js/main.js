@@ -15,6 +15,7 @@ require([
     "js/pages",
     "js/question_editor",
     "js/widgets",
+    "js/widget-grid-table",
     "dijit/layout/ContentPane",
     "dijit/form/Select",
     "dojo/domReady!"
@@ -33,6 +34,7 @@ require([
     pages,
     questionEditor,
     widgets,
+    widgetGridTable,
     ContentPane,
     Select
 ){
@@ -100,6 +102,9 @@ require([
         // domStyle.set("startup", "display", "none");
         domStyle.set("pageDiv", "display", "block");
         
+        // Because the page was hidden when created, all the grids need to be resized --- seems like bad design in dgrid
+        widgetGridTable.resizeGridsKludge();
+        
         window.scrollTo(0, 0); 
         
         questionEditor.updateQuestionsForPageChange();
@@ -113,6 +118,9 @@ require([
             console.log("ERROR: No definition for page: ", id);
             return;
         }
+        
+        // Kludge for grids -- clearing out
+        widgetGridTable.clearGridsKludge();
         
         var pagePane = new ContentPane({
             "id": id,
@@ -180,16 +188,16 @@ require([
        */
        
        domain.pageInstantiations[id] = pagePane;
-       
-       pagePane.startup();
-       
+              
        // console.log("about to set visibility", id);
        if (visible) {
             domStyle.set(id, "display", "block");
        } else {
             domStyle.set(id, "display", "none");
        }
-                     
+                  
+       pagePane.startup();
+              
        return pagePane;
     }
     
