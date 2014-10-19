@@ -141,6 +141,7 @@ define([
               "page_planningQuestionsDraft",
               "page_participantGroups",
               "page_addParticipantGroup",
+              "page_aboutYou",
               "page_projectStories",
               "page_projectStory",
               "page_createProjectStoryElements",
@@ -248,6 +249,9 @@ define([
             "project_PNIquestions_scope_draft": "",
             "project_PNIquestions_emphasis_draft": "",
             "project_participantGroupsList": [],
+            "aboutYou_experience": null,
+            "aboutYou_help": null,
+            "aboutYou_tech": null,
             "project_projectStoriesList": [],
             "project_projectStoryElementsList": [],
             "assessment_counterStories": null,
@@ -357,10 +361,7 @@ define([
                      "participantGroupAspects_topic_feeling": null,
                      "participantGroupAspects_topic_private": null,
                      "participantGroupAspects_topic_articulate": null,
-                     "participantGroupAspects_topic_timeframe": null,
-                     "participantGroupAspects_you_experience": null,
-                     "participantGroupAspects_you_help": null,
-                     "participantGroupAspects_you_tech": null
+                     "participantGroupAspects_topic_timeframe": null
                    },
                    {
                      "__id": "page_projectStory",

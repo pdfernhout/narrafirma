@@ -318,26 +318,34 @@ define(
                 "text": "How long of a time period do you need these participants to look back on?",
                 "type": "select",
                 "options": "unknown;hours;days;months;years;decades;mixed"
-            },
+            }
+        ]
+    },
+    {
+        "id": "page_aboutYou",
+        "name": "About you",
+        "description": "",
+        "isHeader": false,
+        "questions": [
             {
                 "id": "aspects_youHeader",
                 "text": "About you",
                 "type": "header"
             },
             {
-                "id": "participantGroupAspects_you_experience",
+                "id": "aboutYou_experience",
                 "text": "How much experience do you have facilitating PNI projects?",
                 "type": "select",
                 "options": "none;a little;some;a lot"
             },
             {
-                "id": "participantGroupAspects_you_help",
+                "id": "aboutYou_help",
                 "text": "How much help will you have carrying out this project?",
                 "type": "select",
                 "options": "none;a little;some;a lot"
             },
             {
-                "id": "participantGroupAspects_you_tech",
+                "id": "aboutYou_tech",
                 "text": "How many technological resources will you have for carrying out this project?",
                 "type": "select",
                 "options": "none;a little;some;a lot"
@@ -875,7 +883,7 @@ define(
                 "options": "what happened;directed question;undirected questions;point in time;event;extreme;surprise;people, places, things;fictional scenario;other"
             },
             {
-                "id": "FIXME_342",
+                "id": "FIXME_343",
                 "text": "(Unfinished: This will be a list of template questions the user can copy.)",
                 "type": "label"
             }
@@ -1526,17 +1534,20 @@ define(
             {
                 "id": "collectionSessionRecord_construction_name",
                 "text": "Please give this construction a name.",
+                "shortText": "Name",
                 "type": "text"
             },
             {
                 "id": "collectionSessionRecord_construction_type",
                 "text": "What type of construction is it?",
+                "shortText": "Type",
                 "type": "select",
                 "options": "timeline;landscape;other"
             },
             {
                 "id": "collectionSessionRecord_construction_description",
                 "text": "Please describe the construction (or include a description given by participants).\nYour description can include links to images or other documents.",
+                "shortText": "Description",
                 "type": "textarea"
             }
         ]
@@ -1721,6 +1732,7 @@ define(
             {
                 "id": "observation_name",
                 "text": "Please give this observation a name.",
+                "shortText": "Name",
                 "type": "text"
             },
             {
@@ -1867,16 +1879,19 @@ define(
             {
                 "id": "excerpt_name",
                 "text": "Please give this excerpt a name.",
+                "shortText": "Name",
                 "type": "text"
             },
             {
                 "id": "excerpt_text",
                 "text": "You can edit the excerpt here.",
+                "shortText": "Excerpt",
                 "type": "textarea"
             },
             {
                 "id": "excerpt_notes",
                 "text": "Enter some notes about the excerpt.",
+                "shortText": "Notes",
                 "type": "textarea"
             }
         ]
@@ -2001,6 +2016,7 @@ define(
             {
                 "id": "perspective_resultLinkageNotes",
                 "text": "Enter any notes you want to remember about this result with respect to this perspective.",
+                "shortText": "Notes",
                 "type": "textarea"
             }
         ]
@@ -2015,6 +2031,7 @@ define(
             {
                 "id": "perspective_excerptLinkageNotes",
                 "text": "Enter any notes you want to remember about this excerpt with respect to this perspective.",
+                "shortText": "Notes",
                 "type": "textarea"
             }
         ]
@@ -2029,6 +2046,7 @@ define(
             {
                 "id": "perspective_interpretationLinkageNotes",
                 "text": "Enter any notes you want to remember about this interpretation as it is linked to this perspective.",
+                "shortText": "Notes",
                 "type": "textarea"
             }
         ]
@@ -2237,7 +2255,7 @@ define(
                 "type": "textarea"
             },
             {
-                "id": "FIXME_781",
+                "id": "FIXME_782",
                 "text": "(Unfinished: This will be a list of template activities the user can copy.)",
                 "type": "label"
             }
@@ -3162,7 +3180,7 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "FIXME_1031",
+                "id": "FIXME_1032",
                 "text": "On this page you can keep track of requests for help as your project winds down.",
                 "type": "label"
             },

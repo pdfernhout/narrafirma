@@ -163,10 +163,11 @@ What do you know about them?
 * How hard will it be for these participants to articulate their feelings about the topic? [participantGroupAspects_topic_articulate|select|unknown;hard;medium;easy;mixed]
 * How long of a time period do you need these participants to look back on? [participantGroupAspects_topic_timeframe|select|unknown;hours;days;months;years;decades;mixed]
 
+## About you [page_aboutYou]
 * About you [aspects_youHeader|header]
-* How much experience do you have facilitating PNI projects? [participantGroupAspects_you_experience|select|none;a little;some;a lot]
-* How much help will you have carrying out this project? [participantGroupAspects_you_help|select|none;a little;some;a lot]
-* How many technological resources will you have for carrying out this project? [participantGroupAspects_you_tech|select|none;a little;some;a lot]
+* How much experience do you have facilitating PNI projects? [aboutYou_experience|select|none;a little;some;a lot]
+* How much help will you have carrying out this project? [aboutYou_help|select|none;a little;some;a lot]
+* How many technological resources will you have for carrying out this project? [aboutYou_tech|select|none;a little;some;a lot]
 
 ## Tell project stories [page_projectStories]
 
@@ -351,7 +352,6 @@ related to the questions answered about participant groups.
 * (Unfinished: This will be a table of recommendations for story questions [storyQRecommendationsTable|label]
 related to the questions answered about participant groups.
 * It will look something like this.) [mockup_recTable_storyQ|image|images/mockups/mockupRecTable.png]
-
 
 ## Add story question [page_addStoryQuestion|popup]
 
@@ -545,9 +545,9 @@ such as timelines or landscapes. You can enter details about those here.
 
 ## Story collection construction [page_newCollectionSessionConstruction|popup]
 
-* Please give this construction a name. [collectionSessionRecord_construction_name|text]
-* What type of construction is it? [collectionSessionRecord_construction_type|select|timeline;landscape;other]
-* Please describe the construction (or include a description given by participants). [collectionSessionRecord_construction_description|textarea]
+* Name | Please give this construction a name. [collectionSessionRecord_construction_name|text]
+* Type | What type of construction is it? [collectionSessionRecord_construction_type|select|timeline;landscape;other]
+* Description | Please describe the construction (or include a description given by participants). [collectionSessionRecord_construction_description|textarea]
 Your description can include links to images or other documents.
 
 ## Read collection process report [page_readCollectionProcessReport]
@@ -625,7 +625,7 @@ all stories have been entered.
 
 ## Create new observation [page_createOrEditObservation|popup]
 
-* Please give this observation a name. [observation_name|text]
+* Name | Please give this observation a name. [observation_name|text]
 * Observation | Please describe this observation. [observation_text|textarea]
 * Results | These are the results you have selected to include in this observation. [observation__observationResultsList|accumulatedItemsGrid|collectedStoriesAfterCollection]
 
@@ -649,6 +649,7 @@ Is there a third thing this pattern could mean?
 
 ## Add excerpt to interpretation [page_selectExcerpt|popup]
 
+// TODO: This seems wrong -- needs definition that would fit into a grid with headers for previous section or other change
 * Collected excerpts [selectExcerpt_excerptsListDisplay|excerptsList]
 
 * Add selected excerpt to interpretation [selectExcerpt_addExcerptToInterpretationButton|button]
@@ -662,9 +663,9 @@ Is there a third thing this pattern could mean?
 
 ## Create new excerpt [page_createNewExcerpt|popup]
 
-* Please give this excerpt a name. [excerpt_name|text]
-* You can edit the excerpt here. [excerpt_text|textarea]
-* Enter some notes about the excerpt. [excerpt_notes|textarea]
+* Name | Please give this excerpt a name. [excerpt_name|text]
+* Excerpt | You can edit the excerpt here. [excerpt_text|textarea]
+* Notes | Enter some notes about the excerpt. [excerpt_notes|textarea]
 
 ## Review excerpts [page_reviewExcerpts]
 
@@ -709,15 +710,15 @@ your interpretations.
 // all of these popups could go away if there is an editable field on the grid
 ## Annotate result for perspective [page_annotateResultForPerspective|popup]
 
-* Enter any notes you want to remember about this result with respect to this perspective. [perspective_resultLinkageNotes|textarea]
+* Notes | Enter any notes you want to remember about this result with respect to this perspective. [perspective_resultLinkageNotes|textarea]
 
 ## Annotate excerpt for perspective [page_annotateExcerptForPerspective|popup]
 
-* Enter any notes you want to remember about this excerpt with respect to this perspective. [perspective_excerptLinkageNotes|textarea]
+* Notes | Enter any notes you want to remember about this excerpt with respect to this perspective. [perspective_excerptLinkageNotes|textarea]
 
 ## Annotate interpretation for perspective [page_annotateInterpretationForPerspective|popup]
 
-* Enter any notes you want to remember about this interpretation as it is linked to this perspective. [perspective_interpretationLinkageNotes|textarea]
+* Notes | Enter any notes you want to remember about this interpretation as it is linked to this perspective. [perspective_interpretationLinkageNotes|textarea]
 
 ## Read catalysis report [page_readCatalysisReport]
 
