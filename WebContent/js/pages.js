@@ -783,7 +783,13 @@ define(
                 "type": "label"
             },
             {
-                "id": "venueRecommendationsTable",
+                "id": "venueRecommendations",
+                "text": "Venue recommendations",
+                "type": "recommendationTable",
+                "options": "Venues"
+            },
+            {
+                "id": "venueRecommendationsTable_unfinished",
                 "text": "(Unfinished: This will be a table of venue recommendations\nrelated to the questions answered about participant groups.",
                 "type": "label"
             },
@@ -850,7 +856,13 @@ define(
                 "options": "page_addElicitingQuestion"
             },
             {
-                "id": "elicitingRecommendationsTable",
+                "id": "elicitingQuestionRecommendations",
+                "text": "Recommendations for eliciting questions",
+                "type": "recommendationTable",
+                "options": "Eliciting questions"
+            },
+            {
+                "id": "elicitingRecommendationsTable_unfinished",
                 "text": "(Unfinished: This will be a table of recommendations for eliciting questions\nrelated to the questions answered about participant groups.",
                 "type": "label"
             },
@@ -883,7 +895,13 @@ define(
                 "options": "what happened;directed question;undirected questions;point in time;event;extreme;surprise;people, places, things;fictional scenario;other"
             },
             {
-                "id": "FIXME_343",
+                "id": "templates_elicitingQuestions",
+                "text": "Or choose a question from this list.",
+                "type": "templateList",
+                "options": "elicitingQuestions"
+            },
+            {
+                "id": "templates_elicitingQuestions_unfinished",
                 "text": "(Unfinished: This will be a list of template questions the user can copy.)",
                 "type": "label"
             }
@@ -907,7 +925,13 @@ define(
                 "options": "page_addStoryQuestion"
             },
             {
-                "id": "storyQRecommendationsTable",
+                "id": "storyQuestionRecommendations",
+                "text": "Recommendations for story questions",
+                "type": "recommendationTable",
+                "options": "storyQuestions"
+            },
+            {
+                "id": "storyQuestionRecommendationsTable_unfinished",
                 "text": "(Unfinished: This will be a table of recommendations for story questions\nrelated to the questions answered about participant groups.",
                 "type": "label"
             },
@@ -958,7 +982,13 @@ define(
                 "type": "textarea"
             },
             {
-                "id": "FIXME_379",
+                "id": "templates_storyQuestions",
+                "text": "Or choose a question from this list.",
+                "type": "templateList",
+                "options": "storyQuestions"
+            },
+            {
+                "id": "templates_storyQuestions_unfinished",
                 "text": "(Unfinished: This will be a list of template questions the user can copy.)",
                 "type": "label"
             }
@@ -982,7 +1012,13 @@ define(
                 "options": "page_addParticipantQuestion"
             },
             {
-                "id": "partQRecommendationsTable",
+                "id": "participantQuestionRecommendations",
+                "text": "Recommendations for participant questions",
+                "type": "recommendationTable",
+                "options": "participantQuestions"
+            },
+            {
+                "id": "participantQuestionRecommendations_unfinished",
                 "text": "(Unfinished: This will be a table of recommendations for participant questions\nrelated to the questions answered about participant groups.",
                 "type": "label"
             },
@@ -1033,7 +1069,13 @@ define(
                 "type": "textarea"
             },
             {
-                "id": "FIXME_401",
+                "id": "templates_participantQuestions",
+                "text": "Or choose a question from this list.",
+                "type": "templateList",
+                "options": "participantQuestions"
+            },
+            {
+                "id": "templates_participantQuestions_unfinished",
                 "text": "(Unfinished: This will be a list of template questions the user can copy.)",
                 "type": "label"
             }
@@ -1084,7 +1126,13 @@ define(
                 "type": "label"
             },
             {
-                "id": "collectionRecommendationsTable",
+                "id": "collectionSessionRecommendations",
+                "text": "Recommendations for story collection sessions",
+                "type": "recommendationTable",
+                "options": "collectionSessions"
+            },
+            {
+                "id": "collectionRecommendationsTable_unfinished",
                 "text": "(Unfinished: This will be a table of recommendations for collection sessions\nrelated to the questions answered about participant groups.",
                 "type": "label"
             },
@@ -1239,7 +1287,13 @@ define(
                 "type": "textarea"
             },
             {
-                "id": "FIXME_455",
+                "id": "templates_storyCollectionActivities",
+                "text": "Or choose an activity from this list.",
+                "type": "templateList",
+                "options": "storyCollectionActivities"
+            },
+            {
+                "id": "templates_storyCollectionActivities_unfinished",
                 "text": "(Unfinished: This will be a list of template activities the user can copy.)",
                 "type": "label"
             }
@@ -1620,7 +1674,12 @@ define(
                 "type": "label"
             },
             {
-                "id": "mockupThemingLabel",
+                "id": "themeStories",
+                "text": "Theme stories",
+                "type": "storyThemer"
+            },
+            {
+                "id": "mockupThemingLabel_unfinished",
                 "text": "(Unfinished: The user will use this area to theme stories.",
                 "type": "label"
             },
@@ -1644,7 +1703,12 @@ define(
                 "type": "label"
             },
             {
-                "id": "graphBrowserMockupLabel",
+                "id": "graphBrowserDisplay",
+                "text": "Graph browser",
+                "type": "graphBrowser"
+            },
+            {
+                "id": "graphBrowserMockupLabel_unfinished",
                 "text": "(Unfinished: This area will show graphs of patterns in the data.",
                 "type": "label"
             },
@@ -1680,7 +1744,12 @@ define(
                 "options": "0.05;0.01"
             },
             {
-                "id": "mockupTrendsLabel",
+                "id": "reviewTrends_display",
+                "text": "Trends report",
+                "type": "trendsReport"
+            },
+            {
+                "id": "mockupTrendsLabel_unfinished",
                 "text": "(Unfinished: This area will show the most significant statistical trends.",
                 "type": "label"
             },
@@ -1936,7 +2005,13 @@ define(
                 "type": "label"
             },
             {
-                "id": "mockupClusteringLabel",
+                "id": "clusterInterpretations_clusterSpace",
+                "text": "Cluster interpretations into perspectives",
+                "type": "clusterSpace",
+                "options": "interpretations"
+            },
+            {
+                "id": "mockupClusteringLabel_unfinished",
                 "text": "(Unfinished: This will be a space where perspectives can be clustered\nrelated to the questions answered about participant groups.",
                 "type": "label"
             },
@@ -2100,7 +2175,13 @@ define(
                 "type": "label"
             },
             {
-                "id": "sensemakingRecommendationsTable",
+                "id": "sensemakingSessionRecommendations",
+                "text": "Recommendations for sensemaking sessions",
+                "type": "recommendationTable",
+                "options": "sensemakingSessions"
+            },
+            {
+                "id": "sensemakingRecommendationsTable_unfinished",
                 "text": "(Unfinished: This will be a table of recommendations for sensemaking sessions\nrelated to the questions answered about participant groups.",
                 "type": "label"
             },
@@ -2255,7 +2336,13 @@ define(
                 "type": "textarea"
             },
             {
-                "id": "FIXME_782",
+                "id": "templates_sensemakingActivities",
+                "text": "Or choose an activity from this list.",
+                "type": "templateList",
+                "options": "sensemakingActivities"
+            },
+            {
+                "id": "templates_sensemakingActivities_unfinished",
                 "text": "(Unfinished: This will be a list of template activities the user can copy.)",
                 "type": "label"
             }
@@ -2708,7 +2795,13 @@ define(
                 "type": "label"
             },
             {
-                "id": "interventionRecommendationsTable",
+                "id": "interventionRecommendations",
+                "text": "Recommendations for intervention plans",
+                "type": "recommendationTable",
+                "options": "interventions"
+            },
+            {
+                "id": "interventionRecommendationsTable_unfinished",
                 "text": "(Unfinished: This will be a table of recommendations for this section\nrelated to the questions answered about participant groups.",
                 "type": "label"
             },
@@ -3180,7 +3273,7 @@ define(
         "isHeader": false,
         "questions": [
             {
-                "id": "FIXME_1032",
+                "id": "FIXME_1031",
                 "text": "On this page you can keep track of requests for help as your project winds down.",
                 "type": "label"
             },

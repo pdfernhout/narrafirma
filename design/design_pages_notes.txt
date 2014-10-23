@@ -307,8 +307,8 @@ create some story eliciting and story interpretation questions, design your stor
 
 * On this page you will choose story collection venues, or ways to collect stories. [venuesIntro|label]
 
-//* Venue recommendations [venueRecommendations|recommendationTable|Venues]
-* (Unfinished: This will be a table of venue recommendations [venueRecommendationsTable|label]
+* Venue recommendations [venueRecommendations|recommendationTable|Venues]
+* (Unfinished: This will be a table of venue recommendations [venueRecommendationsTable_unfinished|label]
 related to the questions answered about participant groups.
 * It will look something like this.) [mockup_recTable_venues|image|images/mockups/mockupRecTable.png]
 
@@ -329,8 +329,8 @@ is recommended.
 
 * These are the questions you will be asking. [project_elicitingQuestionsList|grid|page_addElicitingQuestion]
 
-//* Recommendations for eliciting questions [elicitingQuestionRecommendations|recommendationTable|Eliciting questions]
-* (Unfinished: This will be a table of recommendations for eliciting questions [elicitingRecommendationsTable|label]
+* Recommendations for eliciting questions [elicitingQuestionRecommendations|recommendationTable|Eliciting questions]
+* (Unfinished: This will be a table of recommendations for eliciting questions [elicitingRecommendationsTable_unfinished|label]
 related to the questions answered about participant groups.
 * It will look something like this.) [mockup_recTable_eliciting|image|images/mockups/mockupRecTable.png]
 
@@ -339,8 +339,8 @@ related to the questions answered about participant groups.
 * Question | Enter a story-eliciting question. [elicitingQuestion_text|textarea]
 * Type | What type of question is this? [elicitingQuestion_type|checkBoxes|what happened;directed question;undirected questions;point in time;event;extreme;surprise;people, places, things;fictional scenario;other]
 
-//* Or choose a question from this list. [templates_elicitingQuestions|templateList|elicitingQuestions]
-* (Unfinished: This will be a list of template questions the user can copy.)
+* Or choose a question from this list. [templates_elicitingQuestions|templateList|elicitingQuestions]
+* (Unfinished: This will be a list of template questions the user can copy.) [templates_elicitingQuestions_unfinished|label]
 
 ## Write questions about stories [page_writeQuestionsAboutStories]
 
@@ -348,8 +348,8 @@ related to the questions answered about participant groups.
 
 * These are the questions you will be asking about stories. [project_storyQuestionsList|grid|page_addStoryQuestion]
 
-//* Recommendations for story questions [storyQuestionRecommendations|recommendationTable|storyQuestions]
-* (Unfinished: This will be a table of recommendations for story questions [storyQRecommendationsTable|label]
+* Recommendations for story questions [storyQuestionRecommendations|recommendationTable|storyQuestions]
+* (Unfinished: This will be a table of recommendations for story questions [storyQuestionRecommendationsTable_unfinished|label]
 related to the questions answered about participant groups.
 * It will look something like this.) [mockup_recTable_storyQ|image|images/mockups/mockupRecTable.png]
 
@@ -375,8 +375,8 @@ The question types are:
 * Options | If your question requires choices, enter them here (one per line). [storyQuestion_options|textarea]
 * Help | If you want to provide popup help to people answering the question, enter it here. [storyQuestion_help|textarea]
 
-//* Or choose a question from this list. [templates_storyQuestions|templateList|storyQuestions]
-* (Unfinished: This will be a list of template questions the user can copy.)
+* Or choose a question from this list. [templates_storyQuestions|templateList|storyQuestions]
+* (Unfinished: This will be a list of template questions the user can copy.) [templates_storyQuestions_unfinished|label]
 
 ## Write questions about participants [page_writeQuestionsAboutParticipants]
 
@@ -384,8 +384,8 @@ The question types are:
 
 * These are the questions you will be asking people about themselves. [project_participantQuestionsList|grid|page_addParticipantQuestion]
 
-//* Recommendations for participant questions [participantQuestionRecommendations|recommendationTable|participantQuestions]
-* (Unfinished: This will be a table of recommendations for participant questions [partQRecommendationsTable|label]
+* Recommendations for participant questions [participantQuestionRecommendations|recommendationTable|participantQuestions]
+* (Unfinished: This will be a table of recommendations for participant questions [participantQuestionRecommendations_unfinished|label]
 related to the questions answered about participant groups.
 * It will look something like this.) [mockup_recTable_partQ|image|images/mockups/mockupRecTable.png]
 
@@ -397,8 +397,8 @@ related to the questions answered about participant groups.
 * Options | If your question has choices, enter them here (one per line). [participantQuestion_options|textarea]
 * Help | If you want to provide help to people answering the question, enter it here. [participantQuestion_help|textarea]
 
-//* Or choose a question from this list. [templates_participantQuestions|templateList|participantQuestions]
-* (Unfinished: This will be a list of template questions the user can copy.)
+* Or choose a question from this list. [templates_participantQuestions|templateList|participantQuestions]
+* (Unfinished: This will be a list of template questions the user can copy.) [templates_participantQuestions_unfinished|label]
 
 ## Design question form [page_designQuestionForm]
 
@@ -414,8 +414,8 @@ related to the questions answered about participant groups.
 * On this page you will design group sessions in which you will collect stories. [collectionSessionsLabel|label]
 If you don't plan to collect stories using group sessions, you can skip this page.
 
-//* Recommendations for story collection sessions [collectionSessionRecommendations|recommendationTable|collectionSessions]
-* (Unfinished: This will be a table of recommendations for collection sessions [collectionRecommendationsTable|label]
+* Recommendations for story collection sessions [collectionSessionRecommendations|recommendationTable|collectionSessions]
+* (Unfinished: This will be a table of recommendations for collection sessions [collectionRecommendationsTable_unfinished|label]
 related to the questions answered about participant groups.
 * It will look something like this.) [mockup_recTable_collection|image|images/mockups/mockupRecTable.png]
 
@@ -451,8 +451,8 @@ Activities within story collection sessions can be simple instructions or compli
 * Spaces | What spaces will be used for this activity? [collectionSessionPlan_activity_spaces|textarea]
 * Facilitation | What sort of facilitation will be necessary for this activity? [collectionSessionPlan_activity_facilitation|textarea]
 
-//* Or choose an activity from this list. [templates_storyCollectionActivities|templateList|storyCollectionActivities]
-* (Unfinished: This will be a list of template activities the user can copy.)
+* Or choose an activity from this list. [templates_storyCollectionActivities|templateList|storyCollectionActivities]
+* (Unfinished: This will be a list of template activities the user can copy.) [templates_storyCollectionActivities_unfinished|label]
 
 ## Read collection design report [readCollectionDesignReport]
 
@@ -582,8 +582,8 @@ You can also save excerpts (parts of stories) for later use.
 * On this page you will derive emergent themes from the collected stories. [themeStoriesLabel|label]
 The themes will appear in your data as answers to a "Theme" question, creating patterns you can use.
 
-//* Theme stories [themeStories|storyThemer]
-* (Unfinished: The user will use this area to theme stories. [mockupThemingLabel|label]
+* Theme stories [themeStories|storyThemer]
+* (Unfinished: The user will use this area to theme stories. [mockupThemingLabel_unfinished|label]
 * It will look something like this.) [mockup_theming|image|images/mockups/mockupTheming.png]
 
 ## Browse graphs [page_browseGraphs]
@@ -592,8 +592,8 @@ The themes will appear in your data as answers to a "Theme" question, creating p
 and save patterns to observations for later use.
 
 // graph browser has button to add result to observation (existing or new)
-//* Graph browser [graphBrowserDisplay|graphBrowser]
-* (Unfinished: This area will show graphs of patterns in the data. [graphBrowserMockupLabel|label]
+* Graph browser [graphBrowserDisplay|graphBrowser]
+* (Unfinished: This area will show graphs of patterns in the data. [graphBrowserMockupLabel_unfinished|label]
 * It will look something like this.) [mockup_graphBrowser|image|images/mockups/mockupGraphs.png]
 
 ## Review trends [page_reviewTrends]
@@ -608,9 +608,8 @@ and save some to observations for later use.
 
 // when user changes any of the options above, the trend report below should update
 // trends report has button to add result to observation (existing or new)
-//* Trends report [reviewTrends_display|trendsReport]
-
-* (Unfinished: This area will show the most significant statistical trends. [mockupTrendsLabel|label]
+* Trends report [reviewTrends_display|trendsReport]
+* (Unfinished: This area will show the most significant statistical trends. [mockupTrendsLabel_unfinished|label]
 * It will look something like this.) [mockup_trends|image|images/mockups/mockupTrends.png]
 
 ## Add to observation [page_addToObservation|popup]
@@ -684,8 +683,8 @@ Note: Do not cluster your interpretations unless you are sure you have finished 
 
 // ideally, when they are done with this, the circles marked as group names
 // will get copied into the perspectives list seen in the next page
-//* Cluster interpretations into perspectives [clusterInterpretations_clusterSpace|clusterSpace|interpretations]
-* (Unfinished: This will be a space where perspectives can be clustered [mockupClusteringLabel|label]
+* Cluster interpretations into perspectives [clusterInterpretations_clusterSpace|clusterSpace|interpretations]
+* (Unfinished: This will be a space where perspectives can be clustered [mockupClusteringLabel_unfinished|label]
 related to the questions answered about participant groups.
 * It will look something like this.) [mockup_clusters|image|images/mockups/mockupClusters.png]
 
@@ -742,8 +741,8 @@ your interpretations.
 
 * On this page you create plans for your sensemaking sessions. [project_sensemakingSessionPlansLabel|label]
 
-//* Recommendations for sensemaking sessions [sensemakingSessionRecommendations|recommendationTable|sensemakingSessions]
-* (Unfinished: This will be a table of recommendations for sensemaking sessions [sensemakingRecommendationsTable|label]
+* Recommendations for sensemaking sessions [sensemakingSessionRecommendations|recommendationTable|sensemakingSessions]
+* (Unfinished: This will be a table of recommendations for sensemaking sessions [sensemakingRecommendationsTable_unfinished|label]
 related to the questions answered about participant groups.
 * It will look something like this.) [mockup_recTable_sensemaking|image|images/mockups/mockupRecTable.png]
 
@@ -778,8 +777,8 @@ Activities within story collection sessions can be simple instructions or compli
 * Spaces | What spaces will be used for this activity? [sensemakingSessionPlan_activity_spaces|textarea]
 * Facilitation | What sort of facilitation will be necessary for this activity? [sensemakingSessionPlan_activity_facilitation|textarea]
 
-//* Or choose an activity from this list. [templates_sensemakingActivities|templateList|sensemakingActivities]
-* (Unfinished: This will be a list of template activities the user can copy.)
+* Or choose an activity from this list. [templates_sensemakingActivities|templateList|sensemakingActivities]
+* (Unfinished: This will be a list of template activities the user can copy.) [templates_sensemakingActivities_unfinished|label]
 
 ## Enter sensemaking session records [page_enterSensemakingSessionRecords]
 
@@ -902,8 +901,8 @@ the participant groups you set up in the project planning phase.
 * On this page you can design interventions that change the stories people tell [project_interventionLabel|label]
 in your community or organization.
 
-//* Recommendations for intervention plans [interventionRecommendations|recommendationTable|interventions]
-* (Unfinished: This will be a table of recommendations for this section [interventionRecommendationsTable|label]
+* Recommendations for intervention plans [interventionRecommendations|recommendationTable|interventions]
+* (Unfinished: This will be a table of recommendations for this section [interventionRecommendationsTable_unfinished|label]
 related to the questions answered about participant groups.
 * It will look something like this.) [mockup_recTable_intervention|image|images/mockups/mockupRecTable.png]
 
