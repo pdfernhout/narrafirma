@@ -25,7 +25,7 @@ define([
     "dijit/form/SimpleTextarea",
     "dijit/form/TextBox",
     "dijit/form/ToggleButton",
-    "dijit/_WidgetBase",
+    "dijit/_WidgetBase"
 ], function(
     array,
     declare,
@@ -79,7 +79,7 @@ define([
     function newLabel(id, text, addToDiv) {
         var label = new ContentPane({
             id: id,
-            content: text, 
+            content: text
         });
         if (isString(addToDiv)) {
             addToDiv = document.getElementById(addToDiv);
@@ -94,7 +94,7 @@ define([
     
     function newTextBox(id, addToDiv) {
         var textBox = new TextBox({
-            id: id,
+            id: id
         });
         if (isString(addToDiv)) {
             addToDiv = document.getElementById(addToDiv);
@@ -220,7 +220,7 @@ define([
                     checked: (self.value === option.value),
                     value: option.value,
                     name: id,
-                    "id": choiceID,
+                    "id": choiceID
                 });
                 radioButton.placeAt(div);
                 on(radioButton, "click", function(evt) {
@@ -256,7 +256,7 @@ define([
                 var item = this.radioButtons[itemID];
                 item.attr("disabled", value);
             }
-        },
+        }
     });
 
     function newRadioButtons(id, choices, optionsString, addToDiv) {
@@ -318,7 +318,7 @@ define([
                 // console.log("creating checkbox", choiceID);
                 var checkBox = new CheckBox({
                     value: option.value,
-                    "id": choiceID,
+                    "id": choiceID
                 });
                 checkBox.placeAt(div);
                 checkBox.set("checked", self.value[option.value]);
@@ -356,7 +356,7 @@ define([
                 var item = this.checkBoxes[itemID];
                 item.attr("disabled", value);
             }
-        },
+        }
     });
 
     function newCheckBoxes(id, choices, optionsString, addToDiv) {
@@ -431,13 +431,13 @@ define([
             maximum: 100,
             count: labels.length,
             numericMargin: 1,
-            labels: labels,
+            labels: labels
         }, labelsNode);
 
         // TODO: Issue -- should return a new sort of component that can be placed an includes the slider and the rules and labels
         var contentPane = new ContentPane({
             id: id + "_content",
-            content: panelDiv, 
+            content: panelDiv
         });
         
         if (isString(addToDiv)) {
@@ -461,7 +461,7 @@ define([
         var radioButtons = new RadioButtonsWidget({
             id: id,
             choices: null,
-            optionsString: "yes\nno",
+            optionsString: "yes\nno"
             // value: "no"
         });
          
@@ -498,7 +498,7 @@ define([
             id: id,
             label: "false",
             value: false,
-            onChange: function(value) {this.set("label", value); this.set("value", value); domain.buttonClicked(id, value);},
+            onChange: function(value) {this.set("label", value); this.set("value", value); domain.buttonClicked(id, value);}
         });
         
         //toggleButton.set("value", true);
