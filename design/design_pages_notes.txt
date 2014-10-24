@@ -1028,7 +1028,7 @@ from any of the stage reports (or the final project report).
 
 ## Respond to requests for post-project support [page_projectRequests]
 
-* On this page you can keep track of requests for help as your project winds down.
+* On this page you can keep track of requests for help as your project winds down. [project_returnRequestsLabel|label]
 
 * Enter requests for help here. [project_returnRequestsList|grid|page_addNewReturnRequest]
 
