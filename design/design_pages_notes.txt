@@ -273,12 +273,12 @@ based on your consideration of project aspects and your project stories.
 
 * Copy the original draft versions into the answers below [project_PNIquestions_copyDraftsButton|button]
 
-* What is the goal of the project? Why are you doing it? [project_PNIquestions_goal_final|textarea|planning_goal]
-* What relationships are important to the project? [project_PNIquestions_relationships_final|textarea|planning_relationships]
-* What is the focus of the project? What is it about? [project_PNIquestions_focus_final|textarea|planning_focus]
-* What range(s) of experience will the project cover? [project_PNIquestions_range_final|textarea|planning_range]
-* What is the project's scope? (number of people, number of stories, number of questions about stories) [project_PNIquestions_scope_final|textarea|planning_draft_scope]
-* Which phases of PNI will be important to the project? (indicate most and least important phases) [project_PNIquestions_emphasis_final|textarea|planning_draft_emphasis]
+* What is the goal of the project? Why are you doing it? [project_PNIquestions_goal_final|textarea]
+* What relationships are important to the project? [project_PNIquestions_relationships_final|textarea]
+* What is the focus of the project? What is it about? [project_PNIquestions_focus_final|textarea]
+* What range(s) of experience will the project cover? [project_PNIquestions_range_final|textarea]
+* What is the project's scope? (number of people, number of stories, number of questions about stories) [project_PNIquestions_scope_final|textarea]
+* Which phases of PNI will be important to the project? (indicate most and least important phases) [project_PNIquestions_emphasis_final|textarea]
 
 ## Write project synopsis [page_writeProjectSynopsis]
 

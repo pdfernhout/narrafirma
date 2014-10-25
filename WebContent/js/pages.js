@@ -686,38 +686,32 @@ define(
             {
                 "id": "project_PNIquestions_goal_final",
                 "text": "What is the goal of the project? Why are you doing it?",
-                "type": "textarea",
-                "options": "planning_goal"
+                "type": "textarea"
             },
             {
                 "id": "project_PNIquestions_relationships_final",
                 "text": "What relationships are important to the project?",
-                "type": "textarea",
-                "options": "planning_relationships"
+                "type": "textarea"
             },
             {
                 "id": "project_PNIquestions_focus_final",
                 "text": "What is the focus of the project? What is it about?",
-                "type": "textarea",
-                "options": "planning_focus"
+                "type": "textarea"
             },
             {
                 "id": "project_PNIquestions_range_final",
                 "text": "What range(s) of experience will the project cover?",
-                "type": "textarea",
-                "options": "planning_range"
+                "type": "textarea"
             },
             {
                 "id": "project_PNIquestions_scope_final",
                 "text": "What is the project's scope? (number of people, number of stories, number of questions about stories)",
-                "type": "textarea",
-                "options": "planning_draft_scope"
+                "type": "textarea"
             },
             {
                 "id": "project_PNIquestions_emphasis_final",
                 "text": "Which phases of PNI will be important to the project? (indicate most and least important phases)",
-                "type": "textarea",
-                "options": "planning_draft_emphasis"
+                "type": "textarea"
             }
         ]
     },
