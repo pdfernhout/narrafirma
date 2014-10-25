@@ -47,7 +47,7 @@ function extract(line, rest, lineNumber) {
   
   var lineContent = lineSections[0].trim();
   var lineContentSections = lineContent.split('|');
-  var shortLineContent;
+  var shortLineContent = null;
   var longLineContent = lineContent;
   if (lineContentSections.length == 2) {
          shortLineContent = lineContentSections[0].trim();

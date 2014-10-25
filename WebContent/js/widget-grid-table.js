@@ -166,7 +166,7 @@ define([
         
         // TODO: Should only do for one of these... Need to break...
         // TODO: Need to search on unique field...
-        var selection;
+        var selection = null;
         for (var theSelection in grid.selection) {
             selection = theSelection;
         }

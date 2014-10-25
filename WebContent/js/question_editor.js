@@ -432,7 +432,7 @@ define([
     }
     
     function showQuestionEditDialog(question, questionEditorDiv) {
-        var questionEditDialog;
+        var questionEditDialog = null;
         
         var form = new Form();
         form.set("style", "width: 800px; height 800px; overflow: auto;");

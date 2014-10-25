@@ -122,11 +122,11 @@ define([
                 options.push({label: each + " (" +  count + ")", value: each});
             });
         } else if (question.type === "text") {
-            for (each in totals){
-                if (totals.hasOwnProperty(each)) {
-                    count = totals[each];
+            for (var eachTotal in totals){
+                if (totals.hasOwnProperty(eachTotal)) {
+                    count = totals[eachTotal];
                     if (!count) count = 0;
-                    options.push({label: each + " (" +  count + ")", value: each});                    
+                    options.push({label: eachTotal + " (" +  count + ")", value: eachTotal});                    
                 }
             }
         } else {

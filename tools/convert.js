@@ -58,9 +58,9 @@ var acceptableTypes = [
 ];
 
 var usedIDs = {};
-var pages;
-var inputTextArea;
-var outputTextArea;
+var pages = [];
+var inputTextArea = null;
+var outputTextArea = null;
 
 function extract(line, rest, lineNumber) {
     var lineSections = rest.split("[");
@@ -71,7 +71,7 @@ function extract(line, rest, lineNumber) {
     
     var lineContent = string.trim(lineSections[0]);
     var lineContentSections = lineContent.split('|');
-    var shortLineContent;
+    var shortLineContent = "";
     var longLineContent = lineContent;
     if (lineContentSections.length == 2) {
            shortLineContent = string.trim(lineContentSections[0]);
@@ -239,9 +239,9 @@ function loadRecommendationsCSV() {
 }
 
 
-var matrix;
-var matrixColumnCount;
-var matrixRowCount;
+var matrix = [];
+var matrixColumnCount = 0;
+var matrixRowCount = 0;
 
 function getMatrixValue(row, column) {
     if (row > matrixRowCount) return null;
