@@ -1,6 +1,7 @@
 "use strict";
 
 require([
+    "js/pages/allPages",
     "dojo/_base/array",
     "dojox/mvc/at",
     "dojo/_base/connect",
@@ -8,11 +9,6 @@ require([
     "dojo/dom-construct",
     "dojo/dom-style",
     "dojo/hash",
-    //"js/page_design-questions",
-    //"js/page_export-survey",
-    //"js/page_graph-results",
-    //"js/page_take-survey",
-    "js/pages",
     "js/question_editor",
     "js/widgets",
     "js/widget-grid-table",
@@ -20,6 +16,7 @@ require([
     "dijit/form/Select",
     "dojo/domReady!"
 ], function(
+    allPages,
     array,
     at,
     connect,
@@ -27,11 +24,6 @@ require([
     domConstruct,
     domStyle,
     hash,
-    //page_designQuestions,
-    //page_exportSurvey,
-    //page_graphResults,
-    //page_takeSurvey,
-    pages,
     questionEditor,
     widgets,
     widgetGridTable,
@@ -72,7 +64,7 @@ require([
     function showPage(id) {
         if (currentPageID === id) return;
         
-        var page = domain.pageDefinitions[id];
+        var page = allPages[id];
         if (!page) {
             console.log("no such page", id);
             alert("No such page: " + id);
@@ -112,7 +104,7 @@ require([
     
     function createPage(id, visible) {
         console.log("createPage", id);
-        var page = domain.pageDefinitions[id];
+        var page = allPages[id];
         
         if (!page) {
             console.log("ERROR: No definition for page: ", id);
@@ -125,7 +117,6 @@ require([
         var pagePane = new ContentPane({
             "id": id,
             title: page.title,
-            content: page.description.replace(/\n/g, "<br>\n"),
             // Shorten width so grid scroll bar shows up not clipped
             // Also, looks like nested ContentPanes tend to walk off the right side of the page for some reason
             style: "width: 94%",
@@ -140,9 +131,7 @@ require([
         
        // console.log("Made content pane", id);
        
-       array.forEach(page.questions, function(question) {
-           questionEditor.insertQuestionIntoDiv(question, pagePane);
-       });
+       page.addWidgets(pagePane, domain);
        
        // TODO: Fix this to store data
        // TODO: Translate
@@ -187,8 +176,6 @@ require([
        questionEditor.insertQuestionIntoDiv(nextPageButtonQuestion, pagePane);
        */
        
-       domain.pageInstantiations[id] = pagePane;
-              
        // console.log("about to set visibility", id);
        if (visible) {
             domStyle.set(id, "display", "block");
@@ -258,7 +245,7 @@ require([
     
     // Make all of the application pages selectable from the dropdown list and back/next buttons and put them in a TabContainer
     function createLayout() {
-        console.log("createLayout start");
+        console.log("createLayout start", allPages);
         var pageSelectOptions = [];
         
         var questionIndex = 0;
@@ -273,27 +260,25 @@ require([
         // homeButton.set("iconClass", "dijitEditorIcon dijitEditorIconOutdent");
         homeButton.set("iconClass", "homeButtonImage");
         
-        array.forEach(pages, function(page) {
-            // console.log("defining page", page.name)
+        for (var pageKey in allPages) {
+            if (!allPages.hasOwnProperty(pageKey)) continue;
+            var page = allPages[pageKey];
+            console.log("defining page", page.id);
+            // TODO: Translate this
             var title = page.name;
-            // TODO: Eventually remove legacy support for old way of defining pages
-            // TODO: Eventually don't include popups or other special page types in list to display to user
-            var sections = title.split("-");
-            if (sections.length >= 2) {
-                title = sections[0];
-                page.description = " " + sections + "<br>\n" + page.description;
-            }
             if (page.isHeader) {
                 title = "<i>" + title + "</i>";
             } else {
                 title = "&nbsp;&nbsp;&nbsp;&nbsp;" + title;
             }
-            if (page.type) {
+            if (page.type !== "page") {
                 title += " SPECIAL: " + page.type;
             }
             
             page.title = title;
             
+            /*
+            // TODO: Fix/Remove this
             // Cleanup options
             // TODO: Ensure options get translated
             array.forEach(page.questions, function(question) {
@@ -305,7 +290,7 @@ require([
                     // console.log("result of replacement", question.options);
                 }
                 // Hook up question to domain for top level pages
-                if (!page.type) {
+                if (page.type === "page") {
                     // TODO: Other types of grid
                     if (question.type !== "grid") {
                         question.value = at(domain.data, question.id);
@@ -316,12 +301,14 @@ require([
                     console.log("question.value set to", question.id, question.value);
                 }
             });
+            */
             
             domain.pageDefinitions[page.id] = page;      
             
             // console.log("about to make page");
             // Skip over special page types
-            if (!page.type) {
+            if (page.type === "page") {
+                // console.log("pushing page", page);
                 // Make it easy to lookup previous and next pages from a page
                 if (lastPageID) domain.pageDefinitions[lastPageID].nextPageID = page.id;
                 page.previousPageID = lastPageID;
@@ -331,14 +318,14 @@ require([
                 // so can't pass page in as value here and need indirect pageDefinitions lookup dictionary
                 pageSelectOptions.push({label: title, value: page.id});
             }
-        });
+        }
         
         /*
         // Now, premake pages only after all definitons are done (since some pages refer to others for question popups that may be defined later)
         array.forEach(pages, function(page) {
             // console.log("creating page", page.name)
             // Skip over special page types
-            if (!page.type) {
+            if (page.type === "page") {
                 // Pre-make base pages
                 createPage(page.id);
             }
@@ -373,7 +360,7 @@ require([
             urlHashFragmentChanged(fragment);
         } else {
             urlHashFragmentChanged(startPage);
-            showPage(pages[0].id);
+            showPage("page_dashboard");
             currentPageID = startPage;
         }
         

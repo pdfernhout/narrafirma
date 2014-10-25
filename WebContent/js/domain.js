@@ -18,7 +18,6 @@ define([
     StatefulArray
 ) {
     var pageDefinitions = {};
-    var pageInstantiations = {};
     var questions = {};
     
     var exportedSurveyQuestions = [];
@@ -721,7 +720,6 @@ define([
         "testDogStories": testDogStories,
         "exportedSurveyQuestions": exportedSurveyQuestions,
         "surveyResults": surveyResults,
-        "pageInstantiations": pageInstantiations,
         "pageDefinitions": pageDefinitions,
         "callDashboardFunction": callDashboardFunction,
         "buttonClicked": buttonClicked,
