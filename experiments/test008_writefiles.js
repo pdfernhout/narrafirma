@@ -1,3 +1,5 @@
+"use strict";
+
 // Test with node.js
 
 var fs = require('fs');
