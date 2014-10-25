@@ -23,26 +23,26 @@
 "use strict";
 
 define([
-        "js/widgets"
+        "js/widgetBuilder"
     ], function(
         widgets
     ){      
-        function addWidgets(contentPane, model) {
-
-            // TODO: Text would go into translation table...
-            // "project_projectPlanningLabel": "In the planning phase of your PNI project, you will make decisions about how your project will proceed.\nYou will think about your goals, your topic, your participants, and any opportunities and dangers you might encounter during the project.",
-            widgets.addLabel(contentPane, "project_projectPlanningLabel", model);
-            
-            // "project_generalNotes_planning_prompt": "You can enter some general notes on planning in this project here.",
-            // "project_generalNotes_planning_header": "Project general notes",
-            widgets.addTextAreaQuestion(contentPane, "project_generalNotes_planning", model);
-        }
-
-        return {
-            "id": "page_planning",
-            "name": "Planning",
-            "isHeader": true,
-            "addWidgets": addWidgets
-        };
+    function addWidgets(contentPane, model) {
+    
+        // TODO: Text would go into translation table...
+        // "project_projectPlanningLabel": "In the planning phase of your PNI project, you will make decisions about how your project will proceed.\nYou will think about your goals, your topic, your participants, and any opportunities and dangers you might encounter during the project.",
+        widgets.add_label(contentPane, "project_projectPlanningLabel", model);
         
-    });
+        // "project_generalNotes_planning_prompt": "You can enter some general notes on planning in this project here.",
+        // "project_generalNotes_planning_header": "Project general notes",
+        widgets.add_textarea(contentPane, "project_generalNotes_planning", model);
+    }
+    
+    return {
+        "id": "page_planning",
+        "name": "Planning",
+        "isHeader": true,
+        "addWidgets": addWidgets
+    };
+    
+});

@@ -183,101 +183,10 @@ function convert(input) {
   addOutput(');\n');
 }
 
-
 var allOutput = "";
 
 function addOutput(output) {
   allOutput = allOutput + output;
-}
-
-var modelTypes = {
-      text: 1,
-      textarea: 1,
-      boolean: 1,
-      select: 1,
-      imageUploader: 1,
-      toggleButton: 1,
-      checkBoxes: 1,
-      checkBoxesWithPull: 1,
-      excerptsList: 1,
-      grid: 1,
-      annotationsGrid: 1,
-      accumulatedItemsGrid: 1,
-      storyBrowser: 1,
-      storyThemer: 1,
-      graphBrowser: 1,
-      clusterSpace: 1,
-      quizScoreResult: 1,
-      report: 1
-};
-
-function generateModel() {
-  var unusedTypes = {};
-  var model = {};
-  var pagesToGoWithHeaders = {};
-  var lastHeader = null;
-  pages.forEach(function (page) {
-      if (page.isHeader) {
-          pagesToGoWithHeaders[page.id] = [];
-          lastHeader = page.id;
-      } else {
-          pagesToGoWithHeaders[lastHeader].push(page.id);
-      }
-      if (!page.type) {
-          // console.log("page", page);
-          page.questions.forEach(function (question) {
-              if (modelTypes[question.type]) {
-                  console.log("question", question.id, question.type);
-                  if (question.type === "grid" || question.type === "annotationsGrid" || question.type === "accumulatedItemsGrid") {
-                      model[question.id] = [];
-                  } else if (question.type === "text" || question.type === "textarea") {
-                      model[question.id] = "";
-                  } else {
-                      model[question.id] = null;
-                  }
-              } else {
-                  unusedTypes[question.type] = 1;
-              }
-          });
-      }
-  });
-  for (var key in unusedTypes) {
-      console.log("unusedType: ", key);
-  }
-  console.log("Output", JSON.stringify(model, null, "  "));
-  
-  console.log("Pages to go with headers", JSON.stringify(pagesToGoWithHeaders, null, "  "));
-  
-  var unusedTypes2 = {};
-  
-  var moreModels = [];
-  pages.forEach(function (page) {
-      if (page.type) {
-          var model2 = {};
-          moreModels.push(model2);
-          model2.__id = page.id;
-          model2.__type = page.type;
-          console.log("page", page.type, page);
-          page.questions.forEach(function (question) {
-              if (modelTypes[question.type]) {
-                  console.log("question", question.id, question.type);
-                  if (question.type === "grid") {
-                      model2[question.id] = [];
-                  } else if (question.type === "text" || question.type === "textarea") {
-                      model2[question.id] = "";
-                  } else {
-                      model2[question.id] = null;
-                  }
-              } else {
-                  unusedTypes2[question.type] = 1;
-              }
-          });
-      }
-  });
-  for (var key2 in unusedTypes2) {
-      console.log("unusedType2: ", key2);
-  }
-  console.log("Output", JSON.stringify(moreModels, null, "  "));
 }
 
 // Main
@@ -285,12 +194,51 @@ function generateModel() {
 convert(design);
 // console.log("allOutput", allOutput);
 
-if (allOutput) {
-    fs.writeFile("WebContent/js/pages.js", allOutput, function(err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("The pages.js file was written.");
-        }
-    });
+var fileTemplate = "\"use strict\";\n" +
+"\n" +
+"define([\n" +
+"    \"js/widgetBuilder\"\n" +
+"], function(\n" +
+"    widgets\n" +
+") {\n" +
+"\n" +
+"    function addWidgets(contentPane, model) {\n" +
+"{{body}}" +
+"    }\n" +
+"\n" +
+"    return {\n" +
+"        \"id\": \"{{pageID}}\",\n" +
+"        \"name\": \"{{pageName}}\",\n" +
+"        \"isHeader\": {{isHeader}},\n" +
+"        \"addWidgets\": addWidgets\n" +
+"    };\n" +
+"});";
+
+function errorHandler(err) {
+    if (err) {
+        console.log(err);
+    } else {
+        console.log("The test01.js file was written.");
+    }
+}
+
+var folder = "WebContent/js/pages/";
+for (var pageIndex in pages) {
+    var page = pages[pageIndex];
+    var fileName = folder + page.id + ".js";
+    var fileContent = fileTemplate;
+    fileContent = fileContent.replace("{{pageID}}", page.id);
+    fileContent = fileContent.replace("{{pageName}}", page.name);
+    fileContent = fileContent.replace("{{isHeader}}", page.isHeader);
+    allOutput = "";
+    for (var questionIndex in page.questions) {
+        var question = page.questions[questionIndex];
+        var options = question.options;
+        if (!question.options) options = "";
+        addOutput("        widgets.add_" + question.type + "(contentPane, \"" + question.id + "\", model, \"" + options + "\");\n");
+    }
+    
+    fileContent = fileContent.replace("{{body}}", allOutput);
+    fs.writeFile(fileName, fileContent, errorHandler);
+    return;
 }
