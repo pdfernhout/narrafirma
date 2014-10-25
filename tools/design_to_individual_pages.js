@@ -36,7 +36,7 @@ var acceptableTypes = [
 ];
 
 var usedIDs = {};
-var pages;
+var pages = [];
 
 function extract(line, rest, lineNumber) {
   var lineSections = rest.split("[");
@@ -142,6 +142,7 @@ function convert(input) {
           data = extract(line, rest, lineNumber);
           if (data) {
               lastPage = {"id": data.info.id, "name": data.text, "description": "", "isHeader": header, "type": data.info.type, "options": data.info.options, "questions": []};
+              if (!lastPage.type) lastPage.type = "page";
               pages.push(lastPage);
               commentNumberInPage = 0;
           }
@@ -209,36 +210,147 @@ var fileTemplate = "\"use strict\";\n" +
 "    return {\n" +
 "        \"id\": \"{{pageID}}\",\n" +
 "        \"name\": \"{{pageName}}\",\n" +
+"        \"type\": \"{{pageType}}\",\n" +
 "        \"isHeader\": {{isHeader}},\n" +
 "        \"addWidgets\": addWidgets\n" +
 "    };\n" +
 "});";
 
-function errorHandler(err) {
-    if (err) {
-        console.log(err);
-    } else {
-        console.log("The test01.js file was written.");
+function errorHandler(fileName) {
+    return function (err) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("The file " + fileName + " was written.");
+        }
+    };
+}
+
+//Next function from: http://stackoverflow.com/questions/16167581/sort-object-properties-and-json-stringify
+function iterateObjectAlphabetically(obj, callback) {
+    var arr = [];
+    var i;
+
+    for (i in obj) {
+        if (obj.hasOwnProperty(i)) {
+            arr.push(i);
+        }
+    }
+
+    arr.sort();
+
+    for (i = 0; i < arr.length; i++) {
+        // console.log( obj[arr[i]] ); //here is the sorted value
+        //do what you want with the object property
+        if (callback) {
+            callback(obj, arr[i]);
+        }
     }
 }
+
+var translations = {};
+var typesToTranslateOptions = {"radio": true, "checkboxes": true, "select": true};
+var pageFileNames = "";
+var pageNames = "";
+var pageReturn = "";
+var firstPage = true;
 
 var folder = "WebContent/js/pages/";
 for (var pageIndex in pages) {
     var page = pages[pageIndex];
+    
+    // maintain info needed to make allPages file
+    if (firstPage) {
+        firstPage = false;
+    } else {
+        pageFileNames = pageFileNames + ",\n";
+        pageNames = pageNames + ",\n";
+        pageReturn = pageReturn + ",\n";
+    }
+    pageFileNames = pageFileNames + "    \"" + page.id + "\"";
+    pageNames = pageNames + "    " + page.id;
+    pageReturn = pageReturn + "    \"" + page.id + "\": " + page.id;
+    
+    translations[page.id + "::title"] = page.name;
     var fileName = folder + page.id + ".js";
     var fileContent = fileTemplate;
     fileContent = fileContent.replace("{{pageID}}", page.id);
     fileContent = fileContent.replace("{{pageName}}", page.name);
+    fileContent = fileContent.replace("{{pageType}}", page.type);
     fileContent = fileContent.replace("{{isHeader}}", page.isHeader);
     allOutput = "";
     for (var questionIndex in page.questions) {
         var question = page.questions[questionIndex];
         var options = question.options;
-        if (!question.options) options = "";
-        addOutput("        widgets.add_" + question.type + "(contentPane, \"" + question.id + "\", model, \"" + options + "\");\n");
+        var optionsPrinted = "";
+        if (question.options) {
+            optionsPrinted = ", " + JSON.stringify(options.split(";"));
+        }
+        
+        addOutput("        widgets.add_" + question.type + "(contentPane, model, \"" + question.id + "\"" + optionsPrinted + ");\n");
+        translations[question.id + "::prompt"] = question.text;
+        if (question.shortText) {
+            translations[question.id + "::header"] = question.shortText;
+        } else if (question.type !== "label" && question.type !== "header" && question.type !== "image" && question.type !== "button" && question.type !== "report" && question.type !== "quizScoreResult") {
+            console.log("No short name for field: " + question.id + " type: " + question.type + " text: " + question.text);
+        }
+        
+        if (question.options && question.type in typesToTranslateOptions) {
+            var optionsSplit = question.options.split(";");
+            for (var optionIndex in optionsSplit) {
+                var option = optionsSplit[optionIndex];
+                translations[question.id + "::selection:" + option] = option;
+            }
+        }
     }
     
     fileContent = fileContent.replace("{{body}}", allOutput);
-    fs.writeFile(fileName, fileContent, errorHandler);
-    return;
+    fs.writeFile(fileName, fileContent, errorHandler(fileName));
 }
+
+// write allPages file
+
+var allPagesFileTemplate = "\"use strict\";\n" +
+"\n" +
+"define([\n" +
+"{{pageFileNames}}\n" +
+"], function(\n" +
+"{{pageNames}}\n" +
+") {\n" +
+"    return {\n" +
+"{{pageReturn}}\n" +
+"    };\n" +
+"});";
+
+var allPagesFileContent = allPagesFileTemplate;
+allPagesFileContent = allPagesFileContent.replace("{{pageFileNames}}", pageFileNames);
+allPagesFileContent = allPagesFileContent.replace("{{pageNames}}", pageNames);
+allPagesFileContent = allPagesFileContent.replace("{{pageReturn}}", pageReturn);
+
+var allPagesFileName = "WebContent/js/pages/allPages.js";
+fs.writeFile(allPagesFileName, allPagesFileContent, errorHandler(allPagesFileName));
+
+//  write translations file
+
+allOutput = "";
+addOutput("// Not indented correctly to make it easier to cut and paste to other language files\n" +
+        "// See: http://dojotoolkit.org/documentation/tutorials/1.9/i18n/\n" +
+        "define({\n" +
+        "    root: {\n");
+
+var first = true;
+iterateObjectAlphabetically(translations, function(translations, key) {
+    if (!first) {
+        addOutput(",\n");
+    } else {
+        first = false;
+    }
+    addOutput("    " + JSON.stringify(key) + ": " + JSON.stringify(translations[key]));
+});
+
+addOutput("\n");
+addOutput("}\n" +
+"});");
+
+var translationFileName = "WebContent/js/nls/testTransations.js";
+fs.writeFile(translationFileName, allOutput, errorHandler(translationFileName));
