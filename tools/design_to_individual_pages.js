@@ -195,10 +195,11 @@ function addOutput(output) {
 convert(design);
 // console.log("allOutput", allOutput);
 
-var fileTemplate = "\"use strict\";\n" +
+var fileTemplate = "// Generated from design\n" +
+"\"use strict\";\n" +
 "\n" +
 "define([\n" +
-"    \"js/widgetBuilder\"\n" +
+"    \"../widgetBuilder\"\n" +
 "], function(\n" +
 "    widgets\n" +
 ") {\n" +
@@ -267,7 +268,7 @@ for (var pageIndex in pages) {
         pageNames = pageNames + ",\n";
         pageReturn = pageReturn + ",\n";
     }
-    pageFileNames = pageFileNames + "    \"" + page.id + "\"";
+    pageFileNames = pageFileNames + "    \"./" + page.id + "\"";
     pageNames = pageNames + "    " + page.id;
     pageReturn = pageReturn + "    \"" + page.id + "\": " + page.id;
     

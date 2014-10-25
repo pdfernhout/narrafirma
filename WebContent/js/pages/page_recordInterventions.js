@@ -1,7 +1,8 @@
+// Generated from design
 "use strict";
 
 define([
-    "js/widgetBuilder"
+    "../widgetBuilder"
 ], function(
     widgets
 ) {
