@@ -1,0 +1,20 @@
+"use strict";
+
+define([
+    "js/widgetBuilder"
+], function(
+    widgets
+) {
+
+    function addWidgets(contentPane, model) {
+        widgets.add_grid(contentPane, model, "project_observationsDisplayList", ["page_createOrEditObservation"]);
+    }
+
+    return {
+        "id": "page_interpretObservations",
+        "name": "Review and interpret observations",
+        "type": "page",
+        "isHeader": false,
+        "addWidgets": addWidgets
+    };
+});

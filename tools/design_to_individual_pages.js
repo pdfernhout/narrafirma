@@ -352,5 +352,5 @@ addOutput("\n");
 addOutput("}\n" +
 "});");
 
-var translationFileName = "WebContent/js/nls/testTransations.js";
+var translationFileName = "WebContent/js/nls/pageMessages.js";
 fs.writeFile(translationFileName, allOutput, errorHandler(translationFileName));

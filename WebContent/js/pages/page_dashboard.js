@@ -7,13 +7,14 @@ define([
 ) {
 
     function addWidgets(contentPane, model) {
-        widgets.add_label(contentPane, "mainDashboardLabel", model, "");
-        widgets.add_image(contentPane, "project_testImage", model, "images/WWS_BookCover_front_small.png");
+        widgets.add_label(contentPane, model, "mainDashboardLabel");
+        widgets.add_image(contentPane, model, "project_testImage", ["images/WWS_BookCover_front_small.png"]);
     }
 
     return {
         "id": "page_dashboard",
         "name": "Dashboard",
+        "type": "page",
         "isHeader": true,
         "addWidgets": addWidgets
     };

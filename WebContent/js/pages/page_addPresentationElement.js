@@ -1,0 +1,24 @@
+"use strict";
+
+define([
+    "js/widgetBuilder"
+], function(
+    widgets
+) {
+
+    function addWidgets(contentPane, model) {
+        widgets.add_text(contentPane, model, "projectPresentationElement_name");
+        widgets.add_textarea(contentPane, model, "projectPresentationElement_statement");
+        widgets.add_textarea(contentPane, model, "projectPresentationElement_evidence");
+        widgets.add_textarea(contentPane, model, "projectPresentationElement_QA");
+        widgets.add_textarea(contentPane, model, "projectPresentationElement_notes");
+    }
+
+    return {
+        "id": "page_addPresentationElement",
+        "name": "Add element to project presentation outline",
+        "type": "popup",
+        "isHeader": false,
+        "addWidgets": addWidgets
+    };
+});
