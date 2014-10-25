@@ -1294,7 +1294,7 @@ define(
         ]
     },
     {
-        "id": "readCollectionDesignReport",
+        "id": "page_readCollectionDesignReport",
         "name": "Read collection design report",
         "description": "",
         "isHeader": false,

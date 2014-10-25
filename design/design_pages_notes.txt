@@ -454,7 +454,7 @@ Activities within story collection sessions can be simple instructions or compli
 * Or choose an activity from this list. [templates_storyCollectionActivities|templateList|storyCollectionActivities]
 * (Unfinished: This will be a list of template activities the user can copy.) [templates_storyCollectionActivities_unfinished|label]
 
-## Read collection design report [readCollectionDesignReport]
+## Read collection design report [page_readCollectionDesignReport]
 
 * This report shows all of the information entered in the pages grouped under "Collection design." [project_readCollectionDesignReportIntroductionLabel|label]
 

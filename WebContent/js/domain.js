@@ -165,7 +165,7 @@ define([
               "page_planStoryCollectionSessions",
               "page_addStoryCollectionSession",
               "page_addCollectionSessionActivity",
-              "readCollectionDesignReport"
+              "page_readCollectionDesignReport"
             ],
             "page_collectionProcess": [
               "page_finalizeQuestionForms",
