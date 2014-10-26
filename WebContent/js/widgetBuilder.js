@@ -374,13 +374,73 @@ define([
         return label;
     }
     
+    function add_storyThemer(contentPane, model, id, options) {
+        addPromptTextIfNeeded(contentPane, id);
+        
+        var label = new ContentPane({
+            // content: translate(id + "::prompt")
+            content: "<b>UNFINISHED add_storyThemer: " + id + "</b>"             
+        });
+        label.placeAt(contentPane);
+        label.startup();
+        return label;
+    }
+    
     function add_questionsTable(contentPane, model, id, options) {
-        console.log("add_questionsTable", id);
         addPromptTextIfNeeded(contentPane, id);
         
         var label = new ContentPane({
             // content: translate(id + "::prompt")
             content: "<b>UNFINISHED add_questionsTable: " + id + "</b>"             
+        });
+        label.placeAt(contentPane);
+        label.startup();
+        return label;
+    }
+    
+    // TODO: Fix
+    function add_questionAnswer(contentPane, model, id, options) {
+        addPromptTextIfNeeded(contentPane, id);
+        
+        var label = new ContentPane({
+            // content: translate(id + "::prompt")
+            content: "<b>UNFINISHED add_questionAnswer: " + id + "</b>"             
+        });
+        label.placeAt(contentPane);
+        label.startup();
+        return label;
+    }
+    
+    function add_graphBrowser(contentPane, model, id, options) {
+        addPromptTextIfNeeded(contentPane, id);
+        
+        var label = new ContentPane({
+            // content: translate(id + "::prompt")
+            content: "<b>UNFINISHED add_graphBrowser: " + id + "</b>"             
+        });
+        label.placeAt(contentPane);
+        label.startup();
+        return label;
+    }
+    
+    function add_trendsReport(contentPane, model, id, options) {
+        addPromptTextIfNeeded(contentPane, id);
+        
+        var label = new ContentPane({
+            // content: translate(id + "::prompt")
+            content: "<b>UNFINISHED add_trendsReport: " + id + "</b>"             
+        });
+        label.placeAt(contentPane);
+        label.startup();
+        return label;
+    }
+    
+    function add_clusterSpace(contentPane, model, id, options) {
+        addPromptTextIfNeeded(contentPane, id);
+        
+        var label = new ContentPane({
+            // content: translate(id + "::prompt")
+            content: "<b>UNFINISHED add_clusterSpace: " + id + "</b>"             
         });
         label.placeAt(contentPane);
         label.startup();
@@ -410,6 +470,11 @@ define([
         "add_report": add_report,
         "add_recommendationTable": add_recommendationTable,
         "add_questionsTable": add_questionsTable,
-        "add_storyBrowser": add_storyBrowser
+        "add_storyBrowser": add_storyBrowser,
+        "add_storyThemer": add_storyThemer,
+        "add_questionAnswer": add_questionAnswer,
+        "add_graphBrowser": add_graphBrowser,
+        "add_trendsReport": add_trendsReport,
+        "add_clusterSpace": add_clusterSpace
     };
 });
