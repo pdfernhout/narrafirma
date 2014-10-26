@@ -13,9 +13,9 @@ define([
     "js/translate",
     "js/utility",
     "js/widgets",
-    "js/widget-grid-table",
-    "js/widget-questions-table",
-    "js/widget-story-browser",
+    "js/widgets/grid-table",
+    "js/widgets/questions-table",
+    "js/widgets/story-browser",
     "dijit/Dialog",
     "dijit/form/Form",
 ], function(

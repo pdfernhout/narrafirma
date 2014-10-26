@@ -11,7 +11,7 @@ require([
     "dojo/hash",
     "js/question_editor",
     "js/widgets",
-    "js/widget-grid-table",
+    "js/widgets/grid-table",
     "dijit/layout/ContentPane",
     "dijit/form/Select",
     "dojo/domReady!"

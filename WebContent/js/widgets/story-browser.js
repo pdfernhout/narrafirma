@@ -12,7 +12,7 @@ define([
     "dijit/registry",
     "dojo/string",
     "js/widgets",
-    "js/widget-grid-table",
+    "./grid-table",
     "dojo/_base/window",
     "dijit/layout/ContentPane",
     "dojo/store/Memory",
