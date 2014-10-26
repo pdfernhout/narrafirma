@@ -11,6 +11,7 @@ define([
     "js/question_editor",
     "dijit/registry",
     "dojo/string",
+    "js/translate",
     "js/widgets",
     "./grid-table",
     "dojo/_base/window",
@@ -31,6 +32,7 @@ define([
     questionEditor,
     registry,
     string,
+    translate,
     widgets,
     widgetGridTable,
     win,
@@ -163,11 +165,9 @@ define([
     
     var filterableQuestionTypes = ["select", "slider", "boolean", "text"];
     
-    function insertStoryBrowser(pseudoQuestion, pagePane, pageDefinitions) {
-        console.log("insertStoryBrowser", pseudoQuestion);
+    function insertStoryBrowser(id, pagePane, pageDefinitions) {
+        console.log("insertStoryBrowser", id);
         
-        var label = widgets.newLabel(pseudoQuestion.id + "label", pseudoQuestion.text, pagePane.containerNode);
-
         var popupPageDefinition = {
              "id": "testDogQuestions",
              "questions": domain.testDogQuestions   
@@ -191,7 +191,7 @@ define([
         });
         
         var table = new TableContainer({
-            id: pseudoQuestion.id + "_table",
+            id: id + "_table",
             cols: 2,
             showLabels: false,
             customClass: "storyFilterTable",
@@ -206,8 +206,8 @@ define([
             pagePane.addChild(table);
         }
         
-        var filter1 = createFilterPane(pseudoQuestion.id + "_1", questionsById, questionOptions, data, table);
-        var filter2 = createFilterPane(pseudoQuestion.id + "_2", questionsById, questionOptions, data, table);
+        var filter1 = createFilterPane(id + "_1", questionsById, questionOptions, data, table);
+        var filter2 = createFilterPane(id + "_2", questionsById, questionOptions, data, table);
 
         // pagePane.containerNode.appendChild(domConstruct.toDom('<br>'));
         
@@ -216,7 +216,7 @@ define([
         var storyList;
         
         // TODO: Translate text for button
-        var filterButton = widgets.newButton(pseudoQuestion.id + "_filter", "Filter -- show only stories where both questions have the selected values", pagePane, function () {
+        var filterButton = widgets.newButton(id + "_filter", "Filter -- show only stories where both questions have the selected values", pagePane, function () {
             console.log("filter pressed");
             var question1Choice = filter1.question.get("value");
             var answers1Choices = filter1.answers.get("value");
@@ -239,7 +239,7 @@ define([
             });
         });
             
-        storyList = widgetGridTable.insertGridTableBasic(pseudoQuestion.id + "grid", pagePane, popupPageDefinition, dataStore, true);
+        storyList = widgetGridTable.insertGridTableBasic(id + "_grid", pagePane, popupPageDefinition, dataStore, true);
         
         console.log("insertStoryBrowser finished");
     }

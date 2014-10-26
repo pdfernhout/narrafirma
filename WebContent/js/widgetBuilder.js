@@ -243,9 +243,9 @@ define([
     }
     
     // TODO: Need to translate true/false
-    function add_togglebutton(contentPane, model, id, questionOptions) {
+    function add_toggleButton(contentPane, model, id, questionOptions) {
         addPromptTextIfNeeded(contentPane, id);
-
+        
         // Toggle button maintains a "checked" flag, so we need to set value ourselves
         var toggleButton = new ToggleButton({
             label: "" + model.get(id),
@@ -350,6 +350,50 @@ define([
         return contentPane;
     }
     
+    function add_report(contentPane, model, id, options) {
+        addPromptTextIfNeeded(contentPane, id);
+        
+        var label = new ContentPane({
+            // content: translate(id + "::prompt")
+            content: "<b>UNFINISHED add_report: " + id + "</b>"       		
+        });
+        label.placeAt(contentPane);
+        label.startup();
+        return label;
+    }
+    
+    function add_recommendationTable(contentPane, model, id, options) {
+        addPromptTextIfNeeded(contentPane, id);
+        
+        var label = new ContentPane({
+            // content: translate(id + "::prompt")
+            content: "<b>UNFINISHED add_recommendationTable: " + id + "</b>"             
+        });
+        label.placeAt(contentPane);
+        label.startup();
+        return label;
+    }
+    
+    function add_questionsTable(contentPane, model, id, options) {
+        console.log("add_questionsTable", id);
+        addPromptTextIfNeeded(contentPane, id);
+        
+        var label = new ContentPane({
+            // content: translate(id + "::prompt")
+            content: "<b>UNFINISHED add_questionsTable: " + id + "</b>"             
+        });
+        label.placeAt(contentPane);
+        label.startup();
+        return label;
+    }
+    
+    function add_storyBrowser(contentPane, model, id, options) {
+        addPromptTextIfNeeded(contentPane, id);
+        
+        var storyBrowser = StoryBrowser.insertStoryBrowser(id, contentPane, domain.pageDefinitions);
+        return storyBrowser;
+    }
+    
     return {
         "add_label": add_label,
         "add_header": add_header,
@@ -360,8 +404,12 @@ define([
         "add_select": add_select,
         "add_boolean": add_boolean,
         "add_checkbox": add_checkbox,
-        "add_togglebutton": add_togglebutton,
+        "add_toggleButton": add_toggleButton,
         "add_button": add_button,
-        "add_slider": add_slider
+        "add_slider": add_slider,
+        "add_report": add_report,
+        "add_recommendationTable": add_recommendationTable,
+        "add_questionsTable": add_questionsTable,
+        "add_storyBrowser": add_storyBrowser
     };
 });

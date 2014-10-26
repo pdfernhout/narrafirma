@@ -131,7 +131,7 @@ require([
         
        // console.log("Made content pane", id);
        
-       page.addWidgets(pagePane, domain);
+       page.addWidgets(pagePane, domain.data);
        
        // TODO: Fix this to store data
        // TODO: Translate
