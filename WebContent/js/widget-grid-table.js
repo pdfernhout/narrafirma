@@ -17,6 +17,7 @@ define([
     "dgrid/Keyboard",
     "dojo/store/Memory",
     "dgrid/Selection",
+    "dojo/Stateful",
     "dgrid/OnDemandGrid"
 ], function(
     addPage,
@@ -35,6 +36,7 @@ define([
     Keyboard,
     Memory,
     Selection,
+    Stateful,
     OnDemandGrid
 ){
     var storyList = [
@@ -74,7 +76,11 @@ define([
         itemContentPane.set("style", "background-color: #C0C0C0; border: 0.25em solid blue; display: block");
         
         clearGridsKludge();
-        addPage.addPageContents(form, popupPageDefinition);
+        
+        var newItem = {};
+        
+        // addPage.addPageContents(form, popupPageDefinition);
+        popupPageDefinition.addWidgets(form,  new Stateful(newItem));
         
         // TODO: Does the dialog itself have to be "destroyed"???
         
@@ -86,6 +92,7 @@ define([
             var uniqueItemID = ++uniqueItemIDCounter;
             var newItem = {id: uniqueItemID};
             
+            // TODO: Tricky FIX ME -- as getting rid of the question definitions...
             array.forEach(popupPageDefinition.questions, function (question) {
                 // TODO: This may not work for more complex question types or custom widgets?
                 console.log("question type", question, question.type);
@@ -159,8 +166,7 @@ define([
         itemContentPane.set("style", "background-color: #C0C0C0; border: 0.25em solid blue; display: block");
         
         clearGridsKludge();
-        addPage.addPageContents(form, popupPageDefinition);
-        
+                
         console.log("grid", grid, grid.selection);
         // var item = grid
         
@@ -177,6 +183,9 @@ define([
             // Should only be one match
             array.forEach(matches, function (item) {
                 console.log("item", item);
+                popupPageDefinition.addWidgets(form,  new Stateful(item));
+
+                /* TODO: Disabling?
                 array.forEach(popupPageDefinition.questions, function (question) {
                     // TODO: This may not work for more complex question types or custom widgets?
                     var widget = registry.byId(question.id);
@@ -187,6 +196,7 @@ define([
                         console.log("ERROR: could not find widget for:", question.id);
                     }
                 }); 
+                */
             });
         }
 
@@ -342,6 +352,7 @@ define([
         };
     }
     
+    // TODO: Remove function when no longer needed
     function insertGridTable(pseudoQuestion, pagePane, pageDefinitions) {
         // Grid with list of objects
         // console.log("insertGridTable");

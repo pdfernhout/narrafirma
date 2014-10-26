@@ -12,7 +12,12 @@ define([
       return str.lastIndexOf(prefix, 0) === 0;
     }
     
+    function isString(something) {
+        return (typeof something == 'string' || something instanceof String);
+    }
+    
     return {
-        "startsWith": startsWith
+        "startsWith": startsWith,
+        "isString": isString
     };
 });
