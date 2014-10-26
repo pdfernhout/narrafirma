@@ -1,7 +1,6 @@
 "use strict";
 
 define([
-    "js/add_page",
     "dojo/_base/array",
     "dojo/_base/declare",
     "dojo/dom-construct",
@@ -20,7 +19,6 @@ define([
     "dojo/Stateful",
     "dgrid/OnDemandGrid"
 ], function(
-    addPage,
     array,
     declare,
     domConstruct,
@@ -79,7 +77,6 @@ define([
         
         var newItem = {};
         
-        // addPage.addPageContents(form, popupPageDefinition);
         popupPageDefinition.addWidgets(form,  new Stateful(newItem));
         
         // TODO: Does the dialog itself have to be "destroyed"???
