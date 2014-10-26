@@ -1,5 +1,6 @@
 "use strict";
 
+// TODO: Remove unused imports
 define([
         "dojo/_base/array",
         "dojox/mvc/at",
@@ -13,9 +14,11 @@ define([
         "dijit/registry",
         "js/translate",
         "js/utility",
-        "js/widget-grid-table",
-        "js/widget-questions-table",
-        "js/widget-story-browser",
+        "js/widgets/checkboxes",
+        "js/widgets/grid-table",
+        "js/widgets/questions-table",
+        "js/widgets/radio-buttons",
+        "js/widgets/story-browser",
         "dojox/charting/plot2d/Bars",
         "dijit/form/Button",
         "dijit/form/CheckBox",
@@ -44,8 +47,10 @@ define([
         registry,
         translate,
         utility,
+        widgetCheckboxes,
         widgetGridTable,
         widgetQuestionsTable,
+        widgetRadioButtons,
         widgetStoryBrowser,
         Bars,
         Button,
