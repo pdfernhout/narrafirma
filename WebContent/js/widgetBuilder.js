@@ -14,23 +14,23 @@ define([
         "dijit/registry",
         "js/translate",
         "js/utility",
-        "js/widgets/checkboxes",
-        "js/widgets/grid-table",
-        "js/widgets/questions-table",
-        "js/widgets/radio-buttons",
-        "js/widgets/story-browser",
         "dojox/charting/plot2d/Bars",
         "dijit/form/Button",
+        "js/widgets/checkboxes",
         "dijit/form/CheckBox",
         "dijit/layout/ContentPane",
         "dijit/form/FilteringSelect",
+        "js/widgets/grid-table",
         "dijit/form/HorizontalRule",
         "dijit/form/HorizontalRuleLabels",
         "dijit/form/HorizontalSlider",
         "dojo/store/Memory",
+        "js/widgets/questions-table",
         "dijit/form/RadioButton",
+        "js/widgets/radio-buttons",
         "dijit/form/Select",
         "dijit/form/SimpleTextarea",
+        "js/widgets/story-browser",
         "dijit/form/TextBox",
         "dijit/form/ToggleButton",
         "dijit/_WidgetBase"
@@ -47,23 +47,23 @@ define([
         registry,
         translate,
         utility,
-        widgetCheckboxes,
-        widgetGridTable,
-        widgetQuestionsTable,
-        widgetRadioButtons,
-        widgetStoryBrowser,
         Bars,
         Button,
+        CheckBoxes,
         CheckBox,
         ContentPane,
         FilteringSelect,
+        GridTable,
         HorizontalRule,
         HorizontalRuleLabels,
         HorizontalSlider,
         Memory,
+        QuestionsTable,
         RadioButton,
+        RadioButtons,
         Select,
         SimpleTextarea,
+        StoryBrowser,
         TextBox,
         ToggleButton,
         _WidgetBase
@@ -146,7 +146,7 @@ define([
         
         var value = model[id];
         
-        return widgetGridTable.insertGridTableBasic(id, contentPane, popupPageDefinition, value, true);
+        return GridTable.insertGridTableBasic(id, contentPane, popupPageDefinition, value, true);
     }
     
     function add_select(contentPane, model, id, questionOptions, addNoSelectionOption) {
@@ -174,17 +174,180 @@ define([
         var dataStore = new Memory({"data": options});
         
         var select = new FilteringSelect({
-                id: id,
                 store: dataStore,
                 searchAttr: "name",
                 // TODO: Work on validation...
-                required: false
+                required: false,
                 // style: "width: 100%"
+                value: at(model, id)
         });
         
         select.placeAt(contentPane);
         select.startup();
         return select;
+    }
+    
+    function add_boolean(contentPane, model, id, questionOptions) {
+        addPromptTextIfNeeded(contentPane, id);
+        
+        var radioButtons = new RadioButtons({
+            choices: null,
+            // TODO: translate options
+            optionsString: "yes\nno",
+            value: at(model, id)
+        });
+        
+        radioButtons.placeAt(contentPane);
+        radioButtons.startup();
+        return radioButtons;
+    }
+
+    function add_checkbox(contentPane, model, id, questionOptions) {
+        addPromptTextIfNeeded(contentPane, id);
+        
+        var checkbox = new CheckBox({
+            value: at(model, id)
+        });
+        
+        checkbox.placeAt(contentPane);
+        checkbox.startup();
+        return checkbox;
+    }
+    
+    function add_radiobuttons(contentPane, model, id, questionOptions) {
+        addPromptTextIfNeeded(contentPane, id);
+
+        var radioButtons = new RadioButtons({
+            choices: questionOptions,
+            // optionsString: optionsString,
+            value: at(model, id)
+        });
+         
+        radioButtons.placeAt(contentPane);
+        radioButtons.startup();
+        return radioButtons;
+    }
+    
+    function add_checkboxes(contentPane, model, id, questionOptions) {
+        addPromptTextIfNeeded(contentPane, id);
+
+        var checkBoxes = new CheckBoxes({
+            choices: questionOptions,
+            // optionsString: optionsString,
+            value: at(model, id)
+        });
+        
+        checkBoxes.placeAt(contentPane);
+        checkBoxes.startup();
+        return checkBoxes;
+    }
+    
+    // TODO: Need to translate true/false
+    function add_togglebutton(contentPane, model, id, questionOptions) {
+        addPromptTextIfNeeded(contentPane, id);
+
+        // Toggle button maintains a "checked" flag, so we need to set value ourselves
+        var toggleButton = new ToggleButton({
+            label: "" + model.get(id),
+            value: at(model, id),
+            onChange: function(value) {this.set("label", value); this.set("value", value); model.buttonClicked(id, value);}
+        });
+        
+        toggleButton.placeAt(contentPane);
+        toggleButton.startup();
+        
+        return toggleButton;
+    }
+    
+    // TODO: Probably not correct...
+    function add_button(contentPane, model, id, questionOptions, callback) {
+        // addPromptTextIfNeeded(contentPane, id);
+        
+        var button = new Button({
+            label: translate(id + "::prompt"),
+            type: "button",
+            onClick: callback
+        });
+
+        button.placeAt(contentPane);
+        button.startup();
+        return button;
+    }
+    
+    function add_slider(contentPane, model, id, questionOptions) {
+        addPromptTextIfNeeded(contentPane, id);
+        
+        // A div that contains rules, labels, and slider
+        var panelDiv = domConstruct.create("div");
+        
+        // TODO: Maybe these rules and labels need to go into a containing div?
+        // TODO: But then what to return for this function if want to return actual slider to get value?
+        
+        var hasTextLabels = false;
+        var labels = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+        if (questionOptions) {
+            labels = questionOptions;
+            if (labels.length != 2) {
+                console.log("Need to specify low and high labels for question: ", id);
+            } else {
+                hasTextLabels = true;
+                var labelLow = labels[0].trim();
+                var labelHigh = labels[1].trim();
+                labels = [labelLow, labelHigh];
+            }
+        }
+        
+        // console.log("labels", labels, labels.length);
+        
+        var slider = new HorizontalSlider({
+            id: id,
+            minimum: 0,
+            maximum: 100,
+            discreteValues: 101,
+            showButtons: true,
+            // Doesn;t work: style: "align: center; width: 80%;"
+            style: "width: 80%;"
+
+        });
+        
+        slider.placeAt(panelDiv);
+         
+        //if (!hasTextLabels) {}
+        // Create the rules
+        var rulesNode = domConstruct.create("div", {}, slider.containerNode);
+        var sliderRules = new HorizontalRule({
+            container: "bottomDecoration",
+            count: labels.length,
+            style: "height: 5px"
+        }, rulesNode);
+        //}
+
+        // Create the labels
+        var labelsNode = domConstruct.create("div", {}, slider.containerNode);
+        var sliderLabels = new HorizontalRuleLabels({
+            container: "bottomDecoration",
+            style: "height: 1.5em; font-weight: bold",
+            minimum: 0,
+            maximum: 100,
+            count: labels.length,
+            numericMargin: 1,
+            labels: labels
+        }, labelsNode);
+
+        // TODO: Issue -- should return a new sort of component that can be placed an includes the slider and the rules and labels
+        var sliderContentPane = new ContentPane({
+            id: id + "_content",
+            content: panelDiv
+        });
+
+        sliderContentPane.placeAt(contentPane);
+        
+        slider.startup();
+        sliderRules.startup();
+        sliderLabels.startup();
+        sliderContentPane.startup();
+        
+        return contentPane;
     }
     
     return {
@@ -194,6 +357,11 @@ define([
         "add_text": add_text,
         "add_textarea": add_textarea,
         "add_grid": add_grid,
-        "add_select": add_select
+        "add_select": add_select,
+        "add_boolean": add_boolean,
+        "add_checkbox": add_checkbox,
+        "add_togglebutton": add_togglebutton,
+        "add_button": add_button,
+        "add_slider": add_slider
     };
 });
