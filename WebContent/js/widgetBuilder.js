@@ -452,6 +452,30 @@ define([
         return label;
     }
     
+    function add_annotationsGrid(contentPane, model, id, options) {
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
+        
+        var label = new ContentPane({
+            // content: translate(id + "::prompt")
+            content: "<b>UNFINISHED add_annotationsGrid: " + id + "</b>"             
+        });
+        label.placeAt(questionContentPane);
+        label.startup();
+        return label;
+    }
+    
+    function add_storiesList(contentPane, model, id, options) {
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
+        
+        var label = new ContentPane({
+            // content: translate(id + "::prompt")
+            content: "<b>UNFINISHED add_storiesList: " + id + "</b>"             
+        });
+        label.placeAt(questionContentPane);
+        label.startup();
+        return label;
+    }
+    
     function add_storyBrowser(contentPane, model, id, options) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
@@ -480,6 +504,8 @@ define([
         "add_questionAnswer": add_questionAnswer,
         "add_graphBrowser": add_graphBrowser,
         "add_trendsReport": add_trendsReport,
-        "add_clusterSpace": add_clusterSpace
+        "add_clusterSpace": add_clusterSpace,
+        "add_annotationsGrid": add_annotationsGrid,
+        "add_storiesList": add_storiesList
     };
 });
