@@ -22,17 +22,17 @@ define([
     }
 
     var questions = [
-        {"id":"collectionSessionPlan_name", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"collectionSessionPlan_repetitions", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"collectionSessionPlan_duration", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"collectionSessionPlan_times", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"collectionSessionPlan_location", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"collectionSessionPlan_numPeople", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"collectionSessionPlan_groups", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"collectionSessionPlan_materials", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"collectionSessionPlan_details", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"collectionSessionPlan_activitiesList", "type":"grid", "isReportable":true, "isHeader":false},
-        {"id":"collectionSessionPlan_printCollectionSessionAgendaButton", "type":"button", "isReportable":false, "isHeader":false}
+        {"id":"collectionSessionPlan_name", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"collectionSessionPlan_repetitions", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"collectionSessionPlan_duration", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"collectionSessionPlan_times", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"collectionSessionPlan_location", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"collectionSessionPlan_numPeople", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"collectionSessionPlan_groups", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"collectionSessionPlan_materials", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"collectionSessionPlan_details", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"collectionSessionPlan_activitiesList", "type":"grid", "isInReport":true, "isGridColumn":false},
+        {"id":"collectionSessionPlan_printCollectionSessionAgendaButton", "type":"button", "isInReport":false, "isGridColumn":false}
     ];
 
     return {

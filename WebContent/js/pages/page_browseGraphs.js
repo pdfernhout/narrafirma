@@ -15,10 +15,10 @@ define([
     }
 
     var questions = [
-        {"id":"graphBrowserLabel", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"graphBrowserDisplay", "type":"graphBrowser", "isReportable":true, "isHeader":false},
-        {"id":"graphBrowserMockupLabel_unfinished", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"mockup_graphBrowser", "type":"image", "isReportable":true, "isHeader":false}
+        {"id":"graphBrowserLabel", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"graphBrowserDisplay", "type":"graphBrowser", "isInReport":true, "isGridColumn":false},
+        {"id":"graphBrowserMockupLabel_unfinished", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"mockup_graphBrowser", "type":"image", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

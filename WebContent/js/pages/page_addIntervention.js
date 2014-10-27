@@ -23,18 +23,18 @@ define([
     }
 
     var questions = [
-        {"id":"interventionPlan_name", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"interventionPlan_type", "type":"select", "isReportable":true, "isHeader":true},
-        {"id":"interventionPlan_description", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"interventionPlan_times", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"interventionPlan_locations", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"interventionPlan_help", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"interventionPlan_permission", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"interventionPlan_participation", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"interventionPlan_materials", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"interventionPlan_space", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"interventionPlan_techResources", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"interventionPlan_recording", "type":"textarea", "isReportable":true, "isHeader":true}
+        {"id":"interventionPlan_name", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionPlan_type", "type":"select", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionPlan_description", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionPlan_times", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionPlan_locations", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionPlan_help", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionPlan_permission", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionPlan_participation", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionPlan_materials", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionPlan_space", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionPlan_techResources", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionPlan_recording", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
 
     return {

@@ -13,8 +13,8 @@ define([
     }
 
     var questions = [
-        {"id":"sensemakingIntroLabel", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"project_generalNotes_sensemaking", "type":"textarea", "isReportable":true, "isHeader":false}
+        {"id":"sensemakingIntroLabel", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"project_generalNotes_sensemaking", "type":"textarea", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

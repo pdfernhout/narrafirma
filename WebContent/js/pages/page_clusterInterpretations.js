@@ -15,10 +15,10 @@ define([
     }
 
     var questions = [
-        {"id":"clusterInterpretationsLabel", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"clusterInterpretations_clusterSpace", "type":"clusterSpace", "isReportable":true, "isHeader":false},
-        {"id":"mockupClusteringLabel_unfinished", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"mockup_clusters", "type":"image", "isReportable":true, "isHeader":false}
+        {"id":"clusterInterpretationsLabel", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"clusterInterpretations_clusterSpace", "type":"clusterSpace", "isInReport":true, "isGridColumn":false},
+        {"id":"mockupClusteringLabel_unfinished", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"mockup_clusters", "type":"image", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

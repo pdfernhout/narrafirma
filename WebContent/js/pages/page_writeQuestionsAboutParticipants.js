@@ -16,11 +16,11 @@ define([
     }
 
     var questions = [
-        {"id":"project_participantQuestionsLabel", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"project_participantQuestionsList", "type":"grid", "isReportable":true, "isHeader":false},
-        {"id":"participantQuestionRecommendations", "type":"recommendationTable", "isReportable":true, "isHeader":false},
-        {"id":"participantQuestionRecommendations_unfinished", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"mockup_recTable_partQ", "type":"image", "isReportable":true, "isHeader":false}
+        {"id":"project_participantQuestionsLabel", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"project_participantQuestionsList", "type":"grid", "isInReport":true, "isGridColumn":false},
+        {"id":"participantQuestionRecommendations", "type":"recommendationTable", "isInReport":true, "isGridColumn":false},
+        {"id":"participantQuestionRecommendations_unfinished", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"mockup_recTable_partQ", "type":"image", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

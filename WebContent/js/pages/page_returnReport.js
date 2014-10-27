@@ -13,8 +13,8 @@ define([
     }
 
     var questions = [
-        {"id":"returnReportLabel", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"returnReport", "type":"report", "isReportable":true, "isHeader":false}
+        {"id":"returnReportLabel", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"returnReport", "type":"report", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

@@ -18,13 +18,13 @@ define([
     }
 
     var questions = [
-        {"id":"feedback_text", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"feedback_name", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"feedback_type", "type":"select", "isReportable":true, "isHeader":true},
-        {"id":"feedback_who", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"feedback_prompt", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"feedback_response", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"feedback_notes", "type":"textarea", "isReportable":true, "isHeader":true}
+        {"id":"feedback_text", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"feedback_name", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"feedback_type", "type":"select", "isInReport":true, "isGridColumn":true},
+        {"id":"feedback_who", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"feedback_prompt", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"feedback_response", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"feedback_notes", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
 
     return {

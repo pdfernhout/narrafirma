@@ -15,10 +15,10 @@ define([
     }
 
     var questions = [
-        {"id":"venue_primaryForGroup_type", "type":"select", "isReportable":true, "isHeader":false},
-        {"id":"venue_primaryForGroup_plans", "type":"textarea", "isReportable":true, "isHeader":false},
-        {"id":"venue_secondaryForGroup_type", "type":"select", "isReportable":true, "isHeader":false},
-        {"id":"venue_secondaryForGroup_plans", "type":"textarea", "isReportable":true, "isHeader":false}
+        {"id":"venue_primaryForGroup_type", "type":"select", "isInReport":true, "isGridColumn":false},
+        {"id":"venue_primaryForGroup_plans", "type":"textarea", "isInReport":true, "isGridColumn":false},
+        {"id":"venue_secondaryForGroup_type", "type":"select", "isInReport":true, "isGridColumn":false},
+        {"id":"venue_secondaryForGroup_plans", "type":"textarea", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

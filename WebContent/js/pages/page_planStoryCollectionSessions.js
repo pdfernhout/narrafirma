@@ -16,11 +16,11 @@ define([
     }
 
     var questions = [
-        {"id":"collectionSessionsLabel", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"collectionSessionRecommendations", "type":"recommendationTable", "isReportable":true, "isHeader":false},
-        {"id":"collectionRecommendationsTable_unfinished", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"mockup_recTable_collection", "type":"image", "isReportable":true, "isHeader":false},
-        {"id":"project_collectionSessionPlansList", "type":"grid", "isReportable":true, "isHeader":false}
+        {"id":"collectionSessionsLabel", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"collectionSessionRecommendations", "type":"recommendationTable", "isInReport":true, "isGridColumn":false},
+        {"id":"collectionRecommendationsTable_unfinished", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"mockup_recTable_collection", "type":"image", "isInReport":true, "isGridColumn":false},
+        {"id":"project_collectionSessionPlansList", "type":"grid", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

@@ -12,7 +12,7 @@ define([
     }
 
     var questions = [
-        {"id":"storyElementsInstructions", "type":"label", "isReportable":false, "isHeader":false}
+        {"id":"storyElementsInstructions", "type":"label", "isInReport":false, "isGridColumn":false}
     ];
 
     return {

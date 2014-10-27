@@ -16,11 +16,11 @@ define([
     }
 
     var questions = [
-        {"id":"project_interventionLabel", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"interventionRecommendations", "type":"recommendationTable", "isReportable":true, "isHeader":false},
-        {"id":"interventionRecommendationsTable_unfinished", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"mockup_recTable_intervention", "type":"image", "isReportable":true, "isHeader":false},
-        {"id":"project_interventionPlansList", "type":"grid", "isReportable":true, "isHeader":false}
+        {"id":"project_interventionLabel", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"interventionRecommendations", "type":"recommendationTable", "isInReport":true, "isGridColumn":false},
+        {"id":"interventionRecommendationsTable_unfinished", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"mockup_recTable_intervention", "type":"image", "isInReport":true, "isGridColumn":false},
+        {"id":"project_interventionPlansList", "type":"grid", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

@@ -16,11 +16,11 @@ define([
     }
 
     var questions = [
-        {"id":"questionFormLabel", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"questionForm_title", "type":"text", "isReportable":true, "isHeader":false},
-        {"id":"questionForm_image", "type":"text", "isReportable":true, "isHeader":false},
-        {"id":"questionForm_startText", "type":"textarea", "isReportable":true, "isHeader":false},
-        {"id":"questionForm_endText", "type":"textarea", "isReportable":true, "isHeader":false}
+        {"id":"questionFormLabel", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"questionForm_title", "type":"text", "isInReport":true, "isGridColumn":false},
+        {"id":"questionForm_image", "type":"text", "isInReport":true, "isGridColumn":false},
+        {"id":"questionForm_startText", "type":"textarea", "isInReport":true, "isGridColumn":false},
+        {"id":"questionForm_endText", "type":"textarea", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

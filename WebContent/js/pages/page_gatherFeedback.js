@@ -14,9 +14,9 @@ define([
     }
 
     var questions = [
-        {"id":"project_feedbackLabel", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"project_feedbackItemsList", "type":"grid", "isReportable":true, "isHeader":false},
-        {"id":"feedback_generalNotes", "type":"textarea", "isReportable":true, "isHeader":false}
+        {"id":"project_feedbackLabel", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"project_feedbackItemsList", "type":"grid", "isInReport":true, "isGridColumn":false},
+        {"id":"feedback_generalNotes", "type":"textarea", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

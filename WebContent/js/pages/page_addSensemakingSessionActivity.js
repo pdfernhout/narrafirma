@@ -22,17 +22,17 @@ define([
     }
 
     var questions = [
-        {"id":"sensemakingSessionPlan_activity_name", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"sensemakingSessionPlan_activity_type", "type":"select", "isReportable":true, "isHeader":true},
-        {"id":"sensemakingSessionPlan_activity_plan", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"sensemakingSessionPlan_activity_optionalParts", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"sensemakingSessionPlan_activity_duration", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"sensemakingSessionPlan_activity_recording", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"sensemakingSessionPlan_activity_materials", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"sensemakingSessionPlan_activity_spaces", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"sensemakingSessionPlan_activity_facilitation", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"templates_sensemakingActivities", "type":"templateList", "isReportable":true, "isHeader":false},
-        {"id":"templates_sensemakingActivities_unfinished", "type":"label", "isReportable":false, "isHeader":false}
+        {"id":"sensemakingSessionPlan_activity_name", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"sensemakingSessionPlan_activity_type", "type":"select", "isInReport":true, "isGridColumn":true},
+        {"id":"sensemakingSessionPlan_activity_plan", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"sensemakingSessionPlan_activity_optionalParts", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"sensemakingSessionPlan_activity_duration", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"sensemakingSessionPlan_activity_recording", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"sensemakingSessionPlan_activity_materials", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"sensemakingSessionPlan_activity_spaces", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"sensemakingSessionPlan_activity_facilitation", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"templates_sensemakingActivities", "type":"templateList", "isInReport":true, "isGridColumn":false},
+        {"id":"templates_sensemakingActivities_unfinished", "type":"label", "isInReport":false, "isGridColumn":false}
     ];
 
     return {

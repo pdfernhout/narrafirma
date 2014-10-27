@@ -15,10 +15,10 @@ define([
     }
 
     var questions = [
-        {"id":"aspects_youHeader", "type":"header", "isReportable":false, "isHeader":false},
-        {"id":"aboutYou_experience", "type":"select", "isReportable":true, "isHeader":false},
-        {"id":"aboutYou_help", "type":"select", "isReportable":true, "isHeader":false},
-        {"id":"aboutYou_tech", "type":"select", "isReportable":true, "isHeader":false}
+        {"id":"aspects_youHeader", "type":"header", "isInReport":false, "isGridColumn":false},
+        {"id":"aboutYou_experience", "type":"select", "isInReport":true, "isGridColumn":false},
+        {"id":"aboutYou_help", "type":"select", "isInReport":true, "isGridColumn":false},
+        {"id":"aboutYou_tech", "type":"select", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

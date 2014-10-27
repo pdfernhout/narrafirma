@@ -12,7 +12,7 @@ define([
     }
 
     var questions = [
-        {"id":"project_projectStoryElementsList", "type":"grid", "isReportable":true, "isHeader":false}
+        {"id":"project_projectStoryElementsList", "type":"grid", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

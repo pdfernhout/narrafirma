@@ -21,16 +21,16 @@ define([
     }
 
     var questions = [
-        {"id":"project_reflectLabel", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"project_reflect_stories", "type":"textarea", "isReportable":true, "isHeader":false},
-        {"id":"project_reflect_facilitation", "type":"textarea", "isReportable":true, "isHeader":false},
-        {"id":"project_reflect_planning", "type":"textarea", "isReportable":true, "isHeader":false},
-        {"id":"project_reflect_ownPNI", "type":"textarea", "isReportable":true, "isHeader":false},
-        {"id":"project_reflect_community", "type":"textarea", "isReportable":true, "isHeader":false},
-        {"id":"project_reflect_personalStrengths", "type":"textarea", "isReportable":true, "isHeader":false},
-        {"id":"project_reflect_teamStrengths", "type":"textarea", "isReportable":true, "isHeader":false},
-        {"id":"project_reflect_newIdeas", "type":"textarea", "isReportable":true, "isHeader":false},
-        {"id":"project_reflect_notes", "type":"textarea", "isReportable":true, "isHeader":false}
+        {"id":"project_reflectLabel", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"project_reflect_stories", "type":"textarea", "isInReport":true, "isGridColumn":false},
+        {"id":"project_reflect_facilitation", "type":"textarea", "isInReport":true, "isGridColumn":false},
+        {"id":"project_reflect_planning", "type":"textarea", "isInReport":true, "isGridColumn":false},
+        {"id":"project_reflect_ownPNI", "type":"textarea", "isInReport":true, "isGridColumn":false},
+        {"id":"project_reflect_community", "type":"textarea", "isInReport":true, "isGridColumn":false},
+        {"id":"project_reflect_personalStrengths", "type":"textarea", "isInReport":true, "isGridColumn":false},
+        {"id":"project_reflect_teamStrengths", "type":"textarea", "isInReport":true, "isGridColumn":false},
+        {"id":"project_reflect_newIdeas", "type":"textarea", "isInReport":true, "isGridColumn":false},
+        {"id":"project_reflect_notes", "type":"textarea", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

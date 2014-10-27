@@ -312,12 +312,12 @@ for (var pageIndex in pages) {
                 translations[question.id + "::selection:" + option] = option;
             }
         }
-        var isReportable = !(question.type in notReportable);
-        var isGridHeader = (question.shortText !== null);
+        var isInReport = !(question.type in notReportable);
+        var isGridColumn = (question.shortText !== null);
         // Could include options, but file gets bigger: "options": optionsSplit
         // simpleQuestions.push({"id": question.id, "type": question.type, "isReportable": isReportable, "isGridHeader": isGridHeader});
         if (questionOutput) questionOutput += ",\n";
-        questionOutput += "        " + JSON.stringify({"id": question.id, "type": question.type, "isReportable": isReportable, "isHeader": isGridHeader}).split(',"').join(', "'); //.split('":').join('": ');
+        questionOutput += "        " + JSON.stringify({"id": question.id, "type": question.type, "isInReport": isInReport, "isGridColumn": isGridColumn}).split(',"').join(', "'); //.split('":').join('": ');
     }
     
     fileContent = fileContent.replace("{{questions}}", questionOutput);

@@ -13,8 +13,8 @@ define([
     }
 
     var questions = [
-        {"id":"catalysisIntro", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"project_generalNotes_catalysis", "type":"textarea", "isReportable":true, "isHeader":false}
+        {"id":"catalysisIntro", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"project_generalNotes_catalysis", "type":"textarea", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

@@ -14,9 +14,9 @@ define([
     }
 
     var questions = [
-        {"id":"excerpt_name", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"excerpt_text", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"excerpt_notes", "type":"textarea", "isReportable":true, "isHeader":true}
+        {"id":"excerpt_name", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"excerpt_text", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"excerpt_notes", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
 
     return {

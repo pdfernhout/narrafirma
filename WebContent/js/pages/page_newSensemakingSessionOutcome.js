@@ -14,9 +14,9 @@ define([
     }
 
     var questions = [
-        {"id":"sensemakingSessionRecord_outcome_type", "type":"select", "isReportable":true, "isHeader":true},
-        {"id":"sensemakingSessionRecord_outcome_name", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"sensemakingSessionRecord_outcome_description", "type":"textarea", "isReportable":true, "isHeader":true}
+        {"id":"sensemakingSessionRecord_outcome_type", "type":"select", "isInReport":true, "isGridColumn":true},
+        {"id":"sensemakingSessionRecord_outcome_name", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"sensemakingSessionRecord_outcome_description", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
 
     return {

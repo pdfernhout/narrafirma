@@ -12,7 +12,7 @@ define([
     }
 
     var questions = [
-        {"id":"project_synopsis", "type":"textarea", "isReportable":true, "isHeader":false}
+        {"id":"project_synopsis", "type":"textarea", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

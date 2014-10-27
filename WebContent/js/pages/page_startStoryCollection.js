@@ -14,9 +14,9 @@ define([
     }
 
     var questions = [
-        {"id":"webStoryCollection_startCollectionLabel", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"webStoryCollection_enableDisableButton", "type":"toggleButton", "isReportable":true, "isHeader":true},
-        {"id":"webStoryCollection_copyStoryFormURLButton", "type":"button", "isReportable":false, "isHeader":false}
+        {"id":"webStoryCollection_startCollectionLabel", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"webStoryCollection_enableDisableButton", "type":"toggleButton", "isInReport":true, "isGridColumn":true},
+        {"id":"webStoryCollection_copyStoryFormURLButton", "type":"button", "isInReport":false, "isGridColumn":false}
     ];
 
     return {

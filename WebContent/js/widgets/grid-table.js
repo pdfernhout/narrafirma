@@ -258,7 +258,7 @@ define([
         // TODO: FIX ME -- no longer have questions -- either add them back or find another approach...
         array.forEach(popupPageDefinition.questions, function (question) {
             // TODO: Translate these texts
-            if (question.isHeader) {
+            if (question.isGridColumn) {
                 columns[question.id] = translate(question.id + "::shortName", "*FIXME*");
             }
         });

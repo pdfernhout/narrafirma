@@ -13,8 +13,8 @@ define([
     }
 
     var questions = [
-        {"id":"aboutParticipantGroups", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"project_participantGroupsList", "type":"grid", "isReportable":true, "isHeader":false}
+        {"id":"aboutParticipantGroups", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"project_participantGroupsList", "type":"grid", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

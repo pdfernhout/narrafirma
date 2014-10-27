@@ -15,10 +15,10 @@ define([
     }
 
     var questions = [
-        {"id":"themeStoriesLabel", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"themeStories", "type":"storyThemer", "isReportable":true, "isHeader":false},
-        {"id":"mockupThemingLabel_unfinished", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"mockup_theming", "type":"image", "isReportable":true, "isHeader":false}
+        {"id":"themeStoriesLabel", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"themeStories", "type":"storyThemer", "isInReport":true, "isGridColumn":false},
+        {"id":"mockupThemingLabel_unfinished", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"mockup_theming", "type":"image", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

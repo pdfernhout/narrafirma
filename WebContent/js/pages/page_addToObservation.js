@@ -15,10 +15,10 @@ define([
     }
 
     var questions = [
-        {"id":"addToObservation_introduction", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"observationsListChoose", "type":"observationsList", "isReportable":true, "isHeader":false},
-        {"id":"addToObservation_addResultToExistingObservationButton", "type":"button", "isReportable":false, "isHeader":false},
-        {"id":"addToObservation_createNewObservationWithResultButton", "type":"button", "isReportable":false, "isHeader":false}
+        {"id":"addToObservation_introduction", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"observationsListChoose", "type":"observationsList", "isInReport":true, "isGridColumn":false},
+        {"id":"addToObservation_addResultToExistingObservationButton", "type":"button", "isInReport":false, "isGridColumn":false},
+        {"id":"addToObservation_createNewObservationWithResultButton", "type":"button", "isInReport":false, "isGridColumn":false}
     ];
 
     return {

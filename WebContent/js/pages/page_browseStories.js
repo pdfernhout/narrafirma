@@ -13,8 +13,8 @@ define([
     }
 
     var questions = [
-        {"id":"collectedStoriesAfterCollectionLabel", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"collectedStoriesAfterCollection", "type":"storyBrowser", "isReportable":true, "isHeader":false}
+        {"id":"collectedStoriesAfterCollectionLabel", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"collectedStoriesAfterCollection", "type":"storyBrowser", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

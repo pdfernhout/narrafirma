@@ -16,11 +16,11 @@ define([
     }
 
     var questions = [
-        {"id":"projectPresentationElement_name", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"projectPresentationElement_statement", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"projectPresentationElement_evidence", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"projectPresentationElement_QA", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"projectPresentationElement_notes", "type":"textarea", "isReportable":true, "isHeader":true}
+        {"id":"projectPresentationElement_name", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"projectPresentationElement_statement", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"projectPresentationElement_evidence", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"projectPresentationElement_QA", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"projectPresentationElement_notes", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
 
     return {

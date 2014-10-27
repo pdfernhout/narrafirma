@@ -13,8 +13,8 @@ define([
     }
 
     var questions = [
-        {"id":"printQuestionsForm_introduction", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"printQuestionsForm_printFormButton", "type":"button", "isReportable":false, "isHeader":false}
+        {"id":"printQuestionsForm_introduction", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"printQuestionsForm_printFormButton", "type":"button", "isInReport":false, "isGridColumn":false}
     ];
 
     return {

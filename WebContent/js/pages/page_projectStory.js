@@ -18,13 +18,13 @@ define([
     }
 
     var questions = [
-        {"id":"projectStory_scenario", "type":"select", "isReportable":true, "isHeader":true},
-        {"id":"projectStory_outcome", "type":"select", "isReportable":true, "isHeader":true},
-        {"id":"projectStory_text", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"projectStory_name", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"projectStory_feelAbout", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"projectStory_surprise", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"projectStory_dangers", "type":"textarea", "isReportable":true, "isHeader":true}
+        {"id":"projectStory_scenario", "type":"select", "isInReport":true, "isGridColumn":true},
+        {"id":"projectStory_outcome", "type":"select", "isInReport":true, "isGridColumn":true},
+        {"id":"projectStory_text", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"projectStory_name", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"projectStory_feelAbout", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"projectStory_surprise", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"projectStory_dangers", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
 
     return {

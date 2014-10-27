@@ -12,7 +12,7 @@ define([
     }
 
     var questions = [
-        {"id":"outcomesTable", "type":"questionsTable", "isReportable":true, "isHeader":false}
+        {"id":"outcomesTable", "type":"questionsTable", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

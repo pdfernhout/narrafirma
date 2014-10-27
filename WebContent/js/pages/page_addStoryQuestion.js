@@ -18,13 +18,13 @@ define([
     }
 
     var questions = [
-        {"id":"storyQuestion_text", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"storyQuestion_type", "type":"select", "isReportable":true, "isHeader":true},
-        {"id":"storyQuestion_shortName", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"storyQuestion_options", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"storyQuestion_help", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"templates_storyQuestions", "type":"templateList", "isReportable":true, "isHeader":false},
-        {"id":"templates_storyQuestions_unfinished", "type":"label", "isReportable":false, "isHeader":false}
+        {"id":"storyQuestion_text", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"storyQuestion_type", "type":"select", "isInReport":true, "isGridColumn":true},
+        {"id":"storyQuestion_shortName", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"storyQuestion_options", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"storyQuestion_help", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"templates_storyQuestions", "type":"templateList", "isInReport":true, "isGridColumn":false},
+        {"id":"templates_storyQuestions_unfinished", "type":"label", "isInReport":false, "isGridColumn":false}
     ];
 
     return {

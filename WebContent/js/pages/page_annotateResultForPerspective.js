@@ -12,7 +12,7 @@ define([
     }
 
     var questions = [
-        {"id":"perspective_resultLinkageNotes", "type":"textarea", "isReportable":true, "isHeader":true}
+        {"id":"perspective_resultLinkageNotes", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
 
     return {

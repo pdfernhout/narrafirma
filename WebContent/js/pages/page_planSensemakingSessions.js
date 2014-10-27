@@ -16,11 +16,11 @@ define([
     }
 
     var questions = [
-        {"id":"project_sensemakingSessionPlansLabel", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"sensemakingSessionRecommendations", "type":"recommendationTable", "isReportable":true, "isHeader":false},
-        {"id":"sensemakingRecommendationsTable_unfinished", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"mockup_recTable_sensemaking", "type":"image", "isReportable":true, "isHeader":false},
-        {"id":"project_sensemakingSessionPlansList", "type":"grid", "isReportable":true, "isHeader":false}
+        {"id":"project_sensemakingSessionPlansLabel", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"sensemakingSessionRecommendations", "type":"recommendationTable", "isInReport":true, "isGridColumn":false},
+        {"id":"sensemakingRecommendationsTable_unfinished", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"mockup_recTable_sensemaking", "type":"image", "isInReport":true, "isGridColumn":false},
+        {"id":"project_sensemakingSessionPlansList", "type":"grid", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

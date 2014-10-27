@@ -16,11 +16,11 @@ define([
     }
 
     var questions = [
-        {"id":"perspective_name", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"perspective_description", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"perspective_linkedResultsList", "type":"annotationsGrid", "isReportable":true, "isHeader":false},
-        {"id":"perspective_linkedExcerptsList", "type":"annotationsGrid", "isReportable":true, "isHeader":false},
-        {"id":"perspective_linkedInterpretationsList", "type":"annotationsGrid", "isReportable":true, "isHeader":false}
+        {"id":"perspective_name", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"perspective_description", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"perspective_linkedResultsList", "type":"annotationsGrid", "isInReport":true, "isGridColumn":false},
+        {"id":"perspective_linkedExcerptsList", "type":"annotationsGrid", "isInReport":true, "isGridColumn":false},
+        {"id":"perspective_linkedInterpretationsList", "type":"annotationsGrid", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

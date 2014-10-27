@@ -16,11 +16,11 @@ define([
     }
 
     var questions = [
-        {"id":"project_storyQuestionsLabel", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"project_storyQuestionsList", "type":"grid", "isReportable":true, "isHeader":false},
-        {"id":"storyQuestionRecommendations", "type":"recommendationTable", "isReportable":true, "isHeader":false},
-        {"id":"storyQuestionRecommendationsTable_unfinished", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"mockup_recTable_storyQ", "type":"image", "isReportable":true, "isHeader":false}
+        {"id":"project_storyQuestionsLabel", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"project_storyQuestionsList", "type":"grid", "isInReport":true, "isGridColumn":false},
+        {"id":"storyQuestionRecommendations", "type":"recommendationTable", "isInReport":true, "isGridColumn":false},
+        {"id":"storyQuestionRecommendationsTable_unfinished", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"mockup_recTable_storyQ", "type":"image", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

@@ -28,23 +28,23 @@ define([
     }
 
     var questions = [
-        {"id":"interventionRecord_name", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"interventionRecord_notes", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"interventionRecord_reflectLabel", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"interventionRecord_reflectionsOnChangeHeader", "type":"header", "isReportable":false, "isHeader":false},
-        {"id":"interventionRecord_reflections_change_participantPerceptions", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"interventionRecord_reflections_change_yourPerceptions", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"interventionRecord_reflections_change_project", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"interventionRecord_interactionsHeader", "type":"header", "isReportable":false, "isHeader":false},
-        {"id":"interventionRecord_reflections_interaction_participants", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"interventionRecord_reflections_interaction_participantsAndFacilitator", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"interventionRecord_reflections_interaction_stories", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"interventionRecord_learningHeader", "type":"header", "isReportable":false, "isHeader":false},
-        {"id":"interventionRecord_reflections_learning_special", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"interventionRecord_reflections_learning_surprise", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"interventionRecord_reflections_learning_workedWell", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"interventionRecord_reflections_learning_newIdeas", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"interventionRecord_reflections_learning_wantToRemember", "type":"textarea", "isReportable":true, "isHeader":true}
+        {"id":"interventionRecord_name", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionRecord_notes", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionRecord_reflectLabel", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"interventionRecord_reflectionsOnChangeHeader", "type":"header", "isInReport":false, "isGridColumn":false},
+        {"id":"interventionRecord_reflections_change_participantPerceptions", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionRecord_reflections_change_yourPerceptions", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionRecord_reflections_change_project", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionRecord_interactionsHeader", "type":"header", "isInReport":false, "isGridColumn":false},
+        {"id":"interventionRecord_reflections_interaction_participants", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionRecord_reflections_interaction_participantsAndFacilitator", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionRecord_reflections_interaction_stories", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionRecord_learningHeader", "type":"header", "isInReport":false, "isGridColumn":false},
+        {"id":"interventionRecord_reflections_learning_special", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionRecord_reflections_learning_surprise", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionRecord_reflections_learning_workedWell", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionRecord_reflections_learning_newIdeas", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionRecord_reflections_learning_wantToRemember", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
 
     return {

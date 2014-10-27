@@ -14,9 +14,9 @@ define([
     }
 
     var questions = [
-        {"id":"collectionSessionRecord_construction_name", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"collectionSessionRecord_construction_type", "type":"select", "isReportable":true, "isHeader":true},
-        {"id":"collectionSessionRecord_construction_description", "type":"textarea", "isReportable":true, "isHeader":true}
+        {"id":"collectionSessionRecord_construction_name", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"collectionSessionRecord_construction_type", "type":"select", "isInReport":true, "isGridColumn":true},
+        {"id":"collectionSessionRecord_construction_description", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
 
     return {

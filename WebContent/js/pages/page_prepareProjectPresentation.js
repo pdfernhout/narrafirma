@@ -15,10 +15,10 @@ define([
     }
 
     var questions = [
-        {"id":"project_presentationLabel", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"project_presentationElementsList", "type":"grid", "isReportable":true, "isHeader":false},
-        {"id":"projectPresentation_presentationLabel", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"projectPresentation_exportPresentationOutlineButton", "type":"button", "isReportable":false, "isHeader":false}
+        {"id":"project_presentationLabel", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"project_presentationElementsList", "type":"grid", "isInReport":true, "isGridColumn":false},
+        {"id":"projectPresentation_presentationLabel", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"projectPresentation_exportPresentationOutlineButton", "type":"button", "isInReport":false, "isGridColumn":false}
     ];
 
     return {

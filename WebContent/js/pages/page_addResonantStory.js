@@ -16,11 +16,11 @@ define([
     }
 
     var questions = [
-        {"id":"storiesListChoose", "type":"storiesList", "isReportable":true, "isHeader":false},
-        {"id":"sensemakingSessionRecord_resonantStory_type", "type":"select", "isReportable":true, "isHeader":false},
-        {"id":"sensemakingSessionRecord_resonantStory_reason", "type":"textarea", "isReportable":true, "isHeader":false},
-        {"id":"sensemakingSessionRecord_resonantStory_groups", "type":"text", "isReportable":true, "isHeader":false},
-        {"id":"sensemakingSessionRecord_resonantStory_notes", "type":"textarea", "isReportable":true, "isHeader":false}
+        {"id":"storiesListChoose", "type":"storiesList", "isInReport":true, "isGridColumn":false},
+        {"id":"sensemakingSessionRecord_resonantStory_type", "type":"select", "isInReport":true, "isGridColumn":false},
+        {"id":"sensemakingSessionRecord_resonantStory_reason", "type":"textarea", "isInReport":true, "isGridColumn":false},
+        {"id":"sensemakingSessionRecord_resonantStory_groups", "type":"text", "isInReport":true, "isGridColumn":false},
+        {"id":"sensemakingSessionRecord_resonantStory_notes", "type":"textarea", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

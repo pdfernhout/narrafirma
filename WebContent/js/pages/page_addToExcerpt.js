@@ -14,9 +14,9 @@ define([
     }
 
     var questions = [
-        {"id":"addToExcerpt_excerptsListChoose", "type":"excerptsList", "isReportable":true, "isHeader":false},
-        {"id":"addToExcerpt_addTextToExistingExcerptButton", "type":"button", "isReportable":false, "isHeader":false},
-        {"id":"addToExcerpt_createNewExcerptWithTextButton", "type":"button", "isReportable":false, "isHeader":false}
+        {"id":"addToExcerpt_excerptsListChoose", "type":"excerptsList", "isInReport":true, "isGridColumn":false},
+        {"id":"addToExcerpt_addTextToExistingExcerptButton", "type":"button", "isInReport":false, "isGridColumn":false},
+        {"id":"addToExcerpt_createNewExcerptWithTextButton", "type":"button", "isInReport":false, "isGridColumn":false}
     ];
 
     return {

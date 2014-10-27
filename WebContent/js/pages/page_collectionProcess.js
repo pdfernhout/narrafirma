@@ -13,8 +13,8 @@ define([
     }
 
     var questions = [
-        {"id":"collectionProcessIntro", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"project_generalNotes_collectionProcess", "type":"textarea", "isReportable":true, "isHeader":false}
+        {"id":"collectionProcessIntro", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"project_generalNotes_collectionProcess", "type":"textarea", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

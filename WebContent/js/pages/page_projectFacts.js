@@ -20,15 +20,15 @@ define([
     }
 
     var questions = [
-        {"id":"projectFacts", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"project_title", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"project_communityOrOrganizationName", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"project_topic", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"project_startAndEndDates", "type":"text", "isReportable":true, "isHeader":true},
-        {"id":"project_funders", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"project_facilitators", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"project_reportStartText", "type":"textarea", "isReportable":true, "isHeader":true},
-        {"id":"project_reportEndText", "type":"textarea", "isReportable":true, "isHeader":true}
+        {"id":"projectFacts", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"project_title", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"project_communityOrOrganizationName", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"project_topic", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"project_startAndEndDates", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"project_funders", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"project_facilitators", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"project_reportStartText", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"project_reportEndText", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
 
     return {

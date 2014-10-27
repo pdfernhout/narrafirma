@@ -14,9 +14,9 @@ define([
     }
 
     var questions = [
-        {"id":"webStoryCollection_stopCollectionLabel", "type":"label", "isReportable":false, "isHeader":false},
-        {"id":"webStoryCollection_disableWebStoryFormAfterStoryCollectionButton", "type":"button", "isReportable":false, "isHeader":true},
-        {"id":"webStoryCollection_enabledTracker", "type":"questionAnswer", "isReportable":true, "isHeader":false}
+        {"id":"webStoryCollection_stopCollectionLabel", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"webStoryCollection_disableWebStoryFormAfterStoryCollectionButton", "type":"button", "isInReport":false, "isGridColumn":true},
+        {"id":"webStoryCollection_enabledTracker", "type":"questionAnswer", "isInReport":true, "isGridColumn":false}
     ];
 
     return {

@@ -13,8 +13,8 @@ define([
     }
 
     var questions = [
-        {"id":"selectExcerpt_excerptsListDisplay", "type":"excerptsList", "isReportable":true, "isHeader":false},
-        {"id":"selectExcerpt_addExcerptToInterpretationButton", "type":"button", "isReportable":false, "isHeader":false}
+        {"id":"selectExcerpt_excerptsListDisplay", "type":"excerptsList", "isInReport":true, "isGridColumn":false},
+        {"id":"selectExcerpt_addExcerptToInterpretationButton", "type":"button", "isInReport":false, "isGridColumn":false}
     ];
 
     return {
