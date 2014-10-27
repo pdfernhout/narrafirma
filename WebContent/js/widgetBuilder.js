@@ -725,15 +725,19 @@ define([
             console.log("ERROR: unsupported question type: " + type);
             return;
         }
-        addFunction(contentPane, model, id, options);
+        return addFunction(contentPane, model, id, options);
     }
     
+    // Returns disctionary mapping from question IDs to widgets
     function addQuestionWidgets(questions, contentPane, model) {
         console.log("addQuestionWidgets", questions);
+        var widgets = {};
         for (var questionIndex in questions) {
             var question = questions[questionIndex];
-            addQuestionWidget(question.type, contentPane, model, question.id, question.options);
-        } 
+            var widget = addQuestionWidget(question.type, contentPane, model, question.id, question.options);
+            widgets[question.id] = widget;
+        }
+        return widgets;
     }
     
     
