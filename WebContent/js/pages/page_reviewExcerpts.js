@@ -12,7 +12,7 @@ define([
     }
 
     var questions = [
-        {"id":"project_savedExcerptsList", "type":"grid", "isInReport":true, "isGridColumn":false}
+        {"id":"project_savedExcerptsList", "type":"grid", "isInReport":true, "isGridColumn":false, "options":["page_createNewExcerpt"]}
     ];
 
     return {

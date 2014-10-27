@@ -14,7 +14,7 @@ define([
 
     var questions = [
         {"id":"catalysisReport_introductionLabel", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"catalysisReport", "type":"report", "isInReport":true, "isGridColumn":false}
+        {"id":"catalysisReport", "type":"report", "isInReport":true, "isGridColumn":false, "options":["catalysis"]}
     ];
 
     return {

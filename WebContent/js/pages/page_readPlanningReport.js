@@ -14,7 +14,7 @@ define([
 
     var questions = [
         {"id":"project_readPlanningReportIntroductionLabel", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"planningReport", "type":"report", "isInReport":true, "isGridColumn":false}
+        {"id":"planningReport", "type":"report", "isInReport":true, "isGridColumn":false, "options":["planning"]}
     ];
 
     return {

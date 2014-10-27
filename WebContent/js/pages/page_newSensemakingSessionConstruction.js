@@ -15,7 +15,7 @@ define([
 
     var questions = [
         {"id":"sensemakingSessionRecord_construction_name", "type":"text", "isInReport":true, "isGridColumn":true},
-        {"id":"sensemakingSessionRecord_construction_type", "type":"select", "isInReport":true, "isGridColumn":true},
+        {"id":"sensemakingSessionRecord_construction_type", "type":"select", "isInReport":true, "isGridColumn":true, "options":["timeline", "landscape", "story elements", "composite story", "other"]},
         {"id":"sensemakingSessionRecord_construction_description", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
 

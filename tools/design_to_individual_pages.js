@@ -287,12 +287,13 @@ for (var pageIndex in pages) {
     allOutput = "";
     // var simpleQuestions = [];
     var questionOutput = "";
+    var optionsSplit;
     for (var questionIndex in page.questions) {
         var question = page.questions[questionIndex];
         var options = question.options;
         var optionsPrinted = "";
         // optionsSplit is intentionally undefined so it will not appear in simpleQuestions if not defined
-        var optionsSplit;
+        optionsSplit = undefined;
         if (question.options) {
             optionsPrinted = ", " + JSON.stringify(options.split(";"));
         }
@@ -305,19 +306,21 @@ for (var pageIndex in pages) {
             console.log("No short name for field: " + question.id + " type: " + question.type + " text: " + question.text);
         }
         
-        if (question.options && question.type in typesToTranslateOptions) {
+        if (question.options) {
             optionsSplit = question.options.split(";");
-            for (var optionIndex in optionsSplit) {
-                var option = optionsSplit[optionIndex];
-                translations[question.id + "::selection:" + option] = option;
+            if (question.type in typesToTranslateOptions) {
+                for (var optionIndex in optionsSplit) {
+                    var option = optionsSplit[optionIndex];
+                    translations[question.id + "::selection:" + option] = option;
+                }
             }
         }
         var isInReport = !(question.type in notReportable);
         var isGridColumn = (question.shortText !== null);
-        // Could include options, but file gets bigger: "options": optionsSplit
         // simpleQuestions.push({"id": question.id, "type": question.type, "isReportable": isReportable, "isGridHeader": isGridHeader});
+        var questionInfo = {"id": question.id, "type": question.type, "isInReport": isInReport, "isGridColumn": isGridColumn, "options": optionsSplit};
         if (questionOutput) questionOutput += ",\n";
-        questionOutput += "        " + JSON.stringify({"id": question.id, "type": question.type, "isInReport": isInReport, "isGridColumn": isGridColumn}).split(',"').join(', "'); //.split('":').join('": ');
+        questionOutput += "        " + JSON.stringify(questionInfo).split(',"').join(', "'); //.split('":').join('": ');
     }
     
     fileContent = fileContent.replace("{{questions}}", questionOutput);

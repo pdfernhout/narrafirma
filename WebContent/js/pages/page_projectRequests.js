@@ -14,7 +14,7 @@ define([
 
     var questions = [
         {"id":"project_returnRequestsLabel", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"project_returnRequestsList", "type":"grid", "isInReport":true, "isGridColumn":false}
+        {"id":"project_returnRequestsList", "type":"grid", "isInReport":true, "isGridColumn":false, "options":["page_addNewReturnRequest"]}
     ];
 
     return {

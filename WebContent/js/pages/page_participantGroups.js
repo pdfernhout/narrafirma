@@ -14,7 +14,7 @@ define([
 
     var questions = [
         {"id":"aboutParticipantGroups", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"project_participantGroupsList", "type":"grid", "isInReport":true, "isGridColumn":false}
+        {"id":"project_participantGroupsList", "type":"grid", "isInReport":true, "isGridColumn":false, "options":["page_addParticipantGroup"]}
     ];
 
     return {

@@ -18,7 +18,7 @@ define([
         {"id":"graphBrowserLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"graphBrowserDisplay", "type":"graphBrowser", "isInReport":true, "isGridColumn":false},
         {"id":"graphBrowserMockupLabel_unfinished", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"mockup_graphBrowser", "type":"image", "isInReport":true, "isGridColumn":false}
+        {"id":"mockup_graphBrowser", "type":"image", "isInReport":true, "isGridColumn":false, "options":["images/mockups/mockupGraphs.png"]}
     ];
 
     return {

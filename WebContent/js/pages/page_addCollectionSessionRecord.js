@@ -37,7 +37,7 @@ define([
         {"id":"collectionSessionRecord_participants", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"collectionSessionRecord_plan", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"collectionSessionRecord_notes", "type":"textarea", "isInReport":true, "isGridColumn":true},
-        {"id":"collectionSessionRecord_constructionsList", "type":"grid", "isInReport":true, "isGridColumn":false},
+        {"id":"collectionSessionRecord_constructionsList", "type":"grid", "isInReport":true, "isGridColumn":false, "options":["page_newCollectionSessionConstruction"]},
         {"id":"collectionSessionRecord_reflectionsLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"collectionSessionRecord_reflectionsOnChangeHeader", "type":"header", "isInReport":false, "isGridColumn":false},
         {"id":"collectionSessionRecord_reflections_change_participantPerceptions", "type":"textarea", "isInReport":true, "isGridColumn":true},

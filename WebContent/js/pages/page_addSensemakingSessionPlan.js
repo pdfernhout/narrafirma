@@ -31,7 +31,7 @@ define([
         {"id":"sensemakingSessionPlan_groups", "type":"text", "isInReport":true, "isGridColumn":true},
         {"id":"sensemakingSessionPlan_materials", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"sensemakingSessionPlan_details", "type":"textarea", "isInReport":true, "isGridColumn":true},
-        {"id":"sensemakingSessionPlan_activitiesList", "type":"grid", "isInReport":true, "isGridColumn":false},
+        {"id":"sensemakingSessionPlan_activitiesList", "type":"grid", "isInReport":true, "isGridColumn":false, "options":["page_addSensemakingSessionActivity"]},
         {"id":"sensemakingSessionPlan_printSensemakingSessionAgendaButton", "type":"button", "isInReport":false, "isGridColumn":false}
     ];
 

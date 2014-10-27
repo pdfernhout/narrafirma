@@ -14,7 +14,7 @@ define([
 
     var questions = [
         {"id":"project_readCollectionDesignReportIntroductionLabel", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"collectionDesignReport", "type":"report", "isInReport":true, "isGridColumn":false}
+        {"id":"collectionDesignReport", "type":"report", "isInReport":true, "isGridColumn":false, "options":["collectionDesign"]}
     ];
 
     return {

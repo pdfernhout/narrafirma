@@ -14,7 +14,7 @@ define([
 
     var questions = [
         {"id":"sensemakingReportLabel", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"sensemakingReport", "type":"report", "isInReport":true, "isGridColumn":false}
+        {"id":"sensemakingReport", "type":"report", "isInReport":true, "isGridColumn":false, "options":["sensemaking"]}
     ];
 
     return {

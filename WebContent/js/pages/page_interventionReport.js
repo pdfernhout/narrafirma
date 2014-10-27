@@ -14,7 +14,7 @@ define([
 
     var questions = [
         {"id":"interventionReportLabel", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"interventionReport", "type":"report", "isInReport":true, "isGridColumn":false}
+        {"id":"interventionReport", "type":"report", "isInReport":true, "isGridColumn":false, "options":["intervention"]}
     ];
 
     return {

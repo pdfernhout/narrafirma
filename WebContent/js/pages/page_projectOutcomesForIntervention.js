@@ -12,7 +12,7 @@ define([
     }
 
     var questions = [
-        {"id":"outcomesTable", "type":"questionsTable", "isInReport":true, "isGridColumn":false}
+        {"id":"outcomesTable", "type":"questionsTable", "isInReport":true, "isGridColumn":false, "options":["page_outcomesTable", "participants_firstGroupName", "participants_secondGroupName", "participants_thirdGroupName"]}
     ];
 
     return {

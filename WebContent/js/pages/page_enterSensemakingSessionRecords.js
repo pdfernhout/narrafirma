@@ -14,7 +14,7 @@ define([
 
     var questions = [
         {"id":"project_sensemakingSessionRecordsLabel", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"project_sensemakingSessionRecordsList", "type":"grid", "isInReport":true, "isGridColumn":false}
+        {"id":"project_sensemakingSessionRecordsList", "type":"grid", "isInReport":true, "isGridColumn":false, "options":["page_addSensemakingSessionRecord"]}
     ];
 
     return {

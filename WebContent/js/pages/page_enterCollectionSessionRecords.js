@@ -14,7 +14,7 @@ define([
 
     var questions = [
         {"id":"project_collectionRecordsIntroductionLabel", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"project_collectionSessionRecordsList", "type":"grid", "isInReport":true, "isGridColumn":false}
+        {"id":"project_collectionSessionRecordsList", "type":"grid", "isInReport":true, "isGridColumn":false, "options":["page_addCollectionSessionRecord"]}
     ];
 
     return {

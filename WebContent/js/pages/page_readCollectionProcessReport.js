@@ -14,7 +14,7 @@ define([
 
     var questions = [
         {"id":"project_collectionProcessReportLabel", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"project_collectionProcessReport", "type":"report", "isInReport":true, "isGridColumn":false}
+        {"id":"project_collectionProcessReport", "type":"report", "isInReport":true, "isGridColumn":false, "options":["collectionProcess"]}
     ];
 
     return {
