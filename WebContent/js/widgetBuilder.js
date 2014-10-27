@@ -733,11 +733,15 @@ define([
         "add_questionsTable": add_questionsTable,
         "add_storyBrowser": add_storyBrowser,
         "add_storyThemer": add_storyThemer,
-        "add_questionAnswer": add_questionAnswer,
         "add_graphBrowser": add_graphBrowser,
         "add_trendsReport": add_trendsReport,
         "add_clusterSpace": add_clusterSpace,
         "add_annotationsGrid": add_annotationsGrid,
-        "add_storiesList": add_storiesList
+        "add_storiesList": add_storiesList,
+        "add_questionAnswer": add_questionAnswer,
+        "add_questionAnswerCountOfTotalOnPage": add_questionAnswerCountOfTotalOnPage,
+        "add_listCount": add_listCount,
+        "add_function": add_function,
+        "add_quizScoreResult": add_quizScoreResult
     };
 });
