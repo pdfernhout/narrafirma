@@ -1,14 +1,14 @@
 "use strict";
 
+// Currently BROKEN -- and unused
+
 define([
     "dojo/_base/array",
     "dojo/_base/connect",
     "dojo/dom-construct",
     "dojo/dom-style",
-    "js/question_editor",
     "dijit/registry",
     "dojo/string",
-    "js/widgets",
     "dijit/layout/ContentPane",
     "dijit/form/Select",
     "dijit/form/SimpleTextarea",
@@ -19,10 +19,8 @@ define([
     connect,
     domConstruct,
     domStyle,
-    questionEditor,
     registry,
     string,
-    widgets,
     ContentPane,
     Select,
     SimpleTextarea,

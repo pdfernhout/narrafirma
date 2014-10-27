@@ -25,7 +25,6 @@ define([
         "dijit/form/HorizontalRuleLabels",
         "dijit/form/HorizontalSlider",
         "dojo/store/Memory",
-        "js/widgets/questions-table",
         "dijit/form/RadioButton",
         "js/widgets/radio-buttons",
         "dijit/form/Select",
@@ -58,7 +57,6 @@ define([
         HorizontalRuleLabels,
         HorizontalSlider,
         Memory,
-        QuestionsTable,
         RadioButton,
         RadioButtons,
         Select,
@@ -68,6 +66,40 @@ define([
         ToggleButton,
         _WidgetBase
     ){
+    
+    var entryTypes = [
+        "boolean",
+        "checkbox",
+        "checkBoxes",
+        "text",
+        "textarea", 
+        "select",
+        "radio",
+        "slider",
+        "toggleButton"
+    ];
+    
+    var supportedTypes = [
+        "boolean",
+        "label",
+        "header",
+        "checkbox",
+        "checkBoxes",
+        "text",
+        "textarea", 
+        "select",
+        "radio",
+        "slider",
+        "questionAnswer",
+        "questionAnswerCountOfTotalOnPage",
+        "listCount",
+        "function",
+        "toggleButton",
+        "image",
+        "quizScoreResult"
+    ];
+                  
+    /////////////
     
     function createQuestionContentPaneWithPrompt(contentPane, id) {
         var questionText = translate(id + "::prompt", "");
@@ -86,6 +118,8 @@ define([
         questionContentPane.startup();
         return questionContentPane;
     }
+    
+    ////////////////
     
     function add_label(contentPane, model, id, options) {
         var label = new ContentPane({
@@ -121,6 +155,7 @@ define([
         var textBox = new TextBox({
             value: at(model, id)
         });
+        textBox.set("style", "width: 40em");
         textBox.placeAt(questionContentPane);
         textBox.startup();
         return textBox;
@@ -278,9 +313,10 @@ define([
         return toggleButton;
     }
     
-    // TODO: Probably not correct...
     function add_button(contentPane, model, id, questionOptions, callback) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
+        
+        if (!callback) callback = lang.partial(domain.buttonClicked, id, questionOptions);
         
         var button = new Button({
             label: translate(id + "::prompt"),
@@ -325,8 +361,8 @@ define([
             discreteValues: 101,
             showButtons: true,
             // Doesn;t work: style: "align: center; width: 80%;"
-            style: "width: 80%;"
-
+            style: "width: 80%;",
+            value: at(model, id)
         });
         
         slider.placeAt(panelDiv);
@@ -418,17 +454,6 @@ define([
     }
     
     // TODO: Fix
-    function add_questionAnswer(contentPane, model, id, options) {
-        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
-        
-        var label = new ContentPane({
-            // content: translate(id + "::prompt")
-            content: "<b>UNFINISHED add_questionAnswer: " + id + "</b>"             
-        });
-        label.placeAt(questionContentPane);
-        label.startup();
-        return label;
-    }
     
     function add_graphBrowser(contentPane, model, id, options) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
@@ -494,10 +519,203 @@ define([
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var storyBrowser = StoryBrowser.insertStoryBrowser(questionContentPane, model, id, domain.pageDefinitions);
+        questionContentPane.resize();
         return storyBrowser;
     }
     
+    ////// Support for questions that recalculate based on other questions
+    
+    // TODO: When do these get removed?  When page removed???
+    var questionsRequiringRecalculationOnPageChanges = {};
+    
+    function updateLabelUsingCalculation(data) {
+        // console.log("recalculating label", data.label);
+        var calculatedText = data.calculate();
+        var newLabelText = data.baseText + " " + calculatedText; 
+        data.label.set("content", newLabelText);
+        // console.log("recalculated question: ", data.id, calculatedText);
+    }
+    
+    function updateQuestionsForPageChange(domain) {
+        for (var questionID in questionsRequiringRecalculationOnPageChanges) {
+            var data = questionsRequiringRecalculationOnPageChanges[questionID];
+            updateLabelUsingCalculation(data);
+        }
+    }
+    
+    //////
+
+    function calculate_questionAnswer(model, referencedQuestionID) {
+        var value = model.get(referencedQuestionID);
+        if (value === null) value = "(Not Yet Entered)";
+        if (value === undefined) {
+            console.log("ERROR: missing question: ", referencedQuestionID);
+            return "ERROR: missing question: " + referencedQuestionID;            
+        }
+        return value;
+    }
+
+    function calculate_questionAnswerCountOfTotalOnPage(model, pageID) {
+        var page = domain.pageDefinitions[pageID];
+        if (!page) {
+            console.log("ERROR: page not found for: ", pageID);
+            return "ERROR: page not found for: " + pageID + " at: " + Date();
+        }
+        // console.log("found page", page);
+        var questionAskedCount = 0;
+        var questionAnsweredCount = 0;
+        for (var pageQuestionIndex in page.questions) {
+            var pageQuestion = page.questions[pageQuestionIndex];
+            // console.log("pageQuestion", pageQuestion);
+            if (array.indexOf(entryTypes, pageQuestion.type) !== -1) {
+                questionAskedCount++;
+                var pageQuestionValue = model.get(pageQuestion.id);
+                if (pageQuestionValue !== undefined && pageQuestionValue !== "" && pageQuestionValue !== null) questionAnsweredCount++;
+            }
+        }
+        // var percentComplete = Math.round(100 * questionAnsweredCount / questionAskedCount);
+        // if (questionAskedCount === 0) percentComplete = 0;
+        // TODO: Translate
+        //return "Answered " + questionAnsweredCount + " of " + questionAskedCount + " questions (" + percentComplete + "%)";
+        return "answered " + questionAnsweredCount + " of " + questionAskedCount + " questions";
+    }
+    
+    function calculate_listCount(model, referencedQuestionID) {
+        var value = model.get(referencedQuestionID);
+        if (value === null) {
+            return "0";
+        } else if (value === undefined) {
+            console.log("ERROR: missing question: ", referencedQuestionID);
+            return "ERROR: missing question: " + referencedQuestionID;            
+        } else {
+            return "" + value.length;
+        }
+    }
+    
+    function calculate_function(id, functionName, options) {
+        var question = {id: id, options: options};
+        return domain.callDashboardFunction(functionName, question);
+    }
+    
+    function calculate_quizScoreResult(model, dependsOn) {
+        // console.log("quiz score result", dependsOn);
+        var total = 0;
+        for (var dependsOnIndex in dependsOn) {
+            var questionID = dependsOn[dependsOnIndex];
+            // console.log("domain.data", domain.data);
+            var questionAnswer = model.get(questionID);
+            var answerWeight = 0;
+            if (questionAnswer) {
+                // console.log("questionAnswer", questionAnswer);
+                answerWeight = domain.questions[questionID].options.indexOf(questionAnswer) - 1;
+                // console.log("answerWeight", answerWeight);
+                if (answerWeight < 0) answerWeight = 0;
+                total += answerWeight;
+            } else {
+               // Nothing 
+            }
+            // console.log("questionAnswer", questionID, questionAnswer, answerWeight, total);
+        }
+        var possibleTotal = dependsOn.length * 3;
+        var percent = Math.round(100 * total / possibleTotal);
+        // TODO: Translate
+        return "" + total + " of a possible " + possibleTotal + " (" + percent + "%)";
+    }
+    
+    function _add_calculatedText(contentPane, id, calculate) {
+        // var calculatedText = "(Initializing...)";
+        var calculatedText = calculate();
+        var baseText = translate(id + "::prompt");
+        var label = new ContentPane({
+            content: baseText + calculatedText
+        });
+        label.placeAt(contentPane);
+        label.startup();
+        
+        // TODO: How do these updates get removes????
+        var updateInfo = {"id": id, "label": label, "baseText": baseText, "calculate": calculate};
+        questionsRequiringRecalculationOnPageChanges[id] = updateInfo;
+
+        return label;
+    }
+    
+    function add_questionAnswer(contentPane, model, id, options) {
+        var referencedQuestionID = options[0];
+        var calculate = lang.partial(calculate_questionAnswer, model, referencedQuestionID);
+        return _add_calculatedText(contentPane, id, calculate);
+    }
+    
+    function add_questionAnswerCountOfTotalOnPage(contentPane, model, id, options) {
+        var pageID = options[0];
+        var calculate = lang.partial(calculate_questionAnswerCountOfTotalOnPage, model, pageID);
+        return _add_calculatedText(contentPane, id, calculate);
+    }
+    
+    function add_listCount(contentPane, model, id, options) {
+        var referencedQuestionID = options[0];
+        var calculate = lang.partial(calculate_listCount, model, referencedQuestionID);
+        return _add_calculatedText(contentPane, id, calculate);
+    }
+
+    function add_function(contentPane, model, id, options) {
+        var functionName = options[0];
+        var calculate = lang.partial(calculate_function, id, functionName, options);
+        return _add_calculatedText(contentPane, id, calculate);
+    }
+    
+    function add_quizScoreResult(contentPane, model, id, options) {
+        var dependsOn = options;
+        var calculate = lang.partial(calculate_quizScoreResult, model, dependsOn);
+        var label = _add_calculatedText(contentPane, id, calculate);
+        // TODO: Recalculating next two variables wheres they are also calculated in _add_calculatedText
+        var baseText = translate(id + "::prompt");
+        var updateInfo = {"id": id, "label": label, "baseText": baseText, "calculate": calculate};
+        // Ensure this value is recalculated when dependent questions change by using watch
+        for (var dependsOnIndex in dependsOn) {
+            var questionID = dependsOn[dependsOnIndex];
+            // TODO: When do these watches get removed?
+            model.watch(questionID, lang.partial(updateLabelUsingCalculation, updateInfo));
+        }
+        return label;
+    }
+    
+    /* TODO: code from questionEditor that has not yet been implemented
+     
+     } else if (utility.startsWith(question.type, "questionsTable")) {
+            var questionsTable = widgetQuestionsTable.insertQuestionsTable(question, questionsPane, domain.pageDefinitions);
+
+       var helpText = "";
+        if (!question.help) {
+            // Try to retrieve question help if not defined and present in helptexts.html
+            helpText = translate(question.id + "_help", "");
+        } else {
+            // Otherwise, see if can translate the text if it is a tag
+            helpText = translate(question.help, question.help);
+        }
+        // console.log("question help", question.id, question.help, helpText);
+        
+        var helpWidget = null;
+        if (helpText) {
+            // var helpText = question.help.replace(/\"/g, '\\x22').replace(/\'/g, '\\x27');
+            helpWidget = widgets.newButton(question.id + "_help", "?", null, function() {
+                alert(helpText);
+            });
+            // help = ' <button onclick="alert(\'' + helpText + '\')">?</button>';
+        }
+        
+               if (question.type === "textarea" || question.type === "text") questionDiv.appendChild(document.createElement("br"));
+
+        if (question.changed && widget) {
+            widget.on("change", question.changed);
+            //question.changed(widget.get("value"));
+        }
+
+        if (question.visible !== undefined && !question.visible) domStyle.set(questionDiv, "display", "none");
+
+     */
+    
     return {
+        "updateQuestionsForPageChange": updateQuestionsForPageChange,
         "add_label": add_label,
         "add_header": add_header,
         "add_image": add_image,

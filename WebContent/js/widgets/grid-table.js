@@ -7,7 +7,7 @@ define([
     "dojo/_base/lang",
     "dijit/registry",
     "js/translate",
-    "js/widgets",
+    "js/utility",
     "dgrid/extensions/ColumnResizer",
     "dijit/layout/ContentPane",
     "dijit/Dialog",
@@ -25,7 +25,7 @@ define([
     lang,
     registry,
     translate,
-    widgets,
+    utility,
     ColumnResizer,
     ContentPane,
     Dialog,
@@ -129,9 +129,9 @@ define([
         
         // TODO: Does the dialog itself have to be "destroyed"???
         
-        widgets.newButton("list_dialog_ok_" + grid.id, "OK", form, lang.partial(newItemAdded, id, grid, itemContentPane, form, popupPageDefinition, store, statefulItem));
+        utility.newButton("list_dialog_ok_" + grid.id, "OK", form, lang.partial(newItemAdded, id, grid, itemContentPane, form, popupPageDefinition, store, statefulItem));
         
-        widgets.newButton("list_dialog_cancel_" + grid.id, "Cancel", form, function() {
+        utility.newButton("list_dialog_cancel_" + grid.id, "Cancel", form, function() {
             console.log("Cancel");
             
             // itemContentPane.hide();
@@ -210,7 +210,7 @@ define([
 
         // TODO: Does the dialog itself have to be "destroyed"???
         
-        widgets.newButton("list_dialog_ok" + grid.id, "Done", form, function() {
+        utility.newButton("list_dialog_ok" + grid.id, "Done", form, function() {
             console.log("Done");
             
             // dialog.hide();
@@ -303,7 +303,7 @@ define([
         // See: http://dojotoolkit.org/reference-guide/1.7/dojo/partial.html
         // TODO: Translate text of label
         var viewButtonID = id + "view";
-        var viewButton = widgets.newButton(viewButtonID, "View", pane, lang.partial(viewButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+        var viewButton = utility.newButton(viewButtonID, "View", pane, lang.partial(viewButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
 
         var selected = 0;
         viewButton.set("disabled", true);
@@ -319,7 +319,7 @@ define([
         });
         
         if (includeAddButton) {
-            var addButton = widgets.newButton(id + "add", "Add", pane, lang.partial(addButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+            var addButton = utility.newButton(id + "add", "Add", pane, lang.partial(addButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
         }
         
         if (!pagePane.addChild) {
@@ -347,7 +347,8 @@ define([
     return {
         "insertGridTableBasic": insertGridTableBasic,
         "clearGridsKludge": clearGridsKludge,
-        "resizeGridsKludge": resizeGridsKludge
+        "resizeGridsKludge": resizeGridsKludge,
+        "allGrids": allGrids
     };
     
 });

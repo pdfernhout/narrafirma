@@ -8,11 +8,10 @@ define([
     "dojo/dom-style",
     "dojo/_base/lang",
     "dojo/query",
-    "js/question_editor",
     "dijit/registry",
     "dojo/string",
     "js/translate",
-    "js/widgets",
+    "js/utility",
     "./grid-table",
     "dojo/_base/window",
     "dijit/layout/ContentPane",
@@ -30,11 +29,10 @@ define([
     domStyle,
     lang,
     query,
-    questionEditor,
     registry,
     string,
     translate,
-    widgets,
+    utility,
     widgetGridTable,
     win,
     ContentPane,
@@ -149,7 +147,7 @@ define([
         
         containerPane.addChild(contentPane);
          
-        var question = widgets.newSelect(id + "_question", questionOptions, null, contentPane);
+        var question = utility.newSelect(id + "_question", questionOptions, null, contentPane);
         question.set("style", "width: 98%; max-width: 98%");
         
         contentPane.containerNode.appendChild(domConstruct.toDom('<br>'));
@@ -228,7 +226,7 @@ define([
         var storyList;
         
         // TODO: Translate text for button
-        var filterButton = widgets.newButton(id + "_filter", "Filter -- show only stories where both questions have the selected values", pagePane, function () {
+        var filterButton = utility.newButton(id + "_filter", "Filter -- show only stories where both questions have the selected values", pagePane, function () {
             console.log("filter pressed");
             var question1Choice = filter1.question.get("value");
             var answers1Choices = filter1.answers.get("value");
@@ -254,6 +252,9 @@ define([
         console.log("insertStoryBrowser middle 3", id);
         
         storyList = widgetGridTable.insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, true);
+        
+        // TODO: Fix better -- Force resizing of the table later, using grid kludge
+        widgetGridTable.allGrids.push(table);
         
         console.log("insertStoryBrowser finished");
     }

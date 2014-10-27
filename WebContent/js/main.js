@@ -9,8 +9,8 @@ require([
     "dojo/dom-construct",
     "dojo/dom-style",
     "dojo/hash",
-    "js/question_editor",
-    "js/widgets",
+    "js/utility",
+    "js/widgetBuilder",
     "js/widgets/grid-table",
     "dijit/layout/ContentPane",
     "dijit/form/Select",
@@ -24,8 +24,8 @@ require([
     domConstruct,
     domStyle,
     hash,
-    questionEditor,
-    widgets,
+    utility,
+    widgetBuilder,
     widgetGridTable,
     ContentPane,
     Select
@@ -99,7 +99,7 @@ require([
         
         window.scrollTo(0, 0); 
         
-        questionEditor.updateQuestionsForPageChange();
+        widgetBuilder.updateQuestionsForPageChange();
     }
     
     function createPage(id, visible) {
@@ -134,34 +134,35 @@ require([
        page.addWidgets(pagePane, domain.data);
        
        // TODO: Fix this to store data
-       // TODO: Translate
+       // TODO: Translate -- putting in English versions as kludge for now into special domain dictionary
+       var options = ["intentionally skipped", "partially done", "completely finished"];
+       var fullID = pageID + "_pageStatus";
+       var option;
+       var optionIndex;
        if (!page.isHeader) {
-           var pageStatusQuestion = {
-               "id": id + "_pageStatus",
-               "text": "The dashboard status of this page is: ",
-               "type": "select",
-               "options": "intentionally skipped\npartially done\ncompletely finished",
-               "value": at(domain.data, id + "_pageStatus")
-           };
+           domain.extraTranslations[fullID + "::prompt"] =  "The dashboard status of this page is: ";
+           for (optionIndex in options) {
+               option = options[optionIndex];
+               domain.extraTranslations[fullID + "::selection:" + option] = option;
+           }
            // TODO: Put blank line in here
-           questionEditor.insertQuestionIntoDiv(pageStatusQuestion, pagePane);
+           widgetBuilder.add_select(pagePane, domain.data, fullID, options);
        } else {
            // console.log("page dashboard as header", page.id, page.type, page);
            // Put in dashboard
            var pages = domain.pagesToGoWithHeaders[id];
            for (var pageIndex in pages) {
                var pageID = pages[pageIndex];
+               fullID = pageID + "_pageStatus_dashboard";
                // console.log("pageID", page, pageID, domain.pageDefinitions, domain.pageDefinitions[pageID]);
                if (!domain.pageDefinitions[pageID]) console.log("Error: problem finding page definition for", pageID, " -- Could the domain be out of date relative to the design and pages.js?");
                if (domain.pageDefinitions[pageID] && domain.pageDefinitions[pageID].type === "page") {
-                   var pageStatusQuestion2 = {
-                       "id": pageID + "_pageStatus_dashboard",
-                       "text": domain.pageDefinitions[pageID].name,
-                       "type": "select",
-                       "options": "intentionally skipped\npartially done\ncompletely finished",
-                       "value": at(domain.data, pageID + "_pageStatus")
-                   };               
-                   questionEditor.insertQuestionIntoDiv(pageStatusQuestion2, pagePane);
+                   domain.extraTranslations[fullID + "::prompt"] = domain.pageDefinitions[pageID].name;
+                   for (optionIndex in options) {
+                       option = options[optionIndex];
+                       domain.extraTranslations[fullID + "::selection:" + option] = option;
+                   }
+                   widgetBuilder.add_select(pagePane, domain.data, pageID + "_pageStatus_dashboard", options);
                }
            }
        }
@@ -255,7 +256,7 @@ require([
         // imageButton.set("showLabel", false);
         // imageButton.set("iconClass", "wwsButtonImage");
         
-        var homeButton = widgets.newButton("homeImageButton", "Home image button", "navigationDiv", homeButtonClicked);
+        var homeButton = utility.newButton("homeImageButton", "Home image button", "navigationDiv", homeButtonClicked);
         homeButton.set("showLabel", false);
         // homeButton.set("iconClass", "dijitEditorIcon dijitEditorIconOutdent");
         homeButton.set("iconClass", "homeButtonImage");
@@ -347,10 +348,10 @@ require([
         selectWidget.on("change", mainSelectChanged);
         
         // TODO: Translation of buttons
-        previousPageButton = widgets.newButton("previousPage", "Previous Page", "navigationDiv", previousPageClicked);
+        previousPageButton = utility.newButton("previousPage", "Previous Page", "navigationDiv", previousPageClicked);
         previousPageButton.set("iconClass", "leftButtonImage");
         
-        nextPageButton = widgets.newButton("nextPage", "Next Page", "navigationDiv", nextPageClicked);
+        nextPageButton = utility.newButton("nextPage", "Next Page", "navigationDiv", nextPageClicked);
         nextPageButton.set("iconClass", "rightButtonImage");
         
         // Setup the first page
@@ -364,18 +365,6 @@ require([
             currentPageID = startPage;
         }
         
-        // Log all the unspported types together at end
-        console.log("unsupportedTypes: ", questionEditor.unsupportedTypes);
-        var unsupported = "";
-        for (var key in questionEditor.unsupportedTypes) {
-            console.log("unsupportedType", key);
-            if (unsupported) unsupported += " ";
-            unsupported += key;
-        }
-        console.log("all unsupported types:", unsupported);
-        
-        console.log("all buttons", questionEditor.allButtons);
-        
         console.log("createLayout end");
         
         // Update if the URL hash fragment changes
@@ -383,7 +372,7 @@ require([
     }
     
     // Setup important callback for page changes
-    domain.setPageChangeCallback(questionEditor.updateQuestionsForPageChange);
+    domain.setPageChangeCallback(widgetBuilder.updateQuestionsForPageChange);
     
     // Call the main function
     createLayout();
