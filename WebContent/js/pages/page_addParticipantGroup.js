@@ -36,11 +36,41 @@ define([
         widgets.add_select(contentPane, model, "participantGroupAspects_topic_timeframe", ["unknown","hours","days","months","years","decades","mixed"]);
     }
 
+    var questions = [
+        {"id":"participantGroup_name", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"participantGroup_description", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"detailsAboutParticipantGroup", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"participantGroupAspects_statusHeader", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"participantGroupAspects_status", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"participantGroupAspects_confidence", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"participantGroupAspects_abilityHeader", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"participantGroupAspects_time", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"participantGroupAspects_education", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"participantGroupAspects_physicalDisabilities", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"participantGroupAspects_emotionalImpairments", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"aspects_expectationsHeader", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"participantGroupAspects_performing", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"participantGroupAspects_conforming", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"participantGroupAspects_promoting", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"participantGroupAspects_venting", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"aspects_feelingsHeader", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"participantGroupAspects_interest", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"participantGroupAspects_feelings_project", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"participantGroupAspects_feelings_facilitator", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"participantGroupAspects_feelings_stories", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"aspects_topicHeader", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"participantGroupAspects_topic_feeling", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"participantGroupAspects_topic_private", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"participantGroupAspects_topic_articulate", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"participantGroupAspects_topic_timeframe", "type":"select", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_addParticipantGroup",
         "name": "Participant group",
         "type": "popup",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

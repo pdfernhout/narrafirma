@@ -12,11 +12,17 @@ define([
         widgets.add_textarea(contentPane, model, "project_generalNotes_catalysis");
     }
 
+    var questions = [
+        {"id":"catalysisIntro", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"project_generalNotes_catalysis", "type":"textarea", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_catalysis",
         "name": "Catalysis",
         "type": "page",
         "isHeader": true,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

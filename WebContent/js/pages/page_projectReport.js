@@ -12,11 +12,17 @@ define([
         widgets.add_report(contentPane, model, "projectReport", ["project"]);
     }
 
+    var questions = [
+        {"id":"wholeProjectReportLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"projectReport", "type":"report", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_projectReport",
         "name": "Project report",
         "type": "page",
         "isHeader": true,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

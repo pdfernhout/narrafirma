@@ -21,11 +21,26 @@ define([
         widgets.add_label(contentPane, model, "templates_storyCollectionActivities_unfinished");
     }
 
+    var questions = [
+        {"id":"collectionSessionPlan_activity_name", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionPlan_activity_type", "type":"select", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionPlan_activity_plan", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionPlan_activity_optionalParts", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionPlan_activity_duration", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionPlan_activity_recording", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionPlan_activity_materials", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionPlan_activity_spaces", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionPlan_activity_facilitation", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"templates_storyCollectionActivities", "type":"templateList", "isReportable":true, "isHeader":false},
+        {"id":"templates_storyCollectionActivities_unfinished", "type":"label", "isReportable":false, "isHeader":false}
+    ];
+
     return {
         "id": "page_addCollectionSessionActivity",
         "name": "Add story collection session activity",
         "type": "popup",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

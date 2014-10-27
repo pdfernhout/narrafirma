@@ -14,11 +14,19 @@ define([
         widgets.add_button(contentPane, model, "addToObservation_createNewObservationWithResultButton", ["page_createNewObservation"]);
     }
 
+    var questions = [
+        {"id":"addToObservation_introduction", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"observationsListChoose", "type":"observationsList", "isReportable":true, "isHeader":false},
+        {"id":"addToObservation_addResultToExistingObservationButton", "type":"button", "isReportable":false, "isHeader":false},
+        {"id":"addToObservation_createNewObservationWithResultButton", "type":"button", "isReportable":false, "isHeader":false}
+    ];
+
     return {
         "id": "page_addToObservation",
         "name": "Add to observation",
         "type": "popup",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

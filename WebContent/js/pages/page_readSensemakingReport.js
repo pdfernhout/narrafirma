@@ -12,11 +12,17 @@ define([
         widgets.add_report(contentPane, model, "sensemakingReport", ["sensemaking"]);
     }
 
+    var questions = [
+        {"id":"sensemakingReportLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"sensemakingReport", "type":"report", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_readSensemakingReport",
         "name": "Read sensemaking report",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

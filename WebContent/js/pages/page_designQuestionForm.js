@@ -15,11 +15,20 @@ define([
         widgets.add_textarea(contentPane, model, "questionForm_endText");
     }
 
+    var questions = [
+        {"id":"questionFormLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"questionForm_title", "type":"text", "isReportable":true, "isHeader":false},
+        {"id":"questionForm_image", "type":"text", "isReportable":true, "isHeader":false},
+        {"id":"questionForm_startText", "type":"textarea", "isReportable":true, "isHeader":false},
+        {"id":"questionForm_endText", "type":"textarea", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_designQuestionForm",
         "name": "Design question form",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

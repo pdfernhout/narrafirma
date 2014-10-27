@@ -13,11 +13,18 @@ define([
         widgets.add_questionAnswer(contentPane, model, "webStoryCollection_enabledTracker", ["webStoryCollection_enableDisableButton"]);
     }
 
+    var questions = [
+        {"id":"webStoryCollection_stopCollectionLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"webStoryCollection_disableWebStoryFormAfterStoryCollectionButton", "type":"button", "isReportable":false, "isHeader":true},
+        {"id":"webStoryCollection_enabledTracker", "type":"questionAnswer", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_stopStoryCollection",
         "name": "Stop story collection",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

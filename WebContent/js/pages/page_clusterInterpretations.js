@@ -14,11 +14,19 @@ define([
         widgets.add_image(contentPane, model, "mockup_clusters", ["images/mockups/mockupClusters.png"]);
     }
 
+    var questions = [
+        {"id":"clusterInterpretationsLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"clusterInterpretations_clusterSpace", "type":"clusterSpace", "isReportable":true, "isHeader":false},
+        {"id":"mockupClusteringLabel_unfinished", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"mockup_clusters", "type":"image", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_clusterInterpretations",
         "name": "Cluster interpretations",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

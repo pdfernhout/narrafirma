@@ -12,11 +12,17 @@ define([
         widgets.add_report(contentPane, model, "collectionDesignReport", ["collectionDesign"]);
     }
 
+    var questions = [
+        {"id":"project_readCollectionDesignReportIntroductionLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"collectionDesignReport", "type":"report", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_readCollectionDesignReport",
         "name": "Read collection design report",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

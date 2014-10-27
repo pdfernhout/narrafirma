@@ -11,11 +11,16 @@ define([
         widgets.add_textarea(contentPane, model, "perspective_resultLinkageNotes");
     }
 
+    var questions = [
+        {"id":"perspective_resultLinkageNotes", "type":"textarea", "isReportable":true, "isHeader":true}
+    ];
+
     return {
         "id": "page_annotateResultForPerspective",
         "name": "Annotate result for perspective",
         "type": "popup",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

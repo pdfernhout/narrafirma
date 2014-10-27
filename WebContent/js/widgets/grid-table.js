@@ -64,31 +64,16 @@ define([
     // TODO: Maybe rethink how unique item IDs work? Setting to start at 1000 becaues of test data created in story browser
     var uniqueItemIDCounter = 1000;
     
-    function addButtonClicked(grid, store, popupPageDefinition, itemContentPane, event) {
-        console.log("add button pressed");
-        var dialog;
-        
-        var form = new Form();
-        form.set("style", "width: 800px; height 800px; overflow: auto;");
-        
-        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.25em solid blue; display: block");
-        
-        clearGridsKludge();
-        
-        var newItem = {};
-        
-        popupPageDefinition.addWidgets(form,  new Stateful(newItem));
-        
-        // TODO: Does the dialog itself have to be "destroyed"???
-        
-        widgets.newButton("list_dialog_ok_" + grid.id, "OK", form, function() {
-            console.log("OK");
+    function newItemAdded(grid, itemContentPane, form, store, newItem) {
+        return function() {
+            console.log("OK clicked", newItem);
             // itemContentPane.hide();
             // dialogOK(question, questionEditorDiv, form);
-
+    
             var uniqueItemID = ++uniqueItemIDCounter;
-            var newItem = {id: uniqueItemID};
+            // var newItem = {id: uniqueItemID};
             
+            /*
             // TODO: Tricky FIX ME -- as getting rid of the question definitions...
             array.forEach(popupPageDefinition.questions, function (question) {
                 // TODO: This may not work for more complex question types or custom widgets?
@@ -102,6 +87,7 @@ define([
                     }
                 }
             });
+            */
             
             console.log("got data for add form", store, newItem);
             
@@ -112,13 +98,39 @@ define([
             itemContentPane.set("style", "display: none");
             
             // refresh ensures the new data is displayed
+            console.log("Doing refresh for data", newItem);
             grid.refresh();
             
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
             form.destroyRecursive();
             console.log("shut down add form");
-            
+        };
+    }
+    
+    function addButtonClicked(grid, store, popupPageDefinition, itemContentPane, event) {
+        console.log("add button pressed");
+        var dialog;
+        
+        var form = new Form();
+        form.set("style", "width: 800px; height 800px; overflow: auto;");
+        
+        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.25em solid blue; display: block");
+        
+        clearGridsKludge();
+        
+        var newItem = {};
+        array.forEach(popupPageDefinition.questions, function (question) {
+            console.log("defining oject -- question type", question, question.type);
+            if (question.type !== "label" && question.type !== "header" && question.type !== "image") {
+                newItem[question.id] = null;
+            }
         });
+        
+        popupPageDefinition.addWidgets(form, new Stateful(newItem));
+        
+        // TODO: Does the dialog itself have to be "destroyed"???
+        
+        widgets.newButton("list_dialog_ok_" + grid.id, "OK", form, newItemAdded(grid, itemContentPane, form, store, newItem));
         
         widgets.newButton("list_dialog_cancel_" + grid.id, "Cancel", form, function() {
             console.log("Cancel");
@@ -180,9 +192,9 @@ define([
             // Should only be one match
             array.forEach(matches, function (item) {
                 console.log("item", item);
-                popupPageDefinition.addWidgets(form,  new Stateful(item));
+                popupPageDefinition.addWidgets(form, new Stateful(item));
 
-                /* TODO: Disabling?
+                /* TODO: Someway to disable editing?
                 array.forEach(popupPageDefinition.questions, function (question) {
                     // TODO: This may not work for more complex question types or custom widgets?
                     var widget = registry.byId(question.id);
@@ -192,7 +204,7 @@ define([
                     } else {
                         console.log("ERROR: could not find widget for:", question.id);
                     }
-                }); 
+                });
                 */
             });
         }
@@ -261,10 +273,11 @@ define([
             console.log("Trouble: no popupPageDefinition", id, pagePane);
         }
         
+        // TODO: FIX ME -- no longer have questions -- either add them back or find another approach...
         array.forEach(popupPageDefinition.questions, function (question) {
             // TODO: Translate these texts
-            if (question.shortText) {
-                columns[question.id] = question.shortText;
+            if (question.isHeader) {
+                columns[question.id] = translate(question.id + "::shortName", "*FIXME*");
             }
         });
         

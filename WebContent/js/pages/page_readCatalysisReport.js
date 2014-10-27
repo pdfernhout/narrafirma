@@ -12,11 +12,17 @@ define([
         widgets.add_report(contentPane, model, "catalysisReport", ["catalysis"]);
     }
 
+    var questions = [
+        {"id":"catalysisReport_introductionLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"catalysisReport", "type":"report", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_readCatalysisReport",
         "name": "Read catalysis report",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

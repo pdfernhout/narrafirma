@@ -15,11 +15,20 @@ define([
         widgets.add_textarea(contentPane, model, "returnRequest_notes");
     }
 
+    var questions = [
+        {"id":"returnRequest_text", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"returnRequest_type", "type":"select", "isReportable":true, "isHeader":true},
+        {"id":"returnRequest_isMet", "type":"boolean", "isReportable":true, "isHeader":true},
+        {"id":"returnRequest_whatHappened", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"returnRequest_notes", "type":"textarea", "isReportable":true, "isHeader":true}
+    ];
+
     return {
         "id": "page_addNewReturnRequest",
         "name": "Enter project request",
         "type": "popup",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

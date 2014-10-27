@@ -31,11 +31,36 @@ define([
         widgets.add_select(contentPane, model, "outcomes_peopleCuriousAboutStoryWork", ["never","occasionally","sometimes","often","mixed"]);
     }
 
+    var questions = [
+        {"id":"outcomes_hopesHeader", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"outcomes_peopleFeltHeard", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"outcomes_peopleFeltInvolved", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"outcomes_peopleLearnedAboutCommOrg", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"outcomes_voicesHeader", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"outcomes_peopleWantedToTellMoreStories", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"outcomes_peopleWantedToShareMoreStoriesWithEachOther", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"outcomes_peopleFeltStoriesNeededToBeHeard", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"outcomes_peopleFeltNobodyCares", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"outcomes_needsHeader", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"outcomes_peopleFeltNobodyCanMeetNeeds", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"outcomes_peopleFeltTheyNeedNewStories", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"outcomes_peopleWantedToKeepExploring", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"outcomes_crisisPointsWereFound", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"outcomes_issuesWereBeyondWords", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"outcomes_learningHeader", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"outcomes_peopleLarnedAboutTopic", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"outcomes_issuesNewMembersStruggleWith", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"outcomes_foundInfoWithoutUnderstanding", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"outcomes_foundOverConfidence", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"outcomes_peopleCuriousAboutStoryWork", "type":"select", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_outcomesTable",
         "name": "Project outcomes",
         "type": "questionsTable",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

@@ -15,11 +15,20 @@ define([
         widgets.add_grid(contentPane, model, "project_collectionSessionPlansList", ["page_addStoryCollectionSession"]);
     }
 
+    var questions = [
+        {"id":"collectionSessionsLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"collectionSessionRecommendations", "type":"recommendationTable", "isReportable":true, "isHeader":false},
+        {"id":"collectionRecommendationsTable_unfinished", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"mockup_recTable_collection", "type":"image", "isReportable":true, "isHeader":false},
+        {"id":"project_collectionSessionPlansList", "type":"grid", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_planStoryCollectionSessions",
         "name": "Plan story collection sessions",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

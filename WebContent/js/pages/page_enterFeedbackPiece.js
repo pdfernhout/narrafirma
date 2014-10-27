@@ -17,11 +17,22 @@ define([
         widgets.add_textarea(contentPane, model, "feedback_notes");
     }
 
+    var questions = [
+        {"id":"feedback_text", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"feedback_name", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"feedback_type", "type":"select", "isReportable":true, "isHeader":true},
+        {"id":"feedback_who", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"feedback_prompt", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"feedback_response", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"feedback_notes", "type":"textarea", "isReportable":true, "isHeader":true}
+    ];
+
     return {
         "id": "page_enterFeedbackPiece",
         "name": "Enter piece of feedback on project",
         "type": "popup",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

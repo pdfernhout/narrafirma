@@ -208,12 +208,15 @@ var fileTemplate = "// Generated from design\n" +
 "{{body}}" +
 "    }\n" +
 "\n" +
+"    var questions = [\n{{questions}}\n    ];\n" +
+"\n" +
 "    return {\n" +
 "        \"id\": \"{{pageID}}\",\n" +
 "        \"name\": \"{{pageName}}\",\n" +
 "        \"type\": \"{{pageType}}\",\n" +
 "        \"isHeader\": {{isHeader}},\n" +
-"        \"addWidgets\": addWidgets\n" +
+"        \"addWidgets\": addWidgets,\n" +
+"        \"questions\": questions\n" +
 "    };\n" +
 "});";
 
@@ -256,6 +259,8 @@ var pageNames = "";
 var pageReturn = "";
 var firstPage = true;
 
+var notReportable = {"label": true, "header": true, "button": true};
+
 var folder = "WebContent/js/pages/";
 for (var pageIndex in pages) {
     var page = pages[pageIndex];
@@ -280,10 +285,14 @@ for (var pageIndex in pages) {
     fileContent = fileContent.replace("{{pageType}}", page.type);
     fileContent = fileContent.replace("{{isHeader}}", page.isHeader);
     allOutput = "";
+    // var simpleQuestions = [];
+    var questionOutput = "";
     for (var questionIndex in page.questions) {
         var question = page.questions[questionIndex];
         var options = question.options;
         var optionsPrinted = "";
+        // optionsSplit is intentionally undefined so it will not appear in simpleQuestions if not defined
+        var optionsSplit;
         if (question.options) {
             optionsPrinted = ", " + JSON.stringify(options.split(";"));
         }
@@ -291,20 +300,27 @@ for (var pageIndex in pages) {
         addOutput("        widgets.add_" + question.type + "(contentPane, model, \"" + question.id + "\"" + optionsPrinted + ");\n");
         translations[question.id + "::prompt"] = question.text;
         if (question.shortText) {
-            translations[question.id + "::header"] = question.shortText;
+            translations[question.id + "::shortName"] = question.shortText;
         } else if (question.type !== "label" && question.type !== "header" && question.type !== "image" && question.type !== "button" && question.type !== "report" && question.type !== "quizScoreResult") {
             console.log("No short name for field: " + question.id + " type: " + question.type + " text: " + question.text);
         }
         
         if (question.options && question.type in typesToTranslateOptions) {
-            var optionsSplit = question.options.split(";");
+            optionsSplit = question.options.split(";");
             for (var optionIndex in optionsSplit) {
                 var option = optionsSplit[optionIndex];
                 translations[question.id + "::selection:" + option] = option;
             }
         }
+        var isReportable = !(question.type in notReportable);
+        var isGridHeader = (question.shortText !== null);
+        // Could include options, but file gets bigger: "options": optionsSplit
+        // simpleQuestions.push({"id": question.id, "type": question.type, "isReportable": isReportable, "isGridHeader": isGridHeader});
+        if (questionOutput) questionOutput += ",\n";
+        questionOutput += "        " + JSON.stringify({"id": question.id, "type": question.type, "isReportable": isReportable, "isHeader": isGridHeader}).split(',"').join(', "'); //.split('":').join('": ');
     }
     
+    fileContent = fileContent.replace("{{questions}}", questionOutput);
     fileContent = fileContent.replace("{{body}}", allOutput);
     fs.writeFile(fileName, fileContent, errorHandler(fileName));
 }

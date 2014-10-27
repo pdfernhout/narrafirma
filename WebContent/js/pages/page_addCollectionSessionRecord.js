@@ -31,11 +31,36 @@ define([
         widgets.add_textarea(contentPane, model, "collectionSessionRecord_reflections_learning_wantToRemember");
     }
 
+    var questions = [
+        {"id":"collectionSessionRecord_name", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionRecord_whenWhere", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionRecord_participants", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionRecord_plan", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionRecord_notes", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionRecord_constructionsList", "type":"grid", "isReportable":true, "isHeader":false},
+        {"id":"collectionSessionRecord_reflectionsLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"collectionSessionRecord_reflectionsOnChangeHeader", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"collectionSessionRecord_reflections_change_participantPerceptions", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionRecord_reflections_change_yourPerceptions", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionRecord_reflections_change_project", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionRecord_interactionsHeader", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"collectionSessionRecord_reflections_interaction_participants", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionRecord_reflections_interaction_participantsAndFacilitator", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionRecord_reflections_interaction_stories", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionRecord_learningHeader", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"collectionSessionRecord_reflections_learning_special", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionRecord_reflections_learning_surprise", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionRecord_reflections_learning_workedWell", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionRecord_reflections_learning_newIdeas", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionRecord_reflections_learning_wantToRemember", "type":"textarea", "isReportable":true, "isHeader":true}
+    ];
+
     return {
         "id": "page_addCollectionSessionRecord",
         "name": "Add story collection session record",
         "type": "popup",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

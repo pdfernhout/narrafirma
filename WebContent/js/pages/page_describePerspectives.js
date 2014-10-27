@@ -12,11 +12,17 @@ define([
         widgets.add_grid(contentPane, model, "project_perspectivesList", ["page_addPerspective"]);
     }
 
+    var questions = [
+        {"id":"project_perspectivesLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"project_perspectivesList", "type":"grid", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_describePerspectives",
         "name": "Describe perspectives",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

@@ -11,11 +11,16 @@ define([
         widgets.add_textarea(contentPane, model, "project_synopsis");
     }
 
+    var questions = [
+        {"id":"project_synopsis", "type":"textarea", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_writeProjectSynopsis",
         "name": "Write project synopsis",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

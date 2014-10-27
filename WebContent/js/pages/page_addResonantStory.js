@@ -15,11 +15,20 @@ define([
         widgets.add_textarea(contentPane, model, "sensemakingSessionRecord_resonantStory_notes");
     }
 
+    var questions = [
+        {"id":"storiesListChoose", "type":"storiesList", "isReportable":true, "isHeader":false},
+        {"id":"sensemakingSessionRecord_resonantStory_type", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"sensemakingSessionRecord_resonantStory_reason", "type":"textarea", "isReportable":true, "isHeader":false},
+        {"id":"sensemakingSessionRecord_resonantStory_groups", "type":"text", "isReportable":true, "isHeader":false},
+        {"id":"sensemakingSessionRecord_resonantStory_notes", "type":"textarea", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_addResonantStory",
         "name": "Add resonant story",
         "type": "popup",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

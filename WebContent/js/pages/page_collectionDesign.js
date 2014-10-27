@@ -12,11 +12,17 @@ define([
         widgets.add_textarea(contentPane, model, "project_generalNotes_collectionDesign");
     }
 
+    var questions = [
+        {"id":"project_collectionDesignStartLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"project_generalNotes_collectionDesign", "type":"textarea", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_collectionDesign",
         "name": "Collection design",
         "type": "page",
         "isHeader": true,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

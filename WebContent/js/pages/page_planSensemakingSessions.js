@@ -15,11 +15,20 @@ define([
         widgets.add_grid(contentPane, model, "project_sensemakingSessionPlansList", ["page_addSensemakingSessionPlan"]);
     }
 
+    var questions = [
+        {"id":"project_sensemakingSessionPlansLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"sensemakingSessionRecommendations", "type":"recommendationTable", "isReportable":true, "isHeader":false},
+        {"id":"sensemakingRecommendationsTable_unfinished", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"mockup_recTable_sensemaking", "type":"image", "isReportable":true, "isHeader":false},
+        {"id":"project_sensemakingSessionPlansList", "type":"grid", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_planSensemakingSessions",
         "name": "Plan sensemaking sessions",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

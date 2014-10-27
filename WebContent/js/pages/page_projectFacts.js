@@ -19,11 +19,24 @@ define([
         widgets.add_textarea(contentPane, model, "project_reportEndText");
     }
 
+    var questions = [
+        {"id":"projectFacts", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"project_title", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"project_communityOrOrganizationName", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"project_topic", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"project_startAndEndDates", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"project_funders", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"project_facilitators", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"project_reportStartText", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"project_reportEndText", "type":"textarea", "isReportable":true, "isHeader":true}
+    ];
+
     return {
         "id": "page_projectFacts",
         "name": "Enter project facts",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

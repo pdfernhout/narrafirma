@@ -20,11 +20,25 @@ define([
         widgets.add_textarea(contentPane, model, "project_reflect_notes");
     }
 
+    var questions = [
+        {"id":"project_reflectLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"project_reflect_stories", "type":"textarea", "isReportable":true, "isHeader":false},
+        {"id":"project_reflect_facilitation", "type":"textarea", "isReportable":true, "isHeader":false},
+        {"id":"project_reflect_planning", "type":"textarea", "isReportable":true, "isHeader":false},
+        {"id":"project_reflect_ownPNI", "type":"textarea", "isReportable":true, "isHeader":false},
+        {"id":"project_reflect_community", "type":"textarea", "isReportable":true, "isHeader":false},
+        {"id":"project_reflect_personalStrengths", "type":"textarea", "isReportable":true, "isHeader":false},
+        {"id":"project_reflect_teamStrengths", "type":"textarea", "isReportable":true, "isHeader":false},
+        {"id":"project_reflect_newIdeas", "type":"textarea", "isReportable":true, "isHeader":false},
+        {"id":"project_reflect_notes", "type":"textarea", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_reflectOnProject",
         "name": "Reflect on the project",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

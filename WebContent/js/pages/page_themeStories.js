@@ -14,11 +14,19 @@ define([
         widgets.add_image(contentPane, model, "mockup_theming", ["images/mockups/mockupTheming.png"]);
     }
 
+    var questions = [
+        {"id":"themeStoriesLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"themeStories", "type":"storyThemer", "isReportable":true, "isHeader":false},
+        {"id":"mockupThemingLabel_unfinished", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"mockup_theming", "type":"image", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_themeStories",
         "name": "Theme stories",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

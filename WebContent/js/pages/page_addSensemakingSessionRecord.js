@@ -33,11 +33,38 @@ define([
         widgets.add_textarea(contentPane, model, "sensemakingSessionRecord_reflections_learning_wantToRemember");
     }
 
+    var questions = [
+        {"id":"sensemakingSessionRecord_name", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionRecord_whenWhere", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionRecord_participants", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionRecord_plan", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionRecord_notes", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionRecord_resonantStoriesList", "type":"grid", "isReportable":true, "isHeader":false},
+        {"id":"sensemakingSessionRecord_outcomesList", "type":"grid", "isReportable":true, "isHeader":false},
+        {"id":"sensemakingSessionRecord_constructionsList", "type":"grid", "isReportable":true, "isHeader":false},
+        {"id":"sensemakingSessionRecord_reflectionsLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"sensemakingSessionRecord_reflectionsOnChangeHeader", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"sensemakingSessionRecord_reflections_change_participantPerceptions", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionRecord_reflections_change_yourPerceptions", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionRecord_reflections_change_project", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionRecord_interactionsHeader", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"sensemakingSessionRecord_reflections_interaction_participants", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionRecord_reflections_interaction_participantsAndFacilitator", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionRecord_reflections_interaction_stories", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionRecord_learningHeader", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"sensemakingSessionRecord_reflections_learning_special", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionRecord_reflections_learning_surprise", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionRecord_reflections_learning_workedWell", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionRecord_reflections_learning_newIdeas", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionRecord_reflections_learning_wantToRemember", "type":"textarea", "isReportable":true, "isHeader":true}
+    ];
+
     return {
         "id": "page_addSensemakingSessionRecord",
         "name": "Add sensemaking session record",
         "type": "popup",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

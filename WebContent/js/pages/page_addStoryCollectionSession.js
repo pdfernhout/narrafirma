@@ -21,11 +21,26 @@ define([
         widgets.add_button(contentPane, model, "collectionSessionPlan_printCollectionSessionAgendaButton");
     }
 
+    var questions = [
+        {"id":"collectionSessionPlan_name", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionPlan_repetitions", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionPlan_duration", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionPlan_times", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionPlan_location", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionPlan_numPeople", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionPlan_groups", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionPlan_materials", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionPlan_details", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"collectionSessionPlan_activitiesList", "type":"grid", "isReportable":true, "isHeader":false},
+        {"id":"collectionSessionPlan_printCollectionSessionAgendaButton", "type":"button", "isReportable":false, "isHeader":false}
+    ];
+
     return {
         "id": "page_addStoryCollectionSession",
         "name": "Design story collection session",
         "type": "popup",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

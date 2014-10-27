@@ -13,11 +13,18 @@ define([
         widgets.add_textarea(contentPane, model, "sensemakingSessionRecord_outcome_description");
     }
 
+    var questions = [
+        {"id":"sensemakingSessionRecord_outcome_type", "type":"select", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionRecord_outcome_name", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionRecord_outcome_description", "type":"textarea", "isReportable":true, "isHeader":true}
+    ];
+
     return {
         "id": "page_newSensemakingSessionOutcome",
         "name": "Sensemaking session outcome",
         "type": "popup",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

@@ -27,11 +27,32 @@ define([
         widgets.add_textarea(contentPane, model, "interventionRecord_reflections_learning_wantToRemember");
     }
 
+    var questions = [
+        {"id":"interventionRecord_name", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"interventionRecord_notes", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"interventionRecord_reflectLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"interventionRecord_reflectionsOnChangeHeader", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"interventionRecord_reflections_change_participantPerceptions", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"interventionRecord_reflections_change_yourPerceptions", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"interventionRecord_reflections_change_project", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"interventionRecord_interactionsHeader", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"interventionRecord_reflections_interaction_participants", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"interventionRecord_reflections_interaction_participantsAndFacilitator", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"interventionRecord_reflections_interaction_stories", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"interventionRecord_learningHeader", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"interventionRecord_reflections_learning_special", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"interventionRecord_reflections_learning_surprise", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"interventionRecord_reflections_learning_workedWell", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"interventionRecord_reflections_learning_newIdeas", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"interventionRecord_reflections_learning_wantToRemember", "type":"textarea", "isReportable":true, "isHeader":true}
+    ];
+
     return {
         "id": "page_addInterventionRecord",
         "name": "Add intervention record",
         "type": "popup",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

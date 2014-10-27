@@ -12,11 +12,17 @@ define([
         widgets.add_storyBrowser(contentPane, model, "collectedStoriesDuringCollection");
     }
 
+    var questions = [
+        {"id":"collectedStoriesDuringCollectionLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"collectedStoriesDuringCollection", "type":"storyBrowser", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_reviewIncomingStories",
         "name": "Review incoming stories",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

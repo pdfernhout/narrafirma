@@ -12,11 +12,17 @@ define([
         widgets.add_report(contentPane, model, "interventionReport", ["intervention"]);
     }
 
+    var questions = [
+        {"id":"interventionReportLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"interventionReport", "type":"report", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_interventionReport",
         "name": "Read intervention report",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

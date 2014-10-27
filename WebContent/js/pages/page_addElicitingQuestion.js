@@ -14,11 +14,19 @@ define([
         widgets.add_label(contentPane, model, "templates_elicitingQuestions_unfinished");
     }
 
+    var questions = [
+        {"id":"elicitingQuestion_text", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"elicitingQuestion_type", "type":"checkBoxes", "isReportable":true, "isHeader":true},
+        {"id":"templates_elicitingQuestions", "type":"templateList", "isReportable":true, "isHeader":false},
+        {"id":"templates_elicitingQuestions_unfinished", "type":"label", "isReportable":false, "isHeader":false}
+    ];
+
     return {
         "id": "page_addElicitingQuestion",
         "name": "Add story eliciting question",
         "type": "popup",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

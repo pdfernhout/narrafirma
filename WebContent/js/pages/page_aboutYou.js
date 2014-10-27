@@ -14,11 +14,19 @@ define([
         widgets.add_select(contentPane, model, "aboutYou_tech", ["none","a little","some","a lot"]);
     }
 
+    var questions = [
+        {"id":"aspects_youHeader", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"aboutYou_experience", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"aboutYou_help", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"aboutYou_tech", "type":"select", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_aboutYou",
         "name": "About you",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

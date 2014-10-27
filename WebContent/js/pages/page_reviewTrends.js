@@ -16,11 +16,21 @@ define([
         widgets.add_image(contentPane, model, "mockup_trends", ["images/mockups/mockupTrends.png"]);
     }
 
+    var questions = [
+        {"id":"reviewTrendsLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"reviewTrends_minSubsetSize", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"reviewTrends_significanceThreshold", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"reviewTrends_display", "type":"trendsReport", "isReportable":true, "isHeader":false},
+        {"id":"mockupTrendsLabel_unfinished", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"mockup_trends", "type":"image", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_reviewTrends",
         "name": "Review trends",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

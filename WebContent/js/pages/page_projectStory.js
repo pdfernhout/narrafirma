@@ -17,11 +17,22 @@ define([
         widgets.add_textarea(contentPane, model, "projectStory_dangers");
     }
 
+    var questions = [
+        {"id":"projectStory_scenario", "type":"select", "isReportable":true, "isHeader":true},
+        {"id":"projectStory_outcome", "type":"select", "isReportable":true, "isHeader":true},
+        {"id":"projectStory_text", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"projectStory_name", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"projectStory_feelAbout", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"projectStory_surprise", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"projectStory_dangers", "type":"textarea", "isReportable":true, "isHeader":true}
+    ];
+
     return {
         "id": "page_projectStory",
         "name": "Project story",
         "type": "popup",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

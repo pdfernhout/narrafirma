@@ -11,11 +11,16 @@ define([
         widgets.add_grid(contentPane, model, "project_savedExcerptsList", ["page_createNewExcerpt"]);
     }
 
+    var questions = [
+        {"id":"project_savedExcerptsList", "type":"grid", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_reviewExcerpts",
         "name": "Review excerpts",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

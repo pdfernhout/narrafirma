@@ -12,11 +12,17 @@ define([
         widgets.add_textarea(contentPane, model, "project_generalNotes_return");
     }
 
+    var questions = [
+        {"id":"returnIntroLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"project_generalNotes_return", "type":"textarea", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_return",
         "name": "Return",
         "type": "page",
         "isHeader": true,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

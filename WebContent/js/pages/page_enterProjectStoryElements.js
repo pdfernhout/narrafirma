@@ -11,11 +11,16 @@ define([
         widgets.add_grid(contentPane, model, "project_projectStoryElementsList", ["page_addStoryElement"]);
     }
 
+    var questions = [
+        {"id":"project_projectStoryElementsList", "type":"grid", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_enterProjectStoryElements",
         "name": "Enter project story elements",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

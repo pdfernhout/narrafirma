@@ -15,11 +15,20 @@ define([
         widgets.add_textarea(contentPane, model, "projectPresentationElement_notes");
     }
 
+    var questions = [
+        {"id":"projectPresentationElement_name", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"projectPresentationElement_statement", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"projectPresentationElement_evidence", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"projectPresentationElement_QA", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"projectPresentationElement_notes", "type":"textarea", "isReportable":true, "isHeader":true}
+    ];
+
     return {
         "id": "page_addPresentationElement",
         "name": "Add element to project presentation outline",
         "type": "popup",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

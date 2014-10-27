@@ -17,11 +17,22 @@ define([
         widgets.add_label(contentPane, model, "templates_storyQuestions_unfinished");
     }
 
+    var questions = [
+        {"id":"storyQuestion_text", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"storyQuestion_type", "type":"select", "isReportable":true, "isHeader":true},
+        {"id":"storyQuestion_shortName", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"storyQuestion_options", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"storyQuestion_help", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"templates_storyQuestions", "type":"templateList", "isReportable":true, "isHeader":false},
+        {"id":"templates_storyQuestions_unfinished", "type":"label", "isReportable":false, "isHeader":false}
+    ];
+
     return {
         "id": "page_addStoryQuestion",
         "name": "Add story question",
         "type": "popup",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

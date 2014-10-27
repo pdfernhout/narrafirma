@@ -42,11 +42,47 @@ define([
         widgets.add_textarea(contentPane, model, "assessment_notes");
     }
 
+    var questions = [
+        {"id":"assessment_intro", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"assessment_narrativeFreedom", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"assessment_counterStories", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"assessment_authority", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"assessment_mistakes", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"assessment_silencing", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"assessment_conflict", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"assessment_narrativeFlow", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"assessment_remindings", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"assessment_retellings", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"assessment_folklore", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"assessment_storyTypes", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"assessment_sensemaking", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"assessment_narrativeKnowledge", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"assessment_realStories", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"assessment_negotiations", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"assessment_cotelling", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"assessment_blunders", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"assessment_accounting", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"assessment_narrativeUnity", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"assessment_commonStories", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"assessment_sacredStories", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"assessment_condensedStories", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"assessment_intermingling", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"assessment_culture", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"assessment_result_header", "type":"header", "isReportable":false, "isHeader":false},
+        {"id":"assessment_result_freedomSubscore", "type":"quizScoreResult", "isReportable":true, "isHeader":false},
+        {"id":"assessment_result_flowSubscore", "type":"quizScoreResult", "isReportable":true, "isHeader":false},
+        {"id":"assessment_result_knowledgeSubscore", "type":"quizScoreResult", "isReportable":true, "isHeader":false},
+        {"id":"assessment_result_unitySubscore", "type":"quizScoreResult", "isReportable":true, "isHeader":false},
+        {"id":"assessment_result_grandTotal", "type":"quizScoreResult", "isReportable":true, "isHeader":false},
+        {"id":"assessment_notes", "type":"textarea", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_assessStorySharing",
         "name": "Assess story sharing",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

@@ -12,11 +12,17 @@ define([
         widgets.add_button(contentPane, model, "selectExcerpt_addExcerptToInterpretationButton");
     }
 
+    var questions = [
+        {"id":"selectExcerpt_excerptsListDisplay", "type":"excerptsList", "isReportable":true, "isHeader":false},
+        {"id":"selectExcerpt_addExcerptToInterpretationButton", "type":"button", "isReportable":false, "isHeader":false}
+    ];
+
     return {
         "id": "page_selectExcerpt",
         "name": "Add excerpt to interpretation",
         "type": "popup",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

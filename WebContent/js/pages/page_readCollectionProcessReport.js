@@ -12,11 +12,17 @@ define([
         widgets.add_report(contentPane, model, "project_collectionProcessReport", ["collectionProcess"]);
     }
 
+    var questions = [
+        {"id":"project_collectionProcessReportLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"project_collectionProcessReport", "type":"report", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_readCollectionProcessReport",
         "name": "Read collection process report",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

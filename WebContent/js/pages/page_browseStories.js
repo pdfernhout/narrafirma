@@ -12,11 +12,17 @@ define([
         widgets.add_storyBrowser(contentPane, model, "collectedStoriesAfterCollection", ["addToObservation:\"page_addToObservation\"","addToExcerpt:\"page_addToExcerpt\""]);
     }
 
+    var questions = [
+        {"id":"collectedStoriesAfterCollectionLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"collectedStoriesAfterCollection", "type":"storyBrowser", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_browseStories",
         "name": "Browse stories",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

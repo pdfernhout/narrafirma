@@ -21,11 +21,26 @@ define([
         widgets.add_label(contentPane, model, "templates_sensemakingActivities_unfinished");
     }
 
+    var questions = [
+        {"id":"sensemakingSessionPlan_activity_name", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionPlan_activity_type", "type":"select", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionPlan_activity_plan", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionPlan_activity_optionalParts", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionPlan_activity_duration", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionPlan_activity_recording", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionPlan_activity_materials", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionPlan_activity_spaces", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"sensemakingSessionPlan_activity_facilitation", "type":"textarea", "isReportable":true, "isHeader":true},
+        {"id":"templates_sensemakingActivities", "type":"templateList", "isReportable":true, "isHeader":false},
+        {"id":"templates_sensemakingActivities_unfinished", "type":"label", "isReportable":false, "isHeader":false}
+    ];
+
     return {
         "id": "page_addSensemakingSessionActivity",
         "name": "Add sensemaking session activity",
         "type": "popup",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

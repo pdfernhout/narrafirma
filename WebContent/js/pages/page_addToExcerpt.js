@@ -13,11 +13,18 @@ define([
         widgets.add_button(contentPane, model, "addToExcerpt_createNewExcerptWithTextButton", ["page_createNewExcerpt"]);
     }
 
+    var questions = [
+        {"id":"addToExcerpt_excerptsListChoose", "type":"excerptsList", "isReportable":true, "isHeader":false},
+        {"id":"addToExcerpt_addTextToExistingExcerptButton", "type":"button", "isReportable":false, "isHeader":false},
+        {"id":"addToExcerpt_createNewExcerptWithTextButton", "type":"button", "isReportable":false, "isHeader":false}
+    ];
+
     return {
         "id": "page_addToExcerpt",
         "name": "Add text to excerpt",
         "type": "popup",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

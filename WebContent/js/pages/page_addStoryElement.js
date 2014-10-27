@@ -13,11 +13,18 @@ define([
         widgets.add_textarea(contentPane, model, "storyElement_description");
     }
 
+    var questions = [
+        {"id":"storyElement_name", "type":"text", "isReportable":true, "isHeader":true},
+        {"id":"storyElement_type", "type":"select", "isReportable":true, "isHeader":true},
+        {"id":"storyElement_description", "type":"textarea", "isReportable":true, "isHeader":true}
+    ];
+
     return {
         "id": "page_addStoryElement",
         "name": "Add story element",
         "type": "popup",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

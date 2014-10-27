@@ -13,11 +13,18 @@ define([
         widgets.add_button(contentPane, model, "webStoryCollection_copyStoryFormURLButton");
     }
 
+    var questions = [
+        {"id":"webStoryCollection_startCollectionLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"webStoryCollection_enableDisableButton", "type":"toggleButton", "isReportable":true, "isHeader":true},
+        {"id":"webStoryCollection_copyStoryFormURLButton", "type":"button", "isReportable":false, "isHeader":false}
+    ];
+
     return {
         "id": "page_startStoryCollection",
         "name": "Start story collection",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

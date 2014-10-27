@@ -268,7 +268,7 @@ define([
     
     // TODO: Probably not correct...
     function add_button(contentPane, model, id, questionOptions, callback) {
-        // var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var button = new Button({
             label: translate(id + "::prompt"),

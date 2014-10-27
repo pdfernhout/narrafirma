@@ -14,11 +14,19 @@ define([
         widgets.add_textarea(contentPane, model, "venue_secondaryForGroup_plans");
     }
 
+    var questions = [
+        {"id":"venue_primaryForGroup_type", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"venue_primaryForGroup_plans", "type":"textarea", "isReportable":true, "isHeader":false},
+        {"id":"venue_secondaryForGroup_type", "type":"select", "isReportable":true, "isHeader":false},
+        {"id":"venue_secondaryForGroup_plans", "type":"textarea", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_venuesTable",
         "name": "Aspects table",
         "type": "questionsTable",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

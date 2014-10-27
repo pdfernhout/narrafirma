@@ -12,11 +12,17 @@ define([
         widgets.add_textarea(contentPane, model, "project_generalNotes_intervention");
     }
 
+    var questions = [
+        {"id":"interventionIntroLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"project_generalNotes_intervention", "type":"textarea", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_intervention",
         "name": "Intervention",
         "type": "page",
         "isHeader": true,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

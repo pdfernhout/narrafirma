@@ -10,11 +10,16 @@ define([
     function addWidgets(contentPane, model) {
     }
 
+    var questions = [
+
+    ];
+
     return {
         "id": "page_enterStories",
         "name": "Enter stories",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

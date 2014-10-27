@@ -12,11 +12,17 @@ define([
         widgets.add_grid(contentPane, model, "project_sensemakingSessionRecordsList", ["page_addSensemakingSessionRecord"]);
     }
 
+    var questions = [
+        {"id":"project_sensemakingSessionRecordsLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"project_sensemakingSessionRecordsList", "type":"grid", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_enterSensemakingSessionRecords",
         "name": "Enter sensemaking session records",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });

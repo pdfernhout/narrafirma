@@ -15,11 +15,20 @@ define([
         widgets.add_image(contentPane, model, "mockup_recTable_partQ", ["images/mockups/mockupRecTable.png"]);
     }
 
+    var questions = [
+        {"id":"project_participantQuestionsLabel", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"project_participantQuestionsList", "type":"grid", "isReportable":true, "isHeader":false},
+        {"id":"participantQuestionRecommendations", "type":"recommendationTable", "isReportable":true, "isHeader":false},
+        {"id":"participantQuestionRecommendations_unfinished", "type":"label", "isReportable":false, "isHeader":false},
+        {"id":"mockup_recTable_partQ", "type":"image", "isReportable":true, "isHeader":false}
+    ];
+
     return {
         "id": "page_writeQuestionsAboutParticipants",
         "name": "Write questions about participants",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets
+        "addWidgets": addWidgets,
+        "questions": questions
     };
 });
