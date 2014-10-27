@@ -151,9 +151,7 @@ define([
             console.log("Trouble: no popupPageDefinition for options: ", id, options);
         }
         
-        var value = model[id];
-        
-        return GridTable.insertGridTableBasic(model, id, questionContentPane, popupPageDefinition, value, true);
+        return GridTable.insertGridTableBasic(questionContentPane, model, id, popupPageDefinition, true);
     }
     
     function add_select(contentPane, model, id, questionOptions, addNoSelectionOption) {

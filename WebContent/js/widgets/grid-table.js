@@ -76,7 +76,7 @@ define([
         
         array.forEach(popupPageDefinition.questions, function (question) {
             // TODO: This may not work for more complex question types or custom widgets?
-            console.log("question type", question, question.type);
+            // console.log("question type", question, question.type);
             if (question.type !== "label" && question.type !== "header" && question.type !== "image") {
                 newItem[question.id] = statefulItem.get(question.id);
             }
@@ -87,15 +87,6 @@ define([
         store.put(newItem);
                 
         console.log("put store for add form");
-        
-        var collection = model.get(id);
-        if (!collection) {
-            collection = [];
-            model.set(id, collection);
-        }
-        collection.push(newItem);
-
-        console.log("added to model ", id, model);
         
         itemContentPane.set("style", "display: none");
         
@@ -248,29 +239,24 @@ define([
         //dialog.show();
     }
     
-    function insertGridTableBasic(model, id, pagePane, popupPageDefinition, dataStore, includeAddButton) {
+    function insertGridTableBasic(pagePane, model, id, popupPageDefinition, includeAddButton) {
         // Grid with list of objects
-        console.log("insertGridTableBasic", id, dataStore);
-        
-        // Check if using dojo at to wrap a domain value
-        if (!dataStore || dataStore instanceof Array) {
-            // TODO: Need to set better info for fields and meanings to display and index on
-            
-            var list = [];
-           
-            if (dataStore instanceof Array) {
-                list = dataStore;
-                console.log("datastore list", dataStore, list);
-            }
-            
-                
-            dataStore = new Memory({
-                // data: storyList,
-                data: list
-                // TODO: title may not be unique
-                // idProperty: "uniqueID",
-            });            
+        var data = model.get(id);
+        if (!data) {
+            data = [];
+            model.set(id, data);
         }
+        console.log("insertGridTableBasic", id, data);
+        
+        // TODO: Need to set better info for fields and meanings to display and index on
+        
+        // Store will modify underlying array
+        var dataStore = new Memory({
+            // data: storyList,
+            data: data
+            // TODO: title may not be unique
+            // idProperty: "uniqueID",
+        });
         
         var columns = {};
         

@@ -174,14 +174,12 @@ define([
              "id": "testDogQuestions",
              "questions": domain.testDogQuestions   
         };
-        
+
         var data = domain.testDogStories;
-        var dataStore = new Memory({
-            // "data": [],
-            "data": data
-            // TODO: what should this be, if anything?
-            // idProperty: "name",
-        }); 
+        var modelInit = {};
+        modelInit[id] = data;
+        
+        var model = new Stateful(modelInit);
         
         var questionOptions = [];
         var questionsById = {};
@@ -240,10 +238,8 @@ define([
                 return match1 & match2;
             });
         });
-            
-        // TODO: What should model be?
-        var model = new Stateful({});
-        storyList = widgetGridTable.insertGridTableBasic(model, id + "_grid", pagePane, popupPageDefinition, dataStore, true);
+        
+        storyList = widgetGridTable.insertGridTableBasic(pagePane, model, id, popupPageDefinition, true);
         
         console.log("insertStoryBrowser finished");
     }
