@@ -125,7 +125,9 @@ define([
         
         var statefulItem = new Stateful(newItem);
         
+        // console.log("grid: about to call addWidgets");
         popupPageDefinition.addWidgets(form, statefulItem);
+        // console.log("grid: done with call addWidgets");
         
         // TODO: Does the dialog itself have to be "destroyed"???
         

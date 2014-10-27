@@ -23,6 +23,9 @@ define([
     var exportedSurveyQuestions = [];
     var surveyResults = [];
     
+    // Kludge for extra translations for testing
+    var extraTranslations = {};
+
     // Temporary test data
     var testDogQuestions = [
         {id: "name", type: "text", text: "Name | Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},
@@ -32,11 +35,13 @@ define([
         {id: "feeling1", type: "slider", text: "Day Feeling | How good did you feel the day you brought your dog home?"},
         {id: "feeling2", type: "slider", text: "Next Day Feeling| How good did you feel the day after you brought your dog home? ----- just making this question really long for testing -------------------------------------------------------------- ???"},
         {id: "feeling3", type: "slider", text: "Now Feeling | How good do you feel right now?"},
-        {id: "feeling4", type: "select", text: "Now Spouse Feeling | How good does your spouse feel right now?", options: "low\nmedium\nhigh"},
+        {id: "feeling4", type: "select", text: "Now Spouse Feeling | How good does your spouse feel right now?", options: ["low", "medium", "high"]},
     ];
-    
-    // Kludge for extra translations for testing
-    var extraTranslations = {};
+        
+    // To ensure options display as expected without warnings
+    extraTranslations["feeling4::selection:low"] = "low";
+    extraTranslations["feeling4::selection:medium"] = "medium";
+    extraTranslations["feeling4::selection:high"] = "high";
     
     array.forEach(testDogQuestions, function (question) {
         question.isGridColumn = true;
@@ -92,7 +97,6 @@ define([
             return "callDashboardFunction UNFINISHED: " + functionName + " for: " + question.id;
         }
     }
-    
     
     // Store page change callback to prevent circular reference when loading domain and question editor
     var pageChangeCallback = null;

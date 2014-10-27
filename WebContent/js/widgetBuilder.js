@@ -9,6 +9,7 @@ define([
         "js/domain",
         "dojo/dom-construct",
         "dojo/dom-style",
+        "exports",
         "dojo/_base/lang",
         "dojo/on",
         "dijit/registry",
@@ -41,6 +42,7 @@ define([
         domain,
         domConstruct,
         domStyle,
+        exports,
         lang,
         on,
         registry,
@@ -716,7 +718,26 @@ define([
 
      */
     
-    return {
+    function addQuestionWidget(type, contentPane, model, id, options) {
+        console.log("addQuestionWidget", type, id);
+        var addFunction = exportedFunctions["add_" + type];
+        if (!addFunction) {
+            console.log("ERROR: unsupported question type: " + type);
+            return;
+        }
+        addFunction(contentPane, model, id, options);
+    }
+    
+    function addQuestionWidgets(questions, contentPane, model) {
+        console.log("addQuestionWidgets", questions);
+        for (var questionIndex in questions) {
+            var question = questions[questionIndex];
+            addQuestionWidget(question.type, contentPane, model, question.id, question.options);
+        } 
+    }
+    
+    
+    var exportedFunctions = {
         "updateQuestionsForPageChange": updateQuestionsForPageChange,
         "add_label": add_label,
         "add_header": add_header,
@@ -744,6 +765,10 @@ define([
         "add_questionAnswerCountOfTotalOnPage": add_questionAnswerCountOfTotalOnPage,
         "add_listCount": add_listCount,
         "add_function": add_function,
-        "add_quizScoreResult": add_quizScoreResult
+        "add_quizScoreResult": add_quizScoreResult,
+        "addQuestionWidget": addQuestionWidget,
+        "addQuestionWidgets": addQuestionWidgets
     };
+    
+    lang.mixin(exports, exportedFunctions);
 });

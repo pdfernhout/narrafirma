@@ -12,6 +12,7 @@ define([
     "dojo/string",
     "js/translate",
     "js/utility",
+    "js/widgetBuilder",
     "./grid-table",
     "dojo/_base/window",
     "dijit/layout/ContentPane",
@@ -33,6 +34,7 @@ define([
     string,
     translate,
     utility,
+    widgetBuilder,
     widgetGridTable,
     win,
     ContentPane,
@@ -170,7 +172,8 @@ define([
         
         var popupPageDefinition = {
              "id": "testDogQuestions",
-             "questions": domain.testDogQuestions   
+             "questions": domain.testDogQuestions,
+             addWidgets: lang.partial(widgetBuilder.addQuestionWidgets, domain.testDogQuestions)
         };
 
         var data = model.get(id);
