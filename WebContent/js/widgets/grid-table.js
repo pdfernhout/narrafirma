@@ -334,7 +334,7 @@ define([
             pagePane.addChild(itemContentPane);
         } 
         
-        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.5em solid red; display: none");
+        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.5em solid red; margin-left: 2em; display: none");
         
         itemContentPane.startup();
 

@@ -10,6 +10,14 @@ body {
     padding-left: 0em;
 }
 
+#pageDiv {
+   padding-left: 2em; 
+}
+
+form {
+   padding-left: 2em;
+}
+
 /* See http://www.sitepen.com/blog/2012/05/03/css-styling-of-dgrid/ */
 /* Make sure grid rows are just one line high and the text is limited with an ellipsis */
 
@@ -31,7 +39,7 @@ body {
 }
 
 .claro .dijitContentPane {
-	padding-left: 2em;
+	padding-left: 0em;
 }
 
 .dijitDownArrowButton {

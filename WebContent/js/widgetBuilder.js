@@ -69,6 +69,22 @@ define([
         _WidgetBase
     ){
     
+    function createQuestionContentPaneWithPrompt(contentPane, id) {
+        var questionText = translate(id + "::prompt", "");
+        var questionContentPane = new ContentPane({
+        });
+        if (questionText) {
+            var label = new ContentPane({
+                content: questionText
+            });
+            label.placeAt(questionContentPane);
+            label.startup();
+        }
+        questionContentPane.placeAt(contentPane);
+        questionContentPane.startup();
+        return questionContentPane;
+    }
+    
     function add_label(contentPane, model, id, options) {
         var label = new ContentPane({
             content: translate(id + "::prompt")
@@ -90,44 +106,33 @@ define([
     function add_image(contentPane, model, id, options) {
         var imageSource = options[0];
         var questionText = translate(id + "::prompt", "");
-        var label = new ContentPane({
+        var image = new ContentPane({
             content: "<br>" + '<img src="' + imageSource + '" alt="Image for question: ' + questionText + '">'
         });
-        label.placeAt(contentPane);
-        label.startup();
-        return label;
-    }
-    
-    function addPromptTextIfNeeded(contentPane, id) {
-        var questionText = translate(id + "::prompt", "");
-        if (questionText) {
-            var label = new ContentPane({
-                content: questionText
-            });
-            label.placeAt(contentPane);
-            label.startup();        
-        }
+        image.placeAt(contentPane);
+        image.startup();
+        return image;
     }
     
     function add_text(contentPane, model, id, options) {
-        addPromptTextIfNeeded(contentPane, id);
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         var textBox = new TextBox({
             value: at(model, id)
         });
-        textBox.placeAt(contentPane);
+        textBox.placeAt(questionContentPane);
         textBox.startup();
         return textBox;
     }
     
     function add_textarea(contentPane, model, id, options) {
-        addPromptTextIfNeeded(contentPane, id); 
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id); 
         var textarea = new SimpleTextarea({
             rows: "4",
             cols: "80",
             style: "width:auto;",
             value: at(model, id)
         });
-        textarea.placeAt(contentPane);
+        textarea.placeAt(questionContentPane);
         textarea.startup();
         return textarea;
     }
@@ -136,7 +141,7 @@ define([
         // Grid with list of objects
         // console.log("add_grid");
         
-        addPromptTextIfNeeded(contentPane, id);
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var popupPageDefinition = domain.pageDefinitions[options[0]];
         
@@ -146,11 +151,11 @@ define([
         
         var value = model[id];
         
-        return GridTable.insertGridTableBasic(id, contentPane, popupPageDefinition, value, true);
+        return GridTable.insertGridTableBasic(id, questionContentPane, popupPageDefinition, value, true);
     }
     
     function add_select(contentPane, model, id, questionOptions, addNoSelectionOption) {
-        addPromptTextIfNeeded(contentPane, id);
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var options = [];
         // TODO: Translate label for no selection
@@ -182,13 +187,13 @@ define([
                 value: at(model, id)
         });
         
-        select.placeAt(contentPane);
+        select.placeAt(questionContentPane);
         select.startup();
         return select;
     }
     
     function add_boolean(contentPane, model, id, questionOptions) {
-        addPromptTextIfNeeded(contentPane, id);
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var radioButtons = new RadioButtons({
             choices: null,
@@ -197,25 +202,25 @@ define([
             value: at(model, id)
         });
         
-        radioButtons.placeAt(contentPane);
+        radioButtons.placeAt(questionContentPane);
         radioButtons.startup();
         return radioButtons;
     }
 
     function add_checkbox(contentPane, model, id, questionOptions) {
-        addPromptTextIfNeeded(contentPane, id);
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var checkbox = new CheckBox({
             value: at(model, id)
         });
         
-        checkbox.placeAt(contentPane);
+        checkbox.placeAt(questionContentPane);
         checkbox.startup();
         return checkbox;
     }
     
     function add_radiobuttons(contentPane, model, id, questionOptions) {
-        addPromptTextIfNeeded(contentPane, id);
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
 
         var radioButtons = new RadioButtons({
             choices: questionOptions,
@@ -223,13 +228,13 @@ define([
             value: at(model, id)
         });
          
-        radioButtons.placeAt(contentPane);
+        radioButtons.placeAt(questionContentPane);
         radioButtons.startup();
         return radioButtons;
     }
     
     function add_checkboxes(contentPane, model, id, questionOptions) {
-        addPromptTextIfNeeded(contentPane, id);
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
 
         var checkBoxes = new CheckBoxes({
             choices: questionOptions,
@@ -237,14 +242,14 @@ define([
             value: at(model, id)
         });
         
-        checkBoxes.placeAt(contentPane);
+        checkBoxes.placeAt(questionContentPane);
         checkBoxes.startup();
         return checkBoxes;
     }
     
     // TODO: Need to translate true/false
     function add_toggleButton(contentPane, model, id, questionOptions) {
-        addPromptTextIfNeeded(contentPane, id);
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         // Toggle button maintains a "checked" flag, so we need to set value ourselves
         var toggleButton = new ToggleButton({
@@ -253,7 +258,7 @@ define([
             onChange: function(value) {this.set("label", value); this.set("value", value); model.buttonClicked(id, value);}
         });
         
-        toggleButton.placeAt(contentPane);
+        toggleButton.placeAt(questionContentPane);
         toggleButton.startup();
         
         return toggleButton;
@@ -261,7 +266,7 @@ define([
     
     // TODO: Probably not correct...
     function add_button(contentPane, model, id, questionOptions, callback) {
-        // addPromptTextIfNeeded(contentPane, id);
+        // var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var button = new Button({
             label: translate(id + "::prompt"),
@@ -269,13 +274,13 @@ define([
             onClick: callback
         });
 
-        button.placeAt(contentPane);
+        button.placeAt(questionContentPane);
         button.startup();
         return button;
     }
     
     function add_slider(contentPane, model, id, questionOptions) {
-        addPromptTextIfNeeded(contentPane, id);
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         // A div that contains rules, labels, and slider
         var panelDiv = domConstruct.create("div");
@@ -340,7 +345,7 @@ define([
             content: panelDiv
         });
 
-        sliderContentPane.placeAt(contentPane);
+        sliderContentPane.placeAt(questionContentPane);
         
         slider.startup();
         sliderRules.startup();
@@ -351,106 +356,106 @@ define([
     }
     
     function add_report(contentPane, model, id, options) {
-        addPromptTextIfNeeded(contentPane, id);
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var label = new ContentPane({
             // content: translate(id + "::prompt")
             content: "<b>UNFINISHED add_report: " + id + "</b>"       		
         });
-        label.placeAt(contentPane);
+        label.placeAt(questionContentPane);
         label.startup();
         return label;
     }
     
     function add_recommendationTable(contentPane, model, id, options) {
-        addPromptTextIfNeeded(contentPane, id);
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var label = new ContentPane({
             // content: translate(id + "::prompt")
             content: "<b>UNFINISHED add_recommendationTable: " + id + "</b>"             
         });
-        label.placeAt(contentPane);
+        label.placeAt(questionContentPane);
         label.startup();
         return label;
     }
     
     function add_storyThemer(contentPane, model, id, options) {
-        addPromptTextIfNeeded(contentPane, id);
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var label = new ContentPane({
             // content: translate(id + "::prompt")
             content: "<b>UNFINISHED add_storyThemer: " + id + "</b>"             
         });
-        label.placeAt(contentPane);
+        label.placeAt(questionContentPane);
         label.startup();
         return label;
     }
     
     function add_questionsTable(contentPane, model, id, options) {
-        addPromptTextIfNeeded(contentPane, id);
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var label = new ContentPane({
             // content: translate(id + "::prompt")
             content: "<b>UNFINISHED add_questionsTable: " + id + "</b>"             
         });
-        label.placeAt(contentPane);
+        label.placeAt(questionContentPane);
         label.startup();
         return label;
     }
     
     // TODO: Fix
     function add_questionAnswer(contentPane, model, id, options) {
-        addPromptTextIfNeeded(contentPane, id);
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var label = new ContentPane({
             // content: translate(id + "::prompt")
             content: "<b>UNFINISHED add_questionAnswer: " + id + "</b>"             
         });
-        label.placeAt(contentPane);
+        label.placeAt(questionContentPane);
         label.startup();
         return label;
     }
     
     function add_graphBrowser(contentPane, model, id, options) {
-        addPromptTextIfNeeded(contentPane, id);
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var label = new ContentPane({
             // content: translate(id + "::prompt")
             content: "<b>UNFINISHED add_graphBrowser: " + id + "</b>"             
         });
-        label.placeAt(contentPane);
+        label.placeAt(questionContentPane);
         label.startup();
         return label;
     }
     
     function add_trendsReport(contentPane, model, id, options) {
-        addPromptTextIfNeeded(contentPane, id);
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var label = new ContentPane({
             // content: translate(id + "::prompt")
             content: "<b>UNFINISHED add_trendsReport: " + id + "</b>"             
         });
-        label.placeAt(contentPane);
+        label.placeAt(questionContentPane);
         label.startup();
         return label;
     }
     
     function add_clusterSpace(contentPane, model, id, options) {
-        addPromptTextIfNeeded(contentPane, id);
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var label = new ContentPane({
             // content: translate(id + "::prompt")
             content: "<b>UNFINISHED add_clusterSpace: " + id + "</b>"             
         });
-        label.placeAt(contentPane);
+        label.placeAt(questionContentPane);
         label.startup();
         return label;
     }
     
     function add_storyBrowser(contentPane, model, id, options) {
-        addPromptTextIfNeeded(contentPane, id);
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
-        var storyBrowser = StoryBrowser.insertStoryBrowser(id, contentPane, domain.pageDefinitions);
+        var storyBrowser = StoryBrowser.insertStoryBrowser(id, questionContentPane, domain.pageDefinitions);
         return storyBrowser;
     }
     
