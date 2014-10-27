@@ -64,44 +64,51 @@ define([
     // TODO: Maybe rethink how unique item IDs work? Setting to start at 1000 becaues of test data created in story browser
     var uniqueItemIDCounter = 1000;
     
-    function newItemAdded(grid, itemContentPane, form, popupPageDefinition, store, statefulItem) {
-        return function() {
-            console.log("OK clicked", statefulItem);
-            // itemContentPane.hide();
-            // dialogOK(question, questionEditorDiv, form);
+    function newItemAdded(model, id, grid, itemContentPane, form, popupPageDefinition, store, statefulItem) {
+        console.log("OK clicked", statefulItem);
+        // itemContentPane.hide();
+        // dialogOK(question, questionEditorDiv, form);
+
+        var uniqueItemID = ++uniqueItemIDCounter;
+        // var newItem = {id: uniqueItemID};
+        
+        var newItem = {};
+        
+        array.forEach(popupPageDefinition.questions, function (question) {
+            // TODO: This may not work for more complex question types or custom widgets?
+            console.log("question type", question, question.type);
+            if (question.type !== "label" && question.type !== "header" && question.type !== "image") {
+                newItem[question.id] = statefulItem.get(question.id);
+            }
+        });
+        
+        console.log("got data for add form", store, newItem);
+        
+        store.put(newItem);
+                
+        console.log("put store for add form");
+        
+        var collection = model.get(id);
+        if (!collection) {
+            collection = [];
+            model.set(id, collection);
+        }
+        collection.push(newItem);
+
+        console.log("added to model ", id, model);
+        
+        itemContentPane.set("style", "display: none");
+        
+        // refresh ensures the new data is displayed
+        console.log("Doing refresh for data", newItem);
+        grid.refresh();
+        
+        // The next line is needed to get rid of duplicate IDs for next time the form is opened:
+        form.destroyRecursive();
+        console.log("shut down add form");
+}
     
-            var uniqueItemID = ++uniqueItemIDCounter;
-            // var newItem = {id: uniqueItemID};
-            
-            var newItem = {};
-            
-            array.forEach(popupPageDefinition.questions, function (question) {
-                // TODO: This may not work for more complex question types or custom widgets?
-                console.log("question type", question, question.type);
-                if (question.type !== "label" && question.type !== "header" && question.type !== "image") {
-                    newItem[question.id] = statefulItem.get(question.id);
-                }
-            });
-            
-            console.log("got data for add form", store, newItem);
-            
-            store.put(newItem);
-            
-            console.log("put store for add form");
-            
-            itemContentPane.set("style", "display: none");
-            
-            // refresh ensures the new data is displayed
-            console.log("Doing refresh for data", newItem);
-            grid.refresh();
-            
-            // The next line is needed to get rid of duplicate IDs for next time the form is opened:
-            form.destroyRecursive();
-            console.log("shut down add form");
-        };
-    }
-    
-    function addButtonClicked(grid, store, popupPageDefinition, itemContentPane, event) {
+    function addButtonClicked(model, id, grid, store, popupPageDefinition, itemContentPane, event) {
         console.log("add button pressed");
         var dialog;
         
@@ -128,7 +135,7 @@ define([
         
         // TODO: Does the dialog itself have to be "destroyed"???
         
-        widgets.newButton("list_dialog_ok_" + grid.id, "OK", form, newItemAdded(grid, itemContentPane, form, popupPageDefinition, store, statefulItem));
+        widgets.newButton("list_dialog_ok_" + grid.id, "OK", form, lang.partial(newItemAdded, model, id, grid, itemContentPane, form, popupPageDefinition, store, statefulItem));
         
         widgets.newButton("list_dialog_cancel_" + grid.id, "Cancel", form, function() {
             console.log("Cancel");
@@ -241,7 +248,7 @@ define([
         //dialog.show();
     }
     
-    function insertGridTableBasic(id, pagePane, popupPageDefinition, dataStore, includeAddButton) {
+    function insertGridTableBasic(model, id, pagePane, popupPageDefinition, dataStore, includeAddButton) {
         // Grid with list of objects
         console.log("insertGridTableBasic", id, dataStore);
         
@@ -335,7 +342,7 @@ define([
         });
         
         if (includeAddButton) {
-            var addButton = widgets.newButton(id + "add", "Add", pane, lang.partial(addButtonClicked, grid, dataStore, popupPageDefinition, itemContentPane));
+            var addButton = widgets.newButton(id + "add", "Add", pane, lang.partial(addButtonClicked, model, id, grid, dataStore, popupPageDefinition, itemContentPane));
         }
         
         if (!pagePane.addChild) {
@@ -360,25 +367,7 @@ define([
         };
     }
     
-    // TODO: Remove function when no longer needed
-    function insertGridTable(pseudoQuestion, pagePane, pageDefinitions) {
-        // Grid with list of objects
-        // console.log("insertGridTable");
-        
-        var popupPageDefinition = pageDefinitions[pseudoQuestion.options];
-        
-        if (!popupPageDefinition) {
-            console.log("Trouble: no popupPageDefinition for options: ", pseudoQuestion.options, pseudoQuestion);
-        }
-        
-        // TODO: Need to translate
-        var label = widgets.newLabel(pseudoQuestion.id + "label", pseudoQuestion.text, pagePane.containerNode);
-        
-        return insertGridTableBasic(pseudoQuestion.id, pagePane, popupPageDefinition, pseudoQuestion.value, true);
-    }
-
     return {
-        "insertGridTable": insertGridTable,
         "insertGridTableBasic": insertGridTableBasic,
         "clearGridsKludge": clearGridsKludge,
         "resizeGridsKludge": resizeGridsKludge

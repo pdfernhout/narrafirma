@@ -19,6 +19,7 @@ define([
     "dojo/store/Memory",
     "dijit/form/MultiSelect",
     "dijit/form/Select",
+    "dojo/Stateful",
     "dojox/layout/TableContainer",
     "dojo/domReady!"
 ], function(
@@ -40,6 +41,7 @@ define([
     Memory,
     MultiSelect,
     Select,
+    Stateful,
     TableContainer
 ){
     // story browser support
@@ -239,7 +241,9 @@ define([
             });
         });
             
-        storyList = widgetGridTable.insertGridTableBasic(id + "_grid", pagePane, popupPageDefinition, dataStore, true);
+        // TODO: What should model be?
+        var model = new Stateful({});
+        storyList = widgetGridTable.insertGridTableBasic(model, id + "_grid", pagePane, popupPageDefinition, dataStore, true);
         
         console.log("insertStoryBrowser finished");
     }

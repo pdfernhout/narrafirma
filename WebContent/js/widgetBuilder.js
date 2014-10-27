@@ -153,7 +153,7 @@ define([
         
         var value = model[id];
         
-        return GridTable.insertGridTableBasic(id, questionContentPane, popupPageDefinition, value, true);
+        return GridTable.insertGridTableBasic(model, id, questionContentPane, popupPageDefinition, value, true);
     }
     
     function add_select(contentPane, model, id, questionOptions, addNoSelectionOption) {
