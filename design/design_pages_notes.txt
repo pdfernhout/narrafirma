@@ -565,7 +565,7 @@ Your description can include links to images or other documents.
 # Catalysis [page_catalysis]
 
 * In the catalysis phase of your PNI project, you will look for patterns [catalysisIntro|label]
-and pepare materials for use in sensemaking.
+and prepare materials for use in sensemaking.
 
 * You can enter some general notes on catalysis in this project here. [project_generalNotes_catalysis|textarea]
 

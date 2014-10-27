@@ -160,7 +160,7 @@ define({
     "assessment_storyTypes::selection:maybe": "maybe",
     "assessment_storyTypes::selection:no": "no",
     "assessment_storyTypes::selection:unknown": "unknown",
-    "catalysisIntro::prompt": "In the catalysis phase of your PNI project, you will look for patterns\nand pepare materials for use in sensemaking.",
+    "catalysisIntro::prompt": "In the catalysis phase of your PNI project, you will look for patterns\nand prepare materials for use in sensemaking.",
     "catalysisReport::prompt": "Catalysis report",
     "catalysisReport_introductionLabel::prompt": "This report shows all of the information entered in the pages grouped under \"Catalysis.\"",
     "clusterInterpretationsLabel::prompt": "On this page you will cluster together the interpretations you have collected (based on observations)\nto create perspectives for your catalysis report.\nNote: Do not cluster your interpretations unless you are sure you have finished collecting them.",
