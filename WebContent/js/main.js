@@ -278,31 +278,11 @@ require([
             
             page.title = title;
             
-            /*
-            // TODO: Fix/Remove this
-            // Cleanup options
-            // TODO: Ensure options get translated
-            array.forEach(page.questions, function(question) {
+            // Lump all questions together in domain for use by things like calculating derived values from options for quiz score results
+            for (questionIndex in page.questions) {
+                var question = page.questions[questionIndex];
                 domain.questions[question.id] = question;
-                
-                if ((question.type === "select" || question.type === "checkBoxes") && question.options.indexOf(";") != -1) {
-                    // console.log("replacing select options", question.options);
-                    question.options = question.options.replace(/;/g, "\n");
-                    // console.log("result of replacement", question.options);
-                }
-                // Hook up question to domain for top level pages
-                if (page.type === "page") {
-                    // TODO: Other types of grid
-                    if (question.type !== "grid") {
-                        question.value = at(domain.data, question.id);
-                    } else {
-                        // question.value = at(domain.data, question.id);
-                        question.value = domain.data[question.id];
-                    }
-                    console.log("question.value set to", question.id, question.value);
-                }
-            });
-            */
+            }
             
             domain.pageDefinitions[page.id] = page;      
             
@@ -322,12 +302,12 @@ require([
         }
         
         /*
-        // Now, premake pages only after all definitons are done (since some pages refer to others for question popups that may be defined later)
+        // Now, premake pages only after all definitions are done (since some pages refer to others for question popups that may be defined later)
         array.forEach(pages, function(page) {
             // console.log("creating page", page.name)
             // Skip over special page types
             if (page.type === "page") {
-                // Pre-make base pages
+                // Premake base pages
                 createPage(page.id);
             }
         });  

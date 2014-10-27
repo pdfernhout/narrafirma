@@ -529,8 +529,9 @@ define([
     var questionsRequiringRecalculationOnPageChanges = {};
     
     function updateLabelUsingCalculation(data) {
-        // console.log("recalculating label", data.label);
+        // console.log("recalculating label", data);
         var calculatedText = data.calculate();
+        // console.log("calculatedText ", calculatedText);
         var newLabelText = data.baseText + " " + calculatedText; 
         data.label.set("content", newLabelText);
         // console.log("recalculated question: ", data.id, calculatedText);
@@ -674,6 +675,7 @@ define([
         for (var dependsOnIndex in dependsOn) {
             var questionID = dependsOn[dependsOnIndex];
             // TODO: When do these watches get removed?
+            // console.log("setting up watch on", questionID, "for", id, model);
             model.watch(questionID, lang.partial(updateLabelUsingCalculation, updateInfo));
         }
         return label;
