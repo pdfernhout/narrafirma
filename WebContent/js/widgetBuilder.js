@@ -73,6 +73,8 @@ define([
         var questionText = translate(id + "::prompt", "");
         var questionContentPane = new ContentPane({
         });
+        questionContentPane.setAttribute("data-js-question-id", id);
+        // questionContentPane.setAttribute("data-js-question-type", question.type);
         if (questionText) {
             var label = new ContentPane({
                 content: questionText
