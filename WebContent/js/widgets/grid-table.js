@@ -64,7 +64,7 @@ define([
     // TODO: Maybe rethink how unique item IDs work? Setting to start at 1000 becaues of test data created in story browser
     var uniqueItemIDCounter = 1000;
     
-    function newItemAdded(model, id, grid, itemContentPane, form, popupPageDefinition, store, statefulItem) {
+    function newItemAdded(id, grid, itemContentPane, form, popupPageDefinition, store, statefulItem) {
         console.log("OK clicked", statefulItem);
         // itemContentPane.hide();
         // dialogOK(question, questionEditorDiv, form);
@@ -72,6 +72,7 @@ define([
         var uniqueItemID = ++uniqueItemIDCounter;
         // var newItem = {id: uniqueItemID};
         
+        /*
         var newItem = {};
         
         array.forEach(popupPageDefinition.questions, function (question) {
@@ -85,13 +86,15 @@ define([
         console.log("got data for add form", store, newItem);
         
         store.put(newItem);
+        */
+        store.put(statefulItem);
                 
         console.log("put store for add form");
         
         itemContentPane.set("style", "display: none");
         
         // refresh ensures the new data is displayed
-        console.log("Doing refresh for data", newItem);
+        console.log("Doing refresh for data", statefulItem);
         grid.refresh();
         
         // The next line is needed to get rid of duplicate IDs for next time the form is opened:
@@ -99,8 +102,8 @@ define([
         console.log("shut down add form");
 }
     
-    function addButtonClicked(model, id, grid, store, popupPageDefinition, itemContentPane, event) {
-        console.log("add button pressed");
+    function addButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
+        console.log("add button pressed", id, event);
         var dialog;
         
         var form = new Form();
@@ -126,7 +129,7 @@ define([
         
         // TODO: Does the dialog itself have to be "destroyed"???
         
-        widgets.newButton("list_dialog_ok_" + grid.id, "OK", form, lang.partial(newItemAdded, model, id, grid, itemContentPane, form, popupPageDefinition, store, statefulItem));
+        widgets.newButton("list_dialog_ok_" + grid.id, "OK", form, lang.partial(newItemAdded, id, grid, itemContentPane, form, popupPageDefinition, store, statefulItem));
         
         widgets.newButton("list_dialog_cancel_" + grid.id, "Cancel", form, function() {
             console.log("Cancel");
@@ -161,8 +164,8 @@ define([
     }
     
     // TODO: Button should only be enabled if a selection
-    function viewButtonClicked(grid, store, popupPageDefinition, itemContentPane, event) {
-        console.log("view button pressed");
+    function viewButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
+        console.log("view button pressed", id, event);
         var dialog;
         
         var form = new Form(); 
@@ -207,7 +210,7 @@ define([
 
         // TODO: Does the dialog itself have to be "destroyed"???
         
-        widgets.newButton("list_dialog_ok", "Done", form, function() {
+        widgets.newButton("list_dialog_ok" + grid.id, "Done", form, function() {
             console.log("Done");
             
             // dialog.hide();
@@ -237,26 +240,14 @@ define([
         resizeGridsKludge();
         //dialog.startup();
         //dialog.show();
+        console.log("done with view button clicked");
     }
     
-    function insertGridTableBasic(pagePane, model, id, popupPageDefinition, includeAddButton) {
+    function insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, includeAddButton) {
         // Grid with list of objects
-        var data = model.get(id);
-        if (!data) {
-            data = [];
-            model.set(id, data);
-        }
-        console.log("insertGridTableBasic", id, data);
+        console.log("insertGridTableBasic", id, dataStore);
         
         // TODO: Need to set better info for fields and meanings to display and index on
-        
-        // Store will modify underlying array
-        var dataStore = new Memory({
-            // data: storyList,
-            data: data
-            // TODO: title may not be unique
-            // idProperty: "uniqueID",
-        });
         
         var columns = {};
         
@@ -312,7 +303,7 @@ define([
         // See: http://dojotoolkit.org/reference-guide/1.7/dojo/partial.html
         // TODO: Translate text of label
         var viewButtonID = id + "view";
-        var viewButton = widgets.newButton(viewButtonID, "View", pane, lang.partial(viewButtonClicked, grid, dataStore, popupPageDefinition, itemContentPane));
+        var viewButton = widgets.newButton(viewButtonID, "View", pane, lang.partial(viewButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
 
         var selected = 0;
         viewButton.set("disabled", true);
@@ -328,7 +319,7 @@ define([
         });
         
         if (includeAddButton) {
-            var addButton = widgets.newButton(id + "add", "Add", pane, lang.partial(addButtonClicked, model, id, grid, dataStore, popupPageDefinition, itemContentPane));
+            var addButton = widgets.newButton(id + "add", "Add", pane, lang.partial(addButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
         }
         
         if (!pagePane.addChild) {

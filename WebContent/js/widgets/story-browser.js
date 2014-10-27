@@ -175,11 +175,28 @@ define([
              "questions": domain.testDogQuestions   
         };
 
+        // TODO: replace this with real stories
         var data = domain.testDogStories;
+        /*
+        var data = model.get(id);
+        if (!data) {
+            data = [];
+            model.set(id, data);
+        }
+        */
+        
+        // TODO: replace this with real stories
         var modelInit = {};
         modelInit[id] = data;
-        
         var model = new Stateful(modelInit);
+        
+        // Store will modify underlying array
+        var dataStore = new Memory({
+            // data: storyList,
+            data: data
+            // TODO: title may not be unique
+            // idProperty: "uniqueID",
+        });
         
         var questionOptions = [];
         var questionsById = {};
@@ -239,7 +256,7 @@ define([
             });
         });
         
-        storyList = widgetGridTable.insertGridTableBasic(pagePane, model, id, popupPageDefinition, true);
+        storyList = widgetGridTable.insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, true);
         
         console.log("insertStoryBrowser finished");
     }

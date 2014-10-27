@@ -151,7 +151,21 @@ define([
             console.log("Trouble: no popupPageDefinition for options: ", id, options);
         }
         
-        return GridTable.insertGridTableBasic(questionContentPane, model, id, popupPageDefinition, true);
+        var data = model.get(id);
+        if (!data) {
+            data = [];
+            model.set(id, data);
+        }
+        
+        // Store will modify underlying array
+        var dataStore = new Memory({
+            // data: storyList,
+            data: data
+            // TODO: title may not be unique
+            // idProperty: "uniqueID",
+        });
+        
+        return GridTable.insertGridTableBasic(questionContentPane, id, dataStore, popupPageDefinition, true);
     }
     
     function add_select(contentPane, model, id, questionOptions, addNoSelectionOption) {
