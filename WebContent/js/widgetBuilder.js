@@ -493,7 +493,7 @@ define([
     function add_storyBrowser(contentPane, model, id, options) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
-        var storyBrowser = StoryBrowser.insertStoryBrowser(id, questionContentPane, domain.pageDefinitions);
+        var storyBrowser = StoryBrowser.insertStoryBrowser(questionContentPane, model, id, domain.pageDefinitions);
         return storyBrowser;
     }
     

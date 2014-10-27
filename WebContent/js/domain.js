@@ -35,10 +35,15 @@ define([
         {id: "feeling4", type: "select", text: "Now Spouse Feeling | How good does your spouse feel right now?", options: "low\nmedium\nhigh"},
     ];
     
+    // Kludge for extra translations for testing
+    var extraTranslations = {};
+    
     array.forEach(testDogQuestions, function (question) {
+        question.isGridColumn = true;
+        question.isInReport = true;
         var split = question.text.split("|");
-        question.text = string.trim(split[1]);
-        question.shortText = string.trim(split[0]);
+        extraTranslations[question.id + "::" + "prompt"] = string.trim(split[1]);
+        extraTranslations[question.id + "::" + "shortName"] = string.trim(split[0]);
     });
     
     var testDogStories = [];
@@ -708,6 +713,10 @@ define([
     }
     */
     
+    // Kludge some test data
+    data.collectedStoriesAfterCollection = testDogStories;
+    data.collectedStoriesDuringCollection = testDogStories;
+    
     // data = getStateful(data);
     data = new Stateful(data);
     console.log("domain data", data);
@@ -723,6 +732,7 @@ define([
         "pageDefinitions": pageDefinitions,
         "callDashboardFunction": callDashboardFunction,
         "buttonClicked": buttonClicked,
-        "setPageChangeCallback": setPageChangeCallback
+        "setPageChangeCallback": setPageChangeCallback,
+        "extraTranslations": extraTranslations
     };
 });

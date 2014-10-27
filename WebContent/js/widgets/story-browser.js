@@ -167,28 +167,19 @@ define([
     
     var filterableQuestionTypes = ["select", "slider", "boolean", "text"];
     
-    function insertStoryBrowser(id, pagePane, pageDefinitions) {
-        console.log("insertStoryBrowser", id);
+    function insertStoryBrowser(pagePane, model, id, pageDefinitions) {
+        console.log("insertStoryBrowser start", id);
         
         var popupPageDefinition = {
              "id": "testDogQuestions",
              "questions": domain.testDogQuestions   
         };
 
-        // TODO: replace this with real stories
-        var data = domain.testDogStories;
-        /*
         var data = model.get(id);
         if (!data) {
             data = [];
             model.set(id, data);
         }
-        */
-        
-        // TODO: replace this with real stories
-        var modelInit = {};
-        modelInit[id] = data;
-        var model = new Stateful(modelInit);
         
         // Store will modify underlying array
         var dataStore = new Memory({
@@ -202,10 +193,12 @@ define([
         var questionsById = {};
         array.forEach(popupPageDefinition.questions, function (question) {
             if (array.indexOf(filterableQuestionTypes, question.type) != -1) {
-                questionOptions.push({label: question.shortText, value: question.id});
+                questionOptions.push({label: translate(question.id + "::shortName", "*FIXME -- Missing shortName translation for: " + question.id), value: question.id});
                 questionsById[question.id] = question;
             }
         });
+        
+        console.log("insertStoryBrowser middle 1", id);
         
         var table = new TableContainer({
             id: id + "_table",
@@ -222,6 +215,8 @@ define([
         } else {
             pagePane.addChild(table);
         }
+        
+        console.log("insertStoryBrowser middle 2", id);
         
         var filter1 = createFilterPane(id + "_1", questionsById, questionOptions, data, table);
         var filter2 = createFilterPane(id + "_2", questionsById, questionOptions, data, table);
@@ -255,6 +250,8 @@ define([
                 return match1 & match2;
             });
         });
+        
+        console.log("insertStoryBrowser middle 3", id);
         
         storyList = widgetGridTable.insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, true);
         
