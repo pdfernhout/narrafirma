@@ -146,14 +146,14 @@ require([
            // TODO: Put blank line in here
            questionEditor.insertQuestionIntoDiv(pageStatusQuestion, pagePane);
        } else {
-           // console.log("page dashboard", page.id, page.type, page);
+           // console.log("page dashboard as header", page.id, page.type, page);
            // Put in dashboard
            var pages = domain.pagesToGoWithHeaders[id];
            for (var pageIndex in pages) {
                var pageID = pages[pageIndex];
                // console.log("pageID", page, pageID, domain.pageDefinitions, domain.pageDefinitions[pageID]);
                if (!domain.pageDefinitions[pageID]) console.log("Error: problem finding page definition for", pageID, " -- Could the domain be out of date relative to the design and pages.js?");
-               if (domain.pageDefinitions[pageID] && !domain.pageDefinitions[pageID].type) {
+               if (domain.pageDefinitions[pageID] && domain.pageDefinitions[pageID].type === "page") {
                    var pageStatusQuestion2 = {
                        "id": pageID + "_pageStatus_dashboard",
                        "text": domain.pageDefinitions[pageID].name,
