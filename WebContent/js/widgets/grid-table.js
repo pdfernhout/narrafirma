@@ -64,30 +64,24 @@ define([
     // TODO: Maybe rethink how unique item IDs work? Setting to start at 1000 becaues of test data created in story browser
     var uniqueItemIDCounter = 1000;
     
-    function newItemAdded(grid, itemContentPane, form, store, newItem) {
+    function newItemAdded(grid, itemContentPane, form, popupPageDefinition, store, statefulItem) {
         return function() {
-            console.log("OK clicked", newItem);
+            console.log("OK clicked", statefulItem);
             // itemContentPane.hide();
             // dialogOK(question, questionEditorDiv, form);
     
             var uniqueItemID = ++uniqueItemIDCounter;
             // var newItem = {id: uniqueItemID};
             
-            /*
-            // TODO: Tricky FIX ME -- as getting rid of the question definitions...
+            var newItem = {};
+            
             array.forEach(popupPageDefinition.questions, function (question) {
                 // TODO: This may not work for more complex question types or custom widgets?
                 console.log("question type", question, question.type);
-                if (question.type !== "label" && question.type !== "header") {
-                    var widget = registry.byId(question.id);
-                    if (widget) {
-                        newItem[question.id] = widget.get("value");
-                    } else {
-                        console.log("ERROR: could not find widget for:", question.id);
-                    }
+                if (question.type !== "label" && question.type !== "header" && question.type !== "image") {
+                    newItem[question.id] = statefulItem.get(question.id);
                 }
             });
-            */
             
             console.log("got data for add form", store, newItem);
             
@@ -119,18 +113,22 @@ define([
         clearGridsKludge();
         
         var newItem = {};
+        /*
         array.forEach(popupPageDefinition.questions, function (question) {
             console.log("defining oject -- question type", question, question.type);
             if (question.type !== "label" && question.type !== "header" && question.type !== "image") {
                 newItem[question.id] = null;
             }
         });
+        */
         
-        popupPageDefinition.addWidgets(form, new Stateful(newItem));
+        var statefulItem = new Stateful(newItem);
+        
+        popupPageDefinition.addWidgets(form, statefulItem);
         
         // TODO: Does the dialog itself have to be "destroyed"???
         
-        widgets.newButton("list_dialog_ok_" + grid.id, "OK", form, newItemAdded(grid, itemContentPane, form, store, newItem));
+        widgets.newButton("list_dialog_ok_" + grid.id, "OK", form, newItemAdded(grid, itemContentPane, form, popupPageDefinition, store, statefulItem));
         
         widgets.newButton("list_dialog_cancel_" + grid.id, "Cancel", form, function() {
             console.log("Cancel");
