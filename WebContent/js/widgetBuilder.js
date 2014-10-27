@@ -720,10 +720,12 @@ define([
     
     function addQuestionWidget(type, contentPane, model, id, options) {
         console.log("addQuestionWidget", type, id);
-        var addFunction = exportedFunctions["add_" + type];
+        var functionName = "add_" + type;
+        var addFunction = exportedFunctions[functionName];
         if (!addFunction) {
-            console.log("ERROR: unsupported question type: " + type);
-            return;
+            var error = "ERROR: unsupported question type: " + type + " as function is missing: " + functionName;
+            console.log(error);
+            throw error;
         }
         return addFunction(contentPane, model, id, options);
     }
