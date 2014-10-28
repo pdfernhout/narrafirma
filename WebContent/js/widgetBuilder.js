@@ -517,6 +517,18 @@ define([
         return label;
     }
     
+    function add_templateList(contentPane, model, id, options) {
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
+        
+        var label = new ContentPane({
+            // content: translate(id + "::prompt")
+            content: "<b>UNFINISHED add_templateList: " + id + "</b>"             
+        });
+        label.placeAt(questionContentPane);
+        label.startup();
+        return label;
+    }
+    
     function add_storyBrowser(contentPane, model, id, options) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
@@ -767,6 +779,7 @@ define([
         "add_clusterSpace": add_clusterSpace,
         "add_annotationsGrid": add_annotationsGrid,
         "add_storiesList": add_storiesList,
+        "add_templateList": add_templateList,
         "add_questionAnswer": add_questionAnswer,
         "add_questionAnswerCountOfTotalOnPage": add_questionAnswerCountOfTotalOnPage,
         "add_listCount": add_listCount,
