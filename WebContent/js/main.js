@@ -134,35 +134,29 @@ require([
        page.addWidgets(pagePane, domain.data);
        
        // TODO: Fix this to store data
-       // TODO: Translate -- putting in English versions as kludge for now into special domain dictionary
-       var options = ["intentionally skipped", "partially done", "completely finished"];
-       var fullID = pageID + "_pageStatus";
-       var option;
-       var optionIndex;
        if (!page.isHeader) {
-           domain.extraTranslations[fullID + "::prompt"] =  "The dashboard status of this page is: ";
-           for (optionIndex in options) {
-               option = options[optionIndex];
-               domain.extraTranslations[fullID + "::selection:" + option] = option;
+           // TODO: Translate -- putting in English versions as kludge for now into special domain dictionary
+           var options = ["intentionally skipped", "partially done", "completely finished"];
+           var statusEntryID = id + "_pageStatus";
+           domain.extraTranslations[statusEntryID + "::prompt"] =  "The dashboard status of this page is: ";
+           for (var optionIndex in options) {
+               var option = options[optionIndex];
+               domain.extraTranslations[statusEntryID + "::selection:" + option] = option;
            }
            // TODO: Put blank line in here
-           widgetBuilder.add_select(pagePane, domain.data, fullID, options);
+           widgetBuilder.add_select(pagePane, domain.data, statusEntryID, options);
        } else {
            // console.log("page dashboard as header", page.id, page.type, page);
            // Put in dashboard
            var pages = domain.pagesToGoWithHeaders[id];
            for (var pageIndex in pages) {
                var pageID = pages[pageIndex];
-               fullID = pageID + "_pageStatus_dashboard";
+               var statusViewID = pageID + "_pageStatus_dashboard";
                // console.log("pageID", page, pageID, domain.pageDefinitions, domain.pageDefinitions[pageID]);
                if (!domain.pageDefinitions[pageID]) console.log("Error: problem finding page definition for", pageID, " -- Could the domain be out of date relative to the design and pages.js?");
                if (domain.pageDefinitions[pageID] && domain.pageDefinitions[pageID].type === "page") {
-                   domain.extraTranslations[fullID + "::prompt"] = domain.pageDefinitions[pageID].name;
-                   for (optionIndex in options) {
-                       option = options[optionIndex];
-                       domain.extraTranslations[fullID + "::selection:" + option] = option;
-                   }
-                   widgetBuilder.add_select(pagePane, domain.data, pageID + "_pageStatus_dashboard", options);
+                   domain.extraTranslations[statusViewID + "::prompt"] = domain.pageDefinitions[pageID].name + " status: ";
+                   widgetBuilder.add_questionAnswer(pagePane, domain.data, statusViewID, [pageID + "_pageStatus"]);
                }
            }
        }
@@ -298,6 +292,8 @@ require([
                 // Looks like Dojo select has a limitation where it can only take strings as values
                 // so can't pass page in as value here and need indirect pageDefinitions lookup dictionary
                 pageSelectOptions.push({label: title, value: page.id});
+                // Put in a dynamic question (incomplete for options) to be used to lookup page status; needed to check it is a select
+                domain.questions[page.id + "_pageStatus"] = {id: page.id + "_pageStatus", type: "select"};
             }
         }
         

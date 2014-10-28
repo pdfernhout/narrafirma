@@ -562,12 +562,24 @@ define([
 
     function calculate_questionAnswer(model, referencedQuestionID) {
         var value = model.get(referencedQuestionID);
+        // TODO: Ensure this default value is translated
         if (value === null) value = "(Not Yet Entered)";
         if (value === undefined) {
             console.log("ERROR: missing question: ", referencedQuestionID);
             return "ERROR: missing question: " + referencedQuestionID;            
         }
-        return value;
+        // TODO: Should these be translated for selects?
+        console.log("domain.questions", domain, domain.questions);
+        var question = domain.questions[referencedQuestionID];
+        if (question) {
+            if (question.type === "select") {
+            console.log("trying to translate select");
+            value = translate(value, value);
+            }
+        } else {
+            console.log("calculate_questionAnswer: missing question definition for: ", referencedQuestionID);
+        }
+        return "<b>" + value + "<b>";
     }
 
     function calculate_questionAnswerCountOfTotalOnPage(model, pageID) {
@@ -592,7 +604,7 @@ define([
         // if (questionAskedCount === 0) percentComplete = 0;
         // TODO: Translate
         //return "Answered " + questionAnsweredCount + " of " + questionAskedCount + " questions (" + percentComplete + "%)";
-        return "answered " + questionAnsweredCount + " of " + questionAskedCount + " questions";
+        return "<b>answered " + questionAnsweredCount + " of " + questionAskedCount + " questions</b>";
     }
     
     function calculate_listCount(model, referencedQuestionID) {
@@ -601,9 +613,9 @@ define([
             return "0";
         } else if (value === undefined) {
             console.log("ERROR: missing question: ", referencedQuestionID);
-            return "ERROR: missing question: " + referencedQuestionID;            
+            return "<b>ERROR: missing question: " + referencedQuestionID + "</b>";            
         } else {
-            return "" + value.length;
+            return "<b>" + value.length + "</b>";
         }
     }
     
@@ -634,7 +646,7 @@ define([
         var possibleTotal = dependsOn.length * 3;
         var percent = Math.round(100 * total / possibleTotal);
         // TODO: Translate
-        return "" + total + " of a possible " + possibleTotal + " (" + percent + "%)";
+        return "<b>" + total + " of a possible " + possibleTotal + " (" + percent + "%)</b>";
     }
     
     function _add_calculatedText(contentPane, id, calculate) {
