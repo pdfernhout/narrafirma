@@ -210,13 +210,6 @@ define([
             spacing: 10
         });
         
-        if (!pagePane.addChild) {
-            // console.log("trouble -- does not have addChild method!", pagePane);
-            pagePane.containerNode.appendChild(table.domNode);
-        } else {
-            pagePane.addChild(table);
-        }
-        
         console.log("insertStoryBrowser middle 2", id);
         
         var filter1 = createFilterPane(id + "_1", questionsById, questionOptions, data, table);
@@ -224,6 +217,15 @@ define([
 
         // pagePane.containerNode.appendChild(domConstruct.toDom('<br>'));
         
+        // table needs to be added to container after its children are added to it so that the layout will happen correctly, otherwise startup called too soon internally
+        if (!pagePane.addChild) {
+            // console.log("trouble -- does not have addChild method!", pagePane);
+            pagePane.containerNode.appendChild(table.domNode);
+        } else {
+            pagePane.addChild(table);
+        }
+        
+        // This is appears to be superflous as startup is called when table added to pagePane (assuming it is connected to DOM hierarchy?)
         table.startup();
         
         var storyList;
@@ -255,9 +257,6 @@ define([
         console.log("insertStoryBrowser middle 3", id);
         
         storyList = widgetGridTable.insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, true);
-        
-        // TODO: Fix better -- Force resizing of the table later, using grid kludge
-        widgetGridTable.allGrids.push(table);
         
         console.log("insertStoryBrowser finished");
     }
