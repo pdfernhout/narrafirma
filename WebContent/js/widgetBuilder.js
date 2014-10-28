@@ -145,7 +145,7 @@ define([
         var imageSource = options[0];
         var questionText = translate(id + "::prompt", "");
         var image = new ContentPane({
-            content: "<br>" + '<img src="' + imageSource + '" alt="Image for question: ' + questionText + '">'
+            content: questionText + "<br>" + '<img src="' + imageSource + '" alt="Image for question: ' + questionText + '">'
         });
         image.placeAt(contentPane);
         image.startup();
