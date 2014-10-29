@@ -1,11 +1,7 @@
 // Generated from design
 "use strict";
 
-define([
-    "../widgetBuilder"
-], function(
-    widgets
-) {
+define([], function() {
 
     var questions = [
         {"id":"storyElement_name", "type":"text", "isInReport":true, "isGridColumn":true},
@@ -13,8 +9,8 @@ define([
         {"id":"storyElement_description", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
 
-    function addWidgets(contentPane, model) {
-        widgets.addQuestionWidgets(questions, contentPane, model);
+    function addWidgets(builder, contentPane, model) {
+        builder.addQuestionWidgets(questions, contentPane, model);
     }
 
     return {

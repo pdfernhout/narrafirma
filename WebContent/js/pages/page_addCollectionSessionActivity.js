@@ -1,11 +1,7 @@
 // Generated from design
 "use strict";
 
-define([
-    "../widgetBuilder"
-], function(
-    widgets
-) {
+define([], function() {
 
     var questions = [
         {"id":"collectionSessionPlan_activity_name", "type":"text", "isInReport":true, "isGridColumn":true},
@@ -21,8 +17,8 @@ define([
         {"id":"templates_storyCollectionActivities_unfinished", "type":"label", "isInReport":false, "isGridColumn":false}
     ];
 
-    function addWidgets(contentPane, model) {
-        widgets.addQuestionWidgets(questions, contentPane, model);
+    function addWidgets(builder, contentPane, model) {
+        builder.addQuestionWidgets(questions, contentPane, model);
     }
 
     return {

@@ -1,11 +1,7 @@
 // Generated from design
 "use strict";
 
-define([
-    "../widgetBuilder"
-], function(
-    widgets
-) {
+define([], function() {
 
     var questions = [
         {"id":"participantGroup_name", "type":"text", "isInReport":true, "isGridColumn":true},
@@ -36,8 +32,8 @@ define([
         {"id":"participantGroupAspects_topic_timeframe", "type":"select", "isInReport":true, "isGridColumn":false, "options":["unknown", "hours", "days", "months", "years", "decades", "mixed"]}
     ];
 
-    function addWidgets(contentPane, model) {
-        widgets.addQuestionWidgets(questions, contentPane, model);
+    function addWidgets(builder, contentPane, model) {
+        builder.addQuestionWidgets(questions, contentPane, model);
     }
 
     return {

@@ -1,11 +1,7 @@
 // Generated from design
 "use strict";
 
-define([
-    "../widgetBuilder"
-], function(
-    widgets
-) {
+define([], function() {
 
     var questions = [
         {"id":"venuesIntro", "type":"label", "isInReport":false, "isGridColumn":false},
@@ -15,8 +11,8 @@ define([
         {"id":"venuesTable", "type":"questionsTable", "isInReport":true, "isGridColumn":false, "options":["page_venuesTable", "participants_firstGroupName,participants_secondGroupName,participants_thirdGroupName"]}
     ];
 
-    function addWidgets(contentPane, model) {
-        widgets.addQuestionWidgets(questions, contentPane, model);
+    function addWidgets(builder, contentPane, model) {
+        builder.addQuestionWidgets(questions, contentPane, model);
     }
 
     return {

@@ -1,11 +1,7 @@
 // Generated from design
 "use strict";
 
-define([
-    "../widgetBuilder"
-], function(
-    widgets
-) {
+define([], function() {
 
     var questions = [
         {"id":"reviewTrendsLabel", "type":"label", "isInReport":false, "isGridColumn":false},
@@ -16,8 +12,8 @@ define([
         {"id":"mockup_trends", "type":"image", "isInReport":true, "isGridColumn":false, "options":["images/mockups/mockupTrends.png"]}
     ];
 
-    function addWidgets(contentPane, model) {
-        widgets.addQuestionWidgets(questions, contentPane, model);
+    function addWidgets(builder, contentPane, model) {
+        builder.addQuestionWidgets(questions, contentPane, model);
     }
 
     return {

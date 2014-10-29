@@ -1,11 +1,7 @@
 // Generated from design
 "use strict";
 
-define([
-    "../widgetBuilder"
-], function(
-    widgets
-) {
+define([], function() {
 
     var questions = [
         {"id":"returnRequest_text", "type":"textarea", "isInReport":true, "isGridColumn":true},
@@ -15,8 +11,8 @@ define([
         {"id":"returnRequest_notes", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
 
-    function addWidgets(contentPane, model) {
-        widgets.addQuestionWidgets(questions, contentPane, model);
+    function addWidgets(builder, contentPane, model) {
+        builder.addQuestionWidgets(questions, contentPane, model);
     }
 
     return {

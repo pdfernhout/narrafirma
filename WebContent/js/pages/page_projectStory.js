@@ -1,11 +1,7 @@
 // Generated from design
 "use strict";
 
-define([
-    "../widgetBuilder"
-], function(
-    widgets
-) {
+define([], function() {
 
     var questions = [
         {"id":"projectStory_scenario", "type":"select", "isInReport":true, "isGridColumn":true, "options":["ask me anything", "magic ears", "fly on the wall", "project aspects", "my own scenario type"]},
@@ -17,8 +13,8 @@ define([
         {"id":"projectStory_dangers", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
 
-    function addWidgets(contentPane, model) {
-        widgets.addQuestionWidgets(questions, contentPane, model);
+    function addWidgets(builder, contentPane, model) {
+        builder.addQuestionWidgets(questions, contentPane, model);
     }
 
     return {

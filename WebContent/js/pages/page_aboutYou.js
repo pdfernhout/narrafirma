@@ -1,11 +1,7 @@
 // Generated from design
 "use strict";
 
-define([
-    "../widgetBuilder"
-], function(
-    widgets
-) {
+define([], function() {
 
     var questions = [
         {"id":"aspects_youHeader", "type":"header", "isInReport":false, "isGridColumn":false},
@@ -14,8 +10,8 @@ define([
         {"id":"aboutYou_tech", "type":"select", "isInReport":true, "isGridColumn":false, "options":["none", "a little", "some", "a lot"]}
     ];
 
-    function addWidgets(contentPane, model) {
-        widgets.addQuestionWidgets(questions, contentPane, model);
+    function addWidgets(builder, contentPane, model) {
+        builder.addQuestionWidgets(questions, contentPane, model);
     }
 
     return {

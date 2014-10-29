@@ -21,7 +21,6 @@ define([
     "dijit/form/Select",
     "dojo/Stateful",
     "dojox/layout/TableContainer",
-    "dojo/domReady!"
 ], function(
     array,
     connect,

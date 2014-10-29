@@ -1,11 +1,7 @@
 // Generated from design
 "use strict";
 
-define([
-    "../widgetBuilder"
-], function(
-    widgets
-) {
+define([], function() {
 
     var questions = [
         {"id":"elicitingQuestion_text", "type":"textarea", "isInReport":true, "isGridColumn":true},
@@ -14,8 +10,8 @@ define([
         {"id":"templates_elicitingQuestions_unfinished", "type":"label", "isInReport":false, "isGridColumn":false}
     ];
 
-    function addWidgets(contentPane, model) {
-        widgets.addQuestionWidgets(questions, contentPane, model);
+    function addWidgets(builder, contentPane, model) {
+        builder.addQuestionWidgets(questions, contentPane, model);
     }
 
     return {

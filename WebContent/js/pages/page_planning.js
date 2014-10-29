@@ -1,19 +1,15 @@
 // Generated from design
 "use strict";
 
-define([
-    "../widgetBuilder"
-], function(
-    widgets
-) {
+define([], function() {
 
     var questions = [
         {"id":"project_projectPlanningLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"project_generalNotes_planning", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
 
-    function addWidgets(contentPane, model) {
-        widgets.addQuestionWidgets(questions, contentPane, model);
+    function addWidgets(builder, contentPane, model) {
+        builder.addQuestionWidgets(questions, contentPane, model);
     }
 
     return {

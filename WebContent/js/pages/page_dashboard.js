@@ -1,19 +1,15 @@
 // Generated from design
 "use strict";
 
-define([
-    "../widgetBuilder"
-], function(
-    widgets
-) {
+define([], function() {
 
     var questions = [
         {"id":"mainDashboardLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"project_testImage", "type":"image", "isInReport":true, "isGridColumn":false, "options":["images/WWS_BookCover_front_small.png"]}
     ];
 
-    function addWidgets(contentPane, model) {
-        widgets.addQuestionWidgets(questions, contentPane, model);
+    function addWidgets(builder, contentPane, model) {
+        builder.addQuestionWidgets(questions, contentPane, model);
     }
 
     return {

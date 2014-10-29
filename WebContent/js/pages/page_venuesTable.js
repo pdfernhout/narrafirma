@@ -1,11 +1,7 @@
 // Generated from design
 "use strict";
 
-define([
-    "../widgetBuilder"
-], function(
-    widgets
-) {
+define([], function() {
 
     var questions = [
         {"id":"venue_primaryForGroup_type", "type":"select", "isInReport":true, "isGridColumn":false, "options":["individual interviews", "group interviews", "peer interviews", "group story sessions", "surveys", "journals", "narrative incident reports", "gleaned stories", "other"]},
@@ -14,8 +10,8 @@ define([
         {"id":"venue_secondaryForGroup_plans", "type":"textarea", "isInReport":true, "isGridColumn":false}
     ];
 
-    function addWidgets(contentPane, model) {
-        widgets.addQuestionWidgets(questions, contentPane, model);
+    function addWidgets(builder, contentPane, model) {
+        builder.addQuestionWidgets(questions, contentPane, model);
     }
 
     return {

@@ -1,11 +1,7 @@
 // Generated from design
 "use strict";
 
-define([
-    "../widgetBuilder"
-], function(
-    widgets
-) {
+define([], function() {
 
     var questions = [
         {"id":"project_draftQuestionsLabel", "type":"label", "isInReport":false, "isGridColumn":false},
@@ -17,8 +13,8 @@ define([
         {"id":"project_PNIquestions_emphasis_draft", "type":"textarea", "isInReport":true, "isGridColumn":false}
     ];
 
-    function addWidgets(contentPane, model) {
-        widgets.addQuestionWidgets(questions, contentPane, model);
+    function addWidgets(builder, contentPane, model) {
+        builder.addQuestionWidgets(questions, contentPane, model);
     }
 
     return {
