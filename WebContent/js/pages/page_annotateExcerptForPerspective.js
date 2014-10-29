@@ -7,20 +7,20 @@ define([
     widgets
 ) {
 
-    function addWidgets(contentPane, model) {
-        widgets.add_textarea(contentPane, model, "perspective_excerptLinkageNotes");
-    }
-
     var questions = [
         {"id":"perspective_excerptLinkageNotes", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
+
+    function addWidgets(contentPane, model) {
+        widgets.addQuestionWidgets(questions, contentPane, model);
+    }
 
     return {
         "id": "page_annotateExcerptForPerspective",
         "name": "Annotate excerpt for perspective",
         "type": "popup",
         "isHeader": false,
-        "addWidgets": addWidgets,
-        "questions": questions
+        "questions": questions,
+        "addWidgets": addWidgets
     };
 });

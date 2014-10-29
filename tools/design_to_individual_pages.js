@@ -7,16 +7,6 @@ var fs = require('fs');
 // Read design file
 var design = fs.readFileSync('design/design_pages_notes.txt', "utf8");
 
-/*
-fs.writeFile("WebContent/js/pages/test_nodejs_filewriting.txt", "Hello file!", function(err) {
-    if (err) {
-        console.log(err);
-    } else {
-        console.log("The file was saved!");
-    }
-}); 
-*/
-
 function startsWith(str, prefix) {
     // console.log("startsWith", prefix, str.lastIndexOf(prefix, 0) === 0, str);
   return str.lastIndexOf(prefix, 0) === 0;
@@ -204,19 +194,19 @@ var fileTemplate = "// Generated from design\n" +
 "    widgets\n" +
 ") {\n" +
 "\n" +
+"    var questions = [\n{{questions}}\n    ];\n" +
+"\n" +
 "    function addWidgets(contentPane, model) {\n" +
 "{{body}}" +
 "    }\n" +
-"\n" +
-"    var questions = [\n{{questions}}\n    ];\n" +
 "\n" +
 "    return {\n" +
 "        \"id\": \"{{pageID}}\",\n" +
 "        \"name\": \"{{pageName}}\",\n" +
 "        \"type\": \"{{pageType}}\",\n" +
 "        \"isHeader\": {{isHeader}},\n" +
-"        \"addWidgets\": addWidgets,\n" +
-"        \"questions\": questions\n" +
+"        \"questions\": questions,\n" +
+"        \"addWidgets\": addWidgets\n" +
 "    };\n" +
 "});";
 
@@ -324,7 +314,9 @@ for (var pageIndex in pages) {
     }
     
     fileContent = fileContent.replace("{{questions}}", questionOutput);
-    fileContent = fileContent.replace("{{body}}", allOutput);
+    // To write direct calls:
+    // fileContent = fileContent.replace("{{body}}", allOutput);
+    fileContent = fileContent.replace("{{body}}", "        widgets.addQuestionWidgets(questions, contentPane, model);\n");
     fs.writeFile(fileName, fileContent, errorHandler(fileName));
 }
 

@@ -7,14 +7,6 @@ define([
     widgets
 ) {
 
-    function addWidgets(contentPane, model) {
-        widgets.add_label(contentPane, model, "collectionSessionsLabel");
-        widgets.add_recommendationTable(contentPane, model, "collectionSessionRecommendations", ["collectionSessions"]);
-        widgets.add_label(contentPane, model, "collectionRecommendationsTable_unfinished");
-        widgets.add_image(contentPane, model, "mockup_recTable_collection", ["images/mockups/mockupRecTable.png"]);
-        widgets.add_grid(contentPane, model, "project_collectionSessionPlansList", ["page_addStoryCollectionSession"]);
-    }
-
     var questions = [
         {"id":"collectionSessionsLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"collectionSessionRecommendations", "type":"recommendationTable", "isInReport":true, "isGridColumn":false, "options":["collectionSessions"]},
@@ -23,12 +15,16 @@ define([
         {"id":"project_collectionSessionPlansList", "type":"grid", "isInReport":true, "isGridColumn":false, "options":["page_addStoryCollectionSession"]}
     ];
 
+    function addWidgets(contentPane, model) {
+        widgets.addQuestionWidgets(questions, contentPane, model);
+    }
+
     return {
         "id": "page_planStoryCollectionSessions",
         "name": "Plan story collection sessions",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets,
-        "questions": questions
+        "questions": questions,
+        "addWidgets": addWidgets
     };
 });

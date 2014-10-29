@@ -7,22 +7,21 @@ define([
     widgets
 ) {
 
-    function addWidgets(contentPane, model) {
-        widgets.add_label(contentPane, model, "sensemakingIntroLabel");
-        widgets.add_textarea(contentPane, model, "project_generalNotes_sensemaking");
-    }
-
     var questions = [
         {"id":"sensemakingIntroLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"project_generalNotes_sensemaking", "type":"textarea", "isInReport":true, "isGridColumn":false}
     ];
+
+    function addWidgets(contentPane, model) {
+        widgets.addQuestionWidgets(questions, contentPane, model);
+    }
 
     return {
         "id": "page_sensemaking",
         "name": "Sensemaking",
         "type": "page",
         "isHeader": true,
-        "addWidgets": addWidgets,
-        "questions": questions
+        "questions": questions,
+        "addWidgets": addWidgets
     };
 });

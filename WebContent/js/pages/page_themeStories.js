@@ -7,13 +7,6 @@ define([
     widgets
 ) {
 
-    function addWidgets(contentPane, model) {
-        widgets.add_label(contentPane, model, "themeStoriesLabel");
-        widgets.add_storyThemer(contentPane, model, "themeStories");
-        widgets.add_label(contentPane, model, "mockupThemingLabel_unfinished");
-        widgets.add_image(contentPane, model, "mockup_theming", ["images/mockups/mockupTheming.png"]);
-    }
-
     var questions = [
         {"id":"themeStoriesLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"themeStories", "type":"storyThemer", "isInReport":true, "isGridColumn":false},
@@ -21,12 +14,16 @@ define([
         {"id":"mockup_theming", "type":"image", "isInReport":true, "isGridColumn":false, "options":["images/mockups/mockupTheming.png"]}
     ];
 
+    function addWidgets(contentPane, model) {
+        widgets.addQuestionWidgets(questions, contentPane, model);
+    }
+
     return {
         "id": "page_themeStories",
         "name": "Theme stories",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets,
-        "questions": questions
+        "questions": questions,
+        "addWidgets": addWidgets
     };
 });

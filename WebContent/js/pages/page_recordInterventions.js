@@ -7,22 +7,21 @@ define([
     widgets
 ) {
 
-    function addWidgets(contentPane, model) {
-        widgets.add_label(contentPane, model, "project_interventionRecordsLabel");
-        widgets.add_grid(contentPane, model, "project_interventionRecordsList", ["page_addInterventionRecord"]);
-    }
-
     var questions = [
         {"id":"project_interventionRecordsLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"project_interventionRecordsList", "type":"grid", "isInReport":true, "isGridColumn":false, "options":["page_addInterventionRecord"]}
     ];
+
+    function addWidgets(contentPane, model) {
+        widgets.addQuestionWidgets(questions, contentPane, model);
+    }
 
     return {
         "id": "page_recordInterventions",
         "name": "Enter intervention records",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets,
-        "questions": questions
+        "questions": questions,
+        "addWidgets": addWidgets
     };
 });

@@ -7,19 +7,20 @@ define([
     widgets
 ) {
 
-    function addWidgets(contentPane, model) {
-    }
-
     var questions = [
 
     ];
+
+    function addWidgets(contentPane, model) {
+        widgets.addQuestionWidgets(questions, contentPane, model);
+    }
 
     return {
         "id": "page_enterStories",
         "name": "Enter stories",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets,
-        "questions": questions
+        "questions": questions,
+        "addWidgets": addWidgets
     };
 });

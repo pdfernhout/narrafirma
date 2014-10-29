@@ -7,14 +7,6 @@ define([
     widgets
 ) {
 
-    function addWidgets(contentPane, model) {
-        widgets.add_storiesList(contentPane, model, "storiesListChoose");
-        widgets.add_select(contentPane, model, "sensemakingSessionRecord_resonantStory_type", ["pivot","voice","discovery","other"]);
-        widgets.add_textarea(contentPane, model, "sensemakingSessionRecord_resonantStory_reason");
-        widgets.add_text(contentPane, model, "sensemakingSessionRecord_resonantStory_groups");
-        widgets.add_textarea(contentPane, model, "sensemakingSessionRecord_resonantStory_notes");
-    }
-
     var questions = [
         {"id":"storiesListChoose", "type":"storiesList", "isInReport":true, "isGridColumn":false},
         {"id":"sensemakingSessionRecord_resonantStory_type", "type":"select", "isInReport":true, "isGridColumn":false, "options":["pivot", "voice", "discovery", "other"]},
@@ -23,12 +15,16 @@ define([
         {"id":"sensemakingSessionRecord_resonantStory_notes", "type":"textarea", "isInReport":true, "isGridColumn":false}
     ];
 
+    function addWidgets(contentPane, model) {
+        widgets.addQuestionWidgets(questions, contentPane, model);
+    }
+
     return {
         "id": "page_addResonantStory",
         "name": "Add resonant story",
         "type": "popup",
         "isHeader": false,
-        "addWidgets": addWidgets,
-        "questions": questions
+        "questions": questions,
+        "addWidgets": addWidgets
     };
 });

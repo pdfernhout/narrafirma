@@ -7,20 +7,20 @@ define([
     widgets
 ) {
 
-    function addWidgets(contentPane, model) {
-        widgets.add_grid(contentPane, model, "project_projectStoryElementsList", ["page_addStoryElement"]);
-    }
-
     var questions = [
         {"id":"project_projectStoryElementsList", "type":"grid", "isInReport":true, "isGridColumn":false, "options":["page_addStoryElement"]}
     ];
+
+    function addWidgets(contentPane, model) {
+        widgets.addQuestionWidgets(questions, contentPane, model);
+    }
 
     return {
         "id": "page_enterProjectStoryElements",
         "name": "Enter project story elements",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets,
-        "questions": questions
+        "questions": questions,
+        "addWidgets": addWidgets
     };
 });

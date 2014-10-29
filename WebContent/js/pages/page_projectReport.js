@@ -7,22 +7,21 @@ define([
     widgets
 ) {
 
-    function addWidgets(contentPane, model) {
-        widgets.add_label(contentPane, model, "wholeProjectReportLabel");
-        widgets.add_report(contentPane, model, "projectReport", ["project"]);
-    }
-
     var questions = [
         {"id":"wholeProjectReportLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"projectReport", "type":"report", "isInReport":true, "isGridColumn":false, "options":["project"]}
     ];
+
+    function addWidgets(contentPane, model) {
+        widgets.addQuestionWidgets(questions, contentPane, model);
+    }
 
     return {
         "id": "page_projectReport",
         "name": "Project report",
         "type": "page",
         "isHeader": true,
-        "addWidgets": addWidgets,
-        "questions": questions
+        "questions": questions,
+        "addWidgets": addWidgets
     };
 });

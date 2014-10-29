@@ -7,22 +7,21 @@ define([
     widgets
 ) {
 
-    function addWidgets(contentPane, model) {
-        widgets.add_label(contentPane, model, "project_collectionProcessReportLabel");
-        widgets.add_report(contentPane, model, "project_collectionProcessReport", ["collectionProcess"]);
-    }
-
     var questions = [
         {"id":"project_collectionProcessReportLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"project_collectionProcessReport", "type":"report", "isInReport":true, "isGridColumn":false, "options":["collectionProcess"]}
     ];
+
+    function addWidgets(contentPane, model) {
+        widgets.addQuestionWidgets(questions, contentPane, model);
+    }
 
     return {
         "id": "page_readCollectionProcessReport",
         "name": "Read collection process report",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets,
-        "questions": questions
+        "questions": questions,
+        "addWidgets": addWidgets
     };
 });

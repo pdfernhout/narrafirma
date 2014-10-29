@@ -7,22 +7,21 @@ define([
     widgets
 ) {
 
-    function addWidgets(contentPane, model) {
-        widgets.add_label(contentPane, model, "returnIntroLabel");
-        widgets.add_textarea(contentPane, model, "project_generalNotes_return");
-    }
-
     var questions = [
         {"id":"returnIntroLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"project_generalNotes_return", "type":"textarea", "isInReport":true, "isGridColumn":false}
     ];
+
+    function addWidgets(contentPane, model) {
+        widgets.addQuestionWidgets(questions, contentPane, model);
+    }
 
     return {
         "id": "page_return",
         "name": "Return",
         "type": "page",
         "isHeader": true,
-        "addWidgets": addWidgets,
-        "questions": questions
+        "questions": questions,
+        "addWidgets": addWidgets
     };
 });

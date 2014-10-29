@@ -7,24 +7,22 @@ define([
     widgets
 ) {
 
-    function addWidgets(contentPane, model) {
-        widgets.add_label(contentPane, model, "webStoryCollection_startCollectionLabel");
-        widgets.add_toggleButton(contentPane, model, "webStoryCollection_enableDisableButton");
-        widgets.add_button(contentPane, model, "webStoryCollection_copyStoryFormURLButton");
-    }
-
     var questions = [
         {"id":"webStoryCollection_startCollectionLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"webStoryCollection_enableDisableButton", "type":"toggleButton", "isInReport":true, "isGridColumn":true},
         {"id":"webStoryCollection_copyStoryFormURLButton", "type":"button", "isInReport":false, "isGridColumn":false}
     ];
 
+    function addWidgets(contentPane, model) {
+        widgets.addQuestionWidgets(questions, contentPane, model);
+    }
+
     return {
         "id": "page_startStoryCollection",
         "name": "Start story collection",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets,
-        "questions": questions
+        "questions": questions,
+        "addWidgets": addWidgets
     };
 });

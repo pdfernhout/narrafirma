@@ -7,22 +7,21 @@ define([
     widgets
 ) {
 
-    function addWidgets(contentPane, model) {
-        widgets.add_label(contentPane, model, "project_readCollectionDesignReportIntroductionLabel");
-        widgets.add_report(contentPane, model, "collectionDesignReport", ["collectionDesign"]);
-    }
-
     var questions = [
         {"id":"project_readCollectionDesignReportIntroductionLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"collectionDesignReport", "type":"report", "isInReport":true, "isGridColumn":false, "options":["collectionDesign"]}
     ];
+
+    function addWidgets(contentPane, model) {
+        widgets.addQuestionWidgets(questions, contentPane, model);
+    }
 
     return {
         "id": "page_readCollectionDesignReport",
         "name": "Read collection design report",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets,
-        "questions": questions
+        "questions": questions,
+        "addWidgets": addWidgets
     };
 });

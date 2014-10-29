@@ -7,20 +7,20 @@ define([
     widgets
 ) {
 
-    function addWidgets(contentPane, model) {
-        widgets.add_label(contentPane, model, "storyElementsInstructions");
-    }
-
     var questions = [
         {"id":"storyElementsInstructions", "type":"label", "isInReport":false, "isGridColumn":false}
     ];
+
+    function addWidgets(contentPane, model) {
+        widgets.addQuestionWidgets(questions, contentPane, model);
+    }
 
     return {
         "id": "page_createProjectStoryElements",
         "name": "Create project story elements",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets,
-        "questions": questions
+        "questions": questions,
+        "addWidgets": addWidgets
     };
 });

@@ -7,22 +7,21 @@ define([
     widgets
 ) {
 
-    function addWidgets(contentPane, model) {
-        widgets.add_label(contentPane, model, "project_readPlanningReportIntroductionLabel");
-        widgets.add_report(contentPane, model, "planningReport", ["planning"]);
-    }
-
     var questions = [
         {"id":"project_readPlanningReportIntroductionLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"planningReport", "type":"report", "isInReport":true, "isGridColumn":false, "options":["planning"]}
     ];
+
+    function addWidgets(contentPane, model) {
+        widgets.addQuestionWidgets(questions, contentPane, model);
+    }
 
     return {
         "id": "page_readPlanningReport",
         "name": "Read planning report",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets,
-        "questions": questions
+        "questions": questions,
+        "addWidgets": addWidgets
     };
 });

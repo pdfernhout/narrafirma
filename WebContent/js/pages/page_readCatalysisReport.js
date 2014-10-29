@@ -7,22 +7,21 @@ define([
     widgets
 ) {
 
-    function addWidgets(contentPane, model) {
-        widgets.add_label(contentPane, model, "catalysisReport_introductionLabel");
-        widgets.add_report(contentPane, model, "catalysisReport", ["catalysis"]);
-    }
-
     var questions = [
         {"id":"catalysisReport_introductionLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"catalysisReport", "type":"report", "isInReport":true, "isGridColumn":false, "options":["catalysis"]}
     ];
+
+    function addWidgets(contentPane, model) {
+        widgets.addQuestionWidgets(questions, contentPane, model);
+    }
 
     return {
         "id": "page_readCatalysisReport",
         "name": "Read catalysis report",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets,
-        "questions": questions
+        "questions": questions,
+        "addWidgets": addWidgets
     };
 });

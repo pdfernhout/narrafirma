@@ -7,13 +7,6 @@ define([
     widgets
 ) {
 
-    function addWidgets(contentPane, model) {
-        widgets.add_select(contentPane, model, "venue_primaryForGroup_type", ["individual interviews","group interviews","peer interviews","group story sessions","surveys","journals","narrative incident reports","gleaned stories","other"]);
-        widgets.add_textarea(contentPane, model, "venue_primaryForGroup_plans");
-        widgets.add_select(contentPane, model, "venue_secondaryForGroup_type", ["individual interviews","group interviews","peer interviews","group story sessions","surveys","journals","narrative incident reports","gleaned stories","other"]);
-        widgets.add_textarea(contentPane, model, "venue_secondaryForGroup_plans");
-    }
-
     var questions = [
         {"id":"venue_primaryForGroup_type", "type":"select", "isInReport":true, "isGridColumn":false, "options":["individual interviews", "group interviews", "peer interviews", "group story sessions", "surveys", "journals", "narrative incident reports", "gleaned stories", "other"]},
         {"id":"venue_primaryForGroup_plans", "type":"textarea", "isInReport":true, "isGridColumn":false},
@@ -21,12 +14,16 @@ define([
         {"id":"venue_secondaryForGroup_plans", "type":"textarea", "isInReport":true, "isGridColumn":false}
     ];
 
+    function addWidgets(contentPane, model) {
+        widgets.addQuestionWidgets(questions, contentPane, model);
+    }
+
     return {
         "id": "page_venuesTable",
         "name": "Aspects table",
         "type": "questionsTable",
         "isHeader": false,
-        "addWidgets": addWidgets,
-        "questions": questions
+        "questions": questions,
+        "addWidgets": addWidgets
     };
 });

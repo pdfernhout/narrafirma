@@ -7,14 +7,6 @@ define([
     widgets
 ) {
 
-    function addWidgets(contentPane, model) {
-        widgets.add_label(contentPane, model, "questionFormLabel");
-        widgets.add_text(contentPane, model, "questionForm_title");
-        widgets.add_text(contentPane, model, "questionForm_image");
-        widgets.add_textarea(contentPane, model, "questionForm_startText");
-        widgets.add_textarea(contentPane, model, "questionForm_endText");
-    }
-
     var questions = [
         {"id":"questionFormLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"questionForm_title", "type":"text", "isInReport":true, "isGridColumn":false},
@@ -23,12 +15,16 @@ define([
         {"id":"questionForm_endText", "type":"textarea", "isInReport":true, "isGridColumn":false}
     ];
 
+    function addWidgets(contentPane, model) {
+        widgets.addQuestionWidgets(questions, contentPane, model);
+    }
+
     return {
         "id": "page_designQuestionForm",
         "name": "Design question form",
         "type": "page",
         "isHeader": false,
-        "addWidgets": addWidgets,
-        "questions": questions
+        "questions": questions,
+        "addWidgets": addWidgets
     };
 });
