@@ -148,7 +148,7 @@ DONE Fix dashboard items for page status to be read-only
 DONE Bug with scrolling and story browser -- only showing entries in initial page size and rest are blank
 CHANGED to inline -- Dynamic pages for participant group aspects
 CHANGED to inline -- Dynamic pages for collection session plans
-DONE Support quizScoreResult
+DONE Generate model information into allPagesSummary file.
 
 ======= CYNTHIA
 
