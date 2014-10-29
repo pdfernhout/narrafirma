@@ -12,14 +12,14 @@ define([
         
         if (choices) {
             array.forEach(choices, function(each) {
-                var label = translate(id + "_choice_" + each);
+                var label = translate(id + "::selection:" + each);
                 options.push({label: label, value: each});
             });           
         } else if (optionsString) {
             array.forEach(optionsString.split("\n"), function(each) {
-                var translateID = id + "_choice_" + each;
+                var translateID = id + "::selection:" + each;
                 if (optionsString === "yes\nno") translateID = "boolean_choice_" + each;
-                var label = translate(translateID, each);
+                var label = translate(translateID);
                 options.push({label: label, value: each});
             });
         }

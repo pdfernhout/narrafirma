@@ -62,15 +62,17 @@ define([
         value: null,
         choices: null,
         optionsString: null,
-        checkBoxes: null,
+        checkboxes: null,
         options: null,
+        questionID: null,
         
         constructor: function(args) {
             // console.log("Constructor", this, args);
             declare.safeMixin(this, args);
             // These need to be created here so that the instances do not share one copy if made above
-            this.checkBoxes = {};
-            this.options = widgetSupport.buildOptions(this.id, this.choices, this.optionsString);
+            this.checkboxes = {};
+            this.options = widgetSupport.buildOptions(this.questionID, this.choices, this.optionsString);
+            console.log("checkboxes", this.options);
             var self = this;
             if (!this.value) {
                 this.value = {};
@@ -92,8 +94,8 @@ define([
             // var options = buildOptions(id, this.choices, this.optionsString);
             
             array.forEach(this.options, function (option) {
-                var choiceID = id + "_choice_" + option.value;
-                // console.log("creating checkbox", choiceID);
+                var choiceID = id + "::selection:" + option.value;
+                console.log("creating checkbox", choiceID);
                 var checkBox = new CheckBox({
                     value: option.value,
                     "id": choiceID
@@ -108,7 +110,7 @@ define([
                     // TODO: send changed message?
                 });
                 checkBox.startup();
-                self.checkBoxes[option.value] = checkBox;
+                self.checkboxes[option.value] = checkBox;
                 div.appendChild(domConstruct.toDom('<label for="' + choiceID + '">' + option.label + '</label><br>'));
             });
             
@@ -116,22 +118,22 @@ define([
         },
         
         _setValueAttr: function(value) {
-            // TODO: (Maybe good enough?) Need to select checkBoxes when this is called, but not if call it from inside widget on change
+            // TODO: (Maybe good enough?) Need to select checkboxes when this is called, but not if call it from inside widget on change
             // console.log("setting value of checkboxes", value);
             this.value = value;
             var self = this;
             array.forEach(this.options, function (option) {
                 // self.value[option.value] = false;
-                self.checkBoxes[option.value].set("checked", self.value[option.value]);
+                self.checkboxes[option.value].set("checked", self.value[option.value]);
             });
         },
         
         _setDisabledAttr: function(/*Boolean*/ value){
             this.disabled = value;
-            // console.log("CheckBoxes", this.checkBoxes);
-            for (var itemID in this.checkBoxes) {
+            // console.log("CheckBoxes", this.checkboxes);
+            for (var itemID in this.checkboxes) {
                 // console.log("Disabling", value, itemID);
-                var item = this.checkBoxes[itemID];
+                var item = this.checkboxes[itemID];
                 item.attr("disabled", value);
             }
         }

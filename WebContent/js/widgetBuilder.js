@@ -72,7 +72,7 @@ define([
     var entryTypes = [
         "boolean",
         "checkbox",
-        "checkBoxes",
+        "checkboxes",
         "text",
         "textarea", 
         "select",
@@ -86,7 +86,7 @@ define([
         "label",
         "header",
         "checkbox",
-        "checkBoxes",
+        "checkboxes",
         "text",
         "textarea", 
         "select",
@@ -274,6 +274,7 @@ define([
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
 
         var radioButtons = new RadioButtons({
+            questionID: id,
             choices: questionOptions,
             // optionsString: optionsString,
             value: at(model, id)
@@ -287,15 +288,16 @@ define([
     function add_checkboxes(contentPane, model, id, questionOptions) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
 
-        var checkBoxes = new CheckBoxes({
+        var checkboxes = new CheckBoxes({
+            questionID: id,
             choices: questionOptions,
             // optionsString: optionsString,
             value: at(model, id)
         });
         
-        checkBoxes.placeAt(questionContentPane);
-        checkBoxes.startup();
-        return checkBoxes;
+        checkboxes.placeAt(questionContentPane);
+        checkboxes.startup();
+        return checkboxes;
     }
     
     // TODO: Need to translate true/false
@@ -778,6 +780,8 @@ define([
         "add_select": add_select,
         "add_boolean": add_boolean,
         "add_checkbox": add_checkbox,
+        "add_checkboxes": add_checkboxes,
+        "add_radiobuttons": add_radiobuttons,
         "add_toggleButton": add_toggleButton,
         "add_button": add_button,
         "add_slider": add_slider,

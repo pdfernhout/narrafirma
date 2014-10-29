@@ -24,7 +24,7 @@ function isString(something) {
 var acceptableTypes = [
   "text", "textarea", "label", "header", "select", "grid", "button",
   "popup", "imageUploader", "recommendationTable", "questionsTable", "quizScoreResult",
-  "report", "checkBoxes", "templateList", "checkBoxesWithPull", "participantStoryForm", "storyBrowser",
+  "report", "checkboxes", "templateList", "checkboxesWithPull", "participantStoryForm", "storyBrowser",
   "excerptsList", "storyThemer", "graphBrowser", "trendsReport", "clusterSpace", "listCount",
   "questionAnswer", "questionAnswerCountOfTotalOnPage", "toggleButton", "boolean",
   "observationsList", "image"
@@ -244,7 +244,7 @@ function iterateObjectAlphabetically(obj, callback) {
 }
 
 var translations = {};
-var typesToTranslateOptions = {"radio": true, "checkboxes": true, "select": true};
+var typesToTranslateOptions = {"radiobuttons": true, "checkboxes": true, "select": true};
 var pageFileNames = "";
 var pageNames = "";
 var pageReturn = "";
@@ -377,8 +377,8 @@ var modelTypes = {
         select: 1,
         imageUploader: 1,
         toggleButton: 1,
-        checkBoxes: 1,
-        checkBoxesWithPull: 1,
+        checkboxes: 1,
+        checkboxesWithPull: 1,
         excerptsList: 1,
         grid: 1,
         annotationsGrid: 1,

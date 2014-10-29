@@ -2,7 +2,7 @@
 // Double ## for second level pages
 // Single * for questions
 // Question types are in brackets [id|type|options]
-// question types are: label, header (bold label), text, textarea, select, grid, checkBoxes,
+// question types are: label, header (bold label), text, textarea, select, grid, checkboxes,
 //                     quizScoreResult, templateList, button,
 //                     storyBrowser, report,
 //                     observationsList, excerptsList, storyThemer, graphBrowser, trendsReport, clusterSpace
@@ -337,7 +337,7 @@ related to the questions answered about participant groups.
 ## Add story eliciting question [page_addElicitingQuestion|popup]
 
 * Question | Enter a story-eliciting question. [elicitingQuestion_text|textarea]
-* Type | What type of question is this? [elicitingQuestion_type|checkBoxes|what happened;directed question;undirected questions;point in time;event;extreme;surprise;people, places, things;fictional scenario;other]
+* Type | What type of question is this? [elicitingQuestion_type|checkboxes|what happened;directed question;undirected questions;point in time;event;extreme;surprise;people, places, things;fictional scenario;other]
 
 * Or choose a question from this list. [templates_elicitingQuestions|templateList|elicitingQuestions]
 * (Unfinished: This will be a list of template questions the user can copy.) [templates_elicitingQuestions_unfinished|label]
@@ -356,18 +356,18 @@ related to the questions answered about participant groups.
 ## Add story question [page_addStoryQuestion|popup]
 
 * Question | Enter a question to ask people about their stories. [storyQuestion_text|textarea]
-* Type | What type of question is this? [storyQuestion_type|select|boolean;label;header;checkbox;checkBoxes;text;textarea;select;radio;slider]
+* Type | What type of question is this? [storyQuestion_type|select|boolean;label;header;checkbox;checkboxes;text;textarea;select;radiobuttons;slider]
 The question types are:
 <ul>
 <li>boolean: yes and no choices</li>
 <li>label: not a question, just text</li>
 <li>header: same as a label, only in bold</li>
 <li>checkbox: one check box (enter label in options)</li>
-<li>checkBoxes: a series of checkboxes (enter label in options)</li>
+<li>checkboxes: a series of checkboxes (enter label in options)</li>
 <li>text: a one-line free text field</li>
 <li>textarea: a multi-line free text field</li>
 <li>select: a drop-down box (enter choices in options)</li>
-<li>radio: a set of mutually-exclusive radio buttons (enter choices in options)</li>
+<li>radiobuttons: a set of mutually-exclusive radio buttons (enter choices in options)</li>
 <li>slider: a range from 0 to 100 (enter end labels in options)</li>
 </ul>
 
@@ -392,7 +392,7 @@ related to the questions answered about participant groups.
 ## Add participant question [page_addParticipantQuestion|popup]
 
 * Question | Enter a question to ask people about themselves. [participantQuestion_text|textarea]
-* Type | What type of question is this? [participantQuestion_type|select|boolean;label;header;checkbox;checkBoxes;text;textarea;select;radio;slider]
+* Type | What type of question is this? [participantQuestion_type|select|boolean;label;header;checkbox;checkboxes;text;textarea;select;radiobuttons;slider]
 * Short name | Enter a short name we can use to refer to the question. (It must be unique within the project.) [participantQuestion_shortName|text]
 * Options | If your question has choices, enter them here (one per line). [participantQuestion_options|textarea]
 * Help | If you want to provide help to people answering the question, enter it here. [participantQuestion_help|textarea]
@@ -601,7 +601,7 @@ and save patterns to observations for later use.
 * On this page you will look over the most significant statistical results [reviewTrendsLabel|label]
 and save some to observations for later use.
 
-//* Which statistical tests do you want to consider? [reviewTrends_statTests|checkBoxes|chi-squared (differences between counts);t-test (differences between means);correlation]
+//* Which statistical tests do you want to consider? [reviewTrends_statTests|checkboxes|chi-squared (differences between counts);t-test (differences between means);correlation]
 * How large should subsets of stories be to be considered for comparison? [reviewTrends_minSubsetSize|select|20;30;40;50]
 * What significance threshold do you want reported? [reviewTrends_significanceThreshold|select|0.05;0.01]
 //* How many results do you want to see per test type? [reviewTrends_trendResults|select|5;10;15;20;25;30]

@@ -5,7 +5,7 @@ define([], function() {
 
     var questions = [
         {"id":"participantQuestion_text", "type":"textarea", "isInReport":true, "isGridColumn":true},
-        {"id":"participantQuestion_type", "type":"select", "isInReport":true, "isGridColumn":true, "options":["boolean", "label", "header", "checkbox", "checkBoxes", "text", "textarea", "select", "radio", "slider"]},
+        {"id":"participantQuestion_type", "type":"select", "isInReport":true, "isGridColumn":true, "options":["boolean", "label", "header", "checkbox", "checkboxes", "text", "textarea", "select", "radiobuttons", "slider"]},
         {"id":"participantQuestion_shortName", "type":"text", "isInReport":true, "isGridColumn":true},
         {"id":"participantQuestion_options", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"participantQuestion_help", "type":"textarea", "isInReport":true, "isGridColumn":true},

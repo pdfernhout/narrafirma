@@ -60,13 +60,14 @@ define([
         value: null,
         choices: null,
         optionsString: null,
+        questionID: null,
         
         constructor: function(args) {
             // console.log("Constructor", this, args);
             declare.safeMixin(this, args);
             // These need to be created here so that the instances do not share one copy if made above
             this.radioButtons = {};
-            this.options = widgetSupport.buildOptions(this.id, this.choices, this.optionsString);
+            this.options = widgetSupport.buildOptions(this.questionID, this.choices, this.optionsString);
             var self = this;
         },
     
