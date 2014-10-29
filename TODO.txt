@@ -49,7 +49,6 @@ Support observationsList -- used to list all the previously made observations
 Support report (in HTML, name of page, contents of page)
 Support recommendationTable
 Support imageUploader
-Support quizScoreResult
 
 Support storyBrowserCount
 Fix questionAnswerCountOfTotalOnPages so it can handle a questionsTable
@@ -62,8 +61,6 @@ Implement copyStoryFormURLDuringStart in domain buttonClicked
 Implement exportPresentationOutline in domain buttonClicked
 Implement showHideCollectedStories in domain buttonClicked
 
-CHANGED to inline -- Dynamic pages for participant group aspects
-CHANGED to inline -- Dynamic pages for collection session plans
 Dynamic pages for collection session records
 Dynamic pages for venues
 Dynamic pages for sensemaking session plans
@@ -78,7 +75,6 @@ Venues table needs fixing -- one for each participant group
 Popup for add item  -- should have better label in title as to what type of thing is added
 General notes should go after dashboard for each section
 Generate story form for data entry from paper form -- or have it work with story browser to review/add stories
-Bug with scrolling and story browser -- only showing entries in initial page size and rest are blank
 webStoryCollectionEnabled toggle status to turn off seems broken
 Catalysis -- story browser needs two buttons that pull up pages to put things in lists: addToObservation:"page_addToObservation";addToExcerpt:"page_addToExcerpt"
 Need to be able to select text in existing story to AddToExcerpts
@@ -149,6 +145,10 @@ DONE Move generated code out of domain
 DONE Fix issue with side-by-side story browser filters showing above each other
 DONE Put custom widgets in their own folder
 DONE Fix dashboard items for page status to be read-only
+DONE Bug with scrolling and story browser -- only showing entries in initial page size and rest are blank
+CHANGED to inline -- Dynamic pages for participant group aspects
+CHANGED to inline -- Dynamic pages for collection session plans
+DONE Support quizScoreResult
 
 ======= CYNTHIA
 
