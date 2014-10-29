@@ -362,3 +362,129 @@ addOutput("}\n" +
 
 var translationFileName = "WebContent/js/nls/pageMessages.js";
 fs.writeFile(translationFileName, allOutput, errorHandler(translationFileName));
+
+//////
+
+var modelTypes = {
+        text: 1,
+        textarea: 1,
+        boolean: 1,
+        select: 1,
+        imageUploader: 1,
+        toggleButton: 1,
+        checkBoxes: 1,
+        checkBoxesWithPull: 1,
+        excerptsList: 1,
+        grid: 1,
+        annotationsGrid: 1,
+        accumulatedItemsGrid: 1,
+        storyBrowser: 1,
+        storyThemer: 1,
+        graphBrowser: 1,
+        clusterSpace: 1,
+        quizScoreResult: 1,
+        report: 1
+};
+
+function generateModel() {
+    var unusedTypes = {};
+    var model = {};
+    var pagesToGoWithHeaders = {};
+    var lastHeader = null;
+    var pageIndex;
+    var page;
+    var questionIndex;
+    var question;
+    for (pageIndex in pages) {
+        page = pages[pageIndex];
+        if (page.isHeader) {
+            pagesToGoWithHeaders[page.id] = [];
+            lastHeader = page.id;
+        } else {
+            pagesToGoWithHeaders[lastHeader].push(page.id);
+        }
+        if (page.type === "page") {
+            // console.log("page", page);
+            for (questionIndex in page.questions) {
+                question = page.questions[questionIndex];
+                if (modelTypes[question.type]) {
+                    console.log("question", question.id, question.type);
+                    if (question.type === "grid" || question.type === "annotationsGrid" || question.type === "accumulatedItemsGrid") {
+                        model[question.id] = [];
+                    } else if (question.type === "text" || question.type === "textarea") {
+                        model[question.id] = "";
+                    } else {
+                        model[question.id] = null;
+                    }
+                } else {
+                    unusedTypes[question.type] = 1;
+                }
+            }
+        }
+    }
+    for (var key in unusedTypes) {
+        console.log("unusedType: ", key);
+    }
+
+    // console.log("Pages to go with headers", JSON.stringify(pagesToGoWithHeaders, null, "  "));
+    addOutput("var pagesToGoWithHeaders = " + JSON.stringify(pagesToGoWithHeaders, null, "    "));
+    addOutput(";\n\n");
+    
+    //console.log("Output", JSON.stringify(model, null, "  "));
+    addOutput("// All the data collected by the project\n");
+    addOutput("var data = " + JSON.stringify(model, null, "    "));
+    addOutput(";\n\n");
+
+    var unusedTypes2 = {};
+    
+    var moreModels = [];
+    for (pageIndex in pages) {
+        page = pages[pageIndex];
+        if (page.type !== "page") {
+            var model2 = {};
+            moreModels.push(model2);
+            model2.__id = page.id;
+            model2.__type = page.type;
+            console.log("page", page.type, page);
+            for (questionIndex in page.questions) {
+                question = page.questions[questionIndex];
+                if (modelTypes[question.type]) {
+                    console.log("question", question.id, question.type);
+                    if (question.type === "grid") {
+                        model2[question.id] = [];
+                    } else if (question.type === "text" || question.type === "textarea") {
+                        model2[question.id] = "";
+                    } else {
+                        model2[question.id] = null;
+                    }
+                } else {
+                    unusedTypes2[question.type] = 1;
+                }
+            }
+        }
+    }
+    for (var key2 in unusedTypes2) {
+        console.log("unusedType2: ", key2);
+    }
+    
+    // console.log("Output", JSON.stringify(moreModels, null, "  "));
+    addOutput("var other = " + JSON.stringify(moreModels, null, "    "));
+    addOutput(";\n\n");
+}
+
+allOutput = "";
+addOutput("// Generated from design\n");
+addOutput("\"use strict\";\n");
+addOutput("\ndefine(function() {\n\n");
+
+generateModel();
+
+addOutput("return {\n");
+addOutput("    \"pagesToGoWithHeaders\": pagesToGoWithHeaders,\n");
+addOutput("    \"data\": data,\n");
+addOutput("    \"other\": other\n");
+addOutput("};\n");
+addOutput("});\n");
+
+var allPagesSummaryFileName = "WebContent/js/pages/allPagesSummary.js";
+fs.writeFile(allPagesSummaryFileName, allOutput, errorHandler(allPagesSummaryFileName));
