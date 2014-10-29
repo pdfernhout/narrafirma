@@ -103,16 +103,6 @@ define([
                   
     /////////////
 
-    function createQuestionContentPane(contentPane, id) {
-        var questionContentPane = new ContentPane({
-        });
-        questionContentPane.setAttribute("data-js-question-id", id);
-        // questionContentPane.setAttribute("data-js-question-type", question.type);
-        questionContentPane.placeAt(contentPane);
-        questionContentPane.startup();
-        return questionContentPane;
-    }
-    
     function createQuestionContentPaneWithPrompt(contentPane, id) {
         var questionText = translate(id + "::prompt", "");
         var questionContentPane = new ContentPane({
@@ -326,8 +316,6 @@ define([
     }
     
     function add_button(contentPane, model, id, questionOptions, callback) {
-        var questionContentPane = createQuestionContentPane(contentPane, id);
-        
         if (!callback) callback = lang.partial(domain.buttonClicked, id, questionOptions, model);
         
         var button = new Button({
@@ -336,7 +324,7 @@ define([
             onClick: callback
         });
 
-        button.placeAt(questionContentPane);
+        button.placeAt(contentPane);
         button.startup();
         return button;
     }
