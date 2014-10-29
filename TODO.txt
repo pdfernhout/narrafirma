@@ -140,6 +140,15 @@ DONE don't display commented lines from design file
 DONE display images
 DONE make quizScoreResult work (not entered 0, unknown 0, first 0, then 1, 2, 3). ideally total in each category
 DONE Get grid headers to work reliably everywhere
+DONE Refactor code to have one file per page so can override behavior if needed
+DONE Write node.js script to generate pages and translations file
+DONE Refactor code to have one function per widget type
+DONE Refactor code to have one function per calculation for calculated widget types
+DONE Fix support for nested grids to store data
+DONE Move generated code out of domain
+DONE Fix issue with side-by-side story browser filters showing above each other
+DONE Put custom widgets in their own folder
+DONE Fix dashboard items for page status to be read-only
 
 ======= CYNTHIA
 
