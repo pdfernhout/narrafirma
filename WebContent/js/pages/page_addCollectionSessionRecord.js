@@ -27,8 +27,8 @@ define([], function() {
         {"id":"collectionSessionRecord_reflections_learning_wantToRemember", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
 
-    function addWidgets(builder, contentPane, model) {
-        builder.addQuestionWidgets(questions, contentPane, model);
+    function buildPage(builder, contentPane, model) {
+        builder.addQuestions(questions, contentPane, model);
     }
 
     return {
@@ -37,6 +37,6 @@ define([], function() {
         "type": "popup",
         "isHeader": false,
         "questions": questions,
-        "addWidgets": addWidgets
+        "buildPage": buildPage
     };
 });

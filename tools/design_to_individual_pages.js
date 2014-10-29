@@ -192,7 +192,7 @@ var fileTemplate = "// Generated from design\n" +
 "\n" +
 "    var questions = [\n{{questions}}\n    ];\n" +
 "\n" +
-"    function addWidgets(builder, contentPane, model) {\n" +
+"    function buildPage(builder, contentPane, model) {\n" +
 "{{body}}" +
 "    }\n" +
 "\n" +
@@ -202,7 +202,7 @@ var fileTemplate = "// Generated from design\n" +
 "        \"type\": \"{{pageType}}\",\n" +
 "        \"isHeader\": {{isHeader}},\n" +
 "        \"questions\": questions,\n" +
-"        \"addWidgets\": addWidgets\n" +
+"        \"buildPage\": buildPage\n" +
 "    };\n" +
 "});";
 
@@ -312,7 +312,7 @@ for (var pageIndex in pages) {
     fileContent = fileContent.replace("{{questions}}", questionOutput);
     // To write direct calls:
     // fileContent = fileContent.replace("{{body}}", allOutput);
-    fileContent = fileContent.replace("{{body}}", "        builder.addQuestionWidgets(questions, contentPane, model);\n");
+    fileContent = fileContent.replace("{{body}}", "        builder.addQuestions(questions, contentPane, model);\n");
     fs.writeFile(fileName, fileContent, errorHandler(fileName));
 }
 

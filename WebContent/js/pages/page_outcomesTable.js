@@ -27,8 +27,8 @@ define([], function() {
         {"id":"outcomes_peopleCuriousAboutStoryWork", "type":"select", "isInReport":true, "isGridColumn":false, "options":["never", "occasionally", "sometimes", "often", "mixed"]}
     ];
 
-    function addWidgets(builder, contentPane, model) {
-        builder.addQuestionWidgets(questions, contentPane, model);
+    function buildPage(builder, contentPane, model) {
+        builder.addQuestions(questions, contentPane, model);
     }
 
     return {
@@ -37,6 +37,6 @@ define([], function() {
         "type": "questionsTable",
         "isHeader": false,
         "questions": questions,
-        "addWidgets": addWidgets
+        "buildPage": buildPage
     };
 });

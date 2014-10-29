@@ -11,8 +11,8 @@ define([], function() {
         {"id":"venuesTable", "type":"questionsTable", "isInReport":true, "isGridColumn":false, "options":["page_venuesTable", "participants_firstGroupName,participants_secondGroupName,participants_thirdGroupName"]}
     ];
 
-    function addWidgets(builder, contentPane, model) {
-        builder.addQuestionWidgets(questions, contentPane, model);
+    function buildPage(builder, contentPane, model) {
+        builder.addQuestions(questions, contentPane, model);
     }
 
     return {
@@ -21,6 +21,6 @@ define([], function() {
         "type": "page",
         "isHeader": false,
         "questions": questions,
-        "addWidgets": addWidgets
+        "buildPage": buildPage
     };
 });

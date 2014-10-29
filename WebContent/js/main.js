@@ -131,7 +131,7 @@ require([
         
        // console.log("Made content pane", id);
        
-       page.addWidgets(widgetBuilder, pagePane, domain.data);
+       page.buildPage(widgetBuilder, pagePane, domain.data);
        
        // TODO: Fix this to store data
        if (!page.isHeader) {

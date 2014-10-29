@@ -128,7 +128,7 @@ define([
         var statefulItem = new Stateful(newItem);
         
         // console.log("grid: about to call addWidgets");
-        popupPageDefinition.addWidgets(widgetBuilder, form, statefulItem);
+        popupPageDefinition.buildPage(widgetBuilder, form, statefulItem);
         // console.log("grid: done with call addWidgets");
         
         // TODO: Does the dialog itself have to be "destroyed"???
@@ -195,7 +195,7 @@ define([
             // Should only be one match
             array.forEach(matches, function (item) {
                 console.log("item", item);
-                popupPageDefinition.addWidgets(widgetBuilder, form, new Stateful(item));
+                popupPageDefinition.buildPage(widgetBuilder, form, new Stateful(item));
 
                 /* TODO: Someway to disable editing?
                 array.forEach(popupPageDefinition.questions, function (question) {

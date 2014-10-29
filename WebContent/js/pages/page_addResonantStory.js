@@ -11,8 +11,8 @@ define([], function() {
         {"id":"sensemakingSessionRecord_resonantStory_notes", "type":"textarea", "isInReport":true, "isGridColumn":false}
     ];
 
-    function addWidgets(builder, contentPane, model) {
-        builder.addQuestionWidgets(questions, contentPane, model);
+    function buildPage(builder, contentPane, model) {
+        builder.addQuestions(questions, contentPane, model);
     }
 
     return {
@@ -21,6 +21,6 @@ define([], function() {
         "type": "popup",
         "isHeader": false,
         "questions": questions,
-        "addWidgets": addWidgets
+        "buildPage": buildPage
     };
 });

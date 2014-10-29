@@ -10,8 +10,8 @@ define([], function() {
         {"id":"addToObservation_createNewObservationWithResultButton", "type":"button", "isInReport":false, "isGridColumn":false, "options":["page_createNewObservation"]}
     ];
 
-    function addWidgets(builder, contentPane, model) {
-        builder.addQuestionWidgets(questions, contentPane, model);
+    function buildPage(builder, contentPane, model) {
+        builder.addQuestions(questions, contentPane, model);
     }
 
     return {
@@ -20,6 +20,6 @@ define([], function() {
         "type": "popup",
         "isHeader": false,
         "questions": questions,
-        "addWidgets": addWidgets
+        "buildPage": buildPage
     };
 });

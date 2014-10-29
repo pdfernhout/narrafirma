@@ -9,8 +9,8 @@ define([], function() {
         {"id":"addToExcerpt_createNewExcerptWithTextButton", "type":"button", "isInReport":false, "isGridColumn":false, "options":["page_createNewExcerpt"]}
     ];
 
-    function addWidgets(builder, contentPane, model) {
-        builder.addQuestionWidgets(questions, contentPane, model);
+    function buildPage(builder, contentPane, model) {
+        builder.addQuestions(questions, contentPane, model);
     }
 
     return {
@@ -19,6 +19,6 @@ define([], function() {
         "type": "popup",
         "isHeader": false,
         "questions": questions,
-        "addWidgets": addWidgets
+        "buildPage": buildPage
     };
 });

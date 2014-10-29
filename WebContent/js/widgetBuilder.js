@@ -755,8 +755,8 @@ define([
     }
     
     // Returns disctionary mapping from question IDs to widgets
-    function addQuestionWidgets(questions, contentPane, model) {
-        console.log("addQuestionWidgets", questions);
+    function addQuestions(questions, contentPane, model) {
+        console.log("addQuestions", questions);
         var widgets = {};
         for (var questionIndex in questions) {
             var question = questions[questionIndex];
@@ -798,7 +798,7 @@ define([
         "add_function": add_function,
         "add_quizScoreResult": add_quizScoreResult,
         "addQuestionWidget": addQuestionWidget,
-        "addQuestionWidgets": addQuestionWidgets
+        "addQuestions": addQuestions
     };
     
     lang.mixin(exports, exportedFunctions);

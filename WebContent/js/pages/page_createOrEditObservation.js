@@ -21,8 +21,8 @@ define([], function() {
         {"id":"observation_thirdInterpretation_excerptsList", "type":"grid", "isInReport":true, "isGridColumn":true, "options":["page_selectExcerpt"]}
     ];
 
-    function addWidgets(builder, contentPane, model) {
-        builder.addQuestionWidgets(questions, contentPane, model);
+    function buildPage(builder, contentPane, model) {
+        builder.addQuestions(questions, contentPane, model);
     }
 
     return {
@@ -31,6 +31,6 @@ define([], function() {
         "type": "popup",
         "isHeader": false,
         "questions": questions,
-        "addWidgets": addWidgets
+        "buildPage": buildPage
     };
 });

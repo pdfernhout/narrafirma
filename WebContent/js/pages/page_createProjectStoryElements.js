@@ -7,8 +7,8 @@ define([], function() {
         {"id":"storyElementsInstructions", "type":"label", "isInReport":false, "isGridColumn":false}
     ];
 
-    function addWidgets(builder, contentPane, model) {
-        builder.addQuestionWidgets(questions, contentPane, model);
+    function buildPage(builder, contentPane, model) {
+        builder.addQuestions(questions, contentPane, model);
     }
 
     return {
@@ -17,6 +17,6 @@ define([], function() {
         "type": "page",
         "isHeader": false,
         "questions": questions,
-        "addWidgets": addWidgets
+        "buildPage": buildPage
     };
 });

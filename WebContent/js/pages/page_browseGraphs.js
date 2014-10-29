@@ -10,8 +10,8 @@ define([], function() {
         {"id":"mockup_graphBrowser", "type":"image", "isInReport":true, "isGridColumn":false, "options":["images/mockups/mockupGraphs.png"]}
     ];
 
-    function addWidgets(builder, contentPane, model) {
-        builder.addQuestionWidgets(questions, contentPane, model);
+    function buildPage(builder, contentPane, model) {
+        builder.addQuestions(questions, contentPane, model);
     }
 
     return {
@@ -20,6 +20,6 @@ define([], function() {
         "type": "page",
         "isHeader": false,
         "questions": questions,
-        "addWidgets": addWidgets
+        "buildPage": buildPage
     };
 });

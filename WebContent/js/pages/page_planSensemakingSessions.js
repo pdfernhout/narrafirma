@@ -11,8 +11,8 @@ define([], function() {
         {"id":"project_sensemakingSessionPlansList", "type":"grid", "isInReport":true, "isGridColumn":false, "options":["page_addSensemakingSessionPlan"]}
     ];
 
-    function addWidgets(builder, contentPane, model) {
-        builder.addQuestionWidgets(questions, contentPane, model);
+    function buildPage(builder, contentPane, model) {
+        builder.addQuestions(questions, contentPane, model);
     }
 
     return {
@@ -21,6 +21,6 @@ define([], function() {
         "type": "page",
         "isHeader": false,
         "questions": questions,
-        "addWidgets": addWidgets
+        "buildPage": buildPage
     };
 });

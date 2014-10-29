@@ -172,7 +172,7 @@ define([
         var popupPageDefinition = {
              "id": "testDogQuestions",
              "questions": domain.testDogQuestions,
-             addWidgets: lang.partial(widgetBuilder.addQuestionWidgets, domain.testDogQuestions)
+             addWidgets: lang.partial(widgetBuilder.addQuestions, domain.testDogQuestions)
         };
 
         var data = model.get(id);
