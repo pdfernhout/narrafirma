@@ -409,18 +409,6 @@ define([
         return contentPane;
     }
     
-    function add_report(contentPane, model, id, options) {
-        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
-        
-        var label = new ContentPane({
-            // content: translate(id + "::prompt")
-            content: "<b>UNFINISHED add_report: " + id + "</b>"       		
-        });
-        label.placeAt(questionContentPane);
-        label.startup();
-        return label;
-    }
-    
     function add_recommendationTable(contentPane, model, id, options) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
@@ -651,6 +639,10 @@ define([
         return "<b>" + total + " of a possible " + possibleTotal + " (" + percent + "%)</b>";
     }
     
+    function calculate_report(model, headerPageID) {
+        return domain.calculateReport(headerPageID);
+    }
+    
     function _add_calculatedText(contentPane, id, calculate) {
         // var calculatedText = "(Initializing...)";
         var calculatedText = calculate();
@@ -707,6 +699,12 @@ define([
             model.watch(questionID, lang.partial(updateLabelUsingCalculation, updateInfo));
         }
         return label;
+    }
+    
+    function add_report(contentPane, model, id, options) {
+        var headerPageID = "page_" + options[0];
+        var calculate = lang.partial(calculate_report, model, headerPageID);
+        return _add_calculatedText(contentPane, id, calculate);
     }
     
     /* TODO: code from questionEditor that has not yet been implemented

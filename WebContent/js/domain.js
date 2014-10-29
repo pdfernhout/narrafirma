@@ -5,19 +5,23 @@
 define([
     "js/pages/allPagesSummary",
     "dojo/_base/array",
+    "exports",
     "dojox/mvc/getStateful",
     "dojo/_base/lang",
     "dijit/registry",
     "dojo/string",
+    "js/translate",
     "dojo/Stateful",
     "dojox/mvc/StatefulArray"
 ], function(
     allPagesSummary,
     array,
+    exports,
     getStateful,
     lang,
     registry,
     string,
+    translate,
     Stateful,
     StatefulArray
 ) {
@@ -216,8 +220,40 @@ define([
     // data = getStateful(data);
     data = new Stateful(data);
     console.log("domain data", data);
+
+    function calculateReport(headerPageID) {
+        var report = "<br><br>";
+        var pageList = pagesToGoWithHeaders[headerPageID];
+        for (var pageIndex in pageList) {
+            // Skip last report page in a section
+            if (pageIndex === pageList.length - 1) break;
+            var pageID = pageList[pageIndex];
+            var pageDefinition = pageDefinitions[pageID];
+            if (pageDefinition.type !== "page") continue;
+            report += "<div>";
+            report += "<i>" + translate(pageID + "::title") + "</i><br>";
+            var questionsAnsweredCount = 0;
+            var questions = pageDefinition.questions;
+            for (var questionIndex in questions) {
+                var question = questions[questionIndex];
+                var value = data.get(question.id);
+                if (value && value.length !== 0) {
+                    // console.log("value", value, value.length);
+                    var shortName = translate(question.id + "::shortName", translate(question.id + "::prompt"));
+                    var separator = ":";
+                    if (shortName[shortName.length - 1] === "?") separator = "";
+                    report += shortName + separator + " <b>" + data.get(question.id) + "</b></br>";
+                    questionsAnsweredCount++;
+                }
+            }
+            // TODO: Translate
+            if (questionsAnsweredCount === 0) report += "(No questions answered on this page)";
+            report += "</div><br>";
+        }
+        return report;
+    }
     
-    return {
+    var exportedFunctions = {
         "data": data,
         "pagesToGoWithHeaders": pagesToGoWithHeaders,
         "questions": questions,
@@ -229,6 +265,9 @@ define([
         "callDashboardFunction": callDashboardFunction,
         "buttonClicked": buttonClicked,
         "setPageChangeCallback": setPageChangeCallback,
-        "extraTranslations": extraTranslations
+        "extraTranslations": extraTranslations,
+        "calculateReport": calculateReport
     };
+    
+    lang.mixin(exports, exportedFunctions);
 });
