@@ -817,7 +817,7 @@ define({
     "projectStory_surprise::shortName": "Surprised",
     "projectStory_text::prompt": "Now tell your project story as a future history (as though it has already happened).",
     "projectStory_text::shortName": "Story",
-    "project_PNIquestions_copyDraftsButton::prompt": "Copy the original draft versions into the answers below",
+    "project_PNIquestions_copyDraftsButton::prompt": "Copy the original draft versions into any corresponding empty answer fields below",
     "project_PNIquestions_emphasis_draft::prompt": "Which phases of PNI will be important to the project? (indicate most and least important phases)",
     "project_PNIquestions_emphasis_final::prompt": "Which phases of PNI will be important to the project? (indicate most and least important phases)",
     "project_PNIquestions_focus_draft::prompt": "What is the focus of the project? What is it about?",

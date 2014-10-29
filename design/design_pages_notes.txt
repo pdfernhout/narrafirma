@@ -271,7 +271,7 @@ in the places where they normally gather.
 * On this page you can review and improve your draft answers to the PNI planning questions [improvePlanningDrafts|label]
 based on your consideration of project aspects and your project stories. 
 
-* Copy the original draft versions into the answers below [project_PNIquestions_copyDraftsButton|button]
+* Copy the original draft versions into any corresponding empty answer fields below [project_PNIquestions_copyDraftsButton|button|copyDraftPNIQuestionVersionsIntoAnswers]
 
 * What is the goal of the project? Why are you doing it? [project_PNIquestions_goal_final|textarea]
 * What relationships are important to the project? [project_PNIquestions_relationships_final|textarea]

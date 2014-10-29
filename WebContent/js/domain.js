@@ -109,41 +109,83 @@ define([
         pageChangeCallback = pageChangeCallbackNewValue;
     }
     
-    // questionOrValue will be value for toggleButtons, question for other types
-    function buttonClicked(id, questionOrValue) {
-         console.log("buttonClicked", id, questionOrValue);
-         if (id === "printStoryForm") {
-             // TODO
-         } else if (id === "copyStoryFormURLDuringFinalize") {
-             // TODO
-         } else if (id === "copyStoryFormURLDuringStart") {
-             // TODO
-         } else if (id === "webStoryCollectionEnabled") {
-             // TODO: Overkill to recalculate them all...
-             pageChangeCallback();
-             // TODO
-             console.log("TODO webStoryCollectionEnabled");
-             return;
-         } else if (id === "disableWebStoryFormAfterStoryCollection") {
-             // TODO; Shut down the process....
-             registry.byId("webStoryCollectionEnabled").set("checked", false);
-             registry.byId("webStoryCollectionEnabled").set("value", false);
-             console.log("updated webStoryCollectionEnabled to false", registry.byId("webStoryCollectionEnabled").get("value"));
-             // TODO: Overkill to recalculate them all...
-             pageChangeCallback();
-             // TODO
-             console.log("TODO webStoryCollectionEnabled");
-             return;
-         } else if (id === "exportPresentationOutline") {
-             // TODO
-         } else if (id === "showHideCollectedStories") {
-             // This is in a popup...
-             // TODO
-         } else {
-             console.log("unknown button id: ", id, questionOrValue);
-             return alert("unknown button id: " + id);
+    function copyDraftPNIQuestionVersionsIntoAnswers(contentPane, model, id, questionOptions, value) {
+        var finalQuestionIDs = ["project_PNIquestions_goal_final", "project_PNIquestions_relationships_final",
+                         "project_PNIquestions_focus_final", "project_PNIquestions_range_final",
+                         "project_PNIquestions_scope_final", "project_PNIquestions_emphasis_final"];
+        
+        // TODO: Translate -- except maybe not using
+        //var proceed = confirm("Are you sure you want to copy any draft questions into corresponding empty final questions?");
+        //if (!proceed) return;
+        
+        var copiedAnswersCount = 0;
+        
+        for (var index in finalQuestionIDs) {
+            var finalQuestionID = finalQuestionIDs[index];
+            var draftQuestionID = finalQuestionID.replace("_final", "_draft");
+            // console.log("finalQuestionID/draftQuestionID", finalQuestionID, draftQuestionID);
+            var finalValue = model.get(finalQuestionID);
+            if (!finalValue) {
+                var draftValue = model.get(draftQuestionID);
+                if (draftValue) {
+                    model.set(finalQuestionID, draftValue);
+                    copiedAnswersCount++;
+                }
+            }
+        }
+        
+        // TODO: Translate
+        var message = "Copied {{copiedAnswersCount}} answers\nNote that blank draft answers are not copied; non-blank final answers are not replaced";
+        alert(message.replace("{{copiedAnswersCount}}", copiedAnswersCount));
+    }
+    
+    function webStoryCollectionEnabled(contentPane, model, id, questionOptions, value) {
+        // TODO: Overkill to recalculate them all...
+        pageChangeCallback();
+        // TODO
+        console.log("TODO webStoryCollectionEnabled");
+    }
+
+    function disableWebStoryFormAfterStoryCollection(contentPane, model, id, questionOptions, value) {
+        // TODO; Shut down the process....
+        registry.byId("webStoryCollectionEnabled").set("checked", false);
+        registry.byId("webStoryCollectionEnabled").set("value", false);
+        console.log("updated webStoryCollectionEnabled to false", registry.byId("webStoryCollectionEnabled").get("value"));
+        // TODO: Overkill to recalculate them all...
+        pageChangeCallback();
+        // TODO
+        console.log("TODO webStoryCollectionEnabled");        
+    }
+      
+    var buttonFunctions = {
+        //"printStoryForm": printStoryForm,
+        //"copyStoryFormURLDuringFinalize": copyStoryFormURLDuringFinalize,
+        //"copyStoryFormURLDuringStart": copyStoryFormURLDuringStart,
+        //"exportPresentationOutline": exportPresentationOutline,
+        //"showHideCollectedStories": showHideCollectedStories,
+        "copyDraftPNIQuestionVersionsIntoAnswers": copyDraftPNIQuestionVersionsIntoAnswers,
+        "webStoryCollectionEnabled": webStoryCollectionEnabled,
+        "disableWebStoryFormAfterStoryCollection": disableWebStoryFormAfterStoryCollection
+    };
+    
+    // dispatch the button click
+    function buttonClicked(contentPane, model, id, questionOptions, value) {
+         console.log("buttonClicked", id, questionOptions);
+         
+         var functionName = id;
+         if (questionOptions) {
+             functionName = questionOptions[0];
          }
-         alert("Unfinished handling for: " + id);
+         
+         var actualFunction = buttonFunctions[functionName];
+         if (!actualFunction) {
+             var message = "Unfinished handling for: " + id;
+             console.log(message, contentPane, model, id, questionOptions, value);
+             alert(message);
+             return;
+         } else {
+             actualFunction(contentPane, model, id, questionOptions, value);
+         }
     }
  
     ////

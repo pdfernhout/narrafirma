@@ -306,7 +306,11 @@ define([
         var toggleButton = new ToggleButton({
             label: "" + model.get(id),
             value: at(model, id),
-            onChange: function(value) {this.set("label", value); this.set("value", value); model.buttonClicked(id, value);}
+            onChange: function(value) {
+                this.set("label", value);
+                this.set("value", value);
+                domain.buttonClicked(contentPane, model, id, questionOptions, value);
+            }
         });
         
         toggleButton.placeAt(questionContentPane);
@@ -316,7 +320,7 @@ define([
     }
     
     function add_button(contentPane, model, id, questionOptions, callback) {
-        if (!callback) callback = lang.partial(domain.buttonClicked, id, questionOptions, model);
+        if (!callback) callback = lang.partial(domain.buttonClicked, contentPane, model, id, questionOptions);
         
         var button = new Button({
             label: translate(id + "::prompt"),
