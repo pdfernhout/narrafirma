@@ -592,9 +592,9 @@ define([
         }
         // var percentComplete = Math.round(100 * questionAnsweredCount / questionAskedCount);
         // if (questionAskedCount === 0) percentComplete = 0;
-        // TODO: Translate
-        //return "Answered " + questionAnsweredCount + " of " + questionAskedCount + " questions (" + percentComplete + "%)";
-        return "<b>answered " + questionAnsweredCount + " of " + questionAskedCount + " questions</b>";
+        var template = translate("calculate_questionAnswerCountOfTotalOnPage_template");
+        var response = template.replace("{{questionAnsweredCount}}", questionAnsweredCount).replace("{{questionAskedCount}}", questionAskedCount);
+        return "<b>" + response + "</b>";
     }
     
     function calculate_listCount(model, referencedQuestionID) {
@@ -635,8 +635,9 @@ define([
         }
         var possibleTotal = dependsOn.length * 3;
         var percent = Math.round(100 * total / possibleTotal);
-        // TODO: Translate
-        return "<b>" + total + " of a possible " + possibleTotal + " (" + percent + "%)</b>";
+        var template = translate("calculate_quizScoreResult_template");
+        var response = template.replace("{{total}}", total).replace("{{possibleTotal}}", possibleTotal).replace("{{percent}}", percent);
+        return "<b>" + response + "</b>";
     }
     
     function calculate_report(model, headerPageID) {

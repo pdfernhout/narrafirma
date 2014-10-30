@@ -135,9 +135,9 @@ define([
             }
         }
         
-        // TODO: Translate
-        var message = "Copied {{copiedAnswersCount}} answers\nNote that blank draft answers are not copied; non-blank final answers are not replaced";
-        alert(message.replace("{{copiedAnswersCount}}", copiedAnswersCount));
+        var template = translate("copyDraftPNIQuestion_template");
+        var message = template.replace("{{copiedAnswersCount}}", copiedAnswersCount);
+        alert(message);
     }
     
     function webStoryCollectionEnabled(contentPane, model, id, questionOptions, value) {
@@ -239,12 +239,17 @@ define([
                     var shortName = translate(question.id + "::shortName", translate(question.id + "::prompt"));
                     var separator = ":";
                     if (shortName[shortName.length - 1] === "?") separator = "";
-                    report += shortName + separator + " <b>" + data.get(question.id) + "</b></br>";
+                    /* TODO: Translate -- Should translate some answers for some types...
+                    if (question.type === "select" ...) {
+                        value = translate(value);
+                    }
+                    */
+                    report += shortName + separator + " <b>" + value + "</b></br>";
                     questionsAnsweredCount++;
                 }
             }
-            // TODO: Translate
-            if (questionsAnsweredCount === 0) report += "(No questions answered on this page)";
+            
+            if (questionsAnsweredCount === 0) report += translate("no_questions_answered_on_page");
             report += "</div><br>";
         }
         return report;
