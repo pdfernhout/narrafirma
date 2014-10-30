@@ -83,6 +83,9 @@ Need to figure out some way to represent RESULTS in observations (story browser 
 Observations list should not have "add" button, because observations can only be added using "add to observation" button on story browser, graph browser, trends report (but it should have an edit button)
 Think more about catalysis part
 
+Better and more consistent approach for translation selections for selects, checkboxes, radiobuttons, and maybe other types
+Translate report answers as needed for those types like selections
+
 DONE Checkboxes for multiple choices
 DONE Tab container sizing to full page
 DONE Slider with labels and no ticks
@@ -154,7 +157,8 @@ DONE Generate model information into allPagesSummary file.
 DONE Improve general button funciton dispatch handling
 DONE make "copy draft answers" in planning phase work
 DONE Create stub test server to store and retrieve data under node.js to see what it is like
-
+DONE added application level translation file and using it in translate function, but still need to fill it in
+DONE Generic application-level translation TODO items
 
 ======= CYNTHIA
 
