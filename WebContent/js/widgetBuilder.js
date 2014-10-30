@@ -559,13 +559,13 @@ define([
             console.log("ERROR: missing question: ", referencedQuestionID);
             return "ERROR: missing question: " + referencedQuestionID;            
         }
-        // TODO: Should these be translated for selects?
-        console.log("domain.questions", domain, domain.questions);
+        // console.log("domain.questions", domain, domain.questions);
         var question = domain.questions[referencedQuestionID];
         if (question) {
-            if (question.type === "select") {
-            console.log("trying to translate select");
-            value = translate(value, value);
+            if (question.type === "select" ||  question.type === "checkboxes" || question.type === "radiobuttons") {
+                // TODO: This may not translate correctly for checkboxes; may need to be translated individually
+                // console.log("trying to translate select", value);
+                value = translate(value, value);
             }
         } else {
             console.log("calculate_questionAnswer: missing question definition for: ", referencedQuestionID);
