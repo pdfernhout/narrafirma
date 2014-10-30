@@ -289,8 +289,7 @@ require([
             if (!allPages.hasOwnProperty(pageKey)) continue;
             var page = allPages[pageKey];
             console.log("defining page", page.id);
-            // TODO: Translate this
-            var title = page.name;
+            var title = translate(page.id + "::title");
             if (page.isHeader) {
                 title = "<i>" + title + "</i>";
             } else {
@@ -330,7 +329,7 @@ require([
         /*
         // Now, premake pages only after all definitions are done (since some pages refer to others for question popups that may be defined later)
         array.forEach(pages, function(page) {
-            // console.log("creating page", page.name)
+            // console.log("creating page", page.id)
             // Skip over special page types
             if (page.type === "page") {
                 // Premake base pages
