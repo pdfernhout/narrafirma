@@ -554,8 +554,7 @@ define([
 
     function calculate_questionAnswer(model, referencedQuestionID) {
         var value = model.get(referencedQuestionID);
-        // TODO: Ensure this default value is translated
-        if (value === null) value = "(Not Yet Entered)";
+        if (value === null) value = translate("question_not_yet_answered");
         if (value === undefined) {
             console.log("ERROR: missing question: ", referencedQuestionID);
             return "ERROR: missing question: " + referencedQuestionID;            

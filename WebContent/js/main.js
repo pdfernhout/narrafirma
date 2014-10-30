@@ -9,6 +9,7 @@ require([
     "dojo/dom-construct",
     "dojo/dom-style",
     "dojo/hash",
+    "js/translate",
     "js/utility",
     "js/widgetBuilder",
     "js/widgets/grid-table",
@@ -25,6 +26,7 @@ require([
     domConstruct,
     domStyle,
     hash,
+    translate,
     utility,
     widgetBuilder,
     widgetGridTable,
@@ -162,15 +164,14 @@ require([
        
        page.buildPage(widgetBuilder, pagePane, domain.data);
        
-       // TODO: Fix this to store data
        if (!page.isHeader) {
-           // TODO: Translate -- putting in English versions as kludge for now into special domain dictionary
+           // Uses special domain dictionary to store translations synthesized for each indidivual widget
            var options = ["intentionally skipped", "partially done", "completely finished"];
            var statusEntryID = id + "_pageStatus";
-           domain.extraTranslations[statusEntryID + "::prompt"] =  "The dashboard status of this page is: ";
+           domain.extraTranslations[statusEntryID + "::prompt"] =  translate("dashboard_status_entry::prompt") + " ";
            for (var optionIndex in options) {
                var option = options[optionIndex];
-               domain.extraTranslations[statusEntryID + "::selection:" + option] = option;
+               domain.extraTranslations[statusEntryID + "::selection:" + option] = translate("dashboard_status_entry::selection:" + option);
            }
            // TODO: Put blank line in here
            widgetBuilder.add_select(pagePane, domain.data, statusEntryID, options);
@@ -184,7 +185,7 @@ require([
                // console.log("pageID", page, pageID, domain.pageDefinitions, domain.pageDefinitions[pageID]);
                if (!domain.pageDefinitions[pageID]) console.log("Error: problem finding page definition for", pageID, " -- Could the domain be out of date relative to the design and pages.js?");
                if (domain.pageDefinitions[pageID] && domain.pageDefinitions[pageID].type === "page") {
-                   domain.extraTranslations[statusViewID + "::prompt"] = domain.pageDefinitions[pageID].name + " status: ";
+                   domain.extraTranslations[statusViewID + "::prompt"] = translate(pageID + "::title") + " " + translate("dashboard_status_label") + " ";
                    widgetBuilder.add_questionAnswer(pagePane, domain.data, statusViewID, [pageID + "_pageStatus"]);
                }
            }
