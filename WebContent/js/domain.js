@@ -217,8 +217,34 @@ define([
     // data = getStateful(data);
     data = new Stateful(data);
     console.log("domain data", data);
+    
+    function calculate_quizScoreResult(model, dependsOn) {
+        // console.log("quiz score result", dependsOn);
+        var total = 0;
+        for (var dependsOnIndex in dependsOn) {
+            var questionID = dependsOn[dependsOnIndex];
+            // console.log("data", data);
+            var questionAnswer = model.get(questionID);
+            var answerWeight = 0;
+            if (questionAnswer) {
+                // console.log("questionAnswer", questionAnswer);
+                answerWeight = questions[questionID].options.indexOf(questionAnswer) - 1;
+                // console.log("answerWeight", answerWeight);
+                if (answerWeight < 0) answerWeight = 0;
+                total += answerWeight;
+            } else {
+               // Nothing 
+            }
+            // console.log("questionAnswer", questionID, questionAnswer, answerWeight, total);
+        }
+        var possibleTotal = dependsOn.length * 3;
+        var percent = Math.round(100 * total / possibleTotal);
+        var template = translate("calculate_quizScoreResult_template");
+        var response = template.replace("{{total}}", total).replace("{{possibleTotal}}", possibleTotal).replace("{{percent}}", percent);
+        return "<b>" + response + "</b>";
+    }
 
-    function calculateReport(headerPageID) {
+    function calculate_report(model, headerPageID) {
         var report = "<br><br>";
         var pageList = pagesToGoWithHeaders[headerPageID];
         for (var pageIndex in pageList) {
@@ -228,23 +254,34 @@ define([
             var pageDefinition = pageDefinitions[pageID];
             if (pageDefinition.type !== "page") continue;
             report += "<div>";
-            report += "<i>" + translate(pageID + "::title") + "</i><br>";
+            report += "<i> *** " + translate(pageID + "::title") + "</i>  ***<br><br>";
             var questionsAnsweredCount = 0;
             var questions = pageDefinition.questions;
             for (var questionIndex in questions) {
                 var question = questions[questionIndex];
                 var value = data.get(question.id);
+                if (question.type === "quizScoreResult") {
+                    var dependsOn = question.options;
+                    value = calculate_quizScoreResult(data, dependsOn);
+                    // Don't count these as answered questions
+                    questionsAnsweredCount--;
+                }
                 if (value && value.length !== 0) {
                     // console.log("value", value, value.length);
                     var shortName = translate(question.id + "::shortName", translate(question.id + "::prompt"));
                     var separator = ":";
-                    if (shortName[shortName.length - 1] === "?") separator = "";
+                    var lastQuestionCharacter = shortName[shortName.length - 1];
+                    if (lastQuestionCharacter === "?" || lastQuestionCharacter == "." || lastQuestionCharacter == ")") {
+                        separator = "<br>";
+                    } else if (lastQuestionCharacter === ":") {
+                        separator = " ";
+                    }
                     /* TODO: Translate -- Should translate some answers for some types...
                     if (question.type === "select" ...) {
                         value = translate(value);
                     }
                     */
-                    report += shortName + separator + " <b>" + value + "</b></br>";
+                    report += shortName + separator + " <b>" + value + "</b></br><br>";
                     questionsAnsweredCount++;
                 }
             }
@@ -268,7 +305,8 @@ define([
         "buttonClicked": buttonClicked,
         "setPageChangeCallback": setPageChangeCallback,
         "extraTranslations": extraTranslations,
-        "calculateReport": calculateReport
+        "calculate_report": calculate_report,
+        "calculate_quizScoreResult": calculate_quizScoreResult
     };
     
     lang.mixin(exports, exportedFunctions);

@@ -614,36 +614,6 @@ define([
         return domain.callDashboardFunction(functionName, question);
     }
     
-    function calculate_quizScoreResult(model, dependsOn) {
-        // console.log("quiz score result", dependsOn);
-        var total = 0;
-        for (var dependsOnIndex in dependsOn) {
-            var questionID = dependsOn[dependsOnIndex];
-            // console.log("domain.data", domain.data);
-            var questionAnswer = model.get(questionID);
-            var answerWeight = 0;
-            if (questionAnswer) {
-                // console.log("questionAnswer", questionAnswer);
-                answerWeight = domain.questions[questionID].options.indexOf(questionAnswer) - 1;
-                // console.log("answerWeight", answerWeight);
-                if (answerWeight < 0) answerWeight = 0;
-                total += answerWeight;
-            } else {
-               // Nothing 
-            }
-            // console.log("questionAnswer", questionID, questionAnswer, answerWeight, total);
-        }
-        var possibleTotal = dependsOn.length * 3;
-        var percent = Math.round(100 * total / possibleTotal);
-        var template = translate("calculate_quizScoreResult_template");
-        var response = template.replace("{{total}}", total).replace("{{possibleTotal}}", possibleTotal).replace("{{percent}}", percent);
-        return "<b>" + response + "</b>";
-    }
-    
-    function calculate_report(model, headerPageID) {
-        return domain.calculateReport(headerPageID);
-    }
-    
     function _add_calculatedText(contentPane, id, calculate) {
         // var calculatedText = "(Initializing...)";
         var calculatedText = calculate();
@@ -687,7 +657,7 @@ define([
     
     function add_quizScoreResult(contentPane, model, id, options) {
         var dependsOn = options;
-        var calculate = lang.partial(calculate_quizScoreResult, model, dependsOn);
+        var calculate = lang.partial(domain.calculate_quizScoreResult, model, dependsOn);
         var label = _add_calculatedText(contentPane, id, calculate);
         // TODO: Recalculating next two variables wheres they are also calculated in _add_calculatedText
         var baseText = translate(id + "::prompt");
@@ -704,7 +674,7 @@ define([
     
     function add_report(contentPane, model, id, options) {
         var headerPageID = "page_" + options[0];
-        var calculate = lang.partial(calculate_report, model, headerPageID);
+        var calculate = lang.partial(domain.calculate_report, model, headerPageID);
         return _add_calculatedText(contentPane, id, calculate);
     }
     
@@ -801,7 +771,7 @@ define([
         "add_function": add_function,
         "add_quizScoreResult": add_quizScoreResult,
         "addQuestionWidget": addQuestionWidget,
-        "addQuestions": addQuestions
+        "addQuestions": addQuestions,
     };
     
     lang.mixin(exports, exportedFunctions);
