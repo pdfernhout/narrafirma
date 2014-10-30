@@ -39,12 +39,6 @@ define([
     Stateful,
     OnDemandGrid
 ){
-    var storyList = [
-         { title: "The night the bed fell", body: "Story 1..." },
-         { title: "The golden faucets", body: "Story 2..."},
-         { title: "More pickles!", body: "Story 3..."}
-     ];
-    
     // Kludge because dgrid seems to need to be resized after shown to ensure header displayed correctly -- reset to [] for each new page
     var allGrids = [];
     
@@ -63,32 +57,14 @@ define([
         while (allGrids.length) allGrids.pop();
     }
 
-    // TODO: Maybe rethink how unique item IDs work? Setting to start at 1000 becaues of test data created in story browser
+    // TODO: Maybe rethink how unique item IDs work? Setting to start at 1000 because of test data created in story browser
     var uniqueItemIDCounter = 1000;
     
     function newItemAdded(id, grid, itemContentPane, form, popupPageDefinition, store, statefulItem) {
         console.log("OK clicked", statefulItem);
-        // itemContentPane.hide();
-        // dialogOK(question, questionEditorDiv, form);
 
         var uniqueItemID = ++uniqueItemIDCounter;
-        // var newItem = {id: uniqueItemID};
-        
-        /*
-        var newItem = {};
-        
-        array.forEach(popupPageDefinition.questions, function (question) {
-            // TODO: This may not work for more complex question types or custom widgets?
-            // console.log("question type", question, question.type);
-            if (question.type !== "label" && question.type !== "header" && question.type !== "image") {
-                newItem[question.id] = statefulItem.get(question.id);
-            }
-        });
-        
-        console.log("got data for add form", store, newItem);
-        
-        store.put(newItem);
-        */
+
         store.put(statefulItem);
                 
         console.log("put store for add form");
@@ -102,7 +78,7 @@ define([
         // The next line is needed to get rid of duplicate IDs for next time the form is opened:
         form.destroyRecursive();
         console.log("shut down add form");
-}
+    }
     
     function addButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
         console.log("add button pressed", id, event);
@@ -116,55 +92,24 @@ define([
         clearGridsKludge();
         
         var newItem = {};
-        /*
-        array.forEach(popupPageDefinition.questions, function (question) {
-            console.log("defining oject -- question type", question, question.type);
-            if (question.type !== "label" && question.type !== "header" && question.type !== "image") {
-                newItem[question.id] = null;
-            }
-        });
-        */
         
         var statefulItem = new Stateful(newItem);
         
-        // console.log("grid: about to call addWidgets");
         popupPageDefinition.buildPage(widgetBuilder, form, statefulItem);
-        // console.log("grid: done with call addWidgets");
-        
-        // TODO: Does the dialog itself have to be "destroyed"???
-        
+             
         utility.newButton("list_dialog_ok_" + grid.id, "button_OK", form, lang.partial(newItemAdded, id, grid, itemContentPane, form, popupPageDefinition, store, statefulItem));
         
         utility.newButton("list_dialog_cancel_" + grid.id, "button_Cancel", form, function() {
-            console.log("Cancel");
-            
-            // itemContentPane.hide();
-            itemContentPane.set("style", "display: none");
-            
+            console.log("Cancel chosen");
+            itemContentPane.set("style", "display: none");       
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
             form.destroyRecursive();
         });
-
-        /*
-        dialog = new Dialog({
-            // TODO: Translate text
-            // TODO: Make text specific to type of item
-            title: "Add Item",
-            content: form,
-            onCancel: function() {
-                // Handles close X in corner or escape
-                form.destroyRecursive();
-            }
-        });
-        */
         
         itemContentPane.addChild(form);
         
         form.startup();
         resizeGridsKludge();
-        //dialog.startup();
-        //dialog.show();
-        //itemContentPane.show();
     }
     
     // TODO: Button should only be enabled if a selection
@@ -180,8 +125,7 @@ define([
         clearGridsKludge();
                 
         console.log("grid", grid, grid.selection);
-        // var item = grid
-        
+
         // TODO: Should only do for one of these... Need to break...
         // TODO: Need to search on unique field...
         var selection = null;
@@ -197,7 +141,7 @@ define([
                 console.log("item", item);
                 popupPageDefinition.buildPage(widgetBuilder, form, new Stateful(item));
 
-                /* TODO: Someway to disable editing?
+                /* TODO: Some way to disable editing?
                 array.forEach(popupPageDefinition.questions, function (question) {
                     // TODO: This may not work for more complex question types or custom widgets?
                     var widget = registry.byId(question.id);
@@ -212,38 +156,19 @@ define([
             });
         }
 
-        // TODO: Does the dialog itself have to be "destroyed"???
-        
         utility.newButton("list_dialog_ok" + grid.id, "button_Done", form, function() {
             console.log("Done");
-            
-            // dialog.hide();
+
             itemContentPane.set("style", "display: none");
             
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
             form.destroyRecursive();
         });
-
-        /*
-        dialog = new Dialog({
-            // TODO: Translate text
-            // TODO: Make text specific to type of item
-            title: "View Item",
-            content: form,
-            style: "overflow: auto;",
-            onCancel: function() {
-                // Handles close X in corner or escape
-                form.destroyRecursive();
-            }
-        });
-        */
         
         itemContentPane.addChild(form);
         
         form.startup();
         resizeGridsKludge();
-        //dialog.startup();
-        //dialog.show();
         console.log("done with view button clicked");
     }
     
@@ -300,9 +225,7 @@ define([
         var itemContentPane = new ContentPane({
         });
         
-        // console.log("grid startup with", storyList, projectStoriesStore);
-        
-        // Bind first two arguments to function that will be callback recieving one extra arg
+        // Bind first two arguments to function that will be callback receiving one extra argument
         // See: http://dojotoolkit.org/reference-guide/1.7/dojo/partial.html
         var viewButtonID = id + "view";
         var viewButton = utility.newButton(viewButtonID, "button_View", pane, lang.partial(viewButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
