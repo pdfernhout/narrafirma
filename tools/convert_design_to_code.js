@@ -411,7 +411,7 @@ function generateModel() {
             for (questionIndex in page.questions) {
                 question = page.questions[questionIndex];
                 if (modelTypes[question.type]) {
-                    console.log("question", question.id, question.type);
+                    // console.log("question", question.id, question.type);
                     if (question.type === "grid" || question.type === "annotationsGrid" || question.type === "accumulatedItemsGrid") {
                         model[question.id] = [];
                     } else if (question.type === "text" || question.type === "textarea") {
@@ -426,7 +426,7 @@ function generateModel() {
         }
     }
     for (var key in unusedTypes) {
-        console.log("unusedType: ", key);
+        console.log("unusedType for model: ", key);
     }
 
     // console.log("Pages to go with headers", JSON.stringify(pagesToGoWithHeaders, null, "  "));
@@ -448,11 +448,11 @@ function generateModel() {
             moreModels.push(model2);
             model2.__id = page.id;
             model2.__type = page.type;
-            console.log("page", page.type, page);
+            // console.log("page", page.type, page);
             for (questionIndex in page.questions) {
                 question = page.questions[questionIndex];
                 if (modelTypes[question.type]) {
-                    console.log("question", question.id, question.type);
+                    // console.log("question", question.id, question.type);
                     if (question.type === "grid") {
                         model2[question.id] = [];
                     } else if (question.type === "text" || question.type === "textarea") {
@@ -467,7 +467,7 @@ function generateModel() {
         }
     }
     for (var key2 in unusedTypes2) {
-        console.log("unusedType2: ", key2);
+        console.log("unusedType2 for model: ", key2);
     }
     
     // console.log("Output", JSON.stringify(moreModels, null, "  "));
