@@ -7,6 +7,7 @@ define([
     "dojo/dom-construct",
     "dojo/_base/lang",
     "dojo/query",
+    "js/test-data",
     "js/translate",
     "js/utility",
     "js/widgetBuilder",
@@ -25,6 +26,7 @@ define([
     domConstruct,
     lang,
     query,
+    testData,
     translate,
     utility,
     widgetBuilder,
@@ -164,10 +166,11 @@ define([
         console.log("insertStoryBrowser start", id);
         
         var popupPageDefinition = {
+             // TODO: Fix this to use real questions from domain!!!
              "id": "testDogQuestions",
-             "questions": domain.testDogQuestions,
+             "questions": testData.testDogQuestions,
              buildPage: function (builder, contentPane, model) {
-                 widgetBuilder.addQuestions(domain.testDogQuestions, contentPane, model);
+                 widgetBuilder.addQuestions(testData.testDogQuestions, contentPane, model);
              }
         };
 

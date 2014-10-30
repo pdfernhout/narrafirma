@@ -9,6 +9,7 @@ require([
     "dojo/dom-construct",
     "dojo/dom-style",
     "dojo/hash",
+    "js/test-data",
     "js/translate",
     "js/utility",
     "js/widgetBuilder",
@@ -26,6 +27,7 @@ require([
     domConstruct,
     domStyle,
     hash,
+    testData,
     translate,
     utility,
     widgetBuilder,
@@ -380,6 +382,10 @@ require([
     
     // Setup important callback for page changes
     domain.setPageChangeCallback(widgetBuilder.updateQuestionsForPageChange);
+    
+    // TODO: Remove this -- Kludge some test data for now
+    domain.data.collectedStoriesAfterCollection = testData.testDogStories;
+    domain.data.collectedStoriesDuringCollection = testData.testDogStories;
     
     // Call the main function
     createLayout();
