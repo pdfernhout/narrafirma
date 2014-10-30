@@ -209,8 +209,7 @@ define([
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var options = [];
-        // TODO: Translate label for no selection
-        if (addNoSelectionOption) options.push({name: " -- select -- ", id: "", selected: true});
+        if (addNoSelectionOption) options.push({name: translate("selection_has_not_been_made"), id: "", selected: true});
         if (questionOptions) {
             array.forEach(questionOptions, function(each) {
                 // console.log("choice", id, each);

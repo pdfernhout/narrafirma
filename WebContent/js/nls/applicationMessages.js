@@ -29,6 +29,9 @@ define({
     // Story browser button
     button_Filter: "Filter -- show only stories where both questions have the selected values",
     
+    // select widgets
+    selection_has_not_been_made: " -- select -- ",
+    
     // Used for boolean choice widget
     "boolean_choice_yes": "yes",
     "boolean_choice_no": "no"
