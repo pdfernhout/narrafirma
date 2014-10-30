@@ -12,6 +12,13 @@ define({
     
     "question_not_yet_answered": "(Not Yet Entered)",
     
+    // Translation of buttons
+    "button_home": "Home",
+    "button_previousPage": "Previous Page",
+    "button_nextPage": "Next Page",
+    "button_load": "Load",
+    "button_save": "Save",
+    
     // Used for boolean choice widget
     "boolean_choice_yes": "yes",
     "boolean_choice_no": "no"

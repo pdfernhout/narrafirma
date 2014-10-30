@@ -1,11 +1,12 @@
 "use strict";
 
 define([
-    "dojo/_base/array", 
+    "dojo/_base/array",
+    "js/translate",
     "dijit/form/Button",
     "dijit/form/FilteringSelect",
     "dojo/store/Memory",
-], function(array, Button, FilteringSelect, Memory) {
+], function(array, translate, Button, FilteringSelect, Memory) {
     
     function startsWith(str, prefix) {
         // console.log("startsWith", prefix, str.lastIndexOf(prefix, 0) === 0, str);
@@ -20,7 +21,10 @@ define([
     }
     
     // TODO: Two GUI components without translation here temporarily
-    function newButton(id, label, addToDiv, callback) {
+    function newButton(id, label_translate_id, addToDiv, callback) {
+        if (label_translate_id === null) label_translate_id = id;
+        var label = translate(label_translate_id);
+        
         var button = new Button({
             id: id,
             label: label,

@@ -280,7 +280,7 @@ require([
         // imageButton.set("showLabel", false);
         // imageButton.set("iconClass", "wwsButtonImage");
         
-        var homeButton = utility.newButton("homeImageButton", "Home image button", "navigationDiv", homeButtonClicked);
+        var homeButton = utility.newButton("button_home", null, "navigationDiv", homeButtonClicked);
         homeButton.set("showLabel", false);
         // homeButton.set("iconClass", "dijitEditorIcon dijitEditorIconOutdent");
         homeButton.set("iconClass", "homeButtonImage");
@@ -353,15 +353,14 @@ require([
         domStyle.set(selectWidget.domNode, "width", "400px");
         selectWidget.on("change", mainSelectChanged);
         
-        // TODO: Translation of buttons
-        previousPageButton = utility.newButton("previousPage", "Previous Page", "navigationDiv", previousPageClicked);
+        previousPageButton = utility.newButton("button_previousPage", null, "navigationDiv", previousPageClicked);
         previousPageButton.set("iconClass", "leftButtonImage");
         
-        nextPageButton = utility.newButton("nextPage", "Next Page", "navigationDiv", nextPageClicked);
+        nextPageButton = utility.newButton("button_nextPage", null, "navigationDiv", nextPageClicked);
         nextPageButton.set("iconClass", "rightButtonImage");
         
-        loadButton = utility.newButton("load", "Load", "navigationDiv", loadClicked);
-        saveButton = utility.newButton("save", "Save", "navigationDiv", saveClicked);
+        loadButton = utility.newButton("button_load", null, "navigationDiv", loadClicked);
+        saveButton = utility.newButton("button_save", null, "navigationDiv", saveClicked);
         
         // Setup the first page
         var fragment = hash();
