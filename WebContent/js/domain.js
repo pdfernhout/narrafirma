@@ -71,7 +71,7 @@ define([
     "fugiat quo voluptas nulla pariatur?";
     
     console.log("making test dog stories");
-    for (var i = 0; i < 100; i++) {
+    for (var i = 0; i < 10; i++) {
         var newStory = {
             id: i,
             name: "name " + i,
