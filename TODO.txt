@@ -14,6 +14,9 @@ if time
 - make report work
 - styling of nested box
 
+
+Fix issue with checkboxes (and maybe radio buttons) not saving data
+
 Main Dashboard
 
 Help window displaying HTML instead of alert
@@ -150,6 +153,7 @@ CHANGED to inline -- Dynamic pages for collection session plans
 DONE Generate model information into allPagesSummary file.
 DONE Improve general button funciton dispatch handling
 DONE make "copy draft answers" in planning phase work
+DONE Create stub test server to store and retrieve data under node.js to see what it is like
 
 
 ======= CYNTHIA
