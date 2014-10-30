@@ -281,7 +281,18 @@ define([
                         value = translate(value);
                     }
                     */
-                    report += shortName + separator + " <b>" + value + "</b></br><br>";
+                    var valueToDisplay = "";
+                    if (value instanceof Array) {
+                        for (var index in value) {
+                            var item = value[index];
+                            if (index !== "0") valueToDisplay += "<br>";
+                            valueToDisplay += "&nbsp;&nbsp;&nbsp;&nbsp;" + JSON.stringify(item);
+                        }
+                    } else {
+                        valueToDisplay += value;
+                    }
+                        
+                    report += shortName + separator + " <b>" + valueToDisplay + "</b></br><br>";
                     questionsAnsweredCount++;
                 }
             }
