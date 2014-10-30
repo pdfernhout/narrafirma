@@ -13,6 +13,7 @@ require([
     "js/widgetBuilder",
     "js/widgets/grid-table",
     "dijit/layout/ContentPane",
+    "dojo/store/JsonRest",
     "dijit/form/Select",
     "dojo/domReady!"
 ], function(
@@ -28,6 +29,7 @@ require([
     widgetBuilder,
     widgetGridTable,
     ContentPane,
+    JsonRest,
     Select
 ){
     // TODO: Add page validation
@@ -38,7 +40,34 @@ require([
     var selectWidget = null;
     var previousPageButton = null;
     var nextPageButton = null;
+    var loadButton = null;
+    var saveButton = null;
     var startPage = "page_dashboard";
+    var store = new JsonRest({target:"http://localhost:3000/versions/", idAttribute:"id"});
+    
+    function loadClicked(event) {
+        console.log("load clicked");
+        var body = store.get(1).then(function (item) {
+            var body = item.body;
+            console.log("item", item, body);
+            for (var key in body) {
+                if (body.hasOwnProperty(key)) {
+                    domain.data.set(key, body[key]);
+                }
+            }
+            // domain.data = item.body;
+        });
+        
+    }
+    
+    function saveClicked(event) {
+        console.log("save clicked");
+        console.log("save", domain.data);
+        var objectToSave = {"id": 1, "body": domain.data};
+        store.put(objectToSave).then(function () {
+            console.log("done with set");
+        });
+    }
     
     function urlHashFragmentChanged(newHash) {
         // console.log("urlHashFragmentChanged", newHash);
@@ -329,6 +358,9 @@ require([
         
         nextPageButton = utility.newButton("nextPage", "Next Page", "navigationDiv", nextPageClicked);
         nextPageButton.set("iconClass", "rightButtonImage");
+        
+        loadButton = utility.newButton("load", "Load", "navigationDiv", loadClicked);
+        saveButton = utility.newButton("save", "Save", "navigationDiv", saveClicked);
         
         // Setup the first page
         var fragment = hash();
