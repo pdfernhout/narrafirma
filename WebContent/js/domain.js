@@ -31,8 +31,12 @@ define([
     var exportedSurveyQuestions = [];
     var surveyResults = [];
     
-    // Kludge for extra translations for testing
-    var extraTranslations = {};
+    // TODO: Kludge for extra translations for testing -- code will add some things here, need better approach
+    var extraTranslations = {
+         // Used for boolean choice widget
+        "boolean_choice_yes": "yes",
+        "boolean_choice_no": "no"
+    };
 
     // Temporary test data
     var testDogQuestions = [
