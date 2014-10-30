@@ -133,9 +133,9 @@ define([
         
         // TODO: Does the dialog itself have to be "destroyed"???
         
-        utility.newButton("list_dialog_ok_" + grid.id, "OK", form, lang.partial(newItemAdded, id, grid, itemContentPane, form, popupPageDefinition, store, statefulItem));
+        utility.newButton("list_dialog_ok_" + grid.id, "button_OK", form, lang.partial(newItemAdded, id, grid, itemContentPane, form, popupPageDefinition, store, statefulItem));
         
-        utility.newButton("list_dialog_cancel_" + grid.id, "Cancel", form, function() {
+        utility.newButton("list_dialog_cancel_" + grid.id, "button_Cancel", form, function() {
             console.log("Cancel");
             
             // itemContentPane.hide();
@@ -214,7 +214,7 @@ define([
 
         // TODO: Does the dialog itself have to be "destroyed"???
         
-        utility.newButton("list_dialog_ok" + grid.id, "Done", form, function() {
+        utility.newButton("list_dialog_ok" + grid.id, "button_Done", form, function() {
             console.log("Done");
             
             // dialog.hide();
@@ -261,9 +261,8 @@ define([
         
         // TODO: FIX ME -- no longer have questions -- either add them back or find another approach...
         array.forEach(popupPageDefinition.questions, function (question) {
-            // TODO: Translate these texts
             if (question.isGridColumn) {
-                columns[question.id] = translate(question.id + "::shortName", "*FIXME*");
+                columns[question.id] = translate(question.id + "::shortName");
             }
         });
         
@@ -305,9 +304,8 @@ define([
         
         // Bind first two arguments to function that will be callback recieving one extra arg
         // See: http://dojotoolkit.org/reference-guide/1.7/dojo/partial.html
-        // TODO: Translate text of label
         var viewButtonID = id + "view";
-        var viewButton = utility.newButton(viewButtonID, "View", pane, lang.partial(viewButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+        var viewButton = utility.newButton(viewButtonID, "button_View", pane, lang.partial(viewButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
 
         var selected = 0;
         viewButton.set("disabled", true);
@@ -323,7 +321,7 @@ define([
         });
         
         if (includeAddButton) {
-            var addButton = utility.newButton(id + "add", "Add", pane, lang.partial(addButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+            var addButton = utility.newButton(id + "add", "button_Add", pane, lang.partial(addButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
         }
         
         if (!pagePane.addChild) {

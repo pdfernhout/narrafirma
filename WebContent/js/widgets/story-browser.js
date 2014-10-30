@@ -231,8 +231,7 @@ define([
         
         var storyList;
         
-        // TODO: Translate text for button
-        var filterButton = utility.newButton(id + "_filter", "Filter -- show only stories where both questions have the selected values", pagePane, function () {
+        var filterButton = utility.newButton(id + "_filter", "button_Filter", pagePane, function () {
             console.log("filter pressed");
             var question1Choice = filter1.question.get("value");
             var answers1Choices = filter1.answers.get("value");

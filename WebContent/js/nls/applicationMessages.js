@@ -19,6 +19,16 @@ define({
     "button_load": "Load",
     "button_save": "Save",
     
+    // Grid buttons
+    button_OK: "OK",
+    button_Cancel: "Cancel",
+    button_Done: "Done",
+    button_View: "View",
+    button_Add: "Add",
+    
+    // Story browser button
+    button_Filter: "Filter -- show only stories where both questions have the selected values",
+    
     // Used for boolean choice widget
     "boolean_choice_yes": "yes",
     "boolean_choice_no": "no"
