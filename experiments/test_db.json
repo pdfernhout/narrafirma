@@ -18,7 +18,23 @@
         "project_PNIquestions_range_draft": "",
         "project_PNIquestions_scope_draft": "",
         "project_PNIquestions_emphasis_draft": "",
-        "project_participantGroupsList": [],
+        "project_participantGroupsList": [
+          {
+            "participantGroup_name": "group one",
+            "participantGroup_description": "g1 describe",
+            "participantGroupAspects_status": "high",
+            "participantGroupAspects_topic_timeframe": "hours",
+            "id": 0.7702855955695908
+          },
+          {
+            "participantGroup_name": "group two",
+            "participantGroup_description": "g2 describe",
+            "participantGroupAspects_status": "low",
+            "participantGroupAspects_interest": "some",
+            "participantGroupAspects_topic_timeframe": "days",
+            "id": 0.09145217021394858
+          }
+        ],
         "aboutYou_experience": null,
         "aboutYou_help": null,
         "aboutYou_tech": null,
