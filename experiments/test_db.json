@@ -1,6 +1,8 @@
 {
   "versions": [
-    { "id": 1, "body": {
+    {
+      "id": 1,
+      "body": {
         "project_generalNotes_planning": "",
         "project_title": "",
         "project_communityOrOrganizationName": "",
@@ -106,7 +108,7 @@
         "project_returnRequestsList": [],
         "returnReport": null,
         "projectReport": null
+      }
     }
-}
   ]
 }
