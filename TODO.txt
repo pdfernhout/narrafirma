@@ -159,6 +159,7 @@ DONE make "copy draft answers" in planning phase work
 DONE Create stub test server to store and retrieve data under node.js to see what it is like
 DONE added application level translation file and using it in translate function, but still need to fill it in
 DONE Generic application-level translation TODO items
+DONE Move test data out of domain into its own module
 
 ======= CYNTHIA
 
