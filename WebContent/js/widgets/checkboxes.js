@@ -1,59 +1,22 @@
 "use strict";
 
-// TODO: Remove unneeded imports
 define([
     "dojo/_base/array",
     "dojo/_base/declare",
-    "dojo/dom",
-    "js/domain",
     "dojo/dom-construct",
-    "dojo/dom-style",
-    "dojo/_base/lang",
     "dojo/on",
-    "dijit/registry",
     "js/translate",
     "./widgetSupport",
-    "dojox/charting/plot2d/Bars",
-    "dijit/form/Button",
     "dijit/form/CheckBox",
-    "dijit/layout/ContentPane",
-    "dijit/form/FilteringSelect",
-    "dijit/form/HorizontalRule",
-    "dijit/form/HorizontalRuleLabels",
-    "dijit/form/HorizontalSlider",
-    "dojo/store/Memory",
-    "dijit/form/RadioButton",
-    "dijit/form/Select",
-    "dijit/form/SimpleTextarea",
-    "dijit/form/TextBox",
-    "dijit/form/ToggleButton",
     "dijit/_WidgetBase"
 ], function(
     array,
     declare,
-    dom,
-    domain,
     domConstruct,
-    domStyle,
-    lang,
     on,
-    registry,
     translate,
     widgetSupport,
-    Bars,
-    Button,
     CheckBox,
-    ContentPane,
-    FilteringSelect,
-    HorizontalRule,
-    HorizontalRuleLabels,
-    HorizontalSlider,
-    Memory,
-    RadioButton,
-    Select,
-    SimpleTextarea,
-    TextBox,
-    ToggleButton,
     _WidgetBase
 ){
     // TODO: Very similar to RadioButtonsWidget
@@ -106,7 +69,7 @@ define([
                     var localChoiceID = evt.target.defaultValue;
                     var checked = evt.target.checked;
                     self.value[localChoiceID] = checked;
-                    // console.log("clicked checkbox", evt, localChoiceID, checked, self.value);
+                    console.log("clicked checkbox", evt, localChoiceID, checked, self.value);
                     // TODO: send changed message?
                 });
                 checkBox.startup();

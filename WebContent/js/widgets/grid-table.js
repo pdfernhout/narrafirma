@@ -11,7 +11,6 @@ define([
     "js/widgetBuilder",
     "dgrid/extensions/ColumnResizer",
     "dijit/layout/ContentPane",
-    "dijit/Dialog",
     "dgrid/extensions/DijitRegistry",
     "dijit/form/Form",
     "dgrid/Keyboard",
@@ -30,7 +29,6 @@ define([
     widgetBuilder,
     ColumnResizer,
     ContentPane,
-    Dialog,
     DijitRegistry,
     Form,
     Keyboard,
@@ -82,7 +80,6 @@ define([
     
     function addButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
         console.log("add button pressed", id, event);
-        var dialog;
         
         var form = new Form();
         form.set("style", "width: 800px; height 800px; overflow: auto;");
@@ -115,7 +112,6 @@ define([
     // TODO: Button should only be enabled if a selection
     function viewButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
         console.log("view button pressed", id, event);
-        var dialog;
         
         var form = new Form(); 
         form.set("style", "width: 800px; height 800px; overflow: auto;");
