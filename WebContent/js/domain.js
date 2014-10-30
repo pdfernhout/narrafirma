@@ -119,10 +119,6 @@ define([
                          "project_PNIquestions_focus_final", "project_PNIquestions_range_final",
                          "project_PNIquestions_scope_final", "project_PNIquestions_emphasis_final"];
         
-        // TODO: Translate -- except maybe not using
-        //var proceed = confirm("Are you sure you want to copy any draft questions into corresponding empty final questions?");
-        //if (!proceed) return;
-        
         var copiedAnswersCount = 0;
         
         for (var index in finalQuestionIDs) {
