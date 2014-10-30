@@ -16,7 +16,6 @@ define([], function() {
 
     return {
         "id": "page_venuesTable",
-        "name": "Aspects table",
         "type": "questionsTable",
         "isHeader": false,
         "questions": questions,

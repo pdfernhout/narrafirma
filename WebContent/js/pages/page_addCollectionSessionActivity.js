@@ -23,7 +23,6 @@ define([], function() {
 
     return {
         "id": "page_addCollectionSessionActivity",
-        "name": "Add story collection session activity",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

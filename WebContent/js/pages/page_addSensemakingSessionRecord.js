@@ -35,7 +35,6 @@ define([], function() {
 
     return {
         "id": "page_addSensemakingSessionRecord",
-        "name": "Add sensemaking session record",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

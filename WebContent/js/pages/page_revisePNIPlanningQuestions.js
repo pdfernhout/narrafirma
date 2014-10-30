@@ -20,7 +20,6 @@ define([], function() {
 
     return {
         "id": "page_revisePNIPlanningQuestions",
-        "name": "Revise PNI Planning questions",
         "type": "page",
         "isHeader": false,
         "questions": questions,

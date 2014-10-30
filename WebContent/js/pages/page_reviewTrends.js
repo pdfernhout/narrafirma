@@ -18,7 +18,6 @@ define([], function() {
 
     return {
         "id": "page_reviewTrends",
-        "name": "Review trends",
         "type": "page",
         "isHeader": false,
         "questions": questions,

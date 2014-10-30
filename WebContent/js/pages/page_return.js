@@ -14,7 +14,6 @@ define([], function() {
 
     return {
         "id": "page_return",
-        "name": "Return",
         "type": "page",
         "isHeader": true,
         "questions": questions,

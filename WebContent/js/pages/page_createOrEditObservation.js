@@ -27,7 +27,6 @@ define([], function() {
 
     return {
         "id": "page_createOrEditObservation",
-        "name": "Create new observation",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

@@ -14,7 +14,6 @@ define([], function() {
 
     return {
         "id": "page_finalizeQuestionForms",
-        "name": "Print question forms",
         "type": "page",
         "isHeader": false,
         "questions": questions,

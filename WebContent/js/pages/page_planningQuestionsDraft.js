@@ -19,7 +19,6 @@ define([], function() {
 
     return {
         "id": "page_planningQuestionsDraft",
-        "name": "Answer PNI Planning questions",
         "type": "page",
         "isHeader": false,
         "questions": questions,

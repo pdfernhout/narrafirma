@@ -17,7 +17,6 @@ define([], function() {
 
     return {
         "id": "page_addPerspective",
-        "name": "Add or change perspective",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

@@ -19,7 +19,6 @@ define([], function() {
 
     return {
         "id": "page_enterFeedbackPiece",
-        "name": "Enter piece of feedback on project",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

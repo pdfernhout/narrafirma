@@ -13,7 +13,6 @@ define([], function() {
 
     return {
         "id": "page_annotateResultForPerspective",
-        "name": "Annotate result for perspective",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

@@ -23,7 +23,6 @@ define([], function() {
 
     return {
         "id": "page_addStoryCollectionSession",
-        "name": "Design story collection session",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

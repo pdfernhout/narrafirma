@@ -21,7 +21,6 @@ define([], function() {
 
     return {
         "id": "page_projectFacts",
-        "name": "Enter project facts",
         "type": "page",
         "isHeader": false,
         "questions": questions,

@@ -14,7 +14,6 @@ define([], function() {
 
     return {
         "id": "page_intervention",
-        "name": "Intervention",
         "type": "page",
         "isHeader": true,
         "questions": questions,

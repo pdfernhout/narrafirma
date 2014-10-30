@@ -16,7 +16,6 @@ define([], function() {
 
     return {
         "id": "page_themeStories",
-        "name": "Theme stories",
         "type": "page",
         "isHeader": false,
         "questions": questions,

@@ -15,7 +15,6 @@ define([], function() {
 
     return {
         "id": "page_startStoryCollection",
-        "name": "Start story collection",
         "type": "page",
         "isHeader": false,
         "questions": questions,

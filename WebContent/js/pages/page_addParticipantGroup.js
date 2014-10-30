@@ -38,7 +38,6 @@ define([], function() {
 
     return {
         "id": "page_addParticipantGroup",
-        "name": "Participant group",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

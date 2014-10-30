@@ -13,7 +13,6 @@ define([], function() {
 
     return {
         "id": "page_enterStories",
-        "name": "Enter stories",
         "type": "page",
         "isHeader": false,
         "questions": questions,

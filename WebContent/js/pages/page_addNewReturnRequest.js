@@ -17,7 +17,6 @@ define([], function() {
 
     return {
         "id": "page_addNewReturnRequest",
-        "name": "Enter project request",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

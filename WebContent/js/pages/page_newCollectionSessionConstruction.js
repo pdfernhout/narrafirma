@@ -15,7 +15,6 @@ define([], function() {
 
     return {
         "id": "page_newCollectionSessionConstruction",
-        "name": "Story collection construction",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

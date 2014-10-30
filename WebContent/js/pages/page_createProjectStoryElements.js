@@ -13,7 +13,6 @@ define([], function() {
 
     return {
         "id": "page_createProjectStoryElements",
-        "name": "Create project story elements",
         "type": "page",
         "isHeader": false,
         "questions": questions,

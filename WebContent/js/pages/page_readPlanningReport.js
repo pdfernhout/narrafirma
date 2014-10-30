@@ -14,7 +14,6 @@ define([], function() {
 
     return {
         "id": "page_readPlanningReport",
-        "name": "Read planning report",
         "type": "page",
         "isHeader": false,
         "questions": questions,

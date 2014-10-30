@@ -44,7 +44,6 @@ define([], function() {
 
     return {
         "id": "page_assessStorySharing",
-        "name": "Assess story sharing",
         "type": "page",
         "isHeader": false,
         "questions": questions,

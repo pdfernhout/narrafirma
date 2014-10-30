@@ -14,7 +14,6 @@ define([], function() {
 
     return {
         "id": "page_enterSensemakingSessionRecords",
-        "name": "Enter sensemaking session records",
         "type": "page",
         "isHeader": false,
         "questions": questions,

@@ -14,7 +14,6 @@ define([], function() {
 
     return {
         "id": "page_projectRequests",
-        "name": "Respond to requests for post-project support",
         "type": "page",
         "isHeader": false,
         "questions": questions,

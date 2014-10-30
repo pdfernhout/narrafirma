@@ -15,7 +15,6 @@ define([], function() {
 
     return {
         "id": "page_createNewExcerpt",
-        "name": "Create new excerpt",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

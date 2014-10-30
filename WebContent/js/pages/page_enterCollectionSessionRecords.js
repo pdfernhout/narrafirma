@@ -14,7 +14,6 @@ define([], function() {
 
     return {
         "id": "page_enterCollectionSessionRecords",
-        "name": "Enter story collection session records",
         "type": "page",
         "isHeader": false,
         "questions": questions,

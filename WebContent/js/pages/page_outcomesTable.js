@@ -33,7 +33,6 @@ define([], function() {
 
     return {
         "id": "page_outcomesTable",
-        "name": "Project outcomes",
         "type": "questionsTable",
         "isHeader": false,
         "questions": questions,

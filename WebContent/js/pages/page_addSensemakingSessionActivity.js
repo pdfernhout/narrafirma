@@ -23,7 +23,6 @@ define([], function() {
 
     return {
         "id": "page_addSensemakingSessionActivity",
-        "name": "Add sensemaking session activity",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

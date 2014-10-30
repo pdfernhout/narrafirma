@@ -17,7 +17,6 @@ define([], function() {
 
     return {
         "id": "page_addResonantStory",
-        "name": "Add resonant story",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

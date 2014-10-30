@@ -203,7 +203,6 @@ var fileTemplate = "// Generated from design\n" +
 "\n" +
 "    return {\n" +
 "        \"id\": \"{{pageID}}\",\n" +
-"        \"name\": \"{{pageName}}\",\n" +
 "        \"type\": \"{{pageType}}\",\n" +
 "        \"isHeader\": {{isHeader}},\n" +
 "        \"questions\": questions,\n" +
@@ -272,7 +271,6 @@ for (var pageIndex in pages) {
     var fileName = folder + page.id + ".js";
     var fileContent = fileTemplate;
     fileContent = fileContent.replace("{{pageID}}", page.id);
-    fileContent = fileContent.replace("{{pageName}}", page.name);
     fileContent = fileContent.replace("{{pageType}}", page.type);
     fileContent = fileContent.replace("{{isHeader}}", page.isHeader);
     allOutput = "";

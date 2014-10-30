@@ -14,7 +14,6 @@ define([], function() {
 
     return {
         "id": "page_participantGroups",
-        "name": "Describe participant groups",
         "type": "page",
         "isHeader": false,
         "questions": questions,

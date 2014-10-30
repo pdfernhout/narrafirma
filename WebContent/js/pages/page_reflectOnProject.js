@@ -22,7 +22,6 @@ define([], function() {
 
     return {
         "id": "page_reflectOnProject",
-        "name": "Reflect on the project",
         "type": "page",
         "isHeader": false,
         "questions": questions,

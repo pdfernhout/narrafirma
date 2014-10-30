@@ -19,7 +19,6 @@ define([], function() {
 
     return {
         "id": "page_addStoryQuestion",
-        "name": "Add story question",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

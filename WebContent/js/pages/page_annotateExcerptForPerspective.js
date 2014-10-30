@@ -13,7 +13,6 @@ define([], function() {
 
     return {
         "id": "page_annotateExcerptForPerspective",
-        "name": "Annotate excerpt for perspective",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

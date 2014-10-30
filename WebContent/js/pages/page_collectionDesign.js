@@ -14,7 +14,6 @@ define([], function() {
 
     return {
         "id": "page_collectionDesign",
-        "name": "Collection design",
         "type": "page",
         "isHeader": true,
         "questions": questions,

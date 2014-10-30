@@ -14,7 +14,6 @@ define([], function() {
 
     return {
         "id": "page_reviewIncomingStories",
-        "name": "Review incoming stories",
         "type": "page",
         "isHeader": false,
         "questions": questions,

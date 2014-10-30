@@ -33,7 +33,6 @@ define([], function() {
 
     return {
         "id": "page_addCollectionSessionRecord",
-        "name": "Add story collection session record",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

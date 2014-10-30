@@ -19,7 +19,6 @@ define([], function() {
 
     return {
         "id": "page_projectStory",
-        "name": "Project story",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

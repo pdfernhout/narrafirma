@@ -14,7 +14,6 @@ define([], function() {
 
     return {
         "id": "page_collectionProcess",
-        "name": "Collection process",
         "type": "page",
         "isHeader": true,
         "questions": questions,

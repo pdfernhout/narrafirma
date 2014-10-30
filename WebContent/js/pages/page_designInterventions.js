@@ -17,7 +17,6 @@ define([], function() {
 
     return {
         "id": "page_designInterventions",
-        "name": "Design intervention plans",
         "type": "page",
         "isHeader": false,
         "questions": questions,

@@ -16,7 +16,6 @@ define([], function() {
 
     return {
         "id": "page_clusterInterpretations",
-        "name": "Cluster interpretations",
         "type": "page",
         "isHeader": false,
         "questions": questions,

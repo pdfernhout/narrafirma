@@ -16,7 +16,6 @@ define([], function() {
 
     return {
         "id": "page_aboutYou",
-        "name": "About you",
         "type": "page",
         "isHeader": false,
         "questions": questions,

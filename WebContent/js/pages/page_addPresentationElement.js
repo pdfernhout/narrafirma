@@ -17,7 +17,6 @@ define([], function() {
 
     return {
         "id": "page_addPresentationElement",
-        "name": "Add element to project presentation outline",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

@@ -14,7 +14,6 @@ define([], function() {
 
     return {
         "id": "page_describePerspectives",
-        "name": "Describe perspectives",
         "type": "page",
         "isHeader": false,
         "questions": questions,

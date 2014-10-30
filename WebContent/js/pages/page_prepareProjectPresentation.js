@@ -16,7 +16,6 @@ define([], function() {
 
     return {
         "id": "page_prepareProjectPresentation",
-        "name": "Prepare outline of project presentation",
         "type": "page",
         "isHeader": false,
         "questions": questions,

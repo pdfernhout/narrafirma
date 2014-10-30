@@ -16,7 +16,6 @@ define([], function() {
 
     return {
         "id": "page_addToObservation",
-        "name": "Add to observation",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

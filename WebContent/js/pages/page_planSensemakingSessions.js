@@ -17,7 +17,6 @@ define([], function() {
 
     return {
         "id": "page_planSensemakingSessions",
-        "name": "Plan sensemaking sessions",
         "type": "page",
         "isHeader": false,
         "questions": questions,

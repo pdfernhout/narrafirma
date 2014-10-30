@@ -29,7 +29,6 @@ define([], function() {
 
     return {
         "id": "page_addInterventionRecord",
-        "name": "Add intervention record",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

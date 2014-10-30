@@ -14,7 +14,6 @@ define([], function() {
 
     return {
         "id": "page_catalysis",
-        "name": "Catalysis",
         "type": "page",
         "isHeader": true,
         "questions": questions,

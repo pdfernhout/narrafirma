@@ -17,7 +17,6 @@ define([], function() {
 
     return {
         "id": "page_writeQuestionsAboutParticipants",
-        "name": "Write questions about participants",
         "type": "page",
         "isHeader": false,
         "questions": questions,

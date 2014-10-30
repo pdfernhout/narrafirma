@@ -15,7 +15,6 @@ define([], function() {
 
     return {
         "id": "page_newSensemakingSessionOutcome",
-        "name": "Sensemaking session outcome",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

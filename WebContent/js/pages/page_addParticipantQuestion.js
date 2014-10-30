@@ -19,7 +19,6 @@ define([], function() {
 
     return {
         "id": "page_addParticipantQuestion",
-        "name": "Add participant question",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

@@ -16,7 +16,6 @@ define([], function() {
 
     return {
         "id": "page_browseGraphs",
-        "name": "Browse graphs",
         "type": "page",
         "isHeader": false,
         "questions": questions,

@@ -23,7 +23,6 @@ define([], function() {
 
     return {
         "id": "page_addSensemakingSessionPlan",
-        "name": "Enter sensemaking session plan",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

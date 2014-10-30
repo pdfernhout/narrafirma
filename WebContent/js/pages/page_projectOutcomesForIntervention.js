@@ -13,7 +13,6 @@ define([], function() {
 
     return {
         "id": "page_projectOutcomesForIntervention",
-        "name": "Answer questions about project outcomes",
         "type": "page",
         "isHeader": false,
         "questions": questions,

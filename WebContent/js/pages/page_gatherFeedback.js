@@ -15,7 +15,6 @@ define([], function() {
 
     return {
         "id": "page_gatherFeedback",
-        "name": "Gather feedback",
         "type": "page",
         "isHeader": false,
         "questions": questions,

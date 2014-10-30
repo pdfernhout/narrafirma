@@ -14,7 +14,6 @@ define([], function() {
 
     return {
         "id": "page_selectExcerpt",
-        "name": "Add excerpt to interpretation",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

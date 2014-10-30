@@ -17,7 +17,6 @@ define([], function() {
 
     return {
         "id": "page_designQuestionForm",
-        "name": "Design question form",
         "type": "page",
         "isHeader": false,
         "questions": questions,

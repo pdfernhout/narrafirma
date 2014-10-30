@@ -15,7 +15,6 @@ define([], function() {
 
     return {
         "id": "page_addToExcerpt",
-        "name": "Add text to excerpt",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

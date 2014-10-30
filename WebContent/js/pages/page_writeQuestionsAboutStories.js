@@ -17,7 +17,6 @@ define([], function() {
 
     return {
         "id": "page_writeQuestionsAboutStories",
-        "name": "Write questions about stories",
         "type": "page",
         "isHeader": false,
         "questions": questions,

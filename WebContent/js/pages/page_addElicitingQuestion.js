@@ -16,7 +16,6 @@ define([], function() {
 
     return {
         "id": "page_addElicitingQuestion",
-        "name": "Add story eliciting question",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

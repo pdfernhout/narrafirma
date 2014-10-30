@@ -24,7 +24,6 @@ define([], function() {
 
     return {
         "id": "page_addIntervention",
-        "name": "Plan an intervention",
         "type": "popup",
         "isHeader": false,
         "questions": questions,

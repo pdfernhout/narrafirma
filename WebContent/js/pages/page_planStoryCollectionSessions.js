@@ -17,7 +17,6 @@ define([], function() {
 
     return {
         "id": "page_planStoryCollectionSessions",
-        "name": "Plan story collection sessions",
         "type": "page",
         "isHeader": false,
         "questions": questions,

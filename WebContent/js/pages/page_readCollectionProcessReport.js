@@ -14,7 +14,6 @@ define([], function() {
 
     return {
         "id": "page_readCollectionProcessReport",
-        "name": "Read collection process report",
         "type": "page",
         "isHeader": false,
         "questions": questions,

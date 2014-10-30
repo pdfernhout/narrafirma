@@ -13,7 +13,6 @@ define([], function() {
 
     return {
         "id": "page_interpretObservations",
-        "name": "Review and interpret observations",
         "type": "page",
         "isHeader": false,
         "questions": questions,

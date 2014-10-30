@@ -13,7 +13,6 @@ define([], function() {
 
     return {
         "id": "page_reviewExcerpts",
-        "name": "Review excerpts",
         "type": "page",
         "isHeader": false,
         "questions": questions,
