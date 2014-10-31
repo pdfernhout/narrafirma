@@ -520,6 +520,30 @@ define([
         return label;
     }
     
+    function add_accumulatedItemsGrid(contentPane, model, id, options) {
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
+        
+        var label = new ContentPane({
+            // content: translate(id + "::prompt")
+            content: "<b>UNFINISHED accumulatedItemsGrid: " + id + "</b>"             
+        });
+        label.placeAt(questionContentPane);
+        label.startup();
+        return label;
+    }
+    
+    function add_excerptsList(contentPane, model, id, options) {
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
+        
+        var label = new ContentPane({
+            // content: translate(id + "::prompt")
+            content: "<b>UNFINISHED add_excerptsList: " + id + "</b>"             
+        });
+        label.placeAt(questionContentPane);
+        label.startup();
+        return label;
+    }
+    
     function add_storyBrowser(contentPane, model, id, options) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
@@ -763,6 +787,8 @@ define([
         "add_trendsReport": add_trendsReport,
         "add_clusterSpace": add_clusterSpace,
         "add_annotationsGrid": add_annotationsGrid,
+        "add_accumulatedItemsGrid": add_accumulatedItemsGrid,
+        "add_excerptsList": add_excerptsList,
         "add_storiesList": add_storiesList,
         "add_templateList": add_templateList,
         "add_questionAnswer": add_questionAnswer,
