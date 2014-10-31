@@ -180,6 +180,18 @@ define([
         var response = template.replace("{{total}}", total).replace("{{possibleTotal}}", possibleTotal).replace("{{percent}}", percent);
         return "<b>" + response + "</b>";
     }
+    
+    function labelForQuestion(question) {
+        var shortName = translate(question.id + "::shortName", translate(question.id + "::prompt"));
+        var separator = ":";
+        var lastQuestionCharacter = shortName[shortName.length - 1];
+        if (lastQuestionCharacter === "?" || lastQuestionCharacter == "." || lastQuestionCharacter == ")") {
+            separator = "<br>";
+        } else if (lastQuestionCharacter === ":") {
+            separator = " ";
+        }
+        return shortName + separator;
+    }
 
     function calculate_report(model, headerPageID) {
         var report = "<br><br>";
@@ -205,18 +217,10 @@ define([
                 }
                 if (value && value.length !== 0) {
                     // console.log("value", value, value.length);
-                    var shortName = translate(question.id + "::shortName", translate(question.id + "::prompt"));
-                    var separator = ":";
-                    var lastQuestionCharacter = shortName[shortName.length - 1];
-                    if (lastQuestionCharacter === "?" || lastQuestionCharacter == "." || lastQuestionCharacter == ")") {
-                        separator = "<br>";
-                    } else if (lastQuestionCharacter === ":") {
-                        separator = " ";
-                    }
                     
-                    var valueToDisplay = displayStringForValue(question, value, 4);
-                        
-                    report += shortName + separator + " " + valueToDisplay + "</br><br>";
+                    var valueToDisplay = displayStringForValue(question, value, 0);
+                    var label = labelForQuestion(question);
+                    report += label + " " + valueToDisplay + "</br><br>";
                     questionsAnsweredCount++;
                 }
             }
@@ -228,28 +232,38 @@ define([
     }
     
     function indent(level) {
+        console.log("indent", level);
         var result = "";
-        for (var i in level) {
-            result += "&nbsp;";
+        for (var i = 0; i < level; i++) {
+            result += "."; // "&nbsp;";
         }
         return result;
     }
     
     // Recursively calls itself
     function displayStringForValue(question, value, level) {
+        console.log("displayStringForValue", question, value, level);
         // TODO: Translate -- Should translate some answers for some types... But how to know which when when nested?
         var valueToDisplay = "";
         var item;
+        var itemDisplay;
+        var indentChars;
         if (value instanceof Array) {
+            console.log("array", value);
             valueToDisplay += "<br>";
             for (var index in value) {
                 item = value[index];
                 // if (index !== "0") valueToDisplay += "<br>";
-                valueToDisplay += indent(level) + displayStringForValue(null, item, level + 4) + "<br>";
+                indentChars = indent(level + 4);
+                itemDisplay = displayStringForValue(null, item, level + 4);
+                console.log("itemDisplay", itemDisplay);
+                valueToDisplay += "<br>" + indentChars + itemDisplay;
             }
         } else if (value.id) {
+            console.log("value with id", value);
             for (var key in value) {
                 if (!value.hasOwnProperty(key)) continue;
+                if (key === "watchCallbacks") continue;
                 if (key === "id") continue;
                 item = value[key];
                 // TODO: improve how label is calculated when no question, as underscores may not be used consistently in naming fields
@@ -259,12 +273,18 @@ define([
                     if (underscorePosition > -1) {
                         label = label.substring(underscorePosition + 1);
                     }
+                    label += ": ";
                 } else {
-                    label = translate(question.id + "::shortName", translate(question.id + "::prompt"));
+                    label = labelForQuestion(question);
                 }
-                valueToDisplay += indent(level) + label + ": " + displayStringForValue(null, item, level + 4) + "<br>";
+                indentChars = indent(level + 4);
+                console.log("label", label);
+                itemDisplay = displayStringForValue(null, item, level + 4);
+                console.log("itemDisplay", itemDisplay);
+                valueToDisplay += "<br>" + indentChars + label + itemDisplay;
             }
         } else {
+            console.log("regular", value);
             // TODO: Probably need to translate more types, like checkboxes
             if (question !== null && (question.type === "select" || question.type === "radiobuttons")) value = translate(value);
             valueToDisplay += "<b>" + value + "</b>";
