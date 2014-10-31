@@ -87,7 +87,25 @@
         "questionForm_image": "",
         "questionForm_startText": "",
         "questionForm_endText": "",
-        "project_collectionSessionPlansList": [],
+        "project_collectionSessionPlansList": [
+          {
+            "collectionSessionPlan_activitiesList": [
+              {
+                "collectionSessionPlan_activity_name": "act 1",
+                "collectionSessionPlan_activity_type": "discussing stories",
+                "id": 0.10940284185406746
+              },
+              {
+                "collectionSessionPlan_activity_name": "act 2",
+                "collectionSessionPlan_activity_type": "timeline exercise",
+                "collectionSessionPlan_activity_facilitation": "Fac1",
+                "id": 0.8673806459522783
+              }
+            ],
+            "collectionSessionPlan_name": "plan 1",
+            "id": 0.4333227671534652
+          }
+        ],
         "collectionDesignReport": null,
         "project_generalNotes_collectionProcess": "",
         "webStoryCollection_enableDisableButton": null,
@@ -323,7 +341,26 @@
         "reviewTrends_minSubsetSize": null,
         "reviewTrends_significanceThreshold": null,
         "project_savedExcerptsList": [],
-        "project_observationsDisplayList": [],
+        "project_observationsDisplayList": [
+          {
+            "observation_firstInterpretation_excerptsList": [
+              {
+                "id": 0.6052086086132489
+              },
+              {
+                "id": 0.8047113525035479
+              },
+              {
+                "id": 0.10458941418405487
+              }
+            ],
+            "observation_competingInterpretation_excerptsList": [],
+            "observation_thirdInterpretation_excerptsList": [],
+            "observation_name": "obs2",
+            "observation_text": "obs2 des",
+            "id": 0.033192483066437295
+          }
+        ],
         "clusterInterpretations_clusterSpace": null,
         "project_perspectivesList": [],
         "catalysisReport": null,
