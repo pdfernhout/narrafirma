@@ -213,23 +213,10 @@ define([
                     } else if (lastQuestionCharacter === ":") {
                         separator = " ";
                     }
-                    /* TODO: Translate -- Should translate some answers for some types...
-                    if (question.type === "select" ...) {
-                        value = translate(value);
-                    }
-                    */
-                    var valueToDisplay = "";
-                    if (value instanceof Array) {
-                        for (var index in value) {
-                            var item = value[index];
-                            if (index !== "0") valueToDisplay += "<br>";
-                            valueToDisplay += "&nbsp;&nbsp;&nbsp;&nbsp;" + JSON.stringify(item);
-                        }
-                    } else {
-                        valueToDisplay += value;
-                    }
+                    
+                    var valueToDisplay = displayStringForValue(question, value, 4);
                         
-                    report += shortName + separator + " <b>" + valueToDisplay + "</b></br><br>";
+                    report += shortName + separator + " " + valueToDisplay + "</br><br>";
                     questionsAnsweredCount++;
                 }
             }
@@ -238,6 +225,51 @@ define([
             report += "</div><br>";
         }
         return report;
+    }
+    
+    function indent(level) {
+        var result = "";
+        for (var i in level) {
+            result += "&nbsp;";
+        }
+        return result;
+    }
+    
+    // Recursively calls itself
+    function displayStringForValue(question, value, level) {
+        // TODO: Translate -- Should translate some answers for some types... But how to know which when when nested?
+        var valueToDisplay = "";
+        var item;
+        if (value instanceof Array) {
+            valueToDisplay += "<br>";
+            for (var index in value) {
+                item = value[index];
+                // if (index !== "0") valueToDisplay += "<br>";
+                valueToDisplay += indent(level) + displayStringForValue(null, item, level + 4) + "<br>";
+            }
+        } else if (value.id) {
+            for (var key in value) {
+                if (!value.hasOwnProperty(key)) continue;
+                if (key === "id") continue;
+                item = value[key];
+                // TODO: improve how label is calculated when no question, as underscores may not be used consistently in naming fields
+                var label = key;
+                if (question === null) {
+                    var underscorePosition = label.indexOf("_");
+                    if (underscorePosition > -1) {
+                        label = label.substring(underscorePosition + 1);
+                    }
+                } else {
+                    label = translate(question.id + "::shortName", translate(question.id + "::prompt"));
+                }
+                valueToDisplay += indent(level) + label + ": " + displayStringForValue(null, item, level + 4) + "<br>";
+            }
+        } else {
+            // TODO: Probably need to translate more types, like checkboxes
+            if (question !== null && (question.type === "select" || question.type === "radiobuttons")) value = translate(value);
+            valueToDisplay += "<b>" + value + "</b>";
+        }
+        return valueToDisplay;
     }
     
     var exportedFunctions = {
