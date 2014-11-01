@@ -33,6 +33,7 @@ define([], function() {
 
 
     function StoryQuestion () {
+        this._version = "0.0.0";
         this.id = "";
         this.text = "";
         this.type = null;
