@@ -1,7 +1,7 @@
 To run the conversion script or the test server:
 
 Install node.js
-Run (probaly as sudo): $npm install json-server
+Run to install json-server globally: $sudo npm install -g json-server
 Set up local external tools (under .settings, "node.js.launch" and "test server.launch")
 
 To do the conversion, select the file convert_design_to_code.js and pick external tool to run node.js
