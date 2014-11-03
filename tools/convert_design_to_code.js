@@ -19,28 +19,6 @@ function addOutput(output) {
   allOutput = allOutput + output;
 }
 
-// Main
-
-var fileTemplate = "// Generated from design\n" +
-"\"use strict\";\n" +
-"\n" +
-"define([], function() {\n" +
-"\n" +
-"    var questions = [\n{{questions}}\n    ];\n" +
-"\n" +
-"    function buildPage(builder, contentPane, model) {\n" +
-"{{body}}" +
-"    }\n" +
-"\n" +
-"    return {\n" +
-"        \"id\": \"{{pageID}}\",\n" +
-"        \"type\": \"{{pageType}}\",\n" +
-"        \"isHeader\": {{isHeader}},\n" +
-"        \"questions\": questions,\n" +
-"        \"buildPage\": buildPage\n" +
-"    };\n" +
-"});";
-
 function errorHandler(fileName) {
     return function (err) {
         if (err) {
@@ -83,74 +61,97 @@ var firstPage = true;
 var notReportable = {"label": true, "header": true, "button": true};
 
 var folder = "WebContent/js/pages/";
-for (var pageIndex in pages) {
-    var page = pages[pageIndex];
-    
-    // maintain info needed to make allPages file
-    if (firstPage) {
-        firstPage = false;
-    } else {
-        pageFileNames = pageFileNames + ",\n";
-        pageNames = pageNames + ",\n";
-        pageReturn = pageReturn + ",\n";
-    }
-    pageFileNames = pageFileNames + "    \"./" + page.id + "\"";
-    pageNames = pageNames + "    " + page.id;
-    pageReturn = pageReturn + "    \"" + page.id + "\": " + page.id;
-    
-    translations[page.id + "::title"] = page.name;
-    var fileName = folder + page.id + ".js";
-    var fileContent = fileTemplate;
-    fileContent = fileContent.replace("{{pageID}}", page.id);
-    fileContent = fileContent.replace("{{pageType}}", page.type);
-    fileContent = fileContent.replace("{{isHeader}}", page.isHeader);
-    allOutput = "";
-    // var simpleQuestions = [];
-    var questionOutput = "";
-    var optionsSplit;
-    for (var questionIndex in page.questions) {
-        var question = page.questions[questionIndex];
-        var options = question.options;
-        var optionsPrinted = "";
-        // optionsSplit is intentionally undefined so it will not appear in simpleQuestions if not defined
-        optionsSplit = undefined;
-        if (question.options) {
-            optionsPrinted = ", " + JSON.stringify(options.split(";"));
-        }
+
+var fileTemplate = "// Generated from design\n" +
+"\"use strict\";\n" +
+"\n" +
+"define([], function() {\n" +
+"\n" +
+"    var questions = [\n{{questions}}\n    ];\n" +
+"\n" +
+"    function buildPage(builder, contentPane, model) {\n" +
+"{{body}}" +
+"    }\n" +
+"\n" +
+"    return {\n" +
+"        \"id\": \"{{pageID}}\",\n" +
+"        \"type\": \"{{pageType}}\",\n" +
+"        \"isHeader\": {{isHeader}},\n" +
+"        \"questions\": questions,\n" +
+"        \"buildPage\": buildPage\n" +
+"    };\n" +
+"});";
+
+function writePageFiles() {
+    for (var pageIndex in pages) {
+        var page = pages[pageIndex];
         
-        addOutput("        widgets.add_" + question.type + "(contentPane, model, \"" + question.id + "\"" + optionsPrinted + ");\n");
-        translations[question.id + "::prompt"] = question.text;
-        if (question.shortText) {
-            translations[question.id + "::shortName"] = question.shortText;
-        } else if (question.type !== "label" && question.type !== "header" && question.type !== "image" && question.type !== "button" && question.type !== "report" && question.type !== "quizScoreResult") {
-            console.log("No short name for field: " + question.id + " type: " + question.type + " text: " + question.text);
+        // maintain info needed to make allPages file
+        if (firstPage) {
+            firstPage = false;
+        } else {
+            pageFileNames = pageFileNames + ",\n";
+            pageNames = pageNames + ",\n";
+            pageReturn = pageReturn + ",\n";
         }
+        pageFileNames = pageFileNames + "    \"./" + page.id + "\"";
+        pageNames = pageNames + "    " + page.id;
+        pageReturn = pageReturn + "    \"" + page.id + "\": " + page.id;
         
-        if (question.options) {
-            optionsSplit = question.options.split(";");
-            if (question.type in typesToTranslateOptions) {
-                for (var optionIndex in optionsSplit) {
-                    var option = optionsSplit[optionIndex];
-                    translations[question.id + "::selection:" + option] = option;
+        translations[page.id + "::title"] = page.name;
+        var fileName = folder + page.id + ".js";
+        var fileContent = fileTemplate;
+        fileContent = fileContent.replace("{{pageID}}", page.id);
+        fileContent = fileContent.replace("{{pageType}}", page.type);
+        fileContent = fileContent.replace("{{isHeader}}", page.isHeader);
+        allOutput = "";
+        // var simpleQuestions = [];
+        var questionOutput = "";
+        var optionsSplit;
+        for (var questionIndex in page.questions) {
+            var question = page.questions[questionIndex];
+            var options = question.options;
+            var optionsPrinted = "";
+            // optionsSplit is intentionally undefined so it will not appear in simpleQuestions if not defined
+            optionsSplit = undefined;
+            if (question.options) {
+                optionsPrinted = ", " + JSON.stringify(options.split(";"));
+            }
+            
+            addOutput("        widgets.add_" + question.type + "(contentPane, model, \"" + question.id + "\"" + optionsPrinted + ");\n");
+            translations[question.id + "::prompt"] = question.text;
+            if (question.shortText) {
+                translations[question.id + "::shortName"] = question.shortText;
+            } else if (question.type !== "label" && question.type !== "header" && question.type !== "image" && question.type !== "button" && question.type !== "report" && question.type !== "quizScoreResult") {
+                console.log("No short name for field: " + question.id + " type: " + question.type + " text: " + question.text);
+            }
+            
+            if (question.options) {
+                optionsSplit = question.options.split(";");
+                if (question.type in typesToTranslateOptions) {
+                    for (var optionIndex in optionsSplit) {
+                        var option = optionsSplit[optionIndex];
+                        translations[question.id + "::selection:" + option] = option;
+                    }
                 }
             }
+            var isInReport = !(question.type in notReportable);
+            var isGridColumn = (question.shortText !== null);
+            // simpleQuestions.push({"id": question.id, "type": question.type, "isReportable": isReportable, "isGridHeader": isGridHeader});
+            var questionInfo = {"id": question.id, "type": question.type, "isInReport": isInReport, "isGridColumn": isGridColumn, "options": optionsSplit};
+            if (questionOutput) questionOutput += ",\n";
+            questionOutput += "        " + JSON.stringify(questionInfo).split(',"').join(', "'); //.split('":').join('": ');
         }
-        var isInReport = !(question.type in notReportable);
-        var isGridColumn = (question.shortText !== null);
-        // simpleQuestions.push({"id": question.id, "type": question.type, "isReportable": isReportable, "isGridHeader": isGridHeader});
-        var questionInfo = {"id": question.id, "type": question.type, "isInReport": isInReport, "isGridColumn": isGridColumn, "options": optionsSplit};
-        if (questionOutput) questionOutput += ",\n";
-        questionOutput += "        " + JSON.stringify(questionInfo).split(',"').join(', "'); //.split('":').join('": ');
+        
+        fileContent = fileContent.replace("{{questions}}", questionOutput);
+        // To write direct calls:
+        // fileContent = fileContent.replace("{{body}}", allOutput);
+        fileContent = fileContent.replace("{{body}}", "        builder.addQuestions(questions, contentPane, model);\n");
+        fs.writeFile(fileName, fileContent, errorHandler(fileName));
     }
-    
-    fileContent = fileContent.replace("{{questions}}", questionOutput);
-    // To write direct calls:
-    // fileContent = fileContent.replace("{{body}}", allOutput);
-    fileContent = fileContent.replace("{{body}}", "        builder.addQuestions(questions, contentPane, model);\n");
-    fs.writeFile(fileName, fileContent, errorHandler(fileName));
 }
 
-// write allPages file
+var translationFileName = "WebContent/js/nls/pageMessages.js";
 
 var allPagesFileTemplate = "\"use strict\";\n" +
 "\n" +
@@ -164,40 +165,43 @@ var allPagesFileTemplate = "\"use strict\";\n" +
 "    };\n" +
 "});";
 
-var allPagesFileContent = allPagesFileTemplate;
-allPagesFileContent = allPagesFileContent.replace("{{pageFileNames}}", pageFileNames);
-allPagesFileContent = allPagesFileContent.replace("{{pageNames}}", pageNames);
-allPagesFileContent = allPagesFileContent.replace("{{pageReturn}}", pageReturn);
+function writeAllPagesFile() {
 
-var allPagesFileName = "WebContent/js/pages/allPages.js";
-fs.writeFile(allPagesFileName, allPagesFileContent, errorHandler(allPagesFileName));
+    var allPagesFileContent = allPagesFileTemplate;
+    allPagesFileContent = allPagesFileContent.replace("{{pageFileNames}}", pageFileNames);
+    allPagesFileContent = allPagesFileContent.replace("{{pageNames}}", pageNames);
+    allPagesFileContent = allPagesFileContent.replace("{{pageReturn}}", pageReturn);
+    
+    var allPagesFileName = "WebContent/js/pages/allPages.js";
+    fs.writeFile(allPagesFileName, allPagesFileContent, errorHandler(allPagesFileName));
+}
 
-//  write translations file
+function writeTranslationsFile() {
+    
+    allOutput = "";
+    addOutput("// Not indented correctly to make it easier to cut and paste to other language files\n" +
+            "// See: http://dojotoolkit.org/documentation/tutorials/1.9/i18n/\n" +
+            "define({\n" +
+            "    root: {\n");
+    
+    var first = true;
+    iterateObjectAlphabetically(translations, function(translations, key) {
+        if (!first) {
+            addOutput(",\n");
+        } else {
+            first = false;
+        }
+        addOutput("    " + JSON.stringify(key) + ": " + JSON.stringify(translations[key]));
+    });
+    
+    addOutput("\n");
+    addOutput("}\n" +
+    "});");
+    
+    fs.writeFile(translationFileName, allOutput, errorHandler(translationFileName));
+}
 
-allOutput = "";
-addOutput("// Not indented correctly to make it easier to cut and paste to other language files\n" +
-        "// See: http://dojotoolkit.org/documentation/tutorials/1.9/i18n/\n" +
-        "define({\n" +
-        "    root: {\n");
-
-var first = true;
-iterateObjectAlphabetically(translations, function(translations, key) {
-    if (!first) {
-        addOutput(",\n");
-    } else {
-        first = false;
-    }
-    addOutput("    " + JSON.stringify(key) + ": " + JSON.stringify(translations[key]));
-});
-
-addOutput("\n");
-addOutput("}\n" +
-"});");
-
-var translationFileName = "WebContent/js/nls/pageMessages.js";
-fs.writeFile(translationFileName, allOutput, errorHandler(translationFileName));
-
-//////
+////// Model writing
 
 var modelTypes = {
         text: 1,
@@ -220,7 +224,7 @@ var modelTypes = {
         report: 1
 };
 
-function generateModel() {
+function outputModel() {
     var unusedTypes = {};
     var model = {};
     var pagesToGoWithHeaders = {};
@@ -306,19 +310,31 @@ function generateModel() {
     addOutput(";\n\n");
 }
 
-allOutput = "";
-addOutput("// Generated from design\n");
-addOutput("\"use strict\";\n");
-addOutput("\ndefine(function() {\n\n");
-
-generateModel();
-
-addOutput("return {\n");
-addOutput("    \"pagesToGoWithHeaders\": pagesToGoWithHeaders,\n");
-addOutput("    \"data\": data,\n");
-addOutput("    \"other\": other\n");
-addOutput("};\n");
-addOutput("});\n");
-
 var allPagesSummaryFileName = "WebContent/js/pages/allPagesSummary.js";
-fs.writeFile(allPagesSummaryFileName, allOutput, errorHandler(allPagesSummaryFileName));
+
+function writeAllPagesSummaryFile() {
+    allOutput = "";
+    addOutput("// Generated from design\n");
+    addOutput("\"use strict\";\n");
+    addOutput("\ndefine(function() {\n\n");
+    
+    outputModel();
+    
+    addOutput("return {\n");
+    addOutput("    \"pagesToGoWithHeaders\": pagesToGoWithHeaders,\n");
+    addOutput("    \"data\": data,\n");
+    addOutput("    \"other\": other\n");
+    addOutput("};\n");
+    addOutput("});\n");
+    
+    fs.writeFile(allPagesSummaryFileName, allOutput, errorHandler(allPagesSummaryFileName));
+}
+
+function writeFiles() {
+    writePageFiles() ;
+    writeAllPagesFile();
+    writeTranslationsFile();
+    writeAllPagesSummaryFile();
+}
+
+writeFiles();
