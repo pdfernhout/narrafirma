@@ -58,9 +58,9 @@
 // @projectStories
 // @userStories
 
-# Dashboard [page_dashboard]
+# Dashboard [page_dashboard|page|Project]
 
-* Welcome to PNI Workbook. You can use this software to: [mainDashboardLabel|label]
+* Welcome to PNI Workbook. You can use this software to: [project_mainDashboardLabel|label]
 <ul>
 <li>plan your PNI project</li>
 <li>decide how you will collect stories</li>
@@ -87,16 +87,16 @@ the phases of the project.</p>
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-# Planning [page_planning]
+# Planning [page_planning|page|Project]
 
 * In the planning phase of your PNI project, you will make decisions about how your project will proceed. [project_projectPlanningLabel|label]
 You will think about your goals, your topic, your participants, and any opportunities and dangers you might encounter during the project.
 
 * Project general notes | You can enter some general notes on planning in this project here. [project_generalNotes_planning|textarea]
 
-## Enter project facts [page_projectFacts]
+## Enter project facts [page_projectFacts|page|Project]
 
-* On this page you will enter some facts about your project. The information you enter here will appear in your reports. [projectFacts|label]
+* On this page you will enter some facts about your project. The information you enter here will appear in your reports. [project_projectFacts|label]
 
 * Project title | What is the project's title? [project_title|text]
 * Community/organization name | What is the name of your community or organization? [project_communityOrOrganizationName|text]
@@ -107,74 +107,74 @@ You will think about your goals, your topic, your participants, and any opportun
 * Report start text | Enter any other information you want to appear at the top of project reports. [project_reportStartText|textarea]
 * Report end text | Enter any other information you want to appear at the bottom of project reports. [project_reportEndText|textarea]
 
-## Answer PNI Planning questions [page_planningQuestionsDraft]
+## Answer PNI Planning questions [page_planningQuestionsDraft|page|Project]
 
 * On this page you will answer some questions about your project's goals, relationships, focus, range, scope, and emphasis. [project_draftQuestionsLabel|label]
 If you don't have good answers for these questions right now, don't worry; you will have a chance to work on these answers again later.
 
-* What is the goal of the project? Why are you doing it? [project_PNIquestions_goal_draft|textarea]
-* What relationships are important to the project? [project_PNIquestions_relationships_draft|textarea]
-* What is the focus of the project? What is it about? [project_PNIquestions_focus_draft|textarea]
-* What range(s) of experience will the project cover? [project_PNIquestions_range_draft|textarea]
-* What is the project's scope? (number of people, number of stories, number of questions about stories) [project_PNIquestions_scope_draft|textarea]
-* Which phases of PNI will be important to the project? (indicate most and least important phases) [project_PNIquestions_emphasis_draft|textarea]
+* What is the goal of the project? Why are you doing it? [project_pniQuestions_goal_draft|textarea]
+* What relationships are important to the project? [project_pniQuestions_relationships_draft|textarea]
+* What is the focus of the project? What is it about? [project_pniQuestions_focus_draft|textarea]
+* What range(s) of experience will the project cover? [project_pniQuestions_range_draft|textarea]
+* What is the project's scope? (number of people, number of stories, number of questions about stories) [project_pniQuestions_scope_draft|textarea]
+* Which phases of PNI will be important to the project? (indicate most and least important phases) [project_pniQuestions_emphasis_draft|textarea]
 
-## Describe participant groups [page_participantGroups]
+## Describe participant groups [page_participantGroups|page|Project]
 
-* On this page you will think about groups of participants you want to involve in your project. [aboutParticipantGroups|label]
+* On this page you will think about groups of participants you want to involve in your project. [project_aboutParticipantGroups|label]
 Examples might be: doctors and patients; staff and customers; natives, immigrants, and tourists.
 
 * Please add participant groups in the list below (typically up to three groups). [project_participantGroupsList|grid|page_addParticipantGroup]
 
-## Participant group [page_addParticipantGroup|popup]
+## Participant group [page_addParticipantGroup|popup|ParticipantGroup]
 
 * Name | Please name this group of participants (for example, "doctors", "students", "staff"). [participantGroup_name|text]
 * Description | Please describe this group of participants. [participantGroup_description|textarea]
 For example, you might want to record any observations you have made about this group.
 What do you know about them?
 
-* Details for the participant group. [detailsAboutParticipantGroup|label]
+* Details for the participant group. [participantGroup_detailsAboutParticipantGroup|label]
 
-* Status [participantGroupAspects_statusHeader|header]
-* What is the status of these participants in the community or organization? [participantGroupAspects_status|select|unknown;very low;low;moderate;high;very high;mixed]
-* How much self-confidence do these participants have? [participantGroupAspects_confidence|select|unknown;very low;low;medium;high;very high;mixed]
+* Status [participantGroup_statusHeader|header]
+* What is the status of these participants in the community or organization? [participantGroup_status|select|unknown;very low;low;moderate;high;very high;mixed]
+* How much self-confidence do these participants have? [participantGroup_confidence|select|unknown;very low;low;medium;high;very high;mixed]
 
-* Ability [participantGroupAspects_abilityHeader|header]
-* How much free time do these participants have? [participantGroupAspects_time|select|unknown;very little;little;some;a lot;mixed]
-* What is the education level of these participants? [participantGroupAspects_education|select|unknown;illiterate;minimal;moderate;high;very high;mixed]
-* Do these participants have physical limitations that will impact their participation? [participantGroupAspects_physicalDisabilities|select|unknown;none;minimal;moderate;strong;mixed]
-* Do these participants have emotional impairments that will impact their participation (such as mental illness or traumatic stress)? [participantGroupAspects_emotionalImpairments|select|unknown;none;minimal;moderate;strong;mixed]
+* Ability [participantGroup_abilityHeader|header]
+* How much free time do these participants have? [participantGroup_time|select|unknown;very little;little;some;a lot;mixed]
+* What is the education level of these participants? [participantGroup_education|select|unknown;illiterate;minimal;moderate;high;very high;mixed]
+* Do these participants have physical limitations that will impact their participation? [participantGroup_physicalDisabilities|select|unknown;none;minimal;moderate;strong;mixed]
+* Do these participants have emotional impairments that will impact their participation (such as mental illness or traumatic stress)? [participantGroup_emotionalImpairments|select|unknown;none;minimal;moderate;strong;mixed]
 
-* Expectations [aspects_expectationsHeader|header]
-* For these participants, how important is performing well (with "high marks")? [participantGroupAspects_performing|select|unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed]
-* For these participants, how important is conforming (to what is "normal" or expected)? [participantGroupAspects_conforming|select|unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed]
-* For these participants, how important is self-promotion (competing with others)? [participantGroupAspects_promoting|select|unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed]
-* For these participants, how important is speaking out (having a say, venting, sounding off)? [participantGroupAspects_venting|select|unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed]
+* Expectations [participantGroup_expectationsHeader|header]
+* For these participants, how important is performing well (with "high marks")? [participantGroup_performing|select|unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed]
+* For these participants, how important is conforming (to what is "normal" or expected)? [participantGroup_conforming|select|unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed]
+* For these participants, how important is self-promotion (competing with others)? [participantGroup_promoting|select|unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed]
+* For these participants, how important is speaking out (having a say, venting, sounding off)? [participantGroup_venting|select|unknown;very unimportant;somewhat unimportant;somewhat important;very important;mixed]
 
-* Feelings about the project [aspects_feelingsHeader|header]
-* How motivated are these participants to participate in the project? [participantGroupAspects_interest|select|unknown;very little;a little;some;a lot;extremely;mixed]
-* How are these participants likely to feel about the project? [participantGroupAspects_feelings_project|select|unknown;negative;neutral;positive;mixed]
-* How do these participants feel about you? [participantGroupAspects_feelings_facilitator|select|unknown;negative;neutral;positive;mixed]
-* How do these participants feel about the idea of collecting stories? [participantGroupAspects_feelings_stories|select|unknown;negative;neutral;positive;mixed]
+* Feelings about the project [participantGroup_feelingsHeader|header]
+* How motivated are these participants to participate in the project? [participantGroup_interest|select|unknown;very little;a little;some;a lot;extremely;mixed]
+* How are these participants likely to feel about the project? [participantGroup_feelings_project|select|unknown;negative;neutral;positive;mixed]
+* How do these participants feel about you? [participantGroup_feelings_facilitator|select|unknown;negative;neutral;positive;mixed]
+* How do these participants feel about the idea of collecting stories? [participantGroup_feelings_stories|select|unknown;negative;neutral;positive;mixed]
 
-* Feelings about the topic [aspects_topicHeader|header]
-* What experiences have these participants had with the project's topic? [participantGroupAspects_topic_feeling|select|unknown;strongly negative;negative;neutral;positive;strongly positive;mixed]
-* How private do these participants consider the topic to be? [participantGroupAspects_topic_private|select|unknown;very private;medium;not private;mixed]
-* How hard will it be for these participants to articulate their feelings about the topic? [participantGroupAspects_topic_articulate|select|unknown;hard;medium;easy;mixed]
-* How long of a time period do you need these participants to look back on? [participantGroupAspects_topic_timeframe|select|unknown;hours;days;months;years;decades;mixed]
+* Feelings about the topic [participantGroup_topicHeader|header]
+* What experiences have these participants had with the project's topic? [participantGroup_topic_feeling|select|unknown;strongly negative;negative;neutral;positive;strongly positive;mixed]
+* How private do these participants consider the topic to be? [participantGroup_topic_private|select|unknown;very private;medium;not private;mixed]
+* How hard will it be for these participants to articulate their feelings about the topic? [participantGroup_topic_articulate|select|unknown;hard;medium;easy;mixed]
+* How long of a time period do you need these participants to look back on? [participantGroup_topic_timeframe|select|unknown;hours;days;months;years;decades;mixed]
 
-## About you [page_aboutYou]
-* About you [aspects_youHeader|header]
+## About you [page_aboutYou|page|Project.AboutYou]
+* About you [aboutYou_youHeader|header]
 * How much experience do you have facilitating PNI projects? [aboutYou_experience|select|none;a little;some;a lot]
 * How much help will you have carrying out this project? [aboutYou_help|select|none;a little;some;a lot]
 * How many technological resources will you have for carrying out this project? [aboutYou_tech|select|none;a little;some;a lot]
 
-## Tell project stories [page_projectStories]
+## Tell project stories [page_projectStories|page|Project]
 
 * On this page you will tell yourself some stories about how your project might play out. [project_projectStoriesList|grid|page_projectStory]
 These "project stories" will help you think about how best to plan the project.
 
-## Project story [page_projectStory|popup]
+## Project story [page_projectStory|popup|ProjectStory]
 
 * Scenario | Start by choosing a scenario for your project story. [projectStory_scenario|select|ask me anything;magic ears;fly on the wall;project aspects;my own scenario type]
 * Outcome | Now choose an outcome for your story. [projectStory_outcome|select|colossal success;miserable failure;acceptable outcome;my own outcome]
@@ -184,9 +184,9 @@ These "project stories" will help you think about how best to plan the project.
 * Surprised | What surprised you about this story? [projectStory_surprise|textarea]
 * Opportunities or dangers | Describe any opportunities or dangers you see in this story. [projectStory_dangers|textarea]
 
-## Create project story elements [page_createProjectStoryElements]
+## Create project story elements [page_createProjectStoryElements|page|Project]
 
-* Here are some instructions on how to create story elements from your project stories. [storyElementsInstructions|label]
+* Here are some instructions on how to create story elements from your project stories. [project_storyElementsInstructions|label]
 Creating story elements helps you think about what is going on in the stories you told.
 You can enter your story elements on the next page.
 <ol>
@@ -213,17 +213,17 @@ You can enter your story elements on the next page.
 <li>You can enter your story elements on the next page.</li>
 </ol>
 
-## Enter project story elements [page_enterProjectStoryElements]
+## Enter project story elements [page_enterProjectStoryElements|page|Project]
 
 * On this page you can enter the story elements you created on the previous page. [project_projectStoryElementsList|grid|page_addStoryElement]
 
-## Add story element [page_addStoryElement|popup]
+## Add story element [page_addStoryElement|popup|StoryElement]
 
 * Name | What is the name of the story element? [storyElement_name|text]
 * Type | What type of story element is this? [storyElement_type|select|character;situation;value;theme;relationship;motivation;belief;conflict]
 * Description | You can describe the story element more fully here. [storyElement_description|textarea]
 
-## Assess story sharing [page_assessStorySharing]
+## Assess story sharing [page_assessStorySharing|page|Project.Assessment]
 
 * On this page you can answer questions about your community or organization to assess its story sharing culture. [assessment_intro|label]
 Before you answer these questions, you should spend some time listening to people share stories together
@@ -266,29 +266,29 @@ in the places where they normally gather.
 
 * Here you can record some notes or comments about this assessment. [assessment_notes|textarea]
 
-## Revise PNI Planning questions [page_revisePNIPlanningQuestions]
+## Revise PNI Planning questions [page_revisePNIPlanningQuestions|page|Project]
 
-* On this page you can review and improve your draft answers to the PNI planning questions [improvePlanningDrafts|label]
+* On this page you can review and improve your draft answers to the PNI planning questions [project_improvePlanningDrafts|label]
 based on your consideration of project aspects and your project stories. 
 
-* Copy the original draft versions into any corresponding empty answer fields below [project_PNIquestions_copyDraftsButton|button|copyDraftPNIQuestionVersionsIntoAnswers]
+* Copy the original draft versions into any corresponding empty answer fields below [project_pniQuestions_copyDraftsButton|button|copyDraftPNIQuestionVersionsIntoAnswers]
 
-* What is the goal of the project? Why are you doing it? [project_PNIquestions_goal_final|textarea]
-* What relationships are important to the project? [project_PNIquestions_relationships_final|textarea]
-* What is the focus of the project? What is it about? [project_PNIquestions_focus_final|textarea]
-* What range(s) of experience will the project cover? [project_PNIquestions_range_final|textarea]
-* What is the project's scope? (number of people, number of stories, number of questions about stories) [project_PNIquestions_scope_final|textarea]
-* Which phases of PNI will be important to the project? (indicate most and least important phases) [project_PNIquestions_emphasis_final|textarea]
+* What is the goal of the project? Why are you doing it? [project_pniQuestions_goal_final|textarea]
+* What relationships are important to the project? [project_pniQuestions_relationships_final|textarea]
+* What is the focus of the project? What is it about? [project_pniQuestions_focus_final|textarea]
+* What range(s) of experience will the project cover? [project_pniQuestions_range_final|textarea]
+* What is the project's scope? (number of people, number of stories, number of questions about stories) [project_pniQuestions_scope_final|textarea]
+* Which phases of PNI will be important to the project? (indicate most and least important phases) [project_pniQuestions_emphasis_final|textarea]
 
-## Write project synopsis [page_writeProjectSynopsis]
+## Write project synopsis [page_writeProjectSynopsis|page|Project]
 
 * On this page you can write your project synopsis, a one or two sentence summary of what matters most about your project. [project_synopsis|textarea]
 
-## Read planning report [page_readPlanningReport]
+## Read planning report [page_readPlanningReport|page|Project]
 
 * This report shows all of the information entered in the pages grouped under "Planning." [project_readPlanningReportIntroductionLabel|label]
 
-* Project planning report [planningReport|report|planning]
+* Project planning report [project_planningReport|report|planning]
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -296,32 +296,32 @@ based on your consideration of project aspects and your project stories.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-# Collection design [page_collectionDesign]
+# Collection design [page_collectionDesign|page|Project]
 
 * In the collection design phase of your PNI project, you will decide on story collection venues, [project_collectionDesignStartLabel|label]
 create some story eliciting and story interpretation questions, design your story collection form, and plan any story collection sessions you want to hold.
 
 * You can enter some general notes on collection design in this project here. [project_generalNotes_collectionDesign|textarea]
 
-## Choose collection venues [page_chooseCollectionVenues]
+## Choose collection venues [page_chooseCollectionVenues|page|Project]
 
-* On this page you will choose story collection venues, or ways to collect stories. [venuesIntro|label]
+* On this page you will choose story collection venues, or ways to collect stories. [project_venuesIntro|label]
 
-* Venue recommendations [venueRecommendations|recommendationTable|Venues]
-* (Unfinished: This will be a table of venue recommendations [venueRecommendationsTable_unfinished|label]
+* Venue recommendations [SPECIAL_venueRecommendations|recommendationTable|Venues]
+* (Unfinished: This will be a table of venue recommendations [SPECIAL_venueRecommendationsTable_unfinished|label]
 related to the questions answered about participant groups.
-* It will look something like this.) [mockup_recTable_venues|image|images/mockups/mockupRecTable.png]
+* It will look something like this.) [SPECIAL_mockup_recTable_venues|image|images/mockups/mockupRecTable.png]
 
-* Please answer these questions about your collection venues for each participant group. [venuesTable|questionsTable|page_venuesTable;participants_firstGroupName,participants_secondGroupName,participants_thirdGroupName]
+* Please answer these questions about your collection venues for each participant group. [project_venuesTable|questionsTable|page_venuesTable;participants_firstGroupName,participants_secondGroupName,participants_thirdGroupName]
 
-## Aspects table [page_venuesTable|questionsTable]
+## Aspects table [page_venuesTable|questionsTable|Venue]
 
 * Choose a primary means of story collection for this group. [venue_primaryForGroup_type|select|individual interviews;group interviews;peer interviews;group story sessions;surveys;journals;narrative incident reports;gleaned stories;other]
 * Describe your story collection plans for this group and venue. [venue_primaryForGroup_plans|textarea]
 * If you want to collect stories in a second way for this same group, choose one of these options. [venue_secondaryForGroup_type|select|individual interviews;group interviews;peer interviews;group story sessions;surveys;journals;narrative incident reports;gleaned stories;other]
 * Describe your secondary story collection plans for this group and venue. [venue_secondaryForGroup_plans|textarea]
  
-## Write story eliciting questions [page_writeStoryElicitingQuestions]
+## Write story eliciting questions [page_writeStoryElicitingQuestions|page|Project]
 
 * On this page you will design the eliciting questions you use to ask people to tell stories. [project_elicitingQuestionsLabel|label]
 You need at least one question for people to answer. Giving people more than one question to choose from
@@ -329,31 +329,31 @@ is recommended.
 
 * These are the questions you will be asking. [project_elicitingQuestionsList|grid|page_addElicitingQuestion]
 
-* Recommendations for eliciting questions [elicitingQuestionRecommendations|recommendationTable|Eliciting questions]
-* (Unfinished: This will be a table of recommendations for eliciting questions [elicitingRecommendationsTable_unfinished|label]
+* Recommendations for eliciting questions [SPECIAL_elicitingQuestionRecommendations|recommendationTable|Eliciting questions]
+* (Unfinished: This will be a table of recommendations for eliciting questions [SPECIAL_elicitingRecommendationsTable_unfinished|label]
 related to the questions answered about participant groups.
-* It will look something like this.) [mockup_recTable_eliciting|image|images/mockups/mockupRecTable.png]
+* It will look something like this.) [SPECIAL_mockup_recTable_eliciting|image|images/mockups/mockupRecTable.png]
 
-## Add story eliciting question [page_addElicitingQuestion|popup]
+## Add story eliciting question [page_addElicitingQuestion|popup|ElicitingQuestion]
 
 * Question | Enter a story-eliciting question. [elicitingQuestion_text|textarea]
 * Type | What type of question is this? [elicitingQuestion_type|checkboxes|what happened;directed question;undirected questions;point in time;event;extreme;surprise;people, places, things;fictional scenario;other]
 
-* Or choose a question from this list. [templates_elicitingQuestions|templateList|elicitingQuestions]
-* (Unfinished: This will be a list of template questions the user can copy.) [templates_elicitingQuestions_unfinished|label]
+* Or choose a question from this list. [SPECIAL_templates_elicitingQuestions|templateList|elicitingQuestions]
+* (Unfinished: This will be a list of template questions the user can copy.) [SPECIAL_templates_elicitingQuestions_unfinished|label]
 
-## Write questions about stories [page_writeQuestionsAboutStories]
+## Write questions about stories [page_writeQuestionsAboutStories|page|Project]
 
 * On this page you will write your questions to ask people about their stories. [project_storyQuestionsLabel|label]
 
 * These are the questions you will be asking about stories. [project_storyQuestionsList|grid|page_addStoryQuestion]
 
-* Recommendations for story questions [storyQuestionRecommendations|recommendationTable|storyQuestions]
-* (Unfinished: This will be a table of recommendations for story questions [storyQuestionRecommendationsTable_unfinished|label]
+* Recommendations for story questions [SPECIAL_storyQuestionRecommendations|recommendationTable|storyQuestions]
+* (Unfinished: This will be a table of recommendations for story questions [SPECIAL_storyQuestionRecommendationsTable_unfinished|label]
 related to the questions answered about participant groups.
-* It will look something like this.) [mockup_recTable_storyQ|image|images/mockups/mockupRecTable.png]
+* It will look something like this.) [SPECIAL_mockup_recTable_storyQ|image|images/mockups/mockupRecTable.png]
 
-## Add story question [page_addStoryQuestion|popup]
+## Add story question [page_addStoryQuestion|popup|StoryQuestion]
 
 * Question | Enter a question to ask people about their stories. [storyQuestion_text|textarea]
 * Type | What type of question is this? [storyQuestion_type|select|boolean;label;header;checkbox;checkboxes;text;textarea;select;radiobuttons;slider]
@@ -375,21 +375,21 @@ The question types are:
 * Options | If your question requires choices, enter them here (one per line). [storyQuestion_options|textarea]
 * Help | If you want to provide popup help to people answering the question, enter it here. [storyQuestion_help|textarea]
 
-* Or choose a question from this list. [templates_storyQuestions|templateList|storyQuestions]
-* (Unfinished: This will be a list of template questions the user can copy.) [templates_storyQuestions_unfinished|label]
+* Or choose a question from this list. [SPECIAL_templates_storyQuestions|templateList|storyQuestions]
+* (Unfinished: This will be a list of template questions the user can copy.) [SPECIAL_templates_storyQuestions_unfinished|label]
 
-## Write questions about participants [page_writeQuestionsAboutParticipants]
+## Write questions about participants [page_writeQuestionsAboutParticipants|page|Project]
 
 * On this page you will write questions to ask people about themselves. [project_participantQuestionsLabel|label]
 
 * These are the questions you will be asking people about themselves. [project_participantQuestionsList|grid|page_addParticipantQuestion]
 
-* Recommendations for participant questions [participantQuestionRecommendations|recommendationTable|participantQuestions]
-* (Unfinished: This will be a table of recommendations for participant questions [participantQuestionRecommendations_unfinished|label]
+* Recommendations for participant questions [SPECIAL_participantQuestionRecommendations|recommendationTable|participantQuestions]
+* (Unfinished: This will be a table of recommendations for participant questions [SPECIAL_participantQuestionRecommendations_unfinished|label]
 related to the questions answered about participant groups.
-* It will look something like this.) [mockup_recTable_partQ|image|images/mockups/mockupRecTable.png]
+* It will look something like this.) [SPECIAL_mockup_recTable_partQ|image|images/mockups/mockupRecTable.png]
 
-## Add participant question [page_addParticipantQuestion|popup]
+## Add participant question [page_addParticipantQuestion|popup|ParticipantQuestion]
 
 * Question | Enter a question to ask people about themselves. [participantQuestion_text|textarea]
 * Type | What type of question is this? [participantQuestion_type|select|boolean;label;header;checkbox;checkboxes;text;textarea;select;radiobuttons;slider]
@@ -397,32 +397,32 @@ related to the questions answered about participant groups.
 * Options | If your question has choices, enter them here (one per line). [participantQuestion_options|textarea]
 * Help | If you want to provide help to people answering the question, enter it here. [participantQuestion_help|textarea]
 
-* Or choose a question from this list. [templates_participantQuestions|templateList|participantQuestions]
-* (Unfinished: This will be a list of template questions the user can copy.) [templates_participantQuestions_unfinished|label]
+* Or choose a question from this list. [SPECIAL_templates_participantQuestions|templateList|participantQuestions]
+* (Unfinished: This will be a list of template questions the user can copy.) [SPECIAL_templates_participantQuestions_unfinished|label]
 
-## Design question form [page_designQuestionForm]
+## Design question form [page_designQuestionForm|page|Project.QuestionForm]
 
-* On this page you will add any information you want to place on your question form other than the questions on it. [questionFormLabel|label]
+* On this page you will add any information you want to place on your question form other than the questions on it. [questionForm_Label|label]
 
 * Please enter a title for the question form. [questionForm_title|text]
 * You can link to a logo or other image to show at the top of the form. [questionForm_image|text]
 * Please enter an introduction to be shown at the start of the form, after the title. [questionForm_startText|textarea]
 * Please enter any text to be shown at the end of the form. [questionForm_endText|textarea]
 
-## Plan story collection sessions [page_planStoryCollectionSessions]
+## Plan story collection sessions [page_planStoryCollectionSessions|page|Project]
 
-* On this page you will design group sessions in which you will collect stories. [collectionSessionsLabel|label]
+* On this page you will design group sessions in which you will collect stories. [project_collectionSessionsLabel|label]
 If you don't plan to collect stories using group sessions, you can skip this page.
 
-* Recommendations for story collection sessions [collectionSessionRecommendations|recommendationTable|collectionSessions]
-* (Unfinished: This will be a table of recommendations for collection sessions [collectionRecommendationsTable_unfinished|label]
+* Recommendations for story collection sessions [SPECIAL_collectionSessionRecommendations|recommendationTable|collectionSessions]
+* (Unfinished: This will be a table of recommendations for collection sessions [SPECIAL_collectionRecommendationsTable_unfinished|label]
 related to the questions answered about participant groups.
-* It will look something like this.) [mockup_recTable_collection|image|images/mockups/mockupRecTable.png]
+* It will look something like this.) [SPECIAL_mockup_recTable_collection|image|images/mockups/mockupRecTable.png]
 
 * Plans for story collection sessions lay out what you will do and how. [project_collectionSessionPlansList|grid|page_addStoryCollectionSession]
 Each plan can be used in multiple sessions.
 
-## Design story collection session [page_addStoryCollectionSession|popup]
+## Design story collection session [page_addStoryCollectionSession|popup|CollectionSessionPlan]
 
 * Name | Please give this session plan a name. [collectionSessionPlan_name|text]
 * Repetitions | How many repetitions of the session will there be? [collectionSessionPlan_repetitions|text]
@@ -439,26 +439,28 @@ Activities within story collection sessions can be simple instructions or compli
 
 * Print session agenda [collectionSessionPlan_printCollectionSessionAgendaButton|button]
 
-## Add story collection session activity [page_addCollectionSessionActivity|popup]
+## Add story collection session activity [page_addCollectionSessionActivity|popup|CollectionSessionActivity]
 
-* Name | Please give this activity a name. [collectionSessionPlan_activity_name|text]
-* Type | What type of activity is this? [collectionSessionPlan_activity_type|select|ice-breaker;sharing stories (no task);sharing stories (simple task);discussing stories;twice-told stories exercise;timeline exercise;landscape exercise;my own exercise;other]
-* Plan | Describe the plan for this activity. [collectionSessionPlan_activity_plan|textarea]
-* Optional elaborations | Describe any optional elaborations you might or might not use in this activity. [collectionSessionPlan_activity_optionalParts|textarea]
-* Length | How long will this activity take? [collectionSessionPlan_activity_duration|text]
-* Recording | How will stories be recorded during this activity? [collectionSessionPlan_activity_recording|textarea]
-* Materials | What materials will be provided for this activity? [collectionSessionPlan_activity_materials|textarea]
-* Spaces | What spaces will be used for this activity? [collectionSessionPlan_activity_spaces|textarea]
-* Facilitation | What sort of facilitation will be necessary for this activity? [collectionSessionPlan_activity_facilitation|textarea]
+* Name | Please give this activity a name. [collectionSessionActivity_name|text]
+* Type | What type of activity is this? [collectionSessionActivity_type|select|ice-breaker;sharing stories (no task);sharing stories (simple task);discussing stories;twice-told stories exercise;timeline exercise;landscape exercise;my own exercise;other]
+* Plan | Describe the plan for this activity. [collectionSessionActivity_plan|textarea]
+* Optional elaborations | Describe any optional elaborations you might or might not use in this activity. [collectionSessionActivity_optionalParts|textarea]
+* Length | How long will this activity take? [collectionSessionActivity_duration|text]
+* Recording | How will stories be recorded during this activity? [collectionSessionActivity_recording|textarea]
+* Materials | What materials will be provided for this activity? [collectionSessionActivity_materials|textarea]
+* Spaces | What spaces will be used for this activity? [collectionSessionActivity_spaces|textarea]
+* Facilitation | What sort of facilitation will be necessary for this activity? [collectionSessionActivity_facilitation|textarea]
 
-* Or choose an activity from this list. [templates_storyCollectionActivities|templateList|storyCollectionActivities]
-* (Unfinished: This will be a list of template activities the user can copy.) [templates_storyCollectionActivities_unfinished|label]
+* Or choose an activity from this list. [SPECIAL_templates_storyCollectionActivities|templateList|storyCollectionActivities]
+* (Unfinished: This will be a list of template activities the user can copy.) [SPECIAL_templates_storyCollectionActivities_unfinished|label]
 
-## Read collection design report [page_readCollectionDesignReport]
+## Read collection design report [page_readCollectionDesignReport|page|Project]
 
 * This report shows all of the information entered in the pages grouped under "Collection design." [project_readCollectionDesignReportIntroductionLabel|label]
 
-* Collection design report [collectionDesignReport|report|collectionDesign]
+* Collection design report [project_collectionDesignReport|report|collectionDesign]
+
+// GOT THIS FAR IN VERIFYING AND ADDING OBJECT TYPES FOR PAGES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -660,7 +662,7 @@ Is there a third thing this pattern could mean?
 * Add text to selected excerpt [addToExcerpt_addTextToExistingExcerptButton|button]
 * Create new excerpt with this text [addToExcerpt_createNewExcerptWithTextButton|button|page_createNewExcerpt]
 
-## Create new excerpt [page_createNewExcerpt|popup]
+## Create new excerpt [page_createNewExcerpt|popup|Excerpt]
 
 * Name | Please give this excerpt a name. [excerpt_name|text]
 * Excerpt | You can edit the excerpt here. [excerpt_text|textarea]
@@ -908,7 +910,7 @@ related to the questions answered about participant groups.
 
 * Enter your intervention plans here. [project_interventionPlansList|grid|page_addIntervention]
 
-## Plan an intervention [page_addIntervention|popup]
+## Plan an intervention [page_addIntervention|popup|InterventionPlan]
 
 * Name | Please name this intervention plan. [interventionPlan_name|text]
 * Type | What type of intervention will this be? [interventionPlan_type|select|narrative ombudsman;narrative suggestion box;story sharing space;narrative orientation;narrative learning resource;narrative simulation;narrative presentation;dramatic action;sensemaking space;sensemaking pyramid;narrative mentoring program;narrative therapy;participatory theatre;other]
