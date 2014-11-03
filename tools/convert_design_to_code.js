@@ -2,7 +2,7 @@
 "use strict";
 
 // Run with node.js
-// This generates various files with code derived from design/design_pages_notes.txt
+// This generates various files with code derived from design/design_pages_notes.txt, which is parsed via the parse-design.js module.
 // It generates "page_*" files in the js/pages folder to correspond with each page.
 // It generates js/pages/allPages.js which has a structure with all the pages
 // It generates and allPagesSummary.js which defines the domain data model and also has information about what pages go with what headers
