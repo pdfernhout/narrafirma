@@ -371,7 +371,7 @@ function addIndexEntryToAllIndexesIndex(response, allIndexShortFileName, indexNa
     if (!createIndexFileIfMissing(response, fullAllIndexFileName, allIndexShortFileName, false)) return false;
     
     // Create special index entry for the allIndexes index
-    var jsonForIndex = "\n" + '{"operation":"add","name":' + JSON.strinify(indexName) + ',"versionUUID":"' + randomUUID + '"}' + "\n";
+    var jsonForIndex = "\n" + '{"operation":"add","name":' + JSON.stringify(indexName) + ',"versionUUID":"' + randomUUID + '"}' + "\n";
     return appendDataToFile(response, fullAllIndexFileName, jsonForIndex);
 }
 
