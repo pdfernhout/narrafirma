@@ -1,3 +1,6 @@
+"use strict";
+/* global module */
+
 // Pointrel data storage system configuration file
 
 // Do not edit the next line as it is needed to load the file correctly
