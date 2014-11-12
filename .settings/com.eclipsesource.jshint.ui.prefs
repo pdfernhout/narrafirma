@@ -1,4 +1,4 @@
 eclipse.preferences.version=1
-excluded=lib//*\:server/node_modules//*
+excluded=WebContent/lib//*\:server/node_modules//*
 included=//*.js
 projectSpecificOptions=true
