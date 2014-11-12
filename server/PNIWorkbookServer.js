@@ -120,35 +120,35 @@ app.use(passport.session());
 // Authentication routes
 
 function writePageStart(request, response) {
-	var user = request.user;
-	response.write("<html><body>");
-	if (!user) {
-		response.write("<p>");
-		response.write('<a href="/">Home</a> | ');
-		response.write('<a href="/login">Log In</a>');
-		response.write("<p>");
-		response.write("<h2>Welcome! Please log in.</h2>");
+    var user = request.user;
+    response.write("<html><body>");
+    if (!user) {
+        response.write("<p>");
+        response.write('<a href="/">Home</a> | ');
+        response.write('<a href="/login">Log In</a>');
+        response.write("<p>");
+        response.write("<h2>Welcome! Please log in.</h2>");
     } else {
         response.write("<p>");
-		response.write('<a href="/">Home</a> |');
-		response.write('<a href="/login">Log In</a> | ');
-		response.write('<a href="/logout">Log Out</a>');
-		response.write("<p>");
-		response.write("<h2>Hello, " + user.username + ".</h2>");
-	}
+        response.write('<a href="/">Home</a> |');
+        response.write('<a href="/login">Log In</a> | ');
+        response.write('<a href="/logout">Log Out</a>');
+        response.write("<p>");
+        response.write("<h2>Hello, " + user.username + ".</h2>");
+    }
 }
 
 function writePageEnd(request, response) {
-	response.end("</body></html>");
+    response.end("</body></html>");
 }
 
 app.get('/account', ensureAuthenticated, function(request, response) {
-	var user = request.user;
+    var user = request.user;
     // res.render('account', { user: req.user })
-	writePageStart(request, response);
-	response.write("<p>Username: " + user.username + "</p>");
-	response.write("<p>Email: " + user.email + "</p>");
-	writePageEnd(request, response);
+    writePageStart(request, response);
+    response.write("<p>Username: " + user.username + "</p>");
+    response.write("<p>Email: " + user.email + "</p>");
+    writePageEnd(request, response);
 });
 
 var loginTemplate = '<form action="/login" method="post">\n' +
@@ -168,14 +168,14 @@ var loginTemplate = '<form action="/login" method="post">\n' +
 
 app.get('/login', function(request, response){
   // res.render('login', { user: req.user, message: req.flash('error') });
-	writePageStart(request, response);
-	response.write(loginTemplate);
-	//console.log("request.flash('error')", request.flash("error"));
-	var messages = request.flash("error");
-	for (var index in messages) {
-		response.write("<p><b>" + messages[index] + "</p></b>");
-	}
-	writePageEnd(request, response);
+    writePageStart(request, response);
+    response.write(loginTemplate);
+    //console.log("request.flash('error')", request.flash("error"));
+    var messages = request.flash("error");
+    for (var index in messages) {
+        response.write("<p><b>" + messages[index] + "</p></b>");
+    }
+    writePageEnd(request, response);
 });
 
 app.post('/login', 
@@ -191,71 +191,71 @@ app.get('/logout', function(req, res){
 
 
 function writeTestPage(request, response) {
-	// response.sendFile(pointrelConfig.baseDirectory + "index.html");
+    // response.sendFile(pointrelConfig.baseDirectory + "index.html");
     // response.sendFile(baseDirectoryNormalized + "index.html");
-	writePageStart(request, response);
-	response.write("Example of authentication with passport; authenticated " + request.isAuthenticated());
-	var label = "Pointrel App";
-	if (Pointrel20130202Server.pointrelConfig.requireAuthentication) label += " (only available if authenticated)";
-	if (request.isAuthenticated()) response.write('<br><a href="/pointrel/pointrel-app">' + label + '</a>');
-	writePageEnd(request, response);
+    writePageStart(request, response);
+    response.write("Example of authentication with passport; authenticated " + request.isAuthenticated());
+    var label = "Pointrel App";
+    if (Pointrel20130202Server.pointrelConfig.requireAuthentication) label += " (only available if authenticated)";
+    if (request.isAuthenticated()) response.write('<br><a href="/pointrel/pointrel-app">' + label + '</a>');
+    writePageEnd(request, response);
 }
 
 // Application routes
 
-app.get("/", function (request, response) {
-	response.sendFile(Pointrel20130202Server.pointrelConfig.baseDirectory + "index.html");
-});
+//app.get("/", function (request, response) {
+//    response.sendFile(Pointrel20130202Server.pointrelConfig.baseDirectory + "index.html");
+//});
 
-app.get("/index.html", function (request, response) {
-	response.sendFile(Pointrel20130202Server.pointrelConfig.baseDirectory + "index.html");
-});
+//app.get("/index.html", function (request, response) {
+//    response.sendFile(Pointrel20130202Server.pointrelConfig.baseDirectory + "index.html");
+//});
 
 app.get("/test", function (request, response) {
     writeTestPage(request, response);
 });
 
-app.get("/pointrel/pointrel-app/server/journal-store.php", ensureAuthenticated, function (request, response) {
-	Pointrel20130202Server.journalStore(request, response);
+app.get("/cgi-bin/journal-store.php", ensureAuthenticated, function (request, response) {
+    Pointrel20130202Server.journalStore(request, response);
 });
 
-app.post("/pointrel/pointrel-app/server/journal-store.php", ensureAuthenticated, function (request, response) {
-	Pointrel20130202Server.journalStore(request, response);
+//app.post("/cgi-bin/journal-store.php", ensureAuthenticated, function (request, response) {
+//    Pointrel20130202Server.journalStore(request, response);
+//});
+
+app.get("/cgi-bin/resource-add.php", ensureAuthenticated, function (request, response) {
+    Pointrel20130202Server.resourceAdd(request, response);
 });
 
-app.get("/pointrel/pointrel-app/server/resource-add.php", ensureAuthenticated, function (request, response) {
-	Pointrel20130202Server.resourceAdd(request, response);
+app.post("/cgi-bin/resource-add.php", ensureAuthenticated, function (request, response) {
+    Pointrel20130202Server.resourceAdd(request, response);
 });
 
-app.post("/pointrel/pointrel-app/server/resource-add.php", ensureAuthenticated, function (request, response) {
-	Pointrel20130202Server.resourceAdd(request, response);
+app.get("/cgi-bin/resource-get.php", ensureAuthenticated, function (request, response) {
+    Pointrel20130202Server.resourceGet(request, response);
 });
 
-app.get("/pointrel/pointrel-app/server/resource-get.php", ensureAuthenticated, function (request, response) {
-	Pointrel20130202Server.resourceGet(request, response);
+app.post("/cgi-bin/resource-get.php", ensureAuthenticated, function (request, response) {
+    Pointrel20130202Server.Pointrel20130202Server.resourceGet(request, response);
 });
 
-app.post("/pointrel/pointrel-app/server/resource-get.php", ensureAuthenticated, function (request, response) {
-	Pointrel20130202Server.Pointrel20130202Server.resourceGet(request, response);
-});
+//app.get("/cgi-bin/resource-publish.php", ensureAuthenticated, function (request, response) {
+//    Pointrel20130202Server.resourcePublish(request, response);
+//});
+//
+//app.post("/cgi-bin/resource-publish.php", ensureAuthenticated, function (request, response) {
+//    Pointrel20130202Server.resourcePublish(request, response);
+//});
 
-app.get("/pointrel/pointrel-app/server/resource-publish.php", ensureAuthenticated, function (request, response) {
-	Pointrel20130202Server.resourcePublish(request, response);
-});
+//app.get("/cgi-bin/variable-query.php", ensureAuthenticated, function (request, response) {
+//    Pointrel20130202Server.variableQuery(request, response);
+//});
+//
+//app.post("/cgi-bin/variable-query.php", ensureAuthenticated, function (request, response) {
+//    Pointrel20130202Server.variableQuery(request, response);
+//});
 
-app.post("/pointrel/pointrel-app/server/resource-publish.php", ensureAuthenticated, function (request, response) {
-	Pointrel20130202Server.resourcePublish(request, response);
-});
-
-app.get("/pointrel/pointrel-app/server/variable-query.php", ensureAuthenticated, function (request, response) {
-	Pointrel20130202Server.variableQuery(request, response);
-});
-
-app.post("/pointrel/pointrel-app/server/variable-query.php", ensureAuthenticated, function (request, response) {
-	Pointrel20130202Server.variableQuery(request, response);
-});
-
-app.use("/pointrel", ensureAuthenticated, express.static(__dirname + "/../pointrel"));
+app.use("/", ensureAuthenticated, express.static(__dirname + "/../WebContent"));
 
 app.use(function(err, req, res, next){
     console.error(err.stack);
@@ -281,6 +281,6 @@ var sslOptions = {
 var server2 = https.createServer(sslOptions, app).listen(8081, function () {
   var host = server2.address().address;
   var port = server2.address().port;
-  console.log("Pointrel20130202 app listening at https://%s:%s", host, port);
+  console.log("PNIWorkbookServer app listening at https://%s:%s", host, port);
 });
 

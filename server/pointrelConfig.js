@@ -17,22 +17,22 @@ pointrelConfig.baseDirectory = "../";
 // More fine-grained writing control options are below but this overrides them.
 pointrelConfig.pointrelRepositoryIsReadOnly = false;
 
-pointrelConfig.pointrelResourcesDirectory = "pointrel/pointrel-data/resources/";
+pointrelConfig.pointrelResourcesDirectory = "server-data/resources/";
 
-pointrelConfig.pointrelJournalsDirectory = "pointrel/pointrel-data/journals/";
+pointrelConfig.pointrelJournalsDirectory = "server-data/journals/";
 pointrelConfig.pointrelJournalsAllow = true;
 pointrelConfig.pointrelJournalsDeleteAllow = true;
 
-pointrelConfig.pointrelVariablesDirectory = "pointrel/pointrel-data/variables/";
+pointrelConfig.pointrelVariablesDirectory = "server-data/variables/";
 pointrelConfig.pointrelVariablesAllow = true;
 pointrelConfig.pointrelVariablesDeleteAllow = true;
 
-pointrelConfig.pointrelLogsDirectory = "pointrel/pointrel-data/logs/";
+pointrelConfig.pointrelLogsDirectory = "server-data/logs/";
 
-pointrelConfig.pointrelPublishingDirectory = "pointrel/pointrel-www/";
+pointrelConfig.pointrelPublishingDirectory = "server-data/published/";
 pointrelConfig.pointrelPublishingAllow = true;
 
-pointrelConfig.pointrelIndexesDirectory = "pointrel/pointrel-data/indexes/";
+pointrelConfig.pointrelIndexesDirectory = "server-data/indexes/";
 pointrelConfig.pointrelIndexesMaintain = true;
 
 pointrelConfig.requireAuthentication = false;
