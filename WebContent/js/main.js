@@ -129,6 +129,8 @@ require([
                 changePage(newHash);
             } else {
                 console.log("unsupported url hash fragment", newHash);
+                alert("A page was not found for: " + newHash);
+                if (newHash !== startPage) urlHashFragmentChanged(startPage);
             }
         }
     }
@@ -419,7 +421,7 @@ require([
             urlHashFragmentChanged(fragment);
         } else {
             urlHashFragmentChanged(startPage);
-            showPage("page_dashboard");
+            showPage(startPage);
             currentPageID = startPage;
         }
         
