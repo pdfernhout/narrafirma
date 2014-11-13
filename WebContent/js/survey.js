@@ -3,8 +3,7 @@
 define([
     "js/domain",
     "dojo/dom-construct",
-    "dojo/query",
-    "dijit/registry",
+    "dojox/mvc/getPlainValue",
     "js/utility",
     "js/widgetBuilder",
     "dijit/layout/ContentPane",
@@ -14,8 +13,7 @@ define([
 ], function(
     domain,
     domConstruct,
-    query,
-    registry,
+    getPlainValue,
     utility,
     widgetBuilder,
     ContentPane,
@@ -23,25 +21,14 @@ define([
     Form,
     Stateful
 ){
-    function submitSurvey(form) {
+    function submitSurvey(model, form) {
         var answers = {};
         console.log("submitSurvey pressed");
-        var nodes = query(".question", form.containerNode);
-        // console.log("nodes", nodes);
-        nodes.forEach(function(questionDiv) {
-            console.log("submitSurvey question Node", questionDiv);
-            var questionID = questionDiv.getAttribute("data-js-question-id");
-            var valueNode = registry.byId(questionID);
-            var questionValue;
-            if (valueNode) questionValue = valueNode.get("value");
-            console.log("answer", questionDiv, questionID, valueNode, questionValue);
-            // trim off "survey_" part of id
-            // var questionID = questionID.substring(surveyItemPrefix.length);
-            answers[questionID] = questionValue;
-        });
         
-        console.log("answers", answers, JSON.stringify(answers));
-        domain.projectData.surveyResults.allCompletedSurveys.push(answers);
+        var surveyResult = getPlainValue(model);
+        
+        console.log("answers", surveyResult, model);
+        domain.projectData.surveyResults.allCompletedSurveys.push(surveyResult);
         
         // var surveyResultsDiv = document.getElementById("surveyResultsDiv");
         // surveyResultsDiv.innerHTML = JSON.stringify(domain.surveyResults);
@@ -91,7 +78,7 @@ define([
         utility.newButton(undefined, "surveySubmit", form, function() {
             console.log("Submit survery");
             surveyDialog.hide();
-            submitSurvey(form);
+            submitSurvey(model, form);
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
             form.destroyRecursive();
         });
