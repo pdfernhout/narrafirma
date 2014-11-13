@@ -9,7 +9,8 @@
 		factory(exports); // CommonJS
 	} else if (typeof define === "function" && define.amd) {
 		console.log("Pointrel20130202 AMD init");
-		define("Pointrel20130202", ['exports'], factory); // AMD
+		// define("Pointrel20130202", ['exports'], factory); // AMD
+		define(['exports'], factory); // AMD
 	} else {
 		console.log("Pointrel20130202 script init", global, factory);
 		global.Pointrel20130202 = {};

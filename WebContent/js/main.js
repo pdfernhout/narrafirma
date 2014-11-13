@@ -15,7 +15,7 @@ require([
     "js/widgetBuilder",
     "js/widgets/grid-table",
     "dijit/layout/ContentPane",
-    "dojo/store/JsonRest",
+    "js/pointrel20130202",
     "dijit/form/Select",
     "dojo/domReady!"
 ], function(
@@ -33,7 +33,7 @@ require([
     widgetBuilder,
     widgetGridTable,
     ContentPane,
-    JsonRest,
+    Pointrel20130202,
     Select
 ){
     // TODO: Add page validation
@@ -47,29 +47,72 @@ require([
     var loadButton = null;
     var saveButton = null;
     var startPage = "page_dashboard";
-    var store = new JsonRest({target:"http://localhost:3000/versions/", idAttribute:"id"});
+    // var store = new JsonRest({target:"http://localhost:3000/versions/", idAttribute:"id"});
+    
+    var hyperdocumentID = "Test-PNIWorkbook-001";
+    var archiveURL = "/cgi-bin/";
+    // TODO: Fix credentials
+    var credentials = "anonymous";
+    var savedVersions = [];
+    
+    console.log("Pointrel20130202", Pointrel20130202);
+    var archiver = new Pointrel20130202.PointrelArchiver(archiveURL, credentials);
+    var index = new Pointrel20130202.PointrelIndex(archiver, hyperdocumentID, "index", false);
     
     function loadClicked(event) {
         console.log("load clicked");
-        var body = store.get(1).then(function (item) {
+        index.getNewEntries(newEntriesDone);
+    }
+    
+    function newEntriesDone(error, allEntries, newEntries) {
+        console.log("newEntriesDone: ", error, newEntries);
+        if (error) { alert("error"); return; }
+        if (newEntries) {
+            for (var i in newEntries) {
+                //noinspection JSUnfilteredForInLoop
+                var indexEntry = newEntries[i];
+                savedVersions.push(indexEntry);
+                var resourceContent = indexEntry.resourceContent;
+            }
+        }
+        // Try to load the latest one...
+        if (!savedVersions || savedVersions.length === 0) {
+            console.log("No saved versions");
+            return;
+        }
+        var latestVersion = savedVersions[savedVersions.length - 1];
+        var resourceURI = latestVersion.name;
+        
+        archiver.resource_get(resourceURI, function (error, text) {
+            if (error) {
+                console.log("Error when fetching: " + resourceURI);
+                return;
+            }
+            var item = JSON.parse(text);
             var body = item.body;
-            console.log("item", item, body);
+            
+            console.log("loading saved version", item, body);
             for (var key in body) {
                 if (body.hasOwnProperty(key)) {
                     domain.data.set(key, body[key]);
                 }
-            }
-            // domain.data = item.body;
+            } 
         });
-        
     }
     
     function saveClicked(event) {
-        console.log("save clicked");
-        console.log("save", domain.data);
-        var objectToSave = {"id": 1, "body": domain.data};
-        store.put(objectToSave).then(function () {
-            console.log("done with set");
+        console.log("save clicked", domain.data);
+        
+        var timestamp = new Date().toISOString();
+        var userID = credentials;
+        var version = {"_pointrelIndexing": [hyperdocumentID], "timestamp": timestamp, "userID": userID, "body": domain.data};
+        console.log("version:", version);
+        var versionAsString = JSON.stringify(version);
+        console.log("versionAsString:", versionAsString);
+        
+        var newVersionURI = archiver.resource_add(versionAsString, "PNIWorkbook.pce.json", function(error, status) {
+            if (error) { alert("could not write new version: " + JSON.stringify(status)); return; }
+            console.log("wrote newVersionURI:", newVersionURI);
         });
     }
     

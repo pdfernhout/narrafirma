@@ -219,9 +219,9 @@ app.get("/cgi-bin/journal-store.php", ensureAuthenticated, function (request, re
     Pointrel20130202Server.journalStore(request, response);
 });
 
-//app.post("/cgi-bin/journal-store.php", ensureAuthenticated, function (request, response) {
-//    Pointrel20130202Server.journalStore(request, response);
-//});
+app.post("/cgi-bin/journal-store.php", ensureAuthenticated, function (request, response) {
+    Pointrel20130202Server.journalStore(request, response);
+});
 
 app.get("/cgi-bin/resource-add.php", ensureAuthenticated, function (request, response) {
     Pointrel20130202Server.resourceAdd(request, response);
