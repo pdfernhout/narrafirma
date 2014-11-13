@@ -80,6 +80,12 @@ require([
             console.log("No saved versions");
             return;
         }
+        
+        for (var versionIndex in savedVersions) {
+            var savedVersion = savedVersions[versionIndex];
+            console.log("savedVersion: ", savedVersion.trace[0].timestamp, savedVersion.trace[0].userID, savedVersion.name);
+        }
+        
         var latestVersion = savedVersions[savedVersions.length - 1];
         var resourceURI = latestVersion.name;
         
