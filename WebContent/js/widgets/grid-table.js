@@ -4,6 +4,7 @@ define([
     "dojo/_base/array",
     "dojo/_base/declare",
     "dojo/dom-construct",
+    "exports",
     "dojo/_base/lang",
     "dijit/registry",
     "js/translate",
@@ -22,6 +23,7 @@ define([
     array,
     declare,
     domConstruct,
+    exports,
     lang,
     registry,
     translate,
@@ -265,11 +267,13 @@ define([
         };
     }
     
-    return {
+    var exportedFunctions = {
         "insertGridTableBasic": insertGridTableBasic,
         "clearGridsKludge": clearGridsKludge,
         "resizeGridsKludge": resizeGridsKludge,
         "allGrids": allGrids
     };
+    
+    lang.mixin(exports, exportedFunctions);
     
 });
