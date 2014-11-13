@@ -78,6 +78,36 @@ define([
     
     // console.log("testDogStories", testDogStories);
     
+    var testSurvey = {
+        "project_elicitingQuestionsList" : [ {
+            "elicitingQuestion_text" : "What happened the first time you saw a home aquarium?",
+            "id" : 0.27713817273750974
+        } ],
+        "project_storyQuestionsList" : [ {
+            "storyQuestion_text" : "Was there excitement in the story?",
+            "storyQuestion_type" : "boolean",
+            "storyQuestion_shortName" : "excitement",
+            "id" : 0.2733021968538615
+        }, {
+            "storyQuestion_text" : "How did the aquarium owner feel about cleaning the aquarium?",
+            "storyQuestion_type" : "radiobuttons",
+            "storyQuestion_shortName" : "owner feel",
+            "storyQuestion_options" : "enjoyed\ndisgust\ndon't know",
+            "id" : 0.15953227692734107
+        } ],
+        "project_participantQuestionsList" : [ {
+            "participantQuestion_text" : "Do you like to eat fish?",
+            "participantQuestion_type" : "boolean",
+            "participantQuestion_shortName" : "eat fish",
+            "participantQuestion_help" : "Do you eat some sort of fish (Salmon, Tuna, etc.) at least once per month?",
+            "id" : 0.3790697336613146
+        } ],
+        "questionForm_title": "My First Question Form",
+        "questionForm_image": "",
+        "questionForm_startText": "We would like to find out about aquarium use.",
+        "questionForm_endText": "Thanks for taking the time to enter this data!",
+    };
+  
     return {
         testDogQuestions: testDogQuestions,
         testDogStories: testDogStories
