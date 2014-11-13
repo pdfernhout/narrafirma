@@ -100,20 +100,20 @@ require([
             console.log("loading saved version", item, body);
             for (var key in body) {
                 if (body.hasOwnProperty(key)) {
-                    domain.data.set(key, body[key]);
+                    domain.projectData.projectAnswers.set(key, body[key]);
                 }
             } 
         });
     }
     
     function saveClicked(event) {
-        console.log("save clicked", domain.data);
+        console.log("save clicked", domain.projectData.projectAnswers);
         
         var timestamp = new Date().toISOString();
         var userID = credentials;
-        var version = {"_pointrelIndexing": [hyperdocumentID], "timestamp": timestamp, "userID": userID, "body": domain.data};
+        var version = {"_pointrelIndexing": [hyperdocumentID], "timestamp": timestamp, "userID": userID, "body": domain.projectData.projectAnswers};
         console.log("version:", version);
-        var versionAsString = JSON.stringify(version);
+        var versionAsString = JSON.stringify(version, null, 4);
         console.log("versionAsString:", versionAsString);
         
         var newVersionURI = archiver.resource_add(versionAsString, "PNIWorkbook.pce.json", function(error, status) {
@@ -213,7 +213,7 @@ require([
         
        // console.log("Made content pane", id);
        
-       page.buildPage(widgetBuilder, pagePane, domain.data);
+       page.buildPage(widgetBuilder, pagePane, domain.projectData.projectAnswers);
        
        if (!page.isHeader) {
            // Uses special domain dictionary to store translations synthesized for each indidivual widget
@@ -225,7 +225,7 @@ require([
                domain.extraTranslations[statusEntryID + "::selection:" + option] = translate("dashboard_status_entry::selection:" + option);
            }
            // TODO: Put blank line in here
-           widgetBuilder.add_select(pagePane, domain.data, statusEntryID, options);
+           widgetBuilder.add_select(pagePane, domain.projectData.projectAnswers, statusEntryID, options);
        } else {
            // console.log("page dashboard as header", page.id, page.type, page);
            // Put in dashboard
@@ -237,7 +237,7 @@ require([
                if (!domain.pageDefinitions[pageID]) console.log("Error: problem finding page definition for", pageID, " -- Could the domain be out of date relative to the design and pages.js?");
                if (domain.pageDefinitions[pageID] && domain.pageDefinitions[pageID].type === "page") {
                    domain.extraTranslations[statusViewID + "::prompt"] = translate(pageID + "::title") + " " + translate("dashboard_status_label") + " ";
-                   widgetBuilder.add_questionAnswer(pagePane, domain.data, statusViewID, [pageID + "_pageStatus"]);
+                   widgetBuilder.add_questionAnswer(pagePane, domain.projectData.projectAnswers, statusViewID, [pageID + "_pageStatus"]);
                }
            }
        }
@@ -433,8 +433,7 @@ require([
     domain.setPageChangeCallback(widgetBuilder.updateQuestionsForPageChange);
     
     // TODO: Remove this -- Kludge some test data for now
-    domain.data.collectedStoriesAfterCollection = testData.testDogStories;
-    domain.data.collectedStoriesDuringCollection = testData.testDogStories;
+    domain.projectData.surveyResults.allStories = testData.testDogStories;
     
     // Call the main function
     createLayout();

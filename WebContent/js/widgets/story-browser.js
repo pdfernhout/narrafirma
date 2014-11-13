@@ -174,11 +174,14 @@ define([
              }
         };
 
-        var data = model.get(id);
-        if (!data) {
-            data = [];
-            model.set(id, data);
-        }
+        // TODO: Would be nice to make this part of model, at least based on an option...
+        //  var data = model.get(id);
+        // console.log("model", model);
+        var data = domain.projectData.surveyResults.allStories;
+        //if (!data) {
+        //    data = [];
+        //    model.set(id, data);
+        //}
         
         // Store will modify underlying array
         var dataStore = new Memory({

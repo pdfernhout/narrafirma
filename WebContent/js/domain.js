@@ -27,9 +27,9 @@ define([
 ) {
     var pageDefinitions = {};
     var questions = {};
+    var pagesToGoWithHeaders = {};
     
-    var exportedSurveyQuestions = [];
-    var surveyResults = [];
+    var projectData = {};
     
     // TODO: Kludge for extra translations for testing -- code will add some things here, need better approach
     var extraTranslations = {
@@ -129,38 +129,13 @@ define([
              actualFunction(contentPane, model, id, questionOptions, value);
          }
     }
- 
-    ////
-    var data = lang.clone(allPagesSummary.data);
-    var pagesToGoWithHeaders = lang.clone(allPagesSummary.pagesToGoWithHeaders);
-    
-    for (var headerPageID in pagesToGoWithHeaders) {
-        var pages = pagesToGoWithHeaders[headerPageID];
-        for (var pageIndex in pages) {
-            var pageID = pages[pageIndex];
-            data[pageID + "_pageStatus"] = null;
-        }
-    }
-    
-    /*
-    for (var fieldName in data) {
-        var fieldValue = data[fieldName];
-        if (fieldValue instanceof Array) {
-            data[fieldName] = new StatefulArray(fieldValue);
-        }
-    }
-    */
-    
-    // data = getStateful(data);
-    data = new Stateful(data);
-    console.log("domain data", data);
-    
+
     function calculate_quizScoreResult(model, dependsOn) {
         // console.log("quiz score result", dependsOn);
         var total = 0;
         for (var dependsOnIndex in dependsOn) {
             var questionID = dependsOn[dependsOnIndex];
-            // console.log("data", data);
+            // console.log("projectData", projectData);
             var questionAnswer = model.get(questionID);
             var answerWeight = 0;
             if (questionAnswer) {
@@ -208,10 +183,10 @@ define([
             var questions = pageDefinition.questions;
             for (var questionIndex in questions) {
                 var question = questions[questionIndex];
-                var value = data.get(question.id);
+                var value = projectData.projectAnswers.get(question.id);
                 if (question.type === "quizScoreResult") {
                     var dependsOn = question.options;
-                    value = calculate_quizScoreResult(data, dependsOn);
+                    value = calculate_quizScoreResult(projectData.projectAnswers, dependsOn);
                     // Don't count these as answered questions
                     questionsAnsweredCount--;
                 }
@@ -294,17 +269,50 @@ define([
         return valueToDisplay;
     }
     
+    function setupDomain() {
+        projectData.projectAnswers = new Stateful(lang.clone(allPagesSummary.data));
+        projectData.exportedSurveyQuestions = [];
+        projectData.surveyResults = {};
+        projectData.surveyResults.allStories = [];
+        
+        pagesToGoWithHeaders = lang.clone(allPagesSummary.pagesToGoWithHeaders);
+        
+        for (var headerPageID in pagesToGoWithHeaders) {
+            var pages = pagesToGoWithHeaders[headerPageID];
+            for (var pageIndex in pages) {
+                var pageID = pages[pageIndex];
+                projectData.projectAnswers[pageID + "_pageStatus"] = null;
+            }
+        }
+        
+        /*
+        for (var fieldName in projectData.projectAnswers) {
+            var fieldValue = projectData.projectAnswers[fieldName];
+            if (fieldValue instanceof Array) {
+                projectData.projectAnswers[fieldName] = new StatefulArray(fieldValue);
+            }
+        }
+        */
+        
+        console.log("projectData", projectData);
+    }
+    
+    setupDomain();
+    
     var exportedFunctions = {
-        "data": data,
+        // data collected
+        "projectData": projectData,
+        
+        // Supporting GUI
         "pagesToGoWithHeaders": pagesToGoWithHeaders,
         "questions": questions,
-        "exportedSurveyQuestions": exportedSurveyQuestions,
-        "surveyResults": surveyResults,
         "pageDefinitions": pageDefinitions,
+        "extraTranslations": extraTranslations,
+        
+        // functions called from page widgets
+        "setPageChangeCallback": setPageChangeCallback,
         "callDashboardFunction": callDashboardFunction,
         "buttonClicked": buttonClicked,
-        "setPageChangeCallback": setPageChangeCallback,
-        "extraTranslations": extraTranslations,
         "calculate_report": calculate_report,
         "calculate_quizScoreResult": calculate_quizScoreResult
     };
