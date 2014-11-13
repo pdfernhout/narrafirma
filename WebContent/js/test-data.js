@@ -9,7 +9,7 @@ define([
     "dojo/_base/lang",
     "dijit/registry",
     "dojo/string",
-    "js/translate",
+    "js/translate"
 ], function(
     array,
     domain,
@@ -110,6 +110,7 @@ define([
   
     return {
         testDogQuestions: testDogQuestions,
-        testDogStories: testDogStories
+        testDogStories: testDogStories,
+        testSurvey: testSurvey
     };
 });
