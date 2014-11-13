@@ -9,6 +9,7 @@ require([
     "dojo/dom-construct",
     "dojo/dom-style",
     "dojo/hash",
+    "js/survey",
     "js/test-data",
     "js/translate",
     "js/utility",
@@ -27,6 +28,7 @@ require([
     domConstruct,
     domStyle,
     hash,
+    survey,
     testData,
     translate,
     utility,
@@ -431,15 +433,24 @@ require([
         connect.subscribe("/dojo/hashchange", urlHashFragmentChanged);
     }
     
-    // Setup important callback for page changes
-    domain.setPageChangeCallback(widgetBuilder.updateQuestionsForPageChange);
+    function startup() {
+        // Setup important callback for page changes
+        domain.setPageChangeCallback(widgetBuilder.updateQuestionsForPageChange);
+        
+        // TODO: Remove this -- Kludge some test data for now
+        domain.projectData.surveyResults.allStories = testData.testDogStories;
+        domain.projectData.exportedSurveyQuestions = testData.testSurvey;
+        
+        // Callback for this button
+        // TODO: Temp for testing
+        domain.buttonFunctions.printQuestionsForm_printFormButton = survey.takeSurvey;
+        
+        // Call the main function
+        createLayout();
+        
+        // turn off startup "please wait" display
+        document.getElementById("startup").style.display = "none";
+    }
     
-    // TODO: Remove this -- Kludge some test data for now
-    domain.projectData.surveyResults.allStories = testData.testDogStories;
-    
-    // Call the main function
-    createLayout();
-    
-    // turn off startup "please wait" display
-    document.getElementById("startup").style.display = "none";
+    startup();
 });

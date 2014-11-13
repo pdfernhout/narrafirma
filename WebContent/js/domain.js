@@ -98,6 +98,10 @@ define([
         // TODO
         console.log("TODO webStoryCollectionEnabled");        
     }
+    
+    // function testStoryCollection(contentPane, model, id, questionOptions, value) {
+    //    console.log("testStoryCollection", contentPane, model, id, questionOptions, value);
+    //}
       
     var buttonFunctions = {
         //"printStoryForm": printStoryForm,
@@ -107,7 +111,9 @@ define([
         //"showHideCollectedStories": showHideCollectedStories,
         "copyDraftPNIQuestionVersionsIntoAnswers": copyDraftPNIQuestionVersionsIntoAnswers,
         "webStoryCollectionEnabled": webStoryCollectionEnabled,
-        "disableWebStoryFormAfterStoryCollection": disableWebStoryFormAfterStoryCollection
+        "disableWebStoryFormAfterStoryCollection": disableWebStoryFormAfterStoryCollection,
+        // TODO: This next action is filled in by application in main
+        "printQuestionsForm_printFormButton": null
     };
     
     // dispatch the button click
@@ -273,6 +279,7 @@ define([
         projectData.projectAnswers = new Stateful(lang.clone(allPagesSummary.data));
         projectData.exportedSurveyQuestions = [];
         projectData.surveyResults = {};
+        projectData.surveyResults.allCompletedSurveys = [];
         projectData.surveyResults.allStories = [];
         
         pagesToGoWithHeaders = lang.clone(allPagesSummary.pagesToGoWithHeaders);
@@ -314,7 +321,8 @@ define([
         "callDashboardFunction": callDashboardFunction,
         "buttonClicked": buttonClicked,
         "calculate_report": calculate_report,
-        "calculate_quizScoreResult": calculate_quizScoreResult
+        "calculate_quizScoreResult": calculate_quizScoreResult,
+        "buttonFunctions": buttonFunctions
     };
     
     lang.mixin(exports, exportedFunctions);

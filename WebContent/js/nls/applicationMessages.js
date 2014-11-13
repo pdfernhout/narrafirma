@@ -32,6 +32,10 @@ define({
     // Story browser button
     button_Filter: "Filter -- show only stories where both questions have the selected values",
     
+    // Used for test of survey in main.js
+    "surveySubmit": "Submit survey",
+    "surveyCancel": "Cancel",
+    
     // select widgets
     selection_has_not_been_made: " -- select -- ",
     
@@ -45,6 +49,6 @@ define({
     
     // Used for boolean choice widget
     boolean_choice_yes: "yes",
-    boolean_choice_no: "no"
+    boolean_choice_no: "no",
 }
 });
