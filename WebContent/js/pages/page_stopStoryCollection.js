@@ -4,9 +4,9 @@
 define([], function() {
 
     var questions = [
-        {"id":"webStoryCollection_stopCollectionLabel", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"webStoryCollection_disableWebStoryFormAfterStoryCollectionButton", "type":"button", "isInReport":false, "isGridColumn":true},
-        {"id":"webStoryCollection_enabledTracker", "type":"questionAnswer", "isInReport":true, "isGridColumn":false, "options":["webStoryCollection_enableDisableButton"]}
+        {"id":"FIXME_515", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"webStoryCollection_disableWebStoryFormAfterStoryCollectionButton", "type":"button", "isInReport":false, "isGridColumn":false, "options":["storyCollectionStop"]},
+        {"id":"webStoryCollection_enabledTracker2", "type":"function", "isInReport":true, "isGridColumn":false, "options":["isStoryCollectingEnabled"]}
     ];
 
     function buildPage(builder, contentPane, model) {

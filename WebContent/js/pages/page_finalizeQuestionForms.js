@@ -5,7 +5,7 @@ define([], function() {
 
     var questions = [
         {"id":"printQuestionsForm_introduction", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"printQuestionsForm_printFormButton", "type":"button", "isInReport":false, "isGridColumn":false}
+        {"id":"printQuestionsForm_printFormButton", "type":"button", "isInReport":false, "isGridColumn":false, "options":["printStoryForm"]}
     ];
 
     function buildPage(builder, contentPane, model) {

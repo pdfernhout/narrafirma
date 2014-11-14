@@ -2,6 +2,7 @@
 // See: http://dojotoolkit.org/documentation/tutorials/1.9/i18n/
 define({
     root: {
+    "FIXME_515::prompt": "If you are doing story collection over the internet, click this button to make the web form unavailable (to anyone but yourself). You can re-enable story collection later by going back to a previous page.",
     "SPECIAL_collectionRecommendationsTable_unfinished::prompt": "(Unfinished: This will be a table of recommendations for collection sessions\nrelated to the questions answered about participant groups.",
     "SPECIAL_collectionSessionRecommendations::prompt": "Recommendations for story collection sessions",
     "SPECIAL_elicitingQuestionRecommendations::prompt": "Recommendations for eliciting questions",
@@ -186,7 +187,6 @@ define({
     "clusterInterpretations_clusterSpace::prompt": "Cluster interpretations into perspectives",
     "collectedStoriesAfterCollection::prompt": "Collected stories",
     "collectedStoriesAfterCollectionLabel::prompt": "On this page you will review your collected stories.\nYou can save stories (or groups of stories) to observations for later use.\nYou can also save excerpts (parts of stories) for later use.",
-    "collectedStoriesDuringCollection::prompt": "Collected stories",
     "collectedStoriesDuringCollectionLabel::prompt": "On this page you can see your collected stories as they come in.",
     "collectionProcessIntro::prompt": "In the collection process phase of your PNI project, you will review incoming stories and enter records of story collection sessions.",
     "collectionSessionActivity_duration::prompt": "How long will this activity take?",
@@ -794,7 +794,8 @@ define({
     "perspective_name::shortName": "Name",
     "perspective_resultLinkageNotes::prompt": "Enter any notes you want to remember about this result with respect to this perspective.",
     "perspective_resultLinkageNotes::shortName": "Notes",
-    "printQuestionsForm_introduction::prompt": "On this page you can print your story questions form for distribution to participants.",
+    "printQuestionsForm_enterStories::prompt": "Enter survey result",
+    "printQuestionsForm_introduction::prompt": "On this page you can print your story questions form for distribution to participants.\nYou can later enter the results from each form into the system.",
     "printQuestionsForm_printFormButton::prompt": "Print story form",
     "projectPresentationElement_QA::prompt": "What questions do you anticipate about this element, and how would you like to answer them?",
     "projectPresentationElement_QA::shortName": "Q&A",
@@ -1150,14 +1151,16 @@ define({
     "venue_secondaryForGroup_type::selection:other": "other",
     "venue_secondaryForGroup_type::selection:peer interviews": "peer interviews",
     "venue_secondaryForGroup_type::selection:surveys": "surveys",
+    "webStoryCollection_collectedStoriesDuringCollection::prompt": "Collected stories",
     "webStoryCollection_copyStoryFormURLButton::prompt": "Copy story form web URL link",
+    "webStoryCollection_disableStoryCollectionButton::prompt": "Stop web story collection",
     "webStoryCollection_disableWebStoryFormAfterStoryCollectionButton::prompt": "Disable web story collection",
-    "webStoryCollection_disableWebStoryFormAfterStoryCollectionButton::shortName": "Disable web story collection",
-    "webStoryCollection_enableDisableButton::prompt": "Enable web story collection:",
-    "webStoryCollection_enableDisableButton::shortName": "Enable web story collection",
+    "webStoryCollection_enableStoryCollectionButton::prompt": "Start web story collection",
+    "webStoryCollection_enabledTracker2::prompt": "Web story collection enabled:",
     "webStoryCollection_enabledTracker::prompt": "Web story collection enabled:",
+    "webStoryCollection_loadLatestStoriesFromServer::prompt": "Load latest stories from server",
     "webStoryCollection_startCollectionLabel::prompt": "If you are doing story collection over the internet, click this button to make the web form \"live\" and able to be used by people other than yourself.",
-    "webStoryCollection_stopCollectionLabel::prompt": "If you are doing story collection over the internet, click this button to make the web form unavailable (to anyone but yourself). You can re-enable story collection later by going back to a previous page.",
+    "webStoryCollection_stopCollectionLabel::prompt": "You can also disable the data collection here.",
     "wholeProjectReportLabel::prompt": "This report shows all of the information entered in all of the pages of this software."
 }
 });

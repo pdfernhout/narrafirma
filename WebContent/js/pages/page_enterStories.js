@@ -4,7 +4,7 @@
 define([], function() {
 
     var questions = [
-
+        {"id":"printQuestionsForm_enterStories", "type":"button", "isInReport":false, "isGridColumn":false, "options":["enterSurveyResult"]}
     ];
 
     function buildPage(builder, contentPane, model) {

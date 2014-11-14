@@ -5,7 +5,8 @@ define([], function() {
 
     var questions = [
         {"id":"collectedStoriesDuringCollectionLabel", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"collectedStoriesDuringCollection", "type":"storyBrowser", "isInReport":true, "isGridColumn":false}
+        {"id":"webStoryCollection_loadLatestStoriesFromServer", "type":"button", "isInReport":false, "isGridColumn":false, "options":["loadLatestStoriesFromServer"]},
+        {"id":"webStoryCollection_collectedStoriesDuringCollection", "type":"storyBrowser", "isInReport":true, "isGridColumn":false}
     ];
 
     function buildPage(builder, contentPane, model) {

@@ -477,35 +477,46 @@ Activities within story collection sessions can be simple instructions or compli
 ## Print question forms [page_finalizeQuestionForms]
 
 * On this page you can print your story questions form for distribution to participants. [printQuestionsForm_introduction|label]
+You can later enter the results from each form into the system.
 
-* Print story form [printQuestionsForm_printFormButton|button]
+* Print story form [printQuestionsForm_printFormButton|button|printStoryForm]
 
 ## Start story collection [page_startStoryCollection]
 
 * If you are doing story collection over the internet, click this button to make the web form "live" and able to be used by people other than yourself.[webStoryCollection_startCollectionLabel|label]
 
-* Enable web story collection | Enable web story collection: [webStoryCollection_enableDisableButton|toggleButton]
+* Start web story collection [webStoryCollection_enableStoryCollectionButton|button|storyCollectionStart]
 
-* Copy story form web URL link [webStoryCollection_copyStoryFormURLButton|button]
+* Web story collection enabled: [webStoryCollection_enabledTracker|function|isStoryCollectingEnabled]
+
+* Copy story form web URL link [webStoryCollection_copyStoryFormURLButton|button|copyStoryFormURL]
+
+* You can also disable the data collection here. [webStoryCollection_stopCollectionLabel|label]
+
+* Stop web story collection [webStoryCollection_disableStoryCollectionButton|button|storyCollectionStop]
 
 ## Enter stories [page_enterStories]
 
 // the info shown here is what was designed for a story form - how to specify that
-// User can enter data here for stories received via paper forms
+// User can enter data here for stories received via paper forms or other forms of communication like email or other survey systems
+
+* Enter survey result [printQuestionsForm_enterStories|button|enterSurveyResult]
 
 ## Review incoming stories [page_reviewIncomingStories]
 
 * On this page you can see your collected stories as they come in. [collectedStoriesDuringCollectionLabel|label]
 
-* Collected stories [collectedStoriesDuringCollection|storyBrowser]
+* Load latest stories from server [webStoryCollection_loadLatestStoriesFromServer|button|loadLatestStoriesFromServer]
+
+* Collected stories [webStoryCollection_collectedStoriesDuringCollection|storyBrowser]
 
 ## Stop story collection [page_stopStoryCollection]
 
 * If you are doing story collection over the internet, click this button to make the web form unavailable (to anyone but yourself). You can re-enable story collection later by going back to a previous page. [webStoryCollection_stopCollectionLabel|label]
 
-* Disable web story collection | Disable web story collection [webStoryCollection_disableWebStoryFormAfterStoryCollectionButton|button]
+* Disable web story collection [webStoryCollection_disableWebStoryFormAfterStoryCollectionButton|button|storyCollectionStop]
 
-* Web story collection enabled: [webStoryCollection_enabledTracker|questionAnswer|webStoryCollection_enableDisableButton]
+* Web story collection enabled: [webStoryCollection_enabledTracker2|function|isStoryCollectingEnabled]
 
 ## Enter story collection session records [page_enterCollectionSessionRecords]
 
@@ -732,7 +743,7 @@ your interpretations.
 //                                                       SENSEMAKING
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		
+
 # Sensemaking [page_sensemaking]
 
 * In the sensemaking phase of your PNI project, you will plan sensemaking sessions and record what happened in them. [sensemakingIntroLabel|label]
@@ -858,7 +869,7 @@ Your description can include links to images or documents.
 //                                                       INTERVENTION
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
 # Intervention [page_intervention]
 
 * In the intervention phase of your PNI project, you will plan interventions and record information about them. [interventionIntroLabel|label]
