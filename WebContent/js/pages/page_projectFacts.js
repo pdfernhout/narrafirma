@@ -4,7 +4,7 @@
 define([], function() {
 
     var questions = [
-        {"id":"projectFacts", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"project_projectFacts", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"project_title", "type":"text", "isInReport":true, "isGridColumn":true},
         {"id":"project_communityOrOrganizationName", "type":"text", "isInReport":true, "isGridColumn":true},
         {"id":"project_topic", "type":"text", "isInReport":true, "isGridColumn":true},
