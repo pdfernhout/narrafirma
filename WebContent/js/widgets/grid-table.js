@@ -5,6 +5,7 @@ define([
     "dojo/_base/declare",
     "dojo/dom-construct",
     "exports",
+    "dojox/mvc/getPlainValue",
     "dojo/_base/lang",
     "dijit/registry",
     "js/translate",
@@ -24,6 +25,7 @@ define([
     declare,
     domConstruct,
     exports,
+    getPlainValue,
     lang,
     registry,
     translate,
@@ -64,8 +66,11 @@ define([
         console.log("OK clicked", statefulItem);
 
         var uniqueItemID = ++uniqueItemIDCounter;
+        
+        var plainValue = getPlainValue(statefulItem);
+        console.log("grid plainValue", plainValue);
 
-        store.put(statefulItem);
+        store.put(plainValue);
                 
         console.log("put store for add form");
         
