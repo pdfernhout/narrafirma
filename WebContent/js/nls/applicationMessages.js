@@ -21,6 +21,7 @@ define({
     button_nextPage: "Next Page",
     button_load: "Load",
     button_save: "Save",
+    button_debug: "Debug",
     
     // Grid buttons
     button_OK: "OK",

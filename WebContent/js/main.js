@@ -312,6 +312,10 @@ require([
         urlHashFragmentChanged(startPage);
     }
     
+    function debugButtonClicked() {
+        console.log("debug domain.projectData", domain.projectData);
+    }
+    
     // TODO: somehow unify this with code in widget-questions-table?
     function newSpecialSelect(id, options, addToDiv) {
         var select = new Select({
@@ -415,6 +419,8 @@ require([
         
         loadButton = utility.newButton("button_load", null, "navigationDiv", loadClicked);
         saveButton = utility.newButton("button_save", null, "navigationDiv", saveClicked);
+        
+        var debugButton = utility.newButton("button_debug", null, "navigationDiv", debugButtonClicked);
         
         // Setup the first page
         var fragment = hash();
