@@ -14,15 +14,16 @@ if time
 - make report work
 - styling of nested box
 
-
-Fix issue with checkboxes (and maybe radio buttons) not saving data
-
 Main Dashboard
 
 Help window displaying HTML instead of alert
 
 Save data as move from page to page
 Restore data when load page
+
+Add take survey page
+Save data from when survey is taken
+Way to refresh survey data into PNIWorkbook on button press (or similar action)
 
 Some sort of continue button at bottom of page to progress through steps
 Validation of page data as progress through a step
@@ -85,6 +86,9 @@ Think more about catalysis part
 
 Better and more consistent approach for translation selections for selects, checkboxes, radiobuttons, and maybe other types
 Translate report answers as needed for those types like selections
+
+Tranlation support for survey as distinct from application so two do not potentially collide
+Readonly version of checkboxes and radiobutton widgets, used by grid
 
 DONE Checkboxes for multiple choices
 DONE Tab container sizing to full page
@@ -160,6 +164,15 @@ DONE Create stub test server to store and retrieve data under node.js to see wha
 DONE added application level translation file and using it in translate function, but still need to fill it in
 DONE Generic application-level translation TODO items
 DONE Move test data out of domain into its own module
+DONE Write nodejs server for Pointrel system (including importable module)
+DONE Refactor Pointrel system client code so one includable file
+DONE Initial save and load of project data with Pointrel system
+DONE Got Pointrel nodejs server integrated with PNIWorkbook system and have server serving pages
+DONE Import extra dojo modules (beyond base) into project and use with index.html
+DONE Add some basic survey support again to the point of testing core functionality
+DONE Add temporary debug button to print out domain project info
+DONE Fix issue with checkboxes (and maybe radio buttons) not saving data
+DONE Have a way that items in grid that are objects are formatted in some readable way
 
 ======= CYNTHIA
 
