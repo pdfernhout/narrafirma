@@ -255,6 +255,10 @@ app.post("/cgi-bin/resource-get.php", ensureAuthenticated, function (request, re
 //    Pointrel20130202Server.variableQuery(request, response);
 //});
 
+app.use("/$", ensureAuthenticated,   function(req, res) {
+    res.redirect('/index.html');
+});
+
 app.use("/", ensureAuthenticated, express.static(__dirname + "/../WebContent"));
 
 app.use(function(err, req, res, next){
