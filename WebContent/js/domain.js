@@ -7,7 +7,6 @@ define([
     "dojo/_base/array",
     "exports",
     "dojo/_base/lang",
-    "dijit/registry",
     "dojo/string",
     "js/translate",
     "dojo/Stateful",
@@ -17,7 +16,6 @@ define([
     array,
     exports,
     lang,
-    registry,
     string,
     translate,
     Stateful,
@@ -79,37 +77,14 @@ define([
         alert(message);
     }
     
-    function webStoryCollectionEnabled(contentPane, model, id, questionOptions, value) {
-        // TODO: Overkill to recalculate them all...
-        pageChangeCallback();
-        // TODO
-        console.log("TODO webStoryCollectionEnabled");
+    function printStoryForm() {
+        console.log("printStoryForm unfinished");
+        alert("unfinished");
     }
-
-    function disableWebStoryFormAfterStoryCollection(contentPane, model, id, questionOptions, value) {
-        // TODO; Shut down the process....
-        registry.byId("webStoryCollectionEnabled").set("checked", false);
-        registry.byId("webStoryCollectionEnabled").set("value", false);
-        console.log("updated webStoryCollectionEnabled to false", registry.byId("webStoryCollectionEnabled").get("value"));
-        // TODO: Overkill to recalculate them all...
-        pageChangeCallback();
-        // TODO
-        console.log("TODO webStoryCollectionEnabled");        
-    }
-    
-    // function testStoryCollection(contentPane, model, id, questionOptions, value) {
-    //    console.log("testStoryCollection", contentPane, model, id, questionOptions, value);
-    //}
       
     var buttonFunctions = {
-        //"printStoryForm": printStoryForm,
-        //"copyStoryFormURLDuringFinalize": copyStoryFormURLDuringFinalize,
-        //"copyStoryFormURLDuringStart": copyStoryFormURLDuringStart,
-        //"exportPresentationOutline": exportPresentationOutline,
-        //"showHideCollectedStories": showHideCollectedStories,
+        "printStoryForm": printStoryForm,
         "copyDraftPNIQuestionVersionsIntoAnswers": copyDraftPNIQuestionVersionsIntoAnswers,
-        "webStoryCollectionEnabled": webStoryCollectionEnabled,
-        "disableWebStoryFormAfterStoryCollection": disableWebStoryFormAfterStoryCollection,
         // TODO: This next action is filled in by application in main
         "enterSurveyResult": null
     };
