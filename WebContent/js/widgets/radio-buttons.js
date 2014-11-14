@@ -47,16 +47,19 @@ define([
     
             array.forEach(this.options, function (option) {
                 var choiceID = id + "_choice_" + option.value;
+                var isChecked = (self.value === option.value);
+                // console.log("radio init checked", choiceID, isChecked, option.value, self.value);
                 var radioButton = new RadioButton({
-                    checked: (self.value === option.value),
+                    checked: isChecked,
                     value: option.value,
                     name: id,
                     "id": choiceID
                 });
                 radioButton.placeAt(div);
-                on(radioButton, "click", function(evt) {
-                    // console.log("radio clicked", evt.target);
-                    self.set("value", evt.target.value);
+                on(radioButton, "click", function(event) {
+                    // console.log("radio clicked", event.target);
+                    self.set("value", event.target.value);
+                    // console.log("radio clicked", event.target.value);
                 });
                 radioButton.startup();
                 self.radioButtons[option.value] = radioButton;
@@ -68,6 +71,7 @@ define([
 
         _setValueAttr: function(value) {
             // TODO: (Maybe good enough?) Need to select radio button when this is called, but not if call it from inside widget on change
+            // console.log("_setValueAttr radio", value);
             this.value = value;
             var self = this;
             // console.log("set radio", value);
@@ -76,6 +80,7 @@ define([
                 // console.log("radio button value", self.value, option.value);
                 var radioButton = self.radioButtons[option.value];
                 radioButton.set("checked", self.value === option.value);
+                // console.log("radio set", option.value, self.value === option.value);
             });
         },
         
