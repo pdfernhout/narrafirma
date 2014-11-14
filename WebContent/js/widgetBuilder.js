@@ -285,18 +285,19 @@ define([
     }
     
     function add_checkboxes(contentPane, model, id, questionOptions) {
+        // console.log("add_checkboxes", contentPane, model, id, questionOptions);
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
 
         // Checkboxes modifies a dictionary which contains whether each checkbox is checked
         // It does not use an "at" since the checkboxes will modify the data directly
         // Ensure that there is a place to store data about each checkbox
-        if (!model[id]) model[id] = {};
+        if (!model.get(id)) model.set(id, {});
 
         var checkboxes = new CheckBoxes({
             questionID: id,
             choices: questionOptions,
             // optionsString: optionsString,
-            value: model[id]
+            value: model.get(id)
         });
         
         checkboxes.placeAt(questionContentPane);
