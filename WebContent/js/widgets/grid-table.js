@@ -175,13 +175,18 @@ define([
         console.log("done with view button clicked");
     }
     
+    function formatObjectsIfNeeded(item) {
+        if (lang.isString(item)) return item;
+        return JSON.stringify(item);
+    }
+    
     function insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, includeAddButton) {
         // Grid with list of objects
         console.log("insertGridTableBasic", id, dataStore);
         
         // TODO: Need to set better info for fields and meanings to display and index on
         
-        var columns = {};
+        var columns = [];
         
         if (!popupPageDefinition) {
             console.log("Trouble: no popupPageDefinition", id, pagePane);
@@ -190,7 +195,12 @@ define([
         // TODO: FIX ME -- no longer have questions -- either add them back or find another approach...
         array.forEach(popupPageDefinition.questions, function (question) {
             if (question.isGridColumn) {
-                columns[question.id] = translate(question.id + "::shortName");
+                var newColumn =  {
+                    field: question.id,
+                    label: translate(question.id + "::shortName"),
+                    formatter: formatObjectsIfNeeded
+                };
+                columns.push(newColumn);
             }
         });
         
