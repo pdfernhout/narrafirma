@@ -271,7 +271,7 @@ define([
     
     function add_radiobuttons(contentPane, model, id, questionOptions) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
-
+        
         var radioButtons = new RadioButtons({
             questionID: id,
             choices: questionOptions,
@@ -287,11 +287,16 @@ define([
     function add_checkboxes(contentPane, model, id, questionOptions) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
 
+        // Checkboxes modifies a dictionary which contains whether each checkbox is checked
+        // It does not use an "at" since the checkboxes will modify the data directly
+        // Ensure that there is a place to store data about each checkbox
+        if (!model[id]) model[id] = {};
+
         var checkboxes = new CheckBoxes({
             questionID: id,
             choices: questionOptions,
             // optionsString: optionsString,
-            value: at(model, id)
+            value: model[id]
         });
         
         checkboxes.placeAt(questionContentPane);

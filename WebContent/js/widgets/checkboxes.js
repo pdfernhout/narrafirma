@@ -19,7 +19,7 @@ define([
     CheckBox,
     _WidgetBase
 ){
-    // TODO: Very similar to RadioButtonsWidget
+    // TODO: Very similar to RadioButtonsWidget, except it maintains a dictionary of whether checkboxes are checked rather than use an "at" accessor
     // TODO: Set an optional minimum and maximum number that may be checked and validate for that
     var CheckBoxesWidget = declare([_WidgetBase], {
         value: null,
@@ -35,9 +35,11 @@ define([
             // These need to be created here so that the instances do not share one copy if made above
             this.checkboxes = {};
             this.options = widgetSupport.buildOptions(this.questionID, this.choices, this.optionsString);
-            console.log("checkboxes", this.options);
+            // console.log("checkboxes", this.options);
             var self = this;
+            // console.log("checkboxes constructor value", this.value);
             if (!this.value) {
+                console.log("ERROR - creating temporary value for checkboxes", this.id);
                 this.value = {};
                 array.forEach(this.options, function (option) {
                     self.value[option.value] = false;
@@ -58,18 +60,24 @@ define([
             
             array.forEach(this.options, function (option) {
                 var choiceID = id + "::selection:" + option.value;
-                console.log("creating checkbox", choiceID);
+                // console.log("creating checkbox", choiceID);
                 var checkBox = new CheckBox({
                     value: option.value,
                     "id": choiceID
                 });
                 checkBox.placeAt(div);
-                checkBox.set("checked", self.value[option.value]);
+                var startupValue = self.value; // self.get("value");
+                // console.log("checkboxes startupValue", startupValue);
+                checkBox.set("checked", startupValue && startupValue[option.value]);
                 on(checkBox, "click", function(evt) {
                     var localChoiceID = evt.target.defaultValue;
                     var checked = evt.target.checked;
-                    self.value[localChoiceID] = checked;
-                    console.log("clicked checkbox", evt, localChoiceID, checked, self.value);
+                    // console.log("checkboxes value", self.value);
+                    var currentValue = self.value; // self.get("value");
+                    if (currentValue === null) currentValue = {};
+                    currentValue[localChoiceID] = checked;
+                    // self.set("value", currentValue);
+                    // console.log("clicked checkbox", evt, localChoiceID, checked, self.value);
                     // TODO: send changed message?
                 });
                 checkBox.startup();
