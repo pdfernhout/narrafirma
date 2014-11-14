@@ -177,6 +177,8 @@ define([
     
     function formatObjectsIfNeeded(item) {
         if (lang.isString(item)) return item;
+        if (item === undefined) return "";
+        if (item === null) return "";
         return JSON.stringify(item);
     }
     
