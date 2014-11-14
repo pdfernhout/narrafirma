@@ -9,6 +9,7 @@ require([
     "dojo/dom-construct",
     "dojo/dom-style",
     "dojo/hash",
+    "dojo/_base/lang",
     "js/survey",
     "js/test-data",
     "js/translate",
@@ -28,6 +29,7 @@ require([
     domConstruct,
     domStyle,
     hash,
+    lang,
     survey,
     testData,
     translate,
@@ -449,7 +451,7 @@ require([
         
         // Callback for this button
         // TODO: Temp for testing
-        domain.buttonFunctions.enterSurveyResult = survey.takeSurvey;
+        domain.buttonFunctions.enterSurveyResult = lang.partial(survey.takeSurvey, archiver, credentials);
         
         // Call the main function
         createLayout();
