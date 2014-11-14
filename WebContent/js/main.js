@@ -445,7 +445,7 @@ require([
         
         // TODO: Remove this -- Kludge some test data for now
         domain.projectData.surveyResults.allStories = testData.testDogStories;
-        domain.projectData.exportedSurveyQuestions = testData.testSurvey;
+        // domain.projectData.exportedSurveyQuestions = testData.testSurvey;
         
         // Callback for this button
         // TODO: Temp for testing
