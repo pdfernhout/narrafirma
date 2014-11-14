@@ -77,9 +77,29 @@ define([
         alert(message);
     }
     
-    function printStoryForm() {
+    // TODO: How to save the fact we have exported this in the project? Make a copy??? Or keep original in document somewhere? Versus what is returned from server for surveys?
+    function finalizeSurvey() {
+        var survey = {};
+        survey.project_elicitingQuestionsList = projectData.projectAnswers.get("project_elicitingQuestionsList");
+        survey.project_storyQuestionsList = projectData.projectAnswers.get("project_storyQuestionsList");
+        survey.project_participantQuestionsList = projectData.projectAnswers.get("project_participantQuestionsList");
+        survey.questionForm_title = projectData.projectAnswers.get("questionForm_title");
+        survey.questionForm_image = projectData.projectAnswers.get("questionForm_image");
+        survey.questionForm_startText = projectData.projectAnswers.get("questionForm_startText");
+        survey.questionForm_endText = projectData.projectAnswers.get("questionForm_endText");
+        
+        console.log("survey", survey);
+        
+        // Ensure we have an entire fresh copy
+        projectData.exportedSurveyQuestions = JSON.parse(JSON.stringify(survey));
+        
+        console.log("projectData.exportedSurveyQuestions", projectData.exportedSurveyQuestions);
+    }
+    
+    function printStoryForm(contentPane, model, id, questionOptions, value) {
         console.log("printStoryForm unfinished");
-        alert("unfinished");
+        alert("unfinished, but finalizing survey for testing...");
+        finalizeSurvey();
     }
       
     var buttonFunctions = {
@@ -250,7 +270,7 @@ define([
     
     function setupDomain() {
         projectData.projectAnswers = new Stateful(lang.clone(allPagesSummary.data));
-        projectData.exportedSurveyQuestions = [];
+        projectData.exportedSurveyQuestions = {};
         projectData.surveyResults = {};
         projectData.surveyResults.allCompletedSurveys = [];
         projectData.surveyResults.allStories = [];
@@ -295,7 +315,10 @@ define([
         "buttonClicked": buttonClicked,
         "calculate_report": calculate_report,
         "calculate_quizScoreResult": calculate_quizScoreResult,
-        "buttonFunctions": buttonFunctions
+        "buttonFunctions": buttonFunctions,
+        
+        // for testing:
+        "finalizeSurvey": finalizeSurvey
     };
     
     lang.mixin(exports, exportedFunctions);
