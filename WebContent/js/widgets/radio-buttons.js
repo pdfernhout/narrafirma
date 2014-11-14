@@ -58,7 +58,7 @@ define([
                 radioButton.placeAt(div);
                 on(radioButton, "click", function(event) {
                     // console.log("radio clicked", event.target);
-                    self.set("value", event.target.value);
+                    self._set("value", event.target.value);
                     // console.log("radio clicked", event.target.value);
                 });
                 radioButton.startup();
