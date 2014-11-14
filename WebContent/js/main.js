@@ -449,7 +449,7 @@ require([
         
         // Callback for this button
         // TODO: Temp for testing
-        domain.buttonFunctions.printQuestionsForm_printFormButton = survey.takeSurvey;
+        domain.buttonFunctions.enterSurveyResult = survey.takeSurvey;
         
         // Call the main function
         createLayout();

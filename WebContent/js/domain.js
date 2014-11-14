@@ -111,7 +111,7 @@ define([
         "webStoryCollectionEnabled": webStoryCollectionEnabled,
         "disableWebStoryFormAfterStoryCollection": disableWebStoryFormAfterStoryCollection,
         // TODO: This next action is filled in by application in main
-        "printQuestionsForm_printFormButton": null
+        "enterSurveyResult": null
     };
     
     // dispatch the button click
@@ -125,7 +125,7 @@ define([
          
          var actualFunction = buttonFunctions[functionName];
          if (!actualFunction) {
-             var message = "Unfinished handling for: " + id;
+             var message = "Unfinished handling for: " + id + " with functionName: " + functionName;
              console.log(message, contentPane, model, id, questionOptions, value);
              alert(message);
              return;
