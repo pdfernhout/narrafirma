@@ -7,6 +7,7 @@ define([
     "dojo/_base/array",
     "exports",
     "dojo/_base/lang",
+    "js/storage",
     "dojo/string",
     "js/translate",
     "dojo/Stateful",
@@ -16,6 +17,7 @@ define([
     array,
     exports,
     lang,
+    storage,
     string,
     translate,
     Stateful,
@@ -160,8 +162,23 @@ define([
     }
     
     function loadLatestStoriesFromServer(contentPane, model, id, questionOptions, value) {
-        console.log("loadLatestStoriesFromServer unfinished");
-        alert("loadLatestStoriesFromServer unfinished...");
+        console.log("loadLatestStoriesFromServer called");
+        storage.loadLatestSurveyResults(function (allEntries, newEntries) {
+            // console.log("load survey result", "all", allEntries, "new", newEntries);
+            for (var index in newEntries) {
+                var newEntry = newEntries[index];
+                if (newEntry.resourceContent) {
+                    var surveyResult = newEntries[index].resourceContent.surveyResult;
+                    if (surveyResult) {
+                        projectData.surveyResults.allCompletedSurveys.push(surveyResult);
+                    } else {
+                        console.log("ERROR: Missing surveyResult in newEntry", newEntry);
+                    }
+                } else {
+                    console.log("ERROR: Problem reading resourceContent from newEntry", newEntry);
+                }
+            }
+        });
     }
       
     var buttonFunctions = {

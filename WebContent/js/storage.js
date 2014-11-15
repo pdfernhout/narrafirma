@@ -14,16 +14,15 @@ define([
     var userID = "anonymous";
     
     // var savedVersions = [];
+    var archiver = null;
     
     var projectAnswersVersionHyperdocumentUUID = "Test-PNIWorkbook-001";
     var projectAnswersVersionExtension = "PNIWorkbook.pce.json";
+    var projectAnswersVersionsIndex = null;
     
     var surveyResultHyperdocumentID = "Test-PNIWorkbook-001-Surveys";
     var surveyResultExtension = "PNIWorkbookSurveyResult.pce.json";
-
-    var archiver = null;
-    
-    var indexForProjectVersions = null;
+    var surveyResultsIndex = null;
     
     function storeProjectAnswersVersion(projectAnswers) {
         var timestamp = new Date().toISOString();
@@ -38,14 +37,14 @@ define([
         });
     }
     
-    function loadLatestProjectVersion(switchToLoadedProjectDataCallback) {
+    function loadLatestProjectVersion(switchToLoadedProjectAnswersCallback) {
         console.log("loadLatestProjectVersion");
-        indexForProjectVersions.getNewEntries(lang.partial(newEntriesDone, switchToLoadedProjectDataCallback));
+        projectAnswersVersionsIndex.getNewEntries(lang.partial(loadedNewProjectAnswers, switchToLoadedProjectAnswersCallback));
     }
     
     // TODO: improve design and GUI so can choose a version to load?
-    function newEntriesDone(switchToLoadedProjectDataCallback, error, allEntries, newEntries) {
-        console.log("newEntriesDone: ", error, newEntries);
+    function loadedNewProjectAnswers(switchToLoadedProjectAnswersCallback, error, allEntries, newEntries) {
+        console.log("loadedNewProjectAnswers: ", error, newEntries);
         if (error) {
             var errorMessage = "ERROR: error on retrieving index data for project";
             console.log(errorMessage);
@@ -67,14 +66,14 @@ define([
         
         var latestVersion = allEntries[allEntries.length - 1];
         var resourceURI = latestVersion.name;
-        if (latestVersion.resourceContent) return projectDataLoaded(switchToLoadedProjectDataCallback, null, latestVersion.resourceContent.text);
+        if (latestVersion.resourceContent) return projectDataLoaded(switchToLoadedProjectAnswersCallback, null, latestVersion.resourceContent.text);
         
-        archiver.resource_get(resourceURI, lang.partial(projectDataLoaded, switchToLoadedProjectDataCallback));
+        archiver.resource_get(resourceURI, lang.partial(projectDataLoaded, switchToLoadedProjectAnswersCallback));
     }
     
     // TODO: Better error handling popup dialog as a generalized GUI issue
     
-    function projectDataLoaded(switchToLoadedProjectDataCallback, error, text) {
+    function projectDataLoaded(switchToLoadedProjectAnswersCallback, error, text) {
         if (error) {
             var errorMessage = "Error when fetching project data: " + error;
             console.log(errorMessage);
@@ -86,14 +85,14 @@ define([
         try {
             item = JSON.parse(text);
         } catch (err) {
-            console.log("error when trying to parse: ", text, err);
+            console.log("error when trying to parse project file: ", text, err);
             alert("Could not parse project file");
             return;
         }
         var projectAnswers = item.body;
         
         console.log("loading saved version", item, projectAnswers);
-        switchToLoadedProjectDataCallback(projectAnswers);
+        switchToLoadedProjectAnswersCallback(projectAnswers);
     }
     
     function storeSurveyResult(surveyResult) {
@@ -110,11 +109,34 @@ define([
         });
     }
     
+    function loadLatestSurveyResults(loadedSurveyResultsCallback) {
+        console.log("loadLatestSurveyResults");
+        surveyResultsIndex.getNewEntries(lang.partial(loadedNewSurveyResults, loadedSurveyResultsCallback));
+    }
+    
+    // TODO: improve design and GUI so can choose a version to load?
+    function loadedNewSurveyResults(loadedSurveyResultsCallback, error, allEntries, newEntries) {
+        // console.log("loadedNewSurveyResults: ", error, newEntries);
+        if (error) {
+            var errorMessage = "ERROR: error on retrieving survey results";
+            console.log(errorMessage);
+            alert(errorMessage);
+            return;
+        }
+
+        loadedSurveyResultsCallback(allEntries, newEntries);    
+    }
+    
     
     function setup() {
         console.log("Using Pointrel20130202");
         archiver = new Pointrel20130202.PointrelArchiver(archiveURL, userID);
-        indexForProjectVersions = new Pointrel20130202.PointrelIndex(archiver, projectAnswersVersionHyperdocumentUUID, "index", false);
+        
+        // false is don't fetch resources
+        projectAnswersVersionsIndex = new Pointrel20130202.PointrelIndex(archiver, projectAnswersVersionHyperdocumentUUID, "index", false);
+        
+        // true is do fetch resources
+        surveyResultsIndex = new Pointrel20130202.PointrelIndex(archiver, surveyResultHyperdocumentID, "index", true);
     }
     
     setup();
@@ -125,6 +147,7 @@ define([
         //"indexForProjectVersions": indexForProjectVersions,
         "storeProjectAnswersVersion": storeProjectAnswersVersion,
         "loadLatestProjectVersion": loadLatestProjectVersion,
-        "storeSurveyResult": storeSurveyResult
+        "storeSurveyResult": storeSurveyResult,
+        "loadLatestSurveyResults": loadLatestSurveyResults
     };
 });
