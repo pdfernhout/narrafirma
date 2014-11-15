@@ -7,7 +7,6 @@ define([
     "dojo/dom-construct",
     "dojo/_base/lang",
     "dojo/query",
-    "js/test-data",
     "js/translate",
     "js/utility",
     "js/widgetBuilder",
@@ -26,7 +25,6 @@ define([
     domConstruct,
     lang,
     query,
-    testData,
     translate,
     utility,
     widgetBuilder,
@@ -162,15 +160,18 @@ define([
     
     var filterableQuestionTypes = ["select", "slider", "boolean", "text"];
     
+    // TODO: Fix so the filters get updated as the story questions get changed
     function insertStoryBrowser(pagePane, model, id, pageDefinitions) {
         console.log("insertStoryBrowser start", id);
         
+        var questions = domain.collectAllSurveyQuestions();
+        
         var popupPageDefinition = {
              // TODO: Fix this to use real questions from domain!!!
-             "id": "testDogQuestions",
-             "questions": testData.testDogQuestions,
+             "id": "storyBrowserQuestions",
+             "questions": questions,
              buildPage: function (builder, contentPane, model) {
-                 widgetBuilder.addQuestions(testData.testDogQuestions, contentPane, model);
+                 widgetBuilder.addQuestions(questions, contentPane, model);
              }
         };
 
@@ -193,7 +194,7 @@ define([
         
         var questionOptions = [];
         var questionsById = {};
-        array.forEach(popupPageDefinition.questions, function (question) {
+        array.forEach(questions, function (question) {
             if (array.indexOf(filterableQuestionTypes, question.type) != -1) {
                 questionOptions.push({label: translate(question.id + "::shortName", "*FIXME -- Missing shortName translation for: " + question.id), value: question.id});
                 questionsById[question.id] = question;

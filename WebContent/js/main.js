@@ -445,9 +445,8 @@ require([
         // Setup important callback for page changes
         domain.setPageChangeCallback(widgetBuilder.updateQuestionsForPageChange);
         
-        // TODO: Remove this -- Kludge some test data for now
-        domain.projectData.surveyResults.allStories = testData.testDogStories;
-        // domain.projectData.exportedSurveyQuestions = testData.testSurvey;
+        // TODO: Remove this and make a more systematic finalization process
+        // domain.finalizeSurvey();
         
         // Callback for this button
         // TODO: Temp for testing

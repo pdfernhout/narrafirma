@@ -77,6 +77,63 @@ define([
         alert(message);
     }
     
+    // TODO: This needs to be improved for asking multiple questions, maybe spanning multiple pages
+    function collectAllSurveyQuestions() {
+        var questions = [];
+
+        // TODO: Title, logo
+        // TODO: Improve as should be asking multiple questions and storing the results for each one 
+        var elicitingQuestionList = projectData.exportedSurveyQuestions.project_elicitingQuestionsList;
+        console.log("elicitingQuestionList", elicitingQuestionList);
+        var storySolicitationOuestion = "What happened?";
+        if (elicitingQuestionList && elicitingQuestionList.length > 0) storySolicitationOuestion = elicitingQuestionList[0].elicitingQuestion_text;
+        
+        var startText = projectData.exportedSurveyQuestions.questionForm_startText;
+        var endText = projectData.exportedSurveyQuestions.questionForm_endText;
+        var storyQuestionList = projectData.exportedSurveyQuestions.project_storyQuestionsList;
+        var participantQuestionList = projectData.exportedSurveyQuestions.project_participantQuestionsList;
+        
+        if (startText) questions.push({storyQuestion_shortName: "startText", storyQuestion_text: startText, storyQuestion_type: "label"});
+        questions.push({storyQuestion_shortName: "story", storyQuestion_text: storySolicitationOuestion, storyQuestion_type: "textarea"});
+        questions.push({storyQuestion_shortName: "name", storyQuestion_text: "Please give your story a name", storyQuestion_type: "text"});
+        if (storyQuestionList) questions = questions.concat(storyQuestionList);
+        if (participantQuestionList) questions = questions.concat(storyQuestionList);
+        if (endText) questions.push({storyQuestion_shortName: "endText", storyQuestion_text: endText, storyQuestion_type: "label"});
+        
+        console.log("all survey questions", questions);
+        
+        var adjustedQuestions = [];
+        
+        for (var questionIndex in questions) {
+            var question = questions[questionIndex];
+            console.log("question", question);
+            // TODO: FIX BUG HERE PREVENTING the review incoming stories page from being viewed if start with that!!!!
+            var id = question.storyQuestion_shortName || question.participantQuestion_shortName;
+            var type = question.storyQuestion_type || question.participantQuestion_type;
+            // TODO: What to set for initial values?
+            // TODO: Improve how making model...
+            // if (!(type in {label: 1, header: 1})) model.set(id, null);
+            // TODO: Need better approach for translations; these could interfere with main application
+            extraTranslations[id + "::prompt"] = question.storyQuestion_text || question.participantQuestion_text;
+            var options = [];
+            var optionsString = question.storyQuestion_options || question.participantQuestion_options;
+            if (optionsString) {
+                var splitOptions = optionsString.split("\n");
+                // Make sure options don't have leading or trailing space and are not otherwise blank
+                for (var index in splitOptions) {
+                    var trimmedOption = splitOptions[index].trim();
+                    if (trimmedOption) {
+                        options.push(trimmedOption);
+                        extraTranslations[id + "::selection:" + trimmedOption] = trimmedOption;
+                    }
+                }
+            }
+            adjustedQuestions.push({type: type, id: id, options: options});
+        }
+        
+        return adjustedQuestions;
+    }
+    
     // TODO: How to save the fact we have exported this in the project? Make a copy??? Or keep original in document somewhere? Versus what is returned from server for surveys?
     function finalizeSurvey() {
         var survey = {};
@@ -318,7 +375,8 @@ define([
         "buttonFunctions": buttonFunctions,
         
         // for testing:
-        "finalizeSurvey": finalizeSurvey
+        "finalizeSurvey": finalizeSurvey,
+        "collectAllSurveyQuestions": collectAllSurveyQuestions
     };
     
     lang.mixin(exports, exportedFunctions);
