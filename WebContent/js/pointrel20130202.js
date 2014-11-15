@@ -946,10 +946,12 @@
 	function PointrelIndex(archiver, indexName, indexType, fetchResources) {
 		// Default some parameters
 		if (indexType === undefined) indexType = "index";
-		if (fetchResources === undefined && indexType === "index") {
-			fetchResources = true;
-		} else {
-			fetchResources = false;
+		if (fetchResources === undefined) {
+		    if (indexType === "index") {
+		        fetchResources = true;
+		    } else {
+		        fetchResources = false;
+		    }
 		}
 		
 		this.archiver = archiver;
