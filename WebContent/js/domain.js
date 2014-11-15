@@ -97,7 +97,7 @@ define([
         questions.push({storyQuestion_shortName: "story", storyQuestion_text: storySolicitationOuestion, storyQuestion_type: "textarea"});
         questions.push({storyQuestion_shortName: "name", storyQuestion_text: "Please give your story a name", storyQuestion_type: "text"});
         if (storyQuestionList) questions = questions.concat(storyQuestionList);
-        if (participantQuestionList) questions = questions.concat(storyQuestionList);
+        if (participantQuestionList) questions = questions.concat(participantQuestionList);
         if (endText) questions.push({storyQuestion_shortName: "endText", storyQuestion_text: endText, storyQuestion_type: "label"});
         
         console.log("all survey questions", questions);
@@ -158,10 +158,16 @@ define([
         alert("unfinished, but finalizing survey for testing...");
         finalizeSurvey();
     }
+    
+    function loadLatestStoriesFromServer(contentPane, model, id, questionOptions, value) {
+        console.log("loadLatestStoriesFromServer unfinished");
+        alert("loadLatestStoriesFromServer unfinished...");
+    }
       
     var buttonFunctions = {
         "printStoryForm": printStoryForm,
         "copyDraftPNIQuestionVersionsIntoAnswers": copyDraftPNIQuestionVersionsIntoAnswers,
+        "loadLatestStoriesFromServer": loadLatestStoriesFromServer,
         // TODO: This next action is filled in by application in main
         "enterSurveyResult": null
     };
