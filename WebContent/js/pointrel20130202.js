@@ -931,6 +931,10 @@
 		};
 	}
 
+	// indexEntries is an array of objects which have a "name" field which is generally a URI to a resource
+	// The may have a resourceContent field filled in with the resource content to reduce network requests if it is small (default < 2K encoded)
+	// They have a trace field which relates to who added the resource and when, equivalent to an email header
+	
 	// The indexType can be: 
 	// "journal" (but for that you could use PointrelJournal)
 	// "index" (for a specific named index, returns a list of all resources and who added them)
