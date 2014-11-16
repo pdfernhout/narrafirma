@@ -21,6 +21,9 @@ Help window displaying HTML instead of alert
 Save data as move from page to page
 Restore data when load page
 
+Update story browser when load project
+Update story browser when load latest stories from server
+
 Fix how survey data is collected and stored to seperate multiple stories from participant information
 Improve take survey page like with support for seperate pages
 Save data from when survey is taken
