@@ -176,7 +176,12 @@ define([
                     var surveyResult = newEntries[index].resourceContent.surveyResult;
                     if (surveyResult) {
                         // TODO: Kludge to remove for working with test data
-                        if (!surveyResult.id) surveyResult.id = uuid();
+                        if (!surveyResult.id) {
+                            console.log("UUID issue", newEntries[index], surveyResult);
+                            // surveyResult.id = uuid();
+                            // Use the identifier for the resource the survey is in
+                            surveyResult.id = newEntries[index].name;
+                        }
                         projectData.surveyResults.allCompletedSurveys.push(surveyResult);
                     } else {
                         console.log("ERROR: Missing surveyResult in newEntry", newEntry);
