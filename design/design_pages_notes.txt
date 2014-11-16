@@ -514,7 +514,7 @@ You can later enter the results from each form into the system.
 
 ## Stop story collection [page_stopStoryCollection]
 
-* If you are doing story collection over the internet, click this button to make the web form unavailable (to anyone but yourself). You can re-enable story collection later by going back to a previous page. [webStoryCollection_stopCollectionLabel|label]
+* If you are doing story collection over the internet, click this button to make the web form unavailable (to anyone but yourself). You can re-enable story collection later by going back to a previous page. [webStoryCollection_stopCollectionLabel2|label]
 
 * Disable web story collection [webStoryCollection_disableWebStoryFormAfterStoryCollectionButton|button|storyCollectionStop]
 
