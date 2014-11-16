@@ -72,7 +72,18 @@ define([
     
     function filterPaneQuestionChoiceChanged(filterPane, newValue) {
         console.log("event", newValue);
-        var question = newValue;
+        var question = null;
+        for (var index in filterPane.questions) {
+            var questionToCheck = filterPane.questions[index];
+            if (questionToCheck.id === newValue) {
+                question = questionToCheck;
+                break;
+            }
+        }
+        if (!question) {
+            console.log("could not find question for id", newValue);
+            return;
+        }
         //console.log("question", question);
         var options = optionsFromQuestion(question, filterPane.stories);
         setOptionsInMultiSelect(filterPane.answersMultiSelect, options);
@@ -201,10 +212,29 @@ define([
         var questionOptions = [];
         array.forEach(questions, function (question) {
             if (array.indexOf(filterableQuestionTypes, question.type) != -1) {
-                questionOptions.push({label: translate(question.id + "::shortName", "*FIXME -- Missing shortName translation for: " + question.id), value: question});
+                questionOptions.push({label: translate(question.id + "::shortName", "*FIXME -- Missing shortName translation for: " + question.id), value: question.id});
             }
         });
         return questionOptions;
+    }
+    
+    function storiesChanged(storyBrowser, stories) {
+        // TODO
+    }
+    
+    function questionsChanged(storyBrowser, questions) {
+        // TODO
+    }
+    
+    function isMatch(story, questionChoice, selectedAnswerChoices) {
+        if (!questionChoice) return true;
+        var questionAnswer = story[questionChoice];
+        if (questionAnswer === undefined || questionAnswer === null || questionAnswer === "") {
+            questionAnswer = unansweredIndicator;
+        }
+        questionAnswer = "" + questionAnswer;
+        console.log("questionAnswer", questionAnswer);
+        return selectedAnswerChoices.indexOf(questionAnswer) != -1;
     }
     
     // TODO: Fix so the filters get updated as the story questions get changed
@@ -215,7 +245,6 @@ define([
         console.log("DEBUG questions used by story browser", questions);
         
         var popupPageDefinition = {
-             // TODO: Fix this to use real questions from domain!!!
              "id": "storyBrowserQuestions",
              "questions": questions,
              buildPage: function (builder, contentPane, model) {
@@ -282,23 +311,15 @@ define([
             var answers2Choices = filter2.answersMultiSelect.get("value");
             console.log("question2", question2Choice, "answers2", answers2Choices);
             storyList.grid.set("query", function (item) {
-                var match1 = true;
-                if (question1Choice) {
-                    var question1Value = "" + item[question1Choice];
-                    match1 = answers1Choices.indexOf(question1Value) != -1;
-                }
-                var match2 = true;
-                if (question2Choice) {
-                    var question2Value = "" + item[question2Choice];
-                    match2 = answers2Choices.indexOf(question2Value) != -1;
-                }
+                var match1 = isMatch(item, question1Choice, answers1Choices);
+                var match2 = isMatch(item, question2Choice, answers2Choices);
                 return match1 & match2;
             });
         });
         
         console.log("insertStoryBrowser middle 3", id);
         
-        storyList = widgetGridTable.insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, true);
+        storyList = widgetGridTable.insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, true, true);
         
         console.log("insertStoryBrowser finished");
     }

@@ -182,7 +182,7 @@ define([
         return JSON.stringify(item);
     }
     
-    function insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, includeAddButton) {
+    function insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, includeAddButton, includeAllFields) {
         // Grid with list of objects
         console.log("insertGridTableBasic", id, dataStore);
         
@@ -196,7 +196,7 @@ define([
         
         // TODO: FIX ME -- no longer have questions -- either add them back or find another approach...
         array.forEach(popupPageDefinition.questions, function (question) {
-            if (question.isGridColumn) {
+            if (includeAllFields || question.isGridColumn) {
                 var newColumn =  {
                     field: question.id,
                     label: translate(question.id + "::shortName"),
