@@ -119,6 +119,7 @@ define([
             // if (!(type in {label: 1, header: 1})) model.set(id, null);
             // TODO: Need better approach for translations; these could interfere with main application
             extraTranslations[id + "::prompt"] = question.storyQuestion_text || question.participantQuestion_text;
+            extraTranslations[id + "::shortName"] = id;
             var options = [];
             var optionsString = question.storyQuestion_options || question.participantQuestion_options;
             if (optionsString) {
