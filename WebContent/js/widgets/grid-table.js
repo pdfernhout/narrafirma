@@ -196,7 +196,12 @@ define([
         
         // TODO: FIX ME -- no longer have questions -- either add them back or find another approach...
         array.forEach(popupPageDefinition.questions, function (question) {
-            if (includeAllFields || question.isGridColumn) {
+            var includeField = question.isGridColumn;
+            if (includeAllFields) {
+                // TODO: improve this
+                if (question.type !== "label" && question.type !== "header") includeField = true;
+            }
+            if (includeField) {
                 var newColumn =  {
                     field: question.id,
                     label: translate(question.id + "::shortName"),
