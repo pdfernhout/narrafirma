@@ -180,6 +180,10 @@ define([
                     console.log("ERROR: Problem reading resourceContent from newEntry", newEntry);
                 }
             }
+            
+            // TODO: Only for debugging; need to think through the seperating of stories and general survey data
+            projectData.surveyResults.allStories = projectData.surveyResults.allCompletedSurveys;
+            
             // TODO: Update GUI count -- ideally should be more selective in updating
             buttonFunctions.updateQuestionsForPageChangeCallback();
         });
