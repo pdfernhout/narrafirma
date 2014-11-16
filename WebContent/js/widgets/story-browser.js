@@ -71,7 +71,7 @@ define([
     }
     
     function filterPaneQuestionChoiceChanged(filterPane, newValue) {
-        console.log("event", newValue);
+        // console.log("event", newValue);
         var question = null;
         for (var index in filterPane.questions) {
             var questionToCheck = filterPane.questions[index];
@@ -93,7 +93,7 @@ define([
     var unansweredIndicator = "{Unanswered}";
         
     function optionsFromQuestion(question, stories) {
-        console.log("*** optionsFromQuestion", question, stories);
+        // console.log("*** optionsFromQuestion", question, stories);
         // TODO: Translate text for options, at least booleans?
         var options = [];
         
@@ -102,51 +102,70 @@ define([
         // Compute how many of each answer -- assumes typically less than 200-1000 stories
         var totals = {};
         array.forEach(stories, function(item) {
-            console.log("optionsFromQuestion item", item, question.id, item[question.id]);
+            // console.log("optionsFromQuestion item", item, question.id, item[question.id]);
             var choice = item[question.id];
             if (!choice) {
-                console.log("&&&& Undefined or empty choice", choice);
+                // console.log("&&&& Undefined or empty choice", choice);
                 choice = unansweredIndicator;
             }
-            var oldValue = totals[choice];
-            if (!oldValue) oldValue = 0;
-            totals[choice] = oldValue + 1;
+            var oldValue;
+            if (question.type === "checkboxes") {
+                for (var key in choice) {
+                    oldValue = totals[key];
+                    if (!oldValue) oldValue = 0;
+                    totals[key] = oldValue + 1; 
+                }
+            } else {
+                oldValue = totals[choice];
+                if (!oldValue) oldValue = 0;
+                totals[choice] = oldValue + 1;
+            }
         });
         
         var count;
         var each;
         
         // TODO: Maybe should not add the unaswered indicator if zero?
-        // Always add the unanswered indicator
-        count = totals[unansweredIndicator];
-        if (!count) count = 0;
-        options.push({label: unansweredIndicator + " (" +  count + ")", value: unansweredIndicator});
+        // Always add the unanswered indicator if not checkboxes or checkbox
+        if (question.type !== "checkbox" && question.type !== "checkboxes") {
+            count = totals[unansweredIndicator];
+            if (!count) count = 0;
+            options.push({label: unansweredIndicator + " (" +  count + ")", value: unansweredIndicator});
+        }
         
         if (question.type === "select") {
-            console.log("select", question, question.options);
+            // console.log("select", question, question.options);
             array.forEach(question.options, function(each) {
-                console.log("option", question.id, each);
+                // console.log("option", question.id, each);
                 count = totals[each];
                 if (!count) count = 0;
                 options.push({label: each + " (" +  count + ")", value: each});
             });
         } else if (question.type === "radiobuttons") {
-            console.log("radiobuttons", question, question.options);
+            // console.log("radiobuttons", question, question.options);
             array.forEach(question.options, function(each) {
-                console.log("option", question.id, each);
+                // console.log("option", question.id, each);
+                count = totals[each];
+                if (!count) count = 0;
+                options.push({label: each + " (" +  count + ")", value: each});
+            });
+        } else if (question.type === "checkboxes") {
+            // console.log("checkboxes", question, question.options);
+            array.forEach(question.options, function(each) {
+                // console.log("option", question.id, each);
                 count = totals[each];
                 if (!count) count = 0;
                 options.push({label: each + " (" +  count + ")", value: each});
             });
         } else if (question.type === "slider") {
-            console.log("slider", question, question.options);
+            // console.log("slider", question, question.options);
             for (each = 0; each <= 100; each++) {
                 count = totals[each];
                 if (!count) count = 0;
                 options.push({label: each + " (" +  count + ")", value: each});
             }
         } else if (question.type === "boolean") {
-            console.log("boolean", question);
+            // console.log("boolean", question);
             // TODO; Not sure this will really be right with true/false as booleans instead of strings
             array.forEach(["yes", "no"], function(each) {
                 // console.log("option", id, each);
@@ -155,7 +174,7 @@ define([
                 options.push({label: each + " (" +  count + ")", value: each});
             });
         } else if (question.type === "checkbox") {
-            console.log("checkbox", question);
+            // console.log("checkbox", question);
             // TODO; Not sure this will really be right with true/false as checkbox instead of strings
             array.forEach([true, false], function(each) {
                 // console.log("option", id, each);
@@ -227,13 +246,21 @@ define([
     }
     
     function isMatch(story, questionChoice, selectedAnswerChoices) {
+        // console.log("isMatch", questionChoice, selectedAnswerChoices);
         if (!questionChoice) return true;
         var questionAnswer = story[questionChoice];
         if (questionAnswer === undefined || questionAnswer === null || questionAnswer === "") {
             questionAnswer = unansweredIndicator;
+        } else if (lang.isObject(questionAnswer)) {
+            // checkboxes
+            // console.log("checkboxes", questionAnswer);
+            for (var key in questionAnswer) {
+                if (selectedAnswerChoices.indexOf(key) !== -1) return true;
+            }
+            return false;
         }
         questionAnswer = "" + questionAnswer;
-        console.log("questionAnswer", questionAnswer);
+        // console.log("questionAnswer", questionAnswer);
         return selectedAnswerChoices.indexOf(questionAnswer) != -1;
     }
     
@@ -242,7 +269,7 @@ define([
         console.log("insertStoryBrowser start", id);
         
         var questions = domain.collectAllSurveyQuestions();
-        console.log("DEBUG questions used by story browser", questions);
+        // console.log("DEBUG questions used by story browser", questions);
         
         var popupPageDefinition = {
              "id": "storyBrowserQuestions",
@@ -261,7 +288,7 @@ define([
         //    model.set(id, stories);
         //}
         
-        console.log("*** insertStoryBrowser stories", stories);
+        // console.log("*** insertStoryBrowser stories", stories);
         
         // Store will modify underlying array
         var dataStore = new Memory({
@@ -271,7 +298,7 @@ define([
             // idProperty: "uniqueID",
         });
         
-        console.log("insertStoryBrowser middle 1", id);
+        // console.log("insertStoryBrowser middle 1", id);
         
         var table = new TableContainer({
             id: id + "_table",
@@ -282,7 +309,7 @@ define([
             spacing: 10
         });
         
-        console.log("insertStoryBrowser middle 2", id);
+        // console.log("insertStoryBrowser middle 2", id);
         
         var filter1 = createFilterPane(id + "_1", questions, stories, table);
         var filter2 = createFilterPane(id + "_2", questions, stories, table);
@@ -303,13 +330,13 @@ define([
         var storyList;
         
         var filterButton = utility.newButton(id + "_filter", "button_Filter", pagePane, function () {
-            console.log("filter pressed");
+            // console.log("filter pressed");
             var question1Choice = filter1.questionSelect.get("value");
             var answers1Choices = filter1.answersMultiSelect.get("value");
-            console.log("question1", question1Choice, "answers1", answers1Choices);
+            // console.log("question1", question1Choice, "answers1", answers1Choices);
             var question2Choice = filter2.questionSelect.get("value");
             var answers2Choices = filter2.answersMultiSelect.get("value");
-            console.log("question2", question2Choice, "answers2", answers2Choices);
+            // console.log("question2", question2Choice, "answers2", answers2Choices);
             storyList.grid.set("query", function (item) {
                 var match1 = isMatch(item, question1Choice, answers1Choices);
                 var match2 = isMatch(item, question2Choice, answers2Choices);
@@ -317,7 +344,7 @@ define([
             });
         });
         
-        console.log("insertStoryBrowser middle 3", id);
+        // console.log("insertStoryBrowser middle 3", id);
         
         storyList = widgetGridTable.insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, true, true);
         
