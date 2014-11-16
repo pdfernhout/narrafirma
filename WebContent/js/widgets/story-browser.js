@@ -70,12 +70,12 @@ define([
         return widget;
     }
     
-    function questionChanged(questionsById, multiSelect, stories, newValue) {
+    function filterPaneQuestionChoiceChanged(filterPane, newValue) {
         console.log("event", newValue);
-        var question = questionsById[newValue];
+        var question = newValue;
         //console.log("question", question);
-        var options = optionsFromQuestion(question, stories);
-        setOptionsInMultiSelect(multiSelect, options);
+        var options = optionsFromQuestion(question, filterPane.stories);
+        setOptionsInMultiSelect(filterPane.answersMultiSelect, options);
     }
     
     // TODO: Translate
@@ -167,7 +167,7 @@ define([
         return options;
     }
     
-    function createFilterPane(id, questionsById, questionOptions, stories, containerPane) {
+    function createFilterPane(id, questions, stories, containerPane) {
         var contentPane = new ContentPane({
             id: id + "_content",
             style: "width: 95%;"
@@ -176,23 +176,36 @@ define([
         
         containerPane.addChild(contentPane);
          
-        var question = utility.newSelect(id + "_question", questionOptions, null, contentPane);
-        question.set("style", "width: 98%; max-width: 98%");
+        var questionSelect = utility.newSelect(id + "_question", optionsForAllQuestions(questions), null, contentPane);
+        questionSelect.set("style", "width: 98%; max-width: 98%");
         
         contentPane.containerNode.appendChild(domConstruct.toDom('<br>'));
         
-        var answers = newMultiSelect(id + "_answers", []);
-        contentPane.addChild(answers);
-        answers.startup();
+        var answersMultiSelect = newMultiSelect(id + "_answers", []);
+        contentPane.addChild(answersMultiSelect);
+        answersMultiSelect.startup();
+        
+        var filterPane = {"contentPane": contentPane, "questionSelect": questionSelect, "answersMultiSelect": answersMultiSelect, "questions": questions, "stories": stories};
 
-        question.on("change", lang.partial(questionChanged, questionsById, answers, stories)); 
+        questionSelect.on("change", lang.partial(filterPaneQuestionChoiceChanged, filterPane)); 
         
         contentPane.startup();
 
-        return {"contentPane": contentPane, "question": question, "answers": answers};
+        return filterPane;
     }
     
     var filterableQuestionTypes = ["select", "slider", "boolean", "text", "checkbox", "checkboxes", "radiobuttons"];
+    
+    // function updateFilterPaneForCurrentQuestions(questions) {
+    function optionsForAllQuestions(questions) {
+        var questionOptions = [];
+        array.forEach(questions, function (question) {
+            if (array.indexOf(filterableQuestionTypes, question.type) != -1) {
+                questionOptions.push({label: translate(question.id + "::shortName", "*FIXME -- Missing shortName translation for: " + question.id), value: question});
+            }
+        });
+        return questionOptions;
+    }
     
     // TODO: Fix so the filters get updated as the story questions get changed
     function insertStoryBrowser(pagePane, model, id, pageDefinitions) {
@@ -229,15 +242,6 @@ define([
             // idProperty: "uniqueID",
         });
         
-        var questionOptions = [];
-        var questionsById = {};
-        array.forEach(questions, function (question) {
-            if (array.indexOf(filterableQuestionTypes, question.type) != -1) {
-                questionOptions.push({label: translate(question.id + "::shortName", "*FIXME -- Missing shortName translation for: " + question.id), value: question.id});
-                questionsById[question.id] = question;
-            }
-        });
-        
         console.log("insertStoryBrowser middle 1", id);
         
         var table = new TableContainer({
@@ -251,8 +255,8 @@ define([
         
         console.log("insertStoryBrowser middle 2", id);
         
-        var filter1 = createFilterPane(id + "_1", questionsById, questionOptions, stories, table);
-        var filter2 = createFilterPane(id + "_2", questionsById, questionOptions, stories, table);
+        var filter1 = createFilterPane(id + "_1", questions, stories, table);
+        var filter2 = createFilterPane(id + "_2", questions, stories, table);
 
         // pagePane.containerNode.appendChild(domConstruct.toDom('<br>'));
         
@@ -271,11 +275,11 @@ define([
         
         var filterButton = utility.newButton(id + "_filter", "button_Filter", pagePane, function () {
             console.log("filter pressed");
-            var question1Choice = filter1.question.get("value");
-            var answers1Choices = filter1.answers.get("value");
+            var question1Choice = filter1.questionSelect.get("value");
+            var answers1Choices = filter1.answersMultiSelect.get("value");
             console.log("question1", question1Choice, "answers1", answers1Choices);
-            var question2Choice = filter2.question.get("value");
-            var answers2Choices = filter2.answers.get("value");
+            var question2Choice = filter2.questionSelect.get("value");
+            var answers2Choices = filter2.answersMultiSelect.get("value");
             console.log("question2", question2Choice, "answers2", answers2Choices);
             storyList.grid.set("query", function (item) {
                 var match1 = true;
