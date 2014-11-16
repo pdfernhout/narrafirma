@@ -10,6 +10,7 @@ define([
     "js/storage",
     "dojo/string",
     "js/translate",
+    "dojox/uuid/generateRandomUuid",
     "dojo/Stateful",
     "dojox/mvc/StatefulArray"
 ], function(
@@ -20,6 +21,7 @@ define([
     storage,
     string,
     translate,
+    uuid,
     Stateful,
     StatefulArray
 ) {
@@ -173,6 +175,8 @@ define([
                 if (newEntry.resourceContent) {
                     var surveyResult = newEntries[index].resourceContent.surveyResult;
                     if (surveyResult) {
+                        // TODO: Kludge to remove for working with test data
+                        if (!surveyResult.id) surveyResult.id = uuid();
                         projectData.surveyResults.allCompletedSurveys.push(surveyResult);
                     } else {
                         console.log("ERROR: Missing surveyResult in newEntry", newEntry);

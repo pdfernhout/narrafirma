@@ -7,6 +7,7 @@ define([
     "dojo/_base/lang",
     "js/storage",
     "js/utility",
+    "dojox/uuid/generateRandomUuid",
     "js/widgetBuilder",
     "dijit/layout/ContentPane",
     "dijit/Dialog",
@@ -19,6 +20,7 @@ define([
     lang,
     storage,
     utility,
+    uuid,
     widgetBuilder,
     ContentPane,
     Dialog,
@@ -30,6 +32,8 @@ define([
         console.log("submitSurvey pressed");
         
         var surveyResult = getPlainValue(model);
+        
+        surveyResult.id = uuid();
         
         console.log("answers", surveyResult, model);
         domain.projectData.surveyResults.allCompletedSurveys.push(surveyResult);
