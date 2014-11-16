@@ -66,6 +66,9 @@ require([
         }
         // Update derived values
         widgetBuilder.updateQuestionsForPageChange();
+        
+        // TODO: Remove this. Just now for debugging... Need to think about the issue of finalizing the questions more and when to do it and how to store it
+        domain.finalizeSurvey();
     }
     
     function saveClicked(event) {
