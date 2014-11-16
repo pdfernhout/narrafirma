@@ -21,7 +21,8 @@ Help window displaying HTML instead of alert
 Save data as move from page to page
 Restore data when load page
 
-Add take survey page
+Fix how survey data is collected and stored to seperate multiple stories from participant information
+Improve take survey page like with support for seperate pages
 Save data from when survey is taken
 Way to refresh survey data into PNIWorkbook on button press (or similar action)
 
@@ -30,8 +31,6 @@ Validation of page data as progress through a step
 
 Way to retrieve data about project participant groups
 Internationalization of strings related to page of questions on project participant groups
-
-Replace fake story data in story browser with a way that real data is loaded and stored
 
 Support all page types: normal (no specification), popup, questionsTable, recommendationTable, participantStoryForm
 
@@ -173,6 +172,10 @@ DONE Add some basic survey support again to the point of testing core functional
 DONE Add temporary debug button to print out domain project info
 DONE Fix issue with checkboxes (and maybe radio buttons) not saving data
 DONE Have a way that items in grid that are objects are formatted in some readable way
+DONE Add take survey page
+DONE Replace fake story data in story browser with a way that real data is loaded and stored
+DONE Support for radiobuttons, checkbox, and checkboxes in story browser
+DONE Add uuid to survey results
 
 ======= CYNTHIA
 
