@@ -120,6 +120,21 @@ define([
     function viewButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
         console.log("view button pressed", id, event);
         
+        // TODO: Should only do for one of these... Need to break...
+        // TODO: Need to search on unique field...
+        var selection = null;
+        
+        for (var theSelection in grid.selection) {
+            selection = theSelection;
+        }
+        
+        if (!selection) {
+            console.log("No selection");
+            // TODO: Translate
+            alert("Please select an item to view first");
+            return;
+        }
+        
         var form = new Form(); 
         form.set("style", "width: 800px; height 800px; overflow: auto;");
         
@@ -129,35 +144,42 @@ define([
                 
         console.log("grid", grid, grid.selection);
 
-        // TODO: Should only do for one of these... Need to break...
-        // TODO: Need to search on unique field...
-        var selection = null;
-        for (var theSelection in grid.selection) {
-            selection = theSelection;
+        /*
+        console.log("selection", selection);
+        var matches = store.query({id: selection});
+        console.log("matches", matches);
+        // Should only be one match
+        var itemToDisplay = null;
+        array.forEach(matches, function (item) {
+            console.log("item", item);
+            itemToDisplay = item;
+        });
+        */
+        
+        console.log("selection", selection);
+        var itemToDisplay = store.get(selection);
+        
+        if (itemToDisplay === null) {
+            console.log("itemToDisplay is null", id);
+            return;
         }
-        if (theSelection) {
-            console.log("selection", selection);
-            var matches = store.query({id: selection});
-            console.log("matches", matches);
-            // Should only be one match
-            array.forEach(matches, function (item) {
-                console.log("item", item);
-                popupPageDefinition.buildPage(widgetBuilder, form, new Stateful(item));
+        
+        console.log("item to display", itemToDisplay);
+        
+        popupPageDefinition.buildPage(widgetBuilder, form, new Stateful(itemToDisplay));
 
-                /* TODO: Some way to disable editing?
-                array.forEach(popupPageDefinition.questions, function (question) {
-                    // TODO: This may not work for more complex question types or custom widgets?
-                    var widget = registry.byId(question.id);
-                    if (widget) {
-                        widget.set("value", item[question.id]);
-                        widget.set("disabled", true);
-                    } else {
-                        console.log("ERROR: could not find widget for:", question.id);
-                    }
-                });
-                */
-            });
-        }
+        /* TODO: Some way to disable editing?
+        array.forEach(popupPageDefinition.questions, function (question) {
+            // TODO: This may not work for more complex question types or custom widgets?
+            var widget = registry.byId(question.id);
+            if (widget) {
+                widget.set("value", item[question.id]);
+                widget.set("disabled", true);
+            } else {
+                console.log("ERROR: could not find widget for:", question.id);
+            }
+        });
+        */
 
         utility.newButton("list_dialog_ok" + grid.id, "button_Done", form, function() {
             console.log("Done");
