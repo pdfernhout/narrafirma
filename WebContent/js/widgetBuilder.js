@@ -572,7 +572,8 @@ define([
         // console.log("recalculated question: ", data.id, calculatedText);
     }
     
-    function updateQuestionsForPageChange(domain) {
+    // TODO: Make a version of this that can be more selective in updates
+    function updateQuestionsForPageChange() {
         for (var questionID in questionsRequiringRecalculationOnPageChanges) {
             var data = questionsRequiringRecalculationOnPageChanges[questionID];
             updateLabelUsingCalculation(data);

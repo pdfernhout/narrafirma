@@ -508,6 +508,8 @@ You can later enter the results from each form into the system.
 
 * Load latest stories from server [webStoryCollection_loadLatestStoriesFromServer|button|loadLatestStoriesFromServer]
 
+* Total number of survey results loaded from server: [webStoryCollection_totalResults|function|totalNumberOfSurveyResults]
+
 * Collected stories [webStoryCollection_collectedStoriesDuringCollection|storyBrowser]
 
 ## Stop story collection [page_stopStoryCollection]

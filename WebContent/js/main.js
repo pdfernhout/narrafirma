@@ -64,6 +64,8 @@ require([
                 domain.projectData.projectAnswers.set(key, projectAnswers[key]);
             }
         }
+        // Update derived values
+        widgetBuilder.updateQuestionsForPageChange();
     }
     
     function saveClicked(event) {
@@ -397,6 +399,7 @@ require([
         // Callback for this button
         // TODO: Temp for testing
         domain.buttonFunctions.enterSurveyResult = survey.takeSurvey;
+        domain.buttonFunctions.updateQuestionsForPageChangeCallback = widgetBuilder.updateQuestionsForPageChange;
         
         // Call the main function
         createLayout();

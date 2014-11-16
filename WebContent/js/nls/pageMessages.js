@@ -2,7 +2,7 @@
 // See: http://dojotoolkit.org/documentation/tutorials/1.9/i18n/
 define({
     root: {
-    "FIXME_515::prompt": "If you are doing story collection over the internet, click this button to make the web form unavailable (to anyone but yourself). You can re-enable story collection later by going back to a previous page.",
+    "FIXME_517::prompt": "If you are doing story collection over the internet, click this button to make the web form unavailable (to anyone but yourself). You can re-enable story collection later by going back to a previous page.",
     "SPECIAL_collectionRecommendationsTable_unfinished::prompt": "(Unfinished: This will be a table of recommendations for collection sessions\nrelated to the questions answered about participant groups.",
     "SPECIAL_collectionSessionRecommendations::prompt": "Recommendations for story collection sessions",
     "SPECIAL_elicitingQuestionRecommendations::prompt": "Recommendations for eliciting questions",
@@ -1161,6 +1161,7 @@ define({
     "webStoryCollection_loadLatestStoriesFromServer::prompt": "Load latest stories from server",
     "webStoryCollection_startCollectionLabel::prompt": "If you are doing story collection over the internet, click this button to make the web form \"live\" and able to be used by people other than yourself.",
     "webStoryCollection_stopCollectionLabel::prompt": "You can also disable the data collection here.",
+    "webStoryCollection_totalResults::prompt": "Total number of survey results loaded from server:",
     "wholeProjectReportLabel::prompt": "This report shows all of the information entered in all of the pages of this software."
 }
 });

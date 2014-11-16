@@ -40,6 +40,8 @@ define([
     function callDashboardFunction(functionName, question) {
         if (functionName === "countNumberOfVenuesChosen") {
             return countNumberOfVenuesChosen(question);
+        } else if (functionName === "totalNumberOfSurveyResults") {
+            return "<b>" + projectData.surveyResults.allCompletedSurveys.length + "</b>";
         } else {
             console.log("TODO: callDashboardFunction ", functionName, question);
             return "callDashboardFunction UNFINISHED: " + functionName + " for: " + question.id;
@@ -178,6 +180,8 @@ define([
                     console.log("ERROR: Problem reading resourceContent from newEntry", newEntry);
                 }
             }
+            // TODO: Update GUI count -- ideally should be more selective in updating
+            buttonFunctions.updateQuestionsForPageChangeCallback();
         });
     }
       
@@ -186,7 +190,11 @@ define([
         "copyDraftPNIQuestionVersionsIntoAnswers": copyDraftPNIQuestionVersionsIntoAnswers,
         "loadLatestStoriesFromServer": loadLatestStoriesFromServer,
         // TODO: This next action is filled in by application in main
-        "enterSurveyResult": null
+        "enterSurveyResult": null,
+        
+        // TODO: Improve this coarse updating so can just update when one function changes
+        // GUI should fill this in, and it is used as a callback when items are changed
+        "updateQuestionsForPageChangeCallback": null,
     };
     
     // dispatch the button click
