@@ -173,10 +173,20 @@ define([
         }
         
         console.log("selection", selection);
-        var itemToDisplay = store.get(selection);
+        
+        // Can't use store.get becaues store.index may be out of date if the array changed; store only updates the index on a put
+        // var itemToDisplay = store.get(selection);
+        var matches = store.query({id: selection});
+        console.log("matches", matches);
+        // Should only be one match
+        var itemToDisplay = null;
+        array.forEach(matches, function (item) {
+            console.log("item", item);
+            itemToDisplay = item;
+        });
         
         if (!itemToDisplay) {
-            console.log("itemToDisplay is null", id, store);
+            console.log("itemToDisplay was not found in store", id, store);
             return;
         }
         
