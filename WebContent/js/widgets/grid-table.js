@@ -88,6 +88,12 @@ define([
     function addButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
         console.log("add button pressed", id, event);
         
+        if (itemContentPane.domNode.childNodes.length > 0) {
+            // Already have a panel displayed for either view or add
+            console.log("Panel already displayed");
+            return;
+        }
+        
         var form = new Form();
         form.set("style", "width: 800px; height 800px; overflow: auto;");
         
@@ -119,6 +125,12 @@ define([
     // TODO: Button should only be enabled if a selection
     function viewButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
         console.log("view button pressed", id, event);
+        
+        if (itemContentPane.domNode.childNodes.length > 0) {
+            // Already have a panel displayed for either view or add
+            console.log("Panel already displayed");
+            return;
+        }
         
         // TODO: Should only do for one of these... Need to break...
         // TODO: Need to search on unique field...
