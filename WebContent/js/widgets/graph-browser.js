@@ -137,6 +137,9 @@ define([
                 labels.push({value: i * increment, text: question.options[i]});
             }
         }
+        
+        // Ideas:
+        // chart1.addAxis("y", {vertical: true, fixLower: "major", fixUpper: "major"});
     }
     
     function updateGraph(graphResultsPane) {
@@ -221,32 +224,11 @@ define([
             //gap: 5
         });
         
-        // labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
-        // includeZero: true,
-        
         addAxis(chart1, "x", xAxisQuestion);
         addAxis(chart1, "y", yAxisQuestion);
-        
-        // chart1.addAxis("x");
-        // chart1.addAxis("y", {vertical: true, fixLower: "major", fixUpper: "major"});
-        
+
         chart1.addSeries("Series 1", plotItems);
-        chart1.render();
-        
-        /*
-        var chart2Div = domConstruct.create("div", {}, "chartDiv");
-        
-        var chart2 = new Chart(chart2Div);
-        console.log("Made chart 2");
-        chart2.addPlot("default", {type: Lines});
-        chart2.addAxis("x");
-        chart2.addAxis("y", {vertical: true});
-        chart2.addSeries("Series 1", [10, 12, 2, 3, 4, 5, 5, 7]);
-        chart2.render();
-        */
-        
-        // var surveyGraphDiv = document.getElementById("surveyGraphDiv");
-        // chart1.placeAt(surveyGraphDiv);     
+        chart1.render(); 
     }
         
     function insertGraphBrowser(contentPane, model, id, pageDefinitions) {       
