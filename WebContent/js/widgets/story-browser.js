@@ -81,7 +81,8 @@ define([
             }
         }
         if (!question) {
-            console.log("could not find question for id", newValue);
+            if (newValue) console.log("could not find question for id", newValue);
+            setOptionsInMultiSelect(filterPane.answersMultiSelect, []);
             return;
         }
         //console.log("question", question);
