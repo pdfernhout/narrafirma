@@ -21,6 +21,7 @@ define([
         "dijit/form/CheckBox",
         "dijit/layout/ContentPane",
         "dijit/form/FilteringSelect",
+        "js/widgets/graph-browser",
         "js/widgets/grid-table",
         "dijit/form/HorizontalRule",
         "dijit/form/HorizontalRuleLabels",
@@ -54,6 +55,7 @@ define([
         CheckBox,
         ContentPane,
         FilteringSelect,
+        GraphBrowser,
         GridTable,
         HorizontalRule,
         HorizontalRuleLabels,
@@ -454,16 +456,13 @@ define([
     
     // TODO: Fix
     
+    
     function add_graphBrowser(contentPane, model, id, options) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
-        var label = new ContentPane({
-            // content: translate(id + "::prompt")
-            content: "<b>UNFINISHED add_graphBrowser: " + id + "</b>"             
-        });
-        label.placeAt(questionContentPane);
-        label.startup();
-        return label;
+        var graphBrowser = GraphBrowser.insertGraphBrowser(questionContentPane, model, id, domain.pageDefinitions);
+        questionContentPane.resize();
+        return graphBrowser;
     }
     
     function add_trendsReport(contentPane, model, id, options) {

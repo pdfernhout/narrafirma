@@ -5,7 +5,7 @@ define([
     "js/domain",
     "dojo/dom-construct",
     "js/translate",
-    "js/widgets",
+    "js/utility",
     "dojox/charting/plot2d/Bars",
     "dojox/charting/Chart",
     "dojox/charting/plot2d/Columns",
@@ -17,14 +17,13 @@ define([
     domain,
     domConstruct,
     translate,
-    widgets,
+    utility,
     Bars,
     Chart,
     Columns,
     ContentPane,
     Default,
     Lines
-    
 ){
     function updateGraph() {
         console.log("updateGraph");
@@ -103,7 +102,7 @@ define([
         // chart1.placeAt(surveyGraphDiv);     
     }
         
-    function createPage(tabContainer) {       
+    function insertGraphBrowser(contentPane) {       
         // Graph results pane
         
         var graphResultsPane = new ContentPane({
@@ -111,14 +110,16 @@ define([
         });
         
         var pane = graphResultsPane.containerNode;
-        var takeSurveyButton = widgets.newButton("Update Graph", pane, updateGraph);
+        var takeSurveyButton = utility.newButton("updateGraph", null, pane, updateGraph);
         pane.appendChild(document.createElement("br"));
-        pane.appendChild(domConstruct.toDom('Survey Graph<br><div id="surveyGraphDiv"></div><div id="chartDiv" style="width: 250px; height: 150px; margin: 5px auto 0px auto;"></div>'));
+        pane.appendChild(domConstruct.toDom('Survey Graph<br><div id="surveyGraphDiv"></div><div id="chartDiv" style="width: 250px; height: 550px; margin: 5px auto 0px auto;"></div>'));
 
-        tabContainer.addChild(graphResultsPane);
+        contentPane.addChild(graphResultsPane);
         graphResultsPane.startup();
     }
 
-    return createPage;
+    return {
+        insertGraphBrowser: insertGraphBrowser
+    };
     
 });

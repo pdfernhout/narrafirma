@@ -51,5 +51,8 @@ define({
     // Used for boolean choice widget
     boolean_choice_yes: "yes",
     boolean_choice_no: "no",
+    
+    // Used for graph browser
+    updateGraph: "Update Graph"
 }
 });
