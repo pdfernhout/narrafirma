@@ -50,7 +50,7 @@ define([
         for (var gridIndex in allGrids) {
             console.log("resizing dgrid", gridIndex, allGrids);
             allGrids[gridIndex].resize();
-            // allGrids[gridIndex].refresh();
+             // allGrids[gridIndex].refresh();
             console.log("resize done");
         }
     }
@@ -99,13 +99,12 @@ define([
             grid.form.destroyRecursive();
             grid.formType = null;
             grid.form = null;
+            itemContentPane.set("style", "display: none"); 
         }
         
         var form = new Form();
         form.set("style", "width: 800px; height 800px; overflow: auto;");
-        
-        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.25em solid green; margin: 1em; display: block");
-        
+            
         clearGridsKludge();
         
         var newItem = {};
@@ -134,6 +133,8 @@ define([
         
         itemContentPane.addChild(form);
         
+        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.25em solid green; margin: 1em; display: block");
+        
         form.startup();
         resizeGridsKludge();
     }
@@ -153,6 +154,7 @@ define([
             grid.form.destroyRecursive();
             grid.formType = null;
             grid.form = null;
+            itemContentPane.set("style", "display: none"); 
         }
         
         // TODO: Should only do for one of these... Need to break...
@@ -170,11 +172,19 @@ define([
             return;
         }
         
+        console.log("selection", selection);
+        var itemToDisplay = store.get(selection);
+        
+        if (!itemToDisplay) {
+            console.log("itemToDisplay is null", id, store);
+            return;
+        }
+        
+        console.log("item to display", itemToDisplay);
+        
         var form = new Form(); 
         form.set("style", "width: 800px; height 800px; overflow: auto;");
-        
-        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.25em solid blue; margin: 1em; display: block");
-        
+            
         clearGridsKludge();
                 
         console.log("grid", grid, grid.selection);
@@ -190,16 +200,6 @@ define([
             itemToDisplay = item;
         });
         */
-        
-        console.log("selection", selection);
-        var itemToDisplay = store.get(selection);
-        
-        if (itemToDisplay === null) {
-            console.log("itemToDisplay is null", id);
-            return;
-        }
-        
-        console.log("item to display", itemToDisplay);
         
         popupPageDefinition.buildPage(widgetBuilder, form, new Stateful(itemToDisplay));
 
@@ -232,6 +232,8 @@ define([
         grid.formType = "view";
         
         itemContentPane.addChild(form);
+        
+        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.25em solid blue; margin: 1em; display: block");
         
         form.startup();
         resizeGridsKludge();
