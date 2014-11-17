@@ -29,6 +29,15 @@ define([
     Default,
     Lines
 ){
+    function correctForUnanswered(value) {
+        if (value === undefined || value === null || value === "") return "{Unanswered}";
+        return value;
+    }
+    
+    function newPlotItem(xValue, yValue, story) {
+        return {x: xValue, y: yValue, story: story};
+    }
+    
     function updateGraph(graphResultsPane) {
         console.log("updateGraph", graphResultsPane);
         
@@ -36,6 +45,53 @@ define([
         var yAxisValue = graphResultsPane.yAxisSelect.get("value");
         
         console.log("x y axis values", xAxisValue, yAxisValue);
+        
+        // collect data
+        var plotItems = [];
+        var stories = domain.projectData.surveyResults.allStories;
+        for (var index in stories) {
+            var story = stories[index];
+            var xValue = correctForUnanswered(story[xAxisValue]);
+            var yValue = correctForUnanswered(story[yAxisValue]);
+            
+            var plotItem;
+            var xHasCheckboxes = lang.isObject(xValue);
+            var yHasCheckboxes = lang.isObject(yValue);
+            // fast path
+            if (!xHasCheckboxes && !yHasCheckboxes) {
+                plotItem = newPlotItem(xValue, yValue, story);
+                plotItems.push(plotItem);
+            } else {
+                // one or both may be checkboxes, so do a loop for each and create plot items for every combination         
+                var key;
+                var xValues = [];
+                var yValues = [];
+                if (xHasCheckboxes) {
+                    // checkboxes
+                    for (key in xValue) {
+                        if (xValue[key]) xValues.push(key);
+                    }
+                } else {
+                    xValues.push(xValue);                
+                }
+                if (yHasCheckboxes) {
+                    // checkboxes
+                    for (key in yValue) {
+                        if (yValue[key]) yValues.push(key);
+                    }
+                } else {
+                    yValues.push(yValue);                
+                }
+                for (var xIndex in xValues) {
+                    for (var yIndex in yValues) {
+                        plotItem = newPlotItem(xValues[xIndex], yValues[yIndex], story);
+                        plotItems.push(plotItem); 
+                    }
+                }
+            }
+        }
+        
+        console.log("plot items", plotItems);
         
         var widgets = dijit.findWidgets("chartDiv");
         array.forEach(widgets, function(widget) {
