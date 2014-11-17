@@ -166,6 +166,11 @@ define([
         finalizeSurvey();
     }
     
+    function replaceArrayContents(destination, source) {
+        destination.length = 0;
+        destination.push.apply(destination, source);
+    }
+    
     function loadLatestStoriesFromServer(contentPane, model, id, questionOptions, value) {
         console.log("loadLatestStoriesFromServer called");
         storage.loadLatestSurveyResults(function (allEntries, newEntries) {
@@ -192,7 +197,8 @@ define([
             }
             
             // TODO: Only for debugging; need to think through the seperating of stories and general survey data
-            projectData.surveyResults.allStories = projectData.surveyResults.allCompletedSurveys;
+            // Preserve existing array -- just replace its contents
+            replaceArrayContents(projectData.surveyResults.allStories, projectData.surveyResults.allCompletedSurveys);
             
             // TODO: Update GUI count -- ideally should be more selective in updating
             buttonFunctions.updateQuestionsForPageChangeCallback();
