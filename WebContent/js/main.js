@@ -54,6 +54,9 @@ require([
 
     function loadClicked(event) {
         console.log("load clicked");
+        
+        // TODO: Check for unsaved data...
+        
         storage.loadLatestProjectVersion(switchToLoadedProjectData);
     }
      
@@ -69,6 +72,9 @@ require([
         
         // TODO: Remove this. Just now for debugging... Need to think about the issue of finalizing the questions more and when to do it and how to store it
         domain.finalizeSurvey();
+        
+        // Reload page looking at...
+        showPage(currentPageID, "forceRefresh");
     }
     
     function saveClicked(event) {
@@ -99,8 +105,8 @@ require([
         showPage(id);
     }
     
-    function showPage(id) {
-        if (currentPageID === id) return;
+    function showPage(id, forceRefresh) {
+        if (currentPageID === id && !forceRefresh) return;
         
         var page = allPages[id];
         if (!page) {
@@ -391,6 +397,11 @@ require([
         connect.subscribe("/dojo/hashchange", urlHashFragmentChanged);
     }
     
+    function updatePagesForDomainValueChange() {
+        widgetBuilder.updateQuestionsForPageChange();
+        // widgetGridTable.resizeGridsKludge();
+    }
+    
     function startup() {
         
         // Setup important callback for page changes
@@ -402,7 +413,7 @@ require([
         // Callback for this button
         // TODO: Temp for testing
         domain.buttonFunctions.enterSurveyResult = survey.takeSurvey;
-        domain.buttonFunctions.updateQuestionsForPageChangeCallback = widgetBuilder.updateQuestionsForPageChange;
+        domain.buttonFunctions.updateQuestionsForPageChangeCallback = updatePagesForDomainValueChange;
         
         // Call the main function
         createLayout();
