@@ -14,6 +14,8 @@ define([
     "dijit/layout/ContentPane",
     "dojox/charting/axis2d/Default",
     "dojox/charting/plot2d/Lines",
+    "dojox/charting/plot2d/Markers",
+    "dojox/charting/plot2d/Scatter"
 ], function(
     array,
     domain,
@@ -27,39 +29,146 @@ define([
     Columns,
     ContentPane,
     Default,
-    Lines
+    Lines,
+    Markers,
+    Scatter
 ){
     function correctForUnanswered(value) {
         if (value === undefined || value === null || value === "") return "{Unanswered}";
         return value;
     }
     
-    function newPlotItem(xValue, yValue, story) {
-        return {x: xValue, y: yValue, story: story};
+    function questionForID(questions, id) {
+        for (var index in questions) {
+            var question = questions[index];
+            if (question.id === id) return question;
+        }
+        console.log("ERROR: question not found for id", id, questions);
+        return null;
+    }
+    
+    function positionForQuestionAnswer(question, answer) {
+        // console.log("positionForQuestionAnswer", question, answer);
+        
+     // TODO: Confirm checkbox values are also yes/no...
+        if (question.type === "boolean" || question.type === "checkbox") {
+            if (answer === "no") return 0;
+            if (answer === "yes") return 100;
+            return -100;
+        }
+        
+        // TODO: How to display sliders when unanswered? Add one here?
+        // TODO: Check that answer is numerical
+        if (question.type === "slider") {
+            console.log("slider answer", answer);
+            if (answer === "{Unanswered}") return -10;
+            return answer;
+        }
+        
+        // Doesn't work for text...
+        if (question.type === "text") {
+            console.log("TODO: positionForQuestionAnswer does not work for text");
+            return 0;
+        }
+        
+        // Adjust for question types without options
+        
+        var answerCount = question.options.length;
+        
+        // Adjust for unanswered items
+        // if (question.type !== "checkboxes") answerCount += 1;
+        
+        if (answer === "{Unanswered}") {
+            return -100 * 1 / (question.options.length - 1);
+        }
+        
+        var answerIndex = question.options.indexOf(answer);
+        console.log("answerIndex", answerIndex);
+
+        var position = 100 * answerIndex / (question.options.length - 1);
+        console.log("calculated position: ", position);
+
+        return position;  
+    }
+    
+    function newPlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story) {
+        console.log("newPlotItem", xAxisQuestion, yAxisQuestion, xValue, yValue, story);
+        
+        // Plot onto a 100 x 100 value to work with sliders
+        var x = positionForQuestionAnswer(xAxisQuestion, xValue);
+        var y = positionForQuestionAnswer(yAxisQuestion, yValue);
+        return {x: x, y: y, story: story};
+    }
+    
+    function addAxis(chart, axis, question) {
+        // TODO: Translate, especially booleans
+        var type = question.type;
+        if (type === "boolean" || type == "checkbox") {
+            chart.addAxis(axis, {
+               labels: [
+                   {value: -100, text: "{Unanswered}"},
+                   {value: 0, text: "No"},
+                   {value: 100, text: "Yes"},
+               ], 
+               vertical: axis === "y",
+               includeZero: true
+            });
+        } else if (type === "slider") {
+            chart.addAxis("x", { labels: [
+               {value: -10, text: "{Unanswered}"},
+               {value: 0, text: "0"},
+               {value: 10, text: "10"},
+               {value: 20, text: "20"},
+               {value: 30, text: "30"},
+               {value: 40, text: "40"},
+               {value: 50, text: "50"},
+               {value: 60, text: "60"},
+               {value: 70, text: "70"},
+               {value: 80, text: "80"},
+               {value: 90, text: "90"},
+               {value: 100, text: "100"}
+           ]});
+        } else {
+            var increment = 100 / (question.options.length - 1);
+            var labels = [
+               {value: -increment, text: "{Unanswered}"},
+            ];
+            for (var i = 0; i < question.options.length; i++) {
+                labels.push({value: i * increment, text: question.options[i]});
+            }
+        }
     }
     
     function updateGraph(graphResultsPane) {
         console.log("updateGraph", graphResultsPane);
         
-        var xAxisValue = graphResultsPane.xAxisSelect.get("value");
-        var yAxisValue = graphResultsPane.yAxisSelect.get("value");
+        var xAxisQuestionID = graphResultsPane.xAxisSelect.get("value");
+        var yAxisQuestionID = graphResultsPane.yAxisSelect.get("value");
         
-        console.log("x y axis values", xAxisValue, yAxisValue);
+        // TODO: Translated or improve checking or provide alternate handling if only one selected
+        if (!xAxisQuestionID || !yAxisQuestionID) return alert("Please select a question for each axis");
         
+        var surveyQuestions = domain.collectAllSurveyQuestions();
+        
+        var xAxisQuestion = questionForID(surveyQuestions, xAxisQuestionID);
+        var yAxisQuestion = questionForID(surveyQuestions, yAxisQuestionID);
+        
+        console.log("x y axis values", xAxisQuestion, yAxisQuestion);
+              
         // collect data
         var plotItems = [];
         var stories = domain.projectData.surveyResults.allStories;
         for (var index in stories) {
             var story = stories[index];
-            var xValue = correctForUnanswered(story[xAxisValue]);
-            var yValue = correctForUnanswered(story[yAxisValue]);
+            var xValue = correctForUnanswered(story[xAxisQuestionID]);
+            var yValue = correctForUnanswered(story[yAxisQuestionID]);
             
             var plotItem;
             var xHasCheckboxes = lang.isObject(xValue);
             var yHasCheckboxes = lang.isObject(yValue);
             // fast path
             if (!xHasCheckboxes && !yHasCheckboxes) {
-                plotItem = newPlotItem(xValue, yValue, story);
+                plotItem = newPlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story);
                 plotItems.push(plotItem);
             } else {
                 // one or both may be checkboxes, so do a loop for each and create plot items for every combination         
@@ -84,7 +193,7 @@ define([
                 }
                 for (var xIndex in xValues) {
                     for (var yIndex in yValues) {
-                        plotItem = newPlotItem(xValues[xIndex], yValues[yIndex], story);
+                        plotItem = newPlotItem(xAxisQuestion, yAxisQuestion, xValues[xIndex], yValues[yIndex], story);
                         plotItems.push(plotItem); 
                     }
                 }
@@ -101,54 +210,27 @@ define([
         
         var chart1Div = domConstruct.create("div", {style: "width: 500px; height: 500px;"}, "chartDiv");
         
-        var chart1Data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        var chart1Title = "Title goes here";
-        
-        var theSlider = null;
-        array.forEach(domain.exportedSurveyQuestions, function(each) {
-            if (each.type == "slider") {
-                theSlider = each.id;
-                chart1Title = each.text;
-            }
-        });
-        
-        if (theSlider !== null) {
-            array.forEach(domain.surveyResults, function(each) {
-                var answer = each[theSlider];
-                console.log("answer", answer);
-                var slot = Math.round(answer / 10);
-                chart1Data[slot] += 1;
-            });
-        }
-        
-        // var chart1Data = [1, 2, 2, 3, 4, 5, 5, 2];
+        var chart1Title = "" + xAxisQuestionID + " vs. " + yAxisQuestionID;
         
         var chart1 = new Chart(chart1Div, {title: chart1Title});
         console.log("Made chart");
+        
         chart1.addPlot("default", {
-            type: Columns,
-            markers: true,
-            gap: 5
+            type: Scatter,
+            //markers: true,
+            //gap: 5
         });
         
         // labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
         // includeZero: true,
         
-        chart1.addAxis("x", { labels: [
-            {value: 1, text: "0-4"},
-            {value: 2, text: "10"},
-            {value: 3, text: "20"},
-            {value: 4, text: "30"},
-            {value: 5, text: "40"},
-            {value: 6, text: "50"},
-            {value: 7, text: "60"},
-            {value: 8, text: "70"},
-            {value: 9, text: "80"},
-            {value: 10, text: "90"},
-            {value: 11, text: "95-100"}
-        ]});
-        chart1.addAxis("y", {vertical: true, includeZero: true});
-        chart1.addSeries("Series 1", chart1Data);
+        addAxis(chart1, "x", xAxisQuestion);
+        addAxis(chart1, "y", yAxisQuestion);
+        
+        // chart1.addAxis("x");
+        // chart1.addAxis("y", {vertical: true, fixLower: "major", fixUpper: "major"});
+        
+        chart1.addSeries("Series 1", plotItems);
         chart1.render();
         
         /*
