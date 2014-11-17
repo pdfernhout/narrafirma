@@ -88,16 +88,23 @@ define([
     function addButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
         console.log("add button pressed", id, event);
         
-        if (itemContentPane.domNode.childNodes.length > 0) {
+        if (grid.form) { // itemContentPane.domNode.childNodes.length > 0) {
             // Already have a panel displayed for either view or add
-            console.log("Panel already displayed");
-            return;
+            console.log("Panel already displayed", grid.formType, grid.form);
+            if (grid.formType === "add") {
+                // TODO: Translate
+                alert("Add already in progress; please cancel add form first");
+                return;
+            }
+            grid.form.destroyRecursive();
+            grid.formType = null;
+            grid.form = null;
         }
         
         var form = new Form();
         form.set("style", "width: 800px; height 800px; overflow: auto;");
         
-        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.25em solid blue; margin: 1em; display: block");
+        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.25em solid green; margin: 1em; display: block");
         
         clearGridsKludge();
         
@@ -111,10 +118,17 @@ define([
         
         utility.newButton("list_dialog_cancel_" + grid.id, "button_Cancel", form, function() {
             console.log("Cancel chosen");
+            
+            grid.formType = null;
+            grid.form = null;
+            
             itemContentPane.set("style", "display: none");       
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
             form.destroyRecursive();
         });
+        
+        grid.form = form;
+        grid.formType = "add";
         
         itemContentPane.addChild(form);
         
@@ -126,10 +140,17 @@ define([
     function viewButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
         console.log("view button pressed", id, event);
         
-        if (itemContentPane.domNode.childNodes.length > 0) {
+        if (grid.form) { // itemContentPane.domNode.childNodes.length > 0) {
             // Already have a panel displayed for either view or add
-            console.log("Panel already displayed");
-            return;
+            console.log("Panel already displayed", grid.formType, grid.form);
+            if (grid.formType === "add") {
+                // TODO: Translate
+                alert("Add already in progress; please cancel add form first");
+                return;
+            }
+            grid.form.destroyRecursive();
+            grid.formType = null;
+            grid.form = null;
         }
         
         // TODO: Should only do for one of these... Need to break...
@@ -195,12 +216,18 @@ define([
 
         utility.newButton("list_dialog_ok" + grid.id, "button_Done", form, function() {
             console.log("Done");
+            
+            grid.formType = null;
+            grid.form = null;
 
             itemContentPane.set("style", "display: none");
             
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
             form.destroyRecursive();
         });
+        
+        grid.form = form;
+        grid.formType = "view";
         
         itemContentPane.addChild(form);
         
@@ -281,8 +308,9 @@ define([
         
         // Bind first two arguments to function that will be callback receiving one extra argument
         // See: http://dojotoolkit.org/reference-guide/1.7/dojo/partial.html
+        var viewButtonClickedPartial = lang.partial(viewButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane);
         var viewButtonID = id + "view";
-        var viewButton = utility.newButton(viewButtonID, "button_View", pane, lang.partial(viewButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+        var viewButton = utility.newButton(viewButtonID, "button_View", pane, viewButtonClickedPartial);
 
         var selected = 0;
         viewButton.set("disabled", true);
@@ -296,6 +324,9 @@ define([
             selected -= e.rows.length;
             viewButton.set("disabled", !selected);
         });
+        
+        // Support double click as view
+        grid.on("dblclick", viewButtonClickedPartial);
         
         if (includeAddButton) {
             var addButton = utility.newButton(id + "add", "button_Add", pane, lang.partial(addButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
