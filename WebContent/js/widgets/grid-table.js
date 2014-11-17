@@ -119,6 +119,8 @@ define([
         utility.newButton("list_dialog_cancel_" + grid.id, "button_Cancel", form, function() {
             console.log("Cancel chosen");
             
+            // TODO: Confirm cancel if have entered data
+            
             grid.formType = null;
             grid.form = null;
             
