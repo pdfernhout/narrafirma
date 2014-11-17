@@ -2,7 +2,7 @@
 
 define([
     "dojo/_base/lang",
-    "js/pointrel20130202"
+    "lib/pointrel20130202"
 ], function(
     lang,
     Pointrel20130202
