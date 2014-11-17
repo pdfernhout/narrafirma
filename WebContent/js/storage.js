@@ -44,7 +44,7 @@ define([
     
     // TODO: improve design and GUI so can choose a version to load?
     function loadedNewProjectAnswers(switchToLoadedProjectAnswersCallback, error, allEntries, newEntries) {
-        console.log("loadedNewProjectAnswers: ", error, newEntries);
+        // console.log("loadedNewProjectAnswers: ", error, newEntries);
         if (error) {
             var errorMessage = "ERROR: error on retrieving index data for project";
             console.log(errorMessage);
@@ -91,7 +91,7 @@ define([
         }
         var projectAnswers = item.body;
         
-        console.log("loading saved version", item, projectAnswers);
+        // console.log("loading saved version", item, projectAnswers);
         switchToLoadedProjectAnswersCallback(projectAnswers);
     }
     

@@ -106,13 +106,13 @@ define([
         if (participantQuestionList) questions = questions.concat(participantQuestionList);
         if (endText) questions.push({storyQuestion_shortName: "endText", storyQuestion_text: endText, storyQuestion_type: "label"});
         
-        console.log("all survey questions", questions);
+        // console.log("all survey questions", questions);
         
         var adjustedQuestions = [];
         
         for (var questionIndex in questions) {
             var question = questions[questionIndex];
-            console.log("question", question);
+            // console.log("question", question);
             // TODO: FIX BUG HERE PREVENTING the review incoming stories page from being viewed if start with that!!!!
             var id = question.storyQuestion_shortName || question.participantQuestion_shortName;
             var type = question.storyQuestion_type || question.participantQuestion_type;
@@ -182,7 +182,7 @@ define([
                     if (surveyResult) {
                         // TODO: Kludge to remove for working with test data
                         if (!surveyResult.id) {
-                            console.log("UUID issue", newEntries[index], surveyResult);
+                            // console.log("UUID issue", newEntries[index], surveyResult);
                             // surveyResult.id = uuid();
                             // Use the identifier for the resource the survey is in
                             surveyResult.id = newEntries[index].name;
