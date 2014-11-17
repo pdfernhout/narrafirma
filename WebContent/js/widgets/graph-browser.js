@@ -114,20 +114,24 @@ define([
                includeZero: true
             });
         } else if (type === "slider") {
-            chart.addAxis("x", { labels: [
-               {value: -10, text: "{Unanswered}"},
-               {value: 0, text: "0"},
-               {value: 10, text: "10"},
-               {value: 20, text: "20"},
-               {value: 30, text: "30"},
-               {value: 40, text: "40"},
-               {value: 50, text: "50"},
-               {value: 60, text: "60"},
-               {value: 70, text: "70"},
-               {value: 80, text: "80"},
-               {value: 90, text: "90"},
-               {value: 100, text: "100"}
-           ]});
+            chart.addAxis(axis, {
+                labels: [
+                    {value: -10, text: "{Unanswered}"},
+                    {value: 0, text: "0"},
+                    {value: 10, text: "10"},
+                    {value: 20, text: "20"},
+                    {value: 30, text: "30"},
+                    {value: 40, text: "40"},
+                    {value: 50, text: "50"},
+                    {value: 60, text: "60"},
+                    {value: 70, text: "70"},
+                    {value: 80, text: "80"},
+                    {value: 90, text: "90"},
+                    {value: 100, text: "100"}
+               ],
+               vertical: axis === "y",
+               includeZero: true
+            });
         } else {
             var increment = 100 / (question.options.length - 1);
             var labels = [
@@ -136,6 +140,11 @@ define([
             for (var i = 0; i < question.options.length; i++) {
                 labels.push({value: i * increment, text: question.options[i]});
             }
+            chart.addAxis(axis, {
+                labels: labels,
+                vertical: axis === "y",
+                includeZero: true
+            });
         }
         
         // Ideas:
@@ -215,13 +224,24 @@ define([
         
         var chart1Title = "" + xAxisQuestionID + " vs. " + yAxisQuestionID;
         
-        var chart1 = new Chart(chart1Div, {title: chart1Title});
+        var chart1 = new Chart(chart1Div, {
+            title: chart1Title,
+        });
         console.log("Made chart");
         
         chart1.addPlot("default", {
             type: Scatter,
             //markers: true,
             //gap: 5
+            // margins: {
+            //     l: 10,
+            //     r: 10,
+            //     t: 10,
+            //     b: 10
+            // },
+             // hAxis: xAxisQuestionID,
+             // vAxis: yAxisQuestionID,
+             // ticks: false
         });
         
         addAxis(chart1, "x", xAxisQuestion);
