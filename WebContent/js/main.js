@@ -57,6 +57,9 @@ require([
         
         // TODO: Check for unsaved data...
         
+        // TODO: Kludge of loading all stories when load data?
+        domain.buttonFunctions.loadLatestStoriesFromServer();
+        
         storage.loadLatestProjectVersion(switchToLoadedProjectData);
     }
      
@@ -305,7 +308,7 @@ require([
         for (var pageKey in allPages) {
             if (!allPages.hasOwnProperty(pageKey)) continue;
             var page = allPages[pageKey];
-            console.log("defining page", page.id);
+            // console.log("defining page", page.id);
             var title = translate(page.id + "::title");
             if (page.isHeader) {
                 title = "<i>" + title + "</i>";
