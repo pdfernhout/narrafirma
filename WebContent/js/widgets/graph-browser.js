@@ -4,6 +4,7 @@ define([
     "dojo/_base/array",
     "js/domain",
     "dojo/dom-construct",
+    "dojo/_base/lang",
     "js/translate",
     "js/utility",
     "./widgetSupport",
@@ -17,6 +18,7 @@ define([
     array,
     domain,
     domConstruct,
+    lang,
     translate,
     utility,
     widgetSupport,
@@ -27,8 +29,13 @@ define([
     Default,
     Lines
 ){
-    function updateGraph() {
-        console.log("updateGraph");
+    function updateGraph(graphResultsPane) {
+        console.log("updateGraph", graphResultsPane);
+        
+        var xAxisValue = graphResultsPane.xAxisSelect.get("value");
+        var yAxisValue = graphResultsPane.yAxisSelect.get("value");
+        
+        console.log("x y axis values", xAxisValue, yAxisValue);
         
         var widgets = dijit.findWidgets("chartDiv");
         array.forEach(widgets, function(widget) {
@@ -113,7 +120,7 @@ define([
         });
         
         var pane = graphResultsPane.containerNode;
-        var takeSurveyButton = utility.newButton("updateGraph", null, pane, updateGraph);
+        var takeSurveyButton = utility.newButton("updateGraph", null, pane, lang.partial(updateGraph, graphResultsPane));
         pane.appendChild(document.createElement("br"));
         
         // TODO: Translate "Survey Graph"
@@ -132,6 +139,11 @@ define([
         yAxisSelect.set("style", "width: 48%; max-width: 40%");
         
         graphResultsPane.startup();
+        
+        graphResultsPane.xAxisSelect = xAxisSelect;
+        graphResultsPane.yAxisSelect = yAxisSelect;
+        
+        return graphResultsPane;
     }
 
     return {
