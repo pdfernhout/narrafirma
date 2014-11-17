@@ -216,7 +216,7 @@ var modelTypes = {
         grid: 1,
         annotationsGrid: 1,
         accumulatedItemsGrid: 1,
-        storyBrowser: 1,
+        // storyBrowser: 1,
         storyThemer: 1,
         graphBrowser: 1,
         clusterSpace: 1,
