@@ -29,7 +29,22 @@ define([
         return options;
     }
     
+    // Types of questions that have data associated with them for filters and graphs
+    var filterableQuestionTypes = ["select", "slider", "boolean", "text", "checkbox", "checkboxes", "radiobuttons"];
+
+    // function updateFilterPaneForCurrentQuestions(questions) {
+    function optionsForAllQuestions(questions) {
+        var questionOptions = [];
+        array.forEach(questions, function (question) {
+            if (array.indexOf(filterableQuestionTypes, question.type) != -1) {
+                questionOptions.push({label: translate(question.id + "::shortName", "*FIXME -- Missing shortName translation for: " + question.id), value: question.id});
+            }
+        });
+        return questionOptions;
+    }
+    
     return {
-        "buildOptions": buildOptions
+        "buildOptions": buildOptions,
+        "optionsForAllQuestions": optionsForAllQuestions
     };
 });

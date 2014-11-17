@@ -6,6 +6,7 @@ define([
     "dojo/dom-construct",
     "js/translate",
     "js/utility",
+    "./widgetSupport",
     "dojox/charting/plot2d/Bars",
     "dojox/charting/Chart",
     "dojox/charting/plot2d/Columns",
@@ -18,6 +19,7 @@ define([
     domConstruct,
     translate,
     utility,
+    widgetSupport,
     Bars,
     Chart,
     Columns,
@@ -102,19 +104,33 @@ define([
         // chart1.placeAt(surveyGraphDiv);     
     }
         
-    function insertGraphBrowser(contentPane) {       
+    function insertGraphBrowser(contentPane, model, id, pageDefinitions) {       
         // Graph results pane
         
         var graphResultsPane = new ContentPane({
+            // TODO: Translate
             title: "Graph results"
         });
         
         var pane = graphResultsPane.containerNode;
         var takeSurveyButton = utility.newButton("updateGraph", null, pane, updateGraph);
         pane.appendChild(document.createElement("br"));
-        pane.appendChild(domConstruct.toDom('Survey Graph<br><div id="surveyGraphDiv"></div><div id="chartDiv" style="width: 250px; height: 550px; margin: 5px auto 0px auto;"></div>'));
-
+        
+        // TODO: Translate "Survey Graph"
+        pane.appendChild(domConstruct.toDom('Survey Graph<br><div id="surveyGraphDiv"></div><div id="chartDiv" style="width: 550px; height: 550px; margin: 5px auto 0px auto;"></div>'));
         contentPane.addChild(graphResultsPane);
+        
+        // TODO: Update these as they change...
+        var questions = domain.collectAllSurveyQuestions();
+        
+        var optionsForAllQuestions = widgetSupport.optionsForAllQuestions(questions);
+        
+        var xAxisSelect = utility.newSelect(id + "_xAxis_question", optionsForAllQuestions, null, contentPane);
+        xAxisSelect.set("style", "width: 48%; max-width: 40%");
+        
+        var yAxisSelect = utility.newSelect(id + "_yAxis_question", optionsForAllQuestions, null, contentPane);
+        yAxisSelect.set("style", "width: 48%; max-width: 40%");
+        
         graphResultsPane.startup();
     }
 

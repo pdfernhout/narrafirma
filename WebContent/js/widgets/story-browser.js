@@ -11,6 +11,7 @@ define([
     "js/utility",
     "js/widgetBuilder",
     "./grid-table",
+    "./widgetSupport",
     "dojo/_base/window",
     "dijit/layout/ContentPane",
     "dojo/store/Memory",
@@ -29,6 +30,7 @@ define([
     utility,
     widgetBuilder,
     widgetGridTable,
+    widgetSupport,
     win,
     ContentPane,
     Memory,
@@ -207,7 +209,7 @@ define([
         
         containerPane.addChild(contentPane);
          
-        var questionSelect = utility.newSelect(id + "_question", optionsForAllQuestions(questions), null, contentPane);
+        var questionSelect = utility.newSelect(id + "_question", widgetSupport.optionsForAllQuestions(questions), null, contentPane);
         questionSelect.set("style", "width: 98%; max-width: 98%");
         
         contentPane.containerNode.appendChild(domConstruct.toDom('<br>'));
@@ -223,19 +225,6 @@ define([
         contentPane.startup();
 
         return filterPane;
-    }
-    
-    var filterableQuestionTypes = ["select", "slider", "boolean", "text", "checkbox", "checkboxes", "radiobuttons"];
-    
-    // function updateFilterPaneForCurrentQuestions(questions) {
-    function optionsForAllQuestions(questions) {
-        var questionOptions = [];
-        array.forEach(questions, function (question) {
-            if (array.indexOf(filterableQuestionTypes, question.type) != -1) {
-                questionOptions.push({label: translate(question.id + "::shortName", "*FIXME -- Missing shortName translation for: " + question.id), value: question.id});
-            }
-        });
-        return questionOptions;
     }
     
     function storiesChanged(storyBrowser, stories) {
