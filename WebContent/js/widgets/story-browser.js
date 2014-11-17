@@ -116,7 +116,7 @@ define([
                 for (var key in choice) {
                     oldValue = totals[key];
                     if (!oldValue) oldValue = 0;
-                    totals[key] = oldValue + 1; 
+                    if (choice[key]) totals[key] = oldValue + 1; 
                 }
             } else {
                 oldValue = totals[choice];
@@ -245,7 +245,7 @@ define([
             // checkboxes
             // console.log("checkboxes", questionAnswer);
             for (var key in questionAnswer) {
-                if (selectedAnswerChoices.indexOf(key) !== -1) return true;
+                if ((selectedAnswerChoices.indexOf(key) !== -1) && questionAnswer[key]) return true;
             }
             return false;
         }
