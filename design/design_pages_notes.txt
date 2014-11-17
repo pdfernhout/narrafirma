@@ -586,11 +586,16 @@ and prepare materials for use in sensemaking.
 
 ## Browse stories [page_browseStories]
 
-* On this page you will review your collected stories. [collectedStoriesAfterCollectionLabel|label]
+* On this page you will review your collected stories. [browseStories_collectedStoriesAfterCollectionLabel|label]
 You can save stories (or groups of stories) to observations for later use.
 You can also save excerpts (parts of stories) for later use.
 
-* Collected stories [collectedStoriesAfterCollection|storyBrowser|addToObservation:"page_addToObservation";addToExcerpt:"page_addToExcerpt"]
+* Load latest stories from server [browseStories_loadLatestStoriesFromServer|button|loadLatestStoriesFromServer]
+
+* Total number of survey results loaded from server: [browseStories_totalResults|function|totalNumberOfSurveyResults]
+
+
+* Collected stories [browseStories_collectedStoriesAfterCollection|storyBrowser|addToObservation:"page_addToObservation";addToExcerpt:"page_addToExcerpt"]
 
 ## Theme stories [page_themeStories]
 
