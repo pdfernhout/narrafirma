@@ -1,25 +1,12 @@
 ==== PNI Workbook TODO list:
 
 PRIORITY:
-
 - questionsTable working again
-
 - recommendations table working
 - make whole planning phase work
-
-if time
 - make templates work
 - print story form
-- one bar graph in graph browser
-- make report work
-- styling of nested box
-
-Main Dashboard
-
-Help window displaying HTML instead of alert
-
-Save data as move from page to page
-Restore data when load page
+- styling of nested box in grid
 
 Fix how survey data is collected and stored to seperate multiple stories from participant information
 Improve take survey page like with support for seperate pages
@@ -29,7 +16,7 @@ Some sort of continue button at bottom of page to progress through steps
 Validation of page data as progress through a step
 
 Way to retrieve data about project participant groups
-Internationalization of strings related to page of questions on project participant groups
+Translation of strings related to page of questions on project participant groups
 
 Support a templateList -- a list box with templates read in from a file (of a particular type) with a "copy" button
 
@@ -59,11 +46,6 @@ Support clusterSpace -- used in catalysis to cluster interpretations it is a gra
 Support observationsList -- used to list all the previously made observations
 
 Support recommendationTable
-
-Support imageUploader
-
-Support storyBrowserCount
-Fix questionAnswerCountOfTotalOnPages so it can handle a questionsTable
 
 Implement countNumberOfVenuesChosen in domain
 Implement startup and shutdown of web data collection in domain buttonClicked
@@ -104,6 +86,21 @@ Improve reports so look nice
 
 Update story browser when load latest stories from server (without need to press Filter button again)
 
+Improve loading and saving of project so can look at versions
+Confirm reloading or closing page if have unsaved data
+Autosave, perhaps based on time or based on changing pages
+Provide GUI feedback when saving project to server
+Provide GUI feedback when loading project from server
+
+Main Dashboard
+
+Help window displaying HTML instead of alert
+Look at all alerts in code and make into nicer GUI feedback
+Final review of all strings in code looking for TODO translate items or similar
+
+Support imageUploader
+Support storyBrowserCount
+Fix questionAnswerCountOfTotalOnPages so it can handle a questionsTable
 
 DONE Checkboxes for multiple choices
 DONE Tab container sizing to full page
@@ -152,6 +149,8 @@ DONE Move question creation code from main.js into question_editor.js and genera
 DONE Support a button does something when clicked
 DONE Test dynamic pages vs. inline page sections for grid items
 NOT DOING Create new pages when add new participant groups
+DONE Save data (within domain model) as move from page to page
+DONE Restore data (from domain model) when load page
 DONE Add select at bottom of each page -- this page has been: intentionally skipped;partially completed;completed
 DONE Participant questions need to have options and ids and translations
 DONE Support grid widget with buttons for add and view
@@ -198,6 +197,7 @@ DONE Update story browser when load project
 DONE Save data from when survey is taken
 DONE Way to refresh survey data into PNIWorkbook on button press (or similar action)
 DONE Support graphBrowser -- shows one graph at a time, with two question select drop-downs to choose which graph to show
+DONE one bar graph in graph browser (actually scatter plot)
 DONE Fix bug from testing with problem adding two grid items
 DONE Support grid widget double-click to view
 DONE Support all page types: normal (no specification), popup, questionsTable, recommendationTable [defered to own item], participantStoryForm
