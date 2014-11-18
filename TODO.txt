@@ -22,7 +22,6 @@ Save data as move from page to page
 Restore data when load page
 
 Fix how survey data is collected and stored to seperate multiple stories from participant information
-Fix survey entry to prevent missing or duplicate question ids
 Improve take survey page like with support for seperate pages
 Investigate double creation of survey data during test on 2014-11-17 on cfk machine for first survey created
 
@@ -202,6 +201,7 @@ DONE Support graphBrowser -- shows one graph at a time, with two question select
 DONE Fix bug from testing with problem adding two grid items
 DONE Support grid widget double-click to view
 DONE Support all page types: normal (no specification), popup, questionsTable, recommendationTable [defered to own item], participantStoryForm
+DONE Fix survey entry to prevent missing or duplicate question ids (done in domain for now)
 
 ======= CYNTHIA
 

@@ -150,13 +150,32 @@ define([
         survey.questionForm_title = projectData.projectAnswers.get("questionForm_title");
         survey.questionForm_image = projectData.projectAnswers.get("questionForm_image");
         survey.questionForm_startText = projectData.projectAnswers.get("questionForm_startText");
-        survey.questionForm_endText = projectData.projectAnswers.get("questionForm_endText");
+        survey.questionForm_endText = projectData.projectAnswers.get("questionForm_endText"); 
         
         console.log("survey", survey);
         
         // Ensure we have an entire fresh copy
         projectData.exportedSurveyQuestions = JSON.parse(JSON.stringify(survey));
         
+        // Validate the survey ids to prevent duplicates and missing ones; ideally this should be done in GUI somehow
+        var questions = [].concat(projectData.exportedSurveyQuestions.project_storyQuestionsList, projectData.exportedSurveyQuestions.project_participantQuestionsList);
+        var ids = {};
+        var createdIDCount = 0;
+        for (var index in questions) {
+            var question = questions[index];
+            if (!question.id) {
+                question.id = "question " + (++createdIDCount);
+                console.log("SURVEY DESIGN ERROR: question had missing ID and one was assigned", question);
+            }
+            while (ids[question.id]) {
+                // ID already exists
+                console.log("SURVEY DESIGN ERROR: duplicate ID", question.id);
+                question.id = "question " + (++createdIDCount);
+                console.log("SURVEY DESIGN ERROR: question had duplicate ID and a new one was assigned", question);
+            }
+            ids[question.id] = true;
+        }
+
         console.log("projectData.exportedSurveyQuestions", projectData.exportedSurveyQuestions);
     }
     
