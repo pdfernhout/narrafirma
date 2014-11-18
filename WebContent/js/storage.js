@@ -48,13 +48,14 @@ define([
         if (error) {
             var errorMessage = "ERROR: error on retrieving index data for project";
             console.log(errorMessage);
-            alert(errorMessage);
+            // TODO: Translate
+            alert("No saved project version is available; has one been saved?");
             return;
         }
 
         // Try to load the latest one...
         if (allEntries.length === 0) {
-            console.log("No saved versions");
+            console.log("No stored versions");
             return;
         }
         
@@ -118,9 +119,10 @@ define([
     function loadedNewSurveyResults(loadedSurveyResultsCallback, error, allEntries, newEntries) {
         // console.log("loadedNewSurveyResults: ", error, newEntries);
         if (error) {
-            var errorMessage = "ERROR: error on retrieving survey results";
-            console.log(errorMessage);
-            alert(errorMessage);
+            var errorMessage = "ERROR: error on retrieving survey results; is it possible none have been stored yet?";
+            console.log(error, errorMessage);
+            // TODO: Translate
+            // alert("No survey results are available");
             return;
         }
 

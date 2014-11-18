@@ -202,6 +202,7 @@ DONE Fix bug from testing with problem adding two grid items
 DONE Support grid widget double-click to view
 DONE Support all page types: normal (no specification), popup, questionsTable, recommendationTable [defered to own item], participantStoryForm
 DONE Fix survey entry to prevent missing or duplicate question ids (done in domain for now)
+DONE Better error messages when loading project or survey results and not available on the server
 
 ======= CYNTHIA
 
