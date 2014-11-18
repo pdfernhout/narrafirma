@@ -58,6 +58,14 @@ define([
     function clearGridsKludge() {
         while (allGrids.length) allGrids.pop();
     }
+    
+    function hideAndDestroyForm(itemContentPane, form, grid) {
+        // The next line is needed to get rid of duplicate IDs for next time the form is opened:
+        itemContentPane.set("style", "display: none");
+        form.destroyRecursive();
+        grid.formType = null;
+        grid.form = null;
+    }
 
     // TODO: Maybe rethink how unique item IDs work? Setting to start at 1000 because of test data created in story browser
     var uniqueItemIDCounter = 1000;
@@ -74,14 +82,12 @@ define([
                 
         console.log("put store for add form");
         
-        itemContentPane.set("style", "display: none");
-        
+        hideAndDestroyForm(itemContentPane, form, grid);
+             
         // refresh ensures the new data is displayed
         console.log("Doing refresh for data", statefulItem);
         grid.refresh();
-        
-        // The next line is needed to get rid of duplicate IDs for next time the form is opened:
-        form.destroyRecursive();
+          
         console.log("shut down add form");
     }
     
@@ -96,10 +102,7 @@ define([
                 alert("Add already in progress; please cancel add form first");
                 return;
             }
-            grid.form.destroyRecursive();
-            grid.formType = null;
-            grid.form = null;
-            itemContentPane.set("style", "display: none"); 
+            hideAndDestroyForm(itemContentPane, grid.form, grid);
         }
         
         var form = new Form();
@@ -119,13 +122,8 @@ define([
             console.log("Cancel chosen");
             
             // TODO: Confirm cancel if have entered data
-            
-            grid.formType = null;
-            grid.form = null;
-            
-            itemContentPane.set("style", "display: none");       
-            // The next line is needed to get rid of duplicate IDs for next time the form is opened:
-            form.destroyRecursive();
+              
+            hideAndDestroyForm(itemContentPane, form, grid);
         });
         
         grid.form = form;
@@ -151,10 +149,7 @@ define([
                 alert("Add already in progress; please cancel add form first");
                 return;
             }
-            grid.form.destroyRecursive();
-            grid.formType = null;
-            grid.form = null;
-            itemContentPane.set("style", "display: none"); 
+            hideAndDestroyForm(itemContentPane, grid.form, grid);
         }
         
         // TODO: Should only do for one of these... Need to break...
@@ -229,13 +224,7 @@ define([
         utility.newButton("list_dialog_ok" + grid.id, "button_Done", form, function() {
             console.log("Done");
             
-            grid.formType = null;
-            grid.form = null;
-
-            itemContentPane.set("style", "display: none");
-            
-            // The next line is needed to get rid of duplicate IDs for next time the form is opened:
-            form.destroyRecursive();
+            hideAndDestroyForm(itemContentPane, form, grid);
         });
         
         grid.form = form;
