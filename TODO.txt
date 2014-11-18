@@ -92,6 +92,8 @@ Autosave, perhaps based on time or based on changing pages
 Provide GUI feedback when saving project to server
 Provide GUI feedback when loading project from server
 
+Improve feedback when there are no project versions or survey results; maybe distinguish between an error and nothing being saved yet
+
 Main Dashboard
 
 Help window displaying HTML instead of alert
