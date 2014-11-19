@@ -283,6 +283,88 @@ define([
         chart.render(); 
     }
     
+    function scatterPlot(mainChartDiv, xAxisQuestion, yAxisQuestion) {
+        
+        // collect data
+        var plotItems = [];
+        var stories = domain.projectData.surveyResults.allStories;
+        for (var index in stories) {
+            var story = stories[index];
+            var xValue = correctForUnanswered(xAxisQuestion, story[xAxisQuestion.id]);
+            var yValue = correctForUnanswered(yAxisQuestion, story[yAxisQuestion.id]);
+            
+            // TODO: What do do about unanswered?
+            if (xValue === unansweredKey || yValue === unansweredKey) continue;
+            
+            var plotItem = newPlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story);
+            plotItems.push(plotItem);
+        }
+        console.log("plot items", plotItems);
+
+        var chartDiv = domConstruct.create("div", {style: "width: 500px; height: 500px;"}, "chartDiv");
+        
+        var chartTitle = "" + xAxisQuestion.id + " vs. " + yAxisQuestion.id;
+        
+        var chart = new Chart(chartDiv, {
+            title: chartTitle,
+        });
+        console.log("Made chart");
+        
+        // TODO: Set theme
+        
+        chart.addPlot("default", {
+            type: Scatter
+        });
+        
+        // TODO: What do do about unanswered?
+        
+        chart.addAxis("x", {
+            labels: [
+                //{value: -10, text: unansweredKey},
+                {value: 0, text: "0"},
+                {value: 10, text: "10"},
+                {value: 20, text: "20"},
+                {value: 30, text: "30"},
+                {value: 40, text: "40"},
+                {value: 50, text: "50"},
+                {value: 60, text: "60"},
+                {value: 70, text: "70"},
+                {value: 80, text: "80"},
+                {value: 90, text: "90"},
+                {value: 100, text: "100"}
+           ],
+           vertical: false,
+           includeZero: true,
+           fixLower: "major",
+           fixUpper: "major"
+        });
+        
+        chart.addAxis("y", {
+            labels: [
+                //{value: -10, text: unansweredKey},
+                {value: 0, text: "0"},
+                {value: 10, text: "10"},
+                {value: 20, text: "20"},
+                {value: 30, text: "30"},
+                {value: 40, text: "40"},
+                {value: 50, text: "50"},
+                {value: 60, text: "60"},
+                {value: 70, text: "70"},
+                {value: 80, text: "80"},
+                {value: 90, text: "90"},
+                {value: 100, text: "100"}
+           ],
+           vertical: true,
+           includeZero: true,
+           fixLower: "major",
+           fixUpper: "major" 
+        });
+
+        chart.addSeries("Series 1", plotItems);
+        
+        chart.render(); 
+    }
+    
     function updateGraph(graphResultsPane) {
         console.log("updateGraph", graphResultsPane);
         
@@ -342,6 +424,7 @@ define([
             console.log("plot choice: Multiple histograms");
         } else if (xType === "scale" && yType === "scale") {
             console.log("plot choice: Scatter plot");
+            scatterPlot(chartDiv, xAxisQuestion, yAxisQuestion);
         } else {
             console.log("ERROR: Unexpected graph type");
             alert("ERROR: Unexpected graph type");
