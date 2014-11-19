@@ -33,8 +33,11 @@ define([
     Markers,
     Scatter
 ){
-    function correctForUnanswered(value) {
-        if (value === undefined || value === null || value === "") return "{Unanswered}";
+    var unansweredKey = "{Unanswered}";
+        
+    function correctForUnanswered(question, value) {
+        if (question.type === "checkbox" && !value) return false;
+        if (value === undefined || value === null || value === "") return unansweredKey;
         return value;
     }
     
@@ -62,7 +65,7 @@ define([
         // TODO: Check that answer is numerical
         if (question.type === "slider") {
             console.log("slider answer", answer);
-            if (answer === "{Unanswered}") return -10;
+            if (answer === unansweredKey) return -10;
             return answer;
         }
         
@@ -79,7 +82,7 @@ define([
         // Adjust for unanswered items
         // if (question.type !== "checkboxes") answerCount += 1;
         
-        if (answer === "{Unanswered}") {
+        if (answer === unansweredKey) {
             return -100 * 1 / (question.options.length - 1);
         }
         
@@ -107,7 +110,7 @@ define([
         if (type === "boolean" || type == "checkbox") {
             chart.addAxis(axis, {
                labels: [
-                   {value: -100, text: "{Unanswered}"},
+                   {value: -100, text: unansweredKey},
                    {value: 0, text: "No"},
                    {value: 100, text: "Yes"},
                ], 
@@ -117,7 +120,7 @@ define([
         } else if (type === "slider") {
             chart.addAxis(axis, {
                 labels: [
-                    {value: -10, text: "{Unanswered}"},
+                    {value: -10, text: unansweredKey},
                     {value: 0, text: "0"},
                     {value: 10, text: "10"},
                     {value: 20, text: "20"},
@@ -136,7 +139,7 @@ define([
         } else {
             var increment = 100 / (question.options.length - 1);
             var labels = [
-               {value: -increment, text: "{Unanswered}"},
+               {value: -increment, text: unansweredKey},
             ];
             for (var i = 0; i < question.options.length; i++) {
                 labels.push({value: i * increment, text: question.options[i]});
@@ -152,6 +155,134 @@ define([
         // chart1.addAxis("y", {vertical: true, fixLower: "major", fixUpper: "major"});
     }
     
+    function incrementMapSlot(map, key) {
+        var oldCount = map[key];
+        if (!oldCount) oldCount = 0;
+        map[key] = oldCount + 1;
+    }
+    
+    function barChart(mainChartDiv, question) {
+         
+        // collect data
+        var plotItems = [];
+        var plotLabels = [];
+        var results = {};
+        
+        var stories = domain.projectData.surveyResults.allStories;
+        for (var storyIndex in stories) {
+            var story = stories[storyIndex];
+            var xValue = correctForUnanswered(question, story[question.id]);
+            
+            var xHasCheckboxes = lang.isObject(xValue);
+            // fast path
+            if (!xHasCheckboxes) {
+                incrementMapSlot(results, xValue);
+            } else {
+                console.log(question, xValue);
+                for (var xIndex in xValue) {
+                    if (xValue[xIndex]) incrementMapSlot(results, xIndex);
+                }
+            }
+        }
+        
+        var resultIndex = 1;
+        
+        // Keep unanswered at start
+        var key = unansweredKey;
+        plotLabels.push({value: resultIndex, text: key});
+        plotItems.push({x: resultIndex, y: results[key]});
+        resultIndex++;
+        
+        for (key in results) {
+            if (key === unansweredKey) continue;
+            plotLabels.push({value: resultIndex, text: key});
+            plotItems.push({x: resultIndex, y: results[key]});
+            resultIndex++;
+        }
+        
+        console.log("plot items", plotItems);
+
+        var chartDiv = domConstruct.create("div", {style: "width: 500px; height: 500px;"}, "chartDiv");
+        
+        var chartTitle = "" + question.id;
+        
+        var chart = new Chart(chartDiv, {
+            title: chartTitle,
+        });
+        console.log("Made chart");
+        
+        // TODO: Set theme
+        
+        chart.addPlot("default", {
+            type: Columns,
+            markers: true,
+            gap: 5
+        });
+        
+        chart.addAxis("x", {labels: plotLabels, fixLower: "major", fixUpper: "major"});
+        chart.addAxis("y", {vertical: true, fixLower: "major", fixUpper: "major" });
+
+        chart.addSeries("Series 1", plotItems);
+        
+        chart.render(); 
+    }
+    
+    function histogramChart(mainChartDiv, question) {
+        
+        // TODO: Statistics
+        
+        // collect data
+        var plotItems = [];
+        var results = {};
+        
+        var stories = domain.projectData.surveyResults.allStories;
+        for (var storyIndex in stories) {
+            var story = stories[storyIndex];
+            var xValue = correctForUnanswered(question, story[question.id]);
+            incrementMapSlot(results, xValue);
+        }
+        
+        var resultIndex = 1;
+        
+        // TODO: What about unanswered?
+        
+        //var key = unansweredKey;
+        //plotLabels.push({value: resultIndex, text: key});
+        //plotItems.push({x: resultIndex, y: results[key]});
+        //resultIndex++;
+        
+        plotItems.push({x: -1, y: results[unansweredKey]});
+        for (var i = 0; i < 100; i++) {
+            plotItems.push({x: i, y: results[i]});
+        }
+        
+        console.log("plot items", plotItems);
+
+        var chartDiv = domConstruct.create("div", {style: "width: 500px; height: 500px;"}, "chartDiv");
+        
+        var chartTitle = "" + question.id;
+        
+        var chart = new Chart(chartDiv, {
+            title: chartTitle,
+        });
+        console.log("Made chart");
+        
+        // TODO: Set theme
+        
+        chart.addPlot("default", {
+            type: Columns,
+            markers: true,
+            gap: 5
+        });
+        
+        chart.addAxis("x", {fixLower: "none", fixUpper: "major", includeZero: true});
+        chart.addAxis("y", {vertical: true, fixLower: "major", fixUpper: "major" });
+
+        chart.addSeries("Series 1", plotItems);
+        
+        chart.render(); 
+    }
+    
     function updateGraph(graphResultsPane) {
         console.log("updateGraph", graphResultsPane);
         
@@ -160,6 +291,13 @@ define([
         
         // TODO: Translated or improve checking or provide alternate handling if only one selected
         if (!xAxisQuestionID && !yAxisQuestionID) return alert("Please select a question for one or both graph axes");
+        
+        // Remove old graph(s) and create a place to put one
+        var widgets = dijit.findWidgets("chartDiv");
+        array.forEach(widgets, function(widget) {
+            widget.destroyRecursive(true);
+        });
+        var chartDiv = domConstruct.empty("chartDiv");
         
         var surveyQuestions = domain.collectAllSurveyQuestions();
         
@@ -191,12 +329,15 @@ define([
         
         if (xType === "choice" && yType === null) {
             console.log("plot choice: Bar graph");
+            console.log("barGraph", chartDiv, xAxisQuestion);
+            barChart(chartDiv, xAxisQuestion);
         } else if (xType === "choice" && yType === "choice") {
             console.log("plot choice: Contingency table");
         } else if (xType === "choice" && yType === "scale") {
             console.log("plot choice: Multiple histograms");
         } else if (xType === "scale" && yType === null) {
             console.log("plot choice: Histogram");
+            histogramChart(chartDiv, xAxisQuestion);
         } else if (xType === "scale" && yType === "choice") {
             console.log("plot choice: Multiple histograms");
         } else if (xType === "scale" && yType === "scale") {
@@ -214,8 +355,8 @@ define([
         var stories = domain.projectData.surveyResults.allStories;
         for (var index in stories) {
             var story = stories[index];
-            var xValue = correctForUnanswered(story[xAxisQuestionID]);
-            var yValue = correctForUnanswered(story[yAxisQuestionID]);
+            var xValue = correctForUnanswered(xAxisQuestion, story[xAxisQuestionID]);
+            var yValue = correctForUnanswered(yAxisQuestion, story[yAxisQuestionID]);
             
             var plotItem;
             var xHasCheckboxes = lang.isObject(xValue);
@@ -256,11 +397,7 @@ define([
         
         console.log("plot items", plotItems);
         
-        var widgets = dijit.findWidgets("chartDiv");
-        array.forEach(widgets, function(widget) {
-            widget.destroyRecursive(true);
-        });
-        domConstruct.empty("chartDiv");
+
         
         var chart1Div = domConstruct.create("div", {style: "width: 500px; height: 500px;"}, "chartDiv");
         
