@@ -39,6 +39,7 @@ define([
     }
     
     function questionForID(questions, id) {
+        if (!id) return null;
         for (var index in questions) {
             var question = questions[index];
             if (question.id === id) return question;
@@ -158,14 +159,55 @@ define([
         var yAxisQuestionID = graphResultsPane.yAxisSelect.get("value");
         
         // TODO: Translated or improve checking or provide alternate handling if only one selected
-        if (!xAxisQuestionID || !yAxisQuestionID) return alert("Please select a question for each axis");
+        if (!xAxisQuestionID && !yAxisQuestionID) return alert("Please select a question for one or both graph axes");
         
         var surveyQuestions = domain.collectAllSurveyQuestions();
         
         var xAxisQuestion = questionForID(surveyQuestions, xAxisQuestionID);
         var yAxisQuestion = questionForID(surveyQuestions, yAxisQuestionID);
         
+        // Ensule xAxisQuestion is always defined
+        if (!xAxisQuestion) {
+            xAxisQuestion = yAxisQuestion;
+            yAxisQuestion = null;
+        }
+        
         console.log("x y axis values", xAxisQuestion, yAxisQuestion);
+        
+        var xType = "choice";
+        var yType = null;
+        if (xAxisQuestion.type === "slider") {
+            xType = "scale";
+        }
+        if (yAxisQuestion) {
+            if (yAxisQuestion.type === "slider") {
+                yType = "scale";
+            } else {
+                yType = "choice";
+            }
+        }
+        
+        console.log("types x y", xType, yType);
+        
+        if (xType === "choice" && yType === null) {
+            console.log("plot choice: Bar graph");
+        } else if (xType === "choice" && yType === "choice") {
+            console.log("plot choice: Contingency table");
+        } else if (xType === "choice" && yType === "scale") {
+            console.log("plot choice: Multiple histograms");
+        } else if (xType === "scale" && yType === null) {
+            console.log("plot choice: Histogram");
+        } else if (xType === "scale" && yType === "choice") {
+            console.log("plot choice: Multiple histograms");
+        } else if (xType === "scale" && yType === "scale") {
+            console.log("plot choice: Scatter plot");
+        } else {
+            console.log("ERROR: Unexpected graph type");
+            alert("ERROR: Unexpected graph type");
+            return;
+        }
+
+        /*
               
         // collect data
         var plotItems = [];
@@ -249,6 +291,7 @@ define([
 
         chart1.addSeries("Series 1", plotItems);
         chart1.render(); 
+        */
     }
         
     function insertGraphBrowser(contentPane, model, id, pageDefinitions) {       
