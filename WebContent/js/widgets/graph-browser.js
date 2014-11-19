@@ -15,7 +15,8 @@ define([
     "dojox/charting/axis2d/Default",
     "dojox/charting/plot2d/Lines",
     "dojox/charting/plot2d/Markers",
-    "dojox/charting/plot2d/Scatter"
+    "dojox/charting/plot2d/Scatter",
+    "dojox/layout/TableContainer"
 ], function(
     array,
     domain,
@@ -31,7 +32,8 @@ define([
     Default,
     Lines,
     Markers,
-    Scatter
+    Scatter,
+    TableContainer
 ){
     var unansweredKey = "{Unanswered}";
         
@@ -161,6 +163,20 @@ define([
         map[key] = oldCount + 1;
     }
     
+    function preloadResultsForQuestionOptions(results, question) {
+        /*jshint -W069 */
+        var type = question.type;
+        results[unansweredKey] = 0;
+        if (type === "boolean" || type == "checkbox") {
+            results["no"] = 0;
+            results["yes"] = 0;
+        } else if (question.options) {
+            for (var i = 0; i < question.options.length; i++) {
+                results[question.options[i]] = 0;
+            }
+        }
+    }
+    
     function barChart(mainChartDiv, question) {
          
         // collect data
@@ -186,6 +202,8 @@ define([
         }
         
         var resultIndex = 1;
+        
+        preloadResultsForQuestionOptions(results, question);
         
         // Keep unanswered at start
         var key = unansweredKey;
@@ -365,6 +383,67 @@ define([
         chart.render(); 
     }
     
+    function contingencyTable(chartDiv, xAxisQuestion, yAxisQuestion) {
+        var columnLabels = {};
+        var rowLabels = {};
+        
+        preloadResultsForQuestionOptions(columnLabels, xAxisQuestion);
+        preloadResultsForQuestionOptions(rowLabels, yAxisQuestion);
+        
+        columnLabels["{Total}"] = 0;
+        rowLabels["{Total}"] = 0;
+        
+        var columnCount = Object.keys(columnLabels).length;
+        var rowCount = Object.keys(rowLabels).length;
+        
+        var table = new TableContainer({
+            cols: columnCount + 2,
+            showLabels: false,
+            customClass: "contingencyTable",
+            style: "width: 98%;",
+            spacing: 10
+        }, "chartDiv");
+        
+        
+        var content;
+        var row;
+        var column;
+        
+        content = new ContentPane({content:"", colspan: 1});
+        table.addChild(content);
+        
+        for (column = 0; column < columnCount; column++) {
+            content = new ContentPane({content:"COLUMN TITLE", colspan: 1});
+            table.addChild(content);
+        }
+        content = new ContentPane({content: "ROW TOTAL", colspan: 1});
+        table.addChild(content);
+        
+        for (row = 0; row < rowCount; row++) {
+            content = new ContentPane({content: "ROW TITLE", colspan: 1});
+            table.addChild(content);
+            
+            for (column = 0; column < columnCount; column++) {
+                content = new ContentPane({content: "<i>" + column + "," + row + "</i>", colspan: 1});
+                table.addChild(content);
+            }
+            content = new ContentPane({content: "row total", "colspan": 1});
+            table.addChild(content);
+        }
+        content = new ContentPane({content: "COLUMN TOTAL", colspan: 1});
+        table.addChild(content);
+        for (column = 0; column < columnCount; column++) {
+            content = new ContentPane({content:"column total", colspan: 1});
+            table.addChild(content);
+        }
+        content = new ContentPane({content: "grand total", colspan: 1});
+        table.addChild(content);
+        
+        // This is appears to be superflous as startup is called when table added to pagePane (assuming it is connected to DOM hierarchy?)
+        table.startup();
+    }
+    
+    
     function updateGraph(graphResultsPane) {
         console.log("updateGraph", graphResultsPane);
         
@@ -415,6 +494,7 @@ define([
             barChart(chartDiv, xAxisQuestion);
         } else if (xType === "choice" && yType === "choice") {
             console.log("plot choice: Contingency table");
+            contingencyTable(chartDiv, xAxisQuestion, yAxisQuestion);
         } else if (xType === "choice" && yType === "scale") {
             console.log("plot choice: Multiple histograms");
         } else if (xType === "scale" && yType === null) {
