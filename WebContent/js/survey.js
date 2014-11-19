@@ -36,8 +36,10 @@ define([
         surveyResult.id = uuid();
         
         console.log("answers", surveyResult, model);
-        domain.projectData.surveyResults.allCompletedSurveys.push(surveyResult);
         storage.storeSurveyResult(surveyResult);
+        
+        // Can't push survey into all results at this point or will have duplicates when load them later
+        // TODO: Maybe should load latest results from server back at this point? Because will not have new survey...
         
         // var surveyResultsDiv = document.getElementById("surveyResultsDiv");
         // surveyResultsDiv.innerHTML = JSON.stringify(domain.surveyResults);

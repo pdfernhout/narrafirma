@@ -10,7 +10,6 @@ PRIORITY:
 
 Fix how survey data is collected and stored to seperate multiple stories from participant information
 Improve take survey page like with support for seperate pages
-Investigate double creation of survey data during test on 2014-11-17 on cfk machine for first survey created
 
 Some sort of continue button at bottom of page to progress through steps
 Validation of page data as progress through a step
@@ -205,6 +204,7 @@ DONE Support grid widget double-click to view
 DONE Support all page types: normal (no specification), popup, questionsTable, recommendationTable [defered to own item], participantStoryForm
 DONE Fix survey entry to prevent missing or duplicate question ids (done in domain for now)
 DONE Better error messages when loading project or survey results and not available on the server
+DONE Investigate double creation of survey data during test on 2014-11-17 on cfk machine for first survey created
 
 ======= CYNTHIA
 
