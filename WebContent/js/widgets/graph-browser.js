@@ -41,7 +41,7 @@ define([
     var unansweredKey = "{Unanswered}";
         
     function correctForUnanswered(question, value) {
-        if (question.type === "checkbox" && !value) return false;
+        if (question.type === "checkbox" && !value) return "no";
         if (value === undefined || value === null || value === "") return unansweredKey;
         return value;
     }
@@ -101,7 +101,7 @@ define([
     }
     
     function newPlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story) {
-        console.log("newPlotItem", xAxisQuestion, yAxisQuestion, xValue, yValue, story);
+        // console.log("newPlotItem", xAxisQuestion, yAxisQuestion, xValue, yValue, story);
         
         // Plot onto a 100 x 100 value to work with sliders
         var x = positionForQuestionAnswer(xAxisQuestion, xValue);
@@ -249,8 +249,8 @@ define([
     }
     
     // choiceQuestion and option may be undefined if this is just a simple histogram for all values
-    function histogramChart(mainChartDiv, question, choiceQuestion, choice) {
-        // console.log("mainChartDiv, question", mainChartDiv, question);
+    function histogramChart(mainChartDiv, scaleQuestion, choiceQuestion, choice) {
+        // console.log("mainChartDiv, scaleQuestion", mainChartDiv, scaleQuestion);
         
         // TODO: Statistics
         
@@ -261,11 +261,19 @@ define([
         var stories = domain.projectData.surveyResults.allStories;
         for (var storyIndex in stories) {
             var story = stories[storyIndex];
-            var xValue = correctForUnanswered(question, story[question.id]);
+            var xValue = correctForUnanswered(scaleQuestion, story[scaleQuestion.id]);
             if (choiceQuestion) {
                 // Only count results where the choice matches
                 var choiceValue = correctForUnanswered(choiceQuestion, story[choiceQuestion.id]);
-                if (choiceValue !== choice) continue;
+                var skip = false;
+                if (choiceQuestion.type === "checkboxes") {
+                    console.log("choiceValue[choice]", choiceValue[choice]);
+                    if (!choiceValue[choice]) skip = true;
+                } else {
+                    if (choiceValue !== choice) skip = true;
+                }
+                console.log("choice choiceValue skip", choice, choiceValue, skip);
+                if (skip) continue;
             }
             incrementMapSlot(results, xValue);
         }
@@ -284,11 +292,14 @@ define([
             plotItems.push({x: i, y: results[i]});
         }
         
-        console.log("plot items", plotItems);
-
-        var chartDiv = domConstruct.create("div", {style: "width: 500px; height: 500px;"}, "chartDiv");
+        // console.log("plot items", plotItems);
         
-        var chartTitle = "" + question.id;
+        var extraStyle = "";
+        if (choiceQuestion) extraStyle = " float: left;"; // " display: inline;";
+
+        var chartDiv = domConstruct.create("div", {style: "width: 500px; height: 500px;" + extraStyle}, "chartDiv");
+        
+        var chartTitle = "" + scaleQuestion.id;
         if (choiceQuestion) chartTitle = chartTitle + " for choice: " + choice;
         
         var chart = new Chart(chartDiv, {
@@ -313,7 +324,6 @@ define([
     }
     
     function scatterPlot(mainChartDiv, xAxisQuestion, yAxisQuestion) {
-        
         // collect data
         var plotItems = [];
         var stories = domain.projectData.surveyResults.allStories;
@@ -328,7 +338,7 @@ define([
             var plotItem = newPlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story);
             plotItems.push(plotItem);
         }
-        console.log("plot items", plotItems);
+        // console.log("plot items", plotItems);
 
         var chartDiv = domConstruct.create("div", {style: "width: 500px; height: 500px;"}, "chartDiv");
         
@@ -524,10 +534,12 @@ define([
     function multipleHistograms(chartDiv, choiceQuestion, scaleQuestion) {
         var options = [];
         var index;
-        options.push(unansweredKey);
-        if (choiceQuestion.type === "boolean" || choiceQuestion.type === "checkboxes") {
-            options.push("No");
-            options.push("Yes");
+        if (choiceQuestion.type !== "checkbox" && choiceQuestion.type !== "checkboxes") {
+            options.push(unansweredKey);
+        }
+        if (choiceQuestion.type === "boolean" || choiceQuestion.type === "checkbox") {
+            options.push("no");
+            options.push("yes");
         } else if (choiceQuestion.options) {
             for (index in choiceQuestion.options) {
                 options.push(choiceQuestion.options[index]);
@@ -539,6 +551,9 @@ define([
             var option = options[index];
             histogramChart(chartDiv, scaleQuestion, choiceQuestion, option);
         }
+        
+        // End the float
+        domConstruct.create("div", {style: "clear: left;"}, "chartDiv");
     }
     
     
