@@ -390,11 +390,73 @@ define([
         preloadResultsForQuestionOptions(columnLabels, xAxisQuestion);
         preloadResultsForQuestionOptions(rowLabels, yAxisQuestion);
         
-        columnLabels["{Total}"] = 0;
-        rowLabels["{Total}"] = 0;
+        //columnLabels["{Total}"] = 0;
+        //rowLabels["{Total}"] = 0;
         
-        var columnCount = Object.keys(columnLabels).length;
-        var rowCount = Object.keys(rowLabels).length;
+        // collect data
+        var results = {};
+        var grandTotal = 0;
+        var stories = domain.projectData.surveyResults.allStories;
+        for (var index in stories) {
+            var story = stories[index];
+            var xValue = correctForUnanswered(xAxisQuestion, story[xAxisQuestion.id]);
+            var yValue = correctForUnanswered(yAxisQuestion, story[yAxisQuestion.id]);
+            
+            var plotItem;
+            var xHasCheckboxes = lang.isObject(xValue);
+            var yHasCheckboxes = lang.isObject(yValue);
+            // fast path
+            if (!xHasCheckboxes && !yHasCheckboxes) {
+                incrementMapSlot(results, JSON.stringify({x: xValue, y: yValue}));
+                incrementMapSlot(results, JSON.stringify({x: xValue}));
+                incrementMapSlot(results, JSON.stringify({y: yValue}));
+                grandTotal++;
+            } else {
+                // one or both may be checkboxes, so do a loop for each and create plot items for every combination         
+                var key;
+                var xValues = [];
+                var yValues = [];
+                if (xHasCheckboxes) {
+                    // checkboxes
+                    for (key in xValue) {
+                        if (xValue[key]) xValues.push(key);
+                    }
+                } else {
+                    xValues.push(xValue);                
+                }
+                if (yHasCheckboxes) {
+                    // checkboxes
+                    for (key in yValue) {
+                        if (yValue[key]) yValues.push(key);
+                    }
+                } else {
+                    yValues.push(yValue);                
+                }
+                for (var xIndex in xValues) {
+                    for (var yIndex in yValues) {
+                        // TODO: Need to include stories...
+                        incrementMapSlot(results, JSON.stringify({x: xValues[xIndex], y: yValues[yIndex]}));
+                        incrementMapSlot(results, JSON.stringify({x: xValues[xIndex]}));
+                        incrementMapSlot(results, JSON.stringify({y: yValues[yIndex]}));
+                        grandTotal++;
+                    }
+                }
+            }
+        }
+        
+        var columnLabelsArray = [];
+        for (var columnName in columnLabels) {
+            columnLabelsArray.push(columnName);
+        }
+        var columnCount = columnLabelsArray.length;
+        
+        var rowLabelsArray = [];
+        for (var rowName in rowLabels) {
+            rowLabelsArray.push(rowName);
+        }
+        var rowCount = rowLabelsArray.length;
+        
+        var chartDiv = domConstruct.create("div", {style: "width: 500px; height: 500px;"}, "chartDiv");
         
         var table = new TableContainer({
             cols: columnCount + 2,
@@ -402,7 +464,7 @@ define([
             customClass: "contingencyTable",
             style: "width: 98%;",
             spacing: 10
-        }, "chartDiv");
+        }, chartDiv);
         
         
         var content;
@@ -413,30 +475,32 @@ define([
         table.addChild(content);
         
         for (column = 0; column < columnCount; column++) {
-            content = new ContentPane({content:"COLUMN TITLE", colspan: 1});
+            content = new ContentPane({content: "<i>" + columnLabelsArray[column] + "</i>", colspan: 1});
             table.addChild(content);
         }
-        content = new ContentPane({content: "ROW TOTAL", colspan: 1});
+        content = new ContentPane({content: "<i>[Row Total]</i>", colspan: 1});
         table.addChild(content);
         
         for (row = 0; row < rowCount; row++) {
-            content = new ContentPane({content: "ROW TITLE", colspan: 1});
+            content = new ContentPane({content: "<i>" + rowLabelsArray[row] + "</i>", colspan: 1});
             table.addChild(content);
             
             for (column = 0; column < columnCount; column++) {
-                content = new ContentPane({content: "<i>" + column + "," + row + "</i>", colspan: 1});
+                var cellValue = results[JSON.stringify({x: columnLabelsArray[column], y: rowLabelsArray[row]})];
+                if (!cellValue) cellValue = 0;
+                content = new ContentPane({content: "<b>" + cellValue + "</b>", colspan: 1});
                 table.addChild(content);
             }
-            content = new ContentPane({content: "row total", "colspan": 1});
+            content = new ContentPane({content: "" + results[JSON.stringify({y: rowLabelsArray[row]})], "colspan": 1});
             table.addChild(content);
         }
-        content = new ContentPane({content: "COLUMN TOTAL", colspan: 1});
+        content = new ContentPane({content: "<i>[Column Total]</i>", colspan: 1});
         table.addChild(content);
         for (column = 0; column < columnCount; column++) {
-            content = new ContentPane({content:"column total", colspan: 1});
+            content = new ContentPane({content: "" + results[JSON.stringify({x: columnLabelsArray[column]})], colspan: 1});
             table.addChild(content);
         }
-        content = new ContentPane({content: "grand total", colspan: 1});
+        content = new ContentPane({content: "" + grandTotal, colspan: 1});
         table.addChild(content);
         
         // This is appears to be superflous as startup is called when table added to pagePane (assuming it is connected to DOM hierarchy?)
