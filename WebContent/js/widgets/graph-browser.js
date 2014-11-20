@@ -35,6 +35,9 @@ define([
     Scatter,
     TableContainer
 ){
+    
+    // TODO: Need to be able to associate related stories with everything on screen so can browse them when clicked
+    
     var unansweredKey = "{Unanswered}";
         
     function correctForUnanswered(question, value) {
@@ -245,7 +248,9 @@ define([
         chart.render(); 
     }
     
-    function histogramChart(mainChartDiv, question) {
+    // choiceQuestion and option may be undefined if this is just a simple histogram for all values
+    function histogramChart(mainChartDiv, question, choiceQuestion, choice) {
+        // console.log("mainChartDiv, question", mainChartDiv, question);
         
         // TODO: Statistics
         
@@ -257,6 +262,11 @@ define([
         for (var storyIndex in stories) {
             var story = stories[storyIndex];
             var xValue = correctForUnanswered(question, story[question.id]);
+            if (choiceQuestion) {
+                // Only count results where the choice matches
+                var choiceValue = correctForUnanswered(choiceQuestion, story[choiceQuestion.id]);
+                if (choiceValue !== choice) continue;
+            }
             incrementMapSlot(results, xValue);
         }
         
@@ -279,6 +289,7 @@ define([
         var chartDiv = domConstruct.create("div", {style: "width: 500px; height: 500px;"}, "chartDiv");
         
         var chartTitle = "" + question.id;
+        if (choiceQuestion) chartTitle = chartTitle + " for choice: " + choice;
         
         var chart = new Chart(chartDiv, {
             title: chartTitle,
@@ -510,6 +521,26 @@ define([
         table.startup();
     }
     
+    function multipleHistograms(chartDiv, choiceQuestion, scaleQuestion) {
+        var options = [];
+        var index;
+        options.push(unansweredKey);
+        if (choiceQuestion.type === "boolean" || choiceQuestion.type === "checkboxes") {
+            options.push("No");
+            options.push("Yes");
+        } else if (choiceQuestion.options) {
+            for (index in choiceQuestion.options) {
+                options.push(choiceQuestion.options[index]);
+            }
+        }
+        // TODO: Could push extra options based on actual data choices (in case question changed at some point)
+        
+        for (index in options) {
+            var option = options[index];
+            histogramChart(chartDiv, scaleQuestion, choiceQuestion, option);
+        }
+    }
+    
     
     function updateGraph(graphResultsPane) {
         console.log("updateGraph", graphResultsPane);
@@ -564,11 +595,13 @@ define([
             contingencyTable(chartDiv, xAxisQuestion, yAxisQuestion);
         } else if (xType === "choice" && yType === "scale") {
             console.log("plot choice: Multiple histograms");
+            multipleHistograms(chartDiv, xAxisQuestion, yAxisQuestion);
         } else if (xType === "scale" && yType === null) {
             console.log("plot choice: Histogram");
             histogramChart(chartDiv, xAxisQuestion);
         } else if (xType === "scale" && yType === "choice") {
             console.log("plot choice: Multiple histograms");
+            multipleHistograms(chartDiv, yAxisQuestion, xAxisQuestion);
         } else if (xType === "scale" && yType === "scale") {
             console.log("plot choice: Scatter plot");
             scatterPlot(chartDiv, xAxisQuestion, yAxisQuestion);
