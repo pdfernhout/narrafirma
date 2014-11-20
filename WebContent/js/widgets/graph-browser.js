@@ -3,8 +3,10 @@
 define([
     "dojo/_base/array",
     "js/domain",
+    "dojo/dom",
     "dojo/dom-construct",
     "dojo/_base/lang",
+    // "dijit/registry",
     "js/translate",
     "js/utility",
     "./widgetSupport",
@@ -20,8 +22,10 @@ define([
 ], function(
     array,
     domain,
+    dom,
     domConstruct,
     lang,
+    // registry,
     translate,
     utility,
     widgetSupport,
@@ -294,13 +298,13 @@ define([
         
         // console.log("plot items", plotItems);
         
-        var extraStyle = "";
-        if (choiceQuestion) extraStyle = " float: left;"; // " display: inline;";
+        var style = "width: 500px; height: 500px;";
+        if (choiceQuestion) style = "width: 200px; height: 200px; float: left;"; // " display: inline;";
 
-        var chartDiv = domConstruct.create("div", {style: "width: 500px; height: 500px;" + extraStyle}, "chartDiv");
+        var chartDiv = domConstruct.create("div", {style: style}, "chartDiv");
         
         var chartTitle = "" + scaleQuestion.id;
-        if (choiceQuestion) chartTitle = chartTitle + " for choice: " + choice;
+        if (choiceQuestion) chartTitle = "" + choice;
         
         var chart = new Chart(chartDiv, {
             title: chartTitle,
@@ -321,6 +325,39 @@ define([
         chart.addSeries("Series 1", plotItems);
         
         chart.render(); 
+    }
+    
+    function multipleHistograms(mainChartDiv, choiceQuestion, scaleQuestion) {
+        var options = [];
+        var index;
+        if (choiceQuestion.type !== "checkbox" && choiceQuestion.type !== "checkboxes") {
+            options.push(unansweredKey);
+        }
+        if (choiceQuestion.type === "boolean" || choiceQuestion.type === "checkbox") {
+            options.push("no");
+            options.push("yes");
+        } else if (choiceQuestion.options) {
+            for (index in choiceQuestion.options) {
+                options.push(choiceQuestion.options[index]);
+            }
+        }
+        // TODO: Could push extra options based on actual data choices (in case question changed at some point)
+        
+        var title = "Histograms for: " + scaleQuestion.id + " vs. ...";
+        // var content = new ContentPane({content: title, style: "text-align: center;"});
+        content = domConstruct.toDom('<span style="text-align: center;"><b>' + title + '</b></span>')
+        var chartDiv = dom.byId("chartDiv");
+        chartDiv.appendChild(content);
+        
+        domConstruct.create("br", {}, "chartDiv");
+        
+        for (index in options) {
+            var option = options[index];
+            histogramChart(mainChartDiv, scaleQuestion, choiceQuestion, option);
+        }
+        
+        // End the float
+        domConstruct.create("br", {style: "clear: left;"}, "chartDiv");
     }
     
     function scatterPlot(mainChartDiv, xAxisQuestion, yAxisQuestion) {
@@ -404,7 +441,7 @@ define([
         chart.render(); 
     }
     
-    function contingencyTable(enclosingChartDiv, xAxisQuestion, yAxisQuestion) {
+    function contingencyTable(mainChartDiv, xAxisQuestion, yAxisQuestion) {
         var columnLabels = {};
         var rowLabels = {};
         
@@ -531,31 +568,6 @@ define([
         table.startup();
     }
     
-    function multipleHistograms(chartDiv, choiceQuestion, scaleQuestion) {
-        var options = [];
-        var index;
-        if (choiceQuestion.type !== "checkbox" && choiceQuestion.type !== "checkboxes") {
-            options.push(unansweredKey);
-        }
-        if (choiceQuestion.type === "boolean" || choiceQuestion.type === "checkbox") {
-            options.push("no");
-            options.push("yes");
-        } else if (choiceQuestion.options) {
-            for (index in choiceQuestion.options) {
-                options.push(choiceQuestion.options[index]);
-            }
-        }
-        // TODO: Could push extra options based on actual data choices (in case question changed at some point)
-        
-        for (index in options) {
-            var option = options[index];
-            histogramChart(chartDiv, scaleQuestion, choiceQuestion, option);
-        }
-        
-        // End the float
-        domConstruct.create("div", {style: "clear: left;"}, "chartDiv");
-    }
-    
     
     function updateGraph(graphResultsPane) {
         console.log("updateGraph", graphResultsPane);
@@ -604,22 +616,22 @@ define([
         if (xType === "choice" && yType === null) {
             console.log("plot choice: Bar graph");
             console.log("barGraph", chartDiv, xAxisQuestion);
-            barChart(chartDiv, xAxisQuestion);
+            barChart(graphResultsPane, xAxisQuestion);
         } else if (xType === "choice" && yType === "choice") {
             console.log("plot choice: Contingency table");
-            contingencyTable(chartDiv, xAxisQuestion, yAxisQuestion);
+            contingencyTable(graphResultsPane, xAxisQuestion, yAxisQuestion);
         } else if (xType === "choice" && yType === "scale") {
             console.log("plot choice: Multiple histograms");
-            multipleHistograms(chartDiv, xAxisQuestion, yAxisQuestion);
+            multipleHistograms(graphResultsPane, xAxisQuestion, yAxisQuestion);
         } else if (xType === "scale" && yType === null) {
             console.log("plot choice: Histogram");
-            histogramChart(chartDiv, xAxisQuestion);
+            histogramChart(graphResultsPane, xAxisQuestion);
         } else if (xType === "scale" && yType === "choice") {
             console.log("plot choice: Multiple histograms");
-            multipleHistograms(chartDiv, yAxisQuestion, xAxisQuestion);
+            multipleHistograms(graphResultsPane, yAxisQuestion, xAxisQuestion);
         } else if (xType === "scale" && yType === "scale") {
             console.log("plot choice: Scatter plot");
-            scatterPlot(chartDiv, xAxisQuestion, yAxisQuestion);
+            scatterPlot(graphResultsPane, xAxisQuestion, yAxisQuestion);
         } else {
             console.log("ERROR: Unexpected graph type");
             alert("ERROR: Unexpected graph type");
@@ -737,7 +749,7 @@ define([
         pane.appendChild(document.createElement("br"));
         
         // TODO: Translate "Survey Graph"
-        pane.appendChild(domConstruct.toDom('Survey Graph<br><div id="surveyGraphDiv"></div><div id="chartDiv" style="width: 550px; height: 550px; margin: 5px auto 0px auto;"></div>'));
+        pane.appendChild(domConstruct.toDom('<br><div id="surveyGraphDiv"></div><div id="chartDiv" style="width: 550px; height: 550px; margin: 5px auto 0px auto;"></div>'));
         contentPane.addChild(graphResultsPane);
         
         graphResultsPane.startup();
