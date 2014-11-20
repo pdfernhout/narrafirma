@@ -383,7 +383,7 @@ define([
         chart.render(); 
     }
     
-    function contingencyTable(chartDiv, xAxisQuestion, yAxisQuestion) {
+    function contingencyTable(enclosingChartDiv, xAxisQuestion, yAxisQuestion) {
         var columnLabels = {};
         var rowLabels = {};
         
@@ -471,7 +471,10 @@ define([
         var row;
         var column;
         
-        content = new ContentPane({content:"", colspan: 1});
+        content = new ContentPane({content: "&lt;- <b>" + xAxisQuestion.id + "</b> -&gt;", colspan: columnCount + 2, style: "text-align: center;"});
+        table.addChild(content);
+        
+        content = new ContentPane({content: "V <b>" + yAxisQuestion.id + "</b> V", colspan: 1});
         table.addChild(content);
         
         for (column = 0; column < columnCount; column++) {
@@ -666,14 +669,6 @@ define([
             title: "Graph results"
         });
         
-        var pane = graphResultsPane.containerNode;
-        var takeSurveyButton = utility.newButton("updateGraph", null, pane, lang.partial(updateGraph, graphResultsPane));
-        pane.appendChild(document.createElement("br"));
-        
-        // TODO: Translate "Survey Graph"
-        pane.appendChild(domConstruct.toDom('Survey Graph<br><div id="surveyGraphDiv"></div><div id="chartDiv" style="width: 550px; height: 550px; margin: 5px auto 0px auto;"></div>'));
-        contentPane.addChild(graphResultsPane);
-        
         // TODO: Update these as they change...
         var questions = domain.collectAllSurveyQuestions();
         
@@ -684,6 +679,14 @@ define([
         
         var yAxisSelect = utility.newSelect(id + "_yAxis_question", optionsForAllQuestions, null, contentPane);
         yAxisSelect.set("style", "width: 48%; max-width: 40%");
+        
+        var pane = graphResultsPane.containerNode;
+        var takeSurveyButton = utility.newButton("updateGraph", null, pane, lang.partial(updateGraph, graphResultsPane));
+        pane.appendChild(document.createElement("br"));
+        
+        // TODO: Translate "Survey Graph"
+        pane.appendChild(domConstruct.toDom('Survey Graph<br><div id="surveyGraphDiv"></div><div id="chartDiv" style="width: 550px; height: 550px; margin: 5px auto 0px auto;"></div>'));
+        contentPane.addChild(graphResultsPane);
         
         graphResultsPane.startup();
         
