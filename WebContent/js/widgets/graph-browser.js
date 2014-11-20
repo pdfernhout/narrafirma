@@ -677,6 +677,10 @@ define([
         var xAxisSelect = utility.newSelect(id + "_xAxis_question", optionsForAllQuestions, null, contentPane);
         xAxisSelect.set("style", "width: 48%; max-width: 40%");
         
+        // TODO: Translate
+        var content = new ContentPane({content: " versus ", style: "display: inline;"});
+        contentPane.addChild(content);
+        
         var yAxisSelect = utility.newSelect(id + "_yAxis_question", optionsForAllQuestions, null, contentPane);
         yAxisSelect.set("style", "width: 48%; max-width: 40%");
         
