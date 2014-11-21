@@ -43,6 +43,9 @@ define([
     // TODO: Need to be able to associate related stories with everything on screen so can browse them when clicked
     
     var unansweredKey = "{Unanswered}";
+    var singleChartStyle = "width: 800px; height: 600px;";
+    var multipleChartStyle = "width: 200px; height: 150; float: left;";
+    var chartEnclosureStyle = "width: 850px; height: 650px; margin: 5px auto 0px auto;";
         
     function correctForUnanswered(question, value) {
         if (question.type === "checkbox" && !value) return "no";
@@ -227,7 +230,7 @@ define([
         
         console.log("plot items", plotItems);
 
-        var chartDiv = domConstruct.create("div", {style: "width: 500px; height: 500px;"}, "chartDiv");
+        var chartDiv = domConstruct.create("div", {style: singleChartStyle}, "chartDiv");
         
         var chartTitle = "" + question.id;
         
@@ -271,12 +274,10 @@ define([
                 var choiceValue = correctForUnanswered(choiceQuestion, story[choiceQuestion.id]);
                 var skip = false;
                 if (choiceQuestion.type === "checkboxes") {
-                    console.log("choiceValue[choice]", choiceValue[choice]);
                     if (!choiceValue[choice]) skip = true;
                 } else {
                     if (choiceValue !== choice) skip = true;
                 }
-                console.log("choice choiceValue skip", choice, choiceValue, skip);
                 if (skip) continue;
             }
             incrementMapSlot(results, xValue);
@@ -298,8 +299,8 @@ define([
         
         // console.log("plot items", plotItems);
         
-        var style = "width: 500px; height: 500px;";
-        if (choiceQuestion) style = "width: 200px; height: 200px; float: left;"; // " display: inline;";
+        var style = singleChartStyle;
+        if (choiceQuestion) style = multipleChartStyle;
 
         var chartDiv = domConstruct.create("div", {style: style}, "chartDiv");
         
@@ -343,9 +344,9 @@ define([
         }
         // TODO: Could push extra options based on actual data choices (in case question changed at some point)
         
-        var title = "Histograms for: " + scaleQuestion.id + " vs. ...";
+        var title = "" + scaleQuestion.id + " vs. " + choiceQuestion.id + " ...";
         // var content = new ContentPane({content: title, style: "text-align: center;"});
-        content = domConstruct.toDom('<span style="text-align: center;"><b>' + title + '</b></span>')
+        var content = domConstruct.toDom('<span style="text-align: center;"><b>' + title + '</b></span>');
         var chartDiv = dom.byId("chartDiv");
         chartDiv.appendChild(content);
         
@@ -377,7 +378,7 @@ define([
         }
         // console.log("plot items", plotItems);
 
-        var chartDiv = domConstruct.create("div", {style: "width: 500px; height: 500px;"}, "chartDiv");
+        var chartDiv = domConstruct.create("div", {style: singleChartStyle}, "chartDiv");
         
         var chartTitle = "" + xAxisQuestion.id + " vs. " + yAxisQuestion.id;
         
@@ -514,7 +515,7 @@ define([
         }
         var rowCount = rowLabelsArray.length;
         
-        var chartDiv = domConstruct.create("div", {style: "width: 500px; height: 500px;"}, "chartDiv");
+        var chartDiv = domConstruct.create("div", {style: singleChartStyle}, "chartDiv");
         
         var table = new TableContainer({
             cols: columnCount + 2,
@@ -689,7 +690,7 @@ define([
         
 
         
-        var chart1Div = domConstruct.create("div", {style: "width: 500px; height: 500px;"}, "chartDiv");
+        var chart1Div = domConstruct.create("div", {style: singleChartStyle}, "chartDiv");
         
         var chart1Title = "" + xAxisQuestionID + " vs. " + yAxisQuestionID;
         
@@ -749,7 +750,7 @@ define([
         pane.appendChild(document.createElement("br"));
         
         // TODO: Translate "Survey Graph"
-        pane.appendChild(domConstruct.toDom('<br><div id="surveyGraphDiv"></div><div id="chartDiv" style="width: 550px; height: 550px; margin: 5px auto 0px auto;"></div>'));
+        pane.appendChild(domConstruct.toDom('<br><div id="surveyGraphDiv"></div><div id="chartDiv" style="' + chartEnclosureStyle + '"></div>'));
         contentPane.addChild(graphResultsPane);
         
         graphResultsPane.startup();
