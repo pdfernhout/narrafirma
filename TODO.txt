@@ -32,8 +32,9 @@ Support storyThemer -- a widget where people look at each story, give it 1-3 the
 
 Support graphBrowser "add to observation" button
 Support graphBrowser contingency table with statistical results
-Support standard deviation and mean for histograms
-Support common maximum for multiple histograms
+Support graphBrowser standard deviation and mean for histograms
+Support graphBrowser common maximum for multiple histograms
+Support graphBrowser displaying related stories for visible data point or bar or line
 
 Support trendsReport -- shows text and graphs in report based on top differences in statistical tests,  has "add to observation" button
 
