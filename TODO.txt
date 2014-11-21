@@ -31,12 +31,9 @@ Grid widget option specification to control button availability
 Support storyThemer -- a widget where people look at each story, give it 1-3 themes, then merge the themes into smaller numbers of themes
 
 Support graphBrowser "add to observation" button
-Support graphBrowser scatter graph for slide vs. slider
-Support graphBrowser contingency table for choice vs. choice
-Support graphBrowser multiple histograms for scale vs. slider (or stacked histogram)
-Support graphBrowser bar graph for choice alone
-Support graphBrowser histogram for slider alone
 Support graphBrowser contingency table with statistical results
+Support standard deviation and mean for histograms
+Support common maximum for multiple histograms
 
 Support trendsReport -- shows text and graphs in report based on top differences in statistical tests,  has "add to observation" button
 
@@ -205,6 +202,11 @@ DONE Support all page types: normal (no specification), popup, questionsTable, r
 DONE Fix survey entry to prevent missing or duplicate question ids (done in domain for now)
 DONE Better error messages when loading project or survey results and not available on the server
 DONE Investigate double creation of survey data during test on 2014-11-17 on cfk machine for first survey created
+DONE Support graphBrowser scatter graph for slide vs. slider
+DONE Support graphBrowser contingency table for choice vs. choice
+DONE Support graphBrowser multiple histograms for scale vs. slider (or stacked histogram)
+DONE Support graphBrowser bar graph for choice alone
+DONE Support graphBrowser histogram for slider alone
 
 ======= CYNTHIA
 
