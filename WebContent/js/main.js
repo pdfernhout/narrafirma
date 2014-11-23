@@ -78,11 +78,17 @@ require([
         
         // Reload page looking at...
         showPage(currentPageID, "forceRefresh");
+        
+        alert("Done loading...");
     }
     
     function saveClicked(event) {
         console.log("save clicked", domain.projectData.projectAnswers);
-        storage.storeProjectAnswersVersion(domain.projectData.projectAnswers);
+        storage.storeProjectAnswersVersion(domain.projectData.projectAnswers, saveFinished);
+    }
+    
+    function saveFinished(newVersionURI, status) {
+        alert("Save completed to file:\n" + newVersionURI);
     }
     
     function urlHashFragmentChanged(newHash) {

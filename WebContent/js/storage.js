@@ -24,7 +24,7 @@ define([
     var surveyResultExtension = "PNIWorkbookSurveyResult.pce.json";
     var surveyResultsIndex = null;
     
-    function storeProjectAnswersVersion(projectAnswers) {
+    function storeProjectAnswersVersion(projectAnswers, callbackWhenDone) {
         var timestamp = new Date().toISOString();
         var version = {"_pointrelIndexing": [projectAnswersVersionHyperdocumentUUID], "timestamp": timestamp, "userID": userID, "body": projectAnswers};
         console.log("version:", version);
@@ -34,6 +34,7 @@ define([
         var newVersionURI = archiver.resource_add(versionAsString, projectAnswersVersionExtension, function(error, status) {
             if (error) { alert("could not write new version: " + JSON.stringify(status)); return; }
             console.log("wrote newVersionURI:", newVersionURI);
+            callbackWhenDone(newVersionURI, status);
         });
     }
     
