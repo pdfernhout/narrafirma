@@ -63,8 +63,10 @@ define([
         // The next line is needed to get rid of duplicate IDs for next time the form is opened:
         itemContentPane.set("style", "display: none");
         form.destroyRecursive();
-        grid.formType = null;
         grid.form = null;
+        grid.formType = null;
+        grid.formItemToDisplay = null;
+        grid.formItemToAdd = null;
         updateGridButtonsForSelectionAndForm(grid);
     }
 
@@ -129,6 +131,7 @@ define([
         
         grid.form = form;
         grid.formType = "add";
+        grid.formItemToAdd = statefulItem;
         
         itemContentPane.addChild(form);
         
@@ -141,7 +144,13 @@ define([
     }
     
     function viewButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
-        console.log("view button pressed", id, event);
+        console.log("view button pressed or double click", id, event);
+        
+        var selection = null;
+        
+        for (var theSelection in grid.selection) {
+            selection = theSelection;
+        }
         
         if (grid.form) { // itemContentPane.domNode.childNodes.length > 0) {
             // Already have a panel displayed for either view or add
@@ -151,15 +160,9 @@ define([
                 alert("Add already in progress; please cancel add form first");
                 return;
             }
+            // Don't change anything if already viewing item
+            if (selection === grid.formItemToDisplay) return;
             hideAndDestroyForm(itemContentPane, grid.form, grid);
-        }
-        
-        // TODO: Should only do for one of these... Need to break...
-        // TODO: Need to search on unique field...
-        var selection = null;
-        
-        for (var theSelection in grid.selection) {
-            selection = theSelection;
         }
         
         if (!selection) {
@@ -188,7 +191,7 @@ define([
         }
         
         console.log("item to display", itemToDisplay);
-        
+                
         var form = new Form(); 
         form.set("style", "width: 800px; height 800px; overflow: auto;");
             
@@ -208,7 +211,9 @@ define([
         });
         */
         
-        popupPageDefinition.buildPage(widgetBuilder, form, new Stateful(itemToDisplay));
+        var statefulItem = new Stateful(itemToDisplay)
+        
+        popupPageDefinition.buildPage(widgetBuilder, form, statefulItem);
 
         /* TODO: Some way to disable editing?
         array.forEach(popupPageDefinition.questions, function (question) {
@@ -231,6 +236,7 @@ define([
         
         grid.form = form;
         grid.formType = "view";
+        grid.formItemToDisplay = itemToDisplay;
         
         itemContentPane.addChild(form);
         
@@ -359,14 +365,22 @@ define([
         grid.buttons = buttons;
         grid.selectedCount = 0;
 
-        grid.on("dgrid-select", function(e) {
-            grid.selectedCount += e.rows.length;
+        grid.on("dgrid-select", function(event) {
+            console.log("dgrid-select", event);
+            grid.selectedCount += event.rows.length;
             updateGridButtonsForSelectionAndForm(grid);
+            
+            // TODO: Track first selected item if view open -- this does not work as a deselect called before select always
+            // if (grid.formType === "view") viewButtonClicked(id, grid, dataStore, popupPageDefinition, itemContentPane, event);
         });
         
-        grid.on("dgrid-deselect", function(e) {
-            grid.selectedCount -= e.rows.length;
+        grid.on("dgrid-deselect", function(event) {
+            console.log("dgrid-deselect", event);
+            grid.selectedCount -= event.rows.length;
             updateGridButtonsForSelectionAndForm(grid);
+            
+            // TODO: Track first selected item if view open -- this does not work as a deselect called before select always
+            // if (grid.formType === "view") viewButtonClicked(id, grid, dataStore, popupPageDefinition, itemContentPane, event);
         });
                 
         if (configuration.addButton) {
