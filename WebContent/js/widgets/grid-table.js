@@ -198,20 +198,8 @@ define([
         clearGridsKludge();
                 
         console.log("grid", grid, grid.selection);
-
-        /*
-        console.log("selection", selection);
-        var matches = store.query({id: selection});
-        console.log("matches", matches);
-        // Should only be one match
-        var itemToDisplay = null;
-        array.forEach(matches, function (item) {
-            console.log("item", item);
-            itemToDisplay = item;
-        });
-        */
         
-        var statefulItem = new Stateful(itemToDisplay)
+        var statefulItem = new Stateful(itemToDisplay);
         
         popupPageDefinition.buildPage(widgetBuilder, form, statefulItem);
 
