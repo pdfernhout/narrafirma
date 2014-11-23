@@ -246,7 +246,9 @@ define([
         return JSON.stringify(item);
     }
     
-    function insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, includeAddButton, includeAllFields) {
+    // var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
+    
+    function insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, configuration) {
         // Grid with list of objects
         console.log("insertGridTableBasic", id, dataStore);
         
@@ -261,7 +263,7 @@ define([
         // TODO: FIX ME -- no longer have questions -- either add them back or find another approach...
         array.forEach(popupPageDefinition.questions, function (question) {
             var includeField = question.isGridColumn;
-            if (includeAllFields) {
+            if (configuration.includeAllFields) {
                 // TODO: improve this
                 if (question.type !== "label" && question.type !== "header") includeField = true;
             }
@@ -309,15 +311,8 @@ define([
         var itemContentPane = new ContentPane({
         });
         
-        // Bind first two arguments to function that will be callback receiving one extra argument
-        // See: http://dojotoolkit.org/reference-guide/1.7/dojo/partial.html
-        var viewButtonClickedPartial = lang.partial(viewButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane);
-        var viewButtonID = id + "view";
-        var viewButton = utility.newButton(viewButtonID, "button_View", pane, viewButtonClickedPartial);
-
         var selected = 0;
-        viewButton.set("disabled", true);
-        
+
         grid.on("dgrid-select", function(e){
             selected += e.rows.length;
             viewButton.set("disabled", !selected);
@@ -328,10 +323,19 @@ define([
             viewButton.set("disabled", !selected);
         });
         
-        // Support double click as view
-        grid.on("dblclick", viewButtonClickedPartial);
-        
-        if (includeAddButton) {
+        if (configuration.viewButton) {
+            // Bind first two arguments to function that will be callback receiving one extra argument
+            // See: http://dojotoolkit.org/reference-guide/1.7/dojo/partial.html
+            var viewButtonClickedPartial = lang.partial(viewButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane);
+            var viewButtonID = id + "view";
+            var viewButton = utility.newButton(viewButtonID, "button_View", pane, viewButtonClickedPartial);
+            viewButton.set("disabled", true);
+            // TODO: Should there be an option of double click as edit?
+            // Support double click as view
+            grid.on("dblclick", viewButtonClickedPartial);
+        }
+
+        if (configuration.addButton) {
             var addButton = utility.newButton(id + "add", "button_Add", pane, lang.partial(addButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
         }
         

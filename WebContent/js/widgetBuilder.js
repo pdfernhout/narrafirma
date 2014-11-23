@@ -204,7 +204,8 @@ define([
             // idProperty: "uniqueID",
         });
         
-        return GridTable.insertGridTableBasic(questionContentPane, id, dataStore, popupPageDefinition, true);
+        var configuration = {viewButton: true, addButton: true, includeAllFields: false};
+        return GridTable.insertGridTableBasic(questionContentPane, id, dataStore, popupPageDefinition, configuration);
     }
     
     function add_select(contentPane, model, id, questionOptions, addNoSelectionOption) {

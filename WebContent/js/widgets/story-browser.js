@@ -336,7 +336,8 @@ define([
         
         // console.log("insertStoryBrowser middle 3", id);
         
-        storyList = widgetGridTable.insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, false, true);
+        var configuration = {viewButton: true, addButton: false, includeAllFields: true};
+        storyList = widgetGridTable.insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, configuration);
         
         console.log("insertStoryBrowser finished");
     }
