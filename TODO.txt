@@ -8,8 +8,8 @@ PRIORITY:
 - print story form
 - styling of nested box in grid
 
-Fix how survey data is collected and stored to seperate multiple stories from participant information
-Improve take survey page like with support for seperate pages
+Fix how survey data is collected and stored to separate multiple stories from participant information
+Improve take survey page like with support for separate pages
 
 Some sort of continue button at bottom of page to progress through steps
 Validation of page data as progress through a step
@@ -75,7 +75,7 @@ Think more about catalysis part
 
 Better and more consistent approach for translation selections for selects, checkboxes, radiobuttons, and maybe other types
 Translate report answers as needed for those types like selections
-Tranlation support for survey as distinct from application so two do not potentially collide
+Translation support for survey as distinct from application so two do not potentially collide
 
 Readonly version of checkboxes and radiobutton widgets, used by grid
 
@@ -86,8 +86,6 @@ Update story browser when load latest stories from server (without need to press
 Improve loading and saving of project so can look at versions
 Confirm reloading or closing page if have unsaved data
 Autosave, perhaps based on time or based on changing pages
-Provide GUI feedback when saving project to server
-Provide GUI feedback when loading project from server
 
 Improve feedback when there are no project versions or survey results; maybe distinguish between an error and nothing being saved yet
 
@@ -208,6 +206,8 @@ DONE Support graphBrowser contingency table for choice vs. choice
 DONE Support graphBrowser multiple histograms for scale vs. slider (or stacked histogram)
 DONE Support graphBrowser bar graph for choice alone
 DONE Support graphBrowser histogram for slider alone
+DONE Provide GUI feedback when saving project to server
+DONE Provide GUI feedback when loading project from server
 
 ======= CYNTHIA
 
@@ -277,6 +277,8 @@ Improve startup wait progress
 
 Generate PDF reports
 Generate CSV output
+
+Improve save/load feedback
 
 ==== Might not do
 
