@@ -2,10 +2,16 @@
 
 define([
     "dojo/_base/array",
-    "../translate"
+    //"dojo/aspect",
+    "../translate",
+    "dijit/ConfirmDialog"
+    //"dojo/Deferred"
 ], function(
     array,
-    translate
+    //aspect,
+    translate,
+    ConfirmDialog
+    //Deferred
 ){
     function buildOptions(id, choices, optionsString){
         var options = [];
@@ -43,8 +49,58 @@ define([
         return questionOptions;
     }
     
+    // TODO: Translate: Change to taking a translate ID
+    // TODO: Buttons don't show up if window to narrow for dialog
+    function confirm(message, okCallback, cancelCallback) { 
+        var dialog = new ConfirmDialog({
+            title: "Confirm",
+            content: message,
+            style: "width: 300px",
+            onExecute: okCallback,
+            onCancel: cancelCallback
+        });
+        dialog.show();
+    }
+    
+    // From: http://stackoverflow.com/questions/10401512/dojo-dialog-with-confirmation-button/10405938#10405938
+    // Usage: widgetSupport.confirm().then(function() {console.log("OK chosen")});
+    // Doen not work -- produces strange exception
+    /*
+    function confirm_brokenGeneratesExceptionTrace(kwArgs) {
+        var confirmDialog = new ConfirmDialog(kwArgs);
+        confirmDialog.startup();
+
+        var deferred = new Deferred();
+        var signals = [];
+
+        var destroyDialog = function() {
+            array.forEach(signals, function(signal) {
+                signal.remove();
+            });
+            confirmDialog.destroyRecursive();
+        };
+
+        var signal = aspect.after(confirmDialog, "onExecute", function() {
+            destroyDialog();
+            deferred.resolve('MessageBox.OK');
+        });
+        signals.push(signal);
+
+        signal = aspect.after(confirmDialog, "onCancel", function() {
+            destroyDialog();   
+            deferred.reject('MessageBox.Cancel');            
+        });
+        signals.push(signal);
+
+        confirmDialog.show();
+        return deferred;
+    }
+    */
+    
     return {
         "buildOptions": buildOptions,
-        "optionsForAllQuestions": optionsForAllQuestions
+        "optionsForAllQuestions": optionsForAllQuestions,
+        "confirm": confirm
     };
+   
 });
