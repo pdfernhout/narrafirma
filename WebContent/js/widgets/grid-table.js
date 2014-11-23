@@ -11,6 +11,7 @@ define([
     "js/translate",
     "js/utility",
     "js/widgetBuilder",
+    "./widgetSupport",
     "dgrid/extensions/ColumnResizer",
     "dijit/layout/ContentPane",
     "dgrid/extensions/DijitRegistry",
@@ -31,6 +32,7 @@ define([
     translate,
     utility,
     widgetBuilder,
+    widgetSupport,
     ColumnResizer,
     ContentPane,
     DijitRegistry,
@@ -239,6 +241,12 @@ define([
     
     function removeButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
         console.log("remove button pressed", id, event);
+        // TODO: translate
+        widgetSupport.confirm("Are you sure you with to delete the selected item?", function () {
+            console.log("chose OK");
+        }, function () {
+            console.log("chose Cancel");
+        });
     }
     
     function editButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
