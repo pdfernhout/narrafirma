@@ -65,6 +65,7 @@ define([
         form.destroyRecursive();
         grid.formType = null;
         grid.form = null;
+        updateGridButtonsForSelectionAndForm(grid);
     }
 
     // TODO: Maybe rethink how unique item IDs work? Setting to start at 1000 because of test data created in story browser
@@ -135,6 +136,8 @@ define([
         
         form.startup();
         resizeGridsKludge();
+        
+        updateGridButtonsForSelectionAndForm(grid);
     }
     
     function viewButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
@@ -235,7 +238,9 @@ define([
         
         form.startup();
         resizeGridsKludge();
-        console.log("done with view button clicked");
+        
+        updateGridButtonsForSelectionAndForm(grid);
+        // console.log("done with view button clicked");
     }
     
     function removeButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
@@ -265,9 +270,16 @@ define([
         return JSON.stringify(item);
     }
     
-    function updateButtonsForSelection(buttons, selected) {
+    function updateGridButtonsForSelectionAndForm(grid) {
+        var buttons = grid.buttons;
+        var selected = grid.selectedCount;
+        
+        var isAdding = (grid.formType === "add");
+        if (buttons.addButton) buttons.addButton.set("disabled", isAdding);
+        
+        // disable other buttons if in the middle of adding a new item or if no selection; otherwise enable
+        if (isAdding) selected = false;
         if (buttons.viewButton) buttons.viewButton.set("disabled", !selected);
-        // if (buttons.addButton) buttons.addButton.set("disabled", !selected);
         if (buttons.removeButton) buttons.removeButton.set("disabled", !selected);
         if (buttons.editButton) buttons.editButton.set("disabled", !selected);
         if (buttons.duplicateButton) buttons.duplicateButton.set("disabled", !selected);
@@ -344,17 +356,17 @@ define([
         });
         
         var buttons = {};
-
-        var selected = 0;
+        grid.buttons = buttons;
+        grid.selectedCount = 0;
 
         grid.on("dgrid-select", function(e) {
-            selected += e.rows.length;
-            updateButtonsForSelection(buttons, selected);
+            grid.selectedCount += e.rows.length;
+            updateGridButtonsForSelectionAndForm(grid);
         });
         
         grid.on("dgrid-deselect", function(e) {
-            selected -= e.rows.length;
-            updateButtonsForSelection(buttons, selected);
+            grid.selectedCount -= e.rows.length;
+            updateGridButtonsForSelectionAndForm(grid);
         });
                 
         if (configuration.addButton) {
@@ -389,7 +401,7 @@ define([
             buttons.downButton = utility.newButton(id + "_down", "button_Down", pane, lang.partial(downButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
         }
         
-        updateButtonsForSelection(buttons, false);
+        updateGridButtonsForSelectionAndForm(grid);
         
         if (!pagePane.addChild) {
             console.log("trouble -- does not have addChild method!", pagePane);
