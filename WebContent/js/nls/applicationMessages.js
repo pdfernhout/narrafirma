@@ -29,6 +29,11 @@ define({
     button_Done: "Done",
     button_View: "View",
     button_Add: "Add",
+    button_Remove: "Remove",
+    button_Edit: "Edit",
+    button_Duplicate: "Duplicate",
+    button_Up: "Move Up",
+    button_Down: "Move Down",
     
     // Story browser button
     button_Filter: "Filter -- show only stories where both questions have the selected values",

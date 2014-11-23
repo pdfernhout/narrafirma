@@ -137,7 +137,6 @@ define([
         resizeGridsKludge();
     }
     
-    // TODO: Button should only be enabled if a selection
     function viewButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
         console.log("view button pressed", id, event);
         
@@ -239,6 +238,26 @@ define([
         console.log("done with view button clicked");
     }
     
+    function removeButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
+        console.log("remove button pressed", id, event);
+    }
+    
+    function editButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
+        console.log("edit button pressed", id, event);
+    }
+    
+    function duplicateButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
+        console.log("duplicate button pressed", id, event);
+    }
+    
+    function upButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
+        console.log("up button pressed", id, event);
+    }
+    
+    function downButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
+        console.log("down button pressed", id, event);
+    }
+    
     function formatObjectsIfNeeded(item) {
         if (lang.isString(item)) return item;
         if (item === undefined) return "";
@@ -246,12 +265,25 @@ define([
         return JSON.stringify(item);
     }
     
-    // var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
+    function updateButtonsForSelection(buttons, selected) {
+        if (buttons.viewButton) buttons.viewButton.set("disabled", !selected);
+        // if (buttons.addButton) buttons.addButton.set("disabled", !selected);
+        if (buttons.removeButton) buttons.removeButton.set("disabled", !selected);
+        if (buttons.editButton) buttons.editButton.set("disabled", !selected);
+        if (buttons.duplicateButton) buttons.duplicateButton.set("disabled", !selected);
+        if (buttons.upButton) buttons.upButton.set("disabled", !selected);
+        if (buttons.downButton) buttons.downButton.set("disabled", !selected);
+    }
     
+    // Possible configuration options
+    // var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
     function insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, configuration) {
         // Grid with list of objects
         console.log("insertGridTableBasic", id, dataStore);
-        
+
+        // TODO: only for testing!!!
+        configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
+
         // TODO: Need to set better info for fields and meanings to display and index on
         
         var columns = [];
@@ -311,33 +343,53 @@ define([
         var itemContentPane = new ContentPane({
         });
         
+        var buttons = {};
+
         var selected = 0;
 
-        grid.on("dgrid-select", function(e){
+        grid.on("dgrid-select", function(e) {
             selected += e.rows.length;
-            viewButton.set("disabled", !selected);
+            updateButtonsForSelection(buttons, selected);
         });
         
-        grid.on("dgrid-deselect", function(e){
+        grid.on("dgrid-deselect", function(e) {
             selected -= e.rows.length;
-            viewButton.set("disabled", !selected);
+            updateButtonsForSelection(buttons, selected);
         });
+                
+        if (configuration.addButton) {
+            buttons.addButton = utility.newButton(id + "_add", "button_Add", pane, lang.partial(addButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+        }
+        
+        if (configuration.removeButton) {
+            buttons.removeButton = utility.newButton(id + "_remove", "button_Remove", pane, lang.partial(removeButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+        }
         
         if (configuration.viewButton) {
             // Bind first two arguments to function that will be callback receiving one extra argument
             // See: http://dojotoolkit.org/reference-guide/1.7/dojo/partial.html
             var viewButtonClickedPartial = lang.partial(viewButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane);
-            var viewButtonID = id + "view";
-            var viewButton = utility.newButton(viewButtonID, "button_View", pane, viewButtonClickedPartial);
-            viewButton.set("disabled", true);
+            var viewButtonID = id + "_view";
+            buttons.viewButton = utility.newButton(viewButtonID, "button_View", pane, viewButtonClickedPartial);
             // TODO: Should there be an option of double click as edit?
             // Support double click as view
             grid.on("dblclick", viewButtonClickedPartial);
         }
 
-        if (configuration.addButton) {
-            var addButton = utility.newButton(id + "add", "button_Add", pane, lang.partial(addButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+        if (configuration.editButton) {
+            buttons.editButton = utility.newButton(id + "_edit", "button_Edit", pane, lang.partial(editButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
         }
+        
+        if (configuration.duplicateButton) {
+            buttons.duplicateButton = utility.newButton(id + "_duplicate", "button_Duplicate", pane, lang.partial(duplicateButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+        }
+        
+        if (configuration.moveUpDownButtons) {
+            buttons.upButton = utility.newButton(id + "_up", "button_Up", pane, lang.partial(upButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.downButton = utility.newButton(id + "_down", "button_Down", pane, lang.partial(downButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+        }
+        
+        updateButtonsForSelection(buttons, false);
         
         if (!pagePane.addChild) {
             console.log("trouble -- does not have addChild method!", pagePane);
