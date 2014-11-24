@@ -20,6 +20,7 @@ define([
     "dojo/store/Memory",
     "dgrid/Selection",
     "dojo/Stateful",
+    "dojo/store/Observable",
     "dgrid/OnDemandGrid"
 ], function(
     array,
@@ -41,6 +42,7 @@ define([
     Memory,
     Selection,
     Stateful,
+    Observable,
     OnDemandGrid
 ){
     // Kludge because dgrid seems to need to be resized after shown to ensure header displayed correctly -- reset to [] for each new page
@@ -242,10 +244,11 @@ define([
     function removeButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
         console.log("remove button pressed", id, event);
         // TODO: translate
-        widgetSupport.confirm("Are you sure you with to delete the selected item?", function () {
-            console.log("chose OK");
-        }, function () {
-            console.log("chose Cancel");
+        widgetSupport.confirm("Are you sure you with to delete the selected item(s)?", function () {
+            console.log("Removal confirmed");
+            for (var id in grid.selection) {
+                store.remove(id);
+            }
         });
     }
     
@@ -294,6 +297,9 @@ define([
     function insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, configuration) {
         // Grid with list of objects
         console.log("insertGridTableBasic", id, dataStore);
+        
+        // TODO: may need to check if already observable so dont; do extra wrapping.
+        dataStore = new Observable(dataStore);
 
         // TODO: only for testing!!!
         configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
@@ -326,6 +332,7 @@ define([
         // console.log("making grid");
         var grid = new(declare([OnDemandGrid, DijitRegistry, Keyboard, Selection, ColumnResizer]))({
             "id": id,
+            "sort": "order",
             "store": dataStore,
             "columns": columns
         });
