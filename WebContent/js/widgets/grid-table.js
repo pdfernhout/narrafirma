@@ -68,15 +68,14 @@ define([
         form.destroyRecursive();
         grid.form = null;
         grid.formType = null;
-        grid.formItemToDisplay = null;
-        grid.formItemToAdd = null;
+        grid.formItem = null;
         updateGridButtonsForSelectionAndForm(grid);
     }
 
     // TODO: Maybe rethink how unique item IDs work? Setting to start at 1000 because of test data created in story browser
     var uniqueItemIDCounter = 1000;
     
-    function newItemAdded(id, grid, itemContentPane, form, popupPageDefinition, store, statefulItem) {
+    function newItemAdded(id, grid, store, popupPageDefinition, itemContentPane, form, statefulItem) {
         console.log("OK clicked", statefulItem);
 
         var uniqueItemID = ++uniqueItemIDCounter;
@@ -93,17 +92,20 @@ define([
         console.log("shut down add form");
     }
     
-    function addButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
-        console.log("add button pressed", id, event);
+    // formType can be view, add, edit
+    function openFormForItem(id, grid, store, popupPageDefinition, itemContentPane, formType, statefulItem) {
+        console.log("openFormForItem", grid, formType, statefulItem);
         
-        if (grid.form) { // itemContentPane.domNode.childNodes.length > 0) {
+        if (grid.form) {
             // Already have a panel displayed for either view or add
             console.log("Panel already displayed", grid.formType, grid.form);
-            if (grid.formType === "add") {
+            if (grid.formType !== "view") {
                 // TODO: Translate
-                alert("Add already in progress; please cancel add form first");
+                alert("Item change already in progress; please cancel form first");
                 return;
             }
+            // Don't change anything if already viewing item
+            // if (formType === "view" && statefulItem.get("id") === grid.formItem.get("id")) return;
             hideAndDestroyForm(itemContentPane, grid.form, grid);
         }
         
@@ -111,35 +113,60 @@ define([
         form.set("style", "width: 800px; height 800px; overflow: auto;");
             
         clearGridsKludge();
-        
-        var newItem = {};
-        
-        var statefulItem = new Stateful(newItem);
-        
+
         popupPageDefinition.buildPage(widgetBuilder, form, statefulItem);
-             
-        utility.newButton("list_dialog_ok_" + grid.id, "button_OK", form, lang.partial(newItemAdded, id, grid, itemContentPane, form, popupPageDefinition, store, statefulItem));
         
-        utility.newButton("list_dialog_cancel_" + grid.id, "button_Cancel", form, function() {
-            console.log("Cancel chosen");
+        var borderColor = "green";
+        if (formType === "view") {
+            borderColor = "blue";
             
-            // TODO: Confirm cancel if have entered data
-              
-            hideAndDestroyForm(itemContentPane, form, grid);
-        });
+            utility.newButton("list_dialog_ok" + grid.id, "button_Done", form, function() {
+                console.log("Done");
+                hideAndDestroyForm(itemContentPane, form, grid);
+            });
+            
+            /* TODO: Some way to disable editing?
+            array.forEach(popupPageDefinition.questions, function (question) {
+                // TODO: This may not work for more complex question types or custom widgets?
+                var widget = registry.byId(question.id);
+                if (widget) {
+                    widget.set("value", item[question.id]);
+                    widget.set("disabled", true);
+                } else {
+                    console.log("ERROR: could not find widget for:", question.id);
+                }
+            });
+            */
+        } else {
+            utility.newButton("list_dialog_ok_" + grid.id, "button_OK", form, lang.partial(newItemAdded, id, grid, store, popupPageDefinition, itemContentPane, form, statefulItem));
+            utility.newButton("list_dialog_cancel_" + grid.id, "button_Cancel", form, function() {
+                console.log("Cancel chosen");          
+                // TODO: Confirm cancel if have entered data    
+                hideAndDestroyForm(itemContentPane, form, grid);
+            });
+        }
         
         grid.form = form;
-        grid.formType = "add";
-        grid.formItemToAdd = statefulItem;
+        grid.formType = formType;
+        grid.formItem = statefulItem;
         
         itemContentPane.addChild(form);
         
-        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.25em solid green; margin: 1em; display: block");
+        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.25em solid " + borderColor + "; margin: 1em; display: block");
         
         form.startup();
         resizeGridsKludge();
         
         updateGridButtonsForSelectionAndForm(grid);
+    }
+    
+    function addButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
+        console.log("add button pressed", id, event);
+        
+        var newItem = {};
+        var statefulItem = new Stateful(newItem);
+        
+        openFormForItem(id, grid, store, popupPageDefinition, itemContentPane, "add", statefulItem);  
     }
     
     function viewButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
@@ -151,31 +178,20 @@ define([
             selection = theSelection;
         }
         
-        if (grid.form) { // itemContentPane.domNode.childNodes.length > 0) {
-            // Already have a panel displayed for either view or add
-            console.log("Panel already displayed", grid.formType, grid.form);
-            if (grid.formType === "add") {
-                // TODO: Translate
-                alert("Add already in progress; please cancel add form first");
-                return;
-            }
-            // Don't change anything if already viewing item
-            if (selection === grid.formItemToDisplay) return;
-            hideAndDestroyForm(itemContentPane, grid.form, grid);
-        }
-        
         if (!selection) {
             console.log("No selection");
             // TODO: Translate
             alert("Please select an item to view first");
             return;
         }
-        
+
         console.log("selection", selection);
-        
-        // Can't use store.get becaues store.index may be out of date if the array changed; store only updates the index on a put
+
+        // TODO: This is probably out of date and can be removed now that using Observable? Can thse grids be changed elsewhere when this grid is visible?
+        // Can't use store.get because store.index may be out of date if the array changed; store only updates the index on a put
         // var itemToDisplay = store.get(selection);
-        var matches = store.query({id: selection});
+        /*
+         * var matches = store.query({id: selection});
         console.log("matches", matches);
         // Should only be one match
         var itemToDisplay = null;
@@ -183,66 +199,30 @@ define([
             console.log("item", item);
             itemToDisplay = item;
         });
+        */
+        
+        var itemToDisplay = store.get(selection);
         
         if (!itemToDisplay) {
+            alert("itemToDisplay was not found in store: " + id);
             console.log("itemToDisplay was not found in store", id, store);
             return;
         }
         
         console.log("item to display", itemToDisplay);
-                
-        var form = new Form(); 
-        form.set("style", "width: 800px; height 800px; overflow: auto;");
-            
-        clearGridsKludge();
-                
-        console.log("grid", grid, grid.selection);
         
         var statefulItem = new Stateful(itemToDisplay);
         
-        popupPageDefinition.buildPage(widgetBuilder, form, statefulItem);
-
-        /* TODO: Some way to disable editing?
-        array.forEach(popupPageDefinition.questions, function (question) {
-            // TODO: This may not work for more complex question types or custom widgets?
-            var widget = registry.byId(question.id);
-            if (widget) {
-                widget.set("value", item[question.id]);
-                widget.set("disabled", true);
-            } else {
-                console.log("ERROR: could not find widget for:", question.id);
-            }
-        });
-        */
-
-        utility.newButton("list_dialog_ok" + grid.id, "button_Done", form, function() {
-            console.log("Done");
-            
-            hideAndDestroyForm(itemContentPane, form, grid);
-        });
-        
-        grid.form = form;
-        grid.formType = "view";
-        grid.formItemToDisplay = itemToDisplay;
-        
-        itemContentPane.addChild(form);
-        
-        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.25em solid blue; margin: 1em; display: block");
-        
-        form.startup();
-        resizeGridsKludge();
-        
-        updateGridButtonsForSelectionAndForm(grid);
-        // console.log("done with view button clicked");
+        openFormForItem(id, grid, store, popupPageDefinition, itemContentPane, "view", statefulItem);
     }
     
     function removeButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
         console.log("remove button pressed", id, event);
         // TODO: translate
-        widgetSupport.confirm("Are you sure you with to delete the selected item(s)?", function () {
+        widgetSupport.confirm("Are you sure you want to delete the selected item(s)?", function () {
             console.log("Removal confirmed");
-            for (var id in grid.selection) {
-                store.remove(id);
+            for (var itemID in grid.selection) {
+                store.remove(itemID);
             }
         });
     }
@@ -256,7 +236,10 @@ define([
     }
     
     function upButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
-        console.log("up button pressed", id, event);    
+        console.log("up button pressed", id, event);
+        //for (var id in grid.selection) {
+        //    // store.remove(id);
+        //}
     }
     
     function downButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
