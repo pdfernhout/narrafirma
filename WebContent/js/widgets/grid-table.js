@@ -93,8 +93,10 @@ define([
     }
     
     // formType can be view, add, edit
-    function openFormForItem(id, grid, store, popupPageDefinition, itemContentPane, formType, statefulItem) {
-        console.log("openFormForItem", grid, formType, statefulItem);
+    function openFormForItem(id, grid, store, popupPageDefinition, itemContentPane, formType, item) {
+        console.log("openFormForItem", grid, formType, item);
+        
+        var statefulItem = new Stateful(item);
         
         if (grid.form) {
             // Already have a panel displayed for either view or add
@@ -169,51 +171,58 @@ define([
         openFormForItem(id, grid, store, popupPageDefinition, itemContentPane, "add", statefulItem);  
     }
     
-    function viewButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
-        console.log("view button pressed or double click", id, event);
-        
-        var selection = null;
+    function getSelectedItem(grid, store) {
+        var selectedItemID = null;
         
         for (var theSelection in grid.selection) {
-            selection = theSelection;
+            selectedItemID = theSelection;
         }
         
-        if (!selection) {
+        if (!selectedItemID) {
             console.log("No selection");
-            // TODO: Translate
-            alert("Please select an item to view first");
-            return;
+            return null;
         }
 
-        console.log("selection", selection);
+        console.log("selectedItemID", selectedItemID);
+        
+        var selectedItem = store.get(selectedItemID);
 
-        // TODO: This is probably out of date and can be removed now that using Observable? Can thse grids be changed elsewhere when this grid is visible?
+        // TODO: This is probably out of date and can be removed now that using Observable? Can these grids be changed elsewhere when this grid is visible?
         // Can't use store.get because store.index may be out of date if the array changed; store only updates the index on a put
-        // var itemToDisplay = store.get(selection);
+        // var itemToDisplay = store.get(selectedItemID);
         /*
-         * var matches = store.query({id: selection});
+         * var matches = store.query({id: selectedItemID});
         console.log("matches", matches);
         // Should only be one match
-        var itemToDisplay = null;
+        var selectedItem = null;
         array.forEach(matches, function (item) {
             console.log("item", item);
-            itemToDisplay = item;
+            selectedItem = item;
         });
         */
         
-        var itemToDisplay = store.get(selection);
+        if (!selectedItem) {
+            alert("itemToDisplay was not found in store: " + selectedItemID);
+            console.log("itemToDisplay was not found in store", selectedItemID, store);
+            return null;
+        }
         
-        if (!itemToDisplay) {
-            alert("itemToDisplay was not found in store: " + id);
-            console.log("itemToDisplay was not found in store", id, store);
+        return selectedItem;
+    }
+    
+    function viewButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
+        console.log("view button pressed or double click", id, event);
+        
+        var selectedItem = getSelectedItem(grid, store);
+        
+        if (!selectedItem) {
+            alert("Please select an item to view first");
             return;
         }
         
-        console.log("item to display", itemToDisplay);
-        
-        var statefulItem = new Stateful(itemToDisplay);
-        
-        openFormForItem(id, grid, store, popupPageDefinition, itemContentPane, "view", statefulItem);
+        console.log("item to display", selectedItem);
+
+        openFormForItem(id, grid, store, popupPageDefinition, itemContentPane, "view", selectedItem);
     }
     
     function removeButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
