@@ -51,13 +51,13 @@ define([
     
     // TODO: Translate: Change to taking a translate ID
     // TODO: Buttons don't show up if window to narrow for dialog
-    function confirm(message, okCallback, cancelCallback) { 
+    function confirm(message, okCallback) {
         var dialog = new ConfirmDialog({
             title: "Confirm",
             content: message,
             style: "width: 300px",
             onExecute: okCallback,
-            onCancel: cancelCallback
+            // TODO: onCancel: cancelCallback
         });
         dialog.show();
     }
