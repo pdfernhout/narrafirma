@@ -10,6 +10,7 @@ define([
     "dijit/registry",
     "js/translate",
     "js/utility",
+    "dojox/uuid/generateRandomUuid",
     "js/widgetBuilder",
     "./widgetSupport",
     "dgrid/extensions/ColumnResizer",
@@ -32,6 +33,7 @@ define([
     registry,
     translate,
     utility,
+    uuid,
     widgetBuilder,
     widgetSupport,
     ColumnResizer,
@@ -47,6 +49,8 @@ define([
 ){
     // Kludge because dgrid seems to need to be resized after shown to ensure header displayed correctly -- reset to [] for each new page
     var allGrids = [];
+    
+    // TODO: Maybe should use another name for id to avoid collisions with user survey questions, like _id? Otherwise need to prevent them form using that?
     
     function resizeGridsKludge() {
         // Kludge for dgrid header issue
@@ -72,18 +76,20 @@ define([
         updateGridButtonsForSelectionAndForm(grid);
     }
 
-    // TODO: Maybe rethink how unique item IDs work? Setting to start at 1000 because of test data created in story browser
-    var uniqueItemIDCounter = 1000;
-    
-    function newItemAdded(id, grid, store, popupPageDefinition, itemContentPane, form, statefulItem) {
+    function storeItem(id, grid, store, popupPageDefinition, itemContentPane, form, statefulItem) {
         console.log("OK clicked", statefulItem);
 
-        var uniqueItemID = ++uniqueItemIDCounter;
+        var uniqueItemID = uuid();
         
         var plainValue = getPlainValue(statefulItem);
         console.log("grid plainValue", plainValue);
 
-        store.put(plainValue);
+        if (grid.formType === "add") {
+            plainValue.id = uniqueItemID;
+            store.add(plainValue);
+        } else {
+            store.put(plainValue);
+        }
                 
         console.log("put store for add form");
         
@@ -140,7 +146,7 @@ define([
             });
             */
         } else {
-            utility.newButton("list_dialog_ok_" + grid.id, "button_OK", form, lang.partial(newItemAdded, id, grid, store, popupPageDefinition, itemContentPane, form, statefulItem));
+            utility.newButton("list_dialog_ok_" + grid.id, "button_OK", form, lang.partial(storeItem, id, grid, store, popupPageDefinition, itemContentPane, form, statefulItem));
             utility.newButton("list_dialog_cancel_" + grid.id, "button_Cancel", form, function() {
                 console.log("Cancel chosen");          
                 // TODO: Confirm cancel if have entered data    
@@ -207,6 +213,8 @@ define([
             return null;
         }
         
+        console.log("selectedItem", selectedItem);
+
         return selectedItem;
     }
     
@@ -220,8 +228,6 @@ define([
             return;
         }
         
-        console.log("item to display", selectedItem);
-
         openFormForItem(id, grid, store, popupPageDefinition, itemContentPane, "view", selectedItem);
     }
     
@@ -238,10 +244,31 @@ define([
     
     function editButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
         console.log("edit button pressed", id, event);
+
+        var selectedItem = getSelectedItem(grid, store);
+        
+        if (!selectedItem) {
+            alert("Please select an item to edit first");
+            return;
+        }
+        
+        openFormForItem(id, grid, store, popupPageDefinition, itemContentPane, "edit", selectedItem);
     }
     
     function duplicateButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
         console.log("duplicate button pressed", id, event);
+
+        var selectedItem = getSelectedItem(grid, store);
+        
+        if (!selectedItem) {
+            alert("Please select an item to duplicate first");
+            return;
+        }
+        
+        // Remove the ID so it will be treated as a new item
+        delete selectedItem.id;
+        
+        openFormForItem(id, grid, store, popupPageDefinition, itemContentPane, "add", selectedItem);
     }
     
     function upButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
