@@ -21,9 +21,6 @@ Support a templateList -- a list box with templates read in from a file (of a pa
 
 Support a participantStoryForm -- the form everyone who comes to the URL can see
 
-Support grid item remove
-Support grid item edit
-Support grid item duplicate
 Support grid item move up or down 
 
 Grid widget option specification to control button availability
@@ -208,6 +205,9 @@ DONE Support graphBrowser bar graph for choice alone
 DONE Support graphBrowser histogram for slider alone
 DONE Provide GUI feedback when saving project to server
 DONE Provide GUI feedback when loading project from server
+DONE Support grid item remove
+DONE Support grid item edit
+DONE Support grid item duplicate
 
 ======= CYNTHIA
 
