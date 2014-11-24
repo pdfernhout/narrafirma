@@ -54,7 +54,6 @@ define([
         for (var gridIndex in allGrids) {
             console.log("resizing dgrid", gridIndex, allGrids);
             allGrids[gridIndex].resize();
-             // allGrids[gridIndex].refresh();
             console.log("resize done");
         }
     }
@@ -91,10 +90,6 @@ define([
         
         hideAndDestroyForm(itemContentPane, form, grid);
              
-        // refresh ensures the new data is displayed
-        console.log("Doing refresh for data", statefulItem);
-        grid.refresh();
-          
         console.log("shut down add form");
     }
     
@@ -261,7 +256,7 @@ define([
     }
     
     function upButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
-        console.log("up button pressed", id, event);
+        console.log("up button pressed", id, event);    
     }
     
     function downButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
