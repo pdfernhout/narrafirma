@@ -309,13 +309,19 @@ define([
         var storyList;
         
         var filterButton = utility.newButton(id + "_filter", "button_Filter", pagePane, function () {
+            // TODO: Kludge: Make sure the store re-indexes all the data in case the data was added to by loading more stories
+            // What "should" happen instead is that the dataStore is updates when the underlying array is changed
+            // But that would require some sort of dependency in the data model
+            // or deciding to have an observable store in the domain to store the questions
+            if (dataStore.index.length != dataStore.data.length) dataStore.setData(dataStore.data);
+          
             // console.log("filter pressed");
             var question1Choice = filter1.questionSelect.get("value");
             var answers1Choices = filter1.answersMultiSelect.get("value");
             // console.log("question1", question1Choice, "answers1", answers1Choices);
             var question2Choice = filter2.questionSelect.get("value");
             var answers2Choices = filter2.answersMultiSelect.get("value");
-            // console.log("question2", question2Choice, "answers2", answers2Choices);
+            // console.log("question2", question2Choice, "answers2", answers2Choices);  
             storyList.grid.set("query", function (item) {
                 var match1 = isMatch(item, question1Choice, answers1Choices);
                 var match2 = isMatch(item, question2Choice, answers2Choices);
