@@ -349,8 +349,8 @@ define([
         // TODO: may need to check if already observable so dont; do extra wrapping.
         dataStore = new Observable(dataStore);
 
-        // TODO: only for testing!!!
-        configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
+        // only for testing!!!
+        // configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
 
         // TODO: Need to set better info for fields and meanings to display and index on
         

@@ -202,7 +202,7 @@ define([
             idProperty: "_id"
         });
         
-        var configuration = {viewButton: true, addButton: true, includeAllFields: false};
+        var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
         return GridTable.insertGridTableBasic(questionContentPane, id, dataStore, popupPageDefinition, configuration);
     }
     

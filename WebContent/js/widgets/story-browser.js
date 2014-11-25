@@ -325,7 +325,8 @@ define([
         
         // console.log("insertStoryBrowser middle 3", id);
         
-        var configuration = {viewButton: true, addButton: false, includeAllFields: true};
+        // Only allow view button for stories
+        var configuration = {viewButton: true, includeAllFields: true};
         storyList = widgetGridTable.insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, configuration);
         
         console.log("insertStoryBrowser finished");
