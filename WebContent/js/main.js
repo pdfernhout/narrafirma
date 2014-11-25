@@ -79,7 +79,8 @@ require([
         // Reload page looking at...
         showPage(currentPageID, "forceRefresh");
         
-        alert("Done loading...");
+        // TODO: Translate and improve this feedback
+        alert("Finished loading");
     }
     
     function saveClicked(event) {
@@ -88,7 +89,9 @@ require([
     }
     
     function saveFinished(newVersionURI, status) {
-        alert("Save completed to file:\n" + newVersionURI);
+        // TODO: Translate and improve this feedback
+        console.log("Save finished to file", newVersionURI);
+        alert("Finished saving");
     }
     
     function urlHashFragmentChanged(newHash) {
