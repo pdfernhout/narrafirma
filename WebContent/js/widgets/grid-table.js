@@ -50,7 +50,7 @@ define([
     // Kludge because dgrid seems to need to be resized after shown to ensure header displayed correctly -- reset to [] for each new page
     var allGrids = [];
     
-    // TODO: Maybe should use another name for id to avoid collisions with user survey questions, like _id? Otherwise need to prevent them form using that?
+    // TODO: Probably need to prevent user surveys from having a question with a short name of "_id".
     
     function resizeGridsKludge() {
         // Kludge for dgrid header issue
@@ -85,7 +85,8 @@ define([
         console.log("grid plainValue", plainValue);
 
         if (grid.formType === "add") {
-            plainValue.id = uniqueItemID;
+            var idProperty = store.idProperty;
+            plainValue[idProperty] = uniqueItemID;
             store.add(plainValue);
         } else {
             store.put(plainValue);
@@ -273,13 +274,46 @@ define([
     
     function upButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
         console.log("up button pressed", id, event);
-        //for (var id in grid.selection) {
-        //    // store.remove(id);
-        //}
+        
+        // Probably only work on Memory store
+        var items = store.data;
+        var lastSelectedObjectLocation = -1;
+        for (var i = 0; i < items.length; i++) {
+            var item = items[i];
+            if (item[store.idProperty] in grid.selection) {
+                if (lastSelectedObjectLocation < i - 1) {
+                    var otherItem = items[i - 1];
+                    items[i - 1] = item;
+                    items[i] = otherItem;
+                    lastSelectedObjectLocation = i - 1;
+                } else {
+                    lastSelectedObjectLocation = i;
+                }
+            }
+        }
+        grid.refresh();
     }
     
     function downButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
         console.log("down button pressed", id, event);
+        
+        // Probably only work on Memory store
+        var items = store.data;
+        var lastSelectedObjectLocation = items.length;
+        for (var i = items.length - 1; i >= 0; i--) {
+            var item = items[i];
+            if (item[store.idProperty] in grid.selection) {
+                if (lastSelectedObjectLocation > i + 1) {
+                    var otherItem = items[i + 1];
+                    items[i + 1] = item;
+                    items[i] = otherItem;
+                    lastSelectedObjectLocation = i + 1;
+                } else {
+                    lastSelectedObjectLocation = i;
+                }
+            }
+        }
+        grid.refresh();
     }
     
     function formatObjectsIfNeeded(item) {
@@ -345,10 +379,12 @@ define([
         
         // console.log("making grid");
         var grid = new(declare([OnDemandGrid, DijitRegistry, Keyboard, Selection, ColumnResizer]))({
-            "id": id,
-            "sort": "order",
-            "store": dataStore,
-            "columns": columns
+            id: id,
+            // "sort": "order",
+            store: dataStore,
+            columns: columns,
+            // Preserve the selections despite refresh needed when move items up or down
+            deselectOnRefresh: false
         });
         
         if (!pagePane.addChild) {
