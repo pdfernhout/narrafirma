@@ -21,8 +21,6 @@ Support a templateList -- a list box with templates read in from a file (of a pa
 
 Support a participantStoryForm -- the form everyone who comes to the URL can see
 
-Grid widget option specification to control button availability
-
 Support storyThemer -- a widget where people look at each story, give it 1-3 themes, then merge the themes into smaller numbers of themes
 
 Support graphBrowser "add to observation" button
@@ -243,8 +241,6 @@ Think about what happens to data if questions change somehow in future versions 
 
 Survey taking system on web server
 
-Wordpress plugin
-
 Backup/Export/Import
 
 Roles/Accounts & Security
@@ -281,5 +277,9 @@ Improve save/load feedback
 
 ==== Might not do
 
-Story list using dgrid with accordian for story
+Wordpress plugin
+
+Grid widget option specification to control button availability
+
+Story list using dgrid with accordion for story
 Support checkBoxesWithPull -- a set of check boxes where the display texts are drawn from a list entered previously 
