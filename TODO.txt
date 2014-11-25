@@ -8,18 +8,18 @@ PRIORITY:
 - print story form
 - styling of nested box in grid
 
+Support recommendationTable
+
 Fix how survey data is collected and stored to separate multiple stories from participant information
-Improve take survey page like with support for separate pages
+Support a participantStoryForm -- the form everyone who comes to the URL can see
+webStoryCollectionEnabled toggle status to turn off seems broken
+Implement startup and shutdown of web data collection in domain buttonClicked
+Implement copyStoryFormURLDuringFinalize in domain buttonClicked
+Implement copyStoryFormURLDuringStart in domain buttonClicked
 
-Some sort of continue button at bottom of page to progress through steps
-Validation of page data as progress through a step
-
-Way to retrieve data about project participant groups
-Translation of strings related to page of questions on project participant groups
+Implement printStoryForm in domain buttonClicked
 
 Support a templateList -- a list box with templates read in from a file (of a particular type) with a "copy" button
-
-Support a participantStoryForm -- the form everyone who comes to the URL can see
 
 Support storyThemer -- a widget where people look at each story, give it 1-3 themes, then merge the themes into smaller numbers of themes
 
@@ -35,31 +35,22 @@ Support clusterSpace -- used in catalysis to cluster interpretations it is a gra
 
 Support observationsList -- used to list all the previously made observations
 
-Support recommendationTable
-
 Implement countNumberOfVenuesChosen in domain
-Implement startup and shutdown of web data collection in domain buttonClicked
-Implement printStoryForm in domain buttonClicked
-Implement copyStoryFormURLDuringFinalize in domain buttonClicked
-Implement copyStoryFormURLDuringStart in domain buttonClicked
-Implement exportPresentationOutline in domain buttonClicked
-Implement showHideCollectedStories in domain buttonClicked
 
-Dynamic pages for collection session records
-Dynamic pages for venues
-Dynamic pages for sensemaking session plans
-Dynamic pages for sensemaking session records
-Dynamic pages for project outcomes
-Dynamic pages for intervention plans?
-Dynamic pages for intervention records?
-Disabled or hidden tabs which are enabled as progress
-Tabs created for new pages as add participants or session plans or session records
+Implement exportPresentationOutline in domain buttonClicked
+
+Add text field to add participants for these:
+  Dynamic pages for collection session records
+  Dynamic pages for venues
+  Dynamic pages for sensemaking session plans
+  Dynamic pages for sensemaking session records
+  Dynamic pages for intervention plans?
+  Dynamic pages for intervention records?
+
+One project outcome item created per participant group
 
 Venues table needs fixing -- one for each participant group
-Popup for add item  -- should have better label in title as to what type of thing is added
 General notes should go after dashboard for each section
-Generate story form for data entry from paper form -- or have it work with story browser to review/add stories
-webStoryCollectionEnabled toggle status to turn off seems broken
 Catalysis -- story browser needs two buttons that pull up pages to put things in lists: addToObservation:"page_addToObservation";addToExcerpt:"page_addToExcerpt"
 Need to be able to select text in existing story to AddToExcerpts
 Need to figure out some way to represent RESULTS in observations (story browser queries/results, graphs, statistical tests)
@@ -70,7 +61,8 @@ Better and more consistent approach for translation selections for selects, chec
 Translate report answers as needed for those types like selections
 Translation support for survey as distinct from application so two do not potentially collide
 
-Readonly version of checkboxes and radiobutton widgets, used by grid
+When viewing grid data, it should not look editable
+Readonly version of checkboxes and radiobutton widgets, used by grid (assuming that is how the read only data is presented)
 
 Improve reports so look nice
 
@@ -82,7 +74,10 @@ Autosave, perhaps based on time or based on changing pages
 
 Improve feedback when there are no project versions or survey results; maybe distinguish between an error and nothing being saved yet
 
+Make sure that short name IDs entered by user when defining questions are unique amont themselved and don have leading underscore (or at least arent; "_id")
+
 Main Dashboard
+Decide or distinguish between between an initial explanation page versus a first big dashboard
 
 Help window displaying HTML instead of alert
 Look at all alerts in code and make into nicer GUI feedback
@@ -91,6 +86,11 @@ Final review of all strings in code looking for TODO translate items or similar
 Support imageUploader
 Support storyBrowserCount
 Fix questionAnswerCountOfTotalOnPages so it can handle a questionsTable
+
+Popup for add item  -- should have better label in title as to what type of thing is added
+
+Way to retrieve data about project participant groups [Is this still relevant?]
+Implement showHideCollectedStories in domain buttonClicked [Not sure what this means now or if still relevant]
 
 DONE Checkboxes for multiple choices
 DONE Tab container sizing to full page
@@ -205,6 +205,8 @@ DONE Support grid item remove
 DONE Support grid item edit
 DONE Support grid item duplicate
 DONE Support grid item move up or down 
+NOT DOING Tabs created for new pages as add participants or session plans or session records [Replaced by grid table edit area]
+DONE Translation of strings related to page of questions on project participant groups [should work like everything else since using grid table]
 
 ======= CYNTHIA
 
@@ -227,6 +229,9 @@ DONE Prototype concept images for demo
 
 ==== Later:
 
+Some sort of continue button at bottom of page to progress through steps
+Validation of page data as progress through a step
+
 Validation in general when progress through tabs and error reporting
 Validation of text fields for empty
 Validation of text fields for length
@@ -247,6 +252,8 @@ Roles/Accounts & Security
 
 Page to enter themes for stories
 Page to cluster themes into final themes
+
+Disabled or hidden tabs which are enabled as progress
 
 ==== Wish list:
 
@@ -282,4 +289,9 @@ Wordpress plugin
 Grid widget option specification to control button availability
 
 Story list using dgrid with accordion for story
-Support checkBoxesWithPull -- a set of check boxes where the display texts are drawn from a list entered previously 
+Support checkBoxesWithPull -- a set of check boxes where the display texts are drawn from a list entered previously (like for participant list)
+
+Improve take survey page like with support for separate pages
+
+Way to edit a story or participant info (with versioning) if needed?
+
