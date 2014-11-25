@@ -33,7 +33,7 @@ define([
         
         var surveyResult = getPlainValue(model);
         
-        surveyResult.id = uuid();
+        surveyResult._id = uuid();
         
         console.log("answers", surveyResult, model);
         storage.storeSurveyResult(surveyResult);

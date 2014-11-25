@@ -198,10 +198,8 @@ define([
         
         // Store will modify underlying array
         var dataStore = new Memory({
-            // data: storyList,
-            data: data
-            // TODO: title may not be unique
-            // idProperty: "uniqueID",
+            data: data,
+            idProperty: "_id"
         });
         
         var configuration = {viewButton: true, addButton: true, includeAllFields: false};

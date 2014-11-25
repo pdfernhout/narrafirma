@@ -269,23 +269,12 @@ define([
              }
         };
 
-        // TODO: Would be nice to make this part of model, at least based on an option...
-        //  var stories = model.get(id);
-        // console.log("model", model);
         var stories = domain.projectData.surveyResults.allStories;
-        //if (!stories) {
-        //    stories = [];
-        //    model.set(id, stories);
-        //}
-        
-        // console.log("*** insertStoryBrowser stories", stories);
-        
+
         // Store will modify underlying array
         var dataStore = new Memory({
-            // data: storyList,
-            data: stories
-            // TODO: title may not be unique
-            // idProperty: "uniqueID",
+            data: stories,
+            idProperty: "_id"
         });
         
         // console.log("insertStoryBrowser middle 1", id);
