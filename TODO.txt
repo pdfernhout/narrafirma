@@ -21,8 +21,6 @@ Support a templateList -- a list box with templates read in from a file (of a pa
 
 Support a participantStoryForm -- the form everyone who comes to the URL can see
 
-Support grid item move up or down 
-
 Grid widget option specification to control button availability
 
 Support storyThemer -- a widget where people look at each story, give it 1-3 themes, then merge the themes into smaller numbers of themes
@@ -101,7 +99,7 @@ DONE Tab container sizing to full page
 DONE Slider with labels and no ticks
 DONE Way to tag question as story text, story title, question about story, question about participant
 DONE Getting dgrid to work alongside CDN
-DONE Refactor NarraCoach pages into seperate AMD modules
+DONE Refactor NarraCoach pages into separate AMD modules
 DONE Use table to have up to three sets of answers for general info questions about project participant groups
 DONE Tabs should be grouped based on PNI stages
 DONE Make "skeleton" of program with named tabs for all steps from spreadsheet
@@ -115,9 +113,9 @@ DONE Remove all JSHint warnings (as of 2014-09-05)
 DONE Remaking narracoach_questions.js to be proper module
 DONE Support questionsTable
 DONE Story browser with list of title and shows stories
-DONE Support storyBrowser -- a smalltalk-like browser for stories (basic support)
+DONE Support storyBrowser -- a Smalltalk-like browser for stories (basic support)
 DONE Fix issue when two items selected and click view and get NS_ERROR_UNEXPECTED
-DONE Moved styling into seperate css style sheet
+DONE Moved styling into separate css style sheet
 DONE Story browser with two choices of questions and answers
 DONE Improve error logging to construct a list of new types added for Dashboard widgets and otherwise
 DONE Fix popup dialog background when scroll and shows content beneath it
@@ -194,7 +192,7 @@ DONE Support graphBrowser -- shows one graph at a time, with two question select
 DONE one bar graph in graph browser (actually scatter plot)
 DONE Fix bug from testing with problem adding two grid items
 DONE Support grid widget double-click to view
-DONE Support all page types: normal (no specification), popup, questionsTable, recommendationTable [defered to own item], participantStoryForm
+DONE Support all page types: normal (no specification), popup, questionsTable, recommendationTable [deferred to own item], participantStoryForm
 DONE Fix survey entry to prevent missing or duplicate question ids (done in domain for now)
 DONE Better error messages when loading project or survey results and not available on the server
 DONE Investigate double creation of survey data during test on 2014-11-17 on cfk machine for first survey created
@@ -208,6 +206,7 @@ DONE Provide GUI feedback when loading project from server
 DONE Support grid item remove
 DONE Support grid item edit
 DONE Support grid item duplicate
+DONE Support grid item move up or down 
 
 ======= CYNTHIA
 
