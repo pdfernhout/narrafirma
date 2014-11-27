@@ -85,6 +85,17 @@ Support storyBrowserCount
 Way to retrieve data about project participant groups [Is this still relevant?]
 Implement showHideCollectedStories in domain buttonClicked [Not sure what this means now or if still relevant]
 
+Resolve these issues from conversion or add them to list of types not needing a short name:
+No short name for type: storyThemer field: themeStories text: Theme stories
+No short name for type: trendsReport field: reviewTrends_display text: Trends report
+No short name for type: observationsList field: observationsListChoose text: Choose an observation from this list to which to add the selected result, or create a new observation.
+No short name for type: excerptsList field: selectExcerpt_excerptsListDisplay text: Collected excerpts
+No short name for type: excerptsList field: addToExcerpt_excerptsListChoose text: Choose an excerpt from this list to which to add the selected text, or create a new excerpt.
+No short name for type: clusterSpace field: clusterInterpretations_clusterSpace text: Cluster interpretations into perspectives
+No short name for type: annotationsGrid field: perspective_linkedResultsList text: Results linked to this perspective
+No short name for type: annotationsGrid field: perspective_linkedExcerptsList text: Excerpts linked to this perspective
+No short name for type: annotationsGrid field: perspective_linkedInterpretationsList text: Interpretations linked to this perspective
+
 DONE Checkboxes for multiple choices
 DONE Tab container sizing to full page
 DONE Slider with labels and no ticks
