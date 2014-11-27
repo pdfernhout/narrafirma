@@ -5,7 +5,7 @@ define([], function() {
 
     var questions = [
         {"id":"catalysisIntro", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"project_generalNotes_catalysis", "type":"textarea", "isInReport":true, "isGridColumn":false}
+        {"id":"project_generalNotes_catalysis", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
 
     function buildPage(builder, contentPane, model) {

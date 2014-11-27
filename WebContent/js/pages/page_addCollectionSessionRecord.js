@@ -6,10 +6,11 @@ define([], function() {
     var questions = [
         {"id":"collectionSessionRecord_name", "type":"text", "isInReport":true, "isGridColumn":true},
         {"id":"collectionSessionRecord_whenWhere", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"collectionSessionRecord_groups", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"collectionSessionRecord_participants", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"collectionSessionRecord_plan", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"collectionSessionRecord_notes", "type":"textarea", "isInReport":true, "isGridColumn":true},
-        {"id":"collectionSessionRecord_constructionsList", "type":"grid", "isInReport":true, "isGridColumn":false, "options":["page_newCollectionSessionConstruction"]},
+        {"id":"collectionSessionRecord_constructionsList", "type":"grid", "isInReport":true, "isGridColumn":true, "options":["page_newCollectionSessionConstruction"]},
         {"id":"collectionSessionRecord_reflectionsLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"collectionSessionRecord_reflectionsOnChangeHeader", "type":"header", "isInReport":false, "isGridColumn":false},
         {"id":"collectionSessionRecord_reflections_change_participantPerceptions", "type":"textarea", "isInReport":true, "isGridColumn":true},

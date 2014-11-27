@@ -5,7 +5,7 @@ define([], function() {
 
     var questions = [
         {"id":"project_collectionRecordsIntroductionLabel", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"project_collectionSessionRecordsList", "type":"grid", "isInReport":true, "isGridColumn":false, "options":["page_addCollectionSessionRecord"]}
+        {"id":"project_collectionSessionRecordsList", "type":"grid", "isInReport":true, "isGridColumn":true, "options":["page_addCollectionSessionRecord"]}
     ];
 
     function buildPage(builder, contentPane, model) {

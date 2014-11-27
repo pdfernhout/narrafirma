@@ -8,7 +8,7 @@ define([], function() {
         {"id":"interventionRecommendations", "type":"recommendationTable", "isInReport":true, "isGridColumn":false, "options":["interventions"]},
         {"id":"interventionRecommendationsTable_unfinished", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"mockup_recTable_intervention", "type":"image", "isInReport":true, "isGridColumn":false, "options":["images/mockups/mockupRecTable.png"]},
-        {"id":"project_interventionPlansList", "type":"grid", "isInReport":true, "isGridColumn":false, "options":["page_addIntervention"]}
+        {"id":"project_interventionPlansList", "type":"grid", "isInReport":true, "isGridColumn":true, "options":["page_addIntervention"]}
     ];
 
     function buildPage(builder, contentPane, model) {

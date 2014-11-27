@@ -5,7 +5,7 @@ define([], function() {
 
     var questions = [
         {"id":"project_sensemakingSessionRecordsLabel", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"project_sensemakingSessionRecordsList", "type":"grid", "isInReport":true, "isGridColumn":false, "options":["page_addSensemakingSessionRecord"]}
+        {"id":"project_sensemakingSessionRecordsList", "type":"grid", "isInReport":true, "isGridColumn":true, "options":["page_addSensemakingSessionRecord"]}
     ];
 
     function buildPage(builder, contentPane, model) {

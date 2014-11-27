@@ -5,7 +5,7 @@ define([], function() {
 
     var questions = [
         {"id":"returnIntroLabel", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"project_generalNotes_return", "type":"textarea", "isInReport":true, "isGridColumn":false}
+        {"id":"project_generalNotes_return", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
 
     function buildPage(builder, contentPane, model) {

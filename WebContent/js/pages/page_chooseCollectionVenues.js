@@ -8,7 +8,7 @@ define([], function() {
         {"id":"SPECIAL_venueRecommendations", "type":"recommendationTable", "isInReport":true, "isGridColumn":false, "options":["Venues"]},
         {"id":"SPECIAL_venueRecommendationsTable_unfinished", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"SPECIAL_mockup_recTable_venues", "type":"image", "isInReport":true, "isGridColumn":false, "options":["images/mockups/mockupRecTable.png"]},
-        {"id":"project_venuesTable", "type":"questionsTable", "isInReport":true, "isGridColumn":false, "options":["page_venuesTable", "participants_firstGroupName,participants_secondGroupName,participants_thirdGroupName"]}
+        {"id":"project_venuesList", "type":"grid", "isInReport":true, "isGridColumn":true, "options":["page_addVenue"]}
     ];
 
     function buildPage(builder, contentPane, model) {

@@ -5,8 +5,8 @@ define([], function() {
 
     var questions = [
         {"id":"project_feedbackLabel", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"project_feedbackItemsList", "type":"grid", "isInReport":true, "isGridColumn":false, "options":["page_enterFeedbackPiece"]},
-        {"id":"feedback_generalNotes", "type":"textarea", "isInReport":true, "isGridColumn":false}
+        {"id":"project_feedbackItemsList", "type":"grid", "isInReport":true, "isGridColumn":true, "options":["page_enterFeedbackPiece"]},
+        {"id":"feedback_generalNotes", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
 
     function buildPage(builder, contentPane, model) {

@@ -4,7 +4,7 @@
 define([], function() {
 
     var questions = [
-        {"id":"project_projectStoryElementsList", "type":"grid", "isInReport":true, "isGridColumn":false, "options":["page_addStoryElement"]}
+        {"id":"project_projectStoryElementsList", "type":"grid", "isInReport":true, "isGridColumn":true, "options":["page_addStoryElement"]}
     ];
 
     function buildPage(builder, contentPane, model) {

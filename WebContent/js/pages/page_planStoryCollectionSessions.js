@@ -8,7 +8,7 @@ define([], function() {
         {"id":"SPECIAL_collectionSessionRecommendations", "type":"recommendationTable", "isInReport":true, "isGridColumn":false, "options":["collectionSessions"]},
         {"id":"SPECIAL_collectionRecommendationsTable_unfinished", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"SPECIAL_mockup_recTable_collection", "type":"image", "isInReport":true, "isGridColumn":false, "options":["images/mockups/mockupRecTable.png"]},
-        {"id":"project_collectionSessionPlansList", "type":"grid", "isInReport":true, "isGridColumn":false, "options":["page_addStoryCollectionSession"]}
+        {"id":"project_collectionSessionPlansList", "type":"grid", "isInReport":true, "isGridColumn":true, "options":["page_addStoryCollectionSession"]}
     ];
 
     function buildPage(builder, contentPane, model) {

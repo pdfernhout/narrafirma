@@ -5,7 +5,7 @@ define([], function() {
 
     var questions = [
         {"id":"project_returnRequestsLabel", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"project_returnRequestsList", "type":"grid", "isInReport":true, "isGridColumn":false, "options":["page_addNewReturnRequest"]}
+        {"id":"project_returnRequestsList", "type":"grid", "isInReport":true, "isGridColumn":true, "options":["page_addNewReturnRequest"]}
     ];
 
     function buildPage(builder, contentPane, model) {

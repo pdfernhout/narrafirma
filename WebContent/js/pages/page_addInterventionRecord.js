@@ -5,7 +5,8 @@ define([], function() {
 
     var questions = [
         {"id":"interventionRecord_name", "type":"text", "isInReport":true, "isGridColumn":true},
-        {"id":"interventionRecord_notes", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionRecord_description", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"interventionRecord_groups", "type":"text", "isInReport":true, "isGridColumn":true},
         {"id":"interventionRecord_reflectLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"interventionRecord_reflectionsOnChangeHeader", "type":"header", "isInReport":false, "isGridColumn":false},
         {"id":"interventionRecord_reflections_change_participantPerceptions", "type":"textarea", "isInReport":true, "isGridColumn":true},
