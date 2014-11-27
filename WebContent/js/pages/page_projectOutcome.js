@@ -4,6 +4,7 @@
 define([], function() {
 
     var questions = [
+        {"id":"outcomes_group", "type":"text", "isInReport":true, "isGridColumn":true},
         {"id":"outcomes_hopesHeader", "type":"header", "isInReport":false, "isGridColumn":false},
         {"id":"outcomes_peopleFeltHeard", "type":"select", "isInReport":true, "isGridColumn":true, "options":["never", "occasionally", "sometimes", "often", "mixed"]},
         {"id":"outcomes_peopleFeltInvolved", "type":"select", "isInReport":true, "isGridColumn":true, "options":["never", "occasionally", "sometimes", "often", "mixed"]},
@@ -32,8 +33,8 @@ define([], function() {
     }
 
     return {
-        "id": "page_outcomesTable",
-        "type": "questionsTable",
+        "id": "page_projectOutcome",
+        "type": "popup",
         "isHeader": false,
         "questions": questions,
         "buildPage": buildPage

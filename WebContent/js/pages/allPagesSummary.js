@@ -80,7 +80,7 @@ var pagesToGoWithHeaders = {
     ],
     "page_intervention": [
         "page_projectOutcomesForIntervention",
-        "page_outcomesTable",
+        "page_projectOutcome",
         "page_designInterventions",
         "page_addIntervention",
         "page_recordInterventions",
@@ -186,6 +186,7 @@ var data = {
     "project_sensemakingSessionRecordsList": [],
     "sensemakingReport": null,
     "project_generalNotes_intervention": "",
+    "project_outcomesList": [],
     "project_interventionPlansList": [],
     "project_interventionRecordsList": [],
     "interventionReport": null,
@@ -480,8 +481,9 @@ var other = [
         "sensemakingSessionRecord_construction_description": ""
     },
     {
-        "__id": "page_outcomesTable",
-        "__type": "questionsTable",
+        "__id": "page_projectOutcome",
+        "__type": "popup",
+        "outcomes_group": "",
         "outcomes_peopleFeltHeard": null,
         "outcomes_peopleFeltInvolved": null,
         "outcomes_peopleLearnedAboutCommOrg": null,
