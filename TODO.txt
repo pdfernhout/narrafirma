@@ -34,22 +34,22 @@ Support clusterSpace -- used in catalysis to cluster interpretations it is a gra
 
 Support observationsList -- used to list all the previously made observations
 
-Support accumulatedItemsGrid -- for results selected to include in an observation
-Support annotationsGrid -- for results, excerpts, or interpretations linked to a perspective
-Support storiesList -- for choosing a resonant story
-
 Implement countNumberOfVenuesChosen in domain
 
 Implement exportPresentationOutline in domain buttonClicked
 
-One project outcome item created per participant group
-
 Venues table needs fixing -- one for each participant group
+Should "venues" name be changed, as could be confusing as to meaning "location"? But "venue" can also mean "forum" or "soapbox" so maybe OK?
+
 General notes should go after dashboard for each section
+
 Catalysis -- story browser needs two buttons that pull up pages to put things in lists: addToObservation:"page_addToObservation";addToExcerpt:"page_addToExcerpt"
 Need to be able to select text in existing story to AddToExcerpts
 Need to figure out some way to represent RESULTS in observations (story browser queries/results, graphs, statistical tests)
 Observations list should not have "add" button, because observations can only be added using "add to observation" button on story browser, graph browser, trends report (but it should have an edit button)
+Support accumulatedItemsGrid -- for results selected to include in an observation
+Support annotationsGrid -- for results, excerpts, or interpretations linked to a perspective
+Support storiesList -- for choosing a resonant story
 Think more about catalysis part
 
 Better and more consistent approach for translation selections for selects, checkboxes, radiobuttons, and maybe other types
@@ -209,6 +209,7 @@ DONE Add text field to add participants for these:
   DONE Dynamic pages for intervention records [Now handled as grid]
 NOT DOING questionsTable working again [No longer needed]
 NOT DOING Fix questionAnswerCountOfTotalOnPages so it can handle a questionsTable [No longer needed]
+DONE Improvements to conversion utility to report conversion issues like missing short names better
 
 ======= CYNTHIA
 
@@ -296,4 +297,6 @@ Support checkBoxesWithPull -- a set of check boxes where the display texts are d
 Improve take survey page like with support for separate pages
 
 Way to edit a story or participant info (with versioning) if needed?
+
+One project outcome item created per participant group
 
