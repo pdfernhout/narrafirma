@@ -34,6 +34,10 @@ Support clusterSpace -- used in catalysis to cluster interpretations it is a gra
 
 Support observationsList -- used to list all the previously made observations
 
+Support accumulatedItemsGrid -- for results selected to include in an observation
+Support annotationsGrid -- for results, excerpts, or interpretations linked to a perspective
+Support storiesList -- for choosing a resonant story
+
 Implement countNumberOfVenuesChosen in domain
 
 Implement exportPresentationOutline in domain buttonClicked
