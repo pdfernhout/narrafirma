@@ -1,7 +1,6 @@
 ==== PNI Workbook TODO list:
 
 PRIORITY:
-- questionsTable working again
 - recommendations table working
 - make whole planning phase work
 - make templates work
@@ -55,6 +54,7 @@ Translation support for survey as distinct from application so two do not potent
 
 When viewing grid data, it should not look editable
 Readonly version of checkboxes and radiobutton widgets, used by grid (assuming that is how the read only data is presented)
+Popup for add item from grid -- should have better label in title as to what type of thing is added
 
 Improve reports so look nice
 
@@ -66,7 +66,7 @@ Autosave, perhaps based on time or based on changing pages
 
 Improve feedback when there are no project versions or survey results; maybe distinguish between an error and nothing being saved yet
 
-Make sure that short name IDs entered by user when defining questions are unique amont themselved and don have leading underscore (or at least arent; "_id")
+Make sure that short name IDs entered by user when defining questions are unique among themselves and don't have a leading underscore (or at least aren't "_id")
 
 Main Dashboard
 Decide or distinguish between between an initial explanation page versus a first big dashboard
@@ -77,9 +77,6 @@ Final review of all strings in code looking for TODO translate items or similar
 
 Support imageUploader
 Support storyBrowserCount
-Fix questionAnswerCountOfTotalOnPages so it can handle a questionsTable
-
-Popup for add item  -- should have better label in title as to what type of thing is added
 
 Way to retrieve data about project participant groups [Is this still relevant?]
 Implement showHideCollectedStories in domain buttonClicked [Not sure what this means now or if still relevant]
@@ -200,13 +197,15 @@ DONE Support grid item move up or down
 NOT DOING Tabs created for new pages as add participants or session plans or session records [Replaced by grid table edit area]
 DONE Translation of strings related to page of questions on project participant groups [should work like everything else since using grid table]
 DONE Add text field to add participants for these:
-  Dynamic pages for collection session records - DONE
-  Dynamic pages for venues - DONE
-  Dynamic pages for sensemaking session plans - DONE
-  Dynamic pages for sensemaking session records - DONE
-  Dynamic pages for intervention plans - DONE
-  Dynamic pages for intervention records - DONE
-  
+  DONE Dynamic pages for collection session records [Now handled as grid]
+  DONE Dynamic pages for venues [Now handled as grid]
+  DONE Dynamic pages for sensemaking session plans [Now handled as grid]
+  DONE Dynamic pages for sensemaking session records [Now handled as grid]
+  DONE Dynamic pages for intervention plans [Now handled as grid]
+  DONE Dynamic pages for intervention records [Now handled as grid]
+NOT DOING questionsTable working again [No longer needed]
+NOT DOING Fix questionAnswerCountOfTotalOnPages so it can handle a questionsTable [No longer needed]
+
 ======= CYNTHIA
 
 Write up sample PNI Workbook product offering descriptions for review 
