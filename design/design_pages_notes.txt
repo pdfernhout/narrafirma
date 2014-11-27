@@ -6,7 +6,7 @@
 //                     quizScoreResult, templateList, button,
 //                     storyBrowser, report,
 //                     observationsList, excerptsList, storyThemer, graphBrowser, trendsReport, clusterSpace
-// page types are: normal (no specification), popup, questionsTable, recommendationTable
+// page types are: normal (no specification), popup, recommendationTable
 
 // a button does something when clicked
 
@@ -92,7 +92,7 @@ the phases of the project.</p>
 * In the planning phase of your PNI project, you will make decisions about how your project will proceed. [project_projectPlanningLabel|label]
 You will think about your goals, your topic, your participants, and any opportunities and dangers you might encounter during the project.
 
-* Project general notes | You can enter some general notes on planning in this project here. [project_generalNotes_planning|textarea]
+* Planning notes | You can enter some general notes on planning in this project here. [project_generalNotes_planning|textarea]
 
 ## Enter project facts [page_projectFacts|page|Project]
 
@@ -282,7 +282,7 @@ based on your consideration of project aspects and your project stories.
 
 ## Write project synopsis [page_writeProjectSynopsis|page|Project]
 
-* On this page you can write your project synopsis, a one or two sentence summary of what matters most about your project. [project_synopsis|textarea]
+* Project synopsis | On this page you can write your project synopsis, a one or two sentence summary of what matters most about your project. [project_synopsis|textarea]
 
 ## Read planning report [page_readPlanningReport|page|Project]
 
@@ -301,7 +301,7 @@ based on your consideration of project aspects and your project stories.
 * In the collection design phase of your PNI project, you will decide on story collection venues, [project_collectionDesignStartLabel|label]
 create some story eliciting and story interpretation questions, design your story collection form, and plan any story collection sessions you want to hold.
 
-* Notes | You can enter some general notes on collection design in this project here. [project_generalNotes_collectionDesign|textarea]
+* Collection design notes | You can enter some general notes on collection design in this project here. [project_generalNotes_collectionDesign|textarea]
 
 ## Choose collection venues [page_chooseCollectionVenues|page|Project]
 
@@ -476,7 +476,7 @@ Activities within story collection sessions can be simple instructions or compli
 
 * In the collection process phase of your PNI project, you will review incoming stories and enter records of story collection sessions. [collectionProcessIntro|label]
 
-* Notes | You can enter some general notes on your collection process in this project here. [project_generalNotes_collectionProcess|textarea]
+* Collection process notes | You can enter some general notes on your collection process in this project here. [project_generalNotes_collectionProcess|textarea]
 
 ## Print question forms [page_finalizeQuestionForms]
 
@@ -587,7 +587,7 @@ Your description can include links to images or other documents.
 * In the catalysis phase of your PNI project, you will look for patterns [catalysisIntro|label]
 and prepare materials for use in sensemaking.
 
-* Notes | You can enter some general notes on catalysis in this project here. [project_generalNotes_catalysis|textarea]
+* Catalysis notes | You can enter some general notes on catalysis in this project here. [project_generalNotes_catalysis|textarea]
 
 ## Browse stories [page_browseStories]
 
@@ -759,7 +759,7 @@ your interpretations.
 
 * In the sensemaking phase of your PNI project, you will plan sensemaking sessions and record what happened in them. [sensemakingIntroLabel|label]
 
-* You can enter some general notes on sensemaking in this project here. [project_generalNotes_sensemaking|textarea]
+* Sensemaking notes | You can enter some general notes on sensemaking in this project here. [project_generalNotes_sensemaking|textarea]
 
 ## Plan sensemaking sessions [page_planSensemakingSessions]
 
@@ -851,7 +851,7 @@ you can describe them here.
 ## Add resonant story [page_addResonantStory|popup]
 
 // this is not a story browser, it is a list of all stories, and the one selected will be copied to the resonant stories list for this session when they click ok on this popup
-* Choose a story to mark as a resonant story for this sensemaking session. [storiesListChoose|storiesList]
+* Resonant story | Choose a story to mark as a resonant story for this sensemaking session. [sensemakingSessionRecord_resonantStory_selection|storiesList]
 * Type | Which type of resonant story is this? [sensemakingSessionRecord_resonantStory_type|select|pivot;voice;discovery;other]
 * Why | Why did this story stand out? [sensemakingSessionRecord_resonantStory_reason|textarea]
 * Groups | For which participant groups was this story important? [sensemakingSessionRecord_resonantStory_groups|text]
@@ -886,15 +886,17 @@ Your description can include links to images or documents.
 
 * In the intervention phase of your PNI project, you will plan interventions and record information about them. [interventionIntroLabel|label]
 
-* You can enter some general notes on intervention in this project here. [project_generalNotes_intervention|textarea]
+* Intervention notes | You can enter some general notes on intervention in this project here. [project_generalNotes_intervention|textarea]
 
 ## Answer questions about project outcomes [page_projectOutcomesForIntervention]
 
-* In order to choose interventions that will be useful in your project, it will be helpful to think about some [outcomesTable|questionsTable|page_outcomesTable;participants_firstGroupName;participants_secondGroupName;participants_thirdGroupName]
+* In order to choose interventions that will be useful in your project, it will be helpful to think about some [project_outcomesList|grid|page_projectOutcome]
 of the issues (positive and negative) you discovered in your project. Please answer these questions in reference to
-the participant groups you set up in the project planning phase.
+the participant groups you set up in the project planning phase. Please enter one record for each participant group.
 
-## Project outcomes [page_outcomesTable|questionsTable]
+## Project outcomes [page_projectOutcome|popup]
+
+* Participant group | Which participant group is this outcome for? [outcomes_group|text]
 
 * Hopes [outcomes_hopesHeader|header]
 * Felt heard | During your project, did the people in this group say they felt heard for the first time? [outcomes_peopleFeltHeard|select|never;occasionally;sometimes;often;mixed]
@@ -1000,7 +1002,7 @@ related to the questions answered about participant groups.
 * In the return phase of your PNI project, you will gather feedback, reflect on the project, possibly present [returnIntroLabel|label]
 the project to someone, and help people with requests about the project.
 
-* Notes | You can enter some general notes on the return phase of this project here. [project_generalNotes_return|textarea]
+* Return phase notes | You can enter some general notes on the return phase of this project here. [project_generalNotes_return|textarea]
 
 ## Gather feedback [page_gatherFeedback]
 
