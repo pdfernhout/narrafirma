@@ -3,6 +3,9 @@
 
 // This parses design/design_pages_notes.txt to create a pages structure with an object for each page that contains questions for that page.
 
+// The design file to be read
+var designFileName = '../design/design_pages_notes.txt';
+
 var fs = require('fs');
 
 function startsWith(str, prefix) {
@@ -167,7 +170,7 @@ function convert(input) {
 }
 
 //Read design file
-var design = fs.readFileSync('design/design_pages_notes.txt', "utf8");
+var design = fs.readFileSync(designFileName, "utf8");
 
 // convert it to pages
 convert(design);

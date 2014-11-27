@@ -8,6 +8,12 @@
 // It generates and allPagesSummary.js which defines the domain data model and also has information about what pages go with what headers
 // It generates js/nls/pageMessages.js translation file
 
+// Various files to be written and their locations
+var translationFileName = "../WebContent/js/nls/pageMessages.js";
+var pagesFolder = "../WebContent/js/pages/";
+var allPagesFileName = pagesFolder + "allPages.js";
+var allPagesSummaryFileName = pagesFolder +  "allPagesSummary.js";
+
 var parseDesign = require("./parse-design.js");
 var pages = parseDesign.pages;
 
@@ -60,8 +66,6 @@ var firstPage = true;
 
 var notReportable = {"label": true, "header": true, "button": true};
 
-var folder = "WebContent/js/pages/";
-
 var fileTemplate = "// Generated from design\n" +
 "\"use strict\";\n" +
 "\n" +
@@ -99,7 +103,7 @@ function writePageFiles() {
         pageReturn = pageReturn + "    \"" + page.id + "\": " + page.id;
         
         translations[page.id + "::title"] = page.name;
-        var fileName = folder + page.id + ".js";
+        var fileName = pagesFolder + page.id + ".js";
         var fileContent = fileTemplate;
         fileContent = fileContent.replace("{{pageID}}", page.id);
         fileContent = fileContent.replace("{{pageType}}", page.type);
@@ -151,8 +155,6 @@ function writePageFiles() {
     }
 }
 
-var translationFileName = "WebContent/js/nls/pageMessages.js";
-
 var allPagesFileTemplate = "\"use strict\";\n" +
 "\n" +
 "define([\n" +
@@ -172,7 +174,6 @@ function writeAllPagesFile() {
     allPagesFileContent = allPagesFileContent.replace("{{pageNames}}", pageNames);
     allPagesFileContent = allPagesFileContent.replace("{{pageReturn}}", pageReturn);
     
-    var allPagesFileName = "WebContent/js/pages/allPages.js";
     fs.writeFile(allPagesFileName, allPagesFileContent, errorHandler(allPagesFileName));
 }
 
@@ -309,8 +310,6 @@ function outputModel() {
     addOutput("var other = " + JSON.stringify(moreModels, null, "    "));
     addOutput(";\n\n");
 }
-
-var allPagesSummaryFileName = "WebContent/js/pages/allPagesSummary.js";
 
 function writeAllPagesSummaryFile() {
     allOutput = "";
