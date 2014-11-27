@@ -97,7 +97,8 @@ var typesNotNeedingShortName = {
     "function": 1,
     recommendationTable: 1,
     templateList: 1,
-    storyBrowser: 1
+    storyBrowser: 1,
+    graphBrowser: 1
 };
 
 function writePageFiles() {
