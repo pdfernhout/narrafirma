@@ -84,13 +84,6 @@ Popup for add item  -- should have better label in title as to what type of thin
 Way to retrieve data about project participant groups [Is this still relevant?]
 Implement showHideCollectedStories in domain buttonClicked [Not sure what this means now or if still relevant]
 
-DONE Add text field to add participants for these:
-  Dynamic pages for collection session records - DONE
-  Dynamic pages for venues - DONE
-  Dynamic pages for sensemaking session plans - DONE
-  Dynamic pages for sensemaking session records - DONE
-  Dynamic pages for intervention plans - DONE
-  Dynamic pages for intervention records - DONE
 DONE Checkboxes for multiple choices
 DONE Tab container sizing to full page
 DONE Slider with labels and no ticks
@@ -206,7 +199,14 @@ DONE Support grid item duplicate
 DONE Support grid item move up or down 
 NOT DOING Tabs created for new pages as add participants or session plans or session records [Replaced by grid table edit area]
 DONE Translation of strings related to page of questions on project participant groups [should work like everything else since using grid table]
-
+DONE Add text field to add participants for these:
+  Dynamic pages for collection session records - DONE
+  Dynamic pages for venues - DONE
+  Dynamic pages for sensemaking session plans - DONE
+  Dynamic pages for sensemaking session records - DONE
+  Dynamic pages for intervention plans - DONE
+  Dynamic pages for intervention records - DONE
+  
 ======= CYNTHIA
 
 Write up sample PNI Workbook product offering descriptions for review 
@@ -214,9 +214,6 @@ Finish templates
 Create recommendations file
 Create help 
 
-DONE Change "Sensemaking sessions" and all other too short labels for lists near end of file
-DONE Every question must have short name - except labels and complicated widgets
-DONE Story collection sessions -- change question to label
 NOT DOING Change dashboards to a special widget with list of pages in options [id|dashboard|page1;page2]
 DONE Change all items that start with "list_"
 DONE Remove all "I'm done with this" checkboxes
@@ -225,6 +222,9 @@ DONE Templates for activities
 DONE Figure out what to do with finalize your questions
 DONE Intro for reports
 DONE Prototype concept images for demo
+DONE Change "Sensemaking sessions" and all other too short labels for lists near end of file
+DONE Every question must have short name - except labels and complicated widgets
+DONE Story collection sessions -- change question to label
 
 ==== Later:
 
