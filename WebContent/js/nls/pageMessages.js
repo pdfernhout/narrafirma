@@ -952,6 +952,7 @@ define({
     "project_observationsDisplayList::prompt": "These are the observations you have collected from the\nbrowse, graph, and trends pages.",
     "project_observationsDisplayList::shortName": "Catalysis observations",
     "project_outcomesList::prompt": "In order to choose interventions that will be useful in your project, it will be helpful to think about some\nof the issues (positive and negative) you discovered in your project. Please answer these questions in reference to\nthe participant groups you set up in the project planning phase. Please enter one record for each participant group.",
+    "project_outcomesList::shortName": "Project outcomes",
     "project_participantGroupsList::prompt": "Please add participant groups in the list below (typically up to three groups).",
     "project_participantGroupsList::shortName": "Participant groups",
     "project_participantQuestionsLabel::prompt": "On this page you will write questions to ask people about themselves.",

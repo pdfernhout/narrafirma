@@ -890,7 +890,7 @@ Your description can include links to images or documents.
 
 ## Answer questions about project outcomes [page_projectOutcomesForIntervention]
 
-* In order to choose interventions that will be useful in your project, it will be helpful to think about some [project_outcomesList|grid|page_projectOutcome]
+* Project outcomes | In order to choose interventions that will be useful in your project, it will be helpful to think about some [project_outcomesList|grid|page_projectOutcome]
 of the issues (positive and negative) you discovered in your project. Please answer these questions in reference to
 the participant groups you set up in the project planning phase. Please enter one record for each participant group.
 
