@@ -23,8 +23,11 @@ var acceptableTypes = [
   "report", "checkboxes", "templateList", "checkboxesWithPull", "participantStoryForm", "storyBrowser",
   "excerptsList", "storyThemer", "graphBrowser", "trendsReport", "clusterSpace", "listCount",
   "questionAnswer", "questionAnswerCountOfTotalOnPage", "toggleButton", "boolean",
-  "observationsList", "image"
+  "observationsList", "image", "function",
+  "accumulatedItemsGrid", "annotationsGrid", "storiesList"
 ];
+
+// TODO: List types not used from acceptable types
 
 var usedIDs = {};
 var pages = [];
@@ -95,7 +98,7 @@ function extract(line, rest, lineNumber) {
 }
 
 function convert(input) {
-  console.log("convert");
+  // console.log("convert");
   // console.log("input", input);
   
   usedIDs = {};
@@ -169,7 +172,8 @@ function convert(input) {
 
 }
 
-//Read design file
+// Read design file
+console.log("Reading design file:", designFileName);
 var design = fs.readFileSync(designFileName, "utf8");
 
 // convert it to pages

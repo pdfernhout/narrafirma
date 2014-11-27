@@ -25,12 +25,13 @@ function addOutput(output) {
   allOutput = allOutput + output;
 }
 
+// TODO: Fix references which are a legacy from when did the file writing asynchronously
 function errorHandler(fileName) {
     return function (err) {
         if (err) {
             console.log(err);
         } else {
-            console.log("The file " + fileName + " was written.");
+            // console.log("The file " + fileName + " was written.");
         }
     };
 }
@@ -86,6 +87,19 @@ var fileTemplate = "// Generated from design\n" +
 "    };\n" +
 "});";
 
+var typesNotNeedingShortName = {
+    "label": 1,
+    "header": 1,
+    "image": 1,
+    "button": 1,
+    "report": 1,
+    "quizScoreResult": 1,
+    "function": 1,
+    recommendationTable: 1,
+    templateList: 1,
+    storyBrowser: 1
+};
+
 function writePageFiles() {
     for (var pageIndex in pages) {
         var page = pages[pageIndex];
@@ -126,8 +140,8 @@ function writePageFiles() {
             translations[question.id + "::prompt"] = question.text;
             if (question.shortText) {
                 translations[question.id + "::shortName"] = question.shortText;
-            } else if (question.type !== "label" && question.type !== "header" && question.type !== "image" && question.type !== "button" && question.type !== "report" && question.type !== "quizScoreResult") {
-                console.log("No short name for field: " + question.id + " type: " + question.type + " text: " + question.text);
+            } else if (! (question.type in typesNotNeedingShortName)) {
+                console.log("No short name for type: " + question.type + " field: " + question.id + " text: " + question.text);
             }
             
             if (question.options) {
@@ -151,7 +165,8 @@ function writePageFiles() {
         // To write direct calls:
         // fileContent = fileContent.replace("{{body}}", allOutput);
         fileContent = fileContent.replace("{{body}}", "        builder.addQuestions(questions, contentPane, model);\n");
-        fs.writeFile(fileName, fileContent, errorHandler(fileName));
+        var error = fs.writeFileSync(fileName, fileContent);
+        errorHandler(fileName)(error);
     }
 }
 
@@ -174,7 +189,8 @@ function writeAllPagesFile() {
     allPagesFileContent = allPagesFileContent.replace("{{pageNames}}", pageNames);
     allPagesFileContent = allPagesFileContent.replace("{{pageReturn}}", pageReturn);
     
-    fs.writeFile(allPagesFileName, allPagesFileContent, errorHandler(allPagesFileName));
+    var error = fs.writeFileSync(allPagesFileName, allPagesFileContent);
+    errorHandler(allPagesFileName)(error);
 }
 
 function writeTranslationsFile() {
@@ -199,7 +215,8 @@ function writeTranslationsFile() {
     addOutput("}\n" +
     "});");
     
-    fs.writeFile(translationFileName, allOutput, errorHandler(translationFileName));
+    var error = fs.writeFileSync(translationFileName, allOutput);
+    errorHandler(translationFileName)(error);
 }
 
 ////// Model writing
@@ -326,14 +343,25 @@ function writeAllPagesSummaryFile() {
     addOutput("};\n");
     addOutput("});\n");
     
-    fs.writeFile(allPagesSummaryFileName, allOutput, errorHandler(allPagesSummaryFileName));
+    var error = fs.writeFileSync(allPagesSummaryFileName, allOutput);
+    errorHandler(allPagesSummaryFileName)(error);
 }
 
 function writeFiles() {
-    writePageFiles() ;
+    console.log('\nWriting page files');
+    writePageFiles();
+    
+    console.log('\nWriting "allPages" file');
     writeAllPagesFile();
+    
+    console.log('\nWriting translation file');
     writeTranslationsFile();
+    
+    console.log('\nWriting all pages summary file (model)');
     writeAllPagesSummaryFile();
+    
+    console.log("\nDone writing files");
 }
 
+console.log("Converting design file to JavaScript");
 writeFiles();
