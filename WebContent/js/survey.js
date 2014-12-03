@@ -1,7 +1,6 @@
 "use strict";
 
 define([
-    "js/domain",
     "dojo/dom-construct",
     "dojox/mvc/getPlainValue",
     "dojo/_base/lang",
@@ -14,7 +13,6 @@ define([
     "dijit/form/Form",
     "dojo/Stateful"
 ], function(
-    domain,
     domConstruct,
     getPlainValue,
     lang,
@@ -40,28 +38,19 @@ define([
         
         // Can't push survey into all results at this point or will have duplicates when load them later
         // TODO: Maybe should load latest results from server back at this point? Because will not have new survey...
-        
-        // var surveyResultsDiv = document.getElementById("surveyResultsDiv");
-        // surveyResultsDiv.innerHTML = JSON.stringify(domain.surveyResults);
     }
     
-    function takeSurvey() {
-        // TODO: Remove this -- ONLY FOR TESTING
-        domain.finalizeSurvey();
-        
+    function takeSurvey(questions) {  
+        console.log("takeSurvey questions", questions);
         var surveyDialog = null;
         
         var form = new Form();
         form.set("style", "width: 800px; height 800px; overflow: auto;");
         
-        // question_editor.insertQuestionsIntoDiv(domain.exportedSurveyQuestions, form.containerNode);
         var surveyModel = new Stateful();
         
         var model = surveyModel;
         var contentPane = form.containerNode;
-        
-        console.log("domain.projectData", domain.projectData);
-        var questions = domain.collectAllSurveyQuestions();
         
         widgetBuilder.addQuestions(questions, contentPane, model);
         

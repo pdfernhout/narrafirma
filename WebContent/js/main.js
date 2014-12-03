@@ -414,6 +414,16 @@ require([
         // widgetGridTable.resizeGridsKludge();
     }
     
+    function takeSurvey() {
+        // TODO: Remove this -- ONLY FOR TESTING
+        domain.finalizeSurvey();
+        
+        console.log("domain.projectData", domain.projectData);
+        var questions = domain.collectAllSurveyQuestions();
+        
+        survey.takeSurvey(questions);
+    }
+    
     function startup() {
         
         // Setup important callback for page changes
@@ -424,7 +434,7 @@ require([
         
         // Callback for this button
         // TODO: Temp for testing
-        domain.buttonFunctions.enterSurveyResult = survey.takeSurvey;
+        domain.buttonFunctions.enterSurveyResult = takeSurvey;
         domain.buttonFunctions.updateQuestionsForPageChangeCallback = updatePagesForDomainValueChange;
         
         // Call the main function
