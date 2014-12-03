@@ -40,9 +40,8 @@ define([
         // TODO: Maybe should load latest results from server back at this point? Because will not have new survey...
     }
     
-    function takeSurvey(questions) {  
-        console.log("takeSurvey questions", questions);
-        var surveyDialog = null;
+    function buildSurveyForm(questions, doneCallback) {  
+        console.log("buildSurveyForm questions", questions);
         
         var form = new Form();
         form.set("style", "width: 800px; height 800px; overflow: auto;");
@@ -58,7 +57,7 @@ define([
         
         utility.newButton(undefined, "surveySubmit", form, function() {
             console.log("Submit survery");
-            surveyDialog.hide();
+            if (doneCallback) doneCallback();
             submitSurvey(model, form);
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
             form.destroyRecursive();
@@ -66,21 +65,38 @@ define([
         
         utility.newButton(undefined, "surveyCancel", form, function() {
             console.log("Cancel");
-            surveyDialog.hide();
+            if (doneCallback) doneCallback();
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
             form.destroyRecursive();
         });
+        
+        form.startup();
+        
+        return form;
+    }
 
+    
+    function takeSurvey(questions) {  
+        console.log("takeSurvey questions", questions);
+        
+        var surveyDialog;
+        
+        function hideSurveyDialog() {
+            surveyDialog.hide();
+        }
+
+        var form = buildSurveyForm(questions, hideSurveyDialog);
+   
         surveyDialog = new Dialog({
             title: "Take Survey",
             content: form,
             onCancel: function() {
+                // TODO: Confirm closing if have entered data and otherwise don't close...
                 // Handles close X in corner or escape
                 form.destroyRecursive();
             }
         });
-        
-        form.startup();
+                
         surveyDialog.startup();
         surveyDialog.show();
     }
