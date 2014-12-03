@@ -34,7 +34,9 @@ define([
         surveyResult._id = uuid();
         
         console.log("answers", surveyResult, model);
-        storage.storeSurveyResult(surveyResult);
+        
+        // TODO: Commented out for testing -- put back!!!
+        // storage.storeSurveyResult(surveyResult);
         
         // Can't push survey into all results at this point or will have duplicates when load them later
         // TODO: Maybe should load latest results from server back at this point? Because will not have new survey...
@@ -57,8 +59,8 @@ define([
         
         utility.newButton(undefined, "surveySubmit", form, function() {
             console.log("Submit survery");
-            if (doneCallback) doneCallback();
             submitSurvey(model, form);
+            if (doneCallback) doneCallback();
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
             form.destroyRecursive();
         });
@@ -118,6 +120,7 @@ define([
 //    }
 
     return {
-        takeSurvey: takeSurvey
+        takeSurvey: takeSurvey,
+        buildSurveyForm: buildSurveyForm
     };
 });
