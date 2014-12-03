@@ -236,7 +236,7 @@ app.get("/cgi-bin/resource-get.php", ensureAuthenticated, function (request, res
 });
 
 app.post("/cgi-bin/resource-get.php", ensureAuthenticated, function (request, response) {
-    Pointrel20130202Server.Pointrel20130202Server.resourceGet(request, response);
+    Pointrel20130202Server.resourceGet(request, response);
 });
 
 //app.get("/cgi-bin/resource-publish.php", ensureAuthenticated, function (request, response) {
