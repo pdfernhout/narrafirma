@@ -42,7 +42,7 @@ define([
         // TODO: Maybe should load latest results from server back at this point? Because will not have new survey...
     }
     
-    function buildSurveyForm(questions, doneCallback) {  
+    function buildSurveyForm(questions, doneCallback, includeCancelButton) {  
         console.log("buildSurveyForm questions", questions);
         
         var form = new Form();
@@ -60,17 +60,19 @@ define([
         utility.newButton(undefined, "surveySubmit", form, function() {
             console.log("Submit survery");
             submitSurvey(model, form);
-            if (doneCallback) doneCallback();
+            if (doneCallback) doneCallback("submitted");
             // The next line is needed to get rid of duplicate IDs for next time the form is opened:
             form.destroyRecursive();
         });
         
-        utility.newButton(undefined, "surveyCancel", form, function() {
-            console.log("Cancel");
-            if (doneCallback) doneCallback();
-            // The next line is needed to get rid of duplicate IDs for next time the form is opened:
-            form.destroyRecursive();
-        });
+        if (includeCancelButton) {
+            utility.newButton(undefined, "surveyCancel", form, function() {
+                console.log("Cancel");
+                if (doneCallback) doneCallback("cancelled");
+                // The next line is needed to get rid of duplicate IDs for next time the form is opened:
+                form.destroyRecursive();
+            });
+        }
         
         form.startup();
         
@@ -83,11 +85,11 @@ define([
         
         var surveyDialog;
         
-        function hideSurveyDialog() {
+        function hideSurveyDialog(status) {
             surveyDialog.hide();
         }
 
-        var form = buildSurveyForm(questions, hideSurveyDialog);
+        var form = buildSurveyForm(questions, hideSurveyDialog, true);
    
         surveyDialog = new Dialog({
             title: "Take Survey",

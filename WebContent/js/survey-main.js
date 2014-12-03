@@ -31,7 +31,7 @@ require([
            
         var questions = getQuestionsFromServer();
         
-        var form = survey.buildSurveyForm(questions, finishedSurvey); 
+        var form = survey.buildSurveyForm(questions, finishedSurvey, false); 
         
         var surveyDiv = dom.byId("surveyDiv");
         surveyDiv.appendChild(form.containerNode);
