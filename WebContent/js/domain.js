@@ -113,15 +113,20 @@ define([
         for (var questionIndex in questions) {
             var question = questions[questionIndex];
             // console.log("question", question);
-            // TODO: FIX BUG HERE PREVENTING the review incoming stories page from being viewed if start with that!!!!
-            var id = question.storyQuestion_shortName || question.participantQuestion_shortName;
+            var shortName = question.storyQuestion_shortName || question.participantQuestion_shortName;
+            // Including prefix for question ID so extra translations going with id will not collide with main application IDs
+            // TODO: Maybe should include a survey name here in ID?
+            var id = "__survey_" + shortName;
             var type = question.storyQuestion_type || question.participantQuestion_type;
             // TODO: What to set for initial values?
             // TODO: Improve how making model...
             // if (!(type in {label: 1, header: 1})) model.set(id, null);
-            // TODO: Need better approach for translations; these could interfere with main application
-            extraTranslations[id + "::prompt"] = question.storyQuestion_text || question.participantQuestion_text;
-            extraTranslations[id + "::shortName"] = id;
+            var prompt = question.storyQuestion_text || question.participantQuestion_text;
+            
+            // TODO: Remove setting extra translations here and create them when building form for survey
+            extraTranslations[id + "::prompt"] = prompt;
+            extraTranslations[id + "::shortName"] = shortName;
+            
             var options = [];
             var optionsString = question.storyQuestion_options || question.participantQuestion_options;
             if (optionsString) {
@@ -135,7 +140,7 @@ define([
                     }
                 }
             }
-            adjustedQuestions.push({type: type, id: id, options: options});
+            adjustedQuestions.push({type: type, id: id, options: options, shortName: shortName, prompt: prompt});
         }
         
         return adjustedQuestions;
