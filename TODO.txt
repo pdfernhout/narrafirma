@@ -52,10 +52,6 @@ Support annotationsGrid -- for results, excerpts, or interpretations linked to a
 Support storiesList -- for choosing a resonant story
 Think more about catalysis part
 
-Better and more consistent approach for translation selections for selects, checkboxes, radiobuttons, and maybe other types
-Translate report answers as needed for those types like selections
-Translation support for survey as distinct from application so two do not potentially collide
-
 When viewing grid data, it should not look editable
 Readonly version of checkboxes and radiobutton widgets, used by grid (assuming that is how the read only data is presented)
 Popup for add item from grid -- should have better label in title as to what type of thing is added
@@ -77,6 +73,9 @@ Decide or distinguish between between an initial explanation page versus a first
 
 Help window displaying HTML instead of alert
 Look at all alerts in code and make into nicer GUI feedback
+
+Better and more consistent approach for translation selections for selects, checkboxes, radiobuttons, and maybe other types
+Translate report answers as needed for those types like selections
 Final review of all strings in code looking for TODO translate items or similar
 
 Support imageUploader
@@ -222,6 +221,7 @@ NOT DOING questionsTable working again [No longer needed]
 NOT DOING Fix questionAnswerCountOfTotalOnPages so it can handle a questionsTable [No longer needed]
 DONE Improvements to conversion utility to report conversion issues like missing short names better
 DONE Use new version of Pointrel system with memory indexing instead of index logs so server code is simpler and more robust and supports use by server-side code
+DONE Translation support for survey as distinct from application so two do not potentially collide
 
 ======= CYNTHIA
 

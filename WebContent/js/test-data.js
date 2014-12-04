@@ -4,7 +4,6 @@
 
 define([
     "dojo/_base/array",
-    "js/domain",
     "exports",
     "dojo/_base/lang",
     "dijit/registry",
@@ -12,7 +11,6 @@ define([
     "js/translate"
 ], function(
     array,
-    domain,
     exports,
     lang,
     registry,
@@ -32,16 +30,16 @@ define([
     ];
         
     // To ensure options display as expected without warnings
-    domain.extraTranslations["feeling4::selection:low"] = "low";
-    domain.extraTranslations["feeling4::selection:medium"] = "medium";
-    domain.extraTranslations["feeling4::selection:high"] = "high";
+    translate.extraTranslations["feeling4::selection:low"] = "low";
+    translate.extraTranslations["feeling4::selection:medium"] = "medium";
+    translate.extraTranslations["feeling4::selection:high"] = "high";
     
     array.forEach(testDogQuestions, function (question) {
         question.isGridColumn = true;
         question.isInReport = true;
         var split = question.text.split("|");
-        domain.extraTranslations[question.id + "::" + "prompt"] = string.trim(split[1]);
-        domain.extraTranslations[question.id + "::" + "shortName"] = string.trim(split[0]);
+        translate.extraTranslations[question.id + "::" + "prompt"] = string.trim(split[1]);
+        translate.extraTranslations[question.id + "::" + "shortName"] = string.trim(split[0]);
     });
     
     var testDogStories = [];

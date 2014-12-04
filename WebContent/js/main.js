@@ -2,6 +2,7 @@
 
 require([
     "js/pages/allPages",
+    "dojo/i18n!js/nls/applicationMessages",
     "dojo/_base/array",
     "dojox/mvc/at",
     "dojo/_base/connect",
@@ -10,6 +11,7 @@ require([
     "dojo/dom-style",
     "dojo/hash",
     "dojo/_base/lang",
+    "dojo/i18n!js/nls/pageMessages",
     "js/storage",
     "js/survey",
     "js/test-data",
@@ -22,6 +24,7 @@ require([
     "dojo/domReady!"
 ], function(
     allPages,
+    applicationMessages,
     array,
     at,
     connect,
@@ -30,6 +33,7 @@ require([
     domStyle,
     hash,
     lang,
+    pageMessages,
     storage,
     survey,
     testData,
@@ -198,10 +202,10 @@ require([
            // Uses special domain dictionary to store translations synthesized for each indidivual widget
            var options = ["intentionally skipped", "partially done", "completely finished"];
            var statusEntryID = id + "_pageStatus";
-           domain.extraTranslations[statusEntryID + "::prompt"] =  translate("dashboard_status_entry::prompt") + " ";
+           translate.extraTranslations[statusEntryID + "::prompt"] =  translate("dashboard_status_entry::prompt") + " ";
            for (var optionIndex in options) {
                var option = options[optionIndex];
-               domain.extraTranslations[statusEntryID + "::selection:" + option] = translate("dashboard_status_entry::selection:" + option);
+               translate.extraTranslations[statusEntryID + "::selection:" + option] = translate("dashboard_status_entry::selection:" + option);
            }
            // TODO: Put blank line in here
            widgetBuilder.add_select(pagePane, domain.projectData.projectAnswers, statusEntryID, options);
@@ -215,7 +219,7 @@ require([
                // console.log("pageID", page, pageID, domain.pageDefinitions, domain.pageDefinitions[pageID]);
                if (!domain.pageDefinitions[pageID]) console.log("Error: problem finding page definition for", pageID, " -- Could the domain be out of date relative to the design and pages.js?");
                if (domain.pageDefinitions[pageID] && domain.pageDefinitions[pageID].type === "page") {
-                   domain.extraTranslations[statusViewID + "::prompt"] = translate(pageID + "::title") + " " + translate("dashboard_status_label") + " ";
+                   translate.extraTranslations[statusViewID + "::prompt"] = translate(pageID + "::title") + " " + translate("dashboard_status_label") + " ";
                    widgetBuilder.add_questionAnswer(pagePane, domain.projectData.projectAnswers, statusViewID, [pageID + "_pageStatus"]);
                }
            }
@@ -430,6 +434,7 @@ require([
     }
     
     function startup() {
+        translate.configure(pageMessages, applicationMessages);
         
         // Setup important callback for page changes
         domain.setPageChangeCallback(widgetBuilder.updateQuestionsForPageChange);

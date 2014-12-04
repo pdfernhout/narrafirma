@@ -1,12 +1,16 @@
 "use strict";
 
 require([
+    "dojo/i18n!js/nls/applicationMessages",
     "dojo/dom",
     "js/survey",
+    "js/translate",
     "dojo/domReady!"
 ], function(
+    applicationMessages,
     dom,
-    survey
+    survey,
+    translate
 ){
     // TODO: Internationalize
     // TODO: Full survey
@@ -42,6 +46,7 @@ require([
     }
     
     function startup() {
+        translate.configure({}, applicationMessages);
         // Call the main function
         createLayout();
     }

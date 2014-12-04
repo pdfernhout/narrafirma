@@ -31,10 +31,6 @@ define([
     
     var projectData = {};
     
-    // TODO: Kludge for extra translations for testing -- code will add some things here, need better approach
-    var extraTranslations = {
-    };
-    
     function countNumberOfVenuesChosen(question) {
         return "countNumberOfVenuesChosen UNFINISHED";
     }
@@ -123,10 +119,6 @@ define([
             // if (!(type in {label: 1, header: 1})) model.set(id, null);
             var prompt = question.storyQuestion_text || question.participantQuestion_text;
             
-            // TODO: Remove setting extra translations here and create them when building form for survey
-            extraTranslations[id + "::prompt"] = prompt;
-            extraTranslations[id + "::shortName"] = shortName;
-            
             var options = [];
             var optionsString = question.storyQuestion_options || question.participantQuestion_options;
             if (optionsString) {
@@ -136,7 +128,6 @@ define([
                     var trimmedOption = splitOptions[index].trim();
                     if (trimmedOption) {
                         options.push(trimmedOption);
-                        extraTranslations[id + "::selection:" + trimmedOption] = trimmedOption;
                     }
                 }
             }
@@ -461,7 +452,6 @@ define([
         "pagesToGoWithHeaders": pagesToGoWithHeaders,
         "questions": questions,
         "pageDefinitions": pageDefinitions,
-        "extraTranslations": extraTranslations,
         
         // functions called from page widgets
         "setPageChangeCallback": setPageChangeCallback,

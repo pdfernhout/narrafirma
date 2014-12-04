@@ -5,6 +5,7 @@ define([
     "dojox/mvc/getPlainValue",
     "dojo/_base/lang",
     "js/storage",
+    "js/translate",
     "js/utility",
     "dojox/uuid/generateRandomUuid",
     "js/widgetBuilder",
@@ -17,6 +18,7 @@ define([
     getPlainValue,
     lang,
     storage,
+    translate,
     utility,
     uuid,
     widgetBuilder,
@@ -48,8 +50,23 @@ define([
         // TODO: Maybe should load latest results from server back at this point? Because will not have new survey...
     }
     
+    
+    function addExtraTranslationsForQuestions(questions) {
+        for (var questionIndex in questions) {
+            var question = questions[questionIndex];  
+            translate.extraTranslations[question.id + "::prompt"] = question.prompt;
+            translate.extraTranslations[question.id + "::shortName"] = question.shortName;
+            for (var optionIndex in question.options) {
+                var option = question.options[optionIndex];
+                translate.extraTranslations[question.id + "::selection:" + option] = option;
+            }
+        }
+    }
+    
     function buildSurveyForm(questions, doneCallback, includeCancelButton) {  
         console.log("buildSurveyForm questions", questions);
+        
+        addExtraTranslationsForQuestions(questions);
         
         var form = new Form();
         form.set("style", "width: 800px; height 800px; overflow: auto;");
@@ -85,7 +102,6 @@ define([
         return form;
     }
 
-    
     function takeSurvey(questions) {  
         console.log("takeSurvey questions", questions);
         
@@ -110,22 +126,6 @@ define([
         surveyDialog.startup();
         surveyDialog.show();
     }
-    
-//    function createPage(tabContainer) {
-//        // Take survey pane
-//        
-//        var takeSurveyPane = new ContentPane({
-//            title: "Take survey"
-//        });
-//        
-//        var pane = takeSurveyPane.containerNode;
-//        var takeSurveyButton = widgets.newButton("Take survey", pane, takeSurvey);
-//        pane.appendChild(document.createElement("br"));
-//        pane.appendChild(domConstruct.toDom('Survey Results<br><div id="surveyResultsDiv"></div>'));
-//        
-//        tabContainer.addChild(takeSurveyPane);
-//        takeSurveyPane.startup();
-//    }
     
     function getQuestionnaireFromServer(questionnaireID, callback) {
         storage.loadLatestQuestionnaireVersion(questionnaireID, callback);
