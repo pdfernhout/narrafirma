@@ -192,28 +192,39 @@ define([
     
     function loadLatestStoriesFromServer(contentPane, model, id, questionOptions, value) {
         console.log("loadLatestStoriesFromServer called");
-        storage.loadLatestSurveyResults(function (allEntries, newEntries) {
+        storage.loadLatestSurveyResults(function (allEnvelopes, newEnvelopes) {
             // console.log("load survey result", "all", allEntries, "new", newEntries);
-            for (var index in newEntries) {
-                var newEntryID = newEntries[index];
-                var newEntry = allEntries[newEntryID];
-                if (newEntry) {
-                    var surveyResult = newEntry.surveyResult;
+            var newEnvelopeCount = 0;
+            for (var index in newEnvelopes) {
+                var newEnvelopeReference = newEnvelopes[index];
+                var newEnvelope = allEnvelopes[newEnvelopeReference];
+                if (newEnvelope) {
+                    newEnvelopeCount++;
+                    var surveyResult = newEnvelope.content;
                     if (surveyResult) {
                         // TODO: Kludge to remove for working with test data
                         if (!surveyResult.id) {
                             // console.log("UUID issue", newEntries[index], surveyResult);
                             // surveyResult.id = uuid();
                             // Use the identifier for the resource the survey is in
-                            surveyResult.id = newEntryID;
+                            surveyResult.id = newEnvelopeReference;
                         }
                         projectData.surveyResults.allCompletedSurveys.push(surveyResult);
                     } else {
-                        console.log("ERROR: Missing surveyResult in newEntry", newEntry);
+                        console.log("ERROR: Missing surveyResult in newEnvelope", newEnvelope);
                     }
                 } else {
-                    console.log("ERROR: Problem reading resourceContent from newEntry", newEntryID);
+                    console.log("ERROR: Problem reading resourceContent from newEnvelope", newEnvelopeReference);
                 }
+            }
+            
+            if (newEnvelopeCount === 0) {
+                // TODO: Translate
+                alert("No new survey results were found.");
+                return;
+            } else {
+                // TODO: Translate
+                alert("" + newEnvelopeCount + "new survey result(s) were found.");
             }
             
             // TODO: Only for debugging; need to think through the seperating of stories and general survey data

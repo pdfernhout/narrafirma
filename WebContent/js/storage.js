@@ -14,22 +14,14 @@ define([
     // var savedVersions = [];
     
     var projectAnswersVersionHyperdocumentUUID = "Test-PNIWorkbook-002";
-    var projectAnswersVersionContentType = "pointrel/org.workingwithstories.PNIWorkbook";
+    var projectAnswersVersionContentType = "org.workingwithstories.PNIWorkbook";
     
     var surveyResultHyperdocumentID = "Test-PNIWorkbook-002-Surveys";
-    var surveyResultContentType = "pointrel/org.workingwithstories.PNIWorkbookSurveyResult";
+    var surveyResultContentType = "org.workingwithstories.PNIWorkbookSurveyResult";
     
     function storeProjectAnswersVersion(projectAnswers, callbackWhenDone) {
-        var timestamp = new Date().toISOString();
-        var version = {"timestamp": timestamp, "userID": userID, "body": projectAnswers};
-        console.log("version:", version);
-        var versionAsString = JSON.stringify(version, null, 4);
-        console.log("versionAsString:", versionAsString);
-        
-        var id = null;
-        var tags = [projectAnswersVersionHyperdocumentUUID];
-        var contentType = projectAnswersVersionContentType;
-        var newVersionURI = pointrel20141201Client.storeInNewEnvelope(version, id, tags, contentType, function(error) {
+        var metadata = {id: null, tags: [projectAnswersVersionHyperdocumentUUID], contentType: projectAnswersVersionContentType, author: null, committer: userID, timestamp: true};        
+        var newVersionURI = pointrel20141201Client.storeInNewEnvelope(projectAnswers, metadata, function(error) {
             if (error) {
                 alert("could not write new version:\n" + error);
                 return;
@@ -40,14 +32,22 @@ define([
     }
     
     // TODO: Seems wasteful of memory to keep these loaded? Maybe really only needed latest one and a record of which ones were checked and seen to be earlier?
-    var projectVersions = {};
+    var projectVersionEnvelopes = {};
     
     function loadLatestProjectVersion(switchToLoadedProjectAnswersCallback) {
         console.log("loadLatestProjectVersion");
-        pointrel20141201Client.loadResourcesForTag(projectVersions, projectAnswersVersionHyperdocumentUUID, function(error, resourceToContentMap, newItems) {
+        pointrel20141201Client.loadEnvelopesForTag(projectVersionEnvelopes, projectAnswersVersionHyperdocumentUUID, function(error, referenceToEnvelopeMap, newItems) {
             if (error) { return switchToLoadedProjectAnswersCallback(error); }
             loadedNewProjectAnswers(switchToLoadedProjectAnswersCallback);           
         });
+    }
+    
+    function isEmptyObject( obj ) {
+        var name;
+        for (name in obj) {
+            return false;
+        }
+        return true;
     }
     
     // TODO: improve design and GUI so can choose a version to load?
@@ -55,7 +55,7 @@ define([
         console.log("loadedNewProjectAnswers");
 
         // Try to load the latest one...
-        if (projectVersions.length === 0) {
+        if (isEmptyObject(projectVersionEnvelopes)) {
             console.log("No stored versions could be loaded");
             return switchToLoadedProjectAnswersCallback("No stored versions could be loaded -- have you saved any project versions?");
         }
@@ -64,14 +64,14 @@ define([
         
         // Find the latest version
         // TODO: Could be problem if timestamp for one is wrong and way far in future due to server time error?
-        for (var key in projectVersions) {
-            var projectVersion = projectVersions[key];
-            if (!latestVersion || projectVersion.timestamp >= latestVersion.timestamp) {
-                latestVersion = projectVersion;
+        for (var key in projectVersionEnvelopes) {
+            var projectVersionEnvelope = projectVersionEnvelopes[key];
+            if (!latestVersion || projectVersionEnvelope.timestamp >= latestVersion.timestamp) {
+                latestVersion = projectVersionEnvelope;
             }
         }
         
-        if (latestVersion) return switchToLoadedProjectAnswersCallback(null, latestVersion.body);
+        if (latestVersion) return switchToLoadedProjectAnswersCallback(null, latestVersion.content);
     }
     
     // TODO: Better error handling popup dialog as a generalized GUI issue
@@ -100,16 +100,8 @@ define([
     
     function storeSurveyResult(surveyResult, callback) {
         // Store the result
-        var timestamp = new Date().toISOString();
-        var version = {"timestamp": timestamp, "userID": userID, "surveyResult": surveyResult};
-        console.log("version:", version);
-        var versionAsString = JSON.stringify(version, null, 4);
-        console.log("versionAsString:", versionAsString);
-        
-        var id = null;
-        var tags = [surveyResultHyperdocumentID];
-        var contentType = surveyResultContentType;
-        var newVersionURI = pointrel20141201Client.storeInNewEnvelope(version, id, tags, contentType, function(error) {
+        var metadata = {id: null, tags: [surveyResultHyperdocumentID], contentType: surveyResultContentType, author: null, committer: userID, timestamp: true};
+        var newVersionURI = pointrel20141201Client.storeInNewEnvelope(surveyResult, metadata, function(error) {
             if (error) {
                 alert("could not write new survey result:\n" + error);
                 if (callback) callback(error);
@@ -121,18 +113,18 @@ define([
     }
     
     // TODO: Seems wasteful of memory to keep these loaded as copies are made by domain?
-    var surveyResults = {};
+    var surveyResultEnvelopes = {};
     
     function loadLatestSurveyResults(loadedSurveyResultsCallback) {
         console.log("loadLatestSurveyResults");
-        pointrel20141201Client.loadResourcesForTag(surveyResults, surveyResultHyperdocumentID, function(error, resourceToContentMap, newItems) {
+        pointrel20141201Client.loadEnvelopesForTag(surveyResultEnvelopes, surveyResultHyperdocumentID, function(error, referenceToEnvelopeMap, newItems) {
             if (error) { return loadedNewSurveyResults(loadedSurveyResultsCallback, error); }
-            loadedNewSurveyResults(loadedSurveyResultsCallback, null, resourceToContentMap, newItems);           
+            loadedNewSurveyResults(loadedSurveyResultsCallback, null, referenceToEnvelopeMap, newItems);           
         });
     }
     
     // TODO: improve design and GUI so can choose a version to load?
-    function loadedNewSurveyResults(loadedSurveyResultsCallback, error, allEntries, newEntries) {
+    function loadedNewSurveyResults(loadedSurveyResultsCallback, error, allEnvelopes, newEnvelopes) {
         // console.log("loadedNewSurveyResults: ", error, newEntries);
         if (error) {
             var errorMessage = "ERROR: error on retrieving survey results; is it possible none have been stored yet?";
@@ -142,7 +134,7 @@ define([
             return;
         }
 
-        loadedSurveyResultsCallback(allEntries, newEntries);    
+        loadedSurveyResultsCallback(allEnvelopes, newEnvelopes);    
     }
     
     

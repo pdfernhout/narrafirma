@@ -18,17 +18,31 @@ define([
     var idIndexPath = apiPath + "indexes/id/";
     var tagIndexPath = apiPath + "indexes/tag/";
     
-    function pointrel_storeInNewEnvelope(item, id, tags, contentType, callback) {
-        console.log("pointrel_storeInNewEnvelope", id, tags, contentType, item);
+    // var metadata = {id: null, tags: [], contentType: null, author: null, committer: null, timestamp: true};
+    // "true" for timestamp means use the current time
+    function pointrel_storeInNewEnvelope(item, metadata, callback) {
+        console.log("pointrel_storeInNewEnvelope", metadata, item);
         
         var envelope = {
-            __type: "org.pointrel.pointrel20141201.ContentEnvelope",
+            __type: "org.pointrel.pointrel20141201.PointrelContentEnvelope",
         };
         
         // TODO: More validation to ensure strings for tags and that it is an array
-        if (id) envelope.id = "" + id;
-        if (tags) envelope.tags = tags;
-        if (contentType) envelope.contentType = "" + contentType;
+        if (metadata.id) envelope.id = "" + metadata.id;
+        if (metadata.tags && metadata.tags.length > 0) envelope.tags = metadata.tags;
+        if (metadata.contentType) envelope.contentType = "" + metadata.contentType;
+        
+        if (metadata.author) envelope.author = "" + metadata.author;
+        if (metadata.committer) envelope.committer = "" + metadata.committer;
+        if (metadata.timestamp) {
+            if (metadata.timestamp === true) {
+                envelope.timestamp = "" + new Date().toISOString();
+            } else {
+                envelope.timestamp = "" + metadata.timestamp;
+            }
+        }
+        
+        // TODO: check if any unsupported fields? Or just copy them in?
         
         envelope.content = item;
         
@@ -113,7 +127,7 @@ define([
     
     /* Convenience */
     
-    function fetchItem(resourceToContentMap, sha256AndLength) {
+    function fetchItem(referenceToEnvelopeMap, sha256AndLength) {
         console.log("fetchItem", sha256AndLength);
         var deferred = new Deferred();
         pointrel_fetchEnvelope(sha256AndLength, function(error, envelope) {
@@ -125,30 +139,30 @@ define([
                 return;
             }
             console.log("Got item", envelope.content);
-            resourceToContentMap[sha256AndLength] = envelope.content;
+            referenceToEnvelopeMap[sha256AndLength] = envelope;
             deferred.resolve(sha256AndLength);
         });
         return deferred.promise;
     }
     
-    function loadResourcesForTag(resourceToContentMap, tag, callback) {
-        console.log("loadAllResourcesForTag");
+    function loadEnvelopesForTag(referenceToEnvelopeMap, tag, callback) {
+        console.log("loadEnvelopesForTag", tag);
         pointrel_queryByTag(tag, function(error, queryResult) {
-            if (error) { console.log("loadResourcesForTag error", error); return callback(error);}
+            if (error) { console.log("loadEnvelopesForTag error", error); return callback(error);}
             console.log("Got queryResult for tag", tag, queryResult);
             
-            var items = queryResult.items;
+            var indexEntries = queryResult.indexEntries;
             
             var promises = [];
-            for (var index in items) {
-                var sha256AndLength = items[index];
-                if (!resourceToContentMap[sha256AndLength]) {
-                    promises.push(fetchItem(resourceToContentMap, sha256AndLength));
+            for (var index in indexEntries) {
+                var indexEntry = indexEntries[index];
+                if (!referenceToEnvelopeMap[indexEntry.sha256AndLength]) {
+                    promises.push(fetchItem(referenceToEnvelopeMap, indexEntry.sha256AndLength));
                 }
             }
             
             all(promises).then(function(newItems) {
-                callback(null, resourceToContentMap, newItems);
+                callback(null, referenceToEnvelopeMap, newItems);
             });            
         });
     }
@@ -168,6 +182,6 @@ define([
         fetchEnvelope: pointrel_fetchEnvelope,
         queryByID: pointrel_queryByID,
         queryByTag: pointrel_queryByTag,
-        loadResourcesForTag: loadResourcesForTag
+        loadEnvelopesForTag: loadEnvelopesForTag
     };
 });

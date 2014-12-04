@@ -10,9 +10,9 @@
 
 // TODO: use nested directories so can support lots of files better
 
-var version = "pointrel20141201-0.0.1";
+var version = "pointrel20141201-0.0.2";
 var resourceFileSuffix = ".pce";
-var signatureType = "org.pointrel.pointrel20141201.ContentEnvelope";
+var signatureType = "org.pointrel.pointrel20141201.PointrelContentEnvelope";
 
 // resourceDirectoryLevels of 2 should be good for about 6 million resource files or so (256 * 256 * 100)
 // with at most 100 in a directory if sha256 is distributed randomly
@@ -94,20 +94,30 @@ function addToIndexes(body, sha256AndLength) {
         return;
     }
     
+    // TODO: Maybe store body content in indexEntry if it is small... (< 10K?)
+    // Put in essential envelope data
+    var indexEntry = {sha256AndLength: sha256AndLength};
+    if (body.id) indexEntry.id = body.id;
+    if (body.tags) indexEntry.tags = body.tags;
+    if (body.contentType) indexEntry.contentType = body.contentType;
+    if (body.author) indexEntry.author = body.author;
+    if (body.committer) indexEntry.committer = body.committer;
+    if (body.timestamp) indexEntry.timestamp = body.timestamp;
+    
     if (id) {
         if (referencesForID(id)) {
             console.log("ERROR: duplicate reference to ID in %s and %s", indexes.idToReferences[id], sha256AndLength);
         }
-        addToIndex("id", indexes.idToReferences, "" + id, sha256AndLength);
+        addToIndex("id", indexes.idToReferences, "" + id, indexEntry);
     }
     if (tags) {
         for (var tagKey in tags) {
             var tag = tags[tagKey];
-            addToIndex("tags", indexes.tagToReferences, "" + tag, sha256AndLength);
+            addToIndex("tags", indexes.tagToReferences, "" + tag, indexEntry);
         }
     }
     if (contentType) {
-        addToIndex("contentType", indexes.contentTypeToReferences, "" + contentType, sha256AndLength);
+        addToIndex("contentType", indexes.contentTypeToReferences, "" + contentType, indexEntry);
     }
     
     return true;
@@ -326,15 +336,15 @@ function respondForID(request, response) {
     
     var id = request.params.id;
     
-    var sha256AndLengthList = referencesForID(id);
+    var indexEntryList = referencesForID(id);
     
     // It the request ID is not available, return not found error
-    if (!sha256AndLengthList || sha256AndLengthList.length === 0) {
+    if (!indexEntryList || indexEntryList.length === 0) {
         return sendFailureMessage(response, 404, "Not found");
     }
     
     // Return the first -- should signal error if more than one?
-    return response.json({status: 'OK', message: "Index for ID", idRequested: id, items: sha256AndLengthList});
+    return response.json({status: 'OK', message: "Index for ID", idRequested: id, indexEntries: indexEntryList});
 }
 
 function respondForTag(request, response) {
@@ -342,15 +352,15 @@ function respondForTag(request, response) {
     
     var tag = request.params.tag;
     
-    var sha256AndLengthList = referencesForTag(tag);
+    var indexEntryList = referencesForTag(tag);
     
     // It's not an error if there are no items for a tag -- just return an empty list
-    if (!sha256AndLengthList) {
-        sha256AndLengthList = [];
+    if (!indexEntryList) {
+        indexEntryList = [];
     }
     
     // Return the first -- should signal error if more than one?
-    return response.json({status: 'OK', message: "Index for Tag", tagRequested: tag, items: sha256AndLengthList});
+    return response.json({status: 'OK', message: "Index for Tag", tagRequested: tag, indexEntries: indexEntryList});
 }
 
 /* Other */
