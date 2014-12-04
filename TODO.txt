@@ -10,7 +10,6 @@ PRIORITY:
 Support recommendationTable
 
 Fix how survey data is collected and stored to separate multiple stories from participant information
-Support a participantStoryForm -- the form everyone who comes to the URL can see
 webStoryCollectionEnabled toggle status to turn off seems broken
 Implement startup and shutdown of web data collection in domain buttonClicked
 Implement copyStoryFormURLDuringFinalize in domain buttonClicked
@@ -83,6 +82,8 @@ Support storyBrowserCount
 
 Way to retrieve data about project participant groups [Is this still relevant?]
 Implement showHideCollectedStories in domain buttonClicked [Not sure what this means now or if still relevant]
+
+Ensure the survey taking app does no need to load entire domain from project editor app or load grid or story browser or other modules it does not really need.
 
 Resolve these issues from conversion or add them to list of types not needing a short name:
 No short name for type: storyThemer field: themeStories text: Theme stories
@@ -222,6 +223,7 @@ NOT DOING Fix questionAnswerCountOfTotalOnPages so it can handle a questionsTabl
 DONE Improvements to conversion utility to report conversion issues like missing short names better
 DONE Use new version of Pointrel system with memory indexing instead of index logs so server code is simpler and more robust and supports use by server-side code
 DONE Translation support for survey as distinct from application so two do not potentially collide
+DONE Support a participantStoryForm -- the form everyone who comes to the URL can see
 
 ======= CYNTHIA
 
