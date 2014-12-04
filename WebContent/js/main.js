@@ -92,7 +92,8 @@ require([
         storage.storeProjectAnswersVersion(domain.projectData.projectAnswers, saveFinished);
     }
     
-    function saveFinished(newVersionURI) {
+    function saveFinished(error, newVersionURI) {
+        if (error) {return alert("could not write new version:\n" + error);}
         // TODO: Translate and improve this feedback
         console.log("Save finished to file", newVersionURI);
         alert("Finished saving");

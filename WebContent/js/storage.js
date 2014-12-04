@@ -23,11 +23,11 @@ define([
         var metadata = {id: null, tags: [projectAnswersVersionHyperdocumentUUID], contentType: projectAnswersVersionContentType, author: null, committer: userID, timestamp: true};        
         var newVersionURI = pointrel20141201Client.storeInNewEnvelope(projectAnswers, metadata, function(error) {
             if (error) {
-                alert("could not write new version:\n" + error);
-                return;
+                console.log("could not write new version:\n" + error);
+                return callbackWhenDone(error);
             }
             console.log("wrote newVersionURI:", newVersionURI);
-            callbackWhenDone(newVersionURI);
+            callbackWhenDone(null, newVersionURI);
         });
     }
     
@@ -36,7 +36,7 @@ define([
         console.log("loadLatestProjectVersion");
         pointrel20141201Client.loadLatestEnvelopeForTag(projectAnswersVersionHyperdocumentUUID, function(error, envelope) {
             if (error) {
-                if (error === "No items found for tag") error = "No stored versions could be loaded -- have you saved any project versions?";
+                if (error === "No items found for tag") error = "No stored versions could be loaded -- have any project versions been saved?";
                 return switchToLoadedProjectAnswersCallback(error);
             }
             switchToLoadedProjectAnswersCallback(null, envelope.content);           
@@ -47,9 +47,9 @@ define([
     
     function projectDataLoaded(switchToLoadedProjectAnswersCallback, error, text) {
         if (error) {
-            var errorMessage = "Error when fetching project data: " + error;
+            var errorMessage = "Error when fetching project data:\n" + error;
             console.log(errorMessage);
-            alert(errorMessage);
+            switchToLoadedProjectAnswersCallback(error);
             return;
         }
         
@@ -58,7 +58,7 @@ define([
             item = JSON.parse(text);
         } catch (err) {
             console.log("error when trying to parse project file: ", text, err);
-            alert("Could not parse project file");
+            switchToLoadedProjectAnswersCallback("Could not parse project file: " + err);
             return;
         }
         var projectAnswers = item.body;
@@ -72,7 +72,6 @@ define([
         var metadata = {id: null, tags: [surveyResultHyperdocumentID], contentType: surveyResultContentType, author: null, committer: userID, timestamp: true};
         var newVersionURI = pointrel20141201Client.storeInNewEnvelope(surveyResult, metadata, function(error) {
             if (error) {
-                alert("could not write new survey result:\n" + error);
                 if (callback) callback(error);
                 return;
             }
@@ -96,17 +95,43 @@ define([
     function loadedNewSurveyResults(loadedSurveyResultsCallback, error, allEnvelopes, newEnvelopes) {
         // console.log("loadedNewSurveyResults: ", error, newEntries);
         if (error) {
-            var errorMessage = "ERROR: error on retrieving survey results; is it possible none have been stored yet?";
-            console.log(error, errorMessage);
             // TODO: Translate
-            // alert("No survey results are available");
+            // "No survey results are available"
+            var errorMessage = "ERROR: error on retrieving survey results; is it possible none have been stored yet?";
+            console.log("ERROR loadedNewSurveyResults:", error, errorMessage);
+            loadedSurveyResultsCallback(errorMessage);
             return;
         }
 
         loadedSurveyResultsCallback(allEnvelopes, newEnvelopes);    
     }
     
+    var questionnaireContentType = "org.workingwithstories.Questionnaire";
     
+    function storeQuestionnaireVersion(questionnaireID, questionnaire, callback) {
+        var metadata = {id: null, tags: [questionnaireID], contentType: questionnaireContentType, author: null, committer: userID, timestamp: true};        
+        var sha256HashAndLength = pointrel20141201Client.storeInNewEnvelope(questionnaire, metadata, function(error) {
+            if (error) {
+                console.log("ERROR storeQuestionnaireVersion: could not write new questionnaire:\n" + error);
+                callback(error);
+                return;
+            }
+            console.log("wrote newVersionURI:", sha256HashAndLength);
+            callback(null, sha256HashAndLength);
+        });
+    }
+    
+    function loadLatestQuestionnaireVersion(questionnaireID, callback) {
+        console.log("loadLatestQuestionnaireVersion");
+        pointrel20141201Client.loadLatestEnvelopeForTag(questionnaireID, function(error, envelope) {
+            if (error) {
+                if (error === "No items found for tag") error = "No stored questionanaire could be loaded for " + questionnaireID + " -- have any versions been saved?";
+                return callback(error);
+            }
+            callback(null, envelope.content);           
+        });
+    }
+ 
     function setup() {
         console.log("Using pointrel20141201");
     }
@@ -117,6 +142,8 @@ define([
         "storeProjectAnswersVersion": storeProjectAnswersVersion,
         "loadLatestProjectVersion": loadLatestProjectVersion,
         "storeSurveyResult": storeSurveyResult,
-        "loadLatestSurveyResults": loadLatestSurveyResults
+        "loadLatestSurveyResults": loadLatestSurveyResults,
+        "storeQuestionnaireVersion": storeQuestionnaireVersion,
+        "loadLatestQuestionnaireVersion": loadLatestQuestionnaireVersion
     };
 });

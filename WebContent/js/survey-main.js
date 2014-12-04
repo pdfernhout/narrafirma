@@ -3,18 +3,11 @@
 require([
     "dojo/dom",
     "js/survey",
-    "js/test-data.js",
     "dojo/domReady!"
 ], function(
     dom,
-    survey,
-    testData
+    survey
 ){
-    
-    function getQuestionsFromServer() {
-        return testData.testDogQuestions;
-    }
-    
     // TODO: Internationalize
     // TODO: Full survey
     // TODO: Cancel feedback
@@ -29,21 +22,28 @@ require([
     function createLayout() {
         console.log("createLayout");
            
-        var questions = getQuestionsFromServer();
-        
-        var form = survey.buildSurveyForm(questions, finishedSurvey, false); 
-        
-        var surveyDiv = dom.byId("surveyDiv");
-        surveyDiv.appendChild(form.containerNode);
+        // TODO: Fix hardcoded ID!!
+        survey.getQuestionnaireFromServer('questionnaire-test-001', function(error, questions) {
+            if (error) {
+                // TODO: Translate
+                document.getElementById("startup").innerHTML = "Something went wrong loading the survey questionnaire from the server";
+                alert("Something went wrong loading the survey questionnaire from the server:\n" + error);
+                return;
+            }
+            var form = survey.buildSurveyForm(questions, finishedSurvey, false); 
+            
+            var surveyDiv = dom.byId("surveyDiv");
+            surveyDiv.appendChild(form.containerNode);
+            
+            // turn off startup "please wait" display
+            document.getElementById("startup").style.display = "none";
+
+        });
     }
     
     function startup() {
-        
         // Call the main function
         createLayout();
-        
-        // turn off startup "please wait" display
-        document.getElementById("startup").style.display = "none";
     }
     
     startup();

@@ -181,8 +181,17 @@ define([
     
     function printStoryForm(contentPane, model, id, questionOptions, value) {
         console.log("printStoryForm unfinished");
+        
         alert("unfinished, but finalizing survey for testing...");
         finalizeSurvey();
+        
+        var questions = collectAllSurveyQuestions();
+        
+        // TODO: Fix hardcoded questionnaire ID
+        storage.storeQuestionnaireVersion('questionnaire-test-001', questions, function(error) {
+            if (error) { return alert("Could not store questionnaire"); }
+            alert("Store questionnaire as 'test'");
+        });
     }
     
     function replaceArrayContents(destination, source) {

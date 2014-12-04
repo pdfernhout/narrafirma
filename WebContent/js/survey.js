@@ -25,6 +25,8 @@ define([
     Form,
     Stateful
 ){
+    // TODO: Replace use of storage with direct calls to server to get questionnaire and submit survey
+    
     function submitSurvey(model, form) {
         var answers = {};
         console.log("submitSurvey pressed");
@@ -35,7 +37,12 @@ define([
         
         console.log("answers", surveyResult, model);
         
-        storage.storeSurveyResult(surveyResult);
+        storage.storeSurveyResult(surveyResult, function(error) {
+            // TODO: Translate
+            // TODO: Cancel clearing of survey if it can't be sent
+            if (error) { alert("Could not write new survey result to server:\n" + error);}
+            alert("Survey successfully sent to server!");
+        });
         
         // Can't push survey into all results at this point or will have duplicates when load them later
         // TODO: Maybe should load latest results from server back at this point? Because will not have new survey...
@@ -119,9 +126,14 @@ define([
 //        tabContainer.addChild(takeSurveyPane);
 //        takeSurveyPane.startup();
 //    }
+    
+    function getQuestionnaireFromServer(questionnaireID, callback) {
+        storage.loadLatestQuestionnaireVersion(questionnaireID, callback);
+    }
 
     return {
         takeSurvey: takeSurvey,
-        buildSurveyForm: buildSurveyForm
+        buildSurveyForm: buildSurveyForm,
+        getQuestionnaireFromServer: getQuestionnaireFromServer
     };
 });
