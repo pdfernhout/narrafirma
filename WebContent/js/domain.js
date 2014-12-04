@@ -230,7 +230,7 @@ define([
                 return;
             } else {
                 // TODO: Translate
-                if (contentPane) alert("" + newEnvelopeCount + "new survey result(s) were found.");
+                if (contentPane) alert("" + newEnvelopeCount + " new survey result(s) were found.");
             }
             
             // TODO: Only for debugging; need to think through the seperating of stories and general survey data
