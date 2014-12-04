@@ -258,7 +258,7 @@ define([
     function insertStoryBrowser(pagePane, model, id, pageDefinitions) {
         console.log("insertStoryBrowser start", id);
         
-        var questions = domain.collectAllSurveyQuestions();
+        var questions = domain.getCurrentQuestionnaire().questions;
         // console.log("DEBUG questions used by story browser", questions);
         
         translate.addExtraTranslationsForQuestions(questions);

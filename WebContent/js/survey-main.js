@@ -27,14 +27,14 @@ require([
         console.log("createLayout");
            
         // TODO: Fix hardcoded ID!!
-        survey.getQuestionnaireFromServer('questionnaire-test-001', function(error, questions) {
+        survey.getQuestionnaireFromServer('questionnaire-test-001', function(error, questionnaire) {
             if (error) {
                 // TODO: Translate
                 document.getElementById("startup").innerHTML = "Something went wrong loading the survey questionnaire from the server";
                 alert("Something went wrong loading the survey questionnaire from the server:\n" + error);
                 return;
             }
-            var form = survey.buildSurveyForm(questions, finishedSurvey, false); 
+            var form = survey.buildSurveyForm(questionnaire.questions, finishedSurvey, false); 
             
             var surveyDiv = dom.byId("surveyDiv");
             surveyDiv.appendChild(form.containerNode);

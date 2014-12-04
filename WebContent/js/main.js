@@ -81,9 +81,6 @@ require([
         // Update derived values
         widgetBuilder.updateQuestionsForPageChange();
         
-        // TODO: Remove this. Just now for debugging... Need to think about the issue of finalizing the questions more and when to do it and how to store it
-        domain.finalizeSurvey();
-        
         // Reload page looking at...
         showPage(currentPageID, "forceRefresh");
         
@@ -424,11 +421,8 @@ require([
     }
     
     function takeSurvey() {
-        // TODO: Remove this -- ONLY FOR TESTING
-        domain.finalizeSurvey();
-        
         console.log("domain.projectData", domain.projectData);
-        var questions = domain.collectAllSurveyQuestions();
+        var questions = domain.getCurrentQuestionnaire().questions;
         
         survey.takeSurvey(questions);
     }
@@ -438,9 +432,6 @@ require([
         
         // Setup important callback for page changes
         domain.setPageChangeCallback(widgetBuilder.updateQuestionsForPageChange);
-        
-        // TODO: Remove this and make a more systematic finalization process
-        // domain.finalizeSurvey();
         
         // Callback for this button
         // TODO: Temp for testing

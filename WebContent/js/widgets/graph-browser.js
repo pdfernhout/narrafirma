@@ -586,7 +586,7 @@ define([
         });
         var chartDiv = domConstruct.empty("chartDiv");
         
-        var surveyQuestions = domain.collectAllSurveyQuestions();
+        var surveyQuestions = domain.getCurrentQuestionnaire().questions;
         
         var xAxisQuestion = questionForID(surveyQuestions, xAxisQuestionID);
         var yAxisQuestion = questionForID(surveyQuestions, yAxisQuestionID);
@@ -731,7 +731,7 @@ define([
         });
         
         // TODO: Update these as they change...
-        var questions = domain.collectAllSurveyQuestions();
+        var questions = domain.getCurrentQuestionnaire().questions;
         
         var optionsForAllQuestions = widgetSupport.optionsForAllQuestions(questions);
         

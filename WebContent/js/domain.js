@@ -82,7 +82,9 @@ define([
     }
     
     // TODO: This needs to be improved for asking multiple questions, maybe spanning multiple pages
-    function collectAllSurveyQuestions() {
+    function getCurrentQuestionnaire() {
+        finalizeSurvey();
+        
         var questions = [];
 
         // TODO: Title, logo
@@ -136,7 +138,11 @@ define([
             adjustedQuestions.push({type: type, id: id, options: options, shortName: shortName, prompt: prompt});
         }
         
-        return adjustedQuestions;
+        var questionnaire = {
+                questions: adjustedQuestions
+        };
+        
+        return questionnaire;
     }
     
     // TODO: How to save the fact we have exported this in the project? Make a copy??? Or keep original in document somewhere? Versus what is returned from server for surveys?
@@ -237,12 +243,11 @@ define([
     
     function storyCollectionStart(contentPane, model, id, questionOptions, value) {
         alert("unfinished, but finalizing survey for testing...");
-        finalizeSurvey();
         
-        var questions = collectAllSurveyQuestions();
+        var questionnaire = getCurrentQuestionnaire();
         
         // TODO: Fix hardcoded questionnaire ID
-        storage.storeQuestionnaireVersion('questionnaire-test-001', questions, function(error) {
+        storage.storeQuestionnaireVersion('questionnaire-test-001', questionnaire, function(error) {
             if (error) { return alert("Could not store questionnaire"); }
             alert("Store questionnaire as 'test'");
         });
@@ -480,9 +485,7 @@ define([
         "calculate_quizScoreResult": calculate_quizScoreResult,
         "buttonFunctions": buttonFunctions,
         
-        // for testing:
-        "finalizeSurvey": finalizeSurvey,
-        "collectAllSurveyQuestions": collectAllSurveyQuestions
+        "getCurrentQuestionnaire": getCurrentQuestionnaire
     };
     
     lang.mixin(exports, exportedFunctions);
