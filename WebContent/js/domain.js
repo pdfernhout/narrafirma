@@ -218,13 +218,14 @@ define([
                 }
             }
             
+            // Checking on contentPane being set before put up alert in case loading called when load project document
             if (newEnvelopeCount === 0) {
                 // TODO: Translate
-                alert("No new survey results were found.");
+                if (contentPane) alert("No new survey results were found.");
                 return;
             } else {
                 // TODO: Translate
-                alert("" + newEnvelopeCount + "new survey result(s) were found.");
+                if (contentPane) alert("" + newEnvelopeCount + "new survey result(s) were found.");
             }
             
             // TODO: Only for debugging; need to think through the seperating of stories and general survey data

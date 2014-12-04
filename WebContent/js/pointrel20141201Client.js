@@ -167,6 +167,37 @@ define([
         });
     }
     
+    function loadLatestEnvelopeForTag(tag, callback) {
+        console.log("loadLatestEnvelopeForTag", tag);
+        pointrel_queryByTag(tag, function(error, queryResult) {
+            if (error) { console.log("loadLatestEnvelopeForTag error", error); return callback(error);}
+            console.log("Got queryResult for tag", tag, queryResult);
+            
+            var indexEntries = queryResult.indexEntries;
+            
+            var latestEntry = null;
+            for (var index in indexEntries) {
+                var indexEntry = indexEntries[index];
+                if (!latestEntry || latestEntry.timestamp <= indexEntry.timestamp) {
+                    latestEntry = indexEntry;
+                }
+            }
+            
+            if (latestEntry) {
+                pointrel_fetchEnvelope(latestEntry.sha256AndLength, function(error, envelope) {
+                    if (error) {
+                        console.log("error", error);
+                        callback(error);
+                        return;
+                    }
+                    callback(null, envelope);
+                });
+            } else {
+                callback("No items found for tag");
+            }
+        });
+    }
+    
     // Optional initialization
     function initialize(configuration) {
         if (configuration) {
@@ -182,6 +213,7 @@ define([
         fetchEnvelope: pointrel_fetchEnvelope,
         queryByID: pointrel_queryByID,
         queryByTag: pointrel_queryByTag,
-        loadEnvelopesForTag: loadEnvelopesForTag
+        loadEnvelopesForTag: loadEnvelopesForTag,
+        loadLatestEnvelopeForTag: loadLatestEnvelopeForTag
     };
 });

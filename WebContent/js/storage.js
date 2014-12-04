@@ -31,47 +31,16 @@ define([
         });
     }
     
-    // TODO: Seems wasteful of memory to keep these loaded? Maybe really only needed latest one and a record of which ones were checked and seen to be earlier?
-    var projectVersionEnvelopes = {};
-    
+    // TODO: improve design and GUI so can choose a version to load?
     function loadLatestProjectVersion(switchToLoadedProjectAnswersCallback) {
         console.log("loadLatestProjectVersion");
-        pointrel20141201Client.loadEnvelopesForTag(projectVersionEnvelopes, projectAnswersVersionHyperdocumentUUID, function(error, referenceToEnvelopeMap, newItems) {
-            if (error) { return switchToLoadedProjectAnswersCallback(error); }
-            loadedNewProjectAnswers(switchToLoadedProjectAnswersCallback);           
-        });
-    }
-    
-    function isEmptyObject( obj ) {
-        var name;
-        for (name in obj) {
-            return false;
-        }
-        return true;
-    }
-    
-    // TODO: improve design and GUI so can choose a version to load?
-    function loadedNewProjectAnswers(switchToLoadedProjectAnswersCallback) {
-        console.log("loadedNewProjectAnswers");
-
-        // Try to load the latest one...
-        if (isEmptyObject(projectVersionEnvelopes)) {
-            console.log("No stored versions could be loaded");
-            return switchToLoadedProjectAnswersCallback("No stored versions could be loaded -- have you saved any project versions?");
-        }
-        
-        var latestVersion = null;
-        
-        // Find the latest version
-        // TODO: Could be problem if timestamp for one is wrong and way far in future due to server time error?
-        for (var key in projectVersionEnvelopes) {
-            var projectVersionEnvelope = projectVersionEnvelopes[key];
-            if (!latestVersion || projectVersionEnvelope.timestamp >= latestVersion.timestamp) {
-                latestVersion = projectVersionEnvelope;
+        pointrel20141201Client.loadLatestEnvelopeForTag(projectAnswersVersionHyperdocumentUUID, function(error, envelope) {
+            if (error) {
+                if (error === "No items found for tag") error = "No stored versions could be loaded -- have you saved any project versions?";
+                return switchToLoadedProjectAnswersCallback(error);
             }
-        }
-        
-        if (latestVersion) return switchToLoadedProjectAnswersCallback(null, latestVersion.content);
+            switchToLoadedProjectAnswersCallback(null, envelope.content);           
+        });
     }
     
     // TODO: Better error handling popup dialog as a generalized GUI issue
