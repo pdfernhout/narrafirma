@@ -195,23 +195,24 @@ define([
         storage.loadLatestSurveyResults(function (allEntries, newEntries) {
             // console.log("load survey result", "all", allEntries, "new", newEntries);
             for (var index in newEntries) {
-                var newEntry = newEntries[index];
-                if (newEntry.resourceContent) {
-                    var surveyResult = newEntries[index].resourceContent.surveyResult;
+                var newEntryID = newEntries[index];
+                var newEntry = allEntries[newEntryID];
+                if (newEntry) {
+                    var surveyResult = newEntry.surveyResult;
                     if (surveyResult) {
                         // TODO: Kludge to remove for working with test data
                         if (!surveyResult.id) {
                             // console.log("UUID issue", newEntries[index], surveyResult);
                             // surveyResult.id = uuid();
                             // Use the identifier for the resource the survey is in
-                            surveyResult.id = newEntries[index].name;
+                            surveyResult.id = newEntryID;
                         }
                         projectData.surveyResults.allCompletedSurveys.push(surveyResult);
                     } else {
                         console.log("ERROR: Missing surveyResult in newEntry", newEntry);
                     }
                 } else {
-                    console.log("ERROR: Problem reading resourceContent from newEntry", newEntry);
+                    console.log("ERROR: Problem reading resourceContent from newEntry", newEntryID);
                 }
             }
             

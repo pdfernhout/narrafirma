@@ -1,14 +1,8 @@
 "use strict";
 
 define([
-    "dojo/promise/all",
-    "dojo/Deferred",
-    "dojo/_base/lang",
     "js/pointrel20141201Client"
 ], function(
-    all,
-    Deferred,
-    lang,
     pointrel20141201Client
 ) {
     
@@ -45,50 +39,14 @@ define([
         });
     }
     
+    // TODO: Seems wasteful of memory to keep these loaded? Maybe really only needed latest one and a record of which ones were checked and seen to be earlier?
     var projectVersions = {};
-    
-    function fetchItem(sha256AndLength) {
-        console.log("fetchItem", sha256AndLength);
-        var deferred = new Deferred();
-        pointrel20141201Client.fetchEnvelope(sha256AndLength, function(error, envelope) {
-            if (error) {
-                console.log("error", error);
-                // TODO: Could "reject" here to generate an error, but then anyone failure could stop loading others
-                deferred.resolve(null);
-                return;
-            }
-            console.log("Got item", envelope.content);
-            projectVersions[sha256AndLength] = envelope.content;
-            deferred.resolve(envelope.content);
-        });
-        return deferred.promise;
-    }
     
     function loadLatestProjectVersion(switchToLoadedProjectAnswersCallback) {
         console.log("loadLatestProjectVersion");
-        pointrel20141201Client.queryByTag(projectAnswersVersionHyperdocumentUUID, function(error, queryResult) {
-            if (error) { console.log("error", error); return switchToLoadedProjectAnswersCallback(error);}
-            console.log("Got queryResult for tag 'test'", queryResult);
-            
-            var items = queryResult.items;
-            
-            if (items.length === 0) {
-                // TODO: Translate
-                console.log("No saved project version is available; has one been saved?");
-                return switchToLoadedProjectAnswersCallback("No saved project version is available; has one been saved?");
-            }
-            
-            var promises = [];
-            for (var index in items) {
-                var sha256AndLength = items[index];
-                if (!projectVersions[sha256AndLength]) {
-                    promises.push(fetchItem(sha256AndLength));
-                }
-            }
-            
-            all(promises).then(function(results) {
-                loadedNewProjectAnswers(switchToLoadedProjectAnswersCallback);
-            });            
+        pointrel20141201Client.loadResourcesForTag(projectVersions, projectAnswersVersionHyperdocumentUUID, function(error, resourceToContentMap, newItems) {
+            if (error) { return switchToLoadedProjectAnswersCallback(error); }
+            loadedNewProjectAnswers(switchToLoadedProjectAnswersCallback);           
         });
     }
     
@@ -99,7 +57,7 @@ define([
         // Try to load the latest one...
         if (projectVersions.length === 0) {
             console.log("No stored versions could be loaded");
-            return switchToLoadedProjectAnswersCallback("No stored versions could be loaded -- check the server logs");
+            return switchToLoadedProjectAnswersCallback("No stored versions could be loaded -- have you saved any project versions?");
         }
         
         var latestVersion = null;
@@ -162,10 +120,15 @@ define([
         });
     }
     
+    // TODO: Seems wasteful of memory to keep these loaded as copies are made by domain?
+    var surveyResults = {};
+    
     function loadLatestSurveyResults(loadedSurveyResultsCallback) {
         console.log("loadLatestSurveyResults");
-        alert("loadLatestSurveyResults Unfinished");
-        //TODO: surveyResultsIndex.getNewEntries(lang.partial(loadedNewSurveyResults, loadedSurveyResultsCallback));
+        pointrel20141201Client.loadResourcesForTag(surveyResults, surveyResultHyperdocumentID, function(error, resourceToContentMap, newItems) {
+            if (error) { return loadedNewSurveyResults(loadedSurveyResultsCallback, error); }
+            loadedNewSurveyResults(loadedSurveyResultsCallback, null, resourceToContentMap, newItems);           
+        });
     }
     
     // TODO: improve design and GUI so can choose a version to load?

@@ -35,8 +35,7 @@ define([
         
         console.log("answers", surveyResult, model);
         
-        // TODO: Commented out for testing -- put back!!!
-        // storage.storeSurveyResult(surveyResult);
+        storage.storeSurveyResult(surveyResult);
         
         // Can't push survey into all results at this point or will have duplicates when load them later
         // TODO: Maybe should load latest results from server back at this point? Because will not have new survey...
