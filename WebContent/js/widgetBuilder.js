@@ -106,7 +106,7 @@ define([
     /////////////
 
     function createQuestionContentPaneWithPrompt(contentPane, id) {
-        var questionText = translate(id + "::prompt", "");
+        var questionText = translate(id + "::prompt", "ERROR: missing text for: " + id + "::prompt");
         var questionContentPane = new ContentPane({
         });
         questionContentPane.setAttribute("data-js-question-id", id);
