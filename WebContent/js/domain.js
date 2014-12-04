@@ -178,16 +178,7 @@ define([
     function printStoryForm(contentPane, model, id, questionOptions, value) {
         console.log("printStoryForm unfinished");
         
-        alert("unfinished, but finalizing survey for testing...");
-        finalizeSurvey();
-        
-        var questions = collectAllSurveyQuestions();
-        
-        // TODO: Fix hardcoded questionnaire ID
-        storage.storeQuestionnaireVersion('questionnaire-test-001', questions, function(error) {
-            if (error) { return alert("Could not store questionnaire"); }
-            alert("Store questionnaire as 'test'");
-        });
+        alert("unfinished");
     }
     
     function replaceArrayContents(destination, source) {
@@ -241,6 +232,23 @@ define([
             buttonFunctions.updateQuestionsForPageChangeCallback();
         });
     }
+    
+    function storyCollectionStart(contentPane, model, id, questionOptions, value) {
+        alert("unfinished, but finalizing survey for testing...");
+        finalizeSurvey();
+        
+        var questions = collectAllSurveyQuestions();
+        
+        // TODO: Fix hardcoded questionnaire ID
+        storage.storeQuestionnaireVersion('questionnaire-test-001', questions, function(error) {
+            if (error) { return alert("Could not store questionnaire"); }
+            alert("Store questionnaire as 'test'");
+        });
+    }
+    
+    function storyCollectionStop(contentPane, model, id, questionOptions, value) {
+        alert("storyCollectionStop unfinished");
+    }
       
     var buttonFunctions = {
         "printStoryForm": printStoryForm,
@@ -252,6 +260,9 @@ define([
         // TODO: Improve this coarse updating so can just update when one function changes
         // GUI should fill this in, and it is used as a callback when items are changed
         "updateQuestionsForPageChangeCallback": null,
+        
+        "storyCollectionStart": storyCollectionStart,
+        "storyCollectionStop": storyCollectionStop
     };
     
     // dispatch the button click
