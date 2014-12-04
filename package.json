@@ -1,0 +1,14 @@
+{
+    "name": "PNIWorkbook",
+    "description": "PNIWorkbook Application",
+    "version": "0.0.1",
+    "keywords": ["JavaScript", "Dojo", "Toolkit", "DojoX"],
+    "maintainers": [{
+        "name": "Paul D. Fernhout"
+    },{
+        "name": "Cynthia F. Kurtz"
+    }],
+    "main": "src",
+    "homepage": "http://workingwithstories.com/",
+    "dojoBuild": "app.profile.js"
+}

@@ -272,6 +272,8 @@ Page to cluster themes into final themes
 
 Disabled or hidden tabs which are enabled as progress
 
+Learn how to use Dojo build process to minimize application
+
 ==== Wish list:
 
 Improve dashboards, perhaps with green checkmarks and thinking through completion feedback to be better
