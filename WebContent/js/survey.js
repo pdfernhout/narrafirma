@@ -50,23 +50,10 @@ define([
         // TODO: Maybe should load latest results from server back at this point? Because will not have new survey...
     }
     
-    
-    function addExtraTranslationsForQuestions(questions) {
-        for (var questionIndex in questions) {
-            var question = questions[questionIndex];  
-            translate.extraTranslations[question.id + "::prompt"] = question.prompt;
-            translate.extraTranslations[question.id + "::shortName"] = question.shortName;
-            for (var optionIndex in question.options) {
-                var option = question.options[optionIndex];
-                translate.extraTranslations[question.id + "::selection:" + option] = option;
-            }
-        }
-    }
-    
     function buildSurveyForm(questions, doneCallback, includeCancelButton) {  
         console.log("buildSurveyForm questions", questions);
         
-        addExtraTranslationsForQuestions(questions);
+        translate.addExtraTranslationsForQuestions(questions);
         
         var form = new Form();
         form.set("style", "width: 800px; height 800px; overflow: auto;");

@@ -261,6 +261,8 @@ define([
         var questions = domain.collectAllSurveyQuestions();
         // console.log("DEBUG questions used by story browser", questions);
         
+        translate.addExtraTranslationsForQuestions(questions);
+        
         var popupPageDefinition = {
              "id": "storyBrowserQuestions",
              "questions": questions,

@@ -32,9 +32,22 @@ define([
         applicationMessages = applicationMessagesNew;
     }
     
+    function addExtraTranslationsForQuestions(questions) {
+        for (var questionIndex in questions) {
+            var question = questions[questionIndex];  
+            translate.extraTranslations[question.id + "::prompt"] = question.prompt;
+            translate.extraTranslations[question.id + "::shortName"] = question.shortName;
+            for (var optionIndex in question.options) {
+                var option = question.options[optionIndex];
+                translate.extraTranslations[question.id + "::selection:" + option] = option;
+            }
+        }
+    }
+    
     // Adding these to function just so can keep previous code the same as direct call to translate module
     translate.configure = configure;
     translate.extraTranslations = extraTranslations;
+    translate.addExtraTranslationsForQuestions = addExtraTranslationsForQuestions;
     
     return translate;
 });
