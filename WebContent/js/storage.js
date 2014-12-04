@@ -1,11 +1,15 @@
 "use strict";
 
 define([
+    "dojo/promise/all",
+    "dojo/Deferred",
     "dojo/_base/lang",
-    "lib/pointrel20130202"
+    "lib/pointrel20141201Client"
 ], function(
+    all,
+    Deferred,
     lang,
-    Pointrel20130202
+    pointrel20141201Client
 ) {
     
     var archiveURL = "/cgi-bin/";
@@ -14,63 +18,102 @@ define([
     var userID = "anonymous";
     
     // var savedVersions = [];
-    var archiver = null;
     
-    var projectAnswersVersionHyperdocumentUUID = "Test-PNIWorkbook-001";
-    var projectAnswersVersionExtension = "PNIWorkbook.pce.json";
-    var projectAnswersVersionsIndex = null;
+    var projectAnswersVersionHyperdocumentUUID = "Test-PNIWorkbook-002";
+    var projectAnswersVersionContentType = "pointrel/org.workingwithstories.PNIWorkbook";
     
-    var surveyResultHyperdocumentID = "Test-PNIWorkbook-001-Surveys";
-    var surveyResultExtension = "PNIWorkbookSurveyResult.pce.json";
-    var surveyResultsIndex = null;
+    var surveyResultHyperdocumentID = "Test-PNIWorkbook-002-Surveys";
+    var surveyResultContentType = "pointrel/org.workingwithstories.PNIWorkbookSurveyResult";
     
     function storeProjectAnswersVersion(projectAnswers, callbackWhenDone) {
         var timestamp = new Date().toISOString();
-        var version = {"_pointrelIndexing": [projectAnswersVersionHyperdocumentUUID], "timestamp": timestamp, "userID": userID, "body": projectAnswers};
+        var version = {"timestamp": timestamp, "userID": userID, "body": projectAnswers};
         console.log("version:", version);
         var versionAsString = JSON.stringify(version, null, 4);
         console.log("versionAsString:", versionAsString);
         
-        var newVersionURI = archiver.resource_add(versionAsString, projectAnswersVersionExtension, function(error, status) {
-            if (error) { alert("could not write new version: " + JSON.stringify(status)); return; }
+        var id = null;
+        var tags = [projectAnswersVersionHyperdocumentUUID];
+        var contentType = projectAnswersVersionContentType;
+        var newVersionURI = pointrel20141201Client.storeInNewEnvelope(version, id, tags, contentType, function(error) {
+            if (error) {
+                alert("could not write new version:\n" + error);
+                return;
+            }
             console.log("wrote newVersionURI:", newVersionURI);
-            callbackWhenDone(newVersionURI, status);
+            callbackWhenDone(newVersionURI);
         });
+    }
+    
+    var projectVersions = {};
+    
+    function fetchItem(sha256AndLength) {
+        console.log("fetchItem", sha256AndLength);
+        var deferred = new Deferred();
+        pointrel20141201Client.fetchEnvelope(sha256AndLength, function(error, envelope) {
+            if (error) {
+                console.log("error", error);
+                // TODO: Could "reject" here to generate an error, but then anyone failure could stop loading others
+                deferred.resolve(null);
+                return;
+            }
+            console.log("Got item", envelope.content);
+            projectVersions[sha256AndLength] = envelope.content;
+            deferred.resolve(envelope.content);
+        });
+        return deferred.promise;
     }
     
     function loadLatestProjectVersion(switchToLoadedProjectAnswersCallback) {
         console.log("loadLatestProjectVersion");
-        projectAnswersVersionsIndex.getNewEntries(lang.partial(loadedNewProjectAnswers, switchToLoadedProjectAnswersCallback));
+        pointrel20141201Client.queryByTag(projectAnswersVersionHyperdocumentUUID, function(error, queryResult) {
+            if (error) { console.log("error", error); return switchToLoadedProjectAnswersCallback(error);}
+            console.log("Got queryResult for tag 'test'", queryResult);
+            
+            var items = queryResult.items;
+            
+            if (items.length === 0) {
+                // TODO: Translate
+                console.log("No saved project version is available; has one been saved?");
+                return switchToLoadedProjectAnswersCallback("No saved project version is available; has one been saved?");
+            }
+            
+            var promises = [];
+            for (var index in items) {
+                var sha256AndLength = items[index];
+                if (!projectVersions[sha256AndLength]) {
+                    promises.push(fetchItem(sha256AndLength));
+                }
+            }
+            
+            all(promises).then(function(results) {
+                loadedNewProjectAnswers(switchToLoadedProjectAnswersCallback);
+            });            
+        });
     }
     
     // TODO: improve design and GUI so can choose a version to load?
-    function loadedNewProjectAnswers(switchToLoadedProjectAnswersCallback, error, allEntries, newEntries) {
-        // console.log("loadedNewProjectAnswers: ", error, newEntries);
-        if (error) {
-            var errorMessage = "ERROR: error on retrieving index data for project";
-            console.log(errorMessage);
-            // TODO: Translate
-            alert("No saved project version is available; has one been saved?");
-            return;
-        }
+    function loadedNewProjectAnswers(switchToLoadedProjectAnswersCallback) {
+        console.log("loadedNewProjectAnswers");
 
         // Try to load the latest one...
-        if (allEntries.length === 0) {
-            console.log("No stored versions");
-            return;
+        if (projectVersions.length === 0) {
+            console.log("No stored versions could be loaded");
+            return switchToLoadedProjectAnswersCallback("No stored versions could be loaded -- check the server logs");
         }
         
-        // Ideally should check some internal timestamp on each version to see what is the latest added by anyone? But timestamp for one could be wrong and way far in future?
-        //for (var versionIndex in allEntries) {
-        //    var savedVersion = savedVersions[versionIndex];
-        //    console.log("savedVersion: ", savedVersion.trace[0].timestamp, savedVersion.trace[0].userID, savedVersion.name);
-        //}
+        var latestVersion = null;
         
-        var latestVersion = allEntries[allEntries.length - 1];
-        var resourceURI = latestVersion.name;
-        if (latestVersion.resourceContent) return projectDataLoaded(switchToLoadedProjectAnswersCallback, null, latestVersion.resourceContent.text);
+        // Find the latest version
+        // TODO: Could be problem if timestamp for one is wrong and way far in future due to server time error?
+        for (var key in projectVersions) {
+            var projectVersion = projectVersions[key];
+            if (!latestVersion || projectVersion.timestamp >= latestVersion.timestamp) {
+                latestVersion = projectVersion;
+            }
+        }
         
-        archiver.resource_get(resourceURI, lang.partial(projectDataLoaded, switchToLoadedProjectAnswersCallback));
+        if (latestVersion) return switchToLoadedProjectAnswersCallback(null, latestVersion.body);
     }
     
     // TODO: Better error handling popup dialog as a generalized GUI issue
@@ -97,23 +140,32 @@ define([
         switchToLoadedProjectAnswersCallback(projectAnswers);
     }
     
-    function storeSurveyResult(surveyResult) {
+    function storeSurveyResult(surveyResult, callback) {
         // Store the result
         var timestamp = new Date().toISOString();
-        var version = {"_pointrelIndexing": [surveyResultHyperdocumentID], "timestamp": timestamp, "userID": userID, "surveyResult": surveyResult};
+        var version = {"timestamp": timestamp, "userID": userID, "surveyResult": surveyResult};
         console.log("version:", version);
         var versionAsString = JSON.stringify(version, null, 4);
         console.log("versionAsString:", versionAsString);
         
-        var newVersionURI = archiver.resource_add(versionAsString, surveyResultExtension, function(error, status) {
-            if (error) { alert("could not write new survey result: " + JSON.stringify(status)); return; }
+        var id = null;
+        var tags = [surveyResultHyperdocumentID];
+        var contentType = surveyResultContentType;
+        var newVersionURI = pointrel20141201Client.storeInNewEnvelope(version, id, tags, contentType, function(error) {
+            if (error) {
+                alert("could not write new survey result:\n" + error);
+                if (callback) callback(error);
+                return;
+            }
             console.log("wrote surveyResult as newVersionURI:", newVersionURI);
+            if (callback) callback(null);
         });
     }
     
     function loadLatestSurveyResults(loadedSurveyResultsCallback) {
         console.log("loadLatestSurveyResults");
-        surveyResultsIndex.getNewEntries(lang.partial(loadedNewSurveyResults, loadedSurveyResultsCallback));
+        alert("loadLatestSurveyResults Unfinished");
+        //TODO: surveyResultsIndex.getNewEntries(lang.partial(loadedNewSurveyResults, loadedSurveyResultsCallback));
     }
     
     // TODO: improve design and GUI so can choose a version to load?
@@ -132,22 +184,12 @@ define([
     
     
     function setup() {
-        console.log("Using Pointrel20130202");
-        archiver = new Pointrel20130202.PointrelArchiver(archiveURL, userID);
-        
-        // false is don't fetch resources
-        projectAnswersVersionsIndex = new Pointrel20130202.PointrelIndex(archiver, projectAnswersVersionHyperdocumentUUID, "index", false);
-        
-        // true is do fetch resources
-        surveyResultsIndex = new Pointrel20130202.PointrelIndex(archiver, surveyResultHyperdocumentID, "index", true);
+        console.log("Using pointrel20141201");
     }
     
     setup();
     
     return {
-        //"archiver": archiver,
-        //"userID": userID,
-        //"indexForProjectVersions": indexForProjectVersions,
         "storeProjectAnswersVersion": storeProjectAnswersVersion,
         "loadLatestProjectVersion": loadLatestProjectVersion,
         "storeSurveyResult": storeSurveyResult,

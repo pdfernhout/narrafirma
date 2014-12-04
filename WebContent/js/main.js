@@ -63,7 +63,11 @@ require([
         storage.loadLatestProjectVersion(switchToLoadedProjectData);
     }
      
-    function switchToLoadedProjectData(projectAnswers) {
+    function switchToLoadedProjectData(error, projectAnswers) {
+        if (error) {
+            alert("A problem happened when trying to load the latest version of the project:\n" + error);
+            return;
+        }
         console.log("loading saved version", projectAnswers);
         for (var key in projectAnswers) {
             if (projectAnswers.hasOwnProperty(key)) {
@@ -88,7 +92,7 @@ require([
         storage.storeProjectAnswersVersion(domain.projectData.projectAnswers, saveFinished);
     }
     
-    function saveFinished(newVersionURI, status) {
+    function saveFinished(newVersionURI) {
         // TODO: Translate and improve this feedback
         console.log("Save finished to file", newVersionURI);
         alert("Finished saving");

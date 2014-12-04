@@ -21,7 +21,12 @@ var methodOverride = require("method-override");
 var sessionModule = require("express-session");
 
 // the server library
-var Pointrel20130202Server = require("./Pointrel20130202Server");
+var pointrel20141201Server = require("./pointrel20141201Server");
+
+// TODO: think about authentication
+var config = {
+    requireAuthentication: false
+};
 
 // For authentication test; see: https://github.com/jaredhanson/passport-local/blob/master/examples/express3/app.js
 var LocalStrategy = passportLocal.Strategy;
@@ -79,26 +84,17 @@ passport.use(new LocalStrategy(
 ));
 
 function ensureAuthenticated(request, response, next) {
-  if (!Pointrel20130202Server.pointrelConfig.requireAuthentication || request.isAuthenticated()) { return next(); }
+  if (!config.requireAuthentication || request.isAuthenticated()) { return next(); }
   response.redirect('/login');
 }
 
 // Main code
 
-console.log("Pointrel20130202 server for nodejs started: " + Date());
+console.log("PNIWorkbookServer server for nodejs started: " + Date());
 
 console.log("__dirname", __dirname);
 
 var app = express();
-
-// TODO: Could there be an issue with bodyParser with undeleted temp files?
-//to support JSON-encoded bodies
-app.use(bodyParser.json());
-
-//to support URL-encoded bodies
-app.use(bodyParser.urlencoded({
-  extended: true
-})); 
 
 var logger = function(request, response, next) {
     console.log("Requesting:", request.url);
@@ -107,10 +103,20 @@ var logger = function(request, response, next) {
 
 app.use(logger);
 
+// TODO: May need to move this and split up JSON parsing functionality
+// TODO: Could there be an issue with bodyParser with undeleted temp files?
+// includes support to parse JSON-encoded bodies (and saving the rawBody)
+pointrel20141201Server.initialize(app);
+// app.use(bodyParser.json());
+
+// to support URL-encoded bodies
+app.use(bodyParser.urlencoded({
+  extended: true
+})); 
+
 // All added for passport authentication
 // app.use(express.logger());
 app.use(cookieParser());
-// Have already added bodyParser above, is it enough?
 app.use(methodOverride());
 app.use(sessionModule({secret: 'tools of abundance', saveUninitialized: true, resave: true}));
 app.use(flash());
@@ -196,64 +202,20 @@ function writeTestPage(request, response) {
     writePageStart(request, response);
     response.write("Example of authentication with passport; authenticated " + request.isAuthenticated());
     var label = "Pointrel App";
-    if (Pointrel20130202Server.pointrelConfig.requireAuthentication) label += " (only available if authenticated)";
+    if (config.requireAuthentication) label += " (only available if authenticated)";
     if (request.isAuthenticated()) response.write('<br><a href="/pointrel/pointrel-app">' + label + '</a>');
     writePageEnd(request, response);
 }
 
 // Application routes
 
-//app.get("/", function (request, response) {
-//    response.sendFile(Pointrel20130202Server.pointrelConfig.baseDirectory + "index.html");
-//});
-
-//app.get("/index.html", function (request, response) {
-//    response.sendFile(Pointrel20130202Server.pointrelConfig.baseDirectory + "index.html");
-//});
-
 app.get("/test", function (request, response) {
     writeTestPage(request, response);
 });
 
-app.get("/cgi-bin/journal-store.php", ensureAuthenticated, function (request, response) {
-    Pointrel20130202Server.journalStore(request, response);
+app.post("/survey/questions", function (request, response) {
+   // TODO: Pointrel20130202.resourceGet(request, response);
 });
-
-app.post("/cgi-bin/journal-store.php", ensureAuthenticated, function (request, response) {
-    Pointrel20130202Server.journalStore(request, response);
-});
-
-app.get("/cgi-bin/resource-add.php", ensureAuthenticated, function (request, response) {
-    Pointrel20130202Server.resourceAdd(request, response);
-});
-
-app.post("/cgi-bin/resource-add.php", ensureAuthenticated, function (request, response) {
-    Pointrel20130202Server.resourceAdd(request, response);
-});
-
-app.get("/cgi-bin/resource-get.php", ensureAuthenticated, function (request, response) {
-    Pointrel20130202Server.resourceGet(request, response);
-});
-
-app.post("/cgi-bin/resource-get.php", ensureAuthenticated, function (request, response) {
-    Pointrel20130202Server.resourceGet(request, response);
-});
-
-//app.get("/cgi-bin/resource-publish.php", ensureAuthenticated, function (request, response) {
-//    Pointrel20130202Server.resourcePublish(request, response);
-//});
-//
-//app.post("/cgi-bin/resource-publish.php", ensureAuthenticated, function (request, response) {
-//    Pointrel20130202Server.resourcePublish(request, response);
-//});
-
-//app.get("/cgi-bin/variable-query.php", ensureAuthenticated, function (request, response) {
-//    Pointrel20130202Server.variableQuery(request, response);
-//});
-//
-//app.post("/cgi-bin/variable-query.php", ensureAuthenticated, function (request, response) {
-//    Pointrel20130202Server.variableQuery(request, response);
-//});
 
 app.use("/$", ensureAuthenticated,   function(req, res) {
     res.redirect('/index.html');
@@ -273,7 +235,7 @@ app.use(function(err, req, res, next){
 var server = http.createServer(app).listen(8080, function () {
   var host = server.address().address;
   var port = server.address().port;
-  console.log("Pointrel20130202 app listening at http://%s:%s", host, port);
+  console.log("PNIWorkbookServer app listening at http://%s:%s", host, port);
 });
 
 // http://stackoverflow.com/questions/5998694/how-to-create-an-https-server-in-node-js
