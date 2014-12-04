@@ -4,7 +4,7 @@ define([
     "dojo/promise/all",
     "dojo/Deferred",
     "dojo/_base/lang",
-    "lib/pointrel20141201Client"
+    "js/pointrel20141201Client"
 ], function(
     all,
     Deferred,

@@ -1,3 +1,5 @@
+"use strict";
+    
 define([
     "dojo/request/xhr",
     'dojox/encoding/digests/_base',
@@ -7,8 +9,6 @@ define([
     digests,
     SHA256
 ) {
-    "use strict";
-    
     var apiPath = "/api/pointrel20141201/";
     var resourcesPath = apiPath + "resources/";
     var idIndexPath = apiPath + "indexes/id/";
