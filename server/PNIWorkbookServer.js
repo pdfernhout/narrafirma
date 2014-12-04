@@ -213,8 +213,42 @@ app.get("/test", function (request, response) {
     writeTestPage(request, response);
 });
 
-app.post("/survey/questions", function (request, response) {
-   // TODO: Pointrel20130202.resourceGet(request, response);
+function getLatestIndexEntry(indexEntries) {
+    var latest = null;
+    for (var i = 0; i < indexEntries.length; i++) {
+        var indexEntry = indexEntries[i];
+        if (!latest || indexEntries[i].timestamp >= latest.timestamp)
+            latest = indexEntries[i];
+    }
+    return latest;
+}
+
+app.post("/survey/questions/:surveyID", function (request, response) {
+    var surveyID = request.params.surveyID;
+    var indexEntries = pointrel20141201Server.referencesForTag(surveyID);
+    if (!indexEntries) {
+        return response.json({status: "FAILED", message: "Survey is not defined", questions: null});
+    }
+    var indexEntry = getLatestIndexEntry(indexEntries);
+    if (!indexEntry) {
+        var errorMessage = "Survey definitions are missing timestamps";
+        console.log("ERROR: Should never get here", errorMessage);
+        return response.json({status: "FAILED", message: errorMessage, questions: null});
+    }
+    pointrel20141201Server.fetchContentForReference(indexEntry.sha256AndLength, function(error, data) {
+        if (error) {
+            console.log("ERROR reading question file: ", error);
+            return response.json({status: "FAILED", message: error, questions: null});
+        }
+        var questionsEnvelope;
+        try {
+            questionsEnvelope = JSON.parse(data);
+        } catch (parseError) {
+            return response.json({status: "FAILED", message: "Parse error: " + parseError, questions: null});
+        }
+        // TODO: Should this really have to parse the question object? Maybe should let client do it?
+        return response.json({status: "OK", message: "Retrieved survey", questions: questionsEnvelope.content});
+    });
 });
 
 app.use("/$", ensureAuthenticated,   function(req, res) {
