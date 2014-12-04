@@ -40,6 +40,8 @@ define([
             return countNumberOfVenuesChosen(question);
         } else if (functionName === "totalNumberOfSurveyResults") {
             return "<b>" + projectData.surveyResults.allCompletedSurveys.length + "</b>";
+        } else if (functionName === "isStoryCollectingEnabled") {
+            return isStoryCollectingEnabled(question);
         } else {
             console.log("TODO: callDashboardFunction ", functionName, question);
             return "callDashboardFunction UNFINISHED: " + functionName + " for: " + question.id;
@@ -248,6 +250,12 @@ define([
     
     function storyCollectionStop(contentPane, model, id, questionOptions, value) {
         alert("storyCollectionStop unfinished");
+    }
+    
+    function isStoryCollectingEnabled(question) {
+        // TODO: Fix this
+        var state = false;
+        return "<b>" + state + "</b>";
     }
       
     var buttonFunctions = {
