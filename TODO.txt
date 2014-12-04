@@ -221,6 +221,7 @@ DONE Add text field to add participants for these:
 NOT DOING questionsTable working again [No longer needed]
 NOT DOING Fix questionAnswerCountOfTotalOnPages so it can handle a questionsTable [No longer needed]
 DONE Improvements to conversion utility to report conversion issues like missing short names better
+DONE Use new version of Pointrel system with memory indexing instead of index logs so server code is simpler and more robust and supports use by server-side code
 
 ======= CYNTHIA
 
@@ -310,4 +311,6 @@ Improve take survey page like with support for separate pages
 Way to edit a story or participant info (with versioning) if needed?
 
 One project outcome item created per participant group
+
+Check time server on startup in server to see if accurate enough when timestamping versions; same for client
 
