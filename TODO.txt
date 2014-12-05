@@ -10,10 +10,6 @@ PRIORITY:
 Support recommendationTable
 
 Fix how survey data is collected and stored to separate multiple stories from participant information
-webStoryCollectionEnabled toggle status to turn off seems broken
-Implement startup and shutdown of web data collection in domain buttonClicked
-Implement copyStoryFormURLDuringFinalize in domain buttonClicked
-Implement copyStoryFormURLDuringStart in domain buttonClicked
 
 Implement printStoryForm in domain buttonClicked
 
@@ -224,6 +220,10 @@ DONE Improvements to conversion utility to report conversion issues like missing
 DONE Use new version of Pointrel system with memory indexing instead of index logs so server code is simpler and more robust and supports use by server-side code
 DONE Translation support for survey as distinct from application so two do not potentially collide
 DONE Support a participantStoryForm -- the form everyone who comes to the URL can see
+DONE webStoryCollectionEnabled toggle status to turn off seems broken
+DONE Survey taking system on web server
+DONE Implement startup and shutdown of web data collection in domain buttonClicked
+DONE Implement copyStoryFormURL in domain buttonClicked
 
 ======= CYNTHIA
 
@@ -261,8 +261,6 @@ Chart where can select a set of stories
 Saving project data to a file server as make progress
 Think about what happens to data if questions change somehow in future versions of the software
 
-Survey taking system on web server
-
 Backup/Export/Import
 
 Roles/Accounts & Security
@@ -273,6 +271,9 @@ Page to cluster themes into final themes
 Disabled or hidden tabs which are enabled as progress
 
 Learn how to use Dojo build process to minimize application
+
+Have survey page support different surveys
+Have survey page use special server method so does not use Pointrel system directly or need authenticaion
 
 ==== Wish list:
 
