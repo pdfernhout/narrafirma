@@ -131,6 +131,33 @@ define([
             callback(null, envelope.content);           
         });
     }
+    
+    var questionnaireStatusContentType = "org.workingwithstories.QuestionnaireStatus";
+    
+    // TODO: What if the user's clock is wrong? How to reset status?
+    function storeQuestionnaireStatus(questionnaireID, questionnaireStatus, callback) {
+        var metadata = {id: null, tags: ["questionnaireStatus::" + questionnaireID], contentType: questionnaireStatusContentType, author: null, committer: userID, timestamp: true};        
+        var sha256HashAndLength = pointrel20141201Client.storeInNewEnvelope(questionnaireStatus, metadata, function(error) {
+            if (error) {
+                console.log("ERROR storeQuestionnaireVersion: could not write new questionnaire status:\n" + error);
+                callback(error);
+                return;
+            }
+            console.log("wrote newVersionURI:", sha256HashAndLength);
+            callback(null, sha256HashAndLength);
+        });
+    }
+    
+    function loadLatestQuestionnaireStatus(questionnaireID, callback) {
+        console.log("loadLatestQuestionnaireVersion");
+        pointrel20141201Client.loadLatestEnvelopeForTag("questionnaireStatus::" + questionnaireID, function(error, envelope) {
+            if (error) {
+                if (error === "No items found for tag") error = "No stored questionanaire status could be loaded for " + questionnaireID + " -- have any versions been saved?";
+                return callback(error);
+            }
+            callback(null, envelope.content);           
+        });
+    }
  
     function setup() {
         console.log("Using pointrel20141201");
@@ -144,6 +171,8 @@ define([
         "storeSurveyResult": storeSurveyResult,
         "loadLatestSurveyResults": loadLatestSurveyResults,
         "storeQuestionnaireVersion": storeQuestionnaireVersion,
-        "loadLatestQuestionnaireVersion": loadLatestQuestionnaireVersion
+        "loadLatestQuestionnaireVersion": loadLatestQuestionnaireVersion,
+        "storeQuestionnaireStatus": storeQuestionnaireStatus,
+        "loadLatestQuestionnaireStatus": loadLatestQuestionnaireStatus
     };
 });

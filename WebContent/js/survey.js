@@ -114,6 +114,10 @@ define([
         surveyDialog.show();
     }
     
+    function getStatusFromServer(questionnaireID, callback) {
+        storage.loadLatestQuestionnaireStatus(questionnaireID, callback);
+    }
+    
     function getQuestionnaireFromServer(questionnaireID, callback) {
         storage.loadLatestQuestionnaireVersion(questionnaireID, callback);
     }
@@ -121,6 +125,7 @@ define([
     return {
         takeSurvey: takeSurvey,
         buildSurveyForm: buildSurveyForm,
-        getQuestionnaireFromServer: getQuestionnaireFromServer
+        getQuestionnaireFromServer: getQuestionnaireFromServer,
+        getStatusFromServer: getStatusFromServer
     };
 });

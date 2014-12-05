@@ -241,26 +241,45 @@ define([
         });
     }
     
+    // TODO: Fix hardcoded questionnaire ID
+    var questionnaireID = 'questionnaire-test-001';
+    
     function storyCollectionStart(contentPane, model, id, questionOptions, value) {
-        alert("unfinished, but finalizing survey for testing...");
+        alert("also finalizing survey for testing...");
         
         var questionnaire = getCurrentQuestionnaire();
         
-        // TODO: Fix hardcoded questionnaire ID
-        storage.storeQuestionnaireVersion('questionnaire-test-001', questionnaire, function(error) {
+        storage.storeQuestionnaireVersion(questionnaireID, questionnaire, function(error) {
             if (error) { return alert("Could not store questionnaire"); }
-            alert("Store questionnaire as 'test'");
+            alert("Store questionnaire as:" + questionnaireID);
+        });
+        
+        var status = {questionnaireID: questionnaireID, active: true};
+        storage.storeQuestionnaireStatus(questionnaireID, status, function(error) {
+            console.log("Activated questionnaire", questionnaireID);
+            questionnaireStatus = {questionnaireID: questionnaireID, active: true};
+            pageChangeCallback();
         });
     }
     
     function storyCollectionStop(contentPane, model, id, questionOptions, value) {
-        alert("storyCollectionStop unfinished");
+        var status = {questionnaireID: questionnaireID, active: false};
+        storage.storeQuestionnaireStatus(questionnaireID, status, function(error) {
+            console.log("Deactivated questionnaire", questionnaireID);
+            questionnaireStatus = {questionnaireID: questionnaireID, active: false};
+            pageChangeCallback();
+        });
     }
     
+    // TODO: When does this get updated?
+    var questionnaireStatus = {questionnaireID: questionnaireID, active: true};
+    
     function isStoryCollectingEnabled(question) {
-        // TODO: Fix this
-        var state = false;
-        return "<b>" + state + "</b>";
+        return "<b>" + questionnaireStatus.active + "</b>";
+    }
+    
+    function copyStoryFormURL() {
+        alert("Story form URL is: " + "http://localhost:8080/survey.html");
     }
       
     var buttonFunctions = {
@@ -275,7 +294,8 @@ define([
         "updateQuestionsForPageChangeCallback": null,
         
         "storyCollectionStart": storyCollectionStart,
-        "storyCollectionStop": storyCollectionStop
+        "storyCollectionStop": storyCollectionStop,
+        "copyStoryFormURL": copyStoryFormURL
     };
     
     // dispatch the button click
@@ -464,6 +484,14 @@ define([
         */
         
         console.log("projectData", projectData);
+        
+        // Determine status of current questionnaire
+        storage.loadLatestQuestionnaireStatus(questionnaireID, function(error, status) {
+            if (error) {return console.log("Could not determine questionnaire status; assuming inactive", questionnaireID);}
+            console.log("got questionnaire status", status);
+            questionnaireStatus = status;
+            if (pageChangeCallback) pageChangeCallback();
+        });
     }
     
     setupDomain();

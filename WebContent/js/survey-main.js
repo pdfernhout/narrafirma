@@ -23,11 +23,14 @@ require([
         surveyDiv.innerHTML = "Thank you for taking the survey!";
     }
     
+    // TODO: Fix hardcoded value
+    var questionnaireID = 'questionnaire-test-001';
+    
     function createLayout() {
         console.log("createLayout");
            
         // TODO: Fix hardcoded ID!!
-        survey.getQuestionnaireFromServer('questionnaire-test-001', function(error, questionnaire) {
+        survey.getQuestionnaireFromServer(questionnaireID, function(error, questionnaire) {
             if (error) {
                 // TODO: Translate
                 document.getElementById("startup").innerHTML = "Something went wrong loading the survey questionnaire from the server";
@@ -47,8 +50,17 @@ require([
     
     function startup() {
         translate.configure({}, applicationMessages);
-        // Call the main function
-        createLayout();
+        
+        // Determine status of current questionnaire
+        survey.getStatusFromServer(questionnaireID, function(error, status) {
+            if (error || !status.active) {
+                // TODO: Translate
+                document.getElementById("startup").innerHTML = "The survey is not currently active: " + questionnaireID;
+                return;
+            }
+            console.log("got questionnaire status", status);
+            createLayout();
+        });
     }
     
     startup();
