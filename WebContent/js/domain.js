@@ -292,6 +292,20 @@ define([
             buttonFunctions.updateQuestionsForPageChangeCallback();
         });
     }
+    
+    function getParticipantDataForParticipantID(participantID) {
+        // TODO: Maybe optimize as a lookup map maintained when read in survery results
+        for (var responseIndex in projectData.surveyResults.allCompletedSurveys) {
+            var response = projectData.surveyResults.allCompletedSurveys[responseIndex];
+            if (response.participantData._participantID === participantID) {
+                console.log("getParticipantDataForParticipantID", participantID, response.participantData);
+                return response.participantData;
+            }
+        }
+        
+        console.log("ERROR getParticipantDataForParticipantID: participantID not found", participantID);
+        return {};
+    }
         
     function storyCollectionStart(contentPane, model, id, questionOptions, value) {
         alert("also finalizing survey for testing...");
@@ -566,7 +580,8 @@ define([
         "getCurrentQuestionnaire": getCurrentQuestionnaire,
         
         // Application using domain need to call this at start...
-        "determineStatusOfCurrentQuestionnaire": determineStatusOfCurrentQuestionnaire
+        "determineStatusOfCurrentQuestionnaire": determineStatusOfCurrentQuestionnaire,
+        "getParticipantDataForParticipantID": getParticipantDataForParticipantID
     };
     
     lang.mixin(exports, exportedFunctions);
