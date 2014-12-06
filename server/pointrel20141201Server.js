@@ -131,10 +131,18 @@ function reindexAllResources() {
     indexes.contentTypeToReferences = {};
     
     reindexAllResourcesInDirectory(resourcesDirectory);
+    
+    var resourceCount = 0;
+    for (var key in indexes.referenceToIsIndexed) resourceCount++;
+    console.log("Indexed %s resources", resourceCount);
+    
+    // console.log("id index", indexes.idToReferences);
+    // console.log("tag index", indexes.tagToReferences);
+    // console.log("contentType index", indexes.contentTypeToReferences);
 }
 
 function reindexAllResourcesInDirectory(directory) {
-    console.log("reindexAllResourcesInDirectory", directory);
+    // console.log("reindexAllResourcesInDirectory", directory);
     
     var fileNames;
     try {
@@ -142,11 +150,11 @@ function reindexAllResourcesInDirectory(directory) {
     } catch(error) {
         console.log("Problem reading directory %s error: %s", directory, error);
     }
-    console.log("fileNames", fileNames);
+    // console.log("fileNames", fileNames);
     for (var fileNameIndex in fileNames) {
         var fileName = fileNames[fileNameIndex];
         if (endsWith(fileName, resourceFileSuffix)) {
-            console.log("Indexing: ", fileName);
+            // console.log("Indexing: ", fileName);
             try {
                 var resourceContent = fetchContentForReferenceSync(fileName.substring(0, fileName.length - resourceFileSuffix.length));
                 var resourceObject = JSON.parse(resourceContent);
@@ -398,10 +406,6 @@ function initialize(app, config) {
     }
     reindexAllResources();
 
-    console.log("id index", indexes.idToReferences);
-    console.log("tag index", indexes.tagToReferences);
-    console.log("contentType index", indexes.contentTypeToReferences);
-    
     app.use(bodyParser.json({
         verify: bodyParserVerifyAddSHA256
     }));
