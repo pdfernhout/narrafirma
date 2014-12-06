@@ -184,21 +184,6 @@ define([
             questionnaire.elicitingQuestions.push(elicitingQuestionInfo);
         }
         
-        // TODO: How to prevent this problem of no eliciting questions?
-        if (questionnaire.elicitingQuestions.length === 0) {
-            // TODO: Translate
-            var message = "No elicting questions were defined!";
-            console.log("PROBLEM", message);
-            alert(message);
-            console.log("Adding an eliciting question for testing", message);
-            var testElicitingQuestionInfo = {
-                text: "What happened?",
-                id: "what happened",
-                type: {"what happened": true}
-            };
-            questionnaire.elicitingQuestions.push(testElicitingQuestionInfo);
-        }
-        
         /*
         if (startText) questions.push({storyQuestion_shortName: "startText", storyQuestion_text: startText, storyQuestion_type: "label"});
         questions.push({storyQuestion_shortName: "story", storyQuestion_text: storySolicitationOuestion, storyQuestion_type: "textarea"});
@@ -216,6 +201,24 @@ define([
         console.log("getCurrentQuestionnaire result", questionnaire);
         return questionnaire;
     }
+    
+    function ensureAtLeastOneElicitingQuestion(questionnaire) {
+        // TODO: How to prevent this potential problem of no eliciting questions during questionaiire deisgn in GUI?
+        if (questionnaire.elicitingQuestions.length === 0) {
+            // TODO: Translate
+            var message = "No elicting questions were defined! Adding one with 'What happened?' for testing.";
+            console.log("PROBLEM", message);
+            // alert(message);
+            console.log("Adding an eliciting question for testing", message);
+            var testElicitingQuestionInfo = {
+                text: "What happened?",
+                id: "what happened",
+                type: {"what happened": true}
+            };
+            questionnaire.elicitingQuestions.push(testElicitingQuestionInfo);
+        }
+    }
+    
 
     function printStoryForm(contentPane, model, id, questionOptions, value) {
         console.log("printStoryForm unfinished");
@@ -280,6 +283,8 @@ define([
         
         var questionnaire = getCurrentQuestionnaire();
         questionnaire.questionnaireID = questionnaireID;
+        
+        ensureAtLeastOneElicitingQuestion();
         
         storage.storeQuestionnaireVersion(questionnaireID, questionnaire, function(error) {
             if (error) { return alert("Could not store questionnaire"); }
