@@ -586,7 +586,8 @@ define([
         });
         var chartDiv = domConstruct.empty("chartDiv");
         
-        var surveyQuestions = domain.getCurrentQuestionnaire().questions;
+        // TODO: Fix this so it also handles particcipant questions somehwo
+        var surveyQuestions = domain.getCurrentQuestionnaire().storyQuestions;
         
         var xAxisQuestion = questionForID(surveyQuestions, xAxisQuestionID);
         var yAxisQuestion = questionForID(surveyQuestions, yAxisQuestionID);
@@ -730,8 +731,9 @@ define([
             title: "Graph results"
         });
         
+        // TODO: Fix this so it also handles participant questions somehow
         // TODO: Update these as they change...
-        var questions = domain.getCurrentQuestionnaire().questions;
+        var questions = domain.getCurrentQuestionnaire().storyQuestions;
         
         var optionsForAllQuestions = widgetSupport.optionsForAllQuestions(questions);
         

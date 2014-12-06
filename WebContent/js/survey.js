@@ -39,21 +39,45 @@ define([
         
         console.log("answers", surveyResult, model);
         
+        /* TODO: Commented out now for testing changeover to multipel stories per survey
         storage.storeSurveyResult(surveyResult, function(error) {
             // TODO: Translate
             // TODO: Cancel clearing of survey if it can't be sent
             if (error) { alert("Could not write new survey result to server:\n" + error);}
             alert("Survey successfully sent to server!");
         });
+        */
         
         // Can't push survey into all results at this point or will have duplicates when load them later
         // TODO: Maybe should load latest results from server back at this point? Because will not have new survey...
     }
     
-    function buildSurveyForm(questions, doneCallback, includeCancelButton) {  
-        console.log("buildSurveyForm questions", questions);
+    function buildSurveyForm(questionnaire, doneCallback, includeCancelButton) {  
+        console.log("buildSurveyForm questions", questionnaire);
         
-        translate.addExtraTranslationsForQuestions(questions);
+        var startQuestions = [];
+        if (questionnaire.startText) startQuestions.push({id: "__survey_" + "startText", shortName: "startText", prompt: questionnaire.startText, type: "label", options:[]});
+
+        var endQuestions = [];
+        if (questionnaire.endText) endQuestions.push({id: "__survey_" + "endText", shortName: "endText", prompt: questionnaire.endText, type: "label", options:[]});
+
+        // TODO: What about idea of having IDs that go with eliciting questions so store reference to ID not text prompt?
+        var elicitingQuestionPrompts = [];
+        for (var elicitingQuestionIndex in questionnaire.elicitingQuestions) {
+            var elicitingQuestionSpecification = questionnaire.elicitingQuestions[elicitingQuestionIndex];
+            elicitingQuestionPrompts.push(elicitingQuestionSpecification.text);
+        }
+        
+        // TODO: What if these IDs for storyText and storyName are not unique?
+        questionnaire.storyQuestions.unshift({id: "__survey_" + "storyName", shortName: "storyName", prompt: "Please give your story a name", type: "text", options:[]});
+        questionnaire.storyQuestions.unshift({id: "__survey_" + "storyText", shortName: "storyText", prompt: "Please enter your response to the question above in the space below", type: "textarea", options:[]});
+        questionnaire.storyQuestions.unshift({id: "__survey_" + "elicitingQuestion", shortName: "elicitingQuestion", prompt: "Please choose a question you would like to respond to", type: "select", options: elicitingQuestionPrompts});
+        
+        // TODO: Handle other implicit questions
+        translate.addExtraTranslationsForQuestions(startQuestions);
+        translate.addExtraTranslationsForQuestions(questionnaire.storyQuestions);
+        translate.addExtraTranslationsForQuestions(questionnaire.participantQuestions);
+        translate.addExtraTranslationsForQuestions(endQuestions);
         
         var form = new Form();
         form.set("style", "width: 800px; height 800px; overflow: auto;");
@@ -63,7 +87,11 @@ define([
         var model = surveyModel;
         var contentPane = form.containerNode;
         
-        widgetBuilder.addQuestions(questions, contentPane, model);
+        // TODO: Need to handle multiple stories somehow
+        widgetBuilder.addQuestions(startQuestions, contentPane, model);
+        widgetBuilder.addQuestions(questionnaire.storyQuestions, contentPane, model);
+        widgetBuilder.addQuestions(questionnaire.participantQuestions, contentPane, model);
+        widgetBuilder.addQuestions(endQuestions, contentPane, model);
         
         // TODO: Does the dialog itself have to be "destroyed"???
         
@@ -89,8 +117,8 @@ define([
         return form;
     }
 
-    function takeSurvey(questions) {  
-        console.log("takeSurvey questions", questions);
+    function takeSurvey(questionnaire) {  
+        console.log("takeSurvey questionnaire", questionnaire);
         
         var surveyDialog;
         
@@ -98,7 +126,7 @@ define([
             surveyDialog.hide();
         }
 
-        var form = buildSurveyForm(questions, hideSurveyDialog, true);
+        var form = buildSurveyForm(questionnaire, hideSurveyDialog, true);
    
         surveyDialog = new Dialog({
             title: "Take Survey",

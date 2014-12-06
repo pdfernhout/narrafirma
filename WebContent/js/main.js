@@ -422,9 +422,9 @@ require([
     
     function takeSurvey() {
         console.log("domain.projectData", domain.projectData);
-        var questions = domain.getCurrentQuestionnaire().questions;
+        var questionnaire = domain.getCurrentQuestionnaire();
         
-        survey.takeSurvey(questions);
+        survey.takeSurvey(questionnaire);
     }
     
     function startup() {

@@ -37,7 +37,7 @@ require([
                 alert("Something went wrong loading the survey questionnaire from the server:\n" + error);
                 return;
             }
-            var form = survey.buildSurveyForm(questionnaire.questions, finishedSurvey, false); 
+            var form = survey.buildSurveyForm(questionnaire, finishedSurvey, false); 
             
             var surveyDiv = dom.byId("surveyDiv");
             surveyDiv.appendChild(form.containerNode);

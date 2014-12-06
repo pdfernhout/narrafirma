@@ -81,37 +81,29 @@ define([
         alert(message);
     }
     
-    // TODO: This needs to be improved for asking multiple questions, maybe spanning multiple pages
-    function getCurrentQuestionnaire() {
-        finalizeSurvey();
-        
-        var questions = [];
-
-        // TODO: Title, logo
-        // TODO: Improve as should be asking multiple questions and storing the results for each one 
-        var elicitingQuestionList = projectData.exportedSurveyQuestions.project_elicitingQuestionsList;
-        console.log("elicitingQuestionList", elicitingQuestionList);
-        var storySolicitationOuestion = "What happened?";
-        if (elicitingQuestionList && elicitingQuestionList.length > 0) storySolicitationOuestion = elicitingQuestionList[0].elicitingQuestion_text;
-        
-        var startText = projectData.exportedSurveyQuestions.questionForm_startText;
-        var endText = projectData.exportedSurveyQuestions.questionForm_endText;
-        var storyQuestionList = projectData.exportedSurveyQuestions.project_storyQuestionsList;
-        var participantQuestionList = projectData.exportedSurveyQuestions.project_participantQuestionsList;
-        
-        if (startText) questions.push({storyQuestion_shortName: "startText", storyQuestion_text: startText, storyQuestion_type: "label"});
-        questions.push({storyQuestion_shortName: "story", storyQuestion_text: storySolicitationOuestion, storyQuestion_type: "textarea"});
-        questions.push({storyQuestion_shortName: "name", storyQuestion_text: "Please give your story a name", storyQuestion_type: "text"});
-        if (storyQuestionList) questions = questions.concat(storyQuestionList);
-        if (participantQuestionList) questions = questions.concat(participantQuestionList);
-        if (endText) questions.push({storyQuestion_shortName: "endText", storyQuestion_text: endText, storyQuestion_type: "label"});
-        
-        // console.log("all survey questions", questions);
-        
+    function ensureUniqueQuestionIDs(usedIDs, editorQuestions) {
+        // Validate the survey ids to prevent duplicates and missing ones; ideally this should be done in GUI somehow
+        for (var index in editorQuestions) {
+            var editorQuestion = editorQuestions[index];
+            if (!editorQuestion.id) {
+                editorQuestion.id = "question " + (++(usedIDs.__createdIDCount));
+                console.log("SURVEY DESIGN ERROR: question had missing ID and one was assigned", editorQuestion);
+            }
+            while (usedIDs[editorQuestion.id]) {
+                // ID already exists
+                console.log("SURVEY DESIGN ERROR: duplicate ID", editorQuestion.id);
+                editorQuestion.id = "question " + (++(usedIDs.__createdIDCount));
+                console.log("SURVEY DESIGN ERROR: question had duplicate ID and a new one was assigned", editorQuestion);
+            }
+            usedIDs[editorQuestion.id] = true;
+        }
+    }
+    
+    function convertEditorQuestions(editorQuestions) {
         var adjustedQuestions = [];
         
-        for (var questionIndex in questions) {
-            var question = questions[questionIndex];
+        for (var questionIndex in editorQuestions) {
+            var question = editorQuestions[questionIndex];
             // console.log("question", question);
             var shortName = question.storyQuestion_shortName || question.participantQuestion_shortName;
             // Including prefix for question ID so extra translations going with id will not collide with main application IDs
@@ -138,51 +130,85 @@ define([
             adjustedQuestions.push({type: type, id: id, options: options, shortName: shortName, prompt: prompt});
         }
         
-        var questionnaire = {
-                questions: adjustedQuestions
-        };
-        
-        return questionnaire;
+        return adjustedQuestions;
     }
     
     // TODO: How to save the fact we have exported this in the project? Make a copy??? Or keep original in document somewhere? Versus what is returned from server for surveys?
-    function finalizeSurvey() {
-        var survey = {};
-        survey.project_elicitingQuestionsList = projectData.projectAnswers.get("project_elicitingQuestionsList");
-        survey.project_storyQuestionsList = projectData.projectAnswers.get("project_storyQuestionsList");
-        survey.project_participantQuestionsList = projectData.projectAnswers.get("project_participantQuestionsList");
-        survey.questionForm_title = projectData.projectAnswers.get("questionForm_title");
-        survey.questionForm_image = projectData.projectAnswers.get("questionForm_image");
-        survey.questionForm_startText = projectData.projectAnswers.get("questionForm_startText");
-        survey.questionForm_endText = projectData.projectAnswers.get("questionForm_endText"); 
+    // TODO: This needs to be improved for asking multiple questions, maybe spanning multiple pages
+    function getCurrentQuestionnaire() {
+        var usedIDs = {};
+        usedIDs.__createdIDCount = 0;
+
+        // TODO: Title, logo
+        // TODO: Improve as should be asking multiple questions and storing the results for each one 
+        var questionnaire = {};
         
-        console.log("survey", survey);
+        questionnaire.title = projectData.projectAnswers.get("questionForm_title");
+        questionnaire.image = projectData.projectAnswers.get("questionForm_image");
+        questionnaire.startText = projectData.projectAnswers.get("questionForm_startText");
+        questionnaire.endText = projectData.projectAnswers.get("questionForm_endText"); 
+
+        var elicitingQuestions = projectData.projectAnswers.get("project_elicitingQuestionsList");
+        console.log("elicitingQuestions", elicitingQuestions);
+        
+        var storyQuestions = projectData.projectAnswers.get("project_storyQuestionsList");
+        ensureUniqueQuestionIDs(usedIDs, storyQuestions);
+        
+        var participantQuestions = projectData.projectAnswers.get("project_participantQuestionsList");
+        ensureUniqueQuestionIDs(usedIDs, participantQuestions);
+        
+        // console.log("survey", survey);
         
         // Ensure we have an entire fresh copy
-        projectData.exportedSurveyQuestions = JSON.parse(JSON.stringify(survey));
-        
-        // Validate the survey ids to prevent duplicates and missing ones; ideally this should be done in GUI somehow
-        var questions = [].concat(projectData.exportedSurveyQuestions.project_storyQuestionsList, projectData.exportedSurveyQuestions.project_participantQuestionsList);
-        var ids = {};
-        var createdIDCount = 0;
-        for (var index in questions) {
-            var question = questions[index];
-            if (!question.id) {
-                question.id = "question " + (++createdIDCount);
-                console.log("SURVEY DESIGN ERROR: question had missing ID and one was assigned", question);
-            }
-            while (ids[question.id]) {
-                // ID already exists
-                console.log("SURVEY DESIGN ERROR: duplicate ID", question.id);
-                question.id = "question " + (++createdIDCount);
-                console.log("SURVEY DESIGN ERROR: question had duplicate ID and a new one was assigned", question);
-            }
-            ids[question.id] = true;
+        // projectData.exportedSurveyQuestions = JSON.parse(JSON.stringify(survey));
+        // console.log("projectData.exportedSurveyQuestions", projectData.exportedSurveyQuestions);
+            
+        questionnaire.elicitingQuestions = [];
+        for (var elicitinQuestionIndex in elicitingQuestions) {
+            var storySolicitationOuestionText = elicitingQuestions[elicitinQuestionIndex].elicitingQuestion_text;
+            // TODO: var storySolicitationOuestionShortName = elicitingQuestions[elicitinQuestionIndex].elicitingQuestion_shortName;
+            var storySolicitationOuestionType = elicitingQuestions[elicitinQuestionIndex].elicitingQuestion_type;
+            var elicitingQuestionInfo = {
+                text: storySolicitationOuestionText,
+                // TODO: id: storySolicitationOuestionShortName,
+                type: storySolicitationOuestionType
+            };
+            questionnaire.elicitingQuestions.push(elicitingQuestionInfo);
         }
-
-        console.log("projectData.exportedSurveyQuestions", projectData.exportedSurveyQuestions);
+        
+        // TODO: How to prevent this problem of no eliciting questions?
+        if (questionnaire.elicitingQuestions.length === 0) {
+            // TODO: Translate
+            var message = "No elicting questions were defined!";
+            console.log("PROBLEM", message);
+            alert(message);
+            console.log("Adding an eliciting question for testing", message);
+            var testElicitingQuestionInfo = {
+                text: "What happened?",
+                id: "what happened",
+                type: {"what happened": true}
+            };
+            questionnaire.elicitingQuestions.push(testElicitingQuestionInfo);
+        }
+        
+        /*
+        if (startText) questions.push({storyQuestion_shortName: "startText", storyQuestion_text: startText, storyQuestion_type: "label"});
+        questions.push({storyQuestion_shortName: "story", storyQuestion_text: storySolicitationOuestion, storyQuestion_type: "textarea"});
+        questions.push({storyQuestion_shortName: "name", storyQuestion_text: "Please give your story a name", storyQuestion_type: "text"});
+        if (storyQuestionList) questions = questions.concat(storyQuestionList);
+        if (participantQuestionList) questions = questions.concat(participantQuestionList);
+        if (endText) questions.push({storyQuestion_shortName: "endText", storyQuestion_text: endText, storyQuestion_type: "label"});
+        */
+        
+        // console.log("all survey questions", questions);
+        
+        questionnaire.storyQuestions = convertEditorQuestions(storyQuestions);
+        questionnaire.participantQuestions = convertEditorQuestions(participantQuestions);
+           
+        console.log("getCurrentQuestionnaire result", questionnaire);
+        return questionnaire;
     }
-    
+
     function printStoryForm(contentPane, model, id, questionOptions, value) {
         console.log("printStoryForm unfinished");
         

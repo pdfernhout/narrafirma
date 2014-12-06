@@ -258,7 +258,8 @@ define([
     function insertStoryBrowser(pagePane, model, id, pageDefinitions) {
         console.log("insertStoryBrowser start", id);
         
-        var questions = domain.getCurrentQuestionnaire().questions;
+        // TODO: Fix this show also handles participant questions somehow
+        var questions = domain.getCurrentQuestionnaire().storyQuestions;
         // console.log("DEBUG questions used by story browser", questions);
         
         translate.addExtraTranslationsForQuestions(questions);
