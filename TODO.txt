@@ -9,8 +9,9 @@ PRIORITY:
 
 Support recommendationTable
 
-Fix how survey data is collected and stored to separate multiple stories from participant information
 Fix how selected eliciting question in select box is not entirely visible
+Support adding more than one story in survey form GUI
+Remove redundant code when calculating survey questions for story and name in survey and story browser
 
 Fix how story browser browses stories for separation of participant info from stories
 Should there be a separate participant info browser or is that handled by story browser? If "story browser" does that, may need to rename story browser?
@@ -237,6 +238,7 @@ DONE Implement startup and shutdown of web data collection in domain buttonClick
 DONE Implement copyStoryFormURL in domain buttonClicked
 DONE Use questionnaire instead of list of questions as specification for survey form
 DONE Determine why survey form is requesting some resources twice (due to loading the domain which checks questionnaire status itself -- fixed)
+DONE Fix how survey data is collected and stored to separate multiple stories from participant information
 
 ======= CYNTHIA
 
