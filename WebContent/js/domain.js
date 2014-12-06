@@ -313,7 +313,7 @@ define([
         var questionnaire = getCurrentQuestionnaire();
         questionnaire.questionnaireID = questionnaireID;
         
-        ensureAtLeastOneElicitingQuestion();
+        ensureAtLeastOneElicitingQuestion(questionnaire);
         
         storage.storeQuestionnaireVersion(questionnaireID, questionnaire, function(error) {
             if (error) { return alert("Could not store questionnaire"); }
