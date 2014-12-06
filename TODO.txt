@@ -10,6 +10,10 @@ PRIORITY:
 Support recommendationTable
 
 Fix how survey data is collected and stored to separate multiple stories from participant information
+Fix how story browser browses stories for separation of participant info from stories
+Should there be a separate participant info browser or is that handled by story browser? If "story browser" does that, may need to rename story browser?
+Fix how graph browser shows graphs for separation of participant info from stories
+Add support for short names for eliciting questions
 
 Implement printStoryForm in domain buttonClicked
 
@@ -224,6 +228,7 @@ DONE webStoryCollectionEnabled toggle status to turn off seems broken
 DONE Survey taking system on web server
 DONE Implement startup and shutdown of web data collection in domain buttonClicked
 DONE Implement copyStoryFormURL in domain buttonClicked
+DONE Use questionnaire instead of list of questions as specification for survey form
 
 ======= CYNTHIA
 
