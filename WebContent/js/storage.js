@@ -16,7 +16,7 @@ define([
     var projectAnswersVersionHyperdocumentUUID = "Test-PNIWorkbook-002";
     var projectAnswersVersionContentType = "org.workingwithstories.PNIWorkbook";
     
-    var surveyResultHyperdocumentID = "Test-PNIWorkbook-002-Surveys";
+    var surveyResultHyperdocumentID = "Test-PNIWorkbook-003-Surveys";
     var surveyResultContentType = "org.workingwithstories.PNIWorkbookSurveyResult";
     
     function storeProjectAnswersVersion(projectAnswers, callbackWhenDone) {

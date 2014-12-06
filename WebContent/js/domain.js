@@ -32,7 +32,7 @@ define([
     var projectData = {};
     
     // TODO: Fix hardcoded questionnaire ID
-    var questionnaireID = 'questionnaire-test-002';
+    var questionnaireID = 'questionnaire-test-003';
     
     // TODO: When does this get updated?
     var questionnaireStatus = {questionnaireID: questionnaireID, active: false};
@@ -226,10 +226,12 @@ define([
         alert("unfinished");
     }
     
+    /*
     function replaceArrayContents(destination, source) {
         destination.length = 0;
         destination.push.apply(destination, source);
     }
+    */
     
     function loadLatestStoriesFromServer(contentPane, model, id, questionOptions, value) {
         console.log("loadLatestStoriesFromServer called");
@@ -271,7 +273,20 @@ define([
             
             // TODO: Only for debugging; need to think through the seperating of stories and general survey data
             // Preserve existing array -- just replace its contents
-            replaceArrayContents(projectData.surveyResults.allStories, projectData.surveyResults.allCompletedSurveys);
+            var allStories = projectData.surveyResults.allStories;
+            while (allStories.length > 0) {
+                allStories.pop();
+            }
+            for (var responseIndex in projectData.surveyResults.allCompletedSurveys) {
+                var response = projectData.surveyResults.allCompletedSurveys[responseIndex];
+                for (var storyIndex in response.stories) {
+                    var story = response.stories[storyIndex];
+                    console.log("=== story", story);
+                    allStories.push(story);
+                }
+            }
+            
+            console.log("===== All stories", allStories);
             
             // TODO: Update GUI count -- ideally should be more selective in updating
             buttonFunctions.updateQuestionsForPageChangeCallback();
