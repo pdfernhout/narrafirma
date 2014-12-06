@@ -10,10 +10,15 @@ PRIORITY:
 Support recommendationTable
 
 Fix how survey data is collected and stored to separate multiple stories from participant information
+Fix how selected eliciting question in select box is not entirely visible
 Fix how story browser browses stories for separation of participant info from stories
 Should there be a separate participant info browser or is that handled by story browser? If "story browser" does that, may need to rename story browser?
 Fix how graph browser shows graphs for separation of participant info from stories
-Add support for short names for eliciting questions
+
+Add support for short names (ids) for eliciting questions
+Add support for short names (ids) for all options for survey questions
+Improve how options are specified for questions in question designer rather than use text box
+
 Have survey page use special server method so does not use Pointrel system directly or need authentication
 Ensure the survey taking app does no need to load entire domain from project editor app or load grid or story browser or other modules it does not really need.
 
@@ -34,8 +39,6 @@ Support trendsReport -- shows text and graphs in report based on top differences
 Support clusterSpace -- used in catalysis to cluster interpretations it is a graphical OR grid way of putting like with like, the option tells you what is to be clustered
 
 Support observationsList -- used to list all the previously made observations
-
-Implement countNumberOfVenuesChosen in domain
 
 Implement exportPresentationOutline in domain buttonClicked
 
@@ -71,6 +74,7 @@ Make sure that short name IDs entered by user when defining questions are unique
 
 Main Dashboard
 Decide or distinguish between between an initial explanation page versus a first big dashboard
+Implement countNumberOfVenuesChosen in domain (is this still needed? If not, remove stub code for it.)
 
 Help window displaying HTML instead of alert
 Look at all alerts in code and make into nicer GUI feedback
@@ -281,6 +285,8 @@ Learn how to use Dojo build process to minimize application
 Have survey page support different surveys
 
 ==== Wish list:
+
+Add support for surveys that can be in multiple languages
 
 Improve dashboards, perhaps with green checkmarks and thinking through completion feedback to be better
 
