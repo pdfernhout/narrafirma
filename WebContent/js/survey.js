@@ -59,10 +59,11 @@ define([
         console.log("buildSurveyForm questions", questionnaire);
         
         var startQuestions = [];
-        if (questionnaire.startText) startQuestions.push({id: "__survey_" + "startText", shortName: "startText", prompt: questionnaire.startText, type: "label", options:[]});
+        if (questionnaire.title) startQuestions.push({id: "__survey-local_" + "title", shortName: "title", prompt: questionnaire.title, type: "header", options:[]});
+        if (questionnaire.startText) startQuestions.push({id: "__survey-local_" + "startText", shortName: "startText", prompt: questionnaire.startText, type: "label", options:[]});
 
         var endQuestions = [];
-        if (questionnaire.endText) endQuestions.push({id: "__survey_" + "endText", shortName: "endText", prompt: questionnaire.endText, type: "label", options:[]});
+        if (questionnaire.endText) endQuestions.push({id: "__survey-local_" + "endText", shortName: "endText", prompt: questionnaire.endText, type: "label", options:[]});
 
         // TODO: What about idea of having IDs that go with eliciting questions so store reference to ID not text prompt?
         var elicitingQuestionPrompts = [];

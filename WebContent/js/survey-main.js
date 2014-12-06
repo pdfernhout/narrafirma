@@ -24,7 +24,7 @@ require([
     }
     
     // TODO: Fix hardcoded value
-    var questionnaireID = 'questionnaire-test-001';
+    var questionnaireID = 'questionnaire-test-002';
     
     function createLayout() {
         console.log("createLayout");
@@ -37,6 +37,7 @@ require([
                 alert("Something went wrong loading the survey questionnaire from the server:\n" + error);
                 return;
             }
+            console.log("got questionnaire from server", questionnaireID, questionnaire);
             var form = survey.buildSurveyForm(questionnaire, finishedSurvey, false); 
             
             var surveyDiv = dom.byId("surveyDiv");

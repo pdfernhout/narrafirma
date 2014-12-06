@@ -31,6 +31,12 @@ define([
     
     var projectData = {};
     
+    // TODO: Fix hardcoded questionnaire ID
+    var questionnaireID = 'questionnaire-test-002';
+    
+    // TODO: When does this get updated?
+    var questionnaireStatus = {questionnaireID: questionnaireID, active: false};
+    
     function countNumberOfVenuesChosen(question) {
         return "countNumberOfVenuesChosen UNFINISHED";
     }
@@ -141,7 +147,9 @@ define([
 
         // TODO: Title, logo
         // TODO: Improve as should be asking multiple questions and storing the results for each one 
-        var questionnaire = {};
+        var questionnaire = {
+                __type: "org.workingwithstories.Questionnaire"
+        };
         
         questionnaire.title = projectData.projectAnswers.get("questionForm_title");
         questionnaire.image = projectData.projectAnswers.get("questionForm_image");
@@ -266,14 +274,12 @@ define([
             buttonFunctions.updateQuestionsForPageChangeCallback();
         });
     }
-    
-    // TODO: Fix hardcoded questionnaire ID
-    var questionnaireID = 'questionnaire-test-001';
-    
+        
     function storyCollectionStart(contentPane, model, id, questionOptions, value) {
         alert("also finalizing survey for testing...");
         
         var questionnaire = getCurrentQuestionnaire();
+        questionnaire.questionnaireID = questionnaireID;
         
         storage.storeQuestionnaireVersion(questionnaireID, questionnaire, function(error) {
             if (error) { return alert("Could not store questionnaire"); }
@@ -296,9 +302,6 @@ define([
             pageChangeCallback();
         });
     }
-    
-    // TODO: When does this get updated?
-    var questionnaireStatus = {questionnaireID: questionnaireID, active: true};
     
     function isStoryCollectingEnabled(question) {
         return "<b>" + questionnaireStatus.active + "</b>";
