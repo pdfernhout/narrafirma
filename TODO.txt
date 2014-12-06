@@ -11,6 +11,7 @@ Support recommendationTable
 
 Fix how survey data is collected and stored to separate multiple stories from participant information
 Fix how selected eliciting question in select box is not entirely visible
+
 Fix how story browser browses stories for separation of participant info from stories
 Should there be a separate participant info browser or is that handled by story browser? If "story browser" does that, may need to rename story browser?
 Fix how graph browser shows graphs for separation of participant info from stories
@@ -19,10 +20,11 @@ Add support for short names (ids) for eliciting questions
 Add support for short names (ids) for all options for survey questions
 Improve how options are specified for questions in question designer rather than use text box
 
+Figure out GUI for "finalizing" a survey as opposed to storing current version when enable survey
 Have survey page use special server method so does not use Pointrel system directly or need authentication
 Ensure the survey taking app does no need to load entire domain from project editor app or load grid or story browser or other modules it does not really need.
 
-Implement printStoryForm in domain buttonClicked
+Implement printStoryForm in domain buttonClicked (what do do about entering multiple stories?)
 
 Support a templateList -- a list box with templates read in from a file (of a particular type) with a "copy" button
 
@@ -88,6 +90,8 @@ Support storyBrowserCount
 
 Way to retrieve data about project participant groups [Is this still relevant?]
 Implement showHideCollectedStories in domain buttonClicked [Not sure what this means now or if still relevant]
+
+Support for socket.io to track recently added survey results and whether survey is enabled
 
 Resolve these issues from conversion or add them to list of types not needing a short name:
 No short name for type: storyThemer field: themeStories text: Theme stories
@@ -287,12 +291,14 @@ Have survey page support different surveys
 ==== Wish list:
 
 Add support for surveys that can be in multiple languages
+Add support for multiple surveys per project
+Add support for providing story browser filter options based on data as well as current questionnaire(s)
 
 Improve dashboards, perhaps with green checkmarks and thinking through completion feedback to be better
 
 Remember previous filtering options for any question in story browser
 
-Ad hoc questions (or tags) that can be added to stories when noticing trends (e.g. Did they talk about XYZ in the story?)
+Adhoc questions (or tags) that can be added to stories when noticing trends (e.g. Did they talk about XYZ in the story?)
 Or, saving sets of filtered and/or selected questions
 Describe the filtering choices as a string, including detecting ranges for sliders to do dashed range for value
 
@@ -325,6 +331,7 @@ Support checkBoxesWithPull -- a set of check boxes where the display texts are d
 Improve take survey page like with support for separate pages
 
 Way to edit a story or participant info (with versioning) if needed?
+Editing survey results for consistency with version control based on survey ID?
 
 One project outcome item created per participant group
 
