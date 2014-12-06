@@ -429,10 +429,13 @@ require([
     
     function startup() {
         translate.configure(pageMessages, applicationMessages);
-        
+
+        // Synchronizes the state of the domain for one status flag with what is on server
+        domain.determineStatusOfCurrentQuestionnaire();
+
         // Setup important callback for page changes
         domain.setPageChangeCallback(widgetBuilder.updateQuestionsForPageChange);
-        
+
         // Callback for this button
         // TODO: Temp for testing
         domain.buttonFunctions.enterSurveyResult = takeSurvey;

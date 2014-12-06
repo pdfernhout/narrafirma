@@ -510,8 +510,9 @@ define([
         */
         
         console.log("projectData", projectData);
-        
-        // Determine status of current questionnaire
+    }
+    
+    function determineStatusOfCurrentQuestionnaire() {
         storage.loadLatestQuestionnaireStatus(questionnaireID, function(error, status) {
             if (error) {return console.log("Could not determine questionnaire status; assuming inactive", questionnaireID);}
             console.log("got questionnaire status", status);
@@ -539,7 +540,10 @@ define([
         "calculate_quizScoreResult": calculate_quizScoreResult,
         "buttonFunctions": buttonFunctions,
         
-        "getCurrentQuestionnaire": getCurrentQuestionnaire
+        "getCurrentQuestionnaire": getCurrentQuestionnaire,
+        
+        // Application using domain need to call this at start...
+        "determineStatusOfCurrentQuestionnaire": determineStatusOfCurrentQuestionnaire
     };
     
     lang.mixin(exports, exportedFunctions);

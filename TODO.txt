@@ -14,6 +14,8 @@ Fix how story browser browses stories for separation of participant info from st
 Should there be a separate participant info browser or is that handled by story browser? If "story browser" does that, may need to rename story browser?
 Fix how graph browser shows graphs for separation of participant info from stories
 Add support for short names for eliciting questions
+Have survey page use special server method so does not use Pointrel system directly or need authentication
+Ensure the survey taking app does no need to load entire domain from project editor app or load grid or story browser or other modules it does not really need.
 
 Implement printStoryForm in domain buttonClicked
 
@@ -82,8 +84,6 @@ Support storyBrowserCount
 
 Way to retrieve data about project participant groups [Is this still relevant?]
 Implement showHideCollectedStories in domain buttonClicked [Not sure what this means now or if still relevant]
-
-Ensure the survey taking app does no need to load entire domain from project editor app or load grid or story browser or other modules it does not really need.
 
 Resolve these issues from conversion or add them to list of types not needing a short name:
 No short name for type: storyThemer field: themeStories text: Theme stories
@@ -229,6 +229,7 @@ DONE Survey taking system on web server
 DONE Implement startup and shutdown of web data collection in domain buttonClicked
 DONE Implement copyStoryFormURL in domain buttonClicked
 DONE Use questionnaire instead of list of questions as specification for survey form
+DONE Determine why survey form is requesting some resources twice (due to loading the domain which checks questionnaire status itself -- fixed)
 
 ======= CYNTHIA
 
@@ -278,7 +279,6 @@ Disabled or hidden tabs which are enabled as progress
 Learn how to use Dojo build process to minimize application
 
 Have survey page support different surveys
-Have survey page use special server method so does not use Pointrel system directly or need authenticaion
 
 ==== Wish list:
 
@@ -322,5 +322,6 @@ Way to edit a story or participant info (with versioning) if needed?
 
 One project outcome item created per participant group
 
-Check time server on startup in server to see if accurate enough when timestamping versions; same for client
+Check time server on startup in server to see if accurate enough when timestamping versions; maybe same for client
+Support for Pointrel server returning the current time so clients can compare with it
 
