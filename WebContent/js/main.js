@@ -58,12 +58,11 @@ require([
 
     function loadClicked(event) {
         console.log("load clicked");
-        
-        // TODO: Check for unsaved data...
-        
+                
         // TODO: Kludge of loading all stories when load data?
-        domain.buttonFunctions.loadLatestStoriesFromServer();
-        
+        // domain.buttonFunctions.loadLatestStoriesFromServer();
+ 
+        // TODO: Check for unsaved data before loading project...
         storage.loadLatestProjectVersion(switchToLoadedProjectData);
     }
      
@@ -85,7 +84,7 @@ require([
         showPage(currentPageID, "forceRefresh");
         
         // TODO: Translate and improve this feedback
-        alert("Finished loading");
+        alert("Finished loading project data");        
     }
     
     function saveClicked(event) {
@@ -421,6 +420,7 @@ require([
     }
     
     function takeSurvey() {
+        // TODO: What version of questionnaire should be used? Should it really be the latest one? Or the one active on server?
         console.log("domain.projectData", domain.projectData);
         var questionnaire = domain.getCurrentQuestionnaire();
         
