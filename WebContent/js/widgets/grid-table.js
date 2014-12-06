@@ -181,8 +181,9 @@ define([
     function getSelectedItem(grid, store) {
         var selectedItemID = null;
         
+        console.log("getSelectedItem", grid.selection, grid);
         for (var theSelection in grid.selection) {
-            selectedItemID = theSelection;
+            if (grid.selection[theSelection]) selectedItemID = theSelection;
         }
         
         if (!selectedItemID) {
@@ -223,6 +224,7 @@ define([
         console.log("view button pressed or double click", id, event);
         
         var selectedItem = getSelectedItem(grid, store);
+        console.log("viewButtonClicked selectedItem", selectedItem);
         
         if (!selectedItem) {
             alert("Please select an item to view first");
