@@ -29,27 +29,30 @@ define([
 ){
     // TODO: Replace use of storage with direct calls to server to get questionnaire and submit survey
     
-    function submitSurvey(model, form) {
+    var timestampStart;
+    
+    function submitSurvey(surveyResultsWithModels) {
         var answers = {};
         console.log("submitSurvey pressed");
         
-        var surveyResult = getPlainValue(model);
+        var timestampEnd = new Date();
         
-        surveyResult._id = uuid();
+        surveyResultsWithModels.timestampEnd = timestampEnd.toISOString();
+        surveyResultsWithModels.timeDuration_ms = timestampEnd.getTime() - timestampStart.getTime(); 
         
-        console.log("answers", surveyResult, model);
+        var surveyResult = getPlainValue(surveyResultsWithModels);
+           
+        console.log("answers", surveyResult);
         
-        /* TODO: Commented out now for testing changeover to multipel stories per survey
         storage.storeSurveyResult(surveyResult, function(error) {
             // TODO: Translate
             // TODO: Cancel clearing of survey if it can't be sent
             if (error) { alert("Could not write new survey result to server:\n" + error);}
             alert("Survey successfully sent to server!");
         });
-        */
         
-        // Can't push survey into all results at this point or will have duplicates when load them later
-        // TODO: Maybe should load latest results from server back at this point? Because will not have new survey...
+        // For editor app, can't push survey into all results at this point or will have duplicates when load them later
+        // TODO: For editor app, maybe should load latest results from server back at this point? Because will not have new survey...
     }
     
     function buildSurveyForm(questionnaire, doneCallback, includeCancelButton) {  
@@ -82,33 +85,47 @@ define([
         var form = new Form();
         form.set("style", "width: 800px; height 800px; overflow: auto;");
         
-        var surveyModel = new Stateful();
+        timestampStart = new Date();
         
-        var model = surveyModel;
+        var surveyResultsWithModels = {
+            __type: "org.workingwithstories.QuestionnaireResponse",
+            questionnaire: questionnaire,
+            responseID: uuid(), 
+            stories: [],
+            participantData: null,
+            timestampStart: "" + timestampStart.toISOString()
+        };
+        
+        var participantID = uuid();
+        var participantDataModel = new Stateful();
+        participantDataModel.set("__type", "org.workingwithstories.ParticipantData");
+        participantDataModel.set("_participantID", participantID);
+        surveyResultsWithModels.participantData = participantDataModel;
+        
+        var storyQuestionsModel = new Stateful();
+        storyQuestionsModel.set("__type", "org.workingwithstories.Story");
+        storyQuestionsModel.set("_storyID", uuid());
+        storyQuestionsModel.set("_participantID", participantID);
+        surveyResultsWithModels.stories.push(storyQuestionsModel);
+
         var contentPane = form.containerNode;
         
         // TODO: Need to handle multiple stories somehow
-        widgetBuilder.addQuestions(startQuestions, contentPane, model);
-        widgetBuilder.addQuestions(questionnaire.storyQuestions, contentPane, model);
-        widgetBuilder.addQuestions(questionnaire.participantQuestions, contentPane, model);
-        widgetBuilder.addQuestions(endQuestions, contentPane, model);
-        
-        // TODO: Does the dialog itself have to be "destroyed"???
+        widgetBuilder.addQuestions(startQuestions, contentPane, participantDataModel);
+        widgetBuilder.addQuestions(questionnaire.storyQuestions, contentPane, storyQuestionsModel);
+        widgetBuilder.addQuestions(questionnaire.participantQuestions, contentPane, participantDataModel);
+        widgetBuilder.addQuestions(endQuestions, contentPane, participantDataModel);
         
         utility.newButton(undefined, "surveySubmit", form, function() {
-            console.log("Submit survery");
-            submitSurvey(model, form);
+            console.log("Submit survey");
+            submitSurvey(surveyResultsWithModels, form);
             if (doneCallback) doneCallback("submitted");
-            // The next line is needed to get rid of duplicate IDs for next time the form is opened:
-            form.destroyRecursive();
         });
         
         if (includeCancelButton) {
             utility.newButton(undefined, "surveyCancel", form, function() {
                 console.log("Cancel");
                 if (doneCallback) doneCallback("cancelled");
-                // The next line is needed to get rid of duplicate IDs for next time the form is opened:
-                form.destroyRecursive();
             });
         }
         
@@ -121,12 +138,16 @@ define([
         console.log("takeSurvey questionnaire", questionnaire);
         
         var surveyDialog;
+        var form;
         
         function hideSurveyDialog(status) {
+            // TODO: Does the dialog itself have to be "destroyed"???
             surveyDialog.hide();
+            // The next line is needed to get rid of duplicate IDs for next time the form is opened:
+            form.destroyRecursive();
         }
 
-        var form = buildSurveyForm(questionnaire, hideSurveyDialog, true);
+        form = buildSurveyForm(questionnaire, hideSurveyDialog, true);
    
         surveyDialog = new Dialog({
             title: "Take Survey",
