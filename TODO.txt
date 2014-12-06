@@ -73,6 +73,7 @@ Autosave, perhaps based on time or based on changing pages
 Improve feedback when there are no project versions or survey results; maybe distinguish between an error and nothing being saved yet
 
 Make sure that short name IDs entered by user when defining questions are unique among themselves and don't have a leading underscore (or at least aren't "_id")
+Ensure short name IDs entered by user do not conflict with automatically created ones or story text and story name
 
 Main Dashboard
 Decide or distinguish between between an initial explanation page versus a first big dashboard
@@ -90,8 +91,6 @@ Support storyBrowserCount
 
 Way to retrieve data about project participant groups [Is this still relevant?]
 Implement showHideCollectedStories in domain buttonClicked [Not sure what this means now or if still relevant]
-
-Support for socket.io to track recently added survey results and whether survey is enabled
 
 Resolve these issues from conversion or add them to list of types not needing a short name:
 No short name for type: storyThemer field: themeStories text: Theme stories
@@ -286,13 +285,15 @@ Disabled or hidden tabs which are enabled as progress
 
 Learn how to use Dojo build process to minimize application
 
-Have survey page support different surveys
+Add support for adding multiple surveys per project
+Have survey entry page support different surveys
 
 ==== Wish list:
 
+Support for socket.io to track recently added survey results and whether survey is enabled
+
 Add support for surveys that can be in multiple languages
-Add support for multiple surveys per project
-Add support for providing story browser filter options based on data as well as current questionnaire(s)
+Add support for providing story browser filter options based on analyzing data from surveys to collect all actual choices as well as current questionnaire(s)
 
 Improve dashboards, perhaps with green checkmarks and thinking through completion feedback to be better
 
