@@ -277,7 +277,7 @@ define([
         // Store will modify underlying array
         var dataStore = new Memory({
             data: stories,
-            idProperty: "_id"
+            idProperty: "_storyID"
         });
         
         // console.log("insertStoryBrowser middle 1", id);
