@@ -25,6 +25,7 @@ define([
         
         var envelope = {
             __type: "org.pointrel.pointrel20141201.PointrelContentEnvelope",
+            // TODO: Maybe store a UUID?
         };
         
         // TODO: More validation to ensure strings for tags and that it is an array
@@ -145,6 +146,63 @@ define([
         return deferred.promise;
     }
     
+    function loadEnvelopesForID(referenceToEnvelopeMap, id, callback) {
+        console.log("loadEnvelopesForID", id);
+        pointrel_queryByID(id, function(error, queryResult) {
+            if (error) { console.log("loadEnvelopesForID error", error); return callback(error);}
+            console.log("Got queryResult for id", id, queryResult);
+            
+            var indexEntries = queryResult.indexEntries;
+            
+            var promises = [];
+            for (var index in indexEntries) {
+                var indexEntry = indexEntries[index];
+                if (!referenceToEnvelopeMap[indexEntry.sha256AndLength]) {
+                    promises.push(fetchItem(referenceToEnvelopeMap, indexEntry.sha256AndLength));
+                }
+            }
+            
+            all(promises).then(function(newItems) {
+                callback(null, referenceToEnvelopeMap, newItems);
+            });            
+        });
+    }
+    
+    // TODO: On "latest" functions, think about supporting a list of items with the same latest timestamp
+    // TODO: Consider adding support for a sequence number of some sort in "latest" operations
+    
+    // TODO: User server-side call to optimize this this
+    function loadLatestEnvelopeForID(id, callback) {
+        console.log("loadLatestEnvelopeForID", id);
+        pointrel_queryByID(id, function(error, queryResult) {
+            if (error) { console.log("loadLatestEnvelopeForID error", error); return callback(error);}
+            console.log("Got queryResult for id", id, queryResult);
+            
+            var indexEntries = queryResult.indexEntries;
+            
+            var latestEntry = null;
+            for (var index in indexEntries) {
+                var indexEntry = indexEntries[index];
+                if (!latestEntry || latestEntry.timestamp <= indexEntry.timestamp) {
+                    latestEntry = indexEntry;
+                }
+            }
+            
+            if (latestEntry) {
+                pointrel_fetchEnvelope(latestEntry.sha256AndLength, function(error, envelope) {
+                    if (error) {
+                        console.log("error", error);
+                        callback(error);
+                        return;
+                    }
+                    callback(null, envelope);
+                });
+            } else {
+                callback("No items found for id", id);
+            }
+        });
+    }
+    
     function loadEnvelopesForTag(referenceToEnvelopeMap, tag, callback) {
         console.log("loadEnvelopesForTag", tag);
         pointrel_queryByTag(tag, function(error, queryResult) {
@@ -167,6 +225,7 @@ define([
         });
     }
     
+    // TODO: User server-side call to optimize this this
     function loadLatestEnvelopeForTag(tag, callback) {
         console.log("loadLatestEnvelopeForTag", tag);
         pointrel_queryByTag(tag, function(error, queryResult) {
@@ -193,7 +252,7 @@ define([
                     callback(null, envelope);
                 });
             } else {
-                callback("No items found for tag");
+                callback("No items found for tag", tag);
             }
         });
     }
