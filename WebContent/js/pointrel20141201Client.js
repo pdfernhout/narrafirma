@@ -272,6 +272,8 @@ define([
         fetchEnvelope: pointrel_fetchEnvelope,
         queryByID: pointrel_queryByID,
         queryByTag: pointrel_queryByTag,
+        loadEnvelopesForID: loadEnvelopesForID,
+        loadLatestEnvelopeForID: loadLatestEnvelopeForID,
         loadEnvelopesForTag: loadEnvelopesForTag,
         loadLatestEnvelopeForTag: loadLatestEnvelopeForTag
     };
