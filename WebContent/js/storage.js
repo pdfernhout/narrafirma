@@ -13,14 +13,21 @@ define([
     
     // var savedVersions = [];
     
-    var projectAnswersVersionHyperdocumentUUID = "Test-PNIWorkbook-002";
-    var projectAnswersVersionContentType = "org.workingwithstories.PNIWorkbook";
+    // TODO: reading old version, but writing new one as upgrade test
+    // TODO: Fix hardcoded projectAnswersDocumentID
+    var projectAnswersDocumentIDOld = "Test-PNIWorkbook-002";
+    var projectAnswersDocumentID = "Test-PNIWorkbook-003";
     
+    // TODO: Fix hardcoded surveyResultHyperdocumentID
     var surveyResultHyperdocumentID = "Test-PNIWorkbook-003-Surveys";
+
+    var projectAnswersContentType = "org.workingwithstories.PNIWorkbook";
+    var questionnaireContentType = "org.workingwithstories.Questionnaire";
+    var questionnaireStatusContentType = "org.workingwithstories.QuestionnaireStatus";
     var surveyResultContentType = "org.workingwithstories.PNIWorkbookSurveyResult";
     
     function storeProjectAnswersVersion(projectAnswers, callbackWhenDone) {
-        var metadata = {id: null, tags: [projectAnswersVersionHyperdocumentUUID], contentType: projectAnswersVersionContentType, author: null, committer: userID, timestamp: true};        
+        var metadata = {id: projectAnswersDocumentID, tags: [], contentType: projectAnswersContentType, author: null, committer: userID, timestamp: true};        
         var newVersionURI = pointrel20141201Client.storeInNewEnvelope(projectAnswers, metadata, function(error) {
             if (error) {
                 console.log("could not write new version:\n" + error);
@@ -34,7 +41,8 @@ define([
     // TODO: improve design and GUI so can choose a version to load?
     function loadLatestProjectVersion(switchToLoadedProjectAnswersCallback) {
         console.log("loadLatestProjectVersion");
-        pointrel20141201Client.loadLatestEnvelopeForTag(projectAnswersVersionHyperdocumentUUID, function(error, envelope) {
+        // pointrel20141201Client.loadLatestEnvelopeForID(projectAnswersDocumentID, function(error, envelope) {
+        pointrel20141201Client.loadLatestEnvelopeForTag(projectAnswersDocumentIDOld, function(error, envelope) {
             if (error) {
                 if (error === "No items found for tag") error = "No stored versions could be loaded -- have any project versions been saved?";
                 return switchToLoadedProjectAnswersCallback(error);
@@ -69,7 +77,7 @@ define([
     
     function storeSurveyResult(surveyResult, callback) {
         // Store the result
-        var metadata = {id: null, tags: [surveyResultHyperdocumentID], contentType: surveyResultContentType, author: null, committer: userID, timestamp: true};
+        var metadata = {id: surveyResult.responseID, tags: [surveyResultHyperdocumentID], contentType: surveyResultContentType, author: null, committer: userID, timestamp: true};
         var newVersionURI = pointrel20141201Client.storeInNewEnvelope(surveyResult, metadata, function(error) {
             if (error) {
                 if (callback) callback(error);
@@ -106,8 +114,6 @@ define([
         loadedSurveyResultsCallback(allEnvelopes, newEnvelopes);    
     }
     
-    var questionnaireContentType = "org.workingwithstories.Questionnaire";
-    
     function storeQuestionnaireVersion(questionnaireID, questionnaire, callback) {
         var metadata = {id: null, tags: [questionnaireID], contentType: questionnaireContentType, author: null, committer: userID, timestamp: true};        
         var sha256HashAndLength = pointrel20141201Client.storeInNewEnvelope(questionnaire, metadata, function(error) {
@@ -131,8 +137,6 @@ define([
             callback(null, envelope.content);           
         });
     }
-    
-    var questionnaireStatusContentType = "org.workingwithstories.QuestionnaireStatus";
     
     // TODO: What if the user's clock is wrong? How to reset status?
     function storeQuestionnaireStatus(questionnaireID, questionnaireStatus, callback) {
