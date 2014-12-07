@@ -13,9 +13,7 @@ define([
     
     // var savedVersions = [];
     
-    // TODO: reading old version, but writing new one as upgrade test
     // TODO: Fix hardcoded projectAnswersDocumentID
-    var projectAnswersDocumentIDOld = "Test-PNIWorkbook-002";
     var projectAnswersDocumentID = "Test-PNIWorkbook-003";
     
     // TODO: Fix hardcoded surveyResultHyperdocumentID
@@ -41,8 +39,7 @@ define([
     // TODO: improve design and GUI so can choose a version to load?
     function loadLatestProjectVersion(switchToLoadedProjectAnswersCallback) {
         console.log("loadLatestProjectVersion");
-        // pointrel20141201Client.loadLatestEnvelopeForID(projectAnswersDocumentID, function(error, envelope) {
-        pointrel20141201Client.loadLatestEnvelopeForTag(projectAnswersDocumentIDOld, function(error, envelope) {
+        pointrel20141201Client.loadLatestEnvelopeForID(projectAnswersDocumentID, function(error, envelope) {
             if (error) {
                 if (error === "No items found for tag") error = "No stored versions could be loaded -- have any project versions been saved?";
                 return switchToLoadedProjectAnswersCallback(error);
