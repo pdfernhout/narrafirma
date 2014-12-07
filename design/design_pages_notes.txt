@@ -2,7 +2,7 @@
 // Double ## for second level pages
 // Single * for questions
 // Question types are in brackets [id|type|options]
-// question types are: label, header (bold label), text, textarea, select, grid, checkboxes,
+// question types are: label, header (bold label), text, textarea, select, radiobuttons, grid, checkboxes,
 //                     quizScoreResult, templateList, button,
 //                     storyBrowser, report,
 //                     observationsList, excerptsList, storyThemer, graphBrowser, trendsReport, clusterSpace
@@ -341,6 +341,7 @@ related to the questions answered about participant groups.
 ## Add story eliciting question [page_addElicitingQuestion|popup|ElicitingQuestion]
 
 * Question | Enter a story-eliciting question. [elicitingQuestion_text|textarea]
+* Short Name | Enter a short name for this story-eliciting question to use as a reference to it. [elicitingQuestion_shortName|text]
 * Type | What type of question is this? [elicitingQuestion_type|checkboxes|what happened;directed question;undirected questions;point in time;event;extreme;surprise;people, places, things;fictional scenario;other]
 
 * You can copy a question from this list. [SPECIAL_templates_elicitingQuestions|templateList|elicitingQuestions]
