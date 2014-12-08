@@ -180,7 +180,7 @@ define([
             console.log("Server response at: " + currentLocalTimestamp + " is: " + JSON.stringify(serverResponse), serverResponse);
             if (serverResponse.currentTimestamp < currentLocalTimestamp) {
                 // TODO: Translate
-                alert("Server responded with a time in the past and so application may not work correctly.\nPlease check your PC's clock for accuracy.\n" + JSON.stringify(serverResponse));
+                alert("Server unexpectedly responded with a time in the past.\nPlease check your PC's clock for accuracy, or contact the server administrator if your PC's clock is accurate.\n" + JSON.stringify(serverResponse));
             }
         });
     }
