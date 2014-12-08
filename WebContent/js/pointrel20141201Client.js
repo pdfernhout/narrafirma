@@ -14,9 +14,27 @@ define([
     SHA256
 ) {
     var apiPath = "/api/pointrel20141201/";
+    var serverStatusPath = apiPath + "server/status";
     var resourcesPath = apiPath + "resources/";
     var idIndexPath = apiPath + "indexes/id/";
     var tagIndexPath = apiPath + "indexes/tag/";
+    
+    function pointrel_getServerStatus(callback) {
+        console.log("pointrel_getServerStatus");
+        
+        xhr.get(serverStatusPath, {
+            handleAs: "text"
+        }).then(function(data) {
+            // OK
+            callback(null, JSON.parse(data));
+        }, function(error) {
+            // Error
+            console.log("pointrel_getServerStatus error", error);
+            callback(error, null);
+        }, function(event) {
+            // Handle a progress event from the request if the browser supports XHR2
+        });
+    }
     
     // var metadata = {id: null, tags: [], contentType: null, author: null, committer: null, timestamp: true};
     // "true" for timestamp means use the current time
@@ -37,6 +55,7 @@ define([
         if (metadata.committer) envelope.committer = "" + metadata.committer;
         if (metadata.timestamp) {
             if (metadata.timestamp === true) {
+                // TODO: Could request status from server to get its current timestamp in case of excessive client time drift
                 envelope.timestamp = "" + new Date().toISOString();
             } else {
                 envelope.timestamp = "" + metadata.timestamp;
@@ -268,6 +287,7 @@ define([
     
     return {
         initialize: initialize,
+        getServerStatus: pointrel_getServerStatus,
         storeInNewEnvelope: pointrel_storeInNewEnvelope,
         fetchEnvelope: pointrel_fetchEnvelope,
         queryByID: pointrel_queryByID,
