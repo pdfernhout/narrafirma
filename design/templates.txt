@@ -89,7 +89,7 @@
 * Setting | Over what period of time did the events in this story take place? [timePeriod|"Time period"|slider|moments;decades]
 
 * Change | What changed in this story? [whatChanged|"What changed"|select|fill in your own relevant choices; choice 2; choice 3; not sure]
-* Change | What did not change in this story? [whatDidNotChange|"What did not change|select|fill in your own relevant choices;choice 2; choice 3;not sure]
+* Change | What did not change in this story? [whatDidNotChange|"What did not change"|select|fill in your own relevant choices;choice 2; choice 3;not sure]
 * Change | Who was affected by the changes in this story? [whoWasAffectedByChanges|"Who was affected by changes"|select|fill in your own relevant choices;choice 2;choice 3;not sure]
 * Change | Who was unaffected by the changes in this story? [whoWasUnaffectedByChanges|"Who was unaffected by changes"|select|fill in your own relevant choices;choice 2;choice 3;not sure]
 
@@ -109,21 +109,21 @@
 * Origin | Why was this story told? [whyTold|"Why told"|select|to educate;to explain;to inform;to persuade;to reminisce;to complain;to entertain;not sure]
 * Origin | Where did this story come from? [whereCameFrom|"Where came from"|select|it happened to me;it happened to someone I know;it happened to someone I don't know;I heard about it;it's a rumor;it's made up;not sure]
 * Origin | How factually true is this story? [howTrue|"How true"|slider|it happened just as it was told;it's totally made up]
-* Origin | Why do you think this particular story was chosen to be told just when it was? [whyStoryChosen|"Why story chosen"|it seemed to fit;it followed another story;it needed to be told;the teller wanted to tell it;it seemed helpful;not sure]
+* Origin | Why do you think this particular story was chosen to be told just when it was? [whyStoryChosen|"Why story chosen"|select|it seemed to fit;it followed another story;it needed to be told;the teller wanted to tell it;it seemed helpful;not sure]
 
 * Community | Based on what you know of (the community or organization or topic), do you consider the events described in this story to be common or rare? [commonOrRare|"Common or rare"|slider|happens to everyone;happens to one in a million]
 * Community | What scope of (the community or organization) is involved in this story? [scopeInvolved|"Scope involved"|slider|one person;everyone]
-* Community | Which of these roles were involved in this story? [rolesInvolved|"Roles involved"|checkBoxes|fill in your own relevant choices;choice 2;choice 3;not sure]
-* Community | Which groups of people were involved in this story? [groupsInvolved|"Groups involved"|checkBoxes|fill in your own relevant choices; choice 2; choice 3;not sure]
+* Community | Which of these roles were involved in this story? [rolesInvolved|"Roles involved"|checkboxes|fill in your own relevant choices;choice 2;choice 3;not sure]
+* Community | Which groups of people were involved in this story? [groupsInvolved|"Groups involved"|checkboxes|fill in your own relevant choices; choice 2; choice 3;not sure]
 * Community | If this story was more widely heard, how strong would its impact be on (the community or organization)? [strengthOfImpactIfHeard|"Strength of impact if heard"|slider|no impact;it would change everything]
-* Community | If this story was more widely heard, what impact would that have on (the comunity or organization)? [impactIfHeard|"Impact if heard"|textarea]
-* Community | Which of these groups particularly need to hear this story? [groupsNeedToHearStory|"Groups need to hear story"|fill in your own relevant choices;choice 2;choice 3;not sure]
-* Community | Which of these groups is not likely to have ever heard this type of story before? [groupsHaveNotHeardStory|"Groups have never heard story"|fill in your own relevant choices;choice 2;choice 3;not sure]
-* Community | In which of these groups will people refuse to hear this story? [groupsWillNotHearStory|"Groups will not hear story"|fill in your own relevant choices;choice 2;choice 3;not sure]
-* Community | To which of these groups will this story give new energy to solve problems? [groupsWillGetNewEnergy|"Groups will get new energy"|fill in your own relevant choices;choice 2;choice 3;not sure]
-* Community | For which of these groups will this story drain their energy? [groupsWillLoseEnergy|"Groups will lose energy"|fill in your own relevant choices;choice 2;choice 3;not sure]
-* Community | What does this story say to you about (rules, cooperation, trust, power, etc)? [storySaysAbout|"Story says about"|textarea]
-* What do you think this story says to (other people, another group) about (rules, cooperation, trust, power, etc)? [storySaysToOthersAbout|"Story says to others about"|textarea]
+* Community | If this story was more widely heard, what impact would that have on (the community or organization)? [impactIfHeard|"Impact if heard"|textarea|]
+* Community | Which of these groups particularly need to hear this story? [groupsNeedToHearStory|"Groups need to hear story"|checkboxes|fill in your own relevant choices;choice 2;choice 3;not sure]
+* Community | Which of these groups is not likely to have ever heard this type of story before? [groupsHaveNotHeardStory|"Groups have never heard story"|checkboxes|fill in your own relevant choices;choice 2;choice 3;not sure]
+* Community | In which of these groups will people refuse to hear this story? [groupsWillNotHearStory|"Groups will not hear story"|checkboxes|fill in your own relevant choices;choice 2;choice 3;not sure]
+* Community | To which of these groups will this story give new energy to solve problems? [groupsWillGetNewEnergy|"Groups will get new energy"|checkboxes|fill in your own relevant choices;choice 2;choice 3;not sure]
+* Community | For which of these groups will this story drain their energy? [groupsWillLoseEnergy|"Groups will lose energy"|checkboxes|fill in your own relevant choices;choice 2;choice 3;not sure]
+* Community | What does this story say to you about (rules, cooperation, trust, power, etc)? [storySaysAbout|"Story says about"|textarea|]
+* What do you think this story says to (other people, another group) about (rules, cooperation, trust, power, etc)? [storySaysToOthersAbout|"Story says to others about"|textarea|]
 
 * Other views | Do you think (other people, another group) in (the community or organization) would say that this story turned out well? [otherViewsOnValue|"Other views on value"|slider|they would say it turned out horribly;they would say it turned out perfectly]
 * Other views | Do you think (other people, another group) in (the community or organization) would say the events in this story were common? [otherViewsOnCommonality|"Other views on commonality"|slider|they would say it was common;they would say it was rare]
@@ -171,10 +171,8 @@
 
 // personality - big five
 
-* Do you like trying new things?
-[opennessToExperience|slider|I like things to stay the same;if it's new I'm for it]
-* Would you call yourself self-disciplined?
-[selfDisciplined|slider|I always do exactly what I should;I have no control over myself]
+* Do you like trying new things? [opennessToExperience|slider|I like things to stay the same;if it's new I'm for it]
+* Would you call yourself self-disciplined? [selfDisciplined|slider|I always do exactly what I should;I have no control over myself]
 * Are you more of an extravert or an introvert? [introvertOrExtravert|slider|introverted;extraverted]
 * How do you feel about other people? [agreeableness|slider|heaven is other people;hell is other people]
 * How much do you worry? [neuroticism|slider|constantly;me? never]
@@ -188,27 +186,24 @@
 
 // personality - other
 
-* ambiguity
-* patience
-* chaos ok?
-* learning: reading vs listening vs kinesthetic
-* flexibility: always have a plan or see what happens
-* tidy or sloppy
-* how emotional- close to the surface or cold
-* how decisive - make decisions quickly or waffle over options
-* do you finish what you start? always vs rarely
-* volatility of mood-alwaysthe same or always different
-* like attention?
+// * ambiguity
+// * patience
+// * chaos ok?
+// * learning: reading vs listening vs kinesthetic
+// * flexibility: always have a plan or see what happens
+// * tidy or sloppy
+// * how emotional - close to the surface or cold
+// * how decisive - make decisions quickly or waffle over options
+// * do you finish what you start? always vs rarely
+// * volatility of mood-always the same or always different
+// * like attention?
 
 // role
-* time scope (lots of things fast vs long term projects)
-* scope of purview
+// * time scope (lots of things fast vs long term projects)
+// * scope of purview
+
 // look at projects that asked these questions
 
 // issue view
 
-
 // community view
-
-
-
