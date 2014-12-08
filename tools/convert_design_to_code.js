@@ -14,6 +14,9 @@ var pagesFolder = "../WebContent/js/pages/";
 var allPagesFileName = pagesFolder + "allPages.js";
 var allPagesSummaryFileName = pagesFolder +  "allPagesSummary.js";
 
+// Module parse-templates.js writes the file itself
+var parseTemplates = require("./parse-templates.js");
+
 var parseDesign = require("./parse-design.js");
 var pages = parseDesign.pages;
 
