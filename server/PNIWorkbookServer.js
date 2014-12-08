@@ -97,7 +97,7 @@ console.log("__dirname", __dirname);
 var app = express();
 
 var logger = function(request, response, next) {
-    console.log("Requesting:", request.url);
+    console.log("Request:", request.method, request.url);
     next();
 };
 
