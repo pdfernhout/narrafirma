@@ -340,6 +340,7 @@ define([
         if (buttons.duplicateButton) buttons.duplicateButton.set("disabled", !selected);
         if (buttons.upButton) buttons.upButton.set("disabled", !selected);
         if (buttons.downButton) buttons.downButton.set("disabled", !selected);
+        if (buttons.customButton) buttons.customButton.set("disabled", !selected);
     }
     
     // Possible configuration options
@@ -464,10 +465,17 @@ define([
         if (configuration.duplicateButton) {
             buttons.duplicateButton = utility.newButton(id + "_duplicate", "button_Duplicate", pane, lang.partial(duplicateButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
         }
-        
+             
         if (configuration.moveUpDownButtons) {
             buttons.upButton = utility.newButton(id + "_up", "button_Up", pane, lang.partial(upButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
             buttons.downButton = utility.newButton(id + "_down", "button_Down", pane, lang.partial(downButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+        }
+        
+        if (configuration.customButton) {
+            var options = configuration.customButton;
+            buttons.customButton = utility.newButton(id + "_" + options.id, options.translationID, pane, lang.partial(options.callback, id, grid, dataStore, popupPageDefinition, itemContentPane));
+            // Make this function available to users
+            grid.getSelectedItem = getSelectedItem;
         }
         
         updateGridButtonsForSelectionAndForm(grid);
