@@ -26,13 +26,14 @@ define([
     
     function storeProjectAnswersVersion(projectAnswers, callbackWhenDone) {
         var metadata = {id: projectAnswersDocumentID, tags: [], contentType: projectAnswersContentType, author: null, committer: userID, timestamp: true};        
-        var newVersionURI = pointrel20141201Client.storeInNewEnvelope(projectAnswers, metadata, function(error) {
+        pointrel20141201Client.storeInNewEnvelope(projectAnswers, metadata, function(error, serverResponse) {
             if (error) {
                 console.log("could not write new version:\n" + error);
                 return callbackWhenDone(error);
             }
-            console.log("wrote newVersionURI:", newVersionURI);
-            callbackWhenDone(null, newVersionURI);
+            var sha256HashAndLength = serverResponse.sha256AndLength;
+            console.log("wrote sha256HashAndLength:", sha256HashAndLength);
+            callbackWhenDone(null, sha256HashAndLength);
         });
     }
     
@@ -75,13 +76,14 @@ define([
     function storeSurveyResult(surveyResult, callback) {
         // Store the result
         var metadata = {id: surveyResult.responseID, tags: [surveyResultHyperdocumentID], contentType: surveyResultContentType, author: null, committer: userID, timestamp: true};
-        var newVersionURI = pointrel20141201Client.storeInNewEnvelope(surveyResult, metadata, function(error) {
+        pointrel20141201Client.storeInNewEnvelope(surveyResult, metadata, function(error, serverResponse) {
             if (error) {
                 if (callback) callback(error);
                 return;
             }
-            console.log("wrote surveyResult as newVersionURI:", newVersionURI);
-            if (callback) callback(null);
+            var sha256HashAndLength = serverResponse.sha256AndLength;
+            console.log("wrote surveyResult as sha256HashAndLength:", sha256HashAndLength);
+            if (callback) callback(null, sha256HashAndLength);
         });
     }
     
@@ -113,12 +115,13 @@ define([
     
     function storeQuestionnaireVersion(questionnaireID, questionnaire, callback) {
         var metadata = {id: null, tags: [questionnaireID], contentType: questionnaireContentType, author: null, committer: userID, timestamp: true};        
-        var sha256HashAndLength = pointrel20141201Client.storeInNewEnvelope(questionnaire, metadata, function(error) {
+        pointrel20141201Client.storeInNewEnvelope(questionnaire, metadata, function(error, serverResponse) {
             if (error) {
                 console.log("ERROR storeQuestionnaireVersion: could not write new questionnaire:\n" + error);
                 callback(error);
                 return;
             }
+            var sha256HashAndLength = serverResponse.sha256AndLength;
             console.log("wrote newVersionURI:", sha256HashAndLength);
             callback(null, sha256HashAndLength);
         });
@@ -138,12 +141,13 @@ define([
     // TODO: What if the user's clock is wrong? How to reset status?
     function storeQuestionnaireStatus(questionnaireID, questionnaireStatus, callback) {
         var metadata = {id: null, tags: ["questionnaireStatus::" + questionnaireID], contentType: questionnaireStatusContentType, author: null, committer: userID, timestamp: true};        
-        var sha256HashAndLength = pointrel20141201Client.storeInNewEnvelope(questionnaireStatus, metadata, function(error) {
+        pointrel20141201Client.storeInNewEnvelope(questionnaireStatus, metadata, function(error, serverResponse) {
             if (error) {
                 console.log("ERROR storeQuestionnaireVersion: could not write new questionnaire status:\n" + error);
                 callback(error);
                 return;
             }
+            var sha256HashAndLength = serverResponse.sha256AndLength;
             console.log("wrote newVersionURI:", sha256HashAndLength);
             callback(null, sha256HashAndLength);
         });
@@ -164,7 +168,7 @@ define([
     function setup() {
         console.log("Using pointrel20141201");
         var currentLocalTimestamp = new Date().toISOString();
-        pointrel20141201Client.getServerStatus(function (error, status) {
+        pointrel20141201Client.getServerStatus(function (error, serverResponse) {
             if (error) {
                 // TODO: translate
                 var message = "Problem checking server status so application may not work correctly if server is unavailable: " + error;
@@ -173,10 +177,10 @@ define([
                 alert(message);
                 return;
             }
-            console.log("Server response at: " + currentLocalTimestamp + " is: " + JSON.stringify(status), status);
-            if (status.currentTimestamp < currentLocalTimestamp) {
+            console.log("Server response at: " + currentLocalTimestamp + " is: " + JSON.stringify(serverResponse), serverResponse);
+            if (serverResponse.currentTimestamp < currentLocalTimestamp) {
                 // TODO: Translate
-                alert("Server responded with a time in the past and so application may not work correctly.\nPlease check your PC's clock for accuracy.\n" + JSON.stringify(status));
+                alert("Server responded with a time in the past and so application may not work correctly.\nPlease check your PC's clock for accuracy.\n" + JSON.stringify(serverResponse));
             }
         });
     }

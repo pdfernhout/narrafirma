@@ -239,6 +239,9 @@ DONE Implement copyStoryFormURL in domain buttonClicked
 DONE Use questionnaire instead of list of questions as specification for survey form
 DONE Determine why survey form is requesting some resources twice (due to loading the domain which checks questionnaire status itself -- fixed)
 DONE Fix how survey data is collected and stored to separate multiple stories from participant information
+DONE Support for Pointrel server returning the current time so clients can compare with it
+DONE Integrity checks in Pointrel server to ensure timestamps from client are not significantly in the future
+DONE Have timestamp for new resources set by server as an option, with the sha256AndLength returned for a post
 
 ======= CYNTHIA
 
@@ -339,5 +342,3 @@ Editing survey results for consistency with version control based on survey ID?
 One project outcome item created per participant group
 
 Check time server on startup in server to see if accurate enough when timestamping versions; maybe same for client
-Support for Pointrel server returning the current time so clients can compare with it
-

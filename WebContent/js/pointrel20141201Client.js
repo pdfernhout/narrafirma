@@ -37,7 +37,7 @@ define([
     }
     
     // var metadata = {id: null, tags: [], contentType: null, author: null, committer: null, timestamp: true};
-    // "true" for timestamp means use the current time
+    // "true" for timestamp means use the current time as calculated on the server
     function pointrel_storeInNewEnvelope(item, metadata, callback) {
         console.log("pointrel_storeInNewEnvelope", metadata, item);
         
@@ -54,12 +54,13 @@ define([
         if (metadata.author) envelope.author = "" + metadata.author;
         if (metadata.committer) envelope.committer = "" + metadata.committer;
         if (metadata.timestamp) {
-            if (metadata.timestamp === true) {
-                // TODO: Could request status from server to get its current timestamp in case of excessive client time drift
-                envelope.timestamp = "" + new Date().toISOString();
-            } else {
-                envelope.timestamp = "" + metadata.timestamp;
-            }
+            envelope.timestamp = metadata.timestamp;
+//            if (metadata.timestamp === true) {
+//                // TODO: Could request status from server to get its current timestamp in case of excessive client time drift
+//                envelope.timestamp = "" + new Date().toISOString();
+//            } else {
+//                envelope.timestamp = "" + metadata.timestamp;
+//            }
         }
         
         // TODO: check if any unsupported fields? Or just copy them in?
@@ -67,11 +68,12 @@ define([
         envelope.content = item;
         
         var content = JSON.stringify(envelope, null, 2);
-        var itemReference = SHA256(content,digests.outputTypes.Hex) + "_" + content.length;
+        // var itemReference = SHA256(content,digests.outputTypes.Hex) + "_" + content.length;
         
         console.log("will be posting '%s'", content);
         
-        xhr.post(resourcesPath + itemReference, {
+        // xhr.post(resourcesPath + itemReference, {
+        xhr.post(resourcesPath, {
             handleAs: "text",
             data: content,
             headers: {'Content-Type': 'application/json; charset=UTF-8'}
@@ -93,7 +95,7 @@ define([
             // Handle a progress event from the request if the browser supports XHR2
         });
         
-        return itemReference;
+        // return itemReference;
     }
     
     function pointrel_fetchEnvelope(itemReference, callback) {
