@@ -267,6 +267,7 @@ var other = [
         "__id": "page_addElicitingQuestion",
         "__type": "popup",
         "elicitingQuestion_text": "",
+        "elicitingQuestion_shortName": "",
         "elicitingQuestion_type": null
     },
     {

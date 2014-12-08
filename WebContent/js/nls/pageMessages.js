@@ -311,6 +311,8 @@ define({
     "collectionSessionRecord_reflections_learning_workedWell::shortName": "Worked and didn't work",
     "collectionSessionRecord_whenWhere::prompt": "When and where did the session take place?",
     "collectionSessionRecord_whenWhere::shortName": "When and where",
+    "elicitingQuestion_shortName::prompt": "Enter a short name for this story-eliciting question to use as a reference to it.",
+    "elicitingQuestion_shortName::shortName": "Short Name",
     "elicitingQuestion_text::prompt": "Enter a story-eliciting question.",
     "elicitingQuestion_text::shortName": "Question",
     "elicitingQuestion_type::prompt": "What type of question is this?",
