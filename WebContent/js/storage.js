@@ -160,8 +160,25 @@ define([
         });
     }
  
+    // TODO: this is not needed by apps that only use application-specific server APIs directly
     function setup() {
         console.log("Using pointrel20141201");
+        var currentLocalTimestamp = new Date().toISOString();
+        pointrel20141201Client.getServerStatus(function (error, status) {
+            if (error) {
+                // TODO: translate
+                var message = "Problem checking server status so application may not work correctly if server is unavailable: " + error;
+                console.log("ERROR", error);
+                console.log(message);
+                alert(message);
+                return;
+            }
+            console.log("Server response at: " + currentLocalTimestamp + " is: " + JSON.stringify(status), status);
+            if (status.currentTimestamp < currentLocalTimestamp) {
+                // TODO: Translate
+                alert("Server responded with a time in the past and so application may not work correctly.\nPlease check your PC's clock for accuracy.\n" + JSON.stringify(status));
+            }
+        });
     }
     
     setup();

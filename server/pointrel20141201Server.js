@@ -1,14 +1,25 @@
 /*jslint node: true */
 "use strict";
 
+/* "The only reason for time is so that everything doesn't happen at once. (Albert Einstein)" */
+
 // Simplified version of Pointrel system (building on Pointrel20130202)
 // Stores JSON resources in files
 // Keeps indexes for them in memory
-// indexes created from parsing all resources at startup
+// Indexes created from parsing all resources at startup
 // Trying to avoid maintaining log files which could get corrupted
 // Also making this module usable directly from server code in nodejs
 
-// TODO: use nested directories so can support lots of files better
+// This version relies on using timestamps to get latest version of content
+// It will not index stored resources with timestamps in the future, and will reject them when added via API
+// This is to prevent a resource significantly in the future always being returned as the "latest" version for an ID or tag
+// Otherwise, that would be an error that can't be recovered from short of deleting the resource file manually and restarting the server
+
+// The constant maximumTimeDriftAllowed_ms is the maximum time drift allowed for resources to be in the future to allow for slightly different clocks
+// The more frequently records are written to the server, the smaller this value should be
+var maximumTimeDriftAllowed_ms = 10000;
+
+// TODO: Use internet time service somehow to check if server time looks close enough to OK when startup
 
 var version = "pointrel20141201-0.0.2";
 var resourceFileSuffix = ".pce";
@@ -105,9 +116,10 @@ function addToIndexes(body, sha256AndLength) {
     if (body.timestamp) indexEntry.timestamp = body.timestamp;
     
     if (id) {
-        if (referencesForID(id)) {
-            console.log("ERROR: duplicate reference to ID in %s and %s", indexes.idToReferences[id], sha256AndLength);
-        }
+        // Multiple resources with the same ID are now assumed to be versions of the same abstract entity
+        // if (referencesForID(id)) {
+        //    console.log("ERROR: duplicate reference to ID in %s and %s", JSON.stringify(indexes.idToReferences[id]), sha256AndLength);
+        //}
         addToIndex("id", indexes.idToReferences, "" + id, indexEntry);
     }
     if (tags) {
@@ -143,6 +155,7 @@ function reindexAllResources() {
 
 function reindexAllResourcesInDirectory(directory) {
     // console.log("reindexAllResourcesInDirectory", directory);
+    var maximumAllowedTimestamp = calculateMaximumAllowedTimestamp();
     
     var fileNames;
     try {
@@ -159,7 +172,14 @@ function reindexAllResourcesInDirectory(directory) {
                 var resourceContent = fetchContentForReferenceSync(fileName.substring(0, fileName.length - resourceFileSuffix.length));
                 var resourceObject = JSON.parse(resourceContent);
                 // console.log("resourceObject", resourceObject);
-                addToIndexes(resourceObject, fileName.substring(0, fileName.length-4));
+                // Reject items with a future timestamp
+                var envelopeTimestamp = resourceObject.timestamp;
+                if (!isTimestampInFuture(envelopeTimestamp, maximumAllowedTimestamp)) {
+                    addToIndexes(resourceObject, fileName.substring(0, fileName.length-4));
+                } else {
+                    return console.log("Item not indexed: " + fileName + " because resource envelope timestamp of: " + envelopeTimestamp + " is later than the currently maximumAllowedTimestamp of: " + maximumAllowedTimestamp);
+                    
+                }
             } catch(error) {
                 console.log("Problem indexing %s error: %s", fileName, error);
             }
@@ -282,10 +302,16 @@ function returnResource(sha256AndLength, response) {
     });
 }
 
+function calculateMaximumAllowedTimestamp() {
+    var currentTime = new Date();
+    var futureTime = new Date(currentTime.getTime() + maximumTimeDriftAllowed_ms);
+    return futureTime.toISOString();
+}
+
 /* Responding to requests */
 
 function respondWithStatus(request, response) {
-    response.json({status: 'OK', version: version});
+    response.json({status: 'OK', version: version, currentTimestamp: new Date().toISOString()});
 }
 
 function respondForResourceGet(request, response) {
@@ -294,6 +320,15 @@ function respondForResourceGet(request, response) {
     
     console.log("==== GET by sha256AndLength", request.url);
     returnResource(sha256AndLength, response);
+}
+
+// To use: var maximumAllowedTimestamp = calculateMaximumAllowedTimestamp();
+function isTimestampInFuture(timestamp, maximumAllowedTimestamp) {
+    if (!timestamp) return false;
+    // TODO: Could check timestamp format
+    var isRequestTimestampIsInFuture = timestamp > maximumAllowedTimestamp;
+    // console.log("Checking timestamp request: %s maximumAllowedTimestamp: %s isRequestTimestampIsInFuture: %s",  timestamp, maximumAllowedTimestamp,  isRequestTimestampIsInFuture);
+    return isRequestTimestampIsInFuture;
 }
 
 function respondForResourcePost(request, response) {
@@ -313,7 +348,15 @@ function respondForResourcePost(request, response) {
     if (request.body.__type !== signatureType) {
         return sendFailureMessage(response, 406, "Not acceptable: post is missing __type signatureType of " + signatureType);
     }
-
+    
+    // Check here if using a future time and reject if so
+    // TODO: allow perhaps for some configurable limited time drift like 10 seconds)
+    var requestTimestamp = request.body.timestamp;
+    var maximumAllowedTimestamp = calculateMaximumAllowedTimestamp();
+    if (isTimestampInFuture(requestTimestamp, maximumAllowedTimestamp)) {
+        return sendFailureMessage(response, 406, "Not acceptable: Please check you computer's clock; request timestamp of: " + requestTimestamp + " is later that the currently maximum allowed timestamp of: " + maximumAllowedTimestamp);
+    }
+    
     var length = request.rawBodyBuffer.length;
     
     // Probably should validate content as utf8 and valid JSON and so on...
@@ -410,7 +453,7 @@ function initialize(app, config) {
         verify: bodyParserVerifyAddSHA256
     }));
     
-    app.use(apiBaseURL + '/status', respondWithStatus);
+    app.use(apiBaseURL + '/server/status', respondWithStatus);
     
     app.get(apiBaseURL + '/resources/:sha256AndLength', respondForResourceGet);
     app.post(apiBaseURL + '/resources/:sha256AndLength', respondForResourcePost);
