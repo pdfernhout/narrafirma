@@ -78,26 +78,6 @@ function endsWith(str, suffix) {
     return str.indexOf(suffix, str.length - suffix.length) !== -1;
 }
 
-/*
-function generateRecommendationsTable() {
-    if (!pages) console.log('Run convert before generating recommendations table');
-    outputTextArea.set("value", "");
-    array.forEach(pages, function (page) {
-        array.forEach(page.questions, function (question) {
-            if (startsWith(question.id, 'aspects_') && (question.type === 'select')) {
-                addOutput('\n' + question.id + '\n');
-                array.forEach(question.options.split(';'), function (option) {
-                    addOutput('\t' + option + '\n');
-                    // console.log(option);
-                });
-            }
-        });
-        
-    });
-    
-}
-*/
-
 var matrix = [];
 var matrixColumnCount = 0;
 var matrixRowCount = 0;
