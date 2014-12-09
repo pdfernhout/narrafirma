@@ -12,6 +12,7 @@ define([
         "exports",
         "dojo/_base/lang",
         "dojo/on",
+        "js/templates/recommendations",
         "dijit/registry",
         "js/translate",
         "js/templates/templates",
@@ -34,6 +35,7 @@ define([
         "dijit/form/Select",
         "dijit/form/SimpleTextarea",
         "js/widgets/story-browser",
+        "dojox/layout/TableContainer",
         "dijit/form/TextBox",
         "dijit/form/ToggleButton",
         "dijit/_WidgetBase"
@@ -48,6 +50,7 @@ define([
         exports,
         lang,
         on,
+        recommendations,
         registry,
         translate,
         templates,
@@ -70,6 +73,7 @@ define([
         Select,
         SimpleTextarea,
         StoryBrowser,
+        TableContainer,
         TextBox,
         ToggleButton,
         _WidgetBase
@@ -423,14 +427,65 @@ define([
     
     function add_recommendationTable(contentPane, model, id, options) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
+
+        var categoryName = options[0];
+        console.log("add_recommendationTable category", categoryName);
         
-        var label = new ContentPane({
-            // content: translate(id + "::prompt")
-            content: "<b>UNFINISHED add_recommendationTable: " + id + "</b>"             
+        var fieldsForCategory = recommendations.categories[categoryName];
+        if (!fieldsForCategory) {
+            console.log("ERROR: No data for recommendationTable category: ", categoryName);
+            fieldsForCategory = [];
+        }
+        
+        var table = new TableContainer({
+            customClass:"wwsRecommendationsTable",
+            cols: fieldsForCategory.length + 4 + 2,
+            showLabels: false,
+            spacing: 0
         });
-        label.placeAt(questionContentPane);
-        label.startup();
-        return label;
+        
+        var columnHeader1ContentPane = new ContentPane({"content": "<i>Question</i>", "colspan": 4, "align": "right"});
+        table.addChild(columnHeader1ContentPane);
+        columnHeader1ContentPane.startup();
+        
+        var columnHeader2ContentPane = new ContentPane({"content": "<i>Your answer</i>", "colspan": 2, "align": "right"});
+        table.addChild(columnHeader2ContentPane);
+        columnHeader2ContentPane.startup();
+        
+        for (var headerFieldIndex in fieldsForCategory) {
+            var headerFieldName = fieldsForCategory[headerFieldIndex];
+            var columnHeaderFieldContentPane = new ContentPane({"content": "<i>" + headerFieldName + "</i>", "colspan": 1, "align": "right"});
+            table.addChild(columnHeaderFieldContentPane);
+            columnHeaderFieldContentPane.startup();            
+        }
+        
+        for (var questionName in recommendations.questions) {
+            var questionText = translate(questionName + "::prompt", "Missing translation for: " + questionName);
+            var yourAnswer = model.get(questionName);
+            
+            var questionTextContentPane = new ContentPane({"content": questionText, "colspan": 4, "align": "right"});
+            table.addChild(questionTextContentPane);
+            questionTextContentPane.startup();
+            
+            var yourAnswerContentPane = new ContentPane({"content": yourAnswer, "colspan": 2, "align": "right"});
+            table.addChild(yourAnswerContentPane);
+            yourAnswerContentPane.startup();
+
+            var recommendationsForAnswer = recommendations.recommendations[questionName][yourAnswer];
+            
+            for (var fieldIndex in fieldsForCategory) {
+                var fieldName = fieldsForCategory[fieldIndex];
+                var recommendationValue = "???";
+                if (recommendationsForAnswer) recommendationValue = recommendationsForAnswer[categoryName][fieldName];
+                var fieldContentPane = new ContentPane({"content": "<i>" + recommendationValue + "</i>", "colspan": 1, "align": "right"});
+                table.addChild(fieldContentPane);
+                fieldContentPane.startup();            
+            }
+        }
+        
+        table.placeAt(questionContentPane);
+        table.startup();
+        return table;
     }
     
     function add_storyThemer(contentPane, model, id, options) {
@@ -457,8 +512,7 @@ define([
         return label;
     }
     
-    // TODO: Fix
-    
+    // TODO: Fix UNFINISHED widgets
     
     function add_graphBrowser(contentPane, model, id, options) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);

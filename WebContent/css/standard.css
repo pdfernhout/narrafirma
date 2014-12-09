@@ -117,3 +117,25 @@ form {
     max-height: 400px;
     overflow: auto;
 }
+
+/* for the recommendationsTable */
+.wwsRecommendationsTable-labelCell {
+
+  background-color: lightgrey;
+  /* padding-left: 5px; */
+  
+  border-style: solid;
+  border-width: thin;
+  
+}
+
+.wwsRecommendationsTable-valueCell {
+
+  /* padding-left: 20px; */
+  background-color: lightblue;
+  
+  border-style: solid;
+  border-width: thin;
+  
+}
+
