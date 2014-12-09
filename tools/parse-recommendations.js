@@ -175,10 +175,6 @@ function processRecommendationsMatrix() {
  
     for (var lineIndex = 1; lineIndex < matrixRowCount; lineIndex ++) {
         var line = matrix[lineIndex];
-        if (lineIndex === 0) {
-            header = line;
-            continue;
-        }
         rowField = getMatrixValue(lineIndex, 0).trim();
         if (rowField === "") continue;
         if (startsWith(rowField, "#")) {
@@ -203,8 +199,51 @@ function processRecommendationsMatrix() {
     return recommendations;
 }
 
+function buildQuestions() {
+    var result = {};
+    var rowCategory = null;
+    var rowField = null;
+ 
+    for (var lineIndex = 1; lineIndex < matrixRowCount; lineIndex ++) {
+        var line = matrix[lineIndex];
+        rowField = getMatrixValue(lineIndex, 0).trim();
+        if (rowField === "") continue;
+        if (startsWith(rowField, "#")) {
+            rowCategory = rowField.substring(1).trim();
+            rowField = null;
+            result[rowCategory] = [];
+            continue;
+        }
+        result[rowCategory].push(rowField);
+    }
+    return result;
+}
+
+function buildCategories() {
+    var result = {};
+    var columnCategory = null;
+    var columnField = null;
+    for (var columnIndex = 1; columnIndex <  matrixColumnCount; columnIndex++) {
+        columnField = getMatrixValue(0, columnIndex).trim();
+        if (columnField === "") continue;
+        if (startsWith(columnField, "#")) {
+            columnCategory = columnField.substring(1).trim();
+            columnField = null;
+            result[columnCategory] = [];
+            continue;
+        }
+        result[columnCategory].push(columnField);
+    }
+    return result;
+}
+
 console.log("Reading recommendations file:", recommendationsFileName);
 var textOfRecommendations = fs.readFileSync(recommendationsFileName, "utf8");
 loadMatrixFromCSVText(textOfRecommendations);
+var categories = buildCategories();
+var questions = buildQuestions();
 var recommendations = processRecommendationsMatrix();
-console.log("recommendations", JSON.stringify(recommendations, null, 2));
+// console.log("recommendations", JSON.stringify(recommendations, null, 2));
+
+var result = {categories: categories, questions: questions, recommendations: recommendations};
+console.log("result", JSON.stringify(result, null, 2));
