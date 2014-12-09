@@ -3,7 +3,6 @@
 PRIORITY:
 - recommendations table working
 - make whole planning phase work
-- make templates work
 - print story form
 - styling of nested box in grid
 
@@ -27,7 +26,7 @@ Ensure the survey taking app does no need to load entire domain from project edi
 
 Implement printStoryForm in domain buttonClicked (what do do about entering multiple stories?)
 
-Support a templateList -- a list box with templates read in from a file (of a particular type) with a "copy" button
+Improve template list generation tool to support storyCollectionActivities and sensemakingActivities
 
 Support storyThemer -- a widget where people look at each story, give it 1-3 themes, then merge the themes into smaller numbers of themes
 
@@ -242,6 +241,7 @@ DONE Fix how survey data is collected and stored to separate multiple stories fr
 DONE Support for Pointrel server returning the current time so clients can compare with it
 DONE Integrity checks in Pointrel server to ensure timestamps from client are not significantly in the future
 DONE Have timestamp for new resources set by server as an option, with the sha256AndLength returned for a post
+DONE Support a templateList -- a list box with templates read in from a file (of a particular type) with a "copy" button
 
 ======= CYNTHIA
 

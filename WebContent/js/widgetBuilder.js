@@ -14,7 +14,9 @@ define([
         "dojo/on",
         "dijit/registry",
         "js/translate",
+        "js/templates/templates",
         "js/utility",
+        "js/widgets/widgetSupport",
         "dojox/charting/plot2d/Bars",
         "dijit/form/Button",
         "js/widgets/checkboxes",
@@ -48,7 +50,9 @@ define([
         on,
         registry,
         translate,
+        templates,
         utility,
+        widgetSupport,
         Bars,
         Button,
         CheckBoxes,
@@ -512,16 +516,142 @@ define([
         return label;
     }
     
+    // For add_templateList
+    var add_templateList_elicitationQuestions = [
+        {"id":"category", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"id", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"text", "type":"textarea", "isInReport":true, "isGridColumn":true},
+    ];
+   
+   var add_templateList_storyOrParticipantQuestions = [
+        {"id":"category", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"id", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"shortName", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"text", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"type", "type":"text", "isInReport":true, "isGridColumn":true}, // , "options":["boolean", "label", "header", "checkbox", "checkboxes", "text", "textarea", "select", "radiobuttons", "slider"]},
+        {"id":"options", "type":"textarea", "isInReport":true, "isGridColumn":true}
+        // {"id":"templateQuestion_help", "type":"textarea", "isInReport":true, "isGridColumn":true},
+    ];
+   
+   var add_templateList_activityQuestions = [
+        {"id":"name", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"type", "type":"text", "isInReport":true, "isGridColumn":true}, // , "options":["ice-breaker", "encountering stories (no task)", "encountering stories (simple task)", "discussing stories", "twice-told stories exercise", "timeline exercise", "landscape exercise", "story elements exercise", "composite stories exercise", "my own exercise", "other"]},
+        {"id":"plan", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"optionalParts", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"duration", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"recording", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"materials", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"spaces", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"facilitation", "type":"textarea", "isInReport":true, "isGridColumn":true},
+    ];
+    
+    // TODO: Refactor this into its own widget module
     function add_templateList(contentPane, model, id, options) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
-        var label = new ContentPane({
-            // content: translate(id + "::prompt")
-            content: "<b>UNFINISHED add_templateList: " + id + "</b>"             
+        var templateListChoice = options[0];
+        console.log("templateListChoice", templateListChoice);
+        var templateCollection = templates[templateListChoice];
+        console.log("templateCollection", templateCollection);
+        
+        var templateQuestions;
+        if (templateCollection) {
+            templateQuestions = templateCollection.questions;
+        } else {
+            console.log("No templates defined yet for templateListChoice", templateListChoice);
+            // alert("Unsupported templateListChoice: " + templateListChoice);
+            templateQuestions = [];
+        }
+        
+        var dataStore = new Memory({
+            data: templateQuestions,
+            idProperty: "id"
         });
-        label.placeAt(questionContentPane);
-        label.startup();
-        return label;
+        
+        var pageQuestions;
+        
+        if (templateListChoice === "elicitationQuestions") {
+            pageQuestions = add_templateList_elicitationQuestions;
+        } else if (templateListChoice === "storyQuestions" || templateListChoice === "participantQuestions") {
+            pageQuestions = add_templateList_storyOrParticipantQuestions;
+        } else if (templateListChoice === "storyCollectionActivities" || templateListChoice === "sensemakingActivities") {
+            pageQuestions = add_templateList_activityQuestions;
+        } else {
+            var message = "ERROR: unsupported template type:" +  templateListChoice;
+            console.log(message);
+            alert(message);
+            pageQuestions = [];
+        }
+
+         function buildPage(builder, contentPane, model) {
+             builder.addQuestions(pageQuestions, contentPane, model);
+         }
+         
+         var popupPageDefinition = {
+             "id": "page_template",
+             "type": "popup",
+             "isHeader": false,
+             "questions": pageQuestions,
+             "buildPage": buildPage
+         };
+                
+        function useButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
+            console.log("useButtonClicked", id, grid, store, popupPageDefinition, itemContentPane, event);
+            var selectedTemplate = grid.getSelectedItem(grid, store);
+            console.log("grid selectedTemplate", selectedTemplate);
+            
+            if (selectedTemplate) {
+                // TODO: not sure whether to confirm?
+                // TODO: Translate
+                widgetSupport.confirm("Copy selected template '" + selectedTemplate.id + "' into question definition?", function () {
+                    if (templateListChoice === "elicitationQuestions") {
+                        model.set("elicitingQuestion_text", selectedTemplate.text || "");
+                        // Use the ID here instead of non-existent shortName
+                        model.set("elicitingQuestion_shortName", selectedTemplate.id || "");
+                        // TODO: No data for type, and would need to copy over settings for checkboxes if such data existed
+                        // model.set("storyQuestion_type", selectedTemplate.text);
+                        model.set("elicitingQuestion_type", {});
+                    } else if (templateListChoice === "storyQuestions") {
+                        model.set("storyQuestion_text", selectedTemplate.text || "");
+                        model.set("storyQuestion_type", selectedTemplate.type || "");
+                        model.set("storyQuestion_shortName", selectedTemplate.shortName || "");
+                        model.set("storyQuestion_options", selectedTemplate.options || "");
+                    } else if (templateListChoice === "participantQuestions") {
+                        model.set("participantQuestion_text", selectedTemplate.text || "");
+                        model.set("participantQuestion_type", selectedTemplate.type || "");
+                        model.set("participantQuestion_shortName", selectedTemplate.shortName || "");
+                        model.set("participantQuestion_options", selectedTemplate.options || "");
+                    } else if (templateListChoice === "storyCollectionActivities") {
+                        model.set("collectionSessionActivity_name", selectedTemplate.name || "");
+                        model.set("collectionSessionActivity_type", selectedTemplate.type || "");
+                        model.set("collectionSessionActivity_plan", selectedTemplate.plan || "");
+                        model.set("collectionSessionActivity_optionalParts", selectedTemplate.optionalParts || "");
+                        model.set("collectionSessionActivity_duration", selectedTemplate.duration || "");
+                        model.set("collectionSessionActivity_recording", selectedTemplate.recording || "");
+                        model.set("collectionSessionActivity_materials", selectedTemplate.materials || "");
+                        model.set("collectionSessionActivity_spaces", selectedTemplate.spaces || "");
+                        model.set("collectionSessionActivity_facilitation", selectedTemplate.facilitation || "");
+                    } else if (templateListChoice === "sensemakingActivities") {
+                        model.set("sensemakingSessionPlan_activity_name", selectedTemplate.name || "");
+                        model.set("sensemakingSessionPlan_activity_type", selectedTemplate.type || "");
+                        model.set("sensemakingSessionPlan_activity_plan", selectedTemplate.plan || "");
+                        model.set("sensemakingSessionPlan_activity_optionalParts", selectedTemplate.optionalParts || "");
+                        model.set("sensemakingSessionPlan_activity_duration", selectedTemplate.duration || "");
+                        model.set("sensemakingSessionPlan_activity_recording", selectedTemplate.recording || "");
+                        model.set("sensemakingSessionPlan_activity_materials", selectedTemplate.materials || "");
+                        model.set("sensemakingSessionPlan_activity_spaces", selectedTemplate.spaces || "");
+                        model.set("sensemakingSessionPlan_activity_facilitation", selectedTemplate.facilitation || "");
+                    } else {
+                        var message = "ERROR: unsupported template type:" +  templateListChoice;
+                        console.log(message);
+                        alert(message);
+                    }
+                });
+            }
+        }
+        
+        var configuration = {viewButton: true, includeAllFields: true, customButton: {id: "useTemplate", translationID: "button_UseTemplate", callback: useButtonClicked}};
+        return GridTable.insertGridTableBasic(questionContentPane, id, dataStore, popupPageDefinition, configuration);
     }
     
     function add_accumulatedItemsGrid(contentPane, model, id, options) {

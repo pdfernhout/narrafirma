@@ -58,6 +58,47 @@ define({
     boolean_choice_no: "no",
     
     // Used for graph browser
-    updateGraph: "Update Graph"
+    updateGraph: "Update Graph",
+    
+    // Used for templates 
+
+    // eliciting or questions
+    "category::shortName": "category",
+    "id::shortName": "id",
+    "shortName::shortName": "short name",
+    "text::shortName": "text",
+    "type::shortName": "type",
+    "options::shortName": "options",
+    
+    "category::prompt": "category",
+    "id::prompt": "id",
+    "shortName::prompt": "short name",
+    "text::prompt": "text",
+    "type::prompt": "type",
+    "options::prompt": "options",
+    
+    // activities
+    "name::shortName": "name",
+    // duplicated above for questions: "type::shortName": "type",
+    "plan::shortName": "plan",
+    "optionalParts::shortName": "optionalParts",
+    "duration::shortName": "duration",
+    "recording::shortName": "recording",
+    "materials::shortName": "materials",
+    "spaces::shortName": "spaces",
+    "facilitation::shortName": "facilitation",
+    
+    "name::prompt": "name",
+    // duplicated above for questions: "type::prompt": "type",
+    "plan::prompt": "plan",
+    "optionalParts::prompt": "optionalParts",
+    "duration::prompt": "duration",
+    "recording::prompt": "recording",
+    "materials::prompt": "materials",
+    "spaces::prompt": "spaces",
+    "facilitation::prompt": "facilitation",
+    
+    "button_UseTemplate": "Use template"
+        
 }
 });
