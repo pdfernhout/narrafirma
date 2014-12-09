@@ -13,8 +13,7 @@ define([], function() {
         {"id":"collectionSessionActivity_materials", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"collectionSessionActivity_spaces", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"collectionSessionActivity_facilitation", "type":"textarea", "isInReport":true, "isGridColumn":true},
-        {"id":"SPECIAL_templates_storyCollectionActivities", "type":"templateList", "isInReport":true, "isGridColumn":false, "options":["storyCollectionActivities"]},
-        {"id":"SPECIAL_templates_storyCollectionActivities_unfinished", "type":"label", "isInReport":false, "isGridColumn":false}
+        {"id":"SPECIAL_templates_storyCollectionActivities", "type":"templateList", "isInReport":true, "isGridColumn":false, "options":["storyCollectionActivities"]}
     ];
 
     function buildPage(builder, contentPane, model) {

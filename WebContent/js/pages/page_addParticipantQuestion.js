@@ -9,8 +9,7 @@ define([], function() {
         {"id":"participantQuestion_shortName", "type":"text", "isInReport":true, "isGridColumn":true},
         {"id":"participantQuestion_options", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"participantQuestion_help", "type":"textarea", "isInReport":true, "isGridColumn":true},
-        {"id":"SPECIAL_templates_participantQuestions", "type":"templateList", "isInReport":true, "isGridColumn":false, "options":["participantQuestions"]},
-        {"id":"SPECIAL_templates_participantQuestions_unfinished", "type":"label", "isInReport":false, "isGridColumn":false}
+        {"id":"SPECIAL_templates_participantQuestions", "type":"templateList", "isInReport":true, "isGridColumn":false, "options":["participantQuestions"]}
     ];
 
     function buildPage(builder, contentPane, model) {

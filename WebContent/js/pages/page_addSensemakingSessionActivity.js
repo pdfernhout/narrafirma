@@ -13,8 +13,7 @@ define([], function() {
         {"id":"sensemakingSessionPlan_activity_materials", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"sensemakingSessionPlan_activity_spaces", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"sensemakingSessionPlan_activity_facilitation", "type":"textarea", "isInReport":true, "isGridColumn":true},
-        {"id":"templates_sensemakingActivities", "type":"templateList", "isInReport":true, "isGridColumn":false, "options":["sensemakingActivities"]},
-        {"id":"templates_sensemakingActivities_unfinished", "type":"label", "isInReport":false, "isGridColumn":false}
+        {"id":"templates_sensemakingActivities", "type":"templateList", "isInReport":true, "isGridColumn":false, "options":["sensemakingActivities"]}
     ];
 
     function buildPage(builder, contentPane, model) {

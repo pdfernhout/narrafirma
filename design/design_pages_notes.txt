@@ -344,8 +344,7 @@ related to the questions answered about participant groups.
 * Short Name | Enter a short name for this story-eliciting question to use as a reference to it. [elicitingQuestion_shortName|text]
 * Type | What type of question is this? [elicitingQuestion_type|checkboxes|what happened;directed question;undirected questions;point in time;event;extreme;surprise;people, places, things;fictional scenario;other]
 
-* You can copy a question from this list. [SPECIAL_templates_elicitingQuestions|templateList|elicitingQuestions]
-* (Unfinished: This will be a list of template questions the user can copy.) [SPECIAL_templates_elicitingQuestions_unfinished|label]
+* You can copy a question from this list. [SPECIAL_templates_elicitingQuestions|templateList|elicitationQuestions]
 
 ## Write questions about stories [page_writeQuestionsAboutStories|page|Project]
 
@@ -381,7 +380,6 @@ The question types are:
 * Help | If you want to provide popup help to people answering the question, enter it here. [storyQuestion_help|textarea]
 
 * You can copy a question from this list. [SPECIAL_templates_storyQuestions|templateList|storyQuestions]
-* (Unfinished: This will be a list of template questions the user can copy.) [SPECIAL_templates_storyQuestions_unfinished|label]
 
 ## Write questions about participants [page_writeQuestionsAboutParticipants|page|Project]
 
@@ -403,7 +401,6 @@ related to the questions answered about participant groups.
 * Help | If you want to provide help to people answering the question, enter it here. [participantQuestion_help|textarea]
 
 * You can copy a question from this list. [SPECIAL_templates_participantQuestions|templateList|participantQuestions]
-* (Unfinished: This will be a list of template questions the user can copy.) [SPECIAL_templates_participantQuestions_unfinished|label]
 
 ## Design question form [page_designQuestionForm|page|Project.QuestionForm]
 
@@ -457,7 +454,6 @@ Activities within story collection sessions can be simple instructions or compli
 * Facilitation | What sort of facilitation will be necessary for this activity? [collectionSessionActivity_facilitation|textarea]
 
 * You can copy an activity from this list. [SPECIAL_templates_storyCollectionActivities|templateList|storyCollectionActivities]
-* (Unfinished: This will be a list of template activities the user can copy.) [SPECIAL_templates_storyCollectionActivities_unfinished|label]
 
 ## Read collection design report [page_readCollectionDesignReport|page|Project]
 
@@ -803,7 +799,6 @@ Activities within story collection sessions can be simple instructions or compli
 * Facilitation | What sort of facilitation will be necessary for this activity? [sensemakingSessionPlan_activity_facilitation|textarea]
 
 * You can copy an activity from this list. [templates_sensemakingActivities|templateList|sensemakingActivities]
-* (Unfinished: This will be a list of template activities the user can copy.) [templates_sensemakingActivities_unfinished|label]
 
 ## Enter sensemaking session records [page_enterSensemakingSessionRecords]
 
