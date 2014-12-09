@@ -3,6 +3,7 @@
 
 var recommendationsFileName = '../design/recommendations.csv';
 // var recommendationsFileName = './recommendations-test.csv';
+var recommendationsOutputFileName = '../WebContent/js/templates/recommendations.js';
 
 // Process Recommendations CSV file 
 // File should have category header line to define categories with "# SECTION" to define sections and blank items between sections
@@ -237,6 +238,30 @@ function buildCategories() {
     return result;
 }
 
+var allOutput = "";
+
+function addOutput(output) {
+  allOutput = allOutput + output;
+}
+
+function writeRecommendationsModule(recommendationsStructure) {
+    allOutput = "";
+    addOutput("// Generated from design\n");
+    addOutput("\"use strict\";\n");
+    addOutput("\ndefine(function() {\n");
+    
+    addOutput("\n  var recommendations = ");
+    addOutput(JSON.stringify(recommendationsStructure, null, 4));
+    addOutput(";\n");
+    
+    addOutput("\n  return recommendations;\n");
+    addOutput("});\n");
+    
+    fs.writeFileSync(recommendationsOutputFileName, allOutput);
+    
+    console.log("wrote recommendations module", recommendationsOutputFileName);
+}
+
 console.log("Reading recommendations file:", recommendationsFileName);
 var textOfRecommendations = fs.readFileSync(recommendationsFileName, "utf8");
 loadMatrixFromCSVText(textOfRecommendations);
@@ -245,5 +270,6 @@ var questions = buildQuestions();
 var recommendations = processRecommendationsMatrix();
 // console.log("recommendations", JSON.stringify(recommendations, null, 2));
 
-var result = {categories: categories, questions: questions, recommendations: recommendations};
-console.log("result", JSON.stringify(result, null, 2));
+var recommendationsStructure = {categories: categories, questions: questions, recommendations: recommendations};
+// console.log("recommendationsStructure", JSON.stringify(recommendationsStructure, null, 2));
+writeRecommendationsModule(recommendationsStructure);
