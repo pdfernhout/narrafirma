@@ -5,6 +5,13 @@ define(function() {
 
   var recommendations = {
     "categories": {
+        "Eliciting questions": [],
+        "storyQuestions": [
+            "choice",
+            "range",
+            "free text"
+        ],
+        "participantQuestions": [],
         "Venues": [
             "individual interviews",
             "group interviews",
@@ -15,14 +22,12 @@ define(function() {
             "narrative incident reports",
             "gleaned stories"
         ],
-        "Questions about stories": [
-            "choice",
-            "range",
-            "free text"
-        ]
+        "collectionSessions": [],
+        "sensemakingSessions": [],
+        "interventions": []
     },
     "questions": {
-        "aspects_status": [
+        "participantGroup_status": [
             "unknown",
             "very low",
             "low",
@@ -31,7 +36,7 @@ define(function() {
             "very high",
             "mixed"
         ],
-        "aspects_confidence": [
+        "participantGroup_confidence": [
             "unknown",
             "very low",
             "low",
@@ -40,7 +45,7 @@ define(function() {
             "very high",
             "mixed"
         ],
-        "aspects_time": [
+        "participantGroup_time": [
             "unknown",
             "very little",
             "little",
@@ -48,7 +53,7 @@ define(function() {
             "a lot",
             "mixed"
         ],
-        "aspects_education": [
+        "participantGroup_education": [
             "unknown",
             "illiterate",
             "minimal",
@@ -57,7 +62,7 @@ define(function() {
             "very high",
             "mixed"
         ],
-        "aspects_physicalDisabilities": [
+        "participantGroup_physicalDisabilities": [
             "unknown",
             "none",
             "minimal",
@@ -65,7 +70,7 @@ define(function() {
             "strong",
             "mixed"
         ],
-        "aspects_emotionalImpairments": [
+        "participantGroup_emotionalImpairments": [
             "unknown",
             "none",
             "minimal",
@@ -73,7 +78,7 @@ define(function() {
             "strong",
             "mixed"
         ],
-        "aspects_performing": [
+        "participantGroup_performing": [
             "unknown",
             "very unimportant",
             "somewhat unimportant",
@@ -81,7 +86,7 @@ define(function() {
             "very important",
             "mixed"
         ],
-        "aspects_conforming": [
+        "participantGroup_conforming": [
             "unknown",
             "very unimportant",
             "somewhat unimportant",
@@ -89,7 +94,7 @@ define(function() {
             "very important",
             "mixed"
         ],
-        "aspects_promoting": [
+        "participantGroup_promoting": [
             "unknown",
             "very unimportant",
             "somewhat unimportant",
@@ -97,7 +102,7 @@ define(function() {
             "very important",
             "mixed"
         ],
-        "aspects_venting": [
+        "participantGroup_venting": [
             "unknown",
             "very unimportant",
             "somewhat unimportant",
@@ -105,7 +110,7 @@ define(function() {
             "very important",
             "mixed"
         ],
-        "aspects_interest": [
+        "participantGroup_interest": [
             "unknown",
             "very little",
             "a little",
@@ -114,28 +119,28 @@ define(function() {
             "extremely",
             "mixed"
         ],
-        "aspects_feelings_project": [
+        "participantGroup_feelings_project": [
             "unknown",
             "negative",
             "neutral",
             "positive",
             "mixed"
         ],
-        "aspects_feelings_facilitator": [
+        "participantGroup_feelings_facilitator": [
             "unknown",
             "negative",
             "neutral",
             "positive",
             "mixed"
         ],
-        "aspects_feelings_stories": [
+        "participantGroup_feelings_stories": [
             "unknown",
             "negative",
             "neutral",
             "positive",
             "mixed"
         ],
-        "aspects_topic_feeling": [
+        "participantGroup_topic_feeling": [
             "unknown",
             "strongly negative",
             "negative",
@@ -144,21 +149,21 @@ define(function() {
             "strongly positive",
             "mixed"
         ],
-        "aspects_topic_private": [
+        "participantGroup_topic_private": [
             "unknown",
             "very private",
             "medium",
             "not private",
             "mixed"
         ],
-        "aspects_topic_articulate": [
+        "participantGroup_topic_articulate": [
             "unknown",
             "hard",
             "medium",
             "easy",
             "mixed"
         ],
-        "aspects_topic_timeframe": [
+        "participantGroup_topic_timeframe": [
             "unknown",
             "hours",
             "days",
@@ -167,19 +172,19 @@ define(function() {
             "decades",
             "mixed"
         ],
-        "aspects_you_experience": [
+        "aboutYou_experience": [
             "none",
             "a little",
             "some",
             "a lot"
         ],
-        "aspects_you_help": [
+        "aboutYou_help": [
             "none",
             "a little",
             "some",
             "a lot"
         ],
-        "aspects_you_tech": [
+        "aboutYou_tech": [
             "none",
             "a little",
             "some",
@@ -187,129 +192,64 @@ define(function() {
         ]
     },
     "recommendations": {
-        "aspects_status": {
+        "participantGroup_status": {
             "unknown": {
-                "Venues": {
-                    "individual interviews": "0",
-                    "group interviews": "0",
-                    "peer interviews": "0",
-                    "group story sessions": "0",
-                    "surveys": "0",
-                    "journals": "0",
-                    "narrative incident reports": "0",
-                    "gleaned stories": "0"
-                },
-                "Questions about stories": {
+                "storyQuestions": {
                     "choice": "",
                     "range": "",
                     "free text": ""
+                },
+                "Venues": {
+                    "individual interviews": "",
+                    "group interviews": "",
+                    "peer interviews": "",
+                    "group story sessions": "",
+                    "surveys": "",
+                    "journals": "",
+                    "narrative incident reports": "",
+                    "gleaned stories": ""
                 }
             },
             "very low": {
-                "Venues": {
-                    "individual interviews": "1",
-                    "group interviews": "1",
-                    "peer interviews": "1",
-                    "group story sessions": "1",
-                    "surveys": "1",
-                    "journals": "1",
-                    "narrative incident reports": "1",
-                    "gleaned stories": "1"
-                },
-                "Questions about stories": {
+                "storyQuestions": {
                     "choice": "",
                     "range": "",
                     "free text": ""
+                },
+                "Venues": {
+                    "individual interviews": "",
+                    "group interviews": "",
+                    "peer interviews": "",
+                    "group story sessions": "",
+                    "surveys": "",
+                    "journals": "",
+                    "narrative incident reports": "",
+                    "gleaned stories": ""
                 }
             },
             "low": {
-                "Venues": {
-                    "individual interviews": "2",
-                    "group interviews": "2",
-                    "peer interviews": "2",
-                    "group story sessions": "2",
-                    "surveys": "2",
-                    "journals": "2",
-                    "narrative incident reports": "2",
-                    "gleaned stories": "2"
-                },
-                "Questions about stories": {
+                "storyQuestions": {
                     "choice": "",
                     "range": "",
                     "free text": ""
+                },
+                "Venues": {
+                    "individual interviews": "",
+                    "group interviews": "",
+                    "peer interviews": "",
+                    "group story sessions": "",
+                    "surveys": "",
+                    "journals": "",
+                    "narrative incident reports": "",
+                    "gleaned stories": ""
                 }
             },
             "moderate": {
-                "Venues": {
-                    "individual interviews": "3",
-                    "group interviews": "3",
-                    "peer interviews": "3",
-                    "group story sessions": "88",
-                    "surveys": "3",
-                    "journals": "3",
-                    "narrative incident reports": "3",
-                    "gleaned stories": "3"
-                },
-                "Questions about stories": {
+                "storyQuestions": {
                     "choice": "",
                     "range": "",
                     "free text": ""
-                }
-            },
-            "high": {
-                "Venues": {
-                    "individual interviews": "4",
-                    "group interviews": "4",
-                    "peer interviews": "4",
-                    "group story sessions": "4",
-                    "surveys": "4",
-                    "journals": "4",
-                    "narrative incident reports": "4",
-                    "gleaned stories": "4"
                 },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
-                }
-            },
-            "very high": {
-                "Venues": {
-                    "individual interviews": "5",
-                    "group interviews": "5",
-                    "peer interviews": "5",
-                    "group story sessions": "5",
-                    "surveys": "5",
-                    "journals": "5",
-                    "narrative incident reports": "5",
-                    "gleaned stories": "5"
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
-                }
-            },
-            "mixed": {
-                "Venues": {
-                    "individual interviews": "6",
-                    "group interviews": "6",
-                    "peer interviews": "6",
-                    "group story sessions": "6",
-                    "surveys": "6",
-                    "journals": "6",
-                    "narrative incident reports": "6",
-                    "gleaned stories": "6"
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
-                }
-            }
-        },
-        "aspects_confidence": {
-            "unknown": {
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -319,14 +259,84 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
+                }
+            },
+            "high": {
+                "storyQuestions": {
                     "choice": "",
                     "range": "",
                     "free text": ""
+                },
+                "Venues": {
+                    "individual interviews": "",
+                    "group interviews": "",
+                    "peer interviews": "",
+                    "group story sessions": "",
+                    "surveys": "",
+                    "journals": "",
+                    "narrative incident reports": "",
+                    "gleaned stories": ""
+                }
+            },
+            "very high": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
+                "Venues": {
+                    "individual interviews": "",
+                    "group interviews": "",
+                    "peer interviews": "",
+                    "group story sessions": "",
+                    "surveys": "",
+                    "journals": "",
+                    "narrative incident reports": "",
+                    "gleaned stories": ""
+                }
+            },
+            "mixed": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
+                "Venues": {
+                    "individual interviews": "",
+                    "group interviews": "",
+                    "peer interviews": "",
+                    "group story sessions": "",
+                    "surveys": "",
+                    "journals": "",
+                    "narrative incident reports": "",
+                    "gleaned stories": ""
+                }
+            }
+        },
+        "participantGroup_confidence": {
+            "unknown": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
+                "Venues": {
+                    "individual interviews": "",
+                    "group interviews": "",
+                    "peer interviews": "",
+                    "group story sessions": "",
+                    "surveys": "",
+                    "journals": "",
+                    "narrative incident reports": "",
+                    "gleaned stories": ""
                 }
             },
             "very low": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -336,14 +346,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "low": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -353,14 +363,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "medium": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -370,14 +380,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "high": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -387,14 +397,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "very high": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -404,14 +414,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "mixed": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -421,16 +431,16 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             }
         },
-        "aspects_time": {
+        "participantGroup_time": {
             "unknown": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -440,14 +450,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "very little": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -457,14 +467,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "little": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -474,14 +484,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "some": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -491,14 +501,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "a lot": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -508,14 +518,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "mixed": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -525,16 +535,16 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             }
         },
-        "aspects_education": {
+        "participantGroup_education": {
             "unknown": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -544,14 +554,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "illiterate": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -561,14 +571,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "minimal": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -578,14 +588,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "moderate": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -595,14 +605,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "high": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -612,14 +622,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "very high": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -629,14 +639,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "mixed": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -646,16 +656,16 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             }
         },
-        "aspects_physicalDisabilities": {
+        "participantGroup_physicalDisabilities": {
             "unknown": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -665,14 +675,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "none": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -682,14 +692,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "minimal": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -699,14 +709,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "moderate": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -716,14 +726,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "strong": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -733,14 +743,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "mixed": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -750,16 +760,16 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             }
         },
-        "aspects_emotionalImpairments": {
+        "participantGroup_emotionalImpairments": {
             "unknown": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -769,14 +779,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "none": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -786,14 +796,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "minimal": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -803,14 +813,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "moderate": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -820,14 +830,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "strong": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -837,14 +847,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "mixed": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -854,16 +864,16 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             }
         },
-        "aspects_performing": {
+        "participantGroup_performing": {
             "unknown": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -873,14 +883,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "very unimportant": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -890,14 +900,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "somewhat unimportant": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -907,14 +917,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "somewhat important": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -924,14 +934,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "very important": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -941,14 +951,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "mixed": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -958,16 +968,16 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             }
         },
-        "aspects_conforming": {
+        "participantGroup_conforming": {
             "unknown": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -977,14 +987,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "very unimportant": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -994,14 +1004,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "somewhat unimportant": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1011,14 +1021,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "somewhat important": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1028,14 +1038,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "very important": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1045,14 +1055,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "mixed": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1062,16 +1072,16 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             }
         },
-        "aspects_promoting": {
+        "participantGroup_promoting": {
             "unknown": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1081,14 +1091,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "very unimportant": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1098,14 +1108,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "somewhat unimportant": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1115,14 +1125,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "somewhat important": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1132,14 +1142,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "very important": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1149,14 +1159,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "mixed": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1166,16 +1176,16 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             }
         },
-        "aspects_venting": {
+        "participantGroup_venting": {
             "unknown": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1185,14 +1195,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "very unimportant": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1202,14 +1212,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "somewhat unimportant": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1219,14 +1229,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "somewhat important": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1236,14 +1246,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "very important": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1253,14 +1263,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "mixed": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1270,16 +1280,16 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             }
         },
-        "aspects_interest": {
+        "participantGroup_interest": {
             "unknown": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1289,14 +1299,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "very little": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1306,14 +1316,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "a little": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1323,14 +1333,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "some": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1340,14 +1350,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "a lot": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1357,14 +1367,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "extremely": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1374,14 +1384,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "mixed": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1391,16 +1401,16 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             }
         },
-        "aspects_feelings_project": {
+        "participantGroup_feelings_project": {
             "unknown": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1410,14 +1420,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "negative": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1427,14 +1437,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "neutral": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1444,14 +1454,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "positive": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1461,14 +1471,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "mixed": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1478,16 +1488,16 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             }
         },
-        "aspects_feelings_facilitator": {
+        "participantGroup_feelings_facilitator": {
             "unknown": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1497,14 +1507,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "negative": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1514,14 +1524,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "neutral": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1531,14 +1541,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "positive": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1548,14 +1558,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "mixed": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1565,16 +1575,16 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             }
         },
-        "aspects_feelings_stories": {
+        "participantGroup_feelings_stories": {
             "unknown": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1584,14 +1594,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "negative": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1601,14 +1611,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "neutral": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1618,14 +1628,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "positive": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1635,14 +1645,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "mixed": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1652,16 +1662,16 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             }
         },
-        "aspects_topic_feeling": {
+        "participantGroup_topic_feeling": {
             "unknown": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1671,14 +1681,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "strongly negative": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1688,14 +1698,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "negative": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1705,14 +1715,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "neutral": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1722,14 +1732,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "positive": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1739,14 +1749,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "strongly positive": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1756,14 +1766,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "mixed": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1773,16 +1783,16 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             }
         },
-        "aspects_topic_private": {
+        "participantGroup_topic_private": {
             "unknown": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1792,14 +1802,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "very private": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1809,14 +1819,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "medium": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1826,14 +1836,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "not private": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1843,14 +1853,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "mixed": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1860,16 +1870,16 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             }
         },
-        "aspects_topic_articulate": {
+        "participantGroup_topic_articulate": {
             "unknown": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1879,14 +1889,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "hard": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1896,14 +1906,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "medium": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1913,14 +1923,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "easy": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1930,14 +1940,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "mixed": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1947,16 +1957,16 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             }
         },
-        "aspects_topic_timeframe": {
+        "participantGroup_topic_timeframe": {
             "unknown": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1966,14 +1976,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "hours": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -1983,14 +1993,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "days": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -2000,14 +2010,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "months": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -2017,14 +2027,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "years": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -2034,14 +2044,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "decades": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -2051,14 +2061,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "mixed": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -2068,16 +2078,16 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             }
         },
-        "aspects_you_experience": {
+        "aboutYou_experience": {
             "none": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -2087,14 +2097,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "a little": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -2104,14 +2114,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "some": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -2121,14 +2131,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "a lot": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -2138,16 +2148,16 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             }
         },
-        "aspects_you_help": {
+        "aboutYou_help": {
             "none": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -2157,14 +2167,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "a little": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -2174,14 +2184,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "some": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -2191,14 +2201,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "a lot": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -2208,16 +2218,16 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             }
         },
-        "aspects_you_tech": {
+        "aboutYou_tech": {
             "none": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -2227,14 +2237,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "a little": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -2244,14 +2254,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "some": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -2261,14 +2271,14 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             },
             "a lot": {
+                "storyQuestions": {
+                    "choice": "",
+                    "range": "",
+                    "free text": ""
+                },
                 "Venues": {
                     "individual interviews": "",
                     "group interviews": "",
@@ -2278,11 +2288,6 @@ define(function() {
                     "journals": "",
                     "narrative incident reports": "",
                     "gleaned stories": ""
-                },
-                "Questions about stories": {
-                    "choice": "",
-                    "range": "",
-                    "free text": ""
                 }
             }
         }
