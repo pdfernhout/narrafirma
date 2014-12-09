@@ -121,7 +121,7 @@ form {
 /* for the recommendationsTable */
 .wwsRecommendationsTable-labelCell {
 
-  background-color: lightgrey;
+  /* background-color: lightgrey; */
   /* padding-left: 5px; */
   
   border-style: solid;
@@ -132,10 +132,22 @@ form {
 .wwsRecommendationsTable-valueCell {
 
   /* padding-left: 20px; */
-  background-color: lightblue;
+  /* background-color: lightblue; */
   
   border-style: solid;
   border-width: thin;
   
 }
 
+
+.recommendationHigh {
+    background-color: green;
+}
+
+.recommendationMedium {
+    background-color: yellow;
+}
+
+.recommendationLow {
+    background-color: red;
+}
