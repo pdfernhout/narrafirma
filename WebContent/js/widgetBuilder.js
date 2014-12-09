@@ -525,7 +525,7 @@ define([
    
    var add_templateList_storyOrParticipantQuestions = [
         {"id":"category", "type":"text", "isInReport":true, "isGridColumn":true},
-        {"id":"id", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"id", "type":"text", "isInReport":true, "isGridColumn":false},
         {"id":"shortName", "type":"text", "isInReport":true, "isGridColumn":true},
         {"id":"text", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"type", "type":"text", "isInReport":true, "isGridColumn":true}, // , "options":["boolean", "label", "header", "checkbox", "checkboxes", "text", "textarea", "select", "radiobuttons", "slider"]},
@@ -650,7 +650,7 @@ define([
             }
         }
         
-        var configuration = {viewButton: true, includeAllFields: true, customButton: {id: "useTemplate", translationID: "button_UseTemplate", callback: useButtonClicked}};
+        var configuration = {viewButton: true, includeAllFields: false, customButton: {id: "useTemplate", translationID: "button_UseTemplate", callback: useButtonClicked}};
         return GridTable.insertGridTableBasic(questionContentPane, id, dataStore, popupPageDefinition, configuration);
     }
     
