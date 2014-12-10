@@ -428,6 +428,19 @@ define([
     }
     
     function add_recommendationTable(contentPane, model, id, options) {
+        var dialogConfiguration = {
+            dialogOpenButtonID: "button_showRecommendationsTable",
+            dialogContentPaneID: "recommendationsTable",
+            dialogTitleID: "title_recommendationsTable",
+            dialogStyle: undefined,
+            dialogConstructionFunction: build_recommendationTable
+        };
+        var button = widgetSupport.addButtonThatLaunchesDialog(contentPane, model, id, options, dialogConfiguration);
+        return button;
+    }
+    
+    function build_recommendationTable(contentPane, model, id, options) {
+
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
 
         var categoryName = options[0];
@@ -489,9 +502,9 @@ define([
         table.startup();
         
         // TO DO WORKING HERE!!!! Experiment -- Trying to get full background color set for a cell
-        query(".wwsRecommendationsTable-valueCell-14")[0].className += " recommendationHigh";
-        query(".wwsRecommendationsTable-valueCell-15")[0].className += " recommendationMedium";
-        query(".wwsRecommendationsTable-valueCell-16")[0].className += " recommendationLow";
+        query(".wwsRecommendationsTable-valueCell-14", table.domNode)[0].className += " recommendationHigh";
+        query(".wwsRecommendationsTable-valueCell-15", table.domNode)[0].className += " recommendationMedium";
+        query(".wwsRecommendationsTable-valueCell-16", table.domNode)[0].className += " recommendationLow";
         return table;
     }
     

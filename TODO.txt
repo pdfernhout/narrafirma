@@ -8,6 +8,8 @@ PRIORITY:
 
 Support recommendationTable
 
+Fix how templates are not splitting up options separated by semicolons
+
 Fix how selected eliciting question in select box is not entirely visible
 Support adding more than one story in survey form GUI
 Remove redundant code when calculating survey questions for story and name in survey and story browser
@@ -254,6 +256,7 @@ DONE Integrity checks in Pointrel server to ensure timestamps from client are no
 DONE Have timestamp for new resources set by server as an option, with the sha256AndLength returned for a post
 DONE Support a templateList -- a list box with templates read in from a file (of a particular type) with a "copy" button
 DONE Figure out how to run NodeJS server on AWS EC2 standard CentOS AMI as a service that gets respawned if it crashes and gets restarted on reboot
+DONE Have templates list and recommendations table be popup dialogs opened from a button instead of inline on page
 
 ======= CYNTHIA
 

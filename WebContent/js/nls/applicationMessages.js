@@ -101,7 +101,10 @@ define({
     "spaces::prompt": "spaces",
     "facilitation::prompt": "facilitation",
     
-    "button_UseTemplate": "Use template"
-        
+    "button_UseTemplate": "Use template",
+     
+    // use for recommendations table
+    button_showRecommendationsTable: "Show recommendations table",
+    title_recommendationsTable: "Recommendations table"
 }
 });
