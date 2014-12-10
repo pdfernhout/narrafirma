@@ -168,6 +168,7 @@ define([
     function setup() {
         console.log("Using pointrel20141201");
         var currentLocalTimestamp = new Date().toISOString();
+        var currentLocalTimestampMinusTenSeconds = new Date(new Date().getTime() - 10000).toISOString();
         pointrel20141201Client.getServerStatus(function (error, serverResponse) {
             if (error) {
                 // TODO: translate
@@ -178,14 +179,15 @@ define([
                 return;
             }
             console.log("Server response at: " + currentLocalTimestamp + " is: " + JSON.stringify(serverResponse), serverResponse);
-            if (serverResponse.currentTimestamp < currentLocalTimestamp) {
+            if (serverResponse.currentTimestamp < currentLocalTimestampMinusTenSeconds) {
                 // TODO: Translate
-                alert("Server unexpectedly responded with a time in the past.\nPlease check your PC's clock for accuracy, or contact the server administrator if your PC's clock is accurate.\n" + JSON.stringify(serverResponse));
+                alert("The server unexpectedly responded with a time more than ten seconds earlier than this PC's time when the server's status was requested at " + currentLocalTimestamp + ".\nPlease check your PC's clock for accuracy, or contact the server administrator if your PC's clock is accurate.\n" + JSON.stringify(serverResponse));
             }
         });
     }
     
-    setup();
+    // TODO: Make checking the server time configurable
+    // setup();
     
     return {
         "storeProjectAnswersVersion": storeProjectAnswersVersion,
