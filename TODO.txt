@@ -9,6 +9,7 @@ PRIORITY:
 Support recommendationTable
 
 Fix how templates are not splitting up options separated by semicolons
+Fix how templates list popup has too much scrolling and is not sized well; perhaps start with grid item view pane open?
 
 Fix how selected eliciting question in select box is not entirely visible
 Support adding more than one story in survey form GUI
