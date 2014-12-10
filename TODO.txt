@@ -265,6 +265,8 @@ DONE Story collection sessions -- change question to label
 
 ==== Later:
 
+Better mobile support for taking survey on cell phones
+
 Some sort of continue button at bottom of page to progress through steps
 Validation of page data as progress through a step
 
