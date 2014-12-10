@@ -20,9 +20,18 @@ Add support for short names (ids) for eliciting questions
 Add support for short names (ids) for all options for survey questions
 Improve how options are specified for questions in question designer rather than use text box
 
+Figure out what URLs will look like for administration/authoring vs. survey taking (multiple?) vs. (maybe) project
+Settle on some authentication approach for authoring/administration
 Figure out GUI for "finalizing" a survey as opposed to storing current version when enable survey
 Have survey page use special server method so does not use Pointrel system directly or need authentication
+Record IP address of survey or use another means to see if someone taking it multipel times
 Ensure the survey taking app does no need to load entire domain from project editor app or load grid or story browser or other modules it does not really need.
+
+Think through logging in the server, perhaps using a library
+Ensure useful server logs are kept
+Think through logging in the client, perhaps using a library
+Client application could report errors to server or another service
+Client application could report usage metrics to server or another service
 
 Implement printStoryForm in domain buttonClicked (what do do about entering multiple stories?)
 
