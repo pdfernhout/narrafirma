@@ -2,16 +2,18 @@
 
 define([
     "dojo/_base/array",
-    //"dojo/aspect",
     "../translate",
-    "dijit/ConfirmDialog"
-    //"dojo/Deferred"
+    "dijit/form/Button",
+    "dijit/ConfirmDialog",
+    "dijit/layout/ContentPane",
+    "dijit/Dialog"
 ], function(
     array,
-    //aspect,
     translate,
-    ConfirmDialog
-    //Deferred
+    Button,
+    ConfirmDialog,
+    ContentPane,
+    Dialog
 ){
     function buildOptions(id, choices, optionsString){
         var options = [];
@@ -62,45 +64,76 @@ define([
         dialog.show();
     }
     
-    // From: http://stackoverflow.com/questions/10401512/dojo-dialog-with-confirmation-button/10405938#10405938
-    // Usage: widgetSupport.confirm().then(function() {console.log("OK chosen")});
-    // Doen not work -- produces strange exception
     /*
-    function confirm_brokenGeneratesExceptionTrace(kwArgs) {
-        var confirmDialog = new ConfirmDialog(kwArgs);
-        confirmDialog.startup();
-
-        var deferred = new Deferred();
-        var signals = [];
-
-        var destroyDialog = function() {
-            array.forEach(signals, function(signal) {
-                signal.remove();
-            });
-            confirmDialog.destroyRecursive();
-        };
-
-        var signal = aspect.after(confirmDialog, "onExecute", function() {
-            destroyDialog();
-            deferred.resolve('MessageBox.OK');
-        });
-        signals.push(signal);
-
-        signal = aspect.after(confirmDialog, "onCancel", function() {
-            destroyDialog();   
-            deferred.reject('MessageBox.Cancel');            
-        });
-        signals.push(signal);
-
-        confirmDialog.show();
-        return deferred;
-    }
+    var dialogConfiguration = {
+        dialogOpenButtonID: "???",
+        dialogContentPaneID: "???",
+        dialogTitleID: "???",
+        dialogStyle: "height: 500px",
+        dialogConstructionFunction: ???
+    };
     */
+    function addButtonThatLaunchesDialog(contentPane, model, id, options, dialogConfiguration) {
+        // if (!callback) callback = lang.partial(domain.buttonClicked, contentPane, model, id, questionOptions);
+        var callback = function() {
+            openDialog(model, id, options, dialogConfiguration);
+        };
+        
+        var button = new Button({
+            label: translate(dialogConfiguration.dialogOpenButtonID),
+            type: "button",
+            onClick: callback
+        });
+
+        button.placeAt(contentPane);
+        button.startup();
+        
+        var wrap = new ContentPane({
+            content: "<br>"
+        });
+        wrap.placeAt(contentPane);
+        
+        return button;
+    }
+    
+    function openDialog(model, id, options, dialogConfiguration) {  
+        console.log("openDialog model, id, options", model, id, options, JSON.stringify(dialogConfiguration));
+        
+        var dialog;
+        var dialogContentPane = new ContentPane({id: dialogConfiguration.dialogContentPaneID});
+        
+        function hideDialog(status) {
+            // TODO: Does the dialog itself have to be "destroyed"???
+            dialog.hide();
+            // The next line is needed to get rid of duplicate IDs for next time the form is opened:
+            dialogContentPane.destroyRecursive();
+        }
+        
+        dialogConfiguration.dialogConstructionFunction(dialogContentPane, model, id, options, hideDialog, dialogConfiguration);
+   
+        dialog = new Dialog({
+            // TODO: Translate
+            title: translate(dialogConfiguration.dialogTitleID),
+            style: dialogConfiguration.dialogStyle,
+            content: dialogContentPane,
+            onCancel: function() {
+                // TODO: Confirm closing if have entered data and otherwise don't close...
+                // Handles close X in corner or escape
+                dialogContentPane.destroyRecursive();
+            }
+        });
+                
+        dialog.startup();
+        dialogContentPane.startup();
+        
+        dialog.show();
+    }
     
     return {
         "buildOptions": buildOptions,
         "optionsForAllQuestions": optionsForAllQuestions,
-        "confirm": confirm
+        "confirm": confirm,
+        "addButtonThatLaunchesDialog": addButtonThatLaunchesDialog
     };
    
 });

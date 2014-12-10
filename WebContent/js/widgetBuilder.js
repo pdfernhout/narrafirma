@@ -24,7 +24,6 @@ define([
         "js/widgets/checkboxes",
         "dijit/form/CheckBox",
         "dijit/layout/ContentPane",
-        "dijit/Dialog",
         "dijit/form/FilteringSelect",
         "js/widgets/graph-browser",
         "js/widgets/grid-table",
@@ -64,7 +63,6 @@ define([
         CheckBoxes,
         CheckBox,
         ContentPane,
-        Dialog,
         FilteringSelect,
         GraphBrowser,
         GridTable,
@@ -610,61 +608,18 @@ define([
     
     // TODO: Refactor this into its own widget module
     function add_templateList(contentPane, model, id, options) {
-        // if (!callback) callback = lang.partial(domain.buttonClicked, contentPane, model, id, questionOptions);
-        var callback = function() {selectTemplate(model, id, options); }; // alert("add_templateList Unfinished");};
-        
-        var button = new Button({
-            label: translate("button_chooseATemplateToInsert"),
-            type: "button",
-            onClick: callback
-        });
-
-        button.placeAt(contentPane);
-        button.startup();
-        
-        var wrap = new ContentPane({
-            content: "<br>"
-        });
-        wrap.placeAt(contentPane);
-        
+        var dialogConfiguration = {
+            dialogOpenButtonID: "button_chooseATemplateToInsert",
+            dialogContentPaneID: "templateList",
+            dialogTitleID: "title_chooseATemplate",
+            dialogStyle: "height: 900px",
+            dialogConstructionFunction: makeTemplateListChooser
+        };
+        var button = widgetSupport.addButtonThatLaunchesDialog(contentPane, model, id, options, dialogConfiguration);
         return button;
     }
     
-    function selectTemplate(model, id, options) {  
-        console.log("selectTemplate model, id, options", model, id, options);
-        
-        var dialog;
-        var contentPane = new ContentPane({id: "templateList"});
-        
-        function hideDialog(status) {
-            // TODO: Does the dialog itself have to be "destroyed"???
-            dialog.hide();
-            // The next line is needed to get rid of duplicate IDs for next time the form is opened:
-            contentPane.destroyRecursive();
-        }
-        
-        // form = buildSurveyForm(questionnaire, hideDialog, true);
-        makeTemplateListChooser(contentPane, model, id, options);
-   
-        dialog = new Dialog({
-            // TODO: Translate
-            title: "Choose a template",
-            style: "height: 1000px",
-            content: contentPane, // "<b>Test</b>",
-            onCancel: function() {
-                // TODO: Confirm closing if have entered data and otherwise don't close...
-                // Handles close X in corner or escape
-                contentPane.destroyRecursive();
-            }
-        });
-                
-        dialog.startup();
-        contentPane.startup();
-        
-        dialog.show();
-    }
-    
-    function makeTemplateListChooser(contentPane, model, id, options) {
+    function makeTemplateListChooser(contentPane, model, id, options, hideDialog, dialogConfiguration) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var templateListChoice = options[0];

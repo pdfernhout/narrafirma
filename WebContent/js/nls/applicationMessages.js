@@ -63,6 +63,7 @@ define({
     // Used for templates
     
     button_chooseATemplateToInsert: "Choose a template to insert...",
+    title_chooseATemplate: "Choose a template",
 
     // eliciting or questions
     "category::shortName": "category",
