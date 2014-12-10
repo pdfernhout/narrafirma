@@ -24,8 +24,10 @@ Figure out what URLs will look like for administration/authoring vs. survey taki
 Settle on some authentication approach for authoring/administration
 Figure out GUI for "finalizing" a survey as opposed to storing current version when enable survey
 Have survey page use special server method so does not use Pointrel system directly or need authentication
-Record IP address of survey or use another means to see if someone taking it multipel times
+Record IP address of survey or use another means to see if someone taking it multiple times
 Ensure the survey taking app does no need to load entire domain from project editor app or load grid or story browser or other modules it does not really need.
+
+Think through how project is loaded and saved, especially what happens if multiple windows or users edit the same project
 
 Think through logging in the server, perhaps using a library
 Ensure useful server logs are kept
