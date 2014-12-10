@@ -60,7 +60,9 @@ define({
     // Used for graph browser
     updateGraph: "Update Graph",
     
-    // Used for templates 
+    // Used for templates
+    
+    button_chooseATemplateToInsert: "Choose a template to insert...",
 
     // eliciting or questions
     "category::shortName": "category",

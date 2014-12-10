@@ -118,6 +118,13 @@ form {
     overflow: auto;
 }
 
+/* not yet used */
+#templateList .dgrid-scroller {
+    position: relative;
+    max-height: 150px;
+    overflow: auto;
+}
+
 /* for the recommendationsTable */
 .wwsRecommendationsTable-labelCell {
 
