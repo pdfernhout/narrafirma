@@ -6,8 +6,6 @@ define([], function() {
     var questions = [
         {"id":"project_venuesIntro", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"SPECIAL_venueRecommendations", "type":"recommendationTable", "isInReport":true, "isGridColumn":false, "options":["Venues"]},
-        {"id":"SPECIAL_venueRecommendationsTable_unfinished", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"SPECIAL_mockup_recTable_venues", "type":"image", "isInReport":true, "isGridColumn":false, "options":["images/mockups/mockupRecTable.png"]},
         {"id":"project_venuesList", "type":"grid", "isInReport":true, "isGridColumn":true, "options":["page_addVenue"]}
     ];
 

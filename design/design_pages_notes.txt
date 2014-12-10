@@ -308,9 +308,6 @@ create some story eliciting and story interpretation questions, design your stor
 * On this page you will plan your story collection venues, or the ways you will collect stories. [project_venuesIntro|label]
 
 * Venue recommendations [SPECIAL_venueRecommendations|recommendationTable|Venues]
-* (Unfinished: This will be a table of venue recommendations [SPECIAL_venueRecommendationsTable_unfinished|label]
-related to the questions answered about participant groups.
-* It will look something like this.) [SPECIAL_mockup_recTable_venues|image|images/mockups/mockupRecTable.png]
 
 * Story collection venues | These are the ways you will be collecting stories. [project_venuesList|grid|page_addVenue]
 
@@ -334,9 +331,6 @@ is recommended.
 * Story eliciting questions | These are the questions you will be asking. [project_elicitingQuestionsList|grid|page_addElicitingQuestion]
 
 * Recommendations for eliciting questions [SPECIAL_elicitingQuestionRecommendations|recommendationTable|Eliciting questions]
-* (Unfinished: This will be a table of recommendations for eliciting questions [SPECIAL_elicitingRecommendationsTable_unfinished|label]
-related to the questions answered about participant groups.
-* It will look something like this.) [SPECIAL_mockup_recTable_eliciting|image|images/mockups/mockupRecTable.png]
 
 ## Add story eliciting question [page_addElicitingQuestion|popup|ElicitingQuestion]
 
@@ -353,9 +347,6 @@ related to the questions answered about participant groups.
 * Questions about stories | These are the questions you will be asking about stories. [project_storyQuestionsList|grid|page_addStoryQuestion]
 
 * Recommendations for story questions [SPECIAL_storyQuestionRecommendations|recommendationTable|storyQuestions]
-* (Unfinished: This will be a table of recommendations for story questions [SPECIAL_storyQuestionRecommendationsTable_unfinished|label]
-related to the questions answered about participant groups.
-* It will look something like this.) [SPECIAL_mockup_recTable_storyQ|image|images/mockups/mockupRecTable.png]
 
 ## Add story question [page_addStoryQuestion|popup|StoryQuestion]
 
@@ -388,9 +379,6 @@ The question types are:
 * Questions about people | These are the questions you will be asking people about themselves. [project_participantQuestionsList|grid|page_addParticipantQuestion]
 
 * Recommendations for participant questions [SPECIAL_participantQuestionRecommendations|recommendationTable|participantQuestions]
-* (Unfinished: This will be a table of recommendations for participant questions [SPECIAL_participantQuestionRecommendations_unfinished|label]
-related to the questions answered about participant groups.
-* It will look something like this.) [SPECIAL_mockup_recTable_partQ|image|images/mockups/mockupRecTable.png]
 
 ## Add participant question [page_addParticipantQuestion|popup|ParticipantQuestion]
 
@@ -417,9 +405,6 @@ related to the questions answered about participant groups.
 If you don't plan to collect stories using group sessions, you can skip this page.
 
 * Recommendations for story collection sessions [SPECIAL_collectionSessionRecommendations|recommendationTable|collectionSessions]
-* (Unfinished: This will be a table of recommendations for collection sessions [SPECIAL_collectionRecommendationsTable_unfinished|label]
-related to the questions answered about participant groups.
-* It will look something like this.) [SPECIAL_mockup_recTable_collection|image|images/mockups/mockupRecTable.png]
 
 * Story collection session plans | Plans for story collection sessions lay out what you will do and how. [project_collectionSessionPlansList|grid|page_addStoryCollectionSession]
 Each plan can be used in multiple sessions.
@@ -763,9 +748,6 @@ your interpretations.
 * On this page you can create plans for your sensemaking sessions. [project_sensemakingSessionPlansLabel|label]
 
 * Recommendations for sensemaking sessions [sensemakingSessionRecommendations|recommendationTable|sensemakingSessions]
-* (Unfinished: This will be a table of recommendations for sensemaking sessions [sensemakingRecommendationsTable_unfinished|label]
-related to the questions answered about participant groups.
-* It will look something like this.) [mockup_recTable_sensemaking|image|images/mockups/mockupRecTable.png]
 
 * Sensemaking session plans | Enter your plans for sensemaking sessions here. [project_sensemakingSessionPlansList|grid|page_addSensemakingSessionPlan]
 
@@ -925,9 +907,6 @@ the participant groups you set up in the project planning phase. Please enter on
 in your community or organization.
 
 * Recommendations for intervention plans [interventionRecommendations|recommendationTable|interventions]
-* (Unfinished: This will be a table of recommendations for this section [interventionRecommendationsTable_unfinished|label]
-related to the questions answered about participant groups.
-* It will look something like this.) [mockup_recTable_intervention|image|images/mockups/mockupRecTable.png]
 
 * Intervention plans | Enter your plans for narrative interventions here. [project_interventionPlansList|grid|page_addIntervention]
 

@@ -6,9 +6,7 @@ define([], function() {
     var questions = [
         {"id":"project_elicitingQuestionsLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"project_elicitingQuestionsList", "type":"grid", "isInReport":true, "isGridColumn":true, "options":["page_addElicitingQuestion"]},
-        {"id":"SPECIAL_elicitingQuestionRecommendations", "type":"recommendationTable", "isInReport":true, "isGridColumn":false, "options":["Eliciting questions"]},
-        {"id":"SPECIAL_elicitingRecommendationsTable_unfinished", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"SPECIAL_mockup_recTable_eliciting", "type":"image", "isInReport":true, "isGridColumn":false, "options":["images/mockups/mockupRecTable.png"]}
+        {"id":"SPECIAL_elicitingQuestionRecommendations", "type":"recommendationTable", "isInReport":true, "isGridColumn":false, "options":["Eliciting questions"]}
     ];
 
     function buildPage(builder, contentPane, model) {
