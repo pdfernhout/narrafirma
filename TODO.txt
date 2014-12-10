@@ -242,6 +242,7 @@ DONE Support for Pointrel server returning the current time so clients can compa
 DONE Integrity checks in Pointrel server to ensure timestamps from client are not significantly in the future
 DONE Have timestamp for new resources set by server as an option, with the sha256AndLength returned for a post
 DONE Support a templateList -- a list box with templates read in from a file (of a particular type) with a "copy" button
+DONE Figure out how to run NodeJS server on AWS EC2 standard CentOS AMI as a service that gets respawned if it crashes and gets restarted on reboot
 
 ======= CYNTHIA
 
