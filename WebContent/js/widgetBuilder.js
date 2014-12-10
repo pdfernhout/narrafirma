@@ -489,11 +489,7 @@ define([
         table.startup();
         
         // TO DO WORKING HERE!!!! Experiment -- Trying to get full background color set for a cell
-        var queryResult = query(".wwsRecommendationsTable-valueCell-14");
-        console.log("queryResult", queryResult, queryResult[0]);
-        // queryResult[0].style["background-color"] = "green";
-        queryResult[0].className += " recommendationHigh";
-        
+        query(".wwsRecommendationsTable-valueCell-14")[0].className += " recommendationHigh";
         query(".wwsRecommendationsTable-valueCell-15")[0].className += " recommendationMedium";
         query(".wwsRecommendationsTable-valueCell-16")[0].className += " recommendationLow";
         return table;
