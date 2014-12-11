@@ -97,6 +97,9 @@ Implement countNumberOfVenuesChosen in domain (is this still needed? If not, rem
 Help window displaying HTML instead of alert
 Look at all alerts in code and make into nicer GUI feedback
 
+Improve concept map so you can have more than one per page or application
+Figure out how to save and load concept map more directly than with a button to save
+
 Better and more consistent approach for translation selections for selects, checkboxes, radiobuttons, and maybe other types
 Translate report answers as needed for those types like selections
 Final review of all strings in code looking for TODO translate items or similar
@@ -261,6 +264,7 @@ DONE Figure out how to run NodeJS server on AWS EC2 standard CentOS AMI as a ser
 DONE Have templates list and recommendations table be popup dialogs opened from a button instead of inline on page
 DONE Resolve server configuration issue where upstart got confused about what was running [by removing use of forever]
 DONE Improve logging from upstart about when start and stop server
+DONE Add proof-of-concept for concept map
 
 ======= CYNTHIA
 
