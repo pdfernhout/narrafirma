@@ -14,7 +14,11 @@ define([
     "dijit/form/Textarea",
     "dijit/Dialog",
     "dojo/touch",
-    "dojox/uuid/generateRandomUuid"
+    "dojox/uuid/generateRandomUuid",
+    "dojo/Stateful",
+    "dojox/mvc/at",
+    "dojox/layout/TableContainer",
+    "dojo/_base/lang"
 ], function (
     ready,
     domAttr,
@@ -28,7 +32,11 @@ define([
     SimpleTextarea,
     Dialog,
     touch,
-    generateRandomUuid
+    generateRandomUuid,
+    Stateful,
+    at,
+    TableContainer,
+    lang
 ) {
     // TODO: Will this still work OK if there are more than one map per page or per app?
 
@@ -54,14 +62,6 @@ define([
 
     function setHTML(field, value) {
         domAttr.set(field, "innerHTML", value);
-    }
-
-    function setFieldValue(name, value) {
-        registry.byId(name).set("value", value);
-    }
-
-    function setTextAreaValue(name, value) {
-        registry.byId(name).set("value", value);
     }
 
     /** ConceptMap-specific functions here */
@@ -107,7 +107,7 @@ define([
     ConceptMap.prototype.newButton = function(name, label, callback) {
         var theButton = new Button({
             label: label,
-            onClick: callback
+            onClick: lang.hitch(this, callback)
         }, name);
         this.mainContentPane.domNode.appendChild(theButton.domNode);
 
@@ -117,24 +117,19 @@ define([
     ConceptMap.prototype.setupMainButtons = function() {
 
         var addButton = this.newButton("addButton", "New item", function () {
-            setFieldValue("name", "");
-            setFieldValue("url", "");
-            this.openEntryDialog();
+            this.openEntryDialog("", "");
         });
 
         /*
         var newDiagramButton = newButton("newDiagramButton", "Link to new diagram", function () {
             var uuid = "pce:org.twirlip.ConceptMap:uuid:" + uuidFast();
             var url = "conceptMap.html?diagram=" + uuid;
-            setFieldValue("name", "");
-            setFieldValue("url", url);
-            entryDialog.show();
+            this.openEntryDialog("", url);
         });
         */
 
         var sourceButton = this.newButton("sourceButton", "Diagram Source", function () {
-            setTextAreaValue("sourceTextArea", JSON.stringify(this.items));
-            this.openSourceDialog();
+            this.openSourceDialog(JSON.stringify(this.items));
         });
 
         var saveChangesButton = this.newButton("saveChangesButton", "Save Changes", function () {
@@ -200,28 +195,74 @@ define([
         //  mainContentPane.domNode.appendChild(newBreak);
     };
 
-    ConceptMap.prototype.clickedNewEntryOK = function(event) {
+    ConceptMap.prototype.clickedNewEntryOK = function(dialogHolder, model, event) {
+        console.log("clickedNewEntryOK", this, dialogHolder, model, event);
+        dialogHolder.dialog.hide();
         console.log("Clicked OK", event);
-        var data = entryDialog.get("value");
-        console.log("data", data);
-        var group = this.addItem(this.mainSurface, null, data.name, data.url);
+        var name = model.get("name");
+        var url = model.get("url");
+        console.log("data", name, url);
+        var group = this.addItem(this.mainSurface, null, name, url);
         this.items.push(group.item);
         console.log("items", this.items);
         this.changesCount++;
-        // item.text = textBox.get("value");
-        // item.url = urlBox.get("value");
     };
     
-    ConceptMap.prototype.openEntryDialog = function() {
-        entryDialog = new Dialog({
-            title: "New item",
-            id: "formDialog",
-            style: "width: 300px",
-            content: "name: <input data-dojo-type='dijit/form/TextBox' type='text' name='name' id='name'>" +
-                "<br/>notes: <input data-dojo-type='dijit/form/TextBox' type='text' name='url' id='url'>" +
-                //'<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="return registry.byId("formDialog").isValid();">OK</button>'
-                '<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="document.conceptMap_clickedNewEntryOK();">OK</button>'
+    // TODO: Translate
+    ConceptMap.prototype.openEntryDialog = function(name, url) {
+        var model = new Stateful({name: name, url: url});
+
+        var layout = new dojox.layout.TableContainer({
+            showLabels: true,
+            orientation: "horiz"
         });
+        
+        var nameTextBox = new TextBox({
+            name: 'name',
+            title: 'Name',
+            value: at(model, "name"),
+            placeHolder: "Name"
+        });
+
+        var urlTextBox = new TextBox({
+            name: 'url',
+            title: 'Notes',
+            value: at(model, "url"),
+            placeHolder: "Notes or URL with more information"
+        });
+        
+        // Indirect way to hold onto dialog so can pass a reference to the dialog to button clicked function so that function can hide the dialog
+        // The problem this solves is that a hoisted entryDialog is undefined at this point, and also hitch uses the current value not a reference to the variable
+        var dialogHolder = {};
+        
+        var okButton = new Button({
+          label: "OK",
+          type: "button",
+          // TODO: This won't be OK, and need model
+          onClick: lang.hitch(this, this.clickedNewEntryOK, dialogHolder, model)
+        });
+        
+        layout.addChild(nameTextBox);
+        layout.addChild(urlTextBox);
+        layout.addChild(okButton);
+ 
+        var entryDialog = new Dialog({
+            title: "New item",
+            id: "entryDialog",
+            style: "width: 400px",
+            content: layout
+        });
+        
+        dialogHolder.dialog = entryDialog;
+        
+        entryDialog.connect(entryDialog, "onHide", function(e) {
+            console.log("destroying entryDialog");
+            entryDialog.destroyRecursive(); 
+        });
+        
+        entryDialog.startup();
+        layout.startup();
+        entryDialog.show();
     };
 
     ConceptMap.prototype.clickedUpdateSource = function(event) {
@@ -242,8 +283,9 @@ define([
         console.log("Updated OK");
     };
     
-    ConceptMap.prototype.openSourceDialog = function() {
-        sourceDialog = new Dialog({
+    // TODO: Translate
+    ConceptMap.prototype.openSourceDialog = function(sourceText) {
+        var sourceDialog = new Dialog({
             title: "Diagram source",
             id: "sourceDialog",
             style: {width: "600px", height: "400px", overflow: "auto"},
@@ -251,6 +293,8 @@ define([
                 '<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="document.conceptMap_clickedUpdateSource();">Update</button>' +
                 '<button data-dojo-type="dijit/form/Button" type="submit">Cancel</button>'
         });
+        registry.byId("sourceTextArea").set("value", sourceText);
+        sourceDialog.show();
     };
 
     ConceptMap.prototype.rebuildItems = function() {
@@ -331,36 +375,35 @@ define([
         //touch.press(group, function(e) {
         //touch.press(blueCircle, function(e) {
         //noinspection JSUnusedLocalSymbols
-        group.connect("onmousedown", function (e) {
+        group.connect("onmousedown", lang.hitch(this, function (e) {
             // require(["dojo/on"], function(on) {
             //  var handle = on(group, "mousedown", function(e) {
             // console.log("triggered down", e);
             this.lastSelectedItem = item;
             // console.log("onmousedown item", item);
             this.updateForItemClick(item);
-        });
+        }));
 
         /*
         //noinspection JSUnusedLocalSymbols
-        group.connect("ondblclick", function (e) {
+        group.connect("ondblclick", lang.hitch(this, function (e) {
             // var handle = on(group, "dblclick", function(e) {
             // alert("triggered ondblclick");
-            go(group.item.url);
-        });
-        // });
+            this.go(group.item.url);
+        }));
         */
 
         var moveable = new Moveable(group);
         moveable.item = item;
 
-        moveable.onMoved = function (mover, shift) {
+        moveable.onMoved = lang.hitch(this, function (mover, shift) {
             item.x += shift.dx;
             item.y += shift.dy;
             this.changesCount++;
 
             // Kludge for Android as not setting on mouse down
             this.updateForItemClick(item);
-        };
+        });
 
         group.applyTransform(gfx.matrix.translate(item.x, item.y));
 
