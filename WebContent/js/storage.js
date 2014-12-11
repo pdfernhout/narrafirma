@@ -37,12 +37,22 @@ define([
         });
     }
     
-    // TODO: improve design and GUI so can choose a version to load?
+    function loadAllProjectVersions(loadedProjectVersionsCallback) {
+        console.log("loadAllProjectVersions");
+        pointrel20141201Client.queryByID(projectAnswersDocumentID, function(error, result) {
+            if (error) {
+                if (error === "No items found for id") error = "No stored versions could be loaded -- have any project versions been saved?";
+                return loadedProjectVersionsCallback(error);
+            }
+            loadedProjectVersionsCallback(null, result.indexEntries);           
+        });
+    }
+    
     function loadLatestProjectVersion(switchToLoadedProjectAnswersCallback) {
         console.log("loadLatestProjectVersion");
         pointrel20141201Client.loadLatestEnvelopeForID(projectAnswersDocumentID, function(error, envelope) {
             if (error) {
-                if (error === "No items found for tag") error = "No stored versions could be loaded -- have any project versions been saved?";
+                if (error === "No items found for id") error = "No stored versions could be loaded -- have any project versions been saved?";
                 return switchToLoadedProjectAnswersCallback(error);
             }
             switchToLoadedProjectAnswersCallback(null, envelope.content);           
@@ -192,6 +202,7 @@ define([
     return {
         "storeProjectAnswersVersion": storeProjectAnswersVersion,
         "loadLatestProjectVersion": loadLatestProjectVersion,
+        "loadAllProjectVersions": loadAllProjectVersions,
         "storeSurveyResult": storeSurveyResult,
         "loadLatestSurveyResults": loadLatestSurveyResults,
         "storeQuestionnaireVersion": storeQuestionnaireVersion,
