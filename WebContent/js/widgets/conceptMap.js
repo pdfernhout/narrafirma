@@ -233,50 +233,49 @@ define([
         });
         
         // Indirect way to hold onto dialog so can pass a reference to the dialog to button clicked function so that function can hide the dialog
-        // The problem this solves is that a hoisted entryDialog is undefined at this point, and also hitch uses the current value not a reference to the variable
+        // The problem this solves is that a hoisted dialog is undefined at this point, and also hitch uses the current value not a reference to the variable
         var dialogHolder = {};
         
         var okButton = new Button({
-          label: "OK",
-          type: "button",
-          // TODO: This won't be OK, and need model
-          onClick: lang.hitch(this, this.clickedNewEntryOK, dialogHolder, model)
+            // TODO: Translate
+            label: "OK",
+            type: "button",
+            // TODO: This won't be OK, and need model
+            onClick: lang.hitch(this, this.clickedNewEntryOK, dialogHolder, model)
         });
         
         layout.addChild(nameTextBox);
         layout.addChild(urlTextBox);
         layout.addChild(okButton);
  
-        var entryDialog = new Dialog({
+        var dialog = new Dialog({
             // TODO: Translate
             title: "New item",
             style: "width: 400px",
             content: layout
         });
         
-        dialogHolder.dialog = entryDialog;
+        dialogHolder.dialog = dialog;
         
         // This will free the dialog when we are done with it whether from OK or Cancel
-        entryDialog.connect(entryDialog, "onHide", function(e) {
+        dialog.connect(dialog, "onHide", function(e) {
             console.log("destroying entryDialog");
-            entryDialog.destroyRecursive(); 
+            dialog.destroyRecursive(); 
         });
         
-        entryDialog.startup();
+        dialog.startup();
         layout.startup();
-        entryDialog.show();
+        dialog.show();
     };
 
-    ConceptMap.prototype.clickedUpdateSource = function(event) {
+    ConceptMap.prototype.clickedUpdateSource = function(dialogHolder, model, event) {
         console.log("Clicked updateSource", event);
-        var data = sourceDialog.get("value");
-        console.log("data", data);
+        dialogHolder.dialog.hide();
+        
+        var sourceText = model.get("sourceText");
+        console.log("sourceText", sourceText);
 
-        //noinspection JSUnresolvedVariable
-        var jsonText = data.sourceTextArea;
-        console.log("data", jsonText);
-
-        this.items = JSON.parse(jsonText);
+        this.items = JSON.parse(sourceText);
 
         console.log("parsed", this.items);
 
@@ -285,18 +284,53 @@ define([
         console.log("Updated OK");
     };
     
-    // TODO: Translate
     ConceptMap.prototype.openSourceDialog = function(sourceText) {
-        var sourceDialog = new Dialog({
-            title: "Diagram source",
-            id: "sourceDialog",
-            style: {width: "600px", height: "400px", overflow: "auto"},
-            content: "source: <input data-dojo-type='dijit/form/SimpleTextarea' type='text' name='sourceTextArea' rows='30' id='sourceTextArea'>" +
-                '<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="document.conceptMap_clickedUpdateSource();">Update</button>' +
-                '<button data-dojo-type="dijit/form/Button" type="submit">Cancel</button>'
+        var model = new Stateful({sourceText: sourceText});
+
+        var layout = new dojox.layout.TableContainer({
+            showLabels: false,
+            orientation: "horiz"
         });
-        registry.byId("sourceTextArea").set("value", sourceText);
-        sourceDialog.show();
+        
+        var sourceTextarea = new SimpleTextarea({
+            name: 'sourceText',
+            value: at(model, "sourceText"),
+            placeHolder: "[]"
+        });
+        
+        // Indirect way to hold onto dialog so can pass a reference to the dialog to button clicked function so that function can hide the dialog
+        // The problem this solves is that a hoisted dialog is undefined at this point, and also hitch uses the current value not a reference to the variable
+        var dialogHolder = {};
+        
+        var okButton = new Button({
+            // TODO: Translate
+            label: "Update",
+            type: "button",
+            // TODO: This won't be OK, and need model
+            onClick: lang.hitch(this, this.clickedUpdateSource, dialogHolder, model)
+        });
+        
+        layout.addChild(sourceTextarea);
+        layout.addChild(okButton);
+ 
+        var dialog = new Dialog({
+            // TODO: Translate
+            title: "Diagram source",
+            style: "width: 600px; height: 400px; overflow: auto",
+            content: layout
+        });
+        
+        dialogHolder.dialog = dialog;
+        
+        // This will free the dialog when we are done with it whether from OK or Cancel
+        dialog.connect(dialog, "onHide", function(e) {
+            console.log("destroying sourceDialog");
+            dialog.destroyRecursive(); 
+        });
+        
+        dialog.startup();
+        layout.startup();
+        dialog.show();
     };
 
     ConceptMap.prototype.rebuildItems = function() {
