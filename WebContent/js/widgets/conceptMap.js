@@ -18,7 +18,9 @@ define([
     "dojo/Stateful",
     "dojox/mvc/at",
     "dojox/layout/TableContainer",
-    "dojo/_base/lang"
+    "dojo/_base/lang",
+    "./widgetSupport"
+    //"dojox/layout/ResizeHandle"
 ], function (
     ready,
     domAttr,
@@ -36,7 +38,9 @@ define([
     Stateful,
     at,
     TableContainer,
-    lang
+    lang,
+    widgetSupport
+    // ResizeHandle
 ) {
    // Resources:
    // # http://dojotdg.zaffra.com/2009/03/dojo-now-with-drawing-tools-linux-journal-reprint/
@@ -161,11 +165,13 @@ define([
         this.textBox = new TextBox({
             name: "conceptTextBox",
             value: "",
+            // TODO: Translate 
             placeHolder: "type in a concept",
             style: textBoxWidth
         }, "conceptTextBox");
         this.mainContentPane.domNode.appendChild(this.textBox.domNode);
 
+        // TODO: Translate
         var updateItemButton = this.newButton("updateItemButton", "Update item", function () {
             if (this.lastSelectedItem) {
                 this.lastSelectedItem.text = this.textBox.get("value");
@@ -174,6 +180,29 @@ define([
                 // Wasteful to do all of them
                 this.rebuildItems();
             }
+        });
+        
+        function removeItemFromArray(item, anArray) {
+            var index = anArray.indexOf(item);
+            if (index > -1) {
+                anArray.splice(index, 1);
+                return item;
+            }
+            return null;
+        }
+        
+        var deleteButton = this.newButton("deleteButton", "Delete item", function () {
+            if (!this.lastSelectedItem) {
+                // TODO: Translate
+                alert("Please select an item first");
+                return;
+            }
+            widgetSupport.confirm("Confirm removal of: '" + this.lastSelectedItem.text + "'?", lang.hitch(this, function () {
+                removeItemFromArray(this.lastSelectedItem, this.items);
+                this.incrementChangesCount();
+                // Wasteful to do all of them
+                this.rebuildItems();
+            }));
         });
 
         var newBreak = document.createElement("br");
@@ -184,15 +213,17 @@ define([
         this.urlBox = new TextBox({
             name: "urlTextBox",
             value: "", // http://www.rakontu.org
+            // TODO: Translate 
             placeHolder: "type in some notes or a url with more information",
             style: urlBoxWidth
         }, "urlTextBox");
         this.mainContentPane.domNode.appendChild(this.urlBox.domNode);
 
         /*
-        var goButton = newButton("goButton", "Go", lang.hitch(this, function () {
+        // TODO: Translate
+        var goButton = this.newButton("goButton", "Go", function () {
             this.go(urlBox.get("value"));
-        }));
+        });
         */
 
         //  var newBreak = document.createElement("br");
