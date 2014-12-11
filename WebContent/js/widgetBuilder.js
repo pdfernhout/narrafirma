@@ -197,7 +197,7 @@ define([
         
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
-        return conceptMap.insertConceptMap(questionContentPane, model, id, mapName);
+        return conceptMap.insertConceptMap(questionContentPane, model, id, mapName, true);
     }
     
     function add_grid(contentPane, model, id, options) {

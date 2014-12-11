@@ -61,13 +61,14 @@ define([
 
     /** ConceptMap-specific functions here */
     
-    function insertConceptMap(contentPane, model, id, mapName) {
-        return new ConceptMap(contentPane, model, id, mapName);
+    function insertConceptMap(contentPane, model, id, mapName, autosave) {
+        return new ConceptMap(contentPane, model, id, mapName, autosave);
     }
     
-    function ConceptMap(contentPane, model, id, mapName) {
+    function ConceptMap(contentPane, model, id, mapName, autosave) {
         console.log("Creating ConceptMap", contentPane, model, id, mapName);
 
+        this.autosave = autosave;
         this.changesCount = 0;
         this.lastSelectedItem = null;
         this.mainContentPane = contentPane;
@@ -97,6 +98,13 @@ define([
 
         this.setupMainSurface();
     }
+    
+    ConceptMap.prototype.incrementChangesCount = function() {
+        this.changesCount++;
+        if (this.autosave) {
+            this.saveChanges();
+        }
+    };
 
     ConceptMap.prototype.newButton = function(name, label, callback) {
         var theButton = new Button({
@@ -126,10 +134,12 @@ define([
             this.openSourceDialog(JSON.stringify(this.items));
         });
 
-        var saveChangesButton = this.newButton("saveChangesButton", "Save Changes", function () {
-            console.log("About to save");
-            this.saveChanges();
-        });
+        if (!this.autosave) {
+            var saveChangesButton = this.newButton("saveChangesButton", "Save Changes", function () {
+                console.log("About to save");
+                this.saveChanges();
+            });
+        }
     };
 
     ConceptMap.prototype.setupMainSurface = function() {
@@ -160,7 +170,7 @@ define([
             if (this.lastSelectedItem) {
                 this.lastSelectedItem.text = this.textBox.get("value");
                 this.lastSelectedItem.url = this.urlBox.get("value");
-                this.changesCount++;
+                this.incrementChangesCount();
                 // Wasteful to do all of them
                 this.rebuildItems();
             }
@@ -199,7 +209,7 @@ define([
         var group = this.addItem(this.mainSurface, null, name, url);
         this.items.push(group.item);
         console.log("items", this.items);
-        this.changesCount++;
+        this.incrementChangesCount();
     };
     
     ConceptMap.prototype.openEntryDialog = function(name, url) {
@@ -274,7 +284,7 @@ define([
         console.log("parsed", this.items);
 
         this.rebuildItems();
-        this.changesCount++;
+        this.incrementChangesCount();
         console.log("Updated OK");
     };
     
@@ -424,13 +434,18 @@ define([
         var moveable = new Moveable(group);
         moveable.item = item;
 
+        moveable.onMoveStart = lang.hitch(this, function (mover, shift) {
+            // Kludge for Android as not setting on mouse down
+            this.updateForItemClick(item);
+        });
+        
         moveable.onMoved = lang.hitch(this, function (mover, shift) {
             item.x += shift.dx;
             item.y += shift.dy;
-            this.changesCount++;
+        });
 
-            // Kludge for Android as not setting on mouse down
-            this.updateForItemClick(item);
+        moveable.onMoveStop = lang.hitch(this, function (mover, shift) {
+            this.incrementChangesCount();
         });
 
         group.applyTransform(gfx.matrix.translate(item.x, item.y));

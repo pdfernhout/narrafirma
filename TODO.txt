@@ -97,8 +97,6 @@ Implement countNumberOfVenuesChosen in domain (is this still needed? If not, rem
 Help window displaying HTML instead of alert
 Look at all alerts in code and make into nicer GUI feedback
 
-Figure out how to save and load concept map more directly than with a button to save
-
 For all dialogs, look into probable memory leak when closed and they are not destroyed; see conceptMap for an approach that works to clear them
 
 Better and more consistent approach for translation selections for selects, checkboxes, radiobuttons, and maybe other types
@@ -267,6 +265,7 @@ DONE Resolve server configuration issue where upstart got confused about what wa
 DONE Improve logging from upstart about when start and stop server
 DONE Add proof-of-concept for concept map
 DONE Improve concept map so you can have more than one per page or application
+DONE Figure out how to save and load concept map more directly than with a button to save
 
 ======= CYNTHIA
 
