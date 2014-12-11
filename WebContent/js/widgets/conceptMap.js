@@ -41,54 +41,6 @@ define([
     var surfaceWidth = 800;
     var surfaceHeight = 400;
     
-    // dialogs
-    var sourceDialog;
-    var entryDialog;
-    
-    function defineSourceDialog() {
-        // TODO: Will this still work OK if there are more than one map per page or per app?
-        
-        // TODO: Fix this!!!
-        // Make our function available globally so the dialog can find it
-        // document.conceptMap_updateSource = conceptMap_updateSource;
-
-        // Prevent making multiple versions of these dialogs if concept map is regenerated or used in multiple places
-        sourceDialog = registry.byId("sourceDialog");
-        if (sourceDialog) return;
-        sourceDialog = new Dialog({
-            title: "Diagram source",
-            id: "sourceDialog",
-            style: {width: "600px", height: "400px", overflow: "auto"},
-            content: "source: <input data-dojo-type='dijit/form/SimpleTextarea' type='text' name='sourceTextArea' rows='30' id='sourceTextArea'>" +
-                '<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="document.conceptMap_updateSource();">Update</button>' +
-                '<button data-dojo-type="dijit/form/Button" type="submit">Cancel</button>'
-        });
-    }
-
-    function defineEntryDialog() {
-        // TODO: Fix this!!!
-        // TODO: Will this still work OK if there are more than one map per page or per app?
-        // document.conceptMap_clickedNewEntryOK = conceptMap_clickedNewEntryOK;
-
-        // Prevent making multiple versions of these dialogs if concept map is regenerated or used in multiple places
-        entryDialog = registry.byId("formDialog");
-        if (sourceDialog) return;
-        
-        entryDialog = new Dialog({
-            title: "New item",
-            id: "formDialog",
-            style: "width: 300px",
-            content: "name: <input data-dojo-type='dijit/form/TextBox' type='text' name='name' id='name'>" +
-                "<br/>notes: <input data-dojo-type='dijit/form/TextBox' type='text' name='url' id='url'>" +
-                //'<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="return registry.byId("formDialog").isValid();">OK</button>'
-                '<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="document.conceptMap_clickedNewEntryOK();">OK</button>'
-        });
-    }
-    
-    // TODO: Fix this so dialogs are created as needed and widgets are destroyed when done
-    defineEntryDialog();
-    defineSourceDialog();
-    
     function uuidFast() {
     	return generateRandomUuid();
     }
@@ -167,7 +119,7 @@ define([
         var addButton = this.newButton("addButton", "New item", function () {
             setFieldValue("name", "");
             setFieldValue("url", "");
-            entryDialog.show();
+            this.openEntryDialog();
         });
 
         /*
@@ -182,7 +134,7 @@ define([
 
         var sourceButton = this.newButton("sourceButton", "Diagram Source", function () {
             setTextAreaValue("sourceTextArea", JSON.stringify(this.items));
-            sourceDialog.show();
+            this.openSourceDialog();
         });
 
         var saveChangesButton = this.newButton("saveChangesButton", "Save Changes", function () {
@@ -248,7 +200,7 @@ define([
         //  mainContentPane.domNode.appendChild(newBreak);
     };
 
-    ConceptMap.prototype.conceptMap_clickedNewEntryOK = function(event) {
+    ConceptMap.prototype.clickedNewEntryOK = function(event) {
         console.log("Clicked OK", event);
         var data = entryDialog.get("value");
         console.log("data", data);
@@ -259,9 +211,21 @@ define([
         // item.text = textBox.get("value");
         // item.url = urlBox.get("value");
     };
+    
+    ConceptMap.prototype.openEntryDialog = function() {
+        entryDialog = new Dialog({
+            title: "New item",
+            id: "formDialog",
+            style: "width: 300px",
+            content: "name: <input data-dojo-type='dijit/form/TextBox' type='text' name='name' id='name'>" +
+                "<br/>notes: <input data-dojo-type='dijit/form/TextBox' type='text' name='url' id='url'>" +
+                //'<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="return registry.byId("formDialog").isValid();">OK</button>'
+                '<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="document.conceptMap_clickedNewEntryOK();">OK</button>'
+        });
+    };
 
-    ConceptMap.prototype.conceptMap_updateSource = function(event) {
-        console.log("Clicked conceptMap_updateSource", event);
+    ConceptMap.prototype.clickedUpdateSource = function(event) {
+        console.log("Clicked updateSource", event);
         var data = sourceDialog.get("value");
         console.log("data", data);
 
@@ -276,6 +240,17 @@ define([
         this.rebuildItems();
         this.changesCount++;
         console.log("Updated OK");
+    };
+    
+    ConceptMap.prototype.openSourceDialog = function() {
+        sourceDialog = new Dialog({
+            title: "Diagram source",
+            id: "sourceDialog",
+            style: {width: "600px", height: "400px", overflow: "auto"},
+            content: "source: <input data-dojo-type='dijit/form/SimpleTextarea' type='text' name='sourceTextArea' rows='30' id='sourceTextArea'>" +
+                '<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="document.conceptMap_clickedUpdateSource();">Update</button>' +
+                '<button data-dojo-type="dijit/form/Button" type="submit">Cancel</button>'
+        });
     };
 
     ConceptMap.prototype.rebuildItems = function() {
