@@ -30,8 +30,10 @@ define([
     touch,
     generateRandomUuid
 ) {
-    
+    // TODO: Will this still work OK if there are more than one map per page or per app?
+
     // TODO: Replace use of document.conceptMap_* for dialogs with callbacks
+    // TODO: Probably memory leak here with dialogs when load data in application and page is regenerated; may be general issue with app?
 
    // Resources:
    // # http://dojotdg.zaffra.com/2009/03/dojo-now-with-drawing-tools-linux-journal-reprint/
@@ -40,7 +42,7 @@ define([
     var urlBox = null;
 
     var surfaceWidth = 800;
-    var surfaceHeight = 500;
+    var surfaceHeight = 400;
     var _mainSurface = null;
     var mainSurface = null;
 
@@ -176,33 +178,45 @@ define([
     }
 
     function defineSourceDialog() {
+        // TODO: Will this still work OK if there are more than one map per page or per app?
+        
+        // Make our function available globally so the dialog can find it
+        document.conceptMap_updateSource = conceptMap_updateSource;
+
+        // Prevent making multiple versions of these dialogs if concept map is regenerated or used in multiple places
+        sourceDialog = registry.byId("sourceDialog");
+        if (sourceDialog) return;
         sourceDialog = new Dialog({
             title: "Diagram source",
             id: "sourceDialog",
-            style: {width: "800px", height: "600px", overflow: "auto"},
+            style: {width: "600px", height: "400px", overflow: "auto"},
             content: "source: <input data-dojo-type='dijit/form/SimpleTextarea' type='text' name='sourceTextArea' rows='30' id='sourceTextArea'>" +
                 '<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="document.conceptMap_updateSource();">Update</button>' +
                 '<button data-dojo-type="dijit/form/Button" type="submit">Cancel</button>'
         });
-        // Make our function available globally so the dialog can find it
-        document.conceptMap_updateSource = conceptMap_updateSource;
     }
 
     function defineEntryDialog() {
+        // TODO: Will this still work OK if there are more than one map per page or per app?
+        document.conceptMap_clickedNewEntryOK = conceptMap_clickedNewEntryOK;
+
+        // Prevent making multiple versions of these dialogs if concept map is regenerated or used in multiple places
+        entryDialog = registry.byId("formDialog");
+        if (sourceDialog) return;
+        
         entryDialog = new Dialog({
             title: "New item",
             id: "formDialog",
             style: "width: 300px",
             content: "name: <input data-dojo-type='dijit/form/TextBox' type='text' name='name' id='name'>" +
-                "<br/>url: <input data-dojo-type='dijit/form/TextBox' type='text' name='url' id='url'>" +
+                "<br/>notes: <input data-dojo-type='dijit/form/TextBox' type='text' name='url' id='url'>" +
                 //'<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="return registry.byId("formDialog").isValid();">OK</button>'
                 '<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="document.conceptMap_clickedNewEntryOK();">OK</button>'
         });
-        document.conceptMap_clickedNewEntryOK = conceptMap_clickedNewEntryOK;
     }
 
     function addItemEditor() {
-        var textBoxWidth = "width: 50em; margin-left: 2em;";
+        var textBoxWidth = "width: 30em; margin-left: 2em;";
         textBox = new TextBox({
             name: "conceptTextBox",
             value: "",
@@ -225,11 +239,11 @@ define([
         mainContentPane.domNode.appendChild(newBreak);
 
         // var urlBoxWidth = "width: 500em; border: 5px solid #C4C4C4; padding: 6px;";
-        var urlBoxWidth = "width: 50em; margin-left: 2em;";
+        var urlBoxWidth = "width: 30em; margin-left: 2em;";
         urlBox = new TextBox({
             name: "urlTextBox",
             value: "", // http://www.rakontu.org
-            placeHolder: "type in a url",
+            placeHolder: "type in some notes or a url with more information",
             style: urlBoxWidth
         }, "urlTextBox");
         mainContentPane.domNode.appendChild(urlBox.domNode);
