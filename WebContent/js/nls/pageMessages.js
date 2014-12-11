@@ -979,6 +979,7 @@ define({
     "project_projectPlanningLabel::prompt": "In the planning phase of your PNI project, you will make decisions about how your project will proceed.\nYou will think about your goals, your topic, your participants, and any opportunities and dangers you might encounter during the project.",
     "project_projectStoriesList::prompt": "On this page you will tell yourself some stories about how your project might play out.\nThese \"project stories\" will help you think about how best to plan the project.",
     "project_projectStoriesList::shortName": "Project stories",
+    "project_projectStoryElementsConceptMap::prompt": "You can create a concept map here:",
     "project_projectStoryElementsList::prompt": "On this page you can enter the story elements you created on the previous page.",
     "project_projectStoryElementsList::shortName": "Story elements",
     "project_readCollectionDesignReportIntroductionLabel::prompt": "This report shows all of the information entered in the pages grouped under \"Collection design.\"",

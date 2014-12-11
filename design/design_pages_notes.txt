@@ -213,6 +213,8 @@ You can enter your story elements on the next page.
 <li>You can enter your story elements on the next page.</li>
 </ol>
 
+* You can create a concept map here: [project_projectStoryElementsConceptMap|conceptMap|answersMap]
+
 ## Enter project story elements [page_enterProjectStoryElements|page|Project]
 
 * Story elements | On this page you can enter the story elements you created on the previous page. [project_projectStoryElementsList|grid|page_addStoryElement]
