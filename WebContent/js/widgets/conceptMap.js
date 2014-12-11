@@ -59,10 +59,15 @@ define([
         }
     }
 
-    function setHTML(field, value) {
-        domAttr.set(field, "innerHTML", value);
+    function removeItemFromArray(item, anArray) {
+        var index = anArray.indexOf(item);
+        if (index > -1) {
+            anArray.splice(index, 1);
+            return item;
+        }
+        return null;
     }
-
+    
     /** ConceptMap-specific functions here */
     
     function insertConceptMap(contentPane, model, id, mapName, autosave) {
@@ -95,8 +100,7 @@ define([
 
         this.setupMainButtons();
 
-        var newBr = document.createElement("br");
-        this.mainContentPane.domNode.appendChild(newBr);
+        //this.newBreak();
 
         this.addItemEditor();
 
@@ -108,6 +112,13 @@ define([
         if (this.autosave) {
             this.saveChanges();
         }
+    };
+    
+    ConceptMap.prototype.newBreak = function() {
+        var newBr = document.createElement("br");
+        this.mainContentPane.domNode.appendChild(newBr);
+
+        return newBr;
     };
 
     ConceptMap.prototype.newButton = function(name, label, callback) {
@@ -161,16 +172,6 @@ define([
     };
 
     ConceptMap.prototype.addItemEditor = function() {
-        var textBoxWidth = "width: 30em; margin-left: 2em;";
-        this.textBox = new TextBox({
-            name: "conceptTextBox",
-            value: "",
-            // TODO: Translate 
-            placeHolder: "type in a concept",
-            style: textBoxWidth
-        }, "conceptTextBox");
-        this.mainContentPane.domNode.appendChild(this.textBox.domNode);
-
         // TODO: Translate
         var updateItemButton = this.newButton("updateItemButton", "Update item", function () {
             if (this.lastSelectedItem) {
@@ -179,22 +180,17 @@ define([
                 this.incrementChangesCount();
                 // Wasteful to do all of them
                 this.rebuildItems();
+            } else {
+             // TODO: Translate
+                alert("Please select an item to update first");
+                return;
             }
         });
-        
-        function removeItemFromArray(item, anArray) {
-            var index = anArray.indexOf(item);
-            if (index > -1) {
-                anArray.splice(index, 1);
-                return item;
-            }
-            return null;
-        }
-        
+
         var deleteButton = this.newButton("deleteButton", "Delete item", function () {
             if (!this.lastSelectedItem) {
                 // TODO: Translate
-                alert("Please select an item first");
+                alert("Please select an item to delete first");
                 return;
             }
             widgetSupport.confirm("Confirm removal of: '" + this.lastSelectedItem.text + "'?", lang.hitch(this, function () {
@@ -204,30 +200,50 @@ define([
                 this.rebuildItems();
             }));
         });
-
-        var newBreak = document.createElement("br");
-        this.mainContentPane.domNode.appendChild(newBreak);
-
-        // var urlBoxWidth = "width: 500em; border: 5px solid #C4C4C4; padding: 6px;";
-        var urlBoxWidth = "width: 30em; margin-left: 2em;";
-        this.urlBox = new TextBox({
-            name: "urlTextBox",
-            value: "", // http://www.rakontu.org
-            // TODO: Translate 
-            placeHolder: "type in some notes or a url with more information",
-            style: urlBoxWidth
-        }, "urlTextBox");
-        this.mainContentPane.domNode.appendChild(this.urlBox.domNode);
-
+        
         /*
         // TODO: Translate
         var goButton = this.newButton("goButton", "Go", function () {
             this.go(urlBox.get("value"));
         });
         */
+        
+        // this.newBreak();
+        
+        var layout = new dojox.layout.TableContainer({
+            showLabels: true,
+            orientation: "horiz",
+            labelWidth: 60
+        });
+        
+        var textBoxWidth = "width: 40em; margin-left: 2em;";
+        this.textBox = new TextBox({
+            name: "conceptTextBox",
+            value: "",
+            // TODO: Translate
+            title: 'Name',
+            // TODO: Translate 
+            placeHolder: "type in a concept",
+            style: textBoxWidth
+        }, "conceptTextBox");
 
-        //  var newBreak = document.createElement("br");
-        //  this.mainContentPane.domNode.appendChild(newBreak);
+        layout.addChild(this.textBox);
+        
+        var urlBoxWidth = "width: 40em; margin-left: 2em;";
+        this.urlBox = new TextBox({
+            name: "urlTextBox",
+            value: "",
+            // TODO: Translate
+            title: 'Notes',
+            // TODO: Translate 
+            placeHolder: "type in some notes or a url with more information",
+            style: urlBoxWidth
+        }, "urlTextBox");
+
+        layout.addChild(this.urlBox);
+        
+        this.mainContentPane.domNode.appendChild(layout.domNode);
+        layout.startup();
     };
 
     ConceptMap.prototype.clickedNewEntryOK = function(dialogHolder, model, event) {
@@ -407,6 +423,15 @@ define([
         this.textBox.set("value", item.text);
         this.urlBox.set("value", item.url);
     };
+    
+    var defaultBodyColor = [0, 0, 155, 0.5]; // blue, transparent
+    var defaultBorderColor = "black";
+    // var defaultBorderColor = "green";
+    var defaultBorderWidth = 1;
+    // var defaultHasNoteBorderColor = "green";
+    // var defaultTextStyle = {family: "Arial", size: "10pt", weight: "bold"};
+    var defaultTextStyle = {family: "Arial", size: "9pt", weight: "normal"};
+    var defaultRadius = 44;
 
     ConceptMap.prototype.addItem = function(surface, item, text, url) {
         // alert("Add button pressed");
@@ -421,30 +446,51 @@ define([
             item.x = 200;
             item.y = 200;
             item.uuid = uuidFast();
+            // item.bodyColor = defaultBodyColor;
+            // item.borderWidth = defaultBorderWidth;
+            // item.borderColor = defaultBorderColor;
+            // item.radius = defaultRadius;
+            // item.textStyle = defaultTextStyle;
         }
         console.log("item", item);
+        
+        var bodyColor = item.bodyColor;
+        if (!bodyColor) bodyColor = defaultBodyColor;
+        
+        var borderColor = item.borderColor;
+        if (!borderColor) borderColor = defaultBorderColor;
+        
+        var borderWidth = item.borderWidth;
+        if (!borderWidth) borderWidth = defaultBorderWidth;
+        
+        var radius = item.radius;
+        if (!radius) radius = defaultRadius;
+        
+        var textStyle = item.textStyle;
+        if (!textStyle) textStyle = defaultTextStyle;
 
         var group = surface.createGroup();
         group.item = item;
 
-        console.log("group", group);
+        // console.log("group etc.", group, item, bodyColor, borderColor, borderWidth, radius, textStyle);
 
-        var circle = {cx: 0, cy: 0, r: 50 };
-        var color = "black";
-        if (item.url) color = "green";
+        var circle = {cx: 0, cy: 0, r: radius };
+        
+        // TODO: Maybe no longer set a different color based on url if you can set border color yourself?? 
+        // if (item.url) item.borderColor = defaultHasNoteBorderColor;
 
-        var blueCircle = group.createCircle(circle).
-            setFill([0, 0, 155, 0.5]).
-            setStroke({color: color, width: 4, cap: "butt", join: 4}).
+        var itemCircle = group.createCircle(circle).
+            setFill(bodyColor).
+            setStroke({color: borderColor, width: borderWidth, cap: "butt", join: 4}).
             applyTransform(gfx.matrix.identity);
 
-        this.addText(group, item.text, 75);
+        this.addText(group, item.text, radius * 1.5, textStyle);
 
         //console.log("group", group);
-        //console.log("blueCircle", blueCircle);
+        //console.log("itemCircle", itemCircle);
 
         //touch.press(group, function(e) {
-        //touch.press(blueCircle, function(e) {
+        //touch.press(itemCircle, function(e) {
         group.connect("onmousedown", lang.hitch(this, function (e) {
             // require(["dojo/on"], function(on) {
             //  var handle = on(group, "mousedown", function(e) {
@@ -484,8 +530,7 @@ define([
         return group;
     };
 
-    ConceptMap.prototype.addText = function(group, text, maxWidth) {
-        var style = {family: "Arial", size: "10pt", weight: "bold"};
+    ConceptMap.prototype.addText = function(group, text, maxWidth, textStyle) {
         var lineHeight = 12;
         var tb = gfx._base._getTextBox;
         var words = text.split(" ");
@@ -511,7 +556,7 @@ define([
         var y = startY;
         forEach(lines, function (index, line) {
             var theTextItem = group.createText({text: line, x: 0, y: y, align: "middle"}).
-                setFont(style).
+                setFont(textStyle).
                 setFill("black");
             console.log("textItem", theTextItem);
             y += lineHeight;
