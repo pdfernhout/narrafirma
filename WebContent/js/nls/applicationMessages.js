@@ -19,7 +19,8 @@ define({
     button_home: "Home",
     button_previousPage: "Previous Page",
     button_nextPage: "Next Page",
-    button_load: "Load",
+    button_loadLatest: "Load latest",
+    button_loadVersion: "Load version",
     button_save: "Save",
     button_debug: "Debug",
     

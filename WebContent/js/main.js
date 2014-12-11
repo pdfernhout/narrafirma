@@ -52,18 +52,38 @@ require([
     var selectWidget = null;
     var previousPageButton = null;
     var nextPageButton = null;
-    var loadButton = null;
+    var loadLatestButton = null;
+    var loadVersionButton = null;
     var saveButton = null;
     var startPage = "page_dashboard";
 
-    function loadClicked(event) {
-        console.log("load clicked");
+    function loadLatestClicked(event) {
+        console.log("load latest clicked");
                 
         // TODO: Kludge of loading all stories when load data?
         // domain.buttonFunctions.loadLatestStoriesFromServer();
  
         // TODO: Check for unsaved data before loading project...
         storage.loadLatestProjectVersion(switchToLoadedProjectData);
+    }
+    
+    function loadVersionClicked(event) {
+        console.log("load version clicked");
+                
+        // TODO: Kludge of loading all stories when load data?
+        // domain.buttonFunctions.loadLatestStoriesFromServer();
+ 
+        // TODO: Check for unsaved data before loading project...
+        storage.loadAllProjectVersions(loadedProjectVersions);
+    }
+    
+    function loadedProjectVersions(error, versions) {
+        console.log("loadedProjectVersions", error, versions);
+        if (error) {
+            alert("A problem happened when trying to load all the versions of the project:\n" + error);
+            return;
+        }
+        // TODO: Put up a dialog to choose from
     }
      
     function switchToLoadedProjectData(error, projectAnswers) {
@@ -392,7 +412,8 @@ require([
         nextPageButton = utility.newButton("button_nextPage", null, "navigationDiv", nextPageClicked);
         nextPageButton.set("iconClass", "rightButtonImage");
         
-        loadButton = utility.newButton("button_load", null, "navigationDiv", loadClicked);
+        loadLatestButton = utility.newButton("button_loadLatest", null, "navigationDiv", loadLatestClicked);
+        loadVersionButton = utility.newButton("button_loadVersion", null, "navigationDiv", loadVersionClicked);
         saveButton = utility.newButton("button_save", null, "navigationDiv", saveClicked);
         
         var debugButton = utility.newButton("button_debug", null, "navigationDiv", debugButtonClicked);
