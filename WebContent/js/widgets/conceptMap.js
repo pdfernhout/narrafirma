@@ -38,30 +38,50 @@ define([
    // Resources:
    // # http://dojotdg.zaffra.com/2009/03/dojo-now-with-drawing-tools-linux-journal-reprint/
 
-    var textBox = null;
-    var urlBox = null;
-
     var surfaceWidth = 800;
     var surfaceHeight = 400;
-    var _mainSurface = null;
-    var mainSurface = null;
-
-    var items = null;
-    var changesCount = 0;
-
-    var lastSelectedItem = null;
-
-    var diagramName = "saved";
-
-    var currentVersionURI = "";
     
-    var mainContentPane = null;
-    var modelForStorage = null;
-    var idForStorage = null;
-
     // dialogs
     var sourceDialog;
     var entryDialog;
+    
+    function defineSourceDialog() {
+        // TODO: Will this still work OK if there are more than one map per page or per app?
+        
+        // Make our function available globally so the dialog can find it
+        document.conceptMap_updateSource = conceptMap_updateSource;
+
+        // Prevent making multiple versions of these dialogs if concept map is regenerated or used in multiple places
+        sourceDialog = registry.byId("sourceDialog");
+        if (sourceDialog) return;
+        sourceDialog = new Dialog({
+            title: "Diagram source",
+            id: "sourceDialog",
+            style: {width: "600px", height: "400px", overflow: "auto"},
+            content: "source: <input data-dojo-type='dijit/form/SimpleTextarea' type='text' name='sourceTextArea' rows='30' id='sourceTextArea'>" +
+                '<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="document.conceptMap_updateSource();">Update</button>' +
+                '<button data-dojo-type="dijit/form/Button" type="submit">Cancel</button>'
+        });
+    }
+
+    function defineEntryDialog() {
+        // TODO: Will this still work OK if there are more than one map per page or per app?
+        document.conceptMap_clickedNewEntryOK = conceptMap_clickedNewEntryOK;
+
+        // Prevent making multiple versions of these dialogs if concept map is regenerated or used in multiple places
+        entryDialog = registry.byId("formDialog");
+        if (sourceDialog) return;
+        
+        entryDialog = new Dialog({
+            title: "New item",
+            id: "formDialog",
+            style: "width: 300px",
+            content: "name: <input data-dojo-type='dijit/form/TextBox' type='text' name='name' id='name'>" +
+                "<br/>notes: <input data-dojo-type='dijit/form/TextBox' type='text' name='url' id='url'>" +
+                //'<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="return registry.byId("formDialog").isValid();">OK</button>'
+                '<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="document.conceptMap_clickedNewEntryOK();">OK</button>'
+        });
+    }
     
     function uuidFast() {
     	return generateRandomUuid();
@@ -77,31 +97,40 @@ define([
         domAttr.set(field, "innerHTML", value);
     }
 
-    function setHiddenJSONData(fieldName, data) {
-        // Idea from: http://www.webdeveloper.com/forum/showthread.php?t=137518
-        var hiddenDataElement = document.getElementById(fieldName);
-        var hiddenDataString = JSON.stringify(data);
-        hiddenDataElement.value = hiddenDataString;
-        return hiddenDataString;
+    function setFieldValue(name, value) {
+        registry.byId(name).set("value", value);
     }
 
+    function setTextAreaValue(name, value) {
+        registry.byId(name).set("value", value);
+    }
+
+    /** ConceptMap-specific functions here */
+    
     function insertConceptMap(contentPane, model, id, mapName) {
         console.log("Called twirlip conceptMap code", mapName);
-        mainContentPane = contentPane;
-        diagramName = mapName;
-        idForStorage = id;
-        modelForStorage = model;
-        items = model.get(id);
+        
+        var conceptMap = {
+            changesCount: 0,
+            lastSelectedItem: null,
+            mainContentPane: contentPane,
+            diagramName: mapName,
+            idForStorage: id,
+            modelForStorage: model,
+            items: model.get(id),
+            textBox: null,
+            urlBox: null, 
+            _mainSurface: null,
+            mainSurface: null
+        };
 
-        if (!items) {
+        if (!conceptMap.items) {
             console.log("First time loading");
-            items = [];
+            conceptMap.items = [];
         } else {
             console.log("Already loaded");
-            console.log("items", items);
+            console.log("items", conceptMap.items);
         }
-
-        changesCount = 0;
 
         defineEntryDialog();
         defineSourceDialog();
@@ -109,19 +138,11 @@ define([
         setupMainButtons();
 
         var newBr = document.createElement("br");
-        mainContentPane.domNode.appendChild(newBr);
+        conceptMap.mainContentPane.domNode.appendChild(newBr);
 
         addItemEditor();
 
         setupMainSurface();
-    }
-
-    function setFieldValue(name, value) {
-        registry.byId(name).set("value", value);
-    }
-
-    function setTextAreaValue(name, value) {
-        registry.byId(name).set("value", value);
     }
 
     function newButton(name, label, callback) {
@@ -175,44 +196,6 @@ define([
 
         rebuildItems(mainSurface, items);
         //   items.push({text: theText, url: theURL, x: circle.cx, y: circle.cy});
-    }
-
-    function defineSourceDialog() {
-        // TODO: Will this still work OK if there are more than one map per page or per app?
-        
-        // Make our function available globally so the dialog can find it
-        document.conceptMap_updateSource = conceptMap_updateSource;
-
-        // Prevent making multiple versions of these dialogs if concept map is regenerated or used in multiple places
-        sourceDialog = registry.byId("sourceDialog");
-        if (sourceDialog) return;
-        sourceDialog = new Dialog({
-            title: "Diagram source",
-            id: "sourceDialog",
-            style: {width: "600px", height: "400px", overflow: "auto"},
-            content: "source: <input data-dojo-type='dijit/form/SimpleTextarea' type='text' name='sourceTextArea' rows='30' id='sourceTextArea'>" +
-                '<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="document.conceptMap_updateSource();">Update</button>' +
-                '<button data-dojo-type="dijit/form/Button" type="submit">Cancel</button>'
-        });
-    }
-
-    function defineEntryDialog() {
-        // TODO: Will this still work OK if there are more than one map per page or per app?
-        document.conceptMap_clickedNewEntryOK = conceptMap_clickedNewEntryOK;
-
-        // Prevent making multiple versions of these dialogs if concept map is regenerated or used in multiple places
-        entryDialog = registry.byId("formDialog");
-        if (sourceDialog) return;
-        
-        entryDialog = new Dialog({
-            title: "New item",
-            id: "formDialog",
-            style: "width: 300px",
-            content: "name: <input data-dojo-type='dijit/form/TextBox' type='text' name='name' id='name'>" +
-                "<br/>notes: <input data-dojo-type='dijit/form/TextBox' type='text' name='url' id='url'>" +
-                //'<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="return registry.byId("formDialog").isValid();">OK</button>'
-                '<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="document.conceptMap_clickedNewEntryOK();">OK</button>'
-        });
     }
 
     function addItemEditor() {
@@ -310,7 +293,6 @@ define([
             return;
         }
         console.log("items: ", items);
-        setHiddenJSONData("items", items);
         if (changesCount !== 0) {
             console.log("trying to go with changes...");
             var okToGo = confirm("You have unsaved changes");
@@ -321,6 +303,11 @@ define([
         window.open(url);
     }
     */
+    
+    function updateForItemClick(item) {
+        textBox.set("value", item.text);
+        urlBox.set("value", item.url);
+    }
 
     function addItem(surface, item, text, url) {
         // alert("Add button pressed");
@@ -394,11 +381,6 @@ define([
         group.applyTransform(gfx.matrix.translate(item.x, item.y));
 
         return group;
-    }
-
-    function updateForItemClick(item) {
-        textBox.set("value", item.text);
-        urlBox.set("value", item.url);
     }
 
     function addText(group, text, maxWidth) {
