@@ -48,8 +48,9 @@ define([
     function defineSourceDialog() {
         // TODO: Will this still work OK if there are more than one map per page or per app?
         
+        // TODO: Fix this!!!
         // Make our function available globally so the dialog can find it
-        document.conceptMap_updateSource = conceptMap_updateSource;
+        // document.conceptMap_updateSource = conceptMap_updateSource;
 
         // Prevent making multiple versions of these dialogs if concept map is regenerated or used in multiple places
         sourceDialog = registry.byId("sourceDialog");
@@ -65,8 +66,9 @@ define([
     }
 
     function defineEntryDialog() {
+        // TODO: Fix this!!!
         // TODO: Will this still work OK if there are more than one map per page or per app?
-        document.conceptMap_clickedNewEntryOK = conceptMap_clickedNewEntryOK;
+        // document.conceptMap_clickedNewEntryOK = conceptMap_clickedNewEntryOK;
 
         // Prevent making multiple versions of these dialogs if concept map is regenerated or used in multiple places
         entryDialog = registry.byId("formDialog");
@@ -83,10 +85,15 @@ define([
         });
     }
     
+    // TODO: Fix this so dialogs are created as needed and widgets are destroyed when done
+    defineEntryDialog();
+    defineSourceDialog();
+    
     function uuidFast() {
     	return generateRandomUuid();
     }
 
+    // Caution: "this" may be undefined for functions called by this unless "bind" or "hitch" is used
     function forEach(array, theFunction) {
         for (var index = 0, length = array.length; index < length; ++index) {
             theFunction(index, array[index], array);
@@ -108,56 +115,56 @@ define([
     /** ConceptMap-specific functions here */
     
     function insertConceptMap(contentPane, model, id, mapName) {
-        console.log("Called twirlip conceptMap code", mapName);
-        
-        var conceptMap = {
-            changesCount: 0,
-            lastSelectedItem: null,
-            mainContentPane: contentPane,
-            diagramName: mapName,
-            idForStorage: id,
-            modelForStorage: model,
-            items: model.get(id),
-            textBox: null,
-            urlBox: null, 
-            _mainSurface: null,
-            mainSurface: null
-        };
+        return new ConceptMap(contentPane, model, id, mapName);
+    }
+    
+    function ConceptMap(contentPane, model, id, mapName) {
 
-        if (!conceptMap.items) {
+        console.log("Creating ConceptMap", contentPane, model, id, mapName);
+
+        this.changesCount = 0;
+        this.lastSelectedItem = null;
+        this.mainContentPane = contentPane;
+        this.diagramName = mapName;
+        this.idForStorage = id;
+        this.modelForStorage = model;
+        this.items = model.get(id);
+        this.textBox = null;
+        this.urlBox = null; 
+        this._mainSurface = null;
+        this.mainSurface = null;
+
+        if (!this.items) {
             console.log("First time loading");
-            conceptMap.items = [];
+            this.items = [];
         } else {
             console.log("Already loaded");
-            console.log("items", conceptMap.items);
+            console.log("items", this.items);
         }
 
-        defineEntryDialog();
-        defineSourceDialog();
-
-        setupMainButtons();
+        this.setupMainButtons();
 
         var newBr = document.createElement("br");
-        conceptMap.mainContentPane.domNode.appendChild(newBr);
+        this.mainContentPane.domNode.appendChild(newBr);
 
-        addItemEditor();
+        this.addItemEditor();
 
-        setupMainSurface();
+        this.setupMainSurface();
     }
 
-    function newButton(name, label, callback) {
+    ConceptMap.prototype.newButton = function(name, label, callback) {
         var theButton = new Button({
             label: label,
             onClick: callback
         }, name);
-        mainContentPane.domNode.appendChild(theButton.domNode);
+        this.mainContentPane.domNode.appendChild(theButton.domNode);
 
         return theButton;
-    }
+    };
 
-    function setupMainButtons() {
+    ConceptMap.prototype.setupMainButtons = function() {
 
-        var addButton = newButton("addButton", "New item", function () {
+        var addButton = this.newButton("addButton", "New item", function () {
             setFieldValue("name", "");
             setFieldValue("url", "");
             entryDialog.show();
@@ -173,63 +180,63 @@ define([
         });
         */
 
-        var sourceButton = newButton("sourceButton", "Diagram Source", function () {
-            setTextAreaValue("sourceTextArea", JSON.stringify(items));
+        var sourceButton = this.newButton("sourceButton", "Diagram Source", function () {
+            setTextAreaValue("sourceTextArea", JSON.stringify(this.items));
             sourceDialog.show();
         });
 
-        var saveChangesButton = newButton("saveChangesButton", "Save Changes", function () {
+        var saveChangesButton = this.newButton("saveChangesButton", "Save Changes", function () {
             console.log("About to save");
-            saveChanges();
+            this.saveChanges();
         });
-    }
+    };
 
-    function setupMainSurface() {
+    ConceptMap.prototype.setupMainSurface = function() {
         var node = document.createElement("div");
         var divForCanvasInfo = {width: surfaceWidth, height: surfaceHeight, border: "solid 1px"};
         domAttr.set(node, "style", divForCanvasInfo);
-        mainContentPane.domNode.appendChild(node);
-        _mainSurface = gfx.createSurface(node, divForCanvasInfo.width, divForCanvasInfo.height);
-        mainSurface = _mainSurface.createGroup();
+        this.mainContentPane.domNode.appendChild(node);
+        this._mainSurface = gfx.createSurface(node, divForCanvasInfo.width, divForCanvasInfo.height);
+        this.mainSurface = this._mainSurface.createGroup();
 
         // surface.whenLoaded(drawStuff);
 
-        rebuildItems(mainSurface, items);
+        this.rebuildItems();
         //   items.push({text: theText, url: theURL, x: circle.cx, y: circle.cy});
-    }
+    };
 
-    function addItemEditor() {
+    ConceptMap.prototype.addItemEditor = function() {
         var textBoxWidth = "width: 30em; margin-left: 2em;";
-        textBox = new TextBox({
+        this.textBox = new TextBox({
             name: "conceptTextBox",
             value: "",
             placeHolder: "type in a concept",
             style: textBoxWidth
         }, "conceptTextBox");
-        mainContentPane.domNode.appendChild(textBox.domNode);
+        this.mainContentPane.domNode.appendChild(this.textBox.domNode);
 
-        var updateItemButton = newButton("updateItemButton", "Update item", function () {
-            if (lastSelectedItem) {
-                lastSelectedItem.text = textBox.get("value");
-                lastSelectedItem.url = urlBox.get("value");
-                changesCount++;
+        var updateItemButton = this.newButton("updateItemButton", "Update item", function () {
+            if (this.lastSelectedItem) {
+                this.lastSelectedItem.text = this.textBox.get("value");
+                this.lastSelectedItem.url = this.urlBox.get("value");
+                this.changesCount++;
                 // Wasteful to do all of them
-                rebuildItems(mainSurface, items);
+                this.rebuildItems();
             }
         });
 
         var newBreak = document.createElement("br");
-        mainContentPane.domNode.appendChild(newBreak);
+        this.mainContentPane.domNode.appendChild(newBreak);
 
         // var urlBoxWidth = "width: 500em; border: 5px solid #C4C4C4; padding: 6px;";
         var urlBoxWidth = "width: 30em; margin-left: 2em;";
-        urlBox = new TextBox({
+        this.urlBox = new TextBox({
             name: "urlTextBox",
             value: "", // http://www.rakontu.org
             placeHolder: "type in some notes or a url with more information",
             style: urlBoxWidth
         }, "urlTextBox");
-        mainContentPane.domNode.appendChild(urlBox.domNode);
+        this.mainContentPane.domNode.appendChild(this.urlBox.domNode);
 
         /*
         var goButton = newButton("goButton", "Go", function () {
@@ -239,21 +246,21 @@ define([
 
         //  var newBreak = document.createElement("br");
         //  mainContentPane.domNode.appendChild(newBreak);
-    }
+    };
 
-    function conceptMap_clickedNewEntryOK(event) {
+    ConceptMap.prototype.conceptMap_clickedNewEntryOK = function(event) {
         console.log("Clicked OK", event);
         var data = entryDialog.get("value");
         console.log("data", data);
-        var group = addItem(mainSurface, null, data.name, data.url);
-        items.push(group.item);
-        console.log("items", items);
-        changesCount++;
+        var group = this.addItem(this.mainSurface, null, data.name, data.url);
+        this.items.push(group.item);
+        console.log("items", this.items);
+        this.changesCount++;
         // item.text = textBox.get("value");
         // item.url = urlBox.get("value");
-    }
+    };
 
-    function conceptMap_updateSource(event) {
+    ConceptMap.prototype.conceptMap_updateSource = function(event) {
         console.log("Clicked conceptMap_updateSource", event);
         var data = sourceDialog.get("value");
         console.log("data", data);
@@ -262,31 +269,33 @@ define([
         var jsonText = data.sourceTextArea;
         console.log("data", jsonText);
 
-        items = JSON.parse(jsonText);
+        this.items = JSON.parse(jsonText);
 
-        console.log("parsed", items);
+        console.log("parsed", this.items);
 
-        rebuildItems(mainSurface, items);
-        changesCount++;
+        this.rebuildItems();
+        this.changesCount++;
         console.log("Updated OK");
-    }
+    };
 
-    function rebuildItems(surface, items) {
+    ConceptMap.prototype.rebuildItems = function() {
         // console.log("rebuildItems");
-        surface.clear();
-        forEach(items, function (index, item) {
-            // console.log("looping over: " + item);
-            addItem(surface, item);
+        this.mainSurface.clear();
+        // console.log("before forEach this:", this);
+        var thisObject = this;
+        forEach(this.items, function (index, item) {
+            // console.log("looping over: ", item, "this:", this);
+            thisObject.addItem(thisObject.mainSurface, item);
         });
         // console.log("done rebuildItems");
-    }
+    };
 
-    function saveChanges() {
-        modelForStorage.set(idForStorage, items);
-    }
+    ConceptMap.prototype.saveChanges = function() {
+        this.modelForStorage.set(this.idForStorage, this.items);
+    };
 
     /*
-    function go(url) {
+    ConceptMap.prototype.go = function(url) {
         console.log("go: ", url);
         if (!url) {
             console.log("empty url, not going");
@@ -301,15 +310,15 @@ define([
         console.log("going to url", url);
         // document.location.href = url;
         window.open(url);
-    }
+    };
     */
     
-    function updateForItemClick(item) {
-        textBox.set("value", item.text);
-        urlBox.set("value", item.url);
-    }
+    ConceptMap.prototype.updateForItemClick = function(item) {
+        this.textBox.set("value", item.text);
+        this.urlBox.set("value", item.url);
+    };
 
-    function addItem(surface, item, text, url) {
+    ConceptMap.prototype.addItem = function(surface, item, text, url) {
         // alert("Add button pressed");
         //arrow = drawArrow(surface, {start: {x: 200, y: 200}, end: {x: 335, y: 335}});
         //new Moveable(arrow);
@@ -339,7 +348,7 @@ define([
             setStroke({color: color, width: 4, cap: "butt", join: 4}).
             applyTransform(gfx.matrix.identity);
 
-        addText(group, item.text, 75);
+        this.addText(group, item.text, 75);
 
         //console.log("group", group);
         //console.log("blueCircle", blueCircle);
@@ -351,9 +360,9 @@ define([
             // require(["dojo/on"], function(on) {
             //  var handle = on(group, "mousedown", function(e) {
             // console.log("triggered down", e);
-            lastSelectedItem = item;
+            this.lastSelectedItem = item;
             // console.log("onmousedown item", item);
-            updateForItemClick(item);
+            this.updateForItemClick(item);
         });
 
         /*
@@ -372,18 +381,18 @@ define([
         moveable.onMoved = function (mover, shift) {
             item.x += shift.dx;
             item.y += shift.dy;
-            changesCount++;
+            this.changesCount++;
 
             // Kludge for Android as not setting on mouse down
-            updateForItemClick(item);
+            this.updateForItemClick(item);
         };
 
         group.applyTransform(gfx.matrix.translate(item.x, item.y));
 
         return group;
-    }
+    };
 
-    function addText(group, text, maxWidth) {
+    ConceptMap.prototype.addText = function(group, text, maxWidth) {
         var style = {family: "Arial", size: "10pt", weight: "bold"};
         var lineHeight = 12;
         var tb = gfx._base._getTextBox;
@@ -413,10 +422,10 @@ define([
             var theTextItem = group.createText({text: line, x: 0, y: y, align: "middle"}).
                 setFont(style).
                 setFill("black");
-            console.log(theTextItem);
+            console.log("textItem", theTextItem);
             y += lineHeight;
         }); 
-    }
+    };
     
     return {
         insertConceptMap: insertConceptMap
