@@ -4,6 +4,7 @@
 define([
         "dojo/_base/array",
         "dojox/mvc/at",
+        "js/widgets/conceptMap",
         "dojo/_base/declare",
         "dojo/dom",
         "js/domain",
@@ -43,6 +44,7 @@ define([
     ], function(
         array,
         at,
+        conceptMap,
         declare,
         dom,
         domain,
@@ -186,6 +188,18 @@ define([
         textarea.placeAt(questionContentPane);
         textarea.startup();
         return textarea;
+    }
+    
+    function add_conceptMap(contentPane, model, id, options) {
+        // concept map using a list of 2D objects
+        console.log("add_conceptMap", model, id, options);
+        console.log("conceptMap module", conceptMap);
+        
+        var mapName = options[0];
+        
+        var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
+        
+        return conceptMap.insertConceptMap(questionContentPane, model, id, mapName);
     }
     
     function add_grid(contentPane, model, id, options) {
@@ -995,6 +1009,7 @@ define([
         "add_boolean": add_boolean,
         "add_checkbox": add_checkbox,
         "add_checkboxes": add_checkboxes,
+        "add_conceptMap": add_conceptMap,
         "add_radiobuttons": add_radiobuttons,
         "add_toggleButton": add_toggleButton,
         "add_button": add_button,

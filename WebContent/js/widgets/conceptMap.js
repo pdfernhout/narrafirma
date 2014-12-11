@@ -1,7 +1,7 @@
 /*jslint browser: true */
 "use strict";
 
-define("conceptMap", [
+define([
     "dojo/ready",
     "dojo/dom-attr",
     "dojo/io-query",
@@ -30,6 +30,8 @@ define("conceptMap", [
     touch,
     generateRandomUuid
 ) {
+    
+    // TODO: Replace use of document.conceptMap_* for dialogs with callbacks
 
    // Resources:
    // # http://dojotdg.zaffra.com/2009/03/dojo-now-with-drawing-tools-linux-journal-reprint/
@@ -50,6 +52,10 @@ define("conceptMap", [
     var diagramName = "saved";
 
     var currentVersionURI = "";
+    
+    var mainContentPane = null;
+    var modelForStorage = null;
+    var idForStorage = null;
 
     // dialogs
     var sourceDialog;
@@ -60,26 +66,13 @@ define("conceptMap", [
     }
 
     function forEach(array, theFunction) {
-        for(var index = 0, length = array.length; index < length; ++index) {
+        for (var index = 0, length = array.length; index < length; ++index) {
             theFunction(index, array[index], array);
         }
     }
 
     function setHTML(field, value) {
         domAttr.set(field, "innerHTML", value);
-    }
-
-    function getHiddenJSONData(fieldName) {
-        // Idea from: http://www.webdeveloper.com/forum/showthread.php?t=137518
-        var hiddenDataElement = document.getElementById(fieldName);
-        var hiddenDataString = hiddenDataElement.value;
-        if (hiddenDataString === "") {
-            // console.log("First time loading");
-            return null;
-        } else {
-            // console.log("Already loaded");
-            return JSON.parse(hiddenDataString);
-        }
     }
 
     function setHiddenJSONData(fieldName, data) {
@@ -90,33 +83,17 @@ define("conceptMap", [
         return hiddenDataString;
     }
 
-    function conceptMapPageLoaded() {
-        console.log("Called twirlip conceptMap code");
-        setHTML("nojavascript", 'Twirlip Concept Map');
+    function insertConceptMap(contentPane, model, id, mapName) {
+        console.log("Called twirlip conceptMap code", mapName);
+        mainContentPane = contentPane;
+        diagramName = mapName;
+        idForStorage = id;
+        modelForStorage = model;
+        items = model.get(id);
 
-        console.log("location.href", location.href);
-        console.log("document.URL", document.URL);
-
-        var uri = document.URL;
-        var queryString = uri.substring(uri.indexOf("?") + 1, uri.length);
-        console.log("queryString", queryString);
-        if (queryString) {
-            var q = ioQuery.queryToObject(queryString);
-            console.log("query", q);
-            //noinspection JSUnresolvedVariable
-            if (q && q.diagram) {
-                //noinspection JSUnresolvedVariable
-                diagramName = q.diagram;
-            }
-        }
-
-        // Idea from: http://www.webdeveloper.com/forum/showthread.php?t=137518
-        items = getHiddenJSONData("items");
-
-        if (items === null) {
+        if (!items) {
             console.log("First time loading");
             items = [];
-            requestLatestItemsToLoad();
         } else {
             console.log("Already loaded");
             console.log("items", items);
@@ -130,7 +107,7 @@ define("conceptMap", [
         setupMainButtons();
 
         var newBr = document.createElement("br");
-        document.body.appendChild(newBr);
+        mainContentPane.domNode.appendChild(newBr);
 
         addItemEditor();
 
@@ -150,7 +127,7 @@ define("conceptMap", [
             label: label,
             onClick: callback
         }, name);
-        document.body.appendChild(theButton.domNode);
+        mainContentPane.domNode.appendChild(theButton.domNode);
 
         return theButton;
     }
@@ -163,6 +140,7 @@ define("conceptMap", [
             entryDialog.show();
         });
 
+        /*
         var newDiagramButton = newButton("newDiagramButton", "Link to new diagram", function () {
             var uuid = "pce:org.twirlip.ConceptMap:uuid:" + uuidFast();
             var url = "conceptMap.html?diagram=" + uuid;
@@ -170,6 +148,7 @@ define("conceptMap", [
             setFieldValue("url", url);
             entryDialog.show();
         });
+        */
 
         var sourceButton = newButton("sourceButton", "Diagram Source", function () {
             setTextAreaValue("sourceTextArea", JSON.stringify(items));
@@ -186,7 +165,7 @@ define("conceptMap", [
         var node = document.createElement("div");
         var divForCanvasInfo = {width: surfaceWidth, height: surfaceHeight, border: "solid 1px"};
         domAttr.set(node, "style", divForCanvasInfo);
-        document.body.appendChild(node);
+        mainContentPane.domNode.appendChild(node);
         _mainSurface = gfx.createSurface(node, divForCanvasInfo.width, divForCanvasInfo.height);
         mainSurface = _mainSurface.createGroup();
 
@@ -202,11 +181,11 @@ define("conceptMap", [
             id: "sourceDialog",
             style: {width: "800px", height: "600px", overflow: "auto"},
             content: "source: <input data-dojo-type='dijit/form/SimpleTextarea' type='text' name='sourceTextArea' rows='30' id='sourceTextArea'>" +
-                '<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="document.updateSource();">Update</button>' +
+                '<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="document.conceptMap_updateSource();">Update</button>' +
                 '<button data-dojo-type="dijit/form/Button" type="submit">Cancel</button>'
         });
         // Make our function available globally so the dialog can find it
-        document.updateSource = updateSource;
+        document.conceptMap_updateSource = conceptMap_updateSource;
     }
 
     function defineEntryDialog() {
@@ -217,9 +196,9 @@ define("conceptMap", [
             content: "name: <input data-dojo-type='dijit/form/TextBox' type='text' name='name' id='name'>" +
                 "<br/>url: <input data-dojo-type='dijit/form/TextBox' type='text' name='url' id='url'>" +
                 //'<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="return registry.byId("formDialog").isValid();">OK</button>'
-                '<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="document.clickedNewEntryOK();">OK</button>'
+                '<br/><button data-dojo-type="dijit/form/Button" type="submit" onClick="document.conceptMap_clickedNewEntryOK();">OK</button>'
         });
-        document.clickedNewEntryOK = clickedNewEntryOK;
+        document.conceptMap_clickedNewEntryOK = conceptMap_clickedNewEntryOK;
     }
 
     function addItemEditor() {
@@ -230,7 +209,7 @@ define("conceptMap", [
             placeHolder: "type in a concept",
             style: textBoxWidth
         }, "conceptTextBox");
-        document.body.appendChild(textBox.domNode);
+        mainContentPane.domNode.appendChild(textBox.domNode);
 
         var updateItemButton = newButton("updateItemButton", "Update item", function () {
             if (lastSelectedItem) {
@@ -243,7 +222,7 @@ define("conceptMap", [
         });
 
         var newBreak = document.createElement("br");
-        document.body.appendChild(newBreak);
+        mainContentPane.domNode.appendChild(newBreak);
 
         // var urlBoxWidth = "width: 500em; border: 5px solid #C4C4C4; padding: 6px;";
         var urlBoxWidth = "width: 50em; margin-left: 2em;";
@@ -253,17 +232,19 @@ define("conceptMap", [
             placeHolder: "type in a url",
             style: urlBoxWidth
         }, "urlTextBox");
-        document.body.appendChild(urlBox.domNode);
+        mainContentPane.domNode.appendChild(urlBox.domNode);
 
+        /*
         var goButton = newButton("goButton", "Go", function () {
             go(urlBox.get("value"));
         });
+        */
 
         //  var newBreak = document.createElement("br");
-        //  document.body.appendChild(newBreak);
+        //  mainContentPane.domNode.appendChild(newBreak);
     }
 
-    function clickedNewEntryOK(event) {
+    function conceptMap_clickedNewEntryOK(event) {
         console.log("Clicked OK", event);
         var data = entryDialog.get("value");
         console.log("data", data);
@@ -275,8 +256,8 @@ define("conceptMap", [
         // item.url = urlBox.get("value");
     }
 
-    function updateSource(event) {
-        console.log("Clicked updateSource", event);
+    function conceptMap_updateSource(event) {
+        console.log("Clicked conceptMap_updateSource", event);
         var data = sourceDialog.get("value");
         console.log("data", data);
 
@@ -303,89 +284,11 @@ define("conceptMap", [
         // console.log("done rebuildItems");
     }
 
-    function requestLatestItemsToLoad() {
-        //dojo.when(twirlipStore.get(diagramName), function(old) {
-        //  console.log("old", old);
-        //  if (old) {
-        //    items = old.items;
-        //    rebuildItems(mainSurface, items);
-        //  }
-        // }, function(error) {console.log("error", error);});
-
-        archiver.variable_get(diagramName, function (error, variableGetResult) {
-            console.log("in callback from variable_get");
-            if (error) {
-                alert("Error happened on variable get; variable name may be new? Result: " + variableGetResult.message);
-                return;
-            }
-            var versionURI = variableGetResult.currentValue;
-            archiver.resource_get(versionURI, function (error, versionContents) {
-                console.log("in callback from resource_get");
-                if (error) {
-                    alert("Error happened on versionContents get");
-                    return;
-                }
-                console.log("versionContents:", versionContents);
-                var version = JSON.parse(versionContents);
-                var textURI = version.value;
-                archiver.resource_get(textURI, function (error, text) {
-                    console.log("in callback from resource_get");
-                    if (error) {
-                        alert("Error happened when getting text of version");
-                        return;
-                    }
-                    currentVersionURI = versionURI;
-                    items = JSON.parse(text).items;
-                    rebuildItems(mainSurface, items);
-                    changesCount = 0;
-                });
-            });
-        });
-    }
-
     function saveChanges() {
-        if (!Pointrel20130202Utility.LoginHelper.isLoggedIn()) { alert ("Please login first"); return;}
-        // Try to get old value to update it...
-        // Although maybe you should not, as it is a conflict?
-        // Could warn?
-        var newItemsDocument = {_id: diagramName, items: items};
-
-        //twirlipStore.get(diagramName).then(function(oldItemsDocument) {
-        //   console.log("save then", oldItemsDocument);
-        //  saveChanges2(oldItemsDocument, newItemsDocument);
-        // }, function(error) {
-        //  console.log("save error1", error);
-        //  saveChanges2(null, newItemsDocument);
-        // });
-
-        // TODO: Does not deal with editing conflicts except by failing
-
-        var newItemsDocumentText = JSON.stringify(newItemsDocument);
-        var textURI = archiver.resource_add(newItemsDocumentText, "ConceptMapItems.json");
-        console.log(textURI);
-        var timestamp = new Date().toISOString();
-        var previousVersionURI = currentVersionURI;
-        var version = {timestamp: timestamp, userID: Pointrel20130202Utility.LoginHelper.getUserID(), previousVersion: previousVersionURI, value: textURI};
-        console.log("version:", version);
-        var versionAsString = JSON.stringify(version);
-        console.log("versionAsString:", versionAsString);
-        var newVersionURI = archiver.resource_add(versionAsString, "Version.json");
-        console.log("newVersionURI:", newVersionURI);
-        //noinspection JSUnusedLocalSymbols
-        archiver.variable_set(diagramName, currentVersionURI, newVersionURI, function (error, result) {
-            if (error) {
-                alert("Error happened when trying to set variable");
-                return;
-            }
-            console.log("store updating before:", currentVersionURI);
-            console.log("store updating after:", newVersionURI);
-            currentVersionURI = newVersionURI;
-            changesCount = 0;
-            alert("Saved concept map");
-        });
-
+        modelForStorage.set(idForStorage, items);
     }
 
+    /*
     function go(url) {
         console.log("go: ", url);
         if (!url) {
@@ -403,6 +306,7 @@ define("conceptMap", [
         // document.location.href = url;
         window.open(url);
     }
+    */
 
     function addItem(surface, item, text, url) {
         // alert("Add button pressed");
@@ -451,6 +355,7 @@ define("conceptMap", [
             updateForItemClick(item);
         });
 
+        /*
         //noinspection JSUnusedLocalSymbols
         group.connect("ondblclick", function (e) {
             // var handle = on(group, "dblclick", function(e) {
@@ -458,6 +363,7 @@ define("conceptMap", [
             go(group.item.url);
         });
         // });
+        */
 
         var moveable = new Moveable(group);
         moveable.item = item;
@@ -516,5 +422,7 @@ define("conceptMap", [
         }); 
     }
     
-    ready(conceptMapPageLoaded);
+    return {
+        insertConceptMap: insertConceptMap
+    };
 });
