@@ -38,11 +38,6 @@ define([
     TableContainer,
     lang
 ) {
-    // TODO: Will this still work OK if there are more than one map per page or per app?
-
-    // TODO: Replace use of document.conceptMap_* for dialogs with callbacks
-    // TODO: Probably memory leak here with dialogs when load data in application and page is regenerated; may be general issue with app?
-
    // Resources:
    // # http://dojotdg.zaffra.com/2009/03/dojo-now-with-drawing-tools-linux-journal-reprint/
 
@@ -71,7 +66,6 @@ define([
     }
     
     function ConceptMap(contentPane, model, id, mapName) {
-
         console.log("Creating ConceptMap", contentPane, model, id, mapName);
 
         this.changesCount = 0;
@@ -121,11 +115,11 @@ define([
         });
 
         /*
-        var newDiagramButton = newButton("newDiagramButton", "Link to new diagram", function () {
+        var newDiagramButton = newButton("newDiagramButton", "Link to new diagram", lang.hitch(function () {
             var uuid = "pce:org.twirlip.ConceptMap:uuid:" + uuidFast();
             var url = "conceptMap.html?diagram=" + uuid;
             this.openEntryDialog("", url);
-        });
+        }));
         */
 
         var sourceButton = this.newButton("sourceButton", "Diagram Source", function () {
@@ -186,13 +180,13 @@ define([
         this.mainContentPane.domNode.appendChild(this.urlBox.domNode);
 
         /*
-        var goButton = newButton("goButton", "Go", function () {
-            go(urlBox.get("value"));
-        });
+        var goButton = newButton("goButton", "Go", lang.hitch(this, function () {
+            this.go(urlBox.get("value"));
+        }));
         */
 
         //  var newBreak = document.createElement("br");
-        //  mainContentPane.domNode.appendChild(newBreak);
+        //  this.mainContentPane.domNode.appendChild(newBreak);
     };
 
     ConceptMap.prototype.clickedNewEntryOK = function(dialogHolder, model, event) {
@@ -397,7 +391,7 @@ define([
         var circle = {cx: 0, cy: 0, r: 50 };
         var color = "black";
         if (item.url) color = "green";
-        //noinspection JSUnusedLocalSymbols
+
         var blueCircle = group.createCircle(circle).
             setFill([0, 0, 155, 0.5]).
             setStroke({color: color, width: 4, cap: "butt", join: 4}).
@@ -410,7 +404,6 @@ define([
 
         //touch.press(group, function(e) {
         //touch.press(blueCircle, function(e) {
-        //noinspection JSUnusedLocalSymbols
         group.connect("onmousedown", lang.hitch(this, function (e) {
             // require(["dojo/on"], function(on) {
             //  var handle = on(group, "mousedown", function(e) {
@@ -421,7 +414,6 @@ define([
         }));
 
         /*
-        //noinspection JSUnusedLocalSymbols
         group.connect("ondblclick", lang.hitch(this, function (e) {
             // var handle = on(group, "dblclick", function(e) {
             // alert("triggered ondblclick");
@@ -472,7 +464,6 @@ define([
         if (lines.length == 6) startY += lineHeight;
         var y = startY;
         forEach(lines, function (index, line) {
-            //noinspection JSUnusedLocalSymbols
             var theTextItem = group.createText({text: line, x: 0, y: y, align: "middle"}).
                 setFont(style).
                 setFill("black");
