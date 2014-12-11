@@ -34,6 +34,7 @@ Think through how project is loaded and saved, especially what happens if multip
 
 Think through logging in the server, perhaps using a library
 Ensure useful server logs are kept
+Fix issue with PNIWorkbookServer.conf that it uses logs directory that is not server-data/logs
 Think through logging in the client, perhaps using a library
 Client application could report errors to server or another service
 Client application could report usage metrics to server or another service
@@ -258,6 +259,8 @@ DONE Have timestamp for new resources set by server as an option, with the sha25
 DONE Support a templateList -- a list box with templates read in from a file (of a particular type) with a "copy" button
 DONE Figure out how to run NodeJS server on AWS EC2 standard CentOS AMI as a service that gets respawned if it crashes and gets restarted on reboot
 DONE Have templates list and recommendations table be popup dialogs opened from a button instead of inline on page
+DONE Resolve server configuration issue where upstart got confused about what was running [by removing use of forever]
+DONE Improve logging from upstart about when start and stop server
 
 ======= CYNTHIA
 
