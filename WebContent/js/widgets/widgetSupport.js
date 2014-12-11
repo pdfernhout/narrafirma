@@ -133,7 +133,8 @@ define([
         "buildOptions": buildOptions,
         "optionsForAllQuestions": optionsForAllQuestions,
         "confirm": confirm,
-        "addButtonThatLaunchesDialog": addButtonThatLaunchesDialog
+        "addButtonThatLaunchesDialog": addButtonThatLaunchesDialog,
+        "openDialog": openDialog
     };
    
 });
