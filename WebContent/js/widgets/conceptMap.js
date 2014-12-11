@@ -196,9 +196,9 @@ define([
     };
 
     ConceptMap.prototype.clickedNewEntryOK = function(dialogHolder, model, event) {
-        console.log("clickedNewEntryOK", this, dialogHolder, model, event);
+        // console.log("clickedNewEntryOK", this, dialogHolder, model, event);
         dialogHolder.dialog.hide();
-        console.log("Clicked OK", event);
+        console.log("Clicked OK", event, model);
         var name = model.get("name");
         var url = model.get("url");
         console.log("data", name, url);
@@ -208,7 +208,6 @@ define([
         this.changesCount++;
     };
     
-    // TODO: Translate
     ConceptMap.prototype.openEntryDialog = function(name, url) {
         var model = new Stateful({name: name, url: url});
 
@@ -219,6 +218,7 @@ define([
         
         var nameTextBox = new TextBox({
             name: 'name',
+            // TODO: Translate
             title: 'Name',
             value: at(model, "name"),
             placeHolder: "Name"
@@ -226,6 +226,7 @@ define([
 
         var urlTextBox = new TextBox({
             name: 'url',
+            // TODO: Translate
             title: 'Notes',
             value: at(model, "url"),
             placeHolder: "Notes or URL with more information"
@@ -247,14 +248,15 @@ define([
         layout.addChild(okButton);
  
         var entryDialog = new Dialog({
+            // TODO: Translate
             title: "New item",
-            id: "entryDialog",
             style: "width: 400px",
             content: layout
         });
         
         dialogHolder.dialog = entryDialog;
         
+        // This will free the dialog when we are done with it whether from OK or Cancel
         entryDialog.connect(entryDialog, "onHide", function(e) {
             console.log("destroying entryDialog");
             entryDialog.destroyRecursive(); 
