@@ -471,19 +471,24 @@ define([
             spacing: 0
         });
         
+        var recommendationsValues = [];
+        
         var columnHeader1ContentPane = new ContentPane({"content": "<i>Question</i>", "colspan": 4, "align": "right"});
         table.addChild(columnHeader1ContentPane);
         columnHeader1ContentPane.startup();
+        recommendationsValues.push(null);
         
         var columnHeader2ContentPane = new ContentPane({"content": "<i>Your answer</i>", "colspan": 2, "align": "right"});
         table.addChild(columnHeader2ContentPane);
         columnHeader2ContentPane.startup();
-        
+        recommendationsValues.push(null);
+
         for (var headerFieldIndex in fieldsForCategory) {
             var headerFieldName = fieldsForCategory[headerFieldIndex];
             var columnHeaderFieldContentPane = new ContentPane({"content": "<i>" + headerFieldName + "</i>", "colspan": 1, "align": "right"});
             table.addChild(columnHeaderFieldContentPane);
-            columnHeaderFieldContentPane.startup();            
+            columnHeaderFieldContentPane.startup();    
+            recommendationsValues.push(null);
         }
         
         for (var questionName in recommendations.questions) {
@@ -493,20 +498,24 @@ define([
             var questionTextContentPane = new ContentPane({"content": questionText, "colspan": 4, "align": "right"});
             table.addChild(questionTextContentPane);
             questionTextContentPane.startup();
+            recommendationsValues.push(null);
             
             var yourAnswerContentPane = new ContentPane({"content": yourAnswer, "colspan": 2, "align": "right"});
             table.addChild(yourAnswerContentPane);
             yourAnswerContentPane.startup();
+            recommendationsValues.push(null);
 
             var recommendationsForAnswer = recommendations.recommendations[questionName][yourAnswer];
             
             for (var fieldIndex in fieldsForCategory) {
                 var fieldName = fieldsForCategory[fieldIndex];
-                var recommendationValue = "???";
+                var recommendationNumber = Math.floor((Math.random() * 3) + 1);
+                recommendationsValues.push(recommendationNumber);
+                var recommendationValue = {1: "risky", 2: "maybe", 3: "good"}[recommendationNumber];
                 if (recommendationsForAnswer) recommendationValue = recommendationsForAnswer[categoryName][fieldName];
                 var fieldContentPane = new ContentPane({"content": "<i>" + recommendationValue + "</i>", "colspan": 1, "align": "right"});
                 table.addChild(fieldContentPane);
-                fieldContentPane.startup();            
+                fieldContentPane.startup();   
             }
         }
         
@@ -514,9 +523,18 @@ define([
         table.startup();
         
         // TO DO WORKING HERE!!!! Experiment -- Trying to get full background color set for a cell
-        query(".wwsRecommendationsTable-valueCell-14", table.domNode)[0].className += " recommendationHigh";
-        query(".wwsRecommendationsTable-valueCell-15", table.domNode)[0].className += " recommendationMedium";
-        query(".wwsRecommendationsTable-valueCell-16", table.domNode)[0].className += " recommendationLow";
+        for (var i = 0; i < recommendationsValues.length; i++) {
+            var recommendation = recommendationsValues[i];
+            // console.log("recommendation", i, recommendation);
+            if (recommendation === 1) {
+                query(".wwsRecommendationsTable-valueCell-" + i, table.domNode)[0].className += " recommendationLow";
+            } else if (recommendation === 2) {
+                query(".wwsRecommendationsTable-valueCell-" + i, table.domNode)[0].className += " recommendationMedium";
+            } else if (recommendation === 3) {
+                query(".wwsRecommendationsTable-valueCell-" + i, table.domNode)[0].className += " recommendationHigh";
+            }
+        }
+        
         return table;
     }
     
