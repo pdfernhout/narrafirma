@@ -84,6 +84,9 @@ require([
             return;
         }
         // TODO: Put up a dialog to choose from
+        
+        // STOPPED HERE
+        // TODO: Use widgetSupport.openDialog to create dialog similar to that for picking a template
     }
      
     function switchToLoadedProjectData(error, projectAnswers) {
@@ -464,6 +467,9 @@ require([
         
         // Call the main function
         createLayout();
+        
+        // Get the latest project data
+        loadLatestClicked();
         
         // turn off startup "please wait" display
         document.getElementById("startup").style.display = "none";
