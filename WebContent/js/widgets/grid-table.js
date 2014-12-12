@@ -21,6 +21,7 @@ define([
     "dojo/store/Memory",
     "dgrid/Selection",
     "dojo/Stateful",
+    "dijit/Tooltip",
     "dojo/store/Observable",
     "dgrid/OnDemandGrid"
 ], function(
@@ -44,6 +45,7 @@ define([
     Memory,
     Selection,
     Stateful,
+    Tooltip,
     Observable,
     OnDemandGrid
 ){
@@ -495,6 +497,24 @@ define([
         allGrids.push(grid);
         console.log("adding grid to kludge array", grid, allGrids);
         
+        /*
+        if (configuration.showTooltip) {
+            console.log("using tooltip for widget", id, grid);
+            new Tooltip({
+                connectId: id,
+                selector: ".dgrid-cell",
+                getContent: function(matchedNode) {
+                    console.log("trying to get tooltip text", matchedNode);
+                    // return matchedNode.getAttribute("tooltipText");
+                    return matchedNode.innerHTML;
+                },
+                position: ["below", "above", "before", "after"],
+                label: "the text for the tooltip",
+                showDelay: 600
+            });
+        }
+        */
+         
         return {
             "store": dataStore,
             "listContentPane": listContentPane,

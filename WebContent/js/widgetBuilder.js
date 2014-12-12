@@ -748,7 +748,7 @@ define([
             }
         }
         
-        var configuration = {viewButton: true, includeAllFields: false, customButton: {id: "useTemplate", translationID: "button_UseTemplate", callback: useButtonClicked}};
+        var configuration = {viewButton: true, includeAllFields: false, showTooltip: true, customButton: {id: "useTemplate", translationID: "button_UseTemplate", callback: useButtonClicked}};
         return GridTable.insertGridTableBasic(questionContentPane, id, dataStore, popupPageDefinition, configuration);
     }
     
