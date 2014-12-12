@@ -8,8 +8,6 @@ PRIORITY:
 
 Support recommendationTable
 
-Support setting color of items in concept map
-
 Fix how templates are not splitting up options separated by semicolons
 Fix how templates list popup has too much scrolling and is not sized well; perhaps start with grid item view pane open?
 
@@ -272,6 +270,7 @@ DONE Add proof-of-concept for concept map
 DONE Improve concept map so you can have more than one per page or application
 DONE Figure out how to save and load concept map more directly than with a button to save
 DONE Add support for deleting items in concept map
+DONE Support setting color of items in concept map
 
 ======= CYNTHIA
 

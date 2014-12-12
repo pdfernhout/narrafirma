@@ -20,7 +20,9 @@ define([
     "dojox/layout/TableContainer",
     "dojo/_base/lang",
     "./widgetSupport",
-    "dijit/layout/ContentPane"
+    "dijit/layout/ContentPane",
+    "dijit/ColorPalette",
+    "dojo/_base/Color"
     //"dojox/layout/ResizeHandle"
 ], function (
     ready,
@@ -41,7 +43,9 @@ define([
     TableContainer,
     lang,
     widgetSupport,
-    ContentPane
+    ContentPane,
+    ColorPalette,
+    Color
     // ResizeHandle
 ) {
    // Resources:
@@ -276,10 +280,13 @@ define([
         console.log("Clicked OK", event, model);
         var text = model.get("text");
         var url = model.get("url");
-        console.log("data", text, url);
+        var bodyColor = model.get("bodyColor");
+        console.log("data", text, url, bodyColor);
         var item = dialogHolder.item;
         item.text = text;
         item.url = url;
+        // Documentation for ColorPalette says it returns a "Color" but it seems to really return a hex string
+        if (bodyColor) item.bodyColor = bodyColor;
         if (!dialogHolder.isExistingItem) {
             this.items.push(item);
             var group = this.addDisplayObjectForItem(this.mainSurface, item);
@@ -316,6 +323,14 @@ define([
             placeHolder: "Notes or URL with more information"
         });
         
+        var colorPalette = new ColorPalette({
+            // palette: "7x10",
+            palette: "3x4",
+            colspan: 3,
+            value: at(model, "bodyColor")
+            // onChange: function(val){ console.log("color: ", val); } 
+        });
+        
         // Indirect way to hold onto dialog so can pass a reference to the dialog to button clicked function so that function can hide the dialog
         // The problem this solves is that a hoisted dialog is undefined at this point, and also hitch uses the current value not a reference to the variable
         var dialogHolder = {};
@@ -348,6 +363,9 @@ define([
          // TODO: Translate
         layout.addChild(new ContentPane({content: "Notes", style: "text-align: right;"}));
         layout.addChild(urlTextBox);
+        // TODO: Translate
+        layout.addChild(new ContentPane({content: "Color", style: "text-align: right;"}));
+        layout.addChild(colorPalette);
         layout.addChild(new ContentPane({content: ""}));
         layout.addChild(new ContentPane({content: ""}));
         layout.addChild(okButton);
@@ -375,6 +393,7 @@ define([
         
         dialog.startup();
         layout.startup();
+        colorPalette.startup();
         dialog.show();
     };
 
@@ -498,7 +517,8 @@ define([
         this.urlBox.set("content", "Notes: " + item.url);
     };
     
-    var defaultBodyColor = [0, 0, 155, 0.5]; // blue, transparent
+    var defaultBodyColor = "#00009B"; // light blue
+    // var defaultBodyColor = [0, 0, 155, 0.5]; // light blue, transparent
     var defaultBorderColor = "black";
     // var defaultBorderColor = "green";
     var defaultBorderWidth = 1;
@@ -535,6 +555,9 @@ define([
         
         var borderColor = item.borderColor;
         if (!borderColor) borderColor = defaultBorderColor;
+        // Ensure body color is transluscent
+        bodyColor = Color.fromString(bodyColor).toRgba();
+        bodyColor[3] = 0.5;
         
         var borderWidth = item.borderWidth;
         if (!borderWidth) borderWidth = defaultBorderWidth;
@@ -554,7 +577,7 @@ define([
         
         // TODO: Maybe no longer set a different color based on url if you can set border color yourself?? 
         // if (item.url) item.borderColor = defaultHasNoteBorderColor;
-
+        
         var itemCircle = group.createCircle(circle).
             setFill(bodyColor).
             setStroke({color: borderColor, width: borderWidth, cap: "butt", join: 4}).
