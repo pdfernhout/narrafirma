@@ -19,7 +19,8 @@ define([
     "dojox/mvc/at",
     "dojox/layout/TableContainer",
     "dojo/_base/lang",
-    "./widgetSupport"
+    "./widgetSupport",
+    "dijit/layout/ContentPane"
     //"dojox/layout/ResizeHandle"
 ], function (
     ready,
@@ -39,12 +40,17 @@ define([
     at,
     TableContainer,
     lang,
-    widgetSupport
+    widgetSupport,
+    ContentPane
     // ResizeHandle
 ) {
    // Resources:
    // # http://dojotdg.zaffra.com/2009/03/dojo-now-with-drawing-tools-linux-journal-reprint/
 
+    // TODO: Maybe add tooltip with notes for item? And then don't display item info at bottom?
+    // TODO: Highlight selected item
+    // TODO: Select and move groups of items
+    
     var surfaceWidth = 800;
     var surfaceHeight = 400;
     
@@ -105,6 +111,8 @@ define([
         this.addItemEditor();
 
         this.setupMainSurface();
+        
+        this.addItemDisplay();
     }
     
     ConceptMap.prototype.incrementChangesCount = function() {
@@ -133,28 +141,30 @@ define([
 
     ConceptMap.prototype.setupMainButtons = function() {
 
-        var addButton = this.newButton("addButton", "New item", function () {
-            this.openEntryDialog("", "");
-        });
-
-        /*
-        var newDiagramButton = newButton("newDiagramButton", "Link to new diagram", lang.hitch(function () {
-            var uuid = "pce:org.twirlip.ConceptMap:uuid:" + uuidFast();
-            var url = "conceptMap.html?diagram=" + uuid;
-            this.openEntryDialog("", url);
-        }));
-        */
-
-        var sourceButton = this.newButton("sourceButton", "Diagram Source", function () {
-            this.openSourceDialog(JSON.stringify(this.items));
-        });
-
         if (!this.autosave) {
             var saveChangesButton = this.newButton("saveChangesButton", "Save Changes", function () {
                 console.log("About to save");
                 this.saveChanges();
             });
         }
+        
+        var sourceButton = this.newButton("sourceButton", "Diagram Source", function () {
+            this.openSourceDialog(JSON.stringify(this.items));
+        });
+        
+        var addButton = this.newButton("addButton", "New item", function () {
+            var newItem = this.newItem();
+            this.openEntryDialog(newItem, false);
+        });
+
+        /*
+        var newDiagramButton = newButton("newDiagramButton", "Link to new diagram", lang.hitch(function () {
+            var uuid = "pce:org.twirlip.ConceptMap:uuid:" + uuidFast();
+            var url = "conceptMap.html?diagram=" + uuid;
+            var newItem = {name: "", url: url};
+            this.openEntryDialog(newItem);
+        }));
+        */
     };
 
     ConceptMap.prototype.setupMainSurface = function() {
@@ -167,7 +177,7 @@ define([
 
         // surface.whenLoaded(drawStuff);
 
-        this.rebuildItems();
+        this.recreateDisplayObjectsForAllItems();
         //   items.push({text: theText, url: theURL, x: circle.cx, y: circle.cy});
     };
 
@@ -175,11 +185,12 @@ define([
         // TODO: Translate
         var updateItemButton = this.newButton("updateItemButton", "Update item", function () {
             if (this.lastSelectedItem) {
-                this.lastSelectedItem.text = this.textBox.get("value");
-                this.lastSelectedItem.url = this.urlBox.get("value");
-                this.incrementChangesCount();
+                this.openEntryDialog(this.lastSelectedItem, true);
+                //this.lastSelectedItem.text = this.textBox.get("value");
+                //this.lastSelectedItem.url = this.urlBox.get("value");
+                //this.incrementChangesCount();
                 // Wasteful to do all of them
-                this.rebuildItems();
+                //this.recreateDisplayObjectsForAllItems();
             } else {
              // TODO: Translate
                 alert("Please select an item to update first");
@@ -195,11 +206,20 @@ define([
             }
             widgetSupport.confirm("Confirm removal of: '" + this.lastSelectedItem.text + "'?", lang.hitch(this, function () {
                 removeItemFromArray(this.lastSelectedItem, this.items);
+                this.clearSelection();
                 this.incrementChangesCount();
                 // Wasteful to do all of them
-                this.rebuildItems();
+                this.recreateDisplayObjectsForAllItems();
             }));
         });
+    };
+    
+    
+    ConceptMap.prototype.addItemDisplay = function() {    
+        this.textBox = new ContentPane({content: "", style: "text-overflow: ellipsis;"});
+        this.mainContentPane.addChild(this.textBox);
+        this.urlBox = new ContentPane({content: "", style: "text-overflow: ellipsis;"});
+        this.mainContentPane.addChild(this.urlBox);
         
         /*
         // TODO: Translate
@@ -210,14 +230,16 @@ define([
         
         // this.newBreak();
         
+        /*
         var layout = new dojox.layout.TableContainer({
             showLabels: true,
             orientation: "horiz",
             labelWidth: 60
         });
-        
+                
         var textBoxWidth = "width: 40em; margin-left: 2em;";
         this.textBox = new TextBox({
+            readOnly: true,
             name: "conceptTextBox",
             value: "",
             // TODO: Translate
@@ -231,6 +253,7 @@ define([
         
         var urlBoxWidth = "width: 40em; margin-left: 2em;";
         this.urlBox = new TextBox({
+            readOnly: true,
             name: "urlTextBox",
             value: "",
             // TODO: Translate
@@ -244,41 +267,51 @@ define([
         
         this.mainContentPane.domNode.appendChild(layout.domNode);
         layout.startup();
+        */
     };
 
-    ConceptMap.prototype.clickedNewEntryOK = function(dialogHolder, model, event) {
-        // console.log("clickedNewEntryOK", this, dialogHolder, model, event);
+    ConceptMap.prototype.clickedEntryOK = function(dialogHolder, model, event) {
+        console.log("clickedEntryOK", this, dialogHolder, model, event);
         dialogHolder.dialog.hide();
         console.log("Clicked OK", event, model);
-        var name = model.get("name");
+        var text = model.get("text");
         var url = model.get("url");
-        console.log("data", name, url);
-        var group = this.addItem(this.mainSurface, null, name, url);
-        this.items.push(group.item);
+        console.log("data", text, url);
+        var item = dialogHolder.item;
+        item.text = text;
+        item.url = url;
+        if (!dialogHolder.isExistingItem) {
+            this.items.push(item);
+            var group = this.addDisplayObjectForItem(this.mainSurface, item);
+        } else {
+            // Wasteful to do all of them
+            this.recreateDisplayObjectsForAllItems();
+        }
         console.log("items", this.items);
         this.incrementChangesCount();
+        this.updateForItemClick(item);
     };
     
-    ConceptMap.prototype.openEntryDialog = function(name, url) {
-        var model = new Stateful({name: name, url: url});
+    ConceptMap.prototype.openEntryDialog = function(item, isExistingItem) {
+        console.log("openEntryDialog", item, isExistingItem);
+        var model = new Stateful(item);
 
         var layout = new dojox.layout.TableContainer({
-            showLabels: true,
+            cols: 4,
+            showLabels: false,
             orientation: "horiz"
         });
         
         var nameTextBox = new TextBox({
+            colspan: 3,
             name: 'name',
-            // TODO: Translate
-            title: 'Name',
-            value: at(model, "name"),
+            value: at(model, "text"),
             placeHolder: "Name"
         });
 
         var urlTextBox = new TextBox({
+            colspan: 3,
             name: 'url',
-            // TODO: Translate
-            title: 'Notes',
             value: at(model, "url"),
             placeHolder: "Notes or URL with more information"
         });
@@ -287,26 +320,52 @@ define([
         // The problem this solves is that a hoisted dialog is undefined at this point, and also hitch uses the current value not a reference to the variable
         var dialogHolder = {};
         
+        // TODO: Translate
+        var buttonLabel = "Create item";
+        if (isExistingItem) buttonLabel = "Update item";
+        
         var okButton = new Button({
+            colspan: 1,
             // TODO: Translate
-            label: "OK",
+            label: buttonLabel,
             type: "button",
-            // TODO: This won't be OK, and need model
-            onClick: lang.hitch(this, this.clickedNewEntryOK, dialogHolder, model)
+            title: '',
+            onClick: lang.hitch(this, this.clickedEntryOK, dialogHolder, model)
         });
         
+        var cancelButton = new Button({
+            colspan: 1,
+            // TODO: Translate
+            label: "Cancel",
+            type: "button",
+            title: '',
+            onClick: function () {dialogHolder.dialog.hide();}
+        });
+        
+         // TODO: Translate
+        layout.addChild(new ContentPane({content: "Name", style: "text-align: right;"}));
         layout.addChild(nameTextBox);
+         // TODO: Translate
+        layout.addChild(new ContentPane({content: "Notes", style: "text-align: right;"}));
         layout.addChild(urlTextBox);
+        layout.addChild(new ContentPane({content: ""}));
+        layout.addChild(new ContentPane({content: ""}));
         layout.addChild(okButton);
+        layout.addChild(cancelButton);
+        
+        // TODO: Translate
+        var title = "New Item";
+        if (isExistingItem) title = "Change Item";
  
         var dialog = new Dialog({
-            // TODO: Translate
-            title: "New item",
+            title: title,
             style: "width: 400px",
             content: layout
         });
-        
+
         dialogHolder.dialog = dialog;
+        dialogHolder.item = item;
+        dialogHolder.isExistingItem = isExistingItem;
         
         // This will free the dialog when we are done with it whether from OK or Cancel
         dialog.connect(dialog, "onHide", function(e) {
@@ -330,9 +389,16 @@ define([
 
         console.log("parsed", this.items);
 
-        this.rebuildItems();
+        this.recreateDisplayObjectsForAllItems();
         this.incrementChangesCount();
         console.log("Updated OK");
+        
+        this.clearSelection();
+    };
+    
+    ConceptMap.prototype.clearSelection = function() {
+        this.lastSelectedItem = null;
+        this.updateForItemClick(null);
     };
     
     ConceptMap.prototype.openSourceDialog = function(sourceText) {
@@ -384,16 +450,16 @@ define([
         dialog.show();
     };
 
-    ConceptMap.prototype.rebuildItems = function() {
-        // console.log("rebuildItems");
+    ConceptMap.prototype.recreateDisplayObjectsForAllItems = function() {
+        // console.log("recreateDisplayObjectsForAllItems");
         this.mainSurface.clear();
         // console.log("before forEach this:", this);
         var thisObject = this;
         forEach(this.items, function (index, item) {
             // console.log("looping over: ", item, "this:", this);
-            thisObject.addItem(thisObject.mainSurface, item);
+            thisObject.addDisplayObjectForItem(thisObject.mainSurface, item);
         });
-        // console.log("done rebuildItems");
+        // console.log("done recreateDisplayObjectsForAllItems");
     };
 
     ConceptMap.prototype.saveChanges = function() {
@@ -420,8 +486,16 @@ define([
     */
     
     ConceptMap.prototype.updateForItemClick = function(item) {
-        this.textBox.set("value", item.text);
-        this.urlBox.set("value", item.url);
+        if (!item) {
+            this.textBox.set("content", "");
+            this.urlBox.set("content", "");
+            return;
+        }
+        // this.textBox.set("value", item.text);
+        // this.urlBox.set("value", item.url);
+        // TODO: Translate labels
+        this.textBox.set("content", "Name: " + item.text);
+        this.urlBox.set("content", "Notes: " + item.url);
     };
     
     var defaultBodyColor = [0, 0, 155, 0.5]; // blue, transparent
@@ -432,26 +506,28 @@ define([
     // var defaultTextStyle = {family: "Arial", size: "10pt", weight: "bold"};
     var defaultTextStyle = {family: "Arial", size: "9pt", weight: "normal"};
     var defaultRadius = 44;
+    
+    ConceptMap.prototype.newItem = function(text, url) {
+        var item = {};
+        item.text = text;
+        item.url = url;
+        item.x = 200;
+        item.y = 200;
+        item.uuid = uuidFast();
+        // item.bodyColor = defaultBodyColor;
+        // item.borderWidth = defaultBorderWidth;
+        // item.borderColor = defaultBorderColor;
+        // item.radius = defaultRadius;
+        // item.textStyle = defaultTextStyle;
+        return item;
+    };
 
-    ConceptMap.prototype.addItem = function(surface, item, text, url) {
+    ConceptMap.prototype.addDisplayObjectForItem = function(surface, item) {
         // alert("Add button pressed");
         //arrow = drawArrow(surface, {start: {x: 200, y: 200}, end: {x: 335, y: 335}});
         //new Moveable(arrow);
         // console.log("addClick");
 
-        if (item === null) {
-            item = {};
-            item.text = text;
-            item.url = url;
-            item.x = 200;
-            item.y = 200;
-            item.uuid = uuidFast();
-            // item.bodyColor = defaultBodyColor;
-            // item.borderWidth = defaultBorderWidth;
-            // item.borderColor = defaultBorderColor;
-            // item.radius = defaultRadius;
-            // item.textStyle = defaultTextStyle;
-        }
         console.log("item", item);
         
         var bodyColor = item.bodyColor;
@@ -483,7 +559,7 @@ define([
             setFill(bodyColor).
             setStroke({color: borderColor, width: borderWidth, cap: "butt", join: 4}).
             applyTransform(gfx.matrix.identity);
-
+        
         this.addText(group, item.text, radius * 1.5, textStyle);
 
         //console.log("group", group);
