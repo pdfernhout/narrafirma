@@ -118,7 +118,7 @@ define(function() {
             },
             {
                 "id": "time_foundYourselfMost",
-                "shortName": "Found yourself most"w,
+                "shortName": "Found yourself most",
                 "text": "At what point during ____ did you find yourself the most (project topic)?",
                 "category": "Point in time (topic)",
                 "type": "label"
@@ -1062,7 +1062,7 @@ define(function() {
                 "category": "Personality Myers Briggs",
                 "type": "slider",
                 "options": "rules keep life working;rules are for breaking"
-            }
+            },
               {
                 "id": "vigilant",
                 "text": "What do you typically do about the future?",
@@ -1335,8 +1335,7 @@ define(function() {
 	                "materials": "Question forms, recording equipment",
 	                "spaces": "Tables or seating for small groups",
 	                "facilitation": "Watch over people and help out if they are not telling stories or can't find any stories to tell.",
-	            }
-
+	            },
 	            {
 	                "id": "sharingStoriesSimpleTask",
 	                "name": "Sharing stories (simple task)",
@@ -1471,7 +1470,7 @@ define(function() {
 	                "name": "Discussing stories",
 	                "type": "discussing stories",
 	                "plan": "After people have encountered stories, ask small groups to talk about what the stories say to them.",
-	                "length": "If people have time, they can tell some of their own stories in response. Also, the tasks people do with the stories can be multiple or elaborated.",
+	                "elaborations": "If people have time, they can tell some of their own stories in response. Also, the tasks people do with the stories can be multiple or elaborated.",
 	                "length": "15-30 minutes",
 	                "recording": "None required",
 	                "materials": "Stories printed on story cards with answers to questions",
@@ -1525,7 +1524,7 @@ define(function() {
 	                "materials": "Sticky notes or index cards",
 	                "spaces": "Wall/table/floor space",
 	                "facilitation": "Listen for confusion about clustering; like goes with like. Watch for confusion when attributes are being created (have questions ready).",
-                }
+                },
                 {
                     "id": "compositeStories",
 	                "name": "Composite stories exercise",
@@ -1541,8 +1540,6 @@ define(function() {
 	      ]
 	  },
   ];
-
-  
 
   return {
     "elicitationQuestions": templates[0],
