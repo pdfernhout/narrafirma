@@ -56,7 +56,7 @@ define(function() {
            "inviting via networks",
            "inviting via broadcasting",
            "inviting via advertisement",
-           "inviting via spontaneous sessions","
+           "inviting via spontaneous sessions",
            "mixing groups in one session",
            "paying people to come",
            "gifting",
@@ -76,12 +76,13 @@ define(function() {
            "timeline",
            "landscape",
            "story elements"
+        ],
         "sensemakingSessions": [
 	        "inviting via command",
 	        "inviting via networks",
 	        "inviting via broadcasting",
 	        "inviting via advertisement",
-	        "inviting via spontaneous sessions","
+	        "inviting via spontaneous sessions",
 	        "mixing groups in one session",
 	        "paying people to come",
 	        "gifting",
