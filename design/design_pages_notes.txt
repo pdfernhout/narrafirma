@@ -60,9 +60,9 @@
 
 # Dashboard [page_dashboard|page|Project]
 
-* Welcome to PNI Workbook. You can use this software to: [project_mainDashboardLabel|label]
+* Welcome to NarraKit. You can use this software to: [project_mainDashboardLabel|label]
 <ul>
-<li>plan your PNI project</li>
+<li>plan your Participatory Narrative Inquiry (PNI) project</li>
 <li>decide how you will collect stories</li>
 <li>write questions about stories</li>
 <li>plan group story sessions (and record what went on in them)</li>

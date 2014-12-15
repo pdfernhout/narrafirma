@@ -1,12 +1,10 @@
-==== PNI Workbook TODO list:
+==== NarraKit TODO list:
 
 PRIORITY:
 - recommendations table working
 - make whole planning phase work
 - print story form
 - styling of nested box in grid
-
-Change name to "NarraKit" to try it out
 
 Rename "concept map" to "clustering space"
 Area to right on clustering looks like it should work but does not as circles disappear when maximize window
@@ -116,6 +114,8 @@ Support storyBrowserCount
 
 Way to retrieve data about project participant groups [Is this still relevant?]
 Implement showHideCollectedStories in domain buttonClicked [Not sure what this means now or if still relevant]
+
+Review nls/messages_legacy_ideas.js and delete it after moving any useful content to design.
 
 Resolve these issues from conversion or add them to list of types not needing a short name:
 No short name for type: storyThemer field: themeStories text: Theme stories
@@ -281,10 +281,11 @@ DONE Improve concept map so you can have more than one per page or application
 DONE Figure out how to save and load concept map more directly than with a button to save
 DONE Add support for deleting items in concept map
 DONE Support setting color of items in concept map
+DONE Change name from to "PNI Workbook" to "NarraKit" to try it out
 
 ======= CYNTHIA
 
-Write up sample PNI Workbook product offering descriptions for review
+Write up sample NarraKit product offering descriptions for review
 Finish templates
 Create recommendations file
 Create help
