@@ -6,6 +6,12 @@ PRIORITY:
 - print story form
 - styling of nested box in grid
 
+Change name to "NarraKit" to try it out
+
+Rename "concept map" to "clustering space"
+Area to right on clustering looks like it should work but does not as circles disappear when maximize window
+Draft answers not copied when press button
+
 Support recommendationTable
 
 Fix how templates are not splitting up options separated by semicolons
@@ -31,6 +37,8 @@ Record IP address of survey or use another means to see if someone taking it mul
 Ensure the survey taking app does no need to load entire domain from project editor app or load grid or story browser or other modules it does not really need.
 
 Think through how project is loaded and saved, especially what happens if multiple windows or users edit the same project
+
+Add project export and import buttons
 
 Think through logging in the server, perhaps using a library
 Ensure useful server logs are kept
@@ -122,6 +130,8 @@ No short name for type: annotationsGrid field: perspective_linkedInterpretations
 
 Uncomment and test tooltip code in grid table
 Get tooltips working in dialogs (maybe Dojo bug?)
+
+Add project configuration page?
 
 DONE Checkboxes for multiple choices
 DONE Tab container sizing to full page
@@ -274,10 +284,11 @@ DONE Support setting color of items in concept map
 
 ======= CYNTHIA
 
-Write up sample PNI Workbook product offering descriptions for review 
-Finish templates 
+Write up sample PNI Workbook product offering descriptions for review
+Finish templates
 Create recommendations file
-Create help 
+Create help
+Forgot to put "memorable" in eliciting question types
 
 NOT DOING Change dashboards to a special widget with list of pages in options [id|dashboard|page1;page2]
 DONE Change all items that start with "list_"
