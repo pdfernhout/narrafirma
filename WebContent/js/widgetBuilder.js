@@ -4,7 +4,7 @@
 define([
         "dojo/_base/array",
         "dojox/mvc/at",
-        "js/widgets/conceptMap",
+        "js/widgets/clusteringDiagram",
         "dojo/dom",
         "js/domain",
         "dojo/dom-construct",
@@ -43,7 +43,7 @@ define([
     ], function(
         array,
         at,
-        conceptMap,
+        clusteringDiagram,
         dom,
         domain,
         domConstruct,
@@ -188,16 +188,16 @@ define([
         return textarea;
     }
     
-    function add_conceptMap(contentPane, model, id, options) {
-        // concept map using a list of 2D objects
-        console.log("add_conceptMap", model, id, options);
-        console.log("conceptMap module", conceptMap);
+    function add_clusteringDiagram(contentPane, model, id, options) {
+        // clustering diagram using a list of 2D objects
+        console.log("add_clusteringDiagram", model, id, options);
+        // console.log("clusteringDiagram module", clusteringDiagram);
         
-        var mapName = options[0];
+        var diagramName = options[0];
         
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
-        return conceptMap.insertConceptMap(questionContentPane, model, id, mapName, true);
+        return clusteringDiagram.insertClusteringDiagram(questionContentPane, model, id, diagramName, true);
     }
     
     function add_grid(contentPane, model, id, options) {
@@ -1025,7 +1025,7 @@ define([
         "add_boolean": add_boolean,
         "add_checkbox": add_checkbox,
         "add_checkboxes": add_checkboxes,
-        "add_conceptMap": add_conceptMap,
+        "add_clusteringDiagram": add_clusteringDiagram,
         "add_radiobuttons": add_radiobuttons,
         "add_toggleButton": add_toggleButton,
         "add_button": add_button,

@@ -78,23 +78,23 @@ define([
         return null;
     }
     
-    /** ConceptMap-specific functions here */
+    /** ClusteringDiagram-specific functions here */
     
-    function insertConceptMap(contentPane, model, id, mapName, autosave) {
-        return new ConceptMap(contentPane, model, id, mapName, autosave);
+    function insertClusteringDiagram(contentPane, model, id, diagramName, autosave) {
+        return new ClusteringDiagram(contentPane, model, id, diagramName, autosave);
     }
     
-    function ConceptMap(contentPane, model, id, mapName, autosave) {
-        console.log("Creating ConceptMap", contentPane, model, id, mapName);
+    function ClusteringDiagram(contentPane, model, id, diagramName, autosave) {
+        console.log("Creating ClusteringDiagram", contentPane, model, id, diagramName);
 
         this.autosave = autosave;
         this.changesCount = 0;
         this.lastSelectedItem = null;
         this.mainContentPane = contentPane;
-        this.diagramName = mapName;
-        this.idForStorage = id;
+        this.diagramName = diagramName;
+        this.idOfWidget = id;
         this.modelForStorage = model;
-        this.items = model.get(id);
+        this.items = model.get(this.diagramName);
         this.textBox = null;
         this.urlBox = null; 
         this._mainSurface = null;
@@ -119,21 +119,21 @@ define([
         this.addItemDisplay();
     }
     
-    ConceptMap.prototype.incrementChangesCount = function() {
+    ClusteringDiagram.prototype.incrementChangesCount = function() {
         this.changesCount++;
         if (this.autosave) {
             this.saveChanges();
         }
     };
     
-    ConceptMap.prototype.newBreak = function() {
+    ClusteringDiagram.prototype.newBreak = function() {
         var newBr = document.createElement("br");
         this.mainContentPane.domNode.appendChild(newBr);
 
         return newBr;
     };
 
-    ConceptMap.prototype.newButton = function(name, label, callback) {
+    ClusteringDiagram.prototype.newButton = function(name, label, callback) {
         var theButton = new Button({
             label: label,
             onClick: lang.hitch(this, callback)
@@ -143,7 +143,7 @@ define([
         return theButton;
     };
 
-    ConceptMap.prototype.setupMainButtons = function() {
+    ClusteringDiagram.prototype.setupMainButtons = function() {
 
         if (!this.autosave) {
             var saveChangesButton = this.newButton("saveChangesButton", "Save Changes", function () {
@@ -163,15 +163,15 @@ define([
 
         /*
         var newDiagramButton = newButton("newDiagramButton", "Link to new diagram", lang.hitch(function () {
-            var uuid = "pce:org.twirlip.ConceptMap:uuid:" + uuidFast();
-            var url = "conceptMap.html?diagram=" + uuid;
+            var uuid = "pce:org.twirlip.ClusteringDiagram:uuid:" + uuidFast();
+            var url = "clusteringDiagram.html?diagram=" + uuid;
             var newItem = {name: "", url: url};
             this.openEntryDialog(newItem);
         }));
         */
     };
 
-    ConceptMap.prototype.setupMainSurface = function() {
+    ClusteringDiagram.prototype.setupMainSurface = function() {
         var node = document.createElement("div");
         var divForCanvasInfo = {width: surfaceWidth, height: surfaceHeight, border: "solid 1px"};
         domAttr.set(node, "style", divForCanvasInfo);
@@ -185,7 +185,7 @@ define([
         //   items.push({text: theText, url: theURL, x: circle.cx, y: circle.cy});
     };
 
-    ConceptMap.prototype.addItemEditor = function() {
+    ClusteringDiagram.prototype.addItemEditor = function() {
         // TODO: Translate
         var updateItemButton = this.newButton("updateItemButton", "Update item", function () {
             if (this.lastSelectedItem) {
@@ -219,7 +219,7 @@ define([
     };
     
     
-    ConceptMap.prototype.addItemDisplay = function() {    
+    ClusteringDiagram.prototype.addItemDisplay = function() {    
         this.textBox = new ContentPane({content: "", style: "text-overflow: ellipsis;"});
         this.mainContentPane.addChild(this.textBox);
         this.urlBox = new ContentPane({content: "", style: "text-overflow: ellipsis;"});
@@ -274,7 +274,7 @@ define([
         */
     };
 
-    ConceptMap.prototype.clickedEntryOK = function(dialogHolder, model, event) {
+    ClusteringDiagram.prototype.clickedEntryOK = function(dialogHolder, model, event) {
         console.log("clickedEntryOK", this, dialogHolder, model, event);
         dialogHolder.dialog.hide();
         console.log("Clicked OK", event, model);
@@ -299,7 +299,7 @@ define([
         this.updateForItemClick(item);
     };
     
-    ConceptMap.prototype.openEntryDialog = function(item, isExistingItem) {
+    ClusteringDiagram.prototype.openEntryDialog = function(item, isExistingItem) {
         console.log("openEntryDialog", item, isExistingItem);
         var model = new Stateful(item);
 
@@ -397,7 +397,7 @@ define([
         dialog.show();
     };
 
-    ConceptMap.prototype.clickedUpdateSource = function(dialogHolder, model, event) {
+    ClusteringDiagram.prototype.clickedUpdateSource = function(dialogHolder, model, event) {
         console.log("Clicked updateSource", event);
         dialogHolder.dialog.hide();
         
@@ -415,12 +415,12 @@ define([
         this.clearSelection();
     };
     
-    ConceptMap.prototype.clearSelection = function() {
+    ClusteringDiagram.prototype.clearSelection = function() {
         this.lastSelectedItem = null;
         this.updateForItemClick(null);
     };
     
-    ConceptMap.prototype.openSourceDialog = function(sourceText) {
+    ClusteringDiagram.prototype.openSourceDialog = function(sourceText) {
         var model = new Stateful({sourceText: sourceText});
 
         var layout = new dojox.layout.TableContainer({
@@ -469,7 +469,7 @@ define([
         dialog.show();
     };
 
-    ConceptMap.prototype.recreateDisplayObjectsForAllItems = function() {
+    ClusteringDiagram.prototype.recreateDisplayObjectsForAllItems = function() {
         // console.log("recreateDisplayObjectsForAllItems");
         this.mainSurface.clear();
         // console.log("before forEach this:", this);
@@ -481,12 +481,12 @@ define([
         // console.log("done recreateDisplayObjectsForAllItems");
     };
 
-    ConceptMap.prototype.saveChanges = function() {
-        this.modelForStorage.set(this.idForStorage, this.items);
+    ClusteringDiagram.prototype.saveChanges = function() {
+        this.modelForStorage.set(this.diagramName, this.items);
     };
 
     /*
-    ConceptMap.prototype.go = function(url) {
+    ClusteringDiagram.prototype.go = function(url) {
         console.log("go: ", url);
         if (!url) {
             console.log("empty url, not going");
@@ -504,7 +504,7 @@ define([
     };
     */
     
-    ConceptMap.prototype.updateForItemClick = function(item) {
+    ClusteringDiagram.prototype.updateForItemClick = function(item) {
         if (!item) {
             this.textBox.set("content", "");
             this.urlBox.set("content", "");
@@ -527,7 +527,7 @@ define([
     var defaultTextStyle = {family: "Arial", size: "9pt", weight: "normal"};
     var defaultRadius = 44;
     
-    ConceptMap.prototype.newItem = function(text, url) {
+    ClusteringDiagram.prototype.newItem = function(text, url) {
         var item = {};
         item.text = text;
         item.url = url;
@@ -542,7 +542,7 @@ define([
         return item;
     };
 
-    ConceptMap.prototype.addDisplayObjectForItem = function(surface, item) {
+    ClusteringDiagram.prototype.addDisplayObjectForItem = function(surface, item) {
         // alert("Add button pressed");
         //arrow = drawArrow(surface, {start: {x: 200, y: 200}, end: {x: 335, y: 335}});
         //new Moveable(arrow);
@@ -629,7 +629,7 @@ define([
         return group;
     };
 
-    ConceptMap.prototype.addText = function(group, text, maxWidth, textStyle) {
+    ClusteringDiagram.prototype.addText = function(group, text, maxWidth, textStyle) {
         var lineHeight = 12;
         var tb = gfx._base._getTextBox;
         var words = text.split(" ");
@@ -663,6 +663,6 @@ define([
     };
     
     return {
-        insertConceptMap: insertConceptMap
+        insertClusteringDiagram: insertClusteringDiagram
     };
 });

@@ -213,7 +213,7 @@ You can enter your story elements on the next page.
 <li>You can enter your story elements on the next page.</li>
 </ol>
 
-* You can create a concept map here: [project_projectStoryElementsConceptMap|conceptMap|answersMap]
+* You can work on a clustering diagram here: [project_projectStoryElementsAnswersClusteringDiagram|clusteringDiagram|project_storyElementsAnswersClusteringDiagram]
 
 ## Enter project story elements [page_enterProjectStoryElements|page|Project]
 
