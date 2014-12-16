@@ -52,8 +52,8 @@ define([
    // # http://dojotdg.zaffra.com/2009/03/dojo-now-with-drawing-tools-linux-journal-reprint/
 
     // TODO: Maybe add tooltip with notes for item? And then don't display item info at bottom?
-    // TODO: Highlight selected item
     // TODO: Select and move groups of items
+    // TODO: Does surface need to be "destroy"-ed when closing page or replacing contentPane to prevent memory leak?
     
     var surfaceWidth = 800;
     var surfaceHeight = 400;
@@ -285,6 +285,7 @@ define([
         if (typeOfChange === "delete") {
             delete this.itemToDisplayObjectMap[item.uuid];
             this.mainSurface.remove(displayObject);
+            displayObject.destroy();
             return;
         }
         this.mainSurface.remove(displayObject);
