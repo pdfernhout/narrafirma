@@ -282,6 +282,7 @@ DONE Add support for deleting items in concept map
 DONE Support setting color of items in concept map
 DONE Change name from to "PNI Workbook" to "NarraKit" to try it out
 DONE Rename "concept map" to "clustering space"
+DONE optimize redrawing for changes in clustering diagram
 
 ======= CYNTHIA
 

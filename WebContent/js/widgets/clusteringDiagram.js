@@ -99,6 +99,7 @@ define([
         this.urlBox = null; 
         this._mainSurface = null;
         this.mainSurface = null;
+        this.itemToDisplayObjectMap = {};
 
         if (!this.items) {
             console.log("First time loading");
@@ -174,6 +175,7 @@ define([
     ClusteringDiagram.prototype.setupMainSurface = function() {
         var node = document.createElement("div");
         var divForCanvasInfo = {width: surfaceWidth, height: surfaceHeight, border: "solid 1px"};
+        // var divForCanvasInfo = {border: "solid 1px"};
         domAttr.set(node, "style", divForCanvasInfo);
         this.mainContentPane.domNode.appendChild(node);
         this._mainSurface = gfx.createSurface(node, divForCanvasInfo.width, divForCanvasInfo.height);
@@ -190,11 +192,6 @@ define([
         var updateItemButton = this.newButton("updateItemButton", "Update item", function () {
             if (this.lastSelectedItem) {
                 this.openEntryDialog(this.lastSelectedItem, true);
-                //this.lastSelectedItem.text = this.textBox.get("value");
-                //this.lastSelectedItem.url = this.urlBox.get("value");
-                //this.incrementChangesCount();
-                // Wasteful to do all of them
-                //this.recreateDisplayObjectsForAllItems();
             } else {
              // TODO: Translate
                 alert("Please select an item to update first");
@@ -209,11 +206,10 @@ define([
                 return;
             }
             widgetSupport.confirm("Confirm removal of: '" + this.lastSelectedItem.text + "'?", lang.hitch(this, function () {
+                this.updateDisplayForChangedItem(this.lastSelectedItem, "delete");
                 removeItemFromArray(this.lastSelectedItem, this.items);
                 this.clearSelection();
                 this.incrementChangesCount();
-                // Wasteful to do all of them
-                this.recreateDisplayObjectsForAllItems();
             }));
         });
     };
@@ -274,6 +270,23 @@ define([
         */
     };
 
+    // typeOfChange should be either "delete" or "update"
+    ClusteringDiagram.prototype.updateDisplayForChangedItem = function(item, typeOfChange) {
+        if (item === null) {
+            console.log("updateDisplayForChangedItem item is null", typeOfChange);
+            return;
+        }
+        var displayObject = this.itemToDisplayObjectMap[item.uuid];
+        if (typeOfChange === "delete") {
+            delete this.itemToDisplayObjectMap[item.uuid];
+            this.mainSurface.remove(displayObject);
+            return;
+        }
+        this.mainSurface.remove(displayObject);
+        var newDisplayObject = this.addDisplayObjectForItem(this.mainSurface, item);
+        this.itemToDisplayObjectMap[item.uuid] = newDisplayObject;
+    };
+    
     ClusteringDiagram.prototype.clickedEntryOK = function(dialogHolder, model, event) {
         console.log("clickedEntryOK", this, dialogHolder, model, event);
         dialogHolder.dialog.hide();
@@ -289,10 +302,9 @@ define([
         if (bodyColor) item.bodyColor = bodyColor;
         if (!dialogHolder.isExistingItem) {
             this.items.push(item);
-            var group = this.addDisplayObjectForItem(this.mainSurface, item);
+            var displayObject = this.addDisplayObjectForItem(this.mainSurface, item);
         } else {
-            // Wasteful to do all of them
-            this.recreateDisplayObjectsForAllItems();
+            this.updateDisplayForChangedItem(item, "update");
         }
         console.log("items", this.items);
         this.incrementChangesCount();
@@ -471,12 +483,13 @@ define([
 
     ClusteringDiagram.prototype.recreateDisplayObjectsForAllItems = function() {
         // console.log("recreateDisplayObjectsForAllItems");
+        this.itemToDisplayObjectMap = {};
         this.mainSurface.clear();
         // console.log("before forEach this:", this);
         var thisObject = this;
         forEach(this.items, function (index, item) {
             // console.log("looping over: ", item, "this:", this);
-            thisObject.addDisplayObjectForItem(thisObject.mainSurface, item);
+            var displayObject = thisObject.addDisplayObjectForItem(thisObject.mainSurface, item);
         });
         // console.log("done recreateDisplayObjectsForAllItems");
     };
@@ -626,6 +639,7 @@ define([
 
         group.applyTransform(gfx.matrix.translate(item.x, item.y));
 
+        this.itemToDisplayObjectMap[item.uuid] = group;
         return group;
     };
 
