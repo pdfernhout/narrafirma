@@ -22,8 +22,9 @@ define([
     "./widgetSupport",
     "dijit/layout/ContentPane",
     "dijit/ColorPalette",
-    "dojo/_base/Color"
-    //"dojox/layout/ResizeHandle"
+    "dojo/_base/Color",
+    "dojox/layout/ResizeHandle"
+    // "dojo/_base/connect"
 ], function (
     ready,
     domAttr,
@@ -45,8 +46,9 @@ define([
     widgetSupport,
     ContentPane,
     ColorPalette,
-    Color
-    // ResizeHandle
+    Color,
+    ResizeHandle
+    // connect
 ) {
    // Resources:
    // # http://dojotdg.zaffra.com/2009/03/dojo-now-with-drawing-tools-linux-journal-reprint/
@@ -97,6 +99,7 @@ define([
         this.items = model.get(this.diagramName);
         this.textBox = null;
         this.urlBox = null; 
+        this.divForResizing = null;
         this._mainSurface = null;
         this.mainSurface = null;
         this.itemToDisplayObjectMap = {};
@@ -173,12 +176,23 @@ define([
     };
 
     ClusteringDiagram.prototype.setupMainSurface = function() {
-        var node = document.createElement("div");
-        var divForCanvasInfo = {width: surfaceWidth, height: surfaceHeight, border: "solid 1px"};
-        // var divForCanvasInfo = {border: "solid 1px"};
-        domAttr.set(node, "style", divForCanvasInfo);
-        this.mainContentPane.domNode.appendChild(node);
-        this._mainSurface = gfx.createSurface(node, divForCanvasInfo.width, divForCanvasInfo.height);
+        var divForResizing = document.createElement("div");
+        this.divForResizing = divForResizing;
+        // TODO: Needs to be unique to node
+        var divUUID = generateRandomUuid(); 
+        divForResizing.setAttribute("id", divUUID);
+        // , position: "relative"
+        // divForResizing.setAttribute("style", {width: surfaceWidth, height: surfaceHeight, border: "solid 1px"});
+        divForResizing.setAttribute("style", "width: 800px; height: 400px; border: solid 1px; position: relative");
+       
+        this.mainContentPane.domNode.appendChild(divForResizing);
+        
+        var divForCanvas = divForResizing;
+        //var divForCanvas = document.createElement("div");
+        //domAttr.set(divForCanvas, "style", {width: surfaceWidth, height: surfaceHeight, border: "solid 1px"});
+        //divForResizing.appendChild(divForCanvas);
+        
+        this._mainSurface = gfx.createSurface(divForCanvas, surfaceWidth, surfaceHeight);
 
         this._mainSurface.whenLoaded(lang.hitch(this, function() {
             // TODO: Maybe need to disable diagram widget until this callback is called?
@@ -190,6 +204,32 @@ define([
             }));
             this.recreateDisplayObjectsForAllItems();
         }));
+        
+        var handle = new dojox.layout.ResizeHandle({
+            targetId: divUUID,
+            // Need activeResize true so that onResize will only be called when totally done resizing
+            // and not with animation still running and node not quite the final size
+            activeResize: true,
+            // style: "bottom: 4px; right: 4px;",
+            onResize: lang.hitch(this, this.updateSizeOfCanvas)
+        }).placeAt(divForResizing);
+        handle.startup();
+        
+        /* This is called multiple times, so not that usefl, plus may be called last time before really done
+        // TODO: Does this need to unsubscribe when containing pane is destroyed?
+        connect.subscribe("/dojo/resize/stop", function(handle) {
+            // handle.targetDomNode
+            console.log("handle.targetDomNode", handle.targetDomNode);
+            console.log("resize stop!", handle, divForResizing.clientWidth, divForResizing.clientHeight);
+        });
+        */
+    };
+    
+    ClusteringDiagram.prototype.updateSizeOfCanvas = function() {
+        var newWidth = this.divForResizing.clientWidth;
+        var newHeight = this.divForResizing.clientHeight;
+        console.log("resize!", newWidth, newHeight);
+        this._mainSurface.setDimensions(newWidth, newHeight);
     };
 
     ClusteringDiagram.prototype.addItemEditor = function() {
