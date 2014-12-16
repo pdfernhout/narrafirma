@@ -6,7 +6,6 @@ PRIORITY:
 - print story form
 - styling of nested box in grid
 
-Area to right on clustering looks like it should work but does not as circles disappear when maximize window
 Draft answers not copied when press button
 
 Support recommendationTable
@@ -129,6 +128,8 @@ No short name for type: annotationsGrid field: perspective_linkedInterpretations
 
 Uncomment and test tooltip code in grid table
 Get tooltips working in dialogs (maybe Dojo bug?)
+
+Support multiple item selection in clustering diagram
 
 Add project configuration page?
 
@@ -283,6 +284,9 @@ DONE Support setting color of items in concept map
 DONE Change name from to "PNI Workbook" to "NarraKit" to try it out
 DONE Rename "concept map" to "clustering space"
 DONE optimize redrawing for changes in clustering diagram
+DONE add indicator for selected item in clustering diagram 
+DONE Area to right on clustering looks like it should work but does not as circles disappear when maximize window
+DONE Support resizing cluster diagram
 
 ======= CYNTHIA
 
