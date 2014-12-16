@@ -179,12 +179,17 @@ define([
         domAttr.set(node, "style", divForCanvasInfo);
         this.mainContentPane.domNode.appendChild(node);
         this._mainSurface = gfx.createSurface(node, divForCanvasInfo.width, divForCanvasInfo.height);
-        this.mainSurface = this._mainSurface.createGroup();
 
-        // surface.whenLoaded(drawStuff);
-
-        this.recreateDisplayObjectsForAllItems();
-        //   items.push({text: theText, url: theURL, x: circle.cx, y: circle.cy});
+        this._mainSurface.whenLoaded(lang.hitch(this, function() {
+            // TODO: Maybe need to disable diagram widget until this callback is called?
+            this.mainSurface = this._mainSurface.createGroup();
+            this._mainSurface.connect("onmousedown", lang.hitch(this, function (e) {
+                // console.log("triggered down", e);
+                this.selectItem(null);
+                // console.log("onmousedown item", item);
+            }));
+            this.recreateDisplayObjectsForAllItems();
+        }));
     };
 
     ClusteringDiagram.prototype.addItemEditor = function() {
@@ -308,7 +313,7 @@ define([
         }
         console.log("items", this.items);
         this.incrementChangesCount();
-        this.updateForItemClick(item);
+        this.selectItem(item);
     };
     
     ClusteringDiagram.prototype.openEntryDialog = function(item, isExistingItem) {
@@ -428,8 +433,7 @@ define([
     };
     
     ClusteringDiagram.prototype.clearSelection = function() {
-        this.lastSelectedItem = null;
-        this.updateForItemClick(null);
+        this.selectItem(null);
     };
     
     ClusteringDiagram.prototype.openSourceDialog = function(sourceText) {
@@ -517,7 +521,7 @@ define([
     };
     */
     
-    ClusteringDiagram.prototype.updateForItemClick = function(item) {
+    ClusteringDiagram.prototype.updateItemDisplay = function(item) {
         if (!item) {
             this.textBox.set("content", "");
             this.urlBox.set("content", "");
@@ -555,6 +559,22 @@ define([
         return item;
     };
 
+    // TODO: Clean up duplication here and elsewhere with calculating border color and width
+    ClusteringDiagram.prototype.selectItem = function(item) {
+        console.log("selectItem", item);
+        if (this.lastSelectedItem) {
+            console.log("lastSelected", this.lastSelectedItem);
+            var lastSelectedDisplayObject = this.itemToDisplayObjectMap[this.lastSelectedItem.uuid];
+            lastSelectedDisplayObject.circle.setStroke({color: lastSelectedDisplayObject.borderColor, width: lastSelectedDisplayObject.borderWidth, cap: "butt", join: 4});
+        }
+        if (item) {
+            var displayObject = this.itemToDisplayObjectMap[item.uuid];
+            displayObject.circle.setStroke({color: displayObject.borderColor, width: displayObject.borderWidth * 2, cap: "butt", join: 4});
+        }
+        this.lastSelectedItem = item;
+        this.updateItemDisplay(item);
+    };
+    
     ClusteringDiagram.prototype.addDisplayObjectForItem = function(surface, item) {
         // alert("Add button pressed");
         //arrow = drawArrow(surface, {start: {x: 200, y: 200}, end: {x: 335, y: 335}});
@@ -596,6 +616,10 @@ define([
             setStroke({color: borderColor, width: borderWidth, cap: "butt", join: 4}).
             applyTransform(gfx.matrix.identity);
         
+        group.circle = itemCircle;
+        group.borderColor = borderColor;
+        group.borderWidth = borderWidth;
+        
         this.addText(group, item.text, radius * 1.5, textStyle);
 
         //console.log("group", group);
@@ -604,12 +628,9 @@ define([
         //touch.press(group, function(e) {
         //touch.press(itemCircle, function(e) {
         group.connect("onmousedown", lang.hitch(this, function (e) {
-            // require(["dojo/on"], function(on) {
-            //  var handle = on(group, "mousedown", function(e) {
             // console.log("triggered down", e);
-            this.lastSelectedItem = item;
+            this.selectItem(item);
             // console.log("onmousedown item", item);
-            this.updateForItemClick(item);
         }));
 
         /*
@@ -625,7 +646,7 @@ define([
 
         moveable.onMoveStart = lang.hitch(this, function (mover, shift) {
             // Kludge for Android as not setting on mouse down
-            this.updateForItemClick(item);
+            this.updateItemDisplay(item);
         });
         
         moveable.onMoved = lang.hitch(this, function (mover, shift) {
