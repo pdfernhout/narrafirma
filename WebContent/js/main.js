@@ -56,6 +56,8 @@ require([
     var loadVersionButton = null;
     var saveButton = null;
     var startPage = "page_dashboard";
+    
+    var currentProjectVersionReference = null; 
 
     function loadLatestClicked(event) {
         console.log("load latest clicked");
@@ -106,19 +108,23 @@ require([
         // Reload page looking at...
         showPage(currentPageID, "forceRefresh");
         
+        // Store a reference so can pass it to storage as "previous" for next version to get chain or tree of versions
+        currentProjectVersionReference = envelope.__sha256HashAndLength;
+        
         // TODO: Translate and improve this feedback
         alert("Finished loading project data");        
     }
     
     function saveClicked(event) {
         console.log("save clicked", domain.projectData.projectAnswers);
-        storage.storeProjectAnswersVersion(domain.projectData.projectAnswers, saveFinished);
+        storage.storeProjectAnswersVersion(domain.projectData.projectAnswers, currentProjectVersionReference, saveFinished);
     }
     
     function saveFinished(error, newVersionURI) {
         if (error) {return alert("could not write new version:\n" + error);}
         // TODO: Translate and improve this feedback
         console.log("Save finished to file", newVersionURI);
+        currentProjectVersionReference = newVersionURI;
         alert("Finished saving");
     }
     

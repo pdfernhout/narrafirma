@@ -27,8 +27,8 @@ define([
     
     /* Project Version */
     
-    function storeProjectAnswersVersion(projectAnswers, callbackWhenDone) {
-        var metadata = {id: projectAnswersDocumentID, tags: [], contentType: projectAnswersContentType, author: null, committer: userID, timestamp: true};        
+    function storeProjectAnswersVersion(projectAnswers, previous, callbackWhenDone) {
+        var metadata = {id: projectAnswersDocumentID, previous: previous, tags: [], contentType: projectAnswersContentType, author: null, committer: userID, timestamp: true};        
         pointrel20141201Client.storeInNewEnvelope(projectAnswers, metadata, function(error, serverResponse) {
             if (error) {
                 console.log("could not write new version:\n" + error);
