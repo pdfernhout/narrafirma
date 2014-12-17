@@ -662,7 +662,7 @@ define([
         return button;
     }
     
-    function makeTemplateListChooser(contentPane, model, id, options, hideDialog, dialogConfiguration) {
+    function makeTemplateListChooser(contentPane, model, id, options, hideDialogCallback, dialogConfiguration) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var templateListChoice = options[0];
@@ -762,7 +762,12 @@ define([
                         console.log(message);
                         alert(message);
                     }
+                    console.log("about to call hideDialogCallback");
+                    hideDialogCallback();
                 });
+            } else {
+                // TODO: Translate
+                alert("No template was selected");
             }
         }
         
