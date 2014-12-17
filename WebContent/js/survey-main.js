@@ -30,7 +30,7 @@ require([
         console.log("createLayout");
            
         // TODO: Fix hardcoded ID!!
-        survey.getQuestionnaireFromServer(questionnaireID, function(error, questionnaire) {
+        survey.getQuestionnaireFromServer(questionnaireID, function(error, questionnaire, envelope) {
             if (error) {
                 // TODO: Translate
                 document.getElementById("startup").innerHTML = "Something went wrong loading the survey questionnaire from the server";
@@ -53,7 +53,7 @@ require([
         translate.configure({}, applicationMessages);
         
         // Determine status of current questionnaire
-        survey.getStatusFromServer(questionnaireID, function(error, status) {
+        survey.getStatusFromServer(questionnaireID, function(error, status, envelope) {
             if (error || !status.active) {
                 // TODO: Translate
                 document.getElementById("startup").innerHTML = "The survey is not currently active: " + questionnaireID;

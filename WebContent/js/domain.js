@@ -550,7 +550,7 @@ define([
     }
     
     function determineStatusOfCurrentQuestionnaire() {
-        storage.loadLatestQuestionnaireStatus(questionnaireID, function(error, status) {
+        storage.loadLatestQuestionnaireStatus(questionnaireID, function(error, status, envelope) {
             if (error) {return console.log("Could not determine questionnaire status; assuming inactive", questionnaireID);}
             console.log("got questionnaire status", status);
             questionnaireStatus = status;

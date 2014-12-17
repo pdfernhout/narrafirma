@@ -89,7 +89,7 @@ require([
         // TODO: Use widgetSupport.openDialog to create dialog similar to that for picking a template
     }
      
-    function switchToLoadedProjectData(error, projectAnswers) {
+    function switchToLoadedProjectData(error, projectAnswers, envelope) {
         if (error) {
             alert("A problem happened when trying to load the latest version of the project:\n" + error);
             return;
