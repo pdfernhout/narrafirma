@@ -5,6 +5,7 @@ define([
 ], function(
     pointrel20141201Client
 ) {
+    // TODO: Better error handling popup dialog as a generalized GUI issue
     
     var archiveURL = "/cgi-bin/";
     
@@ -23,6 +24,8 @@ define([
     var questionnaireContentType = "org.workingwithstories.Questionnaire";
     var questionnaireStatusContentType = "org.workingwithstories.QuestionnaireStatus";
     var surveyResultContentType = "org.workingwithstories.PNIWorkbookSurveyResult";
+    
+    /* Project Version */
     
     function storeProjectAnswersVersion(projectAnswers, callbackWhenDone) {
         var metadata = {id: projectAnswersDocumentID, tags: [], contentType: projectAnswersContentType, author: null, committer: userID, timestamp: true};        
@@ -55,33 +58,11 @@ define([
                 if (error === "No items found for id") error = "No stored versions could be loaded -- have any project versions been saved?";
                 return switchToLoadedProjectAnswersCallback(error);
             }
-            switchToLoadedProjectAnswersCallback(null, envelope.content);           
+            switchToLoadedProjectAnswersCallback(null, envelope.content, envelope);           
         });
     }
     
-    // TODO: Better error handling popup dialog as a generalized GUI issue
-    
-    function projectDataLoaded(switchToLoadedProjectAnswersCallback, error, text) {
-        if (error) {
-            var errorMessage = "Error when fetching project data:\n" + error;
-            console.log(errorMessage);
-            switchToLoadedProjectAnswersCallback(error);
-            return;
-        }
-        
-        var item;
-        try {
-            item = JSON.parse(text);
-        } catch (err) {
-            console.log("error when trying to parse project file: ", text, err);
-            switchToLoadedProjectAnswersCallback("Could not parse project file: " + err);
-            return;
-        }
-        var projectAnswers = item.body;
-        
-        // console.log("loading saved version", item, projectAnswers);
-        switchToLoadedProjectAnswersCallback(projectAnswers);
-    }
+    /* Survey Result */
     
     function storeSurveyResult(surveyResult, callback) {
         // Store the result
@@ -123,6 +104,8 @@ define([
         loadedSurveyResultsCallback(allEnvelopes, newEnvelopes);    
     }
     
+    /* Questionnaire Version */
+    
     function storeQuestionnaireVersion(questionnaireID, questionnaire, callback) {
         var metadata = {id: null, tags: [questionnaireID], contentType: questionnaireContentType, author: null, committer: userID, timestamp: true};        
         pointrel20141201Client.storeInNewEnvelope(questionnaire, metadata, function(error, serverResponse) {
@@ -147,6 +130,8 @@ define([
             callback(null, envelope.content);           
         });
     }
+    
+    /* Questionnaire Status */
     
     // TODO: What if the user's clock is wrong? How to reset status?
     function storeQuestionnaireStatus(questionnaireID, questionnaireStatus, callback) {
@@ -173,6 +158,8 @@ define([
             callback(null, envelope.content);           
         });
     }
+    
+    /* Setup */
  
     // TODO: this is not needed by apps that only use application-specific server APIs directly
     function setup() {
