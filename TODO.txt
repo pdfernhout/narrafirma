@@ -31,7 +31,10 @@ Ensure the survey taking app does no need to load entire domain from project edi
 
 Think through how project is loaded and saved, especially what happens if multiple windows or users edit the same project
 
-Add project export and import buttons
+Add export and import buttons for project
+Add export button for survey results
+Maybe import button for survey results
+Add way to clear out or reset old survey results? Or maybe partition them by survey?
 
 Think through logging in the server, perhaps using a library
 Ensure useful server logs are kept
@@ -331,7 +334,7 @@ Chart where can select a set of stories
 Saving project data to a file server as make progress
 Think about what happens to data if questions change somehow in future versions of the software
 
-Backup/Export/Import
+Backup
 
 Roles/Accounts & Security
 
