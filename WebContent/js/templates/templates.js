@@ -1003,10 +1003,22 @@ define(function() {
         ]
     }
 ];
+  
+  function convertSemicolonsToNewlinesForOptions(section) {
+      var questions = section.questions;
+      for (var questionIndex in questions) {
+          var question = questions[questionIndex];
+          if (question.options) {
+              question.options = question.options.replace(/;/g, "\n");
+              console.log("new options", question.options);
+          }
+      }
+      return section;
+  }
 
   return {
-    "elicitationQuestions": templates[0],
-    "storyQuestions": templates[1],
-    "participantQuestions": templates[2]
+    "elicitationQuestions": convertSemicolonsToNewlinesForOptions(templates[0]),
+    "storyQuestions": convertSemicolonsToNewlinesForOptions(templates[1]),
+    "participantQuestions": convertSemicolonsToNewlinesForOptions(templates[2])
   };
 });

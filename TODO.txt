@@ -10,7 +10,7 @@ Draft answers not copied when press button
 
 Support recommendationTable
 
-Fix how templates are not splitting up options separated by semicolons
+Fix how templates dialog does not close when insert one
 Fix how templates list popup has too much scrolling and is not sized well; perhaps start with grid item view pane open?
 
 Fix how selected eliciting question in select box is not entirely visible
@@ -288,6 +288,7 @@ DONE add indicator for selected item in clustering diagram
 DONE Area to right on clustering looks like it should work but does not as circles disappear when maximize window
 DONE Support resizing cluster diagram
 DONE Store clustering diagram as an object with properties not just an array of items
+DONE Fix how templates are not splitting up options separated by semicolons
 
 ======= CYNTHIA
 
