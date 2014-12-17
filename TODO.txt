@@ -98,6 +98,11 @@ Implement countNumberOfVenuesChosen in domain (is this still needed? If not, rem
 Help window displaying HTML instead of alert
 Look at all alerts in code and make into nicer GUI feedback
 
+Add version format (1.2.3) information to saved resources
+Add revision UUID for document version to documents (or sha256AndLength reference?)
+Add reference to previous version (or versions) when save resources to get tree or chain of versions
+Update application code to track versions
+
 Better and more consistent approach for translation selections for selects, checkboxes, radiobuttons, and maybe other types
 Translate report answers as needed for those types like selections
 Final review of all strings in code looking for TODO translate items or similar

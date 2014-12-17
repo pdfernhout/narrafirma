@@ -36,7 +36,7 @@ define([
         });
     }
     
-    // var metadata = {id: null, tags: [], contentType: null, author: null, committer: null, timestamp: true};
+    // var metadata = {id: null, previous: null, revision: null, tags: [], contentType: null, contentVersion: null, author: null, committer: null, timestamp: true};
     // "true" for timestamp means use the current time as calculated on the server
     function pointrel_storeInNewEnvelope(item, metadata, callback) {
         console.log("pointrel_storeInNewEnvelope", metadata, item);
@@ -46,13 +46,28 @@ define([
             // TODO: Maybe store a UUID?
         };
         
-        // TODO: More validation to ensure strings for tags and that it is an array
         if (metadata.id) envelope.id = "" + metadata.id;
+        
+        // Possibly previous could be either a string with sha256AndLength or an object: {uuid: "???", sha256AndLength: "???"}
+        if (metadata.previous) envelope.previous = metadata.previous;
+        
+        /*
+        if (metadata.revision) {
+            envelope.revision = metadata.revision;
+        } else {
+            envelope.revision = uuid();
+        }
+        */
+
+        // TODO: More validation to ensure strings for tags and that it is an array
         if (metadata.tags && metadata.tags.length > 0) envelope.tags = metadata.tags;
+        
         if (metadata.contentType) envelope.contentType = "" + metadata.contentType;
+        if (metadata.contentVersion) envelope.contentVersion = "" + metadata.contentVersion;
         
         if (metadata.author) envelope.author = "" + metadata.author;
         if (metadata.committer) envelope.committer = "" + metadata.committer;
+        
         if (metadata.timestamp) {
             envelope.timestamp = metadata.timestamp;
 //            if (metadata.timestamp === true) {
@@ -98,6 +113,14 @@ define([
         // return itemReference;
     }
     
+    // Modify the returned object so it has a reference to its enclosing sha256AndLength
+    function reconstructItem(itemReference, jsonText) {
+        var item = JSON.parse(jsonText);
+        // if (!item.revision) item.revision = itemReference;
+        if (!item.__sha256HashAndLength) item.__sha256HashAndLength = itemReference;
+        return item;
+    }
+    
     function pointrel_fetchEnvelope(itemReference, callback) {
         console.log("pointrel_fetchEnvelope", itemReference);
         
@@ -105,7 +128,7 @@ define([
             handleAs: "text"
         }).then(function(data) {
             // OK
-            callback(null, JSON.parse(data));
+            callback(null, reconstructItem(itemReference, data));
         }, function(error) {
             // Error
             console.log("pointrel_fetchEnvelope error", error);
