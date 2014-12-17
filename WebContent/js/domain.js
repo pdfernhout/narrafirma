@@ -62,9 +62,9 @@ define([
     }
     
     function copyDraftPNIQuestionVersionsIntoAnswers(contentPane, model, id, questionOptions, value) {
-        var finalQuestionIDs = ["project_PNIquestions_goal_final", "project_PNIquestions_relationships_final",
-                         "project_PNIquestions_focus_final", "project_PNIquestions_range_final",
-                         "project_PNIquestions_scope_final", "project_PNIquestions_emphasis_final"];
+        var finalQuestionIDs = ["project_pniQuestions_goal_final", "project_pniQuestions_relationships_final",
+                         "project_pniQuestions_focus_final", "project_pniQuestions_range_final",
+                         "project_pniQuestions_scope_final", "project_pniQuestions_emphasis_final"];
         
         var copiedAnswersCount = 0;
         

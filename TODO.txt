@@ -6,8 +6,6 @@ PRIORITY:
 - print story form
 - styling of nested box in grid
 
-Draft answers not copied when press button
-
 Support recommendationTable
 
 Fix how templates list popup has too much scrolling and is not sized well; perhaps start with grid item view pane open?
@@ -288,6 +286,7 @@ DONE Store clustering diagram as an object with properties not just an array of 
 DONE Fix how templates are not splitting up options separated by semicolons
 DONE For all dialogs, look into probable memory leak when closed and they are not destroyed; see conceptMap for an approach that works to clear them
 DONE Fix how templates dialog does not close when insert one
+DONE Draft answers not copied when press button
 
 ======= CYNTHIA
 
