@@ -1,14 +1,12 @@
 "use strict";
 
 define([
-    "js/pointrel20141201Client"
+    "js/pointrel20141201Client",
+    "js/versions"
 ], function(
-    pointrel20141201Client
-) {
-    // TODO: Better error handling popup dialog as a generalized GUI issue
-    
-    var archiveURL = "/cgi-bin/";
-    
+    pointrel20141201Client,
+    versions
+) {  
     // TODO: Fix credentials
     var userID = "anonymous";
     
@@ -19,23 +17,11 @@ define([
     
     // TODO: Fix hardcoded surveyResultHyperdocumentID
     var surveyResultHyperdocumentID = "Test-PNIWorkbook-003-Surveys";
-
-    var projectAnswersContentType = "org.workingwithstories.PNIWorkbook";
-    var projectAnswersContentVersion = "0.1.0";
-    
-    var questionnaireContentType = "org.workingwithstories.Questionnaire";
-    var questionnaireContentVersion = "0.1.0";
-    
-    var questionnaireStatusContentType = "org.workingwithstories.QuestionnaireStatus";
-    var questionnaireStatusContentVersion = "0.1.0";
-    
-    var surveyResultContentType = "org.workingwithstories.PNIWorkbookSurveyResult";
-    var surveyResultContentVersion = "0.1.0";
    
     /* Project Version */
     
     function storeProjectAnswersVersion(projectAnswers, previous, callbackWhenDone) {
-        var metadata = {id: projectAnswersDocumentID, previous: previous, tags: [], contentType: projectAnswersContentType, contentVersion: projectAnswersContentVersion, author: null, committer: userID, timestamp: true};        
+        var metadata = {id: projectAnswersDocumentID, previous: previous, tags: [], contentType: versions.projectAnswersContentType, contentVersion: versions.projectAnswersContentVersion, author: null, committer: userID, timestamp: true};        
         pointrel20141201Client.storeInNewEnvelope(projectAnswers, metadata, function(error, serverResponse) {
             if (error) {
                 console.log("could not write new version:\n" + error);
@@ -73,7 +59,7 @@ define([
     
     function storeSurveyResult(surveyResult, callback) {
         // Store the result
-        var metadata = {id: surveyResult.responseID, tags: [surveyResultHyperdocumentID], contentType: surveyResultContentType, contentVersion: surveyResultContentVersion, author: null, committer: userID, timestamp: true};
+        var metadata = {id: surveyResult.responseID, tags: [surveyResultHyperdocumentID], contentType: versions.surveyResultContentType, contentVersion: versions.surveyResultContentVersion, author: null, committer: userID, timestamp: true};
         pointrel20141201Client.storeInNewEnvelope(surveyResult, metadata, function(error, serverResponse) {
             if (error) {
                 if (callback) callback(error);
@@ -114,7 +100,7 @@ define([
     /* Questionnaire Version */
     
     function storeQuestionnaireVersion(questionnaireID, questionnaire, callback) {
-        var metadata = {id: null, tags: [questionnaireID], contentType: questionnaireContentType, contentVersion: questionnaireContentVersion, author: null, committer: userID, timestamp: true};        
+        var metadata = {id: null, tags: [questionnaireID], contentType: versions.questionnaireContentType, contentVersion: versions.questionnaireContentVersion, author: null, committer: userID, timestamp: true};        
         pointrel20141201Client.storeInNewEnvelope(questionnaire, metadata, function(error, serverResponse) {
             if (error) {
                 console.log("ERROR storeQuestionnaireVersion: could not write new questionnaire:\n" + error);
@@ -142,7 +128,7 @@ define([
     
     // TODO: What if the user's clock is wrong? How to reset status?
     function storeQuestionnaireStatus(questionnaireID, questionnaireStatus, callback) {
-        var metadata = {id: null, tags: ["questionnaireStatus::" + questionnaireID], contentType: questionnaireStatusContentType, contentVersion: questionnaireStatusContentVersion, author: null, committer: userID, timestamp: true};        
+        var metadata = {id: null, tags: ["questionnaireStatus::" + questionnaireID], contentType: versions.questionnaireStatusContentType, contentVersion: versions.questionnaireStatusContentVersion, author: null, committer: userID, timestamp: true};        
         pointrel20141201Client.storeInNewEnvelope(questionnaireStatus, metadata, function(error, serverResponse) {
             if (error) {
                 console.log("ERROR storeQuestionnaireVersion: could not write new questionnaire status:\n" + error);
