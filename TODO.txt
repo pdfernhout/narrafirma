@@ -287,6 +287,7 @@ DONE optimize redrawing for changes in clustering diagram
 DONE add indicator for selected item in clustering diagram 
 DONE Area to right on clustering looks like it should work but does not as circles disappear when maximize window
 DONE Support resizing cluster diagram
+DONE Store clustering diagram as an object with properties not just an array of items
 
 ======= CYNTHIA
 

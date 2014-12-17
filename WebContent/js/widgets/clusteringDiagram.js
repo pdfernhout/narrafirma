@@ -55,8 +55,8 @@ define([
     // TODO: Select and move groups of items
     // TODO: Does surface need to be "destroy"-ed when closing page or replacing contentPane to prevent memory leak?
     
-    var surfaceWidth = 800;
-    var surfaceHeight = 400;
+    var defaultSurfaceWidthInPixels = 800;
+    var defaultSurfaceHeightInPixels = 400;
     
     function uuidFast() {
     	return generateRandomUuid();
@@ -94,21 +94,29 @@ define([
         this.diagramName = diagramName;
         this.idOfWidget = id;
         this.modelForStorage = model;
-        this.items = model.get(this.diagramName);
+        this.diagram = model.get(this.diagramName);
+        
+        // TODO: remove test on Array after demo data gets upgraded
+        if (!this.diagram || this.diagram instanceof Array) {
+            this.diagram = {
+                surfaceWidthInPixels: defaultSurfaceWidthInPixels,
+                surfaceHeightInPixels: defaultSurfaceHeightInPixels,
+                items: this.diagram
+            };
+        }
+        
+        if (!this.diagram.items) {
+            this.diagram.items = [];
+        }
+        
+        console.log("diagram", JSON.stringify(this.diagram, null, 2));
+        
         this.textBox = null;
         this.urlBox = null; 
         this.divForResizing = null;
         this._mainSurface = null;
         this.mainSurface = null;
         this.itemToDisplayObjectMap = {};
-
-        if (!this.items) {
-            console.log("First time loading");
-            this.items = [];
-        } else {
-            console.log("Already loaded");
-            console.log("items", this.items);
-        }
 
         this.setupMainButtons();
 
@@ -155,7 +163,7 @@ define([
         }
         
         var sourceButton = this.newButton("sourceButton", "Diagram Source", function () {
-            this.openSourceDialog(JSON.stringify(this.items));
+            this.openSourceDialog(JSON.stringify(this.diagram, null, 2));
         });
         
         var addButton = this.newButton("addButton", "New item", function () {
@@ -178,11 +186,11 @@ define([
         this.divForResizing = divForResizing;
         var divUUID = "ResizeableCanvasHolder_" + generateRandomUuid(); 
         divForResizing.setAttribute("id", divUUID);
-        divForResizing.setAttribute("style", "width: " + surfaceWidth + "px; height: " + surfaceHeight + "px; border: solid 1px; position: relative");
+        divForResizing.setAttribute("style", "width: " + this.diagram.surfaceWidthInPixels + "px; height: " + this.diagram.surfaceHeightInPixels + "px; border: solid 1px; position: relative");
        
         this.mainContentPane.domNode.appendChild(divForResizing);
         
-        this._mainSurface = gfx.createSurface(divForResizing, surfaceWidth, surfaceHeight);
+        this._mainSurface = gfx.createSurface(divForResizing, this.diagram.surfaceWidthInPixels, this.diagram.surfaceHeightInPixels);
 
         this._mainSurface.whenLoaded(lang.hitch(this, function() {
             // TODO: Maybe need to disable diagram widget until this callback is called?
@@ -209,11 +217,14 @@ define([
     };
     
     ClusteringDiagram.prototype.updateSizeOfCanvas = function() {
-        
         var newWidth = this.divForResizing.clientWidth;
         var newHeight = this.divForResizing.clientHeight;
         console.log("resize!", newWidth, newHeight);
         this._mainSurface.setDimensions(newWidth, newHeight);
+        
+        this.diagram.surfaceWidthInPixels = newWidth;
+        this.diagram.surfaceHeightInPixels = newHeight;
+        this.incrementChangesCount();
     };
 
     ClusteringDiagram.prototype.addItemEditor = function() {
@@ -236,7 +247,7 @@ define([
             }
             widgetSupport.confirm("Confirm removal of: '" + this.lastSelectedItem.text + "'?", lang.hitch(this, function () {
                 this.updateDisplayForChangedItem(this.lastSelectedItem, "delete");
-                removeItemFromArray(this.lastSelectedItem, this.items);
+                removeItemFromArray(this.lastSelectedItem, this.diagram.items);
                 this.clearSelection();
                 this.incrementChangesCount();
             }));
@@ -331,12 +342,12 @@ define([
         // Documentation for ColorPalette says it returns a "Color" but it seems to really return a hex string
         if (bodyColor) item.bodyColor = bodyColor;
         if (!dialogHolder.isExistingItem) {
-            this.items.push(item);
+            this.diagram.items.push(item);
             var displayObject = this.addDisplayObjectForItem(this.mainSurface, item);
         } else {
             this.updateDisplayForChangedItem(item, "update");
         }
-        console.log("items", this.items);
+        console.log("items", this.diagram.items);
         this.incrementChangesCount();
         this.selectItem(item);
     };
@@ -446,9 +457,9 @@ define([
         var sourceText = model.get("sourceText");
         console.log("sourceText", sourceText);
 
-        this.items = JSON.parse(sourceText);
+        this.diagram = JSON.parse(sourceText);
 
-        console.log("parsed", this.items);
+        console.log("parsed diagram", this.diagram);
 
         this.recreateDisplayObjectsForAllItems();
         this.incrementChangesCount();
@@ -516,7 +527,7 @@ define([
         this.mainSurface.clear();
         // console.log("before forEach this:", this);
         var thisObject = this;
-        forEach(this.items, function (index, item) {
+        forEach(this.diagram.items, function (index, item) {
             // console.log("looping over: ", item, "this:", this);
             var displayObject = thisObject.addDisplayObjectForItem(thisObject.mainSurface, item);
         });
@@ -524,7 +535,7 @@ define([
     };
 
     ClusteringDiagram.prototype.saveChanges = function() {
-        this.modelForStorage.set(this.diagramName, this.items);
+        this.modelForStorage.set(this.diagramName, this.diagram);
     };
 
     /*
