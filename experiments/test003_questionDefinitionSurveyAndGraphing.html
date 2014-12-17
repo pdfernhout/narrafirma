@@ -334,31 +334,27 @@ require([
     
     insertQuestionsIntoDiv(createSurveyQuestions, form.containerNode);
     
-    // TODO: Does the dialog itself have to be "destroyed"???
-    
     newButton("OK", form, function() {
       console.log("OK");
-      questionEditDialog.hide();
       questionEditDialogOK(question, questionEditorDiv, form);
-      // The next line is needed to get rid of duplicate IDs for next time the form is opened:
-      form.destroyRecursive();
+      questionEditDialog.hide();
     });
     
     newButton("Cancel", form, function() {
       console.log("Cancel");
       questionEditDialog.hide();
-      // The next line is needed to get rid of duplicate IDs for next time the form is opened:
-      form.destroyRecursive();
     });
 
     questionEditDialog = new Dialog({
       title: "Edit question " + question.index,
       content: form,
-      style: "width: 600px; height 800px; overflow: auto;",
-      onCancel: function() {
-        // Handles close X in corner or escape
-        form.destroyRecursive();
-      }
+      style: "width: 600px; height 800px; overflow: auto;"
+    });
+    
+    // This will free the dialog when we are done with it whether from OK or Cancel
+    questionEditDialog.connect(questionEditDialog, "onHide", function(e) {
+       console.log("destroying questionEditDialog");
+       questionEditDialog.destroyRecursive();
     });
     
     form.startup();
@@ -463,32 +459,28 @@ require([
     var form = new Form();
     
     insertQuestionsIntoDiv(exportedSurveyQuestions, form.containerNode);
-    
-    // TODO: Does the dialog itself have to be "destroyed"???
-    
+ 
     newButton("Submit survey", form, function() {
       console.log("Submit survey");
-      surveyDialog.hide();
       submitSurvey(form);
-      // The next line is needed to get rid of duplicate IDs for next time the form is opened:
-      form.destroyRecursive();
+      surveyDialog.hide();
     });
     
     newButton("Cancel", form, function() {
       console.log("Cancel");
       surveyDialog.hide();
-      // The next line is needed to get rid of duplicate IDs for next time the form is opened:
-      form.destroyRecursive();
     });
 
     surveyDialog = new Dialog({
       title: "Take Survey",
       content: form,
       style: "width: 600px",
-      onCancel: function() {
-        // Handles close X in corner or escape
-        form.destroyRecursive();
-      }
+    });
+    
+    // This will free the dialog when we are done with it whether from OK or Cancel
+    surveyDialog.connect(surveyDialog, "onHide", function(e) {
+       console.log("destroying surveyDialog");
+       surveyDialog.destroyRecursive();
     });
     
     form.startup();

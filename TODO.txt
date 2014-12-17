@@ -101,8 +101,6 @@ Implement countNumberOfVenuesChosen in domain (is this still needed? If not, rem
 Help window displaying HTML instead of alert
 Look at all alerts in code and make into nicer GUI feedback
 
-For all dialogs, look into probable memory leak when closed and they are not destroyed; see conceptMap for an approach that works to clear them
-
 Better and more consistent approach for translation selections for selects, checkboxes, radiobuttons, and maybe other types
 Translate report answers as needed for those types like selections
 Final review of all strings in code looking for TODO translate items or similar
@@ -289,6 +287,7 @@ DONE Area to right on clustering looks like it should work but does not as circl
 DONE Support resizing cluster diagram
 DONE Store clustering diagram as an object with properties not just an array of items
 DONE Fix how templates are not splitting up options separated by semicolons
+DONE For all dialogs, look into probable memory leak when closed and they are not destroyed; see conceptMap for an approach that works to clear them
 
 ======= CYNTHIA
 

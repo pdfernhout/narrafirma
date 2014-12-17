@@ -140,30 +140,26 @@ define([
         
         insertQuestionsIntoDiv(createSurveyQuestions, form.containerNode);
         
-        // TODO: Does the dialog itself have to be "destroyed"???
-        
         widgets.newButton("questionEdit_ok", "OK", form, function() {
             console.log("OK");
-            questionEditDialog.hide();
             questionEditDialogOK(question, questionEditorDiv, form);
-            // The next line is needed to get rid of duplicate IDs for next time the form is opened:
-            form.destroyRecursive();
+            questionEditDialog.hide();
         });
         
         widgets.newButton("questionEdit_cancel", "Cancel", form, function() {
             console.log("Cancel");
             questionEditDialog.hide();
-            // The next line is needed to get rid of duplicate IDs for next time the form is opened:
-            form.destroyRecursive();
         });
 
         questionEditDialog = new Dialog({
             title: "Edit question " + question.index,
-            content: form,
-            onCancel: function() {
-                // Handles close X in corner or escape
-                form.destroyRecursive();
-            }
+            content: form
+        });
+        
+        // This will free the dialog when we are done with it whether from OK or Cancel to avoid a memory leak
+        questionEditDialog.connect(questionEditDialog, "onHide", function(e) {
+            console.log("destroying surveyDialog");
+            questionEditDialog.destroyRecursive(); 
         });
         
         form.startup();

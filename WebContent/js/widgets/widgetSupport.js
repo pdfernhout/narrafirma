@@ -103,10 +103,7 @@ define([
         var dialogContentPane = new ContentPane({id: dialogConfiguration.dialogContentPaneID});
         
         function hideDialog(status) {
-            // TODO: Does the dialog itself have to be "destroyed"???
             dialog.hide();
-            // The next line is needed to get rid of duplicate IDs for next time the form is opened:
-            dialogContentPane.destroyRecursive();
         }
         
         dialogConfiguration.dialogConstructionFunction(dialogContentPane, model, id, options, hideDialog, dialogConfiguration);
@@ -115,12 +112,13 @@ define([
             // TODO: Translate
             title: translate(dialogConfiguration.dialogTitleID),
             style: dialogConfiguration.dialogStyle,
-            content: dialogContentPane,
-            onCancel: function() {
-                // TODO: Confirm closing if have entered data and otherwise don't close...
-                // Handles close X in corner or escape
-                dialogContentPane.destroyRecursive();
-            }
+            content: dialogContentPane
+        });
+        
+        // This will free the dialog when we are done with it whether from OK or Cancel to avoid a memory leak
+        dialog.connect(dialog, "onHide", function(e) {
+            console.log("destroying dialog");
+            dialog.destroyRecursive(); 
         });
                 
         dialog.startup();
