@@ -127,7 +127,7 @@ define([
                 if (error === "No items found for tag") error = "No stored questionanaire could be loaded for " + questionnaireID + " -- have any versions been saved?";
                 return callback(error);
             }
-            callback(null, envelope.content);           
+            callback(null, envelope.content, envelope);           
         });
     }
     
@@ -155,7 +155,7 @@ define([
                 if (error === "No items found for tag") error = "No stored questionanaire status could be loaded for " + questionnaireID + " -- have any versions been saved?";
                 return callback(error);
             }
-            callback(null, envelope.content);           
+            callback(null, envelope.content, envelope);           
         });
     }
     
