@@ -47,18 +47,21 @@ require([
     // TODO: Add page validation
     // TODO: Add translations for GUI strings used here
     
+    var startPage = "page_dashboard";
+
     var currentPage = null;
     var currentPageID = null;
     var selectWidget = null;
+    
+    var currentProjectVersionReference = null; 
+    
     var previousPageButton = null;
     var nextPageButton = null;
     var loadLatestButton = null;
     var loadVersionButton = null;
     var saveButton = null;
-    var startPage = "page_dashboard";
+    var importExportButton = null;
     
-    var currentProjectVersionReference = null; 
-
     function loadLatestClicked(event) {
         console.log("load latest clicked");
                 
@@ -320,6 +323,10 @@ require([
         console.log("debug domain.projectData", domain.projectData);
     }
     
+    function importExportClicked() {
+        console.log("importExportClicked");
+    }
+    
     // TODO: somehow unify this with code in widget-questions-table?
     function newSpecialSelect(id, options, addToDiv) {
         var select = new Select({
@@ -420,11 +427,14 @@ require([
         
         nextPageButton = utility.newButton("button_nextPage", null, "navigationDiv", nextPageClicked);
         nextPageButton.set("iconClass", "rightButtonImage");
-        
+
+        saveButton = utility.newButton("button_save", null, "navigationDiv", saveClicked);
+
         loadLatestButton = utility.newButton("button_loadLatest", null, "navigationDiv", loadLatestClicked);
         loadVersionButton = utility.newButton("button_loadVersion", null, "navigationDiv", loadVersionClicked);
-        saveButton = utility.newButton("button_save", null, "navigationDiv", saveClicked);
-        
+
+        importExportButton = utility.newButton("button_importExport", null, "navigationDiv", importExportClicked);
+
         var debugButton = utility.newButton("button_debug", null, "navigationDiv", debugButtonClicked);
         
         // Setup the first page

@@ -23,6 +23,7 @@ define({
     button_loadVersion: "Load version",
     button_save: "Save",
     button_debug: "Debug",
+    button_importExport: "Import/Export",
     
     // Grid buttons
     button_OK: "OK",
