@@ -1,27 +1,35 @@
 ==== NarraKit TODO list:
 
-PRIORITY:
-- recommendations table working
-- make whole planning phase work
-- print story form
-- styling of nested box in grid
+PRIORITY
+- survey multiple stories
+- catalysis
 
+RECOMMENDATIONS
 Support recommendationTable
 
+TEMPLATES
 Fix how templates list popup has too much scrolling and is not sized well; perhaps start with grid item view pane open?
+Improve template list generation tool to support storyCollectionActivities and sensemakingActivities
 
+SURVEY QUESTIONS
 Fix how selected eliciting question in select box is not entirely visible
 Support adding more than one story in survey form GUI
 Remove redundant code when calculating survey questions for story and name in survey and story browser
 
+BROWSING
 Fix how story browser browses stories for separation of participant info from stories
 Should there be a separate participant info browser or is that handled by story browser? If "story browser" does that, may need to rename story browser?
 Fix how graph browser shows graphs for separation of participant info from stories
+Update story browser when load latest stories from server (without need to press Filter button again)
 
+IDs
 Add support for short names (ids) for eliciting questions
 Add support for short names (ids) for all options for survey questions
 Improve how options are specified for questions in question designer rather than use text box
+Make sure that short name IDs entered by user when defining questions are unique among themselves and don't have a leading underscore (or at least aren't "_id")
+Ensure short name IDs entered by user do not conflict with automatically created ones or story text and story name
 
+SURVEY GENERAL
 Figure out what URLs will look like for administration/authoring vs. survey taking (multiple?) vs. (maybe) project
 Settle on some authentication approach for authoring/administration
 Figure out GUI for "finalizing" a survey as opposed to storing current version when enable survey
@@ -29,13 +37,20 @@ Have survey page use special server method so does not use Pointrel system direc
 Record IP address of survey or use another means to see if someone taking it multiple times
 Ensure the survey taking app does no need to load entire domain from project editor app or load grid or story browser or other modules it does not really need.
 
-Think through how project is loaded and saved, especially what happens if multiple windows or users edit the same project
-
+EXPORT/IMPORT
 Add export and import buttons for project
 Add export button for survey results
 Maybe import button for survey results
 Add way to clear out or reset old survey results? Or maybe partition them by survey?
 
+LOAD/SAVE
+Think through how project is loaded and saved, especially what happens if multiple windows or users edit the same project
+Improve loading and saving of project so can look at versions
+Confirm reloading or closing page if have unsaved data
+Autosave, perhaps based on time or based on changing pages
+Improve feedback when there are no project versions or survey results; maybe distinguish between an error and nothing being saved yet
+
+LOGGING
 Think through logging in the server, perhaps using a library
 Ensure useful server logs are kept
 Fix issue with PNIWorkbookServer.conf that it uses logs directory that is not server-data/logs
@@ -43,31 +58,34 @@ Think through logging in the client, perhaps using a library
 Client application could report errors to server or another service
 Client application could report usage metrics to server or another service
 
+PRINTING
 Implement printStoryForm in domain buttonClicked (what do do about entering multiple stories?)
 
-Improve template list generation tool to support storyCollectionActivities and sensemakingActivities
-
+STORY THEMER
 Support storyThemer -- a widget where people look at each story, give it 1-3 themes, then merge the themes into smaller numbers of themes
 
+GRAPH BROWSER
 Support graphBrowser "add to observation" button
 Support graphBrowser contingency table with statistical results
 Support graphBrowser standard deviation and mean for histograms
 Support graphBrowser common maximum for multiple histograms
 Support graphBrowser displaying related stories for visible data point or bar or line
 
+TRENDS
 Support trendsReport -- shows text and graphs in report based on top differences in statistical tests,  has "add to observation" button
 
+CLUSTERING
 Support clusterSpace -- used in catalysis to cluster interpretations it is a graphical OR grid way of putting like with like, the option tells you what is to be clustered
+Support multiple item selection in clustering diagram
 
+OBSERVATION LIST
 Support observationsList -- used to list all the previously made observations
 
-Implement exportPresentationOutline in domain buttonClicked
-
+VENUES
 Venues table needs fixing -- one for each participant group
 Should "venues" name be changed, as could be confusing as to meaning "location"? But "venue" can also mean "forum" or "soapbox" so maybe OK?
 
-General notes should go after dashboard for each section
-
+CATALYSIS
 Catalysis -- story browser needs two buttons that pull up pages to put things in lists: addToObservation:"page_addToObservation";addToExcerpt:"page_addToExcerpt"
 Need to be able to select text in existing story to AddToExcerpts
 Need to figure out some way to represent RESULTS in observations (story browser queries/results, graphs, statistical tests)
@@ -76,43 +94,40 @@ Support accumulatedItemsGrid -- for results selected to include in an observatio
 Support annotationsGrid -- for results, excerpts, or interpretations linked to a perspective
 Support storiesList -- for choosing a resonant story
 Think more about catalysis part
+Implement exportPresentationOutline in domain buttonClicked
 
+GRID
 When viewing grid data, it should not look editable
-Readonly version of checkboxes and radiobutton widgets, used by grid (assuming that is how the read only data is presented)
+Read-only version of checkboxes and radiobutton widgets, used by grid (assuming that is how the read only data is presented)
 Popup for add item from grid -- should have better label in title as to what type of thing is added
+CSS styling of nested box in grid
+Uncomment and test tooltip code in grid table
+Get tooltips working in dialogs (maybe Dojo bug?)
 
+CONFIGURATION
+Add project configuration page?
+
+REPORTS
 Improve reports so look nice
+Make whole planning phase work (including report)
 
-Update story browser when load latest stories from server (without need to press Filter button again)
-
-Improve loading and saving of project so can look at versions
-Confirm reloading or closing page if have unsaved data
-Autosave, perhaps based on time or based on changing pages
-
-Improve feedback when there are no project versions or survey results; maybe distinguish between an error and nothing being saved yet
-
-Make sure that short name IDs entered by user when defining questions are unique among themselves and don't have a leading underscore (or at least aren't "_id")
-Ensure short name IDs entered by user do not conflict with automatically created ones or story text and story name
-
+DASHBOARD
 Main Dashboard
 Decide or distinguish between between an initial explanation page versus a first big dashboard
 Implement countNumberOfVenuesChosen in domain (is this still needed? If not, remove stub code for it.)
+General notes should go after dashboard for each section
 
+ALERTS
 Help window displaying HTML instead of alert
 Look at all alerts in code and make into nicer GUI feedback
 
+TRANSLATION
 Better and more consistent approach for translation selections for selects, checkboxes, radiobuttons, and maybe other types
 Translate report answers as needed for those types like selections
 Final review of all strings in code looking for TODO translate items or similar
-
-Support imageUploader
-Support storyBrowserCount
-
-Way to retrieve data about project participant groups [Is this still relevant?]
-Implement showHideCollectedStories in domain buttonClicked [Not sure what this means now or if still relevant]
-
 Review nls/messages_legacy_ideas.js and delete it after moving any useful content to design.
 
+DESIGN FILE
 Resolve these issues from conversion or add them to list of types not needing a short name:
 No short name for type: storyThemer field: themeStories text: Theme stories
 No short name for type: trendsReport field: reviewTrends_display text: Trends report
@@ -124,12 +139,11 @@ No short name for type: annotationsGrid field: perspective_linkedResultsList tex
 No short name for type: annotationsGrid field: perspective_linkedExcerptsList text: Excerpts linked to this perspective
 No short name for type: annotationsGrid field: perspective_linkedInterpretationsList text: Interpretations linked to this perspective
 
-Uncomment and test tooltip code in grid table
-Get tooltips working in dialogs (maybe Dojo bug?)
-
-Support multiple item selection in clustering diagram
-
-Add project configuration page?
+UNSURE
+Way to retrieve data about project participant groups [Is this still relevant?]
+Implement showHideCollectedStories in domain buttonClicked [Not sure what this means now or if still relevant]
+Support imageUploader
+Support storyBrowserCount
 
 DONE Checkboxes for multiple choices
 DONE Tab container sizing to full page
