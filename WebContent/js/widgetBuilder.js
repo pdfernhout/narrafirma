@@ -118,6 +118,11 @@ define([
     /////////////
 
     function createQuestionContentPaneWithPrompt(contentPane, id) {
+        // triangle&#8227; 
+        // double arrow &#187;
+        // Arrow with hook &#8618;
+        // Three rightwards arrows &#21F6; (doesn't work)
+        // "*** " + 
         var questionText = translate(id + "::prompt", "ERROR: missing text for: " + id + "::prompt");
         var questionContentPane = new ContentPane({
         });
