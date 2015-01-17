@@ -404,7 +404,6 @@ define([
         // console.log("labels", labels, labels.length);
         
         var slider = new HorizontalSlider({
-            id: id,
             minimum: 0,
             maximum: 100,
             discreteValues: 101,
@@ -440,7 +439,6 @@ define([
 
         // TODO: Issue -- should return a new sort of component that can be placed an includes the slider and the rules and labels
         var sliderContentPane = new ContentPane({
-            id: id + "_content",
             content: panelDiv
         });
 
