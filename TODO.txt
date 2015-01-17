@@ -12,7 +12,6 @@ Fix how templates list popup has too much scrolling and is not sized well; perha
 Improve template list generation tool to support storyCollectionActivities and sensemakingActivities
 
 SURVEY QUESTIONS
-Fix how selected eliciting question in select box is not entirely visible
 Support adding more than one story in survey form GUI
 Remove redundant code when calculating survey questions for story and name in survey and story browser
 
@@ -414,4 +413,6 @@ DONE Change "Sensemaking sessions" and all other too short labels for lists near
 DONE Every question must have short name - except labels and complicated widgets (Cynthia)
 DONE Story collection sessions -- change question to label (Cynthia)
 </Out of order Cynthia>
+DONE Fix how selected eliciting question in select box is not entirely visible
+DONE Indenting question entry areas under question text using CSS for questionInternal and questionExternal classes
 
