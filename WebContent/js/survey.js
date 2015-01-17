@@ -55,6 +55,22 @@ define([
         // TODO: For editor app, maybe should load latest results from server back at this point? Because will not have new survey...
     }
     
+   function newStoryEntry(contentPane, allStoryQuestions, participantID, surveyResultsWithModels) {
+        
+        var surveyPane = new ContentPane({});
+        
+        var storyQuestionsModel = new Stateful();
+        storyQuestionsModel.set("__type", "org.workingwithstories.Story");
+        storyQuestionsModel.set("_storyID", uuid());
+        storyQuestionsModel.set("_participantID", participantID);
+        surveyResultsWithModels.stories.push(storyQuestionsModel);
+        
+        widgetBuilder.addQuestions(allStoryQuestions, surveyPane, storyQuestionsModel);
+        
+        contentPane.appendChild(surveyPane.domNode);
+        surveyPane.startup();
+    }
+    
     function buildSurveyForm(questionnaire, doneCallback, includeCancelButton) {  
         console.log("buildSurveyForm questions", questionnaire);
         
@@ -74,11 +90,14 @@ define([
         
         // TODO: What if these IDs for storyText and storyName are not unique?
         var initialStoryQuestions = [];
+        initialStoryQuestions.push({id: "__survey_" + "questionHeader", shortName: "questionHeader", prompt: "Story", type: "header", options: []});
         initialStoryQuestions.push({id: "__survey_" + "elicitingQuestion", shortName: "elicitingQuestion", prompt: "Please choose a question to which you would like to respond:", type: "radiobuttons", options: elicitingQuestionPrompts});
         initialStoryQuestions.push({id: "__survey_" + "storyText", shortName: "storyText", prompt: "Please enter your response in the box below:", type: "textarea", options:[]});
         initialStoryQuestions.push({id: "__survey_" + "storyName", shortName: "storyName", prompt: "Please give your story a name", type: "text", options:[]});
         
         var allStoryQuestions = initialStoryQuestions.concat(questionnaire.storyQuestions);
+        
+        questionnaire.participantQuestions.unshift({id: "__survey_" + "prticipantHeader", shortName: "participantHeader", prompt: "About you", type: "header", options: []});
         
         // TODO: Handle other implicit questions
         translate.addExtraTranslationsForQuestions(startQuestions);
@@ -105,18 +124,18 @@ define([
         participantDataModel.set("__type", "org.workingwithstories.ParticipantData");
         participantDataModel.set("_participantID", participantID);
         surveyResultsWithModels.participantData = participantDataModel;
-        
-        var storyQuestionsModel = new Stateful();
-        storyQuestionsModel.set("__type", "org.workingwithstories.Story");
-        storyQuestionsModel.set("_storyID", uuid());
-        storyQuestionsModel.set("_participantID", participantID);
-        surveyResultsWithModels.stories.push(storyQuestionsModel);
 
         var contentPane = form.containerNode;
         
-        // TODO: Need to handle multiple stories somehow
         widgetBuilder.addQuestions(startQuestions, contentPane, participantDataModel);
-        widgetBuilder.addQuestions(allStoryQuestions, contentPane, storyQuestionsModel);
+
+        // TODO: Need to handle multiple stories somehow
+        
+        newStoryEntry(contentPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
+        newStoryEntry(contentPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
+        newStoryEntry(contentPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
+        newStoryEntry(contentPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
+        
         widgetBuilder.addQuestions(questionnaire.participantQuestions, contentPane, participantDataModel);
         widgetBuilder.addQuestions(endQuestions, contentPane, participantDataModel);
         
