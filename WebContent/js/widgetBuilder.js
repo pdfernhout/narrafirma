@@ -7,6 +7,7 @@ define([
         "js/widgets/clusteringDiagram",
         "dojo/dom",
         "js/domain",
+        'dojo/dom-class',
         "dojo/dom-construct",
         "dojo/dom-style",
         "exports",
@@ -46,6 +47,7 @@ define([
         clusteringDiagram,
         dom,
         domain,
+        domClass,
         domConstruct,
         domStyle,
         exports,
@@ -119,6 +121,7 @@ define([
         var questionText = translate(id + "::prompt", "ERROR: missing text for: " + id + "::prompt");
         var questionContentPane = new ContentPane({
         });
+        domClass.add(questionContentPane.domNode, "questionExternal");
         questionContentPane.setAttribute("data-js-question-id", id);
         // questionContentPane.setAttribute("data-js-question-type", question.type);
         if (questionText) {
@@ -130,7 +133,14 @@ define([
         }
         questionContentPane.placeAt(contentPane);
         questionContentPane.startup();
-        return questionContentPane;
+        
+        var internalContentPane = new ContentPane({
+        });
+        domClass.add(internalContentPane.domNode, "questionInternal");
+        internalContentPane.placeAt(questionContentPane);
+        internalContentPane.startup();
+        
+        return internalContentPane;
     }
     
     ////////////////

@@ -56,6 +56,10 @@ form {
     border-bottom: 2px solid #ccc;
 }
 
+.questionInternal {
+    margin-left: 20px;
+}
+
 .wwsButtonImage {
 	background-image: url(../images/WWS_BookCover_front_tiny.png);
     background-repeat: no-repeat;
@@ -145,7 +149,6 @@ form {
   border-width: thin;
   
 }
-
 
 .recommendationHigh {
     background-color: green;
