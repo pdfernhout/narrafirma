@@ -44,10 +44,12 @@ define([
             var id = this.id;
             var self = this;
             var div = domConstruct.create("div");
-
-            div.appendChild(domConstruct.toDom('<br>'));
+            
+            var first = true;
             
             array.forEach(this.options, function (option) {
+                if (!first) div.appendChild(domConstruct.toDom('<br>'));
+                first = false;
                 // div.appendChild(domConstruct.toDom('&nbsp;&nbsp;&nbsp;&nbsp;'));
                 var choiceID = id + "_choice_" + option.value;
                 var isChecked = (self.value === option.value);
@@ -66,7 +68,7 @@ define([
                 });
                 radioButton.startup();
                 self.radioButtons[option.value] = radioButton;
-                div.appendChild(domConstruct.toDom('<label for="' + choiceID + '">' + option.label + '</label><br><br>'));
+                div.appendChild(domConstruct.toDom('<label for="' + choiceID + '">' + option.label + '</label><br>'));
             });
             
             this.domNode = div;
