@@ -73,13 +73,16 @@ define([
         }
         
         // TODO: What if these IDs for storyText and storyName are not unique?
-        questionnaire.storyQuestions.unshift({id: "__survey_" + "storyName", shortName: "storyName", prompt: "Please give your story a name", type: "text", options:[]});
-        questionnaire.storyQuestions.unshift({id: "__survey_" + "storyText", shortName: "storyText", prompt: "Please enter your response to the question above in the space below", type: "textarea", options:[]});
-        questionnaire.storyQuestions.unshift({id: "__survey_" + "elicitingQuestion", shortName: "elicitingQuestion", prompt: "Please choose a question you would like to respond to", type: "select", options: elicitingQuestionPrompts});
+        var initialStoryQuestions = [];
+        initialStoryQuestions.push({id: "__survey_" + "elicitingQuestion", shortName: "elicitingQuestion", prompt: "Please choose a question you would like to respond to", type: "select", options: elicitingQuestionPrompts});
+        initialStoryQuestions.push({id: "__survey_" + "storyText", shortName: "storyText", prompt: "Please enter your response to the question above in the space below", type: "textarea", options:[]});
+        initialStoryQuestions.push({id: "__survey_" + "storyName", shortName: "storyName", prompt: "Please give your story a name", type: "text", options:[]});
+        
+        var allStoryQuestions = initialStoryQuestions.concat(questionnaire.storyQuestions);
         
         // TODO: Handle other implicit questions
         translate.addExtraTranslationsForQuestions(startQuestions);
-        translate.addExtraTranslationsForQuestions(questionnaire.storyQuestions);
+        translate.addExtraTranslationsForQuestions(allStoryQuestions);
         translate.addExtraTranslationsForQuestions(questionnaire.participantQuestions);
         translate.addExtraTranslationsForQuestions(endQuestions);
         
@@ -113,7 +116,7 @@ define([
         
         // TODO: Need to handle multiple stories somehow
         widgetBuilder.addQuestions(startQuestions, contentPane, participantDataModel);
-        widgetBuilder.addQuestions(questionnaire.storyQuestions, contentPane, storyQuestionsModel);
+        widgetBuilder.addQuestions(allStoryQuestions, contentPane, storyQuestionsModel);
         widgetBuilder.addQuestions(questionnaire.participantQuestions, contentPane, participantDataModel);
         widgetBuilder.addQuestions(endQuestions, contentPane, participantDataModel);
         
