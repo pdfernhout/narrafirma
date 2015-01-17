@@ -74,7 +74,7 @@ define([
         
         // TODO: What if these IDs for storyText and storyName are not unique?
         var initialStoryQuestions = [];
-        initialStoryQuestions.push({id: "__survey_" + "elicitingQuestion", shortName: "elicitingQuestion", prompt: "Please choose a question you would like to respond to", type: "select", options: elicitingQuestionPrompts});
+        initialStoryQuestions.push({id: "__survey_" + "elicitingQuestion", shortName: "elicitingQuestion", prompt: "Please choose a question you would like to respond to", type: "radiobuttons", options: elicitingQuestionPrompts});
         initialStoryQuestions.push({id: "__survey_" + "storyText", shortName: "storyText", prompt: "Please enter your response to the question above in the space below", type: "textarea", options:[]});
         initialStoryQuestions.push({id: "__survey_" + "storyName", shortName: "storyName", prompt: "Please give your story a name", type: "text", options:[]});
         
