@@ -135,8 +135,8 @@ define([
         return form;
     }
 
-    function takeSurvey(questionnaire) {  
-        console.log("takeSurvey questionnaire", questionnaire);
+    function openSurveyDialog(questionnaire) {  
+        console.log("openSurveyDialog questionnaire", questionnaire);
         
         var surveyDialog;
         var form;
@@ -171,7 +171,7 @@ define([
     }
 
     return {
-        takeSurvey: takeSurvey,
+        openSurveyDialog: openSurveyDialog,
         buildSurveyForm: buildSurveyForm,
         getQuestionnaireFromServer: getQuestionnaireFromServer,
         getStatusFromServer: getStatusFromServer

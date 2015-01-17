@@ -459,12 +459,12 @@ require([
         // widgetGridTable.resizeGridsKludge();
     }
     
-    function takeSurvey() {
+    function openSurveyDialog() {
         // TODO: What version of questionnaire should be used? Should it really be the latest one? Or the one active on server?
         console.log("domain.projectData", domain.projectData);
         var questionnaire = domain.getCurrentQuestionnaire();
         
-        survey.takeSurvey(questionnaire);
+        survey.openSurveyDialog(questionnaire);
     }
     
     function startup() {
@@ -478,7 +478,7 @@ require([
 
         // Callback for this button
         // TODO: Temp for testing
-        domain.buttonFunctions.enterSurveyResult = takeSurvey;
+        domain.buttonFunctions.enterSurveyResult = openSurveyDialog;
         domain.buttonFunctions.updateQuestionsForPageChangeCallback = updatePagesForDomainValueChange;
         
         // Call the main function
