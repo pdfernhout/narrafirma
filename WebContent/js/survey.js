@@ -119,9 +119,9 @@ define([
         console.log("buildSurveyForm questions", questionnaire);
         
         var wizardPane = new StackContainer({
-            style: "width: 800px; height: 700px;",
-            // style: "width: 95%; height: 95%;",
-            //nextButtonLabel: "Go on"
+            // style: "width: 800px; height: 700px;",
+            style: "width: 100%; height: 100%;",
+            doLayout: false
         });
         
         surveyDiv.appendChild(wizardPane.domNode);

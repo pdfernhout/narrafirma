@@ -425,4 +425,4 @@ DONE Story collection sessions -- change question to label (Cynthia)
 DONE Fix how selected eliciting question in select box is not entirely visible
 DONE Indenting question entry areas under question text using CSS for questionInternal and questionExternal classes
 DONE Support adding more than one story in survey form GUI
-
+DONE Look into Dojo resizing bug in Wizard and StackedContainer when at 100% size and it grows height (seems to be fixed if use "doLayout: false"); comment out PDF debugging code in dijit/layout/_LayooutWidget.js
