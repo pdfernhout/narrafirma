@@ -178,11 +178,14 @@ define([
         surveyResultsWithModels.participantData = participantDataModel;
 
         var startPane = new ContentPane();
+        
         widgetBuilder.addQuestions(startQuestions, startPane.containerNode, participantDataModel);
+        
         utility.newButton(undefined, "button_nextPage", startPane, function() {
             console.log("button_nextPage");
             wizardPane.forward();
         });
+        
         wizardPane.addChild(startPane);
         startPane.startup();
         
@@ -194,35 +197,28 @@ define([
         //newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
         
         var participantPane = new ContentPane();
+        
         widgetBuilder.addQuestions(questionnaire.participantQuestions, participantPane.containerNode, participantDataModel);
-        wizardPane.addChild(participantPane);
+        
         utility.newButton(undefined, "button_previousPage", participantPane, function() {
             console.log("button_previousPage");
             wizardPane.back();
         });
         
-        utility.newButton(undefined, "button_nextPage", participantPane, function() {
-            console.log("button_nextPage");
-            wizardPane.forward();
-        });
-        participantPane.startup();
-        
-        var endPane = new ContentPane();
-        widgetBuilder.addQuestions(endQuestions, endPane.containerNode, participantDataModel);
-        
-        utility.newButton(undefined, "button_previousPage", endPane, function() {
-            console.log("button_previousPage");
-            wizardPane.back();
-        });
-        
-        utility.newButton(undefined, "surveySubmit", endPane, function() {
+        utility.newButton(undefined, "surveySubmit", participantPane, function() {
             console.log("Submit survey");
             submitSurvey(surveyResultsWithModels);
             if (doneCallback) doneCallback("submitted");
         });
         
+        wizardPane.addChild(participantPane);
+        participantPane.startup();
+        
+        var endPane = new ContentPane();
+        widgetBuilder.addQuestions(endQuestions, endPane.containerNode, participantDataModel);
+        
         if (includeCancelButton) {
-            utility.newButton(undefined, "surveyCancel", endPane, function() {
+            utility.newButton(undefined, "surveyCancel", wizardPane, function() {
                 console.log("Cancel");
                 if (doneCallback) doneCallback("cancelled");
             });

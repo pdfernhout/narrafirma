@@ -13,16 +13,15 @@ Improve template list generation tool to support storyCollectionActivities and s
 
 SURVEY QUESTIONS
 Remove redundant code when calculating survey questions for story and name in survey and story browser
+Survey - validation on picking question, entering story, entering title
+Survey - checkbox for is question answer required (maybe later)
+Survey - start page required (what do do if nothing entered)
+Survey - improve styling on radio buttons for question or alternative approach (maybe later)
 Survey - delete button w/confirm
 Survey - reorder story numbers
 Survey - can't delete last story
 Survey - maximum number stories (maybe later)
 Survey - back button in browser -- deal with so don't lose data
-Survey - submit button on participant info
-Survey - validation on picking question
-Survey - checkbox for is question answer required (maybe later)
-Survey - start page required (what do do if nothing entered)
-Survey - improve styling on radio buttons for question or alternative approach (maybe later)
 
 SURVEY GENERAL
 Figure out what URLs will look like for administration/authoring vs. survey taking (multiple?) vs. (maybe) project
@@ -426,3 +425,4 @@ DONE Fix how selected eliciting question in select box is not entirely visible
 DONE Indenting question entry areas under question text using CSS for questionInternal and questionExternal classes
 DONE Support adding more than one story in survey form GUI
 DONE Look into Dojo resizing bug in Wizard and StackedContainer when at 100% size and it grows height (seems to be fixed if use "doLayout: false"); comment out PDF debugging code in dijit/layout/_LayooutWidget.js
+DONE Survey - submit button on participant info
