@@ -38,11 +38,10 @@ require([
                 return;
             }
             console.log("got questionnaire from server", questionnaireID, questionnaire);
-            var form = survey.buildSurveyForm(questionnaire, finishedSurvey, false); 
             
             var surveyDiv = dom.byId("surveyDiv");
-            surveyDiv.appendChild(form.containerNode);
-            
+            var form = survey.buildSurveyForm(surveyDiv, questionnaire, finishedSurvey, false); 
+
             // turn off startup "please wait" display
             document.getElementById("startup").style.display = "none";
 

@@ -12,7 +12,9 @@ define([
     "dijit/layout/ContentPane",
     "dijit/Dialog",
     "dijit/form/Form",
-    "dojo/Stateful"
+    "dojo/Stateful",
+    "dojox/widget/Wizard",
+    "dojox/widget/WizardPane"
 ], function(
     domConstruct,
     getPlainValue,
@@ -25,7 +27,9 @@ define([
     ContentPane,
     Dialog,
     Form,
-    Stateful
+    Stateful,
+    Wizard,
+    WizardPane
 ){
     // TODO: Replace use of storage with direct calls to server to get questionnaire and submit survey
     
@@ -55,9 +59,9 @@ define([
         // TODO: For editor app, maybe should load latest results from server back at this point? Because will not have new survey...
     }
     
-   function newStoryEntry(contentPane, allStoryQuestions, participantID, surveyResultsWithModels) {
+   function newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels) {
         
-        var surveyPane = new ContentPane({});
+        var surveyPane = new WizardPane();
         
         var storyQuestionsModel = new Stateful();
         storyQuestionsModel.set("__type", "org.workingwithstories.Story");
@@ -67,13 +71,21 @@ define([
         
         widgetBuilder.addQuestions(allStoryQuestions, surveyPane, storyQuestionsModel);
         
-        contentPane.appendChild(surveyPane.domNode);
+        wizardPane.addChild(surveyPane);
         surveyPane.startup();
     }
     
-    function buildSurveyForm(questionnaire, doneCallback, includeCancelButton) {  
+    function buildSurveyForm(surveyDiv, questionnaire, doneCallback, includeCancelButton) {  
         console.log("buildSurveyForm questions", questionnaire);
         
+        var wizardPane = new Wizard({
+            style: "width: 800px; height: 700px;",
+            // style: "width: 95%; height: 95%;",
+            //nextButtonLabel: "Go on"
+        });
+        
+        surveyDiv.appendChild(wizardPane.domNode);
+       
         var startQuestions = [];
         if (questionnaire.title) startQuestions.push({id: "__survey-local_" + "title", shortName: "title", prompt: questionnaire.title, type: "header", options:[]});
         if (questionnaire.startText) startQuestions.push({id: "__survey-local_" + "startText", shortName: "startText", prompt: questionnaire.startText, type: "label", options:[]});
@@ -105,8 +117,8 @@ define([
         translate.addExtraTranslationsForQuestions(questionnaire.participantQuestions);
         translate.addExtraTranslationsForQuestions(endQuestions);
         
-        var form = new Form();
-        form.set("style", "width: 800px; height 800px; overflow: auto;");
+        //var form = new Form();
+        //form.set("style", "width: 800px; height 800px; overflow: auto;");
         
         timestampStart = new Date();
         
@@ -125,36 +137,47 @@ define([
         participantDataModel.set("_participantID", participantID);
         surveyResultsWithModels.participantData = participantDataModel;
 
-        var contentPane = form.containerNode;
+        var startPane = new WizardPane();
+        widgetBuilder.addQuestions(startQuestions, startPane.containerNode, participantDataModel);
+        wizardPane.addChild(startPane);
+        startPane.startup();
         
-        widgetBuilder.addQuestions(startQuestions, contentPane, participantDataModel);
-
         // TODO: Need to handle multiple stories somehow
         
-        newStoryEntry(contentPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
-        newStoryEntry(contentPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
-        newStoryEntry(contentPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
-        newStoryEntry(contentPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
+        newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
+        newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
+        newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
+        newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
         
-        widgetBuilder.addQuestions(questionnaire.participantQuestions, contentPane, participantDataModel);
-        widgetBuilder.addQuestions(endQuestions, contentPane, participantDataModel);
+        var participantPane = new WizardPane();
+        widgetBuilder.addQuestions(questionnaire.participantQuestions, participantPane.containerNode, participantDataModel);
+        wizardPane.addChild(participantPane);
+        participantPane.startup();
         
-        utility.newButton(undefined, "surveySubmit", form, function() {
+        var endPane = new WizardPane();
+        widgetBuilder.addQuestions(endQuestions, endPane.containerNode, participantDataModel);
+        
+        utility.newButton(undefined, "surveySubmit", endPane, function() {
             console.log("Submit survey");
-            submitSurvey(surveyResultsWithModels, form);
+            submitSurvey(surveyResultsWithModels);
             if (doneCallback) doneCallback("submitted");
         });
         
         if (includeCancelButton) {
-            utility.newButton(undefined, "surveyCancel", form, function() {
+            utility.newButton(undefined, "surveyCancel", endPane, function() {
                 console.log("Cancel");
                 if (doneCallback) doneCallback("cancelled");
             });
         }
         
-        form.startup();
+        wizardPane.addChild(endPane);
+        endPane.startup();
         
-        return form;
+        // form.startup();
+        wizardPane.startup();
+        wizardPane.resize();
+        
+        return wizardPane;
     }
 
     function openSurveyDialog(questionnaire) {  
@@ -166,12 +189,15 @@ define([
         function hideSurveyDialog(status) {
             surveyDialog.hide();
         }
+        
+        var contentPane = new ContentPane();
+        contentPane.startup();
 
-        form = buildSurveyForm(questionnaire, hideSurveyDialog, true);
+        form = buildSurveyForm(contentPane.containerNode, questionnaire, hideSurveyDialog, true);
    
         surveyDialog = new Dialog({
             title: "Take Survey",
-            content: form
+            content: contentPane
         });
         
         // This will free the dialog when we are done with it whether from OK or Cancel to avoid a memory leak
