@@ -43,7 +43,8 @@ function newButton(label, addToDiv, callback) {
     if (addToDiv) {
         button.placeAt(addToDiv);
     }
-    // TODO: Is startup call really needed here?
+    
+    // Startup is needed here as for this file, the button is added immediately to the visual hierarchy
     button.startup();
     return button.domNode;
 }

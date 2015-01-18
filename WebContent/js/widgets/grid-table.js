@@ -165,7 +165,6 @@ define([
         
         itemContentPane.set("style", "background-color: #C0C0C0; border: 0.25em solid " + borderColor + "; margin: 1em; display: block");
         
-        form.startup();
         resizeGridsKludge();
         
         updateGridButtonsForSelectionAndForm(grid);
@@ -399,8 +398,6 @@ define([
             pagePane.addChild(grid);
         }
         
-        grid.startup();
-                
         var listContentPane = new ContentPane({
             // title: pseudoQuestion.text
         });
@@ -411,8 +408,6 @@ define([
         } else {
             pagePane.addChild(listContentPane);
         }
-        
-        listContentPane.startup();
         
         var pane = listContentPane.containerNode;
         
@@ -491,8 +486,6 @@ define([
         
         itemContentPane.set("style", "background-color: #C0C0C0; border: 0.5em solid red; margin-left: 2em; display: none");
         
-        itemContentPane.startup();
-
         // Kludge to support dgrid header fix as otherwise header not always sized correctly
         allGrids.push(grid);
         console.log("adding grid to kludge array", grid, allGrids);

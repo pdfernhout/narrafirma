@@ -428,3 +428,4 @@ DONE Look into Dojo resizing bug in Wizard and StackedContainer when at 100% siz
 DONE Survey - submit button on participant info
 DONE Survey - improve display of title
 DONE Survey - Improve how end panel is displayed
+DONE Remove unneeded startup calls that may be slowing down page loading: http://dojotoolkit.org/reference-guide/1.10/dijit/layout.html#id8

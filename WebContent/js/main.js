@@ -218,7 +218,7 @@ require([
         
        // console.log("about to place pane", id);
        // Dojo seems to require these pages be in the visual hierarchy before some components like grid that are added to them are have startUp called.
-       // Otherwise the grid header is not sized correctly and will be overvritten by data
+       // Otherwise the grid header is not sized correctly and will be overwritten by data
        // This is as opposed to what one might think would reduce resizing and redrawing by adding the page only after components are added
        pagePane.placeAt("pageDiv");
         
@@ -354,6 +354,9 @@ require([
         homeButton.set("showLabel", false);
         // homeButton.set("iconClass", "dijitEditorIcon dijitEditorIconOutdent");
         homeButton.set("iconClass", "homeButtonImage");
+        // Buttons in this file must have startup called because they are each being added directly to the live visual hierarchy
+        // This is as opposed to being added to some container that will have startup called on it later or already is running after startup was called
+        homeButton.startup();
         
         for (var pageKey in allPages) {
             if (!allPages.hasOwnProperty(pageKey)) continue;
@@ -424,18 +427,25 @@ require([
         
         previousPageButton = utility.newButton("button_previousPage", null, "navigationDiv", previousPageClicked);
         previousPageButton.set("iconClass", "leftButtonImage");
+        previousPageButton.startup();
         
         nextPageButton = utility.newButton("button_nextPage", null, "navigationDiv", nextPageClicked);
         nextPageButton.set("iconClass", "rightButtonImage");
+        nextPageButton.startup();
 
         saveButton = utility.newButton("button_save", null, "navigationDiv", saveClicked);
+        saveButton.startup();
 
         loadLatestButton = utility.newButton("button_loadLatest", null, "navigationDiv", loadLatestClicked);
+        loadLatestButton.startup();
         loadVersionButton = utility.newButton("button_loadVersion", null, "navigationDiv", loadVersionClicked);
+        loadVersionButton.startup();
 
         importExportButton = utility.newButton("button_importExport", null, "navigationDiv", importExportClicked);
+        importExportButton.startup();
 
         var debugButton = utility.newButton("button_debug", null, "navigationDiv", debugButtonClicked);
+        debugButton.startup();
         
         // Setup the first page
         var fragment = hash();

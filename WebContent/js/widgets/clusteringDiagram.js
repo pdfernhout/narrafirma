@@ -213,7 +213,7 @@ define([
             // style: "bottom: 4px; right: 4px;",
             onResize: lang.hitch(this, this.updateSizeOfCanvas)
         }).placeAt(divForResizing);
-        handle.startup();
+        // TODO: Unsure if need this: handle.startup();
     };
     
     ClusteringDiagram.prototype.updateSizeOfCanvas = function() {
@@ -306,7 +306,6 @@ define([
         layout.addChild(this.urlBox);
         
         this.mainContentPane.domNode.appendChild(layout.domNode);
-        layout.startup();
         */
     };
 
@@ -445,8 +444,6 @@ define([
         });
         
         dialog.startup();
-        layout.startup();
-        colorPalette.startup();
         dialog.show();
     };
 
@@ -517,7 +514,6 @@ define([
         });
         
         dialog.startup();
-        layout.startup();
         dialog.show();
     };
 

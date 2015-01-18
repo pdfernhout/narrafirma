@@ -37,8 +37,6 @@ define([
         if (addToDiv) {
             button.placeAt(addToDiv);
         }
-        // TODO: Is startup call really needed here?
-        button.startup();
         return button;
     }
     
@@ -82,7 +80,6 @@ define([
         if (addToDiv) {
             select.placeAt(addToDiv);
         }
-        select.startup();
         return select;
     }
     

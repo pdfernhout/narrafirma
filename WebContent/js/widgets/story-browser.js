@@ -216,13 +216,10 @@ define([
         
         var answersMultiSelect = newMultiSelect(id + "_answers", []);
         contentPane.addChild(answersMultiSelect);
-        answersMultiSelect.startup();
         
         var filterPane = {"contentPane": contentPane, "questionSelect": questionSelect, "answersMultiSelect": answersMultiSelect, "questions": questions, "stories": stories};
 
         questionSelect.on("change", lang.partial(filterPaneQuestionChoiceChanged, filterPane)); 
-        
-        contentPane.startup();
 
         return filterPane;
     }
@@ -332,9 +329,6 @@ define([
         } else {
             pagePane.addChild(table);
         }
-        
-        // This is appears to be superflous as startup is called when table added to pagePane (assuming it is connected to DOM hierarchy?)
-        table.startup();
         
         var storyList;
         

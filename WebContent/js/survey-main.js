@@ -40,7 +40,9 @@ require([
             console.log("got questionnaire from server", questionnaireID, questionnaire);
             
             var surveyDiv = dom.byId("surveyDiv");
-            var form = survey.buildSurveyForm(surveyDiv, questionnaire, finishedSurvey, false); 
+            var form = survey.buildSurveyForm(surveyDiv, questionnaire, finishedSurvey, false);
+            // Startup must be called here as form is being added directly to the rest of document visual hierarchy
+            form.startup();
 
             // turn off startup "please wait" display
             document.getElementById("startup").style.display = "none";

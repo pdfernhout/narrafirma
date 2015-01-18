@@ -80,7 +80,6 @@ define([
                     // console.log("clicked checkbox", evt, localChoiceID, checked, self.value);
                     // TODO: send changed message?
                 });
-                checkBox.startup();
                 self.checkboxes[option.value] = checkBox;
                 div.appendChild(domConstruct.toDom('<label for="' + choiceID + '">' + option.label + '</label><br>'));
             });

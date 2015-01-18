@@ -66,7 +66,6 @@ define([
                     self._set("value", event.target.value);
                     // console.log("radio clicked", event.target.value);
                 });
-                radioButton.startup();
                 self.radioButtons[option.value] = radioButton;
                 div.appendChild(domConstruct.toDom('<label for="' + choiceID + '">' + option.label + '</label><br>'));
             });

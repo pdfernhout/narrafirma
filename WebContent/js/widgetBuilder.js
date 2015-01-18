@@ -134,16 +134,13 @@ define([
                 content: questionText
             });
             label.placeAt(questionContentPane);
-            label.startup();
         }
         questionContentPane.placeAt(contentPane);
-        questionContentPane.startup();
         
         var internalContentPane = new ContentPane({
         });
         domClass.add(internalContentPane.domNode, "questionInternal");
         internalContentPane.placeAt(questionContentPane);
-        internalContentPane.startup();
         
         return internalContentPane;
     }
@@ -155,7 +152,6 @@ define([
             content: translate(id + "::prompt")
         });
         label.placeAt(contentPane);
-        label.startup();
         return label;
     }
     
@@ -164,7 +160,6 @@ define([
             content: "<b>" + translate(id + "::prompt") + "</b>"
         });
         label.placeAt(contentPane);
-        label.startup();
         return label;
     }
     
@@ -175,7 +170,6 @@ define([
             content: questionText + "<br>" + '<img src="' + imageSource + '" alt="Image for question: ' + questionText + '">'
         });
         image.placeAt(contentPane);
-        image.startup();
         return image;
     }
     
@@ -186,7 +180,6 @@ define([
         });
         textBox.set("style", "width: 40em");
         textBox.placeAt(questionContentPane);
-        textBox.startup();
         return textBox;
     }
     
@@ -199,7 +192,6 @@ define([
             value: at(model, id)
         });
         textarea.placeAt(questionContentPane);
-        textarea.startup();
         return textarea;
     }
     
@@ -276,7 +268,6 @@ define([
         });
         
         select.placeAt(questionContentPane);
-        select.startup();
         return select;
     }
     
@@ -291,7 +282,6 @@ define([
         });
         
         radioButtons.placeAt(questionContentPane);
-        radioButtons.startup();
         return radioButtons;
     }
 
@@ -303,7 +293,6 @@ define([
         });
         
         checkbox.placeAt(questionContentPane);
-        checkbox.startup();
         return checkbox;
     }
     
@@ -318,7 +307,6 @@ define([
         });
          
         radioButtons.placeAt(questionContentPane);
-        radioButtons.startup();
         return radioButtons;
     }
     
@@ -339,7 +327,6 @@ define([
         });
         
         checkboxes.placeAt(questionContentPane);
-        checkboxes.startup();
         return checkboxes;
     }
     
@@ -359,7 +346,6 @@ define([
         });
         
         toggleButton.placeAt(questionContentPane);
-        toggleButton.startup();
         
         return toggleButton;
     }
@@ -374,7 +360,6 @@ define([
         });
 
         button.placeAt(contentPane);
-        button.startup();
         return button;
     }
     
@@ -444,11 +429,6 @@ define([
 
         sliderContentPane.placeAt(questionContentPane);
         
-        slider.startup();
-        sliderRules.startup();
-        sliderLabels.startup();
-        sliderContentPane.startup();
-        
         return contentPane;
     }
     
@@ -488,19 +468,16 @@ define([
         
         var columnHeader1ContentPane = new ContentPane({"content": "<i>Question</i>", "colspan": 4, "align": "right"});
         table.addChild(columnHeader1ContentPane);
-        columnHeader1ContentPane.startup();
         recommendationsValues.push(null);
         
         var columnHeader2ContentPane = new ContentPane({"content": "<i>Your answer</i>", "colspan": 2, "align": "right"});
         table.addChild(columnHeader2ContentPane);
-        columnHeader2ContentPane.startup();
         recommendationsValues.push(null);
 
         for (var headerFieldIndex in fieldsForCategory) {
             var headerFieldName = fieldsForCategory[headerFieldIndex];
             var columnHeaderFieldContentPane = new ContentPane({"content": "<i>" + headerFieldName + "</i>", "colspan": 1, "align": "right"});
             table.addChild(columnHeaderFieldContentPane);
-            columnHeaderFieldContentPane.startup();    
             recommendationsValues.push(null);
         }
         
@@ -510,12 +487,10 @@ define([
             
             var questionTextContentPane = new ContentPane({"content": questionText, "colspan": 4, "align": "right"});
             table.addChild(questionTextContentPane);
-            questionTextContentPane.startup();
             recommendationsValues.push(null);
             
             var yourAnswerContentPane = new ContentPane({"content": yourAnswer, "colspan": 2, "align": "right"});
             table.addChild(yourAnswerContentPane);
-            yourAnswerContentPane.startup();
             recommendationsValues.push(null);
 
             var recommendationsForAnswer = recommendations.recommendations[questionName][yourAnswer];
@@ -528,12 +503,10 @@ define([
                 if (recommendationsForAnswer) recommendationValue = recommendationsForAnswer[categoryName][fieldName];
                 var fieldContentPane = new ContentPane({"content": "<i>" + recommendationValue + "</i>", "colspan": 1, "align": "right"});
                 table.addChild(fieldContentPane);
-                fieldContentPane.startup();   
             }
         }
         
         table.placeAt(questionContentPane);
-        table.startup();
         
         // TO DO WORKING HERE!!!! Experiment -- Trying to get full background color set for a cell
         for (var i = 0; i < recommendationsValues.length; i++) {
@@ -559,7 +532,6 @@ define([
             content: "<b>UNFINISHED add_storyThemer: " + id + "</b>"             
         });
         label.placeAt(questionContentPane);
-        label.startup();
         return label;
     }
     
@@ -571,7 +543,6 @@ define([
             content: "<b>UNFINISHED add_questionsTable: " + id + "</b>"             
         });
         label.placeAt(questionContentPane);
-        label.startup();
         return label;
     }
     
@@ -593,7 +564,6 @@ define([
             content: "<b>UNFINISHED add_trendsReport: " + id + "</b>"             
         });
         label.placeAt(questionContentPane);
-        label.startup();
         return label;
     }
     
@@ -605,7 +575,6 @@ define([
             content: "<b>UNFINISHED add_clusterSpace: " + id + "</b>"             
         });
         label.placeAt(questionContentPane);
-        label.startup();
         return label;
     }
     
@@ -617,7 +586,6 @@ define([
             content: "<b>UNFINISHED add_annotationsGrid: " + id + "</b>"             
         });
         label.placeAt(questionContentPane);
-        label.startup();
         return label;
     }
     
@@ -629,7 +597,6 @@ define([
             content: "<b>UNFINISHED add_storiesList: " + id + "</b>"             
         });
         label.placeAt(questionContentPane);
-        label.startup();
         return label;
     }
     
@@ -796,7 +763,6 @@ define([
             content: "<b>UNFINISHED accumulatedItemsGrid: " + id + "</b>"             
         });
         label.placeAt(questionContentPane);
-        label.startup();
         return label;
     }
     
@@ -808,7 +774,6 @@ define([
             content: "<b>UNFINISHED add_excerptsList: " + id + "</b>"             
         });
         label.placeAt(questionContentPane);
-        label.startup();
         return label;
     }
     
@@ -915,7 +880,6 @@ define([
             content: baseText + calculatedText
         });
         label.placeAt(contentPane);
-        label.startup();
         
         // TODO: How do these updates get removes????
         var updateInfo = {"id": id, "label": label, "baseText": baseText, "calculate": calculate};

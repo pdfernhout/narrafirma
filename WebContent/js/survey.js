@@ -117,7 +117,6 @@ define([
         domStyle.set(nextPageButton.domNode, 'display', 'none');
         
         wizardPane.addChild(surveyPane, addIndex);
-        surveyPane.startup();
     }
     
     function buildSurveyForm(surveyDiv, questionnaire, doneCallback, includeCancelButton) {  
@@ -204,7 +203,6 @@ define([
         });
         
         wizardPane.addChild(startPane);
-        startPane.startup();
         
         // TODO: Need to handle multiple stories somehow
         
@@ -228,7 +226,6 @@ define([
         });
         
         wizardPane.addChild(participantPane);
-        participantPane.startup();
         
         var endPane = new ContentPane();
         widgetBuilder.addQuestions(endQuestions, endPane.containerNode, participantDataModel);
@@ -241,11 +238,6 @@ define([
         }
         
         wizardPane.addChild(endPane);
-        endPane.startup();
-        
-        // form.startup();
-        wizardPane.startup();
-        wizardPane.resize();
         
         return wizardPane;
     }
@@ -261,19 +253,19 @@ define([
         }
         
         var contentPane = new ContentPane();
-        contentPane.startup();
 
         form = buildSurveyForm(contentPane.containerNode, questionnaire, hideSurveyDialog, true);
    
         surveyDialog = new Dialog({
             title: "Take Survey",
             content: contentPane
+            // style: "width: 800px; height: 700px;"
         });
         
         // This will free the dialog when we are done with it whether from OK or Cancel to avoid a memory leak
         surveyDialog.connect(surveyDialog, "onHide", function(e) {
             console.log("destroying surveyDialog");
-            surveyDialog.destroyRecursive(); 
+            surveyDialog.destroyRecursive();
         });
                 
         surveyDialog.startup();

@@ -564,9 +564,6 @@ define([
         }
         content = new ContentPane({content: "" + grandTotal, colspan: 1});
         table.addChild(content);
-        
-        // This is appears to be superflous as startup is called when table added to pagePane (assuming it is connected to DOM hierarchy?)
-        table.startup();
     }
     
     
@@ -754,8 +751,6 @@ define([
         // TODO: Translate "Survey Graph"
         pane.appendChild(domConstruct.toDom('<br><div id="surveyGraphDiv"></div><div id="chartDiv" style="' + chartEnclosureStyle + '"></div>'));
         contentPane.addChild(graphResultsPane);
-        
-        graphResultsPane.startup();
         
         graphResultsPane.xAxisSelect = xAxisSelect;
         graphResultsPane.yAxisSelect = yAxisSelect;

@@ -86,7 +86,6 @@ define([
         });
 
         button.placeAt(contentPane);
-        button.startup();
         
         var wrap = new ContentPane({
             content: "<br>"
@@ -121,9 +120,7 @@ define([
             dialog.destroyRecursive(); 
         });
                 
-        dialog.startup();
-        dialogContentPane.startup();
-        
+        dialog.startup(); 
         dialog.show();
     }
     
