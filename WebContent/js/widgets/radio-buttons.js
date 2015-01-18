@@ -50,7 +50,6 @@ define([
             array.forEach(this.options, function (option) {
                 if (!first) div.appendChild(domConstruct.toDom('<br>'));
                 first = false;
-                // div.appendChild(domConstruct.toDom('&nbsp;&nbsp;&nbsp;&nbsp;'));
                 var choiceID = id + "_choice_" + option.value;
                 var isChecked = (self.value === option.value);
                 // console.log("radio init checked", choiceID, isChecked, option.value, self.value);

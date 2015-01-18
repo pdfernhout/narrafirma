@@ -148,7 +148,7 @@ define([
             label: label,
             onClick: lang.hitch(this, callback)
         }, name);
-        this.mainContentPane.domNode.appendChild(theButton.domNode);
+        this.mainContentPane.addChild(theButton);
 
         return theButton;
     };

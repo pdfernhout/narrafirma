@@ -40,7 +40,8 @@ require([
             console.log("got questionnaire from server", questionnaireID, questionnaire);
             
             var surveyDiv = dom.byId("surveyDiv");
-            var form = survey.buildSurveyForm(surveyDiv, questionnaire, finishedSurvey, false);
+            var form = survey.buildSurveyForm(questionnaire, finishedSurvey, false);
+            form.placeAt(surveyDiv);
             // Startup must be called here as form is being added directly to the rest of document visual hierarchy
             form.startup();
 

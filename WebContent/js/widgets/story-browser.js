@@ -324,7 +324,8 @@ define([
         
         // table needs to be added to container after its children are added to it so that the layout will happen correctly, otherwise startup called too soon internally
         if (!pagePane.addChild) {
-            // console.log("trouble -- does not have addChild method!", pagePane);
+            alert("TROUBLE -- see log for details");
+            console.log("TROUBLE -- does not have addChild method!", pagePane);
             pagePane.containerNode.appendChild(table.domNode);
         } else {
             pagePane.addChild(table);

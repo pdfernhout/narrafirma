@@ -119,7 +119,7 @@ define([
         wizardPane.addChild(surveyPane, addIndex);
     }
     
-    function buildSurveyForm(surveyDiv, questionnaire, doneCallback, includeCancelButton) {  
+    function buildSurveyForm(questionnaire, doneCallback, includeCancelButton) {  
         console.log("buildSurveyForm questions", questionnaire);
         
         var wizardPane = new StackContainer({
@@ -127,9 +127,7 @@ define([
             style: "width: 100%; height: 100%;",
             doLayout: false
         });
-        
-        surveyDiv.appendChild(wizardPane.domNode);
-        
+
         var startText = questionnaire.startText;
         // TODO: Translate
         if (!startText) startText = 'Please help by taking a short survey. The data you enter will be sent to the server only at the end when you press the "submit survey" button.';
@@ -252,13 +250,11 @@ define([
             surveyDialog.hide();
         }
         
-        var contentPane = new ContentPane();
-
-        form = buildSurveyForm(contentPane.containerNode, questionnaire, hideSurveyDialog, true);
+        form = buildSurveyForm(questionnaire, hideSurveyDialog, true);
    
         surveyDialog = new Dialog({
             title: "Take Survey",
-            content: contentPane
+            content: form
             // style: "width: 800px; height: 700px;"
         });
         

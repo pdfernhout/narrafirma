@@ -392,7 +392,8 @@ define([
         });
         
         if (!pagePane.addChild) {
-            console.log("trouble -- does not have addChild method!", pagePane);
+            alert("TROUBLE -- see log");
+            console.log("TROUBLE -- does not have addChild method!", pagePane);
             pagePane.containerNode.appendChild(grid.domNode);
         } else {
             pagePane.addChild(grid);
@@ -403,7 +404,8 @@ define([
         });
         
         if (!pagePane.addChild) {
-            console.log("trouble -- does not have addChild method!", pagePane);
+            alert("TROUBLE -- see log");
+            console.log("TROUBLE -- does not have addChild method!", pagePane);
             pagePane.containerNode.appendChild(listContentPane.domNode);
         } else {
             pagePane.addChild(listContentPane);
@@ -478,7 +480,8 @@ define([
         updateGridButtonsForSelectionAndForm(grid);
         
         if (!pagePane.addChild) {
-            console.log("trouble -- does not have addChild method!", pagePane);
+            alert("TROUBLE -- see log");
+            console.log("TROUBLE -- does not have addChild method!", pagePane);
             pagePane.containerNode.appendChild(itemContentPane.domNode);
         } else {
             pagePane.addChild(itemContentPane);
