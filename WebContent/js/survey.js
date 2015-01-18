@@ -37,7 +37,7 @@ define([
     
     var timestampStart;
     
-    function submitSurvey(surveyResultsWithModels) {
+    function submitSurvey(surveyResultsWithModels, wizardPane, doneCallback) {
         var answers = {};
         console.log("submitSurvey pressed");
         
@@ -53,8 +53,13 @@ define([
         storage.storeSurveyResult(surveyResult, function(error) {
             // TODO: Translate
             // TODO: Cancel clearing of survey if it can't be sent
-            if (error) { alert("Could not write new survey result to server:\n" + error);}
-            alert("Survey successfully sent to server!");
+            if (error) {
+                alert("Please try to submit the survery result later;\nCould not write new survey result to server:\n" + error);
+            } else {
+                alert("Survey successfully sent to server!");
+                if (wizardPane) wizardPane.forward();
+                if (doneCallback) doneCallback("submitted");
+            }
         });
         
         // For editor app, can't push survey into all results at this point or will have duplicates when load them later
@@ -125,13 +130,25 @@ define([
         });
         
         surveyDiv.appendChild(wizardPane.domNode);
-       
+        
+        var startText = questionnaire.startText;
+        // TODO: Translate
+        if (!startText) startText = 'Please help by taking a short survey. The data you enter will be sent to the server only at the end when you press the "submit survey" button.';
+        
         var startQuestions = [];
-        if (questionnaire.title) startQuestions.push({id: "__survey-local_" + "title", shortName: "title", prompt: questionnaire.title, type: "header", options:[]});
-        if (questionnaire.startText) startQuestions.push({id: "__survey-local_" + "startText", shortName: "startText", prompt: questionnaire.startText, type: "label", options:[]});
+        if (questionnaire.title) {
+            startQuestions.push({id: "__survey-local_" + "title", shortName: "title", prompt: questionnaire.title, type: "header", options:[]});
+            document.title = questionnaire.title;
+        }
+        
+        startQuestions.push({id: "__survey-local_" + "startText", shortName: "startText", prompt: startText, type: "label", options:[]});
 
+        var endText = questionnaire.endText;
+         // TODO: Translate
+        if (!endText) endText = "Thank you for taking the survey.";
+            
         var endQuestions = [];
-        if (questionnaire.endText) endQuestions.push({id: "__survey-local_" + "endText", shortName: "endText", prompt: questionnaire.endText, type: "label", options:[]});
+        endQuestions.push({id: "__survey-local_" + "endText", shortName: "endText", prompt: endText, type: "label", options:[]});
 
         // TODO: What about idea of having IDs that go with eliciting questions so store reference to ID not text prompt?
         var elicitingQuestionPrompts = [];
@@ -207,8 +224,7 @@ define([
         
         utility.newButton(undefined, "surveySubmit", participantPane, function() {
             console.log("Submit survey");
-            submitSurvey(surveyResultsWithModels);
-            if (doneCallback) doneCallback("submitted");
+            submitSurvey(surveyResultsWithModels, wizardPane, doneCallback);
         });
         
         wizardPane.addChild(participantPane);

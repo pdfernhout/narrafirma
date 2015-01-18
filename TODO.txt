@@ -426,3 +426,5 @@ DONE Indenting question entry areas under question text using CSS for questionIn
 DONE Support adding more than one story in survey form GUI
 DONE Look into Dojo resizing bug in Wizard and StackedContainer when at 100% size and it grows height (seems to be fixed if use "doLayout: false"); comment out PDF debugging code in dijit/layout/_LayooutWidget.js
 DONE Survey - submit button on participant info
+DONE Survey - improve display of title
+DONE Survey - Improve how end panel is displayed

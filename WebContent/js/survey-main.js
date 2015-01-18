@@ -19,8 +19,8 @@ require([
     // TODO: Progress when sending to server 
     
     function finishedSurvey() {
-        var surveyDiv = dom.byId("surveyDiv");
-        surveyDiv.innerHTML = "Thank you for taking the survey!";
+        // var surveyDiv = dom.byId("surveyDiv");
+        // surveyDiv.innerHTML = "Thank you for taking the survey!";
     }
     
     // TODO: Fix hardcoded value
