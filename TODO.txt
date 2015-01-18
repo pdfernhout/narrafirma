@@ -12,21 +12,17 @@ Fix how templates list popup has too much scrolling and is not sized well; perha
 Improve template list generation tool to support storyCollectionActivities and sensemakingActivities
 
 SURVEY QUESTIONS
-Support adding more than one story in survey form GUI
 Remove redundant code when calculating survey questions for story and name in survey and story browser
-
-BROWSING
-Fix how story browser browses stories for separation of participant info from stories
-Should there be a separate participant info browser or is that handled by story browser? If "story browser" does that, may need to rename story browser?
-Fix how graph browser shows graphs for separation of participant info from stories
-Update story browser when load latest stories from server (without need to press Filter button again)
-
-IDs
-Add support for short names (ids) for eliciting questions
-Add support for short names (ids) for all options for survey questions
-Improve how options are specified for questions in question designer rather than use text box
-Make sure that short name IDs entered by user when defining questions are unique among themselves and don't have a leading underscore (or at least aren't "_id")
-Ensure short name IDs entered by user do not conflict with automatically created ones or story text and story name
+Survey - delete button w/confirm
+Survey - reorder story numbers
+Survey - can't delete last story
+Survey - maximum number stories (maybe later)
+Survey - back button in browser -- deal with so don't lose data
+Survey - submit button on participant info
+Survey - validation on picking question
+Survey - checkbox for is question answer required (maybe later)
+Survey - start page required (what do do if nothing entered)
+Survey - improve styling on radio buttons for question or alternative approach (maybe later)
 
 SURVEY GENERAL
 Figure out what URLs will look like for administration/authoring vs. survey taking (multiple?) vs. (maybe) project
@@ -35,6 +31,19 @@ Figure out GUI for "finalizing" a survey as opposed to storing current version w
 Have survey page use special server method so does not use Pointrel system directly or need authentication
 Record IP address of survey or use another means to see if someone taking it multiple times
 Ensure the survey taking app does no need to load entire domain from project editor app or load grid or story browser or other modules it does not really need.
+
+IDs
+Add support for short names (ids) for eliciting questions
+Add support for short names (ids) for all options for survey questions
+Improve how options are specified for questions in question designer rather than use text box
+Make sure that short name IDs entered by user when defining questions are unique among themselves and don't have a leading underscore (or at least aren't "_id")
+Ensure short name IDs entered by user do not conflict with automatically created ones or story text and story name
+
+BROWSING
+Fix how story browser browses stories for separation of participant info from stories
+Should there be a separate participant info browser or is that handled by story browser? If "story browser" does that, may need to rename story browser?
+Fix how graph browser shows graphs for separation of participant info from stories
+Update story browser when load latest stories from server (without need to press Filter button again)
 
 EXPORT/IMPORT
 Add export and import buttons for project
@@ -415,4 +424,5 @@ DONE Story collection sessions -- change question to label (Cynthia)
 </Out of order Cynthia>
 DONE Fix how selected eliciting question in select box is not entirely visible
 DONE Indenting question entry areas under question text using CSS for questionInternal and questionExternal classes
+DONE Support adding more than one story in survey form GUI
 
