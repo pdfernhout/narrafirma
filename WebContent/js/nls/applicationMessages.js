@@ -43,6 +43,8 @@ define({
     // Used for test of survey in main.js
     "surveySubmit": "Submit survey",
     "surveyCancel": "Cancel",
+    "button_tellAnotherStory": "Tell another story",
+    "button_dontTellAnotherStory": "Done with adding stories",
     
     // select widgets
     selection_has_not_been_made: " -- select -- ",

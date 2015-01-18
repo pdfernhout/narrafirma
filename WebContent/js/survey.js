@@ -1,7 +1,9 @@
 "use strict";
 
 define([
+    "dojo/_base/array",
     "dojo/dom-construct",
+    'dojo/dom-style',
     "dojox/mvc/getPlainValue",
     "dojo/_base/lang",
     "js/storage",
@@ -12,11 +14,12 @@ define([
     "dijit/layout/ContentPane",
     "dijit/Dialog",
     "dijit/form/Form",
+    "dijit/layout/StackContainer",
     "dojo/Stateful",
-    "dojox/widget/Wizard",
-    "dojox/widget/WizardPane"
 ], function(
+    array,
     domConstruct,
+    domStyle,
     getPlainValue,
     lang,
     storage,
@@ -27,9 +30,8 @@ define([
     ContentPane,
     Dialog,
     Form,
-    Stateful,
-    Wizard,
-    WizardPane
+    StackContainer,
+    Stateful
 ){
     // TODO: Replace use of storage with direct calls to server to get questionnaire and submit survey
     
@@ -59,9 +61,13 @@ define([
         // TODO: For editor app, maybe should load latest results from server back at this point? Because will not have new survey...
     }
     
-   function newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels) {
+   function newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels, addIndex) {
         
-        var surveyPane = new WizardPane();
+        var surveyPane = new ContentPane();
+        
+        // TODO: Translate
+        allStoryQuestions[0].prompt = "Story #" + addIndex;
+        translate.addExtraTranslationsForQuestions([allStoryQuestions[0]]);
         
         var storyQuestionsModel = new Stateful();
         storyQuestionsModel.set("__type", "org.workingwithstories.Story");
@@ -71,14 +77,48 @@ define([
         
         widgetBuilder.addQuestions(allStoryQuestions, surveyPane, storyQuestionsModel);
         
-        wizardPane.addChild(surveyPane);
+        utility.newButton(undefined, "button_previousPage", surveyPane, function() {
+            console.log("button_previousPage");
+            wizardPane.back();
+        });
+        
+        var tellAnotherStoryButton = utility.newButton(undefined, "button_tellAnotherStory", surveyPane, function() {
+            console.log("button_tellAnotherStory");
+            var children = wizardPane.getChildren();
+            var indexForNewStoryPage = array.indexOf(children, wizardPane.selectedChildWidget) + 1;
+            newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels, indexForNewStoryPage);
+            domStyle.set(tellAnotherStoryButton.domNode, 'display', 'none');
+            domStyle.set(dontTellAnotherStoryButton.domNode, 'display', 'none');
+            domStyle.set(nextPageButton.domNode, 'display', 'inline');
+            wizardPane.forward();
+        });
+        
+        var dontTellAnotherStoryButton = utility.newButton(undefined, "button_dontTellAnotherStory", surveyPane, function() {
+            console.log("button_dontTellAnotherStory");
+            wizardPane.forward();
+        });
+        
+        /*
+        utility.newButton(undefined, "button_deleteThisStory", surveyPane, function() {
+            console.log("button_nextPage");
+            wizardPane.forward();
+        });
+        */
+        
+        var nextPageButton = utility.newButton(undefined, "button_nextPage", surveyPane, function() {
+            console.log("button_nextPage");
+            wizardPane.forward();
+        });
+        domStyle.set(nextPageButton.domNode, 'display', 'none');
+        
+        wizardPane.addChild(surveyPane, addIndex);
         surveyPane.startup();
     }
     
     function buildSurveyForm(surveyDiv, questionnaire, doneCallback, includeCancelButton) {  
         console.log("buildSurveyForm questions", questionnaire);
         
-        var wizardPane = new Wizard({
+        var wizardPane = new StackContainer({
             style: "width: 800px; height: 700px;",
             // style: "width: 95%; height: 95%;",
             //nextButtonLabel: "Go on"
@@ -137,25 +177,43 @@ define([
         participantDataModel.set("_participantID", participantID);
         surveyResultsWithModels.participantData = participantDataModel;
 
-        var startPane = new WizardPane();
+        var startPane = new ContentPane();
         widgetBuilder.addQuestions(startQuestions, startPane.containerNode, participantDataModel);
+        utility.newButton(undefined, "button_nextPage", startPane, function() {
+            console.log("button_nextPage");
+            wizardPane.forward();
+        });
         wizardPane.addChild(startPane);
         startPane.startup();
         
         // TODO: Need to handle multiple stories somehow
         
-        newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
-        newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
-        newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
-        newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
+        newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels, 1) ;
+        //newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
+        //newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
+        //newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
         
-        var participantPane = new WizardPane();
+        var participantPane = new ContentPane();
         widgetBuilder.addQuestions(questionnaire.participantQuestions, participantPane.containerNode, participantDataModel);
         wizardPane.addChild(participantPane);
+        utility.newButton(undefined, "button_previousPage", participantPane, function() {
+            console.log("button_previousPage");
+            wizardPane.back();
+        });
+        
+        utility.newButton(undefined, "button_nextPage", participantPane, function() {
+            console.log("button_nextPage");
+            wizardPane.forward();
+        });
         participantPane.startup();
         
-        var endPane = new WizardPane();
+        var endPane = new ContentPane();
         widgetBuilder.addQuestions(endQuestions, endPane.containerNode, participantDataModel);
+        
+        utility.newButton(undefined, "button_previousPage", endPane, function() {
+            console.log("button_previousPage");
+            wizardPane.back();
+        });
         
         utility.newButton(undefined, "surveySubmit", endPane, function() {
             console.log("Submit survey");
