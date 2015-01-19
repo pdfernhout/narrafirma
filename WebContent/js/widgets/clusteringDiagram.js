@@ -23,7 +23,9 @@ define([
     "dijit/layout/ContentPane",
     "dijit/ColorPalette",
     "dojo/_base/Color",
-    "dojox/layout/ResizeHandle"
+    "dojox/layout/ResizeHandle",
+    "dijit/layout/BorderContainer",
+    "dijit/form/Textarea"
 ], function (
     ready,
     domAttr,
@@ -46,7 +48,9 @@ define([
     ContentPane,
     ColorPalette,
     Color,
-    ResizeHandle
+    ResizeHandle,
+    BorderContainer,
+    Textarea
 ) {
    // Resources:
    // # http://dojotdg.zaffra.com/2009/03/dojo-now-with-drawing-tools-linux-journal-reprint/
@@ -471,16 +475,35 @@ define([
     
     ClusteringDiagram.prototype.openSourceDialog = function(sourceText) {
         var model = new Stateful({sourceText: sourceText});
+        
+        // Experiemnt; lots of tries!!! http://jsfiddle.net/u3qcbxy4/37/
 
-        var layout = new dojox.layout.TableContainer({
-            showLabels: false,
-            orientation: "horiz"
+        var layout = new ContentPane({
+            // style: "overflow: hidden"
+            // style: "height: 100%; width: 100%;"
+            // style: "width: 500px; height: 500px; overflow: scroll",
+            // style: "width: 500px; height: 500px; overflow: scroll",
+            // style: "height: 100%; width: 100%"
         });
         
-        var sourceTextarea = new SimpleTextarea({
+        /*
+        var layout = new BorderContainer({
+            // style: "height: 100%; width: 100%;"
+            // style: "height: 400px; width: 400px;"
+        });
+        */
+        
+        // Textarea SimpleTextarea
+        var sourceTextarea = new Textarea({
             name: 'sourceText',
             value: at(model, "sourceText"),
-            placeHolder: "[]"
+            placeHolder: "[]",
+            // region: 'center',  
+            // rows: "4",
+            // cols: "50",
+            // style: "overflow: auto;"
+            // style: "height: 200px; width: 200px;"
+            style: "overflow: auto; height: 90%; max-height: 90%;"
         });
         
         // Indirect way to hold onto dialog so can pass a reference to the dialog to button clicked function so that function can hide the dialog
@@ -492,7 +515,8 @@ define([
             label: "Update",
             type: "button",
             // TODO: This won't be OK, and need model
-            onClick: lang.hitch(this, this.clickedUpdateSource, dialogHolder, model)
+            onClick: lang.hitch(this, this.clickedUpdateSource, dialogHolder, model),
+            // region: 'bottom'
         });
         
         layout.addChild(sourceTextarea);
@@ -501,7 +525,9 @@ define([
         var dialog = new Dialog({
             // TODO: Translate
             title: "Diagram source",
-            style: "width: 600px; height: 400px; overflow: auto",
+            // style: "overflow: hidden",
+            // style: "width: 600px; height: 600px; overflow: auto",
+            style: "width: 600px; height: 800px",
             content: layout
         });
         
