@@ -109,6 +109,10 @@ define({
      
     // use for recommendations table
     button_showRecommendationsTable: "Show recommendations table",
-    title_recommendationsTable: "Recommendations table"
+    title_recommendationsTable: "Recommendations table",
+    
+    // For clustering diagram
+    clusterDiagramSource_titleID: "Cluster Diagram Source",
+    clusterDiagramSource_okButtonID:  "Update"
 }
 });

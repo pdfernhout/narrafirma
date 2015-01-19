@@ -11,7 +11,6 @@ define([
     "dojox/gfx/Moveable",
     "dijit/form/TextBox",
     "dijit/form/Button",
-    "dijit/form/Textarea",
     "dijit/Dialog",
     "dojo/touch",
     "dojox/uuid/generateRandomUuid",
@@ -24,8 +23,6 @@ define([
     "dijit/ColorPalette",
     "dojo/_base/Color",
     "dojox/layout/ResizeHandle",
-    "dijit/layout/LayoutContainer",
-    "dijit/form/Textarea"
 ], function (
     ready,
     domAttr,
@@ -36,7 +33,6 @@ define([
     Moveable,
     TextBox,
     Button,
-    SimpleTextarea,
     Dialog,
     touch,
     generateRandomUuid,
@@ -48,9 +44,7 @@ define([
     ContentPane,
     ColorPalette,
     Color,
-    ResizeHandle,
-    LayoutContainer,
-    Textarea
+    ResizeHandle
 ) {
    // Resources:
    // # http://dojotdg.zaffra.com/2009/03/dojo-now-with-drawing-tools-linux-journal-reprint/
@@ -451,14 +445,16 @@ define([
         dialog.show();
     };
 
-    ClusteringDiagram.prototype.clickedUpdateSource = function(dialogHolder, model, event) {
-        console.log("Clicked updateSource", event);
-        dialogHolder.dialog.hide();
-        
-        var sourceText = model.get("sourceText");
-        console.log("sourceText", sourceText);
+    ClusteringDiagram.prototype.updateSourceClicked = function(sourceText, hideDialogMethod) {     
+        console.log("updateSourceClicked", sourceText);
 
-        this.diagram = JSON.parse(sourceText);
+        try {
+            this.diagram = JSON.parse(sourceText);
+        } catch(e) {
+            alert("Problem parsing source\n" + e);
+            return;
+        }
+        hideDialogMethod();
 
         console.log("parsed diagram", this.diagram);
 
@@ -473,57 +469,9 @@ define([
         this.selectItem(null);
     };
     
-    ClusteringDiagram.prototype.openSourceDialog = function(sourceText) {
-        var model = new Stateful({sourceText: sourceText});
-        
-        // Experiment; lots of tries!!! http://jsfiddle.net/u3qcbxy4/37/
-        
-        var layout = new LayoutContainer({
-        });
-        
-        // Maybe SimpleTextarea?
-        var sourceTextarea = new Textarea({
-            name: 'sourceText',
-            value: at(model, "sourceText"),
-            placeHolder: "[]",
-            region: 'center',  
-            style: "overflow: auto; height: 90%; max-height: 90%; width: 98%; max-width: 98%"
-        });
-        
-        // Indirect way to hold onto dialog so can pass a reference to the dialog to button clicked function so that function can hide the dialog
-        // The problem this solves is that a hoisted dialog is undefined at this point, and also hitch uses the current value not a reference to the variable
-        var dialogHolder = {};
-        
-        var okButton = new Button({
-            // TODO: Translate
-            label: "Update",
-            type: "button",
-            // TODO: This won't be OK, and need model
-            onClick: lang.hitch(this, this.clickedUpdateSource, dialogHolder, model),
-            region: 'bottom'
-        });
-        
-        layout.addChild(sourceTextarea);
-        layout.addChild(okButton);
- 
-        var dialog = new Dialog({
-            // TODO: Translate
-            title: "Diagram source",
-            style: "width: 600px; height: 800px",
-            content: layout
-        });
-        
-        dialogHolder.dialog = dialog;
-        
-        // This will free the dialog when we are done with it whether from OK or Cancel
-        dialog.connect(dialog, "onHide", function(e) {
-            console.log("destroying sourceDialog");
-            dialog.destroyRecursive(); 
-        });
-        
-        dialog.startup();
-        dialog.show();
-    };
+    ClusteringDiagram.prototype.openSourceDialog = function(text) {
+        widgetSupport.openTextEditorDialog(text, "dialog_clusterDiagramSourceID", "clusterDiagramSource_titleID", "clusterDiagramSource_okButtonID", lang.hitch(this, this.updateSourceClicked));
+     };
 
     ClusteringDiagram.prototype.recreateDisplayObjectsForAllItems = function() {
         // console.log("recreateDisplayObjectsForAllItems");

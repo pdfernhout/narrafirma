@@ -2,18 +2,28 @@
 
 define([
     "dojo/_base/array",
+    "dojox/mvc/at",
+    "dojo/_base/lang",
     "../translate",
     "dijit/form/Button",
     "dijit/ConfirmDialog",
     "dijit/layout/ContentPane",
-    "dijit/Dialog"
+    "dijit/Dialog",
+    "dijit/layout/LayoutContainer",
+    "dojo/Stateful",
+    "dijit/form/Textarea"
 ], function(
     array,
+    at,
+    lang,
     translate,
     Button,
     ConfirmDialog,
     ContentPane,
-    Dialog
+    Dialog,
+    LayoutContainer,
+    Stateful,
+    Textarea
 ){
     function buildOptions(id, choices, optionsString){
         var options = [];
@@ -101,11 +111,11 @@ define([
         var dialog;
         var dialogContentPane = new ContentPane({id: dialogConfiguration.dialogContentPaneID});
         
-        function hideDialog(status) {
+        function hideDialogMethod(status) {
             dialog.hide();
         }
         
-        dialogConfiguration.dialogConstructionFunction(dialogContentPane, model, id, options, hideDialog, dialogConfiguration);
+        dialogConfiguration.dialogConstructionFunction(dialogContentPane, model, id, options, hideDialogMethod, dialogConfiguration);
    
         dialog = new Dialog({
             // TODO: Translate
@@ -124,12 +134,58 @@ define([
         dialog.show();
     }
     
+    // dialogContentPaneID "textEditorDialog" dialogTitleID "title_textEditorDialog"
+    function openTextEditorDialog(text, dialogContentPaneID, dialogTitleID, dialogOKButtonID, dialogOKCallback) {
+        
+        var model = new Stateful({text: text});
+        
+        var dialogConfiguration = {
+                dialogContentPaneID: dialogContentPaneID,
+                dialogTitleID: dialogTitleID,
+                dialogStyle: "width: 600px; height: 800px",
+                dialogConstructionFunction: build_textEditorDialogContent,
+                dialogOKButtonID: dialogOKButtonID,
+                dialogOKCallback: dialogOKCallback
+            };
+        
+        openDialog(model, dialogContentPaneID, {}, dialogConfiguration);
+    }
+    
+    function build_textEditorDialogContent(dialogContentPane, model, id, options, hideDialogMethod, dialogConfiguration) {
+        // Experiment; lots of tries!!! http://jsfiddle.net/u3qcbxy4/37/
+        
+        var layout = new LayoutContainer({
+        });
+        
+        // Maybe SimpleTextarea?
+        var sourceTextarea = new Textarea({
+            name: 'text',
+            value: at(model, "text"),
+            placeHolder: dialogConfiguration.placeHolder, // "[]",
+            region: 'center',  
+            style: "overflow: auto; height: 90%; max-height: 90%; width: 98%; max-width: 98%"
+        });
+        
+        var okButton = new Button({
+            label: translate(dialogConfiguration.dialogOKButtonID),
+            type: "button",
+            onClick: function() {dialogConfiguration.dialogOKCallback(model.get("text"), hideDialogMethod, id, options, dialogConfiguration);},
+            region: 'bottom'
+        });
+        
+        layout.addChild(sourceTextarea);
+        layout.addChild(okButton);
+ 
+        layout.placeAt(dialogContentPane);
+    }
+
     return {
         "buildOptions": buildOptions,
         "optionsForAllQuestions": optionsForAllQuestions,
         "confirm": confirm,
         "addButtonThatLaunchesDialog": addButtonThatLaunchesDialog,
-        "openDialog": openDialog
+        "openDialog": openDialog,
+        "openTextEditorDialog": openTextEditorDialog
     };
    
 });
