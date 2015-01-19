@@ -65,7 +65,40 @@ define([
         // For editor app, can't push survey into all results at this point or will have duplicates when load them later
         // TODO: For editor app, maybe should load latest results from server back at this point? Because will not have new survey...
     }
-    
+
+   function validateStoryQuestionsModel(storyQuestionsModel, allowEmptyBypass) {
+       // TODO: Translate
+       var elicitingQuestion = storyQuestionsModel.get("__survey_elicitingQuestion");
+       var storyName = storyQuestionsModel.get("__survey_storyName");
+       var storyText = storyQuestionsModel.get("__survey_storyText");
+       
+       // Until support deleting stories, allow progress with out entering anything...
+       if (allowEmptyBypass && !storyText && !storyName) {
+           // alert("It looks like you don't want to tell a story right now for this page; that's OK");
+           return true;
+       }
+       
+       if (!elicitingQuestion) {
+           alert("Please select a question before proceeding");
+           return false;
+       }
+       
+       var bypassText = "\n(or clear both the story name field and the story response field if you don't want to enter a story on this page)";
+       if (!allowEmptyBypass) bypassText = "";
+       
+       if (!storyText) {
+           alert("Please enter some text in the story response field before proceeding" + bypassText);
+           return false;
+       }
+       
+       if (!storyName) {
+           alert("Please give your story a name before proceeding" + bypassText);
+           return false;
+       }
+       
+       return true;
+   }
+   
    function newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels, addIndex) {
         
         var surveyPane = new ContentPane();
@@ -89,6 +122,7 @@ define([
         
         var tellAnotherStoryButton = utility.newButton(undefined, "button_tellAnotherStory", surveyPane, function() {
             console.log("button_tellAnotherStory");
+            if (!validateStoryQuestionsModel(storyQuestionsModel)) return;
             var children = wizardPane.getChildren();
             var indexForNewStoryPage = array.indexOf(children, wizardPane.selectedChildWidget) + 1;
             newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels, indexForNewStoryPage);
@@ -100,6 +134,8 @@ define([
         
         var dontTellAnotherStoryButton = utility.newButton(undefined, "button_dontTellAnotherStory", surveyPane, function() {
             console.log("button_dontTellAnotherStory");
+            var canProceedIfNoStory = addIndex !== 1;
+            if (!validateStoryQuestionsModel(storyQuestionsModel, canProceedIfNoStory)) return;
             wizardPane.forward();
         });
         
@@ -112,6 +148,9 @@ define([
         
         var nextPageButton = utility.newButton(undefined, "button_nextPage", surveyPane, function() {
             console.log("button_nextPage");
+            // TODO: Need to somehow require at least one story... But this allows previous stories to be deleted. Kludge for now that first story can't be blank.
+            var canProceedIfNoStory = addIndex !== 1;
+            if (!validateStoryQuestionsModel(storyQuestionsModel, canProceedIfNoStory)) return;
             wizardPane.forward();
         });
         domStyle.set(nextPageButton.domNode, 'display', 'none');

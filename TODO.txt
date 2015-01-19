@@ -13,15 +13,6 @@ Improve template list generation tool to support storyCollectionActivities and s
 
 SURVEY QUESTIONS
 Remove redundant code when calculating survey questions for story and name in survey and story browser
-Survey - validation on picking question, entering story, entering title
-Survey - checkbox for is question answer required (maybe later)
-Survey - start page required (what do do if nothing entered)
-Survey - improve styling on radio buttons for question or alternative approach (maybe later)
-Survey - delete button w/confirm
-Survey - reorder story numbers
-Survey - can't delete last story
-Survey - maximum number stories (maybe later)
-Survey - back button in browser -- deal with so don't lose data
 
 SURVEY GENERAL
 Figure out what URLs will look like for administration/authoring vs. survey taking (multiple?) vs. (maybe) project
@@ -192,6 +183,16 @@ Learn how to use Dojo build process to minimize application
 
 Add support for adding multiple surveys per project
 Have survey entry page support different surveys
+
+Survey - Better validation that at least one story entered instead of forcing first story entry pane to have a story even if second or later panes have stories
+Survey - checkbox for is question answer required (maybe later)
+Survey - start page required (what do do if nothing entered)
+Survey - improve styling on radio buttons for question or alternative approach (maybe later)
+Survey - delete button w/confirm
+Survey - reorder story numbers
+Survey - can't delete last story
+Survey - maximum number stories (maybe later)
+Survey - back button in browser -- deal with so don't lose data
 
 ==== Wish list:
 
@@ -430,3 +431,4 @@ DONE Survey - improve display of title
 DONE Survey - Improve how end panel is displayed
 DONE Remove unneeded startup calls that may be slowing down page loading: http://dojotoolkit.org/reference-guide/1.10/dijit/layout.html#id8
 DONE Improve layout of source dialog in clusterign diagram so the text area scrolls instead of the entire dialog
+DONE Survey - validation on picking question, entering story, entering title
