@@ -24,7 +24,7 @@ define([
     "dijit/ColorPalette",
     "dojo/_base/Color",
     "dojox/layout/ResizeHandle",
-    "dijit/layout/BorderContainer",
+    "dijit/layout/LayoutContainer",
     "dijit/form/Textarea"
 ], function (
     ready,
@@ -49,7 +49,7 @@ define([
     ColorPalette,
     Color,
     ResizeHandle,
-    BorderContainer,
+    LayoutContainer,
     Textarea
 ) {
    // Resources:
@@ -478,9 +478,7 @@ define([
         
         // Experiment; lots of tries!!! http://jsfiddle.net/u3qcbxy4/37/
         
-        var layout = new BorderContainer({
-            // style: "height: 100%; width: 100%;"
-            // style: "height: 400px; width: 400px;"
+        var layout = new LayoutContainer({
         });
         
         // Maybe SimpleTextarea?
