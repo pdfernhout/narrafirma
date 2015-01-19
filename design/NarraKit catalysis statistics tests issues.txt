@@ -1,0 +1,189 @@
+Notes on catalysis design, in practice:
+
+Tiny 
+3 questions + 3 participant
+
+Small projects
+6 story questions + 6 participant questions
+
+Medium project
+10 story questions + 10 participant questions
+
+Big Project (maximum in career)
+15 questions per story + 35 questions per person
+50 questions total -- 35 multiple choice (not ranges)
+Included add five questions as themes per story
+Chi test 35 squared = 1225
+Less than number of possibilities than for correlations
+
+T-test -- differences of means on a distribution (numerical range, distribution drawn as histogram, for subsets data)
+Example: How memorable is story as range, subsets based on another questions (age range)
+Significance (called p) between 0 and 1 -- generally only considered significant if less than 0.05 (or 0.01)
+Test result is called t-value
+
+Chi-squared test -- contingency test between two choice questions (can be multiple answers per question)
+How many people have dogs, how many have cats, how many have birds
+How many like pizza, how many like bread, how many like lettuce
+Test tells you whether the distribution of these counts is difference than what expect by chance
+Look for a "correspondence" between counts (technically not called "correlation")
+Test value called chi-squared value
+
+Correlation -- between two continuous variables
+Test result is R is called correlation coefficient -- Number between 0 and 1
+
+Non-parametric -- if data is not normally distributed
+Does not matter for Chi-squared for "counts".
+Need to do test if normally distributed, so need scale variable (like 0 - 100). Ten is probably too few. But for GUI, max is really number pixels on slider.
+So do test for normality.
+
+If data is normally distributed (only test continuous), then do non-parametric tests.
+Above tests assume normally distributed.
+Parametric test for correlation is called Pearson's R
+If non-parametric, see Spearman's R
+
+For T-test, Studnet's T test if normal, otherwise Kruskal-Wallace
+No difference for Chi-squared (is count, not measurement)
+People like report on normality
+Mean, medium, mode, standard deviation for any distribution
+
+=== Response sizes
+
+Does not matter for statistics whether questions are about story or participant.
+"Size" of project can be independent of number of responses
+
+Responses could range from lowest possible about 80 stories (4 stories for 20 participants) but begins to break the statistics.
+Statistics typically have lower limit of 20 data values (example, normality, correlation)
+Chi-squared cutoff of 5 in each category.
+High end of responses -- 5000 stories, told by on the order of 2000 people (and had maybe 20-30 questions).
+
+Reasonable cutoff could be 6000 stories
+
+=== Example:
+
+Story Questions:
+Example prompting question: Can you remember a time when a pet was important in your life?
+S0. Choice of prompting question if more than one
+S1. How memorable is this story -- slider 0 - 100
+S2. How responsible did person act? Slider 0 - 100
+S3. Which pets are involved in story? Checkboxes for up to three choices: dog, cat, bird
+
+Participant question:
+P1. What kind of pets do you have? Checkboxes up to three choice: Dog, Cat, Bird 
+
+Total: 2 scale questions and two choice questions
+
+Let's say 100 stories from 50 participants.
+
+Chi-squared -- what pets in story vs. what pets you have
+Deviation from randomness might be people who have dogs tell stories about dogs
+Some combinations might be bigger than random chance
+
+T-test
+Look at distribution of how memorable vs. what kind of pets they have
+Might show: Dog owners tell more memorable stories than cat owners. Means of distributions would be separate. Would not expect by chance. So something going on.
+
+Correlation -- How memorable vs. how responsible did person act
+If test significant, then there is a line.
+If not, just blur or snow storm of dots in graph.
+
+== Trends report, pick which of the three tests want to look at. 
+Unsure if can compare significance value of different tests, p values don't mean same thing
+So, top ten correlations could show
+
+Alternative: list box, show headings of comparisons sorted by significance 
+Says for example: "memorability subset for pet ownership: dog vs. memorability subset for pet ownership: cat".
+Cfk notation: Mem+owner:dog vs. Mem+owner:bird
+Each subset of larger distribution may have a different mean
+T-test between two distributions.
+In this case, order does not matter. Dog vs. Cat, Dog vs. Bird, Cat vs. Bird
+
+Top 5, Top 10, Top 20, all, ordered by significance
+
+Drag items over to another area to compare them, with name and test result to compare
+Want to compare vertically, one under another, easier to see mean differences
+
+== Iterate over three types of tests (or pick one)
+
+** For Chi-squared, look for every combination of choice questions. Two choice questions in this case. One test in this case. S3 vs. P1
+Order does not matter, but sometimes generate all graphs as easier, sometime seasire to understand. Could have button to switch order.
+Graph, boxes with expected vs. observed circles.
+P-significance and test value
+So only one test in this case.
+
+No choice is also a choice (but less than 20 need to drop out typically)
+
+** For T-test, for each scale, do each choice question, within each, do pair wise compairson of choices
+For each slider question (memorability, responsibility)
+  memorability vs. story animal -- three comparisons (dog vs. cat, dog vs. bird, cat vs. bird)
+  memorability vs. owned animal
+  responsibility vs. story pet
+  responsibility vs. owned animal
+  
+Can't compare between questions. Within questions.
+  
+Twelve total (four time three)
+
+Issue of ignoring combinations of choices as always have so much choices.
+Could in theory consider (if enough data points, need at least 20) no pets vs. each one vs. each pair vs. all three (but a lot)
+I practice usually a lot of choices (five or more) and would get huge if had huge data set and not dropping most out.
+None might be important if fourth choice. Get six (None vs. dog, None vs. cat, None vs. bird, dog vs. cat, dog vs. bird, cat vs. bird).
+Adding one thing doubles to twenty four.
+
+To get the top five, sort them in list by "p" value
+
+** For correlation, only one.
+Memorabilty vs. responsibility
+
+Could at distributions using choice questions as subsets.
+Could sort those by "p" value (significance).
+Then cutoff, Then sort by r value in cutoff. (Correlation coefficient test value)
+Could also let people pick. 
+Cfk -- one directory without subsets, and one with subsets including all
+
+Example: 6 choices in a question = (n! / (n - r)!) since order does not matter = 18
+
+Memorability vs. Responsibility for six subsets: (owner:dog, owner:bird, owner:cat) (story: dog, story:bird, story:cat)
+
+If has sorted list and could drag them into them, could do catalysis
+But look for larger patterns or more subtle ones from looking at 100 graphs.
+99% of people would not do that?
+
+=== Second example (medium sized project):
+
+10 choice questions, five choices each
+12 scale questions
+100 stories
+
+For chi-squared
+10 choice * 10 choice / 2 = 50 graphs, sort by significance
+
+For T-test, 12 scale * 10 choice * 10 pairs (5 choices = 5! / 3! = 5 * 4 = 20 / 2 order does not matter = 10)
+Total is 1200 graphs. Need sorting.
+
+Correlations
+Pairwise for 12: 12 * 11 / 2 = 66
+At top level.
+
+or subsets: 50 subsets (10 choice questions * 5 choices each = 50)
+
+66 * 50 for subsets = 3300
+
+3366 total if put all together... 
+
+Separate out subsetting of correlations because they might not care....
+
+Correlations don't use means, t-test uses means, chi-squared uses counts
+
+Correlation of subsets is super worst
+
+In past profiling, graphing takes 95% of times.
+
+One correlation: = <100 * <100 ? = < 10000 things compared
+Time needed to compute correlation going up in relation to square of stories
+
+For 1000 stories, some fraction of million
+
+This number times 66. 
+
+Cfk python program from NarraCat -- typical project to generate statistics graphs takes four hours. Without graphs takes seconds. Not optimized though.
+
