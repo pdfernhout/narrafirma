@@ -429,3 +429,4 @@ DONE Survey - submit button on participant info
 DONE Survey - improve display of title
 DONE Survey - Improve how end panel is displayed
 DONE Remove unneeded startup calls that may be slowing down page loading: http://dojotoolkit.org/reference-guide/1.10/dijit/layout.html#id8
+DONE Improve layout of source dialog in clusterign diagram so the text area scrolls instead of the entire dialog
