@@ -458,7 +458,7 @@ define([
         }
         
         var table = new TableContainer({
-            customClass:"wwsRecommendationsTable",
+            customClass: "wwsRecommendationsTable",
             cols: fieldsForCategory.length + 4 + 2,
             showLabels: false,
             spacing: 0
@@ -481,6 +481,18 @@ define([
             recommendationsValues.push(null);
         }
         
+        function tagForRecommentationValue(recommendation) {
+            if (recommendation === 1) {
+                return "recommendationLow";
+            } else if (recommendation === 2) {
+                return "recommendationMedium";
+            } else if (recommendation === 3) {
+                return "recommendationHigh";
+            }
+            console.log("ERROR: Unexpected recommentadtion value", recommendation);
+            return "";
+        }
+        
         for (var questionName in recommendations.questions) {
             var questionText = translate(questionName + "::prompt", "Missing translation for: " + questionName);
             var yourAnswer = model.get(questionName);
@@ -501,25 +513,23 @@ define([
                 recommendationsValues.push(recommendationNumber);
                 var recommendationValue = {1: "risky", 2: "maybe", 3: "good"}[recommendationNumber];
                 if (recommendationsForAnswer) recommendationValue = recommendationsForAnswer[categoryName][fieldName];
-                var fieldContentPane = new ContentPane({"content": "<i>" + recommendationValue + "</i>", "colspan": 1, "align": "right"});
+                var fieldContentPane = new ContentPane({"content": "<i>" + recommendationValue + "</i>", "colspan": 1, "align": "right", "class": tagForRecommentationValue(recommendationNumber)});
                 table.addChild(fieldContentPane);
             }
         }
         
         table.placeAt(questionContentPane);
         
+        /*
         // TO DO WORKING HERE!!!! Experiment -- Trying to get full background color set for a cell
         for (var i = 0; i < recommendationsValues.length; i++) {
             var recommendation = recommendationsValues[i];
             // console.log("recommendation", i, recommendation);
-            if (recommendation === 1) {
-                query(".wwsRecommendationsTable-valueCell-" + i, table.domNode)[0].className += " recommendationLow";
-            } else if (recommendation === 2) {
-                query(".wwsRecommendationsTable-valueCell-" + i, table.domNode)[0].className += " recommendationMedium";
-            } else if (recommendation === 3) {
-                query(".wwsRecommendationsTable-valueCell-" + i, table.domNode)[0].className += " recommendationHigh";
-            }
+            var tag = tagForRecommentationValue(recommendation);
+            var widgets = query(".wwsRecommendationsTable-valueCell-" + i, table.domNode);
+            if (widgets && widgets[0] && tag) widgets[0].className += " " + tag;
         }
+        */
         
         return table;
     }
