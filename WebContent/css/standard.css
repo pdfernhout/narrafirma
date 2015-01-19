@@ -151,13 +151,14 @@ form {
 }
 
 .recommendationHigh {
-    background-color: green;
+    background-color: LightGreen;
 }
 
 .recommendationMedium {
-    background-color: yellow;
+    /* dark yellow */
+    background-color: #CCCC00;
 }
 
 .recommendationLow {
-    background-color: red;
+    background-color: DarkRed;
 }
