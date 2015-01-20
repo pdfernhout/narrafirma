@@ -13,6 +13,7 @@ Improve template list generation tool to support storyCollectionActivities and s
 
 SURVEY
 If only ask one prompting question, don't show radio buttons and choice, just present question
+Clipping of left field name in slider
 
 SURVEY GENERAL
 Figure out what URLs will look like for administration/authoring vs. survey taking (multiple?) vs. (maybe) project
