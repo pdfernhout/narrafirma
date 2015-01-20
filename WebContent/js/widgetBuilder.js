@@ -374,7 +374,8 @@ define([
         
         var hasTextLabels = false;
         var labels = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-        if (questionOptions) {
+        if (questionOptions && questionOptions.length !== 0) {
+            // console.log("questionOptions", questionOptions);
             labels = questionOptions;
             if (labels.length != 2) {
                 console.log("Need to specify low and high labels for question: ", id);
@@ -393,8 +394,8 @@ define([
             maximum: 100,
             discreteValues: 101,
             showButtons: true,
-            // Doesn;t work: style: "align: center; width: 80%;"
-            style: "width: 80%;",
+            // Doesn't work: style: "align: center; width: 80%;"
+            // style: "width: 98%; max-width: 98%",
             value: at(model, id)
         });
         
@@ -411,16 +412,23 @@ define([
         //}
 
         // Create the labels
-        var labelsNode = domConstruct.create("div", {}, slider.containerNode);
-        var sliderLabels = new HorizontalRuleLabels({
-            container: "bottomDecoration",
-            style: "height: 1.5em; font-weight: bold",
-            minimum: 0,
-            maximum: 100,
-            count: labels.length,
-            numericMargin: 1,
-            labels: labels
-        }, labelsNode);
+        if (!hasTextLabels) {
+            var labelsNode = domConstruct.create("div", {}, slider.containerNode);
+            var sliderLabels = new HorizontalRuleLabels({
+                container: "bottomDecoration",
+                style: "height: 1.5em", // ; font-weight: bold
+                minimum: 0,
+                maximum: 100,
+                count: labels.length,
+                numericMargin: 1,
+                labels: labels
+            }, labelsNode);
+        } else {
+            var nodeConstructor = '<div><span style="float: left">' + labels[0] + '</span><span style="float: right">' + labels[1] + '</span></div>';
+            var textLabelsNode = domConstruct.toDom(nodeConstructor);
+            // slider.containerNode
+            panelDiv.appendChild(textLabelsNode);
+        }
 
         // TODO: Issue -- should return a new sort of component that can be placed an includes the slider and the rules and labels
         var sliderContentPane = new ContentPane({

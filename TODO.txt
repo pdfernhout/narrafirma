@@ -13,7 +13,6 @@ Improve template list generation tool to support storyCollectionActivities and s
 
 SURVEY
 If only ask one prompting question, don't show radio buttons and choice, just present question
-Clipping of left field name in slider
 
 SURVEY GENERAL
 Figure out what URLs will look like for administration/authoring vs. survey taking (multiple?) vs. (maybe) project
@@ -438,3 +437,4 @@ DONE Improve layout of source dialog in clusterign diagram so the text area scro
 DONE Survey - validation on picking question, entering story, entering title
 DONE Refactored text edit window from clustering diagram into widget support so can be used by other callers
 DONE Add export and import buttons for project design
+DONE Fixed clipping of left field name in slider
