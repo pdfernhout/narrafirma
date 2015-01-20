@@ -36,7 +36,6 @@ Fix how graph browser shows graphs for separation of participant info from stori
 Update story browser when load latest stories from server (without need to press Filter button again)
 
 EXPORT/IMPORT
-Add export and import buttons for project
 Add export button for survey results
 Maybe import button for survey results
 Add way to clear out or reset old survey results? Or maybe partition them by survey?
@@ -436,3 +435,5 @@ DONE Survey - Improve how end panel is displayed
 DONE Remove unneeded startup calls that may be slowing down page loading: http://dojotoolkit.org/reference-guide/1.10/dijit/layout.html#id8
 DONE Improve layout of source dialog in clusterign diagram so the text area scrolls instead of the entire dialog
 DONE Survey - validation on picking question, entering story, entering title
+DONE Refactored text edit window from clustering diagram into widget support so can be used by other callers
+DONE Add export and import buttons for project design

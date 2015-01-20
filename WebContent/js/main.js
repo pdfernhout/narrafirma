@@ -18,6 +18,7 @@ require([
     "js/translate",
     "js/utility",
     "js/widgetBuilder",
+    "js/widgets/widgetSupport",
     "js/widgets/grid-table",
     "dijit/layout/ContentPane",
     "dijit/form/Select",
@@ -40,6 +41,7 @@ require([
     translate,
     utility,
     widgetBuilder,
+    widgetSupport,
     widgetGridTable,
     ContentPane,
     Select
@@ -100,11 +102,25 @@ require([
             return;
         }
         console.log("loading saved version", projectAnswers);
-        for (var key in projectAnswers) {
+        var key;
+        for (key in projectAnswers) {
             if (projectAnswers.hasOwnProperty(key)) {
                 domain.projectData.projectAnswers.set(key, projectAnswers[key]);
             }
         }
+        // TODO: A little dangerous to remove stuff, should this be kept?
+        var fieldsToRemove = {};
+        for (key in domain.projectData.projectAnswers) {
+            if (domain.projectData.projectAnswers.hasOwnProperty(key) && !projectAnswers.hasOwnProperty(key)) {
+                // Stateful model adds "_watchCallbacks" so don't remove it
+                if (!utility.startsWith(key, "_")) fieldsToRemove[key] = true;
+            }
+        }
+        for (key in fieldsToRemove) {
+            console.log("removing old field/data", key, domain.projectData.projectAnswers.get(key));
+            domain.projectData.projectAnswers.set(key, undefined);
+        }
+        
         // Update derived values
         widgetBuilder.updateQuestionsForPageChange();
         
@@ -115,7 +131,8 @@ require([
         currentProjectVersionReference = envelope.__sha256HashAndLength;
         
         // TODO: Translate and improve this feedback
-        alert("Finished loading project data");        
+        alert("Finished loading project data");
+        return;
     }
     
     function saveClicked(event) {
@@ -323,8 +340,35 @@ require([
         console.log("debug domain.projectData", domain.projectData);
     }
     
+    function importButtonClicked(projectDefinitionText, hideDialogMethod) {     
+        console.log("importButtonClicked", projectDefinitionText);
+        
+        var updatedProjectAnswers;
+        
+        try {
+            updatedProjectAnswers = JSON.parse(projectDefinitionText);
+        } catch(e) {
+            alert("Problem parsing project definition text\n" + e);
+            return;
+        }
+
+        console.log("parsed projectDefinitionText", updatedProjectAnswers);
+        
+        // TODO: Translate
+        widgetSupport.confirm("This will overwrite your current project design.\nAny active survey and any previously stored survey results will remain as-is,\nhowever any new project design might have a different survey design.\nAre you sure you want to replace the curent project definition?", function() {
+
+            // TODO: Not sure what to do for what is essentially a new currentProjectVersionReference defined here
+            switchToLoadedProjectData(null, updatedProjectAnswers, {__sha256HashAndLength: null});
+            
+            console.log("Updated OK");
+            hideDialogMethod();
+        });
+    }
+        
     function importExportClicked() {
         console.log("importExportClicked");
+        var projectDefinitionText = JSON.stringify(domain.projectData.projectAnswers, null, 2);
+        widgetSupport.openTextEditorDialog(projectDefinitionText, "dialog_projectImportExport", "projectImportExportDialog_title", "projectImportExportDialog_okButtonText", importButtonClicked);
     }
     
     // TODO: somehow unify this with code in widget-questions-table?

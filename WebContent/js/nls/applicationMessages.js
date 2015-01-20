@@ -113,6 +113,10 @@ define({
     
     // For clustering diagram
     clusterDiagramSource_titleID: "Cluster Diagram Source",
-    clusterDiagramSource_okButtonID:  "Update"
+    clusterDiagramSource_okButtonID:  "Update",
+        
+    // For project import/export dialog
+    projectImportExportDialog_title: "Project Design Import/Export",
+    projectImportExportDialog_okButtonText: "Import"
 }
 });
