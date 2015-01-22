@@ -11,9 +11,6 @@ TEMPLATES
 Fix how templates list popup has too much scrolling and is not sized well; perhaps start with grid item view pane open?
 Improve template list generation tool to support storyCollectionActivities and sensemakingActivities
 
-SURVEY
-If only ask one prompting question, don't show radio buttons and choice, just present question
-
 SURVEY GENERAL
 Figure out what URLs will look like for administration/authoring vs. survey taking (multiple?) vs. (maybe) project
 Settle on some authentication approach for authoring/administration
@@ -438,3 +435,4 @@ DONE Survey - validation on picking question, entering story, entering title
 DONE Refactored text edit window from clustering diagram into widget support so can be used by other callers
 DONE Add export and import buttons for project design
 DONE Fixed clipping of left field name in slider
+DONE If only ask one prompting question, don't show radio buttons and choice, just present question

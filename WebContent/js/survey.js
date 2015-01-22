@@ -99,7 +99,7 @@ define([
        return true;
    }
    
-   function newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels, addIndex) {
+   function newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels, addIndex, singlePrompt) {
         
         var surveyPane = new ContentPane();
         
@@ -111,6 +111,7 @@ define([
         storyQuestionsModel.set("__type", "org.workingwithstories.Story");
         storyQuestionsModel.set("_storyID", uuid());
         storyQuestionsModel.set("_participantID", participantID);
+        if (singlePrompt) storyQuestionsModel.set("elicitingQuestion", singlePrompt);
         surveyResultsWithModels.stories.push(storyQuestionsModel);
         
         widgetBuilder.addQuestions(allStoryQuestions, surveyPane, storyQuestionsModel);
@@ -125,7 +126,7 @@ define([
             if (!validateStoryQuestionsModel(storyQuestionsModel)) return;
             var children = wizardPane.getChildren();
             var indexForNewStoryPage = array.indexOf(children, wizardPane.selectedChildWidget) + 1;
-            newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels, indexForNewStoryPage);
+            newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels, indexForNewStoryPage, singlePrompt);
             domStyle.set(tellAnotherStoryButton.domNode, 'display', 'none');
             domStyle.set(dontTellAnotherStoryButton.domNode, 'display', 'none');
             domStyle.set(nextPageButton.domNode, 'display', 'inline');
@@ -195,9 +196,15 @@ define([
         
         // TODO: What if these IDs for storyText and storyName are not unique?
         var initialStoryQuestions = [];
+        var singlePrompt = null;
         initialStoryQuestions.push({id: "__survey_" + "questionHeader", shortName: "questionHeader", prompt: "Story", type: "header", options: []});
-        initialStoryQuestions.push({id: "__survey_" + "elicitingQuestion", shortName: "elicitingQuestion", prompt: "Please choose a question to which you would like to respond:", type: "radiobuttons", options: elicitingQuestionPrompts});
-        initialStoryQuestions.push({id: "__survey_" + "storyText", shortName: "storyText", prompt: "Please enter your response in the box below:", type: "textarea", options:[]});
+        if (elicitingQuestionPrompts.length !== 1) {
+            initialStoryQuestions.push({id: "__survey_" + "elicitingQuestion", shortName: "elicitingQuestion", prompt: "Please choose a question to which you would like to respond:", type: "radiobuttons", options: elicitingQuestionPrompts});
+            initialStoryQuestions.push({id: "__survey_" + "storyText", shortName: "storyText", prompt: "Please enter your response in the box below:", type: "textarea", options:[]});
+        } else {
+            singlePrompt = elicitingQuestionPrompts[0];
+            initialStoryQuestions.push({id: "__survey_" + "storyText", shortName: "storyText", prompt: singlePrompt, type: "textarea", options:[]});
+        }
         initialStoryQuestions.push({id: "__survey_" + "storyName", shortName: "storyName", prompt: "Please give your story a name", type: "text", options:[]});
         
         var allStoryQuestions = initialStoryQuestions.concat(questionnaire.storyQuestions);
@@ -243,7 +250,7 @@ define([
         
         // TODO: Need to handle multiple stories somehow
         
-        newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels, 1) ;
+        newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels, 1, singlePrompt) ;
         //newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
         //newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
         //newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
