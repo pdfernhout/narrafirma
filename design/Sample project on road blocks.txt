@@ -1,0 +1,583 @@
+{
+  "project_generalNotes_planning": "",
+  "project_title": "Gathering stories about our police department.",
+  "project_communityOrOrganizationName": "The Gotham City Police Department (G.C.P.D.)",
+  "project_topic": "Studying the safety of roadblock units.",
+  "project_startAndEndDates": "December 21st to December 28th.",
+  "project_funders": "The G.C.P.D. bureau of police safety.",
+  "project_facilitators": "The district of ***** safety bureau",
+  "project_reportStartText": "G.C.P.D. Roadblock unit safety report.",
+  "project_reportEndText": "",
+  "project_pniQuestions_goal_draft": "To find out how the public is affected by roadblock unit deployments in their area.",
+  "project_pniQuestions_relationships_draft": "Between the roadblock unit and local citizens",
+  "project_pniQuestions_focus_draft": "The impact of roadblock units on areas over time",
+  "project_pniQuestions_range_draft": "Civilians in highly roadblocked areas; also roadblock unit staff and police officers involved with car chases/roadblocks",
+  "project_pniQuestions_scope_draft": "100 citizens, 20 police officers, 40 roadblock unit staff",
+  "project_pniQuestions_emphasis_draft": "collection, catalysis, sensemaking, intervention, return",
+  "project_participantGroupsList": [
+    {
+      "participantGroup_name": "Citizens",
+      "participantGroup_description": "People who live on West Grove Street and South Feline Avenue",
+      "participantGroup_status": "mixed",
+      "participantGroup_confidence": "unknown",
+      "participantGroup_time": "mixed",
+      "participantGroup_education": "moderate",
+      "participantGroup_physicalDisabilities": "minimal",
+      "participantGroup_emotionalImpairments": "none",
+      "participantGroup_performing": "unknown",
+      "participantGroup_conforming": "mixed",
+      "participantGroup_promoting": "somewhat unimportant",
+      "participantGroup_venting": "somewhat important",
+      "participantGroup_interest": "a lot",
+      "participantGroup_feelings_project": "neutral",
+      "participantGroup_feelings_facilitator": "positive",
+      "participantGroup_feelings_stories": "neutral",
+      "participantGroup_topic_feeling": "negative",
+      "participantGroup_topic_private": "not private",
+      "participantGroup_topic_articulate": "mixed",
+      "participantGroup_topic_timeframe": "months",
+      "_id": "227b2f46-60c6-4412-8ea3-360c6bbe628d"
+    },
+    {
+      "participantGroup_name": "Roadblock unit officers",
+      "participantGroup_status": "high",
+      "participantGroup_confidence": "medium",
+      "participantGroup_time": "little",
+      "participantGroup_education": "high",
+      "participantGroup_physicalDisabilities": "none",
+      "participantGroup_emotionalImpairments": "none",
+      "participantGroup_performing": "somewhat important",
+      "participantGroup_conforming": "somewhat important",
+      "participantGroup_promoting": "somewhat unimportant",
+      "participantGroup_venting": "very important",
+      "participantGroup_interest": "a lot",
+      "participantGroup_feelings_project": "positive",
+      "participantGroup_feelings_facilitator": "unknown",
+      "participantGroup_feelings_stories": "neutral",
+      "participantGroup_topic_feeling": "mixed",
+      "participantGroup_topic_private": "not private",
+      "participantGroup_topic_articulate": "mixed",
+      "participantGroup_topic_timeframe": "months",
+      "_id": "b139da52-13a3-4339-872d-bd880886bcf5"
+    },
+    {
+      "participantGroup_name": "Police Interceptors",
+      "participantGroup_description": "Police road units who chase after speeders/getaways",
+      "participantGroup_status": "very high",
+      "participantGroup_confidence": "very high",
+      "participantGroup_time": "little",
+      "participantGroup_education": "high",
+      "participantGroup_physicalDisabilities": "none",
+      "participantGroup_emotionalImpairments": "none",
+      "participantGroup_performing": "somewhat important",
+      "participantGroup_conforming": "somewhat important",
+      "participantGroup_promoting": "somewhat important",
+      "participantGroup_venting": "somewhat important",
+      "participantGroup_interest": "some",
+      "participantGroup_feelings_project": "positive",
+      "participantGroup_feelings_facilitator": "neutral",
+      "participantGroup_feelings_stories": "negative",
+      "participantGroup_topic_feeling": "mixed",
+      "participantGroup_topic_private": "not private",
+      "participantGroup_topic_articulate": "medium",
+      "participantGroup_topic_timeframe": "months",
+      "_id": "a0c5bb67-9005-47d6-81b8-b07df6e0d2c4"
+    }
+  ],
+  "aboutYou_experience": "a little",
+  "aboutYou_help": "a little",
+  "aboutYou_tech": "a lot",
+  "project_projectStoriesList": [
+    {
+      "projectStory_scenario": "ask me anything",
+      "projectStory_outcome": "colossal success",
+      "projectStory_text": "We asked citizens to tell us about the last time there was roadblock on their street, and how the citizens reacted to the roadblock, and how the roadblock reacted to the citizens. We discovered that this area was a choke point, and we found better places to place roadblocks at to catch speeders/getaways. Now we are better at stopping them, and we have made less impact on the community.",
+      "projectStory_name": "Better roadblock placement",
+      "projectStory_feelAbout": "very positive",
+      "projectStory_surprise": "how much more effective roadblocks at other positions were at stopping test getaways",
+      "projectStory_dangers": "A danger is of there being more areas for the roadblock units to be destroyed more easily and take more damage (because they were farther away and could be hit more easily). An opportunity is of decreasing the chances of seeing a roadblock on any street.",
+      "_id": "b44615f2-fd5b-4727-8ebe-fb60eea26fa3"
+    },
+    {
+      "projectStory_scenario": "fly on the wall",
+      "projectStory_outcome": "miserable failure",
+      "projectStory_text": "We failed to collect good information in the project. We set up new roadblock patterns anyway. Then we watched as our getaways blitzed through our new roadblock setups, easily evading them, because we could not muster enough units to set up roadblocks along a suspect's entire path. As a result of this, we are switching back to our old system.",
+      "projectStory_name": "Failure via incorrect story collection",
+      "projectStory_feelAbout": "strongly negative",
+      "projectStory_surprise": "We were very surprised that suspects blitzed through our roadblocks. We thought we had done such a good job, but then we realized that there were fields on both sides of the road.",
+      "projectStory_dangers": "The danger of adopting such a system and letting more getaways get away, increasing crime and destruction in the city of Gotham. An opportunity to better ourselves in roadblock placement to make fewer units more effective.",
+      "_id": "784207a8-218b-42e2-8433-330325ad1c37"
+    }
+  ],
+  "project_projectStoryElementsList": [],
+  "assessment_counterStories": null,
+  "assessment_authority": null,
+  "assessment_mistakes": null,
+  "assessment_silencing": null,
+  "assessment_conflict": null,
+  "assessment_remindings": null,
+  "assessment_retellings": null,
+  "assessment_folklore": null,
+  "assessment_storyTypes": null,
+  "assessment_sensemaking": null,
+  "assessment_realStories": null,
+  "assessment_negotiations": null,
+  "assessment_cotelling": null,
+  "assessment_blunders": null,
+  "assessment_accounting": null,
+  "assessment_commonStories": null,
+  "assessment_sacredStories": null,
+  "assessment_condensedStories": null,
+  "assessment_intermingling": null,
+  "assessment_culture": null,
+  "assessment_result_freedomSubscore": null,
+  "assessment_result_flowSubscore": null,
+  "assessment_result_knowledgeSubscore": null,
+  "assessment_result_unitySubscore": null,
+  "assessment_result_grandTotal": null,
+  "assessment_notes": "",
+  "project_pniQuestions_goal_final": "To find out how the public is affected by roadblock unit deployments in their area.",
+  "project_pniQuestions_relationships_final": "Between the roadblock unit and local citizens",
+  "project_pniQuestions_focus_final": "The impact of roadblock units on areas over time",
+  "project_pniQuestions_range_final": "Civilians in highly roadblocked areas; also roadblock unit staff and police officers involved with car chases/roadblocks",
+  "project_pniQuestions_scope_final": "100 citizens, 20 police officers, 40 roadblock unit staff",
+  "project_pniQuestions_emphasis_final": "collection, catalysis, sensemaking, intervention, return",
+  "project_synopsis": "In order to find safer positions and ways to use roadblock units, we will listen to stories from the community and from our officers.",
+  "project_planningReport": null,
+  "project_generalNotes_collectionDesign": "",
+  "project_venuesList": [
+    {
+      "venue_name": "Group interviews",
+      "venue_primary_type": "group interviews",
+      "venue_participantGroups": "all three groups",
+      "_id": "b85102de-80f7-4d3e-81fb-b00c1110328b",
+      "venue_timeline": "At the GCPD awareness day, and on training day, and at any time in the GCPD facility.",
+      "venue_locations": "The GCPD main headquarters"
+    }
+  ],
+  "project_elicitingQuestionsList": [
+    {
+      "elicitingQuestion_type": {
+        "what happened": false,
+        "directed question": true,
+        "point in time": false,
+        "event": true
+      },
+      "elicitingQuestion_text": "(For citizens) Were you ever stopped from getting to where you needed to go by a roadblock? If so, how and when?",
+      "elicitingQuestion_shortName": "Stopped by roadblock",
+      "_id": "dddce275-2566-4359-8989-7fec605b57e6"
+    },
+    {
+      "elicitingQuestion_type": {
+        "what happened": true,
+        "directed question": true,
+        "event": true
+      },
+      "elicitingQuestion_text": "(For citizens) If you have business, has a roadblock ever affected your business? If so, how and why?",
+      "elicitingQuestion_shortName": "Affected business",
+      "_id": "1843d24b-d727-4a1f-8d8a-8d57f3473699"
+    },
+    {
+      "elicitingQuestion_type": {
+        "surprise": false,
+        "what happened": true,
+        "event": true,
+        "directed question": true
+      },
+      "elicitingQuestion_text": "(For officers) Have you ever had an experience where a getaway has blitzed through a roadblock? If so, how and when? What would have stopped them?",
+      "elicitingQuestion_shortName": "Blitzed through",
+      "_id": "475f8810-8edd-4681-8b9a-3747639aaf66"
+    },
+    {
+      "elicitingQuestion_type": {
+        "what happened": true,
+        "directed question": true,
+        "event": true
+      },
+      "elicitingQuestion_text": "(For officers) Can you tell us about a time when a roadblock was dangerous to civilians and/or officers? If so, how and why, and what did you do about it?",
+      "elicitingQuestion_shortName": "Dangerous roadblock",
+      "_id": "f8fbc47c-37ef-45a8-8ffb-30be6ab3204d"
+    },
+    {
+      "elicitingQuestion_type": {
+        "extreme": true
+      },
+      "elicitingQuestion_text": "(For anyone) Did you ever have an experience with a roadblock that you will remember for a long time?",
+      "elicitingQuestion_shortName": "Remember",
+      "_id": "80c1a5cb-6c74-44dd-87da-5c2bedd71b75"
+    },
+    {
+      "elicitingQuestion_type": {
+        "what happened": true,
+        "surprise": true
+      },
+      "elicitingQuestion_text": "(For anyone) Did a roadblock ever surprise you? How, and what happened?",
+      "elicitingQuestion_shortName": "Surprise",
+      "_id": "dc6b46fb-73db-4c70-8070-11fa3abd33af"
+    }
+  ],
+  "project_storyQuestionsList": [
+    {
+      "storyQuestion_text": "How do you feel about this story?",
+      "storyQuestion_type": "select",
+      "storyQuestion_shortName": "Feel about",
+      "storyQuestion_options": "happy\nsad\nangry\nrelieved\nenthused\nindifferent\nnot sure",
+      "_id": "485aab14-7dda-4d6c-89c6-91cdf11d63d5",
+      "id": "question 1"
+    },
+    {
+      "storyQuestion_text": "How long will you remember this story?",
+      "storyQuestion_type": "slider",
+      "storyQuestion_shortName": "remember",
+      "storyQuestion_options": "tomorrow\nforever",
+      "_id": "dc25ac17-739b-4cd5-80ff-6b63cc20f815",
+      "id": "question 2"
+    },
+    {
+      "storyQuestion_text": "Based on what you know of our community, do you consider the events described in this story to be common or rare?",
+      "storyQuestion_type": "slider",
+      "storyQuestion_shortName": "Common or rare",
+      "storyQuestion_options": "happens to everyone\nhappens to one in a million",
+      "_id": "7718149c-0b52-4c4d-8947-c735580fc1d4",
+      "id": "question 3"
+    },
+    {
+      "storyQuestion_text": "Which groups of people were involved in this story?",
+      "storyQuestion_type": "checkboxes",
+      "storyQuestion_shortName": "Groups involved",
+      "storyQuestion_options": "speeders\ngetaways\nofficers\nroadblock unit staff\ncivilians",
+      "_id": "92313053-141e-4f62-8a21-6a74131d709d",
+      "id": "question 4"
+    },
+    {
+      "storyQuestion_text": "Which of these groups particularly need to hear this story?",
+      "storyQuestion_type": "checkboxes",
+      "storyQuestion_shortName": "Groups need to hear story",
+      "storyQuestion_options": "officers\nroadblock unit staff\ncitizens\npublic officials",
+      "_id": "5046bc72-d9da-4a48-87fb-c1d5efd9b06b",
+      "id": "question 5"
+    }
+  ],
+  "project_participantQuestionsList": [
+    {
+      "participantQuestion_text": "Which age range do you fall into?",
+      "participantQuestion_type": "select",
+      "participantQuestion_shortName": "Age",
+      "participantQuestion_options": "<25\n25-34\n35-44\n45-64\n65-74\n75+",
+      "_id": "7ff3a801-14ba-480d-8c6d-a8ad332291a1",
+      "id": "question 6"
+    },
+    {
+      "participantQuestion_text": "How do you feel about rules?",
+      "participantQuestion_type": "slider",
+      "participantQuestion_shortName": "",
+      "participantQuestion_options": "rules keep life working\nrules are for breaking",
+      "_id": "0fcb71d3-706a-4f6f-8291-a4bc4f49b412",
+      "id": "question 7"
+    },
+    {
+      "participantQuestion_text": "Where do you live?",
+      "participantQuestion_type": "select",
+      "participantQuestion_shortName": "Location",
+      "participantQuestion_options": "South Park Avenue\nDallas Street\n13th Parallel Boulevard\nDock Road\nOther",
+      "_id": "4a60584f-e47b-4dfb-8457-1dc4c5ab7d47",
+      "id": "question 8"
+    }
+  ],
+  "questionForm_title": "Roadblock unit safety survey",
+  "questionForm_image": "",
+  "questionForm_startText": "Please help us improve our roadblock placements so our neighborhood will be safer. We need your help!",
+  "questionForm_endText": "Thanks for helping!",
+  "project_collectionSessionPlansList": [],
+  "project_collectionDesignReport": null,
+  "project_generalNotes_collectionProcess": "",
+  "project_collectionSessionRecordsList": [],
+  "project_collectionProcessReport": null,
+  "project_generalNotes_catalysis": "",
+  "themeStories": null,
+  "graphBrowserDisplay": null,
+  "reviewTrends_minSubsetSize": null,
+  "reviewTrends_significanceThreshold": null,
+  "project_savedExcerptsList": [],
+  "project_observationsDisplayList": [],
+  "clusterInterpretations_clusterSpace": null,
+  "project_perspectivesList": [],
+  "catalysisReport": null,
+  "project_generalNotes_sensemaking": "",
+  "project_sensemakingSessionPlansList": [],
+  "project_sensemakingSessionRecordsList": [],
+  "sensemakingReport": null,
+  "project_generalNotes_intervention": "",
+  "project_outcomesList": [],
+  "project_interventionPlansList": [],
+  "project_interventionRecordsList": [],
+  "interventionReport": null,
+  "project_generalNotes_return": "",
+  "project_feedbackItemsList": [],
+  "feedback_generalNotes": "",
+  "project_reflect_stories": "",
+  "project_reflect_facilitation": "",
+  "project_reflect_planning": "",
+  "project_reflect_ownPNI": "",
+  "project_reflect_community": "",
+  "project_reflect_personalStrengths": "",
+  "project_reflect_teamStrengths": "",
+  "project_reflect_newIdeas": "",
+  "project_reflect_notes": "",
+  "project_presentationElementsList": [],
+  "project_returnRequestsList": [],
+  "returnReport": null,
+  "projectReport": null,
+  "page_projectFacts_pageStatus": "completely finished",
+  "page_planningQuestionsDraft_pageStatus": "completely finished",
+  "page_participantGroups_pageStatus": "completely finished",
+  "page_addParticipantGroup_pageStatus": null,
+  "page_aboutYou_pageStatus": "completely finished",
+  "page_projectStories_pageStatus": "completely finished",
+  "page_projectStory_pageStatus": null,
+  "page_createProjectStoryElements_pageStatus": null,
+  "page_enterProjectStoryElements_pageStatus": null,
+  "page_addStoryElement_pageStatus": null,
+  "page_assessStorySharing_pageStatus": null,
+  "page_revisePNIPlanningQuestions_pageStatus": null,
+  "page_writeProjectSynopsis_pageStatus": null,
+  "page_readPlanningReport_pageStatus": null,
+  "page_chooseCollectionVenues_pageStatus": null,
+  "page_addVenue_pageStatus": null,
+  "page_writeStoryElicitingQuestions_pageStatus": null,
+  "page_addElicitingQuestion_pageStatus": null,
+  "page_writeQuestionsAboutStories_pageStatus": null,
+  "page_addStoryQuestion_pageStatus": null,
+  "page_writeQuestionsAboutParticipants_pageStatus": null,
+  "page_addParticipantQuestion_pageStatus": null,
+  "page_designQuestionForm_pageStatus": "completely finished",
+  "page_planStoryCollectionSessions_pageStatus": null,
+  "page_addStoryCollectionSession_pageStatus": null,
+  "page_addCollectionSessionActivity_pageStatus": null,
+  "page_readCollectionDesignReport_pageStatus": null,
+  "page_finalizeQuestionForms_pageStatus": null,
+  "page_startStoryCollection_pageStatus": null,
+  "page_enterStories_pageStatus": null,
+  "page_reviewIncomingStories_pageStatus": null,
+  "page_stopStoryCollection_pageStatus": null,
+  "page_enterCollectionSessionRecords_pageStatus": null,
+  "page_addCollectionSessionRecord_pageStatus": null,
+  "page_newCollectionSessionConstruction_pageStatus": null,
+  "page_readCollectionProcessReport_pageStatus": null,
+  "page_browseStories_pageStatus": null,
+  "page_themeStories_pageStatus": null,
+  "page_browseGraphs_pageStatus": null,
+  "page_reviewTrends_pageStatus": null,
+  "page_addToObservation_pageStatus": null,
+  "page_createOrEditObservation_pageStatus": null,
+  "page_selectExcerpt_pageStatus": null,
+  "page_addToExcerpt_pageStatus": null,
+  "page_createNewExcerpt_pageStatus": null,
+  "page_reviewExcerpts_pageStatus": null,
+  "page_interpretObservations_pageStatus": null,
+  "page_clusterInterpretations_pageStatus": null,
+  "page_describePerspectives_pageStatus": null,
+  "page_addPerspective_pageStatus": null,
+  "page_annotateResultForPerspective_pageStatus": null,
+  "page_annotateExcerptForPerspective_pageStatus": null,
+  "page_annotateInterpretationForPerspective_pageStatus": null,
+  "page_readCatalysisReport_pageStatus": null,
+  "page_planSensemakingSessions_pageStatus": null,
+  "page_addSensemakingSessionPlan_pageStatus": null,
+  "page_addSensemakingSessionActivity_pageStatus": null,
+  "page_enterSensemakingSessionRecords_pageStatus": null,
+  "page_addSensemakingSessionRecord_pageStatus": null,
+  "page_addResonantStory_pageStatus": null,
+  "page_newSensemakingSessionOutcome_pageStatus": null,
+  "page_newSensemakingSessionConstruction_pageStatus": null,
+  "page_readSensemakingReport_pageStatus": null,
+  "page_projectOutcomesForIntervention_pageStatus": null,
+  "page_projectOutcome_pageStatus": null,
+  "page_designInterventions_pageStatus": null,
+  "page_addIntervention_pageStatus": null,
+  "page_recordInterventions_pageStatus": null,
+  "page_addInterventionRecord_pageStatus": null,
+  "page_interventionReport_pageStatus": null,
+  "page_gatherFeedback_pageStatus": null,
+  "page_enterFeedbackPiece_pageStatus": null,
+  "page_reflectOnProject_pageStatus": null,
+  "page_prepareProjectPresentation_pageStatus": null,
+  "page_addPresentationElement_pageStatus": null,
+  "page_projectRequests_pageStatus": null,
+  "page_addNewReturnRequest_pageStatus": null,
+  "page_returnReport_pageStatus": null,
+  "project_storyElementsAnswersClusteringDiagram": {
+    "surfaceWidthInPixels": 808,
+    "surfaceHeightInPixels": 498,
+    "items": [
+      {
+        "text": "Roadblock unit",
+        "x": 268,
+        "y": 61,
+        "uuid": "e1450bbe-7f9b-4520-858a-00bf12de3f97",
+        "bodyColor": "#808080"
+      },
+      {
+        "text": "Getaway",
+        "x": 74,
+        "y": 63,
+        "uuid": "e1d0055b-4512-4632-88c8-2d873f0ae812",
+        "bodyColor": "#808080"
+      },
+      {
+        "text": "Police interceptor unit",
+        "x": 251,
+        "y": 128,
+        "uuid": "c6016910-5ef4-4a79-8da9-a6e5f6829b10",
+        "bodyColor": "#808080"
+      },
+      {
+        "text": "Citizen",
+        "x": 234,
+        "y": 248,
+        "uuid": "b30ff7b5-466a-40b5-8617-65f80359bf6d",
+        "bodyColor": "#808080"
+      },
+      {
+        "text": "Nearby business owner",
+        "x": 323,
+        "y": 323,
+        "uuid": "07440d3a-9db3-48c6-87d9-f0acb431baac",
+        "bodyColor": "#808080"
+      },
+      {
+        "text": "Commuter",
+        "x": 344,
+        "y": 260,
+        "uuid": "fa85d84f-01a2-41b4-823c-7cd94d309732",
+        "bodyColor": "#808080"
+      },
+      {
+        "text": "Pedestrian",
+        "x": 67,
+        "y": 250,
+        "uuid": "c9ce69ef-ae93-4851-82f7-e4fbf1443ab7",
+        "bodyColor": "#808080"
+      },
+      {
+        "text": "Public official",
+        "x": 345,
+        "y": 45,
+        "uuid": "5083863a-19e8-4ee9-8f5b-394845b47340",
+        "bodyColor": "#808080"
+      },
+      {
+        "text": "News reporter",
+        "x": 248,
+        "y": 331,
+        "uuid": "66de6590-9f8d-4913-8c1b-8215dfb7ae17",
+        "bodyColor": "#808080"
+      },
+      {
+        "text": "Backup unit",
+        "x": 392,
+        "y": 91,
+        "uuid": "b553a0d0-f7d3-4784-8e81-7fdb1afad231",
+        "bodyColor": "#808080"
+      },
+      {
+        "text": "Tourist",
+        "x": 71,
+        "y": 314,
+        "uuid": "baec0e38-4ef1-4b8a-846f-239f7d117f08",
+        "bodyColor": "#808080"
+      },
+      {
+        "text": "Speeder",
+        "x": 68,
+        "y": 126,
+        "uuid": "5e98ae60-2277-4d08-8a77-faa521b31155",
+        "bodyColor": "#808080"
+      },
+      {
+        "text": "Uninvolved",
+        "x": 124,
+        "y": 277,
+        "uuid": "75aa7941-c4cf-4570-8c3d-4f56d4fd1a78",
+        "bodyColor": "#ffff00"
+      },
+      {
+        "text": "Causes",
+        "x": 128,
+        "y": 100,
+        "uuid": "e6bc87f9-cc9e-440f-8a33-46dacb603010",
+        "bodyColor": "#ffff00"
+      },
+      {
+        "text": "Responsible for keeping public safe",
+        "x": 323,
+        "y": 110,
+        "uuid": "da5ede88-0852-40e4-81f5-fb0bd327a65f",
+        "bodyColor": "#ffff00"
+      },
+      {
+        "text": "Affected",
+        "x": 289,
+        "y": 277,
+        "uuid": "dc3e3a94-e05d-448e-8ba5-7f496b14a1c4",
+        "bodyColor": "#ffff00"
+      },
+      {
+        "text": "Uninvolved",
+        "x": 580,
+        "y": 333,
+        "uuid": "75aa7941-c4cf-4570-8c3d-4f56d4fd1a78",
+        "bodyColor": "#ffff00"
+      },
+      {
+        "text": "Causes",
+        "x": 712,
+        "y": 235,
+        "uuid": "e6bc87f9-cc9e-440f-8a33-46dacb603010",
+        "bodyColor": "#ffff00"
+      },
+      {
+        "text": "Responsible for keeping public safe",
+        "x": 668,
+        "y": 81,
+        "uuid": "da5ede88-0852-40e4-81f5-fb0bd327a65f",
+        "bodyColor": "#ffff00"
+      },
+      {
+        "text": "Affected",
+        "x": 513,
+        "y": 198,
+        "uuid": "dc3e3a94-e05d-448e-8ba5-7f496b14a1c4",
+        "bodyColor": "#ffff00"
+      },
+      {
+        "text": "Concerned for the public",
+        "x": 604,
+        "y": 47,
+        "uuid": "21d3e131-73ce-4859-8c7c-3b893f46a401",
+        "bodyColor": "#00ff00"
+      },
+      {
+        "text": "Dutiful",
+        "x": 733,
+        "y": 45,
+        "uuid": "6701f5fe-6005-41b1-819d-ec5d22425526",
+        "bodyColor": "#00ff00"
+      },
+      {
+        "text": "Suspicious",
+        "x": 622,
+        "y": 134,
+        "uuid": "87ead1eb-6f37-496b-8abc-734dd43edf13",
+        "bodyColor": "#00ff00"
+      },
+      {
+        "text": "Stuck in habits",
+        "x": 707,
+        "y": 145,
+        "uuid": "c42c6fd5-c3d9-4c33-8aeb-100116a63958",
+        "bodyColor": "#00ff00"
+      }
+    ]
+  }
+}
