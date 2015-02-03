@@ -13,6 +13,50 @@ define([
     digests,
     SHA256
 ) {
+    /*
+     * This version of the Pointrel saves and loads items as JSON "envelopes" that can wrap JSON data.
+     * 
+     * Callbacks should adhere to the convention of a first error argument and a second result argument.
+     * 
+     * Use "storeInNewEnvelope" to store new data. That function will callback with an error or a string consisting of a hash and a length as a
+     * reference for the envelope. The stored envelope and its contents can be used to retrieve the data again later using "fetchEnvelope" with that
+     * reference.
+     * 
+     * Generally, the envelope should have an "id" that specifies what document this data is a version of. Most documents might only have one version,
+     * but some might have several. Envelopes all have a timestamp of when they were created, which is used to determine which one is the "latest" for
+     * some ID or tag. They should also have a contentType which suggests how to interperet the JSON data (like a class name). Other information can
+     * be defined as well including "tags". Tags are roughly equivalent to containers that document version is stored in. To search for data, you can
+     * get envelope references back using either the id (with pointrel_queryByID) or the tags (using pointrel_queryByTag).
+     * 
+     * The convenience methods "loadLatestEnvelopeForID" and "loadLatestEnvelopeForTag" query for the latest envelope for the ID or tag and then
+     * retrieve it.
+     * 
+     * The convenience methods "loadEnvelopesForID" and "loadEnvelopesForTag" with load all envelopes with the ID or tag. Those two methods take a
+     * referenceToEnvelopeMap argument which intially should be an empty dictionary. This will be filled in with the envelopes retrieved from the
+     * server. Previously retrieved items will not be retrieved again. They should not be changing, although in theory they could be deleted on the
+     * server.
+     * 
+     * You can check if the server is currently running OK with "getServerStatus".
+     * 
+     * An example of calling storeInNewEnvelope is:
+     * 
+     * function storeProjectAnswersVersion(projectAnswers, previousReferenceOrNull, callbackWhenDone) {
+     *   var metadata = {id: "Some-ID", previous: previousReferenceOrNull, tags: [], contentType: "Some-Content-Type", contentVersion: "1.0", author: null, committer: "SomeUserID", timestamp: true};        
+     *   pointrel20141201Client.storeInNewEnvelope(projectAnswers, metadata, function(error, serverResponse) {
+     *       if (error) {
+     *           console.log("could not write new version:\n" + error);
+     *           return callbackWhenDone(error);
+     *       }
+     *       var sha256HashAndLength = serverResponse.sha256AndLength;
+     *       console.log("wrote sha256HashAndLength:", sha256HashAndLength);
+     *       callbackWhenDone(null, sha256HashAndLength);
+     *   });
+     * }
+     * 
+     */
+    
+    // TODO: Should "timestamp" be a creation time or an added to archive (update) time?
+    
     var apiPath = "/api/pointrel20141201/";
     var serverStatusPath = apiPath + "server/status";
     var resourcesPath = apiPath + "resources/";
@@ -113,7 +157,7 @@ define([
         // return itemReference;
     }
     
-    // Modify the returned object so it has a reference to its enclosing sha256AndLength
+    // Internal: Modify the returned object so it has a reference to its enclosing sha256AndLength
     function reconstructItem(itemReference, jsonText) {
         var item = JSON.parse(jsonText);
         // if (!item.revision) item.revision = itemReference;
@@ -172,6 +216,7 @@ define([
     
     /* Convenience */
     
+    // Internal: fetch one item and add it to the map
     function fetchItem(referenceToEnvelopeMap, sha256AndLength) {
         console.log("fetchItem", sha256AndLength);
         var deferred = new Deferred();
