@@ -451,6 +451,14 @@ function respondForResourcePost(request, response) {
     });
 }
 
+function respondForIDList(request, response) {
+    console.log("==== GET by id list", request.url);
+    
+    var idList = Object.keys(indexes.idToReferences);
+    
+    return response.json({status: 'OK', message: "List of IDs", idList: idList});
+}
+
 function respondForID(request, response) {
     console.log("==== GET by id", request.url);
     
@@ -527,6 +535,7 @@ function initialize(app, config) {
     app.get(apiBaseURL + '/resources/:sha256AndLength', respondForResourceGet);
     // app.put(apiBaseURL + '/resources/:sha256AndLength', respondForResourcePut);
     app.post(apiBaseURL + '/resources', respondForResourcePost);
+    app.get(apiBaseURL + '/indexes/id/', respondForIDList);
     app.get(apiBaseURL + '/indexes/id/:id', respondForID);
     app.get(apiBaseURL + '/indexes/tag/:tag', respondForTag);
 }
