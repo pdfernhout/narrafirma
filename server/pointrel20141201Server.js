@@ -527,6 +527,7 @@ function initialize(app, config) {
     reindexAllResources();
 
     app.use(bodyParser.json({
+        limit: '10mb'
         // verify: bodyParserVerifyAddSHA256
     }));
     
