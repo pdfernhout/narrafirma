@@ -36,6 +36,10 @@ define([
      * server. Previously retrieved items will not be retrieved again. They should not be changing, although in theory they could be deleted on the
      * server.
      * 
+     * You can list all the IDs in use with "fetchIDs". This makes the full list of documents "discoverable".
+     * TODO: This method is experimental, because since it returns all the IDs, if there are a lot, this may be a problem.
+     * Also, there are security advantages to only being able to retrieve documents the client knows about.
+     * 
      * You can check if the server is currently running OK with "getServerStatus".
      * 
      * An example of calling storeInNewEnvelope is:
@@ -181,6 +185,25 @@ define([
             // Handle a progress event from the request if the browser supports XHR2
         });
     }
+    
+    // TODO: This adds "discoverability", but what happens when there are too many IDs?
+    // Returns structure with an idList field
+    function pointrel_fetchIDs(callback) {
+        console.log("pointrel_fetchIDs");
+        
+        xhr.get(idIndexPath, {
+            handleAs: "text"
+        }).then(function(data) {
+            // OK
+            callback(null, JSON.parse(data));
+        }, function(error) {
+            // Error
+            callback(error, null);
+        }, function(event) {
+            // Handle a progress event from the request if the browser supports XHR2
+        });
+    }
+    
     
     function pointrel_queryByID(id, callback) {
         console.log("pointrel_queryByID", id);
@@ -360,6 +383,7 @@ define([
         getServerStatus: pointrel_getServerStatus,
         storeInNewEnvelope: pointrel_storeInNewEnvelope,
         fetchEnvelope: pointrel_fetchEnvelope,
+        fetchIDs: pointrel_fetchIDs,
         queryByID: pointrel_queryByID,
         queryByTag: pointrel_queryByTag,
         loadEnvelopesForID: loadEnvelopesForID,
