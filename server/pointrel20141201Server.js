@@ -535,8 +535,8 @@ function initialize(app, config) {
     // app.put(apiBaseURL + '/resources/:sha256AndLength', respondForResourcePut);
     app.post(apiBaseURL + '/resources', respondForResourcePost);
     app.get(apiBaseURL + '/indexes/id/', respondForIDList);
-    app.get(apiBaseURL + '/indexes/id/:id*', respondForID);
-    app.get(apiBaseURL + '/indexes/tag/:tag*', respondForTag);
+    app.get(apiBaseURL + '/indexes/id/:id(*)', respondForID);
+    app.get(apiBaseURL + '/indexes/tag/:tag(*)', respondForTag);
 }
 
 exports.version = version;
