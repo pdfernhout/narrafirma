@@ -460,9 +460,8 @@ function respondForIDList(request, response) {
 }
 
 function respondForID(request, response) {
-    console.log("==== GET by id", request.url);
-    
     var id = request.params.id;
+    console.log("==== GET by id", request.url, id);
     
     var indexEntryList = referencesForID(id);
     
@@ -476,9 +475,8 @@ function respondForID(request, response) {
 }
 
 function respondForTag(request, response) {
-    console.log("==== GET by tag", request.url);
-    
     var tag = request.params.tag;
+    console.log("==== GET by tag", request.url, tag);
     
     var indexEntryList = referencesForTag(tag);
     
