@@ -68,6 +68,40 @@ require([
         return stories;
     }
     
+    function collectDataForField(stories, fieldName) {
+        var result = [];
+        for (var i = 0; i < stories.length; i++) {
+            var value = stories[i][fieldName];
+            result.push(value);
+        }
+        return result;
+    }
+    
+    function countsForFieldChoices(stories, field1, field2) {
+        console.log("countsForFieldChoices", stories, field1, field2);
+        // TODO: Need to add in fields that were not selected with a zero count, using definition from questionairre
+        var counts = {};
+        for (var i = 0; i < stories.length; i++) {
+            var value1 = stories[i][field1];
+            var value2 = stories[i][field2];
+            var value = JSON.stringify([value1, value2]);
+            // console.log("value", value, value1, value2);
+            var count = counts[value];
+            if (!count) count = 0;
+            count++;
+            counts[value] = count;
+        }
+        return counts;
+    }
+    
+    function collectValues(dict) {
+        var values = [];
+        for (var key in dict) {
+            values.push(dict[key]);
+        }
+        return values;
+    }
+    
     function statTest(stories, field1, field2) {
         var isContinuous1 = !isNaN(stories[0][field1]);
         var isContinuous2 = !isNaN(stories[0][field2]);
@@ -76,8 +110,18 @@ require([
         if (isContinuous1 && isContinuous2) {
             // TODO: Determine if normal distributions
             console.log("both continuous -- look for correlation with Pearson's R (if normal distribution) or Spearman's R (if not normal distribution)");
+            var data1 = collectDataForField(stories, field1);
+            var data2 = collectDataForField(stories, field2);
+            
         } else if (!isContinuous1 && !isContinuous2) {
             console.log("both not continuous -- look for a 'correspondence' between counts using Chi-squared test");
+            var counts = countsForFieldChoices(stories, field1, field2);
+            console.log("counts", counts);
+            var values = collectValues(counts);
+            console.log("values", values);
+            // TODO: What kind of distribution to use?
+            var statResult = simpleStatistics.chi_squared_goodness_of_fit(values, simpleStatistics.poisson_distribution, 0.05);
+            console.log("stat result", statResult);
         } else {
             console.log("one of each -- for each option, look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney");
         }
