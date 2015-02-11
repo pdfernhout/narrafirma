@@ -62,10 +62,16 @@ require([
                 }
                 story["participantID"] = storyResponse["_participantID"];
                 stories.push(story);
-                console.log("Story with participant data", story);
+                // console.log("Story with participant data", story);
             }
         }
         return stories;
+    }
+    
+    function statTest(stories, field1, field2) {
+        var isContinuous1 = !isNaN(stories[0][field1]);
+        var isContinuous2 = !isNaN(stories[0][field2]);
+        console.log("statTest", field1, isContinuous1, field2, isContinuous2);
     }
     
     function createLayout() {
@@ -73,6 +79,11 @@ require([
         
         // console.log("test data", testData);
         var stories = processResponses(testData.testSurveyResponses);
+        
+        statTest(stories, "participant_Age", "story_Feel about");
+        statTest(stories, "participant_Age", "story_Common or rare");
+        statTest(stories, "story_remember", "story_Feel about");
+        statTest(stories, "story_remember", "story_Common or rare");
           
         var mainDiv = dom.byId("mainDiv");
         
