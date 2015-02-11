@@ -21,7 +21,7 @@ define([
 
     // Some test data
       
-    var testStories = [];
+    var testSurveyResponses = [];
     
     var lorumText = ": Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, " +
     "totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. " +
@@ -202,12 +202,12 @@ define([
   
     console.log("making test stories");
     for (var i = 0; i < testDataItemsToMake; i++) {
-        var newStory = makeResponse(i);
-        testStories.push(newStory);
+        var testResponse = makeResponse(i);
+        testSurveyResponses.push(testResponse);
     }
     
     return {
         testSurvey: testSurvey,
-        testStories: testStories
+        testSurveyResponses: testSurveyResponses
     };
 });
