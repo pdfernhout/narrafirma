@@ -36,13 +36,17 @@ Does not matter for Chi-squared for "counts".
 Need to do test if normally distributed, so need scale variable (like 0 - 100). Ten is probably too few. But for GUI, max is really number pixels on slider.
 So do test for normality.
 
-If data is normally distributed (only test continuous), then do non-parametric tests.
+If data is not normally distributed (only test continuous), then do non-parametric tests.
 Above tests assume normally distributed.
 Parametric test for correlation is called Pearson's R
 If non-parametric, see Spearman's R
 
-For T-test, Studnet's T test if normal, otherwise Kruskal-Wallace
+For T-test, Student's T test if normal, otherwise Kruskal-Wallis
 No difference for Chi-squared (is count, not measurement)
+
+See also for an overview of parametric vs. non-parametric tests:
+http://changingminds.org/explanations/research/analysis/parametric_non-parametric.htm
+
 People like report on normality
 Mean, medium, mode, standard deviation for any distribution
 
