@@ -5,9 +5,13 @@
 // [Javascript module pattern](http://www.adequatelygood.com/2010/3/JavaScript-Module-Pattern-In-Depth),
 // eventually assigning `simple-statistics` to `ss` in browsers or the
 // `exports` object for node.js
-(function() {
+
+// Changed by Paul Fernhout to load as AMD module
+
+define(function() {
     var ss = {};
 
+    /*
     if (typeof module !== 'undefined') {
         // Assign the `ss` object to exports, so that you can require
         // it in [node.js](http://nodejs.org/)
@@ -17,6 +21,7 @@
         // so you can simply refer to it as `ss`.
         this.ss = ss;
     }
+    */
 
     // # [Linear Regression](http://en.wikipedia.org/wiki/Linear_regression)
     //
@@ -1566,5 +1571,7 @@
     ss.median_absolute_deviation = mad;
     ss.rms = root_mean_square;
     ss.erf = error_function;
+    
+    return ss;
 
-})(this);
+});
