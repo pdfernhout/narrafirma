@@ -18,6 +18,7 @@ Figure out GUI for "finalizing" a survey as opposed to storing current version w
 Have survey page use special server method so does not use Pointrel system directly or need authentication
 Record IP address of survey or use another means to see if someone taking it multiple times
 Ensure the survey taking app does no need to load entire domain from project editor app or load grid or story browser or other modules it does not really need.
+Ideally, all responses for selections (other than numerical sliders) should have unique IDs for each response and the stored response should have the ID as well as the chosen text at the time.
 
 IDs
 Add support for short names (ids) for eliciting questions
@@ -436,3 +437,4 @@ DONE Refactored text edit window from clustering diagram into widget support so 
 DONE Add export and import buttons for project design
 DONE Fixed clipping of left field name in slider
 DONE If only ask one prompting question, don't show radio buttons and choice, just present question
+DONE Redo test data for latest approach for use with testing catalysis tools
