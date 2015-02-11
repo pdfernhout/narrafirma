@@ -72,6 +72,15 @@ require([
         var isContinuous1 = !isNaN(stories[0][field1]);
         var isContinuous2 = !isNaN(stories[0][field2]);
         console.log("statTest", field1, isContinuous1, field2, isContinuous2);
+        
+        if (isContinuous1 && isContinuous2) {
+            // TODO: Determine if normal distributions
+            console.log("both continuous -- look for correlation with Pearson's R (if normal distribution) or Spearman's R (if not normal distribution)");
+        } else if (!isContinuous1 && !isContinuous2) {
+            console.log("both not continuous -- look for a 'correspondence' between counts using Chi-squared test");
+        } else {
+            console.log("one of each -- for each option, look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney");
+        }
     }
     
     function createLayout() {
