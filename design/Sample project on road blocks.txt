@@ -270,7 +270,7 @@
     {
       "participantQuestion_text": "How do you feel about rules?",
       "participantQuestion_type": "slider",
-      "participantQuestion_shortName": "",
+      "participantQuestion_shortName": "Rules",
       "participantQuestion_options": "rules keep life working\nrules are for breaking",
       "_id": "0fcb71d3-706a-4f6f-8291-a4bc4f49b412",
       "id": "question 7"
