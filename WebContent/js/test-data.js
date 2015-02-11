@@ -17,32 +17,11 @@ define([
     string,
     translate
 ) {
-    // Temporary test data
-    var testDogQuestions = [
-        {id: "name", type: "text", text: "Name | Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},
-        {id: "ownDog", type: "boolean", text: "Owner? | Do you currently have a dog?", help: "Enter yes or no"},
-        {id: "broughtHome", type: "textarea", text: "Story | What happened when you first brought your dog home?"},
-        {id: "broughtHomeTitle", type: "text", text: "Title | What is a good title for your story?"},
-        {id: "feeling1", type: "slider", text: "Day Feeling | How good did you feel the day you brought your dog home?"},
-        {id: "feeling2", type: "slider", text: "Next Day Feeling| How good did you feel the day after you brought your dog home? ----- just making this question really long for testing -------------------------------------------------------------- ???"},
-        {id: "feeling3", type: "slider", text: "Now Feeling | How good do you feel right now?"},
-        {id: "feeling4", type: "select", text: "Now Spouse Feeling | How good does your spouse feel right now?", options: ["low", "medium", "high"]},
-    ];
-        
-    // To ensure options display as expected without warnings
-    translate.extraTranslations["feeling4::selection:low"] = "low";
-    translate.extraTranslations["feeling4::selection:medium"] = "medium";
-    translate.extraTranslations["feeling4::selection:high"] = "high";
-    
-    array.forEach(testDogQuestions, function (question) {
-        question.isGridColumn = true;
-        question.isInReport = true;
-        var split = question.text.split("|");
-        translate.extraTranslations[question.id + "::" + "prompt"] = string.trim(split[1]);
-        translate.extraTranslations[question.id + "::" + "shortName"] = string.trim(split[0]);
-    });
-    
-    var testDogStories = [];
+    var testDataItemsToMake = 100;
+
+    // Some test data
+      
+    var testStories = [];
     
     var lorumText = ": Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, " +
     "totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. " +
@@ -53,62 +32,182 @@ define([
     " Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum " +
     "fugiat quo voluptas nulla pariatur?";
     
-    console.log("making test dog stories");
-    for (var i = 0; i < 10; i++) {
-        var newStory = {
-            id: i,
-            name: "name " + i,
-            ownDog: (i % 2 === 0),
-            broughtHome: "Story " + i + lorumText,
-            broughtHomeTitle: "Brought Home Title " + i,
-            feeling1: i % 100,
-            feeling2: i % 100,
-            feeling3: i % 100,
-            feeling4: ["low", "medium", "high"][i % 3]
-        };
-        if (newStory.ownDog) {
-            newStory.ownDog = "yes";
-        } else {
-            newStory.ownDog = "no";
+    var testSurvey = {
+        "__type": "org.pointrel.pointrel20141201.PointrelContentEnvelope",
+        "tags": [
+          "questionnaire-test-003"
+        ],
+        "contentType": "org.workingwithstories.Questionnaire",
+        "contentVersion": "0.1.0",
+        "committer": "anonymous",
+        "timestamp": "2015-02-11T13:43:17.725Z",
+        "content": {
+          "__type": "org.workingwithstories.Questionnaire",
+          "title": "Pet owner survey",
+          "image": "",
+          "startText": "Please help us learn more about dog ownership. We need your help!",
+          "endText": "Thanks for helping!",
+          "elicitingQuestions": [
+            {
+              "text": "What happened when you first brought your dog home?",
+              "type": {
+                "what happened": true,
+                "directed question": false,
+                "point in time": false,
+                "event": true
+              }
+            },
+          ],
+          "storyQuestions": [
+            {
+              "type": "select",
+              "id": "__survey_Feel about",
+              "options": [
+                "happy",
+                "sad",
+                "angry",
+                "relieved",
+                "enthused",
+                "indifferent",
+                "not sure"
+              ],
+              "shortName": "Feel about",
+              "prompt": "How do you feel about this story?"
+            },
+            {
+              "type": "slider",
+              "id": "__survey_remember",
+              "options": [
+                "tomorrow",
+                "forever"
+              ],
+              "shortName": "remember",
+              "prompt": "How long will you remember this story?"
+            },
+            {
+              "type": "slider",
+              "id": "__survey_Common or rare",
+              "options": [
+                "happens to everyone",
+                "happens to one in a million"
+              ],
+              "shortName": "Common or rare",
+              "prompt": "Based on what you know of our community, do you consider the events described in this story to be common or rare?"
+            },
+            {
+              "type": "checkboxes",
+              "id": "__survey_Groups need to hear story",
+              "options": [
+                "dog owners",
+                "cat owners",
+                "ASPCA",
+                "public officials"
+              ],
+              "shortName": "Groups need to hear story",
+              "prompt": "Which of these groups particularly need to hear this story?"
+            }
+          ],
+          "participantQuestions": [
+            {
+              "type": "select",
+              "id": "__survey_Age",
+              "options": [
+                "<25",
+                "25-34",
+                "35-44",
+                "45-64",
+                "65-74",
+                "75+"
+              ],
+              "shortName": "Age",
+              "prompt": "Which age range do you fall into?"
+            },
+            {
+              "type": "slider",
+              "id": "__survey_",
+              "options": [
+                "rules keep life working",
+                "rules are for breaking"
+              ],
+              "shortName": "",
+              "prompt": "How do you feel about rules?"
+            },
+            {
+              "type": "select",
+              "id": "__survey_Location",
+              "options": [
+                "South Park Avenue",
+                "Dallas Street",
+                "13th Parallel Boulevard",
+                "Dock Road",
+                "Other"
+              ],
+              "shortName": "Location",
+              "prompt": "Where do you live?"
+            }
+          ],
+          "questionnaireID": "questionnaire-test-003"
         }
-        testDogStories.push(newStory);
+      };
+    
+    function makeResponse(responseNumber) {
+        return {
+        "__type": "org.pointrel.pointrel20141201.PointrelContentEnvelope",
+        "id": "test-" + responseNumber,
+        "tags": [
+          "Test-PNIWorkbook-003-Surveys"
+        ],
+        "contentType": "org.workingwithstories.PNIWorkbookSurveyResult",
+        "committer": "anonymous",
+        "timestamp": "2014-12-13T04:18:29.182Z",
+        "content": {
+          "__type": "org.workingwithstories.QuestionnaireResponse",
+          "questionnaire": { // Deleting most of survey for test...
+            "questionnaireID": "questionnaire-test-003"
+          },
+          "responseID": "responseID-" + responseNumber,
+          "stories": [
+            {
+              "__type": "org.workingwithstories.Story",
+              "_storyID": "storyID-" + responseNumber,
+              "_participantID": "ParticipantID-" + responseNumber,
+              "__survey_Groups need to hear story": {
+                "dog owners": (responseNumber + 0) % 4 === 0,
+                "cat owners": (responseNumber + 1) % 4 === 0,
+                "ASPCA": (responseNumber + 2) % 4 === 0,
+                "public officials": (responseNumber + 3) % 4 === 0
+              },
+              "__survey_elicitingQuestion": testSurvey.content.elicitingQuestions[0].text,
+              "__survey_storyText": lorumText,
+              "__survey_remember": responseNumber % 100,
+              "__survey_storyName": "StoryName-" + responseNumber,
+              "__survey_Feel about": testSurvey.content.storyQuestions[0].options[responseNumber % 7],
+              "__survey_Common or rare": responseNumber % 100
+            }
+          ],
+          "participantData": {
+            "__type": "org.workingwithstories.ParticipantData",
+            "_participantID": "participantID-" + responseNumber,
+            "__survey_Age": testSurvey.content.participantQuestions[0].options[responseNumber % 6],
+            // TODO: Problem with test design as missing the name here..!!!!
+            "__survey_": responseNumber % 100,
+            "__survey_Location": testSurvey.content.participantQuestions[2].options[responseNumber % 5]
+          },
+          "timestampStart": "2014-12-13T04:14:02.916Z",
+          "timestampEnd": "2014-12-13T04:18:27.286Z",
+          "timeDuration_ms": 264370
+        }
+      };
+    }
+  
+    console.log("making test stories");
+    for (var i = 0; i < testDataItemsToMake; i++) {
+        var newStory = makeResponse(i);
+        testStories.push(newStory);
     }
     
-    // console.log("testDogStories", testDogStories);
-    
-    var testSurvey = {
-        "project_elicitingQuestionsList" : [ {
-            "elicitingQuestion_text" : "What happened the first time you saw a home aquarium?",
-            "id" : 0.27713817273750974
-        } ],
-        "project_storyQuestionsList" : [ {
-            "storyQuestion_text" : "Was there excitement in the story?",
-            "storyQuestion_type" : "boolean",
-            "storyQuestion_shortName" : "excitement",
-            "id" : 0.2733021968538615
-        }, {
-            "storyQuestion_text" : "How did the aquarium owner feel about cleaning the aquarium?",
-            "storyQuestion_type" : "radiobuttons",
-            "storyQuestion_shortName" : "owner feel",
-            "storyQuestion_options" : "enjoyed\ndisgust\ndon't know",
-            "id" : 0.15953227692734107
-        } ],
-        "project_participantQuestionsList" : [ {
-            "participantQuestion_text" : "Do you like to eat fish?",
-            "participantQuestion_type" : "boolean",
-            "participantQuestion_shortName" : "eat fish",
-            "participantQuestion_help" : "Do you eat some sort of fish (Salmon, Tuna, etc.) at least once per month?",
-            "id" : 0.3790697336613146
-        } ],
-        "questionForm_title": "My First Question Form",
-        "questionForm_image": "",
-        "questionForm_startText": "We would like to find out about aquarium use.",
-        "questionForm_endText": "Thanks for taking the time to enter this data!",
-    };
-  
     return {
-        testDogQuestions: testDogQuestions,
-        testDogStories: testDogStories,
-        testSurvey: testSurvey
+        testSurvey: testSurvey,
+        testStories: testStories
     };
 });
