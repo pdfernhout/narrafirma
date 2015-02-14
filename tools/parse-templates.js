@@ -197,11 +197,23 @@ function writeTemplatesModule() {
     addOutput("\n  var templates = ");
     addOutput(JSON.stringify(templates, null, 4));
     addOutput(";\n");
-    
-    addOutput("\n  return {\n");
-    addOutput('    "elicitationQuestions": templates[0],\n');
-    addOutput('    "storyQuestions": templates[1],\n');
-    addOutput('    "participantQuestions": templates[2]\n');
+    addOutput("  \n");    
+    addOutput("  function convertSemicolonsToNewlinesForOptions(section) {\n");
+    addOutput("      var questions = section.questions;\n");
+    addOutput("      for (var questionIndex in questions) {\n");
+    addOutput("          var question = questions[questionIndex];\n");
+    addOutput("          if (question.options) {\n");
+    addOutput("              question.options = question.options.replace(/;/g, \"\\n\");\n");
+    addOutput("              // console.log(\"new options\", question.options);\n");
+    addOutput("          }\n");
+    addOutput("      }\n");
+    addOutput("      return section;\n");
+    addOutput("  }\n");
+    addOutput("\n");
+    addOutput("  return {\n");
+    addOutput("    \"elicitationQuestions\": convertSemicolonsToNewlinesForOptions(templates[0]),\n");
+    addOutput("    \"storyQuestions\": convertSemicolonsToNewlinesForOptions(templates[1]),\n");
+    addOutput("    \"participantQuestions\": convertSemicolonsToNewlinesForOptions(templates[2])\n");
     addOutput("  };\n");
     addOutput("});\n");
     
