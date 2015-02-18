@@ -1,8 +1,7 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"outcomes_group", "type":"text", "isInReport":true, "isGridColumn":true},
         {"id":"outcomes_hopesHeader", "type":"header", "isInReport":false, "isGridColumn":false},
@@ -27,7 +26,7 @@ define([], function() {
         {"id":"outcomes_foundOverConfidence", "type":"select", "isInReport":true, "isGridColumn":true, "options":["not at all", "somewhat", "definitely", "mixed"]},
         {"id":"outcomes_peopleCuriousAboutStoryWork", "type":"select", "isInReport":true, "isGridColumn":true, "options":["never", "occasionally", "sometimes", "often", "mixed"]}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

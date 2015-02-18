@@ -1,8 +1,7 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"assessment_intro", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"assessment_narrativeFreedom", "type":"header", "isInReport":false, "isGridColumn":false},
@@ -37,7 +36,7 @@ define([], function() {
         {"id":"assessment_result_grandTotal", "type":"quizScoreResult", "isInReport":true, "isGridColumn":false, "options":["assessment_counterStories", "assessment_authority", "assessment_mistakes", "assessment_silencing", "assessment_conflict", "assessment_remindings", "assessment_retellings", "assessment_folklore", "assessment_storyTypes", "assessment_sensemaking", "assessment_realStories", "assessment_negotiations", "assessment_cotelling", "assessment_blunders", "assessment_accounting", "assessment_commonStories", "assessment_sacredStories", "assessment_condensedStories", "assessment_intermingling", "assessment_culture"]},
         {"id":"assessment_notes", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

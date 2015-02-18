@@ -1,8 +1,7 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"sensemakingSessionRecord_resonantStory_selection", "type":"storiesList", "isInReport":true, "isGridColumn":true},
         {"id":"sensemakingSessionRecord_resonantStory_type", "type":"select", "isInReport":true, "isGridColumn":true, "options":["pivot", "voice", "discovery", "other"]},
@@ -10,7 +9,7 @@ define([], function() {
         {"id":"sensemakingSessionRecord_resonantStory_groups", "type":"text", "isInReport":true, "isGridColumn":true},
         {"id":"sensemakingSessionRecord_resonantStory_notes", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

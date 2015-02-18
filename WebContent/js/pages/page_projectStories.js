@@ -1,12 +1,11 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"project_projectStoriesList", "type":"grid", "isInReport":true, "isGridColumn":true, "options":["page_projectStory"]}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

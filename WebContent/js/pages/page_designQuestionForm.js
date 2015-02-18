@@ -1,8 +1,7 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"questionForm_Label", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"questionForm_title", "type":"text", "isInReport":true, "isGridColumn":true},
@@ -10,7 +9,7 @@ define([], function() {
         {"id":"questionForm_startText", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"questionForm_endText", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

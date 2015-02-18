@@ -1,5 +1,3 @@
-"use strict";
-
 define([
     "./page_dashboard",
     "./page_planning",
@@ -177,6 +175,8 @@ define([
     page_returnReport,
     page_projectReport
 ) {
+    "use strict";
+    
     return {
     "page_dashboard": page_dashboard,
     "page_planning": page_planning,

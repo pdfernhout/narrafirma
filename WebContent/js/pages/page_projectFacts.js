@@ -1,8 +1,7 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"project_projectFacts", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"project_title", "type":"text", "isInReport":true, "isGridColumn":true},
@@ -14,7 +13,7 @@ define([], function() {
         {"id":"project_reportStartText", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"project_reportEndText", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

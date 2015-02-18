@@ -1,12 +1,11 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"printQuestionsForm_enterStories", "type":"button", "isInReport":false, "isGridColumn":false, "options":["enterSurveyResult"]}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

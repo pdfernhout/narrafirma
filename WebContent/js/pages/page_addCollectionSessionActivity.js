@@ -1,8 +1,7 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"collectionSessionActivity_name", "type":"text", "isInReport":true, "isGridColumn":true},
         {"id":"collectionSessionActivity_type", "type":"select", "isInReport":true, "isGridColumn":true, "options":["ice-breaker", "sharing stories (no task)", "sharing stories (simple task)", "discussing stories", "twice-told stories exercise", "timeline exercise", "landscape exercise", "my own exercise", "other"]},
@@ -15,7 +14,7 @@ define([], function() {
         {"id":"collectionSessionActivity_facilitation", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"SPECIAL_templates_storyCollectionActivities", "type":"templateList", "isInReport":true, "isGridColumn":false, "options":["storyCollectionActivities"]}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

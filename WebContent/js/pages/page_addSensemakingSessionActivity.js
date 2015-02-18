@@ -1,8 +1,7 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"sensemakingSessionPlan_activity_name", "type":"text", "isInReport":true, "isGridColumn":true},
         {"id":"sensemakingSessionPlan_activity_type", "type":"select", "isInReport":true, "isGridColumn":true, "options":["ice-breaker", "encountering stories (no task)", "encountering stories (simple task)", "discussing stories", "twice-told stories exercise", "timeline exercise", "landscape exercise", "story elements exercise", "composite stories exercise", "my own exercise", "other"]},
@@ -15,7 +14,7 @@ define([], function() {
         {"id":"sensemakingSessionPlan_activity_facilitation", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"templates_sensemakingActivities", "type":"templateList", "isInReport":true, "isGridColumn":false, "options":["sensemakingActivities"]}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

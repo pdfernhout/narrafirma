@@ -1,8 +1,7 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"project_improvePlanningDrafts", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"project_pniQuestions_copyDraftsButton", "type":"button", "isInReport":false, "isGridColumn":false, "options":["copyDraftPNIQuestionVersionsIntoAnswers"]},
@@ -13,7 +12,7 @@ define([], function() {
         {"id":"project_pniQuestions_scope_final", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"project_pniQuestions_emphasis_final", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

@@ -1,8 +1,7 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"project_reflectLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"project_reflect_stories", "type":"textarea", "isInReport":true, "isGridColumn":true},
@@ -15,7 +14,7 @@ define([], function() {
         {"id":"project_reflect_newIdeas", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"project_reflect_notes", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

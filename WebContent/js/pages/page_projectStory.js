@@ -1,8 +1,7 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"projectStory_scenario", "type":"select", "isInReport":true, "isGridColumn":true, "options":["ask me anything", "magic ears", "fly on the wall", "project aspects", "my own scenario type"]},
         {"id":"projectStory_outcome", "type":"select", "isInReport":true, "isGridColumn":true, "options":["colossal success", "miserable failure", "acceptable outcome", "my own outcome"]},
@@ -12,7 +11,7 @@ define([], function() {
         {"id":"projectStory_surprise", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"projectStory_dangers", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

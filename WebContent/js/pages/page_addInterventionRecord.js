@@ -1,8 +1,7 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"interventionRecord_name", "type":"text", "isInReport":true, "isGridColumn":true},
         {"id":"interventionRecord_description", "type":"textarea", "isInReport":true, "isGridColumn":true},
@@ -23,7 +22,7 @@ define([], function() {
         {"id":"interventionRecord_reflections_learning_newIdeas", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"interventionRecord_reflections_learning_wantToRemember", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

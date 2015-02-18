@@ -1,8 +1,7 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"storyQuestion_text", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"storyQuestion_type", "type":"select", "isInReport":true, "isGridColumn":true, "options":["boolean", "label", "header", "checkbox", "checkboxes", "text", "textarea", "select", "radiobuttons", "slider"]},
@@ -11,7 +10,7 @@ define([], function() {
         {"id":"storyQuestion_help", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"SPECIAL_templates_storyQuestions", "type":"templateList", "isInReport":true, "isGridColumn":false, "options":["storyQuestions"]}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

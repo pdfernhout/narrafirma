@@ -1,8 +1,7 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"observation_name", "type":"text", "isInReport":true, "isGridColumn":true},
         {"id":"observation_text", "type":"textarea", "isInReport":true, "isGridColumn":true},
@@ -20,7 +19,7 @@ define([], function() {
         {"id":"observation_thirdInterpretation_idea", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"observation_thirdInterpretation_excerptsList", "type":"grid", "isInReport":true, "isGridColumn":true, "options":["page_selectExcerpt"]}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

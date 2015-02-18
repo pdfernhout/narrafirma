@@ -1,13 +1,12 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"printQuestionsForm_introduction", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"printQuestionsForm_printFormButton", "type":"button", "isInReport":false, "isGridColumn":false, "options":["printStoryForm"]}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

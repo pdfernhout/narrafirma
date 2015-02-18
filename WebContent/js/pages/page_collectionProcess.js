@@ -1,13 +1,12 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"collectionProcessIntro", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"project_generalNotes_collectionProcess", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

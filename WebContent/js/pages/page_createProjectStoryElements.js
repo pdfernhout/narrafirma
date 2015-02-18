@@ -1,13 +1,12 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"project_storyElementsInstructions", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"project_projectStoryElementsAnswersClusteringDiagram", "type":"clusteringDiagram", "isInReport":true, "isGridColumn":false, "options":["project_storyElementsAnswersClusteringDiagram"]}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

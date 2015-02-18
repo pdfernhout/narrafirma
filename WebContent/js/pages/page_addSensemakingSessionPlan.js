@@ -1,8 +1,7 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"sensemakingSessionPlan_name", "type":"text", "isInReport":true, "isGridColumn":true},
         {"id":"sensemakingSessionPlan_groups", "type":"text", "isInReport":true, "isGridColumn":true},
@@ -16,7 +15,7 @@ define([], function() {
         {"id":"sensemakingSessionPlan_activitiesList", "type":"grid", "isInReport":true, "isGridColumn":true, "options":["page_addSensemakingSessionActivity"]},
         {"id":"sensemakingSessionPlan_printSensemakingSessionAgendaButton", "type":"button", "isInReport":false, "isGridColumn":false}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

@@ -1,8 +1,7 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"collectionSessionRecord_name", "type":"text", "isInReport":true, "isGridColumn":true},
         {"id":"collectionSessionRecord_whenWhere", "type":"textarea", "isInReport":true, "isGridColumn":true},
@@ -27,7 +26,7 @@ define([], function() {
         {"id":"collectionSessionRecord_reflections_learning_newIdeas", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"collectionSessionRecord_reflections_learning_wantToRemember", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

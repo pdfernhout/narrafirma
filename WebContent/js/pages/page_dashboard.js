@@ -1,13 +1,12 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"project_mainDashboardLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"project_testImage", "type":"image", "isInReport":true, "isGridColumn":false, "options":["images/WWS_BookCover_front_small.png"]}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

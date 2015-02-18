@@ -1,8 +1,7 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"participantGroup_name", "type":"text", "isInReport":true, "isGridColumn":true},
         {"id":"participantGroup_description", "type":"textarea", "isInReport":true, "isGridColumn":true},
@@ -31,7 +30,7 @@ define([], function() {
         {"id":"participantGroup_topic_articulate", "type":"select", "isInReport":true, "isGridColumn":true, "options":["unknown", "hard", "medium", "easy", "mixed"]},
         {"id":"participantGroup_topic_timeframe", "type":"select", "isInReport":true, "isGridColumn":true, "options":["unknown", "hours", "days", "months", "years", "decades", "mixed"]}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

@@ -1,8 +1,7 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"sensemakingSessionRecord_name", "type":"text", "isInReport":true, "isGridColumn":true},
         {"id":"sensemakingSessionRecord_whenWhere", "type":"textarea", "isInReport":true, "isGridColumn":true},
@@ -29,7 +28,7 @@ define([], function() {
         {"id":"sensemakingSessionRecord_reflections_learning_newIdeas", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"sensemakingSessionRecord_reflections_learning_wantToRemember", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }

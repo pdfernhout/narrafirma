@@ -1,8 +1,7 @@
 // Generated from design
-"use strict";
-
 define([], function() {
-
+    "use strict";
+    
     var questions = [
         {"id":"webStoryCollection_startCollectionLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"webStoryCollection_enableStoryCollectionButton", "type":"button", "isInReport":false, "isGridColumn":false, "options":["storyCollectionStart"]},
@@ -11,7 +10,7 @@ define([], function() {
         {"id":"webStoryCollection_stopCollectionLabel", "type":"label", "isInReport":false, "isGridColumn":false},
         {"id":"webStoryCollection_disableStoryCollectionButton", "type":"button", "isInReport":false, "isGridColumn":false, "options":["storyCollectionStop"]}
     ];
-
+    
     function buildPage(builder, contentPane, model) {
         builder.addQuestions(questions, contentPane, model);
     }
