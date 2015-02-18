@@ -71,12 +71,11 @@ var firstPage = true;
 var notReportable = {"label": true, "header": true, "button": true};
 
 var fileTemplate = "// Generated from design\n" +
-"\"use strict\";\n" +
-"\n" +
 "define([], function() {\n" +
-"\n" +
+"    \"use strict\";\n" +
+"    \n" +
 "    var questions = [\n{{questions}}\n    ];\n" +
-"\n" +
+"    \n" +
 "    function buildPage(builder, contentPane, model) {\n" +
 "{{body}}" +
 "    }\n" +
@@ -174,13 +173,14 @@ function writePageFiles() {
     }
 }
 
-var allPagesFileTemplate = "\"use strict\";\n" +
-"\n" +
+var allPagesFileTemplate = "" +
 "define([\n" +
 "{{pageFileNames}}\n" +
 "], function(\n" +
 "{{pageNames}}\n" +
 ") {\n" +
+"    \"use strict\";\n"  +
+"    \n" +
 "    return {\n" +
 "{{pageReturn}}\n" +
 "    };\n" +
@@ -335,8 +335,8 @@ function outputModel() {
 function writeAllPagesSummaryFile() {
     allOutput = "";
     addOutput("// Generated from design\n");
-    addOutput("\"use strict\";\n");
-    addOutput("\ndefine(function() {\n\n");
+    addOutput("\ndefine(function() {\n");
+    addOutput("    \"use strict\";\n\n");
     
     outputModel();
     
