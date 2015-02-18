@@ -1,7 +1,6 @@
 ==== NarraKit TODO list:
 
 PRIORITY
-- survey multiple stories
 - catalysis
 
 RECOMMENDATIONS
@@ -438,3 +437,6 @@ DONE Add export and import buttons for project design
 DONE Fixed clipping of left field name in slider
 DONE If only ask one prompting question, don't show radio buttons and choice, just present question
 DONE Redo test data for latest approach for use with testing catalysis tools
+DONE Convert pointrel version to one supporting triples
+DONE Changed conversion code so that it has "use strict" used in its functional form.
+
