@@ -12,7 +12,7 @@
 
 // This version relies on using timestamps to get latest version of content
 // It will not index stored resources with timestamps in the future, and will reject them when added via API
-// This is to prevent a resource significantly in the future always being returned as the "latest" version for an ID or tag
+// This is to prevent a resource significantly in the future always being returned as the "latest" version for an ID or triple
 // Otherwise, that would be an error that can't be recovered from short of deleting the resource file manually and restarting the server
 
 // The constant maximumTimeDriftAllowed_ms is the maximum time drift allowed for resources to be in the future to allow for slightly different clocks
@@ -20,8 +20,11 @@
 var maximumTimeDriftAllowed_ms = 10000;
 
 // TODO: Use internet time service somehow to check if server time looks close enough to OK when startup
+// TODO: Should documents use 128-bit NTP timestamps based on NTP epoch?
+// TODO: Distinguish different types of timestamp: contributed when, authored when, about event when, primary source when???
 
-var version = "pointrel20141201-0.0.2";
+var pointrelServerVersion = "pointrel20141201-0.0.3";
+var pointrelDocumentEnvelopeVersion = "pointrel20141201-0.0.3";
 var resourceFileSuffix = ".pce";
 var signatureType = "org.pointrel.pointrel20141201.PointrelContentEnvelope";
 
@@ -45,20 +48,19 @@ var crypto = require('crypto');
 var bodyParser = require('body-parser');
 var mkdirp = require('mkdirp');
 
+// Local modules
+var TripleStore = require("./PointrelTripleStore");
+
 /* Indexing */
 
 var indexes = {
      // Maps whether an item was added to the indexes (use to quickly tell if it exists)
      referenceToIsIndexed: {},   
         
-     // Maps id to sha256AndLength, array (but should ideally only be one)
+     // Maps document id to array of sha256AndLength strings, one for each "version"
      idToReferences: {},
 
-     // Maps tags to sha256AndLength, array
-     tagToReferences: {},
-
-     // Maps contentType to sha256AndLength, array
-     contentTypeToReferences: {}       
+     tripleStore: new TripleStore(), 
 };
 
 function referenceIsIndexed(reference) {
@@ -70,11 +72,7 @@ function referencesForID(id) {
 }
 
 function referencesForTag(tag) {
-    return indexes.tagToReferences[tag];
-}
-
-function referencesForContentType(contentType) {
-    return indexes.contentTypeToReferences[contentType];
+    return indexes.tripleStore.findAllAForBC(TripleStore.standardDocumentTagRelationship, tag);
 }
 
 function addToIndex(indexType, index, key, itemReference) {
@@ -90,7 +88,6 @@ function addToIndex(indexType, index, key, itemReference) {
 function addToIndexes(body, sha256AndLength) {
     //  console.log("addToIndexes", sha256AndLength, body);
     var id = body.id;
-    var tags = body.tags;
     var contentType = body.contentType;
     
     if (referenceIsIndexed(sha256AndLength)) {
@@ -109,29 +106,22 @@ function addToIndexes(body, sha256AndLength) {
     // Put in essential envelope data
     var indexEntry = {sha256AndLength: sha256AndLength};
     if (body.id) indexEntry.id = body.id;
-    if (body.tags) indexEntry.tags = body.tags;
     if (body.contentType) indexEntry.contentType = body.contentType;
     if (body.author) indexEntry.author = body.author;
     if (body.committer) indexEntry.committer = body.committer;
     if (body.timestamp) indexEntry.timestamp = body.timestamp;
     
     if (id) {
-        // Multiple resources with the same ID are now assumed to be versions of the same abstract entity
-        // if (referencesForID(id)) {
-        //    console.log("ERROR: duplicate reference to ID in %s and %s", JSON.stringify(indexes.idToReferences[id]), sha256AndLength);
-        //}
+        // Multiple resources with the same ID are assumed to be versions of the same abstract entity
         addToIndex("id", indexes.idToReferences, "" + id, indexEntry);
     }
-    if (tags) {
-        for (var tagKey in tags) {
-            var tag = tags[tagKey];
-            addToIndex("tags", indexes.tagToReferences, "" + tag, indexEntry);
-        }
-    }
-    if (contentType) {
-        addToIndex("contentType", indexes.contentTypeToReferences, "" + contentType, indexEntry);
-    }
     
+    // Need to call this even if there are no triples in this version because triples may need to be removed for earlier versions
+    indexes.tripleStore.addOrRemoveTriplesForDocument(body, sha256AndLength);
+    
+    // TODO: Not sure if should keep triples in index entry???
+    if (body.triples) indexEntry.triples = body.triples;
+
     return true;
 }
 
@@ -139,8 +129,7 @@ function reindexAllResources() {
     console.log("reindexAllResources");
     indexes.referenceToIsIndexed = {};
     indexes.idToReferences = {};
-    indexes.tagToReferences = {};
-    indexes.contentTypeToReferences = {};
+    indexes.tripleStore = new TripleStore();
     
     reindexAllResourcesInDirectory(resourcesDirectory);
     
@@ -150,7 +139,6 @@ function reindexAllResources() {
     
     // console.log("id index", indexes.idToReferences);
     // console.log("tag index", indexes.tagToReferences);
-    // console.log("contentType index", indexes.contentTypeToReferences);
 }
 
 function reindexAllResourcesInDirectory(directory) {
@@ -265,18 +253,6 @@ function sanitizeFileName(fileName) {
     return fileName.replace(/\s/g, "_").replace(/\.[\.]+/g, "_").replace(/[^\w_\.\-]/g, "_");
 }
 
-/*
-//For JSON body parser to preserve original content send via PUT
-function bodyParserVerifyAddSHA256(request, result, buffer, encoding) {
-    
-    request.sha256 = calculateSHA256(buffer);
-    // console.log("hash", request.sha256);
- 
-    request.rawBodyBuffer = buffer;
-    // console.log("rawBodyBuffer", request.rawBodyBuffer);
-}
-*/
-
 function sendFailureMessage(response, code, message, extra) {
     var sending = {status: code, error: message};
     if (extra) {
@@ -317,11 +293,12 @@ function calculateMaximumAllowedTimestamp() {
 /* Responding to requests */
 
 function respondWithStatus(request, response) {
-    response.json({status: 'OK', version: version, currentTimestamp: getCurrentTimestamp()});
+    response.json({status: 'OK', version: pointrelServerVersion, currentTimestamp: getCurrentTimestamp()});
 }
 
 function respondForResourceGet(request, response) {
     // Sanitizes resource ID to prevent reading arbitrary files
+    // TODO: Improve with length limits on sections and checking if SHA256 looks good
     var sha256AndLength = sanitizeFileName(request.params.sha256AndLength);
     
     console.log("==== GET by sha256AndLength", request.url);
@@ -337,61 +314,6 @@ function isTimestampInFuture(timestamp, maximumAllowedTimestamp) {
     return isRequestTimestampIsInFuture;
 }
 
-/* 
-
-function respondForResourcePut(request, response) {
-    // console.log("PUT", request.url, request.body);
-    
-    if (referenceIsIndexed(request.params.sha256AndLength)) {
-        return sendFailureMessage(response, 409, "Conflict: The resource already exists on the server", {sha256AndLength: request.params.sha256AndLength});
-    }
-                       
-    var sha256 = request.sha256;
-    // console.log("sha256:", sha256);
-    
-    if (!request.rawBodyBuffer) {
-        return sendFailureMessage(response, 406, "Not acceptable: request is missing JSON Content-Type body");
-    }
-    
-    if (request.body.__type !== signatureType) {
-        return sendFailureMessage(response, 406, "Not acceptable: request is missing __type signatureType of " + signatureType);
-    }
-    
-    // Check here if using a future time and reject if so
-    // TODO: allow perhaps for some configurable limited time drift like 10 seconds)
-    var requestTimestamp = request.body.timestamp;
-    var maximumAllowedTimestamp = calculateMaximumAllowedTimestamp();
-    if (isTimestampInFuture(requestTimestamp, maximumAllowedTimestamp)) {
-        return sendFailureMessage(response, 406, "Not acceptable: Please check you computer's clock; request timestamp of: " + requestTimestamp + " is later that the currently maximum allowed timestamp of: " + maximumAllowedTimestamp);
-    }
-    
-    var length = request.rawBodyBuffer.length;
-    
-    // Probably should validate content as utf8 and valid JSON and so on...
-    
-    var sha256AndLength = sha256 + "_" + length;
-    console.log("==== PUT: ", request.url, sha256AndLength);
-    
-    if (sha256AndLength !== request.params.sha256AndLength) {
-        return sendFailureMessage(response, 406, "Not acceptable: sha256AndLength of content does not match that of request url");
-    }
-    
-    storeContentForReference(sha256AndLength, request.rawBodyBuffer, function(error) {
-        // TODO: Maybe reject new resource if the ID already exists?
-
-        if (error) {
-            return sendFailureMessage(response, 500, "Server error: ' + error + '");
-        }
-        
-        addToIndexes(request.body, sha256AndLength);
-        
-        return response.json({status: 'OK', message: 'Wrote content', sha256AndLength: sha256AndLength});
-        
-    });
-}
-
-*/
-
 function respondForResourcePost(request, response) {
     // console.log("POST", request.url, request.body);
     
@@ -405,6 +327,16 @@ function respondForResourcePost(request, response) {
         return sendFailureMessage(response, 406, "Not acceptable: post requestEnvelope is missing __type signatureType of " + signatureType);
     }
     
+    if (requestEnvelope.__envelopeVersion !== true && requestEnvelope.__envelopeVersion !==  pointrelDocumentEnvelopeVersion) {
+        return sendFailureMessage(response, 406, "Not acceptable: post requestEnvelope __envelopeVersion is not supported; expected true or " + pointrelDocumentEnvelopeVersion);
+    }
+    
+    if (requestEnvelope.__envelopeVersion === true) {
+        requestEnvelope.__envelopeVersion = pointrelDocumentEnvelopeVersion;
+    } else if (requestEnvelope.__envelopeVersion !== pointrelDocumentEnvelopeVersion) {
+        return sendFailureMessage(response, 406, "Not acceptable: post requestEnvelope __envelopeVersion is not supported; expected true or " + pointrelDocumentEnvelopeVersion);
+    }
+    
     var requestTimestamp = requestEnvelope.timestamp;
     if (requestTimestamp !== undefined) {
         if (requestTimestamp === true) {
@@ -416,6 +348,16 @@ function respondForResourcePost(request, response) {
             var maximumAllowedTimestamp = calculateMaximumAllowedTimestamp();
             if (isTimestampInFuture(requestTimestamp, maximumAllowedTimestamp)) {
                 return sendFailureMessage(response, 406, "Not acceptable: Please check you computer's clock; request timestamp of: " + requestTimestamp + " is further in the future than the currently maximum allowed timestamp of: " + maximumAllowedTimestamp);
+            }
+            var triples = requestEnvelope.triples;
+            if (triples) {
+                for (var i = 0; i < triples.length; i++) {
+                    var triple = triples[i];
+                    var tripleTimestamp = triple.timestamp;
+                    if (tripleTimestamp && isTimestampInFuture(tripleTimestamp, maximumAllowedTimestamp)) {
+                        return sendFailureMessage(response, 406, "Not acceptable: Please check you computer's clock; triple timestamp of: " + tripleTimestamp + " for triple[" + i + "] is further in the future than the currently maximum allowed timestamp of: " + maximumAllowedTimestamp);
+                    }
+                }
             }
         }
     }
@@ -478,15 +420,59 @@ function respondForTag(request, response) {
     var tag = request.params.tag;
     console.log("==== GET by tag", request.url, tag);
     
-    var indexEntryList = referencesForTag(tag);
+    var documentIDList = referencesForTag(tag);
     
     // It's not an error if there are no items for a tag -- just return an empty list
-    if (!indexEntryList) {
-        indexEntryList = [];
+    if (!documentIDList) {
+        documentIDList = [];
+    }
+    
+    var documentEntriesList = [];
+    
+    for (var i = 0; i < documentIDList.length; i++) {
+        var documentID = documentIDList[i];
+        var documentEntryFromTripleStore = indexes.tripleStore.documents[documentID];
+        var timestamp = documentEntryFromTripleStore.documentTimestamp;
+        var sha256AndLength = documentEntryFromTripleStore.sha256AndLength;
+         
+        var documentEntry = {documentID: documentID, timestamp: timestamp, sha256AndLength: sha256AndLength};
+        documentEntriesList.push(documentEntry);
     }
     
     // Return the first -- should signal error if more than one?
-    return response.json({status: 'OK', message: "Index for Tag", tagRequested: tag, indexEntries: indexEntryList});
+    return response.json({status: 'OK', message: "Index for Tag", tagRequested: tag, documentEntries: documentEntriesList});
+}
+
+function respondForTriplesQueryPost(request, response) {    
+    var query = request.body;
+
+    var queryType = query.queryType;
+    var a = query.a;
+    var b = query.b;
+    var c = query.c;
+    
+    console.log("==== POST respondForQueryPost", request.url, JSON.stringify([a, b, c, queryType]));
+    
+    var result = null;
+    
+    if (queryType === "findAllCForAB") {
+        result = indexes.tripleStore.findAllCForAB(a, b);
+    } else if (queryType === "findAllBForAC") {
+        result = indexes.tripleStore.findAllBForAC(a, c);
+    } else if (queryType === "findAllAForBC") {
+        result = indexes.tripleStore.findAllAForBC(b, c);
+    } else if (queryType === "findLatestCForAB") {
+        result = indexes.tripleStore.findLatestCForAB(a, b);
+    } else if (queryType === "findLatestBForAC") {
+        result = indexes.tripleStore.findLatestBForAC(a, c);
+    } else if (queryType === "findLatestAForBC") {
+        result = indexes.tripleStore.findLatestAForBC(b, c);
+    } else {
+        return sendFailureMessage(response, 406, "Not acceptable: query type not supported: " + queryType);
+        // return response.json({status: 'FAILED', message: "Unsupported query type", query: query});  
+    }
+    
+    return response.json({status: 'OK', query: query, result: result});        
 }
 
 /* Other */
@@ -532,20 +518,19 @@ function initialize(app, config) {
     app.use(apiBaseURL + '/server/status', respondWithStatus);
     
     app.get(apiBaseURL + '/resources/:sha256AndLength', respondForResourceGet);
-    // app.put(apiBaseURL + '/resources/:sha256AndLength', respondForResourcePut);
     app.post(apiBaseURL + '/resources', respondForResourcePost);
     app.get(apiBaseURL + '/indexes/id/', respondForIDList);
     app.get(apiBaseURL + '/indexes/id/:id(*)', respondForID);
     app.get(apiBaseURL + '/indexes/tag/:tag(*)', respondForTag);
+    app.post(apiBaseURL + '/indexes/triples', respondForTriplesQueryPost);
 }
 
-exports.version = version;
+exports.version = pointrelServerVersion;
 exports.initialize = initialize;
 exports.reindexAllResources = reindexAllResources;
 exports.referenceIsIndexed = referenceIsIndexed;
 exports.referencesForID = referencesForID;
 exports.referencesForTag = referencesForTag;
-exports.referencesForContentType = referencesForContentType;
 exports.fetchContentForReference = fetchContentForReference;
 exports.fetchContentForReferenceSync = fetchContentForReferenceSync;
 exports.storeAndIndexItem = storeAndIndexItem;
