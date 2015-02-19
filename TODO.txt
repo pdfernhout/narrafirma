@@ -440,3 +440,4 @@ DONE Redo test data for latest approach for use with testing catalysis tools
 DONE Convert pointrel version to one supporting triples
 DONE Changed conversion code so that it has "use strict" used in its functional form
 DONE Remove all JSHint warnings
+DONE Add toaster support
