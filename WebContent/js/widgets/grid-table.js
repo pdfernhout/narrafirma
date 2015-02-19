@@ -369,7 +369,12 @@ define([
             var includeField = question.isGridColumn;
             if (configuration.includeAllFields) {
                 // TODO: improve this
-                if (question.type !== "label" && question.type !== "header") includeField = true;
+                if (configuration.includeAllField === true) {
+                    if (question.type !== "label" && question.type !== "header") includeField = true;
+                } else if (configuration.includeAllField !== false) {
+                    // Assume it is an array of field IDs to include
+                    includeField = array.indexOf(configuration.includeAllFields, question.id) !== -1;
+                }
             }
             if (includeField) {
                 var newColumn =  {

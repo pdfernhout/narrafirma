@@ -117,6 +117,9 @@ define({
         
     // For project import/export dialog
     projectImportExportDialog_title: "Project Design Import/Export",
-    projectImportExportDialog_okButtonText: "Import"
+    projectImportExportDialog_okButtonText: "Import",
+    
+    // For theming
+    button_addTheme: "Add theme"
 }
 });
