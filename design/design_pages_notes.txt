@@ -694,7 +694,7 @@ Note: Do not cluster your interpretations unless you are sure you have finished 
 * Cluster interpretations into perspectives [clusterInterpretations_clusterSpace|clusterSpace|interpretations]
 * (Unfinished: This will be a space where perspectives can be clustered [mockupClusteringLabel_unfinished|label]
 related to the questions answered about participant groups.
-* It will look something like this.) [mockup_clusters|image|images/mockups/mockupClusters.png]
+* It will look something like this.) [mockup_clusters|image|images/mockups/mockupClustering.png]
 
 ## Describe perspectives [page_describePerspectives]
 
