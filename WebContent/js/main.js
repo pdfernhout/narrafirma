@@ -20,6 +20,7 @@ require([
     "js/widgets/grid-table",
     "dijit/layout/ContentPane",
     "dijit/form/Select",
+    "dojox/widget/Toaster",
     "dojo/domReady!"
 ], function(
     allPages,
@@ -42,7 +43,8 @@ require([
     widgetSupport,
     widgetGridTable,
     ContentPane,
-    Select
+    Select,
+    Toaster
 ){
     "use strict";
 
@@ -63,6 +65,8 @@ require([
     var loadVersionButton = null;
     var saveButton = null;
     var importExportButton = null;
+    
+    var toasterWidget = null;
     
     function loadLatestClicked(event) {
         console.log("load latest clicked");
@@ -131,7 +135,7 @@ require([
         currentProjectVersionReference = envelope.__sha256HashAndLength;
         
         // TODO: Translate and improve this feedback
-        alert("Finished loading project data");
+        toast("Finished loading project data");
         return;
     }
     
@@ -145,7 +149,7 @@ require([
         // TODO: Translate and improve this feedback
         console.log("Save finished to file", newVersionURI);
         currentProjectVersionReference = newVersionURI;
-        alert("Finished saving");
+        toast("Finished saving");
     }
     
     function urlHashFragmentChanged(newHash) {
@@ -382,6 +386,14 @@ require([
         return select;
     }
     
+    function toast(message, messageType, duration_ms) {
+        if (!messageType) messageType = "message";
+        if (!duration_ms) duration_ms = 2000;
+        toasterWidget.positionDirection = "tl-down";
+        toasterWidget.setContent(message, messageType, duration_ms);
+        toasterWidget.show();
+    }
+    
     // Make all of the application pages selectable from the dropdown list and back/next buttons and put them in a TabContainer
     function createLayout() {
         console.log("createLayout start", allPages);
@@ -389,6 +401,11 @@ require([
         
         var questionIndex = 0;
         var lastPageID = null;
+        
+        // For a "toaster" that can give status or progress updates
+        var toasterPane =  new ContentPane();
+        toasterPane.placeAt("navigationDiv");
+        toasterWidget = new Toaster({id: "toasterWidget"}, toasterPane.domNode);
         
         // var imageButton = widgets.newButton("wwsImageButton", "Working With Stories image button", "navigationDiv", wwsButtonClicked);
         // imageButton.set("showLabel", false);
@@ -505,7 +522,7 @@ require([
         console.log("createLayout end");
         
         // Update if the URL hash fragment changes
-        connect.subscribe("/dojo/hashchange", urlHashFragmentChanged);
+        connect.subscribe("/dojo/hashchange", urlHashFragmentChanged); 
     }
     
     function updatePagesForDomainValueChange() {
