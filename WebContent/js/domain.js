@@ -221,7 +221,6 @@ define([
         }
     }
     
-
     function printStoryForm(contentPane, model, id, questionOptions, value) {
         console.log("printStoryForm unfinished");
         
@@ -235,8 +234,11 @@ define([
     }
     */
     
-    function loadLatestStoriesFromServer(contentPane, model, id, questionOptions, value) {
+    // Can also just pass in callback as first arg, rest are unused and are for compatibility with GUI calling system
+    function loadLatestStoriesFromServer(contentPane, model, id, questionOptions, value, callback) {
         console.log("loadLatestStoriesFromServer called");
+        if (lang.isFunction(contentPane)) callback = contentPane;
+        
         storage.loadLatestSurveyResults(function (allEnvelopes, newEnvelopes) {
             // console.log("load survey result", "all", allEntries, "new", newEntries);
             var newEnvelopeCount = 0;
@@ -266,11 +268,11 @@ define([
             // Checking on contentPane being set before put up alert in case loading called when load project document
             if (newEnvelopeCount === 0) {
                 // TODO: Translate
-                if (contentPane) utility.toast("No new survey results were found.");
+                utility.toast("No new survey results were found.");
                 return;
             } else {
                 // TODO: Translate
-                if (contentPane) utility.toast("" + newEnvelopeCount + " new survey result(s) were found.");
+                utility.toast("" + newEnvelopeCount + " new survey result(s) were found.");
             }
             
             // TODO: Only for debugging; need to think through the seperating of stories and general survey data
@@ -292,6 +294,8 @@ define([
             
             // TODO: Update GUI count -- ideally should be more selective in updating
             buttonFunctions.updateQuestionsForPageChangeCallback();
+            
+            if (callback) callback(newEnvelopeCount);
         });
     }
     

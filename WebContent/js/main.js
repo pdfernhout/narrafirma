@@ -67,9 +67,6 @@ require([
     function loadLatestClicked(event) {
         console.log("load latest clicked");
                 
-        // TODO: Kludge of loading all stories when load data?
-        // domain.buttonFunctions.loadLatestStoriesFromServer();
- 
         // TODO: Check for unsaved data before loading project...
         storage.loadLatestProjectVersion(switchToLoadedProjectData);
     }
@@ -124,7 +121,7 @@ require([
         // Update derived values
         widgetBuilder.updateQuestionsForPageChange();
         
-        // Reload page looking at...
+        // Reload page looking at to ensure it gets latest data...
         showPage(currentPageID, "forceRefresh");
         
         // Store a reference so can pass it to storage as "previous" for next version to get chain or tree of versions
@@ -132,6 +129,15 @@ require([
         
         // TODO: Translate and improve this feedback
         utility.toast("Finished loading project data");
+        
+        // TODO: Kludge of loading all stories when load data?
+        console.log("Going to try to load latest stories from server");
+        domain.buttonFunctions.loadLatestStoriesFromServer(function (newEnvelopeCount) {
+            console.log("Forcing refresh of current page");
+            // TODO: KLUDGE: Updating gui a second time so get flicker -- and maybe lose edits?
+            if (newEnvelopeCount) showPage(currentPageID, "forceRefresh");
+        });
+        
         return;
     }
     
