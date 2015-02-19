@@ -252,8 +252,8 @@ define([
     }
     
     // TODO: Fix so the filters get updated as the story questions get changed
-    function insertStoryBrowser(pagePane, model, id, pageDefinitions) {
-        console.log("insertStoryBrowser start", id);
+    function insertStoryThemer(pagePane, model, id, pageDefinitions) {
+        console.log("insertStoryThemer start", id);
         
         // TODO: Fix this show also handles participant questions somehow
         var questionnaire = domain.getCurrentQuestionnaire();
@@ -364,7 +364,7 @@ define([
     }
     
     return {
-        "insertStoryBrowser": insertStoryBrowser
+        "insertStoryThemer": insertStoryThemer
     };
     
 });

@@ -546,7 +546,7 @@ define([
     function add_storyThemer(contentPane, model, id, options) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
-        var storyThemer = StoryThemer.insertStoryBrowser(questionContentPane, model, id, domain.pageDefinitions);
+        var storyThemer = StoryThemer.insertStoryThemer(questionContentPane, model, id, domain.pageDefinitions);
         questionContentPane.resize();
         return storyThemer;
     }
