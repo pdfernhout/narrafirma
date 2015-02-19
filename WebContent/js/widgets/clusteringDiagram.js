@@ -168,15 +168,6 @@ define([
             var newItem = this.newItem();
             this.openEntryDialog(newItem, false);
         });
-
-        /*
-        var newDiagramButton = newButton("newDiagramButton", "Link to new diagram", lang.hitch(function () {
-            var uuid = "pce:org.twirlip.ClusteringDiagram:uuid:" + uuidFast();
-            var url = "clusteringDiagram.html?diagram=" + uuid;
-            var newItem = {name: "", url: url};
-            this.openEntryDialog(newItem);
-        }));
-        */
     };
 
     ClusteringDiagram.prototype.setupMainSurface = function() {
@@ -258,53 +249,6 @@ define([
         this.mainContentPane.addChild(this.textBox);
         this.urlBox = new ContentPane({content: "", style: "text-overflow: ellipsis;"});
         this.mainContentPane.addChild(this.urlBox);
-        
-        /*
-        // TODO: Translate
-        var goButton = this.newButton("goButton", "Go", function () {
-            this.go(urlBox.get("value"));
-        });
-        */
-        
-        // this.newBreak();
-        
-        /*
-        var layout = new dojox.layout.TableContainer({
-            showLabels: true,
-            orientation: "horiz",
-            labelWidth: 60
-        });
-                
-        var textBoxWidth = "width: 40em; margin-left: 2em;";
-        this.textBox = new TextBox({
-            readOnly: true,
-            name: "conceptTextBox",
-            value: "",
-            // TODO: Translate
-            title: 'Name',
-            // TODO: Translate 
-            placeHolder: "type in a concept",
-            style: textBoxWidth
-        }, "conceptTextBox");
-
-        layout.addChild(this.textBox);
-        
-        var urlBoxWidth = "width: 40em; margin-left: 2em;";
-        this.urlBox = new TextBox({
-            readOnly: true,
-            name: "urlTextBox",
-            value: "",
-            // TODO: Translate
-            title: 'Notes',
-            // TODO: Translate 
-            placeHolder: "type in some notes or a url with more information",
-            style: urlBoxWidth
-        }, "urlTextBox");
-
-        layout.addChild(this.urlBox);
-        
-        this.mainContentPane.domNode.appendChild(layout.domNode);
-        */
     };
 
     // typeOfChange should be either "delete" or "update"
@@ -490,25 +434,6 @@ define([
         this.modelForStorage.set(this.diagramName, this.diagram);
     };
 
-    /*
-    ClusteringDiagram.prototype.go = function(url) {
-        console.log("go: ", url);
-        if (!url) {
-            console.log("empty url, not going");
-            return;
-        }
-        console.log("items: ", items);
-        if (changesCount !== 0) {
-            console.log("trying to go with changes...");
-            var okToGo = confirm("You have unsaved changes");
-            if (!okToGo) return;
-        }
-        console.log("going to url", url);
-        // document.location.href = url;
-        window.open(url);
-    };
-    */
-    
     ClusteringDiagram.prototype.updateItemDisplay = function(item) {
         if (!item) {
             this.textBox.set("content", "");
@@ -564,12 +489,7 @@ define([
     };
     
     ClusteringDiagram.prototype.addDisplayObjectForItem = function(surface, item) {
-        // alert("Add button pressed");
-        //arrow = drawArrow(surface, {start: {x: 200, y: 200}, end: {x: 335, y: 335}});
-        //new Moveable(arrow);
-        // console.log("addClick");
-
-        console.log("item", item);
+        console.log("addDisplayObjectForItem item", item);
         
         var bodyColor = item.bodyColor;
         if (!bodyColor) bodyColor = defaultBodyColor;
