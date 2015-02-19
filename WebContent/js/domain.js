@@ -8,6 +8,7 @@ define([
     "js/storage",
     "dojo/string",
     "js/translate",
+    "js/utility",
     "dojox/uuid/generateRandomUuid",
     "dojo/Stateful",
     "dojox/mvc/StatefulArray"
@@ -19,6 +20,7 @@ define([
     storage,
     string,
     translate,
+    utility,
     uuid,
     Stateful,
     StatefulArray
@@ -264,11 +266,11 @@ define([
             // Checking on contentPane being set before put up alert in case loading called when load project document
             if (newEnvelopeCount === 0) {
                 // TODO: Translate
-                if (contentPane) alert("No new survey results were found.");
+                if (contentPane) utility.toast("No new survey results were found.");
                 return;
             } else {
                 // TODO: Translate
-                if (contentPane) alert("" + newEnvelopeCount + " new survey result(s) were found.");
+                if (contentPane) utility.toast("" + newEnvelopeCount + " new survey result(s) were found.");
             }
             
             // TODO: Only for debugging; need to think through the seperating of stories and general survey data
