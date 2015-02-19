@@ -15,7 +15,7 @@ function startsWith(str, prefix) {
 }
   
 function isString(something) {
-  return (typeof something == 'string' || something instanceof String);
+  return (typeof something === 'string' || something instanceof String);
 }
 
 var acceptableTypes = [
@@ -45,7 +45,7 @@ function extract(line, rest, lineNumber) {
   var lineContentSections = lineContent.split('|');
   var shortLineContent = null;
   var longLineContent = lineContent;
-  if (lineContentSections.length == 2) {
+  if (lineContentSections.length === 2) {
          shortLineContent = lineContentSections[0].trim();
          longLineContent = lineContentSections[1].trim();
      }
@@ -71,7 +71,7 @@ function extract(line, rest, lineNumber) {
   if (infoContentSplit.length >= 1) infoContent.id = infoContentSplit[0];
   if (infoContentSplit.length >= 2) infoContent.type = infoContentSplit[1];
   if (infoContentSplit.length >= 3) infoContent.options = infoContentSplit[2];
-  if (infoContentSplit.length == 4) {
+  if (infoContentSplit.length === 4) {
       infoContent.shortName = infoContentSplit[1];
       if (startsWith(infoContent.shortName, '"')) {
           infoContent.shortName = JSON.parse(infoContent.shortName);
@@ -191,9 +191,8 @@ function addOutput(output) {
 function writeTemplatesModule() {
     allOutput = "";
     addOutput("// Generated from design\n");
-    addOutput("\"use strict\";\n");
     addOutput("\ndefine(function() {\n");
-    
+    addOutput("    \"use strict\";\n");    
     addOutput("\n  var templates = ");
     addOutput(JSON.stringify(templates, null, 4));
     addOutput(";\n");
