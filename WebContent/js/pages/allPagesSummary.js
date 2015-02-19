@@ -178,7 +178,6 @@ var data = {
     "reviewTrends_significanceThreshold": null,
     "project_savedExcerptsList": [],
     "project_observationsDisplayList": [],
-    "clusterInterpretations_clusterSpace": null,
     "project_perspectivesList": [],
     "catalysisReport": null,
     "project_generalNotes_sensemaking": "",

@@ -691,7 +691,8 @@ Note: Do not cluster your interpretations unless you are sure you have finished 
 
 // ideally, when they are done with this, the circles marked as group names
 // will get copied into the perspectives list seen in the next page
-* Cluster interpretations into perspectives [clusterInterpretations_clusterSpace|clusterSpace|interpretations]
+* Cluster interpretations into perspectives [clusterInterpretations_clusterSpace|clusteringDiagram|clusterInterpretations_clusterSpace]
+
 * (Unfinished: This will be a space where perspectives can be clustered [mockupClusteringLabel_unfinished|label]
 related to the questions answered about participant groups.
 * It will look something like this.) [mockup_clusters|image|images/mockups/mockupClustering.png]
