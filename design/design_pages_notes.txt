@@ -5,7 +5,7 @@
 // question types are: label, header (bold label), text, textarea, select, radiobuttons, grid, checkboxes,
 //                     quizScoreResult, templateList, button,
 //                     storyBrowser, report,
-//                     observationsList, excerptsList, storyThemer, graphBrowser, trendsReport, clusterSpace
+//                     observationsList, excerptsList, storyThemer, graphBrowser, trendsReport, clusteringDiagram
 // page types are: normal (no specification), popup, recommendationTable
 
 // a button does something when clicked
@@ -47,9 +47,9 @@
 // trendsReport shows text and graphs in report based on top differences in statistical tests
 // has "add to observation" button
 
-// clusterSpace is used in catalysis to cluster interpretations
+// clusteringDiagram is used in catalysis to cluster interpretations
 // it is a graphical OR grid way of putting like with like
-// the option tells you what is to be clustered
+// the option tells you what is to be clustered (in terms of the storage location of the diagram)
 
 // multiline labels are done by adding lines after the first label line; anything up to the next * or # is read
 // help texts are placed after questions (that are not labels). if there is no leading <p> in the help text, it is <p>text</p>
@@ -685,17 +685,13 @@ browse, graph, and trends pages.
 
 ## Cluster interpretations [page_clusterInterpretations]
 
-* On this page you will cluster together the interpretations you have collected (based on observations) [clusterInterpretationsLabel|label]
+* On this page you will cluster together the interpretations you have collected (based on observations) [project_interpretationsClusteringLabel|label]
 to create perspectives for your catalysis report.
 Note: Do not cluster your interpretations unless you are sure you have finished collecting them.
 
 // ideally, when they are done with this, the circles marked as group names
 // will get copied into the perspectives list seen in the next page
-* Cluster interpretations into perspectives [clusterInterpretations_clusterSpace|clusteringDiagram|clusterInterpretations_clusterSpace]
-
-* (Unfinished: This will be a space where perspectives can be clustered [mockupClusteringLabel_unfinished|label]
-related to the questions answered about participant groups.
-* It will look something like this.) [mockup_clusters|image|images/mockups/mockupClustering.png]
+* Cluster interpretations into perspectives [project_interpretationsClusteringDiagram|clusteringDiagram|project_interpretationsClusteringDiagram]
 
 ## Describe perspectives [page_describePerspectives]
 

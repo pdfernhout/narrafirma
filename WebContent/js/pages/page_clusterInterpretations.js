@@ -3,10 +3,8 @@ define([], function() {
     "use strict";
     
     var questions = [
-        {"id":"clusterInterpretationsLabel", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"clusterInterpretations_clusterSpace", "type":"clusteringDiagram", "isInReport":true, "isGridColumn":false, "options":["clusterInterpretations_clusterSpace"]},
-        {"id":"mockupClusteringLabel_unfinished", "type":"label", "isInReport":false, "isGridColumn":false},
-        {"id":"mockup_clusters", "type":"image", "isInReport":true, "isGridColumn":false, "options":["images/mockups/mockupClustering.png"]}
+        {"id":"project_interpretationsClusteringLabel", "type":"label", "isInReport":false, "isGridColumn":false},
+        {"id":"project_interpretationsClusteringDiagram", "type":"clusteringDiagram", "isInReport":true, "isGridColumn":false, "options":["project_interpretationsClusteringDiagram"]}
     ];
     
     function buildPage(builder, contentPane, model) {
