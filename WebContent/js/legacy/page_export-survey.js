@@ -1,5 +1,3 @@
-"use strict";
-
 define([
     "js/domain",
     "dojo/dom-construct",
@@ -15,6 +13,7 @@ define([
     widgets,
     ContentPane
 ){
+    "use strict";
 
     var surveyItemPrefix = "survey_";
     

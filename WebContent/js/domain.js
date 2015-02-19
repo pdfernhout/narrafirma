@@ -1,5 +1,3 @@
-"use strict";
-
 // This supports globals shared by modules
 
 define([
@@ -25,6 +23,8 @@ define([
     Stateful,
     StatefulArray
 ) {
+    "use strict";
+
     var pageDefinitions = {};
     var questions = {};
     var pagesToGoWithHeaders = {};
@@ -411,7 +411,7 @@ define([
         var shortName = translate(question.id + "::shortName", translate(question.id + "::prompt"));
         var separator = ":";
         var lastQuestionCharacter = shortName[shortName.length - 1];
-        if (lastQuestionCharacter === "?" || lastQuestionCharacter == "." || lastQuestionCharacter == ")") {
+        if (lastQuestionCharacter === "?" || lastQuestionCharacter === "." || lastQuestionCharacter === ")") {
             separator = "<br>";
         } else if (lastQuestionCharacter === ":") {
             separator = " ";

@@ -1,5 +1,3 @@
-"use strict";
-
 define([
     "dojo/dom-construct",
     "js/question_editor",
@@ -13,6 +11,8 @@ define([
     widgets,
     ContentPane
 ){
+    "use strict";
+
     var questionIndex = 1;
     
     function addQuestion() {

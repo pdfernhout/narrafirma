@@ -1,5 +1,3 @@
-"use strict";
-
 define([
     "dojo/_base/array",
     "dojo/_base/connect",
@@ -39,6 +37,8 @@ define([
     Stateful,
     TableContainer
 ){
+    "use strict";
+    
     // story browser support
     
     function setOptionsInMultiSelect(widget, options) {
@@ -248,7 +248,7 @@ define([
         }
         questionAnswer = "" + questionAnswer;
         // console.log("questionAnswer", questionAnswer);
-        return selectedAnswerChoices.indexOf(questionAnswer) != -1;
+        return selectedAnswerChoices.indexOf(questionAnswer) !== -1;
     }
     
     // TODO: Fix so the filters get updated as the story questions get changed
@@ -338,7 +338,7 @@ define([
             // What "should" happen instead is that the dataStore is updates when the underlying array is changed
             // But that would require some sort of dependency in the data model
             // or deciding to have an observable store in the domain to store the questions
-            if (dataStore.index.length != dataStore.data.length) dataStore.setData(dataStore.data);
+            if (dataStore.index.length !== dataStore.data.length) dataStore.setData(dataStore.data);
           
             // console.log("filter pressed");
             var question1Choice = filter1.questionSelect.get("value");

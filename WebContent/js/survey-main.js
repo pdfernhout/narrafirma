@@ -1,5 +1,3 @@
-"use strict";
-
 require([
     "dojo/i18n!js/nls/applicationMessages",
     "dojo/dom",
@@ -12,6 +10,8 @@ require([
     survey,
     translate
 ){
+    "use strict";
+
     // TODO: Internationalize
     // TODO: Full survey
     // TODO: Cancel feedback

@@ -1,5 +1,3 @@
-"use strict";
-
 // Currently BROKEN
 
 define([
@@ -39,7 +37,13 @@ define([
     Dialog,
     Form
 ){
-        
+    "use strict";
+    
+    // TODO: KLUDGE: Created insertQuestionIntoDiv stub function to get jslint warnings to go away, but needs to be fixed if this were to be useable
+    function insertQuestionIntoDiv() {
+        throw new Error("KLUDGE needs to be fixed");
+    }
+
     var testPuppyQuestions = [
         {id: "name", type: "text", text: "Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},
         {id: "wantPuppy", type: "boolean", text: "Do you want a free puppy today?", help: "Enter yes or no"},

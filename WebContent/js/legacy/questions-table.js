@@ -1,5 +1,3 @@
-"use strict";
-
 // Currently BROKEN -- and unused
 
 define([
@@ -26,6 +24,11 @@ define([
     SimpleTextarea,
     TableContainer
 ){
+    "use strict";
+
+    // TODO: KLUDGE: Added widgets to get jslint undefined warnings to go away, but it was probably intended to be a widget builder
+    var widgets = {};
+    
     // questionTable support
     
     function newSpecialSelect(table, id, options) {
@@ -83,7 +86,7 @@ define([
         
         var groupIDs = pseudoQuestion.options.split(";");
         // TODO: Make all these consistent with semicolon
-        if (groupIDs.length == 1) {
+        if (groupIDs.length === 1) {
             groupIDs = pseudoQuestion.options.split(",");
             console.log("WARNING: options should be seperated by semicolon", pseudoQuestion);
         }

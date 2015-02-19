@@ -20,13 +20,13 @@
     },
 */
 
-"use strict";
-
 define([
         "js/widgetBuilder"
     ], function(
         widgets
-    ){      
+    ){    
+    "use strict";
+
     function addWidgets(contentPane, model) {
     
         // TODO: Text would go into translation table...

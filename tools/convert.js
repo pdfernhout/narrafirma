@@ -1,5 +1,3 @@
-"use strict";
-
 // if get error loading file see this:
 // http://stackoverflow.com/questions/10111864/dojo-require-not-working
 
@@ -21,14 +19,15 @@ require([
     CsvStore,
     SimpleTextarea
 ){
-    
+    "use strict";
+
 function startsWith(str, prefix) {
       // console.log("startsWith", prefix, str.lastIndexOf(prefix, 0) === 0, str);
     return str.lastIndexOf(prefix, 0) === 0;
 }
     
 function isString(something) {
-    return (typeof something == 'string' || something instanceof String);
+    return (typeof something === 'string' || something instanceof String);
 }
 
 function newButton(label, addToDiv, callback) {

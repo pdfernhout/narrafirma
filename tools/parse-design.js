@@ -14,7 +14,7 @@ function startsWith(str, prefix) {
 }
   
 function isString(something) {
-  return (typeof something == 'string' || something instanceof String);
+  return (typeof something === 'string' || something instanceof String);
 }
 
 var acceptableTypes = [
@@ -43,7 +43,7 @@ function extract(line, rest, lineNumber) {
   var lineContentSections = lineContent.split('|');
   var shortLineContent = null;
   var longLineContent = lineContent;
-  if (lineContentSections.length == 2) {
+  if (lineContentSections.length === 2) {
          shortLineContent = lineContentSections[0].trim();
          longLineContent = lineContentSections[1].trim();
      }

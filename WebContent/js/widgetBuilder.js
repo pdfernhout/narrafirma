@@ -1,5 +1,3 @@
-"use strict";
-
 // TODO: Remove unused imports
 define([
         "dojo/_base/array",
@@ -82,6 +80,7 @@ define([
         ToggleButton,
         _WidgetBase
     ){
+    "use strict";
     
     var entryTypes = [
         "boolean",
@@ -377,7 +376,7 @@ define([
         if (questionOptions && questionOptions.length !== 0) {
             // console.log("questionOptions", questionOptions);
             labels = questionOptions;
-            if (labels.length != 2) {
+            if (labels.length !== 2) {
                 console.log("Need to specify low and high labels for question: ", id);
             } else {
                 hasTextLabels = true;

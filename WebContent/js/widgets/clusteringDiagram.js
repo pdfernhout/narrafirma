@@ -1,6 +1,4 @@
 /*jslint browser: true */
-"use strict";
-
 define([
     "dojo/ready",
     "dojo/dom-attr",
@@ -46,7 +44,9 @@ define([
     Color,
     ResizeHandle
 ) {
-   // Resources:
+    "use strict";
+
+    // Resources:
    // # http://dojotdg.zaffra.com/2009/03/dojo-now-with-drawing-tools-linux-journal-reprint/
 
     // TODO: Maybe add tooltip with notes for item? And then don't display item info at bottom?
@@ -674,7 +674,7 @@ define([
         });
         if (line !== "") lines.push(line);
         var startY = -((lines.length - 1) / 2) * lineHeight;
-        if (lines.length == 6) startY += lineHeight;
+        if (lines.length === 6) startY += lineHeight;
         var y = startY;
         forEach(lines, function (index, line) {
             var theTextItem = group.createText({text: line, x: 0, y: y, align: "middle"}).

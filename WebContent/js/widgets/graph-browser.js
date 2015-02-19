@@ -1,5 +1,3 @@
-"use strict";
-
 define([
     "dojo/_base/array",
     "js/domain",
@@ -39,7 +37,8 @@ define([
     Scatter,
     TableContainer
 ){
-    
+    "use strict";
+
     // TODO: Need to be able to associate related stories with everything on screen so can browse them when clicked
     
     var unansweredKey = "{Unanswered}";
@@ -119,7 +118,7 @@ define([
     function addAxis(chart, axis, question) {
         // TODO: Translate, especially booleans
         var type = question.type;
-        if (type === "boolean" || type == "checkbox") {
+        if (type === "boolean" || type === "checkbox") {
             chart.addAxis(axis, {
                labels: [
                    {value: -100, text: unansweredKey},
@@ -177,7 +176,7 @@ define([
         /*jshint -W069 */
         var type = question.type;
         results[unansweredKey] = 0;
-        if (type === "boolean" || type == "checkbox") {
+        if (type === "boolean" || type === "checkbox") {
             results["no"] = 0;
             results["yes"] = 0;
         } else if (question.options) {

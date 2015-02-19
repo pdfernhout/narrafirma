@@ -1,4 +1,3 @@
-"use strict";
 
 define([
     "dojo/_base/array",
@@ -19,6 +18,8 @@ define([
     CheckBox,
     _WidgetBase
 ){
+    "use strict";
+
     // TODO: Very similar to RadioButtonsWidget, except it maintains a dictionary of whether checkboxes are checked rather than use an "at" accessor
     // TODO: Set an optional minimum and maximum number that may be checked and validate for that
     var CheckBoxesWidget = declare([_WidgetBase], {

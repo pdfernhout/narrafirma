@@ -1,8 +1,7 @@
-"use strict";
-
 define([
 ], function(
 ) {
+    "use strict";
     
     // Return current versions used by application  
     return {

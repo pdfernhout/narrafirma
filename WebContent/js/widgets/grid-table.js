@@ -1,5 +1,3 @@
-"use strict";
-
 define([
     "dojo/_base/array",
     "dojo/_base/declare",
@@ -49,6 +47,8 @@ define([
     Observable,
     OnDemandGrid
 ){
+    "use strict";
+
     // Kludge because dgrid seems to need to be resized after shown to ensure header displayed correctly -- reset to [] for each new page
     var allGrids = [];
     

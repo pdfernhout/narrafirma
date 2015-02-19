@@ -1,5 +1,3 @@
-"use strict";
-
 define([
     "dojo/_base/array",
     "dojo/_base/declare",
@@ -21,6 +19,8 @@ define([
     RadioButton,
     _WidgetBase
 ){
+    "use strict";
+
     var RadioButtonsWidget = declare([_WidgetBase], {
         value: null,
         choices: null,

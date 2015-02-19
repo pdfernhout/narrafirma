@@ -1,5 +1,3 @@
-"use strict";
-
 require([
     "js/pages/allPages",
     "dojo/i18n!js/nls/applicationMessages",
@@ -46,6 +44,8 @@ require([
     ContentPane,
     Select
 ){
+    "use strict";
+
     // TODO: Add page validation
     // TODO: Add translations for GUI strings used here
     

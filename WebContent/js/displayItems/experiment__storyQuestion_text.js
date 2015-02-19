@@ -1,7 +1,6 @@
 // Generated from design
-"use strict";
-
 define([], function() {
+    "use strict";
 
     return {
         id:"storyQuestion_text",

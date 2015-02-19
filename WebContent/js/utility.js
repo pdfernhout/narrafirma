@@ -1,5 +1,3 @@
-"use strict";
-
 define([
     "dojo/_base/array",
     "js/translate",
@@ -7,6 +5,7 @@ define([
     "dijit/form/FilteringSelect",
     "dojo/store/Memory",
 ], function(array, translate, Button, FilteringSelect, Memory) {
+    "use strict";
     
     function startsWith(str, prefix) {
         // console.log("startsWith", prefix, str.lastIndexOf(prefix, 0) === 0, str);
@@ -17,7 +16,7 @@ define([
     }
     
     function isString(something) {
-        return (typeof something == 'string' || something instanceof String);
+        return (typeof something === 'string' || something instanceof String);
     }
     
     // TODO: Two GUI components without translation here temporarily

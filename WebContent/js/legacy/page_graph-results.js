@@ -1,5 +1,3 @@
-"use strict";
-
 define([
     "dojo/_base/array",
     "js/domain",
@@ -26,6 +24,8 @@ define([
     Lines
     
 ){
+    "use strict";
+
     function updateGraph() {
         console.log("updateGraph");
         
@@ -42,7 +42,7 @@ define([
         
         var theSlider = null;
         array.forEach(domain.exportedSurveyQuestions, function(each) {
-            if (each.type == "slider") {
+            if (each.type === "slider") {
                 theSlider = each.id;
                 chart1Title = each.text;
             }

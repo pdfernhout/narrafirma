@@ -1,5 +1,3 @@
-"use strict";
-    
 define([
     "dojo/promise/all",
     "dojo/Deferred",
@@ -13,6 +11,8 @@ define([
     digests,
     SHA256
 ) {
+    "use strict";
+    
     /*
      * This version of the Pointrel saves and loads items as JSON "envelopes" that can wrap JSON data.
      * 

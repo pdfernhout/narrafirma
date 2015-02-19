@@ -1,5 +1,3 @@
-"use strict";
-
 // This supports globals shared by modules
 
 define([
@@ -17,6 +15,8 @@ define([
     string,
     translate
 ) {
+    "use strict";
+
     var testDataItemsToMake = 100;
 
     // Some test data

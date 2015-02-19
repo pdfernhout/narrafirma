@@ -1,5 +1,3 @@
-"use strict";
-
 define([
     "js/pointrel20141201Client",
     "js/versions"
@@ -7,6 +5,8 @@ define([
     pointrel20141201Client,
     versions
 ) {  
+    "use strict";
+
     // TODO: Fix credentials
     var userID = "anonymous";
     

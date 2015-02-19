@@ -1,5 +1,3 @@
-"use strict";
-
 define([
     "dojo/_base/array",
     "dojox/mvc/at",
@@ -25,6 +23,8 @@ define([
     Stateful,
     Textarea
 ){
+    "use strict";
+    
     function buildOptions(id, choices, optionsString){
         var options = [];
         
@@ -54,7 +54,7 @@ define([
     function optionsForAllQuestions(questions) {
         var questionOptions = [];
         array.forEach(questions, function (question) {
-            if (array.indexOf(filterableQuestionTypes, question.type) != -1) {
+            if (array.indexOf(filterableQuestionTypes, question.type) !== -1) {
                 questionOptions.push({label: translate(question.id + "::shortName", "*FIXME -- Missing shortName translation for: " + question.id), value: question.id});
             }
         });

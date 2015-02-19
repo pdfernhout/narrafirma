@@ -1,5 +1,3 @@
-"use strict";
-
 define([
     "dojo/_base/array",
     "dojo/dom-construct",
@@ -33,6 +31,8 @@ define([
     StackContainer,
     Stateful
 ){
+    "use strict";
+
     // TODO: Replace use of storage with direct calls to server to get questionnaire and submit survey
     
     var timestampStart;
