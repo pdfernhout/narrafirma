@@ -227,9 +227,8 @@ function addOutput(output) {
 function writeRecommendationsModule(recommendationsStructure) {
     allOutput = "";
     addOutput("// Generated from design\n");
-    addOutput("\"use strict\";\n");
     addOutput("\ndefine(function() {\n");
-    
+    addOutput("  \"use strict\";\n");
     addOutput("\n  var recommendations = ");
     addOutput(JSON.stringify(recommendationsStructure, null, 4));
     addOutput(";\n");
