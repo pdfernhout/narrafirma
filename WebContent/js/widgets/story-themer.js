@@ -39,46 +39,7 @@ define([
 ){
     "use strict";
     
-    // story browser support
-    
-    function setOptionsInMultiSelect(widget, options) {
-        // console.log("setOptionsInMultiSelect", widget, options);
-        query('option', widget.domNode).forEach(function(node, index, arr) {
-            // console.log("node", node);
-            domConstruct.destroy(node);
-        }); 
-        
-        for (var i in options){
-            var c = win.doc.createElement('option');
-            c.innerHTML = options[i].label;
-            c.value = options[i].value;
-            widget.domNode.appendChild(c);
-        }
-        // console.log("done");
-    }
-    
-    function newMultiSelect(id, options) {
-        var widget = new MultiSelect({
-            "id": id + "answers1",
-            "size": 12,
-            "style": "width: 100%;"
-            //"options": options
-        });
-        
-        setOptionsInMultiSelect(widget, options);
-        
-        // selectWidget.on("change", mainSelectChanged);
-        
-        return widget;
-    }
-    
-    function storiesChanged(storyBrowser, stories) {
-        // TODO
-    }
-    
-    function questionsChanged(storyBrowser, questions) {
-        // TODO
-    }
+    // story themer support
     
     // TODO: Fix so the filters get updated as the story questions get changed
     function insertStoryThemer(pagePane, model, id, pageDefinitions) {
@@ -132,32 +93,10 @@ define([
             data: stories,
             idProperty: "_storyID"
         });
-
-        var table = new TableContainer({
-            id: id + "_table",
-            cols: 2,
-            showLabels: false,
-            customClass: "storyFilterTable",
-            style: "width: 98%;",
-            spacing: 10
-        });
-
-        // pagePane.containerNode.appendChild(domConstruct.toDom('<br>'));
-        
-        // table needs to be added to container after its children are added to it so that the layout will happen correctly, otherwise startup called too soon internally
-        if (!pagePane.addChild) {
-            alert("TROUBLE -- see log for details");
-            console.log("TROUBLE -- does not have addChild method!", pagePane);
-            pagePane.containerNode.appendChild(table.domNode);
-        } else {
-            pagePane.addChild(table);
-        }
-        
-        var storyList;
         
         // Only allow view button for stories
         var configuration = {viewButton: true, includeAllFields: true};
-        storyList = widgetGridTable.insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, configuration);
+        var storyList = widgetGridTable.insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, configuration);
         
         console.log("insertStoryThemer finished");
     }
