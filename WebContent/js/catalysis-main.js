@@ -105,7 +105,7 @@ require([
     function statTest(stories, field1, field2) {
         var isContinuous1 = !isNaN(stories[0][field1]);
         var isContinuous2 = !isNaN(stories[0][field2]);
-        console.log("statTest", field1, isContinuous1, field2, isContinuous2);
+        console.log("====== statTest", field1, isContinuous1, field2, isContinuous2);
         
         if (isContinuous1 && isContinuous2) {
             // TODO: Determine if normal distributions

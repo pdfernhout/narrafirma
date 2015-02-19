@@ -35,6 +35,7 @@ define([
         "dijit/form/Select",
         "dijit/form/SimpleTextarea",
         "js/widgets/story-browser",
+        "js/widgets/story-themer",
         "dojox/layout/TableContainer",
         "dijit/form/TextBox",
         "dijit/form/ToggleButton",
@@ -75,6 +76,7 @@ define([
         Select,
         SimpleTextarea,
         StoryBrowser,
+        StoryThemer,
         TableContainer,
         TextBox,
         ToggleButton,
@@ -540,16 +542,13 @@ define([
         
         return table;
     }
-    
+      
     function add_storyThemer(contentPane, model, id, options) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
-        var label = new ContentPane({
-            // content: translate(id + "::prompt")
-            content: "<b>UNFINISHED add_storyThemer: " + id + "</b>"             
-        });
-        label.placeAt(questionContentPane);
-        return label;
+        var storyThemer = StoryThemer.insertStoryBrowser(questionContentPane, model, id, domain.pageDefinitions);
+        questionContentPane.resize();
+        return storyThemer;
     }
     
     function add_questionsTable(contentPane, model, id, options) {
