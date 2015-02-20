@@ -435,7 +435,8 @@ define([
                 var newColumn =  {
                     field: question.id,
                     label: translate(question.id + "::shortName"),
-                    formatter: formatObjectsIfNeeded
+                    formatter: formatObjectsIfNeeded,
+                    sortable: !configuration.moveUpDownButtons
                 };
                 columns.push(newColumn);
             }
