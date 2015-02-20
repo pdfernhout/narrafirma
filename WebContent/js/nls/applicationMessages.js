@@ -36,6 +36,10 @@ define({
     button_Duplicate: "Duplicate",
     button_Up: "Move Up",
     button_Down: "Move Down",
+    button_navigateStart: "[<<", 
+    button_navigatePrevious: "<",
+    button_navigateNext: ">",
+    button_navigateEnd: ">>]",
     
     // Story browser button
     button_Filter: "Filter -- show only stories where both questions have the selected values",

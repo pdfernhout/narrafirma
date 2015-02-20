@@ -143,8 +143,9 @@ define([
         });
         
         // Only allow view button for stories
-        var configuration = {viewButton: true, includeAllFields: ["__survey_storyName", "__survey_storyText"]};
+        var configuration = {viewButton: true, navigationButtons: true, includeAllFields: ["__survey_storyName", "__survey_storyText"]};
         var storyList = widgetGridTable.insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, configuration);
+        storyList.grid.set("selectionMode", "single");
         
         console.log("insertStoryThemer finished");
     }

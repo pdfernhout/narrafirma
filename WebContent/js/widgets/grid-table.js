@@ -319,6 +319,15 @@ define([
         grid.refresh();
     }
     
+    function navigateButtonClicked(direction, id, grid, store, popupPageDefinition, itemContentPane, event) {
+        console.log("navigate button pressed", direction);
+        if (direction === "start") {
+            // TODO: Fix this, as it takes an id not an index
+            grid.clearSelection();
+            grid.select(0);
+        }
+    }
+    
     function formatObjectsIfNeeded(item) {
         if (lang.isString(item)) return item;
         if (item === undefined) return "";
@@ -342,16 +351,32 @@ define([
         if (buttons.upButton) buttons.upButton.set("disabled", !selected);
         if (buttons.downButton) buttons.downButton.set("disabled", !selected);
         if (buttons.customButton) buttons.customButton.set("disabled", !selected);
+        
+        // TODO: enabling for navigate buttons
+        // TODO: Fix this as it takes an ID not an index
+        var atStart = true;
+        var atEnd = true;
+        // TODO: This assumes original store was a MemoryStore
+        var data = grid.originalDataStore.data;
+        var idProperty = grid.originalDataStore.idProperty;
+        if (data.length) {
+            atStart = grid.isSelected(data[0][idProperty]);
+            atEnd = grid.isSelected(data[data.length - 1][idProperty]);
+        }
+        if (buttons.navigateStartButton) buttons.navigateStartButton.set("disabled", atStart);
+        if (buttons.navigatePreviousButton) buttons.navigatePreviousButton.set("disabled", atStart || selected !== 1);
+        if (buttons.navigateNextButton) buttons.navigateNextButton.set("disabled", atEnd || selected !== 1);
+        if (buttons.navigateEndButton) buttons.navigateEndButton.set("disabled", atEnd);
     }
     
     // Possible configuration options
-    // var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
-    function insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, configuration) {
+    // var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, navigationButtons: true, includeAllFields: false};
+    function insertGridTableBasic(pagePane, id, originalDataStore, popupPageDefinition, configuration) {
         // Grid with list of objects
-        console.log("insertGridTableBasic", id, dataStore);
+        console.log("insertGridTableBasic", id, originalDataStore);
         
         // TODO: may need to check if already observable so dont; do extra wrapping.
-        dataStore = new Observable(dataStore);
+        var dataStore = new Observable(originalDataStore);
 
         // only for testing!!!
         // configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
@@ -423,6 +448,7 @@ define([
         
         var buttons = {};
         grid.buttons = buttons;
+        grid.originalDataStore = originalDataStore;
         grid.selectedCount = 0;
 
         grid.on("dgrid-select", function(event) {
@@ -480,6 +506,13 @@ define([
             buttons.customButton = utility.newButton(id + "_" + options.id, options.translationID, pane, lang.partial(options.callback, id, grid, dataStore, popupPageDefinition, itemContentPane));
             // Make this function available to users
             grid.getSelectedItem = getSelectedItem;
+        }
+         
+        if (configuration.navigationButtons) {
+            buttons.navigateStartButton = utility.newButton(id + "_navigateStart", "button_navigateStart", pane, lang.partial(navigateButtonClicked, "start", id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.navigatePreviousButton = utility.newButton(id + "_navigatePrevious", "button_navigatePrevious", pane, lang.partial(navigateButtonClicked, "previous",  id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.navigateNextButton = utility.newButton(id + "_navigateNext", "button_navigateNext", pane, lang.partial(navigateButtonClicked, "next",  id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.navigateEndButton = utility.newButton(id + "_navigateEnd", "button_navigateEnd", pane, lang.partial(navigateButtonClicked, "end",  id, grid, dataStore, popupPageDefinition, itemContentPane));
         }
         
         updateGridButtonsForSelectionAndForm(grid);
