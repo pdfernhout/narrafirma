@@ -329,18 +329,20 @@ define([
         var selectedItemID = getSelectedItemID(grid);
         var newRow;
         
+        // TODO: Kludget going to end at moving a million times, but would fail if more than a million items
         if (direction === "start") {
-            newRow = null;
+            newRow = grid.up(selectedItemID, 1000000, true);
         } else if (direction === "previous" && selectedItemID) {
             newRow = grid.up(selectedItemID, 1, true);
         } else if (direction === "next" && selectedItemID) {
             newRow = grid.down(selectedItemID, 1, true);
         } else if (direction === "end") {
-            newRow = null;
+            newRow = grid.down(selectedItemID, 1000000, true);
         }
         if (newRow) {
             if (selectedItemID) grid.deselect(selectedItemID);
             grid.select(newRow);
+            if (grid.formType === "view" && grid.navigateCallback) grid.navigateCallback();
         }
     }
     
@@ -520,6 +522,7 @@ define([
             // TODO: Should there be an option of double click as edit?
             // Support double click as view
             grid.on("dblclick", viewButtonClickedPartial);
+            grid.navigateCallback = viewButtonClickedPartial;
         }
 
         if (configuration.editButton) {
