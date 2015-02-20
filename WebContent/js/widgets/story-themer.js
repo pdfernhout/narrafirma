@@ -13,7 +13,7 @@ define([
     "./widgetSupport",
     "dojo/_base/window",
     "dijit/layout/ContentPane",
-    "dojo/store/Memory",
+    "dstore/Memory",
     "dijit/form/MultiSelect",
     "dijit/form/Select",
     "dojo/Stateful",

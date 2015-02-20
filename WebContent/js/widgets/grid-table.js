@@ -16,11 +16,11 @@ define([
     "dgrid/extensions/DijitRegistry",
     "dijit/form/Form",
     "dgrid/Keyboard",
-    "dojo/store/Memory",
+    "dstore/Memory",
     "dgrid/Selection",
     "dojo/Stateful",
     "dijit/Tooltip",
-    "dojo/store/Observable",
+    "dstore/Trackable",
     "dgrid/OnDemandGrid"
 ], function(
     array,
@@ -44,7 +44,7 @@ define([
     Selection,
     Stateful,
     Tooltip,
-    Observable,
+    Trackable,
     OnDemandGrid
 ){
     "use strict";
@@ -194,7 +194,7 @@ define([
 
         console.log("selectedItemID", selectedItemID);
         
-        var selectedItem = store.get(selectedItemID);
+        var selectedItem = store.getSync(selectedItemID);
 
         // TODO: This is probably out of date and can be removed now that using Observable? Can these grids be changed elsewhere when this grid is visible?
         // Can't use store.get because store.index may be out of date if the array changed; store only updates the index on a put
@@ -375,8 +375,9 @@ define([
         // Grid with list of objects
         console.log("insertGridTableBasic", id, originalDataStore);
         
-        // TODO: may need to check if already observable so dont; do extra wrapping.
-        var dataStore = new Observable(originalDataStore);
+        // TODO: may need to check if already observable so don't do extra wrapping.
+        // var dataStore = new Observable(originalDataStore);
+        var dataStore = Trackable.create(originalDataStore);
 
         // only for testing!!!
         // configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
@@ -391,16 +392,17 @@ define([
         
         // TODO: FIX ME -- no longer have questions -- either add them back or find another approach...
         array.forEach(popupPageDefinition.questions, function (question) {
-            var includeField = question.isGridColumn;
+            var includeField = question.isGridColumn || false;
             if (configuration.includeAllFields) {
                 // TODO: improve this
-                if (configuration.includeAllField === true) {
+                if (configuration.includeAllFields === true) {
                     if (question.type !== "label" && question.type !== "header") includeField = true;
-                } else if (configuration.includeAllField !== false) {
+                } else if (configuration.includeAllFields !== false) {
                     // Assume it is an array of field IDs to include
                     includeField = array.indexOf(configuration.includeAllFields, question.id) !== -1;
                 }
             }
+            // console.log("includeField", includeField, question.id);
             if (includeField) {
                 var newColumn =  {
                     field: question.id,
@@ -415,7 +417,7 @@ define([
         var grid = new(declare([OnDemandGrid, DijitRegistry, Keyboard, Selection, ColumnResizer]))({
             id: id,
             // "sort": "order",
-            store: dataStore,
+            collection: dataStore,
             columns: columns,
             // Preserve the selections despite refresh needed when move items up or down
             deselectOnRefresh: false

@@ -30,6 +30,7 @@ define([
         "dijit/form/HorizontalRuleLabels",
         "dijit/form/HorizontalSlider",
         "dojo/store/Memory",
+        "dstore/Memory",
         "dijit/form/RadioButton",
         "js/widgets/radio-buttons",
         "dijit/form/Select",
@@ -71,6 +72,7 @@ define([
         HorizontalRuleLabels,
         HorizontalSlider,
         Memory,
+        MemoryDstore,
         RadioButton,
         RadioButtons,
         Select,
@@ -227,7 +229,7 @@ define([
         }
         
         // Store will modify underlying array
-        var dataStore = new Memory({
+        var dataStore = new MemoryDstore({
             data: data,
             idProperty: "_id"
         });
@@ -675,7 +677,7 @@ define([
             templateQuestions = [];
         }
         
-        var dataStore = new Memory({
+        var dataStore = new MemoryDstore({
             data: templateQuestions,
             idProperty: "id"
         });

@@ -97,6 +97,7 @@ Popup for add item from grid -- should have better label in title as to what typ
 CSS styling of nested box in grid
 Uncomment and test tooltip code in grid table
 Get tooltips working in dialogs (maybe Dojo bug?)
+Issue when trying to move items up or down but have sorted the list based on a header so the order visible is different than the underlying array
 
 CONFIGURATION
 Add project configuration page?
@@ -441,3 +442,5 @@ DONE Convert pointrel version to one supporting triples
 DONE Changed conversion code so that it has "use strict" used in its functional form
 DONE Remove all JSHint warnings
 DONE Add toaster support
+DONE Migration to dgrid 0.4.0
+DONE Change CDN references to Dojo 1.10.3
