@@ -179,21 +179,26 @@ define([
         openFormForItem(id, grid, store, popupPageDefinition, itemContentPane, "add", statefulItem);  
     }
     
-    function getSelectedItem(grid, store) {
+    function getSelectedItemID(grid) {
         var selectedItemID = null;
         
-        console.log("getSelectedItem", grid.selection, grid);
+        console.log("getSelectedItemID", grid.selection);
         for (var theSelection in grid.selection) {
             if (grid.selection[theSelection]) selectedItemID = theSelection;
         }
+
+        console.log("selectedItemID", selectedItemID);
+        return selectedItemID;
+    }
+    
+    function getSelectedItem(grid, store) {
+        var selectedItemID = getSelectedItemID(grid);
         
         if (!selectedItemID) {
             console.log("No selection");
             return null;
         }
 
-        console.log("selectedItemID", selectedItemID);
-        
         var selectedItem = store.getSync(selectedItemID);
 
         // TODO: This is probably out of date and can be removed now that using Observable? Can these grids be changed elsewhere when this grid is visible?
@@ -321,10 +326,21 @@ define([
     
     function navigateButtonClicked(direction, id, grid, store, popupPageDefinition, itemContentPane, event) {
         console.log("navigate button pressed", direction);
+        var selectedItemID = getSelectedItemID(grid);
+        var newRow;
+        
         if (direction === "start") {
-            // TODO: Fix this, as it takes an id not an index
-            grid.clearSelection();
-            grid.select(0);
+            newRow = null;
+        } else if (direction === "previous" && selectedItemID) {
+            newRow = grid.up(selectedItemID, 1, true);
+        } else if (direction === "next" && selectedItemID) {
+            newRow = grid.down(selectedItemID, 1, true);
+        } else if (direction === "end") {
+            newRow = null;
+        }
+        if (newRow) {
+            if (selectedItemID) grid.deselect(selectedItemID);
+            grid.select(newRow);
         }
     }
     
@@ -335,37 +351,47 @@ define([
         return JSON.stringify(item);
     }
     
+    function updateGridButtonsForSelectionAndFormLater(grid) {
+        // Defer updating until later to ensure grid settles down with sorting
+        // otherwise could calculate button status incorrectly
+        setTimeout(lang.partial(updateGridButtonsForSelectionAndForm, grid), 0);
+    }
+    
     function updateGridButtonsForSelectionAndForm(grid) {
         var buttons = grid.buttons;
-        var selected = grid.selectedCount;
+        var hasSelection = grid.selectedCount;
         
         var isAdding = (grid.formType === "add");
         if (buttons.addButton) buttons.addButton.set("disabled", isAdding);
         
         // disable other buttons if in the middle of adding a new item or if no selection; otherwise enable
-        if (isAdding) selected = false;
-        if (buttons.viewButton) buttons.viewButton.set("disabled", !selected);
-        if (buttons.removeButton) buttons.removeButton.set("disabled", !selected);
-        if (buttons.editButton) buttons.editButton.set("disabled", !selected);
-        if (buttons.duplicateButton) buttons.duplicateButton.set("disabled", !selected);
-        if (buttons.upButton) buttons.upButton.set("disabled", !selected);
-        if (buttons.downButton) buttons.downButton.set("disabled", !selected);
-        if (buttons.customButton) buttons.customButton.set("disabled", !selected);
+        if (isAdding) hasSelection = false;
+        if (buttons.viewButton) buttons.viewButton.set("disabled", !hasSelection);
+        if (buttons.removeButton) buttons.removeButton.set("disabled", !hasSelection);
+        if (buttons.editButton) buttons.editButton.set("disabled", !hasSelection);
+        if (buttons.duplicateButton) buttons.duplicateButton.set("disabled", !hasSelection);
+        if (buttons.upButton) buttons.upButton.set("disabled", !hasSelection);
+        if (buttons.downButton) buttons.downButton.set("disabled", !hasSelection);
+        if (buttons.customButton) buttons.customButton.set("disabled", !hasSelection);
         
-        // TODO: enabling for navigate buttons
-        // TODO: Fix this as it takes an ID not an index
+        // enabling for navigate buttons based on whether can move up or down in list in current sort order
         var atStart = true;
         var atEnd = true;
-        // TODO: This assumes original store was a MemoryStore
-        var data = grid.originalDataStore.data;
-        var idProperty = grid.originalDataStore.idProperty;
-        if (data.length) {
-            atStart = grid.isSelected(data[0][idProperty]);
-            atEnd = grid.isSelected(data[data.length - 1][idProperty]);
+        var selectedItemID = getSelectedItemID(grid);
+        if (selectedItemID !== null) {
+            var row = grid.row(selectedItemID);
+            if (row) {
+                var idAbove = grid.up(row, 1, true).id;
+                var idBelow = grid.down(row, 1, true).id;
+                console.log("current", selectedItemID, "above", idAbove, "below", idBelow);
+                atStart = idAbove === selectedItemID;
+                atEnd = idBelow === selectedItemID;
+                console.log("atStart", atStart, "atEnd", atEnd);
+            }
         }
         if (buttons.navigateStartButton) buttons.navigateStartButton.set("disabled", atStart);
-        if (buttons.navigatePreviousButton) buttons.navigatePreviousButton.set("disabled", atStart || selected !== 1);
-        if (buttons.navigateNextButton) buttons.navigateNextButton.set("disabled", atEnd || selected !== 1);
+        if (buttons.navigatePreviousButton) buttons.navigatePreviousButton.set("disabled", atStart || !selectedItemID || grid.selectedCount !== 1);
+        if (buttons.navigateNextButton) buttons.navigateNextButton.set("disabled", atEnd || !selectedItemID || grid.selectedCount !== 1);
         if (buttons.navigateEndButton) buttons.navigateEndButton.set("disabled", atEnd);
     }
     
@@ -454,7 +480,7 @@ define([
         grid.selectedCount = 0;
 
         grid.on("dgrid-select", function(event) {
-            console.log("dgrid-select", event);
+            console.log("dgrid-select");
             grid.selectedCount += event.rows.length;
             updateGridButtonsForSelectionAndForm(grid);
             
@@ -463,12 +489,18 @@ define([
         });
         
         grid.on("dgrid-deselect", function(event) {
-            console.log("dgrid-deselect", event);
+            console.log("dgrid-deselect");
             grid.selectedCount -= event.rows.length;
             updateGridButtonsForSelectionAndForm(grid);
             
             // TODO: Track first selected item if view open -- this does not work as a deselect called before select always
             // if (grid.formType === "view") viewButtonClicked(id, grid, dataStore, popupPageDefinition, itemContentPane, event);
+        });
+        
+        grid.on("dgrid-sort", function(event) {
+            console.log("dgrid-sort");
+            // Sorting can change the enabling of the navigation buttons
+            updateGridButtonsForSelectionAndFormLater(grid);
         });
                 
         if (configuration.addButton) {
