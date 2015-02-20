@@ -3,16 +3,19 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
 <title>Survey using the NarraKit companion software to Working With Stories</title>
+
 <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.10.2/dojo/resources/dojo.css">
 <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.10.2/dijit/themes/dijit.css">
 <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.10.2/dijit/themes/claro/claro.css">
-<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.10.2/dojox/layout/resources/ResizeHandle.css" />
-<link rel="stylesheet" href="/lib/dgrid-0.3.16/css/dgrid.css">
-<link rel="stylesheet" href="/lib/dgrid-0.3.16/css/skins/claro.css">
-<link rel="stylesheet" href="/lib/dgrid-0.3.16/css/extensions/ColumnResizer.css">
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.10.2/dojox/layout/resources/ResizeHandle.css">
 <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.10.2/dojox/widget/Wizard/Wizard.css">
-<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.10.2/dojox/widget/Toaster/Toaster.css" >
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.10.2/dojox/widget/Toaster/Toaster.css">
+
+<link rel="stylesheet" href="/lib/dgrid/css/dgrid.css">
+<link rel="stylesheet" href="/lib/dgrid/css/skins/claro.css">
+<link rel="stylesheet" href="/lib/dgrid/css/extensions/ColumnResizer.css">
 
 <script>
 	var dojoConfig;
@@ -28,11 +31,12 @@
 			// dgrid, xstyle, and put-selector as siblings of the dojo folder.
 			// More complexity is required because the version names are in the folder names, and these are not in the same directory as dojo modules
 			packages: [
-				{ name: "dgrid", location: baseUrl + "dgrid-0.3.16" },
-				{ name: "xstyle", location: baseUrl + "xstyle-0.2.1" },
-				{ name: "put-selector", location: baseUrl + "put-selector-0.3.5" },
-				{ name: "js", location: location.pathname.replace(/\/[^/]+$/, '') + "/js"},
-				{ name: "lib", location: baseUrl}
+                { name: "js", location: location.pathname.replace(/\/[^/]+$/, '') + "/js"},
+                { name: "lib", location: baseUrl},
+                { name: "dgrid", location: baseUrl + "dgrid" },
+                { name: "dstore", location: baseUrl + "dstore" },
+                { name: "put-selector", location: baseUrl + "put-selector" },
+                { name: "xstyle", location: baseUrl + "xstyle" }
 			]
 		};
 	}());
