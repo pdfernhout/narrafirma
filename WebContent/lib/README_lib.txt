@@ -6,12 +6,16 @@ Downloaded dgrid#0.4.0 using bower on 2015-02-19.
 
 Additional dependencies downloaded by bower (besides dojo#1.10.4) were: dstore#1.0.1, put-selector#0.3.6, and xstyle#0.3.1
 
-The download was done from the command line using:
+Instructions for doing the download are found here:
+  https://github.com/sitepen/dgrid#readme
+
+The download was done from the command line in a temporary directory using:
 
   $ bower install dgrid
   
 With the results:
   
+------------------------------
 bower dgrid#*               not-cached git://github.com/SitePen/dgrid.git#*
 bower dgrid#*                  resolve git://github.com/SitePen/dgrid.git#*
 bower dgrid#*                 download https://github.com/SitePen/dgrid/archive/v0.4.0.tar.gz
@@ -56,6 +60,9 @@ dgrid#0.4.0 bower_components/dgrid
 ├── dstore#1.0.1
 ├── put-selector#0.3.6
 └── xstyle#0.3.1
+------------------------------
+
+The files were then copied into the source tree
 
 If you need to install bower, it is done using npm like so:
 
