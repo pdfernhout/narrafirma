@@ -97,6 +97,7 @@ Popup for add item from grid -- should have better label in title as to what typ
 CSS styling of nested box in grid
 Uncomment and test tooltip code in grid table
 Get tooltips working in dialogs (maybe Dojo bug?)
+Sorting issue: Initial sort order in grid may be order of items in underlying array, but you can't get back to that order once you sort by a column
 
 CONFIGURATION
 Add project configuration page?
