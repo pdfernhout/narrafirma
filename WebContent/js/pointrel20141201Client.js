@@ -1,15 +1,17 @@
 define([
     "dojo/promise/all",
     "dojo/Deferred",
-    "dojo/request/xhr",
-    'dojox/encoding/digests/_base',
-    "dojox/encoding/digests/SHA256"
+    "dojox/encoding/digests/_base",
+    "dojox/uuid/generateRandomUuid",
+    "dojox/encoding/digests/SHA256",
+    "dojo/request/xhr"
 ], function(
     all,
     Deferred,
-    xhr,
     digests,
-    SHA256
+    generateRandomUuid,
+    SHA256,
+    xhr
 ) {
     "use strict";
     
@@ -142,7 +144,11 @@ define([
             // TODO: Maybe store a UUID?
         };
         
-        if (metadata.id) envelope.id = "" + metadata.id;
+        if (metadata.id) {
+            envelope.id = "" + metadata.id;
+        } else {
+            envelope.id = generateRandomUuid();
+        }
         
         // Possibly previous could be either a string with sha256AndLength or an object: {uuid: "???", sha256AndLength: "???"}
         if (metadata.previous) envelope.previous = metadata.previous;
