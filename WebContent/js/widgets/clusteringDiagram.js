@@ -192,7 +192,7 @@ define([
             this.recreateDisplayObjectsForAllItems();
         }));
         
-        var handle = new dojox.layout.ResizeHandle({
+        var handle = new ResizeHandle({
             targetId: divUUID,
             // Need either activeResize true or animateSizing false so that onResize will only be called when totally done resizing
             // and not with animation still running and node not quite the final size
@@ -297,7 +297,7 @@ define([
         console.log("openEntryDialog", item, isExistingItem);
         var model = new Stateful(item);
 
-        var layout = new dojox.layout.TableContainer({
+        var layout = new TableContainer({
             cols: 4,
             showLabels: false,
             orientation: "horiz"
