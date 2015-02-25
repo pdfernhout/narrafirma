@@ -523,7 +523,10 @@ define([
                 var recommendationNumber = Math.floor((Math.random() * 3) + 1);
                 recommendationsValues.push(recommendationNumber);
                 var recommendationValue = {1: "risky", 2: "maybe", 3: "good"}[recommendationNumber];
-                if (recommendationsForAnswer) recommendationValue = recommendationsForAnswer[categoryName][fieldName];
+                if (recommendationsForAnswer) {
+                    var recommendationsForCategory = recommendationsForAnswer[categoryName];
+                    if (recommendationsForCategory) recommendationValue = recommendationsForCategory[fieldName];
+                }
                 var fieldContentPane = new ContentPane({"content": "<i>" + recommendationValue + "</i>", "colspan": 1, "align": "right", "class": tagForRecommentationValue(recommendationNumber)});
                 table.addChild(fieldContentPane);
             }
