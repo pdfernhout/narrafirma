@@ -15,14 +15,12 @@ define([
     "dojo/_base/window",
     "dijit/form/ComboBox",
     "dijit/layout/ContentPane",
-    "dgrid/List",
     "dojo/store/Memory",
     "dstore/Memory",
     "dijit/form/MultiSelect",
     "dijit/form/Select",
     "dojo/Stateful",
-    "dojox/layout/TableContainer",
-    "dstore/Trackable"
+    "dojox/layout/TableContainer"
 ], function(
     array,
     connect,
@@ -40,14 +38,12 @@ define([
     win,
     ComboBox,
     ContentPane,
-    List,
     Memory,
     MemoryDstore,
     MultiSelect,
     Select,
     Stateful,
-    TableContainer,
-    Trackable
+    TableContainer
 ){
     "use strict";
     
@@ -130,20 +126,24 @@ define([
                  themesPane.placeAt(contentPane);
                  
                  // TODO: Need to hook up this with stories somehow, especially given they are loaded and saved outside the project
-                 var storyThemes = [{id: "test", name: "test"}];
-                 var storyThemesStore = Trackable.create(new MemoryDstore({data: storyThemes}));
+                 var testItem = {id: "test", name: "test"};
+                 var storyThemes = [];
+                 var storyThemesStore = new MemoryDstore({data: storyThemes, idProperty: "id"});
                  
-                 var themeList = new List({
-                     collection: storyThemesStore
-                 });
-                 domConstruct.place(themeList.domNode, themesPane.domNode);
-                 // Need to start manually as placing using domNodes and not widget itself
-                 themeList.startup();
-                 // themeList.placeAt(themesPane);
+                 var configuration2 = {removeButton: true, moveUpDownButtons: true, includeAllFields: true};
+                 var popupPageDefinition2 = {
+                     "id": "storyThemeQuestions",
+                     questions: [
+                         {id: "name", shortName: "Theme", prompt: "Theme", type: "text", options:[]}
+                     ]
+                 };
+                 var themeList = widgetGridTable.insertGridTableBasic(themesPane, "storyThemeList", storyThemesStore, popupPageDefinition2, configuration2);
+                 console.log("themeList", themeList);
                  
                  var allThemes = [];
                  var allThemesStore = new Memory({
-                     data: allThemes
+                     data: allThemes,
+                     idProperty: "id"
                  });
                  
                  var themeEntryComboBox = new ComboBox({
@@ -153,7 +153,7 @@ define([
                  themeEntryComboBox.placeAt(themesPane);
                  
                  var addThemeButton = utility.newButton(id + "_addThemeButton", "button_addTheme", pagePane, function () {
-                     console.log("Button pressed");
+                     console.log("Button pressed", themeList, storyThemes, storyThemesStore);
                      var themeText = themeEntryComboBox.get("value");
                      // TODO: Unfinished
                      console.log("themeText", themeText);
@@ -180,12 +180,15 @@ define([
                      // Check if theme already in list of added theme, and if so, delete it and readd it at the bottom
                      for (var j = 0; j < storyThemes.length; j++) {
                          if (storyThemes[j].name === existingTheme.name) {
-                             storyThemes.splice(j, 1); 
+                             // storyThemes.splice(j, 1); 
+                             storyThemesStore.remove(storyThemes[j].id);
                              break;
                          }
                      }
-                     storyThemes.push(existingTheme);
-                     // themeList.refresh();
+                     // storyThemes.push(existingTheme);
+                     // Tell the store things have changed in the underlying data
+                     // storyThemesStore.set("collection", storoyThemes);
+                     storyThemesStore.add(existingTheme);
                  });
                  
                  addThemeButton.placeAt(themesPane);
