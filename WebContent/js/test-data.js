@@ -56,7 +56,7 @@ define([
                 "point in time": false,
                 "event": true
               }
-            },
+            }
           ],
           "storyQuestions": [
             {

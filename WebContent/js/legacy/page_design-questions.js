@@ -34,7 +34,7 @@ define([
         pane.appendChild(domConstruct.toDom("<br>"));
         pane.appendChild(domConstruct.toDom("Survey Design"));
         pane.appendChild(domConstruct.toDom("<br>"));
-        pane.appendChild(domConstruct.toDom('<div id="questionsDiv"/>'));
+        pane.appendChild(domConstruct.toDom('<div id="questionsDiv"></div>'));
         var addQuestionButton = widgets.newButton("Add question", pane, addQuestion);
         pane.appendChild(document.createElement("br"));
     

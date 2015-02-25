@@ -5,7 +5,7 @@ define([
     "dijit/layout/ContentPane",
     "dijit/form/FilteringSelect",
     "dojo/store/Memory",
-    "dojox/widget/Toaster",
+    "dojox/widget/Toaster"
 ], function(array, translate, Button, ContentPane, FilteringSelect, Memory, Toaster) {
     "use strict";
     

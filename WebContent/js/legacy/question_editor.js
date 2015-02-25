@@ -17,7 +17,7 @@ define([
     "js/widgets/questions-table",
     "js/widgets/story-browser",
     "dijit/Dialog",
-    "dijit/form/Form",
+    "dijit/form/Form"
 ], function(
     array,
     dom,
@@ -47,7 +47,7 @@ define([
     var testPuppyQuestions = [
         {id: "name", type: "text", text: "Your Name", help: 'Please enter your \'full\' name, like "John Smith".'},
         {id: "wantPuppy", type: "boolean", text: "Do you want a free puppy today?", help: "Enter yes or no"},
-        {id: "reason", type: "text", text: "If yes, why do you want a free puppy?"},
+        {id: "reason", type: "text", text: "If yes, why do you want a free puppy?"}
     ];
     
     var createSurveyQuestions = [
@@ -56,7 +56,7 @@ define([
         {id: "questionType", type: "select", text: "Question Type", help: 'TODO', options: "text\ntextarea\nboolean\ncheckbox\nselect\nslider"},
         {id: "questionText", type: "textarea", text: "Question Text", help: 'TODO'},
         {id: "questionHelp", type: "textarea", text: "Question Help", help: 'TODO'},
-        {id: "questionOptions", type: "textarea", text: "Question Options", help: 'Enter options here, one per line'},
+        {id: "questionOptions", type: "textarea", text: "Question Options", help: 'Enter options here, one per line'}
     ];
     
     function insertQuestionsIntoDiv(questions, questionsDiv) {

@@ -13,7 +13,7 @@ define([
     "dijit/Dialog",
     "dijit/form/Form",
     "dijit/layout/StackContainer",
-    "dojo/Stateful",
+    "dojo/Stateful"
 ], function(
     array,
     domConstruct,

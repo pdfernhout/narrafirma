@@ -123,7 +123,7 @@ define([
                labels: [
                    {value: -100, text: unansweredKey},
                    {value: 0, text: "No"},
-                   {value: 100, text: "Yes"},
+                   {value: 100, text: "Yes"}
                ], 
                vertical: axis === "y",
                includeZero: true
@@ -150,7 +150,7 @@ define([
         } else {
             var increment = 100 / (question.options.length - 1);
             var labels = [
-               {value: -increment, text: unansweredKey},
+               {value: -increment, text: unansweredKey}
             ];
             for (var i = 0; i < question.options.length; i++) {
                 labels.push({value: i * increment, text: question.options[i]});

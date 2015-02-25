@@ -626,7 +626,7 @@ define([
     var add_templateList_elicitationQuestions = [
         {"id":"category", "type":"text", "isInReport":true, "isGridColumn":true},
         {"id":"id", "type":"text", "isInReport":true, "isGridColumn":true},
-        {"id":"text", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"text", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
    
    var add_templateList_storyOrParticipantQuestions = [
@@ -648,7 +648,7 @@ define([
         {"id":"recording", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"materials", "type":"textarea", "isInReport":true, "isGridColumn":true},
         {"id":"spaces", "type":"textarea", "isInReport":true, "isGridColumn":true},
-        {"id":"facilitation", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"facilitation", "type":"textarea", "isInReport":true, "isGridColumn":true}
     ];
     
     // TODO: Refactor this into its own widget module

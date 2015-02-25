@@ -101,7 +101,7 @@ define(function() {
 	        "timeline",
 	        "landscape",
 	        "story elements",
-	        "composite stories",
+	        "composite stories"
         ],
         "interventions": [
            "narrative ombudsmen",
@@ -117,7 +117,7 @@ define(function() {
            "narrative mentoring",
            "narrative therapy",
            "participatory theatre",
-           "combined interventions",
+           "combined interventions"
         ],
     },
     "questions": {

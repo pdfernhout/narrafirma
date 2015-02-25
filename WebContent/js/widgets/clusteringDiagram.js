@@ -20,7 +20,7 @@ define([
     "dijit/layout/ContentPane",
     "dijit/ColorPalette",
     "dojo/_base/Color",
-    "dojox/layout/ResizeHandle",
+    "dojox/layout/ResizeHandle"
 ], function (
     ready,
     domAttr,

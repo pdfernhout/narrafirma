@@ -9,7 +9,7 @@ define([
     "dojox/charting/plot2d/Columns",
     "dijit/layout/ContentPane",
     "dojox/charting/axis2d/Default",
-    "dojox/charting/plot2d/Lines",
+    "dojox/charting/plot2d/Lines"
 ], function(
     array,
     domain,
