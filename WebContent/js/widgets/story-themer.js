@@ -1,50 +1,27 @@
 define([
-    "dojo/_base/array",
-    "dojo/_base/connect",
     "js/domain",
-    "dojo/dom-construct",
     'dojox/html/entities',
     "dojox/uuid/generateRandomUuid",
-    "dojo/_base/lang",
-    "dojo/query",
     "js/translate",
     "js/utility",
-    "js/widgetBuilder",
     "./grid-table",
-    "./widgetSupport",
-    "dojo/_base/window",
     "dijit/form/ComboBox",
     "dijit/layout/ContentPane",
     "dojo/store/Memory",
     "dstore/Memory",
-    "dijit/form/MultiSelect",
-    "dijit/form/Select",
-    "dojo/Stateful",
-    "dojox/layout/TableContainer"
+    "dojo/Stateful"
 ], function(
-    array,
-    connect,
     domain,
-    domConstruct,
     entities,
     generateRandomUuid,
-    lang,
-    query,
     translate,
     utility,
-    widgetBuilder,
     widgetGridTable,
-    widgetSupport,
-    win,
     ComboBox,
     ContentPane,
     Memory,
     MemoryDstore,
-    MultiSelect,
-    Select,
-    Stateful,
-    TableContainer
-){
+    Stateful){
     "use strict";
     
     // story themer support
@@ -60,7 +37,7 @@ define([
         
         // TODO: What about idea of having IDs that go with eliciting questions so store reference to ID not text prompt?
         var elicitingQuestionPrompts = [];
-        for (var elicitingQuestionIndex in questionnaire.elicitingQuestions) {
+        for (var elicitingQuestionIndex = 0; elicitingQuestionIndex < questionnaire.elicitingQuestions.length; elicitingQuestionIndex++) {
             var elicitingQuestionSpecification = questionnaire.elicitingQuestions[elicitingQuestionIndex];
             elicitingQuestionPrompts.push(elicitingQuestionSpecification.text);
         }
@@ -126,7 +103,7 @@ define([
                  themesPane.placeAt(contentPane);
                  
                  // TODO: Need to hook up this with stories somehow, especially given they are loaded and saved outside the project
-                 var testItem = {id: "test", name: "test"};
+                 // var testItem = {id: "test", name: "test"};
                  var storyThemes = [];
                  var storyThemesStore = new MemoryDstore({data: storyThemes, idProperty: "id"});
                  
@@ -155,7 +132,6 @@ define([
                  var addThemeButton = utility.newButton(id + "_addThemeButton", "button_addTheme", pagePane, function () {
                      console.log("Button pressed", themeList, storyThemes, storyThemesStore);
                      var themeText = themeEntryComboBox.get("value");
-                     // TODO: Unfinished
                      console.log("themeText", themeText);
                      if (!themeText) return;
                      themeEntryComboBox.set("value", "");
@@ -177,7 +153,7 @@ define([
                              return 0;
                          });
                      }
-                     // Check if theme already in list of added theme, and if so, delete it and readd it at the bottom
+                     // Check if theme already in list of added theme, and if so, delete it and add it again at the bottom
                      for (var j = 0; j < storyThemes.length; j++) {
                          if (storyThemes[j].name === existingTheme.name) {
                              // storyThemes.splice(j, 1); 
@@ -185,9 +161,6 @@ define([
                              break;
                          }
                      }
-                     // storyThemes.push(existingTheme);
-                     // Tell the store things have changed in the underlying data
-                     // storyThemesStore.set("collection", storoyThemes);
                      storyThemesStore.add(existingTheme);
                  });
                  
