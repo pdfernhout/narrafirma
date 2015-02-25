@@ -1,11 +1,9 @@
 define([
     "dojo/_base/array",
     "dojo/_base/declare",
-    "dojo/dom-construct",
     "exports",
     "dojox/mvc/getPlainValue",
     "dojo/_base/lang",
-    "dijit/registry",
     "js/translate",
     "js/utility",
     "dojox/uuid/generateRandomUuid",
@@ -16,23 +14,19 @@ define([
     "dgrid/extensions/DijitRegistry",
     "dijit/form/Form",
     "dgrid/Keyboard",
-    "dstore/Memory",
     "dgrid/Selection",
     "dojo/Stateful",
-    "dijit/Tooltip",
     "dstore/Trackable",
     "dgrid/OnDemandGrid"
 ], function(
     array,
     declare,
-    domConstruct,
     exports,
     getPlainValue,
     lang,
-    registry,
     translate,
     utility,
-    uuid,
+    generateRandomUuid,
     widgetBuilder,
     widgetSupport,
     ColumnResizer,
@@ -40,10 +34,8 @@ define([
     DijitRegistry,
     Form,
     Keyboard,
-    Memory,
     Selection,
     Stateful,
-    Tooltip,
     Trackable,
     OnDemandGrid
 ){
@@ -57,7 +49,7 @@ define([
     function resizeGridsKludge() {
         // Kludge for dgrid header issue
         console.log("Kludge allGrids", allGrids);
-        for (var gridIndex in allGrids) {
+        for (var gridIndex = 0; gridIndex < allGrids.length; gridIndex++) {
             console.log("resizing dgrid", gridIndex, allGrids);
             allGrids[gridIndex].resize();
             console.log("resize done");
@@ -81,7 +73,7 @@ define([
     function storeItem(id, grid, store, popupPageDefinition, itemContentPane, form, statefulItem) {
         console.log("OK clicked", statefulItem);
 
-        var uniqueItemID = uuid();
+        var uniqueItemID = generateRandomUuid();
         
         var plainValue = getPlainValue(statefulItem);
         console.log("grid plainValue", plainValue);
@@ -329,7 +321,7 @@ define([
         var selectedItemID = getSelectedItemID(grid);
         var newRow;
         
-        // TODO: Kludget going to end at moving a million times, but would fail if more than a million items
+        // TODO: Kludge of going to end at moving a million times, but would fail if more than a million items
         if (direction === "start") {
             newRow = grid.up(selectedItemID, 1000000, true);
         } else if (direction === "previous" && selectedItemID) {
