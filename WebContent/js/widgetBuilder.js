@@ -528,6 +528,7 @@ define([
                     if (recommendationsForCategory) recommendationValue = recommendationsForCategory[fieldName];
                 }
                 var fieldContentPane = new ContentPane({"content": "<i>" + recommendationValue + "</i>", "colspan": 1, "align": "right", "class": tagForRecommentationValue(recommendationNumber)});
+                // TODO: Does not work as faster alternative: var fieldContentPane = domConstruct.create("span", {innerHTML: "<i>" + recommendationValue + "</i>", "colspan": 1, "align": "right", "class": tagForRecommentationValue(recommendationNumber)});
                 table.addChild(fieldContentPane);
             }
         }
