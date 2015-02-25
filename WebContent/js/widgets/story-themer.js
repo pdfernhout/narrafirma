@@ -158,6 +158,11 @@ define([
                      if (!existingTheme) {
                          var uuid = generateRandomUuid();
                          allThemes.push({id: uuid, name: themeText});
+                         allThemes.sort(function (a, b) {
+                             if (a.name < b.name) return -1;
+                             if (a.name > b.name) return 1;
+                             return 0;
+                         });
                      }
                      // TODO: Check if theme already in list of added theme, and if so, put it at the bottom
                      var themeTextContentPane = new ContentPane({content: "<b>" + themeText + "<b>"});
