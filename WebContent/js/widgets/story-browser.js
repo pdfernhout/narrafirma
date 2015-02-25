@@ -1,6 +1,5 @@
 define([
     "dojo/_base/array",
-    "dojo/_base/connect",
     "js/domain",
     "dojo/dom-construct",
     "dojo/_base/lang",
@@ -14,12 +13,10 @@ define([
     "dijit/layout/ContentPane",
     "dstore/Memory",
     "dijit/form/MultiSelect",
-    "dijit/form/Select",
     "dojo/Stateful",
-    "dojox/layout/TableContainer",
+    "dojox/layout/TableContainer"
 ], function(
     array,
-    connect,
     domain,
     domConstruct,
     lang,
@@ -33,7 +30,6 @@ define([
     ContentPane,
     Memory,
     MultiSelect,
-    Select,
     Stateful,
     TableContainer
 ){
@@ -48,7 +44,7 @@ define([
             domConstruct.destroy(node);
         }); 
         
-        for (var i in options){
+        for (var i = 0; i < options.length; i++) {
             var c = win.doc.createElement('option');
             c.innerHTML = options[i].label;
             c.value = options[i].value;
@@ -75,7 +71,7 @@ define([
     function filterPaneQuestionChoiceChanged(filterPane, newValue) {
         // console.log("event", newValue);
         var question = null;
-        for (var index in filterPane.questions) {
+        for (var index = 0; index < filterPane.questions.length; index++) {
             var questionToCheck = filterPane.questions[index];
             if (questionToCheck.id === newValue) {
                 question = questionToCheck;
@@ -128,7 +124,7 @@ define([
         var count;
         var each;
         
-        // TODO: Maybe should not add the unaswered indicator if zero?
+        // TODO: Maybe should not add the unanswered indicator if zero?
         // Always add the unanswered indicator if not checkboxes or checkbox
         if (question.type !== "checkbox" && question.type !== "checkboxes") {
             count = totals[unansweredIndicator];
@@ -261,7 +257,7 @@ define([
         
         // TODO: What about idea of having IDs that go with eliciting questions so store reference to ID not text prompt?
         var elicitingQuestionPrompts = [];
-        for (var elicitingQuestionIndex in questionnaire.elicitingQuestions) {
+        for (var elicitingQuestionIndex = 0; elicitingQuestionIndex < questionnaire.elicitingQuestions.length; elicitingQuestionIndex++) {
             var elicitingQuestionSpecification = questionnaire.elicitingQuestions[elicitingQuestionIndex];
             elicitingQuestionPrompts.push(elicitingQuestionSpecification.text);
         }
