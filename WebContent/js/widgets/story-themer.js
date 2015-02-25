@@ -131,23 +131,23 @@ define([
                  themeListPane.placeAt(themesPane);
                  
                  var allThemes = [];
-                 var itemStore = new Memory({
+                 var allThemesStore = new Memory({
                      data: allThemes
                  });
                  
-                 var itemEntryComboBox = new ComboBox({
-                     store: itemStore,
+                 var themeEntryComboBox = new ComboBox({
+                     store: allThemesStore,
                      style: {width: "50%"}
                  });
-                 itemEntryComboBox.placeAt(themesPane);
+                 themeEntryComboBox.placeAt(themesPane);
                  
                  var addThemeButton = utility.newButton(id + "_addThemeButton", "button_addTheme", pagePane, function () {
                      console.log("Button pressed");
-                     var themeText = itemEntryComboBox.get("value");
+                     var themeText = themeEntryComboBox.get("value");
                      // TODO: Unfinished
                      console.log("themeText", themeText);
                      if (!themeText) return;
-                     itemEntryComboBox.set("value", "");
+                     themeEntryComboBox.set("value", "");
                      var existingTheme = false;
                      for (var i = 0; i < allThemes.length; i++) {
                          if (allThemes[i].name === themeText) {
