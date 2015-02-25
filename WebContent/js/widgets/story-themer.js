@@ -13,6 +13,7 @@ define([
     "./widgetSupport",
     "dojo/_base/window",
     "dijit/layout/ContentPane",
+    "dgrid/List",
     "dstore/Memory",
     "dijit/form/MultiSelect",
     "dijit/form/Select",
@@ -33,6 +34,7 @@ define([
     widgetSupport,
     win,
     ContentPane,
+    List,
     Memory,
     MultiSelect,
     Select,
@@ -127,7 +129,21 @@ define([
                      var themeText = prompt("Please enter a new theme");
                      // TODO: Unfinished
                      console.log("themeText", themeText);
-                     new ContentPane({content: "<b>" + themeText + "<b>"}).placeAt(themeListPane);
+                     var themeTextContentPane = new ContentPane({content: "<b>" + themeText + "<b>"});
+                     themeTextContentPane.placeAt(themeListPane);
+                     
+                     console.log("themeTextContentPane", themeTextContentPane);
+                     
+                     var newSpan = domConstruct.create("span",{
+                         "class" : "closeText",
+                         title : "close",
+                         innerHTML : "x",
+                         style: "padding-left:10px; color: red"
+                     });
+                     
+                     console.log("newSpan", newSpan);
+                     
+                     domConstruct.place(newSpan, themeTextContentPane.domNode, "last");
                  });
                  
                  addThemeButton.placeAt(themesPane);
