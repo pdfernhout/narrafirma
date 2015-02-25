@@ -4,6 +4,7 @@ define([
     "js/domain",
     "dojo/dom-construct",
     'dojox/html/entities',
+    "dojox/uuid/generateRandomUuid",
     "dojo/_base/lang",
     "dojo/query",
     "js/translate",
@@ -12,8 +13,10 @@ define([
     "./grid-table",
     "./widgetSupport",
     "dojo/_base/window",
+    "dijit/form/ComboBox",
     "dijit/layout/ContentPane",
     "dgrid/List",
+    "dojo/store/Memory",
     "dstore/Memory",
     "dijit/form/MultiSelect",
     "dijit/form/Select",
@@ -25,6 +28,7 @@ define([
     domain,
     domConstruct,
     entities,
+    generateRandomUuid,
     lang,
     query,
     translate,
@@ -33,9 +37,11 @@ define([
     widgetGridTable,
     widgetSupport,
     win,
+    ComboBox,
     ContentPane,
     List,
     Memory,
+    MemoryDstore,
     MultiSelect,
     Select,
     Stateful,
@@ -124,11 +130,36 @@ define([
                  var themeListPane = new ContentPane();
                  themeListPane.placeAt(themesPane);
                  
+                 var allThemes = [];
+                 var itemStore = new Memory({
+                     data: allThemes
+                 });
+                 
+                 var itemEntryComboBox = new ComboBox({
+                     store: itemStore,
+                     style: {width: "50%"}
+                 });
+                 itemEntryComboBox.placeAt(themesPane);
+                 
                  var addThemeButton = utility.newButton(id + "_addThemeButton", "button_addTheme", pagePane, function () {
                      console.log("Button pressed");
-                     var themeText = prompt("Please enter a new theme");
+                     var themeText = itemEntryComboBox.get("value");
                      // TODO: Unfinished
                      console.log("themeText", themeText);
+                     if (!themeText) return;
+                     itemEntryComboBox.set("value", "");
+                     var existingTheme = false;
+                     for (var i = 0; i < allThemes.length; i++) {
+                         if (allThemes[i].name === themeText) {
+                             existingTheme = true;
+                             break;
+                         }
+                     }
+                     if (!existingTheme) {
+                         var uuid = generateRandomUuid();
+                         allThemes.push({id: uuid, name: themeText});
+                     }
+                     // TODO: Check if theme already in list of added theme, and if so, put it at the bottom
                      var themeTextContentPane = new ContentPane({content: "<b>" + themeText + "<b>"});
                      themeTextContentPane.placeAt(themeListPane);
                      
@@ -153,7 +184,7 @@ define([
         var stories = domain.projectData.surveyResults.allStories;
 
         // Store will modify underlying array
-        var dataStore = new Memory({
+        var dataStore = new MemoryDstore({
             data: stories,
             idProperty: "_storyID"
         });
