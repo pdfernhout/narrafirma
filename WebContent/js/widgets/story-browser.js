@@ -120,7 +120,6 @@ define([
         });
         
         var count;
-        var each;
         
         // TODO: Maybe should not add the unanswered indicator if zero?
         // Always add the unanswered indicator if not checkboxes or checkbox
@@ -156,10 +155,10 @@ define([
             });
         } else if (question.type === "slider") {
             // console.log("slider", question, question.options);
-            for (each = 0; each <= 100; each++) {
-                count = totals[each];
+            for (var sliderTick = 0; sliderTick <= 100; sliderTick++) {
+                count = totals[sliderTick];
                 if (!count) count = 0;
-                options.push({label: each + " (" +  count + ")", value: each});
+                options.push({label: sliderTick + " (" +  count + ")", value: sliderTick});
             }
         } else if (question.type === "boolean") {
             // console.log("boolean", question);
@@ -338,7 +337,7 @@ define([
             var filterFunction = function (item) {
                 var match1 = isMatch(item, question1Choice, answers1Choices);
                 var match2 = isMatch(item, question2Choice, answers2Choices);
-                return match1 & match2;
+                return match1 && match2;
             };
             storyList.grid.set("collection", dataStore.filter(filterFunction));
         });
