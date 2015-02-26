@@ -1,0 +1,1558 @@
+{
+  "41f188e24571666c40e0864163364071bbb0c632cedee08bc834ee0653d5b0b7_8401": {
+    "__type": "org.pointrel.pointrel20141201.PointrelContentEnvelope",
+    "id": "747c7a3e-95f1-41b2-87cb-e6f72ab9d964",
+    "tags": [
+      "Test-PNIWorkbook-003-Surveys"
+    ],
+    "contentType": "org.workingwithstories.PNIWorkbookSurveyResult",
+    "committer": "anonymous",
+    "timestamp": "2014-12-13T04:18:29.182Z",
+    "content": {
+      "__type": "org.workingwithstories.QuestionnaireResponse",
+      "questionnaire": {
+        "__type": "org.workingwithstories.Questionnaire",
+        "title": "Roadblock unit safety survey",
+        "image": "",
+        "startText": "Please help us improve our roadblock placements so our neighborhood will be safer. We need your help!",
+        "endText": "Thanks for helping!",
+        "elicitingQuestions": [
+          {
+            "text": "(For citizens) Were you ever stopped from getting to where you needed to go by a roadblock? If so, how and when?",
+            "type": {
+              "what happened": false,
+              "directed question": true,
+              "point in time": false,
+              "event": true
+            }
+          },
+          {
+            "text": "(For citizens) If you have business, has a roadblock ever affected your business? If so, how and why?",
+            "type": {
+              "what happened": true,
+              "directed question": true,
+              "event": true
+            }
+          },
+          {
+            "text": "(For officers) Have you ever had an experience where a getaway has blitzed through a roadblock? If so, how and when? What would have stopped them?",
+            "type": {
+              "surprise": false,
+              "what happened": true,
+              "event": true,
+              "directed question": true
+            }
+          },
+          {
+            "text": "(For officers) Can you tell us about a time when a roadblock was dangerous to civilians and/or officers? If so, how and why, and what did you do about it?",
+            "type": {
+              "what happened": true,
+              "directed question": true,
+              "event": true
+            }
+          },
+          {
+            "text": "(For anyone) Did you ever have an experience with a roadblock that you will remember for a long time?",
+            "type": {
+              "extreme": true
+            }
+          },
+          {
+            "text": "(For anyone) Did a roadblock ever surprise you? How, and what happened?",
+            "type": {
+              "what happened": true,
+              "surprise": true
+            }
+          }
+        ],
+        "storyQuestions": [
+          {
+            "id": "__survey_elicitingQuestion",
+            "shortName": "elicitingQuestion",
+            "prompt": "Please choose a question you would like to respond to",
+            "type": "select",
+            "options": [
+              "(For citizens) Were you ever stopped from getting to where you needed to go by a roadblock? If so, how and when?",
+              "(For citizens) If you have business, has a roadblock ever affected your business? If so, how and why?",
+              "(For officers) Have you ever had an experience where a getaway has blitzed through a roadblock? If so, how and when? What would have stopped them?",
+              "(For officers) Can you tell us about a time when a roadblock was dangerous to civilians and/or officers? If so, how and why, and what did you do about it?",
+              "(For anyone) Did you ever have an experience with a roadblock that you will remember for a long time?",
+              "(For anyone) Did a roadblock ever surprise you? How, and what happened?"
+            ]
+          },
+          {
+            "id": "__survey_storyText",
+            "shortName": "storyText",
+            "prompt": "Please enter your response to the question above in the space below",
+            "type": "textarea",
+            "options": []
+          },
+          {
+            "id": "__survey_storyName",
+            "shortName": "storyName",
+            "prompt": "Please give your story a name",
+            "type": "text",
+            "options": []
+          },
+          {
+            "type": "select",
+            "id": "__survey_Feel about",
+            "options": [
+              "happy",
+              "sad",
+              "angry",
+              "relieved",
+              "enthused",
+              "indifferent",
+              "not sure"
+            ],
+            "shortName": "Feel about",
+            "prompt": "How do you feel about this story?"
+          },
+          {
+            "type": "slider",
+            "id": "__survey_remember",
+            "options": [
+              "tomorrow",
+              "forever"
+            ],
+            "shortName": "remember",
+            "prompt": "How long will you remember this story?"
+          },
+          {
+            "type": "slider",
+            "id": "__survey_Common or rare",
+            "options": [
+              "happens to everyone",
+              "happens to one in a million"
+            ],
+            "shortName": "Common or rare",
+            "prompt": "Based on what you know of our community, do you consider the events described in this story to be common or rare?"
+          },
+          {
+            "type": "checkboxes",
+            "id": "__survey_Groups involved",
+            "options": [
+              "speeders",
+              "getaways",
+              "officers",
+              "roadblock unit staff",
+              "civilians"
+            ],
+            "shortName": "Groups involved",
+            "prompt": "Which groups of people were involved in this story?"
+          },
+          {
+            "type": "checkboxes",
+            "id": "__survey_Groups need to hear story",
+            "options": [
+              "officers",
+              "roadblock unit staff",
+              "citizens",
+              "public officials"
+            ],
+            "shortName": "Groups need to hear story",
+            "prompt": "Which of these groups particularly need to hear this story?"
+          }
+        ],
+        "participantQuestions": [
+          {
+            "type": "select",
+            "id": "__survey_Age",
+            "options": [
+              "<25",
+              "25-34",
+              "35-44",
+              "45-64",
+              "65-74",
+              "75+"
+            ],
+            "shortName": "Age",
+            "prompt": "Which age range do you fall into?"
+          },
+          {
+            "type": "slider",
+            "id": "__survey_",
+            "options": [
+              "rules keep life working",
+              "rules are for breaking"
+            ],
+            "shortName": "",
+            "prompt": "How do you feel about rules?"
+          },
+          {
+            "type": "select",
+            "id": "__survey_Location",
+            "options": [
+              "South Park Avenue",
+              "Dallas Street",
+              "13th Parallel Boulevard",
+              "Dock Road",
+              "Other"
+            ],
+            "shortName": "Location",
+            "prompt": "Where do you live?"
+          }
+        ],
+        "questionnaireID": "questionnaire-test-003"
+      },
+      "responseID": "747c7a3e-95f1-41b2-87cb-e6f72ab9d964",
+      "stories": [
+        {
+          "__type": "org.workingwithstories.Story",
+          "_storyID": "2f00b215-fbe1-4619-845b-34b609b52631",
+          "_participantID": "b6ceec4d-71f7-4636-828f-a172a0f5be8b",
+          "__survey_Groups involved": {
+            "civilians": true,
+            "officers": true,
+            "getaways": false,
+            "speeders": true
+          },
+          "__survey_Groups need to hear story": {
+            "public officials": true,
+            "roadblock unit staff": true
+          },
+          "__survey_elicitingQuestion": "(For anyone) Did you ever have an experience with a roadblock that you will remember for a long time?",
+          "__survey_storyText": "There was a speeding drunk driver spotted at one end of town. For some reason they weren't able to set up a roadblock. The driver injured pedestrians at the other side of town before crashing into a bus. I was on the bus. I only got some bruises, but other people were injured worse. I wish they had been able to stop the driver before they hit the bus.",
+          "__survey_remember": 71,
+          "__survey_storyName": "Stop the drunks",
+          "__survey_Feel about": "sad",
+          "__survey_Common or rare": 87
+        }
+      ],
+      "participantData": {
+        "__type": "org.workingwithstories.ParticipantData",
+        "_participantID": "b6ceec4d-71f7-4636-828f-a172a0f5be8b",
+        "__survey_Age": "45-64",
+        "__survey_": 14,
+        "__survey_Location": "Dallas Street"
+      },
+      "timestampStart": "2014-12-13T04:14:02.916Z",
+      "timestampEnd": "2014-12-13T04:18:27.286Z",
+      "timeDuration_ms": 264370
+    },
+    "__sha256HashAndLength": "41f188e24571666c40e0864163364071bbb0c632cedee08bc834ee0653d5b0b7_8401"
+  },
+  "62aa6e4c7bcf532686923cbe8e6c64399eaa70e7e98668a92a8de138d9aadaa4_7812": {
+    "__type": "org.pointrel.pointrel20141201.PointrelContentEnvelope",
+    "id": "5819be7c-95c0-4f7b-8650-c4e7ce11e89b",
+    "tags": [
+      "Test-PNIWorkbook-003-Surveys"
+    ],
+    "contentType": "org.workingwithstories.PNIWorkbookSurveyResult",
+    "committer": "anonymous",
+    "timestamp": "2014-12-13T04:04:34.307Z",
+    "content": {
+      "__type": "org.workingwithstories.QuestionnaireResponse",
+      "questionnaire": {
+        "__type": "org.workingwithstories.Questionnaire",
+        "title": "Roadblock unit safety survey",
+        "image": "",
+        "startText": "Please help us improve our roadblock placements so our neighborhood will be safer. We need your help!",
+        "endText": "Thanks for helping!",
+        "elicitingQuestions": [
+          {
+            "text": "(For citizens) Were you ever stopped from getting to where you needed to go by a roadblock? If so, how and when?",
+            "type": {
+              "what happened": false,
+              "directed question": true,
+              "point in time": false,
+              "event": true
+            }
+          },
+          {
+            "text": "(For citizens) If you have business, has a roadblock ever affected your business? If so, how and why?",
+            "type": {
+              "what happened": true,
+              "directed question": true,
+              "event": true
+            }
+          },
+          {
+            "text": "(For officers) Have you ever had an experience where a getaway has blitzed through a roadblock? If so, how and when? What would have stopped them?",
+            "type": {
+              "surprise": false,
+              "what happened": true,
+              "event": true,
+              "directed question": true
+            }
+          },
+          {
+            "text": "(For officers) Can you tell us about a time when a roadblock was dangerous to civilians and/or officers? If so, how and why, and what did you do about it?",
+            "type": {
+              "what happened": true,
+              "directed question": true,
+              "event": true
+            }
+          }
+        ],
+        "storyQuestions": [
+          {
+            "id": "__survey_elicitingQuestion",
+            "shortName": "elicitingQuestion",
+            "prompt": "Please choose a question you would like to respond to",
+            "type": "select",
+            "options": [
+              "(For citizens) Were you ever stopped from getting to where you needed to go by a roadblock? If so, how and when?",
+              "(For citizens) If you have business, has a roadblock ever affected your business? If so, how and why?",
+              "(For officers) Have you ever had an experience where a getaway has blitzed through a roadblock? If so, how and when? What would have stopped them?",
+              "(For officers) Can you tell us about a time when a roadblock was dangerous to civilians and/or officers? If so, how and why, and what did you do about it?"
+            ]
+          },
+          {
+            "id": "__survey_storyText",
+            "shortName": "storyText",
+            "prompt": "Please enter your response to the question above in the space below",
+            "type": "textarea",
+            "options": []
+          },
+          {
+            "id": "__survey_storyName",
+            "shortName": "storyName",
+            "prompt": "Please give your story a name",
+            "type": "text",
+            "options": []
+          },
+          {
+            "type": "select",
+            "id": "__survey_Feel about",
+            "options": [
+              "happy",
+              "sad",
+              "angry",
+              "relieved",
+              "enthused",
+              "indifferent",
+              "not sure"
+            ],
+            "shortName": "Feel about",
+            "prompt": "How do you feel about this story?"
+          },
+          {
+            "type": "slider",
+            "id": "__survey_remember",
+            "options": [
+              "tomorrow",
+              "forever"
+            ],
+            "shortName": "remember",
+            "prompt": "How long will you remember this story?"
+          },
+          {
+            "type": "slider",
+            "id": "__survey_Common or rare",
+            "options": [
+              "happens to everyone",
+              "happens to one in a million"
+            ],
+            "shortName": "Common or rare",
+            "prompt": "Based on what you know of our community, do you consider the events described in this story to be common or rare?"
+          },
+          {
+            "type": "checkboxes",
+            "id": "__survey_Groups involved",
+            "options": [
+              "speeders",
+              "getaways",
+              "officers",
+              "roadblock unit staff",
+              "civilians"
+            ],
+            "shortName": "Groups involved",
+            "prompt": "Which groups of people were involved in this story?"
+          },
+          {
+            "type": "checkboxes",
+            "id": "__survey_Groups need to hear story",
+            "options": [
+              "officers",
+              "roadblock unit staff",
+              "citizens",
+              "public officials"
+            ],
+            "shortName": "Groups need to hear story",
+            "prompt": "Which of these groups particularly need to hear this story?"
+          }
+        ],
+        "participantQuestions": [
+          {
+            "type": "select",
+            "id": "__survey_Age",
+            "options": [
+              "<25",
+              "25-34",
+              "35-44",
+              "45-64",
+              "65-74",
+              "75+"
+            ],
+            "shortName": "Age",
+            "prompt": "Which age range do you fall into?"
+          },
+          {
+            "type": "slider",
+            "id": "__survey_",
+            "options": [
+              "rules keep life working",
+              "rules are for breaking"
+            ],
+            "shortName": "",
+            "prompt": "How do you feel about rules?"
+          },
+          {
+            "type": "select",
+            "id": "__survey_Location",
+            "options": [
+              "South Park Avenue",
+              "Dallas Street",
+              "13th Parallel Boulevard",
+              "Dock Road",
+              "Other"
+            ],
+            "shortName": "Location",
+            "prompt": "Where do you live?"
+          }
+        ],
+        "questionnaireID": "questionnaire-test-003"
+      },
+      "responseID": "5819be7c-95c0-4f7b-8650-c4e7ce11e89b",
+      "stories": [
+        {
+          "__type": "org.workingwithstories.Story",
+          "_storyID": "3f4c6881-3833-4c97-81f9-d4e25e04c000",
+          "_participantID": "d1a906a5-897d-4ce4-8dd2-8d4490e73829",
+          "__survey_Groups involved": {
+            "getaways": true,
+            "officers": true,
+            "roadblock unit staff": true
+          },
+          "__survey_Groups need to hear story": {
+            "public officials": true
+          },
+          "__survey_elicitingQuestion": "(For officers) Have you ever had an experience where a getaway has blitzed through a roadblock? If so, how and when? What would have stopped them?",
+          "__survey_storyText": "It was on the East Parallel, towards the intersection with Johnson street. A roadblock was set up in all directions, blocking the getaway from using the crucial intersection. Unfortunately, our roadblock units were not heavy enough. They smashed through the back of two Crown Victoria standard police units, easily blitzing through the roadblock. We did never did catch them. ",
+          "__survey_storyName": "Rammed their way through",
+          "__survey_Feel about": "sad",
+          "__survey_remember": 100,
+          "__survey_Common or rare": 71
+        }
+      ],
+      "participantData": {
+        "__type": "org.workingwithstories.ParticipantData",
+        "_participantID": "d1a906a5-897d-4ce4-8dd2-8d4490e73829",
+        "__survey_Age": "35-44",
+        "__survey_": 0,
+        "__survey_Location": "13th Parallel Boulevard"
+      },
+      "timestampStart": "2014-12-13T04:00:37.082Z",
+      "timestampEnd": "2014-12-13T04:04:32.039Z",
+      "timeDuration_ms": 234957
+    },
+    "__sha256HashAndLength": "62aa6e4c7bcf532686923cbe8e6c64399eaa70e7e98668a92a8de138d9aadaa4_7812"
+  },
+  "8a1f85b694c5b4eaa2ecdbbfa8291047833f39d0cd3c0334e37f292ccf09c95b_7759": {
+    "__type": "org.pointrel.pointrel20141201.PointrelContentEnvelope",
+    "id": "bafd5f3e-3667-413b-822a-b6ede7158507",
+    "tags": [
+      "Test-PNIWorkbook-003-Surveys"
+    ],
+    "contentType": "org.workingwithstories.PNIWorkbookSurveyResult",
+    "committer": "anonymous",
+    "timestamp": "2014-12-13T03:55:48.205Z",
+    "content": {
+      "__type": "org.workingwithstories.QuestionnaireResponse",
+      "questionnaire": {
+        "__type": "org.workingwithstories.Questionnaire",
+        "title": "Roadblock unit safety survey",
+        "image": "",
+        "startText": "Please help us improve our roadblock placements so our neighborhood will be safer. We need your help!",
+        "endText": "Thanks for helping!",
+        "elicitingQuestions": [
+          {
+            "text": "(For citizens) Were you ever stopped from getting to where you needed to go by a roadblock? If so, how and when?",
+            "type": {
+              "what happened": false,
+              "directed question": true,
+              "point in time": false,
+              "event": true
+            }
+          },
+          {
+            "text": "(For citizens) If you have business, has a roadblock ever affected your business? If so, how and why?",
+            "type": {
+              "what happened": true,
+              "directed question": true,
+              "event": true
+            }
+          },
+          {
+            "text": "(For officers) Have you ever had an experience where a getaway has blitzed through a roadblock? If so, how and when? What would have stopped them?",
+            "type": {
+              "surprise": false,
+              "what happened": true,
+              "event": true,
+              "directed question": true
+            }
+          },
+          {
+            "text": "(For officers) Can you tell us about a time when a roadblock was dangerous to civilians and/or officers? If so, how and why, and what did you do about it?",
+            "type": {
+              "what happened": true,
+              "directed question": true,
+              "event": true
+            }
+          }
+        ],
+        "storyQuestions": [
+          {
+            "id": "__survey_elicitingQuestion",
+            "shortName": "elicitingQuestion",
+            "prompt": "Please choose a question you would like to respond to",
+            "type": "select",
+            "options": [
+              "(For citizens) Were you ever stopped from getting to where you needed to go by a roadblock? If so, how and when?",
+              "(For citizens) If you have business, has a roadblock ever affected your business? If so, how and why?",
+              "(For officers) Have you ever had an experience where a getaway has blitzed through a roadblock? If so, how and when? What would have stopped them?",
+              "(For officers) Can you tell us about a time when a roadblock was dangerous to civilians and/or officers? If so, how and why, and what did you do about it?"
+            ]
+          },
+          {
+            "id": "__survey_storyText",
+            "shortName": "storyText",
+            "prompt": "Please enter your response to the question above in the space below",
+            "type": "textarea",
+            "options": []
+          },
+          {
+            "id": "__survey_storyName",
+            "shortName": "storyName",
+            "prompt": "Please give your story a name",
+            "type": "text",
+            "options": []
+          },
+          {
+            "type": "select",
+            "id": "__survey_Feel about",
+            "options": [
+              "happy",
+              "sad",
+              "angry",
+              "relieved",
+              "enthused",
+              "indifferent",
+              "not sure"
+            ],
+            "shortName": "Feel about",
+            "prompt": "How do you feel about this story?"
+          },
+          {
+            "type": "slider",
+            "id": "__survey_remember",
+            "options": [
+              "tomorrow",
+              "forever"
+            ],
+            "shortName": "remember",
+            "prompt": "How long will you remember this story?"
+          },
+          {
+            "type": "slider",
+            "id": "__survey_Common or rare",
+            "options": [
+              "happens to everyone",
+              "happens to one in a million"
+            ],
+            "shortName": "Common or rare",
+            "prompt": "Based on what you know of (the community or organization or topic), do you consider the events described in this story to be common or rare?"
+          },
+          {
+            "type": "checkboxes",
+            "id": "__survey_Groups involved",
+            "options": [
+              "speeders",
+              "getaways",
+              "officers",
+              "roadblock unit staff",
+              "civilians"
+            ],
+            "shortName": "Groups involved",
+            "prompt": "Which groups of people were involved in this story?"
+          },
+          {
+            "type": "checkboxes",
+            "id": "__survey_Groups need to hear story",
+            "options": [
+              "officers",
+              "roadblock unit staff",
+              "citizens",
+              "public officials"
+            ],
+            "shortName": "Groups need to hear story",
+            "prompt": "Which of these groups particularly need to hear this story?"
+          }
+        ],
+        "participantQuestions": [
+          {
+            "type": "select",
+            "id": "__survey_Age",
+            "options": [
+              "<25",
+              "25-34",
+              "35-44",
+              "45-64",
+              "65-74",
+              "75+"
+            ],
+            "shortName": "Age",
+            "prompt": "Which age range do you fall into?"
+          },
+          {
+            "type": "slider",
+            "id": "__survey_",
+            "options": [
+              "rules keep life working",
+              "rules are for breaking"
+            ],
+            "shortName": "",
+            "prompt": "How do you feel about rules?"
+          },
+          {
+            "type": "select",
+            "id": "__survey_Location",
+            "options": [
+              "South Park Avenue",
+              "Dallas Street",
+              "13th Parallel Boulevard",
+              "Dock Road",
+              "Other"
+            ],
+            "shortName": "Location",
+            "prompt": "Where do you live?"
+          }
+        ],
+        "questionnaireID": "questionnaire-test-003"
+      },
+      "responseID": "bafd5f3e-3667-413b-822a-b6ede7158507",
+      "stories": [
+        {
+          "__type": "org.workingwithstories.Story",
+          "_storyID": "0e6fe423-4bef-4178-8295-aae972a17ba0",
+          "_participantID": "7d53e70f-c1e1-4031-8032-a67027018c40",
+          "__survey_Groups involved": {
+            "roadblock unit staff": true,
+            "civilians": true
+          },
+          "__survey_Groups need to hear story": {
+            "public officials": true
+          },
+          "__survey_Common or rare": 15,
+          "__survey_elicitingQuestion": "(For citizens) Were you ever stopped from getting to where you needed to go by a roadblock? If so, how and when?",
+          "__survey_storyText": "Once, while driving down Dock Street to work, I heard loud sirens and saw flashing lights up ahead. I drove up to see what was the issue. I found there was a roadblock in my way. I had to take a ten minute detour around, and I got lost. I was an hour late for work. When I came home from work, the roadblock was gone, and they had caught the suspect. ",
+          "__survey_storyName": "Roadblock caused me to be late for work",
+          "__survey_Feel about": "angry",
+          "__survey_remember": 47
+        }
+      ],
+      "participantData": {
+        "__type": "org.workingwithstories.ParticipantData",
+        "_participantID": "7d53e70f-c1e1-4031-8032-a67027018c40",
+        "__survey_Age": "25-34",
+        "__survey_": 5,
+        "__survey_Location": "Dallas Street"
+      },
+      "timestampStart": "2014-12-13T03:51:27.985Z",
+      "timestampEnd": "2014-12-13T03:55:46.334Z",
+      "timeDuration_ms": 258349
+    },
+    "__sha256HashAndLength": "8a1f85b694c5b4eaa2ecdbbfa8291047833f39d0cd3c0334e37f292ccf09c95b_7759"
+  },
+  "99dcf280280bbab230e532db2b4a7dcf8dbcada403efb9d2886938b474a902ca_8708": {
+    "__type": "org.pointrel.pointrel20141201.PointrelContentEnvelope",
+    "id": "fc401688-59b3-400d-8828-b20a282a1b76",
+    "tags": [
+      "Test-PNIWorkbook-003-Surveys"
+    ],
+    "contentType": "org.workingwithstories.PNIWorkbookSurveyResult",
+    "committer": "anonymous",
+    "timestamp": "2014-12-13T04:24:40.873Z",
+    "content": {
+      "__type": "org.workingwithstories.QuestionnaireResponse",
+      "questionnaire": {
+        "__type": "org.workingwithstories.Questionnaire",
+        "title": "Roadblock unit safety survey",
+        "image": "",
+        "startText": "Please help us improve our roadblock placements so our neighborhood will be safer. We need your help!",
+        "endText": "Thanks for helping!",
+        "elicitingQuestions": [
+          {
+            "text": "(For citizens) Were you ever stopped from getting to where you needed to go by a roadblock? If so, how and when?",
+            "type": {
+              "what happened": false,
+              "directed question": true,
+              "point in time": false,
+              "event": true
+            }
+          },
+          {
+            "text": "(For citizens) If you have business, has a roadblock ever affected your business? If so, how and why?",
+            "type": {
+              "what happened": true,
+              "directed question": true,
+              "event": true
+            }
+          },
+          {
+            "text": "(For officers) Have you ever had an experience where a getaway has blitzed through a roadblock? If so, how and when? What would have stopped them?",
+            "type": {
+              "surprise": false,
+              "what happened": true,
+              "event": true,
+              "directed question": true
+            }
+          },
+          {
+            "text": "(For officers) Can you tell us about a time when a roadblock was dangerous to civilians and/or officers? If so, how and why, and what did you do about it?",
+            "type": {
+              "what happened": true,
+              "directed question": true,
+              "event": true
+            }
+          },
+          {
+            "text": "(For anyone) Did you ever have an experience with a roadblock that you will remember for a long time?",
+            "type": {
+              "extreme": true
+            }
+          },
+          {
+            "text": "(For anyone) Did a roadblock ever surprise you? How, and what happened?",
+            "type": {
+              "what happened": true,
+              "surprise": true
+            }
+          }
+        ],
+        "storyQuestions": [
+          {
+            "id": "__survey_elicitingQuestion",
+            "shortName": "elicitingQuestion",
+            "prompt": "Please choose a question you would like to respond to",
+            "type": "select",
+            "options": [
+              "(For citizens) Were you ever stopped from getting to where you needed to go by a roadblock? If so, how and when?",
+              "(For citizens) If you have business, has a roadblock ever affected your business? If so, how and why?",
+              "(For officers) Have you ever had an experience where a getaway has blitzed through a roadblock? If so, how and when? What would have stopped them?",
+              "(For officers) Can you tell us about a time when a roadblock was dangerous to civilians and/or officers? If so, how and why, and what did you do about it?",
+              "(For anyone) Did you ever have an experience with a roadblock that you will remember for a long time?",
+              "(For anyone) Did a roadblock ever surprise you? How, and what happened?"
+            ]
+          },
+          {
+            "id": "__survey_storyText",
+            "shortName": "storyText",
+            "prompt": "Please enter your response to the question above in the space below",
+            "type": "textarea",
+            "options": []
+          },
+          {
+            "id": "__survey_storyName",
+            "shortName": "storyName",
+            "prompt": "Please give your story a name",
+            "type": "text",
+            "options": []
+          },
+          {
+            "type": "select",
+            "id": "__survey_Feel about",
+            "options": [
+              "happy",
+              "sad",
+              "angry",
+              "relieved",
+              "enthused",
+              "indifferent",
+              "not sure"
+            ],
+            "shortName": "Feel about",
+            "prompt": "How do you feel about this story?"
+          },
+          {
+            "type": "slider",
+            "id": "__survey_remember",
+            "options": [
+              "tomorrow",
+              "forever"
+            ],
+            "shortName": "remember",
+            "prompt": "How long will you remember this story?"
+          },
+          {
+            "type": "slider",
+            "id": "__survey_Common or rare",
+            "options": [
+              "happens to everyone",
+              "happens to one in a million"
+            ],
+            "shortName": "Common or rare",
+            "prompt": "Based on what you know of our community, do you consider the events described in this story to be common or rare?"
+          },
+          {
+            "type": "checkboxes",
+            "id": "__survey_Groups involved",
+            "options": [
+              "speeders",
+              "getaways",
+              "officers",
+              "roadblock unit staff",
+              "civilians"
+            ],
+            "shortName": "Groups involved",
+            "prompt": "Which groups of people were involved in this story?"
+          },
+          {
+            "type": "checkboxes",
+            "id": "__survey_Groups need to hear story",
+            "options": [
+              "officers",
+              "roadblock unit staff",
+              "citizens",
+              "public officials"
+            ],
+            "shortName": "Groups need to hear story",
+            "prompt": "Which of these groups particularly need to hear this story?"
+          }
+        ],
+        "participantQuestions": [
+          {
+            "type": "select",
+            "id": "__survey_Age",
+            "options": [
+              "<25",
+              "25-34",
+              "35-44",
+              "45-64",
+              "65-74",
+              "75+"
+            ],
+            "shortName": "Age",
+            "prompt": "Which age range do you fall into?"
+          },
+          {
+            "type": "slider",
+            "id": "__survey_",
+            "options": [
+              "rules keep life working",
+              "rules are for breaking"
+            ],
+            "shortName": "",
+            "prompt": "How do you feel about rules?"
+          },
+          {
+            "type": "select",
+            "id": "__survey_Location",
+            "options": [
+              "South Park Avenue",
+              "Dallas Street",
+              "13th Parallel Boulevard",
+              "Dock Road",
+              "Other"
+            ],
+            "shortName": "Location",
+            "prompt": "Where do you live?"
+          }
+        ],
+        "questionnaireID": "questionnaire-test-003"
+      },
+      "responseID": "fc401688-59b3-400d-8828-b20a282a1b76",
+      "stories": [
+        {
+          "__type": "org.workingwithstories.Story",
+          "_storyID": "f9676ff6-2641-4b18-8b2b-ec00f2f52c83",
+          "_participantID": "1ea507d5-6ab8-45db-8043-2b3e4c24a8c2",
+          "__survey_Groups involved": {
+            "getaways": true,
+            "officers": true,
+            "roadblock unit staff": true
+          },
+          "__survey_Groups need to hear story": {
+            "citizens": true,
+            "public officials": true
+          },
+          "__survey_elicitingQuestion": "(For anyone) Did a roadblock ever surprise you? How, and what happened?",
+          "__survey_storyText": "The story about the roadblock on Cliff Avenue. What happened was, there was a getaway in their very high ride height Ford F150 Raptor. The roadblock was comprised of three Corvettes. There was a sharp corner, then a roadblock next to the cliff. The idea was to make the getaway slow down to a crawl or a stop. The cliff was only 15 feet deep, or maybe 20. The getaway cut the corner hard and plowed their left front wheel right over the windshield of one of the Corvettes, flying off the vehicle and launching it over the guard rail. The vehicle landed and its suspension was destroyed. We then caught the suspect. I did not think this would work, and I was very surprised. The suspect did not sustain any major injuries.",
+          "__survey_storyName": "Over the cliff!",
+          "__survey_Feel about": "relieved",
+          "__survey_remember": 100,
+          "__survey_Common or rare": 100
+        }
+      ],
+      "participantData": {
+        "__type": "org.workingwithstories.ParticipantData",
+        "_participantID": "1ea507d5-6ab8-45db-8043-2b3e4c24a8c2",
+        "__survey_Age": "25-34",
+        "__survey_": 42,
+        "__survey_Location": "Other"
+      },
+      "timestampStart": "2014-12-13T04:18:32.391Z",
+      "timestampEnd": "2014-12-13T04:24:38.834Z",
+      "timeDuration_ms": 366443
+    },
+    "__sha256HashAndLength": "99dcf280280bbab230e532db2b4a7dcf8dbcada403efb9d2886938b474a902ca_8708"
+  },
+  "a9b8af3ce4aa098fb558e2e928e46d4fe66596a7ae93d293c714b326fb8ccd13_3402": {
+    "__type": "org.pointrel.pointrel20141201.PointrelContentEnvelope",
+    "id": "8a29c2cd-88a5-4054-8d98-58225d4ffb76",
+    "tags": [
+      "Test-PNIWorkbook-003-Surveys"
+    ],
+    "contentType": "org.workingwithstories.PNIWorkbookSurveyResult",
+    "committer": "anonymous",
+    "timestamp": "2014-12-10T14:58:57.574Z",
+    "content": {
+      "__type": "org.workingwithstories.QuestionnaireResponse",
+      "questionnaire": {
+        "__type": "org.workingwithstories.Questionnaire",
+        "title": "NarraCoach author survey",
+        "image": "",
+        "startText": "Please help us improve NarraCoach.",
+        "endText": "Thanks for helping!",
+        "elicitingQuestions": [
+          {
+            "text": "What happened when you first used NarraCoach?",
+            "type": {
+              "what happened": true
+            }
+          },
+          {
+            "text": "What surprised you about NarraCoach?",
+            "type": {
+              "surprise": true
+            }
+          }
+        ],
+        "storyQuestions": [
+          {
+            "id": "__survey_elicitingQuestion",
+            "shortName": "elicitingQuestion",
+            "prompt": "Please choose a question you would like to respond to",
+            "type": "select",
+            "options": [
+              "What happened when you first used NarraCoach?",
+              "What surprised you about NarraCoach?"
+            ]
+          },
+          {
+            "id": "__survey_storyText",
+            "shortName": "storyText",
+            "prompt": "Please enter your response to the question above in the space below",
+            "type": "textarea",
+            "options": []
+          },
+          {
+            "id": "__survey_storyName",
+            "shortName": "storyName",
+            "prompt": "Please give your story a name",
+            "type": "text",
+            "options": []
+          },
+          {
+            "type": "slider",
+            "id": "__survey_remember",
+            "options": [
+              "tomorrow",
+              "forever"
+            ],
+            "shortName": "remember",
+            "prompt": "How long will you remember this story?"
+          }
+        ],
+        "participantQuestions": [
+          {
+            "type": "select",
+            "id": "__survey_Age",
+            "options": [
+              "<25;25-34;35-44;45-64;65-74;75+"
+            ],
+            "shortName": "Age",
+            "prompt": "Which age range do you fall into?"
+          },
+          {
+            "type": "select",
+            "id": "__survey_Rent or own",
+            "options": [
+              "rent;own"
+            ],
+            "shortName": "Rent or own",
+            "prompt": "Do you rent or own your home?"
+          }
+        ],
+        "questionnaireID": "questionnaire-test-003"
+      },
+      "responseID": "8a29c2cd-88a5-4054-8d98-58225d4ffb76",
+      "stories": [
+        {
+          "__type": "org.workingwithstories.Story",
+          "_storyID": "9bccf599-9a04-4d93-8cd1-cbd6d971426e",
+          "_participantID": "4aa73d52-8c53-482d-8f1f-ed0cacb7f4b0",
+          "__survey_elicitingQuestion": "What happened when you first used NarraCoach?",
+          "__survey_storyText": "It worked!",
+          "__survey_storyName": "Worked",
+          "__survey_remember": 25
+        }
+      ],
+      "participantData": {
+        "__type": "org.workingwithstories.ParticipantData",
+        "_participantID": "4aa73d52-8c53-482d-8f1f-ed0cacb7f4b0"
+      },
+      "timestampStart": "2014-12-10T14:55:58.636Z",
+      "timestampEnd": "2014-12-10T14:58:55.009Z",
+      "timeDuration_ms": 176373
+    },
+    "__sha256HashAndLength": "a9b8af3ce4aa098fb558e2e928e46d4fe66596a7ae93d293c714b326fb8ccd13_3402"
+  },
+  "b8a5dcb416600170e844220b8c1052b06d3eefb149b29a194efb4d6e8d90b966_7675": {
+    "__type": "org.pointrel.pointrel20141201.PointrelContentEnvelope",
+    "id": "74abd37c-b6b3-4513-8f5a-1c17ea0af6a8",
+    "tags": [
+      "Test-PNIWorkbook-003-Surveys"
+    ],
+    "contentType": "org.workingwithstories.PNIWorkbookSurveyResult",
+    "committer": "anonymous",
+    "timestamp": "2014-12-13T03:59:21.372Z",
+    "content": {
+      "__type": "org.workingwithstories.QuestionnaireResponse",
+      "questionnaire": {
+        "__type": "org.workingwithstories.Questionnaire",
+        "title": "Roadblock unit safety survey",
+        "image": "",
+        "startText": "Please help us improve our roadblock placements so our neighborhood will be safer. We need your help!",
+        "endText": "Thanks for helping!",
+        "elicitingQuestions": [
+          {
+            "text": "(For citizens) Were you ever stopped from getting to where you needed to go by a roadblock? If so, how and when?",
+            "type": {
+              "what happened": false,
+              "directed question": true,
+              "point in time": false,
+              "event": true
+            }
+          },
+          {
+            "text": "(For citizens) If you have business, has a roadblock ever affected your business? If so, how and why?",
+            "type": {
+              "what happened": true,
+              "directed question": true,
+              "event": true
+            }
+          },
+          {
+            "text": "(For officers) Have you ever had an experience where a getaway has blitzed through a roadblock? If so, how and when? What would have stopped them?",
+            "type": {
+              "surprise": false,
+              "what happened": true,
+              "event": true,
+              "directed question": true
+            }
+          },
+          {
+            "text": "(For officers) Can you tell us about a time when a roadblock was dangerous to civilians and/or officers? If so, how and why, and what did you do about it?",
+            "type": {
+              "what happened": true,
+              "directed question": true,
+              "event": true
+            }
+          }
+        ],
+        "storyQuestions": [
+          {
+            "id": "__survey_elicitingQuestion",
+            "shortName": "elicitingQuestion",
+            "prompt": "Please choose a question you would like to respond to",
+            "type": "select",
+            "options": [
+              "(For citizens) Were you ever stopped from getting to where you needed to go by a roadblock? If so, how and when?",
+              "(For citizens) If you have business, has a roadblock ever affected your business? If so, how and why?",
+              "(For officers) Have you ever had an experience where a getaway has blitzed through a roadblock? If so, how and when? What would have stopped them?",
+              "(For officers) Can you tell us about a time when a roadblock was dangerous to civilians and/or officers? If so, how and why, and what did you do about it?"
+            ]
+          },
+          {
+            "id": "__survey_storyText",
+            "shortName": "storyText",
+            "prompt": "Please enter your response to the question above in the space below",
+            "type": "textarea",
+            "options": []
+          },
+          {
+            "id": "__survey_storyName",
+            "shortName": "storyName",
+            "prompt": "Please give your story a name",
+            "type": "text",
+            "options": []
+          },
+          {
+            "type": "select",
+            "id": "__survey_Feel about",
+            "options": [
+              "happy",
+              "sad",
+              "angry",
+              "relieved",
+              "enthused",
+              "indifferent",
+              "not sure"
+            ],
+            "shortName": "Feel about",
+            "prompt": "How do you feel about this story?"
+          },
+          {
+            "type": "slider",
+            "id": "__survey_remember",
+            "options": [
+              "tomorrow",
+              "forever"
+            ],
+            "shortName": "remember",
+            "prompt": "How long will you remember this story?"
+          },
+          {
+            "type": "slider",
+            "id": "__survey_Common or rare",
+            "options": [
+              "happens to everyone",
+              "happens to one in a million"
+            ],
+            "shortName": "Common or rare",
+            "prompt": "Based on what you know of (the community or organization or topic), do you consider the events described in this story to be common or rare?"
+          },
+          {
+            "type": "checkboxes",
+            "id": "__survey_Groups involved",
+            "options": [
+              "speeders",
+              "getaways",
+              "officers",
+              "roadblock unit staff",
+              "civilians"
+            ],
+            "shortName": "Groups involved",
+            "prompt": "Which groups of people were involved in this story?"
+          },
+          {
+            "type": "checkboxes",
+            "id": "__survey_Groups need to hear story",
+            "options": [
+              "officers",
+              "roadblock unit staff",
+              "citizens",
+              "public officials"
+            ],
+            "shortName": "Groups need to hear story",
+            "prompt": "Which of these groups particularly need to hear this story?"
+          }
+        ],
+        "participantQuestions": [
+          {
+            "type": "select",
+            "id": "__survey_Age",
+            "options": [
+              "<25",
+              "25-34",
+              "35-44",
+              "45-64",
+              "65-74",
+              "75+"
+            ],
+            "shortName": "Age",
+            "prompt": "Which age range do you fall into?"
+          },
+          {
+            "type": "slider",
+            "id": "__survey_",
+            "options": [
+              "rules keep life working",
+              "rules are for breaking"
+            ],
+            "shortName": "",
+            "prompt": "How do you feel about rules?"
+          },
+          {
+            "type": "select",
+            "id": "__survey_Location",
+            "options": [
+              "South Park Avenue",
+              "Dallas Street",
+              "13th Parallel Boulevard",
+              "Dock Road",
+              "Other"
+            ],
+            "shortName": "Location",
+            "prompt": "Where do you live?"
+          }
+        ],
+        "questionnaireID": "questionnaire-test-003"
+      },
+      "responseID": "74abd37c-b6b3-4513-8f5a-1c17ea0af6a8",
+      "stories": [
+        {
+          "__type": "org.workingwithstories.Story",
+          "_storyID": "26e58849-4c26-4840-8f3e-3f216db98237",
+          "_participantID": "bafcbac0-febd-43e3-84bf-d1742c663cd2",
+          "__survey_Groups involved": {
+            "roadblock unit staff": true,
+            "civilians": true
+          },
+          "__survey_Groups need to hear story": {
+            "roadblock unit staff": true
+          },
+          "__survey_elicitingQuestion": "(For citizens) If you have business, has a roadblock ever affected your business? If so, how and why?",
+          "__survey_storyText": "My business is Greg's Tuna and Salmon. I am located at 331 Dock Street. They placed a roadblock directly in front of my store for the peak traffic hours, cutting the day's visitors by 75 percent. This is very annoying and unpleasant when it happens. Thank you for considering my opinion. ",
+          "__survey_storyName": "Business was slowed by roadblock",
+          "__survey_Feel about": "angry",
+          "__survey_remember": 87,
+          "__survey_Common or rare": 51
+        }
+      ],
+      "participantData": {
+        "__type": "org.workingwithstories.ParticipantData",
+        "_participantID": "bafcbac0-febd-43e3-84bf-d1742c663cd2",
+        "__survey_Age": "45-64",
+        "__survey_": 21,
+        "__survey_Location": "Other"
+      },
+      "timestampStart": "2014-12-13T03:56:40.599Z",
+      "timestampEnd": "2014-12-13T03:59:19.495Z",
+      "timeDuration_ms": 158896
+    },
+    "__sha256HashAndLength": "b8a5dcb416600170e844220b8c1052b06d3eefb149b29a194efb4d6e8d90b966_7675"
+  },
+  "ce8f9a3771697adc546a9d60ff04ee5d58ad1b0448551d3bf7e60d34f9505206_3405": {
+    "__type": "org.pointrel.pointrel20141201.PointrelContentEnvelope",
+    "id": "5fd48c9e-23cb-4987-87a3-37b113bdbe34",
+    "tags": [
+      "Test-PNIWorkbook-003-Surveys"
+    ],
+    "contentType": "org.workingwithstories.PNIWorkbookSurveyResult",
+    "committer": "anonymous",
+    "timestamp": "2014-12-10T16:32:57.661Z",
+    "content": {
+      "__type": "org.workingwithstories.QuestionnaireResponse",
+      "questionnaire": {
+        "__type": "org.workingwithstories.Questionnaire",
+        "title": "NarraCoach author survey",
+        "image": "",
+        "startText": "Please help us improve NarraCoach.",
+        "endText": "Thanks for helping!",
+        "elicitingQuestions": [
+          {
+            "text": "What happened when you first used NarraCoach?",
+            "type": {
+              "what happened": true
+            }
+          },
+          {
+            "text": "What surprised you about NarraCoach?",
+            "type": {
+              "surprise": true
+            }
+          }
+        ],
+        "storyQuestions": [
+          {
+            "id": "__survey_elicitingQuestion",
+            "shortName": "elicitingQuestion",
+            "prompt": "Please choose a question you would like to respond to",
+            "type": "select",
+            "options": [
+              "What happened when you first used NarraCoach?",
+              "What surprised you about NarraCoach?"
+            ]
+          },
+          {
+            "id": "__survey_storyText",
+            "shortName": "storyText",
+            "prompt": "Please enter your response to the question above in the space below",
+            "type": "textarea",
+            "options": []
+          },
+          {
+            "id": "__survey_storyName",
+            "shortName": "storyName",
+            "prompt": "Please give your story a name",
+            "type": "text",
+            "options": []
+          },
+          {
+            "type": "slider",
+            "id": "__survey_remember",
+            "options": [
+              "tomorrow",
+              "forever"
+            ],
+            "shortName": "remember",
+            "prompt": "How long will you remember this story?"
+          }
+        ],
+        "participantQuestions": [
+          {
+            "type": "select",
+            "id": "__survey_Age",
+            "options": [
+              "<25;25-34;35-44;45-64;65-74;75+"
+            ],
+            "shortName": "Age",
+            "prompt": "Which age range do you fall into?"
+          },
+          {
+            "type": "select",
+            "id": "__survey_Rent or own",
+            "options": [
+              "rent;own"
+            ],
+            "shortName": "Rent or own",
+            "prompt": "Do you rent or own your home?"
+          }
+        ],
+        "questionnaireID": "questionnaire-test-003"
+      },
+      "responseID": "5fd48c9e-23cb-4987-87a3-37b113bdbe34",
+      "stories": [
+        {
+          "__type": "org.workingwithstories.Story",
+          "_storyID": "c485af9d-796b-40b0-8556-9b40e170ecd1",
+          "_participantID": "2aa962be-0e8a-4b39-842f-a21472dc2cd7",
+          "__survey_elicitingQuestion": "What surprised you about NarraCoach?",
+          "__survey_storyText": "It is super cool!!!",
+          "__survey_remember": 62,
+          "__survey_storyName": "Super cool"
+        }
+      ],
+      "participantData": {
+        "__type": "org.workingwithstories.ParticipantData",
+        "_participantID": "2aa962be-0e8a-4b39-842f-a21472dc2cd7"
+      },
+      "timestampStart": "2014-12-10T16:32:08.077Z",
+      "timestampEnd": "2014-12-10T16:32:55.662Z",
+      "timeDuration_ms": 47585
+    },
+    "__sha256HashAndLength": "ce8f9a3771697adc546a9d60ff04ee5d58ad1b0448551d3bf7e60d34f9505206_3405"
+  },
+  "e9c3d1e932bccdf1b7bfec24a07e5bc48b7381e7d99fae134d3089d117774fec_7800": {
+    "__type": "org.pointrel.pointrel20141201.PointrelContentEnvelope",
+    "id": "52f11f62-6421-47bf-8ea1-9f0b6decaf0f",
+    "tags": [
+      "Test-PNIWorkbook-003-Surveys"
+    ],
+    "contentType": "org.workingwithstories.PNIWorkbookSurveyResult",
+    "committer": "anonymous",
+    "timestamp": "2014-12-13T04:08:29.734Z",
+    "content": {
+      "__type": "org.workingwithstories.QuestionnaireResponse",
+      "questionnaire": {
+        "__type": "org.workingwithstories.Questionnaire",
+        "title": "Roadblock unit safety survey",
+        "image": "",
+        "startText": "Please help us improve our roadblock placements so our neighborhood will be safer. We need your help!",
+        "endText": "Thanks for helping!",
+        "elicitingQuestions": [
+          {
+            "text": "(For citizens) Were you ever stopped from getting to where you needed to go by a roadblock? If so, how and when?",
+            "type": {
+              "what happened": false,
+              "directed question": true,
+              "point in time": false,
+              "event": true
+            }
+          },
+          {
+            "text": "(For citizens) If you have business, has a roadblock ever affected your business? If so, how and why?",
+            "type": {
+              "what happened": true,
+              "directed question": true,
+              "event": true
+            }
+          },
+          {
+            "text": "(For officers) Have you ever had an experience where a getaway has blitzed through a roadblock? If so, how and when? What would have stopped them?",
+            "type": {
+              "surprise": false,
+              "what happened": true,
+              "event": true,
+              "directed question": true
+            }
+          },
+          {
+            "text": "(For officers) Can you tell us about a time when a roadblock was dangerous to civilians and/or officers? If so, how and why, and what did you do about it?",
+            "type": {
+              "what happened": true,
+              "directed question": true,
+              "event": true
+            }
+          }
+        ],
+        "storyQuestions": [
+          {
+            "id": "__survey_elicitingQuestion",
+            "shortName": "elicitingQuestion",
+            "prompt": "Please choose a question you would like to respond to",
+            "type": "select",
+            "options": [
+              "(For citizens) Were you ever stopped from getting to where you needed to go by a roadblock? If so, how and when?",
+              "(For citizens) If you have business, has a roadblock ever affected your business? If so, how and why?",
+              "(For officers) Have you ever had an experience where a getaway has blitzed through a roadblock? If so, how and when? What would have stopped them?",
+              "(For officers) Can you tell us about a time when a roadblock was dangerous to civilians and/or officers? If so, how and why, and what did you do about it?"
+            ]
+          },
+          {
+            "id": "__survey_storyText",
+            "shortName": "storyText",
+            "prompt": "Please enter your response to the question above in the space below",
+            "type": "textarea",
+            "options": []
+          },
+          {
+            "id": "__survey_storyName",
+            "shortName": "storyName",
+            "prompt": "Please give your story a name",
+            "type": "text",
+            "options": []
+          },
+          {
+            "type": "select",
+            "id": "__survey_Feel about",
+            "options": [
+              "happy",
+              "sad",
+              "angry",
+              "relieved",
+              "enthused",
+              "indifferent",
+              "not sure"
+            ],
+            "shortName": "Feel about",
+            "prompt": "How do you feel about this story?"
+          },
+          {
+            "type": "slider",
+            "id": "__survey_remember",
+            "options": [
+              "tomorrow",
+              "forever"
+            ],
+            "shortName": "remember",
+            "prompt": "How long will you remember this story?"
+          },
+          {
+            "type": "slider",
+            "id": "__survey_Common or rare",
+            "options": [
+              "happens to everyone",
+              "happens to one in a million"
+            ],
+            "shortName": "Common or rare",
+            "prompt": "Based on what you know of our community, do you consider the events described in this story to be common or rare?"
+          },
+          {
+            "type": "checkboxes",
+            "id": "__survey_Groups involved",
+            "options": [
+              "speeders",
+              "getaways",
+              "officers",
+              "roadblock unit staff",
+              "civilians"
+            ],
+            "shortName": "Groups involved",
+            "prompt": "Which groups of people were involved in this story?"
+          },
+          {
+            "type": "checkboxes",
+            "id": "__survey_Groups need to hear story",
+            "options": [
+              "officers",
+              "roadblock unit staff",
+              "citizens",
+              "public officials"
+            ],
+            "shortName": "Groups need to hear story",
+            "prompt": "Which of these groups particularly need to hear this story?"
+          }
+        ],
+        "participantQuestions": [
+          {
+            "type": "select",
+            "id": "__survey_Age",
+            "options": [
+              "<25",
+              "25-34",
+              "35-44",
+              "45-64",
+              "65-74",
+              "75+"
+            ],
+            "shortName": "Age",
+            "prompt": "Which age range do you fall into?"
+          },
+          {
+            "type": "slider",
+            "id": "__survey_",
+            "options": [
+              "rules keep life working",
+              "rules are for breaking"
+            ],
+            "shortName": "",
+            "prompt": "How do you feel about rules?"
+          },
+          {
+            "type": "select",
+            "id": "__survey_Location",
+            "options": [
+              "South Park Avenue",
+              "Dallas Street",
+              "13th Parallel Boulevard",
+              "Dock Road",
+              "Other"
+            ],
+            "shortName": "Location",
+            "prompt": "Where do you live?"
+          }
+        ],
+        "questionnaireID": "questionnaire-test-003"
+      },
+      "responseID": "52f11f62-6421-47bf-8ea1-9f0b6decaf0f",
+      "stories": [
+        {
+          "__type": "org.workingwithstories.Story",
+          "_storyID": "08fcea9e-73ec-4d15-82ed-c1f6571f4682",
+          "_participantID": "276c96de-0292-43ce-8250-e4999107e6f3",
+          "__survey_Groups involved": {
+            "getaways": true,
+            "officers": true,
+            "roadblock unit staff": true,
+            "civilians": true
+          },
+          "__survey_Groups need to hear story": {
+            "roadblock unit staff": true,
+            "public officials": true
+          },
+          "__survey_elicitingQuestion": "(For officers) Can you tell us about a time when a roadblock was dangerous to civilians and/or officers? If so, how and why, and what did you do about it?",
+          "__survey_storyText": "First of all, there was a roadblock on Port. It was completely ineffective. The getaway braked hard, causing our pursuit units to skid ahead of them, punching a clean hole through our roadblock. One of the police skidded dangerously near a shop. Luckily nobody was hurt, but it was a close call.",
+          "__survey_remember": 100,
+          "__survey_storyName": "Police units tricked into opening a gap",
+          "__survey_Feel about": "not sure",
+          "__survey_Common or rare": 76
+        }
+      ],
+      "participantData": {
+        "__type": "org.workingwithstories.ParticipantData",
+        "_participantID": "276c96de-0292-43ce-8250-e4999107e6f3",
+        "__survey_Age": "45-64",
+        "__survey_Location": "South Park Avenue"
+      },
+      "timestampStart": "2014-12-13T04:04:43.671Z",
+      "timestampEnd": "2014-12-13T04:08:27.730Z",
+      "timeDuration_ms": 224059
+    },
+    "__sha256HashAndLength": "e9c3d1e932bccdf1b7bfec24a07e5bc48b7381e7d99fae134d3089d117774fec_7800"
+  }
+}
