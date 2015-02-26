@@ -27,7 +27,7 @@ define([
     // story themer support
     
     // TODO: Fix so the filters get updated as the story questions get changed
-    function insertStoryThemer(pagePane, model, id, pageDefinitions) {
+    function insertStoryThemer(widgetBuilder, pagePane, model, id, pageDefinitions) {
         console.log("insertStoryThemer start", id);
         
         // TODO: Fix this show also handles participant questions somehow
@@ -114,7 +114,7 @@ define([
                          {id: "name", shortName: "Theme", prompt: "Theme", type: "text", options:[]}
                      ]
                  };
-                 var themeList = widgetGridTable.insertGridTableBasic(themesPane, "storyThemeList", storyThemesStore, popupPageDefinition2, configuration2);
+                 var themeList = widgetGridTable.insertGridTableBasic(widgetBuilder, themesPane, "storyThemeList", storyThemesStore, popupPageDefinition2, configuration2);
                  console.log("themeList", themeList);
                  
                  var allThemes = [];
@@ -178,7 +178,7 @@ define([
         
         // Only allow view button for stories
         var configuration = {viewButton: true, navigationButtons: true, includeAllFields: ["__survey_storyName", "__survey_storyText"]};
-        var storyList = widgetGridTable.insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, configuration);
+        var storyList = widgetGridTable.insertGridTableBasic(widgetBuilder, pagePane, id, dataStore, popupPageDefinition, configuration);
         storyList.grid.set("selectionMode", "single");
         
         console.log("insertStoryThemer finished");

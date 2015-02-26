@@ -217,7 +217,7 @@ define([
         });
         
         var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
-        return GridTable.insertGridTableBasic(questionContentPane, id, dataStore, popupPageDefinition, configuration);
+        return GridTable.insertGridTableBasic(exportedFunctions, questionContentPane, id, dataStore, popupPageDefinition, configuration);
     }
     
     function add_select(contentPane, model, id, questionOptions, addNoSelectionOption) {
@@ -534,7 +534,7 @@ define([
     function add_storyThemer(contentPane, model, id, options) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
-        var storyThemer = StoryThemer.insertStoryThemer(questionContentPane, model, id, domain.pageDefinitions);
+        var storyThemer = StoryThemer.insertStoryThemer(exportedFunctions, questionContentPane, model, id, domain.pageDefinitions);
         questionContentPane.resize();
         return storyThemer;
     }
@@ -756,7 +756,7 @@ define([
         }
         
         var configuration = {viewButton: true, includeAllFields: false, showTooltip: true, customButton: {id: "useTemplate", translationID: "button_UseTemplate", callback: useButtonClicked}};
-        return GridTable.insertGridTableBasic(questionContentPane, id, dataStore, popupPageDefinition, configuration);
+        return GridTable.insertGridTableBasic(exportedFunctions, questionContentPane, id, dataStore, popupPageDefinition, configuration);
     }
     
     function add_accumulatedItemsGrid(contentPane, model, id, options) {
@@ -784,7 +784,7 @@ define([
     function add_storyBrowser(contentPane, model, id, options) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
-        var storyBrowser = StoryBrowser.insertStoryBrowser(questionContentPane, model, id, domain.pageDefinitions);
+        var storyBrowser = StoryBrowser.insertStoryBrowser(exportedFunctions, questionContentPane, model, id, domain.pageDefinitions);
         questionContentPane.resize();
         return storyBrowser;
     }

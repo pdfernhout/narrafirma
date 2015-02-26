@@ -7,7 +7,6 @@ define([
     "js/translate",
     "js/utility",
     "dojox/uuid/generateRandomUuid",
-    "js/widgetBuilder",
     "./widgetSupport",
     "dgrid/extensions/ColumnResizer",
     "dijit/layout/ContentPane",
@@ -27,7 +26,6 @@ define([
     translate,
     utility,
     generateRandomUuid,
-    widgetBuilder,
     widgetSupport,
     ColumnResizer,
     ContentPane,
@@ -117,7 +115,7 @@ define([
             
         clearGridsKludge();
 
-        popupPageDefinition.buildPage(widgetBuilder, form, statefulItem);
+        popupPageDefinition.buildPage(grid.widgetBuilder, form, statefulItem);
         
         var borderColor = "green";
         if (formType === "view") {
@@ -388,10 +386,11 @@ define([
         if (buttons.navigateNextButton) buttons.navigateNextButton.set("disabled", atEnd || !selectedItemID || grid.selectedCount !== 1);
         if (buttons.navigateEndButton) buttons.navigateEndButton.set("disabled", atEnd);
     }
-    
+
+    // Passing in widgetBuilder rather than import it to avoid AMD cyclic dependency
     // Possible configuration options
     // var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, navigationButtons: true, includeAllFields: false};
-    function insertGridTableBasic(pagePane, id, originalDataStore, popupPageDefinition, configuration) {
+    function insertGridTableBasic(widgetBuilder, pagePane, id, originalDataStore, popupPageDefinition, configuration) {
         // Grid with list of objects
         console.log("insertGridTableBasic", id, originalDataStore);
         
@@ -443,6 +442,8 @@ define([
             // Preserve the selections despite refresh needed when move items up or down
             deselectOnRefresh: false
         });
+
+        grid.widgetBuilder = widgetBuilder;
         
         if (!pagePane.addChild) {
             alert("TROUBLE -- see log");

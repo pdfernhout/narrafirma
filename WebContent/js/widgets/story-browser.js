@@ -6,7 +6,6 @@ define([
     "dojo/query",
     "js/translate",
     "js/utility",
-    "js/widgetBuilder",
     "./grid-table",
     "./widgetSupport",
     "dojo/_base/window",
@@ -23,7 +22,6 @@ define([
     query,
     translate,
     utility,
-    widgetBuilder,
     widgetGridTable,
     widgetSupport,
     win,
@@ -248,7 +246,7 @@ define([
     }
     
     // TODO: Fix so the filters get updated as the story questions get changed
-    function insertStoryBrowser(pagePane, model, id, pageDefinitions) {
+    function insertStoryBrowser(widgetBuilder, pagePane, model, id, pageDefinitions) {
         console.log("insertStoryBrowser start", id);
         
         // TODO: Fix this show also handles participant questions somehow
@@ -349,7 +347,7 @@ define([
         
         // Only allow view button for stories
         var configuration = {viewButton: true, includeAllFields: true};
-        storyList = widgetGridTable.insertGridTableBasic(pagePane, id, dataStore, popupPageDefinition, configuration);
+        storyList = widgetGridTable.insertGridTableBasic(widgetBuilder, pagePane, id, dataStore, popupPageDefinition, configuration);
         
         console.log("insertStoryBrowser finished");
     }
