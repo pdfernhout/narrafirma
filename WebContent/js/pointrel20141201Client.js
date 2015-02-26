@@ -1,16 +1,12 @@
 define([
     "dojo/promise/all",
     "dojo/Deferred",
-    "dojox/encoding/digests/_base",
     "dojox/uuid/generateRandomUuid",
-    "dojox/encoding/digests/SHA256",
     "dojo/request/xhr"
 ], function(
     all,
     Deferred,
-    digests,
     generateRandomUuid,
-    SHA256,
     xhr
 ) {
     "use strict";
@@ -26,7 +22,7 @@ define([
      * 
      * Generally, the envelope should have an "id" that specifies what document this data is a version of. Most documents might only have one version,
      * but some might have several. Envelopes all have a timestamp of when they were created, which is used to determine which one is the "latest" for
-     * some ID or tag. They should also have a contentType which suggests how to interperet the JSON data (like a class name).
+     * some ID or tag. They should also have a contentType which suggests how to interpret the JSON data (like a class name).
      * Other information can be defined as well.
      * 
      * One special type of metadata are "triples" which each consist of three fields (a, b, c) stored in an array.
@@ -51,7 +47,7 @@ define([
      * So, while the fields are arbitrary length strings, ideally they should be short strings that specify UUIDs
      * or they should be semantically meaningful relationship names or tags.
      * Large amounts of content, such as a source code file should be stored in the content part of a document.
-     * Storing content seperately reduces the memory and CPU overhead of indexing.
+     * Storing content separately reduces the memory and CPU overhead of indexing.
      * Triples provide a general purpose way to index associated content in the document.
      * For example, a document could have every word or meaningful word-stem indexed using triples for quick lookup.
      * However, triples can also be used stand-alone without specifying any document content.
@@ -67,8 +63,8 @@ define([
      * or the tags (using queryByTag) or by the triple search API with queryByTriple.
      * To use the queryByTriple API, fill in two of the first three a, b, c arguments with strings and the other with null.
      * To get all the matches, use "all" as the fourth field. Otherwise use "latest".
-     * You can omit the fourth parameter if it is "latest", and also then omit the third paramater if it is null.
-     * However, you still need the callback paramater at the end in those cases with omitted paramaters.
+     * You can omit the fourth parameter if it is "latest", and also then omit the third parameter if it is null.
+     * However, you still need the callback parameter at the end in those cases with omitted parameters.
      * For example: queryByTriple("a", "b", callback) gets the latest "c" match.
      * As another example: queryByTriple(null, "b", "c", "all", callback) gets all the items which have a "b" value of "c".
      * These two queries are the most commonly used, along with getting all values for a "c" where that represents a set.
@@ -77,7 +73,7 @@ define([
      * the latest envelope for the ID or tag and then retrieve it.
      * 
      * The convenience methods "loadEnvelopesForID" and "loadEnvelopesForTag" with load all envelopes with the ID or tag.
-     * Those two methods take a referenceToEnvelopeMap argument which intially should be an empty dictionary.
+     * Those two methods take a referenceToEnvelopeMap argument which initially should be an empty dictionary.
      * This will be filled in with the envelopes retrieved from the server.
      * Previously retrieved items (stored in the referenceToEnvelopeMap) will not be retrieved again.
      * They should not be changing, although in theory they could be manually deleted on the server.
@@ -140,7 +136,7 @@ define([
         var envelope = {
             __type: "org.pointrel.pointrel20141201.PointrelContentEnvelope",
             // Envelope version will be filled in by the server, but could in theory be specified if the server understands it
-            __envelopeVersion: true,
+            __envelopeVersion: true
             // TODO: Maybe store a UUID?
         };
         
@@ -420,7 +416,7 @@ define([
             var indexEntries = queryResult.indexEntries;
             
             var promises = [];
-            for (var index in indexEntries) {
+            for (var index = 0; index <= indexEntries.length; index++) {
                 var indexEntry = indexEntries[index];
                 if (!referenceToEnvelopeMap[indexEntry.sha256AndLength]) {
                     if (!indexEntry.sha256AndLength) {
@@ -457,7 +453,7 @@ define([
             var indexEntries = queryResult.indexEntries;
             
             var latestEntry = null;
-            for (var index in indexEntries) {
+            for (var index = 0; index < indexEntries.length; index++) {
                 var indexEntry = indexEntries[index];
                 if (!latestEntry || latestEntry.timestamp <= indexEntry.timestamp) {
                     latestEntry = indexEntry;
@@ -499,7 +495,7 @@ define([
             var documentEntries = queryResult.documentEntries;
             
             var promises = [];
-            for (var index in documentEntries) {
+            for (var index = 0; index < documentEntries.length; index++) {
                 var documentEntry = documentEntries[index];
                 if (!referenceToEnvelopeMap[documentEntry.sha256AndLength]) {
                     if (!documentEntry.sha256AndLength) {
@@ -533,7 +529,7 @@ define([
             var documentEntries = queryResult.documentEntries;
             
             var latestEntry = null;
-            for (var index in documentEntries) {
+            for (var index = 0; index < documentEntries.length; index++) {
                 var documentEntry = documentEntries[index];
                 if (!latestEntry || latestEntry.timestamp <= documentEntry.timestamp) {
                     latestEntry = documentEntry;
