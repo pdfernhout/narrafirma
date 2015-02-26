@@ -856,7 +856,7 @@ define([
         var page = domain.pageDefinitions[pageID];
         if (!page) {
             console.log("ERROR: page not found for: ", pageID);
-            return "ERROR: page not found for: " + pageID + " at: " + Date();
+            return "ERROR: page not found for: " + pageID + " at: " + new Date();
         }
         // console.log("found page", page);
         var questionAskedCount = 0;
