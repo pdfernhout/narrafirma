@@ -28,7 +28,7 @@
 
 * Event (emotion) | Did any particular event or incident cause you to feel ___ during ____? [event_causedToFeel]
 * Event (emotion) | Tell me about a time when you felt ____. What happened? [event_feltSomething]
-* Event (emotion) | Can you recall a situation when you felt that ____ was _____? [event_feltSomethignWasSomething]
+* Event (emotion) | Can you recall a situation when you felt that ____ was _____? [event_feltSomethingWasSomething]
 
 * Event (topic) | When you consider the (motto, saying, proverb) ____, was there a moment during ____ when you felt that this (motto, saying, proverb) was especially ____? [event_proverb]
 * Event (topic) | Could you tell us about a situation in which ___ was ____? [event_situationInWhich]
@@ -48,7 +48,7 @@
 
 * Surprise | Can you remember a time when you were surprised at how ____? [surprise_timeWhenSurprised]
 * Surprise | As you remember ____, can you think of a time when ___ surprised you? [surprise_somethingSurprisedYou]
-* Surprise | Can you tell us about a surprising ____ during ____? [surprise_aSuprisingSomething]
+* Surprise | Can you tell us about a surprising ____ during ____? [surprise_aSurprisingSomething]
 
 * Change | Was there ever a moment during ___ when ___ changed? What happened? [change_momentOfChange]
 * Change | Did you ever feel a change in ____? What caused you to feel that a change was taking place? [change_feelAChange]
@@ -132,7 +132,7 @@
 
 * Feelings about other views | Would you like (other people, another group) in (the community or organization) to say that this story turned out well? [feelingsAboutOtherViewsOnValue|"Feelings about other views on value"|slider|I would like them to say that it turned out horribly;I would like them to say that it turned out perfectly]
 * Feelings about other views | Would you like (other people, another group) in (the community or organization) to say that the events in this story were common? [feelingsAboutOtherViewsOnCommonality|"Feelings about other views on commonality"|slider|I would like them to say it was common;I would like them to say it was rare]
-* Feelings about other views | What would you like (other people, another group) in (the community or organization) to say about why this story was told? [feelingsaboutOtherViewsOnWhyTold|"Feelings about other views on why told"|select|to educate;to explain;to inform;to persuade;to reminisce;to complain;to entertain;not sure]
+* Feelings about other views | What would you like (other people, another group) in (the community or organization) to say about why this story was told? [feelingsAboutOtherViewsOnWhyTold|"Feelings about other views on why told"|select|to educate;to explain;to inform;to persuade;to reminisce;to complain;to entertain;not sure]
 * Feelings about other views | How long would you like (other people, another group) in (the community or organization) to remember this story? [feelingsAboutOtherViewsOnMemorability|"Feelings about other views on memorability"|slider|I would like them have forgotten it already;I would like them to remember it all of their lives]
 
 * Project topics | Would you say that the people in this story ____? [topicWouldYouSay|textarea]
@@ -162,7 +162,7 @@
 * Do you rent or own your home? [rentOrOwn|"Rent or own"|select|rent;own]
 * What is your income level? [incomeLevel|select|put in your own levels here]
 * How much education have you completed? [educationLevel|select|high school;college;post-graduate;trade;other]
-* What is your marital staus? [maritalStatus|select|single;married;widowed;divorced;other]
+* What is your marital status? [maritalStatus|select|single;married;widowed;divorced;other]
 * How many children do you have? [children|select|none;1;2;3;4;5;6;7;8;9;10]
 * What is your profession? [profession|select|put in your own choices here]
 * Where do you live? [location|select|put in your own choices here]

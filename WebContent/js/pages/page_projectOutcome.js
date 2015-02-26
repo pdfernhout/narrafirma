@@ -20,7 +20,7 @@ define([], function() {
         {"id":"outcomes_crisisPointsWereFound", "type":"select", "isInReport":true, "isGridColumn":true, "options":["not at all", "somewhat", "definitely", "mixed"]},
         {"id":"outcomes_issuesWereBeyondWords", "type":"select", "isInReport":true, "isGridColumn":true, "options":["not at all", "somewhat", "definitely", "mixed"]},
         {"id":"outcomes_learningHeader", "type":"header", "isInReport":false, "isGridColumn":false},
-        {"id":"outcomes_peopleLarnedAboutTopic", "type":"select", "isInReport":true, "isGridColumn":true, "options":["never", "occasionally", "sometimes", "often", "mixed"]},
+        {"id":"outcomes_peopleLearnedAboutTopic", "type":"select", "isInReport":true, "isGridColumn":true, "options":["never", "occasionally", "sometimes", "often", "mixed"]},
         {"id":"outcomes_issuesNewMembersStruggleWith", "type":"select", "isInReport":true, "isGridColumn":true, "options":["not at all", "somewhat", "definitely", "mixed"]},
         {"id":"outcomes_foundInfoWithoutUnderstanding", "type":"select", "isInReport":true, "isGridColumn":true, "options":["not at all", "somewhat", "definitely", "mixed"]},
         {"id":"outcomes_foundOverConfidence", "type":"select", "isInReport":true, "isGridColumn":true, "options":["not at all", "somewhat", "definitely", "mixed"]},

@@ -582,13 +582,13 @@ define([
         });
         var chartDiv = domConstruct.empty("chartDiv");
         
-        // TODO: Fix this so it also handles particcipant questions somehwo
+        // TODO: Fix this so it also handles participant questions somehow
         var surveyQuestions = domain.getCurrentQuestionnaire().storyQuestions;
         
         var xAxisQuestion = questionForID(surveyQuestions, xAxisQuestionID);
         var yAxisQuestion = questionForID(surveyQuestions, yAxisQuestionID);
         
-        // Ensule xAxisQuestion is always defined
+        // Ensure xAxisQuestion is always defined
         if (!xAxisQuestion) {
             xAxisQuestion = yAxisQuestion;
             yAxisQuestion = null;

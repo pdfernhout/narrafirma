@@ -250,7 +250,7 @@ require([
        page.buildPage(widgetBuilder, pagePane, domain.projectData.projectAnswers);
        
        if (!page.isHeader) {
-           // Uses special domain dictionary to store translations synthesized for each indidivual widget
+           // Uses special domain dictionary to store translations synthesized for each individual widget
            var options = ["intentionally skipped", "partially done", "completely finished"];
            var statusEntryID = id + "_pageStatus";
            translate.extraTranslations[statusEntryID + "::prompt"] =  translate("dashboard_status_entry::prompt") + " ";
@@ -361,7 +361,7 @@ require([
         console.log("parsed projectDefinitionText", updatedProjectAnswers);
         
         // TODO: Translate
-        widgetSupport.confirm("This will overwrite your current project design.\nAny active survey and any previously stored survey results will remain as-is,\nhowever any new project design might have a different survey design.\nAre you sure you want to replace the curent project definition?", function() {
+        widgetSupport.confirm("This will overwrite your current project design.\nAny active survey and any previously stored survey results will remain as-is,\nhowever any new project design might have a different survey design.\nAre you sure you want to replace the current project definition?", function() {
 
             // TODO: Not sure what to do for what is essentially a new currentProjectVersionReference defined here
             switchToLoadedProjectData(null, updatedProjectAnswers, {__sha256HashAndLength: null});

@@ -117,7 +117,7 @@ define([
         console.log("loadLatestQuestionnaireVersion");
         pointrel20141201Client.loadLatestEnvelopeForTag(questionnaireID, function(error, envelope) {
             if (error) {
-                if (error === "No items found for tag") error = "No stored questionanaire could be loaded for " + questionnaireID + " -- have any versions been saved?";
+                if (error === "No items found for tag") error = "No stored questionnaire could be loaded for " + questionnaireID + " -- have any versions been saved?";
                 return callback(error);
             }
             callback(null, envelope.content, envelope);           
@@ -145,7 +145,7 @@ define([
         console.log("loadLatestQuestionnaireVersion");
         pointrel20141201Client.loadLatestEnvelopeForTag("questionnaireStatus::" + questionnaireID, function(error, envelope) {
             if (error) {
-                if (error === "No items found for tag") error = "No stored questionanaire status could be loaded for " + questionnaireID + " -- have any versions been saved?";
+                if (error === "No items found for tag") error = "No stored questionnaire status could be loaded for " + questionnaireID + " -- have any versions been saved?";
                 return callback(error);
             }
             callback(null, envelope.content, envelope);           

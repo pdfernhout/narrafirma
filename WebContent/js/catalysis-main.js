@@ -79,7 +79,7 @@ require([
     
     function countsForFieldChoices(stories, field1, field2) {
         console.log("countsForFieldChoices", stories, field1, field2);
-        // TODO: Need to add in fields that were not selected with a zero count, using definition from questionairre
+        // TODO: Need to add in fields that were not selected with a zero count, using definition from questionnaire
         var counts = {};
         for (var i = 0; i < stories.length; i++) {
             var value1 = stories[i][field1];

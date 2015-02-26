@@ -496,7 +496,7 @@ var other = [
         "outcomes_peopleWantedToKeepExploring": null,
         "outcomes_crisisPointsWereFound": null,
         "outcomes_issuesWereBeyondWords": null,
-        "outcomes_peopleLarnedAboutTopic": null,
+        "outcomes_peopleLearnedAboutTopic": null,
         "outcomes_issuesNewMembersStruggleWith": null,
         "outcomes_foundInfoWithoutUnderstanding": null,
         "outcomes_foundOverConfidence": null,

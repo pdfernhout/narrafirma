@@ -496,7 +496,7 @@ define([
         
         var borderColor = item.borderColor;
         if (!borderColor) borderColor = defaultBorderColor;
-        // Ensure body color is transluscent
+        // Ensure body color is translucent
         bodyColor = Color.fromString(bodyColor).toRgba();
         bodyColor[3] = 0.5;
         

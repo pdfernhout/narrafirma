@@ -492,7 +492,7 @@ define([
             recommendationsValues.push(null);
         }
         
-        function tagForRecommentationValue(recommendation) {
+        function tagForRecommendationValue(recommendation) {
             if (recommendation === 1) {
                 return "recommendationLow";
             } else if (recommendation === 2) {
@@ -500,7 +500,7 @@ define([
             } else if (recommendation === 3) {
                 return "recommendationHigh";
             }
-            console.log("ERROR: Unexpected recommentadtion value", recommendation);
+            console.log("ERROR: Unexpected recommendation value", recommendation);
             return "";
         }
         
@@ -527,8 +527,8 @@ define([
                     var recommendationsForCategory = recommendationsForAnswer[categoryName];
                     if (recommendationsForCategory) recommendationValue = recommendationsForCategory[fieldName];
                 }
-                var fieldContentPane = new ContentPane({"content": "<i>" + recommendationValue + "</i>", "colspan": 1, "align": "right", "class": tagForRecommentationValue(recommendationNumber)});
-                // TODO: Does not work as faster alternative: var fieldContentPane = domConstruct.create("span", {innerHTML: "<i>" + recommendationValue + "</i>", "colspan": 1, "align": "right", "class": tagForRecommentationValue(recommendationNumber)});
+                var fieldContentPane = new ContentPane({"content": "<i>" + recommendationValue + "</i>", "colspan": 1, "align": "right", "class": tagForRecommendationValue(recommendationNumber)});
+                // TODO: Does not work as faster alternative: var fieldContentPane = domConstruct.create("span", {innerHTML: "<i>" + recommendationValue + "</i>", "colspan": 1, "align": "right", "class": tagForRecommendationValue(recommendationNumber)});
                 table.addChild(fieldContentPane);
             }
         }
@@ -540,7 +540,7 @@ define([
         for (var i = 0; i < recommendationsValues.length; i++) {
             var recommendation = recommendationsValues[i];
             // console.log("recommendation", i, recommendation);
-            var tag = tagForRecommentationValue(recommendation);
+            var tag = tagForRecommendationValue(recommendation);
             var widgets = query(".wwsRecommendationsTable-valueCell-" + i, table.domNode);
             if (widgets && widgets[0] && tag) widgets[0].className += " " + tag;
         }
@@ -1004,7 +1004,7 @@ define([
         return addFunction(contentPane, model, id, options);
     }
     
-    // Returns disctionary mapping from question IDs to widgets
+    // Returns dictionary mapping from question IDs to widgets
     function addQuestions(questions, contentPane, model) {
         console.log("addQuestions", questions);
         var widgets = {};

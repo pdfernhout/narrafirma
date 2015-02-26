@@ -144,7 +144,7 @@ define(function() {
                 "type": "label"
             },
             {
-                "id": "event_feltSomethignWasSomething",
+                "id": "event_feltSomethingWasSomething",
                 "text": "Can you recall a situation when you felt that ____ was _____?",
                 "category": "Event (emotion)",
                 "type": "label"
@@ -234,7 +234,7 @@ define(function() {
                 "type": "label"
             },
             {
-                "id": "surprise_aSuprisingSomething",
+                "id": "surprise_aSurprisingSomething",
                 "text": "Can you tell us about a surprising ____ during ____?",
                 "category": "Surprise",
                 "type": "label"
@@ -725,7 +725,7 @@ define(function() {
                 "options": "I would like them to say it was common;I would like them to say it was rare"
             },
             {
-                "id": "feelingsaboutOtherViewsOnWhyTold",
+                "id": "feelingsAboutOtherViewsOnWhyTold",
                 "text": "What would you like (other people, another group) in (the community or organization) to say about why this story was told?",
                 "shortName": "Feelings about other views on why told",
                 "category": "Feelings about other views",
@@ -904,7 +904,7 @@ define(function() {
             },
             {
                 "id": "maritalStatus",
-                "text": "What is your marital staus?",
+                "text": "What is your marital status?",
                 "category": null,
                 "type": "select",
                 "options": "single;married;widowed;divorced;other"

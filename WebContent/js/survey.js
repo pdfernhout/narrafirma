@@ -54,7 +54,7 @@ define([
             // TODO: Translate
             // TODO: Cancel clearing of survey if it can't be sent
             if (error) {
-                alert("Please try to submit the survery result later;\nCould not write new survey result to server:\n" + error);
+                alert("Please try to submit the survey result later;\nCould not write new survey result to server:\n" + error);
             } else {
                 alert("Survey successfully sent to server!");
                 if (wizardPane) wizardPane.forward();
@@ -209,7 +209,7 @@ define([
         
         var allStoryQuestions = initialStoryQuestions.concat(questionnaire.storyQuestions);
         
-        questionnaire.participantQuestions.unshift({id: "__survey_" + "prticipantHeader", shortName: "participantHeader", prompt: "About you", type: "header", options: []});
+        questionnaire.participantQuestions.unshift({id: "__survey_" + "participantHeader", shortName: "participantHeader", prompt: "About you", type: "header", options: []});
         
         // TODO: Handle other implicit questions
         translate.addExtraTranslationsForQuestions(startQuestions);

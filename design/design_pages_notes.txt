@@ -844,7 +844,7 @@ you can describe them here.
 
 * Name | Please give this construction a name. [sensemakingSessionRecord_construction_name|text]
 * Type | What type of construction is it? [sensemakingSessionRecord_construction_type|select|timeline;landscape;story elements;composite story;other]
-* Description | Please decribe the construction (or include a description given by participants). [sensemakingSessionRecord_construction_description|textarea]
+* Description | Please describe the construction (or include a description given by participants). [sensemakingSessionRecord_construction_description|textarea]
 Your description can include links to images or documents.
 
 ## Read sensemaking report [page_readSensemakingReport]
@@ -894,7 +894,7 @@ the participant groups you set up in the project planning phase. Please enter on
 * Beyond words | Did you find any issues for this group that were beyond words, that no amount of discussion could resolve? [outcomes_issuesWereBeyondWords|select|not at all;somewhat;definitely;mixed]
 
 * Learning [outcomes_learningHeader|header]
-* Learned about topic | Did these people say that they learned a lot about the topic by participating in the project? [outcomes_peopleLarnedAboutTopic|select|never;occasionally;sometimes;often;mixed]
+* Learned about topic | Did these people say that they learned a lot about the topic by participating in the project? [outcomes_peopleLearnedAboutTopic|select|never;occasionally;sometimes;often;mixed]
 * New members needed help | Did you notice that new members of the community or organization were having a harder time making sense of things? [outcomes_issuesNewMembersStruggleWith|select|not at all;somewhat;definitely;mixed]
 * Had more information than understanding | Were there any issues that these people found difficult to understand, even though abundant information was available? [outcomes_foundInfoWithoutUnderstanding|select|not at all;somewhat;definitely;mixed]
 * Had more confidence than skill | Did you discover any areas in which these people had more confidence than skill? [outcomes_foundOverConfidence|select|not at all;somewhat;definitely;mixed]
@@ -993,7 +993,7 @@ the project to someone, and help people with requests about the project.
 * Type | What type of feedback is this? [feedback_type|select|a story;a reference to something that came up in the project;a wish about the future;an opinion;a complaint;an action;other]
 * Source | Who said or did this? [feedback_who|text]
 * Prompt | What did you say or do (if anything) that led to this feedback? [feedback_prompt|text]
-* Responpse | What did you say or do (if anything) in response? [feedback_response|text]
+* Response | What did you say or do (if anything) in response? [feedback_response|text]
 * Notes | Please enter any other notes you have about this piece of feedback. [feedback_notes|textarea]
 
 ## Reflect on the project [page_reflectOnProject]
@@ -1005,7 +1005,7 @@ the project to someone, and help people with requests about the project.
 * About project stories | What did you learn about project planning? [project_reflect_planning|textarea]
 * About own PNI | How has this project changed your own version of PNI? [project_reflect_ownPNI|textarea]
 * About community | What have you learned about your community or organization because of this project? [project_reflect_community|textarea]
-* About strenths | What did this project teach you about your personal strengths and weaknesses? [project_reflect_personalStrengths|textarea]
+* About strengths | What did this project teach you about your personal strengths and weaknesses? [project_reflect_personalStrengths|textarea]
 * About team | What did this project teach you about your team? [project_reflect_teamStrengths|textarea]
 * Ideas | Describe any new ideas that came up during this project. [project_reflect_newIdeas|textarea]
 * Notes | Enter any additional notes you'd like to remember about the project. [project_reflect_notes|textarea]

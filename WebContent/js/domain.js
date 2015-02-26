@@ -174,21 +174,21 @@ define([
         // console.log("projectData.exportedSurveyQuestions", projectData.exportedSurveyQuestions);
             
         questionnaire.elicitingQuestions = [];
-        for (var elicitinQuestionIndex in elicitingQuestions) {
-            var storySolicitationOuestionText = elicitingQuestions[elicitinQuestionIndex].elicitingQuestion_text;
-            // TODO: var storySolicitationOuestionShortName = elicitingQuestions[elicitinQuestionIndex].elicitingQuestion_shortName;
-            var storySolicitationOuestionType = elicitingQuestions[elicitinQuestionIndex].elicitingQuestion_type;
+        for (var elicitingQuestionIndex in elicitingQuestions) {
+            var storySolicitationQuestionText = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_text;
+            // TODO: var storySolicitationQuestionShortName = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_shortName;
+            var storySolicitationQuestionType = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_type;
             var elicitingQuestionInfo = {
-                text: storySolicitationOuestionText,
-                // TODO: id: storySolicitationOuestionShortName,
-                type: storySolicitationOuestionType
+                text: storySolicitationQuestionText,
+                // TODO: id: storySolicitationQuestionShortName,
+                type: storySolicitationQuestionType
             };
             questionnaire.elicitingQuestions.push(elicitingQuestionInfo);
         }
         
         /*
         if (startText) questions.push({storyQuestion_shortName: "startText", storyQuestion_text: startText, storyQuestion_type: "label"});
-        questions.push({storyQuestion_shortName: "story", storyQuestion_text: storySolicitationOuestion, storyQuestion_type: "textarea"});
+        questions.push({storyQuestion_shortName: "story", storyQuestion_text: storySolicitationQuestion, storyQuestion_type: "textarea"});
         questions.push({storyQuestion_shortName: "name", storyQuestion_text: "Please give your story a name", storyQuestion_type: "text"});
         if (storyQuestionList) questions = questions.concat(storyQuestionList);
         if (participantQuestionList) questions = questions.concat(participantQuestionList);
@@ -205,10 +205,10 @@ define([
     }
     
     function ensureAtLeastOneElicitingQuestion(questionnaire) {
-        // TODO: How to prevent this potential problem of no eliciting questions during questionaiire deisgn in GUI?
+        // TODO: How to prevent this potential problem of no eliciting questions during questionnaire design in GUI?
         if (questionnaire.elicitingQuestions.length === 0) {
             // TODO: Translate
-            var message = "No elicting questions were defined! Adding one with 'What happened?' for testing.";
+            var message = "No eliciting questions were defined! Adding one with 'What happened?' for testing.";
             console.log("PROBLEM", message);
             // alert(message);
             console.log("Adding an eliciting question for testing", message);
@@ -275,7 +275,7 @@ define([
                 utility.toast("" + newEnvelopeCount + " new survey result(s) were found.");
             }
             
-            // TODO: Only for debugging; need to think through the seperating of stories and general survey data
+            // TODO: Only for debugging; need to think through the separating of stories and general survey data
             // Preserve existing array -- just replace its contents
             var allStories = projectData.surveyResults.allStories;
             while (allStories.length > 0) {
@@ -300,7 +300,7 @@ define([
     }
     
     function getParticipantDataForParticipantID(participantID) {
-        // TODO: Maybe optimize as a lookup map maintained when read in survery results
+        // TODO: Maybe optimize as a lookup map maintained when read in survey results
         for (var responseIndex in projectData.surveyResults.allCompletedSurveys) {
             var response = projectData.surveyResults.allCompletedSurveys[responseIndex];
             if (response.participantData._participantID === participantID) {
