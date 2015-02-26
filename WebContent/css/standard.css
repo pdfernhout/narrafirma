@@ -79,28 +79,28 @@ form {
 }
 
 .leftButtonImage {
-    // display: block;
+    /* display: block; */
     background-image: url(../images/ionicicons/arrow-left-a.svg);
     background-repeat: no-repeat;
     background-size: auto 100%;
     width: 20px;
     height: 20px;
-    // text-align: left;
+    /* text-align: left; */
 }
 
 .rightButtonImage {
-    // display: block;
+    /* display: block; */
     background-image: url(../images/ionicicons/arrow-right-a.svg);
     background-repeat: no-repeat;
     background-size: auto 100%;
     width: 20px;
     height: 20px;
-    // text-align: right;
+    /* text-align: right; */
     /* Next line may not work correctly in IE6 & IE7? Also does not work right in safari 5.1 with button a bit high. https://bugs.dojotoolkit.org/ticket/5170 */
     float: right;
 }
  
-// Suggestion from: https://bugs.dojotoolkit.org/ticket/17044 and: http://jsfiddle.net/ondrek/3FjLJ/9/
+/* Suggestion from: https://bugs.dojotoolkit.org/ticket/17044 and: http://jsfiddle.net/ondrek/3FjLJ/9/ */
 .dijitTextBox .dijitInputInner { 
     white-space: nowrap; 
     text-overflow: ellipsis;
