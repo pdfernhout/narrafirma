@@ -1,7 +1,6 @@
 define([
     "dojo/_base/array",
     "dojox/mvc/at",
-    "dojo/_base/lang",
     "../translate",
     "dijit/form/Button",
     "dijit/ConfirmDialog",
@@ -13,7 +12,6 @@ define([
 ], function(
     array,
     at,
-    lang,
     translate,
     Button,
     ConfirmDialog,

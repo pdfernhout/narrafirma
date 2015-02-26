@@ -2,29 +2,20 @@
 
 define([
     "js/pages/allPagesSummary",
-    "dojo/_base/array",
     "exports",
     "dojo/_base/lang",
     "js/storage",
-    "dojo/string",
     "js/translate",
     "js/utility",
-    "dojox/uuid/generateRandomUuid",
-    "dojo/Stateful",
-    "dojox/mvc/StatefulArray"
+    "dojo/Stateful"
 ], function(
     allPagesSummary,
-    array,
     exports,
     lang,
     storage,
-    string,
     translate,
     utility,
-    uuid,
-    Stateful,
-    StatefulArray
-) {
+    Stateful) {
     "use strict";
 
     var pageDefinitions = {};

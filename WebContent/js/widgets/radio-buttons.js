@@ -2,9 +2,7 @@ define([
     "dojo/_base/array",
     "dojo/_base/declare",
     "dojo/dom-construct",
-    "dojo/_base/lang",
     "dojo/on",
-    "js/translate",
     "./widgetSupport",
     "dijit/form/RadioButton",
     "dijit/_WidgetBase"
@@ -12,9 +10,7 @@ define([
     array,
     declare,
     domConstruct,
-    lang,
     on,
-    translate,
     widgetSupport,
     RadioButton,
     _WidgetBase

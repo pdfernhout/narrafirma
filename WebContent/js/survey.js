@@ -1,9 +1,7 @@
 define([
     "dojo/_base/array",
-    "dojo/dom-construct",
     'dojo/dom-style',
     "dojox/mvc/getPlainValue",
-    "dojo/_base/lang",
     "js/storage",
     "js/translate",
     "js/utility",
@@ -11,23 +9,19 @@ define([
     "js/widgetBuilder",
     "dijit/layout/ContentPane",
     "dijit/Dialog",
-    "dijit/form/Form",
     "dijit/layout/StackContainer",
     "dojo/Stateful"
 ], function(
     array,
-    domConstruct,
     domStyle,
     getPlainValue,
-    lang,
     storage,
     translate,
     utility,
-    uuid,
+    generateRandomUuid,
     widgetBuilder,
     ContentPane,
     Dialog,
-    Form,
     StackContainer,
     Stateful
 ){
@@ -109,7 +103,7 @@ define([
         
         var storyQuestionsModel = new Stateful();
         storyQuestionsModel.set("__type", "org.workingwithstories.Story");
-        storyQuestionsModel.set("_storyID", uuid());
+        storyQuestionsModel.set("_storyID", generateRandomUuid());
         storyQuestionsModel.set("_participantID", participantID);
         if (singlePrompt) storyQuestionsModel.set("elicitingQuestion", singlePrompt);
         surveyResultsWithModels.stories.push(storyQuestionsModel);
@@ -225,13 +219,13 @@ define([
         var surveyResultsWithModels = {
             __type: "org.workingwithstories.QuestionnaireResponse",
             questionnaire: questionnaire,
-            responseID: uuid(), 
+            responseID: generateRandomUuid(),
             stories: [],
             participantData: null,
             timestampStart: "" + timestampStart.toISOString()
         };
         
-        var participantID = uuid();
+        var participantID = generateRandomUuid();
         var participantDataModel = new Stateful();
         participantDataModel.set("__type", "org.workingwithstories.ParticipantData");
         participantDataModel.set("_participantID", participantID);

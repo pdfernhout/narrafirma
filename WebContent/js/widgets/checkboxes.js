@@ -4,7 +4,6 @@ define([
     "dojo/_base/declare",
     "dojo/dom-construct",
     "dojo/on",
-    "js/translate",
     "./widgetSupport",
     "dijit/form/CheckBox",
     "dijit/_WidgetBase"
@@ -13,7 +12,6 @@ define([
     declare,
     domConstruct,
     on,
-    translate,
     widgetSupport,
     CheckBox,
     _WidgetBase

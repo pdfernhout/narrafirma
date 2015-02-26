@@ -1,20 +1,7 @@
 // This supports globals shared by modules
 
-define([
-    "dojo/_base/array",
-    "exports",
-    "dojo/_base/lang",
-    "dijit/registry",
-    "dojo/string",
-    "js/translate"
-], function(
-    array,
-    exports,
-    lang,
-    registry,
-    string,
-    translate
-) {
+define([], function(
+    ) {
     "use strict";
 
     var testDataItemsToMake = 100;
