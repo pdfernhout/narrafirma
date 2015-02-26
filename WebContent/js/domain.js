@@ -409,7 +409,7 @@ define([
         var possibleTotal = dependsOn.length * 3;
         var percent = Math.round(100 * total / possibleTotal);
         var template = translate("calculate_quizScoreResult_template");
-        var response = template.replace("{{total}}", total).replace("{{possibleTotal}}", possibleTotal).replace("{{percent}}", percent);
+        var response = template.replace("{{total}}", total).replace("{{possibleTotal}}", possibleTotal).replace("{{percent}}", "" + percent);
         return "<b>" + response + "</b>";
     }
     
