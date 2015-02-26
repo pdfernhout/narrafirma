@@ -234,7 +234,7 @@ define([
         var chartTitle = "" + question.id;
         
         var chart = new Chart(chartDiv, {
-            title: chartTitle,
+            title: chartTitle
         });
         console.log("Made chart");
         
@@ -307,7 +307,7 @@ define([
         if (choiceQuestion) chartTitle = "" + choice;
         
         var chart = new Chart(chartDiv, {
-            title: chartTitle,
+            title: chartTitle
         });
         console.log("Made chart");
         
@@ -382,7 +382,7 @@ define([
         var chartTitle = "" + xAxisQuestion.id + " vs. " + yAxisQuestion.id;
         
         var chart = new Chart(chartDiv, {
-            title: chartTitle,
+            title: chartTitle
         });
         console.log("Made chart");
         

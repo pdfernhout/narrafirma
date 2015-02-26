@@ -15,6 +15,6 @@ define([
         questionnaireStatusContentVersion:"0.1.0",
         
         surveyResultContentType:"org.workingwithstories.PNIWorkbookSurveyResult",
-        surveyResultContentVersion:"0.1.0",
+        surveyResultContentVersion:"0.1.0"
     };
 });

@@ -1053,7 +1053,7 @@ define([
         "add_function": add_function,
         "add_quizScoreResult": add_quizScoreResult,
         "addQuestionWidget": addQuestionWidget,
-        "addQuestions": addQuestions,
+        "addQuestions": addQuestions
     };
     
     lang.mixin(exports, exportedFunctions);

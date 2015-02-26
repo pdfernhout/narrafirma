@@ -68,7 +68,7 @@ define([
             title: "Confirm",
             content: message,
             style: "width: 300px",
-            onExecute: okCallback,
+            onExecute: okCallback
             // TODO: onCancel: cancelCallback
         });
         dialog.show();

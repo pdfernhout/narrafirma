@@ -118,7 +118,7 @@ define(function() {
            "narrative therapy",
            "participatory theatre",
            "combined interventions"
-        ],
+        ]
     },
     "questions": {
         "participantGroup_status": [
