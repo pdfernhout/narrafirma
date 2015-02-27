@@ -3,6 +3,29 @@
 PRIORITY
 - catalysis
 
+NAME
+Change NarraKit everywhere to NarraFirma.
+
+DOMAIN
+Refactor code so have better defined domain models, probably with dmodel
+Think about changing names for fields when they are in a smaller model
+Think about saving and loading for smaller subparts of projects as seperate files
+
+HELP
+Figure out exactly how help text will be stored
+
+OVERALL
+Migrate away from generating code from textual design to maintaining code directly
+
+SITE
+Determine how (or if) to support multi-user sites
+Determine how (or if) to support multiple projects per user
+Settle on some authentication approach for authoring/administration
+Decide on approach for logging in and controlling access to changing project definition
+
+NAVIGATION
+Split up long list of choices into navigation sections which only move through pages in a section (only all project pages, only all catalysis, etc.)
+
 RECOMMENDATIONS
 Support recommendationTable
 
@@ -11,8 +34,8 @@ Fix how templates list popup has too much scrolling and is not sized well; perha
 Improve template list generation tool to support storyCollectionActivities and sensemakingActivities
 
 SURVEY GENERAL
+Switch to using Dojo Mobile for the surveys
 Figure out what URLs will look like for administration/authoring vs. survey taking (multiple?) vs. (maybe) project
-Settle on some authentication approach for authoring/administration
 Figure out GUI for "finalizing" a survey as opposed to storing current version when enable survey
 Have survey page use special server method so does not use Pointrel system directly or need authentication
 Record IP address of survey or use another means to see if someone taking it multiple times
@@ -117,6 +140,7 @@ Help window displaying HTML instead of alert
 Look at all alerts in code and make into nicer GUI feedback
 
 TRANSLATION
+Move to a more generic translation method where can pass a string or can put a "#" in front to indicate and ID with a text to use after that seperated by a space.
 Better and more consistent approach for translation selections for selects, checkboxes, radiobuttons, and maybe other types
 Translate report answers as needed for those types like selections
 Final review of all strings in code looking for TODO translate items or similar
@@ -446,3 +470,7 @@ DONE Migration to dgrid 0.4.0
 DONE Change CDN references to Dojo 1.10.3
 DONE Add start, previous, next, end navigate buttons to grid table
 DONE Issue when trying to move items up or down but have sorted the list based on a header so the order visible is different than the underlying array
+DONE Cleanup typos in design and in comments and such
+DONE Remove various JSHint-like warnings related to loops and such
+DONE Remove cyclic AMD dependencies related to widgetBuilder being used by grid
+DONE Refactor toaster into its own module
