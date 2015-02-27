@@ -100,7 +100,7 @@ define([
     // This should only be called once in your application, at startup
     function createToasterWidget(container) {
         var toasterPane =  new ContentPane();
-        toasterPane.placeAt("navigationDiv");
+        toasterPane.placeAt(container);
         toasterWidget = new Toaster({id: "toasterWidget"}, toasterPane.domNode);
     }
     
