@@ -5,18 +5,20 @@ define([
     "exports",
     "dojo/_base/lang",
     "js/storage",
+    "js/toaster",
     "js/translate",
-    "js/utility",
     "dojo/Stateful"
 ], function(
     allPagesSummary,
     exports,
     lang,
     storage,
+    toaster,
     translate,
-    utility,
     Stateful) {
     "use strict";
+    
+    // TODO: Should not be doing UI work in here with toaster
 
     var pageDefinitions = {};
     var questions = {};
@@ -259,11 +261,11 @@ define([
             // Checking on contentPane being set before put up alert in case loading called when load project document
             if (newEnvelopeCount === 0) {
                 // TODO: Translate
-                utility.toast("No new survey results were found.");
+                toaster.toast("No new survey results were found.");
                 return;
             } else {
                 // TODO: Translate
-                utility.toast("" + newEnvelopeCount + " new survey result(s) were found.");
+                toaster.toast("" + newEnvelopeCount + " new survey result(s) were found.");
             }
             
             // TODO: Only for debugging; need to think through the separating of stories and general survey data

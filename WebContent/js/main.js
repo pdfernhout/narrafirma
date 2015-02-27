@@ -9,6 +9,7 @@ require([
     "dojo/i18n!js/nls/pageMessages",
     "js/storage",
     "js/survey",
+    "js/toaster",
     "js/translate",
     "js/utility",
     "js/widgetBuilder",
@@ -28,6 +29,7 @@ require([
     pageMessages,
     storage,
     survey,
+    toaster,
     translate,
     utility,
     widgetBuilder,
@@ -120,7 +122,7 @@ require([
         currentProjectVersionReference = envelope.__sha256HashAndLength;
         
         // TODO: Translate and improve this feedback
-        utility.toast("Finished loading project data");
+        toaster.toast("Finished loading project data");
         
         // TODO: Kludge of loading all stories when load data?
         console.log("Going to try to load latest stories from server");
@@ -143,7 +145,7 @@ require([
         // TODO: Translate and improve this feedback
         console.log("Save finished to file", newVersionURI);
         currentProjectVersionReference = newVersionURI;
-        utility.toast("Finished saving");
+        toaster.toast("Finished saving");
     }
     
     function urlHashFragmentChanged(newHash) {
@@ -389,7 +391,7 @@ require([
         var lastPageID = null;
         
         // Initialize toaster
-        utility.createToasterWidget("navigationDiv");
+        toaster.createToasterWidget("navigationDiv");
         
         // var imageButton = widgets.newButton("wwsImageButton", "Working With Stories image button", "navigationDiv", wwsButtonClicked);
         // imageButton.set("showLabel", false);

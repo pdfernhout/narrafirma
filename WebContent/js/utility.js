@@ -2,11 +2,15 @@ define([
     "dojo/_base/array",
     "js/translate",
     "dijit/form/Button",
-    "dijit/layout/ContentPane",
     "dijit/form/FilteringSelect",
-    "dojo/store/Memory",
-    "dojox/widget/Toaster"
-], function(array, translate, Button, ContentPane, FilteringSelect, Memory, Toaster) {
+    "dojo/store/Memory"
+], function(
+    array,
+    translate,
+    Button,
+    FilteringSelect,
+    Memory
+) {
     "use strict";
     
     function startsWith(str, prefix) {
@@ -94,30 +98,10 @@ define([
     }
     */
     
-    // For a "toaster" that can give status or progress updates
-    var toasterWidget = null;
- 
-    // This should only be called once in your application, at startup
-    function createToasterWidget(container) {
-        var toasterPane =  new ContentPane();
-        toasterPane.placeAt(container);
-        toasterWidget = new Toaster({id: "toasterWidget"}, toasterPane.domNode);
-    }
-    
-    function toast(message, messageType, duration_ms) {
-        if (!messageType) messageType = "message";
-        if (!duration_ms) duration_ms = 2000;
-        toasterWidget.positionDirection = "tl-down";
-        toasterWidget.setContent(message, messageType, duration_ms);
-        toasterWidget.show();
-    }
-    
     return {
         "startsWith": startsWith,
         "isString": isString,
         "newButton": newButton,
-        "newSelect": newSelect,
-        "createToasterWidget": createToasterWidget,
-        "toast": toast
+        "newSelect": newSelect
     };
 });
