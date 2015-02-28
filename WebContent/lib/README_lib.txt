@@ -68,6 +68,11 @@ If you need to install bower, it is done using npm like so:
 
   $ sudo npm install -g bower
 
+==== dmodel
+
+Copied from master branch of GithHub SitePen/dmodel as of 2015-02-28 latest commit db8ea68ed3
+https://github.com/SitePen/dmodel/tree/master
+
 ==== other
 
 simple_statistics.js was copied from the current github as of around 2015-02-12.
