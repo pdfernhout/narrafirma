@@ -101,6 +101,33 @@ define([
     ];
                   
     /////////////
+    
+    // launchApplication function inspired by: http://stackoverflow.com/questions/528671/javascript-window-open-only-if-the-window-does-not-already-exist
+    var openedWindows = {};
+    function launchApplication(url, windowName) {
+        var openedWindowInfo = openedWindows[windowName];
+        if (openedWindowInfo && ! openedWindowInfo.window.closed) {
+            if (openedWindowInfo.url !== url) {
+                openedWindowInfo.window.location.replace(url);
+            }
+        }
+        if (typeof openedWindowInfo === 'undefined' || openedWindowInfo.window.closed) {
+            var width = Math.round(screen.availWidth / 2);
+            var height = Math.round(screen.availHeight / 3);
+            var windowOpenParams = 'status=1,resizable=1,scrollbars=1,left=200,top=200,width=' + width + ',height=' + height;
+            var openedWindow = window.open(url, windowName, windowOpenParams);
+            // Not sure if moveTo and resizeTo is really needed, since works without them in Firefox
+            openedWindow.moveTo(200, 200);
+            openedWindow.resizeTo(width, height);
+            openedWindowInfo = {window: openedWindow, url: url};
+            openedWindows[windowName] = openedWindowInfo;
+        } else {
+            openedWindowInfo.window.focus();
+        }
+    }
+    
+    // TODO: Need a better approach for calling JavaScript function than this
+    document.__narraFirma_launchApplication = launchApplication;
 
     function createQuestionContentPaneWithPrompt(contentPane, id) {
         // triangle&#8227; 
@@ -116,11 +143,17 @@ define([
         // questionContentPane.setAttribute("data-js-question-type", question.type);
         if (questionText) {
             var label = new ContentPane({
-                content: questionText
-            });
+                // TODO: Fix the help that actually pops up
+                content: questionText + '&nbsp;&nbsp;<img src="/images/Blue_question_mark_icon.svg" height=14 width=14 title="Open help system window on this topic..." onclick="var index = (Math.floor(Math.random() * 8) + 1); document.__narraFirma_launchApplication(\'http://www.kurtz-fernhout.com/help100/0000000\' + index + \'.htm\', \'help\')">'
+                });
             label.placeAt(questionContentPane);
         }
         questionContentPane.placeAt(contentPane);
+        
+        /* var helpWidget = add_button(questionContentPane, null, "button_help", [], function() {
+            alert("Help!");
+        });
+        */
         
         var internalContentPane = new ContentPane({
         });
