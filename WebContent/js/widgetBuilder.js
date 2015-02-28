@@ -144,7 +144,9 @@ define([
         if (questionText) {
             var label = new ContentPane({
                 // TODO: Fix the help that actually pops up
-                content: questionText + '&nbsp;&nbsp;<img src="/images/Blue_question_mark_icon.svg" height=14 width=14 title="Open help system window on this topic..." onclick="var index = (Math.floor(Math.random() * 8) + 1); document.__narraFirma_launchApplication(\'http://www.kurtz-fernhout.com/help100/0000000\' + index + \'.htm\', \'help\')">'
+                content: questionText + '&nbsp;&nbsp;<img src="/images/Information_icon4.svg" height=16 width=16 title="Click to open help system window on this topic..." onclick="var index = (Math.floor(Math.random() * 8) + 1); document.__narraFirma_launchApplication(\'http://www.kurtz-fernhout.com/help100/0000000\' + index + \'.htm\', \'help\')">'
+                // content: questionText + '&nbsp;&nbsp;<img src="/images/Info_blauw.png" height=15 width=15 title="Click to open help system window on this topic..." onclick="var index = (Math.floor(Math.random() * 8) + 1); document.__narraFirma_launchApplication(\'http://www.kurtz-fernhout.com/help100/0000000\' + index + \'.htm\', \'help\')">'
+                // content: questionText + '&nbsp;&nbsp;<img src="/images/Blue_question_mark_icon.svg" height=14 width=14 title="Open help system window on this topic..." onclick="var index = (Math.floor(Math.random() * 8) + 1); document.__narraFirma_launchApplication(\'http://www.kurtz-fernhout.com/help100/0000000\' + index + \'.htm\', \'help\')">'
                 });
             label.placeAt(questionContentPane);
         }
