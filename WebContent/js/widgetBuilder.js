@@ -128,7 +128,27 @@ define([
     
     // TODO: Need a better approach for calling JavaScript function than this
     document.__narraFirma_launchApplication = launchApplication;
+    
+    // TODO: Fix all this so attaching actual JavaScript function not text to be interpreted
+    function htmlForInformationIcon(url) {
+        var template = '<img src="{iconFile}" height=16 width=16 title="{title}" onclick="document.__narraFirma_launchApplication(\'{url}\', \'help\')">';
+        return lang.replace(template, {
+            // TODO: Remove unused images from project
+            // "/images/Info_blauw.png"
+            // "/images/Blue_question_mark_icon.svg"
+            iconFile:'/images/Information_icon4.svg',
+            title: "Click to open help system window on this topic...",
+            url: url
+        });
+    }
 
+    // TODO: Remove this -- just for testing/demo purposes
+    function randomHelpPageURL(id) {
+        var index = (Math.floor(Math.random() * 8) + 1);
+        var url = 'http://www.kurtz-fernhout.com/help100/0000000' + index + '.htm' + "#" + id;
+        return url;
+    }
+    
     function createQuestionContentPaneWithPrompt(contentPane, id) {
         // triangle&#8227; 
         // double arrow &#187;
@@ -141,12 +161,10 @@ define([
         domClass.add(questionContentPane.domNode, "questionExternal");
         questionContentPane.setAttribute("data-js-question-id", id);
         // questionContentPane.setAttribute("data-js-question-type", question.type);
+        // TODO: Fix the help that correct help actually pops up
         if (questionText) {
             var label = new ContentPane({
-                // TODO: Fix the help that actually pops up
-                content: questionText + '&nbsp;&nbsp;<img src="/images/Information_icon4.svg" height=16 width=16 title="Click to open help system window on this topic..." onclick="var index = (Math.floor(Math.random() * 8) + 1); document.__narraFirma_launchApplication(\'http://www.kurtz-fernhout.com/help100/0000000\' + index + \'.htm\', \'help\')">'
-                // content: questionText + '&nbsp;&nbsp;<img src="/images/Info_blauw.png" height=15 width=15 title="Click to open help system window on this topic..." onclick="var index = (Math.floor(Math.random() * 8) + 1); document.__narraFirma_launchApplication(\'http://www.kurtz-fernhout.com/help100/0000000\' + index + \'.htm\', \'help\')">'
-                // content: questionText + '&nbsp;&nbsp;<img src="/images/Blue_question_mark_icon.svg" height=14 width=14 title="Open help system window on this topic..." onclick="var index = (Math.floor(Math.random() * 8) + 1); document.__narraFirma_launchApplication(\'http://www.kurtz-fernhout.com/help100/0000000\' + index + \'.htm\', \'help\')">'
+                content: htmlForInformationIcon(randomHelpPageURL(id)) + "&nbsp;&nbsp;" + questionText
                 });
             label.placeAt(questionContentPane);
         }
@@ -169,7 +187,7 @@ define([
     
     function add_label(contentPane, model, id, options) {
         var label = new ContentPane({
-            content: translate(id + "::prompt")
+            content: htmlForInformationIcon(randomHelpPageURL(id)) + "&nbsp;&nbsp;" + translate(id + "::prompt")
         });
         label.placeAt(contentPane);
         return label;
@@ -177,7 +195,7 @@ define([
     
     function add_header(contentPane, model, id, options) {
         var label = new ContentPane({
-            content: "<b>" + translate(id + "::prompt") + "</b>"
+            content: htmlForInformationIcon(randomHelpPageURL(id)) + "&nbsp;&nbsp;" + "<b>" + translate(id + "::prompt") + "</b>"
         });
         label.placeAt(contentPane);
         return label;
