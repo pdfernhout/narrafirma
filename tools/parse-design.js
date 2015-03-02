@@ -179,4 +179,7 @@ var design = fs.readFileSync(designFileName, "utf8");
 // convert it to pages
 convert(design);
 
+// To generate source for pages in console
+console.log("write design JSON", JSON.stringify(pages, null, 4));
+
 exports.pages = pages;
