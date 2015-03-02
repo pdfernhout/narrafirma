@@ -1,10 +1,13 @@
-==== NarraKit TODO list:
+==== NarraFirma TODO list:
 
 PRIORITY
 - catalysis
 
 NAME
-Change NarraKit everywhere to NarraFirma.
+Add trademark disclaimer/limitation for NarraFirma, perhaps similar to:
+NarraFirma is a trademark of Cynthia F. Kurtz and is used by permission for the main distribution of this software.
+Reference: https://www.mozilla.org/en-US/foundation/trademarks/policy/
+And: http://wordpressfoundation.org/trademark-policy/
 
 DOMAIN
 Refactor code so have better defined domain models, probably with dmodel
@@ -166,7 +169,7 @@ Support storyBrowserCount
 
 ======= CYNTHIA
 
-Write up sample NarraKit product offering descriptions for review
+Write up sample NarraFirma product offering descriptions for review
 Finish templates
 Create recommendations file
 Create help
@@ -419,7 +422,7 @@ DONE Improve concept map so you can have more than one per page or application
 DONE Figure out how to save and load concept map more directly than with a button to save
 DONE Add support for deleting items in concept map
 DONE Support setting color of items in concept map
-DONE Change name from to "PNI Workbook" to "NarraKit" to try it out
+DONE Change name from to "PNI Workbook" to "NarraFirma" to try it out
 DONE Rename "concept map" to "clustering space"
 DONE optimize redrawing for changes in clustering diagram
 DONE add indicator for selected item in clustering diagram 
@@ -474,3 +477,4 @@ DONE Cleanup typos in design and in comments and such
 DONE Remove various JSHint-like warnings related to loops and such
 DONE Remove cyclic AMD dependencies related to widgetBuilder being used by grid
 DONE Refactor toaster into its own module
+DONE Change NarraKit everywhere to NarraFirma.

@@ -40,13 +40,13 @@ var ProjectPlanModel2 = {
 var fields = [
     // * Planning notes | You can enter some general notes on planning in this project here. [project_generalNotes_planning|textarea]
     {
-        fieldOf: 'ProjectPlan',
-        fieldID: 'generalNotes',
+        model: 'ProjectPlan',
+        id: 'project_generalNates_planning',
         type: 'string',
         displayType: 'textarea',
         displayName: 'Planning notes',
         prompt: 'You can enter some general notes on planning in this project here.',
-        reportName: 'Some planning notes',
+        // reportName: 'Some planning notes',
         help: 
             '#ProjectPlan__generalNotes__help This is some very long help ' + 
             'which extends to the next line' +

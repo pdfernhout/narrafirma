@@ -60,7 +60,7 @@
 
 # Dashboard [page_dashboard|page|Project]
 
-* Welcome to NarraKit. You can use this software to: [project_mainDashboardLabel|label]
+* Welcome to NarraFirma. You can use this software to: [project_mainDashboardLabel|label]
 <ul>
 <li>plan your Participatory Narrative Inquiry (PNI) project</li>
 <li>decide how you will collect stories</li>
