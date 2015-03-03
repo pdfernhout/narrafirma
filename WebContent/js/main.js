@@ -250,10 +250,13 @@ require([
        widgetBuilder.buildPanel(panelID, pagePane, domain.projectData.projectAnswers);
        
        if (!page.isHeader) {
-           // TODO: Will need translations for these eventually
            var options = ["intentionally skipped", "partially done", "completely finished"];
            var statusEntryID = id + "_pageStatus";
-           // TODO: Put blank line in here
+           translate.addExtraTranslation(statusEntryID + "::prompt", translate("#dashboard_status_entry::prompt") + " ");
+           for (var optionIndex in options) {
+               var option = options[optionIndex];
+               translate.addExtraTranslation(statusEntryID + "::selection:" + option, translate("#dashboard_status_entry::selection:" + option));
+           }
            widgetBuilder.add_select(pagePane, domain.projectData.projectAnswers, statusEntryID, options);
        } else {
            console.log("page dashboard as header", page.id, page.type, page);

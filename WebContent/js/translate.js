@@ -12,11 +12,11 @@ define([
     // Dynamically added extra translations like for survey questions
     var extraTranslations = {};
     
-    var debugTranslations = true;
+    var debugTranslations = false;
     
     function translate(tag, defaultText) {
-        if (debugTranslations) console.log("translating", tag, extraTranslations);
-        if (tag.charAt(0) !== "#") throw new Error("translation tag should have leading #  for: " + tag);
+        if (debugTranslations) console.log("translating", tag);
+        // if (debugTranslations && tag.charAt(0) !== "#") throw new Error("translation tag should have leading #  for: " + tag);
         // Kludge for extra domain translations for testing
         if (!tag) {
             if (debugTranslations) console.log("translating with no tag, so returning defaultText or empty string", defaultText);
