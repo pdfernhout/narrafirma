@@ -262,6 +262,7 @@ define([
         dialogHolder.dialog.hide();
         console.log("Clicked OK", event, model);
         var text = model.get("text");
+        if (text === undefined) text = "";
         var url = model.get("url");
         var bodyColor = model.get("bodyColor");
         console.log("data", text, url, bodyColor);
