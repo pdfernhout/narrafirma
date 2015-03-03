@@ -38,30 +38,30 @@ pagesReadFromJSON.forEach(function (page) {
 console.log("--------");
 
 var displayTypeToDataTypeMap = {
-    label: "display",
-    image: "display",
+    label: "none",
+    image: "none",
     textarea: 'string',
     text: 'string',
     grid: 'array',
-    header: "display",
+    header: "none",
     select: "string",
     clusteringDiagram: 'object',
-    quizScoreResult: "display",
-    button: "display",
-    report: "display",
-    recommendationTable: "display",
+    quizScoreResult: "none",
+    button: "none",
+    report: "none",
+    recommendationTable: "none",
     checkboxes: 'dictionary',
-    templateList: "display",
-    "function": "display",
-    storyBrowser: '???',
-    storyThemer: '???',
-    graphBrowser: '???',
-    trendsReport: '???',
-    observationsList: 'array',
-    accumulatedItemsGrid: 'array',
-    excerptsList: 'array',
-    annotationsGrid: 'array',
-    storiesList: 'array',
+    templateList: "none",
+    "function": "none",
+    storyBrowser: 'none',
+    storyThemer: 'none',
+    graphBrowser: 'none',
+    trendsReport: 'none',
+    observationsList: 'none',
+    accumulatedItemsGrid: 'none',
+    excerptsList: 'none',
+    annotationsGrid: 'none',
+    storiesList: 'none',
     boolean: 'boolean'
 };
 
@@ -111,7 +111,7 @@ pagesReadFromJSON.forEach(function (page) {
         // Streamline common case of just one option
         var item = {
             id: question.id,
-            // type: typeForDisplayType(question.type),
+            dataType: typeForDisplayType(question.type),
             options: optionsAsArray,
             displayType: question.type,
             displayName: question.shortText || undefined,
@@ -123,7 +123,10 @@ pagesReadFromJSON.forEach(function (page) {
         // console.log(JSON.stringify(item, null, 4));
         // console.log(item);
         // console.log(",");
-        var output = "" + util.inspect(item) + ",";
+        var itemOutput = util.inspect(item);
+        // Remove braces at start and end
+        itemOutput = " " + itemOutput.substring(1, itemOutput.length - 1);
+        var output = "{\n" + itemOutput + "\n},";
         console.log(output);
     });
 });
