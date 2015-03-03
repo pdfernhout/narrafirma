@@ -154,8 +154,7 @@ require([
     function urlHashFragmentChanged(newHash) {
         // console.log("urlHashFragmentChanged", newHash);
         if (currentPageID !== newHash) {
-            var panelID = newHash.replace("page_", "panel_");
-            var page = domain.pageDefinitions[panelID];
+            var page = panelForPageID(newHash);
             if (page && page.displayType === "page") {
                 changePage(newHash);
             } else {
@@ -270,9 +269,10 @@ require([
            for (var pageIndex in pages) {
                var pageID = pages[pageIndex];
                var statusViewID = pageID + "_pageStatus_dashboard";
-               // console.log("pageID", page, pageID, domain.pageDefinitions, domain.pageDefinitions[pageID]);
-               if (!domain.pageDefinitions[pageID]) console.log("Error: problem finding page definition for", pageID, " -- Could the domain be out of date relative to the design and pages.js?");
-               if (domain.pageDefinitions[pageID] && domain.pageDefinitions[pageID].type === "page") {
+               var page = panelForPageID(pageID);
+               // console.log("pageID", page, pageID, domain.pageDefinitions, page);
+               if (!page) console.log("Error: problem finding page definition for", pageID);
+               if (page && page.type === "page") {
                    translate.extraTranslations[statusViewID + "::prompt"] = translate(pageID + "::title") + " " + translate("dashboard_status_label") + " ";
                    widgetBuilder.add_questionAnswer(pagePane, domain.projectData.projectAnswers, statusViewID, [pageID + "_pageStatus"]);
                }
@@ -301,6 +301,11 @@ require([
        return pagePane;
     }
     
+    function panelForPageID(pageID) {
+        var panelID = pageID.replace("page_", "panel_");
+        return domain.pageDefinitions[panelID];
+    }
+    
     function previousPageClicked(event) {
         // console.log("previousPageClicked", event);
         if (!currentPageID) {
@@ -308,7 +313,7 @@ require([
             alert("Something wrong with currentPageID");
             return;
         }
-        var page = domain.pageDefinitions[currentPageID];
+        var page = panelForPageID(currentPageID);
         var previousPageID = page.previousPageID;
         if (previousPageID) {
             changePage(previousPageID);
@@ -325,7 +330,7 @@ require([
             alert("Something wrong with currentPageID");
             return;
         }
-        var page = domain.pageDefinitions[currentPageID];
+        var page = panelForPageID(currentPageID);
         var nextPageID = page.nextPageID;
         if (nextPageID) {
             changePage(nextPageID);
@@ -444,15 +449,15 @@ require([
             // console.log("about to make page");
             // Skip over special page types
             if (page.displayType === "page") {
+                var pageID = page.id.replace("panel_", "page_");
                 console.log("pushing page", page);
                 // Make it easy to lookup previous and next pages from a page
-                if (lastPageID) domain.pageDefinitions[lastPageID].nextPageID = page.id;
+                if (lastPageID) panelForPageID(lastPageID).nextPageID = pageID;
                 page.previousPageID = lastPageID;
-                lastPageID = page.id;
+                lastPageID = pageID;
                 
                 // Looks like Dojo select has a limitation where it can only take strings as values
                 // so can't pass page in as value here and need indirect pageDefinitions lookup dictionary
-                var pageID = page.id.replace("panel_", "page_");
                 pageSelectOptions.push({label: title, value: pageID});
                 // Put in a dynamic question (incomplete for options) to be used to lookup page status; needed to check it is a select
                 domain.questions[page.id + "_pageStatus"] = {id: pageID + "_pageStatus", type: "select"};
