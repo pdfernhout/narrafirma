@@ -267,7 +267,8 @@ require([
                console.log("childPageID", childPage, childPageID, domain.pageDefinitions);
                if (!childPage) console.log("Error: problem finding page definition for", childPageID);
                if (childPage && childPage.displayType === "page") {
-                   translate.extraTranslations[statusViewID + "::prompt"] = translate("#" + childPageID + "::title", childPage.displayName) + " " + translate("#dashboard_status_label") + " ";
+                   var prompt = translate("#" + childPageID + "::title", childPage.displayName) + " " + translate("#dashboard_status_label") + " ";
+                   translate.addExtraTranslation(statusViewID + "::prompt", prompt);
                    console.log("about to call widgetBuilder for childPage", childPageID);
                    widgetBuilder.add_questionAnswer(pagePane, domain.projectData.projectAnswers, statusViewID, [childPageID + "_pageStatus"]);
                }
@@ -439,6 +440,8 @@ require([
                 var question = page.questions[questionIndex];
                 domain.questions[question.id] = question;
             }
+            
+            if (page.questions) translate.addExtraTranslationsForQuestions(page.questions);
             
             domain.pageDefinitions[page.id] = page;      
             

@@ -16,6 +16,7 @@ define([
     
     function translate(tag, defaultText) {
         if (debugTranslations) console.log("translating", tag);
+        if (tag.charAt(0) !== "#") throw new Error("translation tag should have leading #  for: " + tag);
         // Kludge for extra domain translations for testing
         if (!tag) {
             if (debugTranslations) console.log("translating with no tag, so returning defaultText or empty string", defaultText);
@@ -56,20 +57,30 @@ define([
     }
     
     function addExtraTranslationsForQuestions(questions) {
-        for (var questionIndex in questions) {
-            var question = questions[questionIndex];  
-            translate.extraTranslations[question.id + "::prompt"] = question.prompt;
-            translate.extraTranslations[question.id + "::shortName"] = question.shortName;
-            for (var optionIndex in question.options) {
-                var option = question.options[optionIndex];
-                translate.extraTranslations[question.id + "::selection:" + option] = option;
+        console.log("addExtraTranslationsForQuestions", questions);
+        if (!questions) {
+            throw new Error("questions should not be undefined!");
+        }
+        for (var questionIndex = 0; questionIndex < questions.length; questionIndex++) {
+            var question = questions[questionIndex];
+            if (!question) throw new Error("question could not be found for: " + questionIndex + " in: " + JSON.stringify(questions));
+            if (debugTranslations) console.log("adding extra translations for", question.id, question);
+            extraTranslations[question.id + "::prompt"] = question.displayPrompt;
+            extraTranslations[question.id + "::shortName"] = question.shortName;
+            for (var optionIndex in question.dataOptions) {
+                var option = question.dataOptions[optionIndex];
+                extraTranslations[question.id + "::selection:" + option] = option;
             }
         }
     }
     
+    function addExtraTranslation(id, text) {
+        extraTranslations[id] = text;
+    }
+    
     // Adding these to function just so can keep previous code the same as direct call to translate module
     translate.configure = configure;
-    translate.extraTranslations = extraTranslations;
+    translate.addExtraTranslation = addExtraTranslation;
     translate.addExtraTranslationsForQuestions = addExtraTranslationsForQuestions;
     
     return translate;

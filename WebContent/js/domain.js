@@ -128,7 +128,7 @@ define([
                     }
                 }
             }
-            adjustedQuestions.push({type: type, id: id, options: options, shortName: shortName, prompt: prompt});
+            adjustedQuestions.push({type: type, id: id, dataOptions: options, displayName: shortName, displayPrompt: prompt});
         }
         
         return adjustedQuestions;

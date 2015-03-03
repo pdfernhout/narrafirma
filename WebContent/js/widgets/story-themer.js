@@ -44,14 +44,14 @@ define([
         
         // TODO: Remove redundancy
         var leadingStoryQuestions = [];
-        leadingStoryQuestions.unshift({id: "__survey_storyName", shortName: "storyName", prompt: "Please give your story a name", type: "text", options:[]});
-        leadingStoryQuestions.unshift({id: "__survey_storyText", shortName: "storyText", prompt: "Please enter your response to the question above in the space below", type: "textarea", options:[]});
-        leadingStoryQuestions.unshift({id: "__survey_elicitingQuestion", shortName: "elicitingQuestion", prompt: "Please choose a question you would like to respond to", type: "select", options: elicitingQuestionPrompts});
+        leadingStoryQuestions.unshift({id: "__survey_storyName", displayName: "storyName", displayPrompt: "Please give your story a name", displayType: "text", dataOptions:[]});
+        leadingStoryQuestions.unshift({id: "__survey_storyText", displayName: "storyText", displayPrompt: "Please enter your response to the question above in the space below", displayType: "textarea", dataOptions:[]});
+        leadingStoryQuestions.unshift({id: "__survey_elicitingQuestion", displayName: "elicitingQuestion", displayPrompt: "Please choose a question you would like to respond to", displayType: "select", dataOptions: elicitingQuestionPrompts});
 
         // console.log("DEBUG questions used by story browser", questions);
                
         var questions = [].concat(leadingStoryQuestions, storyQuestions);
-        questions.push({id: "__survey_" + "participantData", shortName: "participantData", prompt: "---- participant data below ----", type: "header", options:[]});
+        questions.push({id: "__survey_" + "participantData", displayName: "participantData", displayPrompt: "---- participant data below ----", displayType: "header", dataOptions:[]});
         translate.addExtraTranslationsForQuestions(questions);
         
         translate.addExtraTranslationsForQuestions(participantQuestions);
@@ -111,7 +111,7 @@ define([
                  var popupPageDefinition2 = {
                      "id": "storyThemeQuestions",
                      questions: [
-                         {id: "name", shortName: "Theme", prompt: "Theme", type: "text", options:[]}
+                         {id: "name", displayName: "Theme", displayPrompt: "Theme", displayType: "text", dataOptions:[]}
                      ]
                  };
                  var themeList = widgetGridTable.insertGridTableBasic(widgetBuilder, themesPane, "storyThemeList", storyThemesStore, popupPageDefinition2, configuration2);

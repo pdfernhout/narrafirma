@@ -27,8 +27,8 @@ define([
     
     // TODO: Two GUI components without translation here temporarily
     function newButton(id, label_translate_id, addToDiv, callback) {
-        if (label_translate_id === null) label_translate_id = "#" + id;
-        var label = translate(label_translate_id);
+        if (label_translate_id === null) label_translate_id = id;
+        var label = translate("#" + label_translate_id);
         
         var button = new Button({
             id: id,
@@ -54,7 +54,7 @@ define([
                 // console.log("choice", id, each);
                 if (isString(each)) {
                     // TODO: Add translation support here somehow
-                    var label = each; // translate(id + "_choice_" + each);
+                    var label = each; // translate("#" + id + "_choice_" + each);
                     options.push({name: label, id: each});
                 } else {
                     // TODO: Maybe bug in dojo select that it does not handle values that are not strings

@@ -262,7 +262,7 @@ define([
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var options = [];
-        if (addNoSelectionOption) options.push({name: translate("selection_has_not_been_made"), id: "", selected: true});
+        if (addNoSelectionOption) options.push({name: translate("#selection_has_not_been_made"), id: "", selected: true});
         if (questionOptions) {
             array.forEach(questionOptions, function(each) {
                 // console.log("choice", id, each);
@@ -525,7 +525,7 @@ define([
         }
         
         for (var questionName in recommendations.questions) {
-            var questionText = translate(questionName + "::prompt", "Missing translation for: " + questionName);
+            var questionText = translate("#" + questionName + "::prompt", "Missing translation for: " + questionName);
             var yourAnswer = model.get(questionName);
             
             var questionTextContentPane = new ContentPane({"content": questionText, "colspan": 4, "align": "right"});
@@ -864,7 +864,7 @@ define([
             if (question.type === "select" ||  question.type === "checkboxes" || question.type === "radiobuttons") {
                 // TODO: This may not translate correctly for checkboxes; may need to be translated individually
                 // console.log("trying to translate select", value);
-                value = translate(value, value);
+                value = translate("#" + value, value);
             }
         } else {
             console.log("calculate_questionAnswer: missing question definition for: ", referencedQuestionID);
@@ -892,7 +892,7 @@ define([
         }
         // var percentComplete = Math.round(100 * questionAnsweredCount / questionAskedCount);
         // if (questionAskedCount === 0) percentComplete = 0;
-        var template = translate("calculate_questionAnswerCountOfTotalOnPage_template");
+        var template = translate("#calculate_questionAnswerCountOfTotalOnPage_template");
         var response = template.replace("{{questionAnsweredCount}}", questionAnsweredCount).replace("{{questionAskedCount}}", questionAskedCount);
         return "<b>" + response + "</b>";
     }
