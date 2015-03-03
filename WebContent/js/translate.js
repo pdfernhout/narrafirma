@@ -13,27 +13,35 @@ define([
     var extraTranslations = {};
     
     function translate(tag, defaultText) {
-        // console.log("translating", tag, pageMessages, pageMessages[tag]);
+        console.log("translating", tag);
         // Kludge for extra domain translations for testing
-        if (!tag) return defaultText || "";
-        if (tag[0] !== "#") return tag;
+        if (!tag) {
+            console.log("translating with no tag, so returning defaultText or empty string", defaultText);
+            return defaultText || "";
+        }
+        if (tag.charAt(0) !== "#") {
+            console.log("translating with no leading hash mark, so returning what was passed in", tag);
+            return tag;
+        }
         var id = tag.substring(1);
         var suppliedText = "";
         var splitPoint = id.indexOf(" ");
-        if (splitPoint === -1) {
+        if (splitPoint !== -1) {
             suppliedText = id.substring(splitPoint + 1);
             id = id.substring(0, splitPoint);
         }
         
-        var result = pageMessages[tag] || applicationMessages[tag] || extraTranslations[tag];
+        var result = pageMessages[id] || applicationMessages[id] || extraTranslations[id];
         if (result === undefined) {
-            if (suppliedText) return suppliedText;
-            if (typeof defaultText !== 'undefined') {
+            if (suppliedText) {
+                result = suppliedText;
+            } else if (typeof defaultText !== 'undefined') {
                 result = defaultText;
             } else {
                 result = "ERROR: missing text for: " + tag;
             }
         }
+        console.log("translating result: ", result, tag);
         return result;
     }
     

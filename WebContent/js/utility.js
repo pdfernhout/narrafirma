@@ -27,7 +27,7 @@ define([
     
     // TODO: Two GUI components without translation here temporarily
     function newButton(id, label_translate_id, addToDiv, callback) {
-        if (label_translate_id === null) label_translate_id = id;
+        if (label_translate_id === null) label_translate_id = "#" + id;
         var label = translate(label_translate_id);
         
         var button = new Button({
