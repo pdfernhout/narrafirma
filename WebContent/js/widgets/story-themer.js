@@ -61,7 +61,7 @@ define([
         var popupPageDefinition = {
              "id": "storyBrowserQuestions",
              "questions": questions,
-             buildPage: function (builder, contentPane, model) {
+             buildPanel: function (widgetBuilder, contentPane, model) {
                  var participantID = model.get("_participantID");
                  var participantData = domain.getParticipantDataForParticipantID(participantID);
                  var participantDataModel = new Stateful(participantData);

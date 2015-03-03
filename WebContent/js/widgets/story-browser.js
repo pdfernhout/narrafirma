@@ -278,7 +278,7 @@ define([
         var popupPageDefinition = {
              "id": "storyBrowserQuestions",
              "questions": questions,
-             buildPage: function (builder, contentPane, model) {
+             buildPanel: function (widgetBuilder, contentPane, model) {
                  widgetBuilder.addQuestions(questions, contentPane, model);
                  // TODO: Load correct participant data
                  

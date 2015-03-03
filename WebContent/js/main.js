@@ -247,9 +247,7 @@ require([
         
        // console.log("Made content pane", id);
        
-       // page.buildPage(widgetBuilder, pagePane, domain.projectData.projectAnswers);
-       var questions = applicationBuilder.buildQuestionsForPanel(panelID);
-       widgetBuilder.addQuestions(questions, pagePane, domain.projectData.projectAnswers);
+       widgetBuilder.buildPanel(panelID, pagePane, domain.projectData.projectAnswers);
        
        if (!page.isHeader) {
            // Uses special domain dictionary to store translations synthesized for each individual widget
@@ -269,10 +267,10 @@ require([
            for (var pageIndex in pages) {
                var pageID = pages[pageIndex];
                var statusViewID = pageID + "_pageStatus_dashboard";
-               var page = panelForPageID(pageID);
-               // console.log("pageID", page, pageID, domain.pageDefinitions, page);
-               if (!page) console.log("Error: problem finding page definition for", pageID);
-               if (page && page.type === "page") {
+               var childPage = panelForPageID(pageID);
+               // console.log("pageID", childPage, pageID, domain.pageDefinitions);
+               if (!childPage) console.log("Error: problem finding page definition for", pageID);
+               if (childPage && childPage.type === "page") {
                    translate.extraTranslations[statusViewID + "::prompt"] = translate(pageID + "::title") + " " + translate("dashboard_status_label") + " ";
                    widgetBuilder.add_questionAnswer(pagePane, domain.projectData.projectAnswers, statusViewID, [pageID + "_pageStatus"]);
                }
@@ -543,6 +541,7 @@ require([
     }
     
     function startup() {
+        widgetBuilder.setApplicationBuilder(applicationBuilder);
         translate.configure({}, applicationMessages);
 
         // Synchronizes the state of the domain for one status flag with what is on server

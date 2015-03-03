@@ -68,6 +68,15 @@ define([
 ){
     "use strict";
     
+    // TODO: this should be a class with an instance now that it is being passed around
+    
+    // The applicationBuilder is needed to build popup panels for some widgets like the grid
+    var applicationBuilder;
+    
+    function setApplicationBuilder(newApplicationBuilder) {
+        applicationBuilder = newApplicationBuilder;
+    }
+    
     var entryTypes = [
         "boolean",
         "checkbox",
@@ -712,7 +721,7 @@ define([
             pageQuestions = [];
         }
 
-         function buildPage(builder, contentPane, model) {
+         function buildPanel(builder, contentPane, model) {
              builder.addQuestions(pageQuestions, contentPane, model);
          }
          
@@ -721,7 +730,7 @@ define([
              "type": "popup",
              "isHeader": false,
              "questions": pageQuestions,
-             "buildPage": buildPage
+             "buildPanel": buildPanel
          };
                 
         function useButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
@@ -1027,8 +1036,24 @@ define([
         return widgets;
     }
     
+    // Build an entire panel; panel can be either a string ID referring to a panel or it can be a panel definition itself
+    function buildPanel(panelOrID, contentPane, model) {
+        var questions;
+        if (lang.isString(panelOrID)) {
+            questions = applicationBuilder.buildQuestionsForPanel(panelOrID);
+        } else if (panelOrID.buildPanel) {
+            // TODO: widgetBuilder should really be a class with a "this" value, especially as widgets now pass it around
+            var widgetBuilder = exportedFunctions;
+            return panelOrID.buildPanel(widgetBuilder, contentPane, model);
+        } else {
+            questions = panelOrID.questions;
+        }
+        addQuestions(questions, contentPane, model);
+    }
+    
     
     var exportedFunctions = {
+        "setApplicationBuilder": setApplicationBuilder,
         "updateQuestionsForPageChange": updateQuestionsForPageChange,
         "add_label": add_label,
         "add_header": add_header,
@@ -1064,7 +1089,8 @@ define([
         "add_function": add_function,
         "add_quizScoreResult": add_quizScoreResult,
         "addQuestionWidget": addQuestionWidget,
-        "addQuestions": addQuestions
+        "addQuestions": addQuestions,
+        "buildPanel": buildPanel
     };
     
     lang.mixin(exports, exportedFunctions);

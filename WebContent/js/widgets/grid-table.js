@@ -115,7 +115,7 @@ define([
             
         clearGridsKludge();
 
-        popupPageDefinition.buildPage(grid.widgetBuilder, form, statefulItem);
+        grid.widgetBuilder.buildPanel(popupPageDefinition, form, statefulItem);
         
         var borderColor = "green";
         if (formType === "view") {
