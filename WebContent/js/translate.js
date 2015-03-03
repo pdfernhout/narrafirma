@@ -13,14 +13,14 @@ define([
     var extraTranslations = {};
     
     function translate(tag, defaultText) {
-        console.log("translating", tag);
+        // console.log("translating", tag);
         // Kludge for extra domain translations for testing
         if (!tag) {
-            console.log("translating with no tag, so returning defaultText or empty string", defaultText);
+            // console.log("translating with no tag, so returning defaultText or empty string", defaultText);
             return defaultText || "";
         }
         if (tag.charAt(0) !== "#") {
-            console.log("translating with no leading hash mark, so returning what was passed in", tag);
+            // console.log("translating with no leading hash mark, so returning what was passed in", tag);
             return tag;
         }
         var id = tag.substring(1);
@@ -41,7 +41,7 @@ define([
                 result = "ERROR: missing text for: " + tag;
             }
         }
-        console.log("translating result: ", result, tag);
+        // console.log("translating result: ", result, tag);
         return result;
     }
     
