@@ -2,6 +2,7 @@
 "use strict";
 
 var fs = require('fs');
+var util = require('util');
 
 var pagesFileName = "../design/pages.json";
 
@@ -72,6 +73,8 @@ function typeForDisplayType(displayType) {
 var optionsLists = {};
 var allChoices = {};
 
+console.log("define([");
+
 pagesReadFromJSON.forEach(function (page) {
     var pageType = "PAGE";
     var modelName = "ProjectModel";
@@ -118,9 +121,14 @@ pagesReadFromJSON.forEach(function (page) {
         };
         // console.log("question", question.id, "\n", JSON.stringify(item, null, 4), "\n");
         // console.log(JSON.stringify(item, null, 4));
-        console.log(item);
+        // console.log(item);
+        // console.log(",");
+        var output = "" + util.inspect(item) + ",";
+        console.log(output);
     });
 });
+
+console.log("\n]);");
 
 // console.log("displayTypeToDataTypeMap", displayTypeToDataTypeMap);
 
