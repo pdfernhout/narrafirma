@@ -12,7 +12,7 @@ define([
     // Dynamically added extra translations like for survey questions
     var extraTranslations = {};
     
-    var debugTranslations = false;
+    var debugTranslations = true;
     
     function translate(tag, defaultText) {
         if (debugTranslations) console.log("translating", tag);
@@ -40,8 +40,10 @@ define([
             } else if (typeof defaultText !== 'undefined') {
                 result = defaultText;
             } else {
+                // Just return the tag, which starts with a # which should indicate an issue
                 result = "ERROR: missing text for: " + tag;
                 console.log("translate problem", result);
+                if (!debugTranslations) result = tag;
             }
         }
         if (debugTranslations) console.log("translating result: ", result, tag);

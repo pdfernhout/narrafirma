@@ -140,7 +140,7 @@ define([
         // Arrow with hook &#8618;
         // Three rightwards arrows &#21F6; (doesn't work)
         // "*** " + 
-        var questionText = translate(id + "::prompt", "ERROR: missing text for: " + id + "::prompt");
+        var questionText = translate("#" + id + "::prompt", "ERROR: missing text for: " + id + "::prompt");
         var questionContentPane = new ContentPane({
         });
         domClass.add(questionContentPane.domNode, "questionExternal");
@@ -172,7 +172,7 @@ define([
     
     function add_label(contentPane, model, id, options) {
         var label = new ContentPane({
-            content: htmlForInformationIcon(randomHelpPageURL(id)) + "&nbsp;&nbsp;" + translate(id + "::prompt")
+            content: htmlForInformationIcon(randomHelpPageURL(id)) + "&nbsp;&nbsp;" + translate("#" + id + "::prompt")
         });
         label.placeAt(contentPane);
         return label;
@@ -180,7 +180,7 @@ define([
     
     function add_header(contentPane, model, id, options) {
         var label = new ContentPane({
-            content: htmlForInformationIcon(randomHelpPageURL(id)) + "&nbsp;&nbsp;" + "<b>" + translate(id + "::prompt") + "</b>"
+            content: htmlForInformationIcon(randomHelpPageURL(id)) + "&nbsp;&nbsp;" + "<b>" + translate("#" + id + "::prompt") + "</b>"
         });
         label.placeAt(contentPane);
         return label;
@@ -188,7 +188,7 @@ define([
     
     function add_image(contentPane, model, id, options) {
         var imageSource = options[0];
-        var questionText = translate(id + "::prompt", "");
+        var questionText = translate("#" + id + "::prompt", "");
         var image = new ContentPane({
             content: questionText + "<br>" + '<img src="' + imageSource + '" alt="Image for question: ' + questionText + '">'
         });
@@ -267,7 +267,7 @@ define([
             array.forEach(questionOptions, function(each) {
                 // console.log("choice", id, each);
                 if (utility.isString(each)) {
-                    var label = translate(id + "::selection:" + each);
+                    var label = translate("#" + id + "::selection:" + each);
                     options.push({name: label, id: each});
                 } else {
                     // TODO: Maybe bug in dojo select that it does not handle values that are not strings
@@ -377,7 +377,7 @@ define([
         if (!callback) callback = lang.partial(domain.buttonClicked, contentPane, model, id, questionOptions);
         
         var button = new Button({
-            label: translate(id + "::prompt"),
+            label: translate("#" + id + "::prompt"),
             type: "button",
             onClick: callback
         });
@@ -581,7 +581,7 @@ define([
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var label = new ContentPane({
-            // content: translate(id + "::prompt")
+            // content: translate("#" + id + "::prompt")
             content: "<b>UNFINISHED add_questionsTable: " + id + "</b>"             
         });
         label.placeAt(questionContentPane);
@@ -602,7 +602,7 @@ define([
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var label = new ContentPane({
-            // content: translate(id + "::prompt")
+            // content: translate("#" + id + "::prompt")
             content: "<b>UNFINISHED add_trendsReport: " + id + "</b>"             
         });
         label.placeAt(questionContentPane);
@@ -613,7 +613,7 @@ define([
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var label = new ContentPane({
-            // content: translate(id + "::prompt")
+            // content: translate("#" + id + "::prompt")
             content: "<b>UNFINISHED add_clusterSpace: " + id + "</b>"             
         });
         label.placeAt(questionContentPane);
@@ -624,7 +624,7 @@ define([
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var label = new ContentPane({
-            // content: translate(id + "::prompt")
+            // content: translate("#" + id + "::prompt")
             content: "<b>UNFINISHED add_annotationsGrid: " + id + "</b>"             
         });
         label.placeAt(questionContentPane);
@@ -635,7 +635,7 @@ define([
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var label = new ContentPane({
-            // content: translate(id + "::prompt")
+            // content: translate("#" + id + "::prompt")
             content: "<b>UNFINISHED add_storiesList: " + id + "</b>"             
         });
         label.placeAt(questionContentPane);
@@ -801,7 +801,7 @@ define([
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var label = new ContentPane({
-            // content: translate(id + "::prompt")
+            // content: translate("#" + id + "::prompt")
             content: "<b>UNFINISHED accumulatedItemsGrid: " + id + "</b>"             
         });
         label.placeAt(questionContentPane);
@@ -812,7 +812,7 @@ define([
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
         var label = new ContentPane({
-            // content: translate(id + "::prompt")
+            // content: translate("#" + id + "::prompt")
             content: "<b>UNFINISHED add_excerptsList: " + id + "</b>"             
         });
         label.placeAt(questionContentPane);
@@ -853,7 +853,7 @@ define([
 
     function calculate_questionAnswer(model, referencedQuestionID) {
         var value = model.get(referencedQuestionID);
-        if (value === null) value = translate("question_not_yet_answered");
+        if (value === null) value = translate("#question_not_yet_answered");
         if (value === undefined) {
             console.log("ERROR: missing question: ", referencedQuestionID);
             return "ERROR: missing question: " + referencedQuestionID;            
@@ -917,7 +917,7 @@ define([
     function _add_calculatedText(contentPane, id, calculate) {
         // var calculatedText = "(Initializing...)";
         var calculatedText = calculate();
-        var baseText = translate(id + "::prompt");
+        var baseText = translate("#" + id + "::prompt");
         var label = new ContentPane({
             content: baseText + calculatedText
         });
@@ -959,7 +959,7 @@ define([
         var calculate = lang.partial(domain.calculate_quizScoreResult, model, dependsOn);
         var label = _add_calculatedText(contentPane, id, calculate);
         // TODO: Recalculating next two variables wheres they are also calculated in _add_calculatedText
-        var baseText = translate(id + "::prompt");
+        var baseText = translate("#" + id + "::prompt");
         var updateInfo = {"id": id, "label": label, "baseText": baseText, "calculate": calculate};
         // Ensure this value is recalculated when dependent questions change by using watch
         for (var dependsOnIndex in dependsOn) {
@@ -985,10 +985,10 @@ define([
        var helpText = "";
         if (!question.help) {
             // Try to retrieve question help if not defined and present in helptexts.html
-            helpText = translate(question.id + "_help", "");
+            helpText = translate("#" + question.id + "_help", "");
         } else {
             // Otherwise, see if can translate the text if it is a tag
-            helpText = translate(question.help, question.help);
+            helpText = translate("#" + question.help, question.help);
         }
         // console.log("question help", question.id, question.help, helpText);
         

@@ -45,13 +45,15 @@ define([
         return button;
     }
     
+    // TODO: Remove optionsString parameter after checking for all users; perhaps check if "choices" is a string and if so split it?
     function newSelect(id, choices, optionsString, addToDiv, addNoSelectionOption) {
         var options = [];
-        if (addNoSelectionOption) options.push({name: translate("selection_has_not_been_made"), id: "", selected: true});
+        if (addNoSelectionOption) options.push({name: translate("#selection_has_not_been_made", "-- selection has not been made --"), id: "", selected: true});
         if (choices) {
             array.forEach(choices, function(each) {
                 // console.log("choice", id, each);
                 if (isString(each)) {
+                    // TODO: Add translation support here somehow
                     var label = each; // translate(id + "_choice_" + each);
                     options.push({name: label, id: each});
                 } else {

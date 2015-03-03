@@ -77,7 +77,7 @@ define([
             }
         }
         
-        var template = translate("copyDraftPNIQuestion_template");
+        var template = translate("#copyDraftPNIQuestion_template");
         var message = template.replace("{{copiedAnswersCount}}", copiedAnswersCount);
         alert(message);
     }
@@ -401,13 +401,13 @@ define([
         }
         var possibleTotal = dependsOn.length * 3;
         var percent = Math.round(100 * total / possibleTotal);
-        var template = translate("calculate_quizScoreResult_template");
+        var template = translate("#calculate_quizScoreResult_template");
         var response = template.replace("{{total}}", total).replace("{{possibleTotal}}", possibleTotal).replace("{{percent}}", "" + percent);
         return "<b>" + response + "</b>";
     }
     
     function labelForQuestion(question) {
-        var shortName = translate(question.id + "::shortName", translate(question.id + "::prompt"));
+        var shortName = translate("#" + question.id + "::shortName", translate("#" + question.id + "::prompt"));
         var separator = ":";
         var lastQuestionCharacter = shortName[shortName.length - 1];
         if (lastQuestionCharacter === "?" || lastQuestionCharacter === "." || lastQuestionCharacter === ")") {
@@ -428,7 +428,7 @@ define([
             var pageDefinition = pageDefinitions[pageID];
             if (pageDefinition.type !== "page") continue;
             report += "<div>";
-            report += "<i> *** " + translate(pageID + "::title") + "</i>  ***<br><br>";
+            report += "<i> *** " + translate("#" + pageID + "::title") + "</i>  ***<br><br>";
             var questionsAnsweredCount = 0;
             var questions = pageDefinition.questions;
             for (var questionIndex in questions) {
@@ -450,7 +450,7 @@ define([
                 }
             }
             
-            if (questionsAnsweredCount === 0) report += translate("no_questions_answered_on_page");
+            if (questionsAnsweredCount === 0) report += translate("#no_questions_answered_on_page");
             report += "</div><br>";
         }
         return report;
@@ -513,7 +513,7 @@ define([
         } else {
             // console.log("regular", value);
             // TODO: Probably need to translate more types, like checkboxes
-            if (question !== null && (question.type === "select" || question.type === "radiobuttons")) value = translate(value);
+            if (question !== null && (question.type === "select" || question.type === "radiobuttons")) value = translate("#" + value, value);
             valueToDisplay += "<b>" + value + "</b>";
         }
         return valueToDisplay;

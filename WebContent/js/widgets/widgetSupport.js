@@ -29,7 +29,7 @@ define([
         if (choices) {
             array.forEach(choices, function(each) {
                 // console.log("each1", each);
-                var label = translate(id + "::selection:" + each);
+                var label = translate("#" + id + "::selection:" + each, each);
                 options.push({label: label, value: each});
             });           
         } else if (optionsString) {
@@ -37,7 +37,7 @@ define([
                 // console.log("each2", each);
                 var translateID = id + "::selection:" + each;
                 if (optionsString === "yes\nno") translateID = "boolean_choice_" + each;
-                var label = translate(translateID);
+                var label = translate("#" + translateID, each);
                 options.push({label: label, value: each});
             });
         }
@@ -53,7 +53,7 @@ define([
         var questionOptions = [];
         array.forEach(questions, function (question) {
             if (array.indexOf(filterableQuestionTypes, question.type) !== -1) {
-                questionOptions.push({label: translate(question.id + "::shortName", "*FIXME -- Missing shortName translation for: " + question.id), value: question.id});
+                questionOptions.push({label: translate("#" + question.id + "::shortName", question.displayName), value: question.id});
             }
         });
         return questionOptions;
@@ -88,7 +88,7 @@ define([
         };
         
         var button = new Button({
-            label: translate(dialogConfiguration.dialogOpenButtonID),
+            label: translate("#" + dialogConfiguration.dialogOpenButtonID),
             type: "button",
             onClick: callback
         });
@@ -117,7 +117,7 @@ define([
    
         dialog = new Dialog({
             // TODO: Translate
-            title: translate(dialogConfiguration.dialogTitleID),
+            title: translate("#" + dialogConfiguration.dialogTitleID),
             style: dialogConfiguration.dialogStyle,
             content: dialogContentPane
         });
@@ -165,7 +165,7 @@ define([
         });
         
         var okButton = new Button({
-            label: translate(dialogConfiguration.dialogOKButtonID),
+            label: translate("#" + dialogConfiguration.dialogOKButtonID),
             type: "button",
             onClick: function() {dialogConfiguration.dialogOKCallback(model.get("text"), hideDialogMethod, id, options, dialogConfiguration);},
             region: 'bottom'

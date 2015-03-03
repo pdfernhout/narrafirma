@@ -250,29 +250,26 @@ require([
        widgetBuilder.buildPanel(panelID, pagePane, domain.projectData.projectAnswers);
        
        if (!page.isHeader) {
-           // Uses special domain dictionary to store translations synthesized for each individual widget
+           // TODO: Will need translations for these eventually
            var options = ["intentionally skipped", "partially done", "completely finished"];
            var statusEntryID = id + "_pageStatus";
-           translate.extraTranslations[statusEntryID + "::prompt"] =  translate("dashboard_status_entry::prompt") + " ";
-           for (var optionIndex in options) {
-               var option = options[optionIndex];
-               translate.extraTranslations[statusEntryID + "::selection:" + option] = translate("dashboard_status_entry::selection:" + option);
-           }
            // TODO: Put blank line in here
            widgetBuilder.add_select(pagePane, domain.projectData.projectAnswers, statusEntryID, options);
        } else {
-           // console.log("page dashboard as header", page.id, page.type, page);
+           console.log("page dashboard as header", page.id, page.type, page);
            // Put in dashboard
-           var pages = domain.pagesToGoWithHeaders[id];
-           for (var pageIndex in pages) {
-               var pageID = pages[pageIndex];
-               var statusViewID = pageID + "_pageStatus_dashboard";
-               var childPage = panelForPageID(pageID);
-               // console.log("pageID", childPage, pageID, domain.pageDefinitions);
-               if (!childPage) console.log("Error: problem finding page definition for", pageID);
-               if (childPage && childPage.type === "page") {
-                   translate.extraTranslations[statusViewID + "::prompt"] = translate(pageID + "::title") + " " + translate("dashboard_status_label") + " ";
-                   widgetBuilder.add_questionAnswer(pagePane, domain.projectData.projectAnswers, statusViewID, [pageID + "_pageStatus"]);
+           var childPages = domain.pagesToGoWithHeaders[panelID];
+           console.log("child pages", id, panelID, childPages);
+           for (var childPageIndex in childPages) {
+               var childPageID = childPages[childPageIndex];
+               var statusViewID = childPageID + "_pageStatus_dashboard";
+               var childPage = panelForPageID(childPageID);
+               console.log("childPageID", childPage, childPageID, domain.pageDefinitions);
+               if (!childPage) console.log("Error: problem finding page definition for", childPageID);
+               if (childPage && childPage.displayType === "page") {
+                   translate.extraTranslations[statusViewID + "::prompt"] = translate("#" + childPageID + "::title", childPage.displayName) + " " + translate("#dashboard_status_label") + " ";
+                   console.log("about to call widgetBuilder for childPage", childPageID);
+                   widgetBuilder.add_questionAnswer(pagePane, domain.projectData.projectAnswers, statusViewID, [childPageID + "_pageStatus"]);
                }
            }
        }
@@ -403,6 +400,7 @@ require([
         
         var questionIndex = 0;
         var lastPageID = null;
+        var lastHeader = null;
         
         // Initialize toaster
         toaster.createToasterWidget("navigationDiv");
@@ -453,6 +451,14 @@ require([
                 if (lastPageID) panelForPageID(lastPageID).nextPageID = pageID;
                 page.previousPageID = lastPageID;
                 lastPageID = pageID;
+                
+                if (!page.isHeader) {
+                    var list = domain.pagesToGoWithHeaders[lastHeader] || [];
+                    list.push(page.id);
+                    domain.pagesToGoWithHeaders[lastHeader] = list;
+                } else {
+                    lastHeader = page.id;
+                }
                 
                 // Looks like Dojo select has a limitation where it can only take strings as values
                 // so can't pass page in as value here and need indirect pageDefinitions lookup dictionary

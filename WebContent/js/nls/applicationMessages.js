@@ -11,8 +11,7 @@ define({
     "dashboard_status_entry::selection:intentionally skipped": "intentionally skipped",
     "dashboard_status_entry::selection:partially done": "partially done",
     "dashboard_status_entry::selection:completely finished": "completely finished",
-    dashboard_status_label: "status:",
-    
+    dashboard_status_label: "status:", 
     question_not_yet_answered: "(Not Yet Entered)",
     
     // Translation of buttons

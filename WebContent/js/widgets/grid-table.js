@@ -425,7 +425,7 @@ define([
             if (includeField) {
                 var newColumn =  {
                     field: question.id,
-                    label: translate(question.id + "::shortName"),
+                    label: translate("#" + question.id + "::shortName", question.displayName),
                     formatter: formatObjectsIfNeeded,
                     sortable: !configuration.moveUpDownButtons
                 };
