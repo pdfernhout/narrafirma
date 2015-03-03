@@ -12,15 +12,17 @@ define([
     // Dynamically added extra translations like for survey questions
     var extraTranslations = {};
     
+    var debugTranslations = false;
+    
     function translate(tag, defaultText) {
-        // console.log("translating", tag);
+        if (debugTranslations) console.log("translating", tag);
         // Kludge for extra domain translations for testing
         if (!tag) {
-            // console.log("translating with no tag, so returning defaultText or empty string", defaultText);
+            if (debugTranslations) console.log("translating with no tag, so returning defaultText or empty string", defaultText);
             return defaultText || "";
         }
         if (tag.charAt(0) !== "#") {
-            // console.log("translating with no leading hash mark, so returning what was passed in", tag);
+            if (debugTranslations) console.log("translating with no leading hash mark, so returning what was passed in", tag);
             return tag;
         }
         var id = tag.substring(1);
@@ -39,9 +41,10 @@ define([
                 result = defaultText;
             } else {
                 result = "ERROR: missing text for: " + tag;
+                console.log("translate problem", result);
             }
         }
-        // console.log("translating result: ", result, tag);
+        if (debugTranslations) console.log("translating result: ", result, tag);
         return result;
     }
     
