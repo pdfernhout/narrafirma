@@ -70,7 +70,7 @@ function typeForDisplayType(displayType) {
 }
 
 var optionsLists = {};
-var allChoices = {}
+var allChoices = {};
 
 pagesReadFromJSON.forEach(function (page) {
     var pageType = "PAGE";
@@ -123,14 +123,19 @@ pagesReadFromJSON.forEach(function (page) {
 });
 
 // console.log("displayTypeToDataTypeMap", displayTypeToDataTypeMap);
-console.log("\n\noptionsLists", optionsLists);
 
-console.log("\t\nallChoices", allChoices);
+function printOptionsLists() {
+    console.log("\n\noptionsLists", optionsLists);
+    
+    console.log("\t\nallChoices", allChoices);
+    
+    console.log("\ntranslate options {");
+    var keys = Object.keys(allChoices);
+    keys.sort();
+    keys.forEach(function(key) {
+        console.log("\"option:" + key + "\": \"" + key + "\",");
+    });
+    console.log("}");
+}
 
-console.log("\ntranslate options {");
-var keys = Object.keys(allChoices);
-keys.sort();
-keys.forEach(function(key) {
-    console.log("\"option:" + key + "\": \"" + key + "\",");
-});
-console.log("}");
+// printOptionsLists();
