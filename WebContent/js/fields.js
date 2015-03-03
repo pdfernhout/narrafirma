@@ -1,4 +1,4 @@
-// generated from design_pages_notes.txt on Tue Mar 03 2015 07:45:12 GMT-0500 (EST)
+// generated from design_pages_notes.txt on Tue Mar 03 2015 07:58:13 GMT-0500 (EST)
 
 // page count 87
 // field count 458
@@ -7,7 +7,7 @@ define([], function() {
 "use strict";
 return [
 
-// ==================== SECTION page_dashboard Dashboard ==========================
+// ==================== SECTION Dashboard ==========================
 
 // ------------- HEADER page panel_dashboard Dashboard  ------------- 
 
@@ -45,7 +45,7 @@ return [
   model: 'ProjectModel' 
 },
 
-// ==================== SECTION page_planning Planning ==========================
+// ==================== SECTION Planning ==========================
 
 // ------------- HEADER page panel_planning Planning  ------------- 
 
@@ -327,7 +327,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_addParticipantGroup',
+  options: 'panel_addParticipantGroup',
   displayType: 'grid',
   displayName: 'Participant groups',
   displayPrompt: 'Please add participant groups in the list below (typically up to three groups).',
@@ -796,7 +796,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_projectStory',
+  options: 'panel_projectStory',
   displayType: 'grid',
   displayName: 'Project stories',
   displayPrompt: 'On this page you will tell yourself some stories about how your project might play out.\nThese "project stories" will help you think about how best to plan the project.',
@@ -963,7 +963,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_addStoryElement',
+  options: 'panel_addStoryElement',
   displayType: 'grid',
   displayName: 'Story elements',
   displayPrompt: 'On this page you can enter the story elements you created on the previous page.',
@@ -1638,7 +1638,7 @@ return [
   model: 'ProjectModel' 
 },
 
-// ==================== SECTION page_collectionDesign Collection design ==========================
+// ==================== SECTION Collection design ==========================
 
 // ------------- HEADER page panel_collectionDesign Collection design  ------------- 
 
@@ -1716,7 +1716,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_addVenue',
+  options: 'panel_addVenue',
   displayType: 'grid',
   displayName: 'Story collection venues',
   displayPrompt: 'These are the ways you will be collecting stories.',
@@ -1871,7 +1871,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_addElicitingQuestion',
+  options: 'panel_addElicitingQuestion',
   displayType: 'grid',
   displayName: 'Story eliciting questions',
   displayPrompt: 'These are the questions you will be asking.',
@@ -1991,7 +1991,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_addStoryQuestion',
+  options: 'panel_addStoryQuestion',
   displayType: 'grid',
   displayName: 'Questions about stories',
   displayPrompt: 'These are the questions you will be asking about stories.',
@@ -2135,7 +2135,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_addParticipantQuestion',
+  options: 'panel_addParticipantQuestion',
   displayType: 'grid',
   displayName: 'Questions about people',
   displayPrompt: 'These are the questions you will be asking people about themselves.',
@@ -2363,7 +2363,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_addStoryCollectionSession',
+  options: 'panel_addStoryCollectionSession',
   displayType: 'grid',
   displayName: 'Story collection session plans',
   displayPrompt: 'Plans for story collection sessions lay out what you will do and how.\nEach plan can be used in multiple sessions.',
@@ -2497,7 +2497,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_addCollectionSessionActivity',
+  options: 'panel_addCollectionSessionActivity',
   displayType: 'grid',
   displayName: 'Story collection activities',
   displayPrompt: 'Here you can enter some activities you plan for the session.\nActivities within story collection sessions can be simple instructions or complicated exercises (like the creation of timelines).',
@@ -2696,7 +2696,7 @@ return [
   model: 'ProjectModel' 
 },
 
-// ==================== SECTION page_collectionProcess Collection process ==========================
+// ==================== SECTION Collection process ==========================
 
 // ------------- HEADER page panel_collectionProcess Collection process  ------------- 
 
@@ -3014,7 +3014,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_addCollectionSessionRecord',
+  options: 'panel_addCollectionSessionRecord',
   displayType: 'grid',
   displayName: 'Story collection session records',
   displayPrompt: 'Enter here what went on in your story collection sessions.',
@@ -3112,7 +3112,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_newCollectionSessionConstruction',
+  options: 'panel_newCollectionSessionConstruction',
   displayType: 'grid',
   displayName: 'Story collection session constructions',
   displayPrompt: 'People in your story collection sessions might have created constructions\nsuch as timelines or landscapes. You can enter details about those here.',
@@ -3386,7 +3386,7 @@ return [
   model: 'ProjectModel' 
 },
 
-// ==================== SECTION page_catalysis Catalysis ==========================
+// ==================== SECTION Catalysis ==========================
 
 // ------------- HEADER page panel_catalysis Catalysis  ------------- 
 
@@ -3744,7 +3744,7 @@ return [
   dataType: 'none',
   required: false,
   validators: undefined,
-  options: 'page_createNewObservation',
+  options: 'panel_createNewObservation',
   displayType: 'button',
   displayName: undefined,
   displayPrompt: 'Create new observation with this result',
@@ -3842,7 +3842,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_selectExcerpt',
+  options: 'panel_selectExcerpt',
   displayType: 'grid',
   displayName: 'First interpretation excerpts',
   displayPrompt: 'You can add excerpts to this interpretation.',
@@ -3890,7 +3890,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_selectExcerpt',
+  options: 'panel_selectExcerpt',
   displayType: 'grid',
   displayName: 'Competing interpretation excerpts',
   displayPrompt: 'You can add excerpts to the competing interpretation.',
@@ -3938,7 +3938,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_selectExcerpt',
+  options: 'panel_selectExcerpt',
   displayType: 'grid',
   displayName: 'Third interpretation excerpts',
   displayPrompt: 'You can add excerpts to the third interpretation.',
@@ -4026,7 +4026,7 @@ return [
   dataType: 'none',
   required: false,
   validators: undefined,
-  options: 'page_createNewExcerpt',
+  options: 'panel_createNewExcerpt',
   displayType: 'button',
   displayName: undefined,
   displayPrompt: 'Create new excerpt with this text',
@@ -4100,7 +4100,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_createNewExcerpt',
+  options: 'panel_createNewExcerpt',
   displayType: 'grid',
   displayName: 'Story excerpts',
   displayPrompt: 'These are the story excerpts you have saved.',
@@ -4124,7 +4124,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_createOrEditObservation',
+  options: 'panel_createOrEditObservation',
   displayType: 'grid',
   displayName: 'Catalysis observations',
   displayPrompt: 'These are the observations you have collected from the\nbrowse, graph, and trends pages.',
@@ -4196,7 +4196,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_addPerspective',
+  options: 'panel_addPerspective',
   displayType: 'grid',
   displayName: 'Catalysis perspectives',
   displayPrompt: 'These are the perspectives you have created from interpretations.',
@@ -4246,7 +4246,7 @@ return [
   dataType: 'none',
   required: false,
   validators: undefined,
-  options: 'page_annotateResultForPerspective',
+  options: 'panel_annotateResultForPerspective',
   displayType: 'annotationsGrid',
   displayName: undefined,
   displayPrompt: 'Results linked to this perspective',
@@ -4258,7 +4258,7 @@ return [
   dataType: 'none',
   required: false,
   validators: undefined,
-  options: 'page_annotateExcerptForPerspective',
+  options: 'panel_annotateExcerptForPerspective',
   displayType: 'annotationsGrid',
   displayName: undefined,
   displayPrompt: 'Excerpts linked to this perspective',
@@ -4270,7 +4270,7 @@ return [
   dataType: 'none',
   required: false,
   validators: undefined,
-  options: 'page_annotateInterpretationForPerspective',
+  options: 'panel_annotateInterpretationForPerspective',
   displayType: 'annotationsGrid',
   displayName: undefined,
   displayPrompt: 'Interpretations linked to this perspective',
@@ -4392,7 +4392,7 @@ return [
   model: 'ProjectModel' 
 },
 
-// ==================== SECTION page_sensemaking Sensemaking ==========================
+// ==================== SECTION Sensemaking ==========================
 
 // ------------- HEADER page panel_sensemaking Sensemaking  ------------- 
 
@@ -4470,7 +4470,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_addSensemakingSessionPlan',
+  options: 'panel_addSensemakingSessionPlan',
   displayType: 'grid',
   displayName: 'Sensemaking session plans',
   displayPrompt: 'Enter your plans for sensemaking sessions here.',
@@ -4604,7 +4604,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_addSensemakingSessionActivity',
+  options: 'panel_addSensemakingSessionActivity',
   displayType: 'grid',
   displayName: 'Sensemaking session activities',
   displayPrompt: 'Here you can enter some activities you plan for the session.\nActivities within story collection sessions can be simple instructions or complicated exercises (like the creation of timelines).',
@@ -4797,7 +4797,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_addSensemakingSessionRecord',
+  options: 'panel_addSensemakingSessionRecord',
   displayType: 'grid',
   displayName: 'Sensemaking session records',
   displayPrompt: 'Enter your sensemaking session records here.',
@@ -4895,7 +4895,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_addResonantStory',
+  options: 'panel_addResonantStory',
   displayType: 'grid',
   displayName: 'Sensemaking session resonant stories',
   displayPrompt: 'If you discovered any resonant stories (pivot, voice, discovery) in this session,\nenter them here.',
@@ -4907,7 +4907,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_newSensemakingSessionOutcome',
+  options: 'panel_newSensemakingSessionOutcome',
   displayType: 'grid',
   displayName: 'Sensemaking session outcomes',
   displayPrompt: 'If your session ended with creating lists of outcomes (like discoveries and ideas),\nyou can enter them here.',
@@ -4919,7 +4919,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_newSensemakingSessionConstruction',
+  options: 'panel_newSensemakingSessionConstruction',
   displayType: 'grid',
   displayName: 'Sensemaking session constructions',
   displayPrompt: 'If your session involve creating any group constructions (like landscapes or timelines),\nyou can describe them here.',
@@ -5330,7 +5330,7 @@ return [
   model: 'ProjectModel' 
 },
 
-// ==================== SECTION page_intervention Intervention ==========================
+// ==================== SECTION Intervention ==========================
 
 // ------------- HEADER page panel_intervention Intervention  ------------- 
 
@@ -5384,7 +5384,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_projectOutcome',
+  options: 'panel_projectOutcome',
   displayType: 'grid',
   displayName: 'Project outcomes',
   displayPrompt: 'In order to choose interventions that will be useful in your project, it will be helpful to think about some\nof the issues (positive and negative) you discovered in your project. Please answer these questions in reference to\nthe participant groups you set up in the project planning phase. Please enter one record for each participant group.',
@@ -5710,7 +5710,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_addIntervention',
+  options: 'panel_addIntervention',
   displayType: 'grid',
   displayName: 'Intervention plans',
   displayPrompt: 'Enter your plans for narrative interventions here.',
@@ -5930,7 +5930,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_addInterventionRecord',
+  options: 'panel_addInterventionRecord',
   displayType: 'grid',
   displayName: 'Intervention records',
   displayPrompt: 'Use this list to keep records of the interventions you carried out.',
@@ -6204,7 +6204,7 @@ return [
   model: 'ProjectModel' 
 },
 
-// ==================== SECTION page_return Return ==========================
+// ==================== SECTION Return ==========================
 
 // ------------- HEADER page panel_return Return  ------------- 
 
@@ -6270,7 +6270,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_enterFeedbackPiece',
+  options: 'panel_enterFeedbackPiece',
   displayType: 'grid',
   displayName: 'Pieces of feedback',
   displayPrompt: 'You can enter specific pieces of feedback you have gathered here.',
@@ -6555,7 +6555,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_addPresentationElement',
+  options: 'panel_addPresentationElement',
   displayType: 'grid',
   displayName: 'Presentation elements',
   displayPrompt: 'There are elements (points of discussion) to present about your project.',
@@ -6689,7 +6689,7 @@ return [
   dataType: 'array',
   required: true,
   validators: undefined,
-  options: 'page_addNewReturnRequest',
+  options: 'panel_addNewReturnRequest',
   displayType: 'grid',
   displayName: 'Help requests',
   displayPrompt: 'Enter requests for help here.',
@@ -6812,7 +6812,7 @@ return [
   model: 'ProjectModel' 
 },
 
-// ==================== SECTION page_projectReport Project report ==========================
+// ==================== SECTION Project report ==========================
 
 // ------------- HEADER page panel_projectReport Project report  ------------- 
 

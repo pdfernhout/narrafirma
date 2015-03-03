@@ -90,6 +90,7 @@ function outputStringForItem(item) {
 
 var optionsLists = {};
 var allChoices = {};
+var typesWithChoices = {};
 
 console.log('define([], function() {\n"use strict";\nreturn [');
 
@@ -101,7 +102,7 @@ pagesReadFromJSON.forEach(function (page) {
     var extraForHeader = "";
     
     if (page.isHeader) {
-        console.log("\n// ==================== SECTION", page.id, page.name, "==========================");
+        console.log("\n// ==================== SECTION", page.name, "==========================");
         extraForHeader = " HEADER";
     }
     console.log("\n// -------------" + extraForHeader, page.type, panelID, page.name, " ------------- \n");
@@ -129,8 +130,11 @@ pagesReadFromJSON.forEach(function (page) {
         var optionsAsArray;
         if (question.options) {
             optionsAsArray = question.options.split(";");
-            if (optionsAsArray.length === 1) optionsAsArray = optionsAsArray[0];
-            else {
+            if (optionsAsArray.length === 1) {
+                optionsAsArray = optionsAsArray[0];
+                if (optionsAsArray.indexOf("page_") === 0) optionsAsArray = optionsAsArray.replace("page_", "panel_");
+            } else {
+                typesWithChoices[question.type] = true;
                 var list = optionsLists[question.options] || [];
                 list.push(question.id);
                 optionsLists[question.options] = list;
@@ -180,3 +184,5 @@ function printOptionsLists() {
 }
 
 // printOptionsLists();
+
+// console.log("types with choices", typesWithChoices);
