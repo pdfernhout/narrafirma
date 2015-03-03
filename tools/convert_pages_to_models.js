@@ -84,24 +84,25 @@ var allChoices = {};
 console.log("define([");
 
 pagesReadFromJSON.forEach(function (page) {
-    var pageType = "PAGE";
     var modelName = "ProjectModel";
+    
+    var panelID = page.id.replace("page_", "panel_");
+    
     if (page.isHeader) {
-        pageType = "HEADER";
         console.log("\n// ==================== SECTION", page.id, page.name, "==========================");
     }
-    console.log("\n// ------------- ", pageType, page.id, page.name, page.type, " ------------- \n");
+    console.log("\n// ------------- PANEL", panelID, page.name, page.type, " ------------- \n");
     
-    var pageItem = {
-        id: page.id,
+    var panelItem = {
+        id: panelID,
         displayName: page.name,
         displayType: page.type,
         isHeader: page.isHeader,
-        displayPage: page.id,
-        pageModel: "" + page.options + "Model"
+        displayPanel: panelID,
+        modelPath: ("" + page.options).toLowerCase()
     };
     
-    outputStringForItem(pageItem);
+    outputStringForItem(panelItem);
     
     // console.log("page", page, "\n");
     if (!page.isHeader) {
@@ -138,7 +139,7 @@ pagesReadFromJSON.forEach(function (page) {
             displayType: question.type,
             displayName: question.shortText || undefined,
             displayPrompt: question.text,
-            displayPage: page.id,
+            displayPanel: panelID,
             model: modelName
         };
         // console.log("question", question.id, "\n", JSON.stringify(item, null, 4), "\n");

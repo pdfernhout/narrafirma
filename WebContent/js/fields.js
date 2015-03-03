@@ -2,15 +2,15 @@ define([
 
 // ==================== SECTION page_dashboard Dashboard ==========================
 
-// -------------  HEADER page_dashboard Dashboard page  ------------- 
+// ------------- PANEL panel_dashboard Dashboard page  ------------- 
 
 {
-  id: 'page_dashboard',
+  id: 'panel_dashboard',
   displayName: 'Dashboard',
   displayType: 'page',
   isHeader: true,
-  displayPage: 'page_dashboard',
-  pageModel: 'ProjectModel' 
+  displayPanel: 'panel_dashboard',
+  modelPath: 'project' 
 },
 {
   id: 'project_mainDashboardLabel',
@@ -21,7 +21,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'Welcome to NarraFirma. You can use this software to:\n<ul>\n<li>plan your Participatory Narrative Inquiry (PNI) project</li>\n<li>decide how you will collect stories</li>\n<li>write questions about stories</li>\n<li>plan group story sessions (and record what went on in them)</li>\n<li>collect or enter stories (and answers to questions)</li>\n<li>look at patterns in collected stories and answers</li>\n<li>build catalytic material</li>\n<li>plan sensemaking sessions (and record what went on in them)</li>\n<li>plan interventions (and record what went on in them)</li>\n<li>gather project feedback</li>\n<li>reflect on the project</li>\n<li>present the project to others</li>\n<li>preserve what you learned so you can use it on the next project</li>\n</ul>\n<p>Note: When finished, this page will bring together all of the dashboard pages from\nthe phases of the project.</p>',
-  displayPage: 'page_dashboard',
+  displayPanel: 'panel_dashboard',
   model: 'ProjectModel' 
 },
 {
@@ -33,21 +33,21 @@ define([
   displayType: 'image',
   displayName: undefined,
   displayPrompt: 'This software is a companion for the book "Working with Stories in  Your Community or Organization" by Cynthia F. Kurtz',
-  displayPage: 'page_dashboard',
+  displayPanel: 'panel_dashboard',
   model: 'ProjectModel' 
 },
 
 // ==================== SECTION page_planning Planning ==========================
 
-// -------------  HEADER page_planning Planning page  ------------- 
+// ------------- PANEL panel_planning Planning page  ------------- 
 
 {
-  id: 'page_planning',
+  id: 'panel_planning',
   displayName: 'Planning',
   displayType: 'page',
   isHeader: true,
-  displayPage: 'page_planning',
-  pageModel: 'ProjectModel' 
+  displayPanel: 'panel_planning',
+  modelPath: 'project' 
 },
 {
   id: 'project_projectPlanningLabel',
@@ -58,7 +58,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'In the planning phase of your PNI project, you will make decisions about how your project will proceed.\nYou will think about your goals, your topic, your participants, and any opportunities and dangers you might encounter during the project.',
-  displayPage: 'page_planning',
+  displayPanel: 'panel_planning',
   model: 'ProjectModel' 
 },
 {
@@ -70,19 +70,19 @@ define([
   displayType: 'textarea',
   displayName: 'Planning notes',
   displayPrompt: 'You can enter some general notes on planning in this project here.',
-  displayPage: 'page_planning',
+  displayPanel: 'panel_planning',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_projectFacts Enter project facts page  ------------- 
+// ------------- PANEL panel_projectFacts Enter project facts page  ------------- 
 
 {
-  id: 'page_projectFacts',
+  id: 'panel_projectFacts',
   displayName: 'Enter project facts',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_projectFacts',
-  pageModel: 'ProjectModel' 
+  displayPanel: 'panel_projectFacts',
+  modelPath: 'project' 
 },
 {
   id: 'project_projectFacts',
@@ -93,7 +93,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you will enter some facts about your project. The information you enter here will appear in your reports.',
-  displayPage: 'page_projectFacts',
+  displayPanel: 'panel_projectFacts',
   model: 'ProjectModel' 
 },
 {
@@ -105,7 +105,7 @@ define([
   displayType: 'text',
   displayName: 'Project title',
   displayPrompt: 'What is the project\'s title?',
-  displayPage: 'page_projectFacts',
+  displayPanel: 'panel_projectFacts',
   model: 'ProjectModel' 
 },
 {
@@ -117,7 +117,7 @@ define([
   displayType: 'text',
   displayName: 'Community/organization name',
   displayPrompt: 'What is the name of your community or organization?',
-  displayPage: 'page_projectFacts',
+  displayPanel: 'panel_projectFacts',
   model: 'ProjectModel' 
 },
 {
@@ -129,7 +129,7 @@ define([
   displayType: 'text',
   displayName: 'Project topic',
   displayPrompt: 'Enter a brief name for the project\'s primary topic.',
-  displayPage: 'page_projectFacts',
+  displayPanel: 'panel_projectFacts',
   model: 'ProjectModel' 
 },
 {
@@ -141,7 +141,7 @@ define([
   displayType: 'text',
   displayName: 'Project start and end',
   displayPrompt: 'What are the project\'s starting and ending dates?',
-  displayPage: 'page_projectFacts',
+  displayPanel: 'panel_projectFacts',
   model: 'ProjectModel' 
 },
 {
@@ -153,7 +153,7 @@ define([
   displayType: 'textarea',
   displayName: 'Project funders',
   displayPrompt: 'Who is funding or otherwise supporting the project?',
-  displayPage: 'page_projectFacts',
+  displayPanel: 'panel_projectFacts',
   model: 'ProjectModel' 
 },
 {
@@ -165,7 +165,7 @@ define([
   displayType: 'textarea',
   displayName: 'Project facilitators',
   displayPrompt: 'Who is facilitating the project?',
-  displayPage: 'page_projectFacts',
+  displayPanel: 'panel_projectFacts',
   model: 'ProjectModel' 
 },
 {
@@ -177,7 +177,7 @@ define([
   displayType: 'textarea',
   displayName: 'Report start text',
   displayPrompt: 'Enter any other information you want to appear at the top of project reports.',
-  displayPage: 'page_projectFacts',
+  displayPanel: 'panel_projectFacts',
   model: 'ProjectModel' 
 },
 {
@@ -189,19 +189,19 @@ define([
   displayType: 'textarea',
   displayName: 'Report end text',
   displayPrompt: 'Enter any other information you want to appear at the bottom of project reports.',
-  displayPage: 'page_projectFacts',
+  displayPanel: 'panel_projectFacts',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_planningQuestionsDraft Answer PNI Planning questions page  ------------- 
+// ------------- PANEL panel_planningQuestionsDraft Answer PNI Planning questions page  ------------- 
 
 {
-  id: 'page_planningQuestionsDraft',
+  id: 'panel_planningQuestionsDraft',
   displayName: 'Answer PNI Planning questions',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_planningQuestionsDraft',
-  pageModel: 'ProjectModel' 
+  displayPanel: 'panel_planningQuestionsDraft',
+  modelPath: 'project' 
 },
 {
   id: 'project_draftQuestionsLabel',
@@ -212,7 +212,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you will answer some questions about your project\'s goals, relationships, focus, range, scope, and emphasis.\nIf you don\'t have good answers for these questions right now, don\'t worry; you will have a chance to work on these answers again later.',
-  displayPage: 'page_planningQuestionsDraft',
+  displayPanel: 'panel_planningQuestionsDraft',
   model: 'ProjectModel' 
 },
 {
@@ -224,7 +224,7 @@ define([
   displayType: 'textarea',
   displayName: 'Project goal',
   displayPrompt: 'What is the goal of the project? Why are you doing it?',
-  displayPage: 'page_planningQuestionsDraft',
+  displayPanel: 'panel_planningQuestionsDraft',
   model: 'ProjectModel' 
 },
 {
@@ -236,7 +236,7 @@ define([
   displayType: 'textarea',
   displayName: 'Project relationships',
   displayPrompt: 'What relationships are important to the project?',
-  displayPage: 'page_planningQuestionsDraft',
+  displayPanel: 'panel_planningQuestionsDraft',
   model: 'ProjectModel' 
 },
 {
@@ -248,7 +248,7 @@ define([
   displayType: 'textarea',
   displayName: 'Project focus',
   displayPrompt: 'What is the focus of the project? What is it about?',
-  displayPage: 'page_planningQuestionsDraft',
+  displayPanel: 'panel_planningQuestionsDraft',
   model: 'ProjectModel' 
 },
 {
@@ -260,7 +260,7 @@ define([
   displayType: 'textarea',
   displayName: 'Project range',
   displayPrompt: 'What range(s) of experience will the project cover?',
-  displayPage: 'page_planningQuestionsDraft',
+  displayPanel: 'panel_planningQuestionsDraft',
   model: 'ProjectModel' 
 },
 {
@@ -272,7 +272,7 @@ define([
   displayType: 'textarea',
   displayName: 'Project scope',
   displayPrompt: 'What is the project\'s scope? (number of people, number of stories, number of questions about stories)',
-  displayPage: 'page_planningQuestionsDraft',
+  displayPanel: 'panel_planningQuestionsDraft',
   model: 'ProjectModel' 
 },
 {
@@ -284,19 +284,19 @@ define([
   displayType: 'textarea',
   displayName: 'Project emphasis',
   displayPrompt: 'Which phases of PNI will be important to the project? (indicate most and least important phases)',
-  displayPage: 'page_planningQuestionsDraft',
+  displayPanel: 'panel_planningQuestionsDraft',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_participantGroups Describe participant groups page  ------------- 
+// ------------- PANEL panel_participantGroups Describe participant groups page  ------------- 
 
 {
-  id: 'page_participantGroups',
+  id: 'panel_participantGroups',
   displayName: 'Describe participant groups',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_participantGroups',
-  pageModel: 'ProjectModel' 
+  displayPanel: 'panel_participantGroups',
+  modelPath: 'project' 
 },
 {
   id: 'project_aboutParticipantGroups',
@@ -307,7 +307,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you will think about groups of participants you want to involve in your project.\nExamples might be: doctors and patients; staff and customers; natives, immigrants, and tourists.',
-  displayPage: 'page_participantGroups',
+  displayPanel: 'panel_participantGroups',
   model: 'ProjectModel' 
 },
 {
@@ -319,19 +319,19 @@ define([
   displayType: 'grid',
   displayName: 'Participant groups',
   displayPrompt: 'Please add participant groups in the list below (typically up to three groups).',
-  displayPage: 'page_participantGroups',
+  displayPanel: 'panel_participantGroups',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_addParticipantGroup Participant group popup  ------------- 
+// ------------- PANEL panel_addParticipantGroup Participant group popup  ------------- 
 
 {
-  id: 'page_addParticipantGroup',
+  id: 'panel_addParticipantGroup',
   displayName: 'Participant group',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_addParticipantGroup',
-  pageModel: 'ParticipantGroupModel' 
+  displayPanel: 'panel_addParticipantGroup',
+  modelPath: 'participantgroup' 
 },
 // Generate model ParticipantGroupModel 
 
@@ -344,7 +344,7 @@ define([
   displayType: 'text',
   displayName: 'Name',
   displayPrompt: 'Please name this group of participants (for example, "doctors", "students", "staff").',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -356,7 +356,7 @@ define([
   displayType: 'textarea',
   displayName: 'Description',
   displayPrompt: 'Please describe this group of participants.\nFor example, you might want to record any observations you have made about this group.\nWhat do you know about them?',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -368,7 +368,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'Details for the participant group.',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -380,7 +380,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Status',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -399,7 +399,7 @@ define([
   displayType: 'select',
   displayName: 'Status',
   displayPrompt: 'What is the status of these participants in the community or organization?',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -418,7 +418,7 @@ define([
   displayType: 'select',
   displayName: 'Self-confidence',
   displayPrompt: 'How much self-confidence do these participants have?',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -430,7 +430,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Ability',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -442,7 +442,7 @@ define([
   displayType: 'select',
   displayName: 'Free time',
   displayPrompt: 'How much free time do these participants have?',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -461,7 +461,7 @@ define([
   displayType: 'select',
   displayName: 'Education level',
   displayPrompt: 'What is the education level of these participants?',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -473,7 +473,7 @@ define([
   displayType: 'select',
   displayName: 'Physical limitations',
   displayPrompt: 'Do these participants have physical limitations that will impact their participation?',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -485,7 +485,7 @@ define([
   displayType: 'select',
   displayName: 'Emotional limitations',
   displayPrompt: 'Do these participants have emotional impairments that will impact their participation (such as mental illness or traumatic stress)?',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -497,7 +497,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Expectations',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -515,7 +515,7 @@ define([
   displayType: 'select',
   displayName: 'Performance',
   displayPrompt: 'For these participants, how important is performing well (with "high marks")?',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -533,7 +533,7 @@ define([
   displayType: 'select',
   displayName: 'Conformance',
   displayPrompt: 'For these participants, how important is conforming (to what is "normal" or expected)?',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -551,7 +551,7 @@ define([
   displayType: 'select',
   displayName: 'Self-promotion',
   displayPrompt: 'For these participants, how important is self-promotion (competing with others)?',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -569,7 +569,7 @@ define([
   displayType: 'select',
   displayName: 'Speaking out',
   displayPrompt: 'For these participants, how important is speaking out (having a say, venting, sounding off)?',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -581,7 +581,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Feelings about the project',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -600,7 +600,7 @@ define([
   displayType: 'select',
   displayName: 'Motivated',
   displayPrompt: 'How motivated are these participants to participate in the project?',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -612,7 +612,7 @@ define([
   displayType: 'select',
   displayName: 'Feelings about project',
   displayPrompt: 'How are these participants likely to feel about the project?',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -624,7 +624,7 @@ define([
   displayType: 'select',
   displayName: 'Feelings about you',
   displayPrompt: 'How do these participants feel about you?',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -636,7 +636,7 @@ define([
   displayType: 'select',
   displayName: 'Feel about stories',
   displayPrompt: 'How do these participants feel about the idea of collecting stories?',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -648,7 +648,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Feelings about the topic',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -667,7 +667,7 @@ define([
   displayType: 'select',
   displayName: 'Experiences with topic',
   displayPrompt: 'What experiences have these participants had with the project\'s topic?',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -679,7 +679,7 @@ define([
   displayType: 'select',
   displayName: 'How private',
   displayPrompt: 'How private do these participants consider the topic to be?',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -691,7 +691,7 @@ define([
   displayType: 'select',
   displayName: 'Articulation',
   displayPrompt: 'How hard will it be for these participants to articulate their feelings about the topic?',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 {
@@ -703,19 +703,19 @@ define([
   displayType: 'select',
   displayName: 'Time period',
   displayPrompt: 'How long of a time period do you need these participants to look back on?',
-  displayPage: 'page_addParticipantGroup',
+  displayPanel: 'panel_addParticipantGroup',
   model: 'ParticipantGroupModel' 
 },
 
-// -------------  PAGE page_aboutYou About you page  ------------- 
+// ------------- PANEL panel_aboutYou About you page  ------------- 
 
 {
-  id: 'page_aboutYou',
+  id: 'panel_aboutYou',
   displayName: 'About you',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_aboutYou',
-  pageModel: 'Project.AboutYouModel' 
+  displayPanel: 'panel_aboutYou',
+  modelPath: 'project.aboutyou' 
 },
 {
   id: 'aboutYou_youHeader',
@@ -726,7 +726,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'About you',
-  displayPage: 'page_aboutYou',
+  displayPanel: 'panel_aboutYou',
   model: 'ProjectModel' 
 },
 {
@@ -738,7 +738,7 @@ define([
   displayType: 'select',
   displayName: 'Experience',
   displayPrompt: 'How much experience do you have facilitating PNI projects?',
-  displayPage: 'page_aboutYou',
+  displayPanel: 'panel_aboutYou',
   model: 'ProjectModel' 
 },
 {
@@ -750,7 +750,7 @@ define([
   displayType: 'select',
   displayName: 'Help',
   displayPrompt: 'How much help will you have carrying out this project?',
-  displayPage: 'page_aboutYou',
+  displayPanel: 'panel_aboutYou',
   model: 'ProjectModel' 
 },
 {
@@ -762,19 +762,19 @@ define([
   displayType: 'select',
   displayName: 'Technology',
   displayPrompt: 'How many technological resources will you have for carrying out this project?',
-  displayPage: 'page_aboutYou',
+  displayPanel: 'panel_aboutYou',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_projectStories Tell project stories page  ------------- 
+// ------------- PANEL panel_projectStories Tell project stories page  ------------- 
 
 {
-  id: 'page_projectStories',
+  id: 'panel_projectStories',
   displayName: 'Tell project stories',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_projectStories',
-  pageModel: 'ProjectModel' 
+  displayPanel: 'panel_projectStories',
+  modelPath: 'project' 
 },
 {
   id: 'project_projectStoriesList',
@@ -785,19 +785,19 @@ define([
   displayType: 'grid',
   displayName: 'Project stories',
   displayPrompt: 'On this page you will tell yourself some stories about how your project might play out.\nThese "project stories" will help you think about how best to plan the project.',
-  displayPage: 'page_projectStories',
+  displayPanel: 'panel_projectStories',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_projectStory Project story popup  ------------- 
+// ------------- PANEL panel_projectStory Project story popup  ------------- 
 
 {
-  id: 'page_projectStory',
+  id: 'panel_projectStory',
   displayName: 'Project story',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_projectStory',
-  pageModel: 'ProjectStoryModel' 
+  displayPanel: 'panel_projectStory',
+  modelPath: 'projectstory' 
 },
 // Generate model ProjectStoryModel 
 
@@ -815,7 +815,7 @@ define([
   displayType: 'select',
   displayName: 'Scenario',
   displayPrompt: 'Start by choosing a scenario for your project story.',
-  displayPage: 'page_projectStory',
+  displayPanel: 'panel_projectStory',
   model: 'ProjectStoryModel' 
 },
 {
@@ -831,7 +831,7 @@ define([
   displayType: 'select',
   displayName: 'Outcome',
   displayPrompt: 'Now choose an outcome for your story.',
-  displayPage: 'page_projectStory',
+  displayPanel: 'panel_projectStory',
   model: 'ProjectStoryModel' 
 },
 {
@@ -843,7 +843,7 @@ define([
   displayType: 'textarea',
   displayName: 'Story',
   displayPrompt: 'Now tell your project story as a future history (as though it has already happened).',
-  displayPage: 'page_projectStory',
+  displayPanel: 'panel_projectStory',
   model: 'ProjectStoryModel' 
 },
 {
@@ -855,7 +855,7 @@ define([
   displayType: 'text',
   displayName: 'Name',
   displayPrompt: 'Please name your project story.',
-  displayPage: 'page_projectStory',
+  displayPanel: 'panel_projectStory',
   model: 'ProjectStoryModel' 
 },
 {
@@ -867,7 +867,7 @@ define([
   displayType: 'textarea',
   displayName: 'Feel about',
   displayPrompt: 'How do you feel about this story?',
-  displayPage: 'page_projectStory',
+  displayPanel: 'panel_projectStory',
   model: 'ProjectStoryModel' 
 },
 {
@@ -879,7 +879,7 @@ define([
   displayType: 'textarea',
   displayName: 'Surprised',
   displayPrompt: 'What surprised you about this story?',
-  displayPage: 'page_projectStory',
+  displayPanel: 'panel_projectStory',
   model: 'ProjectStoryModel' 
 },
 {
@@ -891,19 +891,19 @@ define([
   displayType: 'textarea',
   displayName: 'Opportunities or dangers',
   displayPrompt: 'Describe any opportunities or dangers you see in this story.',
-  displayPage: 'page_projectStory',
+  displayPanel: 'panel_projectStory',
   model: 'ProjectStoryModel' 
 },
 
-// -------------  PAGE page_createProjectStoryElements Create project story elements page  ------------- 
+// ------------- PANEL panel_createProjectStoryElements Create project story elements page  ------------- 
 
 {
-  id: 'page_createProjectStoryElements',
+  id: 'panel_createProjectStoryElements',
   displayName: 'Create project story elements',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_createProjectStoryElements',
-  pageModel: 'ProjectModel' 
+  displayPanel: 'panel_createProjectStoryElements',
+  modelPath: 'project' 
 },
 {
   id: 'project_storyElementsInstructions',
@@ -914,7 +914,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'Here are some instructions on how to create story elements from your project stories.\nCreating story elements helps you think about what is going on in the stories you told.\nYou can enter your story elements on the next page.\n<ol>\n<li>Choose one or two types of story element (characters, situations, values, themes, relationships, motivations, beliefs, conflicts).</li>\n<li>For each story, come up with as many answers to that element\'s question as you can. Write the answers on sticky notes.</li>\n<li>The questions are:</li>\n<ul>\n<li>Characters: Who is doing things in this story?</li>\n<li>Situations: What is going on in this story?</li>\n<li>Values: What matters to the characters in this story?</li>\n<li>Themes: What is this story about?</li>\n<li>Relationships: How are the characters related in this story?</li>\n<li>Motivations: Why do the characters do what they do in this story?</li>\n<li>Beliefs: What do people believe in this story?</li>\n<li>Conflicts: Who or what stands in opposition in this story?</li>\n</ul>\n<li>Once you have answered the question(s) you chose for each story, cluster the sticky notes into groups. Place like with like.</li>\n<li>Give each group of sticky notes a name.</li>\n<li>Clear a "halo" of space around each group\'s name.</li>\n<li>In the halo, write 2-5 good and bad attributes (advantages and disadvantages, opportunities and dangers) of each group of sticky notes.</li>\n<li>Copy or move the new good/bad attributes to a new space. Mix them all together.</li>\n<li>Cluster the attributes into groups.</li>\n<li>Name the groups. These are your story elements.</li>\n<li>You can enter your story elements on the next page.</li>\n</ol>',
-  displayPage: 'page_createProjectStoryElements',
+  displayPanel: 'panel_createProjectStoryElements',
   model: 'ProjectModel' 
 },
 {
@@ -926,19 +926,19 @@ define([
   displayType: 'clusteringDiagram',
   displayName: undefined,
   displayPrompt: 'You can work on a clustering diagram here:',
-  displayPage: 'page_createProjectStoryElements',
+  displayPanel: 'panel_createProjectStoryElements',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_enterProjectStoryElements Enter project story elements page  ------------- 
+// ------------- PANEL panel_enterProjectStoryElements Enter project story elements page  ------------- 
 
 {
-  id: 'page_enterProjectStoryElements',
+  id: 'panel_enterProjectStoryElements',
   displayName: 'Enter project story elements',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_enterProjectStoryElements',
-  pageModel: 'ProjectModel' 
+  displayPanel: 'panel_enterProjectStoryElements',
+  modelPath: 'project' 
 },
 {
   id: 'project_projectStoryElementsList',
@@ -949,19 +949,19 @@ define([
   displayType: 'grid',
   displayName: 'Story elements',
   displayPrompt: 'On this page you can enter the story elements you created on the previous page.',
-  displayPage: 'page_enterProjectStoryElements',
+  displayPanel: 'panel_enterProjectStoryElements',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_addStoryElement Add story element popup  ------------- 
+// ------------- PANEL panel_addStoryElement Add story element popup  ------------- 
 
 {
-  id: 'page_addStoryElement',
+  id: 'panel_addStoryElement',
   displayName: 'Add story element',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_addStoryElement',
-  pageModel: 'StoryElementModel' 
+  displayPanel: 'panel_addStoryElement',
+  modelPath: 'storyelement' 
 },
 // Generate model StoryElementModel 
 
@@ -974,7 +974,7 @@ define([
   displayType: 'text',
   displayName: 'Name',
   displayPrompt: 'What is the name of the story element?',
-  displayPage: 'page_addStoryElement',
+  displayPanel: 'panel_addStoryElement',
   model: 'StoryElementModel' 
 },
 {
@@ -994,7 +994,7 @@ define([
   displayType: 'select',
   displayName: 'Type',
   displayPrompt: 'What type of story element is this?',
-  displayPage: 'page_addStoryElement',
+  displayPanel: 'panel_addStoryElement',
   model: 'StoryElementModel' 
 },
 {
@@ -1006,19 +1006,19 @@ define([
   displayType: 'textarea',
   displayName: 'Description',
   displayPrompt: 'You can describe the story element more fully here.',
-  displayPage: 'page_addStoryElement',
+  displayPanel: 'panel_addStoryElement',
   model: 'StoryElementModel' 
 },
 
-// -------------  PAGE page_assessStorySharing Assess story sharing page  ------------- 
+// ------------- PANEL panel_assessStorySharing Assess story sharing page  ------------- 
 
 {
-  id: 'page_assessStorySharing',
+  id: 'panel_assessStorySharing',
   displayName: 'Assess story sharing',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_assessStorySharing',
-  pageModel: 'Project.AssessmentModel' 
+  displayPanel: 'panel_assessStorySharing',
+  modelPath: 'project.assessment' 
 },
 {
   id: 'assessment_intro',
@@ -1029,7 +1029,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you can answer questions about your community or organization to assess its story sharing culture.\nBefore you answer these questions, you should spend some time listening to people share stories together\nin the places where they normally gather.',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1041,7 +1041,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Narrative freedom',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1053,7 +1053,7 @@ define([
   displayType: 'select',
   displayName: 'Countering',
   displayPrompt: 'As you listened to people talk, how often did you hear a person respond to a story with another story that countered it in some way?',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1070,7 +1070,7 @@ define([
   displayType: 'select',
   displayName: 'Authority',
   displayPrompt: 'When someone who was obviously in authority was telling stories, how much time and attention did they get?',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1082,7 +1082,7 @@ define([
   displayType: 'select',
   displayName: 'Mistakes',
   displayPrompt: 'How many times did you hear people tell stories about mistakes?',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1094,7 +1094,7 @@ define([
   displayType: 'select',
   displayName: 'Stepping in',
   displayPrompt: 'When somebody started telling a story and another person stopped them, how did they stop them?',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1106,7 +1106,7 @@ define([
   displayType: 'select',
   displayName: 'Disagreement',
   displayPrompt: 'When somebody was telling a story and another person disagreed with the storyteller, how did they disagree?',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1118,7 +1118,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Narrative flow',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1130,7 +1130,7 @@ define([
   displayType: 'select',
   displayName: 'Reminding',
   displayPrompt: 'When you listened to people telling stories, did you ever hear people say "that reminds me of the time" and then tell a story in response?',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1142,7 +1142,7 @@ define([
   displayType: 'select',
   displayName: 'Passing on stories',
   displayPrompt: 'How often did you hear people pass on stories they heard from other people?',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1154,7 +1154,7 @@ define([
   displayType: 'select',
   displayName: 'Folklore',
   displayPrompt: 'How much evidence did you find for a narrative folklore in your community or organization?',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1166,7 +1166,7 @@ define([
   displayType: 'select',
   displayName: 'Story types',
   displayPrompt: 'Did you hear comic stories, tragic stories, epic stories, and funny stories?',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1178,7 +1178,7 @@ define([
   displayType: 'select',
   displayName: 'Decision making',
   displayPrompt: 'Did you ever see people share stories as they prepared to make decisions?',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1190,7 +1190,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Narrative knowledge',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1202,7 +1202,7 @@ define([
   displayType: 'select',
   displayName: 'Recountings of events',
   displayPrompt: 'Did you see people tell stories that were recountings of events based on emotional experiences from particular perspectives?',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1214,7 +1214,7 @@ define([
   displayType: 'select',
   displayName: 'Vitality',
   displayPrompt: 'How lively were the negotiations you heard going on between storytellers and audiences?',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1226,7 +1226,7 @@ define([
   displayType: 'select',
   displayName: 'Sharing storytelling',
   displayPrompt: 'Did you ever see two or more people tell a story together?',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1238,7 +1238,7 @@ define([
   displayType: 'select',
   displayName: 'Blunders',
   displayPrompt: 'How often did you see someone start telling the wrong story to the wrong people at the wrong time?',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1250,7 +1250,7 @@ define([
   displayType: 'select',
   displayName: 'Accountability',
   displayPrompt: 'Did you see people account for their actions and choices by telling each other stories?',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1262,7 +1262,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Narrative unity',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1274,7 +1274,7 @@ define([
   displayType: 'select',
   displayName: 'Common stories',
   displayPrompt: 'How easy would it be to create a list of stories any member of your community or organization could be expected to know?',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1286,7 +1286,7 @@ define([
   displayType: 'select',
   displayName: 'Sacred stories',
   displayPrompt: 'How easy would it be to create a list of sacred stories, those important to understanding the community or organization?',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1298,7 +1298,7 @@ define([
   displayType: 'select',
   displayName: 'Condensed stories',
   displayPrompt: 'How easy would it be to create a list of condensed stories, in the form of proverbs or references?',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1310,7 +1310,7 @@ define([
   displayType: 'select',
   displayName: 'Intermingling',
   displayPrompt: 'How often were the stories you heard intermingled with each other?',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1322,7 +1322,7 @@ define([
   displayType: 'select',
   displayName: 'Culture',
   displayPrompt: 'How easy would it be to describe the unique storytelling culture of your community or organization?',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1334,7 +1334,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Narrative score results',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1351,7 +1351,7 @@ define([
   displayType: 'quizScoreResult',
   displayName: undefined,
   displayPrompt: 'Narrative freedom subscore:',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1368,7 +1368,7 @@ define([
   displayType: 'quizScoreResult',
   displayName: undefined,
   displayPrompt: 'Narrative flow subscore:',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1385,7 +1385,7 @@ define([
   displayType: 'quizScoreResult',
   displayName: undefined,
   displayPrompt: 'Narrative knowledge subscore:',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1402,7 +1402,7 @@ define([
   displayType: 'quizScoreResult',
   displayName: undefined,
   displayPrompt: 'Narrative unity subscore:',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1434,7 +1434,7 @@ define([
   displayType: 'quizScoreResult',
   displayName: undefined,
   displayPrompt: 'This is your combined test result:',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 {
@@ -1446,19 +1446,19 @@ define([
   displayType: 'textarea',
   displayName: 'Notes',
   displayPrompt: 'Here you can record some notes or comments about this assessment.',
-  displayPage: 'page_assessStorySharing',
+  displayPanel: 'panel_assessStorySharing',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_revisePNIPlanningQuestions Revise PNI Planning questions page  ------------- 
+// ------------- PANEL panel_revisePNIPlanningQuestions Revise PNI Planning questions page  ------------- 
 
 {
-  id: 'page_revisePNIPlanningQuestions',
+  id: 'panel_revisePNIPlanningQuestions',
   displayName: 'Revise PNI Planning questions',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_revisePNIPlanningQuestions',
-  pageModel: 'ProjectModel' 
+  displayPanel: 'panel_revisePNIPlanningQuestions',
+  modelPath: 'project' 
 },
 {
   id: 'project_improvePlanningDrafts',
@@ -1469,7 +1469,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you can review and improve your draft answers to the PNI planning questions\nbased on your consideration of project aspects and your project stories.',
-  displayPage: 'page_revisePNIPlanningQuestions',
+  displayPanel: 'panel_revisePNIPlanningQuestions',
   model: 'ProjectModel' 
 },
 {
@@ -1481,7 +1481,7 @@ define([
   displayType: 'button',
   displayName: undefined,
   displayPrompt: 'Copy the original draft versions into any corresponding empty answer fields below',
-  displayPage: 'page_revisePNIPlanningQuestions',
+  displayPanel: 'panel_revisePNIPlanningQuestions',
   model: 'ProjectModel' 
 },
 {
@@ -1493,7 +1493,7 @@ define([
   displayType: 'textarea',
   displayName: 'Project goal',
   displayPrompt: 'What is the goal of the project? Why are you doing it?',
-  displayPage: 'page_revisePNIPlanningQuestions',
+  displayPanel: 'panel_revisePNIPlanningQuestions',
   model: 'ProjectModel' 
 },
 {
@@ -1505,7 +1505,7 @@ define([
   displayType: 'textarea',
   displayName: 'Project relationships',
   displayPrompt: 'What relationships are important to the project?',
-  displayPage: 'page_revisePNIPlanningQuestions',
+  displayPanel: 'panel_revisePNIPlanningQuestions',
   model: 'ProjectModel' 
 },
 {
@@ -1517,7 +1517,7 @@ define([
   displayType: 'textarea',
   displayName: 'Project focus',
   displayPrompt: 'What is the focus of the project? What is it about?',
-  displayPage: 'page_revisePNIPlanningQuestions',
+  displayPanel: 'panel_revisePNIPlanningQuestions',
   model: 'ProjectModel' 
 },
 {
@@ -1529,7 +1529,7 @@ define([
   displayType: 'textarea',
   displayName: 'Project range',
   displayPrompt: 'What range(s) of experience will the project cover?',
-  displayPage: 'page_revisePNIPlanningQuestions',
+  displayPanel: 'panel_revisePNIPlanningQuestions',
   model: 'ProjectModel' 
 },
 {
@@ -1541,7 +1541,7 @@ define([
   displayType: 'textarea',
   displayName: 'Project scope',
   displayPrompt: 'What is the project\'s scope? (number of people, number of stories, number of questions about stories)',
-  displayPage: 'page_revisePNIPlanningQuestions',
+  displayPanel: 'panel_revisePNIPlanningQuestions',
   model: 'ProjectModel' 
 },
 {
@@ -1553,19 +1553,19 @@ define([
   displayType: 'textarea',
   displayName: 'Project emphasis',
   displayPrompt: 'Which phases of PNI will be important to the project? (indicate most and least important phases)',
-  displayPage: 'page_revisePNIPlanningQuestions',
+  displayPanel: 'panel_revisePNIPlanningQuestions',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_writeProjectSynopsis Write project synopsis page  ------------- 
+// ------------- PANEL panel_writeProjectSynopsis Write project synopsis page  ------------- 
 
 {
-  id: 'page_writeProjectSynopsis',
+  id: 'panel_writeProjectSynopsis',
   displayName: 'Write project synopsis',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_writeProjectSynopsis',
-  pageModel: 'ProjectModel' 
+  displayPanel: 'panel_writeProjectSynopsis',
+  modelPath: 'project' 
 },
 {
   id: 'project_synopsis',
@@ -1576,19 +1576,19 @@ define([
   displayType: 'textarea',
   displayName: 'Project synopsis',
   displayPrompt: 'On this page you can write your project synopsis, a one or two sentence summary of what matters most about your project.',
-  displayPage: 'page_writeProjectSynopsis',
+  displayPanel: 'panel_writeProjectSynopsis',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_readPlanningReport Read planning report page  ------------- 
+// ------------- PANEL panel_readPlanningReport Read planning report page  ------------- 
 
 {
-  id: 'page_readPlanningReport',
+  id: 'panel_readPlanningReport',
   displayName: 'Read planning report',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_readPlanningReport',
-  pageModel: 'ProjectModel' 
+  displayPanel: 'panel_readPlanningReport',
+  modelPath: 'project' 
 },
 {
   id: 'project_readPlanningReportIntroductionLabel',
@@ -1599,7 +1599,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'This report shows all of the information entered in the pages grouped under "Planning."',
-  displayPage: 'page_readPlanningReport',
+  displayPanel: 'panel_readPlanningReport',
   model: 'ProjectModel' 
 },
 {
@@ -1611,21 +1611,21 @@ define([
   displayType: 'report',
   displayName: undefined,
   displayPrompt: 'Project planning report',
-  displayPage: 'page_readPlanningReport',
+  displayPanel: 'panel_readPlanningReport',
   model: 'ProjectModel' 
 },
 
 // ==================== SECTION page_collectionDesign Collection design ==========================
 
-// -------------  HEADER page_collectionDesign Collection design page  ------------- 
+// ------------- PANEL panel_collectionDesign Collection design page  ------------- 
 
 {
-  id: 'page_collectionDesign',
+  id: 'panel_collectionDesign',
   displayName: 'Collection design',
   displayType: 'page',
   isHeader: true,
-  displayPage: 'page_collectionDesign',
-  pageModel: 'ProjectModel' 
+  displayPanel: 'panel_collectionDesign',
+  modelPath: 'project' 
 },
 {
   id: 'project_collectionDesignStartLabel',
@@ -1636,7 +1636,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'In the collection design phase of your PNI project, you will decide on story collection venues,\ncreate some story eliciting and story interpretation questions, design your story collection form, and plan any story collection sessions you want to hold.',
-  displayPage: 'page_collectionDesign',
+  displayPanel: 'panel_collectionDesign',
   model: 'ProjectModel' 
 },
 {
@@ -1648,19 +1648,19 @@ define([
   displayType: 'textarea',
   displayName: 'Collection design notes',
   displayPrompt: 'You can enter some general notes on collection design in this project here.',
-  displayPage: 'page_collectionDesign',
+  displayPanel: 'panel_collectionDesign',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_chooseCollectionVenues Choose collection venues page  ------------- 
+// ------------- PANEL panel_chooseCollectionVenues Choose collection venues page  ------------- 
 
 {
-  id: 'page_chooseCollectionVenues',
+  id: 'panel_chooseCollectionVenues',
   displayName: 'Choose collection venues',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_chooseCollectionVenues',
-  pageModel: 'ProjectModel' 
+  displayPanel: 'panel_chooseCollectionVenues',
+  modelPath: 'project' 
 },
 {
   id: 'project_venuesIntro',
@@ -1671,7 +1671,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you will plan your story collection venues, or the ways you will collect stories.',
-  displayPage: 'page_chooseCollectionVenues',
+  displayPanel: 'panel_chooseCollectionVenues',
   model: 'ProjectModel' 
 },
 {
@@ -1683,7 +1683,7 @@ define([
   displayType: 'recommendationTable',
   displayName: undefined,
   displayPrompt: 'Venue recommendations',
-  displayPage: 'page_chooseCollectionVenues',
+  displayPanel: 'panel_chooseCollectionVenues',
   model: 'ProjectModel' 
 },
 {
@@ -1695,19 +1695,19 @@ define([
   displayType: 'grid',
   displayName: 'Story collection venues',
   displayPrompt: 'These are the ways you will be collecting stories.',
-  displayPage: 'page_chooseCollectionVenues',
+  displayPanel: 'panel_chooseCollectionVenues',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_addVenue Plan story collection venue popup  ------------- 
+// ------------- PANEL panel_addVenue Plan story collection venue popup  ------------- 
 
 {
-  id: 'page_addVenue',
+  id: 'panel_addVenue',
   displayName: 'Plan story collection venue',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_addVenue',
-  pageModel: 'VenuePlanModel' 
+  displayPanel: 'panel_addVenue',
+  modelPath: 'venueplan' 
 },
 // Generate model VenueModel 
 
@@ -1720,7 +1720,7 @@ define([
   displayType: 'text',
   displayName: 'Name',
   displayPrompt: 'Please give this venue plan a name.',
-  displayPage: 'page_addVenue',
+  displayPanel: 'panel_addVenue',
   model: 'VenueModel' 
 },
 {
@@ -1741,7 +1741,7 @@ define([
   displayType: 'select',
   displayName: 'Type',
   displayPrompt: 'Choose a primary means of story collection for this venue.',
-  displayPage: 'page_addVenue',
+  displayPanel: 'panel_addVenue',
   model: 'VenueModel' 
 },
 {
@@ -1753,7 +1753,7 @@ define([
   displayType: 'textarea',
   displayName: 'Participants',
   displayPrompt: 'Which group(s) of participants will tell stories in this venue?',
-  displayPage: 'page_addVenue',
+  displayPanel: 'panel_addVenue',
   model: 'VenueModel' 
 },
 {
@@ -1765,7 +1765,7 @@ define([
   displayType: 'textarea',
   displayName: 'Timeline',
   displayPrompt: 'What is your timeline for collecting stories using this venue?',
-  displayPage: 'page_addVenue',
+  displayPanel: 'panel_addVenue',
   model: 'VenueModel' 
 },
 {
@@ -1777,7 +1777,7 @@ define([
   displayType: 'textarea',
   displayName: 'Locations',
   displayPrompt: 'In what locations will stories be collected?',
-  displayPage: 'page_addVenue',
+  displayPanel: 'panel_addVenue',
   model: 'VenueModel' 
 },
 {
@@ -1789,7 +1789,7 @@ define([
   displayType: 'textarea',
   displayName: 'Help',
   displayPrompt: 'Will anyone be helping to collect stories? What are your plans for organizing your help?',
-  displayPage: 'page_addVenue',
+  displayPanel: 'panel_addVenue',
   model: 'VenueModel' 
 },
 {
@@ -1801,7 +1801,7 @@ define([
   displayType: 'textarea',
   displayName: 'Technology',
   displayPrompt: 'What technologies, if any, will you use to collect stories?',
-  displayPage: 'page_addVenue',
+  displayPanel: 'panel_addVenue',
   model: 'VenueModel' 
 },
 {
@@ -1813,19 +1813,19 @@ define([
   displayType: 'textarea',
   displayName: 'Other',
   displayPrompt: 'Describe any other details of your story collection plans for this venue.',
-  displayPage: 'page_addVenue',
+  displayPanel: 'panel_addVenue',
   model: 'VenueModel' 
 },
 
-// -------------  PAGE page_writeStoryElicitingQuestions Write story eliciting questions page  ------------- 
+// ------------- PANEL panel_writeStoryElicitingQuestions Write story eliciting questions page  ------------- 
 
 {
-  id: 'page_writeStoryElicitingQuestions',
+  id: 'panel_writeStoryElicitingQuestions',
   displayName: 'Write story eliciting questions',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_writeStoryElicitingQuestions',
-  pageModel: 'ProjectModel' 
+  displayPanel: 'panel_writeStoryElicitingQuestions',
+  modelPath: 'project' 
 },
 {
   id: 'project_elicitingQuestionsLabel',
@@ -1836,7 +1836,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you will design the eliciting questions you use to ask people to tell stories.\nYou need at least one question for people to answer. Giving people more than one question to choose from\nis recommended.',
-  displayPage: 'page_writeStoryElicitingQuestions',
+  displayPanel: 'panel_writeStoryElicitingQuestions',
   model: 'ProjectModel' 
 },
 {
@@ -1848,7 +1848,7 @@ define([
   displayType: 'grid',
   displayName: 'Story eliciting questions',
   displayPrompt: 'These are the questions you will be asking.',
-  displayPage: 'page_writeStoryElicitingQuestions',
+  displayPanel: 'panel_writeStoryElicitingQuestions',
   model: 'ProjectModel' 
 },
 {
@@ -1860,19 +1860,19 @@ define([
   displayType: 'recommendationTable',
   displayName: undefined,
   displayPrompt: 'Recommendations for eliciting questions',
-  displayPage: 'page_writeStoryElicitingQuestions',
+  displayPanel: 'panel_writeStoryElicitingQuestions',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_addElicitingQuestion Add story eliciting question popup  ------------- 
+// ------------- PANEL panel_addElicitingQuestion Add story eliciting question popup  ------------- 
 
 {
-  id: 'page_addElicitingQuestion',
+  id: 'panel_addElicitingQuestion',
   displayName: 'Add story eliciting question',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_addElicitingQuestion',
-  pageModel: 'ElicitingQuestionModel' 
+  displayPanel: 'panel_addElicitingQuestion',
+  modelPath: 'elicitingquestion' 
 },
 // Generate model ElicitingQuestionModel 
 
@@ -1885,7 +1885,7 @@ define([
   displayType: 'textarea',
   displayName: 'Question',
   displayPrompt: 'Enter a story-eliciting question.',
-  displayPage: 'page_addElicitingQuestion',
+  displayPanel: 'panel_addElicitingQuestion',
   model: 'ElicitingQuestionModel' 
 },
 {
@@ -1897,7 +1897,7 @@ define([
   displayType: 'text',
   displayName: 'Short Name',
   displayPrompt: 'Enter a short name for this story-eliciting question to use as a reference to it.',
-  displayPage: 'page_addElicitingQuestion',
+  displayPanel: 'panel_addElicitingQuestion',
   model: 'ElicitingQuestionModel' 
 },
 {
@@ -1919,7 +1919,7 @@ define([
   displayType: 'checkboxes',
   displayName: 'Type',
   displayPrompt: 'What type of question is this?',
-  displayPage: 'page_addElicitingQuestion',
+  displayPanel: 'panel_addElicitingQuestion',
   model: 'ElicitingQuestionModel' 
 },
 {
@@ -1931,19 +1931,19 @@ define([
   displayType: 'templateList',
   displayName: undefined,
   displayPrompt: 'You can copy a question from this list.',
-  displayPage: 'page_addElicitingQuestion',
+  displayPanel: 'panel_addElicitingQuestion',
   model: 'ElicitingQuestionModel' 
 },
 
-// -------------  PAGE page_writeQuestionsAboutStories Write questions about stories page  ------------- 
+// ------------- PANEL panel_writeQuestionsAboutStories Write questions about stories page  ------------- 
 
 {
-  id: 'page_writeQuestionsAboutStories',
+  id: 'panel_writeQuestionsAboutStories',
   displayName: 'Write questions about stories',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_writeQuestionsAboutStories',
-  pageModel: 'ProjectModel' 
+  displayPanel: 'panel_writeQuestionsAboutStories',
+  modelPath: 'project' 
 },
 {
   id: 'project_storyQuestionsLabel',
@@ -1954,7 +1954,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you will write your questions to ask people about their stories.',
-  displayPage: 'page_writeQuestionsAboutStories',
+  displayPanel: 'panel_writeQuestionsAboutStories',
   model: 'ProjectModel' 
 },
 {
@@ -1966,7 +1966,7 @@ define([
   displayType: 'grid',
   displayName: 'Questions about stories',
   displayPrompt: 'These are the questions you will be asking about stories.',
-  displayPage: 'page_writeQuestionsAboutStories',
+  displayPanel: 'panel_writeQuestionsAboutStories',
   model: 'ProjectModel' 
 },
 {
@@ -1978,19 +1978,19 @@ define([
   displayType: 'recommendationTable',
   displayName: undefined,
   displayPrompt: 'Recommendations for story questions',
-  displayPage: 'page_writeQuestionsAboutStories',
+  displayPanel: 'panel_writeQuestionsAboutStories',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_addStoryQuestion Add story question popup  ------------- 
+// ------------- PANEL panel_addStoryQuestion Add story question popup  ------------- 
 
 {
-  id: 'page_addStoryQuestion',
+  id: 'panel_addStoryQuestion',
   displayName: 'Add story question',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_addStoryQuestion',
-  pageModel: 'StoryQuestionModel' 
+  displayPanel: 'panel_addStoryQuestion',
+  modelPath: 'storyquestion' 
 },
 // Generate model StoryQuestionModel 
 
@@ -2003,7 +2003,7 @@ define([
   displayType: 'textarea',
   displayName: 'Question',
   displayPrompt: 'Enter a question to ask people about their stories.',
-  displayPage: 'page_addStoryQuestion',
+  displayPanel: 'panel_addStoryQuestion',
   model: 'StoryQuestionModel' 
 },
 {
@@ -2025,7 +2025,7 @@ define([
   displayType: 'select',
   displayName: 'Type',
   displayPrompt: 'What type of question is this?\nThe question types are:\n<ul>\n<li>boolean: yes and no choices</li>\n<li>label: not a question, just text</li>\n<li>header: same as a label, only in bold</li>\n<li>checkbox: one check box (enter label in options)</li>\n<li>checkboxes: a series of checkboxes (enter label in options)</li>\n<li>text: a one-line free text field</li>\n<li>textarea: a multi-line free text field</li>\n<li>select: a drop-down box (enter choices in options)</li>\n<li>radiobuttons: a set of mutually-exclusive radio buttons (enter choices in options)</li>\n<li>slider: a range from 0 to 100 (enter end labels in options)</li>\n</ul>',
-  displayPage: 'page_addStoryQuestion',
+  displayPanel: 'panel_addStoryQuestion',
   model: 'StoryQuestionModel' 
 },
 {
@@ -2037,7 +2037,7 @@ define([
   displayType: 'text',
   displayName: 'Short name',
   displayPrompt: 'Enter a short name we can use to refer to the question. (It must be unique within the project.)',
-  displayPage: 'page_addStoryQuestion',
+  displayPanel: 'panel_addStoryQuestion',
   model: 'StoryQuestionModel' 
 },
 {
@@ -2049,7 +2049,7 @@ define([
   displayType: 'textarea',
   displayName: 'Options',
   displayPrompt: 'If your question requires choices, enter them here (one per line).',
-  displayPage: 'page_addStoryQuestion',
+  displayPanel: 'panel_addStoryQuestion',
   model: 'StoryQuestionModel' 
 },
 {
@@ -2061,7 +2061,7 @@ define([
   displayType: 'textarea',
   displayName: 'Help',
   displayPrompt: 'If you want to provide popup help to people answering the question, enter it here.',
-  displayPage: 'page_addStoryQuestion',
+  displayPanel: 'panel_addStoryQuestion',
   model: 'StoryQuestionModel' 
 },
 {
@@ -2073,19 +2073,19 @@ define([
   displayType: 'templateList',
   displayName: undefined,
   displayPrompt: 'You can copy a question from this list.',
-  displayPage: 'page_addStoryQuestion',
+  displayPanel: 'panel_addStoryQuestion',
   model: 'StoryQuestionModel' 
 },
 
-// -------------  PAGE page_writeQuestionsAboutParticipants Write questions about participants page  ------------- 
+// ------------- PANEL panel_writeQuestionsAboutParticipants Write questions about participants page  ------------- 
 
 {
-  id: 'page_writeQuestionsAboutParticipants',
+  id: 'panel_writeQuestionsAboutParticipants',
   displayName: 'Write questions about participants',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_writeQuestionsAboutParticipants',
-  pageModel: 'ProjectModel' 
+  displayPanel: 'panel_writeQuestionsAboutParticipants',
+  modelPath: 'project' 
 },
 {
   id: 'project_participantQuestionsLabel',
@@ -2096,7 +2096,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you will write questions to ask people about themselves.',
-  displayPage: 'page_writeQuestionsAboutParticipants',
+  displayPanel: 'panel_writeQuestionsAboutParticipants',
   model: 'ProjectModel' 
 },
 {
@@ -2108,7 +2108,7 @@ define([
   displayType: 'grid',
   displayName: 'Questions about people',
   displayPrompt: 'These are the questions you will be asking people about themselves.',
-  displayPage: 'page_writeQuestionsAboutParticipants',
+  displayPanel: 'panel_writeQuestionsAboutParticipants',
   model: 'ProjectModel' 
 },
 {
@@ -2120,19 +2120,19 @@ define([
   displayType: 'recommendationTable',
   displayName: undefined,
   displayPrompt: 'Recommendations for participant questions',
-  displayPage: 'page_writeQuestionsAboutParticipants',
+  displayPanel: 'panel_writeQuestionsAboutParticipants',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_addParticipantQuestion Add participant question popup  ------------- 
+// ------------- PANEL panel_addParticipantQuestion Add participant question popup  ------------- 
 
 {
-  id: 'page_addParticipantQuestion',
+  id: 'panel_addParticipantQuestion',
   displayName: 'Add participant question',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_addParticipantQuestion',
-  pageModel: 'ParticipantQuestionModel' 
+  displayPanel: 'panel_addParticipantQuestion',
+  modelPath: 'participantquestion' 
 },
 // Generate model ParticipantQuestionModel 
 
@@ -2145,7 +2145,7 @@ define([
   displayType: 'textarea',
   displayName: 'Question',
   displayPrompt: 'Enter a question to ask people about themselves.',
-  displayPage: 'page_addParticipantQuestion',
+  displayPanel: 'panel_addParticipantQuestion',
   model: 'ParticipantQuestionModel' 
 },
 {
@@ -2167,7 +2167,7 @@ define([
   displayType: 'select',
   displayName: 'Type',
   displayPrompt: 'What type of question is this?',
-  displayPage: 'page_addParticipantQuestion',
+  displayPanel: 'panel_addParticipantQuestion',
   model: 'ParticipantQuestionModel' 
 },
 {
@@ -2179,7 +2179,7 @@ define([
   displayType: 'text',
   displayName: 'Short name',
   displayPrompt: 'Enter a short name we can use to refer to the question. (It must be unique within the project.)',
-  displayPage: 'page_addParticipantQuestion',
+  displayPanel: 'panel_addParticipantQuestion',
   model: 'ParticipantQuestionModel' 
 },
 {
@@ -2191,7 +2191,7 @@ define([
   displayType: 'textarea',
   displayName: 'Options',
   displayPrompt: 'If your question has choices, enter them here (one per line).',
-  displayPage: 'page_addParticipantQuestion',
+  displayPanel: 'panel_addParticipantQuestion',
   model: 'ParticipantQuestionModel' 
 },
 {
@@ -2203,7 +2203,7 @@ define([
   displayType: 'textarea',
   displayName: 'Help',
   displayPrompt: 'If you want to provide help to people answering the question, enter it here.',
-  displayPage: 'page_addParticipantQuestion',
+  displayPanel: 'panel_addParticipantQuestion',
   model: 'ParticipantQuestionModel' 
 },
 {
@@ -2215,19 +2215,19 @@ define([
   displayType: 'templateList',
   displayName: undefined,
   displayPrompt: 'You can copy a question from this list.',
-  displayPage: 'page_addParticipantQuestion',
+  displayPanel: 'panel_addParticipantQuestion',
   model: 'ParticipantQuestionModel' 
 },
 
-// -------------  PAGE page_designQuestionForm Design question form page  ------------- 
+// ------------- PANEL panel_designQuestionForm Design question form page  ------------- 
 
 {
-  id: 'page_designQuestionForm',
+  id: 'panel_designQuestionForm',
   displayName: 'Design question form',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_designQuestionForm',
-  pageModel: 'Project.QuestionFormModel' 
+  displayPanel: 'panel_designQuestionForm',
+  modelPath: 'project.questionform' 
 },
 {
   id: 'questionForm_Label',
@@ -2238,7 +2238,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you will add any information you want to place on your question form other than the questions on it.',
-  displayPage: 'page_designQuestionForm',
+  displayPanel: 'panel_designQuestionForm',
   model: 'ProjectModel' 
 },
 {
@@ -2250,7 +2250,7 @@ define([
   displayType: 'text',
   displayName: 'Title',
   displayPrompt: 'Please enter a title for the question form.',
-  displayPage: 'page_designQuestionForm',
+  displayPanel: 'panel_designQuestionForm',
   model: 'ProjectModel' 
 },
 {
@@ -2262,7 +2262,7 @@ define([
   displayType: 'text',
   displayName: 'Image',
   displayPrompt: 'You can link to a logo or other image to show at the top of the form.',
-  displayPage: 'page_designQuestionForm',
+  displayPanel: 'panel_designQuestionForm',
   model: 'ProjectModel' 
 },
 {
@@ -2274,7 +2274,7 @@ define([
   displayType: 'textarea',
   displayName: 'Introduction',
   displayPrompt: 'Please enter an introduction to be shown at the start of the form, after the title.',
-  displayPage: 'page_designQuestionForm',
+  displayPanel: 'panel_designQuestionForm',
   model: 'ProjectModel' 
 },
 {
@@ -2286,19 +2286,19 @@ define([
   displayType: 'textarea',
   displayName: 'End of form text',
   displayPrompt: 'Please enter any text to be shown at the end of the form.',
-  displayPage: 'page_designQuestionForm',
+  displayPanel: 'panel_designQuestionForm',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_planStoryCollectionSessions Plan story collection sessions page  ------------- 
+// ------------- PANEL panel_planStoryCollectionSessions Plan story collection sessions page  ------------- 
 
 {
-  id: 'page_planStoryCollectionSessions',
+  id: 'panel_planStoryCollectionSessions',
   displayName: 'Plan story collection sessions',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_planStoryCollectionSessions',
-  pageModel: 'ProjectModel' 
+  displayPanel: 'panel_planStoryCollectionSessions',
+  modelPath: 'project' 
 },
 {
   id: 'project_collectionSessionsLabel',
@@ -2309,7 +2309,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you will design group sessions in which you will collect stories.\nIf you don\'t plan to collect stories using group sessions, you can skip this page.',
-  displayPage: 'page_planStoryCollectionSessions',
+  displayPanel: 'panel_planStoryCollectionSessions',
   model: 'ProjectModel' 
 },
 {
@@ -2321,7 +2321,7 @@ define([
   displayType: 'recommendationTable',
   displayName: undefined,
   displayPrompt: 'Recommendations for story collection sessions',
-  displayPage: 'page_planStoryCollectionSessions',
+  displayPanel: 'panel_planStoryCollectionSessions',
   model: 'ProjectModel' 
 },
 {
@@ -2333,19 +2333,19 @@ define([
   displayType: 'grid',
   displayName: 'Story collection session plans',
   displayPrompt: 'Plans for story collection sessions lay out what you will do and how.\nEach plan can be used in multiple sessions.',
-  displayPage: 'page_planStoryCollectionSessions',
+  displayPanel: 'panel_planStoryCollectionSessions',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_addStoryCollectionSession Design story collection session popup  ------------- 
+// ------------- PANEL panel_addStoryCollectionSession Design story collection session popup  ------------- 
 
 {
-  id: 'page_addStoryCollectionSession',
+  id: 'panel_addStoryCollectionSession',
   displayName: 'Design story collection session',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_addStoryCollectionSession',
-  pageModel: 'CollectionSessionPlanModel' 
+  displayPanel: 'panel_addStoryCollectionSession',
+  modelPath: 'collectionsessionplan' 
 },
 // Generate model StoryCollectionSessionModel 
 
@@ -2358,7 +2358,7 @@ define([
   displayType: 'text',
   displayName: 'Name',
   displayPrompt: 'Please give this session plan a name.',
-  displayPage: 'page_addStoryCollectionSession',
+  displayPanel: 'panel_addStoryCollectionSession',
   model: 'StoryCollectionSessionModel' 
 },
 {
@@ -2370,7 +2370,7 @@ define([
   displayType: 'text',
   displayName: 'Participant groups',
   displayPrompt: 'From which participant groups will people be invited?',
-  displayPage: 'page_addStoryCollectionSession',
+  displayPanel: 'panel_addStoryCollectionSession',
   model: 'StoryCollectionSessionModel' 
 },
 {
@@ -2382,7 +2382,7 @@ define([
   displayType: 'text',
   displayName: 'Repetitions',
   displayPrompt: 'How many repetitions of the session will there be?',
-  displayPage: 'page_addStoryCollectionSession',
+  displayPanel: 'panel_addStoryCollectionSession',
   model: 'StoryCollectionSessionModel' 
 },
 {
@@ -2394,7 +2394,7 @@ define([
   displayType: 'text',
   displayName: 'Length',
   displayPrompt: 'How long will each session be?',
-  displayPage: 'page_addStoryCollectionSession',
+  displayPanel: 'panel_addStoryCollectionSession',
   model: 'StoryCollectionSessionModel' 
 },
 {
@@ -2406,7 +2406,7 @@ define([
   displayType: 'text',
   displayName: 'Time',
   displayPrompt: 'At what dates and times will these sessions take place?',
-  displayPage: 'page_addStoryCollectionSession',
+  displayPanel: 'panel_addStoryCollectionSession',
   model: 'StoryCollectionSessionModel' 
 },
 {
@@ -2418,7 +2418,7 @@ define([
   displayType: 'text',
   displayName: 'Location',
   displayPrompt: 'Where will these sessions take place?',
-  displayPage: 'page_addStoryCollectionSession',
+  displayPanel: 'panel_addStoryCollectionSession',
   model: 'StoryCollectionSessionModel' 
 },
 {
@@ -2430,7 +2430,7 @@ define([
   displayType: 'text',
   displayName: 'Number of people',
   displayPrompt: 'How many people will be invited to each repetition of this session?',
-  displayPage: 'page_addStoryCollectionSession',
+  displayPanel: 'panel_addStoryCollectionSession',
   model: 'StoryCollectionSessionModel' 
 },
 {
@@ -2442,7 +2442,7 @@ define([
   displayType: 'textarea',
   displayName: 'Materials',
   displayPrompt: 'What materials will this session require?',
-  displayPage: 'page_addStoryCollectionSession',
+  displayPanel: 'panel_addStoryCollectionSession',
   model: 'StoryCollectionSessionModel' 
 },
 {
@@ -2454,7 +2454,7 @@ define([
   displayType: 'textarea',
   displayName: 'Other',
   displayPrompt: 'Enter other details about this session.',
-  displayPage: 'page_addStoryCollectionSession',
+  displayPanel: 'panel_addStoryCollectionSession',
   model: 'StoryCollectionSessionModel' 
 },
 {
@@ -2466,7 +2466,7 @@ define([
   displayType: 'grid',
   displayName: 'Story collection activities',
   displayPrompt: 'Here you can enter some activities you plan for the session.\nActivities within story collection sessions can be simple instructions or complicated exercises (like the creation of timelines).',
-  displayPage: 'page_addStoryCollectionSession',
+  displayPanel: 'panel_addStoryCollectionSession',
   model: 'StoryCollectionSessionModel' 
 },
 {
@@ -2478,19 +2478,19 @@ define([
   displayType: 'button',
   displayName: undefined,
   displayPrompt: 'Print session agenda',
-  displayPage: 'page_addStoryCollectionSession',
+  displayPanel: 'panel_addStoryCollectionSession',
   model: 'StoryCollectionSessionModel' 
 },
 
-// -------------  PAGE page_addCollectionSessionActivity Add story collection session activity popup  ------------- 
+// ------------- PANEL panel_addCollectionSessionActivity Add story collection session activity popup  ------------- 
 
 {
-  id: 'page_addCollectionSessionActivity',
+  id: 'panel_addCollectionSessionActivity',
   displayName: 'Add story collection session activity',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_addCollectionSessionActivity',
-  pageModel: 'CollectionSessionActivityModel' 
+  displayPanel: 'panel_addCollectionSessionActivity',
+  modelPath: 'collectionsessionactivity' 
 },
 // Generate model CollectionSessionActivityModel 
 
@@ -2503,7 +2503,7 @@ define([
   displayType: 'text',
   displayName: 'Name',
   displayPrompt: 'Please give this activity a name.',
-  displayPage: 'page_addCollectionSessionActivity',
+  displayPanel: 'panel_addCollectionSessionActivity',
   model: 'CollectionSessionActivityModel' 
 },
 {
@@ -2524,7 +2524,7 @@ define([
   displayType: 'select',
   displayName: 'Type',
   displayPrompt: 'What type of activity is this?',
-  displayPage: 'page_addCollectionSessionActivity',
+  displayPanel: 'panel_addCollectionSessionActivity',
   model: 'CollectionSessionActivityModel' 
 },
 {
@@ -2536,7 +2536,7 @@ define([
   displayType: 'textarea',
   displayName: 'Plan',
   displayPrompt: 'Describe the plan for this activity.',
-  displayPage: 'page_addCollectionSessionActivity',
+  displayPanel: 'panel_addCollectionSessionActivity',
   model: 'CollectionSessionActivityModel' 
 },
 {
@@ -2548,7 +2548,7 @@ define([
   displayType: 'textarea',
   displayName: 'Optional elaborations',
   displayPrompt: 'Describe any optional elaborations you might or might not use in this activity.',
-  displayPage: 'page_addCollectionSessionActivity',
+  displayPanel: 'panel_addCollectionSessionActivity',
   model: 'CollectionSessionActivityModel' 
 },
 {
@@ -2560,7 +2560,7 @@ define([
   displayType: 'text',
   displayName: 'Length',
   displayPrompt: 'How long will this activity take?',
-  displayPage: 'page_addCollectionSessionActivity',
+  displayPanel: 'panel_addCollectionSessionActivity',
   model: 'CollectionSessionActivityModel' 
 },
 {
@@ -2572,7 +2572,7 @@ define([
   displayType: 'textarea',
   displayName: 'Recording',
   displayPrompt: 'How will stories be recorded during this activity?',
-  displayPage: 'page_addCollectionSessionActivity',
+  displayPanel: 'panel_addCollectionSessionActivity',
   model: 'CollectionSessionActivityModel' 
 },
 {
@@ -2584,7 +2584,7 @@ define([
   displayType: 'textarea',
   displayName: 'Materials',
   displayPrompt: 'What materials will be provided for this activity?',
-  displayPage: 'page_addCollectionSessionActivity',
+  displayPanel: 'panel_addCollectionSessionActivity',
   model: 'CollectionSessionActivityModel' 
 },
 {
@@ -2596,7 +2596,7 @@ define([
   displayType: 'textarea',
   displayName: 'Spaces',
   displayPrompt: 'What spaces will be used for this activity?',
-  displayPage: 'page_addCollectionSessionActivity',
+  displayPanel: 'panel_addCollectionSessionActivity',
   model: 'CollectionSessionActivityModel' 
 },
 {
@@ -2608,7 +2608,7 @@ define([
   displayType: 'textarea',
   displayName: 'Facilitation',
   displayPrompt: 'What sort of facilitation will be necessary for this activity?',
-  displayPage: 'page_addCollectionSessionActivity',
+  displayPanel: 'panel_addCollectionSessionActivity',
   model: 'CollectionSessionActivityModel' 
 },
 {
@@ -2620,19 +2620,19 @@ define([
   displayType: 'templateList',
   displayName: undefined,
   displayPrompt: 'You can copy an activity from this list.',
-  displayPage: 'page_addCollectionSessionActivity',
+  displayPanel: 'panel_addCollectionSessionActivity',
   model: 'CollectionSessionActivityModel' 
 },
 
-// -------------  PAGE page_readCollectionDesignReport Read collection design report page  ------------- 
+// ------------- PANEL panel_readCollectionDesignReport Read collection design report page  ------------- 
 
 {
-  id: 'page_readCollectionDesignReport',
+  id: 'panel_readCollectionDesignReport',
   displayName: 'Read collection design report',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_readCollectionDesignReport',
-  pageModel: 'ProjectModel' 
+  displayPanel: 'panel_readCollectionDesignReport',
+  modelPath: 'project' 
 },
 {
   id: 'project_readCollectionDesignReportIntroductionLabel',
@@ -2643,7 +2643,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'This report shows all of the information entered in the pages grouped under "Collection design."',
-  displayPage: 'page_readCollectionDesignReport',
+  displayPanel: 'panel_readCollectionDesignReport',
   model: 'ProjectModel' 
 },
 {
@@ -2655,21 +2655,21 @@ define([
   displayType: 'report',
   displayName: undefined,
   displayPrompt: 'Collection design report',
-  displayPage: 'page_readCollectionDesignReport',
+  displayPanel: 'panel_readCollectionDesignReport',
   model: 'ProjectModel' 
 },
 
 // ==================== SECTION page_collectionProcess Collection process ==========================
 
-// -------------  HEADER page_collectionProcess Collection process page  ------------- 
+// ------------- PANEL panel_collectionProcess Collection process page  ------------- 
 
 {
-  id: 'page_collectionProcess',
+  id: 'panel_collectionProcess',
   displayName: 'Collection process',
   displayType: 'page',
   isHeader: true,
-  displayPage: 'page_collectionProcess',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_collectionProcess',
+  modelPath: 'undefined' 
 },
 {
   id: 'collectionProcessIntro',
@@ -2680,7 +2680,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'In the collection process phase of your PNI project, you will review incoming stories and enter records of story collection sessions.',
-  displayPage: 'page_collectionProcess',
+  displayPanel: 'panel_collectionProcess',
   model: 'ProjectModel' 
 },
 {
@@ -2692,19 +2692,19 @@ define([
   displayType: 'textarea',
   displayName: 'Collection process notes',
   displayPrompt: 'You can enter some general notes on your collection process in this project here.',
-  displayPage: 'page_collectionProcess',
+  displayPanel: 'panel_collectionProcess',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_finalizeQuestionForms Print question forms page  ------------- 
+// ------------- PANEL panel_finalizeQuestionForms Print question forms page  ------------- 
 
 {
-  id: 'page_finalizeQuestionForms',
+  id: 'panel_finalizeQuestionForms',
   displayName: 'Print question forms',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_finalizeQuestionForms',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_finalizeQuestionForms',
+  modelPath: 'undefined' 
 },
 {
   id: 'printQuestionsForm_introduction',
@@ -2715,7 +2715,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you can print your story questions form for distribution to participants.\nYou can later enter the results from each form into the system.',
-  displayPage: 'page_finalizeQuestionForms',
+  displayPanel: 'panel_finalizeQuestionForms',
   model: 'ProjectModel' 
 },
 {
@@ -2727,19 +2727,19 @@ define([
   displayType: 'button',
   displayName: undefined,
   displayPrompt: 'Print story form',
-  displayPage: 'page_finalizeQuestionForms',
+  displayPanel: 'panel_finalizeQuestionForms',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_startStoryCollection Start story collection page  ------------- 
+// ------------- PANEL panel_startStoryCollection Start story collection page  ------------- 
 
 {
-  id: 'page_startStoryCollection',
+  id: 'panel_startStoryCollection',
   displayName: 'Start story collection',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_startStoryCollection',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_startStoryCollection',
+  modelPath: 'undefined' 
 },
 {
   id: 'webStoryCollection_startCollectionLabel',
@@ -2750,7 +2750,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'If you are doing story collection over the internet, click this button to make the web form "live" and able to be used by people other than yourself.',
-  displayPage: 'page_startStoryCollection',
+  displayPanel: 'panel_startStoryCollection',
   model: 'ProjectModel' 
 },
 {
@@ -2762,7 +2762,7 @@ define([
   displayType: 'button',
   displayName: undefined,
   displayPrompt: 'Start web story collection',
-  displayPage: 'page_startStoryCollection',
+  displayPanel: 'panel_startStoryCollection',
   model: 'ProjectModel' 
 },
 {
@@ -2774,7 +2774,7 @@ define([
   displayType: 'function',
   displayName: undefined,
   displayPrompt: 'Web story collection enabled:',
-  displayPage: 'page_startStoryCollection',
+  displayPanel: 'panel_startStoryCollection',
   model: 'ProjectModel' 
 },
 {
@@ -2786,7 +2786,7 @@ define([
   displayType: 'button',
   displayName: undefined,
   displayPrompt: 'Copy story form web URL link',
-  displayPage: 'page_startStoryCollection',
+  displayPanel: 'panel_startStoryCollection',
   model: 'ProjectModel' 
 },
 {
@@ -2798,7 +2798,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'You can also disable the data collection here.',
-  displayPage: 'page_startStoryCollection',
+  displayPanel: 'panel_startStoryCollection',
   model: 'ProjectModel' 
 },
 {
@@ -2810,19 +2810,19 @@ define([
   displayType: 'button',
   displayName: undefined,
   displayPrompt: 'Stop web story collection',
-  displayPage: 'page_startStoryCollection',
+  displayPanel: 'panel_startStoryCollection',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_enterStories Enter stories page  ------------- 
+// ------------- PANEL panel_enterStories Enter stories page  ------------- 
 
 {
-  id: 'page_enterStories',
+  id: 'panel_enterStories',
   displayName: 'Enter stories',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_enterStories',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_enterStories',
+  modelPath: 'undefined' 
 },
 {
   id: 'printQuestionsForm_enterStories',
@@ -2833,19 +2833,19 @@ define([
   displayType: 'button',
   displayName: undefined,
   displayPrompt: 'Enter survey result',
-  displayPage: 'page_enterStories',
+  displayPanel: 'panel_enterStories',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_reviewIncomingStories Review incoming stories page  ------------- 
+// ------------- PANEL panel_reviewIncomingStories Review incoming stories page  ------------- 
 
 {
-  id: 'page_reviewIncomingStories',
+  id: 'panel_reviewIncomingStories',
   displayName: 'Review incoming stories',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_reviewIncomingStories',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_reviewIncomingStories',
+  modelPath: 'undefined' 
 },
 {
   id: 'collectedStoriesDuringCollectionLabel',
@@ -2856,7 +2856,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you can see your collected stories as they come in.',
-  displayPage: 'page_reviewIncomingStories',
+  displayPanel: 'panel_reviewIncomingStories',
   model: 'ProjectModel' 
 },
 {
@@ -2868,7 +2868,7 @@ define([
   displayType: 'button',
   displayName: undefined,
   displayPrompt: 'Load latest stories from server',
-  displayPage: 'page_reviewIncomingStories',
+  displayPanel: 'panel_reviewIncomingStories',
   model: 'ProjectModel' 
 },
 {
@@ -2880,7 +2880,7 @@ define([
   displayType: 'function',
   displayName: undefined,
   displayPrompt: 'Total number of survey results loaded from server:',
-  displayPage: 'page_reviewIncomingStories',
+  displayPanel: 'panel_reviewIncomingStories',
   model: 'ProjectModel' 
 },
 {
@@ -2892,19 +2892,19 @@ define([
   displayType: 'storyBrowser',
   displayName: undefined,
   displayPrompt: 'Collected stories',
-  displayPage: 'page_reviewIncomingStories',
+  displayPanel: 'panel_reviewIncomingStories',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_stopStoryCollection Stop story collection page  ------------- 
+// ------------- PANEL panel_stopStoryCollection Stop story collection page  ------------- 
 
 {
-  id: 'page_stopStoryCollection',
+  id: 'panel_stopStoryCollection',
   displayName: 'Stop story collection',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_stopStoryCollection',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_stopStoryCollection',
+  modelPath: 'undefined' 
 },
 {
   id: 'webStoryCollection_stopCollectionLabel2',
@@ -2915,7 +2915,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'If you are doing story collection over the internet, click this button to make the web form unavailable (to anyone but yourself). You can re-enable story collection later by going back to a previous page.',
-  displayPage: 'page_stopStoryCollection',
+  displayPanel: 'panel_stopStoryCollection',
   model: 'ProjectModel' 
 },
 {
@@ -2927,7 +2927,7 @@ define([
   displayType: 'button',
   displayName: undefined,
   displayPrompt: 'Disable web story collection',
-  displayPage: 'page_stopStoryCollection',
+  displayPanel: 'panel_stopStoryCollection',
   model: 'ProjectModel' 
 },
 {
@@ -2939,19 +2939,19 @@ define([
   displayType: 'function',
   displayName: undefined,
   displayPrompt: 'Web story collection enabled:',
-  displayPage: 'page_stopStoryCollection',
+  displayPanel: 'panel_stopStoryCollection',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_enterCollectionSessionRecords Enter story collection session records page  ------------- 
+// ------------- PANEL panel_enterCollectionSessionRecords Enter story collection session records page  ------------- 
 
 {
-  id: 'page_enterCollectionSessionRecords',
+  id: 'panel_enterCollectionSessionRecords',
   displayName: 'Enter story collection session records',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_enterCollectionSessionRecords',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_enterCollectionSessionRecords',
+  modelPath: 'undefined' 
 },
 {
   id: 'project_collectionRecordsIntroductionLabel',
@@ -2962,7 +2962,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you can enter records for the group story sessions you held.\nIf you did not hold any group story sessions, you can skip this page.',
-  displayPage: 'page_enterCollectionSessionRecords',
+  displayPanel: 'panel_enterCollectionSessionRecords',
   model: 'ProjectModel' 
 },
 {
@@ -2974,19 +2974,19 @@ define([
   displayType: 'grid',
   displayName: 'Story collection session records',
   displayPrompt: 'Enter here what went on in your story collection sessions.',
-  displayPage: 'page_enterCollectionSessionRecords',
+  displayPanel: 'panel_enterCollectionSessionRecords',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_addCollectionSessionRecord Add story collection session record popup  ------------- 
+// ------------- PANEL panel_addCollectionSessionRecord Add story collection session record popup  ------------- 
 
 {
-  id: 'page_addCollectionSessionRecord',
+  id: 'panel_addCollectionSessionRecord',
   displayName: 'Add story collection session record',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_addCollectionSessionRecord',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_addCollectionSessionRecord',
+  modelPath: 'undefined' 
 },
 // Generate model CollectionSessionRecordModel 
 
@@ -2999,7 +2999,7 @@ define([
   displayType: 'text',
   displayName: 'Name',
   displayPrompt: 'Please give this session record a name.',
-  displayPage: 'page_addCollectionSessionRecord',
+  displayPanel: 'panel_addCollectionSessionRecord',
   model: 'CollectionSessionRecordModel' 
 },
 {
@@ -3011,7 +3011,7 @@ define([
   displayType: 'textarea',
   displayName: 'When and where',
   displayPrompt: 'When and where did the session take place?',
-  displayPage: 'page_addCollectionSessionRecord',
+  displayPanel: 'panel_addCollectionSessionRecord',
   model: 'CollectionSessionRecordModel' 
 },
 {
@@ -3023,7 +3023,7 @@ define([
   displayType: 'textarea',
   displayName: 'Participant groups',
   displayPrompt: 'Which participant groups were involved in this session?',
-  displayPage: 'page_addCollectionSessionRecord',
+  displayPanel: 'panel_addCollectionSessionRecord',
   model: 'CollectionSessionRecordModel' 
 },
 {
@@ -3035,7 +3035,7 @@ define([
   displayType: 'textarea',
   displayName: 'Who attended',
   displayPrompt: 'Describe the participants at this session.',
-  displayPage: 'page_addCollectionSessionRecord',
+  displayPanel: 'panel_addCollectionSessionRecord',
   model: 'CollectionSessionRecordModel' 
 },
 {
@@ -3047,7 +3047,7 @@ define([
   displayType: 'textarea',
   displayName: 'Plan',
   displayPrompt: 'Which of your collection session plans did you follow in this session? (And did you stick to the plan?)',
-  displayPage: 'page_addCollectionSessionRecord',
+  displayPanel: 'panel_addCollectionSessionRecord',
   model: 'CollectionSessionRecordModel' 
 },
 {
@@ -3059,7 +3059,7 @@ define([
   displayType: 'textarea',
   displayName: 'Notes',
   displayPrompt: 'Enter additional notes on the session here.\nYour notes can include links to images or other documents.',
-  displayPage: 'page_addCollectionSessionRecord',
+  displayPanel: 'panel_addCollectionSessionRecord',
   model: 'CollectionSessionRecordModel' 
 },
 {
@@ -3071,7 +3071,7 @@ define([
   displayType: 'grid',
   displayName: 'Story collection session constructions',
   displayPrompt: 'People in your story collection sessions might have created constructions\nsuch as timelines or landscapes. You can enter details about those here.',
-  displayPage: 'page_addCollectionSessionRecord',
+  displayPanel: 'panel_addCollectionSessionRecord',
   model: 'CollectionSessionRecordModel' 
 },
 {
@@ -3083,7 +3083,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'Use the questions below to reflect on the session.',
-  displayPage: 'page_addCollectionSessionRecord',
+  displayPanel: 'panel_addCollectionSessionRecord',
   model: 'CollectionSessionRecordModel' 
 },
 {
@@ -3095,7 +3095,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Change',
-  displayPage: 'page_addCollectionSessionRecord',
+  displayPanel: 'panel_addCollectionSessionRecord',
   model: 'CollectionSessionRecordModel' 
 },
 {
@@ -3107,7 +3107,7 @@ define([
   displayType: 'textarea',
   displayName: 'Change in participant perceptions',
   displayPrompt: 'How did the perceptions of the participants change from the start to the end of the session?',
-  displayPage: 'page_addCollectionSessionRecord',
+  displayPanel: 'panel_addCollectionSessionRecord',
   model: 'CollectionSessionRecordModel' 
 },
 {
@@ -3119,7 +3119,7 @@ define([
   displayType: 'textarea',
   displayName: 'Change in facilitator perceptions',
   displayPrompt: 'How did <i>your</i> perceptions change?',
-  displayPage: 'page_addCollectionSessionRecord',
+  displayPanel: 'panel_addCollectionSessionRecord',
   model: 'CollectionSessionRecordModel' 
 },
 {
@@ -3131,7 +3131,7 @@ define([
   displayType: 'textarea',
   displayName: 'Changes to the project',
   displayPrompt: 'How has the overall project changed as a result of this session?',
-  displayPage: 'page_addCollectionSessionRecord',
+  displayPanel: 'panel_addCollectionSessionRecord',
   model: 'CollectionSessionRecordModel' 
 },
 {
@@ -3143,7 +3143,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Interactions',
-  displayPage: 'page_addCollectionSessionRecord',
+  displayPanel: 'panel_addCollectionSessionRecord',
   model: 'CollectionSessionRecordModel' 
 },
 {
@@ -3155,7 +3155,7 @@ define([
   displayType: 'textarea',
   displayName: 'Interactions among participants',
   displayPrompt: 'Describe the interactions between participants in this session.',
-  displayPage: 'page_addCollectionSessionRecord',
+  displayPanel: 'panel_addCollectionSessionRecord',
   model: 'CollectionSessionRecordModel' 
 },
 {
@@ -3167,7 +3167,7 @@ define([
   displayType: 'textarea',
   displayName: 'Interactions between participants and facilitators',
   displayPrompt: 'Describe interactions between participants and facilitators.',
-  displayPage: 'page_addCollectionSessionRecord',
+  displayPanel: 'panel_addCollectionSessionRecord',
   model: 'CollectionSessionRecordModel' 
 },
 {
@@ -3179,7 +3179,7 @@ define([
   displayType: 'textarea',
   displayName: 'Stories',
   displayPrompt: 'What did you notice about the stories people told, retold, chose, and worked with during the session?',
-  displayPage: 'page_addCollectionSessionRecord',
+  displayPanel: 'panel_addCollectionSessionRecord',
   model: 'CollectionSessionRecordModel' 
 },
 {
@@ -3191,7 +3191,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Learning',
-  displayPage: 'page_addCollectionSessionRecord',
+  displayPanel: 'panel_addCollectionSessionRecord',
   model: 'CollectionSessionRecordModel' 
 },
 {
@@ -3203,7 +3203,7 @@ define([
   displayType: 'textarea',
   displayName: 'Unique features',
   displayPrompt: 'What was special about these people in this place on this day?',
-  displayPage: 'page_addCollectionSessionRecord',
+  displayPanel: 'panel_addCollectionSessionRecord',
   model: 'CollectionSessionRecordModel' 
 },
 {
@@ -3215,7 +3215,7 @@ define([
   displayType: 'textarea',
   displayName: 'Surprise',
   displayPrompt: 'What surprised you about this session?',
-  displayPage: 'page_addCollectionSessionRecord',
+  displayPanel: 'panel_addCollectionSessionRecord',
   model: 'CollectionSessionRecordModel' 
 },
 {
@@ -3227,7 +3227,7 @@ define([
   displayType: 'textarea',
   displayName: 'Worked and didn\'t work',
   displayPrompt: 'Which parts of your plans for this session worked out well? Which parts didn\'t?',
-  displayPage: 'page_addCollectionSessionRecord',
+  displayPanel: 'panel_addCollectionSessionRecord',
   model: 'CollectionSessionRecordModel' 
 },
 {
@@ -3239,7 +3239,7 @@ define([
   displayType: 'textarea',
   displayName: 'New ideas',
   displayPrompt: 'What new ideas did you gain from this session? What did you learn from it?',
-  displayPage: 'page_addCollectionSessionRecord',
+  displayPanel: 'panel_addCollectionSessionRecord',
   model: 'CollectionSessionRecordModel' 
 },
 {
@@ -3251,19 +3251,19 @@ define([
   displayType: 'textarea',
   displayName: 'Other',
   displayPrompt: 'What else do you want to remember about this session?',
-  displayPage: 'page_addCollectionSessionRecord',
+  displayPanel: 'panel_addCollectionSessionRecord',
   model: 'CollectionSessionRecordModel' 
 },
 
-// -------------  PAGE page_newCollectionSessionConstruction Story collection construction popup  ------------- 
+// ------------- PANEL panel_newCollectionSessionConstruction Story collection construction popup  ------------- 
 
 {
-  id: 'page_newCollectionSessionConstruction',
+  id: 'panel_newCollectionSessionConstruction',
   displayName: 'Story collection construction',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_newCollectionSessionConstruction',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_newCollectionSessionConstruction',
+  modelPath: 'undefined' 
 },
 // Generate model NewCollectionSessionConstructionModel 
 
@@ -3276,7 +3276,7 @@ define([
   displayType: 'text',
   displayName: 'Name',
   displayPrompt: 'Please give this construction a name.',
-  displayPage: 'page_newCollectionSessionConstruction',
+  displayPanel: 'panel_newCollectionSessionConstruction',
   model: 'NewCollectionSessionConstructionModel' 
 },
 {
@@ -3288,7 +3288,7 @@ define([
   displayType: 'select',
   displayName: 'Type',
   displayPrompt: 'What type of construction is it?',
-  displayPage: 'page_newCollectionSessionConstruction',
+  displayPanel: 'panel_newCollectionSessionConstruction',
   model: 'NewCollectionSessionConstructionModel' 
 },
 {
@@ -3300,19 +3300,19 @@ define([
   displayType: 'textarea',
   displayName: 'Description',
   displayPrompt: 'Please describe the construction (or include a description given by participants).\nYour description can include links to images or other documents.',
-  displayPage: 'page_newCollectionSessionConstruction',
+  displayPanel: 'panel_newCollectionSessionConstruction',
   model: 'NewCollectionSessionConstructionModel' 
 },
 
-// -------------  PAGE page_readCollectionProcessReport Read collection process report page  ------------- 
+// ------------- PANEL panel_readCollectionProcessReport Read collection process report page  ------------- 
 
 {
-  id: 'page_readCollectionProcessReport',
+  id: 'panel_readCollectionProcessReport',
   displayName: 'Read collection process report',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_readCollectionProcessReport',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_readCollectionProcessReport',
+  modelPath: 'undefined' 
 },
 {
   id: 'project_collectionProcessReportLabel',
@@ -3323,7 +3323,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'This report shows all of the information entered in the pages grouped under "Collection process."',
-  displayPage: 'page_readCollectionProcessReport',
+  displayPanel: 'panel_readCollectionProcessReport',
   model: 'ProjectModel' 
 },
 {
@@ -3335,21 +3335,21 @@ define([
   displayType: 'report',
   displayName: undefined,
   displayPrompt: 'Collection process report',
-  displayPage: 'page_readCollectionProcessReport',
+  displayPanel: 'panel_readCollectionProcessReport',
   model: 'ProjectModel' 
 },
 
 // ==================== SECTION page_catalysis Catalysis ==========================
 
-// -------------  HEADER page_catalysis Catalysis page  ------------- 
+// ------------- PANEL panel_catalysis Catalysis page  ------------- 
 
 {
-  id: 'page_catalysis',
+  id: 'panel_catalysis',
   displayName: 'Catalysis',
   displayType: 'page',
   isHeader: true,
-  displayPage: 'page_catalysis',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_catalysis',
+  modelPath: 'undefined' 
 },
 {
   id: 'catalysisIntro',
@@ -3360,7 +3360,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'In the catalysis phase of your PNI project, you will look for patterns\nand prepare materials for use in sensemaking.',
-  displayPage: 'page_catalysis',
+  displayPanel: 'panel_catalysis',
   model: 'ProjectModel' 
 },
 {
@@ -3372,19 +3372,19 @@ define([
   displayType: 'textarea',
   displayName: 'Catalysis notes',
   displayPrompt: 'You can enter some general notes on catalysis in this project here.',
-  displayPage: 'page_catalysis',
+  displayPanel: 'panel_catalysis',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_browseStories Browse stories page  ------------- 
+// ------------- PANEL panel_browseStories Browse stories page  ------------- 
 
 {
-  id: 'page_browseStories',
+  id: 'panel_browseStories',
   displayName: 'Browse stories',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_browseStories',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_browseStories',
+  modelPath: 'undefined' 
 },
 {
   id: 'browseStories_collectedStoriesAfterCollectionLabel',
@@ -3395,7 +3395,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you will review your collected stories.\nYou can save stories (or groups of stories) to observations for later use.\nYou can also save excerpts (parts of stories) for later use.',
-  displayPage: 'page_browseStories',
+  displayPanel: 'panel_browseStories',
   model: 'ProjectModel' 
 },
 {
@@ -3407,7 +3407,7 @@ define([
   displayType: 'button',
   displayName: undefined,
   displayPrompt: 'Load latest stories from server',
-  displayPage: 'page_browseStories',
+  displayPanel: 'panel_browseStories',
   model: 'ProjectModel' 
 },
 {
@@ -3419,7 +3419,7 @@ define([
   displayType: 'function',
   displayName: undefined,
   displayPrompt: 'Total number of survey results loaded from server:',
-  displayPage: 'page_browseStories',
+  displayPanel: 'panel_browseStories',
   model: 'ProjectModel' 
 },
 {
@@ -3433,19 +3433,19 @@ define([
   displayType: 'storyBrowser',
   displayName: undefined,
   displayPrompt: 'Collected stories',
-  displayPage: 'page_browseStories',
+  displayPanel: 'panel_browseStories',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_themeStories Theme stories page  ------------- 
+// ------------- PANEL panel_themeStories Theme stories page  ------------- 
 
 {
-  id: 'page_themeStories',
+  id: 'panel_themeStories',
   displayName: 'Theme stories',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_themeStories',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_themeStories',
+  modelPath: 'undefined' 
 },
 {
   id: 'themeStoriesLabel',
@@ -3456,7 +3456,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you will derive emergent themes from the collected stories.\nThe themes will appear in your data as answers to a "Theme" question, creating patterns you can use.',
-  displayPage: 'page_themeStories',
+  displayPanel: 'panel_themeStories',
   model: 'ProjectModel' 
 },
 {
@@ -3468,7 +3468,7 @@ define([
   displayType: 'storyThemer',
   displayName: undefined,
   displayPrompt: 'Theme stories',
-  displayPage: 'page_themeStories',
+  displayPanel: 'panel_themeStories',
   model: 'ProjectModel' 
 },
 {
@@ -3480,7 +3480,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: '(Unfinished: The user will use this area to theme stories.',
-  displayPage: 'page_themeStories',
+  displayPanel: 'panel_themeStories',
   model: 'ProjectModel' 
 },
 {
@@ -3492,19 +3492,19 @@ define([
   displayType: 'image',
   displayName: undefined,
   displayPrompt: 'It will look something like this.)',
-  displayPage: 'page_themeStories',
+  displayPanel: 'panel_themeStories',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_browseGraphs Browse graphs page  ------------- 
+// ------------- PANEL panel_browseGraphs Browse graphs page  ------------- 
 
 {
-  id: 'page_browseGraphs',
+  id: 'panel_browseGraphs',
   displayName: 'Browse graphs',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_browseGraphs',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_browseGraphs',
+  modelPath: 'undefined' 
 },
 {
   id: 'graphBrowserLabel',
@@ -3515,7 +3515,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you can look at patterns in the answers people gave about their stories,\nand save patterns to observations for later use.',
-  displayPage: 'page_browseGraphs',
+  displayPanel: 'panel_browseGraphs',
   model: 'ProjectModel' 
 },
 {
@@ -3527,7 +3527,7 @@ define([
   displayType: 'graphBrowser',
   displayName: undefined,
   displayPrompt: 'Graph browser',
-  displayPage: 'page_browseGraphs',
+  displayPanel: 'panel_browseGraphs',
   model: 'ProjectModel' 
 },
 {
@@ -3539,7 +3539,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: '(Unfinished: This area will show graphs of patterns in the data.',
-  displayPage: 'page_browseGraphs',
+  displayPanel: 'panel_browseGraphs',
   model: 'ProjectModel' 
 },
 {
@@ -3551,19 +3551,19 @@ define([
   displayType: 'image',
   displayName: undefined,
   displayPrompt: 'It will look something like this.)',
-  displayPage: 'page_browseGraphs',
+  displayPanel: 'panel_browseGraphs',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_reviewTrends Review trends page  ------------- 
+// ------------- PANEL panel_reviewTrends Review trends page  ------------- 
 
 {
-  id: 'page_reviewTrends',
+  id: 'panel_reviewTrends',
   displayName: 'Review trends',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_reviewTrends',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_reviewTrends',
+  modelPath: 'undefined' 
 },
 {
   id: 'reviewTrendsLabel',
@@ -3574,7 +3574,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you will look over the most significant statistical results\nand save some to observations for later use.',
-  displayPage: 'page_reviewTrends',
+  displayPanel: 'panel_reviewTrends',
   model: 'ProjectModel' 
 },
 {
@@ -3586,7 +3586,7 @@ define([
   displayType: 'select',
   displayName: 'Minimum subset size',
   displayPrompt: 'How large should subsets of stories be to be considered for comparison?',
-  displayPage: 'page_reviewTrends',
+  displayPanel: 'panel_reviewTrends',
   model: 'ProjectModel' 
 },
 {
@@ -3598,7 +3598,7 @@ define([
   displayType: 'select',
   displayName: 'Significance threshold',
   displayPrompt: 'What significance threshold do you want reported?',
-  displayPage: 'page_reviewTrends',
+  displayPanel: 'panel_reviewTrends',
   model: 'ProjectModel' 
 },
 {
@@ -3610,7 +3610,7 @@ define([
   displayType: 'trendsReport',
   displayName: undefined,
   displayPrompt: 'Trends report',
-  displayPage: 'page_reviewTrends',
+  displayPanel: 'panel_reviewTrends',
   model: 'ProjectModel' 
 },
 {
@@ -3622,7 +3622,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: '(Unfinished: This area will show the most significant statistical trends.',
-  displayPage: 'page_reviewTrends',
+  displayPanel: 'panel_reviewTrends',
   model: 'ProjectModel' 
 },
 {
@@ -3634,19 +3634,19 @@ define([
   displayType: 'image',
   displayName: undefined,
   displayPrompt: 'It will look something like this.)',
-  displayPage: 'page_reviewTrends',
+  displayPanel: 'panel_reviewTrends',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_addToObservation Add to observation popup  ------------- 
+// ------------- PANEL panel_addToObservation Add to observation popup  ------------- 
 
 {
-  id: 'page_addToObservation',
+  id: 'panel_addToObservation',
   displayName: 'Add to observation',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_addToObservation',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_addToObservation',
+  modelPath: 'undefined' 
 },
 // Generate model ToObservationModel 
 
@@ -3659,7 +3659,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'Note: You should not add any observations that depend on patterns among stories until after\nall stories have been entered.',
-  displayPage: 'page_addToObservation',
+  displayPanel: 'panel_addToObservation',
   model: 'ToObservationModel' 
 },
 {
@@ -3671,7 +3671,7 @@ define([
   displayType: 'observationsList',
   displayName: undefined,
   displayPrompt: 'Choose an observation from this list to which to add the selected result, or create a new observation.',
-  displayPage: 'page_addToObservation',
+  displayPanel: 'panel_addToObservation',
   model: 'ToObservationModel' 
 },
 {
@@ -3683,7 +3683,7 @@ define([
   displayType: 'button',
   displayName: undefined,
   displayPrompt: 'Add result to selected observation',
-  displayPage: 'page_addToObservation',
+  displayPanel: 'panel_addToObservation',
   model: 'ToObservationModel' 
 },
 {
@@ -3695,19 +3695,19 @@ define([
   displayType: 'button',
   displayName: undefined,
   displayPrompt: 'Create new observation with this result',
-  displayPage: 'page_addToObservation',
+  displayPanel: 'panel_addToObservation',
   model: 'ToObservationModel' 
 },
 
-// -------------  PAGE page_createOrEditObservation Create new observation popup  ------------- 
+// ------------- PANEL panel_createOrEditObservation Create new observation popup  ------------- 
 
 {
-  id: 'page_createOrEditObservation',
+  id: 'panel_createOrEditObservation',
   displayName: 'Create new observation',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_createOrEditObservation',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_createOrEditObservation',
+  modelPath: 'undefined' 
 },
 // Generate model ObservationModel 
 
@@ -3720,7 +3720,7 @@ define([
   displayType: 'text',
   displayName: 'Name',
   displayPrompt: 'Please give this observation a name.',
-  displayPage: 'page_createOrEditObservation',
+  displayPanel: 'panel_createOrEditObservation',
   model: 'ObservationModel' 
 },
 {
@@ -3732,7 +3732,7 @@ define([
   displayType: 'textarea',
   displayName: 'Observation',
   displayPrompt: 'Please describe this observation.',
-  displayPage: 'page_createOrEditObservation',
+  displayPanel: 'panel_createOrEditObservation',
   model: 'ObservationModel' 
 },
 {
@@ -3744,7 +3744,7 @@ define([
   displayType: 'accumulatedItemsGrid',
   displayName: 'Results',
   displayPrompt: 'These are the results you have selected to include in this observation.',
-  displayPage: 'page_createOrEditObservation',
+  displayPanel: 'panel_createOrEditObservation',
   model: 'ObservationModel' 
 },
 {
@@ -3756,7 +3756,7 @@ define([
   displayType: 'textarea',
   displayName: 'First interpretation',
   displayPrompt: 'Enter an interpretation of this observation.\nWhat does it mean?',
-  displayPage: 'page_createOrEditObservation',
+  displayPanel: 'panel_createOrEditObservation',
   model: 'ObservationModel' 
 },
 {
@@ -3768,7 +3768,7 @@ define([
   displayType: 'text',
   displayName: 'First interpretation name',
   displayPrompt: 'Please give this interpretation a short name (so you can refer to it later).',
-  displayPage: 'page_createOrEditObservation',
+  displayPanel: 'panel_createOrEditObservation',
   model: 'ObservationModel' 
 },
 {
@@ -3780,7 +3780,7 @@ define([
   displayType: 'textarea',
   displayName: 'First interpretation idea',
   displayPrompt: 'If you like, you can record an idea that follows from this interpretation.',
-  displayPage: 'page_createOrEditObservation',
+  displayPanel: 'panel_createOrEditObservation',
   model: 'ObservationModel' 
 },
 {
@@ -3792,7 +3792,7 @@ define([
   displayType: 'grid',
   displayName: 'First interpretation excerpts',
   displayPrompt: 'You can add excerpts to this interpretation.',
-  displayPage: 'page_createOrEditObservation',
+  displayPanel: 'panel_createOrEditObservation',
   model: 'ObservationModel' 
 },
 {
@@ -3804,7 +3804,7 @@ define([
   displayType: 'textarea',
   displayName: 'Competing interpretation',
   displayPrompt: 'Now enter an interpretation that competes with the first one.\nWhat <i>else</i> could this pattern mean?',
-  displayPage: 'page_createOrEditObservation',
+  displayPanel: 'panel_createOrEditObservation',
   model: 'ObservationModel' 
 },
 {
@@ -3816,7 +3816,7 @@ define([
   displayType: 'text',
   displayName: 'Competing interpretation name',
   displayPrompt: 'Please give this competing interpretation a short name.',
-  displayPage: 'page_createOrEditObservation',
+  displayPanel: 'panel_createOrEditObservation',
   model: 'ObservationModel' 
 },
 {
@@ -3828,7 +3828,7 @@ define([
   displayType: 'textarea',
   displayName: 'Competing interpretation idea',
   displayPrompt: 'If you like, enter an idea that follows from your competing interpretation.',
-  displayPage: 'page_createOrEditObservation',
+  displayPanel: 'panel_createOrEditObservation',
   model: 'ObservationModel' 
 },
 {
@@ -3840,7 +3840,7 @@ define([
   displayType: 'grid',
   displayName: 'Competing interpretation excerpts',
   displayPrompt: 'You can add excerpts to the competing interpretation.',
-  displayPage: 'page_createOrEditObservation',
+  displayPanel: 'panel_createOrEditObservation',
   model: 'ObservationModel' 
 },
 {
@@ -3852,7 +3852,7 @@ define([
   displayType: 'textarea',
   displayName: 'Third interpretation',
   displayPrompt: 'If a third interpretation of the pattern comes to mind, enter it here.\nIs there a third thing this pattern could mean?',
-  displayPage: 'page_createOrEditObservation',
+  displayPanel: 'panel_createOrEditObservation',
   model: 'ObservationModel' 
 },
 {
@@ -3864,7 +3864,7 @@ define([
   displayType: 'text',
   displayName: 'Third interpretation name',
   displayPrompt: 'Please give this third interpretation a short name.',
-  displayPage: 'page_createOrEditObservation',
+  displayPanel: 'panel_createOrEditObservation',
   model: 'ObservationModel' 
 },
 {
@@ -3876,7 +3876,7 @@ define([
   displayType: 'textarea',
   displayName: 'Third interpretation idea',
   displayPrompt: 'If you like, enter an idea that follows from your third interpretation.',
-  displayPage: 'page_createOrEditObservation',
+  displayPanel: 'panel_createOrEditObservation',
   model: 'ObservationModel' 
 },
 {
@@ -3888,19 +3888,19 @@ define([
   displayType: 'grid',
   displayName: 'Third interpretation excerpts',
   displayPrompt: 'You can add excerpts to the third interpretation.',
-  displayPage: 'page_createOrEditObservation',
+  displayPanel: 'panel_createOrEditObservation',
   model: 'ObservationModel' 
 },
 
-// -------------  PAGE page_selectExcerpt Add excerpt to interpretation popup  ------------- 
+// ------------- PANEL panel_selectExcerpt Add excerpt to interpretation popup  ------------- 
 
 {
-  id: 'page_selectExcerpt',
+  id: 'panel_selectExcerpt',
   displayName: 'Add excerpt to interpretation',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_selectExcerpt',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_selectExcerpt',
+  modelPath: 'undefined' 
 },
 // Generate model SelectExcerptModel 
 
@@ -3913,7 +3913,7 @@ define([
   displayType: 'excerptsList',
   displayName: undefined,
   displayPrompt: 'Collected excerpts',
-  displayPage: 'page_selectExcerpt',
+  displayPanel: 'panel_selectExcerpt',
   model: 'SelectExcerptModel' 
 },
 {
@@ -3925,19 +3925,19 @@ define([
   displayType: 'button',
   displayName: undefined,
   displayPrompt: 'Add selected excerpt to interpretation',
-  displayPage: 'page_selectExcerpt',
+  displayPanel: 'panel_selectExcerpt',
   model: 'SelectExcerptModel' 
 },
 
-// -------------  PAGE page_addToExcerpt Add text to excerpt popup  ------------- 
+// ------------- PANEL panel_addToExcerpt Add text to excerpt popup  ------------- 
 
 {
-  id: 'page_addToExcerpt',
+  id: 'panel_addToExcerpt',
   displayName: 'Add text to excerpt',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_addToExcerpt',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_addToExcerpt',
+  modelPath: 'undefined' 
 },
 // Generate model ToExcerptModel 
 
@@ -3950,7 +3950,7 @@ define([
   displayType: 'excerptsList',
   displayName: undefined,
   displayPrompt: 'Choose an excerpt from this list to which to add the selected text, or create a new excerpt.',
-  displayPage: 'page_addToExcerpt',
+  displayPanel: 'panel_addToExcerpt',
   model: 'ToExcerptModel' 
 },
 {
@@ -3962,7 +3962,7 @@ define([
   displayType: 'button',
   displayName: undefined,
   displayPrompt: 'Add text to selected excerpt',
-  displayPage: 'page_addToExcerpt',
+  displayPanel: 'panel_addToExcerpt',
   model: 'ToExcerptModel' 
 },
 {
@@ -3974,19 +3974,19 @@ define([
   displayType: 'button',
   displayName: undefined,
   displayPrompt: 'Create new excerpt with this text',
-  displayPage: 'page_addToExcerpt',
+  displayPanel: 'panel_addToExcerpt',
   model: 'ToExcerptModel' 
 },
 
-// -------------  PAGE page_createNewExcerpt Create new excerpt popup  ------------- 
+// ------------- PANEL panel_createNewExcerpt Create new excerpt popup  ------------- 
 
 {
-  id: 'page_createNewExcerpt',
+  id: 'panel_createNewExcerpt',
   displayName: 'Create new excerpt',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_createNewExcerpt',
-  pageModel: 'ExcerptModel' 
+  displayPanel: 'panel_createNewExcerpt',
+  modelPath: 'excerpt' 
 },
 // Generate model CreateNewExcerptModel 
 
@@ -3999,7 +3999,7 @@ define([
   displayType: 'text',
   displayName: 'Name',
   displayPrompt: 'Please give this excerpt a name.',
-  displayPage: 'page_createNewExcerpt',
+  displayPanel: 'panel_createNewExcerpt',
   model: 'CreateNewExcerptModel' 
 },
 {
@@ -4011,7 +4011,7 @@ define([
   displayType: 'textarea',
   displayName: 'Excerpt',
   displayPrompt: 'You can edit the excerpt here.',
-  displayPage: 'page_createNewExcerpt',
+  displayPanel: 'panel_createNewExcerpt',
   model: 'CreateNewExcerptModel' 
 },
 {
@@ -4023,19 +4023,19 @@ define([
   displayType: 'textarea',
   displayName: 'Notes',
   displayPrompt: 'Enter some notes about the excerpt.',
-  displayPage: 'page_createNewExcerpt',
+  displayPanel: 'panel_createNewExcerpt',
   model: 'CreateNewExcerptModel' 
 },
 
-// -------------  PAGE page_reviewExcerpts Review excerpts page  ------------- 
+// ------------- PANEL panel_reviewExcerpts Review excerpts page  ------------- 
 
 {
-  id: 'page_reviewExcerpts',
+  id: 'panel_reviewExcerpts',
   displayName: 'Review excerpts',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_reviewExcerpts',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_reviewExcerpts',
+  modelPath: 'undefined' 
 },
 {
   id: 'project_savedExcerptsList',
@@ -4046,19 +4046,19 @@ define([
   displayType: 'grid',
   displayName: 'Story excerpts',
   displayPrompt: 'These are the story excerpts you have saved.',
-  displayPage: 'page_reviewExcerpts',
+  displayPanel: 'panel_reviewExcerpts',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_interpretObservations Review and interpret observations page  ------------- 
+// ------------- PANEL panel_interpretObservations Review and interpret observations page  ------------- 
 
 {
-  id: 'page_interpretObservations',
+  id: 'panel_interpretObservations',
   displayName: 'Review and interpret observations',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_interpretObservations',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_interpretObservations',
+  modelPath: 'undefined' 
 },
 {
   id: 'project_observationsDisplayList',
@@ -4069,19 +4069,19 @@ define([
   displayType: 'grid',
   displayName: 'Catalysis observations',
   displayPrompt: 'These are the observations you have collected from the\nbrowse, graph, and trends pages.',
-  displayPage: 'page_interpretObservations',
+  displayPanel: 'panel_interpretObservations',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_clusterInterpretations Cluster interpretations page  ------------- 
+// ------------- PANEL panel_clusterInterpretations Cluster interpretations page  ------------- 
 
 {
-  id: 'page_clusterInterpretations',
+  id: 'panel_clusterInterpretations',
   displayName: 'Cluster interpretations',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_clusterInterpretations',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_clusterInterpretations',
+  modelPath: 'undefined' 
 },
 {
   id: 'project_interpretationsClusteringLabel',
@@ -4092,7 +4092,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you will cluster together the interpretations you have collected (based on observations)\nto create perspectives for your catalysis report.\nNote: Do not cluster your interpretations unless you are sure you have finished collecting them.',
-  displayPage: 'page_clusterInterpretations',
+  displayPanel: 'panel_clusterInterpretations',
   model: 'ProjectModel' 
 },
 {
@@ -4104,19 +4104,19 @@ define([
   displayType: 'clusteringDiagram',
   displayName: undefined,
   displayPrompt: 'Cluster interpretations into perspectives',
-  displayPage: 'page_clusterInterpretations',
+  displayPanel: 'panel_clusterInterpretations',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_describePerspectives Describe perspectives page  ------------- 
+// ------------- PANEL panel_describePerspectives Describe perspectives page  ------------- 
 
 {
-  id: 'page_describePerspectives',
+  id: 'panel_describePerspectives',
   displayName: 'Describe perspectives',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_describePerspectives',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_describePerspectives',
+  modelPath: 'undefined' 
 },
 {
   id: 'project_perspectivesLabel',
@@ -4127,7 +4127,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you will describe the perspectives that resulted from clustering\nyour interpretations.',
-  displayPage: 'page_describePerspectives',
+  displayPanel: 'panel_describePerspectives',
   model: 'ProjectModel' 
 },
 {
@@ -4139,19 +4139,19 @@ define([
   displayType: 'grid',
   displayName: 'Catalysis perspectives',
   displayPrompt: 'These are the perspectives you have created from interpretations.',
-  displayPage: 'page_describePerspectives',
+  displayPanel: 'panel_describePerspectives',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_addPerspective Add or change perspective popup  ------------- 
+// ------------- PANEL panel_addPerspective Add or change perspective popup  ------------- 
 
 {
-  id: 'page_addPerspective',
+  id: 'panel_addPerspective',
   displayName: 'Add or change perspective',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_addPerspective',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_addPerspective',
+  modelPath: 'undefined' 
 },
 // Generate model PerspectiveModel 
 
@@ -4164,7 +4164,7 @@ define([
   displayType: 'text',
   displayName: 'Name',
   displayPrompt: 'Please give this perspective a name.',
-  displayPage: 'page_addPerspective',
+  displayPanel: 'panel_addPerspective',
   model: 'PerspectiveModel' 
 },
 {
@@ -4176,7 +4176,7 @@ define([
   displayType: 'textarea',
   displayName: 'Perspective',
   displayPrompt: 'Describe this perspective.',
-  displayPage: 'page_addPerspective',
+  displayPanel: 'panel_addPerspective',
   model: 'PerspectiveModel' 
 },
 {
@@ -4188,7 +4188,7 @@ define([
   displayType: 'annotationsGrid',
   displayName: undefined,
   displayPrompt: 'Results linked to this perspective',
-  displayPage: 'page_addPerspective',
+  displayPanel: 'panel_addPerspective',
   model: 'PerspectiveModel' 
 },
 {
@@ -4200,7 +4200,7 @@ define([
   displayType: 'annotationsGrid',
   displayName: undefined,
   displayPrompt: 'Excerpts linked to this perspective',
-  displayPage: 'page_addPerspective',
+  displayPanel: 'panel_addPerspective',
   model: 'PerspectiveModel' 
 },
 {
@@ -4212,19 +4212,19 @@ define([
   displayType: 'annotationsGrid',
   displayName: undefined,
   displayPrompt: 'Interpretations linked to this perspective',
-  displayPage: 'page_addPerspective',
+  displayPanel: 'panel_addPerspective',
   model: 'PerspectiveModel' 
 },
 
-// -------------  PAGE page_annotateResultForPerspective Annotate result for perspective popup  ------------- 
+// ------------- PANEL panel_annotateResultForPerspective Annotate result for perspective popup  ------------- 
 
 {
-  id: 'page_annotateResultForPerspective',
+  id: 'panel_annotateResultForPerspective',
   displayName: 'Annotate result for perspective',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_annotateResultForPerspective',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_annotateResultForPerspective',
+  modelPath: 'undefined' 
 },
 // Generate model AnnotateResultForPerspectiveModel 
 
@@ -4237,19 +4237,19 @@ define([
   displayType: 'textarea',
   displayName: 'Notes',
   displayPrompt: 'Enter any notes you want to remember about this result with respect to this perspective.',
-  displayPage: 'page_annotateResultForPerspective',
+  displayPanel: 'panel_annotateResultForPerspective',
   model: 'AnnotateResultForPerspectiveModel' 
 },
 
-// -------------  PAGE page_annotateExcerptForPerspective Annotate excerpt for perspective popup  ------------- 
+// ------------- PANEL panel_annotateExcerptForPerspective Annotate excerpt for perspective popup  ------------- 
 
 {
-  id: 'page_annotateExcerptForPerspective',
+  id: 'panel_annotateExcerptForPerspective',
   displayName: 'Annotate excerpt for perspective',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_annotateExcerptForPerspective',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_annotateExcerptForPerspective',
+  modelPath: 'undefined' 
 },
 // Generate model AnnotateExcerptForPerspectiveModel 
 
@@ -4262,19 +4262,19 @@ define([
   displayType: 'textarea',
   displayName: 'Notes',
   displayPrompt: 'Enter any notes you want to remember about this excerpt with respect to this perspective.',
-  displayPage: 'page_annotateExcerptForPerspective',
+  displayPanel: 'panel_annotateExcerptForPerspective',
   model: 'AnnotateExcerptForPerspectiveModel' 
 },
 
-// -------------  PAGE page_annotateInterpretationForPerspective Annotate interpretation for perspective popup  ------------- 
+// ------------- PANEL panel_annotateInterpretationForPerspective Annotate interpretation for perspective popup  ------------- 
 
 {
-  id: 'page_annotateInterpretationForPerspective',
+  id: 'panel_annotateInterpretationForPerspective',
   displayName: 'Annotate interpretation for perspective',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_annotateInterpretationForPerspective',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_annotateInterpretationForPerspective',
+  modelPath: 'undefined' 
 },
 // Generate model AnnotateInterpretationForPerspectiveModel 
 
@@ -4287,19 +4287,19 @@ define([
   displayType: 'textarea',
   displayName: 'Notes',
   displayPrompt: 'Enter any notes you want to remember about this interpretation as it is linked to this perspective.',
-  displayPage: 'page_annotateInterpretationForPerspective',
+  displayPanel: 'panel_annotateInterpretationForPerspective',
   model: 'AnnotateInterpretationForPerspectiveModel' 
 },
 
-// -------------  PAGE page_readCatalysisReport Read catalysis report page  ------------- 
+// ------------- PANEL panel_readCatalysisReport Read catalysis report page  ------------- 
 
 {
-  id: 'page_readCatalysisReport',
+  id: 'panel_readCatalysisReport',
   displayName: 'Read catalysis report',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_readCatalysisReport',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_readCatalysisReport',
+  modelPath: 'undefined' 
 },
 {
   id: 'catalysisReport_introductionLabel',
@@ -4310,7 +4310,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'This report shows all of the information entered in the pages grouped under "Catalysis."',
-  displayPage: 'page_readCatalysisReport',
+  displayPanel: 'panel_readCatalysisReport',
   model: 'ProjectModel' 
 },
 {
@@ -4322,21 +4322,21 @@ define([
   displayType: 'report',
   displayName: undefined,
   displayPrompt: 'Catalysis report',
-  displayPage: 'page_readCatalysisReport',
+  displayPanel: 'panel_readCatalysisReport',
   model: 'ProjectModel' 
 },
 
 // ==================== SECTION page_sensemaking Sensemaking ==========================
 
-// -------------  HEADER page_sensemaking Sensemaking page  ------------- 
+// ------------- PANEL panel_sensemaking Sensemaking page  ------------- 
 
 {
-  id: 'page_sensemaking',
+  id: 'panel_sensemaking',
   displayName: 'Sensemaking',
   displayType: 'page',
   isHeader: true,
-  displayPage: 'page_sensemaking',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_sensemaking',
+  modelPath: 'undefined' 
 },
 {
   id: 'sensemakingIntroLabel',
@@ -4347,7 +4347,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'In the sensemaking phase of your PNI project, you will plan sensemaking sessions and record what happened in them.',
-  displayPage: 'page_sensemaking',
+  displayPanel: 'panel_sensemaking',
   model: 'ProjectModel' 
 },
 {
@@ -4359,19 +4359,19 @@ define([
   displayType: 'textarea',
   displayName: 'Sensemaking notes',
   displayPrompt: 'You can enter some general notes on sensemaking in this project here.',
-  displayPage: 'page_sensemaking',
+  displayPanel: 'panel_sensemaking',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_planSensemakingSessions Plan sensemaking sessions page  ------------- 
+// ------------- PANEL panel_planSensemakingSessions Plan sensemaking sessions page  ------------- 
 
 {
-  id: 'page_planSensemakingSessions',
+  id: 'panel_planSensemakingSessions',
   displayName: 'Plan sensemaking sessions',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_planSensemakingSessions',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_planSensemakingSessions',
+  modelPath: 'undefined' 
 },
 {
   id: 'project_sensemakingSessionPlansLabel',
@@ -4382,7 +4382,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you can create plans for your sensemaking sessions.',
-  displayPage: 'page_planSensemakingSessions',
+  displayPanel: 'panel_planSensemakingSessions',
   model: 'ProjectModel' 
 },
 {
@@ -4394,7 +4394,7 @@ define([
   displayType: 'recommendationTable',
   displayName: undefined,
   displayPrompt: 'Recommendations for sensemaking sessions',
-  displayPage: 'page_planSensemakingSessions',
+  displayPanel: 'panel_planSensemakingSessions',
   model: 'ProjectModel' 
 },
 {
@@ -4406,19 +4406,19 @@ define([
   displayType: 'grid',
   displayName: 'Sensemaking session plans',
   displayPrompt: 'Enter your plans for sensemaking sessions here.',
-  displayPage: 'page_planSensemakingSessions',
+  displayPanel: 'panel_planSensemakingSessions',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_addSensemakingSessionPlan Enter sensemaking session plan popup  ------------- 
+// ------------- PANEL panel_addSensemakingSessionPlan Enter sensemaking session plan popup  ------------- 
 
 {
-  id: 'page_addSensemakingSessionPlan',
+  id: 'panel_addSensemakingSessionPlan',
   displayName: 'Enter sensemaking session plan',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_addSensemakingSessionPlan',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_addSensemakingSessionPlan',
+  modelPath: 'undefined' 
 },
 // Generate model SensemakingSessionPlanModel 
 
@@ -4431,7 +4431,7 @@ define([
   displayType: 'text',
   displayName: 'Name',
   displayPrompt: 'Please give this session plan a name.',
-  displayPage: 'page_addSensemakingSessionPlan',
+  displayPanel: 'panel_addSensemakingSessionPlan',
   model: 'SensemakingSessionPlanModel' 
 },
 {
@@ -4443,7 +4443,7 @@ define([
   displayType: 'text',
   displayName: 'Participant groups',
   displayPrompt: 'Which participant group(s) will be involved?',
-  displayPage: 'page_addSensemakingSessionPlan',
+  displayPanel: 'panel_addSensemakingSessionPlan',
   model: 'SensemakingSessionPlanModel' 
 },
 {
@@ -4455,7 +4455,7 @@ define([
   displayType: 'text',
   displayName: 'Repetitions',
   displayPrompt: 'How many repetitions of the session will there be?',
-  displayPage: 'page_addSensemakingSessionPlan',
+  displayPanel: 'panel_addSensemakingSessionPlan',
   model: 'SensemakingSessionPlanModel' 
 },
 {
@@ -4467,7 +4467,7 @@ define([
   displayType: 'text',
   displayName: 'Length',
   displayPrompt: 'How long will this session last?',
-  displayPage: 'page_addSensemakingSessionPlan',
+  displayPanel: 'panel_addSensemakingSessionPlan',
   model: 'SensemakingSessionPlanModel' 
 },
 {
@@ -4479,7 +4479,7 @@ define([
   displayType: 'text',
   displayName: 'Time',
   displayPrompt: 'At what dates and times will the session take place?',
-  displayPage: 'page_addSensemakingSessionPlan',
+  displayPanel: 'panel_addSensemakingSessionPlan',
   model: 'SensemakingSessionPlanModel' 
 },
 {
@@ -4491,7 +4491,7 @@ define([
   displayType: 'text',
   displayName: 'Location',
   displayPrompt: 'Where will these sessions take place?',
-  displayPage: 'page_addSensemakingSessionPlan',
+  displayPanel: 'panel_addSensemakingSessionPlan',
   model: 'SensemakingSessionPlanModel' 
 },
 {
@@ -4503,7 +4503,7 @@ define([
   displayType: 'text',
   displayName: 'Number of people',
   displayPrompt: 'How many people will be invited to each repetition of this session?',
-  displayPage: 'page_addSensemakingSessionPlan',
+  displayPanel: 'panel_addSensemakingSessionPlan',
   model: 'SensemakingSessionPlanModel' 
 },
 {
@@ -4515,7 +4515,7 @@ define([
   displayType: 'textarea',
   displayName: 'Materials',
   displayPrompt: 'What materials will this session require?',
-  displayPage: 'page_addSensemakingSessionPlan',
+  displayPanel: 'panel_addSensemakingSessionPlan',
   model: 'SensemakingSessionPlanModel' 
 },
 {
@@ -4527,7 +4527,7 @@ define([
   displayType: 'textarea',
   displayName: 'Other',
   displayPrompt: 'Enter other details about this session.',
-  displayPage: 'page_addSensemakingSessionPlan',
+  displayPanel: 'panel_addSensemakingSessionPlan',
   model: 'SensemakingSessionPlanModel' 
 },
 {
@@ -4539,7 +4539,7 @@ define([
   displayType: 'grid',
   displayName: 'Sensemaking session activities',
   displayPrompt: 'Here you can enter some activities you plan for the session.\nActivities within story collection sessions can be simple instructions or complicated exercises (like the creation of timelines).',
-  displayPage: 'page_addSensemakingSessionPlan',
+  displayPanel: 'panel_addSensemakingSessionPlan',
   model: 'SensemakingSessionPlanModel' 
 },
 {
@@ -4551,19 +4551,19 @@ define([
   displayType: 'button',
   displayName: undefined,
   displayPrompt: 'Print session agenda',
-  displayPage: 'page_addSensemakingSessionPlan',
+  displayPanel: 'panel_addSensemakingSessionPlan',
   model: 'SensemakingSessionPlanModel' 
 },
 
-// -------------  PAGE page_addSensemakingSessionActivity Add sensemaking session activity popup  ------------- 
+// ------------- PANEL panel_addSensemakingSessionActivity Add sensemaking session activity popup  ------------- 
 
 {
-  id: 'page_addSensemakingSessionActivity',
+  id: 'panel_addSensemakingSessionActivity',
   displayName: 'Add sensemaking session activity',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_addSensemakingSessionActivity',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_addSensemakingSessionActivity',
+  modelPath: 'undefined' 
 },
 // Generate model SensemakingSessionActivityModel 
 
@@ -4576,7 +4576,7 @@ define([
   displayType: 'text',
   displayName: 'Name',
   displayPrompt: 'Please give this activity a name.',
-  displayPage: 'page_addSensemakingSessionActivity',
+  displayPanel: 'panel_addSensemakingSessionActivity',
   model: 'SensemakingSessionActivityModel' 
 },
 {
@@ -4599,7 +4599,7 @@ define([
   displayType: 'select',
   displayName: 'Type',
   displayPrompt: 'What type of activity is this?',
-  displayPage: 'page_addSensemakingSessionActivity',
+  displayPanel: 'panel_addSensemakingSessionActivity',
   model: 'SensemakingSessionActivityModel' 
 },
 {
@@ -4611,7 +4611,7 @@ define([
   displayType: 'textarea',
   displayName: 'Plan',
   displayPrompt: 'Describe the plan for this activity.',
-  displayPage: 'page_addSensemakingSessionActivity',
+  displayPanel: 'panel_addSensemakingSessionActivity',
   model: 'SensemakingSessionActivityModel' 
 },
 {
@@ -4623,7 +4623,7 @@ define([
   displayType: 'textarea',
   displayName: 'Optional elaborations',
   displayPrompt: 'Describe any optional elaborations you might or might not use in this activity.',
-  displayPage: 'page_addSensemakingSessionActivity',
+  displayPanel: 'panel_addSensemakingSessionActivity',
   model: 'SensemakingSessionActivityModel' 
 },
 {
@@ -4635,7 +4635,7 @@ define([
   displayType: 'text',
   displayName: 'Length',
   displayPrompt: 'How long will this activity take?',
-  displayPage: 'page_addSensemakingSessionActivity',
+  displayPanel: 'panel_addSensemakingSessionActivity',
   model: 'SensemakingSessionActivityModel' 
 },
 {
@@ -4647,7 +4647,7 @@ define([
   displayType: 'textarea',
   displayName: 'New stories',
   displayPrompt: 'Will new stories be recorded during this activity, and if so, how?',
-  displayPage: 'page_addSensemakingSessionActivity',
+  displayPanel: 'panel_addSensemakingSessionActivity',
   model: 'SensemakingSessionActivityModel' 
 },
 {
@@ -4659,7 +4659,7 @@ define([
   displayType: 'textarea',
   displayName: 'Materials',
   displayPrompt: 'What materials will be provided for this activity?',
-  displayPage: 'page_addSensemakingSessionActivity',
+  displayPanel: 'panel_addSensemakingSessionActivity',
   model: 'SensemakingSessionActivityModel' 
 },
 {
@@ -4671,7 +4671,7 @@ define([
   displayType: 'textarea',
   displayName: 'Spaces',
   displayPrompt: 'What spaces will be used for this activity?',
-  displayPage: 'page_addSensemakingSessionActivity',
+  displayPanel: 'panel_addSensemakingSessionActivity',
   model: 'SensemakingSessionActivityModel' 
 },
 {
@@ -4683,7 +4683,7 @@ define([
   displayType: 'textarea',
   displayName: 'Facilitation',
   displayPrompt: 'What sort of facilitation will be necessary for this activity?',
-  displayPage: 'page_addSensemakingSessionActivity',
+  displayPanel: 'panel_addSensemakingSessionActivity',
   model: 'SensemakingSessionActivityModel' 
 },
 {
@@ -4695,19 +4695,19 @@ define([
   displayType: 'templateList',
   displayName: undefined,
   displayPrompt: 'You can copy an activity from this list.',
-  displayPage: 'page_addSensemakingSessionActivity',
+  displayPanel: 'panel_addSensemakingSessionActivity',
   model: 'SensemakingSessionActivityModel' 
 },
 
-// -------------  PAGE page_enterSensemakingSessionRecords Enter sensemaking session records page  ------------- 
+// ------------- PANEL panel_enterSensemakingSessionRecords Enter sensemaking session records page  ------------- 
 
 {
-  id: 'page_enterSensemakingSessionRecords',
+  id: 'panel_enterSensemakingSessionRecords',
   displayName: 'Enter sensemaking session records',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_enterSensemakingSessionRecords',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_enterSensemakingSessionRecords',
+  modelPath: 'undefined' 
 },
 {
   id: 'project_sensemakingSessionRecordsLabel',
@@ -4718,7 +4718,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you will enter records of what happened at your sensemaking sessions.',
-  displayPage: 'page_enterSensemakingSessionRecords',
+  displayPanel: 'panel_enterSensemakingSessionRecords',
   model: 'ProjectModel' 
 },
 {
@@ -4730,19 +4730,19 @@ define([
   displayType: 'grid',
   displayName: 'Sensemaking session records',
   displayPrompt: 'Enter your sensemaking session records here.',
-  displayPage: 'page_enterSensemakingSessionRecords',
+  displayPanel: 'panel_enterSensemakingSessionRecords',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_addSensemakingSessionRecord Add sensemaking session record popup  ------------- 
+// ------------- PANEL panel_addSensemakingSessionRecord Add sensemaking session record popup  ------------- 
 
 {
-  id: 'page_addSensemakingSessionRecord',
+  id: 'panel_addSensemakingSessionRecord',
   displayName: 'Add sensemaking session record',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_addSensemakingSessionRecord',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_addSensemakingSessionRecord',
+  modelPath: 'undefined' 
 },
 // Generate model SensemakingSessionRecordModel 
 
@@ -4755,7 +4755,7 @@ define([
   displayType: 'text',
   displayName: 'Name',
   displayPrompt: 'Please give this session record a name.',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -4767,7 +4767,7 @@ define([
   displayType: 'textarea',
   displayName: 'When and where',
   displayPrompt: 'When and where did this session take place?',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -4779,7 +4779,7 @@ define([
   displayType: 'text',
   displayName: 'Participant groups',
   displayPrompt: 'Which participant group(s) were at the session?',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -4791,7 +4791,7 @@ define([
   displayType: 'textarea',
   displayName: 'Who attended',
   displayPrompt: 'Describe the participants at this session.',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -4803,7 +4803,7 @@ define([
   displayType: 'textarea',
   displayName: 'Plan',
   displayPrompt: 'Which of your collection session plans did you follow in this session? (And did you stick to the plan?)',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -4815,7 +4815,7 @@ define([
   displayType: 'textarea',
   displayName: 'Notes',
   displayPrompt: 'Enter general notes on the session here.\nYour notes can include links to images or other documents.',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -4827,7 +4827,7 @@ define([
   displayType: 'grid',
   displayName: 'Sensemaking session resonant stories',
   displayPrompt: 'If you discovered any resonant stories (pivot, voice, discovery) in this session,\nenter them here.',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -4839,7 +4839,7 @@ define([
   displayType: 'grid',
   displayName: 'Sensemaking session outcomes',
   displayPrompt: 'If your session ended with creating lists of outcomes (like discoveries and ideas),\nyou can enter them here.',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -4851,7 +4851,7 @@ define([
   displayType: 'grid',
   displayName: 'Sensemaking session constructions',
   displayPrompt: 'If your session involve creating any group constructions (like landscapes or timelines),\nyou can describe them here.',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -4863,7 +4863,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'Use the questions below to reflect on the session.',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -4875,7 +4875,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Change',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -4887,7 +4887,7 @@ define([
   displayType: 'textarea',
   displayName: 'Change in participant perceptions',
   displayPrompt: 'How did the perceptions of the participants change from the start to the end of the session?',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -4899,7 +4899,7 @@ define([
   displayType: 'textarea',
   displayName: 'Change in facilitator perceptions',
   displayPrompt: 'How did <i>your</i> perceptions change?',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -4911,7 +4911,7 @@ define([
   displayType: 'textarea',
   displayName: 'Changes to the project',
   displayPrompt: 'How has the overall project changed as a result of this session?',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -4923,7 +4923,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Interactions',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -4935,7 +4935,7 @@ define([
   displayType: 'textarea',
   displayName: 'Interactions among participants',
   displayPrompt: 'Describe the interactions between participants in this session.',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -4947,7 +4947,7 @@ define([
   displayType: 'textarea',
   displayName: 'Interactions between participants and facilitators',
   displayPrompt: 'Describe interactions between participants and facilitators.',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -4959,7 +4959,7 @@ define([
   displayType: 'textarea',
   displayName: 'Stories',
   displayPrompt: 'What did you notice about the stories people told, retold, chose, and worked with during the session?',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -4971,7 +4971,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Learning',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -4983,7 +4983,7 @@ define([
   displayType: 'textarea',
   displayName: 'Unique features',
   displayPrompt: 'What was special about these people in this place on this day?',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -4995,7 +4995,7 @@ define([
   displayType: 'textarea',
   displayName: 'Surprise',
   displayPrompt: 'What surprised you about this session?',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -5007,7 +5007,7 @@ define([
   displayType: 'textarea',
   displayName: 'Worked and didn\'t work',
   displayPrompt: 'Which parts of your plans for this session worked out well? Which parts didn\'t?',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -5019,7 +5019,7 @@ define([
   displayType: 'textarea',
   displayName: 'New ideas',
   displayPrompt: 'What new ideas did you gain from this session? What did you learn from it?',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 {
@@ -5031,19 +5031,19 @@ define([
   displayType: 'textarea',
   displayName: 'Other',
   displayPrompt: 'What else do you want to remember about this session?',
-  displayPage: 'page_addSensemakingSessionRecord',
+  displayPanel: 'panel_addSensemakingSessionRecord',
   model: 'SensemakingSessionRecordModel' 
 },
 
-// -------------  PAGE page_addResonantStory Add resonant story popup  ------------- 
+// ------------- PANEL panel_addResonantStory Add resonant story popup  ------------- 
 
 {
-  id: 'page_addResonantStory',
+  id: 'panel_addResonantStory',
   displayName: 'Add resonant story',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_addResonantStory',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_addResonantStory',
+  modelPath: 'undefined' 
 },
 // Generate model ResonantStoryModel 
 
@@ -5056,7 +5056,7 @@ define([
   displayType: 'storiesList',
   displayName: 'Resonant story',
   displayPrompt: 'Choose a story to mark as a resonant story for this sensemaking session.',
-  displayPage: 'page_addResonantStory',
+  displayPanel: 'panel_addResonantStory',
   model: 'ResonantStoryModel' 
 },
 {
@@ -5068,7 +5068,7 @@ define([
   displayType: 'select',
   displayName: 'Type',
   displayPrompt: 'Which type of resonant story is this?',
-  displayPage: 'page_addResonantStory',
+  displayPanel: 'panel_addResonantStory',
   model: 'ResonantStoryModel' 
 },
 {
@@ -5080,7 +5080,7 @@ define([
   displayType: 'textarea',
   displayName: 'Why',
   displayPrompt: 'Why did this story stand out?',
-  displayPage: 'page_addResonantStory',
+  displayPanel: 'panel_addResonantStory',
   model: 'ResonantStoryModel' 
 },
 {
@@ -5092,7 +5092,7 @@ define([
   displayType: 'text',
   displayName: 'Groups',
   displayPrompt: 'For which participant groups was this story important?',
-  displayPage: 'page_addResonantStory',
+  displayPanel: 'panel_addResonantStory',
   model: 'ResonantStoryModel' 
 },
 {
@@ -5104,19 +5104,19 @@ define([
   displayType: 'textarea',
   displayName: 'Notes',
   displayPrompt: 'Would you like to make any other notes about this story?',
-  displayPage: 'page_addResonantStory',
+  displayPanel: 'panel_addResonantStory',
   model: 'ResonantStoryModel' 
 },
 
-// -------------  PAGE page_newSensemakingSessionOutcome Sensemaking session outcome popup  ------------- 
+// ------------- PANEL panel_newSensemakingSessionOutcome Sensemaking session outcome popup  ------------- 
 
 {
-  id: 'page_newSensemakingSessionOutcome',
+  id: 'panel_newSensemakingSessionOutcome',
   displayName: 'Sensemaking session outcome',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_newSensemakingSessionOutcome',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_newSensemakingSessionOutcome',
+  modelPath: 'undefined' 
 },
 // Generate model NewSensemakingSessionOutcomeModel 
 
@@ -5137,7 +5137,7 @@ define([
   displayType: 'select',
   displayName: 'Type',
   displayPrompt: 'What type of session outcome is this?',
-  displayPage: 'page_newSensemakingSessionOutcome',
+  displayPanel: 'panel_newSensemakingSessionOutcome',
   model: 'NewSensemakingSessionOutcomeModel' 
 },
 {
@@ -5149,7 +5149,7 @@ define([
   displayType: 'text',
   displayName: 'Name',
   displayPrompt: 'Please give this outcome a name.',
-  displayPage: 'page_newSensemakingSessionOutcome',
+  displayPanel: 'panel_newSensemakingSessionOutcome',
   model: 'NewSensemakingSessionOutcomeModel' 
 },
 {
@@ -5161,19 +5161,19 @@ define([
   displayType: 'textarea',
   displayName: 'Description',
   displayPrompt: 'Describe the outcome.',
-  displayPage: 'page_newSensemakingSessionOutcome',
+  displayPanel: 'panel_newSensemakingSessionOutcome',
   model: 'NewSensemakingSessionOutcomeModel' 
 },
 
-// -------------  PAGE page_newSensemakingSessionConstruction Sensemaking construction popup  ------------- 
+// ------------- PANEL panel_newSensemakingSessionConstruction Sensemaking construction popup  ------------- 
 
 {
-  id: 'page_newSensemakingSessionConstruction',
+  id: 'panel_newSensemakingSessionConstruction',
   displayName: 'Sensemaking construction',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_newSensemakingSessionConstruction',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_newSensemakingSessionConstruction',
+  modelPath: 'undefined' 
 },
 // Generate model NewSensemakingSessionConstructionModel 
 
@@ -5186,7 +5186,7 @@ define([
   displayType: 'text',
   displayName: 'Name',
   displayPrompt: 'Please give this construction a name.',
-  displayPage: 'page_newSensemakingSessionConstruction',
+  displayPanel: 'panel_newSensemakingSessionConstruction',
   model: 'NewSensemakingSessionConstructionModel' 
 },
 {
@@ -5203,7 +5203,7 @@ define([
   displayType: 'select',
   displayName: 'Type',
   displayPrompt: 'What type of construction is it?',
-  displayPage: 'page_newSensemakingSessionConstruction',
+  displayPanel: 'panel_newSensemakingSessionConstruction',
   model: 'NewSensemakingSessionConstructionModel' 
 },
 {
@@ -5215,19 +5215,19 @@ define([
   displayType: 'textarea',
   displayName: 'Description',
   displayPrompt: 'Please describe the construction (or include a description given by participants).\nYour description can include links to images or documents.',
-  displayPage: 'page_newSensemakingSessionConstruction',
+  displayPanel: 'panel_newSensemakingSessionConstruction',
   model: 'NewSensemakingSessionConstructionModel' 
 },
 
-// -------------  PAGE page_readSensemakingReport Read sensemaking report page  ------------- 
+// ------------- PANEL panel_readSensemakingReport Read sensemaking report page  ------------- 
 
 {
-  id: 'page_readSensemakingReport',
+  id: 'panel_readSensemakingReport',
   displayName: 'Read sensemaking report',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_readSensemakingReport',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_readSensemakingReport',
+  modelPath: 'undefined' 
 },
 {
   id: 'sensemakingReportLabel',
@@ -5238,7 +5238,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'This report shows all of the information entered in the pages grouped under "Sensemaking."',
-  displayPage: 'page_readSensemakingReport',
+  displayPanel: 'panel_readSensemakingReport',
   model: 'ProjectModel' 
 },
 {
@@ -5250,21 +5250,21 @@ define([
   displayType: 'report',
   displayName: undefined,
   displayPrompt: 'Sensemaking report',
-  displayPage: 'page_readSensemakingReport',
+  displayPanel: 'panel_readSensemakingReport',
   model: 'ProjectModel' 
 },
 
 // ==================== SECTION page_intervention Intervention ==========================
 
-// -------------  HEADER page_intervention Intervention page  ------------- 
+// ------------- PANEL panel_intervention Intervention page  ------------- 
 
 {
-  id: 'page_intervention',
+  id: 'panel_intervention',
   displayName: 'Intervention',
   displayType: 'page',
   isHeader: true,
-  displayPage: 'page_intervention',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_intervention',
+  modelPath: 'undefined' 
 },
 {
   id: 'interventionIntroLabel',
@@ -5275,7 +5275,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'In the intervention phase of your PNI project, you will plan interventions and record information about them.',
-  displayPage: 'page_intervention',
+  displayPanel: 'panel_intervention',
   model: 'ProjectModel' 
 },
 {
@@ -5287,19 +5287,19 @@ define([
   displayType: 'textarea',
   displayName: 'Intervention notes',
   displayPrompt: 'You can enter some general notes on intervention in this project here.',
-  displayPage: 'page_intervention',
+  displayPanel: 'panel_intervention',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_projectOutcomesForIntervention Answer questions about project outcomes page  ------------- 
+// ------------- PANEL panel_projectOutcomesForIntervention Answer questions about project outcomes page  ------------- 
 
 {
-  id: 'page_projectOutcomesForIntervention',
+  id: 'panel_projectOutcomesForIntervention',
   displayName: 'Answer questions about project outcomes',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_projectOutcomesForIntervention',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_projectOutcomesForIntervention',
+  modelPath: 'undefined' 
 },
 {
   id: 'project_outcomesList',
@@ -5310,19 +5310,19 @@ define([
   displayType: 'grid',
   displayName: 'Project outcomes',
   displayPrompt: 'In order to choose interventions that will be useful in your project, it will be helpful to think about some\nof the issues (positive and negative) you discovered in your project. Please answer these questions in reference to\nthe participant groups you set up in the project planning phase. Please enter one record for each participant group.',
-  displayPage: 'page_projectOutcomesForIntervention',
+  displayPanel: 'panel_projectOutcomesForIntervention',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_projectOutcome Project outcomes popup  ------------- 
+// ------------- PANEL panel_projectOutcome Project outcomes popup  ------------- 
 
 {
-  id: 'page_projectOutcome',
+  id: 'panel_projectOutcome',
   displayName: 'Project outcomes',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_projectOutcome',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_projectOutcome',
+  modelPath: 'undefined' 
 },
 // Generate model ProjectOutcomeModel 
 
@@ -5335,7 +5335,7 @@ define([
   displayType: 'text',
   displayName: 'Participant group',
   displayPrompt: 'Which participant group is this outcome for?',
-  displayPage: 'page_projectOutcome',
+  displayPanel: 'panel_projectOutcome',
   model: 'ProjectOutcomeModel' 
 },
 {
@@ -5347,7 +5347,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Hopes',
-  displayPage: 'page_projectOutcome',
+  displayPanel: 'panel_projectOutcome',
   model: 'ProjectOutcomeModel' 
 },
 {
@@ -5359,7 +5359,7 @@ define([
   displayType: 'select',
   displayName: 'Felt heard',
   displayPrompt: 'During your project, did the people in this group say they felt heard for the first time?',
-  displayPage: 'page_projectOutcome',
+  displayPanel: 'panel_projectOutcome',
   model: 'ProjectOutcomeModel' 
 },
 {
@@ -5371,7 +5371,7 @@ define([
   displayType: 'select',
   displayName: 'Felt involved',
   displayPrompt: 'Did they say they felt involved for the first time?',
-  displayPage: 'page_projectOutcome',
+  displayPanel: 'panel_projectOutcome',
   model: 'ProjectOutcomeModel' 
 },
 {
@@ -5383,7 +5383,7 @@ define([
   displayType: 'select',
   displayName: 'Learned about community',
   displayPrompt: 'Did they say they learned a lot about their community or organization?',
-  displayPage: 'page_projectOutcome',
+  displayPanel: 'panel_projectOutcome',
   model: 'ProjectOutcomeModel' 
 },
 {
@@ -5395,7 +5395,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Voices',
-  displayPage: 'page_projectOutcome',
+  displayPanel: 'panel_projectOutcome',
   model: 'ProjectOutcomeModel' 
 },
 {
@@ -5407,7 +5407,7 @@ define([
   displayType: 'select',
   displayName: 'Wanted to tell more',
   displayPrompt: 'During your story collection, did these people seem to want to tell more stories than you collected?',
-  displayPage: 'page_projectOutcome',
+  displayPanel: 'panel_projectOutcome',
   model: 'ProjectOutcomeModel' 
 },
 {
@@ -5419,7 +5419,7 @@ define([
   displayType: 'select',
   displayName: 'Wanted to share more',
   displayPrompt: 'Did you ever feel that they wanted to share more experiences with each other than they did?',
-  displayPage: 'page_projectOutcome',
+  displayPanel: 'panel_projectOutcome',
   model: 'ProjectOutcomeModel' 
 },
 {
@@ -5431,7 +5431,7 @@ define([
   displayType: 'select',
   displayName: 'Felt that stories needed to be heard',
   displayPrompt: 'Did these people feel that some of the stories you collected "needed to be heard" by anyone?',
-  displayPage: 'page_projectOutcome',
+  displayPanel: 'panel_projectOutcome',
   model: 'ProjectOutcomeModel' 
 },
 {
@@ -5443,7 +5443,7 @@ define([
   displayType: 'select',
   displayName: 'Felt that nobody cares',
   displayPrompt: 'Were there any issues that these people thought "nobody cares" about?',
-  displayPage: 'page_projectOutcome',
+  displayPanel: 'panel_projectOutcome',
   model: 'ProjectOutcomeModel' 
 },
 {
@@ -5455,7 +5455,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Needs',
-  displayPage: 'page_projectOutcome',
+  displayPanel: 'panel_projectOutcome',
   model: 'ProjectOutcomeModel' 
 },
 {
@@ -5467,7 +5467,7 @@ define([
   displayType: 'select',
   displayName: 'Needs could not be met',
   displayPrompt: 'Do the people in this group have needs that <i>nobody</i> can meet?',
-  displayPage: 'page_projectOutcome',
+  displayPanel: 'panel_projectOutcome',
   model: 'ProjectOutcomeModel' 
 },
 {
@@ -5479,7 +5479,7 @@ define([
   displayType: 'select',
   displayName: 'Needed to tell themselves new stories',
   displayPrompt: 'Do these people need to start telling themselves <i>new</i> stories?',
-  displayPage: 'page_projectOutcome',
+  displayPanel: 'panel_projectOutcome',
   model: 'ProjectOutcomeModel' 
 },
 {
@@ -5491,7 +5491,7 @@ define([
   displayType: 'select',
   displayName: 'Wanted more exploration',
   displayPrompt: 'Were there any issues about which the people in this group seemed to want to keep exploring?',
-  displayPage: 'page_projectOutcome',
+  displayPanel: 'panel_projectOutcome',
   model: 'ProjectOutcomeModel' 
 },
 {
@@ -5503,7 +5503,7 @@ define([
   displayType: 'select',
   displayName: 'Crisis points',
   displayPrompt: 'Did you discover any "crisis points" where people in this group needed help and didn\'t get it?',
-  displayPage: 'page_projectOutcome',
+  displayPanel: 'panel_projectOutcome',
   model: 'ProjectOutcomeModel' 
 },
 {
@@ -5515,7 +5515,7 @@ define([
   displayType: 'select',
   displayName: 'Beyond words',
   displayPrompt: 'Did you find any issues for this group that were beyond words, that no amount of discussion could resolve?',
-  displayPage: 'page_projectOutcome',
+  displayPanel: 'panel_projectOutcome',
   model: 'ProjectOutcomeModel' 
 },
 {
@@ -5527,7 +5527,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Learning',
-  displayPage: 'page_projectOutcome',
+  displayPanel: 'panel_projectOutcome',
   model: 'ProjectOutcomeModel' 
 },
 {
@@ -5539,7 +5539,7 @@ define([
   displayType: 'select',
   displayName: 'Learned about topic',
   displayPrompt: 'Did these people say that they learned a lot about the topic by participating in the project?',
-  displayPage: 'page_projectOutcome',
+  displayPanel: 'panel_projectOutcome',
   model: 'ProjectOutcomeModel' 
 },
 {
@@ -5551,7 +5551,7 @@ define([
   displayType: 'select',
   displayName: 'New members needed help',
   displayPrompt: 'Did you notice that new members of the community or organization were having a harder time making sense of things?',
-  displayPage: 'page_projectOutcome',
+  displayPanel: 'panel_projectOutcome',
   model: 'ProjectOutcomeModel' 
 },
 {
@@ -5563,7 +5563,7 @@ define([
   displayType: 'select',
   displayName: 'Had more information than understanding',
   displayPrompt: 'Were there any issues that these people found difficult to understand, even though abundant information was available?',
-  displayPage: 'page_projectOutcome',
+  displayPanel: 'panel_projectOutcome',
   model: 'ProjectOutcomeModel' 
 },
 {
@@ -5575,7 +5575,7 @@ define([
   displayType: 'select',
   displayName: 'Had more confidence than skill',
   displayPrompt: 'Did you discover any areas in which these people had more confidence than skill?',
-  displayPage: 'page_projectOutcome',
+  displayPanel: 'panel_projectOutcome',
   model: 'ProjectOutcomeModel' 
 },
 {
@@ -5587,19 +5587,19 @@ define([
   displayType: 'select',
   displayName: 'Wanted to learn about story work',
   displayPrompt: 'Did any of these participants express an interest in learning more about story work?',
-  displayPage: 'page_projectOutcome',
+  displayPanel: 'panel_projectOutcome',
   model: 'ProjectOutcomeModel' 
 },
 
-// -------------  PAGE page_designInterventions Design intervention plans page  ------------- 
+// ------------- PANEL panel_designInterventions Design intervention plans page  ------------- 
 
 {
-  id: 'page_designInterventions',
+  id: 'panel_designInterventions',
   displayName: 'Design intervention plans',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_designInterventions',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_designInterventions',
+  modelPath: 'undefined' 
 },
 {
   id: 'project_interventionLabel',
@@ -5610,7 +5610,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you can design interventions that change the stories people tell\nin your community or organization.',
-  displayPage: 'page_designInterventions',
+  displayPanel: 'panel_designInterventions',
   model: 'ProjectModel' 
 },
 {
@@ -5622,7 +5622,7 @@ define([
   displayType: 'recommendationTable',
   displayName: undefined,
   displayPrompt: 'Recommendations for intervention plans',
-  displayPage: 'page_designInterventions',
+  displayPanel: 'panel_designInterventions',
   model: 'ProjectModel' 
 },
 {
@@ -5634,19 +5634,19 @@ define([
   displayType: 'grid',
   displayName: 'Intervention plans',
   displayPrompt: 'Enter your plans for narrative interventions here.',
-  displayPage: 'page_designInterventions',
+  displayPanel: 'panel_designInterventions',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_addIntervention Plan an intervention popup  ------------- 
+// ------------- PANEL panel_addIntervention Plan an intervention popup  ------------- 
 
 {
-  id: 'page_addIntervention',
+  id: 'panel_addIntervention',
   displayName: 'Plan an intervention',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_addIntervention',
-  pageModel: 'InterventionPlanModel' 
+  displayPanel: 'panel_addIntervention',
+  modelPath: 'interventionplan' 
 },
 // Generate model InterventionModel 
 
@@ -5659,7 +5659,7 @@ define([
   displayType: 'text',
   displayName: 'Name',
   displayPrompt: 'Please name this intervention plan.',
-  displayPage: 'page_addIntervention',
+  displayPanel: 'panel_addIntervention',
   model: 'InterventionModel' 
 },
 {
@@ -5685,7 +5685,7 @@ define([
   displayType: 'select',
   displayName: 'Type',
   displayPrompt: 'What type of intervention will this be?',
-  displayPage: 'page_addIntervention',
+  displayPanel: 'panel_addIntervention',
   model: 'InterventionModel' 
 },
 {
@@ -5697,7 +5697,7 @@ define([
   displayType: 'textarea',
   displayName: 'Description',
   displayPrompt: 'Please describe your plan for this intervention.',
-  displayPage: 'page_addIntervention',
+  displayPanel: 'panel_addIntervention',
   model: 'InterventionModel' 
 },
 {
@@ -5709,7 +5709,7 @@ define([
   displayType: 'text',
   displayName: 'Participant groups',
   displayPrompt: 'Which participant group(s) will be involved?',
-  displayPage: 'page_addIntervention',
+  displayPanel: 'panel_addIntervention',
   model: 'InterventionModel' 
 },
 {
@@ -5721,7 +5721,7 @@ define([
   displayType: 'text',
   displayName: 'Time',
   displayPrompt: 'When will the intervention start and end?',
-  displayPage: 'page_addIntervention',
+  displayPanel: 'panel_addIntervention',
   model: 'InterventionModel' 
 },
 {
@@ -5733,7 +5733,7 @@ define([
   displayType: 'text',
   displayName: 'Location',
   displayPrompt: 'Where will the intervention take place?',
-  displayPage: 'page_addIntervention',
+  displayPanel: 'panel_addIntervention',
   model: 'InterventionModel' 
 },
 {
@@ -5745,7 +5745,7 @@ define([
   displayType: 'textarea',
   displayName: 'Help',
   displayPrompt: 'What sort of help will you need to carry out this intervention?',
-  displayPage: 'page_addIntervention',
+  displayPanel: 'panel_addIntervention',
   model: 'InterventionModel' 
 },
 {
@@ -5757,7 +5757,7 @@ define([
   displayType: 'textarea',
   displayName: 'Permission',
   displayPrompt: 'Describe any permissions you will need to carry out this intervention.',
-  displayPage: 'page_addIntervention',
+  displayPanel: 'panel_addIntervention',
   model: 'InterventionModel' 
 },
 {
@@ -5769,7 +5769,7 @@ define([
   displayType: 'textarea',
   displayName: 'Participation',
   displayPrompt: 'How will you get people to participate in this intervention?',
-  displayPage: 'page_addIntervention',
+  displayPanel: 'panel_addIntervention',
   model: 'InterventionModel' 
 },
 {
@@ -5781,7 +5781,7 @@ define([
   displayType: 'textarea',
   displayName: 'Materials',
   displayPrompt: 'What physical materials will you need?',
-  displayPage: 'page_addIntervention',
+  displayPanel: 'panel_addIntervention',
   model: 'InterventionModel' 
 },
 {
@@ -5793,7 +5793,7 @@ define([
   displayType: 'textarea',
   displayName: 'Spaces',
   displayPrompt: 'What spaces will you use?',
-  displayPage: 'page_addIntervention',
+  displayPanel: 'panel_addIntervention',
   model: 'InterventionModel' 
 },
 {
@@ -5805,7 +5805,7 @@ define([
   displayType: 'textarea',
   displayName: 'Technology',
   displayPrompt: 'What technological resources will you need?',
-  displayPage: 'page_addIntervention',
+  displayPanel: 'panel_addIntervention',
   model: 'InterventionModel' 
 },
 {
@@ -5817,19 +5817,19 @@ define([
   displayType: 'textarea',
   displayName: 'Recording',
   displayPrompt: 'How will you record the results of this intervention?',
-  displayPage: 'page_addIntervention',
+  displayPanel: 'panel_addIntervention',
   model: 'InterventionModel' 
 },
 
-// -------------  PAGE page_recordInterventions Enter intervention records page  ------------- 
+// ------------- PANEL panel_recordInterventions Enter intervention records page  ------------- 
 
 {
-  id: 'page_recordInterventions',
+  id: 'panel_recordInterventions',
   displayName: 'Enter intervention records',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_recordInterventions',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_recordInterventions',
+  modelPath: 'undefined' 
 },
 {
   id: 'project_interventionRecordsLabel',
@@ -5840,7 +5840,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you will enter records of your interventions.',
-  displayPage: 'page_recordInterventions',
+  displayPanel: 'panel_recordInterventions',
   model: 'ProjectModel' 
 },
 {
@@ -5852,19 +5852,19 @@ define([
   displayType: 'grid',
   displayName: 'Intervention records',
   displayPrompt: 'Use this list to keep records of the interventions you carried out.',
-  displayPage: 'page_recordInterventions',
+  displayPanel: 'panel_recordInterventions',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_addInterventionRecord Add intervention record popup  ------------- 
+// ------------- PANEL panel_addInterventionRecord Add intervention record popup  ------------- 
 
 {
-  id: 'page_addInterventionRecord',
+  id: 'panel_addInterventionRecord',
   displayName: 'Add intervention record',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_addInterventionRecord',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_addInterventionRecord',
+  modelPath: 'undefined' 
 },
 // Generate model InterventionRecordModel 
 
@@ -5877,7 +5877,7 @@ define([
   displayType: 'text',
   displayName: 'Name',
   displayPrompt: 'Please give this intervention record a name.',
-  displayPage: 'page_addInterventionRecord',
+  displayPanel: 'panel_addInterventionRecord',
   model: 'InterventionRecordModel' 
 },
 {
@@ -5889,7 +5889,7 @@ define([
   displayType: 'textarea',
   displayName: 'Description',
   displayPrompt: 'Please describe what happened during the intervention, in general.',
-  displayPage: 'page_addInterventionRecord',
+  displayPanel: 'panel_addInterventionRecord',
   model: 'InterventionRecordModel' 
 },
 {
@@ -5901,7 +5901,7 @@ define([
   displayType: 'text',
   displayName: 'Participant groups',
   displayPrompt: 'Which participant group(s) were involved?',
-  displayPage: 'page_addInterventionRecord',
+  displayPanel: 'panel_addInterventionRecord',
   model: 'InterventionRecordModel' 
 },
 {
@@ -5913,7 +5913,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'Use the questions below to reflect on the intervention.',
-  displayPage: 'page_addInterventionRecord',
+  displayPanel: 'panel_addInterventionRecord',
   model: 'InterventionRecordModel' 
 },
 {
@@ -5925,7 +5925,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Change',
-  displayPage: 'page_addInterventionRecord',
+  displayPanel: 'panel_addInterventionRecord',
   model: 'InterventionRecordModel' 
 },
 {
@@ -5937,7 +5937,7 @@ define([
   displayType: 'textarea',
   displayName: 'Change in participant perceptions',
   displayPrompt: 'How did the perceptions of the participants change from the start to the end of the intervention?',
-  displayPage: 'page_addInterventionRecord',
+  displayPanel: 'panel_addInterventionRecord',
   model: 'InterventionRecordModel' 
 },
 {
@@ -5949,7 +5949,7 @@ define([
   displayType: 'textarea',
   displayName: 'Change in facilitator perceptions',
   displayPrompt: 'How did <i>your</i> perceptions change?',
-  displayPage: 'page_addInterventionRecord',
+  displayPanel: 'panel_addInterventionRecord',
   model: 'InterventionRecordModel' 
 },
 {
@@ -5961,7 +5961,7 @@ define([
   displayType: 'textarea',
   displayName: 'Changes to the project',
   displayPrompt: 'How has the overall project changed as a result of this intervention?',
-  displayPage: 'page_addInterventionRecord',
+  displayPanel: 'panel_addInterventionRecord',
   model: 'InterventionRecordModel' 
 },
 {
@@ -5973,7 +5973,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Interactions',
-  displayPage: 'page_addInterventionRecord',
+  displayPanel: 'panel_addInterventionRecord',
   model: 'InterventionRecordModel' 
 },
 {
@@ -5985,7 +5985,7 @@ define([
   displayType: 'textarea',
   displayName: 'Interactions among participants',
   displayPrompt: 'Describe the interactions between participants in this intervention.',
-  displayPage: 'page_addInterventionRecord',
+  displayPanel: 'panel_addInterventionRecord',
   model: 'InterventionRecordModel' 
 },
 {
@@ -5997,7 +5997,7 @@ define([
   displayType: 'textarea',
   displayName: 'Interactions between participants and facilitators',
   displayPrompt: 'Describe interactions between participants and facilitators.',
-  displayPage: 'page_addInterventionRecord',
+  displayPanel: 'panel_addInterventionRecord',
   model: 'InterventionRecordModel' 
 },
 {
@@ -6009,7 +6009,7 @@ define([
   displayType: 'textarea',
   displayName: 'Stories',
   displayPrompt: 'What did you notice about the stories people told, retold, chose, and worked with during the intervention?',
-  displayPage: 'page_addInterventionRecord',
+  displayPanel: 'panel_addInterventionRecord',
   model: 'InterventionRecordModel' 
 },
 {
@@ -6021,7 +6021,7 @@ define([
   displayType: 'header',
   displayName: undefined,
   displayPrompt: 'Learning',
-  displayPage: 'page_addInterventionRecord',
+  displayPanel: 'panel_addInterventionRecord',
   model: 'InterventionRecordModel' 
 },
 {
@@ -6033,7 +6033,7 @@ define([
   displayType: 'textarea',
   displayName: 'Unique features',
   displayPrompt: 'What was special about this intervention?',
-  displayPage: 'page_addInterventionRecord',
+  displayPanel: 'panel_addInterventionRecord',
   model: 'InterventionRecordModel' 
 },
 {
@@ -6045,7 +6045,7 @@ define([
   displayType: 'textarea',
   displayName: 'Surprise',
   displayPrompt: 'What surprised you about this intervention?',
-  displayPage: 'page_addInterventionRecord',
+  displayPanel: 'panel_addInterventionRecord',
   model: 'InterventionRecordModel' 
 },
 {
@@ -6057,7 +6057,7 @@ define([
   displayType: 'textarea',
   displayName: 'Worked and didn\'t work',
   displayPrompt: 'Which parts of your plans for this intervention worked out well? Which parts didn\'t?',
-  displayPage: 'page_addInterventionRecord',
+  displayPanel: 'panel_addInterventionRecord',
   model: 'InterventionRecordModel' 
 },
 {
@@ -6069,7 +6069,7 @@ define([
   displayType: 'textarea',
   displayName: 'New ideas',
   displayPrompt: 'What new ideas did you gain from this intervention? What did you learn from it?',
-  displayPage: 'page_addInterventionRecord',
+  displayPanel: 'panel_addInterventionRecord',
   model: 'InterventionRecordModel' 
 },
 {
@@ -6081,19 +6081,19 @@ define([
   displayType: 'textarea',
   displayName: 'Other',
   displayPrompt: 'What else do you want to remember about this intervention?',
-  displayPage: 'page_addInterventionRecord',
+  displayPanel: 'panel_addInterventionRecord',
   model: 'InterventionRecordModel' 
 },
 
-// -------------  PAGE page_interventionReport Read intervention report page  ------------- 
+// ------------- PANEL panel_interventionReport Read intervention report page  ------------- 
 
 {
-  id: 'page_interventionReport',
+  id: 'panel_interventionReport',
   displayName: 'Read intervention report',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_interventionReport',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_interventionReport',
+  modelPath: 'undefined' 
 },
 {
   id: 'interventionReportLabel',
@@ -6104,7 +6104,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'This report shows all of the information entered in the pages grouped under "Intervention."',
-  displayPage: 'page_interventionReport',
+  displayPanel: 'panel_interventionReport',
   model: 'ProjectModel' 
 },
 {
@@ -6116,21 +6116,21 @@ define([
   displayType: 'report',
   displayName: undefined,
   displayPrompt: 'Intervention report',
-  displayPage: 'page_interventionReport',
+  displayPanel: 'panel_interventionReport',
   model: 'ProjectModel' 
 },
 
 // ==================== SECTION page_return Return ==========================
 
-// -------------  HEADER page_return Return page  ------------- 
+// ------------- PANEL panel_return Return page  ------------- 
 
 {
-  id: 'page_return',
+  id: 'panel_return',
   displayName: 'Return',
   displayType: 'page',
   isHeader: true,
-  displayPage: 'page_return',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_return',
+  modelPath: 'undefined' 
 },
 {
   id: 'returnIntroLabel',
@@ -6141,7 +6141,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'In the return phase of your PNI project, you will gather feedback, reflect on the project, possibly present\nthe project to someone, and help people with requests about the project.',
-  displayPage: 'page_return',
+  displayPanel: 'panel_return',
   model: 'ProjectModel' 
 },
 {
@@ -6153,19 +6153,19 @@ define([
   displayType: 'textarea',
   displayName: 'Return phase notes',
   displayPrompt: 'You can enter some general notes on the return phase of this project here.',
-  displayPage: 'page_return',
+  displayPanel: 'panel_return',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_gatherFeedback Gather feedback page  ------------- 
+// ------------- PANEL panel_gatherFeedback Gather feedback page  ------------- 
 
 {
-  id: 'page_gatherFeedback',
+  id: 'panel_gatherFeedback',
   displayName: 'Gather feedback',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_gatherFeedback',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_gatherFeedback',
+  modelPath: 'undefined' 
 },
 {
   id: 'project_feedbackLabel',
@@ -6176,7 +6176,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you will enter any feedback you gather about your project.',
-  displayPage: 'page_gatherFeedback',
+  displayPanel: 'panel_gatherFeedback',
   model: 'ProjectModel' 
 },
 {
@@ -6188,7 +6188,7 @@ define([
   displayType: 'grid',
   displayName: 'Pieces of feedback',
   displayPrompt: 'You can enter specific pieces of feedback you have gathered here.',
-  displayPage: 'page_gatherFeedback',
+  displayPanel: 'panel_gatherFeedback',
   model: 'ProjectModel' 
 },
 {
@@ -6200,19 +6200,19 @@ define([
   displayType: 'textarea',
   displayName: 'Notes',
   displayPrompt: 'If you would like to enter any general notes on the feedback you\'ve seen to the project, write them here.',
-  displayPage: 'page_gatherFeedback',
+  displayPanel: 'panel_gatherFeedback',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_enterFeedbackPiece Enter piece of feedback on project popup  ------------- 
+// ------------- PANEL panel_enterFeedbackPiece Enter piece of feedback on project popup  ------------- 
 
 {
-  id: 'page_enterFeedbackPiece',
+  id: 'panel_enterFeedbackPiece',
   displayName: 'Enter piece of feedback on project',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_enterFeedbackPiece',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_enterFeedbackPiece',
+  modelPath: 'undefined' 
 },
 // Generate model EnterFeedbackPieceModel 
 
@@ -6225,7 +6225,7 @@ define([
   displayType: 'textarea',
   displayName: 'Feedback',
   displayPrompt: 'What did someone say or do?',
-  displayPage: 'page_enterFeedbackPiece',
+  displayPanel: 'panel_enterFeedbackPiece',
   model: 'EnterFeedbackPieceModel' 
 },
 {
@@ -6237,7 +6237,7 @@ define([
   displayType: 'text',
   displayName: 'Name',
   displayPrompt: 'Please give this piece of feedback a name.',
-  displayPage: 'page_enterFeedbackPiece',
+  displayPanel: 'panel_enterFeedbackPiece',
   model: 'EnterFeedbackPieceModel' 
 },
 {
@@ -6256,7 +6256,7 @@ define([
   displayType: 'select',
   displayName: 'Type',
   displayPrompt: 'What type of feedback is this?',
-  displayPage: 'page_enterFeedbackPiece',
+  displayPanel: 'panel_enterFeedbackPiece',
   model: 'EnterFeedbackPieceModel' 
 },
 {
@@ -6268,7 +6268,7 @@ define([
   displayType: 'text',
   displayName: 'Source',
   displayPrompt: 'Who said or did this?',
-  displayPage: 'page_enterFeedbackPiece',
+  displayPanel: 'panel_enterFeedbackPiece',
   model: 'EnterFeedbackPieceModel' 
 },
 {
@@ -6280,7 +6280,7 @@ define([
   displayType: 'text',
   displayName: 'Prompt',
   displayPrompt: 'What did you say or do (if anything) that led to this feedback?',
-  displayPage: 'page_enterFeedbackPiece',
+  displayPanel: 'panel_enterFeedbackPiece',
   model: 'EnterFeedbackPieceModel' 
 },
 {
@@ -6292,7 +6292,7 @@ define([
   displayType: 'text',
   displayName: 'Response',
   displayPrompt: 'What did you say or do (if anything) in response?',
-  displayPage: 'page_enterFeedbackPiece',
+  displayPanel: 'panel_enterFeedbackPiece',
   model: 'EnterFeedbackPieceModel' 
 },
 {
@@ -6304,19 +6304,19 @@ define([
   displayType: 'textarea',
   displayName: 'Notes',
   displayPrompt: 'Please enter any other notes you have about this piece of feedback.',
-  displayPage: 'page_enterFeedbackPiece',
+  displayPanel: 'panel_enterFeedbackPiece',
   model: 'EnterFeedbackPieceModel' 
 },
 
-// -------------  PAGE page_reflectOnProject Reflect on the project page  ------------- 
+// ------------- PANEL panel_reflectOnProject Reflect on the project page  ------------- 
 
 {
-  id: 'page_reflectOnProject',
+  id: 'panel_reflectOnProject',
   displayName: 'Reflect on the project',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_reflectOnProject',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_reflectOnProject',
+  modelPath: 'undefined' 
 },
 {
   id: 'project_reflectLabel',
@@ -6327,7 +6327,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you will answer some questions to reflect in general on the entire project.',
-  displayPage: 'page_reflectOnProject',
+  displayPanel: 'panel_reflectOnProject',
   model: 'ProjectModel' 
 },
 {
@@ -6339,7 +6339,7 @@ define([
   displayType: 'textarea',
   displayName: 'From stories',
   displayPrompt: 'What have you learned from the stories you heard in this project?',
-  displayPage: 'page_reflectOnProject',
+  displayPanel: 'panel_reflectOnProject',
   model: 'ProjectModel' 
 },
 {
@@ -6351,7 +6351,7 @@ define([
   displayType: 'textarea',
   displayName: 'About facilitation practice',
   displayPrompt: 'What did you learn about your facilitation practice in this project?',
-  displayPage: 'page_reflectOnProject',
+  displayPanel: 'panel_reflectOnProject',
   model: 'ProjectModel' 
 },
 {
@@ -6363,7 +6363,7 @@ define([
   displayType: 'textarea',
   displayName: 'About project stories',
   displayPrompt: 'What did you learn about project planning?',
-  displayPage: 'page_reflectOnProject',
+  displayPanel: 'panel_reflectOnProject',
   model: 'ProjectModel' 
 },
 {
@@ -6375,7 +6375,7 @@ define([
   displayType: 'textarea',
   displayName: 'About own PNI',
   displayPrompt: 'How has this project changed your own version of PNI?',
-  displayPage: 'page_reflectOnProject',
+  displayPanel: 'panel_reflectOnProject',
   model: 'ProjectModel' 
 },
 {
@@ -6387,7 +6387,7 @@ define([
   displayType: 'textarea',
   displayName: 'About community',
   displayPrompt: 'What have you learned about your community or organization because of this project?',
-  displayPage: 'page_reflectOnProject',
+  displayPanel: 'panel_reflectOnProject',
   model: 'ProjectModel' 
 },
 {
@@ -6399,7 +6399,7 @@ define([
   displayType: 'textarea',
   displayName: 'About strengths',
   displayPrompt: 'What did this project teach you about your personal strengths and weaknesses?',
-  displayPage: 'page_reflectOnProject',
+  displayPanel: 'panel_reflectOnProject',
   model: 'ProjectModel' 
 },
 {
@@ -6411,7 +6411,7 @@ define([
   displayType: 'textarea',
   displayName: 'About team',
   displayPrompt: 'What did this project teach you about your team?',
-  displayPage: 'page_reflectOnProject',
+  displayPanel: 'panel_reflectOnProject',
   model: 'ProjectModel' 
 },
 {
@@ -6423,7 +6423,7 @@ define([
   displayType: 'textarea',
   displayName: 'Ideas',
   displayPrompt: 'Describe any new ideas that came up during this project.',
-  displayPage: 'page_reflectOnProject',
+  displayPanel: 'panel_reflectOnProject',
   model: 'ProjectModel' 
 },
 {
@@ -6435,19 +6435,19 @@ define([
   displayType: 'textarea',
   displayName: 'Notes',
   displayPrompt: 'Enter any additional notes you\'d like to remember about the project.',
-  displayPage: 'page_reflectOnProject',
+  displayPanel: 'panel_reflectOnProject',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_prepareProjectPresentation Prepare outline of project presentation page  ------------- 
+// ------------- PANEL panel_prepareProjectPresentation Prepare outline of project presentation page  ------------- 
 
 {
-  id: 'page_prepareProjectPresentation',
+  id: 'panel_prepareProjectPresentation',
   displayName: 'Prepare outline of project presentation',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_prepareProjectPresentation',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_prepareProjectPresentation',
+  modelPath: 'undefined' 
 },
 {
   id: 'project_presentationLabel',
@@ -6458,7 +6458,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you can build a presentation about your project to show to others.',
-  displayPage: 'page_prepareProjectPresentation',
+  displayPanel: 'panel_prepareProjectPresentation',
   model: 'ProjectModel' 
 },
 {
@@ -6470,7 +6470,7 @@ define([
   displayType: 'grid',
   displayName: 'Presentation elements',
   displayPrompt: 'There are elements (points of discussion) to present about your project.',
-  displayPage: 'page_prepareProjectPresentation',
+  displayPanel: 'panel_prepareProjectPresentation',
   model: 'ProjectModel' 
 },
 {
@@ -6482,7 +6482,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'After you finish adding elements for your presentation, you can export the elements, open them in your word processor, and add material\nfrom any of the stage reports (or the final project report).',
-  displayPage: 'page_prepareProjectPresentation',
+  displayPanel: 'panel_prepareProjectPresentation',
   model: 'ProjectModel' 
 },
 {
@@ -6494,19 +6494,19 @@ define([
   displayType: 'button',
   displayName: undefined,
   displayPrompt: 'Export these elements',
-  displayPage: 'page_prepareProjectPresentation',
+  displayPanel: 'panel_prepareProjectPresentation',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_addPresentationElement Add element to project presentation outline popup  ------------- 
+// ------------- PANEL panel_addPresentationElement Add element to project presentation outline popup  ------------- 
 
 {
-  id: 'page_addPresentationElement',
+  id: 'panel_addPresentationElement',
   displayName: 'Add element to project presentation outline',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_addPresentationElement',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_addPresentationElement',
+  modelPath: 'undefined' 
 },
 // Generate model PresentationElementModel 
 
@@ -6519,7 +6519,7 @@ define([
   displayType: 'text',
   displayName: 'Name',
   displayPrompt: 'What name would you like to give this element in your presentation?',
-  displayPage: 'page_addPresentationElement',
+  displayPanel: 'panel_addPresentationElement',
   model: 'PresentationElementModel' 
 },
 {
@@ -6531,7 +6531,7 @@ define([
   displayType: 'textarea',
   displayName: 'Description',
   displayPrompt: 'How would you like to describe this element in your presentation?',
-  displayPage: 'page_addPresentationElement',
+  displayPanel: 'panel_addPresentationElement',
   model: 'PresentationElementModel' 
 },
 {
@@ -6543,7 +6543,7 @@ define([
   displayType: 'textarea',
   displayName: 'Evidence',
   displayPrompt: 'What evidence does this element present that your project met its goals?',
-  displayPage: 'page_addPresentationElement',
+  displayPanel: 'panel_addPresentationElement',
   model: 'PresentationElementModel' 
 },
 {
@@ -6555,7 +6555,7 @@ define([
   displayType: 'textarea',
   displayName: 'Q&A',
   displayPrompt: 'What questions do you anticipate about this element, and how would you like to answer them?',
-  displayPage: 'page_addPresentationElement',
+  displayPanel: 'panel_addPresentationElement',
   model: 'PresentationElementModel' 
 },
 {
@@ -6567,19 +6567,19 @@ define([
   displayType: 'textarea',
   displayName: 'Notes',
   displayPrompt: 'Enter any other notes you want to remember about this element as you present it.',
-  displayPage: 'page_addPresentationElement',
+  displayPanel: 'panel_addPresentationElement',
   model: 'PresentationElementModel' 
 },
 
-// -------------  PAGE page_projectRequests Respond to requests for post-project support page  ------------- 
+// ------------- PANEL panel_projectRequests Respond to requests for post-project support page  ------------- 
 
 {
-  id: 'page_projectRequests',
+  id: 'panel_projectRequests',
   displayName: 'Respond to requests for post-project support',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_projectRequests',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_projectRequests',
+  modelPath: 'undefined' 
 },
 {
   id: 'project_returnRequestsLabel',
@@ -6590,7 +6590,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'On this page you can keep track of requests for help as your project winds down.',
-  displayPage: 'page_projectRequests',
+  displayPanel: 'panel_projectRequests',
   model: 'ProjectModel' 
 },
 {
@@ -6602,19 +6602,19 @@ define([
   displayType: 'grid',
   displayName: 'Help requests',
   displayPrompt: 'Enter requests for help here.',
-  displayPage: 'page_projectRequests',
+  displayPanel: 'panel_projectRequests',
   model: 'ProjectModel' 
 },
 
-// -------------  PAGE page_addNewReturnRequest Enter project request popup  ------------- 
+// ------------- PANEL panel_addNewReturnRequest Enter project request popup  ------------- 
 
 {
-  id: 'page_addNewReturnRequest',
+  id: 'panel_addNewReturnRequest',
   displayName: 'Enter project request',
   displayType: 'popup',
   isHeader: false,
-  displayPage: 'page_addNewReturnRequest',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_addNewReturnRequest',
+  modelPath: 'undefined' 
 },
 // Generate model ReturnRequestModel 
 
@@ -6627,7 +6627,7 @@ define([
   displayType: 'textarea',
   displayName: 'Request',
   displayPrompt: 'What is the request?',
-  displayPage: 'page_addNewReturnRequest',
+  displayPanel: 'panel_addNewReturnRequest',
   model: 'ReturnRequestModel' 
 },
 {
@@ -6644,7 +6644,7 @@ define([
   displayType: 'select',
   displayName: 'Type',
   displayPrompt: 'What type of request is this?',
-  displayPage: 'page_addNewReturnRequest',
+  displayPanel: 'panel_addNewReturnRequest',
   model: 'ReturnRequestModel' 
 },
 {
@@ -6656,7 +6656,7 @@ define([
   displayType: 'boolean',
   displayName: 'Satisfied',
   displayPrompt: 'Do you consider this request to have been satisfied?',
-  displayPage: 'page_addNewReturnRequest',
+  displayPanel: 'panel_addNewReturnRequest',
   model: 'ReturnRequestModel' 
 },
 {
@@ -6668,7 +6668,7 @@ define([
   displayType: 'textarea',
   displayName: 'What happened',
   displayPrompt: 'What has happened in relation to this request?',
-  displayPage: 'page_addNewReturnRequest',
+  displayPanel: 'panel_addNewReturnRequest',
   model: 'ReturnRequestModel' 
 },
 {
@@ -6680,19 +6680,19 @@ define([
   displayType: 'textarea',
   displayName: 'Notes',
   displayPrompt: 'Enter any notes about the request here.',
-  displayPage: 'page_addNewReturnRequest',
+  displayPanel: 'panel_addNewReturnRequest',
   model: 'ReturnRequestModel' 
 },
 
-// -------------  PAGE page_returnReport Read return report page  ------------- 
+// ------------- PANEL panel_returnReport Read return report page  ------------- 
 
 {
-  id: 'page_returnReport',
+  id: 'panel_returnReport',
   displayName: 'Read return report',
   displayType: 'page',
   isHeader: false,
-  displayPage: 'page_returnReport',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_returnReport',
+  modelPath: 'undefined' 
 },
 {
   id: 'returnReportLabel',
@@ -6703,7 +6703,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'This report shows all of the information entered in the pages grouped under "Return."',
-  displayPage: 'page_returnReport',
+  displayPanel: 'panel_returnReport',
   model: 'ProjectModel' 
 },
 {
@@ -6715,21 +6715,21 @@ define([
   displayType: 'report',
   displayName: undefined,
   displayPrompt: 'Return report',
-  displayPage: 'page_returnReport',
+  displayPanel: 'panel_returnReport',
   model: 'ProjectModel' 
 },
 
 // ==================== SECTION page_projectReport Project report ==========================
 
-// -------------  HEADER page_projectReport Project report page  ------------- 
+// ------------- PANEL panel_projectReport Project report page  ------------- 
 
 {
-  id: 'page_projectReport',
+  id: 'panel_projectReport',
   displayName: 'Project report',
   displayType: 'page',
   isHeader: true,
-  displayPage: 'page_projectReport',
-  pageModel: 'undefinedModel' 
+  displayPanel: 'panel_projectReport',
+  modelPath: 'undefined' 
 },
 {
   id: 'wholeProjectReportLabel',
@@ -6740,7 +6740,7 @@ define([
   displayType: 'label',
   displayName: undefined,
   displayPrompt: 'This report shows all of the information entered in all of the pages of this software.',
-  displayPage: 'page_projectReport',
+  displayPanel: 'panel_projectReport',
   model: 'ProjectModel' 
 },
 {
@@ -6752,7 +6752,7 @@ define([
   displayType: 'report',
   displayName: undefined,
   displayPrompt: 'Project report',
-  displayPage: 'page_projectReport',
+  displayPanel: 'panel_projectReport',
   model: 'ProjectModel' 
 },
 
