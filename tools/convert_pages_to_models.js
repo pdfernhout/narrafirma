@@ -13,39 +13,107 @@ var pagesReadFromJSON = JSON.parse(fs.readFileSync(pagesFileName, 'utf8'));
 
 console.log("page count", pagesReadFromJSON.length);
 
-function rewritetPageNameAsModel(pageName) {
-    pageName = pageName.substring(5);
-    if (pageName.indexOf("add") === 0) pageName = pageName.substring(3);
-    pageName = pageName[0].toUpperCase() + pageName.substring(1);
-    return pageName;
+function rewritePageIDAsModelName(pageID) {
+    var modelName = pageID.substring(5);
+    
+    if (modelName.indexOf("addNew") === 0) {
+        modelName = modelName.substring(6);
+    } else if (modelName.indexOf("createOrEdit") === 0) {
+        modelName = modelName.substring(12);
+    } else if (modelName.indexOf("add") === 0) {
+        modelName = modelName.substring(3);
+    }
+    
+    modelName = modelName[0].toUpperCase() + modelName.substring(1);
+    return modelName  + "Model";
 }
 
+/*
 pagesReadFromJSON.forEach(function (page) {
-    console.log("page", page.id, rewritetPageNameAsModel(page.id));
+    console.log("page", page.id, rewritePageIDAsModelName(page.id));
 });
+*/
 
 console.log("--------");
 
+var displayTypeToDataTypeMap = {
+    label: "display",
+    image: "display",
+    textarea: 'string',
+    text: 'string',
+    grid: 'array',
+    header: "display",
+    select: "string",
+    clusteringDiagram: 'object',
+    quizScoreResult: "display",
+    button: "display",
+    report: "display",
+    recommendationTable: "display",
+    checkboxes: 'dictionary',
+    templateList: "display",
+    "function": "display",
+    storyBrowser: '???',
+    storyThemer: '???',
+    graphBrowser: '???',
+    trendsReport: '???',
+    observationsList: 'array',
+    accumulatedItemsGrid: 'array',
+    excerptsList: 'array',
+    annotationsGrid: 'array',
+    storiesList: 'array',
+    boolean: 'boolean'
+};
+
+function typeForDisplayType(displayType) {
+    // displayTypeToDataTypeMap[displayType] = "string";
+    return displayTypeToDataTypeMap[displayType];
+}
+
+var optionsLists = {};
+
 pagesReadFromJSON.forEach(function (page) {
     var pageType = "PAGE";
+    var modelName = "ProjectModel";
     if (page.isHeader) {
         pageType = "HEADER";
-        console.log("==================== SECTION ==========================");
+        console.log("\n// ==================== SECTION", page.id, page.name, "==========================");
     }
-    console.log("\n ------------- ", pageType, page.id, " ------------- \n");
+    console.log("\n// ------------- ", pageType, page.id, page.name, page.type, " ------------- \n");
+    
+    // console.log("page", page, "\n");
+    if (!page.isHeader) {
+        if (page.type === "popup") {
+            modelName = rewritePageIDAsModelName(page.id);
+            console.log("// Generate model", modelName, "\n");
+        }
+    }
     page.questions.forEach(function (question) {
         var optionsAsArray;
         if (question.options) {
             optionsAsArray = question.options.split(";");
+            if (optionsAsArray.length === 1) optionsAsArray = optionsAsArray[0];
+            else {
+                var list = optionsLists[question.options] || [];
+                list.push(question.id);
+                optionsLists[question.options] = list;
+            }
         }
+        // Streamline common case of just one option
         var item = {
-            page: page.id,
             id: question.id,
-            type: question.type,
-            name: question.shortText,
-            prompt: question.text,
+            // type: typeForDisplayType(question.type),
             options: optionsAsArray,
+            displayType: question.type,
+            displayName: question.shortText || undefined,
+            displayPrompt: question.text,
+            displayPage: page.id,
+            model: modelName
         };
-        console.log("question", page.id, "\n", JSON.stringify(item, null, 4));
+        // console.log("question", question.id, "\n", JSON.stringify(item, null, 4), "\n");
+        // console.log(JSON.stringify(item, null, 4));
+        console.log(item);
     });
 });
+
+// console.log("displayTypeToDataTypeMap", displayTypeToDataTypeMap);
+console.log("\n\noptionsLists", optionsLists);
