@@ -12,7 +12,17 @@ var pagesReadFromJSON = JSON.parse(fs.readFileSync(pagesFileName, 'utf8'));
 // Generate models and pages
 // Generate models
 
-console.log("page count", pagesReadFromJSON.length);
+console.log("// generated from design_pages_notes.txt on " + new Date());
+console.log("");
+console.log("// page count", pagesReadFromJSON.length);
+
+var questionCount = 0;
+pagesReadFromJSON.forEach(function (page) {
+    questionCount += page.questions.length;
+});
+
+console.log("// field count", questionCount);
+console.log("");
 
 function rewritePageIDAsModelName(pageID) {
     var modelName = pageID.substring(5);
@@ -35,7 +45,7 @@ pagesReadFromJSON.forEach(function (page) {
 });
 */
 
-console.log("--------");
+// console.log("--------");
 
 var displayTypeToDataTypeMap = {
     label: "none",
@@ -81,17 +91,20 @@ function outputStringForItem(item) {
 var optionsLists = {};
 var allChoices = {};
 
-console.log("define([");
+console.log('define([], function() {\n"use strict";\nreturn [');
 
 pagesReadFromJSON.forEach(function (page) {
     var modelName = "ProjectModel";
     
     var panelID = page.id.replace("page_", "panel_");
     
+    var extraForHeader = "";
+    
     if (page.isHeader) {
         console.log("\n// ==================== SECTION", page.id, page.name, "==========================");
+        extraForHeader = " HEADER";
     }
-    console.log("\n// ------------- PANEL", panelID, page.name, page.type, " ------------- \n");
+    console.log("\n// -------------" + extraForHeader, page.type, panelID, page.name, " ------------- \n");
     
     var panelItem = {
         id: panelID,
@@ -103,6 +116,7 @@ pagesReadFromJSON.forEach(function (page) {
     };
     
     outputStringForItem(panelItem);
+    console.log("");
     
     // console.log("page", page, "\n");
     if (!page.isHeader) {
@@ -147,7 +161,7 @@ pagesReadFromJSON.forEach(function (page) {
     });
 });
 
-console.log("\n]);");
+console.log("\n];\n});");
 
 // console.log("displayTypeToDataTypeMap", displayTypeToDataTypeMap);
 

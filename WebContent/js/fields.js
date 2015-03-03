@@ -1,8 +1,15 @@
-define([
+// generated from design_pages_notes.txt on Tue Mar 03 2015 07:45:12 GMT-0500 (EST)
+
+// page count 87
+// field count 458
+
+define([], function() {
+"use strict";
+return [
 
 // ==================== SECTION page_dashboard Dashboard ==========================
 
-// ------------- PANEL panel_dashboard Dashboard page  ------------- 
+// ------------- HEADER page panel_dashboard Dashboard  ------------- 
 
 {
   id: 'panel_dashboard',
@@ -12,6 +19,7 @@ define([
   displayPanel: 'panel_dashboard',
   modelPath: 'project' 
 },
+
 {
   id: 'project_mainDashboardLabel',
   dataType: 'none',
@@ -39,7 +47,7 @@ define([
 
 // ==================== SECTION page_planning Planning ==========================
 
-// ------------- PANEL panel_planning Planning page  ------------- 
+// ------------- HEADER page panel_planning Planning  ------------- 
 
 {
   id: 'panel_planning',
@@ -49,6 +57,7 @@ define([
   displayPanel: 'panel_planning',
   modelPath: 'project' 
 },
+
 {
   id: 'project_projectPlanningLabel',
   dataType: 'none',
@@ -74,7 +83,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_projectFacts Enter project facts page  ------------- 
+// ------------- page panel_projectFacts Enter project facts  ------------- 
 
 {
   id: 'panel_projectFacts',
@@ -84,6 +93,7 @@ define([
   displayPanel: 'panel_projectFacts',
   modelPath: 'project' 
 },
+
 {
   id: 'project_projectFacts',
   dataType: 'none',
@@ -193,7 +203,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_planningQuestionsDraft Answer PNI Planning questions page  ------------- 
+// ------------- page panel_planningQuestionsDraft Answer PNI Planning questions  ------------- 
 
 {
   id: 'panel_planningQuestionsDraft',
@@ -203,6 +213,7 @@ define([
   displayPanel: 'panel_planningQuestionsDraft',
   modelPath: 'project' 
 },
+
 {
   id: 'project_draftQuestionsLabel',
   dataType: 'none',
@@ -288,7 +299,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_participantGroups Describe participant groups page  ------------- 
+// ------------- page panel_participantGroups Describe participant groups  ------------- 
 
 {
   id: 'panel_participantGroups',
@@ -298,6 +309,7 @@ define([
   displayPanel: 'panel_participantGroups',
   modelPath: 'project' 
 },
+
 {
   id: 'project_aboutParticipantGroups',
   dataType: 'none',
@@ -323,7 +335,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_addParticipantGroup Participant group popup  ------------- 
+// ------------- popup panel_addParticipantGroup Participant group  ------------- 
 
 {
   id: 'panel_addParticipantGroup',
@@ -333,6 +345,7 @@ define([
   displayPanel: 'panel_addParticipantGroup',
   modelPath: 'participantgroup' 
 },
+
 // Generate model ParticipantGroupModel 
 
 {
@@ -707,7 +720,7 @@ define([
   model: 'ParticipantGroupModel' 
 },
 
-// ------------- PANEL panel_aboutYou About you page  ------------- 
+// ------------- page panel_aboutYou About you  ------------- 
 
 {
   id: 'panel_aboutYou',
@@ -717,6 +730,7 @@ define([
   displayPanel: 'panel_aboutYou',
   modelPath: 'project.aboutyou' 
 },
+
 {
   id: 'aboutYou_youHeader',
   dataType: 'none',
@@ -766,7 +780,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_projectStories Tell project stories page  ------------- 
+// ------------- page panel_projectStories Tell project stories  ------------- 
 
 {
   id: 'panel_projectStories',
@@ -776,6 +790,7 @@ define([
   displayPanel: 'panel_projectStories',
   modelPath: 'project' 
 },
+
 {
   id: 'project_projectStoriesList',
   dataType: 'array',
@@ -789,7 +804,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_projectStory Project story popup  ------------- 
+// ------------- popup panel_projectStory Project story  ------------- 
 
 {
   id: 'panel_projectStory',
@@ -799,6 +814,7 @@ define([
   displayPanel: 'panel_projectStory',
   modelPath: 'projectstory' 
 },
+
 // Generate model ProjectStoryModel 
 
 {
@@ -895,7 +911,7 @@ define([
   model: 'ProjectStoryModel' 
 },
 
-// ------------- PANEL panel_createProjectStoryElements Create project story elements page  ------------- 
+// ------------- page panel_createProjectStoryElements Create project story elements  ------------- 
 
 {
   id: 'panel_createProjectStoryElements',
@@ -905,6 +921,7 @@ define([
   displayPanel: 'panel_createProjectStoryElements',
   modelPath: 'project' 
 },
+
 {
   id: 'project_storyElementsInstructions',
   dataType: 'none',
@@ -930,7 +947,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_enterProjectStoryElements Enter project story elements page  ------------- 
+// ------------- page panel_enterProjectStoryElements Enter project story elements  ------------- 
 
 {
   id: 'panel_enterProjectStoryElements',
@@ -940,6 +957,7 @@ define([
   displayPanel: 'panel_enterProjectStoryElements',
   modelPath: 'project' 
 },
+
 {
   id: 'project_projectStoryElementsList',
   dataType: 'array',
@@ -953,7 +971,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_addStoryElement Add story element popup  ------------- 
+// ------------- popup panel_addStoryElement Add story element  ------------- 
 
 {
   id: 'panel_addStoryElement',
@@ -963,6 +981,7 @@ define([
   displayPanel: 'panel_addStoryElement',
   modelPath: 'storyelement' 
 },
+
 // Generate model StoryElementModel 
 
 {
@@ -1010,7 +1029,7 @@ define([
   model: 'StoryElementModel' 
 },
 
-// ------------- PANEL panel_assessStorySharing Assess story sharing page  ------------- 
+// ------------- page panel_assessStorySharing Assess story sharing  ------------- 
 
 {
   id: 'panel_assessStorySharing',
@@ -1020,6 +1039,7 @@ define([
   displayPanel: 'panel_assessStorySharing',
   modelPath: 'project.assessment' 
 },
+
 {
   id: 'assessment_intro',
   dataType: 'none',
@@ -1450,7 +1470,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_revisePNIPlanningQuestions Revise PNI Planning questions page  ------------- 
+// ------------- page panel_revisePNIPlanningQuestions Revise PNI Planning questions  ------------- 
 
 {
   id: 'panel_revisePNIPlanningQuestions',
@@ -1460,6 +1480,7 @@ define([
   displayPanel: 'panel_revisePNIPlanningQuestions',
   modelPath: 'project' 
 },
+
 {
   id: 'project_improvePlanningDrafts',
   dataType: 'none',
@@ -1557,7 +1578,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_writeProjectSynopsis Write project synopsis page  ------------- 
+// ------------- page panel_writeProjectSynopsis Write project synopsis  ------------- 
 
 {
   id: 'panel_writeProjectSynopsis',
@@ -1567,6 +1588,7 @@ define([
   displayPanel: 'panel_writeProjectSynopsis',
   modelPath: 'project' 
 },
+
 {
   id: 'project_synopsis',
   dataType: 'string',
@@ -1580,7 +1602,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_readPlanningReport Read planning report page  ------------- 
+// ------------- page panel_readPlanningReport Read planning report  ------------- 
 
 {
   id: 'panel_readPlanningReport',
@@ -1590,6 +1612,7 @@ define([
   displayPanel: 'panel_readPlanningReport',
   modelPath: 'project' 
 },
+
 {
   id: 'project_readPlanningReportIntroductionLabel',
   dataType: 'none',
@@ -1617,7 +1640,7 @@ define([
 
 // ==================== SECTION page_collectionDesign Collection design ==========================
 
-// ------------- PANEL panel_collectionDesign Collection design page  ------------- 
+// ------------- HEADER page panel_collectionDesign Collection design  ------------- 
 
 {
   id: 'panel_collectionDesign',
@@ -1627,6 +1650,7 @@ define([
   displayPanel: 'panel_collectionDesign',
   modelPath: 'project' 
 },
+
 {
   id: 'project_collectionDesignStartLabel',
   dataType: 'none',
@@ -1652,7 +1676,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_chooseCollectionVenues Choose collection venues page  ------------- 
+// ------------- page panel_chooseCollectionVenues Choose collection venues  ------------- 
 
 {
   id: 'panel_chooseCollectionVenues',
@@ -1662,6 +1686,7 @@ define([
   displayPanel: 'panel_chooseCollectionVenues',
   modelPath: 'project' 
 },
+
 {
   id: 'project_venuesIntro',
   dataType: 'none',
@@ -1699,7 +1724,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_addVenue Plan story collection venue popup  ------------- 
+// ------------- popup panel_addVenue Plan story collection venue  ------------- 
 
 {
   id: 'panel_addVenue',
@@ -1709,6 +1734,7 @@ define([
   displayPanel: 'panel_addVenue',
   modelPath: 'venueplan' 
 },
+
 // Generate model VenueModel 
 
 {
@@ -1817,7 +1843,7 @@ define([
   model: 'VenueModel' 
 },
 
-// ------------- PANEL panel_writeStoryElicitingQuestions Write story eliciting questions page  ------------- 
+// ------------- page panel_writeStoryElicitingQuestions Write story eliciting questions  ------------- 
 
 {
   id: 'panel_writeStoryElicitingQuestions',
@@ -1827,6 +1853,7 @@ define([
   displayPanel: 'panel_writeStoryElicitingQuestions',
   modelPath: 'project' 
 },
+
 {
   id: 'project_elicitingQuestionsLabel',
   dataType: 'none',
@@ -1864,7 +1891,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_addElicitingQuestion Add story eliciting question popup  ------------- 
+// ------------- popup panel_addElicitingQuestion Add story eliciting question  ------------- 
 
 {
   id: 'panel_addElicitingQuestion',
@@ -1874,6 +1901,7 @@ define([
   displayPanel: 'panel_addElicitingQuestion',
   modelPath: 'elicitingquestion' 
 },
+
 // Generate model ElicitingQuestionModel 
 
 {
@@ -1935,7 +1963,7 @@ define([
   model: 'ElicitingQuestionModel' 
 },
 
-// ------------- PANEL panel_writeQuestionsAboutStories Write questions about stories page  ------------- 
+// ------------- page panel_writeQuestionsAboutStories Write questions about stories  ------------- 
 
 {
   id: 'panel_writeQuestionsAboutStories',
@@ -1945,6 +1973,7 @@ define([
   displayPanel: 'panel_writeQuestionsAboutStories',
   modelPath: 'project' 
 },
+
 {
   id: 'project_storyQuestionsLabel',
   dataType: 'none',
@@ -1982,7 +2011,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_addStoryQuestion Add story question popup  ------------- 
+// ------------- popup panel_addStoryQuestion Add story question  ------------- 
 
 {
   id: 'panel_addStoryQuestion',
@@ -1992,6 +2021,7 @@ define([
   displayPanel: 'panel_addStoryQuestion',
   modelPath: 'storyquestion' 
 },
+
 // Generate model StoryQuestionModel 
 
 {
@@ -2077,7 +2107,7 @@ define([
   model: 'StoryQuestionModel' 
 },
 
-// ------------- PANEL panel_writeQuestionsAboutParticipants Write questions about participants page  ------------- 
+// ------------- page panel_writeQuestionsAboutParticipants Write questions about participants  ------------- 
 
 {
   id: 'panel_writeQuestionsAboutParticipants',
@@ -2087,6 +2117,7 @@ define([
   displayPanel: 'panel_writeQuestionsAboutParticipants',
   modelPath: 'project' 
 },
+
 {
   id: 'project_participantQuestionsLabel',
   dataType: 'none',
@@ -2124,7 +2155,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_addParticipantQuestion Add participant question popup  ------------- 
+// ------------- popup panel_addParticipantQuestion Add participant question  ------------- 
 
 {
   id: 'panel_addParticipantQuestion',
@@ -2134,6 +2165,7 @@ define([
   displayPanel: 'panel_addParticipantQuestion',
   modelPath: 'participantquestion' 
 },
+
 // Generate model ParticipantQuestionModel 
 
 {
@@ -2219,7 +2251,7 @@ define([
   model: 'ParticipantQuestionModel' 
 },
 
-// ------------- PANEL panel_designQuestionForm Design question form page  ------------- 
+// ------------- page panel_designQuestionForm Design question form  ------------- 
 
 {
   id: 'panel_designQuestionForm',
@@ -2229,6 +2261,7 @@ define([
   displayPanel: 'panel_designQuestionForm',
   modelPath: 'project.questionform' 
 },
+
 {
   id: 'questionForm_Label',
   dataType: 'none',
@@ -2290,7 +2323,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_planStoryCollectionSessions Plan story collection sessions page  ------------- 
+// ------------- page panel_planStoryCollectionSessions Plan story collection sessions  ------------- 
 
 {
   id: 'panel_planStoryCollectionSessions',
@@ -2300,6 +2333,7 @@ define([
   displayPanel: 'panel_planStoryCollectionSessions',
   modelPath: 'project' 
 },
+
 {
   id: 'project_collectionSessionsLabel',
   dataType: 'none',
@@ -2337,7 +2371,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_addStoryCollectionSession Design story collection session popup  ------------- 
+// ------------- popup panel_addStoryCollectionSession Design story collection session  ------------- 
 
 {
   id: 'panel_addStoryCollectionSession',
@@ -2347,6 +2381,7 @@ define([
   displayPanel: 'panel_addStoryCollectionSession',
   modelPath: 'collectionsessionplan' 
 },
+
 // Generate model StoryCollectionSessionModel 
 
 {
@@ -2482,7 +2517,7 @@ define([
   model: 'StoryCollectionSessionModel' 
 },
 
-// ------------- PANEL panel_addCollectionSessionActivity Add story collection session activity popup  ------------- 
+// ------------- popup panel_addCollectionSessionActivity Add story collection session activity  ------------- 
 
 {
   id: 'panel_addCollectionSessionActivity',
@@ -2492,6 +2527,7 @@ define([
   displayPanel: 'panel_addCollectionSessionActivity',
   modelPath: 'collectionsessionactivity' 
 },
+
 // Generate model CollectionSessionActivityModel 
 
 {
@@ -2624,7 +2660,7 @@ define([
   model: 'CollectionSessionActivityModel' 
 },
 
-// ------------- PANEL panel_readCollectionDesignReport Read collection design report page  ------------- 
+// ------------- page panel_readCollectionDesignReport Read collection design report  ------------- 
 
 {
   id: 'panel_readCollectionDesignReport',
@@ -2634,6 +2670,7 @@ define([
   displayPanel: 'panel_readCollectionDesignReport',
   modelPath: 'project' 
 },
+
 {
   id: 'project_readCollectionDesignReportIntroductionLabel',
   dataType: 'none',
@@ -2661,7 +2698,7 @@ define([
 
 // ==================== SECTION page_collectionProcess Collection process ==========================
 
-// ------------- PANEL panel_collectionProcess Collection process page  ------------- 
+// ------------- HEADER page panel_collectionProcess Collection process  ------------- 
 
 {
   id: 'panel_collectionProcess',
@@ -2671,6 +2708,7 @@ define([
   displayPanel: 'panel_collectionProcess',
   modelPath: 'undefined' 
 },
+
 {
   id: 'collectionProcessIntro',
   dataType: 'none',
@@ -2696,7 +2734,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_finalizeQuestionForms Print question forms page  ------------- 
+// ------------- page panel_finalizeQuestionForms Print question forms  ------------- 
 
 {
   id: 'panel_finalizeQuestionForms',
@@ -2706,6 +2744,7 @@ define([
   displayPanel: 'panel_finalizeQuestionForms',
   modelPath: 'undefined' 
 },
+
 {
   id: 'printQuestionsForm_introduction',
   dataType: 'none',
@@ -2731,7 +2770,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_startStoryCollection Start story collection page  ------------- 
+// ------------- page panel_startStoryCollection Start story collection  ------------- 
 
 {
   id: 'panel_startStoryCollection',
@@ -2741,6 +2780,7 @@ define([
   displayPanel: 'panel_startStoryCollection',
   modelPath: 'undefined' 
 },
+
 {
   id: 'webStoryCollection_startCollectionLabel',
   dataType: 'none',
@@ -2814,7 +2854,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_enterStories Enter stories page  ------------- 
+// ------------- page panel_enterStories Enter stories  ------------- 
 
 {
   id: 'panel_enterStories',
@@ -2824,6 +2864,7 @@ define([
   displayPanel: 'panel_enterStories',
   modelPath: 'undefined' 
 },
+
 {
   id: 'printQuestionsForm_enterStories',
   dataType: 'none',
@@ -2837,7 +2878,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_reviewIncomingStories Review incoming stories page  ------------- 
+// ------------- page panel_reviewIncomingStories Review incoming stories  ------------- 
 
 {
   id: 'panel_reviewIncomingStories',
@@ -2847,6 +2888,7 @@ define([
   displayPanel: 'panel_reviewIncomingStories',
   modelPath: 'undefined' 
 },
+
 {
   id: 'collectedStoriesDuringCollectionLabel',
   dataType: 'none',
@@ -2896,7 +2938,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_stopStoryCollection Stop story collection page  ------------- 
+// ------------- page panel_stopStoryCollection Stop story collection  ------------- 
 
 {
   id: 'panel_stopStoryCollection',
@@ -2906,6 +2948,7 @@ define([
   displayPanel: 'panel_stopStoryCollection',
   modelPath: 'undefined' 
 },
+
 {
   id: 'webStoryCollection_stopCollectionLabel2',
   dataType: 'none',
@@ -2943,7 +2986,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_enterCollectionSessionRecords Enter story collection session records page  ------------- 
+// ------------- page panel_enterCollectionSessionRecords Enter story collection session records  ------------- 
 
 {
   id: 'panel_enterCollectionSessionRecords',
@@ -2953,6 +2996,7 @@ define([
   displayPanel: 'panel_enterCollectionSessionRecords',
   modelPath: 'undefined' 
 },
+
 {
   id: 'project_collectionRecordsIntroductionLabel',
   dataType: 'none',
@@ -2978,7 +3022,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_addCollectionSessionRecord Add story collection session record popup  ------------- 
+// ------------- popup panel_addCollectionSessionRecord Add story collection session record  ------------- 
 
 {
   id: 'panel_addCollectionSessionRecord',
@@ -2988,6 +3032,7 @@ define([
   displayPanel: 'panel_addCollectionSessionRecord',
   modelPath: 'undefined' 
 },
+
 // Generate model CollectionSessionRecordModel 
 
 {
@@ -3255,7 +3300,7 @@ define([
   model: 'CollectionSessionRecordModel' 
 },
 
-// ------------- PANEL panel_newCollectionSessionConstruction Story collection construction popup  ------------- 
+// ------------- popup panel_newCollectionSessionConstruction Story collection construction  ------------- 
 
 {
   id: 'panel_newCollectionSessionConstruction',
@@ -3265,6 +3310,7 @@ define([
   displayPanel: 'panel_newCollectionSessionConstruction',
   modelPath: 'undefined' 
 },
+
 // Generate model NewCollectionSessionConstructionModel 
 
 {
@@ -3304,7 +3350,7 @@ define([
   model: 'NewCollectionSessionConstructionModel' 
 },
 
-// ------------- PANEL panel_readCollectionProcessReport Read collection process report page  ------------- 
+// ------------- page panel_readCollectionProcessReport Read collection process report  ------------- 
 
 {
   id: 'panel_readCollectionProcessReport',
@@ -3314,6 +3360,7 @@ define([
   displayPanel: 'panel_readCollectionProcessReport',
   modelPath: 'undefined' 
 },
+
 {
   id: 'project_collectionProcessReportLabel',
   dataType: 'none',
@@ -3341,7 +3388,7 @@ define([
 
 // ==================== SECTION page_catalysis Catalysis ==========================
 
-// ------------- PANEL panel_catalysis Catalysis page  ------------- 
+// ------------- HEADER page panel_catalysis Catalysis  ------------- 
 
 {
   id: 'panel_catalysis',
@@ -3351,6 +3398,7 @@ define([
   displayPanel: 'panel_catalysis',
   modelPath: 'undefined' 
 },
+
 {
   id: 'catalysisIntro',
   dataType: 'none',
@@ -3376,7 +3424,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_browseStories Browse stories page  ------------- 
+// ------------- page panel_browseStories Browse stories  ------------- 
 
 {
   id: 'panel_browseStories',
@@ -3386,6 +3434,7 @@ define([
   displayPanel: 'panel_browseStories',
   modelPath: 'undefined' 
 },
+
 {
   id: 'browseStories_collectedStoriesAfterCollectionLabel',
   dataType: 'none',
@@ -3437,7 +3486,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_themeStories Theme stories page  ------------- 
+// ------------- page panel_themeStories Theme stories  ------------- 
 
 {
   id: 'panel_themeStories',
@@ -3447,6 +3496,7 @@ define([
   displayPanel: 'panel_themeStories',
   modelPath: 'undefined' 
 },
+
 {
   id: 'themeStoriesLabel',
   dataType: 'none',
@@ -3496,7 +3546,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_browseGraphs Browse graphs page  ------------- 
+// ------------- page panel_browseGraphs Browse graphs  ------------- 
 
 {
   id: 'panel_browseGraphs',
@@ -3506,6 +3556,7 @@ define([
   displayPanel: 'panel_browseGraphs',
   modelPath: 'undefined' 
 },
+
 {
   id: 'graphBrowserLabel',
   dataType: 'none',
@@ -3555,7 +3606,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_reviewTrends Review trends page  ------------- 
+// ------------- page panel_reviewTrends Review trends  ------------- 
 
 {
   id: 'panel_reviewTrends',
@@ -3565,6 +3616,7 @@ define([
   displayPanel: 'panel_reviewTrends',
   modelPath: 'undefined' 
 },
+
 {
   id: 'reviewTrendsLabel',
   dataType: 'none',
@@ -3638,7 +3690,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_addToObservation Add to observation popup  ------------- 
+// ------------- popup panel_addToObservation Add to observation  ------------- 
 
 {
   id: 'panel_addToObservation',
@@ -3648,6 +3700,7 @@ define([
   displayPanel: 'panel_addToObservation',
   modelPath: 'undefined' 
 },
+
 // Generate model ToObservationModel 
 
 {
@@ -3699,7 +3752,7 @@ define([
   model: 'ToObservationModel' 
 },
 
-// ------------- PANEL panel_createOrEditObservation Create new observation popup  ------------- 
+// ------------- popup panel_createOrEditObservation Create new observation  ------------- 
 
 {
   id: 'panel_createOrEditObservation',
@@ -3709,6 +3762,7 @@ define([
   displayPanel: 'panel_createOrEditObservation',
   modelPath: 'undefined' 
 },
+
 // Generate model ObservationModel 
 
 {
@@ -3892,7 +3946,7 @@ define([
   model: 'ObservationModel' 
 },
 
-// ------------- PANEL panel_selectExcerpt Add excerpt to interpretation popup  ------------- 
+// ------------- popup panel_selectExcerpt Add excerpt to interpretation  ------------- 
 
 {
   id: 'panel_selectExcerpt',
@@ -3902,6 +3956,7 @@ define([
   displayPanel: 'panel_selectExcerpt',
   modelPath: 'undefined' 
 },
+
 // Generate model SelectExcerptModel 
 
 {
@@ -3929,7 +3984,7 @@ define([
   model: 'SelectExcerptModel' 
 },
 
-// ------------- PANEL panel_addToExcerpt Add text to excerpt popup  ------------- 
+// ------------- popup panel_addToExcerpt Add text to excerpt  ------------- 
 
 {
   id: 'panel_addToExcerpt',
@@ -3939,6 +3994,7 @@ define([
   displayPanel: 'panel_addToExcerpt',
   modelPath: 'undefined' 
 },
+
 // Generate model ToExcerptModel 
 
 {
@@ -3978,7 +4034,7 @@ define([
   model: 'ToExcerptModel' 
 },
 
-// ------------- PANEL panel_createNewExcerpt Create new excerpt popup  ------------- 
+// ------------- popup panel_createNewExcerpt Create new excerpt  ------------- 
 
 {
   id: 'panel_createNewExcerpt',
@@ -3988,6 +4044,7 @@ define([
   displayPanel: 'panel_createNewExcerpt',
   modelPath: 'excerpt' 
 },
+
 // Generate model CreateNewExcerptModel 
 
 {
@@ -4027,7 +4084,7 @@ define([
   model: 'CreateNewExcerptModel' 
 },
 
-// ------------- PANEL panel_reviewExcerpts Review excerpts page  ------------- 
+// ------------- page panel_reviewExcerpts Review excerpts  ------------- 
 
 {
   id: 'panel_reviewExcerpts',
@@ -4037,6 +4094,7 @@ define([
   displayPanel: 'panel_reviewExcerpts',
   modelPath: 'undefined' 
 },
+
 {
   id: 'project_savedExcerptsList',
   dataType: 'array',
@@ -4050,7 +4108,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_interpretObservations Review and interpret observations page  ------------- 
+// ------------- page panel_interpretObservations Review and interpret observations  ------------- 
 
 {
   id: 'panel_interpretObservations',
@@ -4060,6 +4118,7 @@ define([
   displayPanel: 'panel_interpretObservations',
   modelPath: 'undefined' 
 },
+
 {
   id: 'project_observationsDisplayList',
   dataType: 'array',
@@ -4073,7 +4132,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_clusterInterpretations Cluster interpretations page  ------------- 
+// ------------- page panel_clusterInterpretations Cluster interpretations  ------------- 
 
 {
   id: 'panel_clusterInterpretations',
@@ -4083,6 +4142,7 @@ define([
   displayPanel: 'panel_clusterInterpretations',
   modelPath: 'undefined' 
 },
+
 {
   id: 'project_interpretationsClusteringLabel',
   dataType: 'none',
@@ -4108,7 +4168,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_describePerspectives Describe perspectives page  ------------- 
+// ------------- page panel_describePerspectives Describe perspectives  ------------- 
 
 {
   id: 'panel_describePerspectives',
@@ -4118,6 +4178,7 @@ define([
   displayPanel: 'panel_describePerspectives',
   modelPath: 'undefined' 
 },
+
 {
   id: 'project_perspectivesLabel',
   dataType: 'none',
@@ -4143,7 +4204,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_addPerspective Add or change perspective popup  ------------- 
+// ------------- popup panel_addPerspective Add or change perspective  ------------- 
 
 {
   id: 'panel_addPerspective',
@@ -4153,6 +4214,7 @@ define([
   displayPanel: 'panel_addPerspective',
   modelPath: 'undefined' 
 },
+
 // Generate model PerspectiveModel 
 
 {
@@ -4216,7 +4278,7 @@ define([
   model: 'PerspectiveModel' 
 },
 
-// ------------- PANEL panel_annotateResultForPerspective Annotate result for perspective popup  ------------- 
+// ------------- popup panel_annotateResultForPerspective Annotate result for perspective  ------------- 
 
 {
   id: 'panel_annotateResultForPerspective',
@@ -4226,6 +4288,7 @@ define([
   displayPanel: 'panel_annotateResultForPerspective',
   modelPath: 'undefined' 
 },
+
 // Generate model AnnotateResultForPerspectiveModel 
 
 {
@@ -4241,7 +4304,7 @@ define([
   model: 'AnnotateResultForPerspectiveModel' 
 },
 
-// ------------- PANEL panel_annotateExcerptForPerspective Annotate excerpt for perspective popup  ------------- 
+// ------------- popup panel_annotateExcerptForPerspective Annotate excerpt for perspective  ------------- 
 
 {
   id: 'panel_annotateExcerptForPerspective',
@@ -4251,6 +4314,7 @@ define([
   displayPanel: 'panel_annotateExcerptForPerspective',
   modelPath: 'undefined' 
 },
+
 // Generate model AnnotateExcerptForPerspectiveModel 
 
 {
@@ -4266,7 +4330,7 @@ define([
   model: 'AnnotateExcerptForPerspectiveModel' 
 },
 
-// ------------- PANEL panel_annotateInterpretationForPerspective Annotate interpretation for perspective popup  ------------- 
+// ------------- popup panel_annotateInterpretationForPerspective Annotate interpretation for perspective  ------------- 
 
 {
   id: 'panel_annotateInterpretationForPerspective',
@@ -4276,6 +4340,7 @@ define([
   displayPanel: 'panel_annotateInterpretationForPerspective',
   modelPath: 'undefined' 
 },
+
 // Generate model AnnotateInterpretationForPerspectiveModel 
 
 {
@@ -4291,7 +4356,7 @@ define([
   model: 'AnnotateInterpretationForPerspectiveModel' 
 },
 
-// ------------- PANEL panel_readCatalysisReport Read catalysis report page  ------------- 
+// ------------- page panel_readCatalysisReport Read catalysis report  ------------- 
 
 {
   id: 'panel_readCatalysisReport',
@@ -4301,6 +4366,7 @@ define([
   displayPanel: 'panel_readCatalysisReport',
   modelPath: 'undefined' 
 },
+
 {
   id: 'catalysisReport_introductionLabel',
   dataType: 'none',
@@ -4328,7 +4394,7 @@ define([
 
 // ==================== SECTION page_sensemaking Sensemaking ==========================
 
-// ------------- PANEL panel_sensemaking Sensemaking page  ------------- 
+// ------------- HEADER page panel_sensemaking Sensemaking  ------------- 
 
 {
   id: 'panel_sensemaking',
@@ -4338,6 +4404,7 @@ define([
   displayPanel: 'panel_sensemaking',
   modelPath: 'undefined' 
 },
+
 {
   id: 'sensemakingIntroLabel',
   dataType: 'none',
@@ -4363,7 +4430,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_planSensemakingSessions Plan sensemaking sessions page  ------------- 
+// ------------- page panel_planSensemakingSessions Plan sensemaking sessions  ------------- 
 
 {
   id: 'panel_planSensemakingSessions',
@@ -4373,6 +4440,7 @@ define([
   displayPanel: 'panel_planSensemakingSessions',
   modelPath: 'undefined' 
 },
+
 {
   id: 'project_sensemakingSessionPlansLabel',
   dataType: 'none',
@@ -4410,7 +4478,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_addSensemakingSessionPlan Enter sensemaking session plan popup  ------------- 
+// ------------- popup panel_addSensemakingSessionPlan Enter sensemaking session plan  ------------- 
 
 {
   id: 'panel_addSensemakingSessionPlan',
@@ -4420,6 +4488,7 @@ define([
   displayPanel: 'panel_addSensemakingSessionPlan',
   modelPath: 'undefined' 
 },
+
 // Generate model SensemakingSessionPlanModel 
 
 {
@@ -4555,7 +4624,7 @@ define([
   model: 'SensemakingSessionPlanModel' 
 },
 
-// ------------- PANEL panel_addSensemakingSessionActivity Add sensemaking session activity popup  ------------- 
+// ------------- popup panel_addSensemakingSessionActivity Add sensemaking session activity  ------------- 
 
 {
   id: 'panel_addSensemakingSessionActivity',
@@ -4565,6 +4634,7 @@ define([
   displayPanel: 'panel_addSensemakingSessionActivity',
   modelPath: 'undefined' 
 },
+
 // Generate model SensemakingSessionActivityModel 
 
 {
@@ -4699,7 +4769,7 @@ define([
   model: 'SensemakingSessionActivityModel' 
 },
 
-// ------------- PANEL panel_enterSensemakingSessionRecords Enter sensemaking session records page  ------------- 
+// ------------- page panel_enterSensemakingSessionRecords Enter sensemaking session records  ------------- 
 
 {
   id: 'panel_enterSensemakingSessionRecords',
@@ -4709,6 +4779,7 @@ define([
   displayPanel: 'panel_enterSensemakingSessionRecords',
   modelPath: 'undefined' 
 },
+
 {
   id: 'project_sensemakingSessionRecordsLabel',
   dataType: 'none',
@@ -4734,7 +4805,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_addSensemakingSessionRecord Add sensemaking session record popup  ------------- 
+// ------------- popup panel_addSensemakingSessionRecord Add sensemaking session record  ------------- 
 
 {
   id: 'panel_addSensemakingSessionRecord',
@@ -4744,6 +4815,7 @@ define([
   displayPanel: 'panel_addSensemakingSessionRecord',
   modelPath: 'undefined' 
 },
+
 // Generate model SensemakingSessionRecordModel 
 
 {
@@ -5035,7 +5107,7 @@ define([
   model: 'SensemakingSessionRecordModel' 
 },
 
-// ------------- PANEL panel_addResonantStory Add resonant story popup  ------------- 
+// ------------- popup panel_addResonantStory Add resonant story  ------------- 
 
 {
   id: 'panel_addResonantStory',
@@ -5045,6 +5117,7 @@ define([
   displayPanel: 'panel_addResonantStory',
   modelPath: 'undefined' 
 },
+
 // Generate model ResonantStoryModel 
 
 {
@@ -5108,7 +5181,7 @@ define([
   model: 'ResonantStoryModel' 
 },
 
-// ------------- PANEL panel_newSensemakingSessionOutcome Sensemaking session outcome popup  ------------- 
+// ------------- popup panel_newSensemakingSessionOutcome Sensemaking session outcome  ------------- 
 
 {
   id: 'panel_newSensemakingSessionOutcome',
@@ -5118,6 +5191,7 @@ define([
   displayPanel: 'panel_newSensemakingSessionOutcome',
   modelPath: 'undefined' 
 },
+
 // Generate model NewSensemakingSessionOutcomeModel 
 
 {
@@ -5165,7 +5239,7 @@ define([
   model: 'NewSensemakingSessionOutcomeModel' 
 },
 
-// ------------- PANEL panel_newSensemakingSessionConstruction Sensemaking construction popup  ------------- 
+// ------------- popup panel_newSensemakingSessionConstruction Sensemaking construction  ------------- 
 
 {
   id: 'panel_newSensemakingSessionConstruction',
@@ -5175,6 +5249,7 @@ define([
   displayPanel: 'panel_newSensemakingSessionConstruction',
   modelPath: 'undefined' 
 },
+
 // Generate model NewSensemakingSessionConstructionModel 
 
 {
@@ -5219,7 +5294,7 @@ define([
   model: 'NewSensemakingSessionConstructionModel' 
 },
 
-// ------------- PANEL panel_readSensemakingReport Read sensemaking report page  ------------- 
+// ------------- page panel_readSensemakingReport Read sensemaking report  ------------- 
 
 {
   id: 'panel_readSensemakingReport',
@@ -5229,6 +5304,7 @@ define([
   displayPanel: 'panel_readSensemakingReport',
   modelPath: 'undefined' 
 },
+
 {
   id: 'sensemakingReportLabel',
   dataType: 'none',
@@ -5256,7 +5332,7 @@ define([
 
 // ==================== SECTION page_intervention Intervention ==========================
 
-// ------------- PANEL panel_intervention Intervention page  ------------- 
+// ------------- HEADER page panel_intervention Intervention  ------------- 
 
 {
   id: 'panel_intervention',
@@ -5266,6 +5342,7 @@ define([
   displayPanel: 'panel_intervention',
   modelPath: 'undefined' 
 },
+
 {
   id: 'interventionIntroLabel',
   dataType: 'none',
@@ -5291,7 +5368,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_projectOutcomesForIntervention Answer questions about project outcomes page  ------------- 
+// ------------- page panel_projectOutcomesForIntervention Answer questions about project outcomes  ------------- 
 
 {
   id: 'panel_projectOutcomesForIntervention',
@@ -5301,6 +5378,7 @@ define([
   displayPanel: 'panel_projectOutcomesForIntervention',
   modelPath: 'undefined' 
 },
+
 {
   id: 'project_outcomesList',
   dataType: 'array',
@@ -5314,7 +5392,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_projectOutcome Project outcomes popup  ------------- 
+// ------------- popup panel_projectOutcome Project outcomes  ------------- 
 
 {
   id: 'panel_projectOutcome',
@@ -5324,6 +5402,7 @@ define([
   displayPanel: 'panel_projectOutcome',
   modelPath: 'undefined' 
 },
+
 // Generate model ProjectOutcomeModel 
 
 {
@@ -5591,7 +5670,7 @@ define([
   model: 'ProjectOutcomeModel' 
 },
 
-// ------------- PANEL panel_designInterventions Design intervention plans page  ------------- 
+// ------------- page panel_designInterventions Design intervention plans  ------------- 
 
 {
   id: 'panel_designInterventions',
@@ -5601,6 +5680,7 @@ define([
   displayPanel: 'panel_designInterventions',
   modelPath: 'undefined' 
 },
+
 {
   id: 'project_interventionLabel',
   dataType: 'none',
@@ -5638,7 +5718,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_addIntervention Plan an intervention popup  ------------- 
+// ------------- popup panel_addIntervention Plan an intervention  ------------- 
 
 {
   id: 'panel_addIntervention',
@@ -5648,6 +5728,7 @@ define([
   displayPanel: 'panel_addIntervention',
   modelPath: 'interventionplan' 
 },
+
 // Generate model InterventionModel 
 
 {
@@ -5821,7 +5902,7 @@ define([
   model: 'InterventionModel' 
 },
 
-// ------------- PANEL panel_recordInterventions Enter intervention records page  ------------- 
+// ------------- page panel_recordInterventions Enter intervention records  ------------- 
 
 {
   id: 'panel_recordInterventions',
@@ -5831,6 +5912,7 @@ define([
   displayPanel: 'panel_recordInterventions',
   modelPath: 'undefined' 
 },
+
 {
   id: 'project_interventionRecordsLabel',
   dataType: 'none',
@@ -5856,7 +5938,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_addInterventionRecord Add intervention record popup  ------------- 
+// ------------- popup panel_addInterventionRecord Add intervention record  ------------- 
 
 {
   id: 'panel_addInterventionRecord',
@@ -5866,6 +5948,7 @@ define([
   displayPanel: 'panel_addInterventionRecord',
   modelPath: 'undefined' 
 },
+
 // Generate model InterventionRecordModel 
 
 {
@@ -6085,7 +6168,7 @@ define([
   model: 'InterventionRecordModel' 
 },
 
-// ------------- PANEL panel_interventionReport Read intervention report page  ------------- 
+// ------------- page panel_interventionReport Read intervention report  ------------- 
 
 {
   id: 'panel_interventionReport',
@@ -6095,6 +6178,7 @@ define([
   displayPanel: 'panel_interventionReport',
   modelPath: 'undefined' 
 },
+
 {
   id: 'interventionReportLabel',
   dataType: 'none',
@@ -6122,7 +6206,7 @@ define([
 
 // ==================== SECTION page_return Return ==========================
 
-// ------------- PANEL panel_return Return page  ------------- 
+// ------------- HEADER page panel_return Return  ------------- 
 
 {
   id: 'panel_return',
@@ -6132,6 +6216,7 @@ define([
   displayPanel: 'panel_return',
   modelPath: 'undefined' 
 },
+
 {
   id: 'returnIntroLabel',
   dataType: 'none',
@@ -6157,7 +6242,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_gatherFeedback Gather feedback page  ------------- 
+// ------------- page panel_gatherFeedback Gather feedback  ------------- 
 
 {
   id: 'panel_gatherFeedback',
@@ -6167,6 +6252,7 @@ define([
   displayPanel: 'panel_gatherFeedback',
   modelPath: 'undefined' 
 },
+
 {
   id: 'project_feedbackLabel',
   dataType: 'none',
@@ -6204,7 +6290,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_enterFeedbackPiece Enter piece of feedback on project popup  ------------- 
+// ------------- popup panel_enterFeedbackPiece Enter piece of feedback on project  ------------- 
 
 {
   id: 'panel_enterFeedbackPiece',
@@ -6214,6 +6300,7 @@ define([
   displayPanel: 'panel_enterFeedbackPiece',
   modelPath: 'undefined' 
 },
+
 // Generate model EnterFeedbackPieceModel 
 
 {
@@ -6308,7 +6395,7 @@ define([
   model: 'EnterFeedbackPieceModel' 
 },
 
-// ------------- PANEL panel_reflectOnProject Reflect on the project page  ------------- 
+// ------------- page panel_reflectOnProject Reflect on the project  ------------- 
 
 {
   id: 'panel_reflectOnProject',
@@ -6318,6 +6405,7 @@ define([
   displayPanel: 'panel_reflectOnProject',
   modelPath: 'undefined' 
 },
+
 {
   id: 'project_reflectLabel',
   dataType: 'none',
@@ -6439,7 +6527,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_prepareProjectPresentation Prepare outline of project presentation page  ------------- 
+// ------------- page panel_prepareProjectPresentation Prepare outline of project presentation  ------------- 
 
 {
   id: 'panel_prepareProjectPresentation',
@@ -6449,6 +6537,7 @@ define([
   displayPanel: 'panel_prepareProjectPresentation',
   modelPath: 'undefined' 
 },
+
 {
   id: 'project_presentationLabel',
   dataType: 'none',
@@ -6498,7 +6587,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_addPresentationElement Add element to project presentation outline popup  ------------- 
+// ------------- popup panel_addPresentationElement Add element to project presentation outline  ------------- 
 
 {
   id: 'panel_addPresentationElement',
@@ -6508,6 +6597,7 @@ define([
   displayPanel: 'panel_addPresentationElement',
   modelPath: 'undefined' 
 },
+
 // Generate model PresentationElementModel 
 
 {
@@ -6571,7 +6661,7 @@ define([
   model: 'PresentationElementModel' 
 },
 
-// ------------- PANEL panel_projectRequests Respond to requests for post-project support page  ------------- 
+// ------------- page panel_projectRequests Respond to requests for post-project support  ------------- 
 
 {
   id: 'panel_projectRequests',
@@ -6581,6 +6671,7 @@ define([
   displayPanel: 'panel_projectRequests',
   modelPath: 'undefined' 
 },
+
 {
   id: 'project_returnRequestsLabel',
   dataType: 'none',
@@ -6606,7 +6697,7 @@ define([
   model: 'ProjectModel' 
 },
 
-// ------------- PANEL panel_addNewReturnRequest Enter project request popup  ------------- 
+// ------------- popup panel_addNewReturnRequest Enter project request  ------------- 
 
 {
   id: 'panel_addNewReturnRequest',
@@ -6616,6 +6707,7 @@ define([
   displayPanel: 'panel_addNewReturnRequest',
   modelPath: 'undefined' 
 },
+
 // Generate model ReturnRequestModel 
 
 {
@@ -6684,7 +6776,7 @@ define([
   model: 'ReturnRequestModel' 
 },
 
-// ------------- PANEL panel_returnReport Read return report page  ------------- 
+// ------------- page panel_returnReport Read return report  ------------- 
 
 {
   id: 'panel_returnReport',
@@ -6694,6 +6786,7 @@ define([
   displayPanel: 'panel_returnReport',
   modelPath: 'undefined' 
 },
+
 {
   id: 'returnReportLabel',
   dataType: 'none',
@@ -6721,7 +6814,7 @@ define([
 
 // ==================== SECTION page_projectReport Project report ==========================
 
-// ------------- PANEL panel_projectReport Project report page  ------------- 
+// ------------- HEADER page panel_projectReport Project report  ------------- 
 
 {
   id: 'panel_projectReport',
@@ -6731,6 +6824,7 @@ define([
   displayPanel: 'panel_projectReport',
   modelPath: 'undefined' 
 },
+
 {
   id: 'wholeProjectReportLabel',
   dataType: 'none',
@@ -6756,4 +6850,5 @@ define([
   model: 'ProjectModel' 
 },
 
-]);
+];
+});
