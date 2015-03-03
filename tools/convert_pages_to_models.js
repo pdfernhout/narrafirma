@@ -70,6 +70,7 @@ function typeForDisplayType(displayType) {
 }
 
 var optionsLists = {};
+var allChoices = {}
 
 pagesReadFromJSON.forEach(function (page) {
     var pageType = "PAGE";
@@ -96,6 +97,12 @@ pagesReadFromJSON.forEach(function (page) {
                 var list = optionsLists[question.options] || [];
                 list.push(question.id);
                 optionsLists[question.options] = list;
+                optionsAsArray.forEach(function (option) {
+                    // console.log("adding option", option, question.id);
+                    var list2 = allChoices[option] || [];
+                    list2.push(question.id);
+                    allChoices[option] = list2;
+                });
             }
         }
         // Streamline common case of just one option
@@ -117,3 +124,13 @@ pagesReadFromJSON.forEach(function (page) {
 
 // console.log("displayTypeToDataTypeMap", displayTypeToDataTypeMap);
 console.log("\n\noptionsLists", optionsLists);
+
+console.log("\t\nallChoices", allChoices);
+
+console.log("\ntranslate options {");
+var keys = Object.keys(allChoices);
+keys.sort();
+keys.forEach(function(key) {
+    console.log("\"option:" + key + "\": \"" + key + "\",");
+});
+console.log("}");
