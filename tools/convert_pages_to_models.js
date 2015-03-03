@@ -128,13 +128,16 @@ pagesReadFromJSON.forEach(function (page) {
     }
     page.questions.forEach(function (question) {
         var optionsAsArray;
+        var displayOptions;
         if (question.options) {
             optionsAsArray = question.options.split(";");
             if (optionsAsArray.length === 1) {
-                optionsAsArray = optionsAsArray[0];
-                if (optionsAsArray.indexOf("page_") === 0) optionsAsArray = optionsAsArray.replace("page_", "panel_");
+                displayOptions = optionsAsArray[0];
+                optionsAsArray = undefined;
+                if (displayOptions.indexOf("page_") === 0) displayOptions = displayOptions.replace("page_", "panel_");
+                typesWithChoices[question.type] = 1;
             } else {
-                typesWithChoices[question.type] = true;
+                typesWithChoices[question.type] = 2;
                 var list = optionsLists[question.options] || [];
                 list.push(question.id);
                 optionsLists[question.options] = list;
@@ -151,10 +154,11 @@ pagesReadFromJSON.forEach(function (page) {
         var item = {
             id: question.id,
             dataType: dataType,
+            dataOptions: optionsAsArray,
             required: dataType !== "none" && question.type !== "checkboxes" && question.shortText !== "Notes",
             validators: undefined,
-            options: optionsAsArray,
             displayType: question.type,
+            displayConfiguration: displayOptions,
             displayName: question.shortText || undefined,
             displayPrompt: question.text,
             displayPanel: panelID,
