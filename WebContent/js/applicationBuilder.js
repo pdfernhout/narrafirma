@@ -1,6 +1,8 @@
 define(["js/applicationFields"], function (applicationFields) {
     "use strict";
     
+    // TODO: Optimize the lookup of questions for panels, and maybe others, by using a dictionary which caches a list
+    
     function initialDataForField(fieldSpecification) {
         var dataType = fieldSpecification.dataType;
         if (dataType === "string") return "";
@@ -45,6 +47,17 @@ define(["js/applicationFields"], function (applicationFields) {
         return panels;
     }
     
+    function buildListOfQuestions() {
+        var questions = [];
+        for (var i = 0; i < applicationFields.length; i++) {
+            var fieldSpecification = applicationFields[i];
+            if (fieldSpecification.displayType !== "page" && fieldSpecification.displayType !== "popup" ) {
+                questions.push(fieldSpecification);
+            }
+        }
+        return questions;
+    }
+    
     function buildQuestionsForPanel(panelID) {
         var questions = [];
         for (var i = 0; i < applicationFields.length; i++) {
@@ -69,6 +82,7 @@ define(["js/applicationFields"], function (applicationFields) {
         buildModel: buildModel,
         buildListOfPages: buildListOfPages,
         buildListOfPanels: buildListOfPanels,
-        buildQuestionsForPanel: buildQuestionsForPanel
+        buildQuestionsForPanel: buildQuestionsForPanel,
+        buildListOfQuestions: buildListOfQuestions,
     };
 });

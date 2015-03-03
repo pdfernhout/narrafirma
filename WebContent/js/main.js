@@ -399,7 +399,6 @@ require([
         console.log("createLayout start", pages);
         var pageSelectOptions = [];
         
-        var questionIndex = 0;
         var lastPageID = null;
         var lastHeader = null;
         
@@ -435,14 +434,6 @@ require([
             // TODO: Should this really be modifying the original???
             page.title = title;
             
-            // Lump all questions together in domain for use by things like calculating derived values from options for quiz score results
-            for (questionIndex in page.questions) {
-                var question = page.questions[questionIndex];
-                domain.questions[question.id] = question;
-            }
-            
-            if (page.questions) translate.addExtraTranslationsForQuestions(page.questions);
-            
             domain.pageDefinitions[page.id] = page;      
             
             // console.log("about to make page");
@@ -467,9 +458,20 @@ require([
                 // so can't pass page in as value here and need indirect pageDefinitions lookup dictionary
                 pageSelectOptions.push({label: title, value: pageID});
                 // Put in a dynamic question (incomplete for options) to be used to lookup page status; needed to check it is a select
-                domain.questions[page.id + "_pageStatus"] = {id: pageID + "_pageStatus", type: "select"};
+                domain.questions[page.id + "_pageStatus"] = {id: pageID + "_pageStatus", displayType: "select"};
             }
         }
+        
+        var questions = applicationBuilder.buildListOfQuestions();
+        
+        // Lump all questions together in domain for use by things like calculating derived values from options for quiz score results
+        for (var questionIndex in questions) {
+            var question = questions[questionIndex];
+            domain.questions[question.id] = question;
+        }
+        
+        // Add default translations for all questions; these can be overriden by local language files which would be searched first
+        translate.addExtraTranslationsForQuestions(questions);
         
         /*
         // Now, premake pages only after all definitions are done (since some pages refer to others for question popups that may be defined later)

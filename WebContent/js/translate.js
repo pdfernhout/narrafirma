@@ -15,7 +15,7 @@ define([
     var debugTranslations = true;
     
     function translate(tag, defaultText) {
-        if (debugTranslations) console.log("translating", tag);
+        if (debugTranslations) console.log("translating", tag, extraTranslations);
         if (tag.charAt(0) !== "#") throw new Error("translation tag should have leading #  for: " + tag);
         // Kludge for extra domain translations for testing
         if (!tag) {
@@ -56,6 +56,18 @@ define([
         applicationMessages = applicationMessagesNew;
     }
     
+    function addExtraTranslationsForQuestion(question) {
+        console.log("addExtraTranslationsForQuestion", question);
+        if (!question) throw new Error("question is null or undefined");
+        if (debugTranslations) console.log("adding extra translations for", question.id, question);
+        extraTranslations[question.id + "::prompt"] = question.displayPrompt;
+        extraTranslations[question.id + "::shortName"] = question.shortName;
+        for (var optionIndex in question.dataOptions) {
+            var option = question.dataOptions[optionIndex];
+            extraTranslations[question.id + "::selection:" + option] = option;
+        }
+    }
+    
     function addExtraTranslationsForQuestions(questions) {
         console.log("addExtraTranslationsForQuestions", questions);
         if (!questions) {
@@ -64,13 +76,7 @@ define([
         for (var questionIndex = 0; questionIndex < questions.length; questionIndex++) {
             var question = questions[questionIndex];
             if (!question) throw new Error("question could not be found for: " + questionIndex + " in: " + JSON.stringify(questions));
-            if (debugTranslations) console.log("adding extra translations for", question.id, question);
-            extraTranslations[question.id + "::prompt"] = question.displayPrompt;
-            extraTranslations[question.id + "::shortName"] = question.shortName;
-            for (var optionIndex in question.dataOptions) {
-                var option = question.dataOptions[optionIndex];
-                extraTranslations[question.id + "::selection:" + option] = option;
-            }
+            addExtraTranslationsForQuestion(question);
         }
     }
     
@@ -81,6 +87,7 @@ define([
     // Adding these to function just so can keep previous code the same as direct call to translate module
     translate.configure = configure;
     translate.addExtraTranslation = addExtraTranslation;
+    translate.addExtraTranslationsForQuestion = addExtraTranslationsForQuestion;
     translate.addExtraTranslationsForQuestions = addExtraTranslationsForQuestions;
     
     return translate;
