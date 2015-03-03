@@ -1,7 +1,7 @@
 // This supports globals shared by modules
 
 define([
-    "js/pages/allPagesSummary",
+    "js/applicationBuilder",
     "exports",
     "dojo/_base/lang",
     "js/storage",
@@ -9,7 +9,7 @@ define([
     "js/translate",
     "dojo/Stateful"
 ], function(
-    allPagesSummary,
+    applicationBuilder,
     exports,
     lang,
     storage,
@@ -520,18 +520,19 @@ define([
     }
     
     function setupDomain() {
-        projectData.projectAnswers = new Stateful(lang.clone(allPagesSummary.data));
+        var projectModel = applicationBuilder.buildModel("ProjectModel");
+        projectData.projectAnswers = new Stateful(projectModel);
         projectData.exportedSurveyQuestions = {};
         projectData.surveyResults = {};
         projectData.surveyResults.allCompletedSurveys = [];
         projectData.surveyResults.allStories = [];
         
-        pagesToGoWithHeaders = lang.clone(allPagesSummary.pagesToGoWithHeaders);
+        var pages = applicationBuilder.buildListOfPages();
         
-        for (var headerPageID in pagesToGoWithHeaders) {
-            var pages = pagesToGoWithHeaders[headerPageID];
-            for (var pageIndex in pages) {
-                var pageID = pages[pageIndex];
+        for (var pageIndex = 0; pageIndex < pages.length; pageIndex++) {
+            var page = pages[pageIndex];
+            if (!page.isHeader) {
+                var pageID = page.id;
                 projectData.projectAnswers[pageID + "_pageStatus"] = null;
             }
         }

@@ -1,12 +1,11 @@
 require([
-    "js/pages/allPages",
+    "js/applicationBuilder",
     "dojo/i18n!js/nls/applicationMessages",
     "dojo/_base/connect",
     "js/domain",
     "dojo/dom-construct",
     "dojo/dom-style",
     "dojo/hash",
-    "dojo/i18n!js/nls/pageMessages",
     "js/storage",
     "js/survey",
     "js/toaster",
@@ -19,14 +18,13 @@ require([
     "dijit/form/Select",
     "dojo/domReady!"
 ], function(
-    allPages,
+    applicationBuilder,
     applicationMessages,
     connect,
     domain,
     domConstruct,
     domStyle,
     hash,
-    pageMessages,
     storage,
     survey,
     toaster,
@@ -44,6 +42,8 @@ require([
     // TODO: Add translations for GUI strings used here
     
     var startPage = "page_dashboard";
+    
+    var allPages = {};
 
     var currentPage = null;
     var currentPageID = null;
@@ -384,7 +384,9 @@ require([
     
     // Make all of the application pages selectable from the dropdown list and back/next buttons and put them in a TabContainer
     function createLayout() {
-        console.log("createLayout start", allPages);
+        var pages = applicationBuilder.buildListOfPanels();
+        
+        console.log("createLayout start", pages);
         var pageSelectOptions = [];
         
         var questionIndex = 0;
@@ -405,20 +407,21 @@ require([
         // This is as opposed to being added to some container that will have startup called on it later or already is running after startup was called
         homeButton.startup();
         
-        for (var pageKey in allPages) {
-            if (!allPages.hasOwnProperty(pageKey)) continue;
-            var page = allPages[pageKey];
+        for (var pageIndex = 0; pageIndex < allPages.length; pageIndex++) {
+            var page = pages[pageIndex];
+            allPages[page.id] = page;
             // console.log("defining page", page.id);
-            var title = translate(page.id + "::title");
+            var title = translate(page.id + "::title", page.displayName);
             if (page.isHeader) {
                 title = "<i>" + title + "</i>";
             } else {
                 title = "&nbsp;&nbsp;&nbsp;&nbsp;" + title;
             }
-            if (page.type !== "page") {
+            if (page.displayType !== "page") {
                 title += " SPECIAL: " + page.type;
             }
             
+            // TODO: Should this really be modifying the original???
             page.title = title;
             
             // Lump all questions together in domain for use by things like calculating derived values from options for quiz score results
@@ -525,7 +528,7 @@ require([
     }
     
     function startup() {
-        translate.configure(pageMessages, applicationMessages);
+        translate.configure({}, applicationMessages);
 
         // Synchronizes the state of the domain for one status flag with what is on server
         domain.determineStatusOfCurrentQuestionnaire();

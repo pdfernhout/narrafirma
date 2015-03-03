@@ -15,8 +15,19 @@ define([
     function translate(tag, defaultText) {
         // console.log("translating", tag, pageMessages, pageMessages[tag]);
         // Kludge for extra domain translations for testing
+        if (!tag) return defaultText || "";
+        if (tag[0] !== "#") return tag;
+        var id = tag.substring(1);
+        var suppliedText = "";
+        var splitPoint = id.indexOf(" ");
+        if (splitPoint === -1) {
+            suppliedText = id.substring(splitPoint + 1);
+            id = id.substring(0, splitPoint);
+        }
+        
         var result = pageMessages[tag] || applicationMessages[tag] || extraTranslations[tag];
         if (result === undefined) {
+            if (suppliedText) return suppliedText;
             if (typeof defaultText !== 'undefined') {
                 result = defaultText;
             } else {
