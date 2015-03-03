@@ -45,9 +45,30 @@ define(["js/applicationFields"], function (applicationFields) {
         return panels;
     }
     
+    function buildQuestionsForPanel(panelID) {
+        var questions = [];
+        for (var i = 0; i < applicationFields.length; i++) {
+            var fieldSpecification = applicationFields[i];
+            if (fieldSpecification.isHeader === undefined && fieldSpecification.displayPanel === panelID) {
+                // TODO: Temporary for testing with next two lines
+                fieldSpecification.type = fieldSpecification.displayType;
+                if (!fieldSpecification.options) {
+                    var options = [];
+                    if (fieldSpecification.displayConfiguration) {
+                        options.push(fieldSpecification.displayConfiguration);
+                    }
+                    fieldSpecification.options = options;
+                }
+                questions.push(fieldSpecification);
+            }
+        }
+        return questions;
+    }
+    
     return {
         buildModel: buildModel,
         buildListOfPages: buildListOfPages,
-        buildListOfPanels: buildListOfPanels
+        buildListOfPanels: buildListOfPanels,
+        buildQuestionsForPanel: buildQuestionsForPanel
     };
 });

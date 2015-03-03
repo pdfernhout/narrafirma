@@ -124,6 +124,8 @@ require([
         // TODO: Translate and improve this feedback
         toaster.toast("Finished loading project data");
         
+        /* TODO: !!!!!!!!!!!! Removed for now while testing changeover to field approach !!!!!!!!!!!!!!!
+         * 
         // TODO: Kludge of loading all stories when load data?
         console.log("Going to try to load latest stories from server");
         domain.buttonFunctions.loadLatestStoriesFromServer(function (newEnvelopeCount) {
@@ -131,6 +133,7 @@ require([
             // TODO: KLUDGE: Updating gui a second time so get flicker -- and maybe lose edits?
             if (newEnvelopeCount) showPage(currentPageID, "forceRefresh");
         });
+        */
         
         return;
     }
@@ -151,7 +154,9 @@ require([
     function urlHashFragmentChanged(newHash) {
         // console.log("urlHashFragmentChanged", newHash);
         if (currentPageID !== newHash) {
-            if (domain.pageDefinitions[newHash]) {
+            var panelID = newHash.replace("page_", "panel_");
+            var page = domain.pageDefinitions[panelID];
+            if (page && page.displayType === "page") {
                 changePage(newHash);
             } else {
                 console.log("unsupported url hash fragment", newHash);
@@ -174,7 +179,8 @@ require([
     function showPage(id, forceRefresh) {
         if (currentPageID === id && !forceRefresh) return;
         
-        var page = allPages[id];
+        var panelID = id.replace("page_", "panel_");
+        var page = allPages[panelID];
         if (!page) {
             console.log("no such page", id);
             alert("No such page: " + id);
@@ -214,7 +220,8 @@ require([
     
     function createPage(id, visible) {
         console.log("createPage", id);
-        var page = allPages[id];
+        var panelID = id.replace("page_", "panel_");
+        var page = allPages[panelID];
         
         if (!page) {
             console.log("ERROR: No definition for page: ", id);
@@ -241,7 +248,9 @@ require([
         
        // console.log("Made content pane", id);
        
-       page.buildPage(widgetBuilder, pagePane, domain.projectData.projectAnswers);
+       // page.buildPage(widgetBuilder, pagePane, domain.projectData.projectAnswers);
+       var questions = applicationBuilder.buildQuestionsForPanel(panelID);
+       widgetBuilder.addQuestions(questions, pagePane, domain.projectData.projectAnswers);
        
        if (!page.isHeader) {
            // Uses special domain dictionary to store translations synthesized for each individual widget
@@ -407,11 +416,11 @@ require([
         // This is as opposed to being added to some container that will have startup called on it later or already is running after startup was called
         homeButton.startup();
         
-        for (var pageIndex = 0; pageIndex < allPages.length; pageIndex++) {
+        for (var pageIndex = 0; pageIndex < pages.length; pageIndex++) {
             var page = pages[pageIndex];
             allPages[page.id] = page;
-            // console.log("defining page", page.id);
-            var title = translate(page.id + "::title", page.displayName);
+            console.log("defining page", page.id);
+            var title = translate("#" + page.id + "::title", page.displayName);
             if (page.isHeader) {
                 title = "<i>" + title + "</i>";
             } else {
@@ -434,8 +443,8 @@ require([
             
             // console.log("about to make page");
             // Skip over special page types
-            if (page.type === "page") {
-                // console.log("pushing page", page);
+            if (page.displayType === "page") {
+                console.log("pushing page", page);
                 // Make it easy to lookup previous and next pages from a page
                 if (lastPageID) domain.pageDefinitions[lastPageID].nextPageID = page.id;
                 page.previousPageID = lastPageID;
@@ -443,9 +452,10 @@ require([
                 
                 // Looks like Dojo select has a limitation where it can only take strings as values
                 // so can't pass page in as value here and need indirect pageDefinitions lookup dictionary
-                pageSelectOptions.push({label: title, value: page.id});
+                var pageID = page.id.replace("panel_", "page_");
+                pageSelectOptions.push({label: title, value: pageID});
                 // Put in a dynamic question (incomplete for options) to be used to lookup page status; needed to check it is a select
-                domain.questions[page.id + "_pageStatus"] = {id: page.id + "_pageStatus", type: "select"};
+                domain.questions[page.id + "_pageStatus"] = {id: pageID + "_pageStatus", type: "select"};
             }
         }
         
@@ -544,8 +554,10 @@ require([
         // Call the main function
         createLayout();
         
+        /* TODO: Commented out while testing changeover to fields
         // Get the latest project data
         loadLatestClicked();
+        */
         
         // turn off startup "please wait" display
         document.getElementById("startup").style.display = "none";
