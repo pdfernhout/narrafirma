@@ -109,9 +109,12 @@ pagesReadFromJSON.forEach(function (page) {
             }
         }
         // Streamline common case of just one option
+        var dataType = typeForDisplayType(question.type);
         var item = {
             id: question.id,
-            dataType: typeForDisplayType(question.type),
+            dataType: dataType,
+            required: dataType !== "none" && question.type !== "checkboxes" && question.shortText !== "Notes",
+            validators: undefined,
             options: optionsAsArray,
             displayType: question.type,
             displayName: question.shortText || undefined,

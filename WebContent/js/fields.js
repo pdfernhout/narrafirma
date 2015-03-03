@@ -7,6 +7,8 @@ define([
 {
   id: 'project_mainDashboardLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -17,6 +19,8 @@ define([
 {
   id: 'project_testImage',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'images/WWS_BookCover_front_small.png',
   displayType: 'image',
   displayName: undefined,
@@ -32,6 +36,8 @@ define([
 {
   id: 'project_projectPlanningLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -42,6 +48,8 @@ define([
 {
   id: 'project_generalNotes_planning',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Planning notes',
@@ -55,6 +63,8 @@ define([
 {
   id: 'project_projectFacts',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -65,6 +75,8 @@ define([
 {
   id: 'project_title',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Project title',
@@ -75,6 +87,8 @@ define([
 {
   id: 'project_communityOrOrganizationName',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Community/organization name',
@@ -85,6 +99,8 @@ define([
 {
   id: 'project_topic',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Project topic',
@@ -95,6 +111,8 @@ define([
 {
   id: 'project_startAndEndDates',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Project start and end',
@@ -105,6 +123,8 @@ define([
 {
   id: 'project_funders',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Project funders',
@@ -115,6 +135,8 @@ define([
 {
   id: 'project_facilitators',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Project facilitators',
@@ -125,6 +147,8 @@ define([
 {
   id: 'project_reportStartText',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Report start text',
@@ -135,6 +159,8 @@ define([
 {
   id: 'project_reportEndText',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Report end text',
@@ -148,6 +174,8 @@ define([
 {
   id: 'project_draftQuestionsLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -158,6 +186,8 @@ define([
 {
   id: 'project_pniQuestions_goal_draft',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Project goal',
@@ -168,6 +198,8 @@ define([
 {
   id: 'project_pniQuestions_relationships_draft',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Project relationships',
@@ -178,6 +210,8 @@ define([
 {
   id: 'project_pniQuestions_focus_draft',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Project focus',
@@ -188,6 +222,8 @@ define([
 {
   id: 'project_pniQuestions_range_draft',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Project range',
@@ -198,6 +234,8 @@ define([
 {
   id: 'project_pniQuestions_scope_draft',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Project scope',
@@ -208,6 +246,8 @@ define([
 {
   id: 'project_pniQuestions_emphasis_draft',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Project emphasis',
@@ -221,6 +261,8 @@ define([
 {
   id: 'project_aboutParticipantGroups',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -231,6 +273,8 @@ define([
 {
   id: 'project_participantGroupsList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_addParticipantGroup',
   displayType: 'grid',
   displayName: 'Participant groups',
@@ -246,6 +290,8 @@ define([
 {
   id: 'participantGroup_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Name',
@@ -256,6 +302,8 @@ define([
 {
   id: 'participantGroup_description',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Description',
@@ -266,6 +314,8 @@ define([
 {
   id: 'participantGroup_detailsAboutParticipantGroup',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -276,6 +326,8 @@ define([
 {
   id: 'participantGroup_statusHeader',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -286,6 +338,8 @@ define([
 {
   id: 'participantGroup_status',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'unknown',
      'very low',
@@ -303,6 +357,8 @@ define([
 {
   id: 'participantGroup_confidence',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'unknown',
      'very low',
@@ -320,6 +376,8 @@ define([
 {
   id: 'participantGroup_abilityHeader',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -330,6 +388,8 @@ define([
 {
   id: 'participantGroup_time',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'very little', 'little', 'some', 'a lot', 'mixed' ],
   displayType: 'select',
   displayName: 'Free time',
@@ -340,6 +400,8 @@ define([
 {
   id: 'participantGroup_education',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'unknown',
      'illiterate',
@@ -357,6 +419,8 @@ define([
 {
   id: 'participantGroup_physicalDisabilities',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'none', 'minimal', 'moderate', 'strong', 'mixed' ],
   displayType: 'select',
   displayName: 'Physical limitations',
@@ -367,6 +431,8 @@ define([
 {
   id: 'participantGroup_emotionalImpairments',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'none', 'minimal', 'moderate', 'strong', 'mixed' ],
   displayType: 'select',
   displayName: 'Emotional limitations',
@@ -377,6 +443,8 @@ define([
 {
   id: 'participantGroup_expectationsHeader',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -387,6 +455,8 @@ define([
 {
   id: 'participantGroup_performing',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'unknown',
      'very unimportant',
@@ -403,6 +473,8 @@ define([
 {
   id: 'participantGroup_conforming',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'unknown',
      'very unimportant',
@@ -419,6 +491,8 @@ define([
 {
   id: 'participantGroup_promoting',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'unknown',
      'very unimportant',
@@ -435,6 +509,8 @@ define([
 {
   id: 'participantGroup_venting',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'unknown',
      'very unimportant',
@@ -451,6 +527,8 @@ define([
 {
   id: 'participantGroup_feelingsHeader',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -461,6 +539,8 @@ define([
 {
   id: 'participantGroup_interest',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'unknown',
      'very little',
@@ -478,6 +558,8 @@ define([
 {
   id: 'participantGroup_feelings_project',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'negative', 'neutral', 'positive', 'mixed' ],
   displayType: 'select',
   displayName: 'Feelings about project',
@@ -488,6 +570,8 @@ define([
 {
   id: 'participantGroup_feelings_facilitator',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'negative', 'neutral', 'positive', 'mixed' ],
   displayType: 'select',
   displayName: 'Feelings about you',
@@ -498,6 +582,8 @@ define([
 {
   id: 'participantGroup_feelings_stories',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'negative', 'neutral', 'positive', 'mixed' ],
   displayType: 'select',
   displayName: 'Feel about stories',
@@ -508,6 +594,8 @@ define([
 {
   id: 'participantGroup_topicHeader',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -518,6 +606,8 @@ define([
 {
   id: 'participantGroup_topic_feeling',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'unknown',
      'strongly negative',
@@ -535,6 +625,8 @@ define([
 {
   id: 'participantGroup_topic_private',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'very private', 'medium', 'not private', 'mixed' ],
   displayType: 'select',
   displayName: 'How private',
@@ -545,6 +637,8 @@ define([
 {
   id: 'participantGroup_topic_articulate',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'hard', 'medium', 'easy', 'mixed' ],
   displayType: 'select',
   displayName: 'Articulation',
@@ -555,6 +649,8 @@ define([
 {
   id: 'participantGroup_topic_timeframe',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'hours', 'days', 'months', 'years', 'decades', 'mixed' ],
   displayType: 'select',
   displayName: 'Time period',
@@ -568,6 +664,8 @@ define([
 {
   id: 'aboutYou_youHeader',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -578,6 +676,8 @@ define([
 {
   id: 'aboutYou_experience',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'none', 'a little', 'some', 'a lot' ],
   displayType: 'select',
   displayName: 'Experience',
@@ -588,6 +688,8 @@ define([
 {
   id: 'aboutYou_help',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'none', 'a little', 'some', 'a lot' ],
   displayType: 'select',
   displayName: 'Help',
@@ -598,6 +700,8 @@ define([
 {
   id: 'aboutYou_tech',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'none', 'a little', 'some', 'a lot' ],
   displayType: 'select',
   displayName: 'Technology',
@@ -611,6 +715,8 @@ define([
 {
   id: 'project_projectStoriesList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_projectStory',
   displayType: 'grid',
   displayName: 'Project stories',
@@ -626,6 +732,8 @@ define([
 {
   id: 'projectStory_scenario',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'ask me anything',
      'magic ears',
@@ -641,6 +749,8 @@ define([
 {
   id: 'projectStory_outcome',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'colossal success',
      'miserable failure',
@@ -655,6 +765,8 @@ define([
 {
   id: 'projectStory_text',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Story',
@@ -665,6 +777,8 @@ define([
 {
   id: 'projectStory_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Name',
@@ -675,6 +789,8 @@ define([
 {
   id: 'projectStory_feelAbout',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Feel about',
@@ -685,6 +801,8 @@ define([
 {
   id: 'projectStory_surprise',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Surprised',
@@ -695,6 +813,8 @@ define([
 {
   id: 'projectStory_dangers',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Opportunities or dangers',
@@ -708,6 +828,8 @@ define([
 {
   id: 'project_storyElementsInstructions',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -718,6 +840,8 @@ define([
 {
   id: 'project_projectStoryElementsAnswersClusteringDiagram',
   dataType: 'object',
+  required: true,
+  validators: undefined,
   options: 'project_storyElementsAnswersClusteringDiagram',
   displayType: 'clusteringDiagram',
   displayName: undefined,
@@ -731,6 +855,8 @@ define([
 {
   id: 'project_projectStoryElementsList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_addStoryElement',
   displayType: 'grid',
   displayName: 'Story elements',
@@ -746,6 +872,8 @@ define([
 {
   id: 'storyElement_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Name',
@@ -756,6 +884,8 @@ define([
 {
   id: 'storyElement_type',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'character',
      'situation',
@@ -774,6 +904,8 @@ define([
 {
   id: 'storyElement_description',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Description',
@@ -787,6 +919,8 @@ define([
 {
   id: 'assessment_intro',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -797,6 +931,8 @@ define([
 {
   id: 'assessment_narrativeFreedom',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -807,6 +943,8 @@ define([
 {
   id: 'assessment_counterStories',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'never', 'seldom', 'sometimes', 'often' ],
   displayType: 'select',
   displayName: 'Countering',
@@ -817,6 +955,8 @@ define([
 {
   id: 'assessment_authority',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'unknown',
      'enthrallment',
@@ -832,6 +972,8 @@ define([
 {
   id: 'assessment_mistakes',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'never', 'seldom', 'sometimes', 'often' ],
   displayType: 'select',
   displayName: 'Mistakes',
@@ -842,6 +984,8 @@ define([
 {
   id: 'assessment_silencing',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'warning', 'caution', 'request', 'joke' ],
   displayType: 'select',
   displayName: 'Stepping in',
@@ -852,6 +996,8 @@ define([
 {
   id: 'assessment_conflict',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'demand', 'criticism', 'comment', 'joke' ],
   displayType: 'select',
   displayName: 'Disagreement',
@@ -862,6 +1008,8 @@ define([
 {
   id: 'assessment_narrativeFlow',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -872,6 +1020,8 @@ define([
 {
   id: 'assessment_remindings',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'never', 'seldom', 'sometimes', 'often' ],
   displayType: 'select',
   displayName: 'Reminding',
@@ -882,6 +1032,8 @@ define([
 {
   id: 'assessment_retellings',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'never', 'seldom', 'sometimes', 'often' ],
   displayType: 'select',
   displayName: 'Passing on stories',
@@ -892,6 +1044,8 @@ define([
 {
   id: 'assessment_folklore',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'none', 'little', 'some', 'strong' ],
   displayType: 'select',
   displayName: 'Folklore',
@@ -902,6 +1056,8 @@ define([
 {
   id: 'assessment_storyTypes',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'no', 'maybe', 'I think so', 'definitely' ],
   displayType: 'select',
   displayName: 'Story types',
@@ -912,6 +1068,8 @@ define([
 {
   id: 'assessment_sensemaking',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'never', 'seldom', 'sometimes', 'often' ],
   displayType: 'select',
   displayName: 'Decision making',
@@ -922,6 +1080,8 @@ define([
 {
   id: 'assessment_narrativeKnowledge',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -932,6 +1092,8 @@ define([
 {
   id: 'assessment_realStories',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'never', 'seldom', 'sometimes', 'often' ],
   displayType: 'select',
   displayName: 'Recountings of events',
@@ -942,6 +1104,8 @@ define([
 {
   id: 'assessment_negotiations',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'never', 'seldom', 'sometimes', 'often' ],
   displayType: 'select',
   displayName: 'Vitality',
@@ -952,6 +1116,8 @@ define([
 {
   id: 'assessment_cotelling',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'never', 'seldom', 'sometimes', 'often' ],
   displayType: 'select',
   displayName: 'Sharing storytelling',
@@ -962,6 +1128,8 @@ define([
 {
   id: 'assessment_blunders',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'often', 'sometimes', 'seldom', 'never' ],
   displayType: 'select',
   displayName: 'Blunders',
@@ -972,6 +1140,8 @@ define([
 {
   id: 'assessment_accounting',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'never', 'seldom', 'sometimes', 'often' ],
   displayType: 'select',
   displayName: 'Accountability',
@@ -982,6 +1152,8 @@ define([
 {
   id: 'assessment_narrativeUnity',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -992,6 +1164,8 @@ define([
 {
   id: 'assessment_commonStories',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'impossible', 'difficult', 'doable', 'easy' ],
   displayType: 'select',
   displayName: 'Common stories',
@@ -1002,6 +1176,8 @@ define([
 {
   id: 'assessment_sacredStories',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'impossible', 'difficult', 'doable', 'easy' ],
   displayType: 'select',
   displayName: 'Sacred stories',
@@ -1012,6 +1188,8 @@ define([
 {
   id: 'assessment_condensedStories',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'impossible', 'difficult', 'doable', 'easy' ],
   displayType: 'select',
   displayName: 'Condensed stories',
@@ -1022,6 +1200,8 @@ define([
 {
   id: 'assessment_intermingling',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'never', 'seldom', 'sometimes', 'often' ],
   displayType: 'select',
   displayName: 'Intermingling',
@@ -1032,6 +1212,8 @@ define([
 {
   id: 'assessment_culture',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'unknown', 'impossible', 'difficult', 'doable', 'easy' ],
   displayType: 'select',
   displayName: 'Culture',
@@ -1042,6 +1224,8 @@ define([
 {
   id: 'assessment_result_header',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -1052,6 +1236,8 @@ define([
 {
   id: 'assessment_result_freedomSubscore',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 
    [ 'assessment_counterStories',
      'assessment_authority',
@@ -1067,6 +1253,8 @@ define([
 {
   id: 'assessment_result_flowSubscore',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 
    [ 'assessment_remindings',
      'assessment_retellings',
@@ -1082,6 +1270,8 @@ define([
 {
   id: 'assessment_result_knowledgeSubscore',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 
    [ 'assessment_realStories',
      'assessment_negotiations',
@@ -1097,6 +1287,8 @@ define([
 {
   id: 'assessment_result_unitySubscore',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 
    [ 'assessment_commonStories',
      'assessment_sacredStories',
@@ -1112,6 +1304,8 @@ define([
 {
   id: 'assessment_result_grandTotal',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 
    [ 'assessment_counterStories',
      'assessment_authority',
@@ -1142,6 +1336,8 @@ define([
 {
   id: 'assessment_notes',
   dataType: 'string',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Notes',
@@ -1155,6 +1351,8 @@ define([
 {
   id: 'project_improvePlanningDrafts',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -1165,6 +1363,8 @@ define([
 {
   id: 'project_pniQuestions_copyDraftsButton',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'copyDraftPNIQuestionVersionsIntoAnswers',
   displayType: 'button',
   displayName: undefined,
@@ -1175,6 +1375,8 @@ define([
 {
   id: 'project_pniQuestions_goal_final',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Project goal',
@@ -1185,6 +1387,8 @@ define([
 {
   id: 'project_pniQuestions_relationships_final',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Project relationships',
@@ -1195,6 +1399,8 @@ define([
 {
   id: 'project_pniQuestions_focus_final',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Project focus',
@@ -1205,6 +1411,8 @@ define([
 {
   id: 'project_pniQuestions_range_final',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Project range',
@@ -1215,6 +1423,8 @@ define([
 {
   id: 'project_pniQuestions_scope_final',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Project scope',
@@ -1225,6 +1435,8 @@ define([
 {
   id: 'project_pniQuestions_emphasis_final',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Project emphasis',
@@ -1238,6 +1450,8 @@ define([
 {
   id: 'project_synopsis',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Project synopsis',
@@ -1251,6 +1465,8 @@ define([
 {
   id: 'project_readPlanningReportIntroductionLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -1261,6 +1477,8 @@ define([
 {
   id: 'project_planningReport',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'planning',
   displayType: 'report',
   displayName: undefined,
@@ -1276,6 +1494,8 @@ define([
 {
   id: 'project_collectionDesignStartLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -1286,6 +1506,8 @@ define([
 {
   id: 'project_generalNotes_collectionDesign',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Collection design notes',
@@ -1299,6 +1521,8 @@ define([
 {
   id: 'project_venuesIntro',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -1309,6 +1533,8 @@ define([
 {
   id: 'SPECIAL_venueRecommendations',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'Venues',
   displayType: 'recommendationTable',
   displayName: undefined,
@@ -1319,6 +1545,8 @@ define([
 {
   id: 'project_venuesList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_addVenue',
   displayType: 'grid',
   displayName: 'Story collection venues',
@@ -1334,6 +1562,8 @@ define([
 {
   id: 'venue_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Name',
@@ -1344,6 +1574,8 @@ define([
 {
   id: 'venue_primary_type',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'individual interviews',
      'group interviews',
@@ -1363,6 +1595,8 @@ define([
 {
   id: 'venue_participantGroups',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Participants',
@@ -1373,6 +1607,8 @@ define([
 {
   id: 'venue_timeline',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Timeline',
@@ -1383,6 +1619,8 @@ define([
 {
   id: 'venue_locations',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Locations',
@@ -1393,6 +1631,8 @@ define([
 {
   id: 'venue_help',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Help',
@@ -1403,6 +1643,8 @@ define([
 {
   id: 'venue_resources',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Technology',
@@ -1413,6 +1655,8 @@ define([
 {
   id: 'venue_description',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Other',
@@ -1426,6 +1670,8 @@ define([
 {
   id: 'project_elicitingQuestionsLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -1436,6 +1682,8 @@ define([
 {
   id: 'project_elicitingQuestionsList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_addElicitingQuestion',
   displayType: 'grid',
   displayName: 'Story eliciting questions',
@@ -1446,6 +1694,8 @@ define([
 {
   id: 'SPECIAL_elicitingQuestionRecommendations',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'Eliciting questions',
   displayType: 'recommendationTable',
   displayName: undefined,
@@ -1461,6 +1711,8 @@ define([
 {
   id: 'elicitingQuestion_text',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Question',
@@ -1471,6 +1723,8 @@ define([
 {
   id: 'elicitingQuestion_shortName',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Short Name',
@@ -1481,6 +1735,8 @@ define([
 {
   id: 'elicitingQuestion_type',
   dataType: 'dictionary',
+  required: false,
+  validators: undefined,
   options: 
    [ 'what happened',
      'directed question',
@@ -1501,6 +1757,8 @@ define([
 {
   id: 'SPECIAL_templates_elicitingQuestions',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'elicitationQuestions',
   displayType: 'templateList',
   displayName: undefined,
@@ -1514,6 +1772,8 @@ define([
 {
   id: 'project_storyQuestionsLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -1524,6 +1784,8 @@ define([
 {
   id: 'project_storyQuestionsList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_addStoryQuestion',
   displayType: 'grid',
   displayName: 'Questions about stories',
@@ -1534,6 +1796,8 @@ define([
 {
   id: 'SPECIAL_storyQuestionRecommendations',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'storyQuestions',
   displayType: 'recommendationTable',
   displayName: undefined,
@@ -1549,6 +1813,8 @@ define([
 {
   id: 'storyQuestion_text',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Question',
@@ -1559,6 +1825,8 @@ define([
 {
   id: 'storyQuestion_type',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'boolean',
      'label',
@@ -1579,6 +1847,8 @@ define([
 {
   id: 'storyQuestion_shortName',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Short name',
@@ -1589,6 +1859,8 @@ define([
 {
   id: 'storyQuestion_options',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Options',
@@ -1599,6 +1871,8 @@ define([
 {
   id: 'storyQuestion_help',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Help',
@@ -1609,6 +1883,8 @@ define([
 {
   id: 'SPECIAL_templates_storyQuestions',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'storyQuestions',
   displayType: 'templateList',
   displayName: undefined,
@@ -1622,6 +1898,8 @@ define([
 {
   id: 'project_participantQuestionsLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -1632,6 +1910,8 @@ define([
 {
   id: 'project_participantQuestionsList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_addParticipantQuestion',
   displayType: 'grid',
   displayName: 'Questions about people',
@@ -1642,6 +1922,8 @@ define([
 {
   id: 'SPECIAL_participantQuestionRecommendations',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'participantQuestions',
   displayType: 'recommendationTable',
   displayName: undefined,
@@ -1657,6 +1939,8 @@ define([
 {
   id: 'participantQuestion_text',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Question',
@@ -1667,6 +1951,8 @@ define([
 {
   id: 'participantQuestion_type',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'boolean',
      'label',
@@ -1687,6 +1973,8 @@ define([
 {
   id: 'participantQuestion_shortName',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Short name',
@@ -1697,6 +1985,8 @@ define([
 {
   id: 'participantQuestion_options',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Options',
@@ -1707,6 +1997,8 @@ define([
 {
   id: 'participantQuestion_help',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Help',
@@ -1717,6 +2009,8 @@ define([
 {
   id: 'SPECIAL_templates_participantQuestions',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'participantQuestions',
   displayType: 'templateList',
   displayName: undefined,
@@ -1730,6 +2024,8 @@ define([
 {
   id: 'questionForm_Label',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -1740,6 +2036,8 @@ define([
 {
   id: 'questionForm_title',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Title',
@@ -1750,6 +2048,8 @@ define([
 {
   id: 'questionForm_image',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Image',
@@ -1760,6 +2060,8 @@ define([
 {
   id: 'questionForm_startText',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Introduction',
@@ -1770,6 +2072,8 @@ define([
 {
   id: 'questionForm_endText',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'End of form text',
@@ -1783,6 +2087,8 @@ define([
 {
   id: 'project_collectionSessionsLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -1793,6 +2099,8 @@ define([
 {
   id: 'SPECIAL_collectionSessionRecommendations',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'collectionSessions',
   displayType: 'recommendationTable',
   displayName: undefined,
@@ -1803,6 +2111,8 @@ define([
 {
   id: 'project_collectionSessionPlansList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_addStoryCollectionSession',
   displayType: 'grid',
   displayName: 'Story collection session plans',
@@ -1818,6 +2128,8 @@ define([
 {
   id: 'collectionSessionPlan_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Name',
@@ -1828,6 +2140,8 @@ define([
 {
   id: 'collectionSessionPlan_groups',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Participant groups',
@@ -1838,6 +2152,8 @@ define([
 {
   id: 'collectionSessionPlan_repetitions',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Repetitions',
@@ -1848,6 +2164,8 @@ define([
 {
   id: 'collectionSessionPlan_duration',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Length',
@@ -1858,6 +2176,8 @@ define([
 {
   id: 'collectionSessionPlan_times',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Time',
@@ -1868,6 +2188,8 @@ define([
 {
   id: 'collectionSessionPlan_location',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Location',
@@ -1878,6 +2200,8 @@ define([
 {
   id: 'collectionSessionPlan_numPeople',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Number of people',
@@ -1888,6 +2212,8 @@ define([
 {
   id: 'collectionSessionPlan_materials',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Materials',
@@ -1898,6 +2224,8 @@ define([
 {
   id: 'collectionSessionPlan_details',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Other',
@@ -1908,6 +2236,8 @@ define([
 {
   id: 'collectionSessionPlan_activitiesList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_addCollectionSessionActivity',
   displayType: 'grid',
   displayName: 'Story collection activities',
@@ -1918,6 +2248,8 @@ define([
 {
   id: 'collectionSessionPlan_printCollectionSessionAgendaButton',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'button',
   displayName: undefined,
@@ -1933,6 +2265,8 @@ define([
 {
   id: 'collectionSessionActivity_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Name',
@@ -1943,6 +2277,8 @@ define([
 {
   id: 'collectionSessionActivity_type',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'ice-breaker',
      'sharing stories (no task)',
@@ -1962,6 +2298,8 @@ define([
 {
   id: 'collectionSessionActivity_plan',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Plan',
@@ -1972,6 +2310,8 @@ define([
 {
   id: 'collectionSessionActivity_optionalParts',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Optional elaborations',
@@ -1982,6 +2322,8 @@ define([
 {
   id: 'collectionSessionActivity_duration',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Length',
@@ -1992,6 +2334,8 @@ define([
 {
   id: 'collectionSessionActivity_recording',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Recording',
@@ -2002,6 +2346,8 @@ define([
 {
   id: 'collectionSessionActivity_materials',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Materials',
@@ -2012,6 +2358,8 @@ define([
 {
   id: 'collectionSessionActivity_spaces',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Spaces',
@@ -2022,6 +2370,8 @@ define([
 {
   id: 'collectionSessionActivity_facilitation',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Facilitation',
@@ -2032,6 +2382,8 @@ define([
 {
   id: 'SPECIAL_templates_storyCollectionActivities',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'storyCollectionActivities',
   displayType: 'templateList',
   displayName: undefined,
@@ -2045,6 +2397,8 @@ define([
 {
   id: 'project_readCollectionDesignReportIntroductionLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -2055,6 +2409,8 @@ define([
 {
   id: 'project_collectionDesignReport',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'collectionDesign',
   displayType: 'report',
   displayName: undefined,
@@ -2070,6 +2426,8 @@ define([
 {
   id: 'collectionProcessIntro',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -2080,6 +2438,8 @@ define([
 {
   id: 'project_generalNotes_collectionProcess',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Collection process notes',
@@ -2093,6 +2453,8 @@ define([
 {
   id: 'printQuestionsForm_introduction',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -2103,6 +2465,8 @@ define([
 {
   id: 'printQuestionsForm_printFormButton',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'printStoryForm',
   displayType: 'button',
   displayName: undefined,
@@ -2116,6 +2480,8 @@ define([
 {
   id: 'webStoryCollection_startCollectionLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -2126,6 +2492,8 @@ define([
 {
   id: 'webStoryCollection_enableStoryCollectionButton',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'storyCollectionStart',
   displayType: 'button',
   displayName: undefined,
@@ -2136,6 +2504,8 @@ define([
 {
   id: 'webStoryCollection_enabledTracker',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'isStoryCollectingEnabled',
   displayType: 'function',
   displayName: undefined,
@@ -2146,6 +2516,8 @@ define([
 {
   id: 'webStoryCollection_copyStoryFormURLButton',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'copyStoryFormURL',
   displayType: 'button',
   displayName: undefined,
@@ -2156,6 +2528,8 @@ define([
 {
   id: 'webStoryCollection_stopCollectionLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -2166,6 +2540,8 @@ define([
 {
   id: 'webStoryCollection_disableStoryCollectionButton',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'storyCollectionStop',
   displayType: 'button',
   displayName: undefined,
@@ -2179,6 +2555,8 @@ define([
 {
   id: 'printQuestionsForm_enterStories',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'enterSurveyResult',
   displayType: 'button',
   displayName: undefined,
@@ -2192,6 +2570,8 @@ define([
 {
   id: 'collectedStoriesDuringCollectionLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -2202,6 +2582,8 @@ define([
 {
   id: 'webStoryCollection_loadLatestStoriesFromServer',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'loadLatestStoriesFromServer',
   displayType: 'button',
   displayName: undefined,
@@ -2212,6 +2594,8 @@ define([
 {
   id: 'webStoryCollection_totalResults',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'totalNumberOfSurveyResults',
   displayType: 'function',
   displayName: undefined,
@@ -2222,6 +2606,8 @@ define([
 {
   id: 'webStoryCollection_collectedStoriesDuringCollection',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'storyBrowser',
   displayName: undefined,
@@ -2235,6 +2621,8 @@ define([
 {
   id: 'webStoryCollection_stopCollectionLabel2',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -2245,6 +2633,8 @@ define([
 {
   id: 'webStoryCollection_disableWebStoryFormAfterStoryCollectionButton',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'storyCollectionStop',
   displayType: 'button',
   displayName: undefined,
@@ -2255,6 +2645,8 @@ define([
 {
   id: 'webStoryCollection_enabledTracker2',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'isStoryCollectingEnabled',
   displayType: 'function',
   displayName: undefined,
@@ -2268,6 +2660,8 @@ define([
 {
   id: 'project_collectionRecordsIntroductionLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -2278,6 +2672,8 @@ define([
 {
   id: 'project_collectionSessionRecordsList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_addCollectionSessionRecord',
   displayType: 'grid',
   displayName: 'Story collection session records',
@@ -2293,6 +2689,8 @@ define([
 {
   id: 'collectionSessionRecord_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Name',
@@ -2303,6 +2701,8 @@ define([
 {
   id: 'collectionSessionRecord_whenWhere',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'When and where',
@@ -2313,6 +2713,8 @@ define([
 {
   id: 'collectionSessionRecord_groups',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Participant groups',
@@ -2323,6 +2725,8 @@ define([
 {
   id: 'collectionSessionRecord_participants',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Who attended',
@@ -2333,6 +2737,8 @@ define([
 {
   id: 'collectionSessionRecord_plan',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Plan',
@@ -2343,6 +2749,8 @@ define([
 {
   id: 'collectionSessionRecord_notes',
   dataType: 'string',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Notes',
@@ -2353,6 +2761,8 @@ define([
 {
   id: 'collectionSessionRecord_constructionsList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_newCollectionSessionConstruction',
   displayType: 'grid',
   displayName: 'Story collection session constructions',
@@ -2363,6 +2773,8 @@ define([
 {
   id: 'collectionSessionRecord_reflectionsLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -2373,6 +2785,8 @@ define([
 {
   id: 'collectionSessionRecord_reflectionsOnChangeHeader',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -2383,6 +2797,8 @@ define([
 {
   id: 'collectionSessionRecord_reflections_change_participantPerceptions',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Change in participant perceptions',
@@ -2393,6 +2809,8 @@ define([
 {
   id: 'collectionSessionRecord_reflections_change_yourPerceptions',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Change in facilitator perceptions',
@@ -2403,6 +2821,8 @@ define([
 {
   id: 'collectionSessionRecord_reflections_change_project',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Changes to the project',
@@ -2413,6 +2833,8 @@ define([
 {
   id: 'collectionSessionRecord_interactionsHeader',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -2423,6 +2845,8 @@ define([
 {
   id: 'collectionSessionRecord_reflections_interaction_participants',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Interactions among participants',
@@ -2433,6 +2857,8 @@ define([
 {
   id: 'collectionSessionRecord_reflections_interaction_participantsAndFacilitator',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Interactions between participants and facilitators',
@@ -2443,6 +2869,8 @@ define([
 {
   id: 'collectionSessionRecord_reflections_interaction_stories',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Stories',
@@ -2453,6 +2881,8 @@ define([
 {
   id: 'collectionSessionRecord_learningHeader',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -2463,6 +2893,8 @@ define([
 {
   id: 'collectionSessionRecord_reflections_learning_special',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Unique features',
@@ -2473,6 +2905,8 @@ define([
 {
   id: 'collectionSessionRecord_reflections_learning_surprise',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Surprise',
@@ -2483,6 +2917,8 @@ define([
 {
   id: 'collectionSessionRecord_reflections_learning_workedWell',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Worked and didn\'t work',
@@ -2493,6 +2929,8 @@ define([
 {
   id: 'collectionSessionRecord_reflections_learning_newIdeas',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'New ideas',
@@ -2503,6 +2941,8 @@ define([
 {
   id: 'collectionSessionRecord_reflections_learning_wantToRemember',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Other',
@@ -2518,6 +2958,8 @@ define([
 {
   id: 'collectionSessionRecord_construction_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Name',
@@ -2528,6 +2970,8 @@ define([
 {
   id: 'collectionSessionRecord_construction_type',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'timeline', 'landscape', 'other' ],
   displayType: 'select',
   displayName: 'Type',
@@ -2538,6 +2982,8 @@ define([
 {
   id: 'collectionSessionRecord_construction_description',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Description',
@@ -2551,6 +2997,8 @@ define([
 {
   id: 'project_collectionProcessReportLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -2561,6 +3009,8 @@ define([
 {
   id: 'project_collectionProcessReport',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'collectionProcess',
   displayType: 'report',
   displayName: undefined,
@@ -2576,6 +3026,8 @@ define([
 {
   id: 'catalysisIntro',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -2586,6 +3038,8 @@ define([
 {
   id: 'project_generalNotes_catalysis',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Catalysis notes',
@@ -2599,6 +3053,8 @@ define([
 {
   id: 'browseStories_collectedStoriesAfterCollectionLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -2609,6 +3065,8 @@ define([
 {
   id: 'browseStories_loadLatestStoriesFromServer',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'loadLatestStoriesFromServer',
   displayType: 'button',
   displayName: undefined,
@@ -2619,6 +3077,8 @@ define([
 {
   id: 'browseStories_totalResults',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'totalNumberOfSurveyResults',
   displayType: 'function',
   displayName: undefined,
@@ -2629,6 +3089,8 @@ define([
 {
   id: 'browseStories_collectedStoriesAfterCollection',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 
    [ 'addToObservation:"page_addToObservation"',
      'addToExcerpt:"page_addToExcerpt"' ],
@@ -2644,6 +3106,8 @@ define([
 {
   id: 'themeStoriesLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -2654,6 +3118,8 @@ define([
 {
   id: 'themeStories',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'storyThemer',
   displayName: undefined,
@@ -2664,6 +3130,8 @@ define([
 {
   id: 'mockupThemingLabel_unfinished',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -2674,6 +3142,8 @@ define([
 {
   id: 'mockup_theming',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'images/mockups/mockupTheming.png',
   displayType: 'image',
   displayName: undefined,
@@ -2687,6 +3157,8 @@ define([
 {
   id: 'graphBrowserLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -2697,6 +3169,8 @@ define([
 {
   id: 'graphBrowserDisplay',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'graphBrowser',
   displayName: undefined,
@@ -2707,6 +3181,8 @@ define([
 {
   id: 'graphBrowserMockupLabel_unfinished',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -2717,6 +3193,8 @@ define([
 {
   id: 'mockup_graphBrowser',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'images/mockups/mockupGraphs.png',
   displayType: 'image',
   displayName: undefined,
@@ -2730,6 +3208,8 @@ define([
 {
   id: 'reviewTrendsLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -2740,6 +3220,8 @@ define([
 {
   id: 'reviewTrends_minSubsetSize',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ '20', '30', '40', '50' ],
   displayType: 'select',
   displayName: 'Minimum subset size',
@@ -2750,6 +3232,8 @@ define([
 {
   id: 'reviewTrends_significanceThreshold',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ '0.05', '0.01' ],
   displayType: 'select',
   displayName: 'Significance threshold',
@@ -2760,6 +3244,8 @@ define([
 {
   id: 'reviewTrends_display',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'trendsReport',
   displayName: undefined,
@@ -2770,6 +3256,8 @@ define([
 {
   id: 'mockupTrendsLabel_unfinished',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -2780,6 +3268,8 @@ define([
 {
   id: 'mockup_trends',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'images/mockups/mockupTrends.png',
   displayType: 'image',
   displayName: undefined,
@@ -2795,6 +3285,8 @@ define([
 {
   id: 'addToObservation_introduction',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -2805,6 +3297,8 @@ define([
 {
   id: 'observationsListChoose',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'observationsList',
   displayName: undefined,
@@ -2815,6 +3309,8 @@ define([
 {
   id: 'addToObservation_addResultToExistingObservationButton',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'button',
   displayName: undefined,
@@ -2825,6 +3321,8 @@ define([
 {
   id: 'addToObservation_createNewObservationWithResultButton',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'page_createNewObservation',
   displayType: 'button',
   displayName: undefined,
@@ -2840,6 +3338,8 @@ define([
 {
   id: 'observation_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Name',
@@ -2850,6 +3350,8 @@ define([
 {
   id: 'observation_text',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Observation',
@@ -2860,6 +3362,8 @@ define([
 {
   id: 'observation__observationResultsList',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'collectedStoriesAfterCollection',
   displayType: 'accumulatedItemsGrid',
   displayName: 'Results',
@@ -2870,6 +3374,8 @@ define([
 {
   id: 'observation_firstInterpretation_text',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'First interpretation',
@@ -2880,6 +3386,8 @@ define([
 {
   id: 'observation_firstInterpretation_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'First interpretation name',
@@ -2890,6 +3398,8 @@ define([
 {
   id: 'observation_firstInterpretation_idea',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'First interpretation idea',
@@ -2900,6 +3410,8 @@ define([
 {
   id: 'observation_firstInterpretation_excerptsList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_selectExcerpt',
   displayType: 'grid',
   displayName: 'First interpretation excerpts',
@@ -2910,6 +3422,8 @@ define([
 {
   id: 'observation_competingInterpretation_text',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Competing interpretation',
@@ -2920,6 +3434,8 @@ define([
 {
   id: 'observation_competingInterpretation_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Competing interpretation name',
@@ -2930,6 +3446,8 @@ define([
 {
   id: 'observation_competingInterpretation_idea',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Competing interpretation idea',
@@ -2940,6 +3458,8 @@ define([
 {
   id: 'observation_competingInterpretation_excerptsList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_selectExcerpt',
   displayType: 'grid',
   displayName: 'Competing interpretation excerpts',
@@ -2950,6 +3470,8 @@ define([
 {
   id: 'observation_thirdInterpretation_text',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Third interpretation',
@@ -2960,6 +3482,8 @@ define([
 {
   id: 'observation_thirdInterpretation_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Third interpretation name',
@@ -2970,6 +3494,8 @@ define([
 {
   id: 'observation_thirdInterpretation_idea',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Third interpretation idea',
@@ -2980,6 +3506,8 @@ define([
 {
   id: 'observation_thirdInterpretation_excerptsList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_selectExcerpt',
   displayType: 'grid',
   displayName: 'Third interpretation excerpts',
@@ -2995,6 +3523,8 @@ define([
 {
   id: 'selectExcerpt_excerptsListDisplay',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'excerptsList',
   displayName: undefined,
@@ -3005,6 +3535,8 @@ define([
 {
   id: 'selectExcerpt_addExcerptToInterpretationButton',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'button',
   displayName: undefined,
@@ -3020,6 +3552,8 @@ define([
 {
   id: 'addToExcerpt_excerptsListChoose',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'excerptsList',
   displayName: undefined,
@@ -3030,6 +3564,8 @@ define([
 {
   id: 'addToExcerpt_addTextToExistingExcerptButton',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'button',
   displayName: undefined,
@@ -3040,6 +3576,8 @@ define([
 {
   id: 'addToExcerpt_createNewExcerptWithTextButton',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'page_createNewExcerpt',
   displayType: 'button',
   displayName: undefined,
@@ -3055,6 +3593,8 @@ define([
 {
   id: 'excerpt_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Name',
@@ -3065,6 +3605,8 @@ define([
 {
   id: 'excerpt_text',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Excerpt',
@@ -3075,6 +3617,8 @@ define([
 {
   id: 'excerpt_notes',
   dataType: 'string',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Notes',
@@ -3088,6 +3632,8 @@ define([
 {
   id: 'project_savedExcerptsList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_createNewExcerpt',
   displayType: 'grid',
   displayName: 'Story excerpts',
@@ -3101,6 +3647,8 @@ define([
 {
   id: 'project_observationsDisplayList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_createOrEditObservation',
   displayType: 'grid',
   displayName: 'Catalysis observations',
@@ -3114,6 +3662,8 @@ define([
 {
   id: 'project_interpretationsClusteringLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -3124,6 +3674,8 @@ define([
 {
   id: 'project_interpretationsClusteringDiagram',
   dataType: 'object',
+  required: true,
+  validators: undefined,
   options: 'project_interpretationsClusteringDiagram',
   displayType: 'clusteringDiagram',
   displayName: undefined,
@@ -3137,6 +3689,8 @@ define([
 {
   id: 'project_perspectivesLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -3147,6 +3701,8 @@ define([
 {
   id: 'project_perspectivesList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_addPerspective',
   displayType: 'grid',
   displayName: 'Catalysis perspectives',
@@ -3162,6 +3718,8 @@ define([
 {
   id: 'perspective_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Name',
@@ -3172,6 +3730,8 @@ define([
 {
   id: 'perspective_description',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Perspective',
@@ -3182,6 +3742,8 @@ define([
 {
   id: 'perspective_linkedResultsList',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'page_annotateResultForPerspective',
   displayType: 'annotationsGrid',
   displayName: undefined,
@@ -3192,6 +3754,8 @@ define([
 {
   id: 'perspective_linkedExcerptsList',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'page_annotateExcerptForPerspective',
   displayType: 'annotationsGrid',
   displayName: undefined,
@@ -3202,6 +3766,8 @@ define([
 {
   id: 'perspective_linkedInterpretationsList',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'page_annotateInterpretationForPerspective',
   displayType: 'annotationsGrid',
   displayName: undefined,
@@ -3217,6 +3783,8 @@ define([
 {
   id: 'perspective_resultLinkageNotes',
   dataType: 'string',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Notes',
@@ -3232,6 +3800,8 @@ define([
 {
   id: 'perspective_excerptLinkageNotes',
   dataType: 'string',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Notes',
@@ -3247,6 +3817,8 @@ define([
 {
   id: 'perspective_interpretationLinkageNotes',
   dataType: 'string',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Notes',
@@ -3260,6 +3832,8 @@ define([
 {
   id: 'catalysisReport_introductionLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -3270,6 +3844,8 @@ define([
 {
   id: 'catalysisReport',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'catalysis',
   displayType: 'report',
   displayName: undefined,
@@ -3285,6 +3861,8 @@ define([
 {
   id: 'sensemakingIntroLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -3295,6 +3873,8 @@ define([
 {
   id: 'project_generalNotes_sensemaking',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Sensemaking notes',
@@ -3308,6 +3888,8 @@ define([
 {
   id: 'project_sensemakingSessionPlansLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -3318,6 +3900,8 @@ define([
 {
   id: 'sensemakingSessionRecommendations',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'sensemakingSessions',
   displayType: 'recommendationTable',
   displayName: undefined,
@@ -3328,6 +3912,8 @@ define([
 {
   id: 'project_sensemakingSessionPlansList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_addSensemakingSessionPlan',
   displayType: 'grid',
   displayName: 'Sensemaking session plans',
@@ -3343,6 +3929,8 @@ define([
 {
   id: 'sensemakingSessionPlan_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Name',
@@ -3353,6 +3941,8 @@ define([
 {
   id: 'sensemakingSessionPlan_groups',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Participant groups',
@@ -3363,6 +3953,8 @@ define([
 {
   id: 'sensemakingSessionPlan_repetitions',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Repetitions',
@@ -3373,6 +3965,8 @@ define([
 {
   id: 'sensemakingSessionPlan_duration',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Length',
@@ -3383,6 +3977,8 @@ define([
 {
   id: 'sensemakingSessionPlan_times',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Time',
@@ -3393,6 +3989,8 @@ define([
 {
   id: 'sensemakingSessionPlan_location',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Location',
@@ -3403,6 +4001,8 @@ define([
 {
   id: 'sensemakingSessionPlan_numPeople',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Number of people',
@@ -3413,6 +4013,8 @@ define([
 {
   id: 'sensemakingSessionPlan_materials',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Materials',
@@ -3423,6 +4025,8 @@ define([
 {
   id: 'sensemakingSessionPlan_details',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Other',
@@ -3433,6 +4037,8 @@ define([
 {
   id: 'sensemakingSessionPlan_activitiesList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_addSensemakingSessionActivity',
   displayType: 'grid',
   displayName: 'Sensemaking session activities',
@@ -3443,6 +4049,8 @@ define([
 {
   id: 'sensemakingSessionPlan_printSensemakingSessionAgendaButton',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'button',
   displayName: undefined,
@@ -3458,6 +4066,8 @@ define([
 {
   id: 'sensemakingSessionPlan_activity_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Name',
@@ -3468,6 +4078,8 @@ define([
 {
   id: 'sensemakingSessionPlan_activity_type',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'ice-breaker',
      'encountering stories (no task)',
@@ -3489,6 +4101,8 @@ define([
 {
   id: 'sensemakingSessionPlan_activity_plan',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Plan',
@@ -3499,6 +4113,8 @@ define([
 {
   id: 'sensemakingSessionPlan_activity_optionalParts',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Optional elaborations',
@@ -3509,6 +4125,8 @@ define([
 {
   id: 'sensemakingSessionPlan_activity_duration',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Length',
@@ -3519,6 +4137,8 @@ define([
 {
   id: 'sensemakingSessionPlan_activity_recording',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'New stories',
@@ -3529,6 +4149,8 @@ define([
 {
   id: 'sensemakingSessionPlan_activity_materials',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Materials',
@@ -3539,6 +4161,8 @@ define([
 {
   id: 'sensemakingSessionPlan_activity_spaces',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Spaces',
@@ -3549,6 +4173,8 @@ define([
 {
   id: 'sensemakingSessionPlan_activity_facilitation',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Facilitation',
@@ -3559,6 +4185,8 @@ define([
 {
   id: 'templates_sensemakingActivities',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'sensemakingActivities',
   displayType: 'templateList',
   displayName: undefined,
@@ -3572,6 +4200,8 @@ define([
 {
   id: 'project_sensemakingSessionRecordsLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -3582,6 +4212,8 @@ define([
 {
   id: 'project_sensemakingSessionRecordsList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_addSensemakingSessionRecord',
   displayType: 'grid',
   displayName: 'Sensemaking session records',
@@ -3597,6 +4229,8 @@ define([
 {
   id: 'sensemakingSessionRecord_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Name',
@@ -3607,6 +4241,8 @@ define([
 {
   id: 'sensemakingSessionRecord_whenWhere',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'When and where',
@@ -3617,6 +4253,8 @@ define([
 {
   id: 'sensemakingSessionRecord_groups',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Participant groups',
@@ -3627,6 +4265,8 @@ define([
 {
   id: 'sensemakingSessionRecord_participants',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Who attended',
@@ -3637,6 +4277,8 @@ define([
 {
   id: 'sensemakingSessionRecord_plan',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Plan',
@@ -3647,6 +4289,8 @@ define([
 {
   id: 'sensemakingSessionRecord_notes',
   dataType: 'string',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Notes',
@@ -3657,6 +4301,8 @@ define([
 {
   id: 'sensemakingSessionRecord_resonantStoriesList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_addResonantStory',
   displayType: 'grid',
   displayName: 'Sensemaking session resonant stories',
@@ -3667,6 +4313,8 @@ define([
 {
   id: 'sensemakingSessionRecord_outcomesList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_newSensemakingSessionOutcome',
   displayType: 'grid',
   displayName: 'Sensemaking session outcomes',
@@ -3677,6 +4325,8 @@ define([
 {
   id: 'sensemakingSessionRecord_constructionsList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_newSensemakingSessionConstruction',
   displayType: 'grid',
   displayName: 'Sensemaking session constructions',
@@ -3687,6 +4337,8 @@ define([
 {
   id: 'sensemakingSessionRecord_reflectionsLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -3697,6 +4349,8 @@ define([
 {
   id: 'sensemakingSessionRecord_reflectionsOnChangeHeader',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -3707,6 +4361,8 @@ define([
 {
   id: 'sensemakingSessionRecord_reflections_change_participantPerceptions',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Change in participant perceptions',
@@ -3717,6 +4373,8 @@ define([
 {
   id: 'sensemakingSessionRecord_reflections_change_yourPerceptions',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Change in facilitator perceptions',
@@ -3727,6 +4385,8 @@ define([
 {
   id: 'sensemakingSessionRecord_reflections_change_project',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Changes to the project',
@@ -3737,6 +4397,8 @@ define([
 {
   id: 'sensemakingSessionRecord_interactionsHeader',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -3747,6 +4409,8 @@ define([
 {
   id: 'sensemakingSessionRecord_reflections_interaction_participants',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Interactions among participants',
@@ -3757,6 +4421,8 @@ define([
 {
   id: 'sensemakingSessionRecord_reflections_interaction_participantsAndFacilitator',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Interactions between participants and facilitators',
@@ -3767,6 +4433,8 @@ define([
 {
   id: 'sensemakingSessionRecord_reflections_interaction_stories',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Stories',
@@ -3777,6 +4445,8 @@ define([
 {
   id: 'sensemakingSessionRecord_learningHeader',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -3787,6 +4457,8 @@ define([
 {
   id: 'sensemakingSessionRecord_reflections_learning_special',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Unique features',
@@ -3797,6 +4469,8 @@ define([
 {
   id: 'sensemakingSessionRecord_reflections_learning_surprise',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Surprise',
@@ -3807,6 +4481,8 @@ define([
 {
   id: 'sensemakingSessionRecord_reflections_learning_workedWell',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Worked and didn\'t work',
@@ -3817,6 +4493,8 @@ define([
 {
   id: 'sensemakingSessionRecord_reflections_learning_newIdeas',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'New ideas',
@@ -3827,6 +4505,8 @@ define([
 {
   id: 'sensemakingSessionRecord_reflections_learning_wantToRemember',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Other',
@@ -3842,6 +4522,8 @@ define([
 {
   id: 'sensemakingSessionRecord_resonantStory_selection',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'storiesList',
   displayName: 'Resonant story',
@@ -3852,6 +4534,8 @@ define([
 {
   id: 'sensemakingSessionRecord_resonantStory_type',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'pivot', 'voice', 'discovery', 'other' ],
   displayType: 'select',
   displayName: 'Type',
@@ -3862,6 +4546,8 @@ define([
 {
   id: 'sensemakingSessionRecord_resonantStory_reason',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Why',
@@ -3872,6 +4558,8 @@ define([
 {
   id: 'sensemakingSessionRecord_resonantStory_groups',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Groups',
@@ -3882,6 +4570,8 @@ define([
 {
   id: 'sensemakingSessionRecord_resonantStory_notes',
   dataType: 'string',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Notes',
@@ -3897,6 +4587,8 @@ define([
 {
   id: 'sensemakingSessionRecord_outcome_type',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'discovery',
      'opportunity',
@@ -3915,6 +4607,8 @@ define([
 {
   id: 'sensemakingSessionRecord_outcome_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Name',
@@ -3925,6 +4619,8 @@ define([
 {
   id: 'sensemakingSessionRecord_outcome_description',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Description',
@@ -3940,6 +4636,8 @@ define([
 {
   id: 'sensemakingSessionRecord_construction_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Name',
@@ -3950,6 +4648,8 @@ define([
 {
   id: 'sensemakingSessionRecord_construction_type',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'timeline',
      'landscape',
@@ -3965,6 +4665,8 @@ define([
 {
   id: 'sensemakingSessionRecord_construction_description',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Description',
@@ -3978,6 +4680,8 @@ define([
 {
   id: 'sensemakingReportLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -3988,6 +4692,8 @@ define([
 {
   id: 'sensemakingReport',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'sensemaking',
   displayType: 'report',
   displayName: undefined,
@@ -4003,6 +4709,8 @@ define([
 {
   id: 'interventionIntroLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -4013,6 +4721,8 @@ define([
 {
   id: 'project_generalNotes_intervention',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Intervention notes',
@@ -4026,6 +4736,8 @@ define([
 {
   id: 'project_outcomesList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_projectOutcome',
   displayType: 'grid',
   displayName: 'Project outcomes',
@@ -4041,6 +4753,8 @@ define([
 {
   id: 'outcomes_group',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Participant group',
@@ -4051,6 +4765,8 @@ define([
 {
   id: 'outcomes_hopesHeader',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -4061,6 +4777,8 @@ define([
 {
   id: 'outcomes_peopleFeltHeard',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'never', 'occasionally', 'sometimes', 'often', 'mixed' ],
   displayType: 'select',
   displayName: 'Felt heard',
@@ -4071,6 +4789,8 @@ define([
 {
   id: 'outcomes_peopleFeltInvolved',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'never', 'occasionally', 'sometimes', 'often', 'mixed' ],
   displayType: 'select',
   displayName: 'Felt involved',
@@ -4081,6 +4801,8 @@ define([
 {
   id: 'outcomes_peopleLearnedAboutCommOrg',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'never', 'occasionally', 'sometimes', 'often', 'mixed' ],
   displayType: 'select',
   displayName: 'Learned about community',
@@ -4091,6 +4813,8 @@ define([
 {
   id: 'outcomes_voicesHeader',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -4101,6 +4825,8 @@ define([
 {
   id: 'outcomes_peopleWantedToTellMoreStories',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'never', 'occasionally', 'sometimes', 'often', 'mixed' ],
   displayType: 'select',
   displayName: 'Wanted to tell more',
@@ -4111,6 +4837,8 @@ define([
 {
   id: 'outcomes_peopleWantedToShareMoreStoriesWithEachOther',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'never', 'occasionally', 'sometimes', 'often', 'mixed' ],
   displayType: 'select',
   displayName: 'Wanted to share more',
@@ -4121,6 +4849,8 @@ define([
 {
   id: 'outcomes_peopleFeltStoriesNeededToBeHeard',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'not at all', 'somewhat', 'definitely', 'mixed' ],
   displayType: 'select',
   displayName: 'Felt that stories needed to be heard',
@@ -4131,6 +4861,8 @@ define([
 {
   id: 'outcomes_peopleFeltNobodyCares',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'not at all', 'somewhat', 'definitely', 'mixed' ],
   displayType: 'select',
   displayName: 'Felt that nobody cares',
@@ -4141,6 +4873,8 @@ define([
 {
   id: 'outcomes_needsHeader',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -4151,6 +4885,8 @@ define([
 {
   id: 'outcomes_peopleFeltNobodyCanMeetNeeds',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'not at all', 'somewhat', 'definitely', 'mixed' ],
   displayType: 'select',
   displayName: 'Needs could not be met',
@@ -4161,6 +4897,8 @@ define([
 {
   id: 'outcomes_peopleFeltTheyNeedNewStories',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'not at all', 'somewhat', 'definitely', 'mixed' ],
   displayType: 'select',
   displayName: 'Needed to tell themselves new stories',
@@ -4171,6 +4909,8 @@ define([
 {
   id: 'outcomes_peopleWantedToKeepExploring',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'not at all', 'somewhat', 'definitely', 'mixed' ],
   displayType: 'select',
   displayName: 'Wanted more exploration',
@@ -4181,6 +4921,8 @@ define([
 {
   id: 'outcomes_crisisPointsWereFound',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'not at all', 'somewhat', 'definitely', 'mixed' ],
   displayType: 'select',
   displayName: 'Crisis points',
@@ -4191,6 +4933,8 @@ define([
 {
   id: 'outcomes_issuesWereBeyondWords',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'not at all', 'somewhat', 'definitely', 'mixed' ],
   displayType: 'select',
   displayName: 'Beyond words',
@@ -4201,6 +4945,8 @@ define([
 {
   id: 'outcomes_learningHeader',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -4211,6 +4957,8 @@ define([
 {
   id: 'outcomes_peopleLearnedAboutTopic',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'never', 'occasionally', 'sometimes', 'often', 'mixed' ],
   displayType: 'select',
   displayName: 'Learned about topic',
@@ -4221,6 +4969,8 @@ define([
 {
   id: 'outcomes_issuesNewMembersStruggleWith',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'not at all', 'somewhat', 'definitely', 'mixed' ],
   displayType: 'select',
   displayName: 'New members needed help',
@@ -4231,6 +4981,8 @@ define([
 {
   id: 'outcomes_foundInfoWithoutUnderstanding',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'not at all', 'somewhat', 'definitely', 'mixed' ],
   displayType: 'select',
   displayName: 'Had more information than understanding',
@@ -4241,6 +4993,8 @@ define([
 {
   id: 'outcomes_foundOverConfidence',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'not at all', 'somewhat', 'definitely', 'mixed' ],
   displayType: 'select',
   displayName: 'Had more confidence than skill',
@@ -4251,6 +5005,8 @@ define([
 {
   id: 'outcomes_peopleCuriousAboutStoryWork',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: [ 'never', 'occasionally', 'sometimes', 'often', 'mixed' ],
   displayType: 'select',
   displayName: 'Wanted to learn about story work',
@@ -4264,6 +5020,8 @@ define([
 {
   id: 'project_interventionLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -4274,6 +5032,8 @@ define([
 {
   id: 'interventionRecommendations',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'interventions',
   displayType: 'recommendationTable',
   displayName: undefined,
@@ -4284,6 +5044,8 @@ define([
 {
   id: 'project_interventionPlansList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_addIntervention',
   displayType: 'grid',
   displayName: 'Intervention plans',
@@ -4299,6 +5061,8 @@ define([
 {
   id: 'interventionPlan_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Name',
@@ -4309,6 +5073,8 @@ define([
 {
   id: 'interventionPlan_type',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'narrative ombudsman',
      'narrative suggestion box',
@@ -4333,6 +5099,8 @@ define([
 {
   id: 'interventionPlan_description',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Description',
@@ -4343,6 +5111,8 @@ define([
 {
   id: 'interventionPlan_groups',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Participant groups',
@@ -4353,6 +5123,8 @@ define([
 {
   id: 'interventionPlan_times',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Time',
@@ -4363,6 +5135,8 @@ define([
 {
   id: 'interventionPlan_locations',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Location',
@@ -4373,6 +5147,8 @@ define([
 {
   id: 'interventionPlan_help',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Help',
@@ -4383,6 +5159,8 @@ define([
 {
   id: 'interventionPlan_permission',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Permission',
@@ -4393,6 +5171,8 @@ define([
 {
   id: 'interventionPlan_participation',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Participation',
@@ -4403,6 +5183,8 @@ define([
 {
   id: 'interventionPlan_materials',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Materials',
@@ -4413,6 +5195,8 @@ define([
 {
   id: 'interventionPlan_space',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Spaces',
@@ -4423,6 +5207,8 @@ define([
 {
   id: 'interventionPlan_techResources',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Technology',
@@ -4433,6 +5219,8 @@ define([
 {
   id: 'interventionPlan_recording',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Recording',
@@ -4446,6 +5234,8 @@ define([
 {
   id: 'project_interventionRecordsLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -4456,6 +5246,8 @@ define([
 {
   id: 'project_interventionRecordsList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_addInterventionRecord',
   displayType: 'grid',
   displayName: 'Intervention records',
@@ -4471,6 +5263,8 @@ define([
 {
   id: 'interventionRecord_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Name',
@@ -4481,6 +5275,8 @@ define([
 {
   id: 'interventionRecord_description',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Description',
@@ -4491,6 +5287,8 @@ define([
 {
   id: 'interventionRecord_groups',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Participant groups',
@@ -4501,6 +5299,8 @@ define([
 {
   id: 'interventionRecord_reflectLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -4511,6 +5311,8 @@ define([
 {
   id: 'interventionRecord_reflectionsOnChangeHeader',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -4521,6 +5323,8 @@ define([
 {
   id: 'interventionRecord_reflections_change_participantPerceptions',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Change in participant perceptions',
@@ -4531,6 +5335,8 @@ define([
 {
   id: 'interventionRecord_reflections_change_yourPerceptions',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Change in facilitator perceptions',
@@ -4541,6 +5347,8 @@ define([
 {
   id: 'interventionRecord_reflections_change_project',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Changes to the project',
@@ -4551,6 +5359,8 @@ define([
 {
   id: 'interventionRecord_interactionsHeader',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -4561,6 +5371,8 @@ define([
 {
   id: 'interventionRecord_reflections_interaction_participants',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Interactions among participants',
@@ -4571,6 +5383,8 @@ define([
 {
   id: 'interventionRecord_reflections_interaction_participantsAndFacilitator',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Interactions between participants and facilitators',
@@ -4581,6 +5395,8 @@ define([
 {
   id: 'interventionRecord_reflections_interaction_stories',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Stories',
@@ -4591,6 +5407,8 @@ define([
 {
   id: 'interventionRecord_learningHeader',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'header',
   displayName: undefined,
@@ -4601,6 +5419,8 @@ define([
 {
   id: 'interventionRecord_reflections_learning_special',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Unique features',
@@ -4611,6 +5431,8 @@ define([
 {
   id: 'interventionRecord_reflections_learning_surprise',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Surprise',
@@ -4621,6 +5443,8 @@ define([
 {
   id: 'interventionRecord_reflections_learning_workedWell',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Worked and didn\'t work',
@@ -4631,6 +5455,8 @@ define([
 {
   id: 'interventionRecord_reflections_learning_newIdeas',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'New ideas',
@@ -4641,6 +5467,8 @@ define([
 {
   id: 'interventionRecord_reflections_learning_wantToRemember',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Other',
@@ -4654,6 +5482,8 @@ define([
 {
   id: 'interventionReportLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -4664,6 +5494,8 @@ define([
 {
   id: 'interventionReport',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'intervention',
   displayType: 'report',
   displayName: undefined,
@@ -4679,6 +5511,8 @@ define([
 {
   id: 'returnIntroLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -4689,6 +5523,8 @@ define([
 {
   id: 'project_generalNotes_return',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Return phase notes',
@@ -4702,6 +5538,8 @@ define([
 {
   id: 'project_feedbackLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -4712,6 +5550,8 @@ define([
 {
   id: 'project_feedbackItemsList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_enterFeedbackPiece',
   displayType: 'grid',
   displayName: 'Pieces of feedback',
@@ -4722,6 +5562,8 @@ define([
 {
   id: 'feedback_generalNotes',
   dataType: 'string',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Notes',
@@ -4737,6 +5579,8 @@ define([
 {
   id: 'feedback_text',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Feedback',
@@ -4747,6 +5591,8 @@ define([
 {
   id: 'feedback_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Name',
@@ -4757,6 +5603,8 @@ define([
 {
   id: 'feedback_type',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'a story',
      'a reference to something that came up in the project',
@@ -4774,6 +5622,8 @@ define([
 {
   id: 'feedback_who',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Source',
@@ -4784,6 +5634,8 @@ define([
 {
   id: 'feedback_prompt',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Prompt',
@@ -4794,6 +5646,8 @@ define([
 {
   id: 'feedback_response',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Response',
@@ -4804,6 +5658,8 @@ define([
 {
   id: 'feedback_notes',
   dataType: 'string',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Notes',
@@ -4817,6 +5673,8 @@ define([
 {
   id: 'project_reflectLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -4827,6 +5685,8 @@ define([
 {
   id: 'project_reflect_stories',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'From stories',
@@ -4837,6 +5697,8 @@ define([
 {
   id: 'project_reflect_facilitation',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'About facilitation practice',
@@ -4847,6 +5709,8 @@ define([
 {
   id: 'project_reflect_planning',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'About project stories',
@@ -4857,6 +5721,8 @@ define([
 {
   id: 'project_reflect_ownPNI',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'About own PNI',
@@ -4867,6 +5733,8 @@ define([
 {
   id: 'project_reflect_community',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'About community',
@@ -4877,6 +5745,8 @@ define([
 {
   id: 'project_reflect_personalStrengths',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'About strengths',
@@ -4887,6 +5757,8 @@ define([
 {
   id: 'project_reflect_teamStrengths',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'About team',
@@ -4897,6 +5769,8 @@ define([
 {
   id: 'project_reflect_newIdeas',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Ideas',
@@ -4907,6 +5781,8 @@ define([
 {
   id: 'project_reflect_notes',
   dataType: 'string',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Notes',
@@ -4920,6 +5796,8 @@ define([
 {
   id: 'project_presentationLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -4930,6 +5808,8 @@ define([
 {
   id: 'project_presentationElementsList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_addPresentationElement',
   displayType: 'grid',
   displayName: 'Presentation elements',
@@ -4940,6 +5820,8 @@ define([
 {
   id: 'projectPresentation_presentationLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -4950,6 +5832,8 @@ define([
 {
   id: 'projectPresentation_exportPresentationOutlineButton',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'button',
   displayName: undefined,
@@ -4965,6 +5849,8 @@ define([
 {
   id: 'projectPresentationElement_name',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'text',
   displayName: 'Name',
@@ -4975,6 +5861,8 @@ define([
 {
   id: 'projectPresentationElement_statement',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Description',
@@ -4985,6 +5873,8 @@ define([
 {
   id: 'projectPresentationElement_evidence',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Evidence',
@@ -4995,6 +5885,8 @@ define([
 {
   id: 'projectPresentationElement_QA',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Q&A',
@@ -5005,6 +5897,8 @@ define([
 {
   id: 'projectPresentationElement_notes',
   dataType: 'string',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Notes',
@@ -5018,6 +5912,8 @@ define([
 {
   id: 'project_returnRequestsLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -5028,6 +5924,8 @@ define([
 {
   id: 'project_returnRequestsList',
   dataType: 'array',
+  required: true,
+  validators: undefined,
   options: 'page_addNewReturnRequest',
   displayType: 'grid',
   displayName: 'Help requests',
@@ -5043,6 +5941,8 @@ define([
 {
   id: 'returnRequest_text',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Request',
@@ -5053,6 +5953,8 @@ define([
 {
   id: 'returnRequest_type',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: 
    [ 'help with their own projects',
      'help with sustaining story exchange',
@@ -5068,6 +5970,8 @@ define([
 {
   id: 'returnRequest_isMet',
   dataType: 'boolean',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'boolean',
   displayName: 'Satisfied',
@@ -5078,6 +5982,8 @@ define([
 {
   id: 'returnRequest_whatHappened',
   dataType: 'string',
+  required: true,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'What happened',
@@ -5088,6 +5994,8 @@ define([
 {
   id: 'returnRequest_notes',
   dataType: 'string',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'textarea',
   displayName: 'Notes',
@@ -5101,6 +6009,8 @@ define([
 {
   id: 'returnReportLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -5111,6 +6021,8 @@ define([
 {
   id: 'returnReport',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'return',
   displayType: 'report',
   displayName: undefined,
@@ -5126,6 +6038,8 @@ define([
 {
   id: 'wholeProjectReportLabel',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: undefined,
   displayType: 'label',
   displayName: undefined,
@@ -5136,6 +6050,8 @@ define([
 {
   id: 'projectReport',
   dataType: 'none',
+  required: false,
+  validators: undefined,
   options: 'project',
   displayType: 'report',
   displayName: undefined,
