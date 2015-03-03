@@ -5,6 +5,14 @@ define([
 // -------------  HEADER page_dashboard Dashboard page  ------------- 
 
 {
+  id: 'page_dashboard',
+  displayName: 'Dashboard',
+  displayType: 'page',
+  isHeader: true,
+  displayPage: 'page_dashboard',
+  pageModel: 'ProjectModel' 
+},
+{
   id: 'project_mainDashboardLabel',
   dataType: 'none',
   required: false,
@@ -34,6 +42,14 @@ define([
 // -------------  HEADER page_planning Planning page  ------------- 
 
 {
+  id: 'page_planning',
+  displayName: 'Planning',
+  displayType: 'page',
+  isHeader: true,
+  displayPage: 'page_planning',
+  pageModel: 'ProjectModel' 
+},
+{
   id: 'project_projectPlanningLabel',
   dataType: 'none',
   required: false,
@@ -60,6 +76,14 @@ define([
 
 // -------------  PAGE page_projectFacts Enter project facts page  ------------- 
 
+{
+  id: 'page_projectFacts',
+  displayName: 'Enter project facts',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_projectFacts',
+  pageModel: 'ProjectModel' 
+},
 {
   id: 'project_projectFacts',
   dataType: 'none',
@@ -172,6 +196,14 @@ define([
 // -------------  PAGE page_planningQuestionsDraft Answer PNI Planning questions page  ------------- 
 
 {
+  id: 'page_planningQuestionsDraft',
+  displayName: 'Answer PNI Planning questions',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_planningQuestionsDraft',
+  pageModel: 'ProjectModel' 
+},
+{
   id: 'project_draftQuestionsLabel',
   dataType: 'none',
   required: false,
@@ -259,6 +291,14 @@ define([
 // -------------  PAGE page_participantGroups Describe participant groups page  ------------- 
 
 {
+  id: 'page_participantGroups',
+  displayName: 'Describe participant groups',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_participantGroups',
+  pageModel: 'ProjectModel' 
+},
+{
   id: 'project_aboutParticipantGroups',
   dataType: 'none',
   required: false,
@@ -285,6 +325,14 @@ define([
 
 // -------------  PAGE page_addParticipantGroup Participant group popup  ------------- 
 
+{
+  id: 'page_addParticipantGroup',
+  displayName: 'Participant group',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_addParticipantGroup',
+  pageModel: 'ParticipantGroupModel' 
+},
 // Generate model ParticipantGroupModel 
 
 {
@@ -662,6 +710,14 @@ define([
 // -------------  PAGE page_aboutYou About you page  ------------- 
 
 {
+  id: 'page_aboutYou',
+  displayName: 'About you',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_aboutYou',
+  pageModel: 'Project.AboutYouModel' 
+},
+{
   id: 'aboutYou_youHeader',
   dataType: 'none',
   required: false,
@@ -713,6 +769,14 @@ define([
 // -------------  PAGE page_projectStories Tell project stories page  ------------- 
 
 {
+  id: 'page_projectStories',
+  displayName: 'Tell project stories',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_projectStories',
+  pageModel: 'ProjectModel' 
+},
+{
   id: 'project_projectStoriesList',
   dataType: 'array',
   required: true,
@@ -727,6 +791,14 @@ define([
 
 // -------------  PAGE page_projectStory Project story popup  ------------- 
 
+{
+  id: 'page_projectStory',
+  displayName: 'Project story',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_projectStory',
+  pageModel: 'ProjectStoryModel' 
+},
 // Generate model ProjectStoryModel 
 
 {
@@ -826,6 +898,14 @@ define([
 // -------------  PAGE page_createProjectStoryElements Create project story elements page  ------------- 
 
 {
+  id: 'page_createProjectStoryElements',
+  displayName: 'Create project story elements',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_createProjectStoryElements',
+  pageModel: 'ProjectModel' 
+},
+{
   id: 'project_storyElementsInstructions',
   dataType: 'none',
   required: false,
@@ -853,6 +933,14 @@ define([
 // -------------  PAGE page_enterProjectStoryElements Enter project story elements page  ------------- 
 
 {
+  id: 'page_enterProjectStoryElements',
+  displayName: 'Enter project story elements',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_enterProjectStoryElements',
+  pageModel: 'ProjectModel' 
+},
+{
   id: 'project_projectStoryElementsList',
   dataType: 'array',
   required: true,
@@ -867,6 +955,14 @@ define([
 
 // -------------  PAGE page_addStoryElement Add story element popup  ------------- 
 
+{
+  id: 'page_addStoryElement',
+  displayName: 'Add story element',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_addStoryElement',
+  pageModel: 'StoryElementModel' 
+},
 // Generate model StoryElementModel 
 
 {
@@ -916,6 +1012,14 @@ define([
 
 // -------------  PAGE page_assessStorySharing Assess story sharing page  ------------- 
 
+{
+  id: 'page_assessStorySharing',
+  displayName: 'Assess story sharing',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_assessStorySharing',
+  pageModel: 'Project.AssessmentModel' 
+},
 {
   id: 'assessment_intro',
   dataType: 'none',
@@ -1349,6 +1453,14 @@ define([
 // -------------  PAGE page_revisePNIPlanningQuestions Revise PNI Planning questions page  ------------- 
 
 {
+  id: 'page_revisePNIPlanningQuestions',
+  displayName: 'Revise PNI Planning questions',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_revisePNIPlanningQuestions',
+  pageModel: 'ProjectModel' 
+},
+{
   id: 'project_improvePlanningDrafts',
   dataType: 'none',
   required: false,
@@ -1448,6 +1560,14 @@ define([
 // -------------  PAGE page_writeProjectSynopsis Write project synopsis page  ------------- 
 
 {
+  id: 'page_writeProjectSynopsis',
+  displayName: 'Write project synopsis',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_writeProjectSynopsis',
+  pageModel: 'ProjectModel' 
+},
+{
   id: 'project_synopsis',
   dataType: 'string',
   required: true,
@@ -1462,6 +1582,14 @@ define([
 
 // -------------  PAGE page_readPlanningReport Read planning report page  ------------- 
 
+{
+  id: 'page_readPlanningReport',
+  displayName: 'Read planning report',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_readPlanningReport',
+  pageModel: 'ProjectModel' 
+},
 {
   id: 'project_readPlanningReportIntroductionLabel',
   dataType: 'none',
@@ -1492,6 +1620,14 @@ define([
 // -------------  HEADER page_collectionDesign Collection design page  ------------- 
 
 {
+  id: 'page_collectionDesign',
+  displayName: 'Collection design',
+  displayType: 'page',
+  isHeader: true,
+  displayPage: 'page_collectionDesign',
+  pageModel: 'ProjectModel' 
+},
+{
   id: 'project_collectionDesignStartLabel',
   dataType: 'none',
   required: false,
@@ -1518,6 +1654,14 @@ define([
 
 // -------------  PAGE page_chooseCollectionVenues Choose collection venues page  ------------- 
 
+{
+  id: 'page_chooseCollectionVenues',
+  displayName: 'Choose collection venues',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_chooseCollectionVenues',
+  pageModel: 'ProjectModel' 
+},
 {
   id: 'project_venuesIntro',
   dataType: 'none',
@@ -1557,6 +1701,14 @@ define([
 
 // -------------  PAGE page_addVenue Plan story collection venue popup  ------------- 
 
+{
+  id: 'page_addVenue',
+  displayName: 'Plan story collection venue',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_addVenue',
+  pageModel: 'VenuePlanModel' 
+},
 // Generate model VenueModel 
 
 {
@@ -1668,6 +1820,14 @@ define([
 // -------------  PAGE page_writeStoryElicitingQuestions Write story eliciting questions page  ------------- 
 
 {
+  id: 'page_writeStoryElicitingQuestions',
+  displayName: 'Write story eliciting questions',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_writeStoryElicitingQuestions',
+  pageModel: 'ProjectModel' 
+},
+{
   id: 'project_elicitingQuestionsLabel',
   dataType: 'none',
   required: false,
@@ -1706,6 +1866,14 @@ define([
 
 // -------------  PAGE page_addElicitingQuestion Add story eliciting question popup  ------------- 
 
+{
+  id: 'page_addElicitingQuestion',
+  displayName: 'Add story eliciting question',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_addElicitingQuestion',
+  pageModel: 'ElicitingQuestionModel' 
+},
 // Generate model ElicitingQuestionModel 
 
 {
@@ -1770,6 +1938,14 @@ define([
 // -------------  PAGE page_writeQuestionsAboutStories Write questions about stories page  ------------- 
 
 {
+  id: 'page_writeQuestionsAboutStories',
+  displayName: 'Write questions about stories',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_writeQuestionsAboutStories',
+  pageModel: 'ProjectModel' 
+},
+{
   id: 'project_storyQuestionsLabel',
   dataType: 'none',
   required: false,
@@ -1808,6 +1984,14 @@ define([
 
 // -------------  PAGE page_addStoryQuestion Add story question popup  ------------- 
 
+{
+  id: 'page_addStoryQuestion',
+  displayName: 'Add story question',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_addStoryQuestion',
+  pageModel: 'StoryQuestionModel' 
+},
 // Generate model StoryQuestionModel 
 
 {
@@ -1896,6 +2080,14 @@ define([
 // -------------  PAGE page_writeQuestionsAboutParticipants Write questions about participants page  ------------- 
 
 {
+  id: 'page_writeQuestionsAboutParticipants',
+  displayName: 'Write questions about participants',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_writeQuestionsAboutParticipants',
+  pageModel: 'ProjectModel' 
+},
+{
   id: 'project_participantQuestionsLabel',
   dataType: 'none',
   required: false,
@@ -1934,6 +2126,14 @@ define([
 
 // -------------  PAGE page_addParticipantQuestion Add participant question popup  ------------- 
 
+{
+  id: 'page_addParticipantQuestion',
+  displayName: 'Add participant question',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_addParticipantQuestion',
+  pageModel: 'ParticipantQuestionModel' 
+},
 // Generate model ParticipantQuestionModel 
 
 {
@@ -2022,6 +2222,14 @@ define([
 // -------------  PAGE page_designQuestionForm Design question form page  ------------- 
 
 {
+  id: 'page_designQuestionForm',
+  displayName: 'Design question form',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_designQuestionForm',
+  pageModel: 'Project.QuestionFormModel' 
+},
+{
   id: 'questionForm_Label',
   dataType: 'none',
   required: false,
@@ -2085,6 +2293,14 @@ define([
 // -------------  PAGE page_planStoryCollectionSessions Plan story collection sessions page  ------------- 
 
 {
+  id: 'page_planStoryCollectionSessions',
+  displayName: 'Plan story collection sessions',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_planStoryCollectionSessions',
+  pageModel: 'ProjectModel' 
+},
+{
   id: 'project_collectionSessionsLabel',
   dataType: 'none',
   required: false,
@@ -2123,6 +2339,14 @@ define([
 
 // -------------  PAGE page_addStoryCollectionSession Design story collection session popup  ------------- 
 
+{
+  id: 'page_addStoryCollectionSession',
+  displayName: 'Design story collection session',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_addStoryCollectionSession',
+  pageModel: 'CollectionSessionPlanModel' 
+},
 // Generate model StoryCollectionSessionModel 
 
 {
@@ -2260,6 +2484,14 @@ define([
 
 // -------------  PAGE page_addCollectionSessionActivity Add story collection session activity popup  ------------- 
 
+{
+  id: 'page_addCollectionSessionActivity',
+  displayName: 'Add story collection session activity',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_addCollectionSessionActivity',
+  pageModel: 'CollectionSessionActivityModel' 
+},
 // Generate model CollectionSessionActivityModel 
 
 {
@@ -2395,6 +2627,14 @@ define([
 // -------------  PAGE page_readCollectionDesignReport Read collection design report page  ------------- 
 
 {
+  id: 'page_readCollectionDesignReport',
+  displayName: 'Read collection design report',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_readCollectionDesignReport',
+  pageModel: 'ProjectModel' 
+},
+{
   id: 'project_readCollectionDesignReportIntroductionLabel',
   dataType: 'none',
   required: false,
@@ -2424,6 +2664,14 @@ define([
 // -------------  HEADER page_collectionProcess Collection process page  ------------- 
 
 {
+  id: 'page_collectionProcess',
+  displayName: 'Collection process',
+  displayType: 'page',
+  isHeader: true,
+  displayPage: 'page_collectionProcess',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'collectionProcessIntro',
   dataType: 'none',
   required: false,
@@ -2451,6 +2699,14 @@ define([
 // -------------  PAGE page_finalizeQuestionForms Print question forms page  ------------- 
 
 {
+  id: 'page_finalizeQuestionForms',
+  displayName: 'Print question forms',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_finalizeQuestionForms',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'printQuestionsForm_introduction',
   dataType: 'none',
   required: false,
@@ -2477,6 +2733,14 @@ define([
 
 // -------------  PAGE page_startStoryCollection Start story collection page  ------------- 
 
+{
+  id: 'page_startStoryCollection',
+  displayName: 'Start story collection',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_startStoryCollection',
+  pageModel: 'undefinedModel' 
+},
 {
   id: 'webStoryCollection_startCollectionLabel',
   dataType: 'none',
@@ -2553,6 +2817,14 @@ define([
 // -------------  PAGE page_enterStories Enter stories page  ------------- 
 
 {
+  id: 'page_enterStories',
+  displayName: 'Enter stories',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_enterStories',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'printQuestionsForm_enterStories',
   dataType: 'none',
   required: false,
@@ -2567,6 +2839,14 @@ define([
 
 // -------------  PAGE page_reviewIncomingStories Review incoming stories page  ------------- 
 
+{
+  id: 'page_reviewIncomingStories',
+  displayName: 'Review incoming stories',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_reviewIncomingStories',
+  pageModel: 'undefinedModel' 
+},
 {
   id: 'collectedStoriesDuringCollectionLabel',
   dataType: 'none',
@@ -2619,6 +2899,14 @@ define([
 // -------------  PAGE page_stopStoryCollection Stop story collection page  ------------- 
 
 {
+  id: 'page_stopStoryCollection',
+  displayName: 'Stop story collection',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_stopStoryCollection',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'webStoryCollection_stopCollectionLabel2',
   dataType: 'none',
   required: false,
@@ -2658,6 +2946,14 @@ define([
 // -------------  PAGE page_enterCollectionSessionRecords Enter story collection session records page  ------------- 
 
 {
+  id: 'page_enterCollectionSessionRecords',
+  displayName: 'Enter story collection session records',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_enterCollectionSessionRecords',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'project_collectionRecordsIntroductionLabel',
   dataType: 'none',
   required: false,
@@ -2684,6 +2980,14 @@ define([
 
 // -------------  PAGE page_addCollectionSessionRecord Add story collection session record popup  ------------- 
 
+{
+  id: 'page_addCollectionSessionRecord',
+  displayName: 'Add story collection session record',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_addCollectionSessionRecord',
+  pageModel: 'undefinedModel' 
+},
 // Generate model CollectionSessionRecordModel 
 
 {
@@ -2953,6 +3257,14 @@ define([
 
 // -------------  PAGE page_newCollectionSessionConstruction Story collection construction popup  ------------- 
 
+{
+  id: 'page_newCollectionSessionConstruction',
+  displayName: 'Story collection construction',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_newCollectionSessionConstruction',
+  pageModel: 'undefinedModel' 
+},
 // Generate model NewCollectionSessionConstructionModel 
 
 {
@@ -2995,6 +3307,14 @@ define([
 // -------------  PAGE page_readCollectionProcessReport Read collection process report page  ------------- 
 
 {
+  id: 'page_readCollectionProcessReport',
+  displayName: 'Read collection process report',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_readCollectionProcessReport',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'project_collectionProcessReportLabel',
   dataType: 'none',
   required: false,
@@ -3024,6 +3344,14 @@ define([
 // -------------  HEADER page_catalysis Catalysis page  ------------- 
 
 {
+  id: 'page_catalysis',
+  displayName: 'Catalysis',
+  displayType: 'page',
+  isHeader: true,
+  displayPage: 'page_catalysis',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'catalysisIntro',
   dataType: 'none',
   required: false,
@@ -3050,6 +3378,14 @@ define([
 
 // -------------  PAGE page_browseStories Browse stories page  ------------- 
 
+{
+  id: 'page_browseStories',
+  displayName: 'Browse stories',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_browseStories',
+  pageModel: 'undefinedModel' 
+},
 {
   id: 'browseStories_collectedStoriesAfterCollectionLabel',
   dataType: 'none',
@@ -3104,6 +3440,14 @@ define([
 // -------------  PAGE page_themeStories Theme stories page  ------------- 
 
 {
+  id: 'page_themeStories',
+  displayName: 'Theme stories',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_themeStories',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'themeStoriesLabel',
   dataType: 'none',
   required: false,
@@ -3155,6 +3499,14 @@ define([
 // -------------  PAGE page_browseGraphs Browse graphs page  ------------- 
 
 {
+  id: 'page_browseGraphs',
+  displayName: 'Browse graphs',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_browseGraphs',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'graphBrowserLabel',
   dataType: 'none',
   required: false,
@@ -3205,6 +3557,14 @@ define([
 
 // -------------  PAGE page_reviewTrends Review trends page  ------------- 
 
+{
+  id: 'page_reviewTrends',
+  displayName: 'Review trends',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_reviewTrends',
+  pageModel: 'undefinedModel' 
+},
 {
   id: 'reviewTrendsLabel',
   dataType: 'none',
@@ -3280,6 +3640,14 @@ define([
 
 // -------------  PAGE page_addToObservation Add to observation popup  ------------- 
 
+{
+  id: 'page_addToObservation',
+  displayName: 'Add to observation',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_addToObservation',
+  pageModel: 'undefinedModel' 
+},
 // Generate model ToObservationModel 
 
 {
@@ -3333,6 +3701,14 @@ define([
 
 // -------------  PAGE page_createOrEditObservation Create new observation popup  ------------- 
 
+{
+  id: 'page_createOrEditObservation',
+  displayName: 'Create new observation',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_createOrEditObservation',
+  pageModel: 'undefinedModel' 
+},
 // Generate model ObservationModel 
 
 {
@@ -3518,6 +3894,14 @@ define([
 
 // -------------  PAGE page_selectExcerpt Add excerpt to interpretation popup  ------------- 
 
+{
+  id: 'page_selectExcerpt',
+  displayName: 'Add excerpt to interpretation',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_selectExcerpt',
+  pageModel: 'undefinedModel' 
+},
 // Generate model SelectExcerptModel 
 
 {
@@ -3547,6 +3931,14 @@ define([
 
 // -------------  PAGE page_addToExcerpt Add text to excerpt popup  ------------- 
 
+{
+  id: 'page_addToExcerpt',
+  displayName: 'Add text to excerpt',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_addToExcerpt',
+  pageModel: 'undefinedModel' 
+},
 // Generate model ToExcerptModel 
 
 {
@@ -3588,6 +3980,14 @@ define([
 
 // -------------  PAGE page_createNewExcerpt Create new excerpt popup  ------------- 
 
+{
+  id: 'page_createNewExcerpt',
+  displayName: 'Create new excerpt',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_createNewExcerpt',
+  pageModel: 'ExcerptModel' 
+},
 // Generate model CreateNewExcerptModel 
 
 {
@@ -3630,6 +4030,14 @@ define([
 // -------------  PAGE page_reviewExcerpts Review excerpts page  ------------- 
 
 {
+  id: 'page_reviewExcerpts',
+  displayName: 'Review excerpts',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_reviewExcerpts',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'project_savedExcerptsList',
   dataType: 'array',
   required: true,
@@ -3645,6 +4053,14 @@ define([
 // -------------  PAGE page_interpretObservations Review and interpret observations page  ------------- 
 
 {
+  id: 'page_interpretObservations',
+  displayName: 'Review and interpret observations',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_interpretObservations',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'project_observationsDisplayList',
   dataType: 'array',
   required: true,
@@ -3659,6 +4075,14 @@ define([
 
 // -------------  PAGE page_clusterInterpretations Cluster interpretations page  ------------- 
 
+{
+  id: 'page_clusterInterpretations',
+  displayName: 'Cluster interpretations',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_clusterInterpretations',
+  pageModel: 'undefinedModel' 
+},
 {
   id: 'project_interpretationsClusteringLabel',
   dataType: 'none',
@@ -3687,6 +4111,14 @@ define([
 // -------------  PAGE page_describePerspectives Describe perspectives page  ------------- 
 
 {
+  id: 'page_describePerspectives',
+  displayName: 'Describe perspectives',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_describePerspectives',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'project_perspectivesLabel',
   dataType: 'none',
   required: false,
@@ -3713,6 +4145,14 @@ define([
 
 // -------------  PAGE page_addPerspective Add or change perspective popup  ------------- 
 
+{
+  id: 'page_addPerspective',
+  displayName: 'Add or change perspective',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_addPerspective',
+  pageModel: 'undefinedModel' 
+},
 // Generate model PerspectiveModel 
 
 {
@@ -3778,6 +4218,14 @@ define([
 
 // -------------  PAGE page_annotateResultForPerspective Annotate result for perspective popup  ------------- 
 
+{
+  id: 'page_annotateResultForPerspective',
+  displayName: 'Annotate result for perspective',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_annotateResultForPerspective',
+  pageModel: 'undefinedModel' 
+},
 // Generate model AnnotateResultForPerspectiveModel 
 
 {
@@ -3795,6 +4243,14 @@ define([
 
 // -------------  PAGE page_annotateExcerptForPerspective Annotate excerpt for perspective popup  ------------- 
 
+{
+  id: 'page_annotateExcerptForPerspective',
+  displayName: 'Annotate excerpt for perspective',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_annotateExcerptForPerspective',
+  pageModel: 'undefinedModel' 
+},
 // Generate model AnnotateExcerptForPerspectiveModel 
 
 {
@@ -3812,6 +4268,14 @@ define([
 
 // -------------  PAGE page_annotateInterpretationForPerspective Annotate interpretation for perspective popup  ------------- 
 
+{
+  id: 'page_annotateInterpretationForPerspective',
+  displayName: 'Annotate interpretation for perspective',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_annotateInterpretationForPerspective',
+  pageModel: 'undefinedModel' 
+},
 // Generate model AnnotateInterpretationForPerspectiveModel 
 
 {
@@ -3829,6 +4293,14 @@ define([
 
 // -------------  PAGE page_readCatalysisReport Read catalysis report page  ------------- 
 
+{
+  id: 'page_readCatalysisReport',
+  displayName: 'Read catalysis report',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_readCatalysisReport',
+  pageModel: 'undefinedModel' 
+},
 {
   id: 'catalysisReport_introductionLabel',
   dataType: 'none',
@@ -3859,6 +4331,14 @@ define([
 // -------------  HEADER page_sensemaking Sensemaking page  ------------- 
 
 {
+  id: 'page_sensemaking',
+  displayName: 'Sensemaking',
+  displayType: 'page',
+  isHeader: true,
+  displayPage: 'page_sensemaking',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'sensemakingIntroLabel',
   dataType: 'none',
   required: false,
@@ -3885,6 +4365,14 @@ define([
 
 // -------------  PAGE page_planSensemakingSessions Plan sensemaking sessions page  ------------- 
 
+{
+  id: 'page_planSensemakingSessions',
+  displayName: 'Plan sensemaking sessions',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_planSensemakingSessions',
+  pageModel: 'undefinedModel' 
+},
 {
   id: 'project_sensemakingSessionPlansLabel',
   dataType: 'none',
@@ -3924,6 +4412,14 @@ define([
 
 // -------------  PAGE page_addSensemakingSessionPlan Enter sensemaking session plan popup  ------------- 
 
+{
+  id: 'page_addSensemakingSessionPlan',
+  displayName: 'Enter sensemaking session plan',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_addSensemakingSessionPlan',
+  pageModel: 'undefinedModel' 
+},
 // Generate model SensemakingSessionPlanModel 
 
 {
@@ -4061,6 +4557,14 @@ define([
 
 // -------------  PAGE page_addSensemakingSessionActivity Add sensemaking session activity popup  ------------- 
 
+{
+  id: 'page_addSensemakingSessionActivity',
+  displayName: 'Add sensemaking session activity',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_addSensemakingSessionActivity',
+  pageModel: 'undefinedModel' 
+},
 // Generate model SensemakingSessionActivityModel 
 
 {
@@ -4198,6 +4702,14 @@ define([
 // -------------  PAGE page_enterSensemakingSessionRecords Enter sensemaking session records page  ------------- 
 
 {
+  id: 'page_enterSensemakingSessionRecords',
+  displayName: 'Enter sensemaking session records',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_enterSensemakingSessionRecords',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'project_sensemakingSessionRecordsLabel',
   dataType: 'none',
   required: false,
@@ -4224,6 +4736,14 @@ define([
 
 // -------------  PAGE page_addSensemakingSessionRecord Add sensemaking session record popup  ------------- 
 
+{
+  id: 'page_addSensemakingSessionRecord',
+  displayName: 'Add sensemaking session record',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_addSensemakingSessionRecord',
+  pageModel: 'undefinedModel' 
+},
 // Generate model SensemakingSessionRecordModel 
 
 {
@@ -4517,6 +5037,14 @@ define([
 
 // -------------  PAGE page_addResonantStory Add resonant story popup  ------------- 
 
+{
+  id: 'page_addResonantStory',
+  displayName: 'Add resonant story',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_addResonantStory',
+  pageModel: 'undefinedModel' 
+},
 // Generate model ResonantStoryModel 
 
 {
@@ -4582,6 +5110,14 @@ define([
 
 // -------------  PAGE page_newSensemakingSessionOutcome Sensemaking session outcome popup  ------------- 
 
+{
+  id: 'page_newSensemakingSessionOutcome',
+  displayName: 'Sensemaking session outcome',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_newSensemakingSessionOutcome',
+  pageModel: 'undefinedModel' 
+},
 // Generate model NewSensemakingSessionOutcomeModel 
 
 {
@@ -4631,6 +5167,14 @@ define([
 
 // -------------  PAGE page_newSensemakingSessionConstruction Sensemaking construction popup  ------------- 
 
+{
+  id: 'page_newSensemakingSessionConstruction',
+  displayName: 'Sensemaking construction',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_newSensemakingSessionConstruction',
+  pageModel: 'undefinedModel' 
+},
 // Generate model NewSensemakingSessionConstructionModel 
 
 {
@@ -4678,6 +5222,14 @@ define([
 // -------------  PAGE page_readSensemakingReport Read sensemaking report page  ------------- 
 
 {
+  id: 'page_readSensemakingReport',
+  displayName: 'Read sensemaking report',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_readSensemakingReport',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'sensemakingReportLabel',
   dataType: 'none',
   required: false,
@@ -4707,6 +5259,14 @@ define([
 // -------------  HEADER page_intervention Intervention page  ------------- 
 
 {
+  id: 'page_intervention',
+  displayName: 'Intervention',
+  displayType: 'page',
+  isHeader: true,
+  displayPage: 'page_intervention',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'interventionIntroLabel',
   dataType: 'none',
   required: false,
@@ -4734,6 +5294,14 @@ define([
 // -------------  PAGE page_projectOutcomesForIntervention Answer questions about project outcomes page  ------------- 
 
 {
+  id: 'page_projectOutcomesForIntervention',
+  displayName: 'Answer questions about project outcomes',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_projectOutcomesForIntervention',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'project_outcomesList',
   dataType: 'array',
   required: true,
@@ -4748,6 +5316,14 @@ define([
 
 // -------------  PAGE page_projectOutcome Project outcomes popup  ------------- 
 
+{
+  id: 'page_projectOutcome',
+  displayName: 'Project outcomes',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_projectOutcome',
+  pageModel: 'undefinedModel' 
+},
 // Generate model ProjectOutcomeModel 
 
 {
@@ -5018,6 +5594,14 @@ define([
 // -------------  PAGE page_designInterventions Design intervention plans page  ------------- 
 
 {
+  id: 'page_designInterventions',
+  displayName: 'Design intervention plans',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_designInterventions',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'project_interventionLabel',
   dataType: 'none',
   required: false,
@@ -5056,6 +5640,14 @@ define([
 
 // -------------  PAGE page_addIntervention Plan an intervention popup  ------------- 
 
+{
+  id: 'page_addIntervention',
+  displayName: 'Plan an intervention',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_addIntervention',
+  pageModel: 'InterventionPlanModel' 
+},
 // Generate model InterventionModel 
 
 {
@@ -5232,6 +5824,14 @@ define([
 // -------------  PAGE page_recordInterventions Enter intervention records page  ------------- 
 
 {
+  id: 'page_recordInterventions',
+  displayName: 'Enter intervention records',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_recordInterventions',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'project_interventionRecordsLabel',
   dataType: 'none',
   required: false,
@@ -5258,6 +5858,14 @@ define([
 
 // -------------  PAGE page_addInterventionRecord Add intervention record popup  ------------- 
 
+{
+  id: 'page_addInterventionRecord',
+  displayName: 'Add intervention record',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_addInterventionRecord',
+  pageModel: 'undefinedModel' 
+},
 // Generate model InterventionRecordModel 
 
 {
@@ -5480,6 +6088,14 @@ define([
 // -------------  PAGE page_interventionReport Read intervention report page  ------------- 
 
 {
+  id: 'page_interventionReport',
+  displayName: 'Read intervention report',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_interventionReport',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'interventionReportLabel',
   dataType: 'none',
   required: false,
@@ -5509,6 +6125,14 @@ define([
 // -------------  HEADER page_return Return page  ------------- 
 
 {
+  id: 'page_return',
+  displayName: 'Return',
+  displayType: 'page',
+  isHeader: true,
+  displayPage: 'page_return',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'returnIntroLabel',
   dataType: 'none',
   required: false,
@@ -5535,6 +6159,14 @@ define([
 
 // -------------  PAGE page_gatherFeedback Gather feedback page  ------------- 
 
+{
+  id: 'page_gatherFeedback',
+  displayName: 'Gather feedback',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_gatherFeedback',
+  pageModel: 'undefinedModel' 
+},
 {
   id: 'project_feedbackLabel',
   dataType: 'none',
@@ -5574,6 +6206,14 @@ define([
 
 // -------------  PAGE page_enterFeedbackPiece Enter piece of feedback on project popup  ------------- 
 
+{
+  id: 'page_enterFeedbackPiece',
+  displayName: 'Enter piece of feedback on project',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_enterFeedbackPiece',
+  pageModel: 'undefinedModel' 
+},
 // Generate model EnterFeedbackPieceModel 
 
 {
@@ -5670,6 +6310,14 @@ define([
 
 // -------------  PAGE page_reflectOnProject Reflect on the project page  ------------- 
 
+{
+  id: 'page_reflectOnProject',
+  displayName: 'Reflect on the project',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_reflectOnProject',
+  pageModel: 'undefinedModel' 
+},
 {
   id: 'project_reflectLabel',
   dataType: 'none',
@@ -5794,6 +6442,14 @@ define([
 // -------------  PAGE page_prepareProjectPresentation Prepare outline of project presentation page  ------------- 
 
 {
+  id: 'page_prepareProjectPresentation',
+  displayName: 'Prepare outline of project presentation',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_prepareProjectPresentation',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'project_presentationLabel',
   dataType: 'none',
   required: false,
@@ -5844,6 +6500,14 @@ define([
 
 // -------------  PAGE page_addPresentationElement Add element to project presentation outline popup  ------------- 
 
+{
+  id: 'page_addPresentationElement',
+  displayName: 'Add element to project presentation outline',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_addPresentationElement',
+  pageModel: 'undefinedModel' 
+},
 // Generate model PresentationElementModel 
 
 {
@@ -5910,6 +6574,14 @@ define([
 // -------------  PAGE page_projectRequests Respond to requests for post-project support page  ------------- 
 
 {
+  id: 'page_projectRequests',
+  displayName: 'Respond to requests for post-project support',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_projectRequests',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'project_returnRequestsLabel',
   dataType: 'none',
   required: false,
@@ -5936,6 +6608,14 @@ define([
 
 // -------------  PAGE page_addNewReturnRequest Enter project request popup  ------------- 
 
+{
+  id: 'page_addNewReturnRequest',
+  displayName: 'Enter project request',
+  displayType: 'popup',
+  isHeader: false,
+  displayPage: 'page_addNewReturnRequest',
+  pageModel: 'undefinedModel' 
+},
 // Generate model ReturnRequestModel 
 
 {
@@ -6007,6 +6687,14 @@ define([
 // -------------  PAGE page_returnReport Read return report page  ------------- 
 
 {
+  id: 'page_returnReport',
+  displayName: 'Read return report',
+  displayType: 'page',
+  isHeader: false,
+  displayPage: 'page_returnReport',
+  pageModel: 'undefinedModel' 
+},
+{
   id: 'returnReportLabel',
   dataType: 'none',
   required: false,
@@ -6035,6 +6723,14 @@ define([
 
 // -------------  HEADER page_projectReport Project report page  ------------- 
 
+{
+  id: 'page_projectReport',
+  displayName: 'Project report',
+  displayType: 'page',
+  isHeader: true,
+  displayPage: 'page_projectReport',
+  pageModel: 'undefinedModel' 
+},
 {
   id: 'wholeProjectReportLabel',
   dataType: 'none',

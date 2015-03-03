@@ -70,6 +70,14 @@ function typeForDisplayType(displayType) {
     return displayTypeToDataTypeMap[displayType];
 }
 
+function outputStringForItem(item) {
+    var itemOutput = util.inspect(item);
+    // Remove braces at start and end
+    itemOutput = " " + itemOutput.substring(1, itemOutput.length - 1);
+    var output = "{\n" + itemOutput + "\n},";
+    console.log(output);
+}
+
 var optionsLists = {};
 var allChoices = {};
 
@@ -83,6 +91,17 @@ pagesReadFromJSON.forEach(function (page) {
         console.log("\n// ==================== SECTION", page.id, page.name, "==========================");
     }
     console.log("\n// ------------- ", pageType, page.id, page.name, page.type, " ------------- \n");
+    
+    var pageItem = {
+        id: page.id,
+        displayName: page.name,
+        displayType: page.type,
+        isHeader: page.isHeader,
+        displayPage: page.id,
+        pageModel: "" + page.options + "Model"
+    };
+    
+    outputStringForItem(pageItem);
     
     // console.log("page", page, "\n");
     if (!page.isHeader) {
@@ -123,14 +142,7 @@ pagesReadFromJSON.forEach(function (page) {
             model: modelName
         };
         // console.log("question", question.id, "\n", JSON.stringify(item, null, 4), "\n");
-        // console.log(JSON.stringify(item, null, 4));
-        // console.log(item);
-        // console.log(",");
-        var itemOutput = util.inspect(item);
-        // Remove braces at start and end
-        itemOutput = " " + itemOutput.substring(1, itemOutput.length - 1);
-        var output = "{\n" + itemOutput + "\n},";
-        console.log(output);
+        outputStringForItem(item);
     });
 });
 
