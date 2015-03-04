@@ -35,7 +35,7 @@ define([
     var chartEnclosureStyle = "width: 850px; height: 650px; margin: 5px auto 0px auto;";
         
     function correctForUnanswered(question, value) {
-        if (question.type === "checkbox" && !value) return "no";
+        if (question.displayType === "checkbox" && !value) return "no";
         if (value === undefined || value === null || value === "") return unansweredKey;
         return value;
     }
@@ -54,7 +54,7 @@ define([
         // console.log("positionForQuestionAnswer", question, answer);
         
      // TODO: Confirm checkbox values are also yes/no...
-        if (question.type === "boolean" || question.type === "checkbox") {
+        if (question.displayType === "boolean" || question.displayType === "checkbox") {
             if (answer === "no") return 0;
             if (answer === "yes") return 100;
             return -100;
@@ -62,33 +62,36 @@ define([
         
         // TODO: How to display sliders when unanswered? Add one here?
         // TODO: Check that answer is numerical
-        if (question.type === "slider") {
+        if (question.displayType === "slider") {
             console.log("slider answer", answer);
             if (answer === unansweredKey) return -10;
             return answer;
         }
         
         // Doesn't work for text...
-        if (question.type === "text") {
+        if (question.displayType === "text") {
             console.log("TODO: positionForQuestionAnswer does not work for text");
             return 0;
         }
         
         // Adjust for question types without options
         
-        var answerCount = question.options.length;
+        // TODO: Should probably review this further related to change for options to dataOptions and displayConfiguration
+        var options = [];
+        if (question.dataOptions) options = question.dataOptions;
+        var answerCount = options.length;
         
         // Adjust for unanswered items
-        // if (question.type !== "checkboxes") answerCount += 1;
+        // if (question.displayType !== "checkboxes") answerCount += 1;
         
         if (answer === unansweredKey) {
-            return -100 * 1 / (question.options.length - 1);
+            return -100 * 1 / (options.length - 1);
         }
         
-        var answerIndex = question.options.indexOf(answer);
+        var answerIndex = options.indexOf(answer);
         console.log("answerIndex", answerIndex);
 
-        var position = 100 * answerIndex / (question.options.length - 1);
+        var position = 100 * answerIndex / (options.length - 1);
         console.log("calculated position: ", position);
 
         return position;  
@@ -105,7 +108,7 @@ define([
     
     function addAxis(chart, axis, question) {
         // TODO: Translate, especially booleans
-        var type = question.type;
+        var type = question.displayType;
         if (type === "boolean" || type === "checkbox") {
             chart.addAxis(axis, {
                labels: [
@@ -136,12 +139,12 @@ define([
                includeZero: true
             });
         } else {
-            var increment = 100 / (question.options.length - 1);
+            var increment = 100 / (question.dataOptions.length - 1);
             var labels = [
                {value: -increment, text: unansweredKey}
             ];
-            for (var i = 0; i < question.options.length; i++) {
-                labels.push({value: i * increment, text: question.options[i]});
+            for (var i = 0; i < question.dataOptions.length; i++) {
+                labels.push({value: i * increment, text: question.dataOptions[i]});
             }
             chart.addAxis(axis, {
                 labels: labels,
@@ -162,14 +165,14 @@ define([
     
     function preloadResultsForQuestionOptions(results, question) {
         /*jshint -W069 */
-        var type = question.type;
+        var type = question.displayType;
         results[unansweredKey] = 0;
         if (type === "boolean" || type === "checkbox") {
             results["no"] = 0;
             results["yes"] = 0;
-        } else if (question.options) {
-            for (var i = 0; i < question.options.length; i++) {
-                results[question.options[i]] = 0;
+        } else if (question.dataOptions) {
+            for (var i = 0; i < question.dataOptions.length; i++) {
+                results[question.dataOptions[i]] = 0;
             }
         }
     }
@@ -260,7 +263,7 @@ define([
                 // Only count results where the choice matches
                 var choiceValue = correctForUnanswered(choiceQuestion, story[choiceQuestion.id]);
                 var skip = false;
-                if (choiceQuestion.type === "checkboxes") {
+                if (choiceQuestion.displayType === "checkboxes") {
                     if (!choiceValue[choice]) skip = true;
                 } else {
                     if (choiceValue !== choice) skip = true;
@@ -318,15 +321,15 @@ define([
     function multipleHistograms(mainChartDiv, choiceQuestion, scaleQuestion) {
         var options = [];
         var index;
-        if (choiceQuestion.type !== "checkbox" && choiceQuestion.type !== "checkboxes") {
+        if (choiceQuestion.displayType !== "checkbox" && choiceQuestion.displayType !== "checkboxes") {
             options.push(unansweredKey);
         }
-        if (choiceQuestion.type === "boolean" || choiceQuestion.type === "checkbox") {
+        if (choiceQuestion.displayType === "boolean" || choiceQuestion.displayType === "checkbox") {
             options.push("no");
             options.push("yes");
-        } else if (choiceQuestion.options) {
-            for (index in choiceQuestion.options) {
-                options.push(choiceQuestion.options[index]);
+        } else if (choiceQuestion.dataOptions) {
+            for (index in choiceQuestion.dataOptions) {
+                options.push(choiceQuestion.dataOptions[index]);
             }
         }
         // TODO: Could push extra options based on actual data choices (in case question changed at some point)
@@ -586,11 +589,11 @@ define([
         
         var xType = "choice";
         var yType = null;
-        if (xAxisQuestion.type === "slider") {
+        if (xAxisQuestion.displayType === "slider") {
             xType = "scale";
         }
         if (yAxisQuestion) {
-            if (yAxisQuestion.type === "slider") {
+            if (yAxisQuestion.displayType === "slider") {
                 yType = "scale";
             } else {
                 yType = "choice";

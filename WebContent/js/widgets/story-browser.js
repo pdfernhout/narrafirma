@@ -106,7 +106,7 @@ define([
                 choice = unansweredIndicator;
             }
             var oldValue;
-            if (question.type === "checkboxes") {
+            if (question.displayType === "checkboxes") {
                 for (var key in choice) {
                     oldValue = totals[key];
                     if (!oldValue) oldValue = 0;
@@ -123,44 +123,44 @@ define([
         
         // TODO: Maybe should not add the unanswered indicator if zero?
         // Always add the unanswered indicator if not checkboxes or checkbox
-        if (question.type !== "checkbox" && question.type !== "checkboxes") {
+        if (question.displayType !== "checkbox" && question.displayType !== "checkboxes") {
             count = totals[unansweredIndicator];
             if (!count) count = 0;
             options.push({label: unansweredIndicator + " (" +  count + ")", value: unansweredIndicator});
         }
         
-        if (question.type === "select") {
-            // console.log("select", question, question.options);
-            array.forEach(question.options, function(each) {
+        if (question.displayType === "select") {
+            // console.log("select", question, question.dataOptions);
+            array.forEach(question.dataOptions, function(each) {
                 // console.log("option", question.id, each);
                 count = totals[each];
                 if (!count) count = 0;
                 options.push({label: each + " (" +  count + ")", value: each});
             });
-        } else if (question.type === "radiobuttons") {
-            // console.log("radiobuttons", question, question.options);
-            array.forEach(question.options, function(each) {
+        } else if (question.displayType === "radiobuttons") {
+            // console.log("radiobuttons", question, question.dataOptions);
+            array.forEach(question.dataOptions, function(each) {
                 // console.log("option", question.id, each);
                 count = totals[each];
                 if (!count) count = 0;
                 options.push({label: each + " (" +  count + ")", value: each});
             });
-        } else if (question.type === "checkboxes") {
-            // console.log("checkboxes", question, question.options);
-            array.forEach(question.options, function(each) {
+        } else if (question.displayType === "checkboxes") {
+            // console.log("checkboxes", question, question.dataOptions);
+            array.forEach(question.dataOptions, function(each) {
                 // console.log("option", question.id, each);
                 count = totals[each];
                 if (!count) count = 0;
                 options.push({label: each + " (" +  count + ")", value: each});
             });
-        } else if (question.type === "slider") {
-            // console.log("slider", question, question.options);
+        } else if (question.displayType === "slider") {
+            // console.log("slider", question, question.displayConfiguration);
             for (var sliderTick = 0; sliderTick <= 100; sliderTick++) {
                 count = totals[sliderTick];
                 if (!count) count = 0;
                 options.push({label: sliderTick + " (" +  count + ")", value: sliderTick});
             }
-        } else if (question.type === "boolean") {
+        } else if (question.displayType === "boolean") {
             // console.log("boolean", question);
             // TODO; Not sure this will really be right with true/false as booleans instead of strings
             array.forEach(["yes", "no"], function(each) {
@@ -169,7 +169,7 @@ define([
                 if (!count) count = 0;
                 options.push({label: each + " (" +  count + ")", value: each});
             });
-        } else if (question.type === "checkbox") {
+        } else if (question.displayType === "checkbox") {
             // console.log("checkbox", question);
             // TODO; Not sure this will really be right with true/false as checkbox instead of strings
             array.forEach([true, false], function(each) {
@@ -178,7 +178,7 @@ define([
                 if (!count) count = 0;
                 options.push({label: each + " (" +  count + ")", value: each});
             });
-        } else if (question.type === "text") {
+        } else if (question.displayType === "text") {
             for (var eachTotal in totals){
                 if (totals.hasOwnProperty(eachTotal)) {
                     count = totals[eachTotal];
@@ -187,7 +187,7 @@ define([
                 }
             }
         } else {
-            console.log("ERROR: question type not supported: ", question.type, question);
+            console.log("ERROR: question type not supported: ", question.displayType, question);
             options.push({label: "*ALL*" + " (" +  stories.length + ")", value: "*ALL*"});
         }
         return options;

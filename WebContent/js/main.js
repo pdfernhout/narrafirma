@@ -259,7 +259,7 @@ require([
            }
            widgetBuilder.add_select(pagePane, domain.projectData.projectAnswers, statusEntryID, options);
        } else {
-           console.log("page dashboard as header", page.id, page.type, page);
+           console.log("page dashboard as header", page.id, page.displayType, page);
            // Put in dashboard
            var childPages = domain.pagesToGoWithHeaders[panelID];
            console.log("child pages", id, panelID, childPages);
@@ -281,8 +281,8 @@ require([
        /*
        var nextPageButtonQuestion = {
            "id": id + "_nextPageButton",
-           "text": "Mark page complete and proceed to next page",
-           "type": "button"
+           "displayPrompt": "Mark page complete and proceed to next page",
+           "displayType": "button"
        };
        
        questionEditor.insertQuestionIntoDiv(nextPageButtonQuestion, pagePane);
@@ -431,7 +431,7 @@ require([
                 title = "&nbsp;&nbsp;&nbsp;&nbsp;" + title;
             }
             if (page.displayType !== "page") {
-                title += " SPECIAL: " + page.type;
+                title += " SPECIAL: " + page.displayType;
             }
             
             // TODO: Should this really be modifying the original???
@@ -481,7 +481,7 @@ require([
         array.forEach(pages, function(page) {
             // console.log("creating page", page.id)
             // Skip over special page types
-            if (page.type === "page") {
+            if (page.displayType === "page") {
                 // Premake base pages
                 createPage(page.id);
             }

@@ -19,6 +19,8 @@ define([], function(
     " Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum " +
     "fugiat quo voluptas nulla pariatur?";
     
+    // TODO: Using older survey format, including with options instead of dataOptions and displayConfiguration
+    
     var testSurvey = {
         "__type": "org.pointrel.pointrel20141201.PointrelContentEnvelope",
         "tags": [

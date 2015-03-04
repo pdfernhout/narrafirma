@@ -52,7 +52,7 @@ define([
     function optionsForAllQuestions(questions) {
         var questionOptions = [];
         array.forEach(questions, function (question) {
-            if (array.indexOf(filterableQuestionTypes, question.type) !== -1) {
+            if (array.indexOf(filterableQuestionTypes, question.displayType) !== -1) {
                 questionOptions.push({label: translate("#" + question.id + "::shortName", question.displayName), value: question.id});
             }
         });

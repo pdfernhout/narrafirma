@@ -145,7 +145,7 @@ define([
         });
         domClass.add(questionContentPane.domNode, "questionExternal");
         questionContentPane.setAttribute("data-js-question-id", id);
-        // questionContentPane.setAttribute("data-js-question-type", question.type);
+        // questionContentPane.setAttribute("data-js-question-type", question.displayType);
         // TODO: Fix the help that correct help actually pops up
         if (questionText) {
             var label = new ContentPane({
@@ -644,31 +644,31 @@ define([
     
     // For add_templateList
     var add_templateList_elicitationQuestions = [
-        {"id":"category", "type":"text", "isInReport":true, "isGridColumn":true},
-        {"id":"id", "type":"text", "isInReport":true, "isGridColumn":true},
-        {"id":"text", "type":"textarea", "isInReport":true, "isGridColumn":true}
+        {"id":"category", dataType: "string", "type":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"id", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"text", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true}
     ];
    
    var add_templateList_storyOrParticipantQuestions = [
-        {"id":"category", "type":"text", "isInReport":true, "isGridColumn":true},
-        {"id":"id", "type":"text", "isInReport":true, "isGridColumn":false},
-        {"id":"shortName", "type":"text", "isInReport":true, "isGridColumn":true},
-        {"id":"text", "type":"textarea", "isInReport":true, "isGridColumn":true},
-        {"id":"type", "type":"text", "isInReport":true, "isGridColumn":true}, // , "options":["boolean", "label", "header", "checkbox", "checkboxes", "text", "textarea", "select", "radiobuttons", "slider"]},
-        {"id":"options", "type":"textarea", "isInReport":true, "isGridColumn":true}
-        // {"id":"templateQuestion_help", "type":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"category", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"id", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":false},
+        {"id":"shortName", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"text", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"type", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":true}, // , "options":["boolean", "label", "header", "checkbox", "checkboxes", "text", "textarea", "select", "radiobuttons", "slider"]},
+        {"id":"options", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true}
+        // {"id":"templateQuestion_help", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true},
     ];
    
    var add_templateList_activityQuestions = [
-        {"id":"name", "type":"text", "isInReport":true, "isGridColumn":true},
-        {"id":"type", "type":"text", "isInReport":true, "isGridColumn":true}, // , "options":["ice-breaker", "encountering stories (no task)", "encountering stories (simple task)", "discussing stories", "twice-told stories exercise", "timeline exercise", "landscape exercise", "story elements exercise", "composite stories exercise", "my own exercise", "other"]},
-        {"id":"plan", "type":"textarea", "isInReport":true, "isGridColumn":true},
-        {"id":"optionalParts", "type":"textarea", "isInReport":true, "isGridColumn":true},
-        {"id":"duration", "type":"text", "isInReport":true, "isGridColumn":true},
-        {"id":"recording", "type":"textarea", "isInReport":true, "isGridColumn":true},
-        {"id":"materials", "type":"textarea", "isInReport":true, "isGridColumn":true},
-        {"id":"spaces", "type":"textarea", "isInReport":true, "isGridColumn":true},
-        {"id":"facilitation", "type":"textarea", "isInReport":true, "isGridColumn":true}
+        {"id":"name", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"type", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":true}, // , "options":["ice-breaker", "encountering stories (no task)", "encountering stories (simple task)", "discussing stories", "twice-told stories exercise", "timeline exercise", "landscape exercise", "story elements exercise", "composite stories exercise", "my own exercise", "other"]},
+        {"id":"plan", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"optionalParts", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"duration", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":true},
+        {"id":"recording", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"materials", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"spaces", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true},
+        {"id":"facilitation", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true}
     ];
     
     // TODO: Refactor this into its own widget module
@@ -727,7 +727,7 @@ define([
          
          var popupPageDefinition = {
              "id": "page_template",
-             "type": "popup",
+             "displayType": "popup",
              "isHeader": false,
              "questions": pageQuestions,
              "buildPanel": buildPanel
@@ -861,7 +861,7 @@ define([
         // console.log("domain.questions", domain, domain.questions);
         var question = domain.questions[referencedQuestionID];
         if (question) {
-            if (question.type === "select" ||  question.type === "checkboxes" || question.type === "radiobuttons") {
+            if (question.displayType === "select" ||  question.displayType === "checkboxes" || question.displayType === "radiobuttons") {
                 // TODO: This may not translate correctly for checkboxes; may need to be translated individually
                 // console.log("trying to translate select", value);
                 value = translate("#" + value, value);
@@ -884,7 +884,7 @@ define([
         for (var pageQuestionIndex in page.questions) {
             var pageQuestion = page.questions[pageQuestionIndex];
             // console.log("pageQuestion", pageQuestion);
-            if (array.indexOf(entryTypes, pageQuestion.type) !== -1) {
+            if (array.indexOf(entryTypes, pageQuestion.displayType) !== -1) {
                 questionAskedCount++;
                 var pageQuestionValue = model.get(pageQuestion.id);
                 if (pageQuestionValue !== undefined && pageQuestionValue !== "" && pageQuestionValue !== null) questionAnsweredCount++;
@@ -910,7 +910,7 @@ define([
     }
     
     function calculate_function(id, functionName, options) {
-        var question = {id: id, options: options};
+        var question = {id: id, displayConfiguration: options};
         return domain.callDashboardFunction(functionName, question);
     }
     
@@ -979,7 +979,7 @@ define([
     
     /* TODO: code from questionEditor that has not yet been implemented
      
-     } else if (utility.startsWith(question.type, "questionsTable")) {
+     } else if (utility.startsWith(question.displayType, "questionsTable")) {
             var questionsTable = widgetQuestionsTable.insertQuestionsTable(question, questionsPane, domain.pageDefinitions);
 
        var helpText = "";
@@ -1001,7 +1001,7 @@ define([
             // help = ' <button onclick="alert(\'' + helpText + '\')">?</button>';
         }
         
-               if (question.type === "textarea" || question.type === "text") questionDiv.appendChild(document.createElement("br"));
+               if (question.displayType === "textarea" || question.displayType === "text") questionDiv.appendChild(document.createElement("br"));
 
         if (question.changed && widget) {
             widget.on("change", question.changed);
@@ -1012,7 +1012,7 @@ define([
 
      */
     
-    function addQuestionWidget(type, contentPane, model, id, options) {
+    function addQuestionWidget(type, contentPane, model, id, dataOptions, displayConfiguration) {
         console.log("addQuestionWidget", type, id);
         var functionName = "add_" + type;
         var addFunction = exportedFunctions[functionName];
@@ -1021,6 +1021,11 @@ define([
             console.log(error);
             throw error;
         }
+        // TODO: Refactor: Legacy from when just one options field in questions
+        // TODO: Maybe, should maybe have all widgets have some more complex configuration approach with two arguments or a dictionary with configuration info
+        var options = dataOptions;
+        if (!options) options = displayConfiguration;
+        if (lang.isString(options)) options = [options];
         return addFunction(contentPane, model, id, options);
     }
     
@@ -1030,7 +1035,7 @@ define([
         var widgets = {};
         for (var questionIndex in questions) {
             var question = questions[questionIndex];
-            var widget = addQuestionWidget(question.type, contentPane, model, question.id, question.options);
+            var widget = addQuestionWidget(question.displayType, contentPane, model, question.id, question.dataOptions, question.displayConfiguration);
             widgets[question.id] = widget;
         }
         return widgets;

@@ -383,14 +383,14 @@ define([
     function calculate_quizScoreResult(model, dependsOn) {
         // console.log("quiz score result", dependsOn);
         var total = 0;
-        for (var dependsOnIndex in dependsOn) {
+        for (var dependsOnIndex = 0; dependsOnIndex < dependsOn.length; dependsOnIndex++) {
             var questionID = dependsOn[dependsOnIndex];
             // console.log("projectData", projectData);
             var questionAnswer = model.get(questionID);
             var answerWeight = 0;
             if (questionAnswer) {
                 // console.log("questionAnswer", questionAnswer);
-                answerWeight = questions[questionID].options.indexOf(questionAnswer) - 1;
+                answerWeight = questions[questionID].displayConfiguration.indexOf(questionAnswer) - 1;
                 // console.log("answerWeight", answerWeight);
                 if (answerWeight < 0) answerWeight = 0;
                 total += answerWeight;
@@ -426,7 +426,7 @@ define([
             if (pageIndex === pageList.length - 1) break;
             var pageID = pageList[pageIndex];
             var pageDefinition = pageDefinitions[pageID];
-            if (pageDefinition.type !== "page") continue;
+            if (pageDefinition.displayType !== "page") continue;
             report += "<div>";
             report += "<i> *** " + translate("#" + pageID + "::title") + "</i>  ***<br><br>";
             var questionsAnsweredCount = 0;
@@ -434,8 +434,8 @@ define([
             for (var questionIndex in questions) {
                 var question = questions[questionIndex];
                 var value = projectData.projectAnswers.get(question.id);
-                if (question.type === "quizScoreResult") {
-                    var dependsOn = question.options;
+                if (question.displayType === "quizScoreResult") {
+                    var dependsOn = question.displayConfiguration;
                     value = calculate_quizScoreResult(projectData.projectAnswers, dependsOn);
                     // Don't count these as answered questions
                     questionsAnsweredCount--;
@@ -513,7 +513,7 @@ define([
         } else {
             // console.log("regular", value);
             // TODO: Probably need to translate more types, like checkboxes
-            if (question !== null && (question.type === "select" || question.type === "radiobuttons")) value = translate("#" + value, value);
+            if (question !== null && (question.displayType === "select" || question.displayType === "radiobuttons")) value = translate("#" + value, value);
             valueToDisplay += "<b>" + value + "</b>";
         }
         return valueToDisplay;

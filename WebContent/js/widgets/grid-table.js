@@ -409,13 +409,15 @@ define([
             console.log("Trouble: no popupPageDefinition", id, pagePane);
         }
         
+        console.log("=========== insertGridTableBasic popupPageDefinition", popupPageDefinition);
+        
         // TODO: FIX ME -- no longer have questions -- either add them back or find another approach...
         array.forEach(popupPageDefinition.questions, function (question) {
             var includeField = question.isGridColumn || false;
             if (configuration.includeAllFields) {
                 // TODO: improve this
                 if (configuration.includeAllFields === true) {
-                    if (question.type !== "label" && question.type !== "header") includeField = true;
+                    if (question.displayType !== "label" && question.displayType !== "header") includeField = true;
                 } else if (configuration.includeAllFields !== false) {
                     // Assume it is an array of field IDs to include
                     includeField = array.indexOf(configuration.includeAllFields, question.id) !== -1;

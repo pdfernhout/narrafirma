@@ -33,6 +33,7 @@ define([
             declare.safeMixin(this, args);
             // These need to be created here so that the instances do not share one copy if made above
             this.checkboxes = {};
+            // TODO: Simplify this so only one standard way of passing in a list of options with one arg, not two args
             this.options = widgetSupport.buildOptions(this.questionID, this.choices, this.optionsString);
             // console.log("checkboxes", this.options);
             var self = this;
