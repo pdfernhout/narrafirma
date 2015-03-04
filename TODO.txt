@@ -11,16 +11,10 @@ And: http://wordpressfoundation.org/trademark-policy/
 
 DOMAIN
 Refactor code so have better defined domain models, probably with dmodel
-Think about changing names for fields when they are in a smaller model
 Think about saving and loading for smaller subparts of projects as seperate files
 
 HELP
 Figure out exactly how help text will be stored
-
-OVERALL
-Migrate away from generating code from textual design to maintaining code directly
-Move to system where have model fields as expandable objects, with builder that uses them to make models
-Mix in GUI interface points on pages to model fields to produce unified view of application design, with builder to extract pages
 Generate stub help files from design specification with one div per interface item on a page
 Improve help system so it jumps to those specific help divs associated
 
@@ -486,4 +480,8 @@ DONE Add blue information icons for every significant interface point that pull 
 DONE Change NarraKit everywhere to NarraFirma.
 DONE Review nls/messages_legacy_ideas.js and delete it after moving any useful content to design.
 DONE Delete old generated and experimental design code no longer used when had been using seperate pages
-DONE Move to a more generic translation method where can pass a string or can put a "#" in front to indicate and ID with a text to use after that seperated by a space.
+DONE Move to a more generic translation method where can pass a string or can put a "#" in front to indicate and ID with a text to use after that separated by a space.
+DONE Migrate away from generating code from textual design to maintaining code directly
+DONE Move to system where have model fields as expandable objects, with builder that uses them to make models
+DONE Mix in GUI interface points on pages to model fields to produce unified view of application design, with builder to extract pages
+NOT DOING Think about changing names for fields when they are in a smaller model (like the long names for searching across files given JavaScript's lack of a type system to otherwise navigate)
