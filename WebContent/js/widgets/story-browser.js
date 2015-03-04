@@ -245,7 +245,7 @@ define([
     }
     
     // TODO: Fix so the filters get updated as the story questions get changed
-    function insertStoryBrowser(widgetBuilder, pagePane, model, id, pageDefinitions) {
+    function insertStoryBrowser(widgetBuilder, pagePane, model, id, panelDefinitions) {
         console.log("insertStoryBrowser start", id);
         
         // TODO: Fix this show also handles participant questions somehow

@@ -267,7 +267,7 @@ require([
                var childPageID = childPages[childPageIndex];
                var statusViewID = childPageID + "_pageStatus_dashboard";
                var childPage = panelForPageID(childPageID);
-               console.log("childPageID", childPage, childPageID, domain.pageDefinitions);
+               console.log("childPageID", childPage, childPageID);
                if (!childPage) console.log("Error: problem finding page definition for", childPageID);
                if (childPage && childPage.displayType === "page") {
                    var prompt = translate("#" + childPageID + "::title", childPage.displayName) + " " + translate("#dashboard_status_label") + " ";
@@ -302,7 +302,7 @@ require([
     
     function panelForPageID(pageID) {
         var panelID = pageID.replace("page_", "panel_");
-        return domain.pageDefinitions[panelID];
+        return domain.panelDefinitions[panelID];
     }
     
     function previousPageClicked(event) {
@@ -395,15 +395,75 @@ require([
         return select;
     }
     
-    // Make all of the application pages selectable from the dropdown list and back/next buttons and put them in a TabContainer
-    function createLayout() {
-        var pages = applicationBuilder.buildListOfPanels();
-        
-        console.log("createLayout start", pages);
-        var pageSelectOptions = [];
+    var pageSelectOptions = [];
+    
+    function buildAllPages() {
+        var panels = applicationBuilder.buildListOfPanels();
+        console.log("buildAllPages", panels);
         
         var lastPageID = null;
         var lastHeader = null;
+        
+        for (var panelIndex = 0; panelIndex < panels.length; panelIndex++) {
+            var panel = panels[panelIndex];
+            allPages[panel.id] = panel;
+            // console.log("defining panel", panel.id);
+            var title = translate("#" + panel.id + "::title", panel.displayName);
+            if (panel.isHeader) {
+                title = "<i>" + title + "</i>";
+            } else {
+                title = "&nbsp;&nbsp;&nbsp;&nbsp;" + title;
+            }
+            if (panel.displayType !== "page") {
+                title += " SPECIAL: " + panel.displayType;
+            }
+            
+            // TODO: Should this really be modifying the original???
+            panel.title = title;
+            panel.questions = applicationBuilder.buildQuestionsForPanel(panel.id);
+            
+            domain.panelDefinitions[panel.id] = panel;      
+            
+            // For panels that are a "page", add to top level pages choices and set up navigation
+            if (panel.displayType === "page") {
+                var pageID = panel.id.replace("panel_", "page_");
+                // console.log("pushing page", panel);
+                // Make it easy to lookup previous and next pages from a page
+                if (lastPageID) panelForPageID(lastPageID).nextPageID = pageID;
+                panel.previousPageID = lastPageID;
+                lastPageID = pageID;
+                
+                if (!panel.isHeader) {
+                    var list = domain.pagesToGoWithHeaders[lastHeader] || [];
+                    list.push(panel.id);
+                    domain.pagesToGoWithHeaders[lastHeader] = list;
+                } else {
+                    lastHeader = panel.id;
+                }
+                
+                // Looks like Dojo select has a limitation where it can only take strings as values
+                // so can't pass page in as value here and need indirect panelDefinitions lookup dictionary
+                pageSelectOptions.push({label: title, value: pageID});
+                // Put in a dynamic question (incomplete for options) to be used to lookup page status; needed to check it is a select
+                domain.questions[panel.id + "_pageStatus"] = {id: pageID + "_pageStatus", displayType: "select"};
+            }
+        }
+        
+        var questions = applicationBuilder.buildListOfQuestions();
+        
+        // Lump all questions together in domain for use by things like calculating derived values from options for quiz score results
+        for (var questionIndex in questions) {
+            var question = questions[questionIndex];
+            domain.questions[question.id] = question;
+        }
+        
+        // Add default translations for all questions; these can be overriden by local language files which would be searched first
+        translate.addExtraTranslationsForQuestions(questions);
+    }
+    
+    // Make all of the application pages selectable from the dropdown list and back/next buttons and put them in a TabContainer
+    function createLayout() {   
+        console.log("createLayout start");
         
         // Initialize toaster
         toaster.createToasterWidget("navigationDiv");
@@ -419,81 +479,6 @@ require([
         // Buttons in this file must have startup called because they are each being added directly to the live visual hierarchy
         // This is as opposed to being added to some container that will have startup called on it later or already is running after startup was called
         homeButton.startup();
-        
-        for (var pageIndex = 0; pageIndex < pages.length; pageIndex++) {
-            var page = pages[pageIndex];
-            allPages[page.id] = page;
-            console.log("defining page", page.id);
-            var title = translate("#" + page.id + "::title", page.displayName);
-            if (page.isHeader) {
-                title = "<i>" + title + "</i>";
-            } else {
-                title = "&nbsp;&nbsp;&nbsp;&nbsp;" + title;
-            }
-            if (page.displayType !== "page") {
-                title += " SPECIAL: " + page.displayType;
-            }
-            
-            // TODO: Should this really be modifying the original???
-            page.title = title;
-            
-            domain.pageDefinitions[page.id] = page;      
-            
-            // console.log("about to make page");
-            // Skip over special page types
-            if (page.displayType === "page") {
-                var pageID = page.id.replace("panel_", "page_");
-                console.log("pushing page", page);
-                // Make it easy to lookup previous and next pages from a page
-                if (lastPageID) panelForPageID(lastPageID).nextPageID = pageID;
-                page.previousPageID = lastPageID;
-                lastPageID = pageID;
-                
-                if (!page.isHeader) {
-                    var list = domain.pagesToGoWithHeaders[lastHeader] || [];
-                    list.push(page.id);
-                    domain.pagesToGoWithHeaders[lastHeader] = list;
-                } else {
-                    lastHeader = page.id;
-                }
-                
-                // Looks like Dojo select has a limitation where it can only take strings as values
-                // so can't pass page in as value here and need indirect pageDefinitions lookup dictionary
-                pageSelectOptions.push({label: title, value: pageID});
-                // Put in a dynamic question (incomplete for options) to be used to lookup page status; needed to check it is a select
-                domain.questions[page.id + "_pageStatus"] = {id: pageID + "_pageStatus", displayType: "select"};
-            }
-        }
-        
-        var questions = applicationBuilder.buildListOfQuestions();
-        
-        // Lump all questions together in domain for use by things like calculating derived values from options for quiz score results
-        for (var questionIndex in questions) {
-            var question = questions[questionIndex];
-            domain.questions[question.id] = question;
-        }
-        
-        // Add default translations for all questions; these can be overriden by local language files which would be searched first
-        translate.addExtraTranslationsForQuestions(questions);
-        
-        /*
-        // Now, premake pages only after all definitions are done (since some pages refer to others for question popups that may be defined later)
-        array.forEach(pages, function(page) {
-            // console.log("creating page", page.id)
-            // Skip over special page types
-            if (page.displayType === "page") {
-                // Premake base pages
-                createPage(page.id);
-            }
-        });  
-        */      
-        
-        /* TODO: Delete these pages after making sure any needed functionality is moved elsewhere (into widgets or more general code) 
-        page_designQuestions(tabContainer);
-        page_exportSurvey(tabContainer);
-        page_takeSurvey(tabContainer);
-        page_graphResults(tabContainer);
-        */
 
         selectWidget = newSpecialSelect("mainSelect", pageSelectOptions, "navigationDiv");
         
@@ -569,7 +554,8 @@ require([
         domain.buttonFunctions.enterSurveyResult = openSurveyDialog;
         domain.buttonFunctions.updateQuestionsForPageChangeCallback = updatePagesForDomainValueChange;
         
-        // Call the main function
+        buildAllPages();
+        
         createLayout();
         
         /* TODO: Commented out while testing changeover to fields

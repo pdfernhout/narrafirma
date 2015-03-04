@@ -20,7 +20,7 @@ define([
     
     // TODO: Should not be doing UI work in here with toaster
 
-    var pageDefinitions = {};
+    var panelDefinitions = {};
     var questions = {};
     var pagesToGoWithHeaders = {};
     
@@ -425,12 +425,12 @@ define([
             // Skip last report page in a section
             if (pageIndex === pageList.length - 1) break;
             var pageID = pageList[pageIndex];
-            var pageDefinition = pageDefinitions[pageID];
-            if (pageDefinition.displayType !== "page") continue;
+            var panelDefinition = panelDefinitions[pageID];
+            if (panelDefinition.displayType !== "page") continue;
             report += "<div>";
             report += "<i> *** " + translate("#" + pageID + "::title") + "</i>  ***<br><br>";
             var questionsAnsweredCount = 0;
-            var questions = pageDefinition.questions;
+            var questions = panelDefinition.questions;
             for (var questionIndex in questions) {
                 var question = questions[questionIndex];
                 var value = projectData.projectAnswers.get(question.id);
@@ -567,7 +567,7 @@ define([
         // Supporting GUI
         "pagesToGoWithHeaders": pagesToGoWithHeaders,
         "questions": questions,
-        "pageDefinitions": pageDefinitions,
+        "panelDefinitions": panelDefinitions,
         
         // functions called from page widgets
         "setPageChangeCallback": setPageChangeCallback,

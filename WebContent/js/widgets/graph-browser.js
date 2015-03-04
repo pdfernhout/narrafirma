@@ -710,7 +710,7 @@ define([
         */
     }
         
-    function insertGraphBrowser(contentPane, model, id, pageDefinitions) {       
+    function insertGraphBrowser(contentPane, model, id, panelDefinitions) {       
         // Graph results pane
         
         var graphResultsPane = new ContentPane({

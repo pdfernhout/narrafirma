@@ -236,7 +236,7 @@ define([
         
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
-        var popupPageDefinition = domain.pageDefinitions[options[0]];
+        var popupPageDefinition = domain.panelDefinitions[options[0]];
         
         if (!popupPageDefinition) {
             console.log("Trouble: no popupPageDefinition for options: ", id, options);
@@ -572,7 +572,7 @@ define([
     function add_storyThemer(contentPane, model, id, options) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
-        var storyThemer = StoryThemer.insertStoryThemer(exportedFunctions, questionContentPane, model, id, domain.pageDefinitions);
+        var storyThemer = StoryThemer.insertStoryThemer(exportedFunctions, questionContentPane, model, id, domain.panelDefinitions);
         questionContentPane.resize();
         return storyThemer;
     }
@@ -593,7 +593,7 @@ define([
     function add_graphBrowser(contentPane, model, id, options) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
-        var graphBrowser = GraphBrowser.insertGraphBrowser(questionContentPane, model, id, domain.pageDefinitions);
+        var graphBrowser = GraphBrowser.insertGraphBrowser(questionContentPane, model, id, domain.panelDefinitions);
         questionContentPane.resize();
         return graphBrowser;
     }
@@ -822,7 +822,7 @@ define([
     function add_storyBrowser(contentPane, model, id, options) {
         var questionContentPane = createQuestionContentPaneWithPrompt(contentPane, id);
         
-        var storyBrowser = StoryBrowser.insertStoryBrowser(exportedFunctions, questionContentPane, model, id, domain.pageDefinitions);
+        var storyBrowser = StoryBrowser.insertStoryBrowser(exportedFunctions, questionContentPane, model, id, domain.panelDefinitions);
         questionContentPane.resize();
         return storyBrowser;
     }
@@ -872,17 +872,17 @@ define([
         return "<b>" + value + "<b>";
     }
 
-    function calculate_questionAnswerCountOfTotalOnPage(model, pageID) {
-        var page = domain.pageDefinitions[pageID];
-        if (!page) {
-            console.log("ERROR: page not found for: ", pageID);
-            return "ERROR: page not found for: " + pageID + " at: " + new Date();
+    function calculate_questionAnswerCountOfTotalOnPage(model, panelID) {
+        var panel = domain.panelDefinitions[panelID];
+        if (!panel) {
+            console.log("ERROR: panel not found for: ", panelID);
+            return "ERROR: panel not found for: " + panelID + " at: " + new Date();
         }
-        // console.log("found page", page);
+        // console.log("found panel", panel);
         var questionAskedCount = 0;
         var questionAnsweredCount = 0;
-        for (var pageQuestionIndex in page.questions) {
-            var pageQuestion = page.questions[pageQuestionIndex];
+        for (var pageQuestionIndex in panel.questions) {
+            var pageQuestion = panel.questions[pageQuestionIndex];
             // console.log("pageQuestion", pageQuestion);
             if (array.indexOf(entryTypes, pageQuestion.displayType) !== -1) {
                 questionAskedCount++;
@@ -937,8 +937,8 @@ define([
     }
     
     function add_questionAnswerCountOfTotalOnPage(contentPane, model, id, options) {
-        var pageID = options[0];
-        var calculate = lang.partial(calculate_questionAnswerCountOfTotalOnPage, model, pageID);
+        var panelID = options[0];
+        var calculate = lang.partial(calculate_questionAnswerCountOfTotalOnPage, model, panelID);
         return _add_calculatedText(contentPane, id, calculate);
     }
     
@@ -980,7 +980,7 @@ define([
     /* TODO: code from questionEditor that has not yet been implemented
      
      } else if (utility.startsWith(question.displayType, "questionsTable")) {
-            var questionsTable = widgetQuestionsTable.insertQuestionsTable(question, questionsPane, domain.pageDefinitions);
+            var questionsTable = widgetQuestionsTable.insertQuestionsTable(question, questionsPane, domain.panelDefinitions);
 
        var helpText = "";
         if (!question.help) {
