@@ -411,7 +411,7 @@ define([
         
         console.log("=========== insertGridTableBasic popupPageDefinition", popupPageDefinition);
         
-        var maxColumnCount = 10;
+        var maxColumnCount = 5;
         var columnCount = 0;
         
         var displayTypesToDisplay = {
