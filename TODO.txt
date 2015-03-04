@@ -19,6 +19,10 @@ Figure out exactly how help text will be stored
 
 OVERALL
 Migrate away from generating code from textual design to maintaining code directly
+Move to system where have model fields as expandable objects, with builder that uses them to make models
+Mix in GUI interface points on pages to model fields to produce unified view of application design, with builder to extract pages
+Generate stub help files from design specification with one div per interface item on a page
+Improve help system so it jumps to those specific help divs associated
 
 SITE
 Determine how (or if) to support multi-user sites
@@ -143,11 +147,9 @@ Help window displaying HTML instead of alert
 Look at all alerts in code and make into nicer GUI feedback
 
 TRANSLATION
-Move to a more generic translation method where can pass a string or can put a "#" in front to indicate and ID with a text to use after that seperated by a space.
 Better and more consistent approach for translation selections for selects, checkboxes, radiobuttons, and maybe other types
 Translate report answers as needed for those types like selections
 Final review of all strings in code looking for TODO translate items or similar
-Review nls/messages_legacy_ideas.js and delete it after moving any useful content to design.
 
 DESIGN FILE
 Resolve these issues from conversion or add them to list of types not needing a short name:
@@ -263,7 +265,7 @@ Support checkBoxesWithPull -- a set of check boxes where the display texts are d
 
 Improve take survey page like with support for separate pages
 
-Way to edit a story or participant info (with versioning) if needed?
+Way to edit a story or participant info (with versioning) if needed? (Can use Pointrel approach with latest document version.)
 Editing survey results for consistency with version control based on survey ID?
 
 One project outcome item created per participant group
@@ -437,7 +439,7 @@ DONE Add version format (1.2.3) information to saved resources
 DONE Add revision UUID for document version to documents (or sha256AndLength reference?) [Using sha256AndLength for now]
 DONE Add reference to previous version (or versions) when save resources to get tree or chain of versions [only for main project answers for now]
 DONE Update application code to track versions [only for main project answers]
-<Out of order Cynthia>
+  <Out of order Cynthia>
 NOT DOING Change dashboards to a special widget with list of pages in options [id|dashboard|page1;page2] (Cynthia)
 DONE Change all items that start with "list_" (Cynthia)
 DONE Remove all "I'm done with this" checkboxes (Cynthia)
@@ -449,7 +451,7 @@ DONE Prototype concept images for demo (Cynthia)
 DONE Change "Sensemaking sessions" and all other too short labels for lists near end of file (Cynthia)
 DONE Every question must have short name - except labels and complicated widgets (Cynthia)
 DONE Story collection sessions -- change question to label (Cynthia)
-</Out of order Cynthia>
+  </Out of order Cynthia>
 DONE Fix how selected eliciting question in select box is not entirely visible
 DONE Indenting question entry areas under question text using CSS for questionInternal and questionExternal classes
 DONE Support adding more than one story in survey form GUI
@@ -477,4 +479,9 @@ DONE Cleanup typos in design and in comments and such
 DONE Remove various JSHint-like warnings related to loops and such
 DONE Remove cyclic AMD dependencies related to widgetBuilder being used by grid
 DONE Refactor toaster into its own module
+DONE Add code to put up help window
+DONE Add blue information icons for every significant interface point that pull up help window
 DONE Change NarraKit everywhere to NarraFirma.
+DONE Review nls/messages_legacy_ideas.js and delete it after moving any useful content to design.
+DONE Delete old generated and experimental design code no longer used when had been using seperate pages
+DONE Move to a more generic translation method where can pass a string or can put a "#" in front to indicate and ID with a text to use after that seperated by a space.
