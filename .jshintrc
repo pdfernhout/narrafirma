@@ -9,5 +9,8 @@
   "newcap": true,
   "strict": true,
   "sub": true,
-  "undef": true
+  "undef": true,
+  "globals": {
+    "_": false
+  }
 }
