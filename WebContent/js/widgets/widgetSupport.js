@@ -6,9 +6,13 @@ define([
     "dijit/ConfirmDialog",
     "dijit/layout/ContentPane",
     "dijit/Dialog",
+    "dojo/dom-construct",
     "dijit/layout/LayoutContainer",
+    "dijit/form/MultiSelect",
+    "dojo/query",
     "dojo/Stateful",
-    "dijit/form/Textarea"
+    "dijit/form/Textarea",
+    "dojo/_base/window"
 ], function(
     array,
     at,
@@ -17,11 +21,41 @@ define([
     ConfirmDialog,
     ContentPane,
     Dialog,
+    domConstruct,
     LayoutContainer,
+    MultiSelect,
+    query,
     Stateful,
-    Textarea
+    Textarea,
+    win
 ){
     "use strict";
+    
+    function setOptionsInMultiSelect(widget, options) {
+        // console.log("setOptionsInMultiSelect", widget, options);
+        query('option', widget.domNode).forEach(function(node, index, arr) {
+            domConstruct.destroy(node);
+        }); 
+        
+        for (var i = 0; i < options.length; i++) {
+            var c = win.doc.createElement('option');
+            c.innerHTML = options[i].label;
+            c.value = options[i].value;
+            widget.domNode.appendChild(c);
+        }
+    }
+    
+    function newMultiSelect(options, value) {
+        var widget = new MultiSelect({
+            "size": 12,
+            "style": "width: 100%;",
+            value: value
+        });
+        
+        setOptionsInMultiSelect(widget, options);
+        
+        return widget;
+    }
     
     function buildOptions(id, choices, optionsString){
         var options = [];
@@ -176,6 +210,55 @@ define([
  
         layout.placeAt(dialogContentPane);
     }
+    
+    function openListChoiceDialog(choices, initialChoice, dialogContentPaneID, dialogTitleID, dialogOKButtonID, dialogOKCallback) {
+        
+        var model = new Stateful({choice: initialChoice});
+        
+        var dialogConfiguration = {
+                dialogContentPaneID: dialogContentPaneID,
+                dialogTitleID: dialogTitleID,
+                dialogStyle: "width: 600px; height: 800px",
+                dialogConstructionFunction: buildListChoiceDialogContent,
+                dialogOKButtonID: dialogOKButtonID,
+                dialogOKCallback: dialogOKCallback,
+                choices: choices
+            };
+        
+        openDialog(model, dialogContentPaneID, {}, dialogConfiguration);
+    }
+    
+    function buildListChoiceDialogContent(dialogContentPane, model, id, options, hideDialogMethod, dialogConfiguration) {    
+        var layout = new LayoutContainer({
+        });
+        
+        var choiceOptions = [];
+        for (var index = 0; index < dialogConfiguration.choices.length; index++) {
+            var choice = dialogConfiguration.choices[index];
+            // TODO: Maybe translate?
+            choiceOptions.push({label: "" + choice, value: choice});
+        }
+        
+        var multiSelect = new MultiSelect({
+            name: 'multiselect-popup',
+            value: at(model, "choice"),
+            option: choiceOptions,
+            region: 'center',  
+            style: "overflow: auto; height: 90%; max-height: 90%; width: 98%; max-width: 98%"            
+        });
+        
+        var okButton = new Button({
+            label: translate("#" + dialogConfiguration.dialogOKButtonID),
+            type: "button",
+            onClick: function() {dialogConfiguration.dialogOKCallback(model.get("choice"), hideDialogMethod, id, options, dialogConfiguration);},
+            region: 'bottom'
+        });
+        
+        layout.addChild(multiSelect);
+        layout.addChild(okButton);
+ 
+        layout.placeAt(dialogContentPane);
+    }
 
     return {
         "buildOptions": buildOptions,
@@ -183,7 +266,10 @@ define([
         "confirm": confirm,
         "addButtonThatLaunchesDialog": addButtonThatLaunchesDialog,
         "openDialog": openDialog,
-        "openTextEditorDialog": openTextEditorDialog
+        "openTextEditorDialog": openTextEditorDialog,
+        "openListChoiceDialog": openListChoiceDialog,
+        setOptionsInMultiSelect: setOptionsInMultiSelect,
+        newMultiSelect: newMultiSelect
     };
    
 });

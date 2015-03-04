@@ -3,15 +3,12 @@ define([
     "js/domain",
     "dojo/dom-construct",
     "dojo/_base/lang",
-    "dojo/query",
     "js/translate",
     "js/utility",
     "./grid-table",
     "./widgetSupport",
-    "dojo/_base/window",
     "dijit/layout/ContentPane",
     "dstore/Memory",
-    "dijit/form/MultiSelect",
     "dojo/Stateful",
     "dojox/layout/TableContainer"
 ], function(
@@ -19,52 +16,18 @@ define([
     domain,
     domConstruct,
     lang,
-    query,
     translate,
     utility,
     widgetGridTable,
     widgetSupport,
-    win,
     ContentPane,
     Memory,
-    MultiSelect,
     Stateful,
     TableContainer
 ){
     "use strict";
     
     // story browser support
-    
-    function setOptionsInMultiSelect(widget, options) {
-        // console.log("setOptionsInMultiSelect", widget, options);
-        query('option', widget.domNode).forEach(function(node, index, arr) {
-            // console.log("node", node);
-            domConstruct.destroy(node);
-        }); 
-        
-        for (var i = 0; i < options.length; i++) {
-            var c = win.doc.createElement('option');
-            c.innerHTML = options[i].label;
-            c.value = options[i].value;
-            widget.domNode.appendChild(c);
-        }
-        // console.log("done");
-    }
-    
-    function newMultiSelect(id, options) {
-        var widget = new MultiSelect({
-            "id": id + "answers1",
-            "size": 12,
-            "style": "width: 100%;"
-            //"options": options
-        });
-        
-        setOptionsInMultiSelect(widget, options);
-        
-        // selectWidget.on("change", mainSelectChanged);
-        
-        return widget;
-    }
     
     function filterPaneQuestionChoiceChanged(filterPane, newValue) {
         // console.log("event", newValue);
@@ -78,12 +41,12 @@ define([
         }
         if (!question) {
             if (newValue) console.log("could not find question for id", newValue);
-            setOptionsInMultiSelect(filterPane.answersMultiSelect, []);
+            widgetSupport.setOptionsInMultiSelect(filterPane.answersMultiSelect, []);
             return;
         }
         //console.log("question", question);
         var options = optionsFromQuestion(question, filterPane.stories);
-        setOptionsInMultiSelect(filterPane.answersMultiSelect, options);
+        widgetSupport.setOptionsInMultiSelect(filterPane.answersMultiSelect, options);
     }
     
     // TODO: Translate
@@ -207,7 +170,7 @@ define([
         
         contentPane.containerNode.appendChild(domConstruct.toDom('<br>'));
         
-        var answersMultiSelect = newMultiSelect(id + "_answers", []);
+        var answersMultiSelect = widgetSupport.newMultiSelect([]);
         contentPane.addChild(answersMultiSelect);
         
         var filterPane = {"contentPane": contentPane, "questionSelect": questionSelect, "answersMultiSelect": answersMultiSelect, "questions": questions, "stories": stories};

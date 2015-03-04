@@ -81,8 +81,14 @@ require([
             alert("A problem happened when trying to load all the versions of the project:\n" + error);
             return;
         }
-        // TODO: Put up a dialog to choose from
         
+        console.log("got versions", versions);
+        
+        // TODO: Put up a dialog to choose from
+        widgetSupport.openListChoiceDialog(versions, null, "a content pane id?", "Please choose", "ok button", function (choice) {
+            console.log("choice:", choice);
+        });
+            
         // STOPPED HERE
         // TODO: Use widgetSupport.openDialog to create dialog similar to that for picking a template
     }
