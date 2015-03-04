@@ -250,6 +250,8 @@ Generate CSV output
 
 Improve save/load feedback
 
+Replace Dojo's isString which is deprecated (and similar basic functionality) with lodash calls
+
 ==== Might not do
 
 Wordpress plugin
