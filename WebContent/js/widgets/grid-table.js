@@ -411,9 +411,18 @@ define([
         
         console.log("=========== insertGridTableBasic popupPageDefinition", popupPageDefinition);
         
-        // TODO: FIX ME -- no longer have questions -- either add them back or find another approach...
+        var maxColumnCount = 10;
+        var columnCount = 0;
+        
+        var displayTypesToDisplay = {
+           text: true,
+           textarea: true,
+           select: true,
+           radiobuttons: true
+        };
+        
         array.forEach(popupPageDefinition.questions, function (question) {
-            var includeField = question.isGridColumn || false;
+            var includeField = false;
             if (configuration.includeAllFields) {
                 // TODO: improve this
                 if (configuration.includeAllFields === true) {
@@ -421,6 +430,11 @@ define([
                 } else if (configuration.includeAllFields !== false) {
                     // Assume it is an array of field IDs to include
                     includeField = array.indexOf(configuration.includeAllFields, question.id) !== -1;
+                }
+            } else {
+                if (columnCount < maxColumnCount) {
+                    if (displayTypesToDisplay[question.displayType]) includeField = true;
+                    columnCount++;
                 }
             }
             // console.log("includeField", includeField, question.id);
