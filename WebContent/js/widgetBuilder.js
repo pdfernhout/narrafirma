@@ -979,7 +979,7 @@ define([
     
     /* TODO: code from questionEditor that has not yet been implemented
      
-     } else if (utility.startsWith(question.displayType, "questionsTable")) {
+     } else if (_.startsWith(question.displayType, "questionsTable")) {
             var questionsTable = widgetQuestionsTable.insertQuestionsTable(question, questionsPane, domain.panelDefinitions);
 
        var helpText = "";

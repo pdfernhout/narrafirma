@@ -108,7 +108,7 @@ require([
         for (key in domain.projectData.projectAnswers) {
             if (domain.projectData.projectAnswers.hasOwnProperty(key) && !projectAnswers.hasOwnProperty(key)) {
                 // Stateful model adds "_watchCallbacks" so don't remove it
-                if (!utility.startsWith(key, "_")) fieldsToRemove[key] = true;
+                if (!_.startsWith(key, "_")) fieldsToRemove[key] = true;
             }
         }
         for (key in fieldsToRemove) {

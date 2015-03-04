@@ -43,7 +43,7 @@ require([
                 // console.log("story response", storyResponse);
                 var story = {};
                 for (var storyKey in storyResponse) {
-                    if (utility.startsWith(storyKey, "__survey_")) {
+                    if (_.startsWith(storyKey, "__survey_")) {
                         var newStoryKey = storyKey.substr(9);
                         if (!newStoryKey) newStoryKey = "MISSING";
                         story["story_" + newStoryKey] = storyResponse[storyKey];
@@ -52,7 +52,7 @@ require([
                 story["storyID"] = storyResponse["_storyID"];
                 // Merge in participant data
                 for (var participantKey in response.content.participantData) {
-                    if (utility.startsWith(participantKey, "__survey_")) {
+                    if (_.startsWith(participantKey, "__survey_")) {
                         var newParticipantKey = participantKey.substr(9);
                         if (!newParticipantKey) newParticipantKey = "MISSING";
                         story["participant_" + newParticipantKey] = response.content.participantData[participantKey];

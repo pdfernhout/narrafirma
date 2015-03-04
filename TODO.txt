@@ -485,3 +485,5 @@ DONE Migrate away from generating code from textual design to maintaining code d
 DONE Move to system where have model fields as expandable objects, with builder that uses them to make models
 DONE Mix in GUI interface points on pages to model fields to produce unified view of application design, with builder to extract pages
 NOT DOING Think about changing names for fields when they are in a smaller model (like the long names for searching across files given JavaScript's lack of a type system to otherwise navigate)
+DONE Refactor GUI code out of utility module
+DONE Replace utility module for things like string startsWith with lodash (underscore-work-alike)
