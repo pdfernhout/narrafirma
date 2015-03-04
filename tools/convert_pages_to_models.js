@@ -149,7 +149,7 @@ pagesReadFromJSON.forEach(function (page) {
                 });
             }
         }
-        if (optionsAsArray && (question.type !== "select" && question.type !== "checkboxes")) {
+        if (optionsAsArray && (question.type !== "select" && question.type !== "checkboxes" && question.type !== "radiobuttons")) {
             if (displayOptions) throw new Error("unexpected displayOptions and also dataOptions for: " + question.id);
             displayOptions = optionsAsArray;
             optionsAsArray = undefined;
