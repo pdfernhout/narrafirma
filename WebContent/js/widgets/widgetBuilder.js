@@ -4,6 +4,7 @@ define([
     "dojox/mvc/at",
     "js/browser",
     "js/widgets/clusteringDiagram",
+    "dojo/_base/declare",
     "js/domain",
     'dojo/dom-class',
     "dojo/dom-construct",
@@ -37,6 +38,7 @@ define([
     at,
     browser,
     clusteringDiagram,
+    declare,
     domain,
     domClass,
     domConstruct,
@@ -1012,90 +1014,118 @@ define([
 
      */
     
-    function addQuestionWidget(type, contentPane, model, id, dataOptions, displayConfiguration) {
-        console.log("addQuestionWidget", type, id);
-        var functionName = "add_" + type;
-        var addFunction = exportedFunctions[functionName];
-        if (!addFunction) {
-            var error = "ERROR: unsupported question type: " + type + " as function is missing: " + functionName;
-            console.log(error);
-            throw error;
+    var buildingFunctions = {
+        "label": add_label,
+        "header": add_header,
+        "image": add_image,
+        "text": add_text,
+        "textarea": add_textarea,
+        "grid": add_grid,
+        "select": add_select,
+        "boolean": add_boolean,
+        "checkbox": add_checkbox,
+        "checkboxes": add_checkboxes,
+        "clusteringDiagram": add_clusteringDiagram,
+        "radiobuttons": add_radiobuttons,
+        "toggleButton": add_toggleButton,
+        "button": add_button,
+        "slider": add_slider,
+        "report": add_report,
+        "recommendationTable": add_recommendationTable,
+        "questionsTable": add_questionsTable,
+        "storyBrowser": add_storyBrowser,
+        "storyThemer": add_storyThemer,
+        "graphBrowser": add_graphBrowser,
+        "trendsReport": add_trendsReport,
+        "clusterSpace": add_clusterSpace,
+        "annotationsGrid": add_annotationsGrid,
+        "accumulatedItemsGrid": add_accumulatedItemsGrid,
+        "excerptsList": add_excerptsList,
+        "storiesList": add_storiesList,
+        "templateList": add_templateList,
+        "questionAnswer": add_questionAnswer,
+        "questionAnswerCountOfTotalOnPage": add_questionAnswerCountOfTotalOnPage,
+        "listCount": add_listCount,
+        "function": add_function,
+        "quizScoreResult": add_quizScoreResult
+    };
+    
+    var WidgetBuilder = declare(null, {
+        
+        contentPaneStack: [],
+        contentPane: null,
+        
+        constructor: function(contentPane, kwArgs) {
+            this.contentPane = contentPane;
+            
+            lang.mixin(this, kwArgs);
+            // TODO: What should go here?
+        },
+        
+        addQuestionWidget: function(type, contentPane, model, id, dataOptions, displayConfiguration) {
+            console.log("addQuestionWidget", type, id);
+            var addFunction = buildingFunctions[type];
+            if (!addFunction) {
+                var error = "ERROR: unsupported question type: " + type;
+                console.log(error);
+                throw error;
+            }
+            // TODO: Refactor: Legacy from when just one options field in questions
+            // TODO: Maybe, should maybe have all widgets have some more complex configuration approach with two arguments or a dictionary with configuration info
+            var options = dataOptions;
+            if (!options) options = displayConfiguration;
+            if (lang.isString(options)) options = [options];
+            return addFunction(contentPane, model, id, options);
+        },
+        
+        // Returns dictionary mapping from question IDs to widgets
+        addQuestions: function(questions, contentPane, model) {
+            console.log("addQuestions", questions);
+            var widgets = {};
+            for (var questionIndex in questions) {
+                var question = questions[questionIndex];
+                var widget = this.addQuestionWidget(question.displayType, contentPane, model, question.id, question.dataOptions, question.displayConfiguration);
+                widgets[question.id] = widget;
+            }
+            return widgets;
+        },
+        
+        // Build an entire panel; panel can be either a string ID referring to a panel or it can be a panel definition itself
+        buildPanel: function(panelOrID, contentPane, model) {
+            var questions;
+            if (lang.isString(panelOrID)) {
+                questions = applicationBuilder.buildQuestionsForPanel(panelOrID);
+            } else if (panelOrID.buildPanel) {
+                // TODO: widgetBuilder should really be a class with a "this" value, especially as widgets now pass it around
+                var widgetBuilder = this;
+                return panelOrID.buildPanel(widgetBuilder, contentPane, model);
+            } else {
+                questions = panelOrID.questions;
+            }
+            this.addQuestions(questions, contentPane, model);
         }
-        // TODO: Refactor: Legacy from when just one options field in questions
-        // TODO: Maybe, should maybe have all widgets have some more complex configuration approach with two arguments or a dictionary with configuration info
-        var options = dataOptions;
-        if (!options) options = displayConfiguration;
-        if (lang.isString(options)) options = [options];
-        return addFunction(contentPane, model, id, options);
+    });
+    
+    function newWidgetBuilder(kwArgs) {
+        return new WidgetBuilder(kwArgs);
     }
     
-    // Returns dictionary mapping from question IDs to widgets
-    function addQuestions(questions, contentPane, model) {
-        console.log("addQuestions", questions);
-        var widgets = {};
-        for (var questionIndex in questions) {
-            var question = questions[questionIndex];
-            var widget = addQuestionWidget(question.displayType, contentPane, model, question.id, question.dataOptions, question.displayConfiguration);
-            widgets[question.id] = widget;
-        }
-        return widgets;
+    function usageIdeas(contentPane) {
+        var widgetBuilder = new WidgetBuilder(contentPane);
+        widgetBuilder.addButton("Click me", function () {console.log("clicked");});
+        widgetBuilder.addButton("#someTranslationID Some text if translation not found", "someDomainAction");
+        widgetBuilder.addButton({id: "someQuestionID", displayConfiguration: "someDomainAction"});
+        
+        var newPanel = widgetBuilder.addPanel();
+        // Widgets will go in new panel
+        widgetBuilder.popPanel();
+        
     }
-    
-    // Build an entire panel; panel can be either a string ID referring to a panel or it can be a panel definition itself
-    function buildPanel(panelOrID, contentPane, model) {
-        var questions;
-        if (lang.isString(panelOrID)) {
-            questions = applicationBuilder.buildQuestionsForPanel(panelOrID);
-        } else if (panelOrID.buildPanel) {
-            // TODO: widgetBuilder should really be a class with a "this" value, especially as widgets now pass it around
-            var widgetBuilder = exportedFunctions;
-            return panelOrID.buildPanel(widgetBuilder, contentPane, model);
-        } else {
-            questions = panelOrID.questions;
-        }
-        addQuestions(questions, contentPane, model);
-    }
-    
     
     var exportedFunctions = {
         "setApplicationBuilder": setApplicationBuilder,
         "updateQuestionsForPageChange": updateQuestionsForPageChange,
-        "add_label": add_label,
-        "add_header": add_header,
-        "add_image": add_image,
-        "add_text": add_text,
-        "add_textarea": add_textarea,
-        "add_grid": add_grid,
-        "add_select": add_select,
-        "add_boolean": add_boolean,
-        "add_checkbox": add_checkbox,
-        "add_checkboxes": add_checkboxes,
-        "add_clusteringDiagram": add_clusteringDiagram,
-        "add_radiobuttons": add_radiobuttons,
-        "add_toggleButton": add_toggleButton,
-        "add_button": add_button,
-        "add_slider": add_slider,
-        "add_report": add_report,
-        "add_recommendationTable": add_recommendationTable,
-        "add_questionsTable": add_questionsTable,
-        "add_storyBrowser": add_storyBrowser,
-        "add_storyThemer": add_storyThemer,
-        "add_graphBrowser": add_graphBrowser,
-        "add_trendsReport": add_trendsReport,
-        "add_clusterSpace": add_clusterSpace,
-        "add_annotationsGrid": add_annotationsGrid,
-        "add_accumulatedItemsGrid": add_accumulatedItemsGrid,
-        "add_excerptsList": add_excerptsList,
-        "add_storiesList": add_storiesList,
-        "add_templateList": add_templateList,
-        "add_questionAnswer": add_questionAnswer,
-        "add_questionAnswerCountOfTotalOnPage": add_questionAnswerCountOfTotalOnPage,
-        "add_listCount": add_listCount,
-        "add_function": add_function,
-        "add_quizScoreResult": add_quizScoreResult,
-        "addQuestionWidget": addQuestionWidget,
-        "addQuestions": addQuestions,
-        "buildPanel": buildPanel
+        newWidgetBuilder: newWidgetBuilder
     };
     
     lang.mixin(exports, exportedFunctions);
