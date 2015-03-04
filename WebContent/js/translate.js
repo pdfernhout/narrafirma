@@ -57,7 +57,7 @@ define([
     }
     
     function addExtraTranslationsForQuestion(question) {
-        console.log("addExtraTranslationsForQuestion", question);
+        // console.log("addExtraTranslationsForQuestion", question);
         if (!question) throw new Error("question is null or undefined");
         if (debugTranslations) console.log("adding extra translations for", question.id, question);
         extraTranslations[question.id + "::prompt"] = question.displayPrompt;
@@ -69,7 +69,7 @@ define([
     }
     
     function addExtraTranslationsForQuestions(questions) {
-        console.log("addExtraTranslationsForQuestions", questions);
+        // console.log("addExtraTranslationsForQuestions", questions);
         if (!questions) {
             throw new Error("questions should not be undefined!");
         }
