@@ -10,7 +10,7 @@ require([
     "js/survey",
     "js/toaster",
     "js/translate",
-    "js/widgetBuilder",
+    "js/widgets/widgetBuilder",
     "js/widgets/widgetSupport",
     "js/widgets/grid-table",
     "dijit/layout/ContentPane",

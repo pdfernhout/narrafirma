@@ -5,7 +5,7 @@ define([
     "js/storage",
     "js/translate",
     "dojox/uuid/generateRandomUuid",
-    "js/widgetBuilder",
+    "js/widgets/widgetBuilder",
     "dijit/layout/ContentPane",
     "dijit/Dialog",
     "dijit/layout/StackContainer",
