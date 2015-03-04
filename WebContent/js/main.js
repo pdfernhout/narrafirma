@@ -186,17 +186,15 @@ require([
             return;
         }
         
+        // Hide the current page temporarily
         domStyle.set("pageDiv", "display", "none");
-        // domStyle.set("startup", "display", "block");
         
         if (currentPageID && currentPage) {
             // domStyle.set(currentPageID, "display", "none");
             console.log("destroying", currentPageID, currentPage);
             currentPage.destroyRecursive();
-            domConstruct.destroy(currentPage);
+            domConstruct.destroy(currentPage.domNode);
         }
-        
-        // domStyle.set(id, "display", "block");
         
         currentPage = createPage(id, true);
         
@@ -206,7 +204,7 @@ require([
         previousPageButton.setDisabled(!page.previousPageID);
         nextPageButton.setDisabled(!page.nextPageID);
         
-        // domStyle.set("startup", "display", "none");
+        // Show the current page again
         domStyle.set("pageDiv", "display", "block");
         
         // Because the page was hidden when created, all the grids need to be resized --- seems like bad design in dgrid
@@ -244,6 +242,7 @@ require([
        // Otherwise the grid header is not sized correctly and will be overwritten by data
        // This is as opposed to what one might think would reduce resizing and redrawing by adding the page only after components are added
        pagePane.placeAt("pageDiv");
+       pagePane.startup();
         
        // console.log("Made content pane", id);
        
@@ -294,8 +293,6 @@ require([
        } else {
             domStyle.set(id, "display", "none");
        }
-                  
-       pagePane.startup();
               
        return pagePane;
     }
@@ -390,8 +387,7 @@ require([
             id: id,
             options: options
         });
-        select.placeAt(document.getElementById(addToDiv));
-        select.startup();
+        select.placeAt(addToDiv);
         return select;
     }
     
@@ -461,57 +457,54 @@ require([
         translate.addExtraTranslationsForQuestions(questions);
     }
     
+    var navigationPane;
+    
     // Make all of the application pages selectable from the dropdown list and back/next buttons and put them in a TabContainer
-    function createLayout() {   
+    function createLayout() {
+        
         console.log("createLayout start");
         
-        // Initialize toaster
-        toaster.createToasterWidget("navigationDiv");
+        navigationPane = new ContentPane({}, "navigationDiv");
+        navigationPane.startup();
+        // Any  items like buttons added to the navigationPane will have startup called automatically, since the navigationPane has been started
         
-        // var imageButton = widgets.newButton("wwsImageButton", "Working With Stories image button", "navigationDiv", wwsButtonClicked);
+        // Initialize toaster
+        toaster.createToasterWidget(navigationPane);
+        
+        // var imageButton = widgets.newButton("wwsImageButton", "Working With Stories image button", navigationPane, wwsButtonClicked);
         // imageButton.set("showLabel", false);
         // imageButton.set("iconClass", "wwsButtonImage");
         
-        var homeButton = utility.newButton("button_home", null, "navigationDiv", homeButtonClicked);
+        var homeButton = utility.newButton("button_home", null, navigationPane, homeButtonClicked);
         homeButton.set("showLabel", false);
         // homeButton.set("iconClass", "dijitEditorIcon dijitEditorIconOutdent");
         homeButton.set("iconClass", "homeButtonImage");
-        // Buttons in this file must have startup called because they are each being added directly to the live visual hierarchy
-        // This is as opposed to being added to some container that will have startup called on it later or already is running after startup was called
-        homeButton.startup();
 
-        selectWidget = newSpecialSelect("mainSelect", pageSelectOptions, "navigationDiv");
+        selectWidget = newSpecialSelect("mainSelect", pageSelectOptions, navigationPane);
         
         // console.log("widget", selectWidget);
         // TODO: Width should be determined from contents of select options using font metrics etc.
         domStyle.set(selectWidget.domNode, "width", "400px");
         selectWidget.on("change", mainSelectChanged);
         
-        previousPageButton = utility.newButton("button_previousPage", null, "navigationDiv", previousPageClicked);
+        previousPageButton = utility.newButton("button_previousPage", null, navigationPane, previousPageClicked);
         previousPageButton.set("iconClass", "leftButtonImage");
-        previousPageButton.startup();
         
-        nextPageButton = utility.newButton("button_nextPage", null, "navigationDiv", nextPageClicked);
+        nextPageButton = utility.newButton("button_nextPage", null, navigationPane, nextPageClicked);
         nextPageButton.set("iconClass", "rightButtonImage");
-        nextPageButton.startup();
 
-        saveButton = utility.newButton("button_save", null, "navigationDiv", saveClicked);
-        saveButton.startup();
+        saveButton = utility.newButton("button_save", null, navigationPane, saveClicked);
 
-        loadLatestButton = utility.newButton("button_loadLatest", null, "navigationDiv", loadLatestClicked);
-        loadLatestButton.startup();
-        loadVersionButton = utility.newButton("button_loadVersion", null, "navigationDiv", loadVersionClicked);
-        loadVersionButton.startup();
+        loadLatestButton = utility.newButton("button_loadLatest", null, navigationPane, loadLatestClicked);
+        loadVersionButton = utility.newButton("button_loadVersion", null, navigationPane, loadVersionClicked);
 
-        importExportButton = utility.newButton("button_importExport", null, "navigationDiv", importExportClicked);
-        importExportButton.startup();
+        importExportButton = utility.newButton("button_importExport", null, navigationPane, importExportClicked);
 
-        var debugButton = utility.newButton("button_debug", null, "navigationDiv", debugButtonClicked);
-        debugButton.startup();
+        var debugButton = utility.newButton("button_debug", null, navigationPane, debugButtonClicked);
         
         // Setup the first page
         var fragment = hash();
-        console.log("startup fragment", fragment);
+        console.log("fragment when page first loaded", fragment);
         if (fragment && fragment !== startPage) {
             urlHashFragmentChanged(fragment);
         } else {
@@ -539,7 +532,7 @@ require([
         survey.openSurveyDialog(questionnaire);
     }
     
-    function startup() {
+    function initialize() {
         widgetBuilder.setApplicationBuilder(applicationBuilder);
         translate.configure({}, applicationMessages);
 
@@ -567,5 +560,5 @@ require([
         document.getElementById("startup").style.display = "none";
     }
     
-    startup();
+    initialize();
 });
