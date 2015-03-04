@@ -149,6 +149,11 @@ pagesReadFromJSON.forEach(function (page) {
                 });
             }
         }
+        if (optionsAsArray && (question.type !== "select" && question.type !== "checkboxes")) {
+            if (displayOptions) throw new Error("unexpected displayOptions and also dataOptions for: " + question.id);
+            displayOptions = optionsAsArray;
+            optionsAsArray = undefined;
+        }
         // Streamline common case of just one option
         var dataType = typeForDisplayType(question.type);
         var item = {

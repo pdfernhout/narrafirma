@@ -1,4 +1,4 @@
-// generated from design_pages_notes.txt on Tue Mar 03 2015 08:14:37 GMT-0500 (EST)
+// generated from design_pages_notes.txt on Wed Mar 04 2015 07:41:18 GMT-0500 (EST)
 
 // page count 87
 // field count 458
@@ -1452,16 +1452,16 @@ return [
 {
   id: 'assessment_result_freedomSubscore',
   dataType: 'none',
-  dataOptions: 
+  dataOptions: undefined,
+  required: false,
+  validators: undefined,
+  displayType: 'quizScoreResult',
+  displayConfiguration: 
    [ 'assessment_counterStories',
      'assessment_authority',
      'assessment_mistakes',
      'assessment_silencing',
      'assessment_conflict' ],
-  required: false,
-  validators: undefined,
-  displayType: 'quizScoreResult',
-  displayConfiguration: undefined,
   displayName: undefined,
   displayPrompt: 'Narrative freedom subscore:',
   displayPanel: 'panel_assessStorySharing',
@@ -1470,16 +1470,16 @@ return [
 {
   id: 'assessment_result_flowSubscore',
   dataType: 'none',
-  dataOptions: 
+  dataOptions: undefined,
+  required: false,
+  validators: undefined,
+  displayType: 'quizScoreResult',
+  displayConfiguration: 
    [ 'assessment_remindings',
      'assessment_retellings',
      'assessment_folklore',
      'assessment_storyTypes',
      'assessment_sensemaking' ],
-  required: false,
-  validators: undefined,
-  displayType: 'quizScoreResult',
-  displayConfiguration: undefined,
   displayName: undefined,
   displayPrompt: 'Narrative flow subscore:',
   displayPanel: 'panel_assessStorySharing',
@@ -1488,16 +1488,16 @@ return [
 {
   id: 'assessment_result_knowledgeSubscore',
   dataType: 'none',
-  dataOptions: 
+  dataOptions: undefined,
+  required: false,
+  validators: undefined,
+  displayType: 'quizScoreResult',
+  displayConfiguration: 
    [ 'assessment_realStories',
      'assessment_negotiations',
      'assessment_cotelling',
      'assessment_blunders',
      'assessment_accounting' ],
-  required: false,
-  validators: undefined,
-  displayType: 'quizScoreResult',
-  displayConfiguration: undefined,
   displayName: undefined,
   displayPrompt: 'Narrative knowledge subscore:',
   displayPanel: 'panel_assessStorySharing',
@@ -1506,16 +1506,16 @@ return [
 {
   id: 'assessment_result_unitySubscore',
   dataType: 'none',
-  dataOptions: 
+  dataOptions: undefined,
+  required: false,
+  validators: undefined,
+  displayType: 'quizScoreResult',
+  displayConfiguration: 
    [ 'assessment_commonStories',
      'assessment_sacredStories',
      'assessment_condensedStories',
      'assessment_intermingling',
      'assessment_culture' ],
-  required: false,
-  validators: undefined,
-  displayType: 'quizScoreResult',
-  displayConfiguration: undefined,
   displayName: undefined,
   displayPrompt: 'Narrative unity subscore:',
   displayPanel: 'panel_assessStorySharing',
@@ -1524,7 +1524,11 @@ return [
 {
   id: 'assessment_result_grandTotal',
   dataType: 'none',
-  dataOptions: 
+  dataOptions: undefined,
+  required: false,
+  validators: undefined,
+  displayType: 'quizScoreResult',
+  displayConfiguration: 
    [ 'assessment_counterStories',
      'assessment_authority',
      'assessment_mistakes',
@@ -1545,10 +1549,6 @@ return [
      'assessment_condensedStories',
      'assessment_intermingling',
      'assessment_culture' ],
-  required: false,
-  validators: undefined,
-  displayType: 'quizScoreResult',
-  displayConfiguration: undefined,
   displayName: undefined,
   displayPrompt: 'This is your combined test result:',
   displayPanel: 'panel_assessStorySharing',
@@ -3704,13 +3704,13 @@ return [
 {
   id: 'browseStories_collectedStoriesAfterCollection',
   dataType: 'none',
-  dataOptions: 
-   [ 'addToObservation:"page_addToObservation"',
-     'addToExcerpt:"page_addToExcerpt"' ],
+  dataOptions: undefined,
   required: false,
   validators: undefined,
   displayType: 'storyBrowser',
-  displayConfiguration: undefined,
+  displayConfiguration: 
+   [ 'addToObservation:"page_addToObservation"',
+     'addToExcerpt:"page_addToExcerpt"' ],
   displayName: undefined,
   displayPrompt: 'Collected stories',
   displayPanel: 'panel_browseStories',
