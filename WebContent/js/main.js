@@ -10,7 +10,6 @@ require([
     "js/survey",
     "js/toaster",
     "js/translate",
-    "js/utility",
     "js/widgetBuilder",
     "js/widgets/widgetSupport",
     "js/widgets/grid-table",
@@ -29,7 +28,6 @@ require([
     survey,
     toaster,
     translate,
-    utility,
     widgetBuilder,
     widgetSupport,
     widgetGridTable,
@@ -481,7 +479,7 @@ require([
         // imageButton.set("showLabel", false);
         // imageButton.set("iconClass", "wwsButtonImage");
         
-        var homeButton = utility.newButton("button_home", null, navigationPane, homeButtonClicked);
+        var homeButton = widgetSupport.newButton("button_home", null, navigationPane, homeButtonClicked);
         homeButton.set("showLabel", false);
         // homeButton.set("iconClass", "dijitEditorIcon dijitEditorIconOutdent");
         homeButton.set("iconClass", "homeButtonImage");
@@ -493,20 +491,20 @@ require([
         domStyle.set(selectWidget.domNode, "width", "400px");
         selectWidget.on("change", mainSelectChanged);
         
-        previousPageButton = utility.newButton("button_previousPage", null, navigationPane, previousPageClicked);
+        previousPageButton = widgetSupport.newButton("button_previousPage", null, navigationPane, previousPageClicked);
         previousPageButton.set("iconClass", "leftButtonImage");
         
-        nextPageButton = utility.newButton("button_nextPage", null, navigationPane, nextPageClicked);
+        nextPageButton = widgetSupport.newButton("button_nextPage", null, navigationPane, nextPageClicked);
         nextPageButton.set("iconClass", "rightButtonImage");
 
-        saveButton = utility.newButton("button_save", null, navigationPane, saveClicked);
+        saveButton = widgetSupport.newButton("button_save", null, navigationPane, saveClicked);
 
-        loadLatestButton = utility.newButton("button_loadLatest", null, navigationPane, loadLatestClicked);
-        loadVersionButton = utility.newButton("button_loadVersion", null, navigationPane, loadVersionClicked);
+        loadLatestButton = widgetSupport.newButton("button_loadLatest", null, navigationPane, loadLatestClicked);
+        loadVersionButton = widgetSupport.newButton("button_loadVersion", null, navigationPane, loadVersionClicked);
 
-        importExportButton = utility.newButton("button_importExport", null, navigationPane, importExportClicked);
+        importExportButton = widgetSupport.newButton("button_importExport", null, navigationPane, importExportClicked);
 
-        var debugButton = utility.newButton("button_debug", null, navigationPane, debugButtonClicked);
+        var debugButton = widgetSupport.newButton("button_debug", null, navigationPane, debugButtonClicked);
         
         // Setup the first page
         var fragment = hash();

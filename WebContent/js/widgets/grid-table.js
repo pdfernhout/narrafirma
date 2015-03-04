@@ -5,7 +5,6 @@ define([
     "dojox/mvc/getPlainValue",
     "dojo/_base/lang",
     "js/translate",
-    "js/utility",
     "dojox/uuid/generateRandomUuid",
     "./widgetSupport",
     "dgrid/extensions/ColumnResizer",
@@ -24,7 +23,6 @@ define([
     getPlainValue,
     lang,
     translate,
-    utility,
     generateRandomUuid,
     widgetSupport,
     ColumnResizer,
@@ -121,7 +119,7 @@ define([
         if (formType === "view") {
             borderColor = "blue";
             
-            utility.newButton("list_dialog_ok" + grid.id, "button_Done", form, function() {
+            widgetSupport.newButton("list_dialog_ok" + grid.id, "button_Done", form, function() {
                 console.log("Done");
                 hideAndDestroyForm(itemContentPane, form, grid);
             });
@@ -139,8 +137,8 @@ define([
             });
             */
         } else {
-            utility.newButton("list_dialog_ok_" + grid.id, "button_OK", form, lang.partial(storeItem, id, grid, store, popupPageDefinition, itemContentPane, form, statefulItem));
-            utility.newButton("list_dialog_cancel_" + grid.id, "button_Cancel", form, function() {
+            widgetSupport.newButton("list_dialog_ok_" + grid.id, "button_OK", form, lang.partial(storeItem, id, grid, store, popupPageDefinition, itemContentPane, form, statefulItem));
+            widgetSupport.newButton("list_dialog_cancel_" + grid.id, "button_Cancel", form, function() {
                 console.log("Cancel chosen");          
                 // TODO: Confirm cancel if have entered data    
                 hideAndDestroyForm(itemContentPane, form, grid);
@@ -516,11 +514,11 @@ define([
         });
                 
         if (configuration.addButton) {
-            buttons.addButton = utility.newButton(id + "_add", "button_Add", pane, lang.partial(addButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.addButton = widgetSupport.newButton(id + "_add", "button_Add", pane, lang.partial(addButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
         }
         
         if (configuration.removeButton) {
-            buttons.removeButton = utility.newButton(id + "_remove", "button_Remove", pane, lang.partial(removeButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.removeButton = widgetSupport.newButton(id + "_remove", "button_Remove", pane, lang.partial(removeButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
         }
         
         if (configuration.viewButton) {
@@ -528,7 +526,7 @@ define([
             // See: http://dojotoolkit.org/reference-guide/1.7/dojo/partial.html
             var viewButtonClickedPartial = lang.partial(viewButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane);
             var viewButtonID = id + "_view";
-            buttons.viewButton = utility.newButton(viewButtonID, "button_View", pane, viewButtonClickedPartial);
+            buttons.viewButton = widgetSupport.newButton(viewButtonID, "button_View", pane, viewButtonClickedPartial);
             // TODO: Should there be an option of double click as edit?
             // Support double click as view
             grid.on("dblclick", viewButtonClickedPartial);
@@ -536,30 +534,30 @@ define([
         }
 
         if (configuration.editButton) {
-            buttons.editButton = utility.newButton(id + "_edit", "button_Edit", pane, lang.partial(editButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.editButton = widgetSupport.newButton(id + "_edit", "button_Edit", pane, lang.partial(editButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
         }
         
         if (configuration.duplicateButton) {
-            buttons.duplicateButton = utility.newButton(id + "_duplicate", "button_Duplicate", pane, lang.partial(duplicateButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.duplicateButton = widgetSupport.newButton(id + "_duplicate", "button_Duplicate", pane, lang.partial(duplicateButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
         }
              
         if (configuration.moveUpDownButtons) {
-            buttons.upButton = utility.newButton(id + "_up", "button_Up", pane, lang.partial(upButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
-            buttons.downButton = utility.newButton(id + "_down", "button_Down", pane, lang.partial(downButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.upButton = widgetSupport.newButton(id + "_up", "button_Up", pane, lang.partial(upButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.downButton = widgetSupport.newButton(id + "_down", "button_Down", pane, lang.partial(downButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
         }
         
         if (configuration.customButton) {
             var options = configuration.customButton;
-            buttons.customButton = utility.newButton(id + "_" + options.id, options.translationID, pane, lang.partial(options.callback, id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.customButton = widgetSupport.newButton(id + "_" + options.id, options.translationID, pane, lang.partial(options.callback, id, grid, dataStore, popupPageDefinition, itemContentPane));
             // Make this function available to users
             grid.getSelectedItem = getSelectedItem;
         }
          
         if (configuration.navigationButtons) {
-            buttons.navigateStartButton = utility.newButton(id + "_navigateStart", "button_navigateStart", pane, lang.partial(navigateButtonClicked, "start", id, grid, dataStore, popupPageDefinition, itemContentPane));
-            buttons.navigatePreviousButton = utility.newButton(id + "_navigatePrevious", "button_navigatePrevious", pane, lang.partial(navigateButtonClicked, "previous",  id, grid, dataStore, popupPageDefinition, itemContentPane));
-            buttons.navigateNextButton = utility.newButton(id + "_navigateNext", "button_navigateNext", pane, lang.partial(navigateButtonClicked, "next",  id, grid, dataStore, popupPageDefinition, itemContentPane));
-            buttons.navigateEndButton = utility.newButton(id + "_navigateEnd", "button_navigateEnd", pane, lang.partial(navigateButtonClicked, "end",  id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.navigateStartButton = widgetSupport.newButton(id + "_navigateStart", "button_navigateStart", pane, lang.partial(navigateButtonClicked, "start", id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.navigatePreviousButton = widgetSupport.newButton(id + "_navigatePrevious", "button_navigatePrevious", pane, lang.partial(navigateButtonClicked, "previous",  id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.navigateNextButton = widgetSupport.newButton(id + "_navigateNext", "button_navigateNext", pane, lang.partial(navigateButtonClicked, "next",  id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.navigateEndButton = widgetSupport.newButton(id + "_navigateEnd", "button_navigateEnd", pane, lang.partial(navigateButtonClicked, "end",  id, grid, dataStore, popupPageDefinition, itemContentPane));
         }
         
         updateGridButtonsForSelectionAndForm(grid);

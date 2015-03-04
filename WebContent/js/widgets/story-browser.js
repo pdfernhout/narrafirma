@@ -4,7 +4,6 @@ define([
     "dojo/dom-construct",
     "dojo/_base/lang",
     "js/translate",
-    "js/utility",
     "./grid-table",
     "./widgetSupport",
     "dijit/layout/ContentPane",
@@ -17,7 +16,6 @@ define([
     domConstruct,
     lang,
     translate,
-    utility,
     widgetGridTable,
     widgetSupport,
     ContentPane,
@@ -165,7 +163,7 @@ define([
         
         containerPane.addChild(contentPane);
          
-        var questionSelect = utility.newSelect(id + "_question", widgetSupport.optionsForAllQuestions(questions), null, contentPane);
+        var questionSelect = widgetSupport.newSelect(id + "_question", widgetSupport.optionsForAllQuestions(questions), null, contentPane);
         questionSelect.set("style", "width: 98%; max-width: 98%");
         
         contentPane.containerNode.appendChild(domConstruct.toDom('<br>'));
@@ -289,7 +287,7 @@ define([
         
         var storyList;
         
-        var filterButton = utility.newButton(id + "_filter", "button_Filter", pagePane, function () {
+        var filterButton = widgetSupport.newButton(id + "_filter", "button_Filter", pagePane, function () {
             // console.log("filter pressed");
             var question1Choice = filter1.questionSelect.get("value");
             var answers1Choices = filter1.answersMultiSelect.get("value");

@@ -3,26 +3,27 @@ define([
     'dojox/html/entities',
     "dojox/uuid/generateRandomUuid",
     "js/translate",
-    "js/utility",
     "./grid-table",
     "dijit/form/ComboBox",
     "dijit/layout/ContentPane",
     "dojo/store/Memory",
     "dstore/Memory",
-    "dojo/Stateful"
+    "dojo/Stateful",
+    "js/widgets/widgetSupport"
 ], function(
     domain,
     entities,
     generateRandomUuid,
     translate,
-    utility,
     widgetGridTable,
     ComboBox,
     ContentPane,
     Memory,
     MemoryDstore,
-    Stateful){
-    "use strict";
+    Stateful,
+    widgetSupport
+ ){
+"use strict";
     
     // story themer support
     
@@ -129,7 +130,7 @@ define([
                  });
                  themeEntryComboBox.placeAt(themesPane);
                  
-                 var addThemeButton = utility.newButton(id + "_addThemeButton", "button_addTheme", pagePane, function () {
+                 var addThemeButton = widgetSupport.newButton(id + "_addThemeButton", "button_addTheme", pagePane, function () {
                      console.log("Button pressed", themeList, storyThemes, storyThemesStore);
                      var themeText = themeEntryComboBox.get("value");
                      console.log("themeText", themeText);

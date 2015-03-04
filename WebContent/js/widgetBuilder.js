@@ -2,6 +2,7 @@
 define([
     "dojo/_base/array",
     "dojox/mvc/at",
+    "js/browser",
     "js/widgets/clusteringDiagram",
     "js/domain",
     'dojo/dom-class',
@@ -11,7 +12,6 @@ define([
     "js/templates/recommendations",
     "js/translate",
     "js/templates/templates",
-    "js/utility",
     "js/widgets/widgetSupport",
     "dijit/form/Button",
     "js/widgets/checkboxes",
@@ -35,6 +35,7 @@ define([
 ], function(
     array,
     at,
+    browser,
     clusteringDiagram,
     domain,
     domClass,
@@ -44,7 +45,6 @@ define([
     recommendations,
     translate,
     templates,
-    utility,
     widgetSupport,
     Button,
     CheckBoxes,
@@ -112,7 +112,7 @@ define([
     /////////////
     
     // TODO: Need a better approach for calling JavaScript function than this
-    document.__narraFirma_launchApplication = utility.launchApplication;
+    document.__narraFirma_launchApplication = browser.launchApplication;
     
     // TODO: Fix all this so attaching actual JavaScript function not text to be interpreted
     function htmlForInformationIcon(url) {
@@ -266,7 +266,7 @@ define([
         if (questionOptions) {
             array.forEach(questionOptions, function(each) {
                 // console.log("choice", id, each);
-                if (utility.isString(each)) {
+                if (lang.isString(each)) {
                     var label = translate("#" + id + "::selection:" + each);
                     options.push({name: label, id: each});
                 } else {

@@ -4,7 +4,6 @@ define([
     "dojo/dom",
     "dojo/dom-construct",
     "dojo/_base/lang",
-    "js/utility",
     "./widgetSupport",
     "dojox/charting/Chart",
     "dojox/charting/plot2d/Columns",
@@ -17,7 +16,6 @@ define([
     dom,
     domConstruct,
     lang,
-    utility,
     widgetSupport,
     Chart,
     Columns,
@@ -724,18 +722,18 @@ define([
         
         var optionsForAllQuestions = widgetSupport.optionsForAllQuestions(questions);
         
-        var xAxisSelect = utility.newSelect(id + "_xAxis_question", optionsForAllQuestions, null, contentPane);
+        var xAxisSelect = widgetSupport.newSelect(id + "_xAxis_question", optionsForAllQuestions, null, contentPane);
         xAxisSelect.set("style", "width: 48%; max-width: 40%");
         
         // TODO: Translate
         var content = new ContentPane({content: " versus ", style: "display: inline;"});
         contentPane.addChild(content);
         
-        var yAxisSelect = utility.newSelect(id + "_yAxis_question", optionsForAllQuestions, null, contentPane);
+        var yAxisSelect = widgetSupport.newSelect(id + "_yAxis_question", optionsForAllQuestions, null, contentPane);
         yAxisSelect.set("style", "width: 48%; max-width: 40%");
         
         var pane = graphResultsPane.containerNode;
-        var takeSurveyButton = utility.newButton("updateGraph", null, pane, lang.partial(updateGraph, graphResultsPane));
+        var takeSurveyButton = widgetSupport.newButton("updateGraph", null, pane, lang.partial(updateGraph, graphResultsPane));
         pane.appendChild(document.createElement("br"));
         
         // TODO: Translate "Survey Graph"

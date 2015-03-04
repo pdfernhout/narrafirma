@@ -3,14 +3,12 @@ require([
     "dojo/dom",
     "lib/simple_statistics",
     "js/test-data",
-    "js/utility",
     "dojo/domReady!"
 ], function(
     ContentPane,
     dom,
     simpleStatistics,
-    testData,
-    utility
+    testData
 ){
     "use strict";
     

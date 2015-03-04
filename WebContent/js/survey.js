@@ -4,26 +4,26 @@ define([
     "dojox/mvc/getPlainValue",
     "js/storage",
     "js/translate",
-    "js/utility",
     "dojox/uuid/generateRandomUuid",
     "js/widgetBuilder",
     "dijit/layout/ContentPane",
     "dijit/Dialog",
     "dijit/layout/StackContainer",
-    "dojo/Stateful"
+    "dojo/Stateful",
+    "js/widgets/widgetSupport"
 ], function(
     array,
     domStyle,
     getPlainValue,
     storage,
     translate,
-    utility,
     generateRandomUuid,
     widgetBuilder,
     ContentPane,
     Dialog,
     StackContainer,
-    Stateful
+    Stateful,
+    widgetSupport
 ){
     "use strict";
 
@@ -110,12 +110,12 @@ define([
         
         widgetBuilder.addQuestions(allStoryQuestions, surveyPane, storyQuestionsModel);
         
-        utility.newButton(undefined, "button_previousPage", surveyPane, function() {
+        widgetSupport.newButton(undefined, "button_previousPage", surveyPane, function() {
             console.log("button_previousPage");
             wizardPane.back();
         });
         
-        var tellAnotherStoryButton = utility.newButton(undefined, "button_tellAnotherStory", surveyPane, function() {
+        var tellAnotherStoryButton = widgetSupport.newButton(undefined, "button_tellAnotherStory", surveyPane, function() {
             console.log("button_tellAnotherStory");
             if (!validateStoryQuestionsModel(storyQuestionsModel)) return;
             var children = wizardPane.getChildren();
@@ -127,7 +127,7 @@ define([
             wizardPane.forward();
         });
         
-        var dontTellAnotherStoryButton = utility.newButton(undefined, "button_dontTellAnotherStory", surveyPane, function() {
+        var dontTellAnotherStoryButton = widgetSupport.newButton(undefined, "button_dontTellAnotherStory", surveyPane, function() {
             console.log("button_dontTellAnotherStory");
             var canProceedIfNoStory = addIndex !== 1;
             if (!validateStoryQuestionsModel(storyQuestionsModel, canProceedIfNoStory)) return;
@@ -135,13 +135,13 @@ define([
         });
         
         /*
-        utility.newButton(undefined, "button_deleteThisStory", surveyPane, function() {
+        widgetSupport.newButton(undefined, "button_deleteThisStory", surveyPane, function() {
             console.log("button_nextPage");
             wizardPane.forward();
         });
         */
         
-        var nextPageButton = utility.newButton(undefined, "button_nextPage", surveyPane, function() {
+        var nextPageButton = widgetSupport.newButton(undefined, "button_nextPage", surveyPane, function() {
             console.log("button_nextPage");
             // TODO: Need to somehow require at least one story... But this allows previous stories to be deleted. Kludge for now that first story can't be blank.
             var canProceedIfNoStory = addIndex !== 1;
@@ -235,7 +235,7 @@ define([
         
         widgetBuilder.addQuestions(startQuestions, startPane.containerNode, participantDataModel);
         
-        utility.newButton(undefined, "button_nextPage", startPane, function() {
+        widgetSupport.newButton(undefined, "button_nextPage", startPane, function() {
             console.log("button_nextPage");
             wizardPane.forward();
         });
@@ -253,12 +253,12 @@ define([
         
         widgetBuilder.addQuestions(questionnaire.participantQuestions, participantPane.containerNode, participantDataModel);
         
-        utility.newButton(undefined, "button_previousPage", participantPane, function() {
+        widgetSupport.newButton(undefined, "button_previousPage", participantPane, function() {
             console.log("button_previousPage");
             wizardPane.back();
         });
         
-        utility.newButton(undefined, "surveySubmit", participantPane, function() {
+        widgetSupport.newButton(undefined, "surveySubmit", participantPane, function() {
             console.log("Submit survey");
             submitSurvey(surveyResultsWithModels, wizardPane, doneCallback);
         });
@@ -269,7 +269,7 @@ define([
         widgetBuilder.addQuestions(endQuestions, endPane.containerNode, participantDataModel);
         
         if (includeCancelButton) {
-            utility.newButton(undefined, "surveyCancel", wizardPane, function() {
+            widgetSupport.newButton(undefined, "surveyCancel", wizardPane, function() {
                 console.log("Cancel");
                 if (doneCallback) doneCallback("cancelled");
             });
