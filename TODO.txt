@@ -48,6 +48,7 @@ Have survey page use special server method so does not use Pointrel system direc
 Record IP address of survey or use another means to see if someone taking it multiple times
 Ensure the survey taking app does no need to load entire domain from project editor app or load grid or story browser or other modules it does not really need.
 Ideally, all responses for selections (other than numerical sliders) should have unique IDs for each response and the stored response should have the ID as well as the chosen text at the time.
+Only store reference to questionnaire file resource, not the resource itself
 
 IDs
 Add support for short names (ids) for eliciting questions
