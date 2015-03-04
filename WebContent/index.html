@@ -17,6 +17,8 @@
 <link rel="stylesheet" href="/lib/dgrid/css/skins/claro.css">
 <link rel="stylesheet" href="/lib/dgrid/css/extensions/ColumnResizer.css">
 
+<script type='text/javascript' src="js/lib/lodash.js"></script>
+
 <script type='text/javascript'>
     var dojoConfig;
     (function() {
@@ -27,10 +29,7 @@
             parseOnLoad: false,
             // cacheBust: "1.10.4",
             // Load dgrid and its dependencies from a local copy.
-            // If we were loading everything locally with simple names, this would not
-            // be necessary, since Dojo would automatically pick up
-            // dgrid, xstyle, and put-selector as siblings of the dojo folder.
-            // More complexity is required because these are not in the same directory as dojo modules
+            // More complexity is required because these are not in the same directory as dojo modules when loaded locally or dojo base is loaded from CDN
             packages: [
                 { name: "js", location: baseDirectoryFromURL + "/js"},
                 { name: "lib", location: baseDirectoryFromURL + "/lib"},
