@@ -12,7 +12,7 @@ require([
     "js/translate",
     "js/widgets/widgetBuilder",
     "js/widgets/widgetSupport",
-    "js/widgets/grid-table",
+    "js/widgets/gridTable",
     "dijit/layout/ContentPane",
     "dijit/form/Select",
     "dojo/domReady!"

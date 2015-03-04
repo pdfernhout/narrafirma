@@ -4,7 +4,7 @@ define([
     "dojo/dom-construct",
     "dojo/_base/lang",
     "js/translate",
-    "./grid-table",
+    "./gridTable",
     "./widgetSupport",
     "dijit/layout/ContentPane",
     "dstore/Memory",
