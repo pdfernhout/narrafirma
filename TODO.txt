@@ -102,6 +102,7 @@ Support trendsReport -- shows text and graphs in report based on top differences
 CLUSTERING
 Support clusterSpace -- used in catalysis to cluster interpretations it is a graphical OR grid way of putting like with like, the option tells you what is to be clustered
 Support multiple item selection in clustering diagram
+Issue where background is transparent when go to view or change the source in clustering diagram
 
 OBSERVATION LIST
 Support observationsList -- used to list all the previously made observations
