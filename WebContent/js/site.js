@@ -6,12 +6,12 @@ require([
 ){
     "use strict";
     
-    function startup() {
-        console.log("startup called in site.js");
-        toaster.createToasterWidget(document.getElementById("startup"));
+    function initialize() {
+        console.log("initialize called in site.js");
+        toaster.createToasterWidget(document.getElementById("pleaseWaitDiv"));
         
-        // turn off startup "please wait" display
-        document.getElementById("startup").style.display = "none";
+        // turn off initial "please wait" display
+        document.getElementById("pleaseWaitDiv").style.display = "none";
         
         toaster.toast("test");
         
@@ -28,5 +28,5 @@ require([
         
     }
 
-    startup();
+    initialize();
 });

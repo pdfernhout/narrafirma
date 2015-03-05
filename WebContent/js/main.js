@@ -479,7 +479,8 @@ require([
         
         navigationPane = new ContentPane({}, "navigationDiv");
         navigationPane.startup();
-        // Any  items like buttons added to the navigationPane will have startup called automatically, since the navigationPane has been started
+        // Any items like buttons added to the navigationPane will have startup() called automatically,
+        // since the navigationPane they are being added to has already been started
         
         // Initialize toaster
         toaster.createToasterWidget(navigationPane);
@@ -568,8 +569,8 @@ require([
         loadLatestClicked();
         */
         
-        // turn off startup "please wait" display
-        document.getElementById("startup").style.display = "none";
+        // turn off initial "please wait" display
+        document.getElementById("pleaseWaitDiv").style.display = "none";
     }
     
     initialize();

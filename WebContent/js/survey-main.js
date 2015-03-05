@@ -41,7 +41,7 @@ require([
         survey.getQuestionnaireFromServer(questionnaireID, function(error, questionnaire, envelope) {
             if (error) {
                 // TODO: Translate
-                document.getElementById("startup").innerHTML = "Something went wrong loading the survey questionnaire from the server";
+                document.getElementById("pleaseWaitDiv").innerHTML = "Something went wrong loading the survey questionnaire from the server";
                 alert("Something went wrong loading the survey questionnaire from the server:\n" + error);
                 return;
             }
@@ -66,20 +66,20 @@ require([
             // Startup must be called here as form is being added directly to the rest of document visual hierarchy
             form.startup();
 
-            // turn off startup "please wait" display
-            document.getElementById("startup").style.display = "none";
+            // turn off initial "please wait" display
+            document.getElementById("pleaseWaitDiv").style.display = "none";
 
         });
     }
     
-    function startup() {
+    function initialize() {
         translate.configure({}, applicationMessages);
         
         // Determine status of current questionnaire
         survey.getStatusFromServer(questionnaireID, function(error, status, envelope) {
             if (error || !status.active) {
                 // TODO: Translate
-                document.getElementById("startup").innerHTML = "The survey is not currently active: " + questionnaireID;
+                document.getElementById("pleaseWaitDiv").innerHTML = "The survey is not currently active: " + questionnaireID;
                 return;
             }
             console.log("got questionnaire status", status);
@@ -87,5 +87,5 @@ require([
         });
     }
     
-    startup();
+    initialize();
 });

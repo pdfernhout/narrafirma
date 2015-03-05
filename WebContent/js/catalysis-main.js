@@ -149,13 +149,13 @@ require([
         addBreak();
         addBreak();
 
-        // turn off startup "please wait" display
-        document.getElementById("startup").style.display = "none";
+        // turn off initial "please wait" display
+        document.getElementById("pleaseWaitDiv").style.display = "none";
     }
     
-    function startup() {
+    function initialize() {
         createLayout();
     }
     
-    startup();
+    initialize();
 });

@@ -12,7 +12,7 @@ define([
     // For a "toaster" that can give status or progress updates
     var toasterWidget = null;
  
-    // This should only be called once in your application, at startup
+    // This should only be called once in your application, at the beginning
     function createToasterWidget(container) {
         var toasterPane =  new ContentPane();
         toasterPane.placeAt(container);
