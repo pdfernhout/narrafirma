@@ -451,7 +451,11 @@ define([
             // Skip last report page in a section
             if (pageIndex === pageList.length - 1) break;
             var pageID = pageList[pageIndex];
-            var panelDefinition = panelDefinitions[pageID];
+            var panelDefinition = panelDefinitions[pageID.replace("page_", "panel_")];
+            if (!panelDefinition) {
+                console.log("ERROR: Missing panelDefinition for pageID:", pageID);
+                continue;
+            }
             if (panelDefinition.displayType !== "page") continue;
             report += "<div>";
             report += "<i> *** " + translate("#" + pageID + "::title", panelDefinition.displayName) + "</i>  ***<br><br>";
