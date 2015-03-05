@@ -164,43 +164,53 @@ var buildingFunctions = {
     "function": "add_function",
     "quizScoreResult": "add_quizScoreResult"
 };
-    
+
+// The applicationBuilder is needed to build popup panels for some widgets like the grid
+var applicationBuilder = null;
+
 // This class builds panels from question definitions
 var PanelBuilder = declare(null, {
-    // The applicationBuilder is needed to build popup panels for some widgets like the grid
-    applicationBuilder: null,
-    
     // content panes can be pushed down on the stack when working on nested panes
     contentPaneStack: [],
     contentPane: null,
     
-    constructor: function(contentPane, kwArgs) {
-        this.contentPane = contentPane;
-        
+    constructor: function(kwArgs) {
         lang.mixin(this, kwArgs);
         // TODO: What should go here?
     },
     
+    // TODO: Perhaps should handle contentPane differently, since it is getting overwritten by these next three methods
+    
     addQuestionWidget: function(type, contentPane, model, id, dataOptions, displayConfiguration) {
         console.log("addQuestionWidget", type, id);
+        this.contentPane = contentPane;
         var addFunctionName = buildingFunctions[type];
         if (!addFunctionName) {
             var error = "ERROR: unsupported question type: " + type;
             console.log(error);
-            throw error;
+            throw new Error(error);
         }
-        var addFunction = this[addFunctionName];
+
         // TODO: Refactor: Legacy from when just one options field in questions
         // TODO: Maybe, should maybe have all widgets have some more complex configuration approach with two arguments or a dictionary with configuration info
         var options = dataOptions;
         if (!options) options = displayConfiguration;
         if (lang.isString(options)) options = [options];
-        return addFunction(contentPane, model, id, options);
+        
+        var addFunction = this[addFunctionName];
+        if (!addFunctionName) {
+            var error2 = "ERROR: missing addFunction for: " + addFunctionName + " for type: " + type;
+            console.log(error2);
+            throw new Error(error2);
+        }
+        
+        return lang.hitch(this, addFunction)(contentPane, model, id, options);
     },
     
     // Returns dictionary mapping from question IDs to widgets
     addQuestions: function(questions, contentPane, model) {
         console.log("addQuestions", questions);
+        this.contentPane = contentPane;
         var widgets = {};
         for (var questionIndex in questions) {
             var question = questions[questionIndex];
@@ -212,13 +222,12 @@ var PanelBuilder = declare(null, {
     
     // Build an entire panel; panel can be either a string ID referring to a panel or it can be a panel definition itself
     buildPanel: function(panelOrID, contentPane, model) {
+        this.contentPane = contentPane;
         var questions;
         if (lang.isString(panelOrID)) {
-            questions = this.applicationBuilder.buildQuestionsForPanel(panelOrID);
+            questions = applicationBuilder.buildQuestionsForPanel(panelOrID);
         } else if (panelOrID.buildPanel) {
-            // TODO: widgetBuilder should really be a class with a "this" value, especially as widgets now pass it around
-            var widgetBuilder = this;
-            return panelOrID.buildPanel(widgetBuilder, contentPane, model);
+            return panelOrID.buildPanel(this, contentPane, model);
         } else {
             questions = panelOrID.questions;
         }
@@ -1069,9 +1078,14 @@ var PanelBuilder = declare(null, {
     }
     
     });
-    
+
+    // Class function: Call this once for the application
+    PanelBuilder.setApplicationBuilder = function(newApplicationBuilder) {
+        applicationBuilder = newApplicationBuilder;
+    };
+
     function usageIdeas(contentPane) {
-        var panelBuilder = new PanelBuilder(contentPane);
+        var panelBuilder = new PanelBuilder({contentPane: contentPane});
         panelBuilder.addButton("Click me", function () {console.log("clicked");});
         panelBuilder.addButton("#someTranslationID Some text if translation not found", "someDomainAction");
         panelBuilder.addButton({id: "someQuestionID", displayConfiguration: "someDomainAction"});

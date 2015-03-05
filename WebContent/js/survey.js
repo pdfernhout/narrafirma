@@ -5,7 +5,7 @@ define([
     "js/storage",
     "js/translate",
     "dojox/uuid/generateRandomUuid",
-    "js/widgets/widgetBuilder",
+    "js/PanelBuilder",
     "dijit/layout/ContentPane",
     "dijit/Dialog",
     "dijit/layout/StackContainer",
@@ -18,7 +18,7 @@ define([
     storage,
     translate,
     generateRandomUuid,
-    widgetBuilder,
+    PanelBuilder,
     ContentPane,
     Dialog,
     StackContainer,
@@ -30,6 +30,9 @@ define([
     // TODO: Replace use of storage with direct calls to server to get questionnaire and submit survey
     
     var timestampStart;
+    
+    // Because applicationBuilder is not set, this can not build popup panels (but they are not needed here)
+    var panelBuilder = new PanelBuilder();
     
     function submitSurvey(surveyResultsWithModels, wizardPane, doneCallback) {
         var answers = {};
@@ -108,7 +111,7 @@ define([
         if (singlePrompt) storyQuestionsModel.set("elicitingQuestion", singlePrompt);
         surveyResultsWithModels.stories.push(storyQuestionsModel);
         
-        widgetBuilder.addQuestions(allStoryQuestions, surveyPane, storyQuestionsModel);
+        panelBuilder.addQuestions(allStoryQuestions, surveyPane, storyQuestionsModel);
         
         widgetSupport.newButton(undefined, "button_previousPage", surveyPane, function() {
             console.log("button_previousPage");
@@ -233,7 +236,7 @@ define([
 
         var startPane = new ContentPane();
         
-        widgetBuilder.addQuestions(startQuestions, startPane.containerNode, participantDataModel);
+        panelBuilder.addQuestions(startQuestions, startPane.containerNode, participantDataModel);
         
         widgetSupport.newButton(undefined, "button_nextPage", startPane, function() {
             console.log("button_nextPage");
@@ -251,7 +254,7 @@ define([
         
         var participantPane = new ContentPane();
         
-        widgetBuilder.addQuestions(questionnaire.participantQuestions, participantPane.containerNode, participantDataModel);
+        panelBuilder.addQuestions(questionnaire.participantQuestions, participantPane.containerNode, participantDataModel);
         
         widgetSupport.newButton(undefined, "button_previousPage", participantPane, function() {
             console.log("button_previousPage");
@@ -266,7 +269,7 @@ define([
         wizardPane.addChild(participantPane);
         
         var endPane = new ContentPane();
-        widgetBuilder.addQuestions(endQuestions, endPane.containerNode, participantDataModel);
+        panelBuilder.addQuestions(endQuestions, endPane.containerNode, participantDataModel);
         
         if (includeCancelButton) {
             widgetSupport.newButton(undefined, "surveyCancel", wizardPane, function() {

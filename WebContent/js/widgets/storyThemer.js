@@ -28,7 +28,7 @@ define([
     // story themer support
     
     // TODO: Fix so the filters get updated as the story questions get changed
-    function insertStoryThemer(widgetBuilder, pagePane, model, id, panelDefinitions) {
+    function insertStoryThemer(panelBuilder, pagePane, model, id, panelDefinitions) {
         console.log("insertStoryThemer start", id);
         
         // TODO: Fix this show also handles participant questions somehow
@@ -62,16 +62,16 @@ define([
         var popupPageDefinition = {
              "id": "storyBrowserQuestions",
              "questions": questions,
-             buildPanel: function (widgetBuilder, contentPane, model) {
+             buildPanel: function (panelBuilder, contentPane, model) {
                  var participantID = model.get("_participantID");
                  var participantData = domain.getParticipantDataForParticipantID(participantID);
                  var participantDataModel = new Stateful(participantData);
                  
                  /*
-                 widgetBuilder.addQuestions(questions, contentPane, model);
+                 panelBuilder.addQuestions(questions, contentPane, model);
                  // TODO: Load correct participant data
                  
-                 widgetBuilder.addQuestions(questionnaire.participantQuestions, contentPane, participantDataModel);
+                 panelBuilder.addQuestions(questionnaire.participantQuestions, contentPane, participantDataModel);
                  */
                  
                  // Encode all user-supplied text to ensure it does not create HTML issues
@@ -115,7 +115,7 @@ define([
                          {id: "name", displayName: "Theme", displayPrompt: "Theme", displayType: "text", dataOptions:[]}
                      ]
                  };
-                 var themeList = widgetGridTable.insertGridTableBasic(widgetBuilder, themesPane, "storyThemeList", storyThemesStore, popupPageDefinition2, configuration2);
+                 var themeList = widgetGridTable.insertGridTableBasic(panelBuilder, themesPane, "storyThemeList", storyThemesStore, popupPageDefinition2, configuration2);
                  console.log("themeList", themeList);
                  
                  var allThemes = [];
@@ -179,7 +179,7 @@ define([
         
         // Only allow view button for stories
         var configuration = {viewButton: true, navigationButtons: true, includeAllFields: ["__survey_storyName", "__survey_storyText"]};
-        var storyList = widgetGridTable.insertGridTableBasic(widgetBuilder, pagePane, id, dataStore, popupPageDefinition, configuration);
+        var storyList = widgetGridTable.insertGridTableBasic(panelBuilder, pagePane, id, dataStore, popupPageDefinition, configuration);
         storyList.grid.set("selectionMode", "single");
         
         console.log("insertStoryThemer finished");

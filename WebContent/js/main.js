@@ -10,7 +10,7 @@ require([
     "js/survey",
     "js/toaster",
     "js/translate",
-    "js/widgets/widgetBuilder",
+    "js/PanelBuilder",
     "js/widgets/widgetSupport",
     "js/widgets/gridTable",
     "dijit/layout/ContentPane",
@@ -28,7 +28,7 @@ require([
     survey,
     toaster,
     translate,
-    widgetBuilder,
+    PanelBuilder,
     widgetSupport,
     widgetGridTable,
     ContentPane,
@@ -55,6 +55,11 @@ require([
     var loadVersionButton = null;
     var saveButton = null;
     var importExportButton = null;
+    
+    // Tell all the PanelBuilders where to find information about panels (the applicationBuilder)
+    PanelBuilder.setApplicationBuilder(applicationBuilder);
+    
+    var panelBuilder = new PanelBuilder();
     
     function loadLatestClicked(event) {
         console.log("load latest clicked");
@@ -117,7 +122,7 @@ require([
         }
         
         // Update derived values
-        widgetBuilder.updateQuestionsForPageChange();
+        panelBuilder.updateQuestionsForPageChange();
         
         // Reload page looking at to ensure it gets latest data...
         showPage(currentPageID, "forceRefresh");
@@ -216,7 +221,7 @@ require([
         
         window.scrollTo(0, 0); 
         
-        widgetBuilder.updateQuestionsForPageChange();
+        panelBuilder.updateQuestionsForPageChange();
     }
     
     function createPage(id, visible) {
@@ -250,7 +255,7 @@ require([
         
        // console.log("Made content pane", id);
        
-       widgetBuilder.buildPanel(panelID, pagePane, domain.projectData.projectAnswers);
+       panelBuilder.buildPanel(panelID, pagePane, domain.projectData.projectAnswers);
        
        if (!page.isHeader) {
            var options = ["intentionally skipped", "partially done", "completely finished"];
@@ -260,7 +265,7 @@ require([
                var option = options[optionIndex];
                translate.addExtraTranslation(statusEntryID + "::selection:" + option, translate("#dashboard_status_entry::selection:" + option));
            }
-           widgetBuilder.add_select(pagePane, domain.projectData.projectAnswers, statusEntryID, options);
+           panelBuilder.add_select(pagePane, domain.projectData.projectAnswers, statusEntryID, options);
        } else {
            console.log("page dashboard as header", page.id, page.displayType, page);
            // Put in dashboard
@@ -275,8 +280,8 @@ require([
                if (childPage && childPage.displayType === "page") {
                    var prompt = translate("#" + childPageID + "::title", childPage.displayName) + " " + translate("#dashboard_status_label") + " ";
                    translate.addExtraTranslation(statusViewID + "::prompt", prompt);
-                   console.log("about to call widgetBuilder for childPage", childPageID);
-                   widgetBuilder.add_questionAnswer(pagePane, domain.projectData.projectAnswers, statusViewID, [childPageID + "_pageStatus"]);
+                   console.log("about to call panelBuilder for childPage", childPageID);
+                   panelBuilder.add_questionAnswer(pagePane, domain.projectData.projectAnswers, statusViewID, [childPageID + "_pageStatus"]);
                }
            }
        }
@@ -524,7 +529,7 @@ require([
     }
     
     function updatePagesForDomainValueChange() {
-        widgetBuilder.updateQuestionsForPageChange();
+        panelBuilder.updateQuestionsForPageChange();
         // widgetGridTable.resizeGridsKludge();
     }
     
@@ -537,14 +542,13 @@ require([
     }
     
     function initialize() {
-        widgetBuilder.setApplicationBuilder(applicationBuilder);
         translate.configure({}, applicationMessages);
 
         // Synchronizes the state of the domain for one status flag with what is on server
         domain.determineStatusOfCurrentQuestionnaire();
 
         // Setup important callback for page changes
-        domain.setPageChangeCallback(widgetBuilder.updateQuestionsForPageChange);
+        domain.setPageChangeCallback(panelBuilder.updateQuestionsForPageChange);
 
         // Callback for this button
         // TODO: Temp for testing

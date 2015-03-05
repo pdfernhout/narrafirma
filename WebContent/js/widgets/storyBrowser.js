@@ -206,7 +206,7 @@ define([
     }
     
     // TODO: Fix so the filters get updated as the story questions get changed
-    function insertStoryBrowser(widgetBuilder, pagePane, model, id, panelDefinitions) {
+    function insertStoryBrowser(panelBuilder, pagePane, model, id, panelDefinitions) {
         console.log("insertStoryBrowser start", id);
         
         // TODO: Fix this show also handles participant questions somehow
@@ -239,14 +239,14 @@ define([
         var popupPageDefinition = {
              "id": "storyBrowserQuestions",
              "questions": questions,
-             buildPanel: function (widgetBuilder, contentPane, model) {
-                 widgetBuilder.addQuestions(questions, contentPane, model);
+             buildPanel: function (panelBuilder, contentPane, model) {
+                 panelBuilder.addQuestions(questions, contentPane, model);
                  // TODO: Load correct participant data
                  
                  var participantID = model.get("_participantID");
                  var participantData = domain.getParticipantDataForParticipantID(participantID);
                  var participantDataModel = new Stateful(participantData);
-                 widgetBuilder.addQuestions(questionnaire.participantQuestions, contentPane, participantDataModel);
+                 panelBuilder.addQuestions(questionnaire.participantQuestions, contentPane, participantDataModel);
              }
         };
 
@@ -307,7 +307,7 @@ define([
         
         // Only allow view button for stories
         var configuration = {viewButton: true, includeAllFields: true};
-        storyList = widgetGridTable.insertGridTableBasic(widgetBuilder, pagePane, id, dataStore, popupPageDefinition, configuration);
+        storyList = widgetGridTable.insertGridTableBasic(panelBuilder, pagePane, id, dataStore, popupPageDefinition, configuration);
         
         console.log("insertStoryBrowser finished");
     }

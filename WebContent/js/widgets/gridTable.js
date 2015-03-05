@@ -113,7 +113,7 @@ define([
             
         clearGridsKludge();
 
-        grid.widgetBuilder.buildPanel(popupPageDefinition, form, statefulItem);
+        grid.panelBuilder.buildPanel(popupPageDefinition, form, statefulItem);
         
         var borderColor = "green";
         if (formType === "view") {
@@ -385,10 +385,10 @@ define([
         if (buttons.navigateEndButton) buttons.navigateEndButton.set("disabled", atEnd);
     }
 
-    // Passing in widgetBuilder rather than import it to avoid AMD cyclic dependency
+    // Passing in panelBuilder rather than import it to avoid AMD cyclic dependency
     // Possible configuration options
     // var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, navigationButtons: true, includeAllFields: false};
-    function insertGridTableBasic(widgetBuilder, pagePane, id, originalDataStore, popupPageDefinition, configuration) {
+    function insertGridTableBasic(panelBuilder, pagePane, id, originalDataStore, popupPageDefinition, configuration) {
         // Grid with list of objects
         console.log("insertGridTableBasic", id, originalDataStore);
         
@@ -457,7 +457,7 @@ define([
             deselectOnRefresh: false
         });
 
-        grid.widgetBuilder = widgetBuilder;
+        grid.panelBuilder = panelBuilder;
         
         if (!pagePane.addChild) {
             alert("TROUBLE -- see log");

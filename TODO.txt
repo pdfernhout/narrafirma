@@ -489,3 +489,4 @@ DONE Mix in GUI interface points on pages to model fields to produce unified vie
 NOT DOING Think about changing names for fields when they are in a smaller model (like the long names for searching across files given JavaScript's lack of a type system to otherwise navigate)
 DONE Refactor GUI code out of utility module
 DONE Replace utility module for things like string startsWith with lodash (underscore-work-alike)
+DONE Refactor widgetBuilder module into a PanelBuilder class with an instance used to build panels
