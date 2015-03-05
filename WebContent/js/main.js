@@ -588,6 +588,9 @@ require([
         // Setup important callback for page changes
         domain.setPageChangeCallback(lang.hitch(panelBuilder, panelBuilder.updateQuestionsForPageChange));
 
+        // Set up callback for requests to open a section
+        domain.setOpenSectionCallback(showPage);
+        
         // Callback for this button
         // TODO: Temp for testing
         domain.buttonFunctions.enterSurveyResult = openSurveyDialog;

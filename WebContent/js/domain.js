@@ -50,7 +50,7 @@ define([
     }
     
     // Store page change callback to prevent circular reference when loading domain and question editor
-    var pageChangeCallback = null;
+    var pageChangeCallback;
     
     function setPageChangeCallback(pageChangeCallbackNewValue) {
         pageChangeCallback = pageChangeCallbackNewValue;
@@ -343,6 +343,18 @@ define([
     function copyStoryFormURL() {
         alert("Story form URL is: " + "http://localhost:8080/survey.html");
     }
+    
+    var openSectionCallback;
+    
+    function setOpenSectionCallback(callback) {
+        openSectionCallback = callback;
+    }
+    
+    function guiOpenSection(contentPane, model, fieldSpecification, value) {
+        var section = fieldSpecification.displayConfiguration.section;
+        console.log("guiOpenSection", section, fieldSpecification);
+        if (openSectionCallback) openSectionCallback(section);
+    }
       
     var buttonFunctions = {
         "printStoryForm": printStoryForm,
@@ -357,7 +369,8 @@ define([
         
         "storyCollectionStart": storyCollectionStart,
         "storyCollectionStop": storyCollectionStop,
-        "copyStoryFormURL": copyStoryFormURL
+        "copyStoryFormURL": copyStoryFormURL,
+        "guiOpenSection": guiOpenSection
     };
     
     // dispatch the button click
@@ -366,7 +379,11 @@ define([
          
          var functionName = fieldSpecification.id;
          if (fieldSpecification.displayConfiguration) {
-             functionName = fieldSpecification.displayConfiguration;
+             if (_.isString(fieldSpecification.displayConfiguration)) {
+                 functionName = fieldSpecification.displayConfiguration;
+             } else {
+                 functionName = fieldSpecification.displayConfiguration.action;
+             }
          }
          
          var actualFunction = buttonFunctions[functionName];
@@ -579,12 +596,15 @@ define([
         "panelDefinitions": panelDefinitions,
         
         // functions called from page widgets
-        "setPageChangeCallback": setPageChangeCallback,
         "callDashboardFunction": callDashboardFunction,
         "buttonClicked": buttonClicked,
         "calculate_report": calculate_report,
         "calculate_quizScoreResult": calculate_quizScoreResult,
         "buttonFunctions": buttonFunctions,
+        
+        // Configuring callbacks for button functions
+        "setPageChangeCallback": setPageChangeCallback,
+        "setOpenSectionCallback": setOpenSectionCallback,
         
         "getCurrentQuestionnaire": getCurrentQuestionnaire,
         
