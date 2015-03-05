@@ -16,6 +16,7 @@ define([
     
     function translate(tag, defaultText) {
         if (debugTranslations) console.log("translating", tag);
+        if (tag == "#undefined::prompt") throw new Error("bad translation tag using undefined which is likely a programming error");
         // if (debugTranslations && tag.charAt(0) !== "#") throw new Error("translation tag should have leading #  for: " + tag);
         // Kludge for extra domain translations for testing
         if (!tag) {

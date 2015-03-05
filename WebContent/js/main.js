@@ -6,6 +6,7 @@ require([
     "dojo/dom-construct",
     "dojo/dom-style",
     "dojo/hash",
+    "dojo/_base/lang",
     "js/storage",
     "js/survey",
     "js/toaster",
@@ -24,6 +25,7 @@ require([
     domConstruct,
     domStyle,
     hash,
+    lang,
     storage,
     survey,
     toaster,
@@ -265,7 +267,7 @@ require([
                var option = options[optionIndex];
                translate.addExtraTranslation(statusEntryID + "::selection:" + option, translate("#dashboard_status_entry::selection:" + option));
            }
-           panelBuilder.add_select(pagePane, domain.projectData.projectAnswers, statusEntryID, options);
+           panelBuilder.add_select(pagePane, domain.projectData.projectAnswers, {id: statusEntryID, dataOptions: options});
        } else {
            console.log("page dashboard as header", page.id, page.displayType, page);
            // Put in dashboard
@@ -281,7 +283,7 @@ require([
                    var prompt = translate("#" + childPageID + "::title", childPage.displayName) + " " + translate("#dashboard_status_label") + " ";
                    translate.addExtraTranslation(statusViewID + "::prompt", prompt);
                    console.log("about to call panelBuilder for childPage", childPageID);
-                   panelBuilder.add_questionAnswer(pagePane, domain.projectData.projectAnswers, statusViewID, [childPageID + "_pageStatus"]);
+                   panelBuilder.add_questionAnswer(pagePane, domain.projectData.projectAnswers, {id: statusViewID, displayConfiguration: [childPageID + "_pageStatus"]});
                }
            }
        }
@@ -548,7 +550,7 @@ require([
         domain.determineStatusOfCurrentQuestionnaire();
 
         // Setup important callback for page changes
-        domain.setPageChangeCallback(panelBuilder.updateQuestionsForPageChange);
+        domain.setPageChangeCallback(lang.hitch(panelBuilder, panelBuilder.updateQuestionsForPageChange));
 
         // Callback for this button
         // TODO: Temp for testing

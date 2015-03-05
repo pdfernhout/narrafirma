@@ -56,7 +56,7 @@ define([
         pageChangeCallback = pageChangeCallbackNewValue;
     }
     
-    function copyDraftPNIQuestionVersionsIntoAnswers(contentPane, model, id, questionOptions, value) {
+    function copyDraftPNIQuestionVersionsIntoAnswers(contentPane, model, fieldSpecification, value) {
         var finalQuestionIDs = ["project_pniQuestions_goal_final", "project_pniQuestions_relationships_final",
                          "project_pniQuestions_focus_final", "project_pniQuestions_range_final",
                          "project_pniQuestions_scope_final", "project_pniQuestions_emphasis_final"];
@@ -214,7 +214,7 @@ define([
         }
     }
     
-    function printStoryForm(contentPane, model, id, questionOptions, value) {
+    function printStoryForm(contentPane, model, fieldSpecification, value) {
         console.log("printStoryForm unfinished");
         
         alert("unfinished");
@@ -228,7 +228,7 @@ define([
     */
     
     // Can also just pass in callback as first arg, rest are unused and are for compatibility with GUI calling system
-    function loadLatestStoriesFromServer(contentPane, model, id, questionOptions, value, callback) {
+    function loadLatestStoriesFromServer(contentPane, model, fieldSpecification, value, callback) {
         console.log("loadLatestStoriesFromServer called");
         if (lang.isFunction(contentPane)) callback = contentPane;
         
@@ -306,7 +306,7 @@ define([
         return {};
     }
         
-    function storyCollectionStart(contentPane, model, id, questionOptions, value) {
+    function storyCollectionStart(contentPane, model, fieldSpecification, value) {
         alert("also finalizing survey for testing...");
         
         var questionnaire = getCurrentQuestionnaire();
@@ -327,7 +327,7 @@ define([
         });
     }
     
-    function storyCollectionStop(contentPane, model, id, questionOptions, value) {
+    function storyCollectionStop(contentPane, model, fieldSpecification, value) {
         var status = {questionnaireID: questionnaireID, active: false};
         storage.storeQuestionnaireStatus(questionnaireID, status, function(error) {
             console.log("Deactivated questionnaire", questionnaireID);
@@ -361,22 +361,22 @@ define([
     };
     
     // dispatch the button click
-    function buttonClicked(contentPane, model, id, questionOptions, value) {
-         console.log("buttonClicked", id, questionOptions);
+    function buttonClicked(contentPane, model, fieldSpecification, value) {
+         console.log("buttonClicked", fieldSpecification);
          
-         var functionName = id;
-         if (questionOptions) {
-             functionName = questionOptions[0];
+         var functionName = fieldSpecification.id;
+         if (fieldSpecification.displayConfiguration) {
+             functionName = fieldSpecification.displayConfiguration;
          }
          
          var actualFunction = buttonFunctions[functionName];
          if (!actualFunction) {
-             var message = "Unfinished handling for: " + id + " with functionName: " + functionName;
-             console.log(message, contentPane, model, id, questionOptions, value);
+             var message = "Unfinished handling for: " + fieldSpecification.id + " with functionName: " + functionName;
+             console.log(message, contentPane, model, fieldSpecification, value);
              alert(message);
              return;
          } else {
-             actualFunction(contentPane, model, id, questionOptions, value);
+             actualFunction(contentPane, model, fieldSpecification, value);
          }
     }
 

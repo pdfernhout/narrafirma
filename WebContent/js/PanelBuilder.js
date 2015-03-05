@@ -170,9 +170,6 @@ var applicationBuilder = null;
 
 // This class builds panels from question definitions
 var PanelBuilder = declare(null, {
-    // content panes can be pushed down on the stack when working on nested panes
-    contentPaneStack: [],
-    contentPane: null,
     
     constructor: function(kwArgs) {
         lang.mixin(this, kwArgs);
@@ -181,40 +178,34 @@ var PanelBuilder = declare(null, {
     
     // TODO: Perhaps should handle contentPane differently, since it is getting overwritten by these next three methods
     
-    addQuestionWidget: function(type, contentPane, model, id, dataOptions, displayConfiguration) {
-        console.log("addQuestionWidget", type, id);
-        this.contentPane = contentPane;
-        var addFunctionName = buildingFunctions[type];
+    addQuestionWidget: function(contentPane, model, fieldSpecification) {
+        console.log("addQuestionWidget", fieldSpecification);
+        
+        var addFunctionName = buildingFunctions[fieldSpecification.displayType];
         if (!addFunctionName) {
-            var error = "ERROR: unsupported question type: " + type;
+            var error = "ERROR: unsupported field display type: " + fieldSpecification.displayType;
             console.log(error);
             throw new Error(error);
         }
-
-        // TODO: Refactor: Legacy from when just one options field in questions
-        // TODO: Maybe, should maybe have all widgets have some more complex configuration approach with two arguments or a dictionary with configuration info
-        var options = dataOptions;
-        if (!options) options = displayConfiguration;
-        if (lang.isString(options)) options = [options];
         
         var addFunction = this[addFunctionName];
         if (!addFunctionName) {
-            var error2 = "ERROR: missing addFunction for: " + addFunctionName + " for type: " + type;
+            var error2 = "ERROR: missing addFunction for: " + addFunctionName + " for field display type: " + fieldSpecification.displayType;
             console.log(error2);
             throw new Error(error2);
         }
         
-        return lang.hitch(this, addFunction)(contentPane, model, id, options);
+        return lang.hitch(this, addFunction)(contentPane, model, fieldSpecification);
     },
     
     // Returns dictionary mapping from question IDs to widgets
     addQuestions: function(questions, contentPane, model) {
         console.log("addQuestions", questions);
-        this.contentPane = contentPane;
+        
         var widgets = {};
         for (var questionIndex in questions) {
             var question = questions[questionIndex];
-            var widget = this.addQuestionWidget(question.displayType, contentPane, model, question.id, question.dataOptions, question.displayConfiguration);
+            var widget = this.addQuestionWidget(contentPane, model, question);
             widgets[question.id] = widget;
         }
         return widgets;
@@ -222,11 +213,11 @@ var PanelBuilder = declare(null, {
     
     // Build an entire panel; panel can be either a string ID referring to a panel or it can be a panel definition itself
     buildPanel: function(panelOrID, contentPane, model) {
-        this.contentPane = contentPane;
         var questions;
         if (lang.isString(panelOrID)) {
             questions = applicationBuilder.buildQuestionsForPanel(panelOrID);
         } else if (panelOrID.buildPanel) {
+            // Call explicit constructor function
             return panelOrID.buildPanel(this, contentPane, model);
         } else {
             questions = panelOrID.questions;
@@ -237,12 +228,15 @@ var PanelBuilder = declare(null, {
                   
     /////////////
     
-    createQuestionContentPaneWithPrompt: function(contentPane, id) {
+    createQuestionContentPaneWithPrompt: function(contentPane, fieldSpecification) {
         // triangle&#8227; 
         // double arrow &#187;
         // Arrow with hook &#8618;
         // Three rightwards arrows &#21F6; (doesn't work)
         // "*** " + 
+        if (!fieldSpecification) throw new Error("null, undefined, or empty string for fieldSpecification");
+        if (!fieldSpecification.id) throw new Error("null, undefined, or empty string for fieldSpecification id: " + JSON.stringify(fieldSpecification));
+        var id = fieldSpecification.id;
         var questionText = translate("#" + id + "::prompt", "ERROR: missing text for: " + id + "::prompt");
         var questionContentPane = new ContentPane({
         });
@@ -273,25 +267,25 @@ var PanelBuilder = declare(null, {
     
     ////////////////
     
-    add_label: function(contentPane, model, id, options) {
+    add_label: function(contentPane, model, fieldSpecification) {
         var label = new ContentPane({
-            content: htmlForInformationIcon(randomHelpPageURL(id)) + "&nbsp;&nbsp;" + translate("#" + id + "::prompt")
+            content: htmlForInformationIcon(randomHelpPageURL(fieldSpecification.id)) + "&nbsp;&nbsp;" + translate("#" + fieldSpecification.id + "::prompt")
         });
         label.placeAt(contentPane);
         return label;
     },
     
-    add_header: function(contentPane, model, id, options) {
+    add_header: function(contentPane, model, fieldSpecification) {
         var label = new ContentPane({
-            content: htmlForInformationIcon(randomHelpPageURL(id)) + "&nbsp;&nbsp;" + "<b>" + translate("#" + id + "::prompt") + "</b>"
+            content: htmlForInformationIcon(randomHelpPageURL(fieldSpecification.id)) + "&nbsp;&nbsp;" + "<b>" + translate("#" + fieldSpecification.id + "::prompt") + "</b>"
         });
         label.placeAt(contentPane);
         return label;
     },
     
-    add_image: function(contentPane, model, id, options) {
-        var imageSource = options[0];
-        var questionText = translate("#" + id + "::prompt", "");
+    add_image: function(contentPane, model, fieldSpecification) {
+        var imageSource = fieldSpecification.displayConfiguration;
+        var questionText = translate("#" + fieldSpecification.id + "::prompt", "");
         var image = new ContentPane({
             content: questionText + "<br>" + '<img src="' + imageSource + '" alt="Image for question: ' + questionText + '">'
         });
@@ -299,56 +293,56 @@ var PanelBuilder = declare(null, {
         return image;
     },
     
-    add_text: function(contentPane, model, id, options) {
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id);
+    add_text: function(contentPane, model, fieldSpecification) {
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         var textBox = new TextBox({
-            value: at(model, id)
+            value: at(model, fieldSpecification.id)
         });
         textBox.set("style", "width: 40em");
         textBox.placeAt(questionContentPane);
         return textBox;
     },
     
-    add_textarea: function(contentPane, model, id, options) {
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id); 
+    add_textarea: function(contentPane, model, fieldSpecification) {
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification); 
         var textarea = new SimpleTextarea({
             rows: "4",
             cols: "80",
             style: "width:auto;",
-            value: at(model, id)
+            value: at(model, fieldSpecification.id)
         });
         textarea.placeAt(questionContentPane);
         return textarea;
     },
     
-    add_clusteringDiagram: function(contentPane, model, id, options) {
+    add_clusteringDiagram: function(contentPane, model, fieldSpecification) {
         // clustering diagram using a list of 2D objects
-        console.log("add_clusteringDiagram", model, id, options);
+        console.log("add_clusteringDiagram", model, fieldSpecification);
         // console.log("clusteringDiagram module", clusteringDiagram);
         
-        var diagramName = options[0];
+        var diagramName = fieldSpecification.displayConfiguration;
         
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id);
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
-        return clusteringDiagram.insertClusteringDiagram(questionContentPane, model, id, diagramName, true);
+        return clusteringDiagram.insertClusteringDiagram(questionContentPane, model, fieldSpecification.id, diagramName, true);
     },
     
-    add_grid: function(contentPane, model, id, options) {
+    add_grid: function(contentPane, model, fieldSpecification) {
         // Grid with list of objects
         // console.log("add_grid");
         
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id);
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
-        var popupPageDefinition = domain.panelDefinitions[options[0]];
+        var popupPageDefinition = domain.panelDefinitions[fieldSpecification.displayConfiguration];
         
         if (!popupPageDefinition) {
-            console.log("Trouble: no popupPageDefinition for options: ", id, options);
+            console.log("Trouble: no popupPageDefinition for options: ", fieldSpecification);
         }
         
-        var data = model.get(id);
+        var data = model.get(fieldSpecification.id);
         if (!data) {
             data = [];
-            model.set(id, data);
+            model.set(fieldSpecification.id, data);
         }
         
         // Store will modify underlying array
@@ -358,19 +352,20 @@ var PanelBuilder = declare(null, {
         });
         
         var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
-        return GridTable.insertGridTableBasic(this, questionContentPane, id, dataStore, popupPageDefinition, configuration);
+        return GridTable.insertGridTableBasic(this, questionContentPane, fieldSpecification.id, dataStore, popupPageDefinition, configuration);
     },
     
-    add_select: function(contentPane, model, id, questionOptions, addNoSelectionOption) {
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id);
+    add_select: function(contentPane, model, fieldSpecification, addNoSelectionOption) {
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var options = [];
         if (addNoSelectionOption) options.push({name: translate("#selection_has_not_been_made"), id: "", selected: true});
-        if (questionOptions) {
-            array.forEach(questionOptions, function(each) {
+        var choices = fieldSpecification.dataOptions;
+        if (choices) {
+            array.forEach(choices, function(each) {
                 // console.log("choice", id, each);
                 if (lang.isString(each)) {
-                    var label = translate("#" + id + "::selection:" + each);
+                    var label = translate("#" + fieldSpecification.id + "::selection:" + each);
                     options.push({name: label, id: each});
                 } else {
                     // TODO: Maybe bug in dojo select that it does not handle values that are not strings
@@ -379,7 +374,7 @@ var PanelBuilder = declare(null, {
                 }
             });           
         } else {
-            console.log("No choices or options defined for select", id);
+            console.log("No choices or options defined for select", fieldSpecification.id);
         }
         
         var dataStore = new Memory({"data": options});
@@ -390,66 +385,66 @@ var PanelBuilder = declare(null, {
                 // TODO: Work on validation...
                 required: false,
                 // style: "width: 100%"
-                value: at(model, id)
+                value: at(model, fieldSpecification.id)
         });
         
         select.placeAt(questionContentPane);
         return select;
     },
     
-    add_boolean: function(contentPane, model, id, questionOptions) {
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id);
+    add_boolean: function(contentPane, model, fieldSpecification) {
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var radioButtons = new RadioButtons({
             choices: null,
             // TODO: translate options
             optionsString: "yes\nno",
-            value: at(model, id)
+            value: at(model, fieldSpecification.id)
         });
         
         radioButtons.placeAt(questionContentPane);
         return radioButtons;
     },
 
-    add_checkbox: function(contentPane, model, id, questionOptions) {
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id);
+    add_checkbox: function(contentPane, model, fieldSpecification) {
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var checkbox = new CheckBox({
-            value: at(model, id)
+            value: at(model, fieldSpecification.id)
         });
         
         checkbox.placeAt(questionContentPane);
         return checkbox;
     },
     
-    add_radiobuttons: function(contentPane, model, id, questionOptions) {
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id);
+    add_radiobuttons: function(contentPane, model, fieldSpecification) {
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var radioButtons = new RadioButtons({
-            questionID: id,
-            choices: questionOptions,
+            questionID: fieldSpecification.id,
+            choices: fieldSpecification.dataOptions,
             // optionsString: optionsString,
-            value: at(model, id)
+            value: at(model, fieldSpecification.id)
         });
          
         radioButtons.placeAt(questionContentPane);
         return radioButtons;
     },
     
-    add_checkboxes: function(contentPane, model, id, questionOptions) {
-        // console.log("add_checkboxes", contentPane, model, id, questionOptions);
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id);
+    add_checkboxes: function(contentPane, model, fieldSpecification) {
+        // console.log("add_checkboxes", contentPane, model, fieldSpecification);
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
 
         // Checkboxes modifies a dictionary which contains whether each checkbox is checked
         // It does not use an "at" since the checkboxes will modify the data directly
         // Ensure that there is a place to store data about each checkbox
-        if (!model.get(id)) model.set(id, {});
+        if (!model.get(fieldSpecification.id)) model.set(fieldSpecification.id, {});
 
         var checkboxes = new CheckBoxes({
-            questionID: id,
-            choices: questionOptions,
+            questionID: fieldSpecification.id,
+            choices: fieldSpecification.dataOptions,
             // optionsString: optionsString,
-            value: model.get(id)
+            value: model.get(fieldSpecification.id)
         });
         
         checkboxes.placeAt(questionContentPane);
@@ -457,17 +452,17 @@ var PanelBuilder = declare(null, {
     },
     
     // TODO: Need to translate true/false
-    add_toggleButton: function(contentPane, model, id, questionOptions) {
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id);
+    add_toggleButton: function(contentPane, model, fieldSpecification) {
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         // Toggle button maintains a "checked" flag, so we need to set value ourselves
         var toggleButton = new ToggleButton({
-            label: "" + model.get(id),
-            value: at(model, id),
+            label: "" + model.get(fieldSpecification.id),
+            value: at(model, fieldSpecification.id),
             onChange: function(value) {
                 this.set("label", value);
                 this.set("value", value);
-                domain.buttonClicked(contentPane, model, id, questionOptions, value);
+                domain.buttonClicked(contentPane, model, fieldSpecification, value);
             }
         });
         
@@ -476,11 +471,11 @@ var PanelBuilder = declare(null, {
         return toggleButton;
     },
     
-    add_button: function(contentPane, model, id, questionOptions, callback) {
-        if (!callback) callback = lang.partial(domain.buttonClicked, contentPane, model, id, questionOptions);
+    add_button: function(contentPane, model, fieldSpecification, callback) {
+        if (!callback) callback = lang.partial(domain.buttonClicked, contentPane, model, fieldSpecification);
         
         var button = new Button({
-            label: translate("#" + id + "::prompt"),
+            label: translate("#" + fieldSpecification.id + "::prompt"),
             type: "button",
             onClick: callback
         });
@@ -489,8 +484,8 @@ var PanelBuilder = declare(null, {
         return button;
     },
     
-    add_slider: function(contentPane, model, id, questionOptions) {
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id);
+    add_slider: function(contentPane, model, fieldSpecification) {
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         // A div that contains rules, labels, and slider
         var panelDiv = domConstruct.create("div");
@@ -500,11 +495,12 @@ var PanelBuilder = declare(null, {
         
         var hasTextLabels = false;
         var labels = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+        var questionOptions = fieldSpecification.displayConfiguration;
         if (questionOptions && questionOptions.length !== 0) {
             // console.log("questionOptions", questionOptions);
             labels = questionOptions;
             if (labels.length !== 2) {
-                console.log("Need to specify low and high labels for question: ", id);
+                console.log("Need to specify low and high labels for question: ", fieldSpecification.id);
             } else {
                 hasTextLabels = true;
                 var labelLow = labels[0].trim();
@@ -522,7 +518,7 @@ var PanelBuilder = declare(null, {
             showButtons: true,
             // Doesn't work: style: "align: center; width: 80%;"
             // style: "width: 98%; max-width: 98%",
-            value: at(model, id)
+            value: at(model, fieldSpecification.id)
         });
         
         slider.placeAt(panelDiv);
@@ -566,7 +562,7 @@ var PanelBuilder = declare(null, {
         return contentPane;
     },
     
-    add_recommendationTable: function(contentPane, model, id, options) {
+    add_recommendationTable: function(contentPane, model, fieldSpecification) {
         var dialogConfiguration = {
             dialogOpenButtonID: "button_showRecommendationsTable",
             dialogContentPaneID: "recommendationsTable",
@@ -574,15 +570,15 @@ var PanelBuilder = declare(null, {
             dialogStyle: undefined,
             dialogConstructionFunction: lang.hitch(this, this.build_recommendationTable)
         };
-        var button = widgetSupport.addButtonThatLaunchesDialog(contentPane, model, id, options, dialogConfiguration);
+        var button = widgetSupport.addButtonThatLaunchesDialog(contentPane, model, fieldSpecification.id, fieldSpecification.displayConfiguration, dialogConfiguration);
         return button;
     },
     
-    build_recommendationTable: function(contentPane, model, id, options) {
+    build_recommendationTable: function(contentPane, model, fieldSpecification) {
 
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id);
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
 
-        var categoryName = options[0];
+        var categoryName = fieldSpecification.displayConfiguration;
         console.log("add_recommendationTable category", categoryName);
         
         var fieldsForCategory = recommendations.categories[categoryName];
@@ -672,20 +668,20 @@ var PanelBuilder = declare(null, {
         return table;
     },
       
-    add_storyThemer: function(contentPane, model, id, options) {
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id);
+    add_storyThemer: function(contentPane, model, fieldSpecification) {
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
-        var storyThemer = StoryThemer.insertStoryThemer(this, questionContentPane, model, id, domain.panelDefinitions);
+        var storyThemer = StoryThemer.insertStoryThemer(this, questionContentPane, model, fieldSpecification.id, domain.panelDefinitions);
         questionContentPane.resize();
         return storyThemer;
     },
     
-    add_questionsTable: function(contentPane, model, id, options) {
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id);
+    add_questionsTable: function(contentPane, model, fieldSpecification) {
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var label = new ContentPane({
             // content: translate("#" + id + "::prompt")
-            content: "<b>UNFINISHED add_questionsTable: " + id + "</b>"             
+            content: "<b>UNFINISHED add_questionsTable: " + fieldSpecification.id + "</b>"             
         });
         label.placeAt(questionContentPane);
         return label;
@@ -693,60 +689,60 @@ var PanelBuilder = declare(null, {
     
     // TODO: Fix UNFINISHED widgets
     
-    add_graphBrowser: function(contentPane, model, id, options) {
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id);
+    add_graphBrowser: function(contentPane, model, fieldSpecification) {
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
-        var graphBrowser = GraphBrowser.insertGraphBrowser(questionContentPane, model, id, domain.panelDefinitions);
+        var graphBrowser = GraphBrowser.insertGraphBrowser(questionContentPane, model, fieldSpecification.id, domain.panelDefinitions);
         questionContentPane.resize();
         return graphBrowser;
     },
     
-    add_trendsReport: function(contentPane, model, id, options) {
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id);
+    add_trendsReport: function(contentPane, model, fieldSpecification) {
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var label = new ContentPane({
             // content: translate("#" + id + "::prompt")
-            content: "<b>UNFINISHED add_trendsReport: " + id + "</b>"             
+            content: "<b>UNFINISHED add_trendsReport: " + fieldSpecification.id + "</b>"             
         });
         label.placeAt(questionContentPane);
         return label;
     },
     
-    add_clusterSpace: function(contentPane, model, id, options) {
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id);
+    add_clusterSpace: function(contentPane, model, fieldSpecification) {
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var label = new ContentPane({
             // content: translate("#" + id + "::prompt")
-            content: "<b>UNFINISHED add_clusterSpace: " + id + "</b>"             
+            content: "<b>UNFINISHED add_clusterSpace: " + fieldSpecification.id + "</b>"             
         });
         label.placeAt(questionContentPane);
         return label;
     },
     
-    add_annotationsGrid: function(contentPane, model, id, options) {
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id);
+    add_annotationsGrid: function(contentPane, model, fieldSpecification) {
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var label = new ContentPane({
             // content: translate("#" + id + "::prompt")
-            content: "<b>UNFINISHED add_annotationsGrid: " + id + "</b>"             
+            content: "<b>UNFINISHED add_annotationsGrid: " + fieldSpecification.id + "</b>"             
         });
         label.placeAt(questionContentPane);
         return label;
     },
     
-    add_storiesList: function(contentPane, model, id, options) {
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id);
+    add_storiesList: function(contentPane, model, fieldSpecification) {
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var label = new ContentPane({
             // content: translate("#" + id + "::prompt")
-            content: "<b>UNFINISHED add_storiesList: " + id + "</b>"             
+            content: "<b>UNFINISHED add_storiesList: " + fieldSpecification.id + "</b>"             
         });
         label.placeAt(questionContentPane);
         return label;
     },
     
     // TODO: Refactor this into its own widget module
-    add_templateList: function(contentPane, model, id, options) {
+    add_templateList: function(contentPane, model, fieldSpecification) {
         var dialogConfiguration = {
             dialogOpenButtonID: "button_chooseATemplateToInsert",
             dialogContentPaneID: "templateList",
@@ -754,11 +750,11 @@ var PanelBuilder = declare(null, {
             dialogStyle: "height: 900px",
             dialogConstructionFunction: lang.hitch(this, this.makeTemplateListChooser)
         };
-        var button = widgetSupport.addButtonThatLaunchesDialog(contentPane, model, id, options, dialogConfiguration);
+        var button = widgetSupport.addButtonThatLaunchesDialog(contentPane, model, fieldSpecification.id, fieldSpecification.displayConfiguration, dialogConfiguration);
         return button;
     },
     
-    makeTemplateListChooser: function(contentPane, model, id, options, hideDialogCallback, dialogConfiguration) {
+    makeTemplateListChooser: function(contentPane, model, fieldSpecification, hideDialogCallback, dialogConfiguration) {
         // For add_templateList
         var add_templateList_elicitationQuestions = [
             {"id":"category", dataType: "string", "type":"text", "isInReport":true, "isGridColumn":true},
@@ -788,9 +784,9 @@ var PanelBuilder = declare(null, {
             {"id":"facilitation", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true}
         ];
        
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id);
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
-        var templateListChoice = options[0];
+        var templateListChoice = fieldSpecification.displayConfiguration;
         console.log("templateListChoice", templateListChoice);
         var templateCollection = templates[templateListChoice];
         console.log("templateCollection", templateCollection);
@@ -897,35 +893,35 @@ var PanelBuilder = declare(null, {
         }
         
         var configuration = {viewButton: true, includeAllFields: false, showTooltip: true, customButton: {id: "useTemplate", translationID: "button_UseTemplate", callback: useButtonClicked}};
-        return GridTable.insertGridTableBasic(this, questionContentPane, id, dataStore, popupPageDefinition, configuration);
+        return GridTable.insertGridTableBasic(this, questionContentPane, fieldSpecification.id, dataStore, popupPageDefinition, configuration);
     },
     
-    add_accumulatedItemsGrid: function(contentPane, model, id, options) {
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id);
+    add_accumulatedItemsGrid: function(contentPane, model, fieldSpecification) {
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var label = new ContentPane({
             // content: translate("#" + id + "::prompt")
-            content: "<b>UNFINISHED accumulatedItemsGrid: " + id + "</b>"             
+            content: "<b>UNFINISHED accumulatedItemsGrid: " + fieldSpecification.id + "</b>"             
         });
         label.placeAt(questionContentPane);
         return label;
     },
     
-    add_excerptsList: function(contentPane, model, id, options) {
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id);
+    add_excerptsList: function(contentPane, model, fieldSpecification) {
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var label = new ContentPane({
             // content: translate("#" + id + "::prompt")
-            content: "<b>UNFINISHED add_excerptsList: " + id + "</b>"             
+            content: "<b>UNFINISHED add_excerptsList: " + fieldSpecification.id + "</b>"             
         });
         label.placeAt(questionContentPane);
         return label;
     },
     
-    add_storyBrowser: function(contentPane, model, id, options) {
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, id);
+    add_storyBrowser: function(contentPane, model, fieldSpecification) {
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
-        var storyBrowser = StoryBrowser.insertStoryBrowser(this, questionContentPane, model, id, domain.panelDefinitions);
+        var storyBrowser = StoryBrowser.insertStoryBrowser(this, questionContentPane, model, fieldSpecification.id, domain.panelDefinitions);
         questionContentPane.resize();
         return storyBrowser;
     },
@@ -948,15 +944,13 @@ var PanelBuilder = declare(null, {
             this.updateLabelUsingCalculation(data);
         }
     },
-    
-    //////
 
     calculate_questionAnswer: function(model, referencedQuestionID) {
         var value = model.get(referencedQuestionID);
         if (value === null) value = translate("#question_not_yet_answered");
         if (value === undefined) {
             console.log("ERROR: missing question: ", referencedQuestionID);
-            return "ERROR: missing question: " + referencedQuestionID;            
+            throw new Error("ERROR: missing question: " + referencedQuestionID);            
         }
         // console.log("domain.questions", domain, domain.questions);
         var question = domain.questions[referencedQuestionID];
@@ -1009,58 +1003,58 @@ var PanelBuilder = declare(null, {
         }
     },
     
-    calculate_function: function(id, functionName, options) {
-        var question = {id: id, displayConfiguration: options};
-        return domain.callDashboardFunction(functionName, question);
+    calculate_function: function(functionName, fieldSpecification) {
+        return domain.callDashboardFunction(functionName, fieldSpecification);
     },
     
-    _add_calculatedText: function(contentPane, id, calculate) {
+    _add_calculatedText: function(contentPane, fieldSpecification, calculate) {
         // var calculatedText = "(Initializing...)";
         var calculatedText = calculate();
-        var baseText = translate("#" + id + "::prompt");
+        var baseText = translate("#" + fieldSpecification.id + "::prompt");
         var label = new ContentPane({
             content: baseText + calculatedText
         });
         label.placeAt(contentPane);
         
         // TODO: How do these updates get removed????
-        var updateInfo = {"id": id, "label": label, "baseText": baseText, "calculate": calculate};
-        questionsRequiringRecalculationOnPageChanges[id] = updateInfo;
+        var updateInfo = {"id": fieldSpecification.id, "label": label, "baseText": baseText, "calculate": calculate};
+        questionsRequiringRecalculationOnPageChanges[fieldSpecification.id] = updateInfo;
 
         return label;
     },
     
-    add_questionAnswer: function(contentPane, model, id, options) {
-        var referencedQuestionID = options[0];
+    add_questionAnswer: function(contentPane, model, fieldSpecification) {
+        var referencedQuestionID = fieldSpecification.displayConfiguration;
+        if (!referencedQuestionID) throw new Error("missing referencedQuestionID for field: " + fieldSpecification.id + " all: " + JSON.stringify(fieldSpecification));
         var calculate = lang.hitch(this, this.calculate_questionAnswer, model, referencedQuestionID);
-        return this._add_calculatedText(contentPane, id, calculate);
+        return this._add_calculatedText(contentPane, fieldSpecification, calculate);
     },
     
-    add_questionAnswerCountOfTotalOnPage: function(contentPane, model, id, options) {
-        var panelID = options[0];
+    add_questionAnswerCountOfTotalOnPage: function(contentPane, model, fieldSpecification) {
+        var panelID = fieldSpecification.displayConfiguration;
         var calculate = lang.hitch(this, this.calculate_questionAnswerCountOfTotalOnPage, model, panelID);
-        return this._add_calculatedText(contentPane, id, calculate);
+        return this._add_calculatedText(contentPane, fieldSpecification, calculate);
     },
     
-    add_listCount: function(contentPane, model, id, options) {
-        var referencedQuestionID = options[0];
+    add_listCount: function(contentPane, model, fieldSpecification) {
+        var referencedQuestionID = fieldSpecification.displayConfiguration;
         var calculate = lang.hitch(this, this.calculate_listCount, model, referencedQuestionID);
-        return this._add_calculatedText(contentPane, id, calculate);
+        return this._add_calculatedText(contentPane, fieldSpecification, calculate);
     },
 
-    add_function: function(contentPane, model, id, options) {
-        var functionName = options[0];
-        var calculate = lang.hitch(this, this.calculate_function, id, functionName, options);
-        return this._add_calculatedText(contentPane, id, calculate);
+    add_function: function(contentPane, model, fieldSpecification) {
+        var functionName = fieldSpecification.displayConfiguration;
+        var calculate = lang.hitch(this, this.calculate_function, functionName, fieldSpecification);
+        return this._add_calculatedText(contentPane, fieldSpecification, calculate);
     },
     
-    add_quizScoreResult: function(contentPane, model, id, options) {
-        var dependsOn = options;
+    add_quizScoreResult: function(contentPane, model, fieldSpecification) {
+        var dependsOn = fieldSpecification.displayConfiguration;
         var calculate = lang.partial(domain.calculate_quizScoreResult, model, dependsOn);
-        var label = this._add_calculatedText(contentPane, id, calculate);
+        var label = this._add_calculatedText(contentPane, fieldSpecification, calculate);
         // TODO: Recalculating next two variables wheres they are also calculated in _add_calculatedText
-        var baseText = translate("#" + id + "::prompt");
-        var updateInfo = {"id": id, "label": label, "baseText": baseText, "calculate": calculate};
+        var baseText = translate("#" + fieldSpecification.id + "::prompt");
+        var updateInfo = {"id": fieldSpecification.id, "label": label, "baseText": baseText, "calculate": calculate};
         // Ensure this value is recalculated when dependent questions change by using watch
         for (var dependsOnIndex in dependsOn) {
             var questionID = dependsOn[dependsOnIndex];
@@ -1071,10 +1065,10 @@ var PanelBuilder = declare(null, {
         return label;
     },
     
-    add_report: function(contentPane, model, id, options) {
-        var headerPageID = "page_" + options[0];
+    add_report: function(contentPane, model, fieldSpecification) {
+        var headerPageID = "page_" + fieldSpecification.displayConfiguration;
         var calculate = lang.partial(domain.calculate_report, model, headerPageID);
-        return this._add_calculatedText(contentPane, id, calculate);
+        return this._add_calculatedText(contentPane, fieldSpecification, calculate);
     }
     
     });
