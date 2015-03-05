@@ -395,9 +395,8 @@ require([
     }
     
     // TODO: somehow unify this with code in widget-questions-table?
-    function newSpecialSelect(id, options, addToDiv) {
+    function newSpecialSelect(addToDiv, options) {
         var select = new Select({
-            id: id,
             options: options
         });
         select.placeAt(addToDiv);
@@ -427,10 +426,6 @@ require([
                 title += " SPECIAL: " + panel.displayType;
             }
             
-            // TODO: Should this really be modifying the original???
-            panel.title = title;
-            panel.questions = applicationBuilder.buildQuestionsForPanel(panel.id);
-            
             domain.panelDefinitions[panel.id] = panel;      
             
             // For panels that are a "page", add to top level pages choices and set up navigation
@@ -456,6 +451,11 @@ require([
                 // Put in a dynamic question (incomplete for options) to be used to lookup page status; needed to check it is a select
                 domain.questions[panel.id + "_pageStatus"] = {id: pageID + "_pageStatus", displayType: "select"};
             }
+            
+            // TODO: Should this really be modifying the original???
+            panel.title = title;
+            panel.questions = applicationBuilder.buildQuestionsForPanel(panel.id);
+            panel.section = lastHeader;
         }
         
         var questions = applicationBuilder.buildListOfQuestions();
@@ -486,24 +486,11 @@ require([
         // imageButton.set("showLabel", false);
         // imageButton.set("iconClass", "wwsButtonImage");
         
-        var homeButton = widgetSupport.newButton(navigationPane, "#button_home", homeButtonClicked);
-        homeButton.set("showLabel", false);
-        // homeButton.set("iconClass", "dijitEditorIcon dijitEditorIconOutdent");
-        homeButton.set("iconClass", "homeButtonImage");
-
-        selectWidget = newSpecialSelect("mainSelect", pageSelectOptions, navigationPane);
+        // Document controls
         
-        // console.log("widget", selectWidget);
-        // TODO: Width should be determined from contents of select options using font metrics etc.
-        domStyle.set(selectWidget.domNode, "width", "400px");
-        selectWidget.on("change", mainSelectChanged);
+        var documentControlsPane = new ContentPane();
+        documentControlsPane.placeAt(navigationPane);
         
-        previousPageButton = widgetSupport.newButton(navigationPane, "#button_previousPage", previousPageClicked);
-        previousPageButton.set("iconClass", "leftButtonImage");
-        
-        nextPageButton = widgetSupport.newButton(navigationPane, "#button_nextPage", nextPageClicked);
-        nextPageButton.set("iconClass", "rightButtonImage");
-
         saveButton = widgetSupport.newButton(navigationPane, "#button_save", saveClicked);
 
         loadLatestButton = widgetSupport.newButton(navigationPane, "#button_loadLatest", loadLatestClicked);
@@ -513,6 +500,27 @@ require([
 
         var debugButton = widgetSupport.newButton(navigationPane, "#button_debug", debugButtonClicked);
         
+        // Page controls
+        
+        var pageControlsPane = new ContentPane();
+        pageControlsPane.placeAt(navigationPane);
+        
+        var homeButton = widgetSupport.newButton(pageControlsPane, "#button_home", homeButtonClicked);
+        homeButton.set("showLabel", false);
+        // homeButton.set("iconClass", "dijitEditorIcon dijitEditorIconOutdent");
+        homeButton.set("iconClass", "homeButtonImage");
+
+        // TODO: Select width should be determined from contents of select options using font metrics etc.
+        selectWidget = newSpecialSelect(pageControlsPane, pageSelectOptions);
+        domStyle.set(selectWidget.domNode, "width", "400px");
+        selectWidget.on("change", mainSelectChanged);
+        
+        previousPageButton = widgetSupport.newButton(pageControlsPane, "#button_previousPage", previousPageClicked);
+        previousPageButton.set("iconClass", "leftButtonImage");
+        
+        nextPageButton = widgetSupport.newButton(pageControlsPane, "#button_nextPage", nextPageClicked);
+        nextPageButton.set("iconClass", "rightButtonImage");
+
         // Setup the first page
         var fragment = hash();
         console.log("fragment when page first loaded", fragment);
@@ -525,9 +533,6 @@ require([
         }
         
         console.log("createLayout end");
-        
-        // Update if the URL hash fragment changes
-        connect.subscribe("/dojo/hashchange", urlHashFragmentChanged); 
     }
     
     function updatePagesForDomainValueChange() {
@@ -563,6 +568,9 @@ require([
         buildAllPages();
         
         createLayout();
+        
+        // Update if the URL hash fragment changes
+        connect.subscribe("/dojo/hashchange", urlHashFragmentChanged); 
         
         /* TODO: Commented out while testing changeover to fields
         // Get the latest project data
