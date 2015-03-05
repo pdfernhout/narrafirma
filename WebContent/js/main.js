@@ -49,7 +49,7 @@ require([
 
     var currentPage = null;
     var currentPageID = null;
-    var selectWidget = null;
+    var pageNavigationSelect = null;
     
     var currentProjectVersionReference = null; 
     
@@ -165,7 +165,7 @@ require([
     }
     
     function urlHashFragmentChanged(newHash) {
-        // console.log("urlHashFragmentChanged", newHash);
+        console.log("urlHashFragmentChanged", newHash);
         if (currentPageID !== newHash) {
             var page = panelForPageID(newHash);
             if (page && page.displayType === "page") {
@@ -179,23 +179,24 @@ require([
     }
     
     function changePage(id) {
-        selectWidget.set("value", id);
+        console.log("changePage", id);
+        pageNavigationSelect.set("value", id);
     }
     
-    function mainSelectChanged(event) {
+    function pageNavigationSelectChanged(event) {
         var id = event;
         console.log("changing page to:", id);
         showPage(id);
     }
     
-    function showPage(id, forceRefresh) {
-        if (currentPageID === id && !forceRefresh) return;
+    function showPage(pageID, forceRefresh) {
+        if (currentPageID === pageID && !forceRefresh) return;
         
-        var panelID = id.replace("page_", "panel_");
+        var panelID = pageID.replace("page_", "panel_");
         var page = allPages[panelID];
         if (!page) {
-            console.log("no such page", id);
-            alert("No such page: " + id);
+            console.log("no such page", pageID);
+            alert("No such page: " + pageID);
             return;
         }
         
@@ -209,9 +210,9 @@ require([
             domConstruct.destroy(currentPage.domNode);
         }
         
-        currentPage = createPage(id, true);
+        currentPage = createPage(pageID, true);
         
-        currentPageID = id;
+        currentPageID = pageID;
         hash(currentPageID);
         
         previousPageButton.setDisabled(!page.previousPageID);
@@ -228,13 +229,13 @@ require([
         panelBuilder.updateQuestionsForPageChange();
     }
     
-    function createPage(id, visible) {
-        console.log("createPage", id);
-        var panelID = id.replace("page_", "panel_");
+    function createPage(pageID, visible) {
+        console.log("createPage", pageID);
+        var panelID = pageID.replace("page_", "panel_");
         var page = allPages[panelID];
         
         if (!page) {
-            console.log("ERROR: No definition for page: ", id);
+            console.log("ERROR: No definition for page: ", pageID);
             return;
         }
         
@@ -242,7 +243,7 @@ require([
         widgetGridTable.clearGridsKludge();
         
         var pagePane = new ContentPane({
-            "id": id,
+            "id": pageID,
             title: page.title,
             // Shorten width so grid scroll bar shows up not clipped
             // Also, looks like nested ContentPanes tend to walk off the right side of the page for some reason
@@ -250,20 +251,20 @@ require([
             display: "none" // "block" // 
        });
         
-       // console.log("about to place pane", id);
+       // console.log("about to place pane", pageID);
        // Dojo seems to require these pages be in the visual hierarchy before some components like grid that are added to them are have startUp called.
        // Otherwise the grid header is not sized correctly and will be overwritten by data
        // This is as opposed to what one might think would reduce resizing and redrawing by adding the page only after components are added
        pagePane.placeAt("pageDiv");
        pagePane.startup();
         
-       // console.log("Made content pane", id);
+       // console.log("Made content pane", pageID);
        
        panelBuilder.buildPanel(panelID, pagePane, domain.projectData.projectAnswers);
        
        if (!page.isHeader) {
            var options = ["intentionally skipped", "partially done", "completely finished"];
-           var statusEntryID = id + "_pageStatus";
+           var statusEntryID = pageID + "_pageStatus";
            translate.addExtraTranslation(statusEntryID + "::prompt", translate("#dashboard_status_entry::prompt") + " ");
            for (var optionIndex in options) {
                var option = options[optionIndex];
@@ -274,7 +275,7 @@ require([
            console.log("page dashboard as header", page.id, page.displayType, page);
            // Put in dashboard
            var childPages = domain.pagesToGoWithHeaders[panelID];
-           console.log("child pages", id, panelID, childPages);
+           console.log("child pages", pageID, panelID, childPages);
            for (var childPageIndex in childPages) {
                var childPageID = childPages[childPageIndex];
                var statusViewID = childPageID + "_pageStatus_dashboard";
@@ -300,11 +301,11 @@ require([
        questionEditor.insertQuestionIntoDiv(nextPageButtonQuestion, pagePane);
        */
        
-       // console.log("about to set visibility", id);
+       // console.log("about to set visibility", pageID);
        if (visible) {
-            domStyle.set(id, "display", "block");
+            domStyle.set(pageID, "display", "block");
        } else {
-            domStyle.set(id, "display", "none");
+            domStyle.set(pageID, "display", "none");
        }
               
        return pagePane;
@@ -405,6 +406,21 @@ require([
     
     var pageSelectOptions = [];
     
+    function pageSelectOptionsForSection(section) {
+        console.log("======== pageSelectOptionsForSection", section, domain.pagesToGoWithHeaders);
+        var panelIDs = domain.pagesToGoWithHeaders[section];
+        var options = [];
+        var title = panelForPageID(section).title;
+        var pageID = section.replace("panel_", "page_");
+        options.push({label: title, value: pageID});
+        _.forEach(panelIDs, function (panelID) {
+            pageID = panelID.replace("panel_", "page_");
+            title = panelForPageID(pageID).title;
+            options.push({label: title, value: pageID});
+        });
+        return options;
+    }
+    
     function buildAllPages() {
         var panels = applicationBuilder.buildListOfPanels();
         console.log("buildAllPages", panels);
@@ -433,8 +449,8 @@ require([
                 var pageID = panel.id.replace("panel_", "page_");
                 // console.log("pushing page", panel);
                 // Make it easy to lookup previous and next pages from a page
-                if (lastPageID) panelForPageID(lastPageID).nextPageID = pageID;
-                panel.previousPageID = lastPageID;
+                if (lastPageID && !panel.isHeader) panelForPageID(lastPageID).nextPageID = pageID;
+                if (!panel.isHeader) panel.previousPageID = lastPageID;
                 lastPageID = pageID;
                 
                 if (!panel.isHeader) {
@@ -511,9 +527,9 @@ require([
         homeButton.set("iconClass", "homeButtonImage");
 
         // TODO: Select width should be determined from contents of select options using font metrics etc.
-        selectWidget = newSpecialSelect(pageControlsPane, pageSelectOptions);
-        domStyle.set(selectWidget.domNode, "width", "400px");
-        selectWidget.on("change", mainSelectChanged);
+        pageNavigationSelect = newSpecialSelect(pageControlsPane, pageSelectOptionsForSection("page_planning"));
+        domStyle.set(pageNavigationSelect.domNode, "width", "400px");
+        pageNavigationSelect.on("change", pageNavigationSelectChanged);
         
         previousPageButton = widgetSupport.newButton(pageControlsPane, "#button_previousPage", previousPageClicked);
         previousPageButton.set("iconClass", "leftButtonImage");
