@@ -42,7 +42,7 @@ return [
     displayType: 'button',
     displayConfiguration: {action: 'guiOpenSection', section: 'page_planning'},
     displayName: undefined,
-    displayPrompt: 'Open planning section',
+    displayPrompt: 'Planning',
     displayPanel: 'panel_dashboard',
     model: 'ProjectModel' 
 },
@@ -55,7 +55,7 @@ return [
     displayType: 'button',
     displayConfiguration: {action: 'guiOpenSection', section: 'page_collectionDesign'},
     displayName: undefined,
-    displayPrompt: 'Open collection design section',
+    displayPrompt: 'Collection design',
     displayPanel: 'panel_dashboard',
     model: 'ProjectModel' 
 },
@@ -68,7 +68,7 @@ return [
     displayType: 'button',
     displayConfiguration: {action: 'guiOpenSection', section: 'page_collectionProcess'},
     displayName: undefined,
-    displayPrompt: 'Open collection process section',
+    displayPrompt: 'Collection process',
     displayPanel: 'panel_dashboard',
     model: 'ProjectModel' 
 },
@@ -81,7 +81,7 @@ return [
     displayType: 'button',
     displayConfiguration: {action: 'guiOpenSection', section: 'page_catalysis'},
     displayName: undefined,
-    displayPrompt: 'Open catalysis section',
+    displayPrompt: 'Catalysis',
     displayPanel: 'panel_dashboard',
     model: 'ProjectModel' 
 },
@@ -94,7 +94,7 @@ return [
     displayType: 'button',
     displayConfiguration: {action: 'guiOpenSection', section: 'page_sensemaking'},
     displayName: undefined,
-    displayPrompt: 'Open sensemaking section',
+    displayPrompt: 'Sensemaking',
     displayPanel: 'panel_dashboard',
     model: 'ProjectModel' 
 },
@@ -107,7 +107,7 @@ return [
     displayType: 'button',
     displayConfiguration: {action: 'guiOpenSection', section: 'page_intervention'},
     displayName: undefined,
-    displayPrompt: 'Open intervention section',
+    displayPrompt: 'Intervention',
     displayPanel: 'panel_dashboard',
     model: 'ProjectModel' 
 },
@@ -120,7 +120,7 @@ return [
     displayType: 'button',
     displayConfiguration: {action: 'guiOpenSection', section: 'page_return'},
     displayName: undefined,
-    displayPrompt: 'Open return section',
+    displayPrompt: 'Return',
     displayPanel: 'panel_dashboard',
     model: 'ProjectModel' 
 },
@@ -133,10 +133,23 @@ return [
     displayType: 'button',
     displayConfiguration: {action: 'guiOpenSection', section: 'page_projectReport'},
     displayName: undefined,
-    displayPrompt: 'Open project report section',
+    displayPrompt: 'Project report',
     displayPanel: 'panel_dashboard',
     model: 'ProjectModel' 
-},  
+},
+{
+    id: 'project_pniPhasesDiagram',
+    dataType: 'none',
+    dataOptions: undefined,
+    required: false,
+    validators: undefined,
+    displayType: 'image',
+    displayConfiguration: 'images/PNIPhasesDiagram.png',
+    displayName: 'PNI phases diagram showing planning, collection, catalysis, sensemaking, intervention, and return',
+    displayPrompt: 'NarraFirma supports all six phases of the PNI process. Click the buttons above to open those sections. Collection has been split into two subphases of designing a questionnaire and the process of using it. An extra final project report phase is available as well.',
+    displayPanel: 'panel_dashboard',
+    model: 'ProjectModel' 
+  },
 
 //------------- page page panel_introduction Dashboard  ------------- 
 
