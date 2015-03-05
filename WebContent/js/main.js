@@ -51,6 +51,7 @@ require([
     
     // For tricking what page the application is on
     var startPage = "page_dashboard";
+    var currentSectionID;
     var currentPageID;
     var currentPage;
     
@@ -171,18 +172,13 @@ require([
         if (currentPageID !== newHash) {
             var pageSpecification = pageSpecifications[newHash];
             if (pageSpecification && pageSpecification.displayType === "page") {
-                changePage(newHash);
+                showPage(newHash);
             } else {
                 console.log("unsupported url hash fragment", newHash);
                 alert("A page was not found for: " + newHash);
                 if (newHash !== startPage) urlHashFragmentChanged(startPage);
             }
         }
-    }
-    
-    function changePage(pageID) {
-        console.log("changePage", pageID);
-        pageNavigationSelect.set("value", pageID);
     }
     
     function pageNavigationSelectChanged(event) {
@@ -225,9 +221,19 @@ require([
         // Because the page was hidden when created, all the grids need to be resized --- seems like bad design in dgrid
         widgetGridTable.resizeGridsKludge();
         
-        window.scrollTo(0, 0); 
+        window.scrollTo(0, 0);
         
         panelBuilder.updateQuestionsForPageChange();
+        
+        // Ensure the navigation has the list for this section
+        if (currentSectionID !== pageSpecification.section) {   
+            currentSectionID = pageSpecification.section;
+            var options = pageSelectOptionsForSection(pageSpecification.section);
+            pageNavigationSelect.set("options", options);
+        }
+        
+        // Ensure select is pointing to this page; this may trigger an update but it should be ignored as we're already on this page
+        pageNavigationSelect.set("value", pageID);
     }
     
     function createPage(pageID, visible) {
@@ -278,6 +284,7 @@ require([
            // Put in dashboard
            var childPageIDs = domain.childPageIDListForHeaderID[pageID];
            console.log("child pages", pageID, panelID, childPageIDs);
+           if (!childPageIDs) childPageIDs = [];
            for (var childPageIndex = 0; childPageIndex < childPageIDs.length; childPageIndex++) {
                var childPageID = childPageIDs[childPageIndex];
                var statusViewID = childPageID + "_pageStatus_dashboard";
@@ -331,7 +338,7 @@ require([
         var pageSpecification = pageSpecifications[currentPageID];
         var previousPageID = pageSpecification.previousPageID;
         if (previousPageID) {
-            changePage(previousPageID);
+            showPage(previousPageID);
         } else {
             // Should never get here based on button enabling
             alert("At first page");
@@ -348,7 +355,7 @@ require([
         var pageSpecification = pageSpecifications[currentPageID];
         var nextPageID = pageSpecification.nextPageID;
         if (nextPageID) {
-            changePage(nextPageID);
+            showPage(nextPageID);
         } else {
             // Should never get here based on button enabling
             alert("At last page");
@@ -362,7 +369,7 @@ require([
     
     function homeButtonClicked() {
         console.log("homeButtonClicked");
-        urlHashFragmentChanged(startPage);
+        showPage(startPage);
     }
     
     function debugButtonClicked() {
@@ -475,7 +482,7 @@ require([
             // TODO: Should this really be modifying the original???
             panel.title = title;
             panel.questions = applicationBuilder.buildQuestionsForPanel(panel.id);
-            panel.pageSpecifications = lastHeader;
+            panel.section = lastHeader;
         }
         
         var questions = applicationBuilder.buildListOfQuestions();
@@ -529,7 +536,7 @@ require([
         homeButton.set("iconClass", "homeButtonImage");
 
         // TODO: Select width should be determined from contents of select options using font metrics etc.
-        pageNavigationSelect = newSpecialSelect(pageControlsPane, pageSelectOptionsForSection("page_planning"));
+        pageNavigationSelect = newSpecialSelect(pageControlsPane, []);
         domStyle.set(pageNavigationSelect.domNode, "width", "400px");
         pageNavigationSelect.on("change", pageNavigationSelectChanged);
         
