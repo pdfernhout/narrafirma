@@ -29,12 +29,141 @@ return [
   displayType: 'label',
   displayConfiguration: undefined,
   displayName: undefined,
-  displayPrompt: 'Welcome to NarraFirma. You can use this software to:\n<ul>\n<li>plan your Participatory Narrative Inquiry (PNI) project</li>\n<li>decide how you will collect stories</li>\n<li>write questions about stories</li>\n<li>plan group story sessions (and record what went on in them)</li>\n<li>collect or enter stories (and answers to questions)</li>\n<li>look at patterns in collected stories and answers</li>\n<li>build catalytic material</li>\n<li>plan sensemaking sessions (and record what went on in them)</li>\n<li>plan interventions (and record what went on in them)</li>\n<li>gather project feedback</li>\n<li>reflect on the project</li>\n<li>present the project to others</li>\n<li>preserve what you learned so you can use it on the next project</li>\n</ul>\n<p>Note: When finished, this page will bring together all of the dashboard pages from\nthe phases of the project.</p>',
+  displayPrompt: 'NarraFirma Dashboard',
   displayPanel: 'panel_dashboard',
   model: 'ProjectModel' 
 },
 {
-  id: 'project_testImage',
+    id: 'project_launchSection_planning',
+    dataType: 'none',
+    dataOptions: undefined,
+    required: false,
+    validators: undefined,
+    displayType: 'button',
+    displayConfiguration: {action: 'guiOpenSection', section: 'page_planning'},
+    displayName: undefined,
+    displayPrompt: 'Open planning section',
+    displayPanel: 'panel_dashboard',
+    model: 'ProjectModel' 
+},
+{
+    id: 'project_launchSection_collectionDesign',
+    dataType: 'none',
+    dataOptions: undefined,
+    required: false,
+    validators: undefined,
+    displayType: 'button',
+    displayConfiguration: {action: 'guiOpenSection', section: 'page_collectionDesign'},
+    displayName: undefined,
+    displayPrompt: 'Open collection design section',
+    displayPanel: 'panel_dashboard',
+    model: 'ProjectModel' 
+},
+{
+    id: 'project_launchSection_collectionProcess',
+    dataType: 'none',
+    dataOptions: undefined,
+    required: false,
+    validators: undefined,
+    displayType: 'button',
+    displayConfiguration: {action: 'guiOpenSection', section: 'page_collectionProcess'},
+    displayName: undefined,
+    displayPrompt: 'Open collection process section',
+    displayPanel: 'panel_dashboard',
+    model: 'ProjectModel' 
+},
+{
+    id: 'project_launchSection_catalysis',
+    dataType: 'none',
+    dataOptions: undefined,
+    required: false,
+    validators: undefined,
+    displayType: 'button',
+    displayConfiguration: {action: 'guiOpenSection', section: 'page_catalysis'},
+    displayName: undefined,
+    displayPrompt: 'Open catalysis section',
+    displayPanel: 'panel_dashboard',
+    model: 'ProjectModel' 
+},
+{
+    id: 'project_launchSection_sensemaking',
+    dataType: 'none',
+    dataOptions: undefined,
+    required: false,
+    validators: undefined,
+    displayType: 'button',
+    displayConfiguration: {action: 'guiOpenSection', section: 'page_sensemaking'},
+    displayName: undefined,
+    displayPrompt: 'Open sensemaking section',
+    displayPanel: 'panel_dashboard',
+    model: 'ProjectModel' 
+},
+{
+    id: 'project_launchSection_intervention',
+    dataType: 'none',
+    dataOptions: undefined,
+    required: false,
+    validators: undefined,
+    displayType: 'button',
+    displayConfiguration: {action: 'guiOpenSection', section: 'page_intervention'},
+    displayName: undefined,
+    displayPrompt: 'Open intervention section',
+    displayPanel: 'panel_dashboard',
+    model: 'ProjectModel' 
+},
+{
+    id: 'project_launchSection_return',
+    dataType: 'none',
+    dataOptions: undefined,
+    required: false,
+    validators: undefined,
+    displayType: 'button',
+    displayConfiguration: {action: 'guiOpenSection', section: 'page_return'},
+    displayName: undefined,
+    displayPrompt: 'Open return section',
+    displayPanel: 'panel_dashboard',
+    model: 'ProjectModel' 
+},
+{
+    id: 'project_launchSection_projectReport',
+    dataType: 'none',
+    dataOptions: undefined,
+    required: false,
+    validators: undefined,
+    displayType: 'button',
+    displayConfiguration: {action: 'guiOpenSection', section: 'page_projectReport'},
+    displayName: undefined,
+    displayPrompt: 'Open project report section',
+    displayPanel: 'panel_dashboard',
+    model: 'ProjectModel' 
+},  
+
+//------------- page page panel_introduction Dashboard  ------------- 
+
+{
+  id: 'panel_introduction',
+  displayName: 'Introduction',
+  displayType: 'page',
+  isHeader: false,
+  displayPanel: 'panel_introduction',
+  modelPath: 'project' 
+},
+
+{
+  id: 'project_introductionLabel',
+  dataType: 'none',
+  dataOptions: undefined,
+  required: false,
+  validators: undefined,
+  displayType: 'label',
+  displayConfiguration: undefined,
+  displayName: undefined,
+  displayPrompt: 'Welcome to NarraFirma. You can use this software to:\n<ul>\n<li>plan your Participatory Narrative Inquiry (PNI) project</li>\n<li>decide how you will collect stories</li>\n<li>write questions about stories</li>\n<li>plan group story sessions (and record what went on in them)</li>\n<li>collect or enter stories (and answers to questions)</li>\n<li>look at patterns in collected stories and answers</li>\n<li>build catalytic material</li>\n<li>plan sensemaking sessions (and record what went on in them)</li>\n<li>plan interventions (and record what went on in them)</li>\n<li>gather project feedback</li>\n<li>reflect on the project</li>\n<li>present the project to others</li>\n<li>preserve what you learned so you can use it on the next project</li>\n</ul>\n<p>Note: When finished, this page will bring together all of the dashboard pages from\nthe phases of the project.</p>',
+  displayPanel: 'panel_introduction',
+  model: 'ProjectModel' 
+},
+{
+  id: 'project_wwsBookImage',
   dataType: 'none',
   dataOptions: undefined,
   required: false,
@@ -43,7 +172,7 @@ return [
   displayConfiguration: 'images/WWS_BookCover_front_small.png',
   displayName: undefined,
   displayPrompt: 'This software is a companion for the book "Working with Stories in  Your Community or Organization" by Cynthia F. Kurtz',
-  displayPanel: 'panel_dashboard',
+  displayPanel: 'panel_introduction',
   model: 'ProjectModel' 
 },
 
