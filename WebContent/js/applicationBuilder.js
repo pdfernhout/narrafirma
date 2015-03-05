@@ -1,4 +1,8 @@
-define(["js/applicationFields"], function (applicationFields) {
+define([
+    "js/applicationFieldSpecifications"
+], function (
+    applicationFieldSpecifications
+) {
     "use strict";
     
     // TODO: Optimize the lookup of questions for panels, and maybe others, by using a dictionary which caches a list
@@ -15,8 +19,8 @@ define(["js/applicationFields"], function (applicationFields) {
     
     function buildModel(modelName) {
         var model = {__type: modelName};
-        for (var i = 0; i < applicationFields.length; i++) {
-            var fieldSpecification = applicationFields[i];
+        for (var i = 0; i < applicationFieldSpecifications.length; i++) {
+            var fieldSpecification = applicationFieldSpecifications[i];
             if (fieldSpecification.model === modelName && fieldSpecification.dataType !== "none") {
                 model[fieldSpecification.id] = initialDataForField(fieldSpecification);
             }
@@ -27,8 +31,8 @@ define(["js/applicationFields"], function (applicationFields) {
     
     function buildListOfPages() {
         var pages = [];
-        for (var i = 0; i < applicationFields.length; i++) {
-            var fieldSpecification = applicationFields[i];
+        for (var i = 0; i < applicationFieldSpecifications.length; i++) {
+            var fieldSpecification = applicationFieldSpecifications[i];
             if (fieldSpecification.displayType === "page") {
                 pages.push(fieldSpecification);
             }
@@ -38,8 +42,8 @@ define(["js/applicationFields"], function (applicationFields) {
     
     function buildListOfPanels() {
         var panels = [];
-        for (var i = 0; i < applicationFields.length; i++) {
-            var fieldSpecification = applicationFields[i];
+        for (var i = 0; i < applicationFieldSpecifications.length; i++) {
+            var fieldSpecification = applicationFieldSpecifications[i];
             if (fieldSpecification.displayType === "page" || fieldSpecification.displayType === "popup" ) {
                 panels.push(fieldSpecification);
             }
@@ -49,8 +53,8 @@ define(["js/applicationFields"], function (applicationFields) {
     
     function buildListOfQuestions() {
         var questions = [];
-        for (var i = 0; i < applicationFields.length; i++) {
-            var fieldSpecification = applicationFields[i];
+        for (var i = 0; i < applicationFieldSpecifications.length; i++) {
+            var fieldSpecification = applicationFieldSpecifications[i];
             if (fieldSpecification.displayType !== "page" && fieldSpecification.displayType !== "popup" ) {
                 questions.push(fieldSpecification);
             }
@@ -60,8 +64,8 @@ define(["js/applicationFields"], function (applicationFields) {
     
     function buildQuestionsForPanel(panelID) {
         var questions = [];
-        for (var i = 0; i < applicationFields.length; i++) {
-            var fieldSpecification = applicationFields[i];
+        for (var i = 0; i < applicationFieldSpecifications.length; i++) {
+            var fieldSpecification = applicationFieldSpecifications[i];
             if (fieldSpecification.isHeader === undefined && fieldSpecification.displayPanel === panelID) {
                 questions.push(fieldSpecification);
             }
