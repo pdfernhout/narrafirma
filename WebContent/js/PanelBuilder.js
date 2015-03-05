@@ -237,7 +237,7 @@ var PanelBuilder = declare(null, {
         if (!fieldSpecification) throw new Error("null, undefined, or empty string for fieldSpecification");
         if (!fieldSpecification.id) throw new Error("null, undefined, or empty string for fieldSpecification id: " + JSON.stringify(fieldSpecification));
         var id = fieldSpecification.id;
-        var questionText = translate("#" + id + "::prompt", "ERROR: missing text for: " + id + "::prompt");
+        var questionText = translate("#" + id + "::prompt", fieldSpecification.displayPrompt);
         var questionContentPane = new ContentPane({
         });
         domClass.add(questionContentPane.domNode, "questionExternal");
@@ -269,7 +269,7 @@ var PanelBuilder = declare(null, {
     
     add_label: function(contentPane, model, fieldSpecification) {
         var label = new ContentPane({
-            content: htmlForInformationIcon(randomHelpPageURL(fieldSpecification.id)) + "&nbsp;&nbsp;" + translate("#" + fieldSpecification.id + "::prompt")
+            content: htmlForInformationIcon(randomHelpPageURL(fieldSpecification.id)) + "&nbsp;&nbsp;" + translate("#" + fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt)
         });
         label.placeAt(contentPane);
         return label;
@@ -277,7 +277,7 @@ var PanelBuilder = declare(null, {
     
     add_header: function(contentPane, model, fieldSpecification) {
         var label = new ContentPane({
-            content: htmlForInformationIcon(randomHelpPageURL(fieldSpecification.id)) + "&nbsp;&nbsp;" + "<b>" + translate("#" + fieldSpecification.id + "::prompt") + "</b>"
+            content: htmlForInformationIcon(randomHelpPageURL(fieldSpecification.id)) + "&nbsp;&nbsp;" + "<b>" + translate("#" + fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt) + "</b>"
         });
         label.placeAt(contentPane);
         return label;
@@ -285,7 +285,7 @@ var PanelBuilder = declare(null, {
     
     add_image: function(contentPane, model, fieldSpecification) {
         var imageSource = fieldSpecification.displayConfiguration;
-        var questionText = translate("#" + fieldSpecification.id + "::prompt", "");
+        var questionText = translate("#" + fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt || "");
         var image = new ContentPane({
             content: questionText + "<br>" + '<img src="' + imageSource + '" alt="Image for question: ' + questionText + '">'
         });
@@ -363,14 +363,16 @@ var PanelBuilder = declare(null, {
         var choices = fieldSpecification.dataOptions;
         if (choices) {
             array.forEach(choices, function(each) {
+                var label;
                 // console.log("choice", id, each);
                 if (lang.isString(each)) {
-                    var label = translate("#" + fieldSpecification.id + "::selection:" + each);
+                    label = translate("#" + fieldSpecification.id + "::selection:" + each, each);
                     options.push({name: label, id: each});
                 } else {
                     // TODO: Maybe bug in dojo select that it does not handle values that are not strings
                     // http://stackoverflow.com/questions/16205699/programatically-change-selected-option-of-a-dojo-form-select-that-is-populated-b
-                    options.push({name: each.label, id: each.value});
+                    label = translate("#" + fieldSpecification.id + "::selection:" + each.label, each.label);
+                    options.push({name: label, id: each.value});
                 }
             });           
         } else {
@@ -475,7 +477,7 @@ var PanelBuilder = declare(null, {
         if (!callback) callback = lang.partial(domain.buttonClicked, contentPane, model, fieldSpecification);
         
         var button = new Button({
-            label: translate("#" + fieldSpecification.id + "::prompt"),
+            label: translate("#" + fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt),
             type: "button",
             onClick: callback
         });
@@ -646,6 +648,7 @@ var PanelBuilder = declare(null, {
         }
         
         for (var questionName in recommendations.questions) {
+            // TODO: Possible should improve this translation default, maybe by retrieving fieldSpecification for question and getting displayPrompt?
             var questionText = translate("#" + questionName + "::prompt", "Missing translation for: " + questionName);
             var yourAnswer = model.get(questionName);
             
@@ -702,7 +705,7 @@ var PanelBuilder = declare(null, {
         var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var label = new ContentPane({
-            // content: translate("#" + id + "::prompt")
+            // content: translate("#" + id + "::prompt", fieldSpecification.displayPrompt)
             content: "<b>UNFINISHED add_questionsTable: " + fieldSpecification.id + "</b>"             
         });
         label.placeAt(questionContentPane);
@@ -723,7 +726,7 @@ var PanelBuilder = declare(null, {
         var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var label = new ContentPane({
-            // content: translate("#" + id + "::prompt")
+            // content: translate("#" + id + "::prompt", fieldSpecification.displayPrompt)
             content: "<b>UNFINISHED add_trendsReport: " + fieldSpecification.id + "</b>"             
         });
         label.placeAt(questionContentPane);
@@ -734,7 +737,7 @@ var PanelBuilder = declare(null, {
         var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var label = new ContentPane({
-            // content: translate("#" + id + "::prompt")
+            // content: translate("#" + id + "::prompt", fieldSpecification.displayPrompt)
             content: "<b>UNFINISHED add_clusterSpace: " + fieldSpecification.id + "</b>"             
         });
         label.placeAt(questionContentPane);
@@ -745,7 +748,7 @@ var PanelBuilder = declare(null, {
         var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var label = new ContentPane({
-            // content: translate("#" + id + "::prompt")
+            // content: translate("#" + id + "::prompt", fieldSpecification.displayPrompt)
             content: "<b>UNFINISHED add_annotationsGrid: " + fieldSpecification.id + "</b>"             
         });
         label.placeAt(questionContentPane);
@@ -756,7 +759,7 @@ var PanelBuilder = declare(null, {
         var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var label = new ContentPane({
-            // content: translate("#" + id + "::prompt")
+            // content: translate("#" + id + "::prompt", fieldSpecification.displayPrompt)
             content: "<b>UNFINISHED add_storiesList: " + fieldSpecification.id + "</b>"             
         });
         label.placeAt(questionContentPane);
@@ -924,7 +927,7 @@ var PanelBuilder = declare(null, {
         var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var label = new ContentPane({
-            // content: translate("#" + id + "::prompt")
+            // content: translate("#" + id + "::prompt", fieldSpecification.displayPrompt)
             content: "<b>UNFINISHED accumulatedItemsGrid: " + fieldSpecification.id + "</b>"             
         });
         label.placeAt(questionContentPane);
@@ -935,7 +938,7 @@ var PanelBuilder = declare(null, {
         var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var label = new ContentPane({
-            // content: translate("#" + id + "::prompt")
+            // content: translate("#" + id + "::prompt", fieldSpecification.displayPrompt)
             content: "<b>UNFINISHED add_excerptsList: " + fieldSpecification.id + "</b>"             
         });
         label.placeAt(questionContentPane);
@@ -1034,7 +1037,7 @@ var PanelBuilder = declare(null, {
     _add_calculatedText: function(contentPane, fieldSpecification, calculate) {
         // var calculatedText = "(Initializing...)";
         var calculatedText = calculate();
-        var baseText = translate("#" + fieldSpecification.id + "::prompt");
+        var baseText = translate("#" + fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
         var label = new ContentPane({
             content: baseText + calculatedText
         });
@@ -1077,7 +1080,7 @@ var PanelBuilder = declare(null, {
         var calculate = lang.partial(domain.calculate_quizScoreResult, model, dependsOn);
         var label = this._add_calculatedText(contentPane, fieldSpecification, calculate);
         // TODO: Recalculating next two variables wheres they are also calculated in _add_calculatedText
-        var baseText = translate("#" + fieldSpecification.id + "::prompt");
+        var baseText = translate("#" + fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
         var updateInfo = {"id": fieldSpecification.id, "label": label, "baseText": baseText, "calculate": calculate};
         // Ensure this value is recalculated when dependent questions change by using watch
         for (var dependsOnIndex in dependsOn) {

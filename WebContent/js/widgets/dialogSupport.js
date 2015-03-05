@@ -59,6 +59,8 @@ define([
     };
     */
     
+    // TODO: Should probably improve how IDs for translations work, by maybe just passing in string that either has # already or is used as is
+    
     function openDialog(model, dialogConfiguration) {  
         console.log("openDialog", model, JSON.stringify(dialogConfiguration));
         

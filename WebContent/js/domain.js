@@ -407,7 +407,14 @@ define([
     }
     
     function labelForQuestion(question) {
-        var shortName = translate("#" + question.id + "::shortName", translate("#" + question.id + "::prompt"));
+        var shortName = translate("#" + question.id + "::shortName", "");
+        if (!shortName) shortName = translate("#" + question.id + "::prompt", "");
+        if (!shortName) shortName = question.displayName;
+        if (!shortName) shortName = question.displayPrompt;
+        if (!shortName) {
+            console.log("Missing translation of label for question", question.id, question);
+            shortName = question.id;
+        }
         var separator = ":";
         var lastQuestionCharacter = shortName[shortName.length - 1];
         if (lastQuestionCharacter === "?" || lastQuestionCharacter === "." || lastQuestionCharacter === ")") {
@@ -428,7 +435,7 @@ define([
             var panelDefinition = panelDefinitions[pageID];
             if (panelDefinition.displayType !== "page") continue;
             report += "<div>";
-            report += "<i> *** " + translate("#" + pageID + "::title") + "</i>  ***<br><br>";
+            report += "<i> *** " + translate("#" + pageID + "::title", panelDefinition.displayName) + "</i>  ***<br><br>";
             var questionsAnsweredCount = 0;
             var questions = panelDefinition.questions;
             for (var questionIndex in questions) {
