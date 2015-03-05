@@ -45,13 +45,12 @@ require([
     
     var startPage = "page_dashboard";
     
-    var allPages = {};
+    var pageSpecifications = {};
 
-    var currentPage = null;
     var currentPageID = null;
+    var currentPage = null;
+       
     var pageNavigationSelect = null;
-    
-    var currentProjectVersionReference = null; 
     
     var previousPageButton = null;
     var nextPageButton = null;
@@ -59,6 +58,8 @@ require([
     var loadVersionButton = null;
     var saveButton = null;
     var importExportButton = null;
+    
+    var currentProjectVersionReference = null; 
     
     // Tell all the PanelBuilders where to find information about panels (the applicationBuilder)
     PanelBuilder.setApplicationBuilder(applicationBuilder);
@@ -167,8 +168,8 @@ require([
     function urlHashFragmentChanged(newHash) {
         console.log("urlHashFragmentChanged", newHash);
         if (currentPageID !== newHash) {
-            var page = panelForPageID(newHash);
-            if (page && page.displayType === "page") {
+            var pageSpecification = panelForPageID(newHash);
+            if (pageSpecification && pageSpecification.displayType === "page") {
                 changePage(newHash);
             } else {
                 console.log("unsupported url hash fragment", newHash);
@@ -178,23 +179,22 @@ require([
         }
     }
     
-    function changePage(id) {
-        console.log("changePage", id);
-        pageNavigationSelect.set("value", id);
+    function changePage(pageID) {
+        console.log("changePage", pageID);
+        pageNavigationSelect.set("value", pageID);
     }
     
     function pageNavigationSelectChanged(event) {
-        var id = event;
-        console.log("changing page to:", id);
-        showPage(id);
+        var pageID = event;
+        console.log("changing page to:", pageID);
+        showPage(pageID);
     }
     
     function showPage(pageID, forceRefresh) {
         if (currentPageID === pageID && !forceRefresh) return;
         
-        var panelID = pageID.replace("page_", "panel_");
-        var page = allPages[panelID];
-        if (!page) {
+        var pageSpecification = pageSpecifications[pageID];
+        if (!pageSpecification) {
             console.log("no such page", pageID);
             alert("No such page: " + pageID);
             return;
@@ -215,8 +215,8 @@ require([
         currentPageID = pageID;
         hash(currentPageID);
         
-        previousPageButton.setDisabled(!page.previousPageID);
-        nextPageButton.setDisabled(!page.nextPageID);
+        previousPageButton.setDisabled(!pageSpecification.previousPageID);
+        nextPageButton.setDisabled(!pageSpecification.nextPageID);
         
         // Show the current page again
         domStyle.set("pageDiv", "display", "block");
@@ -231,10 +231,11 @@ require([
     
     function createPage(pageID, visible) {
         console.log("createPage", pageID);
-        var panelID = pageID.replace("page_", "panel_");
-        var page = allPages[panelID];
         
-        if (!page) {
+        var pageSpecification = pageSpecifications[pageID];
+        var panelID = pageID.replace("page_", "panel_");
+        
+        if (!pageSpecification) {
             console.log("ERROR: No definition for page: ", pageID);
             return;
         }
@@ -244,7 +245,7 @@ require([
         
         var pagePane = new ContentPane({
             "id": pageID,
-            title: page.title,
+            title: pageSpecification.title,
             // Shorten width so grid scroll bar shows up not clipped
             // Also, looks like nested ContentPanes tend to walk off the right side of the page for some reason
             style: "width: 94%",
@@ -259,10 +260,10 @@ require([
        pagePane.startup();
         
        // console.log("Made content pane", pageID);
-       
+            
        panelBuilder.buildPanel(panelID, pagePane, domain.projectData.projectAnswers);
        
-       if (!page.isHeader) {
+       if (!pageSpecification.isHeader) {
            var options = ["intentionally skipped", "partially done", "completely finished"];
            var statusEntryID = pageID + "_pageStatus";
            translate.addExtraTranslation(statusEntryID + "::prompt", translate("#dashboard_status_entry::prompt") + " ");
@@ -272,7 +273,7 @@ require([
            }
            panelBuilder.add_select(pagePane, domain.projectData.projectAnswers, {id: statusEntryID, dataOptions: options});
        } else {
-           console.log("page dashboard as header", page.id, page.displayType, page);
+           console.log("page dashboard as header", pageSpecification.id, pageSpecification.displayType, pageSpecification);
            // Put in dashboard
            var childPages = domain.pagesToGoWithHeaders[panelID];
            console.log("child pages", pageID, panelID, childPages);
@@ -293,7 +294,7 @@ require([
        
        /*
        var nextPageButtonQuestion = {
-           "id": id + "_nextPageButton",
+           "id": pageID + "_nextPageButton",
            "displayPrompt": "Mark page complete and proceed to next page",
            "displayType": "button"
        };
@@ -323,8 +324,8 @@ require([
             alert("Something wrong with currentPageID");
             return;
         }
-        var page = panelForPageID(currentPageID);
-        var previousPageID = page.previousPageID;
+        var pageSpecification = panelForPageID(currentPageID);
+        var previousPageID = pageSpecification.previousPageID;
         if (previousPageID) {
             changePage(previousPageID);
         } else {
@@ -340,8 +341,8 @@ require([
             alert("Something wrong with currentPageID");
             return;
         }
-        var page = panelForPageID(currentPageID);
-        var nextPageID = page.nextPageID;
+        var pageSpecification = panelForPageID(currentPageID);
+        var nextPageID = pageSpecification.nextPageID;
         if (nextPageID) {
             changePage(nextPageID);
         } else {
@@ -421,16 +422,16 @@ require([
         return options;
     }
     
-    function buildAllPages() {
+    function processAllPanels() {
         var panels = applicationBuilder.buildListOfPanels();
-        console.log("buildAllPages", panels);
+        console.log("processAllPanels", panels);
         
         var lastPageID = null;
         var lastHeader = null;
         
         for (var panelIndex = 0; panelIndex < panels.length; panelIndex++) {
             var panel = panels[panelIndex];
-            allPages[panel.id] = panel;
+            
             // console.log("defining panel", panel.id);
             var title = translate("#" + panel.id + "::title", panel.displayName);
             if (panel.isHeader) {
@@ -447,6 +448,7 @@ require([
             // For panels that are a "page", add to top level pages choices and set up navigation
             if (panel.displayType === "page") {
                 var pageID = panel.id.replace("panel_", "page_");
+                pageSpecifications[pageID] = panel;
                 // console.log("pushing page", panel);
                 // Make it easy to lookup previous and next pages from a page
                 if (lastPageID && !panel.isHeader) panelForPageID(lastPageID).nextPageID = pageID;
@@ -581,7 +583,7 @@ require([
         domain.buttonFunctions.enterSurveyResult = openSurveyDialog;
         domain.buttonFunctions.updateQuestionsForPageChangeCallback = updatePagesForDomainValueChange;
         
-        buildAllPages();
+        processAllPanels();
         
         createLayout();
         
