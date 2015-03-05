@@ -287,7 +287,7 @@ define([
         
         var storyList;
         
-        var filterButton = widgetSupport.newButton(id + "_filter", "button_Filter", pagePane, function () {
+        var filterButton = widgetSupport.newButton(pagePane, "#button_Filter", function () {
             // console.log("filter pressed");
             var question1Choice = filter1.questionSelect.get("value");
             var answers1Choices = filter1.answersMultiSelect.get("value");

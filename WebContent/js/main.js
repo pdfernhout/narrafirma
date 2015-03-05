@@ -482,14 +482,11 @@ require([
         // Any items like buttons added to the navigationPane will have startup() called automatically,
         // since the navigationPane they are being added to has already been started
         
-        // Initialize toaster
-        toaster.createToasterWidget(navigationPane);
-        
         // var imageButton = widgets.newButton("wwsImageButton", "Working With Stories image button", navigationPane, wwsButtonClicked);
         // imageButton.set("showLabel", false);
         // imageButton.set("iconClass", "wwsButtonImage");
         
-        var homeButton = widgetSupport.newButton("button_home", null, navigationPane, homeButtonClicked);
+        var homeButton = widgetSupport.newButton(navigationPane, "#button_home", homeButtonClicked);
         homeButton.set("showLabel", false);
         // homeButton.set("iconClass", "dijitEditorIcon dijitEditorIconOutdent");
         homeButton.set("iconClass", "homeButtonImage");
@@ -501,20 +498,20 @@ require([
         domStyle.set(selectWidget.domNode, "width", "400px");
         selectWidget.on("change", mainSelectChanged);
         
-        previousPageButton = widgetSupport.newButton("button_previousPage", null, navigationPane, previousPageClicked);
+        previousPageButton = widgetSupport.newButton(navigationPane, "#button_previousPage", previousPageClicked);
         previousPageButton.set("iconClass", "leftButtonImage");
         
-        nextPageButton = widgetSupport.newButton("button_nextPage", null, navigationPane, nextPageClicked);
+        nextPageButton = widgetSupport.newButton(navigationPane, "#button_nextPage", nextPageClicked);
         nextPageButton.set("iconClass", "rightButtonImage");
 
-        saveButton = widgetSupport.newButton("button_save", null, navigationPane, saveClicked);
+        saveButton = widgetSupport.newButton(navigationPane, "#button_save", saveClicked);
 
-        loadLatestButton = widgetSupport.newButton("button_loadLatest", null, navigationPane, loadLatestClicked);
-        loadVersionButton = widgetSupport.newButton("button_loadVersion", null, navigationPane, loadVersionClicked);
+        loadLatestButton = widgetSupport.newButton(navigationPane, "#button_loadLatest", loadLatestClicked);
+        loadVersionButton = widgetSupport.newButton(navigationPane, "#button_loadVersion", loadVersionClicked);
 
-        importExportButton = widgetSupport.newButton("button_importExport", null, navigationPane, importExportClicked);
+        importExportButton = widgetSupport.newButton(navigationPane, "#button_importExport", importExportClicked);
 
-        var debugButton = widgetSupport.newButton("button_debug", null, navigationPane, debugButtonClicked);
+        var debugButton = widgetSupport.newButton(navigationPane, "#button_debug", debugButtonClicked);
         
         // Setup the first page
         var fragment = hash();
@@ -548,7 +545,10 @@ require([
     
     function initialize() {
         translate.configure({}, applicationMessages);
-
+        
+        // Initialize toaster
+        toaster.createToasterWidget("navigationDiv");
+        
         // Synchronizes the state of the domain for one status flag with what is on server
         domain.determineStatusOfCurrentQuestionnaire();
 

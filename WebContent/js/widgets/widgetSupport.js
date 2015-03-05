@@ -86,20 +86,15 @@ define([
     }
     
     // TODO: Two GUI components without translation here temporarily
-    function newButton(id, label_translate_id, addToDiv, callback) {
-        if (label_translate_id === null) label_translate_id = id;
-        var label = translate("#" + label_translate_id, label_translate_id);
+    function newButton(addToDiv, label, callback) {
+        var translatedLabel = translate(label);
         
         // TODO: Maybe should not be passingin an ID??? Just let Dojo assign one
         var button = new Button({
-            id: id,
-            label: label,
+            label: translatedLabel,
             type: "button",
             onClick: callback
         });
-        if (lang.isString(addToDiv)) {
-            addToDiv = document.getElementById(addToDiv);
-        }
         if (addToDiv) {
             button.placeAt(addToDiv);
         }

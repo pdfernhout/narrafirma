@@ -130,7 +130,7 @@ define([
                  });
                  themeEntryComboBox.placeAt(themesPane);
                  
-                 var addThemeButton = widgetSupport.newButton(id + "_addThemeButton", "button_addTheme", pagePane, function () {
+                 var addThemeButton = widgetSupport.newButton(pagePane, "#button_addTheme", function () {
                      console.log("Button pressed", themeList, storyThemes, storyThemesStore);
                      var themeText = themeEntryComboBox.get("value");
                      console.log("themeText", themeText);

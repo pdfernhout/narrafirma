@@ -113,12 +113,12 @@ define([
         
         panelBuilder.addQuestions(allStoryQuestions, surveyPane, storyQuestionsModel);
         
-        widgetSupport.newButton(undefined, "button_previousPage", surveyPane, function() {
+        widgetSupport.newButton(surveyPane, "#button_previousPage", function() {
             console.log("button_previousPage");
             wizardPane.back();
         });
         
-        var tellAnotherStoryButton = widgetSupport.newButton(undefined, "button_tellAnotherStory", surveyPane, function() {
+        var tellAnotherStoryButton = widgetSupport.newButton(surveyPane, "#button_tellAnotherStory", function() {
             console.log("button_tellAnotherStory");
             if (!validateStoryQuestionsModel(storyQuestionsModel)) return;
             var children = wizardPane.getChildren();
@@ -130,7 +130,7 @@ define([
             wizardPane.forward();
         });
         
-        var dontTellAnotherStoryButton = widgetSupport.newButton(undefined, "button_dontTellAnotherStory", surveyPane, function() {
+        var dontTellAnotherStoryButton = widgetSupport.newButton(surveyPane, "#button_dontTellAnotherStory", function() {
             console.log("button_dontTellAnotherStory");
             var canProceedIfNoStory = addIndex !== 1;
             if (!validateStoryQuestionsModel(storyQuestionsModel, canProceedIfNoStory)) return;
@@ -138,13 +138,13 @@ define([
         });
         
         /*
-        widgetSupport.newButton(undefined, "button_deleteThisStory", surveyPane, function() {
+        widgetSupport.newButton(surveyPane, "#button_deleteThisStory", function() {
             console.log("button_nextPage");
             wizardPane.forward();
         });
         */
         
-        var nextPageButton = widgetSupport.newButton(undefined, "button_nextPage", surveyPane, function() {
+        var nextPageButton = widgetSupport.newButton(surveyPane, "#button_nextPage", function() {
             console.log("button_nextPage");
             // TODO: Need to somehow require at least one story... But this allows previous stories to be deleted. Kludge for now that first story can't be blank.
             var canProceedIfNoStory = addIndex !== 1;
@@ -238,7 +238,7 @@ define([
         
         panelBuilder.addQuestions(startQuestions, startPane.containerNode, participantDataModel);
         
-        widgetSupport.newButton(undefined, "button_nextPage", startPane, function() {
+        widgetSupport.newButton(startPane, "button_nextPage", function() {
             console.log("button_nextPage");
             wizardPane.forward();
         });
@@ -256,12 +256,12 @@ define([
         
         panelBuilder.addQuestions(questionnaire.participantQuestions, participantPane.containerNode, participantDataModel);
         
-        widgetSupport.newButton(undefined, "button_previousPage", participantPane, function() {
+        widgetSupport.newButton(participantPane, "#button_previousPage", function() {
             console.log("button_previousPage");
             wizardPane.back();
         });
         
-        widgetSupport.newButton(undefined, "surveySubmit", participantPane, function() {
+        widgetSupport.newButton(participantPane, "#surveySubmit", function() {
             console.log("Submit survey");
             submitSurvey(surveyResultsWithModels, wizardPane, doneCallback);
         });
@@ -272,7 +272,7 @@ define([
         panelBuilder.addQuestions(endQuestions, endPane.containerNode, participantDataModel);
         
         if (includeCancelButton) {
-            widgetSupport.newButton(undefined, "surveyCancel", wizardPane, function() {
+            widgetSupport.newButton(wizardPane, "#surveyCancel", function() {
                 console.log("Cancel");
                 if (doneCallback) doneCallback("cancelled");
             });
