@@ -562,21 +562,43 @@ var PanelBuilder = declare(null, {
         return contentPane;
     },
     
-    add_recommendationTable: function(contentPane, model, fieldSpecification) {
-        var dialogConfiguration = {
-            dialogOpenButtonID: "button_showRecommendationsTable",
-            dialogContentPaneID: "recommendationsTable",
-            dialogTitleID: "title_recommendationsTable",
-            dialogStyle: undefined,
-            dialogConstructionFunction: lang.hitch(this, this.build_recommendationTable)
+    addButtonThatLaunchesDialog: function(contentPane, model, fieldSpecification, dialogConfiguration) {
+        // if (!callback) callback = lang.partial(domain.buttonClicked, contentPane, model, id, questionOptions);
+        var callback = function() {
+            widgetSupport.openDialog(model, dialogConfiguration);
         };
-        var button = widgetSupport.addButtonThatLaunchesDialog(contentPane, model, fieldSpecification.id, fieldSpecification.displayConfiguration, dialogConfiguration);
+        
+        var button = new Button({
+            label: translate("#" + fieldSpecification.id, fieldSpecification.displayPrompt),
+            type: "button",
+            onClick: callback
+        });
+
+        button.placeAt(contentPane);
+        
+        var wrap = new ContentPane({
+            content: "<br>"
+        });
+        wrap.placeAt(contentPane);
+        
         return button;
     },
     
-    build_recommendationTable: function(contentPane, model, fieldSpecification) {
-
-        var questionContentPane = this.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
+    add_recommendationTable: function(contentPane, model, fieldSpecification) {
+        var dialogConfiguration = {
+            dialogContentPaneID: "recommendationsTable",
+            dialogTitleID: "title_recommendationsTable",
+            dialogStyle: undefined,
+            dialogConstructionFunction: lang.hitch(this, this.build_recommendationTable),
+            fieldSpecification: fieldSpecification
+        };
+        var button = this.addButtonThatLaunchesDialog(contentPane, model, fieldSpecification, dialogConfiguration);
+        return button;
+    },
+    
+    build_recommendationTable: function(dialogContentPane, model, hideDialogMethod, dialogConfiguration) {
+        var fieldSpecification = dialogConfiguration.fieldSpecification;
+        var questionContentPane = this.createQuestionContentPaneWithPrompt(dialogContentPane, fieldSpecification);
 
         var categoryName = fieldSpecification.displayConfiguration;
         console.log("add_recommendationTable category", categoryName);
@@ -744,17 +766,19 @@ var PanelBuilder = declare(null, {
     // TODO: Refactor this into its own widget module
     add_templateList: function(contentPane, model, fieldSpecification) {
         var dialogConfiguration = {
-            dialogOpenButtonID: "button_chooseATemplateToInsert",
             dialogContentPaneID: "templateList",
             dialogTitleID: "title_chooseATemplate",
             dialogStyle: "height: 900px",
-            dialogConstructionFunction: lang.hitch(this, this.makeTemplateListChooser)
+            dialogConstructionFunction: lang.hitch(this, this.makeTemplateListChooser),
+            fieldSpecification: fieldSpecification
         };
-        var button = widgetSupport.addButtonThatLaunchesDialog(contentPane, model, fieldSpecification.id, fieldSpecification.displayConfiguration, dialogConfiguration);
+        var button = this.addButtonThatLaunchesDialog(contentPane, model, fieldSpecification, dialogConfiguration);
         return button;
     },
     
-    makeTemplateListChooser: function(contentPane, model, fieldSpecification, hideDialogCallback, dialogConfiguration) {
+    makeTemplateListChooser: function(contentPane, model, hideDialogCallback, dialogConfiguration) {
+        var fieldSpecification = dialogConfiguration.fieldSpecification;
+        
         // For add_templateList
         var add_templateList_elicitationQuestions = [
             {"id":"category", dataType: "string", "type":"text", "isInReport":true, "isGridColumn":true},

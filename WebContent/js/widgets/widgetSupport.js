@@ -179,37 +179,15 @@ define([
     
     /*
     var dialogConfiguration = {
-        dialogOpenButtonID: "???",
         dialogContentPaneID: "???",
         dialogTitleID: "???",
         dialogStyle: "height: 500px",
         dialogConstructionFunction: ???
     };
     */
-    function addButtonThatLaunchesDialog(contentPane, model, id, options, dialogConfiguration) {
-        // if (!callback) callback = lang.partial(domain.buttonClicked, contentPane, model, id, questionOptions);
-        var callback = function() {
-            openDialog(model, id, options, dialogConfiguration);
-        };
-        
-        var button = new Button({
-            label: translate("#" + dialogConfiguration.dialogOpenButtonID),
-            type: "button",
-            onClick: callback
-        });
-
-        button.placeAt(contentPane);
-        
-        var wrap = new ContentPane({
-            content: "<br>"
-        });
-        wrap.placeAt(contentPane);
-        
-        return button;
-    }
     
-    function openDialog(model, id, options, dialogConfiguration) {  
-        console.log("openDialog model, id, options", model, id, options, JSON.stringify(dialogConfiguration));
+    function openDialog(model, dialogConfiguration) {  
+        console.log("openDialog", model, JSON.stringify(dialogConfiguration));
         
         var dialog;
         var dialogContentPane = new ContentPane({id: dialogConfiguration.dialogContentPaneID});
@@ -218,7 +196,7 @@ define([
             dialog.hide();
         }
         
-        dialogConfiguration.dialogConstructionFunction(dialogContentPane, model, id, options, hideDialogMethod, dialogConfiguration);
+        dialogConfiguration.dialogConstructionFunction(dialogContentPane, model, hideDialogMethod, dialogConfiguration);
    
         dialog = new Dialog({
             // TODO: Translate
@@ -251,10 +229,10 @@ define([
                 dialogOKCallback: dialogOKCallback
             };
         
-        openDialog(model, dialogContentPaneID, {}, dialogConfiguration);
+        openDialog(model, dialogConfiguration);
     }
     
-    function build_textEditorDialogContent(dialogContentPane, model, id, options, hideDialogMethod, dialogConfiguration) {
+    function build_textEditorDialogContent(dialogContentPane, model, hideDialogMethod, dialogConfiguration) {
         // Experiment; lots of tries!!! http://jsfiddle.net/u3qcbxy4/37/
         
         var layout = new LayoutContainer({
@@ -272,7 +250,7 @@ define([
         var okButton = new Button({
             label: translate("#" + dialogConfiguration.dialogOKButtonID),
             type: "button",
-            onClick: function() {dialogConfiguration.dialogOKCallback(model.get("text"), hideDialogMethod, id, options, dialogConfiguration);},
+            onClick: function() {dialogConfiguration.dialogOKCallback(model.get("text"), hideDialogMethod, dialogConfiguration);},
             region: 'bottom'
         });
         
@@ -296,10 +274,10 @@ define([
                 choices: choices
             };
         
-        openDialog(model, dialogContentPaneID, {}, dialogConfiguration);
+        openDialog(model, dialogConfiguration);
     }
     
-    function buildListChoiceDialogContent(dialogContentPane, model, id, options, hideDialogMethod, dialogConfiguration) {    
+    function buildListChoiceDialogContent(dialogContentPane, model, hideDialogMethod, dialogConfiguration) {    
         var layout = new LayoutContainer({
         });
         
@@ -321,7 +299,7 @@ define([
         var okButton = new Button({
             label: translate("#" + dialogConfiguration.dialogOKButtonID),
             type: "button",
-            onClick: function() {dialogConfiguration.dialogOKCallback(model.get("choice"), hideDialogMethod, id, options, dialogConfiguration);},
+            onClick: function() {dialogConfiguration.dialogOKCallback(model.get("choice"), hideDialogMethod, dialogConfiguration);},
             region: 'bottom'
         });
         
@@ -337,7 +315,6 @@ define([
         newButton: newButton,
         newSelect: newSelect,
         "confirm": confirm,
-        "addButtonThatLaunchesDialog": addButtonThatLaunchesDialog,
         "openDialog": openDialog,
         "openTextEditorDialog": openTextEditorDialog,
         "openListChoiceDialog": openListChoiceDialog,
