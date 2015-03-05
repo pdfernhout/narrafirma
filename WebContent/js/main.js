@@ -169,7 +169,7 @@ require([
     function urlHashFragmentChanged(newHash) {
         console.log("urlHashFragmentChanged", newHash);
         if (currentPageID !== newHash) {
-            var pageSpecification = panelForPageID(newHash);
+            var pageSpecification = pageSpecifications[newHash];
             if (pageSpecification && pageSpecification.displayType === "page") {
                 changePage(newHash);
             } else {
@@ -234,8 +234,7 @@ require([
         console.log("createPage", pageID);
         
         var pageSpecification = pageSpecifications[pageID];
-        var panelID = pageID.replace("page_", "panel_");
-        
+       
         if (!pageSpecification) {
             console.log("ERROR: No definition for page: ", pageID);
             return;
@@ -262,6 +261,7 @@ require([
         
        // console.log("Made content pane", pageID);
             
+       var panelID = panelIDForPageID(pageID);
        panelBuilder.buildPanel(panelID, pagePane, domain.projectData.projectAnswers);
        
        if (!pageSpecification.isHeader) {
@@ -276,18 +276,18 @@ require([
        } else {
            console.log("page dashboard as header", pageSpecification.id, pageSpecification.displayType, pageSpecification);
            // Put in dashboard
-           var childPages = domain.pagesToGoWithHeaders[panelID];
-           console.log("child pages", pageID, panelID, childPages);
-           for (var childPageIndex in childPages) {
-               var childPageID = childPages[childPageIndex];
+           var childPageIDs = domain.childPageIDListForHeaderID[pageID];
+           console.log("child pages", pageID, panelID, childPageIDs);
+           for (var childPageIndex = 0; childPageIndex < childPageIDs.length; childPageIndex++) {
+               var childPageID = childPageIDs[childPageIndex];
                var statusViewID = childPageID + "_pageStatus_dashboard";
-               var childPage = panelForPageID(childPageID);
-               console.log("childPageID", childPage, childPageID);
-               if (!childPage) console.log("Error: problem finding page definition for", childPageID);
-               if (childPage && childPage.displayType === "page") {
-                   var prompt = translate("#" + childPageID + "::title", childPage.displayName) + " " + translate("#dashboard_status_label") + " ";
+               var childPageSpecification = pageSpecifications[childPageID];
+               console.log("childPageID", childPageSpecification, childPageID);
+               if (!childPageSpecification) console.log("Error: problem finding page definition for", childPageID);
+               if (childPageSpecification && childPageSpecification.displayType === "page") {
+                   var prompt = translate("#" + childPageID + "::title", childPageSpecification.displayName) + " " + translate("#dashboard_status_label") + " ";
                    translate.addExtraTranslation(statusViewID + "::prompt", prompt);
-                   console.log("about to call panelBuilder for childPage", childPageID);
+                   console.log("about to call panelBuilder to add one questionAnswer for child page's status", childPageID);
                    panelBuilder.add_questionAnswer(pagePane, domain.projectData.projectAnswers, {id: statusViewID, displayConfiguration: [childPageID + "_pageStatus"]});
                }
            }
@@ -313,9 +313,12 @@ require([
        return pagePane;
     }
     
-    function panelForPageID(pageID) {
-        var panelID = pageID.replace("page_", "panel_");
-        return domain.panelDefinitions[panelID];
+    function panelIDForPageID(pageID) {
+        return pageID.replace("page_", "panel_");
+    }
+    
+    function pageIDForPanelID(panelID) {
+        return panelID.replace("panel_", "page_");
     }
     
     function previousPageClicked(event) {
@@ -325,7 +328,7 @@ require([
             alert("Something wrong with currentPageID");
             return;
         }
-        var pageSpecification = panelForPageID(currentPageID);
+        var pageSpecification = pageSpecifications[currentPageID];
         var previousPageID = pageSpecification.previousPageID;
         if (previousPageID) {
             changePage(previousPageID);
@@ -342,7 +345,7 @@ require([
             alert("Something wrong with currentPageID");
             return;
         }
-        var pageSpecification = panelForPageID(currentPageID);
+        var pageSpecification = pageSpecifications[currentPageID];
         var nextPageID = pageSpecification.nextPageID;
         if (nextPageID) {
             changePage(nextPageID);
@@ -408,16 +411,14 @@ require([
     
     var pageSelectOptions = [];
     
-    function pageSelectOptionsForSection(section) {
-        console.log("======== pageSelectOptionsForSection", section, domain.pagesToGoWithHeaders);
-        var panelIDs = domain.pagesToGoWithHeaders[section];
+    function pageSelectOptionsForSection(sectionHeaderPageID) {
+        console.log("======== pageSelectOptionsForSection", sectionHeaderPageID, domain.childPageIDListForHeaderID);
+        var pageIDs = domain.childPageIDListForHeaderID[sectionHeaderPageID];
         var options = [];
-        var title = panelForPageID(section).title;
-        var pageID = section.replace("panel_", "page_");
-        options.push({label: title, value: pageID});
-        _.forEach(panelIDs, function (panelID) {
-            pageID = panelID.replace("panel_", "page_");
-            title = panelForPageID(pageID).title;
+        var title = pageSpecifications[sectionHeaderPageID].title;
+        options.push({label: title, value: sectionHeaderPageID});
+        _.forEach(pageIDs, function (pageID) {
+            title = pageSpecifications[pageID].title;
             options.push({label: title, value: pageID});
         });
         return options;
@@ -448,18 +449,18 @@ require([
             
             // For panels that are a "page", add to top level pages choices and set up navigation
             if (panel.displayType === "page") {
-                var pageID = panel.id.replace("panel_", "page_");
+                var pageID = pageIDForPanelID(panel.id);
                 pageSpecifications[pageID] = panel;
                 // console.log("pushing page", panel);
                 // Make it easy to lookup previous and next pages from a page
-                if (lastPageID && !panel.isHeader) panelForPageID(lastPageID).nextPageID = pageID;
+                if (lastPageID && !panel.isHeader) pageSpecifications[lastPageID].nextPageID = pageID;
                 if (!panel.isHeader) panel.previousPageID = lastPageID;
                 lastPageID = pageID;
                 
                 if (!panel.isHeader) {
-                    var list = domain.pagesToGoWithHeaders[lastHeader] || [];
-                    list.push(panel.id);
-                    domain.pagesToGoWithHeaders[lastHeader] = list;
+                    var list = domain.childPageIDListForHeaderID[lastHeader] || [];
+                    list.push(pageID);
+                    domain.childPageIDListForHeaderID[lastHeader] = list;
                 } else {
                     lastHeader = pageID;
                 }
@@ -474,7 +475,7 @@ require([
             // TODO: Should this really be modifying the original???
             panel.title = title;
             panel.questions = applicationBuilder.buildQuestionsForPanel(panel.id);
-            panel.section = lastHeader;
+            panel.pageSpecifications = lastHeader;
         }
         
         var questions = applicationBuilder.buildListOfQuestions();

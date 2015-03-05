@@ -22,7 +22,7 @@ define([
 
     var panelDefinitions = {};
     var questions = {};
-    var pagesToGoWithHeaders = {};
+    var childPageIDListForHeaderID = {};
     
     var projectData = {};
     
@@ -428,8 +428,8 @@ define([
     function calculate_report(model, headerPageID) {
         // console.log("domain calculate_report", model, headerPageID);
         var report = "<br><br>";
-        var pageList = pagesToGoWithHeaders[headerPageID];
-        // console.log("page list", pageList, headerPageID, pagesToGoWithHeaders);
+        var pageList = childPageIDListForHeaderID[headerPageID];
+        // console.log("page list", pageList, headerPageID, childPageIDListForHeaderID);
         for (var pageIndex in pageList) {
             // Skip last report page in a section
             if (pageIndex === pageList.length - 1) break;
@@ -541,7 +541,7 @@ define([
         for (var pageIndex = 0; pageIndex < pages.length; pageIndex++) {
             var page = pages[pageIndex];
             if (!page.isHeader) {
-                var pageID = page.id;
+                var pageID = page.id.replace("panel_", "page_");
                 projectData.projectAnswers[pageID + "_pageStatus"] = null;
             }
         }
@@ -574,7 +574,7 @@ define([
         "projectData": projectData,
         
         // Supporting GUI
-        "pagesToGoWithHeaders": pagesToGoWithHeaders,
+        "childPageIDListForHeaderID": childPageIDListForHeaderID,
         "questions": questions,
         "panelDefinitions": panelDefinitions,
         
