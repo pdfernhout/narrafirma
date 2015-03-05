@@ -101,7 +101,7 @@ define([
         var surveyPane = new ContentPane();
         
         // TODO: Translate
-        allStoryQuestions[0].prompt = "Story #" + addIndex;
+        allStoryQuestions[0].displayPrompt = "Story #" + addIndex;
         translate.addExtraTranslationsForQuestions([allStoryQuestions[0]]);
         
         var storyQuestionsModel = new Stateful();

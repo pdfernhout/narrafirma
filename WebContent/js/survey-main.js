@@ -26,6 +26,14 @@ require([
     // TODO: Fix hardcoded value
     var questionnaireID = 'questionnaire-test-003';
     
+    function fixupQuestion(question) {
+        question.displayName = question.shortName;
+        question.displayType = question.type;
+        question.displayOptions = question.options;
+        question.displayPrompt = question.prompt;
+        question.options = undefined;
+    }
+    
     function createLayout() {
         console.log("createLayout");
            
@@ -38,6 +46,19 @@ require([
                 return;
             }
             console.log("got questionnaire from server", questionnaireID, questionnaire);
+            
+            // Fixup old surveys (for testing)
+            console.log("!!! fixing up old survey for testing", questionnaire);
+            var i;
+            var question;
+            for (i = 0; i < questionnaire.participantQuestions.length; i++) {
+                question = questionnaire.participantQuestions[i];
+                fixupQuestion(question);
+            }
+            for (i = 0; i < questionnaire.storyQuestions.length; i++) {
+                question = questionnaire.storyQuestions[i];
+                fixupQuestion(question);
+            }
             
             var surveyDiv = dom.byId("surveyDiv");
             var form = survey.buildSurveyForm(questionnaire, finishedSurvey, false);
