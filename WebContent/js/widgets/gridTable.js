@@ -1,6 +1,7 @@
 define([
     "dojo/_base/array",
     "dojo/_base/declare",
+    "./dialogSupport",
     "exports",
     "dojox/mvc/getPlainValue",
     "dojo/_base/lang",
@@ -19,6 +20,7 @@ define([
 ], function(
     array,
     declare,
+    dialogSupport,
     exports,
     getPlainValue,
     lang,
@@ -231,7 +233,7 @@ define([
     function removeButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
         console.log("remove button pressed", id, event);
         // TODO: translate
-        widgetSupport.confirm("Are you sure you want to delete the selected item(s)?", function () {
+        dialogSupport.confirm("Are you sure you want to delete the selected item(s)?", function () {
             console.log("Removal confirmed");
             for (var itemID in grid.selection) {
                 store.remove(itemID);

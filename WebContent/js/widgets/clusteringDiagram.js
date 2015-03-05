@@ -10,7 +10,7 @@ define([
     "dojox/mvc/at",
     "dojox/layout/TableContainer",
     "dojo/_base/lang",
-    "./widgetSupport",
+    "./dialogSupport",
     "dijit/layout/ContentPane",
     "dijit/ColorPalette",
     "dojo/_base/Color",
@@ -26,7 +26,7 @@ define([
     at,
     TableContainer,
     lang,
-    widgetSupport,
+    dialogSupport,
     ContentPane,
     ColorPalette,
     Color,
@@ -222,7 +222,7 @@ define([
                 alert("Please select an item to delete first");
                 return;
             }
-            widgetSupport.confirm("Confirm removal of: '" + this.lastSelectedItem.text + "'?", lang.hitch(this, function () {
+            dialogSupport.confirm("Confirm removal of: '" + this.lastSelectedItem.text + "'?", lang.hitch(this, function () {
                 this.updateDisplayForChangedItem(this.lastSelectedItem, "delete");
                 removeItemFromArray(this.lastSelectedItem, this.diagram.items);
                 this.clearSelection();
@@ -403,7 +403,7 @@ define([
     };
     
     ClusteringDiagram.prototype.openSourceDialog = function(text) {
-        widgetSupport.openTextEditorDialog(text, "dialog_clusterDiagramSourceID", "clusterDiagramSource_titleID", "clusterDiagramSource_okButtonID", lang.hitch(this, this.updateSourceClicked));
+        dialogSupport.openTextEditorDialog(text, "dialog_clusterDiagramSourceID", "clusterDiagramSource_titleID", "clusterDiagramSource_okButtonID", lang.hitch(this, this.updateSourceClicked));
      };
 
     ClusteringDiagram.prototype.recreateDisplayObjectsForAllItems = function() {

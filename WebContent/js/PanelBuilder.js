@@ -5,6 +5,7 @@ define([
     "js/browser",
     "js/widgets/clusteringDiagram",
     "dojo/_base/declare",
+    "js/widgets/dialogSupport",
     "js/domain",
     'dojo/dom-class',
     "dojo/dom-construct",
@@ -13,7 +14,6 @@ define([
     "js/templates/recommendations",
     "js/translate",
     "js/templates/templates",
-    "js/widgets/widgetSupport",
     "dijit/form/Button",
     "js/widgets/checkboxes",
     "dijit/form/CheckBox",
@@ -39,6 +39,7 @@ define([
     browser,
     clusteringDiagram,
     declare,
+    dialogSupport,
     domain,
     domClass,
     domConstruct,
@@ -47,7 +48,6 @@ define([
     recommendations,
     translate,
     templates,
-    widgetSupport,
     Button,
     CheckBoxes,
     CheckBox,
@@ -565,7 +565,7 @@ var PanelBuilder = declare(null, {
     addButtonThatLaunchesDialog: function(contentPane, model, fieldSpecification, dialogConfiguration) {
         // if (!callback) callback = lang.partial(domain.buttonClicked, contentPane, model, id, questionOptions);
         var callback = function() {
-            widgetSupport.openDialog(model, dialogConfiguration);
+            dialogSupport.openDialog(model, dialogConfiguration);
         };
         
         var button = new Button({
@@ -864,7 +864,7 @@ var PanelBuilder = declare(null, {
             if (selectedTemplate) {
                 // TODO: not sure whether to confirm?
                 // TODO: Translate
-                widgetSupport.confirm("Copy selected template '" + selectedTemplate.id + "' into question definition?", function () {
+                dialogSupport.confirm("Copy selected template '" + selectedTemplate.id + "' into question definition?", function () {
                     if (templateListChoice === "elicitationQuestions") {
                         model.set("elicitingQuestion_text", selectedTemplate.text || "");
                         // Use the ID here instead of non-existent shortName

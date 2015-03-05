@@ -2,6 +2,7 @@ require([
     "js/applicationBuilder",
     "dojo/i18n!js/nls/applicationMessages",
     "dojo/_base/connect",
+    "js/widgets/dialogSupport",
     "js/domain",
     "dojo/dom-construct",
     "dojo/dom-style",
@@ -21,6 +22,7 @@ require([
     applicationBuilder,
     applicationMessages,
     connect,
+    dialogSupport,
     domain,
     domConstruct,
     domStyle,
@@ -90,12 +92,12 @@ require([
         console.log("got versions", versions);
         
         // TODO: Put up a dialog to choose from
-        widgetSupport.openListChoiceDialog(versions, null, "a content pane id?", "Please choose", "ok button", function (choice) {
+        dialogSupport.openListChoiceDialog(versions, null, "a content pane id?", "Please choose", "ok button", function (choice) {
             console.log("choice:", choice);
         });
             
         // STOPPED HERE
-        // TODO: Use widgetSupport.openDialog to create dialog similar to that for picking a template
+        // TODO: Use dialogSupport.openDialog to create dialog similar to that for picking a template
     }
      
     function switchToLoadedProjectData(error, projectAnswers, envelope) {
@@ -376,7 +378,7 @@ require([
         console.log("parsed projectDefinitionText", updatedProjectAnswers);
         
         // TODO: Translate
-        widgetSupport.confirm("This will overwrite your current project design.\nAny active survey and any previously stored survey results will remain as-is,\nhowever any new project design might have a different survey design.\nAre you sure you want to replace the current project definition?", function() {
+        dialogSupport.confirm("This will overwrite your current project design.\nAny active survey and any previously stored survey results will remain as-is,\nhowever any new project design might have a different survey design.\nAre you sure you want to replace the current project definition?", function() {
 
             // TODO: Not sure what to do for what is essentially a new currentProjectVersionReference defined here
             switchToLoadedProjectData(null, updatedProjectAnswers, {__sha256HashAndLength: null});
@@ -389,7 +391,7 @@ require([
     function importExportClicked() {
         console.log("importExportClicked");
         var projectDefinitionText = JSON.stringify(domain.projectData.projectAnswers, null, 2);
-        widgetSupport.openTextEditorDialog(projectDefinitionText, "dialog_projectImportExport", "projectImportExportDialog_title", "projectImportExportDialog_okButtonText", importButtonClicked);
+        dialogSupport.openTextEditorDialog(projectDefinitionText, "dialog_projectImportExport", "projectImportExportDialog_title", "projectImportExportDialog_okButtonText", importButtonClicked);
     }
     
     // TODO: somehow unify this with code in widget-questions-table?
