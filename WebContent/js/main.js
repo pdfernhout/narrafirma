@@ -47,19 +47,20 @@ require([
     
     var pageSpecifications = {};
 
-    var currentPageID = null;
-    var currentPage = null;
+    var currentPageID;
+    var currentPage;
        
-    var pageNavigationSelect = null;
+    var navigationPane;
+    var pageNavigationSelect;
     
-    var previousPageButton = null;
-    var nextPageButton = null;
-    var loadLatestButton = null;
-    var loadVersionButton = null;
-    var saveButton = null;
-    var importExportButton = null;
+    var previousPageButton;
+    var nextPageButton;
+    var loadLatestButton;
+    var loadVersionButton;
+    var saveButton;
+    var importExportButton;
     
-    var currentProjectVersionReference = null; 
+    var currentProjectVersionReference; 
     
     // Tell all the PanelBuilders where to find information about panels (the applicationBuilder)
     PanelBuilder.setApplicationBuilder(applicationBuilder);
@@ -487,8 +488,6 @@ require([
         // Add default translations for all questions; these can be overriden by local language files which would be searched first
         translate.addExtraTranslationsForQuestions(questions);
     }
-    
-    var navigationPane;
     
     // Make all of the application pages selectable from the dropdown list and back/next buttons and put them in a TabContainer
     function createLayout() {
