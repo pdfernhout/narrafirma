@@ -43,16 +43,20 @@ require([
     // TODO: Add page validation
     // TODO: Add translations for GUI strings used here
     
-    var startPage = "page_dashboard";
-    
-    var pageSpecifications = {};
+    // For building panels based on field specifications
+    var panelBuilder = new PanelBuilder();
 
+    // For knowing what pages the application support
+    var pageSpecifications = {}; 
+    
+    // For tricking what page the application is on
+    var startPage = "page_dashboard";
     var currentPageID;
     var currentPage;
-       
+    
+    // Navigation widgets
     var navigationPane;
     var pageNavigationSelect;
-    
     var previousPageButton;
     var nextPageButton;
     var loadLatestButton;
@@ -60,12 +64,8 @@ require([
     var saveButton;
     var importExportButton;
     
+    // The mostly recently loaded project version
     var currentProjectVersionReference; 
-    
-    // Tell all the PanelBuilders where to find information about panels (the applicationBuilder)
-    PanelBuilder.setApplicationBuilder(applicationBuilder);
-    
-    var panelBuilder = new PanelBuilder();
     
     function loadLatestClicked(event) {
         console.log("load latest clicked");
@@ -567,6 +567,9 @@ require([
     
     function initialize() {
         translate.configure({}, applicationMessages);
+        
+        // Tell all the PanelBuilders where to find information about panels (the applicationBuilder)
+        PanelBuilder.setApplicationBuilder(applicationBuilder);
         
         // Initialize toaster
         toaster.createToasterWidget("navigationDiv");
