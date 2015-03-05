@@ -426,8 +426,10 @@ define([
     }
 
     function calculate_report(model, headerPageID) {
+        // console.log("domain calculate_report", model, headerPageID);
         var report = "<br><br>";
         var pageList = pagesToGoWithHeaders[headerPageID];
+        // console.log("page list", pageList, headerPageID, pagesToGoWithHeaders);
         for (var pageIndex in pageList) {
             // Skip last report page in a section
             if (pageIndex === pageList.length - 1) break;

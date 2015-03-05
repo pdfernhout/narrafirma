@@ -447,7 +447,7 @@ require([
                     list.push(panel.id);
                     domain.pagesToGoWithHeaders[lastHeader] = list;
                 } else {
-                    lastHeader = panel.id;
+                    lastHeader = pageID;
                 }
                 
                 // Looks like Dojo select has a limitation where it can only take strings as values
