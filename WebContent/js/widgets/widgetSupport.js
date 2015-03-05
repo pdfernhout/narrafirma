@@ -101,10 +101,12 @@ define([
         return button;
     }
     
-    // TODO: Remove optionsString parameter after checking for all users; perhaps check if "choices" is a string and if so split it?
-    function newSelect(id, choices, optionsString, addToDiv, addNoSelectionOption) {
+    function newSelect(addToDiv, choices, addNoSelectionOption) {
         var options = [];
+        
+        // TODO: Is it OK to pass an item with a blank ID to a data store?
         if (addNoSelectionOption) options.push({name: translate("#selection_has_not_been_made", "-- selection has not been made --"), id: "", selected: true});
+        
         if (choices) {
             array.forEach(choices, function(each) {
                 // console.log("choice", id, each);
@@ -117,32 +119,21 @@ define([
                     // http://stackoverflow.com/questions/16205699/programatically-change-selected-option-of-a-dojo-form-select-that-is-populated-b
                     options.push({name: each.label, id: each.value});
                 }
-            });           
-        } else if (optionsString) {
-            array.forEach(optionsString.split("\n"), function(each) {
-                // console.log("option", id, each);
-                options.push({name: each, id: each});
             });
         } else {
-            console.log("No choices or options defined for select", id);
+            console.log("ERROR: No choices or options defined for select");
         }
         
         var dataStore = new Memory({"data": options});
         
         var select = new FilteringSelect({
-                id: id,
                 store: dataStore,
                 searchAttr: "name",
                 // TODO: Work on validation...
                 required: false
                 // style: "width: 100%"
         });
-        if (lang.isString(addToDiv)) {
-            addToDiv = document.getElementById(addToDiv);
-        }
-        if (addToDiv) {
-            select.placeAt(addToDiv);
-        }
+        select.placeAt(addToDiv);
         return select;
     }
     

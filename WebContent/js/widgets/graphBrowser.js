@@ -722,14 +722,14 @@ define([
         
         var optionsForAllQuestions = widgetSupport.optionsForAllQuestions(questions);
         
-        var xAxisSelect = widgetSupport.newSelect(id + "_xAxis_question", optionsForAllQuestions, null, contentPane);
+        var xAxisSelect = widgetSupport.newSelect(contentPane, optionsForAllQuestions);
         xAxisSelect.set("style", "width: 48%; max-width: 40%");
         
         // TODO: Translate
         var content = new ContentPane({content: " versus ", style: "display: inline;"});
         contentPane.addChild(content);
         
-        var yAxisSelect = widgetSupport.newSelect(id + "_yAxis_question", optionsForAllQuestions, null, contentPane);
+        var yAxisSelect = widgetSupport.newSelect(contentPane, optionsForAllQuestions);
         yAxisSelect.set("style", "width: 48%; max-width: 40%");
         
         var pane = graphResultsPane.containerNode;

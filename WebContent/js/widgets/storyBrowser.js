@@ -163,7 +163,7 @@ define([
         
         containerPane.addChild(contentPane);
          
-        var questionSelect = widgetSupport.newSelect(id + "_question", widgetSupport.optionsForAllQuestions(questions), null, contentPane);
+        var questionSelect = widgetSupport.newSelect(contentPane, widgetSupport.optionsForAllQuestions(questions));
         questionSelect.set("style", "width: 98%; max-width: 98%");
         
         contentPane.containerNode.appendChild(domConstruct.toDom('<br>'));
