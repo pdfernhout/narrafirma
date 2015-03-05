@@ -490,3 +490,6 @@ NOT DOING Think about changing names for fields when they are in a smaller model
 DONE Refactor GUI code out of utility module
 DONE Replace utility module for things like string startsWith with lodash (underscore-work-alike)
 DONE Refactor widgetBuilder module into a PanelBuilder class with an instance used to build panels
+DONE Refactor PanelBuilder add methods so they accept a fieldSpecification instead of an id and options
+DONE Refactor dialog opening code into seperate dialogSupport file
+DONE Improve how translations are calculated using fieldSpecification as the value if no translation in nls files
