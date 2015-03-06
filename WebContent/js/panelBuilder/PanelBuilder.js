@@ -95,19 +95,6 @@ define([
 ){
 
 "use strict";
-
-// TODO: This list may get out of date relative to new widget type plugins -- need to think about it
-var entryTypes = [
-    "boolean",
-    "checkbox",
-    "checkboxes",
-    "text",
-    "textarea", 
-    "select",
-    "radio",
-    "slider",
-    "toggleButton"
- ];
  
 // TODO: Need a better approach for calling JavaScript function than this
 document.__narraFirma_launchApplication = browser.launchApplication;
@@ -255,8 +242,6 @@ var PanelBuilder = declare(null, {
         });
     },
     
-    /////////////
-    
     buttonClicked: function(contentPane, model, fieldSpecification, value) {
         domain.buttonClicked(contentPane, model, fieldSpecification, value);
     },
@@ -297,9 +282,7 @@ var PanelBuilder = declare(null, {
         
         return internalContentPane;
     },
-    
-    ////////////////
-    
+
     addButtonThatLaunchesDialog: function(contentPane, model, fieldSpecification, dialogConfiguration) {
         // if (!callback) callback = lang.partial(domain.buttonClicked, contentPane, model, id, questionOptions);
         var callback = function() {
@@ -347,68 +330,6 @@ var PanelBuilder = declare(null, {
         }
     },
 
-    calculate_questionAnswer: function(panelBuilder, model, referencedQuestionID) {
-        var value = model.get(referencedQuestionID);
-        if (value === null) value = translate("#question_not_yet_answered");
-        if (value === undefined) {
-            console.log("ERROR: missing question: ", referencedQuestionID);
-            throw new Error("ERROR: missing question: " + referencedQuestionID);            
-        }
-        // console.log("domain.questions", domain, domain.questions);
-        var question = domain.questions[referencedQuestionID];
-        if (question) {
-            if (question.displayType === "select" ||  question.displayType === "checkboxes" || question.displayType === "radiobuttons") {
-                // TODO: This may not translate correctly for checkboxes; may need to be translated individually
-                // console.log("trying to translate select", value);
-                value = translate("#" + value, value);
-            }
-        } else {
-            console.log("calculate_questionAnswer: missing question definition for: ", referencedQuestionID);
-        }
-        return "<b>" + value + "<b>";
-    },
-
-    calculate_questionAnswerCountOfTotalOnPage: function(panelBuilder, model, panelID) {
-        var panel = domain.panelDefinitions[panelID];
-        if (!panel) {
-            console.log("ERROR: panel not found for: ", panelID);
-            return "ERROR: panel not found for: " + panelID + " at: " + new Date();
-        }
-        // console.log("found panel", panel);
-        var questionAskedCount = 0;
-        var questionAnsweredCount = 0;
-        for (var pageQuestionIndex in panel.questions) {
-            var pageQuestion = panel.questions[pageQuestionIndex];
-            // console.log("pageQuestion", pageQuestion);
-            if (array.indexOf(entryTypes, pageQuestion.displayType) !== -1) {
-                questionAskedCount++;
-                var pageQuestionValue = model.get(pageQuestion.id);
-                if (pageQuestionValue !== undefined && pageQuestionValue !== "" && pageQuestionValue !== null) questionAnsweredCount++;
-            }
-        }
-        // var percentComplete = Math.round(100 * questionAnsweredCount / questionAskedCount);
-        // if (questionAskedCount === 0) percentComplete = 0;
-        var template = translate("#calculate_questionAnswerCountOfTotalOnPage_template");
-        var response = template.replace("{{questionAnsweredCount}}", questionAnsweredCount).replace("{{questionAskedCount}}", questionAskedCount);
-        return "<b>" + response + "</b>";
-    },
-    
-    calculate_listCount: function(panelBuilder, model, referencedQuestionID) {
-        var value = model.get(referencedQuestionID);
-        if (value === null) {
-            return "0";
-        } else if (value === undefined) {
-            console.log("ERROR: missing question: ", referencedQuestionID);
-            return "<b>ERROR: missing question: " + referencedQuestionID + "</b>";            
-        } else {
-            return "<b>" + value.length + "</b>";
-        }
-    },
-    
-    calculate_function: function(panelBuilder, functionName, fieldSpecification) {
-        return domain.callDashboardFunction(functionName, fieldSpecification);
-    },
-    
     _add_calculatedText: function(panelBuilder, contentPane, fieldSpecification, calculate) {
         // var calculatedText = "(Initializing...)";
         if (!calculate) {
