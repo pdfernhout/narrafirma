@@ -3,6 +3,9 @@
 PRIORITY
 - catalysis
 
+CRASH
+Story browser (Catalysis section second page, but also review stories during collection) seems to sometimes cause and endless loop in Firexfox or Chrome causing memory use growth and beach ball. Maybe some resize bug in dojo or dgrid?
+
 NAME
 Add trademark disclaimer/limitation for NarraFirma, perhaps similar to:
 NarraFirma is a trademark of Cynthia F. Kurtz and is used by permission for the main distribution of this software.
