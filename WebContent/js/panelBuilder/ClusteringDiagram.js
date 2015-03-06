@@ -66,10 +66,6 @@ define([
     
     /** ClusteringDiagram-specific functions here */
     
-    function insertClusteringDiagram(contentPane, model, id, diagramName, autosave) {
-        return new ClusteringDiagram(contentPane, model, id, diagramName, autosave);
-    }
-    
     function ClusteringDiagram(contentPane, model, id, diagramName, autosave) {
         console.log("Creating ClusteringDiagram", contentPane, model, id, diagramName);
 
@@ -594,7 +590,5 @@ define([
         }); 
     };
     
-    return {
-        insertClusteringDiagram: insertClusteringDiagram
-    };
+    return ClusteringDiagram;
 });
