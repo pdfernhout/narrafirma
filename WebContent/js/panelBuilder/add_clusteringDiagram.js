@@ -1,7 +1,7 @@
 define([
-    "./clusteringDiagram"
+    "./ClusteringDiagram"
 ], function(
-    clusteringDiagram
+    ClusteringDiagram
 ){
     "use strict";
     
@@ -14,7 +14,7 @@ define([
         
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
-        return clusteringDiagram.insertClusteringDiagram(questionContentPane, model, fieldSpecification.id, diagramName, true);
+        return new ClusteringDiagram(questionContentPane, model, fieldSpecification.id, diagramName, true);
     }
 
     return add_clusteringDiagram;
