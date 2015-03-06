@@ -1,12 +1,12 @@
 // TODO: Remove unused imports
 define([
+    "./add_clusteringDiagram",
     "./add_recommendationTable",
     "./add_slider",
     "./add_templateList",
     "dojo/_base/array",
     "dojox/mvc/at",
     "js/browser",
-    "./clusteringDiagram",
     "dojo/_base/declare",
     "./dialogSupport",
     "js/domain",
@@ -16,7 +16,7 @@ define([
     "dojo/_base/lang",
     "js/translate",
     "dijit/form/Button",
-    "./CheckBoxesWidget",
+    "./CheckboxesWidget",
     "dijit/form/CheckBox",
     "dijit/layout/ContentPane",
     "dijit/form/FilteringSelect",
@@ -24,20 +24,20 @@ define([
     "./gridTable",
     "dojo/store/Memory",
     "dstore/Memory",
-    "./radioButtons",
+    "./RadioButtonsWidget",
     "dijit/form/SimpleTextarea",
     "./storyBrowser",
     "./storyThemer",
     "dijit/form/TextBox",
     "dijit/form/ToggleButton"
 ], function(
+    add_clusteringDiagram,
     add_recommendationTable,
     add_slider,
     add_templateList,
     array,
     at,
     browser,
-    clusteringDiagram,
     declare,
     dialogSupport,
     domain,
@@ -47,7 +47,7 @@ define([
     lang,
     translate,
     Button,
-    CheckBoxesWidget,
+    CheckboxesWidget,
     CheckBox,
     ContentPane,
     FilteringSelect,
@@ -55,7 +55,7 @@ define([
     GridTable,
     Memory,
     MemoryDstore,
-    RadioButtons,
+    RadioButtonsWidget,
     SimpleTextarea,
     StoryBrowser,
     StoryThemer,
@@ -134,7 +134,6 @@ var buildingFunctions = {
     "boolean": "add_boolean",
     "checkbox": "add_checkbox",
     "checkboxes": "add_checkboxes",
-    "clusteringDiagram": "add_clusteringDiagram",
     "radiobuttons": "add_radiobuttons",
     "toggleButton": "add_toggleButton",
     "button": "add_button",
@@ -164,6 +163,7 @@ function addPlugin(name, callback) {
 addPlugin("templateList", add_templateList);
 addPlugin("slider", add_slider);
 addPlugin("recommendationTable", add_recommendationTable);
+addPlugin("clusteringDiagram", add_clusteringDiagram);
 
 // The applicationBuilder is needed to build popup panels for some widgets like the grid
 var applicationBuilder = null;
@@ -317,18 +317,6 @@ var PanelBuilder = declare(null, {
         return textarea;
     },
     
-    add_clusteringDiagram: function(panelBuilder, contentPane, model, fieldSpecification) {
-        // clustering diagram using a list of 2D objects
-        console.log("add_clusteringDiagram", model, fieldSpecification);
-        // console.log("clusteringDiagram module", clusteringDiagram);
-        
-        var diagramName = fieldSpecification.displayConfiguration;
-        
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        
-        return clusteringDiagram.insertClusteringDiagram(questionContentPane, model, fieldSpecification.id, diagramName, true);
-    },
-    
     add_grid: function(panelBuilder, contentPane, model, fieldSpecification) {
         // Grid with list of objects
         // console.log("add_grid");
@@ -399,15 +387,15 @@ var PanelBuilder = declare(null, {
     add_boolean: function(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
-        var radioButtons = new RadioButtons({
+        var radioButtonsWidget = new RadioButtonsWidget({
             choices: null,
             // TODO: translate options
             optionsString: "yes\nno",
             value: at(model, fieldSpecification.id)
         });
         
-        radioButtons.placeAt(questionContentPane);
-        return radioButtons;
+        radioButtonsWidget.placeAt(questionContentPane);
+        return radioButtonsWidget;
     },
 
     add_checkbox: function(panelBuilder, contentPane, model, fieldSpecification) {
@@ -424,15 +412,15 @@ var PanelBuilder = declare(null, {
     add_radiobuttons: function(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
-        var radioButtons = new RadioButtons({
+        var radioButtonsWidget = new RadioButtonsWidget({
             questionID: fieldSpecification.id,
             choices: fieldSpecification.dataOptions,
             // optionsString: optionsString,
             value: at(model, fieldSpecification.id)
         });
          
-        radioButtons.placeAt(questionContentPane);
-        return radioButtons;
+        radioButtonsWidget.placeAt(questionContentPane);
+        return radioButtonsWidget;
     },
     
     add_checkboxes: function(panelBuilder, contentPane, model, fieldSpecification) {
@@ -444,15 +432,15 @@ var PanelBuilder = declare(null, {
         // Ensure that there is a place to store data about each checkbox
         if (!model.get(fieldSpecification.id)) model.set(fieldSpecification.id, {});
 
-        var checkboxes = new CheckBoxesWidget({
+        var checkboxesWidget = new CheckboxesWidget({
             questionID: fieldSpecification.id,
             choices: fieldSpecification.dataOptions,
             // optionsString: optionsString,
             value: model.get(fieldSpecification.id)
         });
         
-        checkboxes.placeAt(questionContentPane);
-        return checkboxes;
+        checkboxesWidget.placeAt(questionContentPane);
+        return checkboxesWidget;
     },
     
     // TODO: Need to translate true/false
