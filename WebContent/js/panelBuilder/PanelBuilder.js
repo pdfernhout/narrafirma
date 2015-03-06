@@ -329,6 +329,9 @@ var PanelBuilder = declare(null, {
         if (!data) {
             throw new Error("updateLabelUsingCalculation: data should not be empty");
         }
+        if (!_.isFunction(data.calculate)) {
+            throw new Error("updateLabelUsingCalculation: data.calculate should be a function: " + JSON.stringify(data));
+        }
         var calculatedText = data.calculate();
         // console.log("calculatedText ", calculatedText);
         var newLabelText = data.baseText + " " + calculatedText; 

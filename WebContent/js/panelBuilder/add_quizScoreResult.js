@@ -27,7 +27,7 @@ define([
             // TODO: When do these watches get removed?
             // console.log("setting up watch on", questionID, "for", id, model);
          // TODO: Fix when refactor
-            model.watch(questionID, lang.partial(panelBuilder.updateLabelUsingCalculation, panelBuilder, updateInfo));
+            model.watch(questionID, lang.partial(panelBuilder.updateLabelUsingCalculation, updateInfo));
         }
         return label;
     }
