@@ -4,8 +4,8 @@ Install node.js
 Run to install json-server globally: $sudo npm install -g json-server
 Set up local external tools (under .settings, "node.js.launch" and "test server.launch")
 
-To do the conversion, select the file convert_design_to_code.js and pick external tool to run node.js
-To run the test server, select the external tool to run the "test server".
+Obsolete: To do the conversion, select the file convert_design_to_code.js and pick external tool to run node.js
+Obsolete: To run the test server, select the external tool to run the "test server".
 
 References:
 http://nodejs.org/download/
