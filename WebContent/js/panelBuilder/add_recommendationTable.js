@@ -1,10 +1,12 @@
 define([
+    "./dialogSupport",
     "dojo/_base/lang",
     "js/templates/recommendations",
     "js/translate",
     "dijit/layout/ContentPane",
     "dojox/layout/TableContainer"
 ], function(
+    dialogSupport,
     lang,
     recommendations,
     translate,
@@ -22,7 +24,7 @@ define([
             fieldSpecification: fieldSpecification
         };
      // TODO: Fix when refactor
-        var button = panelBuilder.addButtonThatLaunchesDialog(contentPane, model, fieldSpecification, dialogConfiguration);
+        var button = dialogSupport.addButtonThatLaunchesDialog(contentPane, model, fieldSpecification, dialogConfiguration);
         return button;
     }
     

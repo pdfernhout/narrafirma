@@ -37,12 +37,10 @@ define([
     "dojo/_base/array",
     "js/browser",
     "dojo/_base/declare",
-    "./dialogSupport",
     "js/domain",
     'dojo/dom-class',
     "dojo/_base/lang",
     "js/translate",
-    "dijit/form/Button",
     "dijit/layout/ContentPane",
     "./gridTable",
 ], function(
@@ -84,12 +82,10 @@ define([
     array,
     browser,
     declare,
-    dialogSupport,
     domain,
     domClass,
     lang,
     translate,
-    Button,
     ContentPane,
     gridTable
 ){
@@ -281,28 +277,6 @@ var PanelBuilder = declare(null, {
         internalContentPane.placeAt(questionContentPane);
         
         return internalContentPane;
-    },
-
-    addButtonThatLaunchesDialog: function(contentPane, model, fieldSpecification, dialogConfiguration) {
-        // if (!callback) callback = lang.partial(domain.buttonClicked, contentPane, model, id, questionOptions);
-        var callback = function() {
-            dialogSupport.openDialog(model, dialogConfiguration);
-        };
-        
-        var button = new Button({
-            label: translate("#" + fieldSpecification.id, fieldSpecification.displayPrompt),
-            type: "button",
-            onClick: callback
-        });
-
-        button.placeAt(contentPane);
-        
-        var wrap = new ContentPane({
-            content: "<br>"
-        });
-        wrap.placeAt(contentPane);
-        
-        return button;
     },
           
     ////// Support for questions that recalculate based on other questions

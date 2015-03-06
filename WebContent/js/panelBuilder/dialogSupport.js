@@ -1,15 +1,11 @@
 define([
-    "dojo/_base/array",
     "dojox/mvc/at",
     "dijit/form/Button",
     "dijit/ConfirmDialog",
     "dijit/layout/ContentPane",
     "dijit/Dialog",
-    "dojo/dom-construct",
-    "dijit/form/FilteringSelect",
     "dojo/_base/lang",
     "dijit/layout/LayoutContainer",
-    "dojo/store/Memory",
     "dijit/form/MultiSelect",
     "dojo/query",
     "dojo/Stateful",
@@ -17,17 +13,13 @@ define([
     "../translate",
     "dojo/_base/window"
 ], function(
-    array,
     at,
     Button,
     ConfirmDialog,
     ContentPane,
     Dialog,
-    domConstruct,
-    FilteringSelect,
     lang,
     LayoutContainer,
-    Memory,
     MultiSelect,
     query,
     Stateful,
@@ -60,6 +52,28 @@ define([
     */
     
     // TODO: Should probably improve how IDs for translations work, by maybe just passing in string that either has # already or is used as is
+    
+    function addButtonThatLaunchesDialog(contentPane, model, fieldSpecification, dialogConfiguration) {
+        // if (!callback) callback = lang.partial(domain.buttonClicked, contentPane, model, id, questionOptions);
+        var callback = function() {
+            openDialog(model, dialogConfiguration);
+        };
+        
+        var button = new Button({
+            label: translate("#" + fieldSpecification.id, fieldSpecification.displayPrompt),
+            type: "button",
+            onClick: callback
+        });
+
+        button.placeAt(contentPane);
+        
+        var wrap = new ContentPane({
+            content: "<br>"
+        });
+        wrap.placeAt(contentPane);
+        
+        return button;
+    }
     
     function openDialog(model, dialogConfiguration) {  
         console.log("openDialog", model, JSON.stringify(dialogConfiguration));
@@ -185,6 +199,7 @@ define([
     }
 
     return {
+        "addButtonThatLaunchesDialog": addButtonThatLaunchesDialog,
         "confirm": confirm,
         "openDialog": openDialog,
         "openTextEditorDialog": openTextEditorDialog,

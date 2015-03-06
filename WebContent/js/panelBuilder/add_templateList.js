@@ -21,7 +21,7 @@ define([
             dialogConstructionFunction: lang.partial(makeTemplateListChooser, panelBuilder),
             fieldSpecification: fieldSpecification
         };
-        var button = panelBuilder.addButtonThatLaunchesDialog(contentPane, model, fieldSpecification, dialogConfiguration);
+        var button = dialogSupport.addButtonThatLaunchesDialog(contentPane, model, fieldSpecification, dialogConfiguration);
         return button;
     }
     
