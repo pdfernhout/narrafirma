@@ -1,16 +1,12 @@
 // TODO: Remove unused imports
 define([
-    "./add_clusteringDiagram",
-    "./add_recommendationTable",
-    "./add_slider",
-    "./add_templateList",
-    
     "./add_accumulatedItemsGrid",
     "./add_annotationsGrid",
     "./add_boolean",
     "./add_button",
     "./add_checkbox",
     "./add_checkboxes",
+    "./add_clusteringDiagram",
     "./add_excerptsList",
     "./add_function",
     "./add_graphBrowser",
@@ -24,11 +20,14 @@ define([
     "./add_questionsTable",
     "./add_quizScoreResult",
     "./add_radiobuttons",
+    "./add_recommendationTable",
     "./add_report",
     "./add_select",
+    "./add_slider",
     "./add_storiesList",
     "./add_storyBrowser",
     "./add_storyThemer",
+    "./add_templateList",
     "./add_text",
     "./add_textarea",
     "./add_toggleButton",
@@ -44,18 +43,13 @@ define([
     "dijit/layout/ContentPane",
     "./gridTable",
 ], function(
-    add_clusteringDiagram,
-    add_recommendationTable,
-    add_slider,
-    add_templateList,
-    
-    // TODO: Add the above alphabetically
     add_accumulatedItemsGrid,
     add_annotationsGrid,
     add_boolean,
     add_button,
     add_checkbox,
     add_checkboxes,
+    add_clusteringDiagram,
     add_excerptsList,
     add_function,
     add_graphBrowser,
@@ -69,11 +63,14 @@ define([
     add_questionsTable,
     add_quizScoreResult,
     add_radiobuttons,
+    add_recommendationTable,
     add_report,
     add_select,
+    add_slider,
     add_storiesList,
     add_storyBrowser,
     add_storyThemer,
+    add_templateList,
     add_text,
     add_textarea,
     add_toggleButton,
@@ -106,18 +103,13 @@ function addPlugin(name, callback) {
 }
 
 // plugins
-// TODO: Alphabetize these with the rest
-addPlugin("templateList", add_templateList);
-addPlugin("slider", add_slider);
-addPlugin("recommendationTable", add_recommendationTable);
-addPlugin("clusteringDiagram", add_clusteringDiagram);
-
 addPlugin("accumulatedItemsGrid", add_accumulatedItemsGrid);
 addPlugin("annotationsGrid", add_annotationsGrid);
 addPlugin("boolean", add_boolean);
 addPlugin("button", add_button);
 addPlugin("checkbox", add_checkbox);
 addPlugin("checkboxes", add_checkboxes);
+addPlugin("clusteringDiagram", add_clusteringDiagram);
 addPlugin("excerptsList", add_excerptsList);
 addPlugin("function", add_function);
 addPlugin("graphBrowser", add_graphBrowser);
@@ -131,11 +123,14 @@ addPlugin("questionAnswerCountOfTotalOnPage", add_questionAnswerCountOfTotalOnPa
 addPlugin("questionsTable", add_questionsTable);
 addPlugin("quizScoreResult", add_quizScoreResult);
 addPlugin("radiobuttons", add_radiobuttons);
+addPlugin("recommendationTable", add_recommendationTable);
 addPlugin("report", add_report);
 addPlugin("select", add_select);
+addPlugin("slider", add_slider);
 addPlugin("storiesList", add_storiesList);
 addPlugin("storyBrowser", add_storyBrowser);
 addPlugin("storyThemer", add_storyThemer);
+addPlugin("templateList", add_templateList);
 addPlugin("text", add_text);
 addPlugin("textarea", add_textarea);
 addPlugin("toggleButton", add_toggleButton);
