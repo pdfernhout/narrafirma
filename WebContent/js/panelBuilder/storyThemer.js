@@ -9,7 +9,7 @@ define([
     "dojo/store/Memory",
     "dstore/Memory",
     "dojo/Stateful",
-    "js/widgets/widgetSupport"
+    "./widgetSupport"
 ], function(
     domain,
     entities,

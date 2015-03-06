@@ -5,12 +5,12 @@ define([
     "js/storage",
     "js/translate",
     "dojox/uuid/generateRandomUuid",
-    "js/PanelBuilder",
+    "js/PanelBuilder/PanelBuilder",
     "dijit/layout/ContentPane",
     "dijit/Dialog",
     "dijit/layout/StackContainer",
     "dojo/Stateful",
-    "js/widgets/widgetSupport"
+    "js/panelBuilder/widgetSupport"
 ], function(
     array,
     domStyle,
