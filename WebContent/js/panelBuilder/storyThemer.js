@@ -28,7 +28,7 @@ define([
     // story themer support
     
     // TODO: Fix so the filters get updated as the story questions get changed
-    function insertStoryThemer(panelBuilder, pagePane, model, id, panelDefinitions) {
+    function insertStoryThemer(panelBuilder, pagePane, model, id) {
         console.log("insertStoryThemer start", id);
         
         // TODO: Fix this show also handles participant questions somehow

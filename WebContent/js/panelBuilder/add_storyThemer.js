@@ -16,7 +16,7 @@ define([
     function add_storyThemer(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
-        var storyThemerInstance = storyThemer.insertStoryThemer(panelBuilder, questionContentPane, model, fieldSpecification.id, domain.panelDefinitions);
+        var storyThemerInstance = storyThemer.insertStoryThemer(panelBuilder, questionContentPane, model, fieldSpecification.id);
         questionContentPane.resize();
         return storyThemerInstance;
     }

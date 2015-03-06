@@ -16,7 +16,7 @@ define([
     function add_storyBrowser(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
-        var storyBrowserInstance = storyBrowser.insertStoryBrowser(panelBuilder, questionContentPane, model, fieldSpecification.id, domain.panelDefinitions);
+        var storyBrowserInstance = storyBrowser.insertStoryBrowser(panelBuilder, questionContentPane, model, fieldSpecification.id);
         questionContentPane.resize();
         return storyBrowserInstance;
     }
