@@ -407,7 +407,8 @@ define([
             var answerWeight = 0;
             if (questionAnswer) {
                 // console.log("questionAnswer", questionAnswer);
-                answerWeight = questions[questionID].displayConfiguration.indexOf(questionAnswer) - 1;
+                var choices = questions[questionID].dataOptions;
+                answerWeight = choices.indexOf(questionAnswer) - 1;
                 // console.log("answerWeight", answerWeight);
                 if (answerWeight < 0) answerWeight = 0;
                 total += answerWeight;

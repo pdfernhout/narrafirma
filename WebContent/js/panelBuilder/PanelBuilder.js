@@ -326,6 +326,9 @@ var PanelBuilder = declare(null, {
     
     updateLabelUsingCalculation: function(data) {
         // console.log("recalculating label", data);
+        if (!data) {
+            throw new Error("updateLabelUsingCalculation: data should not be empty");
+        }
         var calculatedText = data.calculate();
         // console.log("calculatedText ", calculatedText);
         var newLabelText = data.baseText + " " + calculatedText; 
@@ -405,6 +408,9 @@ var PanelBuilder = declare(null, {
     
     _add_calculatedText: function(panelBuilder, contentPane, fieldSpecification, calculate) {
         // var calculatedText = "(Initializing...)";
+        if (!calculate) {
+            throw new Error("_add_calculatedText: calculate parameter should not be empty");
+        }
         var calculatedText = calculate();
         var baseText = translate("#" + fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
         var label = new ContentPane({

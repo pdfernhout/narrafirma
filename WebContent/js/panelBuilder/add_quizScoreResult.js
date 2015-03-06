@@ -17,7 +17,7 @@ define([
         var dependsOn = fieldSpecification.displayConfiguration;
         var calculate = lang.partial(domain.calculate_quizScoreResult, model, dependsOn);
      // TODO: Fix when refactor
-        var label = panelBuilder._add_calculatedText(contentPane, fieldSpecification, calculate);
+        var label = panelBuilder._add_calculatedText(panelBuilder, contentPane, fieldSpecification, calculate);
         // TODO: Recalculating next two variables wheres they are also calculated in _add_calculatedText
         var baseText = translate("#" + fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
         var updateInfo = {"id": fieldSpecification.id, "label": label, "baseText": baseText, "calculate": calculate};
