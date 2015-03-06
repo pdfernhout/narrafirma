@@ -268,7 +268,7 @@ var PanelBuilder = declare(null, {
     
     ////////////////
     
-    add_label: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_label(panelBuilder, contentPane, model, fieldSpecification) {
         var label = new ContentPane({
             content: htmlForInformationIcon(randomHelpPageURL(fieldSpecification.id)) + "&nbsp;&nbsp;" + translate("#" + fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt)
         });
@@ -276,7 +276,7 @@ var PanelBuilder = declare(null, {
         return label;
     },
     
-    add_header: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_header(panelBuilder, contentPane, model, fieldSpecification) {
         var label = new ContentPane({
             content: htmlForInformationIcon(randomHelpPageURL(fieldSpecification.id)) + "&nbsp;&nbsp;" + "<b>" + translate("#" + fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt) + "</b>"
         });
@@ -284,7 +284,7 @@ var PanelBuilder = declare(null, {
         return label;
     },
     
-    add_image: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_image(panelBuilder, contentPane, model, fieldSpecification) {
         var imageSource = fieldSpecification.displayConfiguration;
         var questionText = translate("#" + fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt || "");
         var image = new ContentPane({
@@ -294,7 +294,7 @@ var PanelBuilder = declare(null, {
         return image;
     },
     
-    add_text: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_text(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         var textBox = new TextBox({
             value: at(model, fieldSpecification.id)
@@ -304,7 +304,7 @@ var PanelBuilder = declare(null, {
         return textBox;
     },
     
-    add_textarea: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_textarea(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification); 
         var textarea = new SimpleTextarea({
             rows: "4",
@@ -316,7 +316,7 @@ var PanelBuilder = declare(null, {
         return textarea;
     },
     
-    add_grid: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_grid(panelBuilder, contentPane, model, fieldSpecification) {
         // Grid with list of objects
         // console.log("add_grid");
         
@@ -344,7 +344,7 @@ var PanelBuilder = declare(null, {
         return GridTable.insertGridTableBasic(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, popupPageDefinition, configuration);
     },
     
-    add_select: function(panelBuilder, contentPane, model, fieldSpecification, addNoSelectionOption) {
+    function add_select(panelBuilder, contentPane, model, fieldSpecification, addNoSelectionOption) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var options = [];
@@ -383,7 +383,7 @@ var PanelBuilder = declare(null, {
         return select;
     },
     
-    add_boolean: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_boolean(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var radioButtonsWidget = new RadioButtonsWidget({
@@ -397,7 +397,7 @@ var PanelBuilder = declare(null, {
         return radioButtonsWidget;
     },
 
-    add_checkbox: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_checkbox(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var checkbox = new CheckBox({
@@ -408,7 +408,7 @@ var PanelBuilder = declare(null, {
         return checkbox;
     },
     
-    add_radiobuttons: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_radiobuttons(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var radioButtonsWidget = new RadioButtonsWidget({
@@ -422,7 +422,7 @@ var PanelBuilder = declare(null, {
         return radioButtonsWidget;
     },
     
-    add_checkboxes: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_checkboxes(panelBuilder, contentPane, model, fieldSpecification) {
         // console.log("add_checkboxes", contentPane, model, fieldSpecification);
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
 
@@ -443,7 +443,7 @@ var PanelBuilder = declare(null, {
     },
     
     // TODO: Need to translate true/false
-    add_toggleButton: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_toggleButton(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         // Toggle button maintains a "checked" flag, so we need to set value ourselves
@@ -462,7 +462,7 @@ var PanelBuilder = declare(null, {
         return toggleButton;
     },
     
-    add_button: function(panelBuilder, contentPane, model, fieldSpecification, callback) {
+    function add_button(panelBuilder, contentPane, model, fieldSpecification, callback) {
         if (!callback) callback = lang.partial(domain.buttonClicked, contentPane, model, fieldSpecification);
         
         var button = new Button({
@@ -497,7 +497,7 @@ var PanelBuilder = declare(null, {
         return button;
     },
           
-    add_storyThemer: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_storyThemer(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var storyThemer = StoryThemer.insertStoryThemer(panelBuilder, questionContentPane, model, fieldSpecification.id, domain.panelDefinitions);
@@ -505,7 +505,7 @@ var PanelBuilder = declare(null, {
         return storyThemer;
     },
     
-    add_questionsTable: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_questionsTable(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var label = new ContentPane({
@@ -518,7 +518,7 @@ var PanelBuilder = declare(null, {
     
     // TODO: Fix UNFINISHED widgets
     
-    add_graphBrowser: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_graphBrowser(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var graphBrowser = GraphBrowser.insertGraphBrowser(questionContentPane, model, fieldSpecification.id, domain.panelDefinitions);
@@ -526,7 +526,7 @@ var PanelBuilder = declare(null, {
         return graphBrowser;
     },
     
-    add_trendsReport: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_trendsReport(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var label = new ContentPane({
@@ -537,7 +537,7 @@ var PanelBuilder = declare(null, {
         return label;
     },
     
-    add_annotationsGrid: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_annotationsGrid(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var label = new ContentPane({
@@ -548,7 +548,7 @@ var PanelBuilder = declare(null, {
         return label;
     },
     
-    add_storiesList: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_storiesList(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var label = new ContentPane({
@@ -559,7 +559,7 @@ var PanelBuilder = declare(null, {
         return label;
     },
         
-    add_accumulatedItemsGrid: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_accumulatedItemsGrid(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var label = new ContentPane({
@@ -570,7 +570,7 @@ var PanelBuilder = declare(null, {
         return label;
     },
     
-    add_excerptsList: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_excerptsList(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var label = new ContentPane({
@@ -581,7 +581,7 @@ var PanelBuilder = declare(null, {
         return label;
     },
     
-    add_storyBrowser: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_storyBrowser(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var storyBrowser = StoryBrowser.insertStoryBrowser(panelBuilder, questionContentPane, model, fieldSpecification.id, domain.panelDefinitions);
@@ -686,7 +686,7 @@ var PanelBuilder = declare(null, {
         return label;
     },
     
-    add_questionAnswer: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_questionAnswer(panelBuilder, contentPane, model, fieldSpecification) {
         var referencedQuestionID = fieldSpecification.displayConfiguration;
         if (!referencedQuestionID) throw new Error("missing referencedQuestionID for field: " + fieldSpecification.id + " all: " + JSON.stringify(fieldSpecification));
      // TODO: Fix when refactor
@@ -695,7 +695,7 @@ var PanelBuilder = declare(null, {
         return panelBuilder._add_calculatedText(panelBuilder, contentPane, fieldSpecification, calculate);
     },
     
-    add_questionAnswerCountOfTotalOnPage: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_questionAnswerCountOfTotalOnPage(panelBuilder, contentPane, model, fieldSpecification) {
         var panelID = fieldSpecification.displayConfiguration;
      // TODO: Fix when refactor
         var calculate = lang.partial(panelBuilder.calculate_questionAnswerCountOfTotalOnPage, panelBuilder, model, panelID);
@@ -703,7 +703,7 @@ var PanelBuilder = declare(null, {
         return panelBuilder._add_calculatedText(panelBuilder, contentPane, fieldSpecification, calculate);
     },
     
-    add_listCount: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_listCount(panelBuilder, contentPane, model, fieldSpecification) {
         var referencedQuestionID = fieldSpecification.displayConfiguration;
      // TODO: Fix when refactor
         var calculate = lang.partial(panelBuilder.calculate_listCount, panelBuilder, model, referencedQuestionID);
@@ -711,7 +711,7 @@ var PanelBuilder = declare(null, {
         return panelBuilder._add_calculatedText(panelBuilder, contentPane, fieldSpecification, calculate);
     },
 
-    add_function: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_function(panelBuilder, contentPane, model, fieldSpecification) {
         var functionName = fieldSpecification.displayConfiguration;
      // TODO: Fix when refactor
         var calculate = lang.partial(panelBuilder.calculate_function, panelBuilder, functionName, fieldSpecification);
@@ -719,7 +719,7 @@ var PanelBuilder = declare(null, {
         return panelBuilder._add_calculatedText(panelBuilder, contentPane, fieldSpecification, calculate);
     },
     
-    add_quizScoreResult: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_quizScoreResult(panelBuilder, contentPane, model, fieldSpecification) {
         var dependsOn = fieldSpecification.displayConfiguration;
         var calculate = lang.partial(domain.calculate_quizScoreResult, model, dependsOn);
      // TODO: Fix when refactor
@@ -738,7 +738,7 @@ var PanelBuilder = declare(null, {
         return label;
     },
     
-    add_report: function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_report(panelBuilder, contentPane, model, fieldSpecification) {
         var headerPageID = "page_" + fieldSpecification.displayConfiguration;
         var calculate = lang.partial(domain.calculate_report, model, headerPageID);
      // TODO: Fix when refactor
