@@ -143,7 +143,6 @@ var buildingFunctions = {
     "storyThemer": "add_storyThemer",
     "graphBrowser": "add_graphBrowser",
     "trendsReport": "add_trendsReport",
-    "clusterSpace": "add_clusterSpace",
     "annotationsGrid": "add_annotationsGrid",
     "accumulatedItemsGrid": "add_accumulatedItemsGrid",
     "excerptsList": "add_excerptsList",
@@ -533,17 +532,6 @@ var PanelBuilder = declare(null, {
         var label = new ContentPane({
             // content: translate("#" + id + "::prompt", fieldSpecification.displayPrompt)
             content: "<b>UNFINISHED add_trendsReport: " + fieldSpecification.id + "</b>"             
-        });
-        label.placeAt(questionContentPane);
-        return label;
-    },
-    
-    add_clusterSpace: function(panelBuilder, contentPane, model, fieldSpecification) {
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        
-        var label = new ContentPane({
-            // content: translate("#" + id + "::prompt", fieldSpecification.displayPrompt)
-            content: "<b>UNFINISHED add_clusterSpace: " + fieldSpecification.id + "</b>"             
         });
         label.placeAt(questionContentPane);
         return label;
