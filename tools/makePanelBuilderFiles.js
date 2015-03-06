@@ -28,7 +28,7 @@ FUNCTIONDEFINITON\n\
 });';
 
 var filesToMake = {
-    // "label": "add_label",
+    "label": "add_label",
     "header": "add_header",
     "image": "add_image",
     "text": "add_text",
@@ -99,20 +99,22 @@ function generateFiles() {
     }
 }
 
+var sortedKeys = _.keys(filesToMake);
+sortedKeys.sort();
+//console.log("sortedKeys", sortedKeys);
+
 function generatePluginCalls() {
-    for (var key in filesToMake) {
+    _.each(sortedKeys, function (key) {
         var functionName = filesToMake[key];
-        console.log('addPlugin("' + functionName + '", ' + functionName + ');');
-    }
+        console.log('addPlugin("' + functionName.replace("add_","") + '", ' + functionName + ');');
+    });
 }
 
 
 function generateImports() {
     var key;
     var functionName;
-    var sortedKeys = _.keys(filesToMake);
-    sortedKeys.sort();
-    // console.log("sortedKeys", sortedKeys);
+    
     _.each(sortedKeys, function (key) {
         functionName = filesToMake[key];
         console.log('    "./' + functionName + '",');
@@ -124,6 +126,6 @@ function generateImports() {
 }
 
 // generateFiles();
-// generatePluginCalls();
-generateImports();
+generatePluginCalls();
+// generateImports();
 
