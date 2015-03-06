@@ -1,5 +1,6 @@
 // TODO: Remove unused imports
 define([
+    "./add_templateList",
     "dojo/_base/array",
     "dojox/mvc/at",
     "js/browser",
@@ -13,7 +14,6 @@ define([
     "dojo/_base/lang",
     "js/templates/recommendations",
     "js/translate",
-    "js/templates/templates",
     "dijit/form/Button",
     "./checkboxes",
     "dijit/form/CheckBox",
@@ -34,6 +34,7 @@ define([
     "dijit/form/TextBox",
     "dijit/form/ToggleButton"
 ], function(
+    add_templateList,
     array,
     at,
     browser,
@@ -47,7 +48,6 @@ define([
     lang,
     recommendations,
     translate,
-    templates,
     Button,
     CheckBoxes,
     CheckBox,
@@ -157,13 +157,19 @@ var buildingFunctions = {
     "accumulatedItemsGrid": "add_accumulatedItemsGrid",
     "excerptsList": "add_excerptsList",
     "storiesList": "add_storiesList",
-    "templateList": "add_templateList",
     "questionAnswer": "add_questionAnswer",
     "questionAnswerCountOfTotalOnPage": "add_questionAnswerCountOfTotalOnPage",
     "listCount": "add_listCount",
     "function": "add_function",
     "quizScoreResult": "add_quizScoreResult"
 };
+
+function addPlugin(name, callback) {
+    buildingFunctions[name] = callback;
+}
+
+// plugins
+addPlugin("templateList", add_templateList);
 
 // The applicationBuilder is needed to build popup panels for some widgets like the grid
 var applicationBuilder = null;
@@ -181,18 +187,20 @@ var PanelBuilder = declare(null, {
     addQuestionWidget: function(contentPane, model, fieldSpecification) {
         console.log("addQuestionWidget", fieldSpecification);
         
-        var addFunctionName = buildingFunctions[fieldSpecification.displayType];
-        if (!addFunctionName) {
+        var addFunction = buildingFunctions[fieldSpecification.displayType];
+        if (!addFunction) {
             var error = "ERROR: unsupported field display type: " + fieldSpecification.displayType;
             console.log(error);
             throw new Error(error);
         }
-        
-        var addFunction = this[addFunctionName];
-        if (!addFunctionName) {
-            var error2 = "ERROR: missing addFunction for: " + addFunctionName + " for field display type: " + fieldSpecification.displayType;
-            console.log(error2);
-            throw new Error(error2);
+        if (_.isString(addFunction)) { 
+            var addFunctionName = addFunction;
+            addFunction = this[addFunctionName];
+            if (!addFunction) {
+                var error2 = "ERROR: missing addFunction for: " + addFunctionName + " for field display type: " + fieldSpecification.displayType;
+                console.log(error2);
+                throw new Error(error2);
+            }
         }
         
         return addFunction(this, contentPane, model, fieldSpecification);
@@ -767,165 +775,7 @@ var PanelBuilder = declare(null, {
         label.placeAt(questionContentPane);
         return label;
     },
-    
-    // TODO: Refactor this into its own widget module
-    add_templateList: function(panelBuilder, contentPane, model, fieldSpecification) {
-        var dialogConfiguration = {
-            dialogContentPaneID: "templateList",
-            dialogTitleID: "title_chooseATemplate",
-            dialogStyle: "height: 900px",
-            // TODO: Fix when refactor
-            dialogConstructionFunction: lang.partial(panelBuilder.makeTemplateListChooser, panelBuilder),
-            fieldSpecification: fieldSpecification
-        };
-        var button = panelBuilder.addButtonThatLaunchesDialog(contentPane, model, fieldSpecification, dialogConfiguration);
-        return button;
-    },
-    
-    makeTemplateListChooser: function(panelBuilder, contentPane, model, hideDialogCallback, dialogConfiguration) {
-        var fieldSpecification = dialogConfiguration.fieldSpecification;
         
-        // For add_templateList
-        var add_templateList_elicitationQuestions = [
-            {"id":"category", dataType: "string", "type":"text", "isInReport":true, "isGridColumn":true},
-            {"id":"id", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":true},
-            {"id":"text", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true}
-        ];
-       
-       var add_templateList_storyOrParticipantQuestions = [
-            {"id":"category", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":true},
-            {"id":"id", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":false},
-            {"id":"shortName", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":true},
-            {"id":"text", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true},
-            {"id":"type", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":true}, // , "options":["boolean", "label", "header", "checkbox", "checkboxes", "text", "textarea", "select", "radiobuttons", "slider"]},
-            {"id":"options", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true}
-            // {"id":"templateQuestion_help", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true},
-        ];
-       
-       var add_templateList_activityQuestions = [
-            {"id":"name", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":true},
-            {"id":"type", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":true}, // , "options":["ice-breaker", "encountering stories (no task)", "encountering stories (simple task)", "discussing stories", "twice-told stories exercise", "timeline exercise", "landscape exercise", "story elements exercise", "composite stories exercise", "my own exercise", "other"]},
-            {"id":"plan", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true},
-            {"id":"optionalParts", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true},
-            {"id":"duration", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":true},
-            {"id":"recording", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true},
-            {"id":"materials", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true},
-            {"id":"spaces", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true},
-            {"id":"facilitation", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true}
-        ];
-       
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        
-        var templateListChoice = fieldSpecification.displayConfiguration;
-        console.log("templateListChoice", templateListChoice);
-        var templateCollection = templates[templateListChoice];
-        console.log("templateCollection", templateCollection);
-        
-        var templateQuestions;
-        if (templateCollection) {
-            templateQuestions = templateCollection.questions;
-        } else {
-            console.log("No templates defined yet for templateListChoice", templateListChoice);
-            // alert("Unsupported templateListChoice: " + templateListChoice);
-            templateQuestions = [];
-        }
-        
-        var dataStore = new MemoryDstore({
-            data: templateQuestions,
-            idProperty: "id"
-        });
-        
-        var pageQuestions;
-        
-        if (templateListChoice === "elicitationQuestions") {
-            pageQuestions = add_templateList_elicitationQuestions;
-        } else if (templateListChoice === "storyQuestions" || templateListChoice === "participantQuestions") {
-            pageQuestions = add_templateList_storyOrParticipantQuestions;
-        } else if (templateListChoice === "storyCollectionActivities" || templateListChoice === "sensemakingActivities") {
-            pageQuestions = add_templateList_activityQuestions;
-        } else {
-            var message = "ERROR: unsupported template type:" +  templateListChoice;
-            console.log(message);
-            alert(message);
-            pageQuestions = [];
-        }
-
-         function buildPanel(builder, contentPane, model) {
-             builder.addQuestions(pageQuestions, contentPane, model);
-         }
-         
-         var popupPageDefinition = {
-             "id": "page_template",
-             "displayType": "popup",
-             "isHeader": false,
-             "questions": pageQuestions,
-             "buildPanel": buildPanel
-         };
-                
-        function useButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
-            console.log("useButtonClicked", id, grid, store, popupPageDefinition, itemContentPane, event);
-            var selectedTemplate = grid.getSelectedItem(grid, store);
-            console.log("grid selectedTemplate", selectedTemplate);
-            
-            if (selectedTemplate) {
-                // TODO: not sure whether to confirm?
-                // TODO: Translate
-                dialogSupport.confirm("Copy selected template '" + selectedTemplate.id + "' into question definition?", function () {
-                    if (templateListChoice === "elicitationQuestions") {
-                        model.set("elicitingQuestion_text", selectedTemplate.text || "");
-                        // Use the ID here instead of non-existent shortName
-                        model.set("elicitingQuestion_shortName", selectedTemplate.id || "");
-                        // TODO: No data for type, and would need to copy over settings for checkboxes if such data existed
-                        // model.set("storyQuestion_type", selectedTemplate.text);
-                        model.set("elicitingQuestion_type", {});
-                    } else if (templateListChoice === "storyQuestions") {
-                        model.set("storyQuestion_text", selectedTemplate.text || "");
-                        model.set("storyQuestion_type", selectedTemplate.type || "");
-                        model.set("storyQuestion_shortName", selectedTemplate.shortName || "");
-                        model.set("storyQuestion_options", selectedTemplate.options || "");
-                    } else if (templateListChoice === "participantQuestions") {
-                        model.set("participantQuestion_text", selectedTemplate.text || "");
-                        model.set("participantQuestion_type", selectedTemplate.type || "");
-                        model.set("participantQuestion_shortName", selectedTemplate.shortName || "");
-                        model.set("participantQuestion_options", selectedTemplate.options || "");
-                    } else if (templateListChoice === "storyCollectionActivities") {
-                        model.set("collectionSessionActivity_name", selectedTemplate.name || "");
-                        model.set("collectionSessionActivity_type", selectedTemplate.type || "");
-                        model.set("collectionSessionActivity_plan", selectedTemplate.plan || "");
-                        model.set("collectionSessionActivity_optionalParts", selectedTemplate.optionalParts || "");
-                        model.set("collectionSessionActivity_duration", selectedTemplate.duration || "");
-                        model.set("collectionSessionActivity_recording", selectedTemplate.recording || "");
-                        model.set("collectionSessionActivity_materials", selectedTemplate.materials || "");
-                        model.set("collectionSessionActivity_spaces", selectedTemplate.spaces || "");
-                        model.set("collectionSessionActivity_facilitation", selectedTemplate.facilitation || "");
-                    } else if (templateListChoice === "sensemakingActivities") {
-                        model.set("sensemakingSessionPlan_activity_name", selectedTemplate.name || "");
-                        model.set("sensemakingSessionPlan_activity_type", selectedTemplate.type || "");
-                        model.set("sensemakingSessionPlan_activity_plan", selectedTemplate.plan || "");
-                        model.set("sensemakingSessionPlan_activity_optionalParts", selectedTemplate.optionalParts || "");
-                        model.set("sensemakingSessionPlan_activity_duration", selectedTemplate.duration || "");
-                        model.set("sensemakingSessionPlan_activity_recording", selectedTemplate.recording || "");
-                        model.set("sensemakingSessionPlan_activity_materials", selectedTemplate.materials || "");
-                        model.set("sensemakingSessionPlan_activity_spaces", selectedTemplate.spaces || "");
-                        model.set("sensemakingSessionPlan_activity_facilitation", selectedTemplate.facilitation || "");
-                    } else {
-                        var message = "ERROR: unsupported template type:" +  templateListChoice;
-                        console.log(message);
-                        alert(message);
-                    }
-                    console.log("about to call hideDialogCallback");
-                    hideDialogCallback();
-                });
-            } else {
-                // TODO: Translate
-                alert("No template was selected");
-            }
-        }
-        
-        var configuration = {viewButton: true, includeAllFields: false, showTooltip: true, customButton: {id: "useTemplate", translationID: "button_UseTemplate", callback: useButtonClicked}};
-        return GridTable.insertGridTableBasic(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, popupPageDefinition, configuration);
-    },
-    
     add_accumulatedItemsGrid: function(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
