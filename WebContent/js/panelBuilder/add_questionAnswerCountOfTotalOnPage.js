@@ -2,14 +2,12 @@ define([
     "dojo/_base/array",
     "dojox/mvc/at",
     "dijit/layout/ContentPane",
-    "js/domain",
     "dojo/_base/lang",
     "js/translate"
 ], function(
     array,
     at,
     ContentPane,
-    domain,
     lang,
     translate
 ){
@@ -29,7 +27,7 @@ define([
     ];
     
     function calculate_questionAnswerCountOfTotalOnPage(panelBuilder, model, panelID) {
-        var panel = domain.panelDefinitions[panelID];
+        var panel = panelBuilder.panelDefinitionForPanelID(panelID);
         if (!panel) {
             console.log("ERROR: panel not found for: ", panelID);
             return "ERROR: panel not found for: " + panelID + " at: " + new Date();
