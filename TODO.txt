@@ -127,6 +127,7 @@ CSS styling of nested box in grid
 Uncomment and test tooltip code in grid table
 Get tooltips working in dialogs (maybe Dojo bug?)
 Sorting issue: Initial sort order in grid may be order of items in underlying array, but you can't get back to that order once you sort by a column
+Bug if viewing data when remove it; the viewing panel remains open with old data
 
 CONFIGURATION
 Add project configuration page?
@@ -140,6 +141,8 @@ Main Dashboard
 Decide or distinguish between between an initial explanation page versus a first big dashboard
 Implement countNumberOfVenuesChosen in domain (is this still needed? If not, remove stub code for it.)
 General notes should go after dashboard for each section
+Create widget for Main Dashboard that combines a button and a section status
+Think about how to save or retrieve general section dashboard status if decide to split up project file by section
 
 ALERTS
 Help window displaying HTML instead of alert
@@ -161,6 +164,12 @@ No short name for type: clusterSpace field: clusterInterpretations_clusterSpace 
 No short name for type: annotationsGrid field: perspective_linkedResultsList text: Results linked to this perspective
 No short name for type: annotationsGrid field: perspective_linkedExcerptsList text: Excerpts linked to this perspective
 No short name for type: annotationsGrid field: perspective_linkedInterpretationsList text: Interpretations linked to this perspective
+
+PANEL BUILDER
+Refactor how dependent values are calculated so that code is not in PanelBuilder
+Separate generic widgets from project-specific widgets, and have project-specific widgets added as plugins by main application
+Remove any use of widgets in widgetSupport or other use of Dojo controls (e.g. Button) directly and only use PanelBuilder for creating GUI
+Add some general small independent tests of PanelBuilder functionality 
 
 UNSURE
 Way to retrieve data about project participant groups [Is this still relevant?]
@@ -496,3 +505,5 @@ DONE Refactor widgetBuilder module into a PanelBuilder class with an instance us
 DONE Refactor PanelBuilder add methods so they accept a fieldSpecification instead of an id and options
 DONE Refactor dialog opening code into seperate dialogSupport file
 DONE Improve how translations are calculated using fieldSpecification as the value if no translation in nls files
+DONE Improve introduction panel with more background and help about how to navigate within application
+DONE Refactor PanelBuilder so all add_* functions are in their own files
