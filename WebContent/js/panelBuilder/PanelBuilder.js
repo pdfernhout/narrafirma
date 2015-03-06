@@ -4,66 +4,99 @@ define([
     "./add_recommendationTable",
     "./add_slider",
     "./add_templateList",
+    
+    "./add_accumulatedItemsGrid",
+    "./add_annotationsGrid",
+    "./add_boolean",
+    "./add_button",
+    "./add_checkbox",
+    "./add_checkboxes",
+    "./add_excerptsList",
+    "./add_function",
+    "./add_graphBrowser",
+    "./add_grid",
+    "./add_header",
+    "./add_image",
+    "./add_label",
+    "./add_listCount",
+    "./add_questionAnswer",
+    "./add_questionAnswerCountOfTotalOnPage",
+    "./add_questionsTable",
+    "./add_quizScoreResult",
+    "./add_radiobuttons",
+    "./add_report",
+    "./add_select",
+    "./add_storiesList",
+    "./add_storyBrowser",
+    "./add_storyThemer",
+    "./add_text",
+    "./add_textarea",
+    "./add_toggleButton",
+    "./add_trendsReport",
+    
     "dojo/_base/array",
-    "dojox/mvc/at",
     "js/browser",
     "dojo/_base/declare",
     "./dialogSupport",
     "js/domain",
     'dojo/dom-class',
-    "dojo/dom-construct",
-    "exports",
     "dojo/_base/lang",
     "js/translate",
     "dijit/form/Button",
-    "./CheckboxesWidget",
-    "dijit/form/CheckBox",
     "dijit/layout/ContentPane",
-    "dijit/form/FilteringSelect",
-    "./graphBrowser",
     "./gridTable",
-    "dojo/store/Memory",
-    "dstore/Memory",
-    "./RadioButtonsWidget",
-    "dijit/form/SimpleTextarea",
-    "./storyBrowser",
-    "./storyThemer",
-    "dijit/form/TextBox",
-    "dijit/form/ToggleButton"
 ], function(
     add_clusteringDiagram,
     add_recommendationTable,
     add_slider,
     add_templateList,
+    
+    // TODO: Add the above alphabetically
+    add_accumulatedItemsGrid,
+    add_annotationsGrid,
+    add_boolean,
+    add_button,
+    add_checkbox,
+    add_checkboxes,
+    add_excerptsList,
+    add_function,
+    add_graphBrowser,
+    add_grid,
+    add_header,
+    add_image,
+    add_label,
+    add_listCount,
+    add_questionAnswer,
+    add_questionAnswerCountOfTotalOnPage,
+    add_questionsTable,
+    add_quizScoreResult,
+    add_radiobuttons,
+    add_report,
+    add_select,
+    add_storiesList,
+    add_storyBrowser,
+    add_storyThemer,
+    add_text,
+    add_textarea,
+    add_toggleButton,
+    add_trendsReport,
+    
     array,
-    at,
     browser,
     declare,
     dialogSupport,
     domain,
     domClass,
-    domConstruct,
-    exports,
     lang,
     translate,
     Button,
-    CheckboxesWidget,
-    CheckBox,
     ContentPane,
-    FilteringSelect,
-    GraphBrowser,
-    GridTable,
-    Memory,
-    MemoryDstore,
-    RadioButtonsWidget,
-    SimpleTextarea,
-    StoryBrowser,
-    StoryThemer,
-    TextBox,
-    ToggleButton
+    gridTable
 ){
+
 "use strict";
 
+// TODO: This list may get out of date relative to new widget type plugins -- need to think about it
 var entryTypes = [
     "boolean",
     "checkbox",
@@ -75,94 +108,55 @@ var entryTypes = [
     "slider",
     "toggleButton"
  ];
-  
- var supportedTypes = [
-     "boolean",
-     "label",
-     "header",
-     "checkbox",
-     "checkboxes",
-     "text",
-     "textarea", 
-     "select",
-     "radio",
-     "slider",
-     "questionAnswer",
-     "questionAnswerCountOfTotalOnPage",
-     "listCount",
-     "function",
-     "toggleButton",
-     "image",
-     "quizScoreResult"
-];
  
 // TODO: Need a better approach for calling JavaScript function than this
 document.__narraFirma_launchApplication = browser.launchApplication;
- 
-// TODO: Fix all this so attaching actual JavaScript function not text to be interpreted
-function htmlForInformationIcon(url) {
-    var template = '<img src="{iconFile}" height=16 width=16 title="{title}" onclick="document.__narraFirma_launchApplication(\'{url}\', \'help\')">';
-    return lang.replace(template, {
-        // TODO: Remove unused images from project
-        // "/images/Info_blauw.png"
-        // "/images/Blue_question_mark_icon.svg"
-        iconFile:'/images/Information_icon4.svg',
-        title: "Click to open help system window on this topic...",
-        url: url
-    });
-}
-
-// TODO: Remove this -- just for testing/demo purposes
-function randomHelpPageURL(id) {
-    var index = (Math.floor(Math.random() * 8) + 1);
-    var url = 'http://www.kurtz-fernhout.com/help100/0000000' + index + '.htm' + "#" + id;
-    return url;
-}
 
 // TODO: Think about where this goes!!!
 // TODO: When do these get removed?  When page removed???
 var questionsRequiringRecalculationOnPageChanges = {};
 
-var buildingFunctions = {
-    "label": "add_label",
-    "header": "add_header",
-    "image": "add_image",
-    "text": "add_text",
-    "textarea": "add_textarea",
-    "grid": "add_grid",
-    "select": "add_select",
-    "boolean": "add_boolean",
-    "checkbox": "add_checkbox",
-    "checkboxes": "add_checkboxes",
-    "radiobuttons": "add_radiobuttons",
-    "toggleButton": "add_toggleButton",
-    "button": "add_button",
-    "report": "add_report",
-    "questionsTable": "add_questionsTable",
-    "storyBrowser": "add_storyBrowser",
-    "storyThemer": "add_storyThemer",
-    "graphBrowser": "add_graphBrowser",
-    "trendsReport": "add_trendsReport",
-    "annotationsGrid": "add_annotationsGrid",
-    "accumulatedItemsGrid": "add_accumulatedItemsGrid",
-    "excerptsList": "add_excerptsList",
-    "storiesList": "add_storiesList",
-    "questionAnswer": "add_questionAnswer",
-    "questionAnswerCountOfTotalOnPage": "add_questionAnswerCountOfTotalOnPage",
-    "listCount": "add_listCount",
-    "function": "add_function",
-    "quizScoreResult": "add_quizScoreResult"
-};
+var buildingFunctions = {};
 
 function addPlugin(name, callback) {
     buildingFunctions[name] = callback;
 }
 
 // plugins
+// TODO: Alphabetize these with the rest
 addPlugin("templateList", add_templateList);
 addPlugin("slider", add_slider);
 addPlugin("recommendationTable", add_recommendationTable);
 addPlugin("clusteringDiagram", add_clusteringDiagram);
+
+addPlugin("accumulatedItemsGrid", add_accumulatedItemsGrid);
+addPlugin("annotationsGrid", add_annotationsGrid);
+addPlugin("boolean", add_boolean);
+addPlugin("button", add_button);
+addPlugin("checkbox", add_checkbox);
+addPlugin("checkboxes", add_checkboxes);
+addPlugin("excerptsList", add_excerptsList);
+addPlugin("function", add_function);
+addPlugin("graphBrowser", add_graphBrowser);
+addPlugin("grid", add_grid);
+addPlugin("header", add_header);
+addPlugin("image", add_image);
+addPlugin("label", add_label);
+addPlugin("listCount", add_listCount);
+addPlugin("questionAnswer", add_questionAnswer);
+addPlugin("questionAnswerCountOfTotalOnPage", add_questionAnswerCountOfTotalOnPage);
+addPlugin("questionsTable", add_questionsTable);
+addPlugin("quizScoreResult", add_quizScoreResult);
+addPlugin("radiobuttons", add_radiobuttons);
+addPlugin("report", add_report);
+addPlugin("select", add_select);
+addPlugin("storiesList", add_storiesList);
+addPlugin("storyBrowser", add_storyBrowser);
+addPlugin("storyThemer", add_storyThemer);
+addPlugin("text", add_text);
+addPlugin("textarea", add_textarea);
+addPlugin("toggleButton", add_toggleButton);
+addPlugin("trendsReport", add_trendsReport);
 
 // The applicationBuilder is needed to build popup panels for some widgets like the grid
 var applicationBuilder = null;
@@ -202,6 +196,9 @@ var PanelBuilder = declare(null, {
     // Returns dictionary mapping from question IDs to widgets
     addQuestions: function(questions, contentPane, model) {
         console.log("addQuestions", questions);
+        if (!questions) {
+            throw new Error("questions are not defined");
+        }
         
         var widgets = {};
         for (var questionIndex in questions) {
@@ -213,21 +210,56 @@ var PanelBuilder = declare(null, {
     },
     
     // Build an entire panel; panel can be either a string ID referring to a panel or it can be a panel definition itself
-    buildPanel: function(panelOrID, contentPane, model) {
+    buildPanel: function(panelOrPanelID, contentPane, model) {
+        console.log("buildPanel", panelOrPanelID);
         var questions;
-        if (lang.isString(panelOrID)) {
-            questions = applicationBuilder.buildQuestionsForPanel(panelOrID);
-        } else if (panelOrID.buildPanel) {
+        if (lang.isString(panelOrPanelID)) {
+            var panel = this.panelDefinitionForPanelID(panelOrPanelID);
+            questions = panel.questions;
+        } else if (panelOrPanelID.buildPanel) {
             // Call explicit constructor function
-            return panelOrID.buildPanel(this, contentPane, model);
+            return panelOrPanelID.buildPanel(this, contentPane, model);
         } else {
-            questions = panelOrID.questions;
+            questions = panelOrPanelID.questions;
         }
         this.addQuestions(questions, contentPane, model);
     },
     
-                  
+    /// Suport functions
+    
+    panelDefinitionForPanelID: function(panelID) {
+        // var questions = applicationBuilder.buildQuestionsForPanel(panelID);
+        // console.log("panelDefinitionForPanelID", panelID, questions);
+        var panelSpecification = domain.panelDefinitions[panelID];
+        console.log("panelDefinitionForPanelID", panelID, panelSpecification);
+        return panelSpecification;
+    },
+    
+    // TODO: Remove this -- just for testing/demo purposes
+    randomHelpPageURL: function(id) {
+        var index = (Math.floor(Math.random() * 8) + 1);
+        var url = 'http://www.kurtz-fernhout.com/help100/0000000' + index + '.htm' + "#" + id;
+        return url;
+    },
+                
+    // TODO: Fix all this so attaching actual JavaScript function not text to be interpreted
+    htmlForInformationIcon: function(url) {
+        var template = '<img src="{iconFile}" height=16 width=16 title="{title}" onclick="document.__narraFirma_launchApplication(\'{url}\', \'help\')">';
+        return lang.replace(template, {
+            // TODO: Remove unused images from project
+            // "/images/Info_blauw.png"
+            // "/images/Blue_question_mark_icon.svg"
+            iconFile:'/images/Information_icon4.svg',
+            title: "Click to open help system window on this topic...",
+            url: url
+        });
+    },
+    
     /////////////
+    
+    buttonClicked: function(contentPane, model, fieldSpecification, value) {
+        domain.buttonClicked(contentPane, model, fieldSpecification, value);
+    },
     
     createQuestionContentPaneWithPrompt: function(contentPane, fieldSpecification) {
         // triangle&#8227; 
@@ -247,7 +279,7 @@ var PanelBuilder = declare(null, {
         // TODO: Fix the help that correct help actually pops up
         if (questionText) {
             var label = new ContentPane({
-                content: htmlForInformationIcon(randomHelpPageURL(id)) + "&nbsp;&nbsp;" + questionText
+                content: this.htmlForInformationIcon(this.randomHelpPageURL(id)) + "&nbsp;&nbsp;" + questionText
                 });
             label.placeAt(questionContentPane);
         }
@@ -267,213 +299,6 @@ var PanelBuilder = declare(null, {
     },
     
     ////////////////
-    
-    function add_label(panelBuilder, contentPane, model, fieldSpecification) {
-        var label = new ContentPane({
-            content: htmlForInformationIcon(randomHelpPageURL(fieldSpecification.id)) + "&nbsp;&nbsp;" + translate("#" + fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt)
-        });
-        label.placeAt(contentPane);
-        return label;
-    },
-    
-    function add_header(panelBuilder, contentPane, model, fieldSpecification) {
-        var label = new ContentPane({
-            content: htmlForInformationIcon(randomHelpPageURL(fieldSpecification.id)) + "&nbsp;&nbsp;" + "<b>" + translate("#" + fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt) + "</b>"
-        });
-        label.placeAt(contentPane);
-        return label;
-    },
-    
-    function add_image(panelBuilder, contentPane, model, fieldSpecification) {
-        var imageSource = fieldSpecification.displayConfiguration;
-        var questionText = translate("#" + fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt || "");
-        var image = new ContentPane({
-            content: questionText + "<br>" + '<img src="' + imageSource + '" alt="Image for question: ' + questionText + '">'
-        });
-        image.placeAt(contentPane);
-        return image;
-    },
-    
-    function add_text(panelBuilder, contentPane, model, fieldSpecification) {
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        var textBox = new TextBox({
-            value: at(model, fieldSpecification.id)
-        });
-        textBox.set("style", "width: 40em");
-        textBox.placeAt(questionContentPane);
-        return textBox;
-    },
-    
-    function add_textarea(panelBuilder, contentPane, model, fieldSpecification) {
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification); 
-        var textarea = new SimpleTextarea({
-            rows: "4",
-            cols: "80",
-            style: "width:auto;",
-            value: at(model, fieldSpecification.id)
-        });
-        textarea.placeAt(questionContentPane);
-        return textarea;
-    },
-    
-    function add_grid(panelBuilder, contentPane, model, fieldSpecification) {
-        // Grid with list of objects
-        // console.log("add_grid");
-        
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        
-        var popupPageDefinition = domain.panelDefinitions[fieldSpecification.displayConfiguration];
-        
-        if (!popupPageDefinition) {
-            console.log("Trouble: no popupPageDefinition for options: ", fieldSpecification);
-        }
-        
-        var data = model.get(fieldSpecification.id);
-        if (!data) {
-            data = [];
-            model.set(fieldSpecification.id, data);
-        }
-        
-        // Store will modify underlying array
-        var dataStore = new MemoryDstore({
-            data: data,
-            idProperty: "_id"
-        });
-        
-        var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
-        return GridTable.insertGridTableBasic(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, popupPageDefinition, configuration);
-    },
-    
-    function add_select(panelBuilder, contentPane, model, fieldSpecification, addNoSelectionOption) {
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        
-        var options = [];
-        if (addNoSelectionOption) options.push({name: translate("#selection_has_not_been_made"), id: "", selected: true});
-        var choices = fieldSpecification.dataOptions;
-        if (choices) {
-            array.forEach(choices, function(each) {
-                var label;
-                // console.log("choice", id, each);
-                if (lang.isString(each)) {
-                    label = translate("#" + fieldSpecification.id + "::selection:" + each, each);
-                    options.push({name: label, id: each});
-                } else {
-                    // TODO: Maybe bug in dojo select that it does not handle values that are not strings
-                    // http://stackoverflow.com/questions/16205699/programatically-change-selected-option-of-a-dojo-form-select-that-is-populated-b
-                    label = translate("#" + fieldSpecification.id + "::selection:" + each.label, each.label);
-                    options.push({name: label, id: each.value});
-                }
-            });           
-        } else {
-            console.log("No choices or options defined for select", fieldSpecification.id);
-        }
-        
-        var dataStore = new Memory({"data": options});
-        
-        var select = new FilteringSelect({
-                store: dataStore,
-                searchAttr: "name",
-                // TODO: Work on validation...
-                required: false,
-                // style: "width: 100%"
-                value: at(model, fieldSpecification.id)
-        });
-        
-        select.placeAt(questionContentPane);
-        return select;
-    },
-    
-    function add_boolean(panelBuilder, contentPane, model, fieldSpecification) {
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        
-        var radioButtonsWidget = new RadioButtonsWidget({
-            choices: null,
-            // TODO: translate options
-            optionsString: "yes\nno",
-            value: at(model, fieldSpecification.id)
-        });
-        
-        radioButtonsWidget.placeAt(questionContentPane);
-        return radioButtonsWidget;
-    },
-
-    function add_checkbox(panelBuilder, contentPane, model, fieldSpecification) {
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        
-        var checkbox = new CheckBox({
-            value: at(model, fieldSpecification.id)
-        });
-        
-        checkbox.placeAt(questionContentPane);
-        return checkbox;
-    },
-    
-    function add_radiobuttons(panelBuilder, contentPane, model, fieldSpecification) {
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        
-        var radioButtonsWidget = new RadioButtonsWidget({
-            questionID: fieldSpecification.id,
-            choices: fieldSpecification.dataOptions,
-            // optionsString: optionsString,
-            value: at(model, fieldSpecification.id)
-        });
-         
-        radioButtonsWidget.placeAt(questionContentPane);
-        return radioButtonsWidget;
-    },
-    
-    function add_checkboxes(panelBuilder, contentPane, model, fieldSpecification) {
-        // console.log("add_checkboxes", contentPane, model, fieldSpecification);
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-
-        // Checkboxes modifies a dictionary which contains whether each checkbox is checked
-        // It does not use an "at" since the checkboxes will modify the data directly
-        // Ensure that there is a place to store data about each checkbox
-        if (!model.get(fieldSpecification.id)) model.set(fieldSpecification.id, {});
-
-        var checkboxesWidget = new CheckboxesWidget({
-            questionID: fieldSpecification.id,
-            choices: fieldSpecification.dataOptions,
-            // optionsString: optionsString,
-            value: model.get(fieldSpecification.id)
-        });
-        
-        checkboxesWidget.placeAt(questionContentPane);
-        return checkboxesWidget;
-    },
-    
-    // TODO: Need to translate true/false
-    function add_toggleButton(panelBuilder, contentPane, model, fieldSpecification) {
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        
-        // Toggle button maintains a "checked" flag, so we need to set value ourselves
-        var toggleButton = new ToggleButton({
-            label: "" + model.get(fieldSpecification.id),
-            value: at(model, fieldSpecification.id),
-            onChange: function(value) {
-                this.set("label", value);
-                this.set("value", value);
-                domain.buttonClicked(contentPane, model, fieldSpecification, value);
-            }
-        });
-        
-        toggleButton.placeAt(questionContentPane);
-        
-        return toggleButton;
-    },
-    
-    function add_button(panelBuilder, contentPane, model, fieldSpecification, callback) {
-        if (!callback) callback = lang.partial(domain.buttonClicked, contentPane, model, fieldSpecification);
-        
-        var button = new Button({
-            label: translate("#" + fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt),
-            type: "button",
-            onClick: callback
-        });
-
-        button.placeAt(contentPane);
-        return button;
-    },
     
     addButtonThatLaunchesDialog: function(contentPane, model, fieldSpecification, dialogConfiguration) {
         // if (!callback) callback = lang.partial(domain.buttonClicked, contentPane, model, id, questionOptions);
@@ -497,98 +322,6 @@ var PanelBuilder = declare(null, {
         return button;
     },
           
-    function add_storyThemer(panelBuilder, contentPane, model, fieldSpecification) {
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        
-        var storyThemer = StoryThemer.insertStoryThemer(panelBuilder, questionContentPane, model, fieldSpecification.id, domain.panelDefinitions);
-        questionContentPane.resize();
-        return storyThemer;
-    },
-    
-    function add_questionsTable(panelBuilder, contentPane, model, fieldSpecification) {
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        
-        var label = new ContentPane({
-            // content: translate("#" + id + "::prompt", fieldSpecification.displayPrompt)
-            content: "<b>UNFINISHED add_questionsTable: " + fieldSpecification.id + "</b>"             
-        });
-        label.placeAt(questionContentPane);
-        return label;
-    },
-    
-    // TODO: Fix UNFINISHED widgets
-    
-    function add_graphBrowser(panelBuilder, contentPane, model, fieldSpecification) {
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        
-        var graphBrowser = GraphBrowser.insertGraphBrowser(questionContentPane, model, fieldSpecification.id, domain.panelDefinitions);
-        questionContentPane.resize();
-        return graphBrowser;
-    },
-    
-    function add_trendsReport(panelBuilder, contentPane, model, fieldSpecification) {
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        
-        var label = new ContentPane({
-            // content: translate("#" + id + "::prompt", fieldSpecification.displayPrompt)
-            content: "<b>UNFINISHED add_trendsReport: " + fieldSpecification.id + "</b>"             
-        });
-        label.placeAt(questionContentPane);
-        return label;
-    },
-    
-    function add_annotationsGrid(panelBuilder, contentPane, model, fieldSpecification) {
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        
-        var label = new ContentPane({
-            // content: translate("#" + id + "::prompt", fieldSpecification.displayPrompt)
-            content: "<b>UNFINISHED add_annotationsGrid: " + fieldSpecification.id + "</b>"             
-        });
-        label.placeAt(questionContentPane);
-        return label;
-    },
-    
-    function add_storiesList(panelBuilder, contentPane, model, fieldSpecification) {
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        
-        var label = new ContentPane({
-            // content: translate("#" + id + "::prompt", fieldSpecification.displayPrompt)
-            content: "<b>UNFINISHED add_storiesList: " + fieldSpecification.id + "</b>"             
-        });
-        label.placeAt(questionContentPane);
-        return label;
-    },
-        
-    function add_accumulatedItemsGrid(panelBuilder, contentPane, model, fieldSpecification) {
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        
-        var label = new ContentPane({
-            // content: translate("#" + id + "::prompt", fieldSpecification.displayPrompt)
-            content: "<b>UNFINISHED accumulatedItemsGrid: " + fieldSpecification.id + "</b>"             
-        });
-        label.placeAt(questionContentPane);
-        return label;
-    },
-    
-    function add_excerptsList(panelBuilder, contentPane, model, fieldSpecification) {
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        
-        var label = new ContentPane({
-            // content: translate("#" + id + "::prompt", fieldSpecification.displayPrompt)
-            content: "<b>UNFINISHED add_excerptsList: " + fieldSpecification.id + "</b>"             
-        });
-        label.placeAt(questionContentPane);
-        return label;
-    },
-    
-    function add_storyBrowser(panelBuilder, contentPane, model, fieldSpecification) {
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        
-        var storyBrowser = StoryBrowser.insertStoryBrowser(panelBuilder, questionContentPane, model, fieldSpecification.id, domain.panelDefinitions);
-        questionContentPane.resize();
-        return storyBrowser;
-    },
-    
     ////// Support for questions that recalculate based on other questions
     
     updateLabelUsingCalculation: function(data) {
@@ -684,65 +417,6 @@ var PanelBuilder = declare(null, {
         questionsRequiringRecalculationOnPageChanges[fieldSpecification.id] = updateInfo;
 
         return label;
-    },
-    
-    function add_questionAnswer(panelBuilder, contentPane, model, fieldSpecification) {
-        var referencedQuestionID = fieldSpecification.displayConfiguration;
-        if (!referencedQuestionID) throw new Error("missing referencedQuestionID for field: " + fieldSpecification.id + " all: " + JSON.stringify(fieldSpecification));
-     // TODO: Fix when refactor
-        var calculate = lang.partial(panelBuilder.calculate_questionAnswer, panelBuilder, model, referencedQuestionID);
-     // TODO: Fix when refactor
-        return panelBuilder._add_calculatedText(panelBuilder, contentPane, fieldSpecification, calculate);
-    },
-    
-    function add_questionAnswerCountOfTotalOnPage(panelBuilder, contentPane, model, fieldSpecification) {
-        var panelID = fieldSpecification.displayConfiguration;
-     // TODO: Fix when refactor
-        var calculate = lang.partial(panelBuilder.calculate_questionAnswerCountOfTotalOnPage, panelBuilder, model, panelID);
-     // TODO: Fix when refactor
-        return panelBuilder._add_calculatedText(panelBuilder, contentPane, fieldSpecification, calculate);
-    },
-    
-    function add_listCount(panelBuilder, contentPane, model, fieldSpecification) {
-        var referencedQuestionID = fieldSpecification.displayConfiguration;
-     // TODO: Fix when refactor
-        var calculate = lang.partial(panelBuilder.calculate_listCount, panelBuilder, model, referencedQuestionID);
-     // TODO: Fix when refactor
-        return panelBuilder._add_calculatedText(panelBuilder, contentPane, fieldSpecification, calculate);
-    },
-
-    function add_function(panelBuilder, contentPane, model, fieldSpecification) {
-        var functionName = fieldSpecification.displayConfiguration;
-     // TODO: Fix when refactor
-        var calculate = lang.partial(panelBuilder.calculate_function, panelBuilder, functionName, fieldSpecification);
-     // TODO: Fix when refactor
-        return panelBuilder._add_calculatedText(panelBuilder, contentPane, fieldSpecification, calculate);
-    },
-    
-    function add_quizScoreResult(panelBuilder, contentPane, model, fieldSpecification) {
-        var dependsOn = fieldSpecification.displayConfiguration;
-        var calculate = lang.partial(domain.calculate_quizScoreResult, model, dependsOn);
-     // TODO: Fix when refactor
-        var label = panelBuilder._add_calculatedText(contentPane, fieldSpecification, calculate);
-        // TODO: Recalculating next two variables wheres they are also calculated in _add_calculatedText
-        var baseText = translate("#" + fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
-        var updateInfo = {"id": fieldSpecification.id, "label": label, "baseText": baseText, "calculate": calculate};
-        // Ensure this value is recalculated when dependent questions change by using watch
-        for (var dependsOnIndex in dependsOn) {
-            var questionID = dependsOn[dependsOnIndex];
-            // TODO: When do these watches get removed?
-            // console.log("setting up watch on", questionID, "for", id, model);
-         // TODO: Fix when refactor
-            model.watch(questionID, lang.partial(panelBuilder.updateLabelUsingCalculation, panelBuilder, updateInfo));
-        }
-        return label;
-    },
-    
-    function add_report(panelBuilder, contentPane, model, fieldSpecification) {
-        var headerPageID = "page_" + fieldSpecification.displayConfiguration;
-        var calculate = lang.partial(domain.calculate_report, model, headerPageID);
-     // TODO: Fix when refactor
-        return panelBuilder._add_calculatedText(panelBuilder, contentPane, fieldSpecification, calculate);
     }
     
     });
