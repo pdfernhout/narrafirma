@@ -8,9 +8,9 @@ define({
 
     // Used for entering dashboard page status
     "dashboard_status_entry::prompt":  "The dashboard status of this page is:",
-    "dashboard_status_entry::selection:intentionally skipped": "intentionally skipped",
-    "dashboard_status_entry::selection:partially done": "partially done",
-    "dashboard_status_entry::selection:completely finished": "completely finished",
+    "dashboard_status_entry::selection:intentionally_skipped": "intentionally skipped",
+    "dashboard_status_entry::selection:partially_done": "partially done",
+    "dashboard_status_entry::selection:completely_finished": "completely finished",
     dashboard_status_label: "status:", 
     question_not_yet_answered: "(Not Yet Entered)",
     

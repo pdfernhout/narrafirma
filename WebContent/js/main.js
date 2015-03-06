@@ -271,7 +271,7 @@ require([
        panelBuilder.buildPanel(panelID, pagePane, domain.projectData.projectAnswers);
        
        if (!pageSpecification.isHeader) {
-           var options = ["intentionally skipped", "partially done", "completely finished"];
+           var options = ["intentionally_skipped", "partially_done", "completely_finished"];
            var statusEntryID = pageID + "_pageStatus";
            translate.addExtraTranslation(statusEntryID + "::prompt", translate("#dashboard_status_entry::prompt") + " ");
            for (var optionIndex in options) {
