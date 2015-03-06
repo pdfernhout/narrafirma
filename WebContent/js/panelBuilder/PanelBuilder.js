@@ -329,17 +329,6 @@ var PanelBuilder = declare(null, {
     PanelBuilder.setApplicationBuilder = function(newApplicationBuilder) {
         applicationBuilder = newApplicationBuilder;
     };
-
-    function usageIdeas(contentPane) {
-        var panelBuilder = new PanelBuilder({contentPane: contentPane});
-        panelBuilder.addButton("Click me", function () {console.log("clicked");});
-        panelBuilder.addButton("#someTranslationID Some text if translation not found", "someDomainAction");
-        panelBuilder.addButton({id: "someQuestionID", displayConfiguration: "someDomainAction"});
-        
-        var newPanel = panelBuilder.addPanel();
-        // Widgets will go in new panel
-        panelBuilder.popPanel(); 
-    }
     
     return PanelBuilder;
 });
