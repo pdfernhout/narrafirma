@@ -69,7 +69,7 @@ function extractFunctionSource(functionName) {
         var line = lines[i];
         // console.log(i, "'" + line + "'");
         if (_.startsWith(line, "    function " + functionName)) {
-            console.log("found: " + functionName);
+            // console.log("found: " + functionName);
             for (var j = i; j < lines.length; j++) {
                 line = lines[j];
                 source += line + "\n";
@@ -83,16 +83,47 @@ function extractFunctionSource(functionName) {
     throw new Error("did not find start of source for: " + functionName);
 }
 
-var test = extractFunctionSource("add_boolean");
-console.log("source", test);
+// var test = extractFunctionSource("add_boolean");
+// console.log("source", test);
 
-for (var key in filesToMake) {
-    var functionName = filesToMake[key];
-    var fileName = outputDirectory + functionName + ".js";
-    console.log("key", key, fileName);
-    // var output = template.replace("FUNCTIONDEFINITON", "    function " + functionName + "() {}");
-    var source = extractFunctionSource(functionName);
-    var output = template.replace("FUNCTIONDEFINITON", source);
-    output = output.replace("FUNCTIONNAME", functionName);
-    fs.writeFileSync(fileName, output);
+function generateFiles() {
+    for (var key in filesToMake) {
+        var functionName = filesToMake[key];
+        var fileName = outputDirectory + functionName + ".js";
+        // console.log("key", key, fileName);
+        // var output = template.replace("FUNCTIONDEFINITON", "    function " + functionName + "() {}");
+        var source = extractFunctionSource(functionName);
+        var output = template.replace("FUNCTIONDEFINITON", source);
+        output = output.replace("FUNCTIONNAME", functionName);
+        fs.writeFileSync(fileName, output);
+    }
 }
+
+function generatePluginCalls() {
+    for (var key in filesToMake) {
+        var functionName = filesToMake[key];
+        console.log('addPlugin("' + functionName + '", ' + functionName + ');');
+    }
+}
+
+
+function generateImports() {
+    var key;
+    var functionName;
+    var sortedKeys = _.keys(filesToMake);
+    sortedKeys.sort();
+    // console.log("sortedKeys", sortedKeys);
+    _.each(sortedKeys, function (key) {
+        functionName = filesToMake[key];
+        console.log('    "./' + functionName + '",');
+    });
+    _.each(sortedKeys, function (key) {
+        functionName = filesToMake[key];
+        console.log('    ' + functionName + ',');
+    });
+}
+
+// generateFiles();
+// generatePluginCalls();
+generateImports();
+
