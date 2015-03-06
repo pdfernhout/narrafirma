@@ -16,7 +16,7 @@ define([
     "dojo/_base/lang",
     "js/translate",
     "dijit/form/Button",
-    "./checkboxes",
+    "./CheckBoxesWidget",
     "dijit/form/CheckBox",
     "dijit/layout/ContentPane",
     "dijit/form/FilteringSelect",
@@ -47,7 +47,7 @@ define([
     lang,
     translate,
     Button,
-    CheckBoxes,
+    CheckBoxesWidget,
     CheckBox,
     ContentPane,
     FilteringSelect,
@@ -444,7 +444,7 @@ var PanelBuilder = declare(null, {
         // Ensure that there is a place to store data about each checkbox
         if (!model.get(fieldSpecification.id)) model.set(fieldSpecification.id, {});
 
-        var checkboxes = new CheckBoxes({
+        var checkboxes = new CheckBoxesWidget({
             questionID: fieldSpecification.id,
             choices: fieldSpecification.dataOptions,
             // optionsString: optionsString,
