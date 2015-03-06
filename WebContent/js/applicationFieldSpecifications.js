@@ -223,7 +223,7 @@ return [
     displayType: 'label',
     displayConfiguration: 'images/PNIPhasesDiagram.png',
     displayName: undefined,
-    displayPrompt: 'The NarraFirma software supports all six major phases of the PNI process. You can click on the buttons on the main dashboard (home) page to open those sections. Collection has been split into two subphases of designing a questionnaire and the process of using it. An extra final project report phase is available as well. Each phase is further subdivided into typically about ten or so individual pages that represent tasks.',
+    displayPrompt: 'The NarraFirma software supports all six major phases of the PNI process. You can click on the buttons on the main dashboard (home) page to open those sections. Collection has been split into two subphases of designing a questionnaire and the process of using it. An extra final project report phase is available as well. Each phase is further subdivided into typically about seven or so individual pages that represent tasks.',
     displayPanel: 'panel_introduction',
     model: 'ProjectModel' 
 },
