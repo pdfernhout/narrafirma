@@ -31,7 +31,7 @@ define([
     
     var timestampStart;
     
-    // Because applicationBuilder is not set, this survey can not build internal panels (but they are not needed here because no GridWithItemPanel is used)
+    // Panel builder needs to be configured further if buttons or grids are used
     var panelBuilder = new PanelBuilder();
     
     function submitSurvey(surveyResultsWithModels, wizardPane, doneCallback) {
