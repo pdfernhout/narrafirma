@@ -746,8 +746,14 @@ define([
         return graphResultsPane;
     }
 
-    return {
-        insertGraphBrowser: insertGraphBrowser
-    };
+    function add_graphBrowser(panelBuilder, contentPane, model, fieldSpecification) {
+        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
+        
+        var graphBrowserInstance = insertGraphBrowser(questionContentPane, model, fieldSpecification);
+        questionContentPane.resize();
+        return graphBrowserInstance;
+    }
+
+    return add_graphBrowser;
     
 });
