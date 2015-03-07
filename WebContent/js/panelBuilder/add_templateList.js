@@ -2,13 +2,13 @@ define([
     "./dialogSupport",
     "dojo/_base/lang",
     "js/templates/templates",
-    "./GridWithDetail",
+    "./GridWithItemPanel",
     "dstore/Memory"
 ], function(
     dialogSupport,
     lang,
     templates,
-    GridWithDetail,
+    GridWithItemPanel,
     MemoryDstore
 ){
     "use strict";
@@ -166,7 +166,7 @@ define([
         }
         
         var configuration = {viewButton: true, includeAllFields: false, showTooltip: true, customButton: {id: "useTemplate", translationID: "button_UseTemplate", callback: useButtonClicked}};
-        return new GridWithDetail(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, popupPageDefinition, configuration);
+        return new GridWithItemPanel(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, popupPageDefinition, configuration);
     }
     
     return add_templateList;

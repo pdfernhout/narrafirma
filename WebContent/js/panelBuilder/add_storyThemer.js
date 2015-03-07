@@ -3,7 +3,7 @@ define([
     'dojox/html/entities',
     "dojox/uuid/generateRandomUuid",
     "js/translate",
-    "./GridWithDetail",
+    "./GridWithItemPanel",
     "dijit/form/ComboBox",
     "dijit/layout/ContentPane",
     "dojo/store/Memory",
@@ -15,7 +15,7 @@ define([
     entities,
     generateRandomUuid,
     translate,
-    GridWithDetail,
+    GridWithItemPanel,
     ComboBox,
     ContentPane,
     Memory,
@@ -115,7 +115,7 @@ define([
                          {id: "name", displayName: "Theme", displayPrompt: "Theme", displayType: "text", dataOptions:[]}
                      ]
                  };
-                 var themeList = new GridWithDetail(panelBuilder, themesPane, "storyThemeList", storyThemesStore, popupPageDefinition2, configuration2);
+                 var themeList = new GridWithItemPanel(panelBuilder, themesPane, "storyThemeList", storyThemesStore, popupPageDefinition2, configuration2);
                  console.log("themeList", themeList);
                  
                  var allThemes = [];
@@ -179,7 +179,7 @@ define([
         
         // Only allow view button for stories
         var configuration = {viewButton: true, navigationButtons: true, includeAllFields: ["__survey_storyName", "__survey_storyText"]};
-        var storyList = new GridWithDetail(panelBuilder, pagePane, id, dataStore, popupPageDefinition, configuration);
+        var storyList = new GridWithItemPanel(panelBuilder, pagePane, id, dataStore, popupPageDefinition, configuration);
         storyList.grid.set("selectionMode", "single");
         
         console.log("insertStoryThemer finished");

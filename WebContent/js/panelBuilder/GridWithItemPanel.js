@@ -43,10 +43,10 @@ define([
     
     // Possible configuration options
     // var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, navigationButtons: true, includeAllFields: false};
-    function GridWithDetail(panelBuilder, pagePane, id, originalDataStore, popupPageDefinition, configuration) {
+    function GridWithItemPanel(panelBuilder, pagePane, id, originalDataStore, popupPageDefinition, configuration) {
         var self = this;
         
-        console.log("constructing GridWithDetail", id, originalDataStore);
+        console.log("constructing GridWithItemPanel", id, originalDataStore);
         
         this.panelBuilder = panelBuilder;
 
@@ -84,7 +84,7 @@ define([
             console.log("Trouble: no popupPageDefinition", id, pagePane);
         }
         
-        console.log("=========== creating GridWithDetail with popupPageDefinition", popupPageDefinition);
+        console.log("=========== creating GridWithItemPanel with popupPageDefinition", popupPageDefinition);
         
         var maxColumnCount = 5;
         var columnCount = 0;
@@ -236,7 +236,7 @@ define([
         this.updateGridButtonsForSelectionAndForm();
     }
     
-    GridWithDetail.prototype.hideAndDestroyForm = function() {
+    GridWithItemPanel.prototype.hideAndDestroyForm = function() {
         // The next line is needed to get rid of duplicate IDs for next time the form is opened:
         this.itemContentPane.set("style", "display: none");
         this.form.destroyRecursive();
@@ -246,7 +246,7 @@ define([
         this.updateGridButtonsForSelectionAndForm();
     };
 
-    GridWithDetail.prototype.storeItem = function(statefulItem) {
+    GridWithItemPanel.prototype.storeItem = function(statefulItem) {
         console.log("OK clicked", statefulItem);
 
         var uniqueItemID = generateRandomUuid();
@@ -270,7 +270,7 @@ define([
     };
     
     // formType can be view, add, edit
-    GridWithDetail.prototype.openFormForItem = function(formType, item) {
+    GridWithItemPanel.prototype.openFormForItem = function(formType, item) {
         var self = this;
         console.log("openFormForItem", item);
         
@@ -338,7 +338,7 @@ define([
         this.updateGridButtonsForSelectionAndForm();
     };
     
-    GridWithDetail.prototype.addButtonClicked = function(event) {
+    GridWithItemPanel.prototype.addButtonClicked = function(event) {
         console.log("add button pressed", event);
         
         var newItem = {};
@@ -347,7 +347,7 @@ define([
         this.openFormForItem("add", statefulItem);  
     };
     
-    GridWithDetail.prototype.getSelectedItemID = function() {
+    GridWithItemPanel.prototype.getSelectedItemID = function() {
         var selectedItemID = null;
         
         console.log("getSelectedItemID", this.grid.selection);
@@ -359,7 +359,7 @@ define([
         return selectedItemID;
     };
     
-    GridWithDetail.prototype.getSelectedItem = function() {
+    GridWithItemPanel.prototype.getSelectedItem = function() {
         var selectedItemID = this.getSelectedItemID();
         
         if (!selectedItemID) {
@@ -394,7 +394,7 @@ define([
         return selectedItem;
     };
     
-    GridWithDetail.prototype.viewButtonClicked = function(event) {
+    GridWithItemPanel.prototype.viewButtonClicked = function(event) {
         console.log("view button pressed or double click", event);
         
         var selectedItem = this.getSelectedItem();
@@ -408,7 +408,7 @@ define([
         this.openFormForItem("view", selectedItem);
     };
     
-    GridWithDetail.prototype.removeButtonClicked = function(event) {
+    GridWithItemPanel.prototype.removeButtonClicked = function(event) {
         var self = this;
         console.log("remove button pressed", event);
         // TODO: translate
@@ -420,7 +420,7 @@ define([
         });
     };
     
-    GridWithDetail.prototype.editButtonClicked = function(event) {
+    GridWithItemPanel.prototype.editButtonClicked = function(event) {
         console.log("edit button pressed", event);
 
         var selectedItem = this.getSelectedItem();
@@ -433,7 +433,7 @@ define([
         this.openFormForItem("edit", selectedItem);
     };
     
-    GridWithDetail.prototype.duplicateButtonClicked = function(event) {
+    GridWithItemPanel.prototype.duplicateButtonClicked = function(event) {
         console.log("duplicate button pressed", event);
 
         var selectedItem = this.getSelectedItem();
@@ -449,7 +449,7 @@ define([
         this.openFormForItem("add", selectedItem);
     };
     
-    GridWithDetail.prototype.upButtonClicked = function(event) {
+    GridWithItemPanel.prototype.upButtonClicked = function(event) {
         console.log("up button pressed", event);
         
         // Probably only work on Memory store
@@ -473,7 +473,7 @@ define([
         this.grid.refresh();
     };
     
-    GridWithDetail.prototype.downButtonClicked = function(event) {
+    GridWithItemPanel.prototype.downButtonClicked = function(event) {
         console.log("down button pressed", event);
         
         // Probably only work on Memory store
@@ -497,7 +497,7 @@ define([
         this.grid.refresh();
     };
     
-    GridWithDetail.prototype.navigateButtonClicked = function(direction, event) {
+    GridWithItemPanel.prototype.navigateButtonClicked = function(direction, event) {
         console.log("navigate button pressed", direction);
         var selectedItemID = this.getSelectedItemID();
         var newRow;
@@ -519,20 +519,20 @@ define([
         }
     };
     
-    GridWithDetail.prototype.formatObjectsIfNeeded = function(item) {
+    GridWithItemPanel.prototype.formatObjectsIfNeeded = function(item) {
         if (lang.isString(item)) return item;
         if (item === undefined) return "";
         if (item === null) return "";
         return JSON.stringify(item);
     };
     
-    GridWithDetail.prototype.updateGridButtonsForSelectionAndFormLater = function() {
+    GridWithItemPanel.prototype.updateGridButtonsForSelectionAndFormLater = function() {
         // Defer updating until later to ensure grid settles down with sorting
         // otherwise could calculate button status incorrectly
         setTimeout(lang.hitch(this, this.updateGridButtonsForSelectionAndForm), 0);
     };
     
-    GridWithDetail.prototype.updateGridButtonsForSelectionAndForm = function() {
+    GridWithItemPanel.prototype.updateGridButtonsForSelectionAndForm = function() {
         var buttons = this.buttons;
         var hasSelection = this.selectedCount;
         
@@ -570,6 +570,6 @@ define([
         if (buttons.navigateEndButton) buttons.navigateEndButton.set("disabled", atEnd);
     };
     
-    return GridWithDetail;
+    return GridWithItemPanel;
     
 });

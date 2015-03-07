@@ -1,14 +1,14 @@
 define([
     "dojox/mvc/at",
     "dijit/layout/ContentPane",
-    "./GridWithDetail",
+    "./GridWithItemPanel",
     "dojo/_base/lang",
     "dstore/Memory",
     "js/translate"
 ], function(
     at,
     ContentPane,
-    GridWithDetail,
+    GridWithItemPanel,
     lang,
     Memory,
     translate
@@ -40,7 +40,7 @@ define([
         });
         
         var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
-        return new GridWithDetail(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, popupPageDefinition, configuration);
+        return new GridWithItemPanel(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, popupPageDefinition, configuration);
     }
 
     return add_grid;
