@@ -443,25 +443,13 @@ define([
 
         grid.panelBuilder = panelBuilder;
         
-        if (!pagePane.addChild) {
-            alert("TROUBLE -- see log");
-            console.log("TROUBLE -- does not have addChild method!", pagePane);
-            pagePane.containerNode.appendChild(grid.domNode);
-        } else {
-            pagePane.addChild(grid);
-        }
+        pagePane.addChild(grid);
         
         var listContentPane = new ContentPane({
             // title: pseudoQuestion.text
         });
         
-        if (!pagePane.addChild) {
-            alert("TROUBLE -- see log");
-            console.log("TROUBLE -- does not have addChild method!", pagePane);
-            pagePane.containerNode.appendChild(listContentPane.domNode);
-        } else {
-            pagePane.addChild(listContentPane);
-        }
+        pagePane.addChild(listContentPane);
         
         var pane = listContentPane.containerNode;
         
@@ -546,13 +534,7 @@ define([
         
         updateGridButtonsForSelectionAndForm(grid);
         
-        if (!pagePane.addChild) {
-            alert("TROUBLE -- see log");
-            console.log("TROUBLE -- does not have addChild method!", pagePane);
-            pagePane.containerNode.appendChild(itemContentPane.domNode);
-        } else {
-            pagePane.addChild(itemContentPane);
-        } 
+        pagePane.addChild(itemContentPane);
         
         itemContentPane.set("style", "background-color: #C0C0C0; border: 0.5em solid red; margin-left: 2em; display: none");
         
