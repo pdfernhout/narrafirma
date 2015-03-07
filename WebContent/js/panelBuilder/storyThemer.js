@@ -23,7 +23,7 @@ define([
     Stateful,
     widgetSupport
  ){
-"use strict";
+    "use strict";
     
     // story themer support
     
@@ -185,8 +185,14 @@ define([
         console.log("insertStoryThemer finished");
     }
     
-    return {
-        "insertStoryThemer": insertStoryThemer
-    };
+    function add_storyThemer(panelBuilder, contentPane, model, fieldSpecification) {
+        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
+        
+        var storyThemerInstance = insertStoryThemer(panelBuilder, questionContentPane, model, fieldSpecification.id);
+        questionContentPane.resize();
+        return storyThemerInstance;
+    }
+
+    return add_storyThemer;
     
 });
