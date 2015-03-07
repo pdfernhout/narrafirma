@@ -270,7 +270,7 @@ define([
     };
     
     // formType can be view, add, edit
-    GridWithDetail.prototype.openFormForItem = function(item, formType) {
+    GridWithDetail.prototype.openFormForItem = function(formType, item) {
         var self = this;
         console.log("openFormForItem", item);
         
@@ -414,7 +414,7 @@ define([
         // TODO: translate
         dialogSupport.confirm("Are you sure you want to delete the selected item(s)?", function () {
             console.log("Removal confirmed");
-            for (var itemID in this.grid.selection) {
+            for (var itemID in self.grid.selection) {
                 self.store.remove(itemID);
             }
         });
