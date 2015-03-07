@@ -41,6 +41,200 @@ define([
 
     // TODO: Probably need to prevent user surveys from having a question with a short name of "_id".
     
+    // Passing in panelBuilder rather than import it to avoid AMD cyclic dependency
+    // Possible configuration options
+    // var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, navigationButtons: true, includeAllFields: false};
+    function insertGridTableBasic(panelBuilder, pagePane, id, originalDataStore, popupPageDefinition, configuration) {
+        // Grid with list of objects
+        console.log("insertGridTableBasic", id, originalDataStore);
+        
+        // TODO: may need to check if already observable so don't do extra wrapping.
+        // var dataStore = new Observable(originalDataStore);
+        var dataStore = Trackable.create(originalDataStore);
+
+        // only for testing!!!
+        // configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
+
+        // TODO: Need to set better info for fields and meanings to display and index on
+        
+        var columns = [];
+        
+        if (!popupPageDefinition) {
+            console.log("Trouble: no popupPageDefinition", id, pagePane);
+        }
+        
+        console.log("=========== insertGridTableBasic popupPageDefinition", popupPageDefinition);
+        
+        var maxColumnCount = 5;
+        var columnCount = 0;
+        
+        var displayTypesToDisplay = {
+           text: true,
+           textarea: true,
+           select: true,
+           radiobuttons: true
+        };
+        
+        array.forEach(popupPageDefinition.questions, function (question) {
+            var includeField = false;
+            if (configuration.includeAllFields) {
+                // TODO: improve this
+                if (configuration.includeAllFields === true) {
+                    if (question.displayType !== "label" && question.displayType !== "header") includeField = true;
+                } else if (configuration.includeAllFields !== false) {
+                    // Assume it is an array of field IDs to include
+                    includeField = array.indexOf(configuration.includeAllFields, question.id) !== -1;
+                }
+            } else {
+                if (columnCount < maxColumnCount) {
+                    if (displayTypesToDisplay[question.displayType]) includeField = true;
+                    columnCount++;
+                }
+            }
+            // console.log("includeField", includeField, question.id);
+            if (includeField) {
+                var newColumn =  {
+                    field: question.id,
+                    label: translate("#" + question.id + "::shortName", question.displayName),
+                    formatter: formatObjectsIfNeeded,
+                    sortable: !configuration.moveUpDownButtons
+                };
+                columns.push(newColumn);
+            }
+        });
+        
+        // console.log("making grid");
+        var grid = new(declare([OnDemandGrid, DijitRegistry, Keyboard, Selection, ColumnResizer]))({
+            id: id,
+            // "sort": "order",
+            collection: dataStore,
+            columns: columns,
+            // Preserve the selections despite refresh needed when move items up or down
+            deselectOnRefresh: false
+        });
+
+        grid.panelBuilder = panelBuilder;
+        
+        pagePane.addChild(grid);
+        
+        var listContentPane = new ContentPane({
+            // title: pseudoQuestion.text
+        });
+        
+        pagePane.addChild(listContentPane);
+        
+        var pane = listContentPane.containerNode;
+        
+        var itemContentPane = new ContentPane({
+        });
+        
+        var buttons = {};
+        grid.buttons = buttons;
+        grid.originalDataStore = originalDataStore;
+        grid.selectedCount = 0;
+
+        grid.on("dgrid-select", function(event) {
+            console.log("dgrid-select");
+            grid.selectedCount += event.rows.length;
+            updateGridButtonsForSelectionAndForm(grid);
+            
+            // TODO: Track first selected item if view open -- this does not work as a deselect called before select always
+            // if (grid.formType === "view") viewButtonClicked(id, grid, dataStore, popupPageDefinition, itemContentPane, event);
+        });
+        
+        grid.on("dgrid-deselect", function(event) {
+            console.log("dgrid-deselect");
+            grid.selectedCount -= event.rows.length;
+            updateGridButtonsForSelectionAndForm(grid);
+            
+            // TODO: Track first selected item if view open -- this does not work as a deselect called before select always
+            // if (grid.formType === "view") viewButtonClicked(id, grid, dataStore, popupPageDefinition, itemContentPane, event);
+        });
+        
+        grid.on("dgrid-sort", function(event) {
+            console.log("dgrid-sort");
+            // Sorting can change the enabling of the navigation buttons
+            updateGridButtonsForSelectionAndFormLater(grid);
+        });
+                
+        if (configuration.addButton) {
+            buttons.addButton = widgetSupport.newButton(pane, "#button_Add", lang.partial(addButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+        }
+        
+        if (configuration.removeButton) {
+            buttons.removeButton = widgetSupport.newButton(pane, "#button_Remove", lang.partial(removeButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+        }
+        
+        if (configuration.viewButton) {
+            // Bind first two arguments to function that will be callback receiving one extra argument
+            // See: http://dojotoolkit.org/reference-guide/1.7/dojo/partial.html
+            var viewButtonClickedPartial = lang.partial(viewButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane);
+            var viewButtonID = id + "_view";
+            buttons.viewButton = widgetSupport.newButton(pane, "#button_View", viewButtonClickedPartial);
+            // TODO: Should there be an option of double click as edit?
+            // Support double click as view
+            grid.on("dblclick", viewButtonClickedPartial);
+            grid.navigateCallback = viewButtonClickedPartial;
+        }
+
+        if (configuration.editButton) {
+            buttons.editButton = widgetSupport.newButton(pane, "#button_Edit", lang.partial(editButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+        }
+        
+        if (configuration.duplicateButton) {
+            buttons.duplicateButton = widgetSupport.newButton(pane, "#button_Duplicate", lang.partial(duplicateButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+        }
+             
+        if (configuration.moveUpDownButtons) {
+            buttons.upButton = widgetSupport.newButton(pane, "#button_Up", lang.partial(upButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.downButton = widgetSupport.newButton(pane, "#button_Down", lang.partial(downButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+        }
+        
+        if (configuration.customButton) {
+            var options = configuration.customButton;
+            buttons.customButton = widgetSupport.newButton(pane, options.translationID, lang.partial(options.callback, id, grid, dataStore, popupPageDefinition, itemContentPane));
+            // Make this function available to users
+            grid.getSelectedItem = getSelectedItem;
+        }
+         
+        if (configuration.navigationButtons) {
+            buttons.navigateStartButton = widgetSupport.newButton(pane, "#button_navigateStart", lang.partial(navigateButtonClicked, "start", id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.navigatePreviousButton = widgetSupport.newButton(pane, "#button_navigatePrevious", lang.partial(navigateButtonClicked, "previous",  id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.navigateNextButton = widgetSupport.newButton(pane, "#button_navigateNext", lang.partial(navigateButtonClicked, "next",  id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.navigateEndButton = widgetSupport.newButton(pane, "#button_navigateEnd", lang.partial(navigateButtonClicked, "end",  id, grid, dataStore, popupPageDefinition, itemContentPane));
+        }
+        
+        updateGridButtonsForSelectionAndForm(grid);
+        
+        pagePane.addChild(itemContentPane);
+        
+        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.5em solid red; margin-left: 2em; display: none");
+        
+        /*
+        if (configuration.showTooltip) {
+            console.log("using tooltip for widget", id, grid);
+            new Tooltip({
+                connectId: id,
+                selector: ".dgrid-cell",
+                getContent: function(matchedNode) {
+                    console.log("trying to get tooltip text", matchedNode);
+                    // return matchedNode.getAttribute("tooltipText");
+                    return matchedNode.innerHTML;
+                },
+                position: ["below", "above", "before", "after"],
+                label: "the text for the tooltip",
+                showDelay: 600
+            });
+        }
+        */
+         
+        return {
+            "store": dataStore,
+            "listContentPane": listContentPane,
+            "grid": grid
+        };
+    }
+    
     function hideAndDestroyForm(itemContentPane, form, grid) {
         // The next line is needed to get rid of duplicate IDs for next time the form is opened:
         itemContentPane.set("style", "display: none");
@@ -367,200 +561,6 @@ define([
         if (buttons.navigatePreviousButton) buttons.navigatePreviousButton.set("disabled", atStart || !selectedItemID || grid.selectedCount !== 1);
         if (buttons.navigateNextButton) buttons.navigateNextButton.set("disabled", atEnd || !selectedItemID || grid.selectedCount !== 1);
         if (buttons.navigateEndButton) buttons.navigateEndButton.set("disabled", atEnd);
-    }
-
-    // Passing in panelBuilder rather than import it to avoid AMD cyclic dependency
-    // Possible configuration options
-    // var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, navigationButtons: true, includeAllFields: false};
-    function insertGridTableBasic(panelBuilder, pagePane, id, originalDataStore, popupPageDefinition, configuration) {
-        // Grid with list of objects
-        console.log("insertGridTableBasic", id, originalDataStore);
-        
-        // TODO: may need to check if already observable so don't do extra wrapping.
-        // var dataStore = new Observable(originalDataStore);
-        var dataStore = Trackable.create(originalDataStore);
-
-        // only for testing!!!
-        // configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
-
-        // TODO: Need to set better info for fields and meanings to display and index on
-        
-        var columns = [];
-        
-        if (!popupPageDefinition) {
-            console.log("Trouble: no popupPageDefinition", id, pagePane);
-        }
-        
-        console.log("=========== insertGridTableBasic popupPageDefinition", popupPageDefinition);
-        
-        var maxColumnCount = 5;
-        var columnCount = 0;
-        
-        var displayTypesToDisplay = {
-           text: true,
-           textarea: true,
-           select: true,
-           radiobuttons: true
-        };
-        
-        array.forEach(popupPageDefinition.questions, function (question) {
-            var includeField = false;
-            if (configuration.includeAllFields) {
-                // TODO: improve this
-                if (configuration.includeAllFields === true) {
-                    if (question.displayType !== "label" && question.displayType !== "header") includeField = true;
-                } else if (configuration.includeAllFields !== false) {
-                    // Assume it is an array of field IDs to include
-                    includeField = array.indexOf(configuration.includeAllFields, question.id) !== -1;
-                }
-            } else {
-                if (columnCount < maxColumnCount) {
-                    if (displayTypesToDisplay[question.displayType]) includeField = true;
-                    columnCount++;
-                }
-            }
-            // console.log("includeField", includeField, question.id);
-            if (includeField) {
-                var newColumn =  {
-                    field: question.id,
-                    label: translate("#" + question.id + "::shortName", question.displayName),
-                    formatter: formatObjectsIfNeeded,
-                    sortable: !configuration.moveUpDownButtons
-                };
-                columns.push(newColumn);
-            }
-        });
-        
-        // console.log("making grid");
-        var grid = new(declare([OnDemandGrid, DijitRegistry, Keyboard, Selection, ColumnResizer]))({
-            id: id,
-            // "sort": "order",
-            collection: dataStore,
-            columns: columns,
-            // Preserve the selections despite refresh needed when move items up or down
-            deselectOnRefresh: false
-        });
-
-        grid.panelBuilder = panelBuilder;
-        
-        pagePane.addChild(grid);
-        
-        var listContentPane = new ContentPane({
-            // title: pseudoQuestion.text
-        });
-        
-        pagePane.addChild(listContentPane);
-        
-        var pane = listContentPane.containerNode;
-        
-        var itemContentPane = new ContentPane({
-        });
-        
-        var buttons = {};
-        grid.buttons = buttons;
-        grid.originalDataStore = originalDataStore;
-        grid.selectedCount = 0;
-
-        grid.on("dgrid-select", function(event) {
-            console.log("dgrid-select");
-            grid.selectedCount += event.rows.length;
-            updateGridButtonsForSelectionAndForm(grid);
-            
-            // TODO: Track first selected item if view open -- this does not work as a deselect called before select always
-            // if (grid.formType === "view") viewButtonClicked(id, grid, dataStore, popupPageDefinition, itemContentPane, event);
-        });
-        
-        grid.on("dgrid-deselect", function(event) {
-            console.log("dgrid-deselect");
-            grid.selectedCount -= event.rows.length;
-            updateGridButtonsForSelectionAndForm(grid);
-            
-            // TODO: Track first selected item if view open -- this does not work as a deselect called before select always
-            // if (grid.formType === "view") viewButtonClicked(id, grid, dataStore, popupPageDefinition, itemContentPane, event);
-        });
-        
-        grid.on("dgrid-sort", function(event) {
-            console.log("dgrid-sort");
-            // Sorting can change the enabling of the navigation buttons
-            updateGridButtonsForSelectionAndFormLater(grid);
-        });
-                
-        if (configuration.addButton) {
-            buttons.addButton = widgetSupport.newButton(pane, "#button_Add", lang.partial(addButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
-        }
-        
-        if (configuration.removeButton) {
-            buttons.removeButton = widgetSupport.newButton(pane, "#button_Remove", lang.partial(removeButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
-        }
-        
-        if (configuration.viewButton) {
-            // Bind first two arguments to function that will be callback receiving one extra argument
-            // See: http://dojotoolkit.org/reference-guide/1.7/dojo/partial.html
-            var viewButtonClickedPartial = lang.partial(viewButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane);
-            var viewButtonID = id + "_view";
-            buttons.viewButton = widgetSupport.newButton(pane, "#button_View", viewButtonClickedPartial);
-            // TODO: Should there be an option of double click as edit?
-            // Support double click as view
-            grid.on("dblclick", viewButtonClickedPartial);
-            grid.navigateCallback = viewButtonClickedPartial;
-        }
-
-        if (configuration.editButton) {
-            buttons.editButton = widgetSupport.newButton(pane, "#button_Edit", lang.partial(editButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
-        }
-        
-        if (configuration.duplicateButton) {
-            buttons.duplicateButton = widgetSupport.newButton(pane, "#button_Duplicate", lang.partial(duplicateButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
-        }
-             
-        if (configuration.moveUpDownButtons) {
-            buttons.upButton = widgetSupport.newButton(pane, "#button_Up", lang.partial(upButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
-            buttons.downButton = widgetSupport.newButton(pane, "#button_Down", lang.partial(downButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
-        }
-        
-        if (configuration.customButton) {
-            var options = configuration.customButton;
-            buttons.customButton = widgetSupport.newButton(pane, options.translationID, lang.partial(options.callback, id, grid, dataStore, popupPageDefinition, itemContentPane));
-            // Make this function available to users
-            grid.getSelectedItem = getSelectedItem;
-        }
-         
-        if (configuration.navigationButtons) {
-            buttons.navigateStartButton = widgetSupport.newButton(pane, "#button_navigateStart", lang.partial(navigateButtonClicked, "start", id, grid, dataStore, popupPageDefinition, itemContentPane));
-            buttons.navigatePreviousButton = widgetSupport.newButton(pane, "#button_navigatePrevious", lang.partial(navigateButtonClicked, "previous",  id, grid, dataStore, popupPageDefinition, itemContentPane));
-            buttons.navigateNextButton = widgetSupport.newButton(pane, "#button_navigateNext", lang.partial(navigateButtonClicked, "next",  id, grid, dataStore, popupPageDefinition, itemContentPane));
-            buttons.navigateEndButton = widgetSupport.newButton(pane, "#button_navigateEnd", lang.partial(navigateButtonClicked, "end",  id, grid, dataStore, popupPageDefinition, itemContentPane));
-        }
-        
-        updateGridButtonsForSelectionAndForm(grid);
-        
-        pagePane.addChild(itemContentPane);
-        
-        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.5em solid red; margin-left: 2em; display: none");
-        
-        /*
-        if (configuration.showTooltip) {
-            console.log("using tooltip for widget", id, grid);
-            new Tooltip({
-                connectId: id,
-                selector: ".dgrid-cell",
-                getContent: function(matchedNode) {
-                    console.log("trying to get tooltip text", matchedNode);
-                    // return matchedNode.getAttribute("tooltipText");
-                    return matchedNode.innerHTML;
-                },
-                position: ["below", "above", "before", "after"],
-                label: "the text for the tooltip",
-                showDelay: 600
-            });
-        }
-        */
-         
-        return {
-            "store": dataStore,
-            "listContentPane": listContentPane,
-            "grid": grid
-        };
     }
     
     var exportedFunctions = {
