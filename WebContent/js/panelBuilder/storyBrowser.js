@@ -312,8 +312,13 @@ define([
         console.log("insertStoryBrowser finished");
     }
     
-    return {
-        "insertStoryBrowser": insertStoryBrowser
-    };
-    
+    function add_storyBrowser(panelBuilder, contentPane, model, fieldSpecification) {
+        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
+        
+        var storyBrowserInstance = insertStoryBrowser(panelBuilder, questionContentPane, model, fieldSpecification.id);
+        questionContentPane.resize();
+        return storyBrowserInstance;
+    }
+
+    return add_storyBrowser;
 });
