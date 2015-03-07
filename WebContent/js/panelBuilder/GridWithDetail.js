@@ -36,6 +36,8 @@ define([
     OnDemandGrid
 ){
     "use strict";
+    
+    // This defines a gui component which has a grid, some buttons, and a detail panel do display the currently selected item or enter a new item
 
     // TODO: Probably need to prevent user surveys from having a question with a short name of "_id".
     
@@ -43,12 +45,33 @@ define([
     // var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, navigationButtons: true, includeAllFields: false};
     function GridWithDetail(panelBuilder, pagePane, id, originalDataStore, popupPageDefinition, configuration) {
         var self = this;
-        // Grid with list of objects
+        
         console.log("constructing GridWithDetail", id, originalDataStore);
         
+        this.panelBuilder = panelBuilder;
+
+        // A count of how many items are currently selected
+        this.selectedCount = 0;
+                        
+        this.popupPageDefinition = popupPageDefinition;
+        
+        // The detail form, its type, and the item it is displaying
+        this.form = null;
+        this.formType = null;
+        this.formItem = null;
+        this.itemContentPane = new ContentPane();
+        
+        // The button widgets created to interact with the current item
+        this.buttons = {};
+        
+        // The dgrid that will display all items
+        this.grid = null;
+
+        this.originalDataStore = originalDataStore;
+
         // TODO: may need to check if already observable so don't do extra wrapping.
         // var dataStore = new Observable(originalDataStore);
-        var dataStore = Trackable.create(originalDataStore);
+        this.store = Trackable.create(originalDataStore);
 
         // only for testing!!!
         // configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
@@ -61,7 +84,7 @@ define([
             console.log("Trouble: no popupPageDefinition", id, pagePane);
         }
         
-        console.log("=========== insertGridTableBasic popupPageDefinition", popupPageDefinition);
+        console.log("=========== creating GridWithDetail with popupPageDefinition", popupPageDefinition);
         
         var maxColumnCount = 5;
         var columnCount = 0;
@@ -94,7 +117,7 @@ define([
                 var newColumn =  {
                     field: question.id,
                     label: translate("#" + question.id + "::shortName", question.displayName),
-                    formatter: lang.hitch(this, this.formatObjectsIfNeeded),
+                    formatter: lang.hitch(self, self.formatObjectsIfNeeded),
                     sortable: !configuration.moveUpDownButtons
                 };
                 columns.push(newColumn);
@@ -102,63 +125,50 @@ define([
         });
         
         // console.log("making grid");
-        var grid = new(declare([OnDemandGrid, DijitRegistry, Keyboard, Selection, ColumnResizer]))({
+        this.grid = new(declare([OnDemandGrid, DijitRegistry, Keyboard, Selection, ColumnResizer]))({
             id: id,
             // "sort": "order",
-            collection: dataStore,
+            collection: this.store,
             columns: columns,
             // Preserve the selections despite refresh needed when move items up or down
             deselectOnRefresh: false
         });
    
-        pagePane.addChild(grid);
+        pagePane.addChild(this.grid);
         
-        var listContentPane = new ContentPane({
-            // title: pseudoQuestion.text
-        });
+        var buttonContentPane = new ContentPane();
+        pagePane.addChild(buttonContentPane);
         
-        pagePane.addChild(listContentPane);
-        
-        // TODO: Fix this so not using container node and adding directly to a contentPane
-        var pane = listContentPane.containerNode;
-        
-        var itemContentPane = new ContentPane({
-        });
-        
-        var buttons = {};
-        this.buttons = buttons;
-        this.selectedCount = 0;
-        
-        grid.on("dgrid-select", function(event) {
+        this.grid.on("dgrid-select", function(event) {
             console.log("dgrid-select");
-            this.selectedCount += event.rows.length;
+            self.selectedCount += event.rows.length;
             self.updateGridButtonsForSelectionAndForm();
             
             // TODO: Track first selected item if view open -- this does not work as a deselect called before select always
-            // if (grid.formType === "view") viewButtonClicked(id, grid, dataStore, popupPageDefinition, itemContentPane, event);
+            // if (grid.formType === "view") self.viewButtonClicked(event);
         });
         
-        grid.on("dgrid-deselect", function(event) {
+        this.grid.on("dgrid-deselect", function(event) {
             console.log("dgrid-deselect");
-            this.selectedCount -= event.rows.length;
+            self.selectedCount -= event.rows.length;
             self.updateGridButtonsForSelectionAndForm();
             
             // TODO: Track first selected item if view open -- this does not work as a deselect called before select always
-            // if (grid.formType === "view") viewButtonClicked(id, grid, dataStore, popupPageDefinition, itemContentPane, event);
+            // if (grid.formType === "view") self.viewButtonClicked(event);
         });
         
-        grid.on("dgrid-sort", function(event) {
+        this.grid.on("dgrid-sort", function(event) {
             console.log("dgrid-sort");
             // Sorting can change the enabling of the navigation buttons
             self.updateGridButtonsForSelectionAndFormLater();
         });
                 
         if (configuration.addButton) {
-            buttons.addButton = widgetSupport.newButton(pane, "#button_Add", lang.hitch(this, this.addButtonClicked));
+            this.buttons.addButton = widgetSupport.newButton(buttonContentPane, "#button_Add", lang.hitch(this, this.addButtonClicked));
         }
         
         if (configuration.removeButton) {
-            buttons.removeButton = widgetSupport.newButton(pane, "#button_Remove", lang.hitch(this, this.removeButtonClicked));
+            this.buttons.removeButton = widgetSupport.newButton(buttonContentPane, "#button_Remove", lang.hitch(this, this.removeButtonClicked));
         }
         
         this.navigateCallback = null;
@@ -168,44 +178,41 @@ define([
             // See: http://dojotoolkit.org/reference-guide/1.7/dojo/partial.html
             var viewButtonClickedPartial = lang.hitch(this, this.viewButtonClicked);
             var viewButtonID = id + "_view";
-            buttons.viewButton = widgetSupport.newButton(pane, "#button_View", viewButtonClickedPartial);
+            this.buttons.viewButton = widgetSupport.newButton(buttonContentPane, "#button_View", viewButtonClickedPartial);
             // TODO: Should there be an option of double click as edit?
             // Support double click as view
-            grid.on("dblclick", viewButtonClickedPartial);
+            this.grid.on("dblclick", viewButtonClickedPartial);
             this.navigateCallback = viewButtonClickedPartial;
         }
 
         if (configuration.editButton) {
-            buttons.editButton = widgetSupport.newButton(pane, "#button_Edit", lang.hitch(this, this.editButtonClicked));
+            this.buttons.editButton = widgetSupport.newButton(buttonContentPane, "#button_Edit", lang.hitch(this, this.editButtonClicked));
         }
         
         if (configuration.duplicateButton) {
-            buttons.duplicateButton = widgetSupport.newButton(pane, "#button_Duplicate", lang.hitch(this, this.duplicateButtonClicked));
+            this.buttons.duplicateButton = widgetSupport.newButton(buttonContentPane, "#button_Duplicate", lang.hitch(this, this.duplicateButtonClicked));
         }
              
         if (configuration.moveUpDownButtons) {
-            buttons.upButton = widgetSupport.newButton(pane, "#button_Up", lang.hitch(this, this.upButtonClicked));
-            buttons.downButton = widgetSupport.newButton(pane, "#button_Down", lang.hitch(this, this.downButtonClicked));
+            this.buttons.upButton = widgetSupport.newButton(buttonContentPane, "#button_Up", lang.hitch(this, this.upButtonClicked));
+            this.buttons.downButton = widgetSupport.newButton(buttonContentPane, "#button_Down", lang.hitch(this, this.downButtonClicked));
         }
         
         if (configuration.customButton) {
             var options = configuration.customButton;
-            buttons.customButton = widgetSupport.newButton(pane, options.translationID, lang.partial(options.callback, this));
+            this.buttons.customButton = widgetSupport.newButton(buttonContentPane, options.translationID, lang.partial(options.callback, this));
         }
          
         if (configuration.navigationButtons) {
-            buttons.navigateStartButton = widgetSupport.newButton(pane, "#button_navigateStart", lang.hitch(this, this.navigateButtonClicked, "start"));
-            buttons.navigatePreviousButton = widgetSupport.newButton(pane, "#button_navigatePrevious", lang.hitch(this, this.navigateButtonClicked, "previous"));
-            buttons.navigateNextButton = widgetSupport.newButton(pane, "#button_navigateNext", lang.hitch(this, this.navigateButtonClicked, "next"));
-            buttons.navigateEndButton = widgetSupport.newButton(pane, "#button_navigateEnd", lang.hitch(this, this.navigateButtonClicked, "end"));
+            this.buttons.navigateStartButton = widgetSupport.newButton(buttonContentPane, "#button_navigateStart", lang.hitch(this, this.navigateButtonClicked, "start"));
+            this.buttons.navigatePreviousButton = widgetSupport.newButton(buttonContentPane, "#button_navigatePrevious", lang.hitch(this, this.navigateButtonClicked, "previous"));
+            this.buttons.navigateNextButton = widgetSupport.newButton(buttonContentPane, "#button_navigateNext", lang.hitch(this, this.navigateButtonClicked, "next"));
+            this.buttons.navigateEndButton = widgetSupport.newButton(buttonContentPane, "#button_navigateEnd", lang.hitch(this, this.navigateButtonClicked, "end"));
         }
+           
+        pagePane.addChild(this.itemContentPane);
         
-        
-        this.updateGridButtonsForSelectionAndForm();
-        
-        pagePane.addChild(itemContentPane);
-        
-        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.5em solid red; margin-left: 2em; display: none");
+        this.itemContentPane.set("style", "background-color: #C0C0C0; border: 0.5em solid red; margin-left: 2em; display: none");
         
         /*
         if (configuration.showTooltip) {
@@ -224,20 +231,9 @@ define([
             });
         }
         */
-         
-        this.panelBuilder = panelBuilder;
 
-        this.store = dataStore;
-        this.originalDataStore = originalDataStore;
-        
-        this.listContentPane = listContentPane;
-        this.grid = grid;
-        
-        this.popupPageDefinition = popupPageDefinition;
-        this.itemContentPane = itemContentPane;
-        this.form = null;
-        this.formType = null;
-        this.formItem = null;
+        // Requires the rest of this to be setup, especially this.buttons and this.selectedCount
+        this.updateGridButtonsForSelectionAndForm();
     }
     
     GridWithDetail.prototype.hideAndDestroyForm = function() {
@@ -294,8 +290,11 @@ define([
             this.hideAndDestroyForm();
         }
         
-        var form = new Form();
-        form.set("style", "width: 800px; height 800px; overflow: auto;");
+        this.form = new Form();
+        this.formType = formType;
+        this.formItem = statefulItem;
+        
+        this.form.set("style", "width: 800px; height 800px; overflow: auto;");
 
         this.panelBuilder.buildPanel(this.popupPageDefinition, this.form, statefulItem);
         
@@ -303,7 +302,7 @@ define([
         if (formType === "view") {
             borderColor = "blue";
             
-            widgetSupport.newButton(form, "#button_Done", function() {
+            widgetSupport.newButton(this.form, "#button_Done", function() {
                 console.log("Done");
                 self.hideAndDestroyForm();
             });
@@ -321,24 +320,20 @@ define([
             });
             */
         } else {
-            widgetSupport.newButton(form, "#button_OK", lang.hitch(this, this.storeItem, statefulItem));
-            widgetSupport.newButton(form, "#button_Cancel", function() {
+            widgetSupport.newButton(this.form, "#button_OK", lang.hitch(this, this.storeItem, statefulItem));
+            widgetSupport.newButton(this.form, "#button_Cancel", function() {
                 console.log("Cancel chosen");          
                 // TODO: Confirm cancel if have entered data    
                 self.hideAndDestroyForm();
             });
         }
         
-        this.form = form;
-        this.formType = formType;
-        this.formItem = statefulItem;
-        
-        this.itemContentPane.addChild(form);
+        this.itemContentPane.addChild(this.form);
         
         this.itemContentPane.set("style", "background-color: #C0C0C0; border: 0.25em solid " + borderColor + "; margin: 1em; display: block");
         
         // Need to force the new form to resize so that the embedded grid will size its header correctly and not be zero height and overwritten
-        form.resize();
+        this.form.resize();
         
         this.updateGridButtonsForSelectionAndForm();
     };
@@ -414,12 +409,13 @@ define([
     };
     
     GridWithDetail.prototype.removeButtonClicked = function(event) {
+        var self = this;
         console.log("remove button pressed", event);
         // TODO: translate
         dialogSupport.confirm("Are you sure you want to delete the selected item(s)?", function () {
             console.log("Removal confirmed");
             for (var itemID in this.grid.selection) {
-                this.store.remove(itemID);
+                self.store.remove(itemID);
             }
         });
     };
