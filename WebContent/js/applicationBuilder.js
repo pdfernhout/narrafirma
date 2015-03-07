@@ -44,7 +44,7 @@ define([
         var panels = [];
         for (var i = 0; i < applicationFieldSpecifications.length; i++) {
             var fieldSpecification = applicationFieldSpecifications[i];
-            if (fieldSpecification.displayType === "page" || fieldSpecification.displayType === "popup" ) {
+            if (fieldSpecification.displayType === "page" || fieldSpecification.displayType === "panel" ) {
                 panels.push(fieldSpecification);
             }
         }
@@ -55,7 +55,7 @@ define([
         var questions = [];
         for (var i = 0; i < applicationFieldSpecifications.length; i++) {
             var fieldSpecification = applicationFieldSpecifications[i];
-            if (fieldSpecification.displayType !== "page" && fieldSpecification.displayType !== "popup" ) {
+            if (fieldSpecification.displayType !== "page" && fieldSpecification.displayType !== "panel" ) {
                 questions.push(fieldSpecification);
             }
         }

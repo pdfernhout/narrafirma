@@ -31,7 +31,7 @@ define([
     
     var timestampStart;
     
-    // Because applicationBuilder is not set, this can not build popup panels (but they are not needed here)
+    // Because applicationBuilder is not set, this survey can not build internal panels (but they are not needed here because no GridWithItemPanel is used)
     var panelBuilder = new PanelBuilder();
     
     function submitSurvey(surveyResultsWithModels, wizardPane, doneCallback) {

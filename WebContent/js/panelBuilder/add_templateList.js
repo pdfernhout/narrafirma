@@ -99,7 +99,7 @@ define([
          
          var itemPanelSpecification = {
              "id": "page_template",
-             "displayType": "popup",
+             "displayType": "panel",
              "isHeader": false,
              "questions": pageQuestions,
              "buildPanel": buildPanel

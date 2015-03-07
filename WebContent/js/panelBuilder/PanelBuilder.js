@@ -134,7 +134,7 @@ addPlugin("textarea", add_textarea);
 addPlugin("toggleButton", add_toggleButton);
 addPlugin("trendsReport", add_trendsReport);
 
-// The applicationBuilder is needed to build popup panels for some widgets like the grid
+// The applicationBuilder is needed to find the questions needed to build internal panels for some widgets like the GridWithItemPanel
 var applicationBuilder = null;
 
 // This class builds panels from question definitions
