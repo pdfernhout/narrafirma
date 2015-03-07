@@ -40,8 +40,7 @@ define([
     'dojo/dom-class',
     "dojo/_base/lang",
     "js/translate",
-    "dijit/layout/ContentPane",
-    "./gridTable",
+    "dijit/layout/ContentPane"
 ], function(
     add_accumulatedItemsGrid,
     add_annotationsGrid,
@@ -83,8 +82,7 @@ define([
     domClass,
     lang,
     translate,
-    ContentPane,
-    gridTable
+    ContentPane
 ){
 
 "use strict";

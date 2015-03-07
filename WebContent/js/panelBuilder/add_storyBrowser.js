@@ -4,7 +4,7 @@ define([
     "dojo/dom-construct",
     "dojo/_base/lang",
     "js/translate",
-    "./gridTable",
+    "./GridWithDetail",
     "./widgetSupport",
     "dijit/layout/ContentPane",
     "dstore/Memory",
@@ -16,7 +16,7 @@ define([
     domConstruct,
     lang,
     translate,
-    widgetGridTable,
+    GridWithDetail,
     widgetSupport,
     ContentPane,
     Memory,
@@ -301,7 +301,7 @@ define([
         
         // Only allow view button for stories
         var configuration = {viewButton: true, includeAllFields: true};
-        storyList = widgetGridTable.insertGridTableBasic(panelBuilder, pagePane, id, dataStore, popupPageDefinition, configuration);
+        storyList = new GridWithDetail(panelBuilder, pagePane, id, dataStore, popupPageDefinition, configuration);
         
         console.log("insertStoryBrowser finished");
     }

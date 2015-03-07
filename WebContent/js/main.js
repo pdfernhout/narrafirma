@@ -14,7 +14,6 @@ require([
     "js/translate",
     "js/panelBuilder/PanelBuilder",
     "js/panelBuilder/widgetSupport",
-    "js/panelBuilder/gridTable",
     "dijit/layout/ContentPane",
     "dijit/form/Select",
     "dojo/domReady!"
@@ -34,7 +33,6 @@ require([
     translate,
     PanelBuilder,
     widgetSupport,
-    widgetGridTable,
     ContentPane,
     Select
 ){
