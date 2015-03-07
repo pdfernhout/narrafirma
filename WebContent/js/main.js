@@ -570,9 +570,6 @@ require([
     function initialize() {
         translate.configure({}, applicationMessages);
         
-        // Tell all the PanelBuilders where to find information about panels (the applicationBuilder)
-        PanelBuilder.setApplicationBuilder(applicationBuilder);
-        
         // Initialize toaster
         toaster.createToasterWidget("navigationDiv");
         
@@ -591,6 +588,15 @@ require([
         domain.buttonFunctions.updateQuestionsForPageChangeCallback = updatePagesForDomainValueChange;
         
         processAllPanels();
+        
+        // Tell the panelBuilder about the panelSpecifications
+        // var questions = applicationBuilder.buildQuestionsForPanel(panelID);
+        panelBuilder.setPanelSpecifications(domain.panelDefinitions);
+        
+        // Tell the panelBuilder what do do if a button is clicked
+        panelBuilder.setButtonClickedCallback(function(panelBuilder, contentPane, model, fieldSpecification, value) {
+            domain.buttonClicked(contentPane, model, fieldSpecification, value);
+        });
         
         createLayout();
         

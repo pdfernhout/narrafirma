@@ -36,7 +36,6 @@ define([
     "dojo/_base/array",
     "js/browser",
     "dojo/_base/declare",
-    "js/domain",
     'dojo/dom-class',
     "dojo/_base/lang",
     "js/translate",
@@ -78,7 +77,6 @@ define([
     array,
     browser,
     declare,
-    domain,
     domClass,
     lang,
     translate,
@@ -134,15 +132,53 @@ addPlugin("textarea", add_textarea);
 addPlugin("toggleButton", add_toggleButton);
 addPlugin("trendsReport", add_trendsReport);
 
-// The applicationBuilder is needed to find the questions needed to build internal panels for some widgets like the GridWithItemPanel
-var applicationBuilder = null;
-
 // This class builds panels from question definitions
 var PanelBuilder = declare(null, {
     
     constructor: function(kwArgs) {
+        this.panelSpecifications = null;
+        this.buttonClickedCallback = null;
+        
         lang.mixin(this, kwArgs);
-        // TODO: What should go here?
+    },
+    
+    // provide a way to find definitions needed to  build internal panels for some widgets like the GridWithItemPanel
+    setPanelSpecifications: function(panelSpecifications) {
+        this.panelSpecifications = panelSpecifications;
+    },
+    
+    panelDefinitionForPanelID: function(panelID) {
+        if (!this.panelSpecifications) {
+            throw new Error("No panelSpecifications set in PanelBuilder so can not resolve panelID: " + panelID);
+        }
+        
+        var panelSpecification;
+        
+        if (_.isFunction(this.panelDefinitions)) {
+            panelSpecification = this.panelSpecifications(panelID);
+        } else {
+            panelSpecification = this.panelSpecifications[panelID];
+        }
+        
+        if (!panelSpecification) {
+            throw new Error("No panelSpecification found by PanelBuilder for panelID: " + panelID);
+        }
+        
+        console.log("panelDefinitionForPanelID", panelID, panelSpecification);
+        return panelSpecification;
+    },
+    
+    // Provide a way to tell buttons what to do when clicked
+    setButtonClickedCallback: function(callback) {
+        this.buttonClickedCallback = callback;
+    },
+    
+    buttonClicked: function(contentPane, model, fieldSpecification, value) {
+        if (!this.buttonClickedCallback) {
+            console.log("No buttonClickedCallback set in panelBuilder", this, fieldSpecification);
+            throw new Error("No buttonClickedCallback set for PanelBuilder");
+        }
+        this.buttonClickedCallback(this, contentPane, model, fieldSpecification, value);
     },
     
     // TODO: Perhaps should handle contentPane differently, since it is getting overwritten by these next three methods
@@ -203,14 +239,6 @@ var PanelBuilder = declare(null, {
     
     /// Suport functions
     
-    panelDefinitionForPanelID: function(panelID) {
-        // var questions = applicationBuilder.buildQuestionsForPanel(panelID);
-        // console.log("panelDefinitionForPanelID", panelID, questions);
-        var panelSpecification = domain.panelDefinitions[panelID];
-        console.log("panelDefinitionForPanelID", panelID, panelSpecification);
-        return panelSpecification;
-    },
-    
     // TODO: Remove this -- just for testing/demo purposes
     randomHelpPageURL: function(id) {
         var index = (Math.floor(Math.random() * 8) + 1);
@@ -229,10 +257,6 @@ var PanelBuilder = declare(null, {
             title: "Click to open help system window on this topic...",
             url: url
         });
-    },
-    
-    buttonClicked: function(contentPane, model, fieldSpecification, value) {
-        domain.buttonClicked(contentPane, model, fieldSpecification, value);
     },
     
     createQuestionContentPaneWithPrompt: function(contentPane, fieldSpecification) {
@@ -317,11 +341,6 @@ var PanelBuilder = declare(null, {
     }
     
     });
-
-    // Class function: Call this once for the application
-    PanelBuilder.setApplicationBuilder = function(newApplicationBuilder) {
-        applicationBuilder = newApplicationBuilder;
-    };
     
     return PanelBuilder;
 });

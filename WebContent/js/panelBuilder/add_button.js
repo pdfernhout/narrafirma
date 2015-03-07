@@ -14,7 +14,7 @@ define([
     "use strict";
     
     function add_button(panelBuilder, contentPane, model, fieldSpecification, callback) {
-        if (!callback) callback = lang.partial(panelBuilder.buttonClicked, contentPane, model, fieldSpecification);
+        if (!callback) callback = lang.hitch(panelBuilder, panelBuilder.buttonClicked, contentPane, model, fieldSpecification);
         
         var button = new Button({
             label: translate("#" + fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt),

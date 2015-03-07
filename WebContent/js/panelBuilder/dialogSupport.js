@@ -54,7 +54,6 @@ define([
     // TODO: Should probably improve how IDs for translations work, by maybe just passing in string that either has # already or is used as is
     
     function addButtonThatLaunchesDialog(contentPane, model, fieldSpecification, dialogConfiguration) {
-        // if (!callback) callback = lang.partial(domain.buttonClicked, contentPane, model, id, questionOptions);
         var callback = function() {
             openDialog(model, dialogConfiguration);
         };
