@@ -2,7 +2,6 @@ define([
     "dojo/_base/array",
     "dojo/_base/declare",
     "./dialogSupport",
-    "exports",
     "dojox/mvc/getPlainValue",
     "dojo/_base/lang",
     "js/translate",
@@ -21,7 +20,6 @@ define([
     array,
     declare,
     dialogSupport,
-    exports,
     getPlainValue,
     lang,
     translate,
@@ -41,12 +39,12 @@ define([
 
     // TODO: Probably need to prevent user surveys from having a question with a short name of "_id".
     
-    // Passing in panelBuilder rather than import it to avoid AMD cyclic dependency
     // Possible configuration options
     // var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, navigationButtons: true, includeAllFields: false};
-    function insertGridTableBasic(panelBuilder, pagePane, id, originalDataStore, popupPageDefinition, configuration) {
+    function GridWithDetail(panelBuilder, pagePane, id, originalDataStore, popupPageDefinition, configuration) {
+        var self = this;
         // Grid with list of objects
-        console.log("insertGridTableBasic", id, originalDataStore);
+        console.log("constructing GridWithDetail", id, originalDataStore);
         
         // TODO: may need to check if already observable so don't do extra wrapping.
         // var dataStore = new Observable(originalDataStore);
@@ -96,7 +94,7 @@ define([
                 var newColumn =  {
                     field: question.id,
                     label: translate("#" + question.id + "::shortName", question.displayName),
-                    formatter: formatObjectsIfNeeded,
+                    formatter: lang.hitch(this, this.formatObjectsIfNeeded),
                     sortable: !configuration.moveUpDownButtons
                 };
                 columns.push(newColumn);
@@ -112,9 +110,7 @@ define([
             // Preserve the selections despite refresh needed when move items up or down
             deselectOnRefresh: false
         });
-
-        grid.panelBuilder = panelBuilder;
-        
+   
         pagePane.addChild(grid);
         
         var listContentPane = new ContentPane({
@@ -123,20 +119,20 @@ define([
         
         pagePane.addChild(listContentPane);
         
+        // TODO: Fix this so not using container node and adding directly to a contentPane
         var pane = listContentPane.containerNode;
         
         var itemContentPane = new ContentPane({
         });
         
         var buttons = {};
-        grid.buttons = buttons;
-        grid.originalDataStore = originalDataStore;
-        grid.selectedCount = 0;
-
+        this.buttons = buttons;
+        this.selectedCount = 0;
+        
         grid.on("dgrid-select", function(event) {
             console.log("dgrid-select");
-            grid.selectedCount += event.rows.length;
-            updateGridButtonsForSelectionAndForm(grid);
+            this.selectedCount += event.rows.length;
+            self.updateGridButtonsForSelectionAndForm();
             
             // TODO: Track first selected item if view open -- this does not work as a deselect called before select always
             // if (grid.formType === "view") viewButtonClicked(id, grid, dataStore, popupPageDefinition, itemContentPane, event);
@@ -144,8 +140,8 @@ define([
         
         grid.on("dgrid-deselect", function(event) {
             console.log("dgrid-deselect");
-            grid.selectedCount -= event.rows.length;
-            updateGridButtonsForSelectionAndForm(grid);
+            this.selectedCount -= event.rows.length;
+            self.updateGridButtonsForSelectionAndForm();
             
             // TODO: Track first selected item if view open -- this does not work as a deselect called before select always
             // if (grid.formType === "view") viewButtonClicked(id, grid, dataStore, popupPageDefinition, itemContentPane, event);
@@ -154,57 +150,58 @@ define([
         grid.on("dgrid-sort", function(event) {
             console.log("dgrid-sort");
             // Sorting can change the enabling of the navigation buttons
-            updateGridButtonsForSelectionAndFormLater(grid);
+            self.updateGridButtonsForSelectionAndFormLater();
         });
                 
         if (configuration.addButton) {
-            buttons.addButton = widgetSupport.newButton(pane, "#button_Add", lang.partial(addButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.addButton = widgetSupport.newButton(pane, "#button_Add", lang.hitch(this, this.addButtonClicked));
         }
         
         if (configuration.removeButton) {
-            buttons.removeButton = widgetSupport.newButton(pane, "#button_Remove", lang.partial(removeButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.removeButton = widgetSupport.newButton(pane, "#button_Remove", lang.hitch(this, this.removeButtonClicked));
         }
+        
+        this.navigateCallback = null;
         
         if (configuration.viewButton) {
             // Bind first two arguments to function that will be callback receiving one extra argument
             // See: http://dojotoolkit.org/reference-guide/1.7/dojo/partial.html
-            var viewButtonClickedPartial = lang.partial(viewButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane);
+            var viewButtonClickedPartial = lang.hitch(this, this.viewButtonClicked);
             var viewButtonID = id + "_view";
             buttons.viewButton = widgetSupport.newButton(pane, "#button_View", viewButtonClickedPartial);
             // TODO: Should there be an option of double click as edit?
             // Support double click as view
             grid.on("dblclick", viewButtonClickedPartial);
-            grid.navigateCallback = viewButtonClickedPartial;
+            this.navigateCallback = viewButtonClickedPartial;
         }
 
         if (configuration.editButton) {
-            buttons.editButton = widgetSupport.newButton(pane, "#button_Edit", lang.partial(editButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.editButton = widgetSupport.newButton(pane, "#button_Edit", lang.hitch(this, this.editButtonClicked));
         }
         
         if (configuration.duplicateButton) {
-            buttons.duplicateButton = widgetSupport.newButton(pane, "#button_Duplicate", lang.partial(duplicateButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.duplicateButton = widgetSupport.newButton(pane, "#button_Duplicate", lang.hitch(this, this.duplicateButtonClicked));
         }
              
         if (configuration.moveUpDownButtons) {
-            buttons.upButton = widgetSupport.newButton(pane, "#button_Up", lang.partial(upButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
-            buttons.downButton = widgetSupport.newButton(pane, "#button_Down", lang.partial(downButtonClicked, id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.upButton = widgetSupport.newButton(pane, "#button_Up", lang.hitch(this, this.upButtonClicked));
+            buttons.downButton = widgetSupport.newButton(pane, "#button_Down", lang.hitch(this, this.downButtonClicked));
         }
         
         if (configuration.customButton) {
             var options = configuration.customButton;
-            buttons.customButton = widgetSupport.newButton(pane, options.translationID, lang.partial(options.callback, id, grid, dataStore, popupPageDefinition, itemContentPane));
-            // Make this function available to users
-            grid.getSelectedItem = getSelectedItem;
+            buttons.customButton = widgetSupport.newButton(pane, options.translationID, lang.partial(options.callback, this));
         }
          
         if (configuration.navigationButtons) {
-            buttons.navigateStartButton = widgetSupport.newButton(pane, "#button_navigateStart", lang.partial(navigateButtonClicked, "start", id, grid, dataStore, popupPageDefinition, itemContentPane));
-            buttons.navigatePreviousButton = widgetSupport.newButton(pane, "#button_navigatePrevious", lang.partial(navigateButtonClicked, "previous",  id, grid, dataStore, popupPageDefinition, itemContentPane));
-            buttons.navigateNextButton = widgetSupport.newButton(pane, "#button_navigateNext", lang.partial(navigateButtonClicked, "next",  id, grid, dataStore, popupPageDefinition, itemContentPane));
-            buttons.navigateEndButton = widgetSupport.newButton(pane, "#button_navigateEnd", lang.partial(navigateButtonClicked, "end",  id, grid, dataStore, popupPageDefinition, itemContentPane));
+            buttons.navigateStartButton = widgetSupport.newButton(pane, "#button_navigateStart", lang.hitch(this, this.navigateButtonClicked, "start"));
+            buttons.navigatePreviousButton = widgetSupport.newButton(pane, "#button_navigatePrevious", lang.hitch(this, this.navigateButtonClicked, "previous"));
+            buttons.navigateNextButton = widgetSupport.newButton(pane, "#button_navigateNext", lang.hitch(this, this.navigateButtonClicked, "next"));
+            buttons.navigateEndButton = widgetSupport.newButton(pane, "#button_navigateEnd", lang.hitch(this, this.navigateButtonClicked, "end"));
         }
         
-        updateGridButtonsForSelectionAndForm(grid);
+        
+        this.updateGridButtonsForSelectionAndForm();
         
         pagePane.addChild(itemContentPane);
         
@@ -228,24 +225,32 @@ define([
         }
         */
          
-        return {
-            "store": dataStore,
-            "listContentPane": listContentPane,
-            "grid": grid
-        };
+        this.panelBuilder = panelBuilder;
+
+        this.store = dataStore;
+        this.originalDataStore = originalDataStore;
+        
+        this.listContentPane = listContentPane;
+        this.grid = grid;
+        
+        this.popupPageDefinition = popupPageDefinition;
+        this.itemContentPane = itemContentPane;
+        this.form = null;
+        this.formType = null;
+        this.formItem = null;
     }
     
-    function hideAndDestroyForm(itemContentPane, form, grid) {
+    GridWithDetail.prototype.hideAndDestroyForm = function() {
         // The next line is needed to get rid of duplicate IDs for next time the form is opened:
-        itemContentPane.set("style", "display: none");
-        form.destroyRecursive();
-        grid.form = null;
-        grid.formType = null;
-        grid.formItem = null;
-        updateGridButtonsForSelectionAndForm(grid);
-    }
+        this.itemContentPane.set("style", "display: none");
+        this.form.destroyRecursive();
+        this.form = null;
+        this.formType = null;
+        this.formItem = null;
+        this.updateGridButtonsForSelectionAndForm();
+    };
 
-    function storeItem(id, grid, store, popupPageDefinition, itemContentPane, form, statefulItem) {
+    GridWithDetail.prototype.storeItem = function(statefulItem) {
         console.log("OK clicked", statefulItem);
 
         var uniqueItemID = generateRandomUuid();
@@ -253,44 +258,46 @@ define([
         var plainValue = getPlainValue(statefulItem);
         console.log("grid plainValue", plainValue);
 
-        if (grid.formType === "add") {
-            var idProperty = store.idProperty;
+        if (this.formType === "add") {
+            var idProperty = this.store.idProperty;
             plainValue[idProperty] = uniqueItemID;
-            store.add(plainValue);
+            this.store.add(plainValue);
         } else {
-            store.put(plainValue);
+            this.store.put(plainValue);
         }
                 
         console.log("put store for add form");
         
-        hideAndDestroyForm(itemContentPane, form, grid);
+        this.hideAndDestroyForm();
              
         console.log("shut down add form");
-    }
+    };
     
     // formType can be view, add, edit
-    function openFormForItem(id, grid, store, popupPageDefinition, itemContentPane, formType, item) {
-        console.log("openFormForItem", grid, formType, item);
+    GridWithDetail.prototype.openFormForItem = function(item, formType) {
+        var self = this;
+        console.log("openFormForItem", item);
         
         var statefulItem = new Stateful(item);
         
-        if (grid.form) {
+        if (this.form) {
             // Already have a panel displayed for either view or add
-            console.log("Panel already displayed", grid.formType, grid.form);
-            if (grid.formType !== "view") {
+            console.log("Panel already displayed", this.formType, this.form);
+            if (this.formType !== "view") {
                 // TODO: Translate
                 alert("Item change already in progress; please cancel form first");
                 return;
             }
+            // TODO: This comment and commented code looks out of date, since seems to rebuild even when viewing
             // Don't change anything if already viewing item
             // if (formType === "view" && statefulItem.get("id") === grid.formItem.get("id")) return;
-            hideAndDestroyForm(itemContentPane, grid.form, grid);
+            this.hideAndDestroyForm();
         }
         
         var form = new Form();
         form.set("style", "width: 800px; height 800px; overflow: auto;");
 
-        grid.panelBuilder.buildPanel(popupPageDefinition, form, statefulItem);
+        this.panelBuilder.buildPanel(this.popupPageDefinition, this.form, statefulItem);
         
         var borderColor = "green";
         if (formType === "view") {
@@ -298,7 +305,7 @@ define([
             
             widgetSupport.newButton(form, "#button_Done", function() {
                 console.log("Done");
-                hideAndDestroyForm(itemContentPane, form, grid);
+                self.hideAndDestroyForm();
             });
             
             /* TODO: Some way to disable editing?
@@ -314,58 +321,58 @@ define([
             });
             */
         } else {
-            widgetSupport.newButton(form, "#button_OK", lang.partial(storeItem, id, grid, store, popupPageDefinition, itemContentPane, form, statefulItem));
+            widgetSupport.newButton(form, "#button_OK", lang.hitch(this, this.storeItem, statefulItem));
             widgetSupport.newButton(form, "#button_Cancel", function() {
                 console.log("Cancel chosen");          
                 // TODO: Confirm cancel if have entered data    
-                hideAndDestroyForm(itemContentPane, form, grid);
+                self.hideAndDestroyForm();
             });
         }
         
-        grid.form = form;
-        grid.formType = formType;
-        grid.formItem = statefulItem;
+        this.form = form;
+        this.formType = formType;
+        this.formItem = statefulItem;
         
-        itemContentPane.addChild(form);
+        this.itemContentPane.addChild(form);
         
-        itemContentPane.set("style", "background-color: #C0C0C0; border: 0.25em solid " + borderColor + "; margin: 1em; display: block");
+        this.itemContentPane.set("style", "background-color: #C0C0C0; border: 0.25em solid " + borderColor + "; margin: 1em; display: block");
         
-        // Need to force the form to resize so that the embedded grid will size its header correctly and not be zero height and overwritten
+        // Need to force the new form to resize so that the embedded grid will size its header correctly and not be zero height and overwritten
         form.resize();
         
-        updateGridButtonsForSelectionAndForm(grid);
-    }
+        this.updateGridButtonsForSelectionAndForm();
+    };
     
-    function addButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
-        console.log("add button pressed", id, event);
+    GridWithDetail.prototype.addButtonClicked = function(event) {
+        console.log("add button pressed", event);
         
         var newItem = {};
         var statefulItem = new Stateful(newItem);
         
-        openFormForItem(id, grid, store, popupPageDefinition, itemContentPane, "add", statefulItem);  
-    }
+        this.openFormForItem("add", statefulItem);  
+    };
     
-    function getSelectedItemID(grid) {
+    GridWithDetail.prototype.getSelectedItemID = function() {
         var selectedItemID = null;
         
-        console.log("getSelectedItemID", grid.selection);
-        for (var theSelection in grid.selection) {
-            if (grid.selection[theSelection]) selectedItemID = theSelection;
+        console.log("getSelectedItemID", this.grid.selection);
+        for (var theSelection in this.grid.selection) {
+            if (this.grid.selection[theSelection]) selectedItemID = theSelection;
         }
 
         console.log("selectedItemID", selectedItemID);
         return selectedItemID;
-    }
+    };
     
-    function getSelectedItem(grid, store) {
-        var selectedItemID = getSelectedItemID(grid);
+    GridWithDetail.prototype.getSelectedItem = function() {
+        var selectedItemID = this.getSelectedItemID();
         
         if (!selectedItemID) {
             console.log("No selection");
             return null;
         }
 
-        var selectedItem = store.getSync(selectedItemID);
+        var selectedItem = this.store.getSync(selectedItemID);
 
         // TODO: This is probably out of date and can be removed now that using Observable? Can these grids be changed elsewhere when this grid is visible?
         // Can't use store.get because store.index may be out of date if the array changed; store only updates the index on a put
@@ -383,19 +390,19 @@ define([
         
         if (!selectedItem) {
             alert("itemToDisplay was not found in store: " + selectedItemID);
-            console.log("itemToDisplay was not found in store", selectedItemID, store);
+            console.log("itemToDisplay was not found in store", selectedItemID, this.store);
             return null;
         }
         
         console.log("selectedItem", selectedItem);
 
         return selectedItem;
-    }
+    };
     
-    function viewButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
-        console.log("view button pressed or double click", id, event);
+    GridWithDetail.prototype.viewButtonClicked = function(event) {
+        console.log("view button pressed or double click", event);
         
-        var selectedItem = getSelectedItem(grid, store);
+        var selectedItem = this.getSelectedItem();
         console.log("viewButtonClicked selectedItem", selectedItem);
         
         if (!selectedItem) {
@@ -403,37 +410,37 @@ define([
             return;
         }
         
-        openFormForItem(id, grid, store, popupPageDefinition, itemContentPane, "view", selectedItem);
-    }
+        this.openFormForItem("view", selectedItem);
+    };
     
-    function removeButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
-        console.log("remove button pressed", id, event);
+    GridWithDetail.prototype.removeButtonClicked = function(event) {
+        console.log("remove button pressed", event);
         // TODO: translate
         dialogSupport.confirm("Are you sure you want to delete the selected item(s)?", function () {
             console.log("Removal confirmed");
-            for (var itemID in grid.selection) {
-                store.remove(itemID);
+            for (var itemID in this.grid.selection) {
+                this.store.remove(itemID);
             }
         });
-    }
+    };
     
-    function editButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
-        console.log("edit button pressed", id, event);
+    GridWithDetail.prototype.editButtonClicked = function(event) {
+        console.log("edit button pressed", event);
 
-        var selectedItem = getSelectedItem(grid, store);
+        var selectedItem = this.getSelectedItem();
         
         if (!selectedItem) {
             alert("Please select an item to edit first");
             return;
         }
         
-        openFormForItem(id, grid, store, popupPageDefinition, itemContentPane, "edit", selectedItem);
-    }
+        this.openFormForItem("edit", selectedItem);
+    };
     
-    function duplicateButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
-        console.log("duplicate button pressed", id, event);
+    GridWithDetail.prototype.duplicateButtonClicked = function(event) {
+        console.log("duplicate button pressed", event);
 
-        var selectedItem = getSelectedItem(grid, store);
+        var selectedItem = this.getSelectedItem();
         
         if (!selectedItem) {
             alert("Please select an item to duplicate first");
@@ -443,18 +450,19 @@ define([
         // Remove the ID so it will be treated as a new item
         delete selectedItem.id;
         
-        openFormForItem(id, grid, store, popupPageDefinition, itemContentPane, "add", selectedItem);
-    }
+        this.openFormForItem("add", selectedItem);
+    };
     
-    function upButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
-        console.log("up button pressed", id, event);
+    GridWithDetail.prototype.upButtonClicked = function(event) {
+        console.log("up button pressed", event);
         
         // Probably only work on Memory store
-        var items = store.data;
+        var items = this.store.data;
         var lastSelectedObjectLocation = -1;
+        var idProperty = this.store.idProperty;
         for (var i = 0; i < items.length; i++) {
             var item = items[i];
-            if (item[store.idProperty] in grid.selection) {
+            if (item[idProperty] in this.grid.selection) {
                 if (lastSelectedObjectLocation < i - 1) {
                     var otherItem = items[i - 1];
                     items[i - 1] = item;
@@ -465,18 +473,20 @@ define([
                 }
             }
         }
-        grid.refresh();
-    }
+        // Tell grid to update for moved items
+        this.grid.refresh();
+    };
     
-    function downButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
-        console.log("down button pressed", id, event);
+    GridWithDetail.prototype.downButtonClicked = function(event) {
+        console.log("down button pressed", event);
         
         // Probably only work on Memory store
-        var items = store.data;
+        var items = this.store.data;
         var lastSelectedObjectLocation = items.length;
+        var idProperty = this.store.idProperty;
         for (var i = items.length - 1; i >= 0; i--) {
             var item = items[i];
-            if (item[store.idProperty] in grid.selection) {
+            if (item[idProperty] in this.grid.selection) {
                 if (lastSelectedObjectLocation > i + 1) {
                     var otherItem = items[i + 1];
                     items[i + 1] = item;
@@ -487,49 +497,50 @@ define([
                 }
             }
         }
-        grid.refresh();
-    }
+        // Tell grid to update for moved items
+        this.grid.refresh();
+    };
     
-    function navigateButtonClicked(direction, id, grid, store, popupPageDefinition, itemContentPane, event) {
+    GridWithDetail.prototype.navigateButtonClicked = function(direction, event) {
         console.log("navigate button pressed", direction);
-        var selectedItemID = getSelectedItemID(grid);
+        var selectedItemID = this.getSelectedItemID();
         var newRow;
         
         // TODO: Kludge of going to end at moving a million times, but would fail if more than a million items
         if (direction === "start") {
-            newRow = grid.up(selectedItemID, 1000000, true);
+            newRow = this.grid.up(selectedItemID, 1000000, true);
         } else if (direction === "previous" && selectedItemID) {
-            newRow = grid.up(selectedItemID, 1, true);
+            newRow = this.grid.up(selectedItemID, 1, true);
         } else if (direction === "next" && selectedItemID) {
-            newRow = grid.down(selectedItemID, 1, true);
+            newRow = this.grid.down(selectedItemID, 1, true);
         } else if (direction === "end") {
-            newRow = grid.down(selectedItemID, 1000000, true);
+            newRow = this.grid.down(selectedItemID, 1000000, true);
         }
         if (newRow) {
-            if (selectedItemID) grid.deselect(selectedItemID);
-            grid.select(newRow);
-            if (grid.formType === "view" && grid.navigateCallback) grid.navigateCallback();
+            if (selectedItemID) this.grid.deselect(selectedItemID);
+            this.grid.select(newRow);
+            if (this.formType === "view" && this.navigateCallback) this.navigateCallback();
         }
-    }
+    };
     
-    function formatObjectsIfNeeded(item) {
+    GridWithDetail.prototype.formatObjectsIfNeeded = function(item) {
         if (lang.isString(item)) return item;
         if (item === undefined) return "";
         if (item === null) return "";
         return JSON.stringify(item);
-    }
+    };
     
-    function updateGridButtonsForSelectionAndFormLater(grid) {
+    GridWithDetail.prototype.updateGridButtonsForSelectionAndFormLater = function() {
         // Defer updating until later to ensure grid settles down with sorting
         // otherwise could calculate button status incorrectly
-        setTimeout(lang.partial(updateGridButtonsForSelectionAndForm, grid), 0);
-    }
+        setTimeout(lang.hitch(this, this.updateGridButtonsForSelectionAndForm), 0);
+    };
     
-    function updateGridButtonsForSelectionAndForm(grid) {
-        var buttons = grid.buttons;
-        var hasSelection = grid.selectedCount;
+    GridWithDetail.prototype.updateGridButtonsForSelectionAndForm = function() {
+        var buttons = this.buttons;
+        var hasSelection = this.selectedCount;
         
-        var isAdding = (grid.formType === "add");
+        var isAdding = (this.formType === "add");
         if (buttons.addButton) buttons.addButton.set("disabled", isAdding);
         
         // disable other buttons if in the middle of adding a new item or if no selection; otherwise enable
@@ -545,12 +556,12 @@ define([
         // enabling for navigate buttons based on whether can move up or down in list in current sort order
         var atStart = true;
         var atEnd = true;
-        var selectedItemID = getSelectedItemID(grid);
+        var selectedItemID = this.getSelectedItemID();
         if (selectedItemID !== null) {
-            var row = grid.row(selectedItemID);
+            var row = this.grid.row(selectedItemID);
             if (row) {
-                var idAbove = grid.up(row, 1, true).id;
-                var idBelow = grid.down(row, 1, true).id;
+                var idAbove = this.grid.up(row, 1, true).id;
+                var idBelow = this.grid.down(row, 1, true).id;
                 console.log("current", selectedItemID, "above", idAbove, "below", idBelow);
                 atStart = idAbove === selectedItemID;
                 atEnd = idBelow === selectedItemID;
@@ -558,15 +569,11 @@ define([
             }
         }
         if (buttons.navigateStartButton) buttons.navigateStartButton.set("disabled", atStart);
-        if (buttons.navigatePreviousButton) buttons.navigatePreviousButton.set("disabled", atStart || !selectedItemID || grid.selectedCount !== 1);
-        if (buttons.navigateNextButton) buttons.navigateNextButton.set("disabled", atEnd || !selectedItemID || grid.selectedCount !== 1);
+        if (buttons.navigatePreviousButton) buttons.navigatePreviousButton.set("disabled", atStart || !selectedItemID || this.grid.selectedCount !== 1);
+        if (buttons.navigateNextButton) buttons.navigateNextButton.set("disabled", atEnd || !selectedItemID || this.grid.selectedCount !== 1);
         if (buttons.navigateEndButton) buttons.navigateEndButton.set("disabled", atEnd);
-    }
-    
-    var exportedFunctions = {
-        "insertGridTableBasic": insertGridTableBasic,
     };
     
-    lang.mixin(exports, exportedFunctions);
+    return GridWithDetail;
     
 });

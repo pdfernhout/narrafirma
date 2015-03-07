@@ -105,9 +105,9 @@ define([
              "buildPanel": buildPanel
          };
                 
-        function useButtonClicked(id, grid, store, popupPageDefinition, itemContentPane, event) {
-            console.log("useButtonClicked", id, grid, store, popupPageDefinition, itemContentPane, event);
-            var selectedTemplate = grid.getSelectedItem(grid, store);
+        function useButtonClicked(gridWithDetail, event) {
+            console.log("useButtonClicked", gridWithDetail, event);
+            var selectedTemplate = gridWithDetail.getSelectedItem();
             console.log("grid selectedTemplate", selectedTemplate);
             
             if (selectedTemplate) {
