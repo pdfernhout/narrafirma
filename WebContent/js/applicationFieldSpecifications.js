@@ -590,12 +590,12 @@ return [
   model: 'ProjectModel' 
 },
 
-// ------------- popup panel_addParticipantGroup Participant group  ------------- 
+// ------------- panel panel_addParticipantGroup Participant group  ------------- 
 
 {
   id: 'panel_addParticipantGroup',
   displayName: 'Participant group',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_addParticipantGroup',
   modelPath: 'participantgroup' 
@@ -1090,12 +1090,12 @@ return [
   model: 'ProjectModel' 
 },
 
-// ------------- popup panel_projectStory Project story  ------------- 
+// ------------- panel panel_projectStory Project story  ------------- 
 
 {
   id: 'panel_projectStory',
   displayName: 'Project story',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_projectStory',
   modelPath: 'projectstory' 
@@ -1267,12 +1267,12 @@ return [
   model: 'ProjectModel' 
 },
 
-// ------------- popup panel_addStoryElement Add story element  ------------- 
+// ------------- panel panel_addStoryElement Add story element  ------------- 
 
 {
   id: 'panel_addStoryElement',
   displayName: 'Add story element',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_addStoryElement',
   modelPath: 'storyelement' 
@@ -2071,12 +2071,12 @@ return [
   model: 'ProjectModel' 
 },
 
-// ------------- popup panel_addVenue Plan story collection venue  ------------- 
+// ------------- panel panel_addVenue Plan story collection venue  ------------- 
 
 {
   id: 'panel_addVenue',
   displayName: 'Plan story collection venue',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_addVenue',
   modelPath: 'venueplan' 
@@ -2249,12 +2249,12 @@ return [
   model: 'ProjectModel' 
 },
 
-// ------------- popup panel_addElicitingQuestion Add story eliciting question  ------------- 
+// ------------- panel panel_addElicitingQuestion Add story eliciting question  ------------- 
 
 {
   id: 'panel_addElicitingQuestion',
   displayName: 'Add story eliciting question',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_addElicitingQuestion',
   modelPath: 'elicitingquestion' 
@@ -2376,12 +2376,12 @@ return [
   model: 'ProjectModel' 
 },
 
-// ------------- popup panel_addStoryQuestion Add story question  ------------- 
+// ------------- panel panel_addStoryQuestion Add story question  ------------- 
 
 {
   id: 'panel_addStoryQuestion',
   displayName: 'Add story question',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_addStoryQuestion',
   modelPath: 'storyquestion' 
@@ -2460,7 +2460,7 @@ return [
   displayType: 'textarea',
   displayConfiguration: undefined,
   displayName: 'Help',
-  displayPrompt: 'If you want to provide popup help to people answering the question, enter it here.',
+  displayPrompt: 'If you want to provide additional help to people answering the question, enter it here.',
   displayPanel: 'panel_addStoryQuestion',
   model: 'StoryQuestionModel' 
 },
@@ -2529,12 +2529,12 @@ return [
   model: 'ProjectModel' 
 },
 
-// ------------- popup panel_addParticipantQuestion Add participant question  ------------- 
+// ------------- panel panel_addParticipantQuestion Add participant question  ------------- 
 
 {
   id: 'panel_addParticipantQuestion',
   displayName: 'Add participant question',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_addParticipantQuestion',
   modelPath: 'participantquestion' 
@@ -2759,12 +2759,12 @@ return [
   model: 'ProjectModel' 
 },
 
-// ------------- popup panel_addStoryCollectionSession Design story collection session  ------------- 
+// ------------- panel panel_addStoryCollectionSession Design story collection session  ------------- 
 
 {
   id: 'panel_addStoryCollectionSession',
   displayName: 'Design story collection session',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_addStoryCollectionSession',
   modelPath: 'collectionsessionplan' 
@@ -2916,12 +2916,12 @@ return [
   model: 'StoryCollectionSessionModel' 
 },
 
-// ------------- popup panel_addCollectionSessionActivity Add story collection session activity  ------------- 
+// ------------- panel panel_addCollectionSessionActivity Add story collection session activity  ------------- 
 
 {
   id: 'panel_addCollectionSessionActivity',
   displayName: 'Add story collection session activity',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_addCollectionSessionActivity',
   modelPath: 'collectionsessionactivity' 
@@ -3453,12 +3453,12 @@ return [
   model: 'ProjectModel' 
 },
 
-// ------------- popup panel_addCollectionSessionRecord Add story collection session record  ------------- 
+// ------------- panel panel_addCollectionSessionRecord Add story collection session record  ------------- 
 
 {
   id: 'panel_addCollectionSessionRecord',
   displayName: 'Add story collection session record',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_addCollectionSessionRecord',
   modelPath: 'undefined' 
@@ -3753,12 +3753,12 @@ return [
   model: 'CollectionSessionRecordModel' 
 },
 
-// ------------- popup panel_newCollectionSessionConstruction Story collection construction  ------------- 
+// ------------- panel panel_newCollectionSessionConstruction Story collection construction  ------------- 
 
 {
   id: 'panel_newCollectionSessionConstruction',
   displayName: 'Story collection construction',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_newCollectionSessionConstruction',
   modelPath: 'undefined' 
@@ -4168,12 +4168,12 @@ return [
   model: 'ProjectModel' 
 },
 
-// ------------- popup panel_addToObservation Add to observation  ------------- 
+// ------------- panel panel_addToObservation Add to observation  ------------- 
 
 {
   id: 'panel_addToObservation',
   displayName: 'Add to observation',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_addToObservation',
   modelPath: 'undefined' 
@@ -4234,12 +4234,12 @@ return [
   model: 'ToObservationModel' 
 },
 
-// ------------- popup panel_createOrEditObservation Create new observation  ------------- 
+// ------------- panel panel_createOrEditObservation Create new observation  ------------- 
 
 {
   id: 'panel_createOrEditObservation',
   displayName: 'Create new observation',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_createOrEditObservation',
   modelPath: 'undefined' 
@@ -4443,12 +4443,12 @@ return [
   model: 'ObservationModel' 
 },
 
-// ------------- popup panel_selectExcerpt Add excerpt to interpretation  ------------- 
+// ------------- panel panel_selectExcerpt Add excerpt to interpretation  ------------- 
 
 {
   id: 'panel_selectExcerpt',
   displayName: 'Add excerpt to interpretation',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_selectExcerpt',
   modelPath: 'undefined' 
@@ -4483,12 +4483,12 @@ return [
   model: 'SelectExcerptModel' 
 },
 
-// ------------- popup panel_addToExcerpt Add text to excerpt  ------------- 
+// ------------- panel panel_addToExcerpt Add text to excerpt  ------------- 
 
 {
   id: 'panel_addToExcerpt',
   displayName: 'Add text to excerpt',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_addToExcerpt',
   modelPath: 'undefined' 
@@ -4536,12 +4536,12 @@ return [
   model: 'ToExcerptModel' 
 },
 
-// ------------- popup panel_createNewExcerpt Create new excerpt  ------------- 
+// ------------- panel panel_createNewExcerpt Create new excerpt  ------------- 
 
 {
   id: 'panel_createNewExcerpt',
   displayName: 'Create new excerpt',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_createNewExcerpt',
   modelPath: 'excerpt' 
@@ -4715,12 +4715,12 @@ return [
   model: 'ProjectModel' 
 },
 
-// ------------- popup panel_addPerspective Add or change perspective  ------------- 
+// ------------- panel panel_addPerspective Add or change perspective  ------------- 
 
 {
   id: 'panel_addPerspective',
   displayName: 'Add or change perspective',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_addPerspective',
   modelPath: 'undefined' 
@@ -4794,12 +4794,12 @@ return [
   model: 'PerspectiveModel' 
 },
 
-// ------------- popup panel_annotateResultForPerspective Annotate result for perspective  ------------- 
+// ------------- panel panel_annotateResultForPerspective Annotate result for perspective  ------------- 
 
 {
   id: 'panel_annotateResultForPerspective',
   displayName: 'Annotate result for perspective',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_annotateResultForPerspective',
   modelPath: 'undefined' 
@@ -4821,12 +4821,12 @@ return [
   model: 'AnnotateResultForPerspectiveModel' 
 },
 
-// ------------- popup panel_annotateExcerptForPerspective Annotate excerpt for perspective  ------------- 
+// ------------- panel panel_annotateExcerptForPerspective Annotate excerpt for perspective  ------------- 
 
 {
   id: 'panel_annotateExcerptForPerspective',
   displayName: 'Annotate excerpt for perspective',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_annotateExcerptForPerspective',
   modelPath: 'undefined' 
@@ -4848,12 +4848,12 @@ return [
   model: 'AnnotateExcerptForPerspectiveModel' 
 },
 
-// ------------- popup panel_annotateInterpretationForPerspective Annotate interpretation for perspective  ------------- 
+// ------------- panel panel_annotateInterpretationForPerspective Annotate interpretation for perspective  ------------- 
 
 {
   id: 'panel_annotateInterpretationForPerspective',
   displayName: 'Annotate interpretation for perspective',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_annotateInterpretationForPerspective',
   modelPath: 'undefined' 
@@ -5004,12 +5004,12 @@ return [
   model: 'ProjectModel' 
 },
 
-// ------------- popup panel_addSensemakingSessionPlan Enter sensemaking session plan  ------------- 
+// ------------- panel panel_addSensemakingSessionPlan Enter sensemaking session plan  ------------- 
 
 {
   id: 'panel_addSensemakingSessionPlan',
   displayName: 'Enter sensemaking session plan',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_addSensemakingSessionPlan',
   modelPath: 'undefined' 
@@ -5161,12 +5161,12 @@ return [
   model: 'SensemakingSessionPlanModel' 
 },
 
-// ------------- popup panel_addSensemakingSessionActivity Add sensemaking session activity  ------------- 
+// ------------- panel panel_addSensemakingSessionActivity Add sensemaking session activity  ------------- 
 
 {
   id: 'panel_addSensemakingSessionActivity',
   displayName: 'Add sensemaking session activity',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_addSensemakingSessionActivity',
   modelPath: 'undefined' 
@@ -5354,12 +5354,12 @@ return [
   model: 'ProjectModel' 
 },
 
-// ------------- popup panel_addSensemakingSessionRecord Add sensemaking session record  ------------- 
+// ------------- panel panel_addSensemakingSessionRecord Add sensemaking session record  ------------- 
 
 {
   id: 'panel_addSensemakingSessionRecord',
   displayName: 'Add sensemaking session record',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_addSensemakingSessionRecord',
   modelPath: 'undefined' 
@@ -5680,12 +5680,12 @@ return [
   model: 'SensemakingSessionRecordModel' 
 },
 
-// ------------- popup panel_addResonantStory Add resonant story  ------------- 
+// ------------- panel panel_addResonantStory Add resonant story  ------------- 
 
 {
   id: 'panel_addResonantStory',
   displayName: 'Add resonant story',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_addResonantStory',
   modelPath: 'undefined' 
@@ -5759,12 +5759,12 @@ return [
   model: 'ResonantStoryModel' 
 },
 
-// ------------- popup panel_newSensemakingSessionOutcome Sensemaking session outcome  ------------- 
+// ------------- panel panel_newSensemakingSessionOutcome Sensemaking session outcome  ------------- 
 
 {
   id: 'panel_newSensemakingSessionOutcome',
   displayName: 'Sensemaking session outcome',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_newSensemakingSessionOutcome',
   modelPath: 'undefined' 
@@ -5820,12 +5820,12 @@ return [
   model: 'NewSensemakingSessionOutcomeModel' 
 },
 
-// ------------- popup panel_newSensemakingSessionConstruction Sensemaking construction  ------------- 
+// ------------- panel panel_newSensemakingSessionConstruction Sensemaking construction  ------------- 
 
 {
   id: 'panel_newSensemakingSessionConstruction',
   displayName: 'Sensemaking construction',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_newSensemakingSessionConstruction',
   modelPath: 'undefined' 
@@ -5981,12 +5981,12 @@ return [
   model: 'ProjectModel' 
 },
 
-// ------------- popup panel_projectOutcome Project outcomes  ------------- 
+// ------------- panel panel_projectOutcome Project outcomes  ------------- 
 
 {
   id: 'panel_projectOutcome',
   displayName: 'Project outcomes',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_projectOutcome',
   modelPath: 'undefined' 
@@ -6332,12 +6332,12 @@ return [
   model: 'ProjectModel' 
 },
 
-// ------------- popup panel_addIntervention Plan an intervention  ------------- 
+// ------------- panel panel_addIntervention Plan an intervention  ------------- 
 
 {
   id: 'panel_addIntervention',
   displayName: 'Plan an intervention',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_addIntervention',
   modelPath: 'interventionplan' 
@@ -6567,12 +6567,12 @@ return [
   model: 'ProjectModel' 
 },
 
-// ------------- popup panel_addInterventionRecord Add intervention record  ------------- 
+// ------------- panel panel_addInterventionRecord Add intervention record  ------------- 
 
 {
   id: 'panel_addInterventionRecord',
   displayName: 'Add intervention record',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_addInterventionRecord',
   modelPath: 'undefined' 
@@ -6944,12 +6944,12 @@ return [
   model: 'ProjectModel' 
 },
 
-// ------------- popup panel_enterFeedbackPiece Enter piece of feedback on project  ------------- 
+// ------------- panel panel_enterFeedbackPiece Enter piece of feedback on project  ------------- 
 
 {
   id: 'panel_enterFeedbackPiece',
   displayName: 'Enter piece of feedback on project',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_enterFeedbackPiece',
   modelPath: 'undefined' 
@@ -7262,12 +7262,12 @@ return [
   model: 'ProjectModel' 
 },
 
-// ------------- popup panel_addPresentationElement Add element to project presentation outline  ------------- 
+// ------------- panel panel_addPresentationElement Add element to project presentation outline  ------------- 
 
 {
   id: 'panel_addPresentationElement',
   displayName: 'Add element to project presentation outline',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_addPresentationElement',
   modelPath: 'undefined' 
@@ -7379,12 +7379,12 @@ return [
   model: 'ProjectModel' 
 },
 
-// ------------- popup panel_addNewReturnRequest Enter project request  ------------- 
+// ------------- panel panel_addNewReturnRequest Enter project request  ------------- 
 
 {
   id: 'panel_addNewReturnRequest',
   displayName: 'Enter project request',
-  displayType: 'popup',
+  displayType: 'panel',
   isHeader: false,
   displayPanel: 'panel_addNewReturnRequest',
   modelPath: 'undefined' 
