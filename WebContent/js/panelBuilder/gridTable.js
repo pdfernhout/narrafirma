@@ -39,24 +39,7 @@ define([
 ){
     "use strict";
 
-    // Kludge because dgrid seems to need to be resized after shown to ensure header displayed correctly -- reset to [] for each new page
-    var allGrids = [];
-    
     // TODO: Probably need to prevent user surveys from having a question with a short name of "_id".
-    
-    function resizeGridsKludge() {
-        // Kludge for dgrid header issue
-        console.log("Kludge allGrids", allGrids);
-        for (var gridIndex = 0; gridIndex < allGrids.length; gridIndex++) {
-            console.log("resizing dgrid", gridIndex, allGrids);
-            allGrids[gridIndex].resize();
-            console.log("resize done");
-        }
-    }
-    
-    function clearGridsKludge() {
-        while (allGrids.length) allGrids.pop();
-    }
     
     function hideAndDestroyForm(itemContentPane, form, grid) {
         // The next line is needed to get rid of duplicate IDs for next time the form is opened:
@@ -112,8 +95,6 @@ define([
         
         var form = new Form();
         form.set("style", "width: 800px; height 800px; overflow: auto;");
-            
-        clearGridsKludge();
 
         grid.panelBuilder.buildPanel(popupPageDefinition, form, statefulItem);
         
@@ -155,7 +136,8 @@ define([
         
         itemContentPane.set("style", "background-color: #C0C0C0; border: 0.25em solid " + borderColor + "; margin: 1em; display: block");
         
-        resizeGridsKludge();
+        // Need to force the form to resize so that the embedded grid will size its header correctly and not be zero height and overwritten
+        form.resize();
         
         updateGridButtonsForSelectionAndForm(grid);
     }
@@ -574,10 +556,6 @@ define([
         
         itemContentPane.set("style", "background-color: #C0C0C0; border: 0.5em solid red; margin-left: 2em; display: none");
         
-        // Kludge to support dgrid header fix as otherwise header not always sized correctly
-        allGrids.push(grid);
-        console.log("adding grid to kludge array", grid, allGrids);
-        
         /*
         if (configuration.showTooltip) {
             console.log("using tooltip for widget", id, grid);
@@ -605,9 +583,6 @@ define([
     
     var exportedFunctions = {
         "insertGridTableBasic": insertGridTableBasic,
-        "clearGridsKludge": clearGridsKludge,
-        "resizeGridsKludge": resizeGridsKludge,
-        "allGrids": allGrids
     };
     
     lang.mixin(exports, exportedFunctions);

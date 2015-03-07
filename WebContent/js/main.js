@@ -218,8 +218,8 @@ require([
         // Show the current page again
         domStyle.set("pageDiv", "display", "block");
         
-        // Because the page was hidden when created, all the grids need to be resized --- seems like bad design in dgrid
-        widgetGridTable.resizeGridsKludge();
+        // Because the page was hidden when created, all the grids need to be resized so grid knows how tall to make header so it is not overwritten
+        currentPage.resize();
         
         window.scrollTo(0, 0);
         
@@ -246,9 +246,6 @@ require([
             return;
         }
         
-        // Kludge for grids -- clearing out
-        widgetGridTable.clearGridsKludge();
-        
         var pagePane = new ContentPane({
             "id": pageID,
             title: pageSpecification.title,
@@ -257,7 +254,7 @@ require([
             style: "width: 94%",
             display: "none" // "block" // 
        });
-        
+       
        // console.log("about to place pane", pageID);
        // Dojo seems to require these pages be in the visual hierarchy before some components like grid that are added to them are have startUp called.
        // Otherwise the grid header is not sized correctly and will be overwritten by data
@@ -266,7 +263,7 @@ require([
        pagePane.startup();
         
        // console.log("Made content pane", pageID);
-            
+           
        var panelID = panelIDForPageID(pageID);
        panelBuilder.buildPanel(panelID, pagePane, domain.projectData.projectAnswers);
        
@@ -562,7 +559,6 @@ require([
     
     function updatePagesForDomainValueChange() {
         panelBuilder.updateQuestionsForPageChange();
-        // widgetGridTable.resizeGridsKludge();
     }
     
     function openSurveyDialog() {
