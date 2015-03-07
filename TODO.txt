@@ -128,6 +128,7 @@ Uncomment and test tooltip code in grid table
 Get tooltips working in dialogs (maybe Dojo bug?)
 Sorting issue: Initial sort order in grid may be order of items in underlying array, but you can't get back to that order once you sort by a column
 Bug if viewing data when remove it; the viewing panel remains open with old data
+Bug if move data item up or down; when you click on an item, it shows you what used to be in that position not what is currently there
 
 CONFIGURATION
 Add project configuration page?
@@ -507,3 +508,5 @@ DONE Refactor dialog opening code into seperate dialogSupport file
 DONE Improve how translations are calculated using fieldSpecification as the value if no translation in nls files
 DONE Improve introduction panel with more background and help about how to navigate within application
 DONE Refactor PanelBuilder so all add_* functions are in their own files
+DONE Remove resizeGridsKludge
+DONE refactor gridTable module into GridWithItemPanel class
