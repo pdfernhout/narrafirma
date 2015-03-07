@@ -97,7 +97,7 @@ define([
              builder.addQuestions(pageQuestions, contentPane, model);
          }
          
-         var popupPageDefinition = {
+         var itemPanelSpecification = {
              "id": "page_template",
              "displayType": "popup",
              "isHeader": false,
@@ -166,7 +166,7 @@ define([
         }
         
         var configuration = {viewButton: true, includeAllFields: false, showTooltip: true, customButton: {id: "useTemplate", translationID: "button_UseTemplate", callback: useButtonClicked}};
-        return new GridWithItemPanel(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, popupPageDefinition, configuration);
+        return new GridWithItemPanel(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, itemPanelSpecification, configuration);
     }
     
     return add_templateList;

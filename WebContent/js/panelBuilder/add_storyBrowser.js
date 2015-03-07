@@ -236,7 +236,7 @@ define([
         
         // TODO: add more participant and survey info, like timestamps and participant ID
         
-        var popupPageDefinition = {
+        var itemPanelSpecification = {
              "id": "storyBrowserQuestions",
              "questions": questions,
              buildPanel: function (panelBuilder, contentPane, model) {
@@ -301,7 +301,7 @@ define([
         
         // Only allow view button for stories
         var configuration = {viewButton: true, includeAllFields: true};
-        storyList = new GridWithItemPanel(panelBuilder, pagePane, id, dataStore, popupPageDefinition, configuration);
+        storyList = new GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration);
         
         console.log("insertStoryBrowser finished");
     }

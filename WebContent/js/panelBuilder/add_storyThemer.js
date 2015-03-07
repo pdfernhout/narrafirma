@@ -59,7 +59,7 @@ define([
         
         // TODO: add more participant and survey info, like timestamps and participant ID
         
-        var popupPageDefinition = {
+        var itemPanelSpecification = {
              "id": "storyBrowserQuestions",
              "questions": questions,
              buildPanel: function (panelBuilder, contentPane, model) {
@@ -109,13 +109,13 @@ define([
                  var storyThemesStore = new MemoryDstore({data: storyThemes, idProperty: "id"});
                  
                  var configuration2 = {removeButton: true, moveUpDownButtons: true, includeAllFields: true};
-                 var popupPageDefinition2 = {
+                 var itemPanelSpecification2 = {
                      "id": "storyThemeQuestions",
                      questions: [
                          {id: "name", displayName: "Theme", displayPrompt: "Theme", displayType: "text", dataOptions:[]}
                      ]
                  };
-                 var themeList = new GridWithItemPanel(panelBuilder, themesPane, "storyThemeList", storyThemesStore, popupPageDefinition2, configuration2);
+                 var themeList = new GridWithItemPanel(panelBuilder, themesPane, "storyThemeList", storyThemesStore, itemPanelSpecification2, configuration2);
                  console.log("themeList", themeList);
                  
                  var allThemes = [];
@@ -179,7 +179,7 @@ define([
         
         // Only allow view button for stories
         var configuration = {viewButton: true, navigationButtons: true, includeAllFields: ["__survey_storyName", "__survey_storyText"]};
-        var storyList = new GridWithItemPanel(panelBuilder, pagePane, id, dataStore, popupPageDefinition, configuration);
+        var storyList = new GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration);
         storyList.grid.set("selectionMode", "single");
         
         console.log("insertStoryThemer finished");

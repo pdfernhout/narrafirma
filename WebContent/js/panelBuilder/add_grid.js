@@ -21,10 +21,10 @@ define([
         
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
-        var popupPageDefinition = panelBuilder.panelDefinitionForPanelID(fieldSpecification.displayConfiguration);
+        var itemPanelSpecification = panelBuilder.panelDefinitionForPanelID(fieldSpecification.displayConfiguration);
         
-        if (!popupPageDefinition) {
-            console.log("Trouble: no popupPageDefinition for options: ", fieldSpecification);
+        if (!itemPanelSpecification) {
+            console.log("Trouble: no itemPanelSpecification for options: ", fieldSpecification);
         }
         
         var data = model.get(fieldSpecification.id);
@@ -40,7 +40,7 @@ define([
         });
         
         var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
-        return new GridWithItemPanel(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, popupPageDefinition, configuration);
+        return new GridWithItemPanel(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, itemPanelSpecification, configuration);
     }
 
     return add_grid;

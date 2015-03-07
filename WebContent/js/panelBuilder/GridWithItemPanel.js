@@ -43,7 +43,7 @@ define([
     
     // Possible configuration options
     // var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, navigationButtons: true, includeAllFields: false};
-    function GridWithItemPanel(panelBuilder, pagePane, id, originalDataStore, popupPageDefinition, configuration) {
+    function GridWithItemPanel(panelBuilder, pagePane, id, originalDataStore, itemPanelSpecification, configuration) {
         var self = this;
         
         console.log("constructing GridWithItemPanel", id, originalDataStore);
@@ -53,7 +53,7 @@ define([
         // A count of how many items are currently selected
         this.selectedCount = 0;
                         
-        this.popupPageDefinition = popupPageDefinition;
+        this.itemPanelSpecification = itemPanelSpecification;
         
         // The detail form, its type, and the item it is displaying
         this.form = null;
@@ -80,11 +80,11 @@ define([
         
         var columns = [];
         
-        if (!popupPageDefinition) {
-            console.log("Trouble: no popupPageDefinition", id, pagePane);
+        if (!itemPanelSpecification) {
+            console.log("Trouble: no itemPanelSpecification", id, pagePane);
         }
         
-        console.log("=========== creating GridWithItemPanel with popupPageDefinition", popupPageDefinition);
+        console.log("=========== creating GridWithItemPanel with itemPanelSpecification", itemPanelSpecification);
         
         var maxColumnCount = 5;
         var columnCount = 0;
@@ -96,7 +96,7 @@ define([
            radiobuttons: true
         };
         
-        array.forEach(popupPageDefinition.questions, function (question) {
+        array.forEach(itemPanelSpecification.questions, function (question) {
             var includeField = false;
             if (configuration.includeAllFields) {
                 // TODO: improve this
@@ -296,7 +296,7 @@ define([
         
         this.form.set("style", "width: 800px; height 800px; overflow: auto;");
 
-        this.panelBuilder.buildPanel(this.popupPageDefinition, this.form, statefulItem);
+        this.panelBuilder.buildPanel(this.itemPanelSpecification, this.form, statefulItem);
         
         var borderColor = "green";
         if (formType === "view") {
@@ -308,7 +308,7 @@ define([
             });
             
             /* TODO: Some way to disable editing?
-            array.forEach(popupPageDefinition.questions, function (question) {
+            array.forEach(itemPanelSpecification.questions, function (question) {
                 // TODO: This may not work for more complex question types or custom widgets?
                 var widget = registry.byId(question.id);
                 if (widget) {
