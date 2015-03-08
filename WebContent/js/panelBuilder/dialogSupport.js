@@ -10,7 +10,7 @@ define([
     "dojo/query",
     "dojo/Stateful",
     "dijit/form/Textarea",
-    "../translate",
+    "./translate",
     "dojo/_base/window"
 ], function(
     at,

@@ -5,7 +5,7 @@ define([
     "dijit/form/FilteringSelect",
     "dojo/_base/lang",
     "dojo/store/Memory",
-    "js/translate"
+    "./translate"
 ], function(
     array,
     at,

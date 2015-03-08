@@ -4,7 +4,7 @@ define([
     "./dialogSupport",
     "dojox/mvc/getPlainValue",
     "dojo/_base/lang",
-    "js/translate",
+    "./translate",
     "dojox/uuid/generateRandomUuid",
     "./widgetSupport",
     "dgrid/extensions/ColumnResizer",

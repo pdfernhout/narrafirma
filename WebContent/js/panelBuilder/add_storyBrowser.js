@@ -3,7 +3,7 @@ define([
     "js/domain",
     "dojo/dom-construct",
     "dojo/_base/lang",
-    "js/translate",
+    "./translate",
     "./GridWithItemPanel",
     "./widgetSupport",
     "dijit/layout/ContentPane",

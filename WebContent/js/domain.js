@@ -5,7 +5,7 @@ define([
     "dojo/_base/lang",
     "js/storage",
     "js/toaster",
-    "js/translate",
+    "js/panelBuilder/translate",
     "dojo/Stateful"
 ], function(
     exports,

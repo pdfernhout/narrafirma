@@ -3,7 +3,7 @@ define([
     "dojox/mvc/at",
     "dijit/layout/ContentPane",
     "dojo/_base/lang",
-    "js/translate"
+    "./translate"
 ], function(
     array,
     at,

@@ -2,7 +2,7 @@ define([
     "js/domain",
     'dojox/html/entities',
     "dojox/uuid/generateRandomUuid",
-    "js/translate",
+    "./translate",
     "./GridWithItemPanel",
     "dijit/form/ComboBox",
     "dijit/layout/ContentPane",

@@ -10,7 +10,7 @@ define([
     "dijit/form/MultiSelect",
     "dojo/query",
     "dojo/Stateful",
-    "../translate",
+    "./translate",
     "dojo/_base/window"
 ], function(
     array,

@@ -1,11 +1,9 @@
 define([
     "dijit/layout/ContentPane",
     "dojox/widget/Toaster"
-    // "js/translate",
 ], function(
     ContentPane,
     Toaster
-    // translate
 ) {
     "use strict";
     

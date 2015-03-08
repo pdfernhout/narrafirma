@@ -11,7 +11,7 @@ require([
     "js/storage",
     "js/survey",
     "js/toaster",
-    "js/translate",
+    "js/panelBuilder/translate",
     "js/panelBuilder/PanelBuilder",
     "js/panelBuilder/widgetSupport",
     "dijit/layout/ContentPane",

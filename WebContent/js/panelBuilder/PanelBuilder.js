@@ -34,11 +34,11 @@ define([
     "./add_trendsReport",
     
     "dojo/_base/array",
-    "js/browser",
+    "./browser",
     "dojo/_base/declare",
     'dojo/dom-class',
     "dojo/_base/lang",
-    "js/translate",
+    "./translate",
     "dijit/layout/ContentPane"
 ], function(
     add_accumulatedItemsGrid,

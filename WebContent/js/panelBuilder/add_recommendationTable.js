@@ -2,7 +2,7 @@ define([
     "./dialogSupport",
     "dojo/_base/lang",
     "js/templates/recommendations",
-    "js/translate",
+    "./translate",
     "dijit/layout/ContentPane",
     "dojox/layout/TableContainer"
 ], function(

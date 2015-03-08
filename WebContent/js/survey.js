@@ -3,7 +3,7 @@ define([
     'dojo/dom-style',
     "dojox/mvc/getPlainValue",
     "js/storage",
-    "js/translate",
+    "js/panelBuilder/translate",
     "dojox/uuid/generateRandomUuid",
     "js/PanelBuilder/PanelBuilder",
     "dijit/layout/ContentPane",
