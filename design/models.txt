@@ -1,0 +1,88 @@
+[Also has ProjectModel at top level]
+
+// generated from design_pages_notes.txt on Sun Mar 08 2015 08:17:35 GMT-0400 (EDT)
+
+// page count 87
+// field count 458
+
+// ==================== SECTION Dashboard ==========================
+
+// ==================== SECTION Planning ==========================
+// Generate model ParticipantGroupModel 
+
+// Generate model ProjectStoryModel 
+
+// Generate model StoryElementModel 
+
+
+// ==================== SECTION Collection design ==========================
+// Generate model VenueModel 
+
+// Generate model ElicitingQuestionModel 
+
+// Generate model StoryQuestionModel 
+
+// Generate model ParticipantQuestionModel 
+
+// Generate model StoryCollectionSessionModel 
+
+// Generate model CollectionSessionActivityModel 
+
+
+// ==================== SECTION Collection process ==========================
+// Generate model CollectionSessionRecordModel 
+
+// Generate model NewCollectionSessionConstructionModel 
+
+
+// ==================== SECTION Catalysis ==========================
+// Generate model ToObservationModel 
+
+// Generate model ObservationModel 
+
+// Generate model SelectExcerptModel 
+
+// Generate model ToExcerptModel 
+
+// Generate model CreateNewExcerptModel 
+
+// Generate model PerspectiveModel 
+
+// Generate model AnnotateResultForPerspectiveModel 
+
+// Generate model AnnotateExcerptForPerspectiveModel 
+
+// Generate model AnnotateInterpretationForPerspectiveModel 
+
+
+// ==================== SECTION Sensemaking ==========================
+// Generate model SensemakingSessionPlanModel 
+
+// Generate model SensemakingSessionActivityModel 
+
+// Generate model SensemakingSessionRecordModel 
+
+// Generate model ResonantStoryModel 
+
+// Generate model NewSensemakingSessionOutcomeModel 
+
+// Generate model NewSensemakingSessionConstructionModel 
+
+
+// ==================== SECTION Intervention ==========================
+// Generate model ProjectOutcomeModel 
+
+// Generate model InterventionModel 
+
+// Generate model InterventionRecordModel 
+
+
+// ==================== SECTION Return ==========================
+// Generate model EnterFeedbackPieceModel 
+
+// Generate model PresentationElementModel 
+
+// Generate model ReturnRequestModel 
+
+
+// ==================== SECTION Project report ==========================
