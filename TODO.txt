@@ -517,4 +517,4 @@ DONE Create a FieldSpecificationCollection which tracks all the field specificat
 DONE split application design fields by page into separate files under fieldSpecification directory by section
 DONE Removed page ID from each field specification and "inherit" it from page or panel specification
 DONE Think about if should mix in page specifications with fields? [Kept as is for now]
-ß
+DONE Split PanelBuilder add_* functions into ones specific to NarraFirma in applicationWidgets and more generic ones left in panelBuilder module
