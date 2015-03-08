@@ -4,7 +4,7 @@ define([
     "dojo/dom",
     "dojo/dom-construct",
     "dojo/_base/lang",
-    "./widgetSupport",
+    "js/panelBuilder/widgetSupport",
     "dojox/charting/Chart",
     "dojox/charting/plot2d/Columns",
     "dijit/layout/ContentPane",

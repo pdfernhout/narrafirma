@@ -7,6 +7,7 @@ require([
     "dojo/dom-style",
     "dojo/hash",
     "dojo/_base/lang",
+    "js/applicationWidgets/loadAllApplicationWidgets",
     "js/fieldSpecifications/loadAllFieldSpecifications",
     "js/storage",
     "js/survey",
@@ -27,6 +28,7 @@ require([
     domStyle,
     hash,
     lang,
+    loadAllApplicationWidgets,
     loadAllFieldSpecifications,
     storage,
     survey,
@@ -567,6 +569,8 @@ require([
         
         // Initialize toaster
         toaster.createToasterWidget("navigationDiv");
+        
+        loadAllApplicationWidgets(PanelBuilder);
         
         console.log("loadAllFieldSpecifications", loadAllFieldSpecifications);
         // Load the applicaiton design

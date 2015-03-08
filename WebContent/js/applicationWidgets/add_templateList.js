@@ -1,8 +1,8 @@
 define([
-    "./dialogSupport",
+    "js/panelBuilder/dialogSupport",
     "dojo/_base/lang",
     "js/templates/templates",
-    "./GridWithItemPanel",
+    "js/panelBuilder/GridWithItemPanel",
     "dstore/Memory"
 ], function(
     dialogSupport,

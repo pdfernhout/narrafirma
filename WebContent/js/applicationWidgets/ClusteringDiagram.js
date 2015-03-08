@@ -10,7 +10,7 @@ define([
     "dojox/mvc/at",
     "dojox/layout/TableContainer",
     "dojo/_base/lang",
-    "./dialogSupport",
+    "js/panelBuilder/dialogSupport",
     "dijit/layout/ContentPane",
     "dijit/ColorPalette",
     "dojo/_base/Color",

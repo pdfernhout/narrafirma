@@ -2,14 +2,14 @@ define([
     "js/domain",
     'dojox/html/entities',
     "dojox/uuid/generateRandomUuid",
-    "./translate",
-    "./GridWithItemPanel",
+    "js/panelBuilder/translate",
+    "js/panelBuilder/GridWithItemPanel",
     "dijit/form/ComboBox",
     "dijit/layout/ContentPane",
     "dojo/store/Memory",
     "dstore/Memory",
     "dojo/Stateful",
-    "./widgetSupport"
+    "js/panelBuilder/widgetSupport"
 ], function(
     domain,
     entities,

@@ -1,8 +1,8 @@
 define([
-    "./dialogSupport",
+    "js/panelBuilder/dialogSupport",
     "dojo/_base/lang",
     "js/templates/recommendations",
-    "./translate",
+    "js/panelBuilder/translate",
     "dijit/layout/ContentPane",
     "dojox/layout/TableContainer"
 ], function(
