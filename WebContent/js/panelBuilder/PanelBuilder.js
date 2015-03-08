@@ -1,37 +1,18 @@
-// TODO: Remove unused imports
 define([
-    "./add_accumulatedItemsGrid",
-    "./add_annotationsGrid",
     "./add_boolean",
     "./add_button",
     "./add_checkbox",
     "./add_checkboxes",
-    "./add_clusteringDiagram",
-    "./add_excerptsList",
-    "./add_function",
-    "./add_graphBrowser",
     "./add_grid",
     "./add_header",
     "./add_image",
     "./add_label",
-    "./add_listCount",
-    "./add_questionAnswer",
-    "./add_questionAnswerCountOfTotalOnPage",
-    "./add_questionsTable",
-    "./add_quizScoreResult",
     "./add_radiobuttons",
-    "./add_recommendationTable",
-    "./add_report",
     "./add_select",
     "./add_slider",
-    "./add_storiesList",
-    "./add_storyBrowser",
-    "./add_storyThemer",
-    "./add_templateList",
     "./add_text",
     "./add_textarea",
     "./add_toggleButton",
-    "./add_trendsReport",
     
     "dojo/_base/array",
     "./browser",
@@ -41,38 +22,20 @@ define([
     "./translate",
     "dijit/layout/ContentPane"
 ], function(
-    add_accumulatedItemsGrid,
-    add_annotationsGrid,
     add_boolean,
     add_button,
     add_checkbox,
     add_checkboxes,
-    add_clusteringDiagram,
-    add_excerptsList,
-    add_function,
-    add_graphBrowser,
     add_grid,
     add_header,
     add_image,
     add_label,
-    add_listCount,
-    add_questionAnswer,
-    add_questionAnswerCountOfTotalOnPage,
-    add_questionsTable,
-    add_quizScoreResult,
     add_radiobuttons,
-    add_recommendationTable,
-    add_report,
     add_select,
     add_slider,
-    add_storiesList,
-    add_storyBrowser,
-    add_storyThemer,
-    add_templateList,
     add_text,
     add_textarea,
     add_toggleButton,
-    add_trendsReport,
     
     array,
     browser,
@@ -98,39 +61,21 @@ function addPlugin(name, callback) {
     buildingFunctions[name] = callback;
 }
 
-// plugins
-addPlugin("accumulatedItemsGrid", add_accumulatedItemsGrid);
-addPlugin("annotationsGrid", add_annotationsGrid);
+// standard plugins
 addPlugin("boolean", add_boolean);
 addPlugin("button", add_button);
 addPlugin("checkbox", add_checkbox);
 addPlugin("checkboxes", add_checkboxes);
-addPlugin("clusteringDiagram", add_clusteringDiagram);
-addPlugin("excerptsList", add_excerptsList);
-addPlugin("function", add_function);
-addPlugin("graphBrowser", add_graphBrowser);
 addPlugin("grid", add_grid);
 addPlugin("header", add_header);
 addPlugin("image", add_image);
 addPlugin("label", add_label);
-addPlugin("listCount", add_listCount);
-addPlugin("questionAnswer", add_questionAnswer);
-addPlugin("questionAnswerCountOfTotalOnPage", add_questionAnswerCountOfTotalOnPage);
-addPlugin("questionsTable", add_questionsTable);
-addPlugin("quizScoreResult", add_quizScoreResult);
 addPlugin("radiobuttons", add_radiobuttons);
-addPlugin("recommendationTable", add_recommendationTable);
-addPlugin("report", add_report);
 addPlugin("select", add_select);
 addPlugin("slider", add_slider);
-addPlugin("storiesList", add_storiesList);
-addPlugin("storyBrowser", add_storyBrowser);
-addPlugin("storyThemer", add_storyThemer);
-addPlugin("templateList", add_templateList);
 addPlugin("text", add_text);
 addPlugin("textarea", add_textarea);
 addPlugin("toggleButton", add_toggleButton);
-addPlugin("trendsReport", add_trendsReport);
 
 // This class builds panels from question definitions
 var PanelBuilder = declare(null, {
@@ -341,6 +286,8 @@ var PanelBuilder = declare(null, {
     }
     
     });
+
+    PanelBuilder.addPlugin = addPlugin;
     
     return PanelBuilder;
 });
