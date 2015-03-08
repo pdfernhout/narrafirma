@@ -1,10 +1,17 @@
 /*jslint node: true */
 "use strict";
 
+// Convert design (as pages.json) into separate page/panel files which define fields that define *both* GUI and Model
+
 var fs = require('fs');
 var util = require('util');
 
-var pagesFileName = "../design/pages.json";
+/*global _: true */
+var _ = require('lodash');
+
+var outputDirectory = __dirname + "/output/";
+
+var pagesFileName = __dirname + "/../design/pages.json";
 
 var pagesReadFromJSON = JSON.parse(fs.readFileSync(pagesFileName, 'utf8'));
 // console.log("pages", pagesReadFromJSON);
@@ -80,53 +87,108 @@ function typeForDisplayType(displayType) {
     return displayTypeToDataTypeMap[displayType];
 }
 
+var output = "";
+
+function write(text) {
+    output += text;
+}
+
+function writeln(text) {
+    output += text + "\n";
+}
+
 function outputStringForItem(item) {
+    /*
     var itemOutput = util.inspect(item);
     // Remove braces at start and end
     itemOutput = " " + itemOutput.substring(1, itemOutput.length - 1);
-    var output = "{\n" + itemOutput + "\n},";
-    console.log(output);
+    var output = "{\n" + itemOutput + "\n}";
+    write(output);
+    */
+    writeln("        {");
+    var first = true;
+    for (var key in item) {
+        var value = item[key];
+        if (value) {
+            if (first) {
+                first = false;
+            } else {
+                writeln(",");
+            }
+            write("            " + key + ": " + JSON.stringify(value));
+        }
+    }
+    write("\n        }");
 }
 
 var optionsLists = {};
 var allChoices = {};
 var typesWithChoices = {};
 
-console.log('define([], function() {\n"use strict";\nreturn [');
+function header() {
+  return 'define([], function() {\n    "use strict";\n    return [';
+}
+
+function footer() {
+    return "    ];\n});";
+}
+
+var section = "main";
+var sectionDirectory = outputDirectory + section;
 
 pagesReadFromJSON.forEach(function (page) {
+    output = "";
+    writeln(header());
+    
     var modelName = "ProjectModel";
     
-    var panelID = page.id.replace("page_", "panel_");
-    
-    var extraForHeader = "";
-    
-    if (page.isHeader) {
-        console.log("\n// ==================== SECTION", page.name, "==========================");
-        extraForHeader = " HEADER";
-    }
-    console.log("\n// -------------" + extraForHeader, page.type, panelID, page.name, " ------------- \n");
-    
-    var panelItem = {
-        id: panelID,
-        displayName: page.name,
-        displayType: page.type,
-        isHeader: page.isHeader,
-        displayPanel: panelID,
-        modelPath: ("" + page.options).toLowerCase()
-    };
-    
-    outputStringForItem(panelItem);
-    console.log("");
-    
-    // console.log("page", page, "\n");
     if (!page.isHeader) {
         if (page.type === "popup") {
             modelName = rewritePageIDAsModelName(page.id);
             console.log("// Generate model", modelName, "\n");
         }
     }
+    
+    var panelID = page.id;
+    if (page.type === "popup") panelID = panelID.replace("page_", "panel_");
+    
+    var extraForHeader = "";
+
+    if (page.isHeader) {
+        console.log("\n// ==================== SECTION", page.name, "==========================");
+        extraForHeader = " HEADER";
+        section = _.snakeCase(page.name);
+        
+        var sectionDirectory = outputDirectory + section;
+        if (!fs.existsSync(sectionDirectory)) {
+            console.log("creating directory for section", section, sectionDirectory);
+            fs.mkdirSync(sectionDirectory);
+        }
+    }
+    // console.log("\n// -------------" + extraForHeader, page.type, panelID, page.name, " ------------- \n");
+    
+    var modelPath = page.options;
+    // if (modelPath) modelPath = modelPath.toLowerCase();
+        
+    var panelItem = {
+        id: panelID,
+        displayName: page.name,
+        displayType: page.type,
+        isHeader: page.isHeader,
+        // displayPanel: panelID,
+        section: section,
+        // modelPath: modelPath,
+        modelClass: modelName
+    };
+    
+    if (page.type === "popup") {
+        panelItem.displayType = "panel";
+    }
+    
+    outputStringForItem(panelItem);
+    
     page.questions.forEach(function (question) {
+        writeln(",");
         var optionsAsArray;
         var displayOptions;
         if (question.options) {
@@ -165,16 +227,23 @@ pagesReadFromJSON.forEach(function (page) {
             displayType: question.type,
             displayConfiguration: displayOptions,
             displayName: question.shortText || undefined,
-            displayPrompt: question.text,
-            displayPanel: panelID,
-            model: modelName
+            displayPrompt: question.text
+            // displayPanel: panelID,
+            // model: modelName
         };
         // console.log("question", question.id, "\n", JSON.stringify(item, null, 4), "\n");
         outputStringForItem(item);
     });
+    
+    writeln("");
+    writeln(footer());
+    
+    // fs.writeF
+    var fileName = outputDirectory + section +  "/" + panelID + ".js";
+    console.log("writing", fileName);
+    console.log(output);
+    fs.writeFileSync(fileName, output);
 });
-
-console.log("\n];\n});");
 
 // console.log("displayTypeToDataTypeMap", displayTypeToDataTypeMap);
 
