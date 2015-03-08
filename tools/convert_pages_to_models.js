@@ -136,6 +136,8 @@ function footer() {
 var section = "main";
 var sectionDirectory = outputDirectory + section;
 
+var modules = [];
+
 pagesReadFromJSON.forEach(function (page) {
     output = "";
     writeln(header());
@@ -145,7 +147,7 @@ pagesReadFromJSON.forEach(function (page) {
     if (!page.isHeader) {
         if (page.type === "popup") {
             modelName = rewritePageIDAsModelName(page.id);
-            console.log("// Generate model", modelName, "\n");
+            // console.log("// Generate model", modelName, "\n");
         }
     }
     
@@ -155,10 +157,11 @@ pagesReadFromJSON.forEach(function (page) {
     var extraForHeader = "";
 
     if (page.isHeader) {
-        console.log("\n// ==================== SECTION", page.name, "==========================");
         extraForHeader = " HEADER";
         section = _.snakeCase(page.name);
-        
+        modules.push(section);
+        console.log("\n    // ==================== SECTION", section, "==========================");
+
         var sectionDirectory = outputDirectory + section;
         if (!fs.existsSync(sectionDirectory)) {
             console.log("creating directory for section", section, sectionDirectory);
@@ -240,10 +243,30 @@ pagesReadFromJSON.forEach(function (page) {
     
     // fs.writeF
     var fileName = outputDirectory + section +  "/" + panelID + ".js";
-    console.log("writing", fileName);
-    console.log(output);
+    // console.log("writing", fileName);
+    // console.log(output);
     fs.writeFileSync(fileName, output);
+    console.log('    fieldSpecificationCollection.addFieldSpecifications(' + panelID + ');');
+    // console.log('    fields.addList(' + panelID + ');');
+    modules.push({name: panelID, file: section + "/" + panelID});
 });
+
+modules.forEach(function (module) {
+    if (_.isString(module)) {
+        console.log('\n    // ' + module);
+    } else {
+        console.log('    "./' + module.file + '",');
+    }
+});
+
+modules.forEach(function (module) {
+    if (_.isString(module)) {
+        console.log('\n    // ' + module);
+    } else {
+        console.log("    " + module.name + ',');
+    }
+});
+
 
 // console.log("displayTypeToDataTypeMap", displayTypeToDataTypeMap);
 
