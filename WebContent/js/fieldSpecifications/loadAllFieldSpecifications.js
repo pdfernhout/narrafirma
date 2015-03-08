@@ -102,7 +102,7 @@ define([
     "./return/page_returnReport",
 
     // project_report
-    "./project_report/page_projectReport",
+    "./project_report/page_projectReport"
 ], function(
     // dashboard
     page_dashboard,
