@@ -1,7 +1,6 @@
 // This supports globals shared by modules
 
 define([
-    "js/applicationBuilder",
     "exports",
     "dojo/_base/lang",
     "js/storage",
@@ -9,7 +8,6 @@ define([
     "js/translate",
     "dojo/Stateful"
 ], function(
-    applicationBuilder,
     exports,
     lang,
     storage,
@@ -20,6 +18,7 @@ define([
     
     // TODO: Should not be doing UI work in here with toaster
 
+    // TODO: panelDefinitions probably should not be in domain
     var panelDefinitions = {};
     var questions = {};
     var childPageIDListForHeaderID = {};
@@ -452,7 +451,7 @@ define([
             // Skip last report page in a section
             if (pageIndex === pageList.length - 1) break;
             var pageID = pageList[pageIndex];
-            var panelDefinition = panelDefinitions[pageID.replace("page_", "panel_")];
+            var panelDefinition = panelDefinitions[pageID];
             if (!panelDefinition) {
                 console.log("ERROR: Missing panelDefinition for pageID:", pageID);
                 continue;
@@ -550,20 +549,21 @@ define([
         return valueToDisplay;
     }
     
-    function setupDomain() {
-        var projectModel = applicationBuilder.buildModel("ProjectModel");
+    // Application should call this at startup
+    function setupDomain(fieldSpecificationCollection) {
+        var projectModel = fieldSpecificationCollection.buildModel("ProjectModel");
         projectData.projectAnswers = new Stateful(projectModel);
         projectData.exportedSurveyQuestions = {};
         projectData.surveyResults = {};
         projectData.surveyResults.allCompletedSurveys = [];
         projectData.surveyResults.allStories = [];
         
-        var pages = applicationBuilder.buildListOfPages();
+        var pages = fieldSpecificationCollection.buildListOfPages();
         
         for (var pageIndex = 0; pageIndex < pages.length; pageIndex++) {
             var page = pages[pageIndex];
             if (!page.isHeader) {
-                var pageID = page.id.replace("panel_", "page_");
+                var pageID = page.id;
                 projectData.projectAnswers[pageID + "_pageStatus"] = null;
             }
         }
@@ -589,9 +589,9 @@ define([
         });
     }
     
-    setupDomain();
-    
     var exportedFunctions = {
+        "setupDomain": setupDomain,
+            
         // data collected
         "projectData": projectData,
         

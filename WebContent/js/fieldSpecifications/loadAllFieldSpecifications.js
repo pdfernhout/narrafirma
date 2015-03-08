@@ -318,7 +318,5 @@ define([
         fieldSpecificationCollection.addFieldSpecifications(page_projectReport);
     }
 
-    return {
-        loadAllFieldSpecifications: loadAllFieldSpecifications
-    };
+    return loadAllFieldSpecifications;
 });

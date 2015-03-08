@@ -1,5 +1,4 @@
 require([
-    "js/applicationBuilder",
     "dojo/i18n!js/nls/applicationMessages",
     "dojo/_base/connect",
     "js/panelBuilder/dialogSupport",
@@ -8,6 +7,7 @@ require([
     "dojo/dom-style",
     "dojo/hash",
     "dojo/_base/lang",
+    "js/fieldSpecifications/loadAllFieldSpecifications",
     "js/storage",
     "js/survey",
     "js/toaster",
@@ -16,9 +16,9 @@ require([
     "js/panelBuilder/widgetSupport",
     "dijit/layout/ContentPane",
     "dijit/form/Select",
+    "js/panelBuilder/FieldSpecificationCollection",
     "dojo/domReady!"
 ], function(
-    applicationBuilder,
     applicationMessages,
     connect,
     dialogSupport,
@@ -27,6 +27,7 @@ require([
     domStyle,
     hash,
     lang,
+    loadAllFieldSpecifications,
     storage,
     survey,
     toaster,
@@ -34,12 +35,15 @@ require([
     PanelBuilder,
     widgetSupport,
     ContentPane,
-    Select
+    Select,
+    FieldSpecificationCollection
 ){
     "use strict";
 
     // TODO: Add page validation
     // TODO: Add translations for GUI strings used here
+    
+    var fieldSpecificationCollection = new FieldSpecificationCollection();
     
     // For building panels based on field specifications
     var panelBuilder = new PanelBuilder();
@@ -261,9 +265,8 @@ require([
        pagePane.startup();
         
        // console.log("Made content pane", pageID);
-           
-       var panelID = panelIDForPageID(pageID);
-       panelBuilder.buildPanel(panelID, pagePane, domain.projectData.projectAnswers);
+       
+       panelBuilder.buildPanel(pageID, pagePane, domain.projectData.projectAnswers);
        
        if (!pageSpecification.isHeader) {
            var options = ["intentionally_skipped", "partially_done", "completely_finished"];
@@ -278,7 +281,7 @@ require([
            console.log("page dashboard as header", pageSpecification.id, pageSpecification.displayType, pageSpecification);
            // Put in dashboard
            var childPageIDs = domain.childPageIDListForHeaderID[pageID];
-           console.log("child pages", pageID, panelID, childPageIDs);
+           console.log("child pages", pageID, childPageIDs);
            if (!childPageIDs) childPageIDs = [];
            for (var childPageIndex = 0; childPageIndex < childPageIDs.length; childPageIndex++) {
                var childPageID = childPageIDs[childPageIndex];
@@ -314,15 +317,7 @@ require([
               
        return pagePane;
     }
-    
-    function panelIDForPageID(pageID) {
-        return pageID.replace("page_", "panel_");
-    }
-    
-    function pageIDForPanelID(panelID) {
-        return panelID.replace("panel_", "page_");
-    }
-    
+
     function previousPageClicked(event) {
         // console.log("previousPageClicked", event);
         if (!currentPageID) {
@@ -427,7 +422,7 @@ require([
     }
     
     function processAllPanels() {
-        var panels = applicationBuilder.buildListOfPanels();
+        var panels = fieldSpecificationCollection.buildListOfPanels();
         console.log("processAllPanels", panels);
         
         var lastPageID = null;
@@ -451,7 +446,7 @@ require([
             
             // For panels that are a "page", add to top level pages choices and set up navigation
             if (panel.displayType === "page") {
-                var pageID = pageIDForPanelID(panel.id);
+                var pageID = panel.id;
                 pageSpecifications[pageID] = panel;
                 // console.log("pushing page", panel);
                 // Make it easy to lookup previous and next pages from a page
@@ -476,11 +471,11 @@ require([
             
             // TODO: Should this really be modifying the original???
             panel.title = title;
-            panel.questions = applicationBuilder.buildQuestionsForPanel(panel.id);
+            panel.questions = fieldSpecificationCollection.buildQuestionsForPanel(panel.id);
             panel.section = lastHeader;
         }
         
-        var questions = applicationBuilder.buildListOfQuestions();
+        var questions = fieldSpecificationCollection.buildListOfQuestions();
         
         // Lump all questions together in domain for use by things like calculating derived values from options for quiz score results
         for (var questionIndex in questions) {
@@ -573,8 +568,12 @@ require([
         // Initialize toaster
         toaster.createToasterWidget("navigationDiv");
         
-        // Synchronizes the state of the domain for one status flag with what is on server
-        domain.determineStatusOfCurrentQuestionnaire();
+        console.log("loadAllFieldSpecifications", loadAllFieldSpecifications);
+        // Load the applicaiton design
+        loadAllFieldSpecifications(fieldSpecificationCollection);
+        
+        // Setup the domain with the base model defined by field specifications
+        domain.setupDomain(fieldSpecificationCollection);
 
         // Setup important callback for page changes
         domain.setPageChangeCallback(lang.hitch(panelBuilder, panelBuilder.updateQuestionsForPageChange));
@@ -590,7 +589,7 @@ require([
         processAllPanels();
         
         // Tell the panelBuilder about the panelSpecifications
-        // var questions = applicationBuilder.buildQuestionsForPanel(panelID);
+        // var questions = fieldSpecificationCollection.buildQuestionsForPanel(panelID);
         panelBuilder.setPanelSpecifications(domain.panelDefinitions);
         
         // Tell the panelBuilder what do do if a button is clicked
@@ -604,6 +603,10 @@ require([
         connect.subscribe("/dojo/hashchange", urlHashFragmentChanged); 
         
         /* TODO: Commented out while testing changeover to fields
+        
+        // Synchronizes the state of the domain for one status flag with what is on server
+        domain.determineStatusOfCurrentQuestionnaire();
+        
         // Get the latest project data
         loadLatestClicked();
         */

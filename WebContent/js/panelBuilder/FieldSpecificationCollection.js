@@ -5,14 +5,29 @@ define([
 ) {
     "use strict";
     
+    function isPanel(fieldSpecification) {
+        return fieldSpecification.displayType === "page" || fieldSpecification.displayType === "panel" ;
+    }
+    
     return declare([], {
         
         applicationFieldSpecifications: [],
     
         addFieldSpecifications: function(fieldSpecifications) {
+            var displayPanel;
+            var modelClass; //  = "ProjectModel";
             for (var i = 0; i < fieldSpecifications.length; i++) {
                 var fieldSpecification = fieldSpecifications[i];
+                if (isPanel(fieldSpecification)) {
+                    displayPanel = fieldSpecification.id;
+                    modelClass = fieldSpecification.modelClass;
+                    fieldSpecification.displayPanel = displayPanel;
+                } else {
+                    fieldSpecification.displayPanel = displayPanel;
+                    fieldSpecification.modelClass = modelClass;
+                }
                 this.applicationFieldSpecifications.push(fieldSpecification);
+                // console.log("adding field specification", fieldSpecification);
             }
         },
         
@@ -32,7 +47,7 @@ define([
             var model = {__type: modelName};
             for (var i = 0; i < this.applicationFieldSpecifications.length; i++) {
                 var fieldSpecification = this.applicationFieldSpecifications[i];
-                if (fieldSpecification.model === modelName && fieldSpecification.dataType !== "none") {
+                if (!isPanel(fieldSpecification) && fieldSpecification.modelClass === modelName && fieldSpecification.dataType !== "none") {
                     model[fieldSpecification.id] = this.initialDataForField(fieldSpecification);
                 }
             }
@@ -55,7 +70,7 @@ define([
             var panels = [];
             for (var i = 0; i < this.applicationFieldSpecifications.length; i++) {
                 var fieldSpecification = this.applicationFieldSpecifications[i];
-                if (fieldSpecification.displayType === "page" || fieldSpecification.displayType === "panel" ) {
+                if (isPanel(fieldSpecification)) {
                     panels.push(fieldSpecification);
                 }
             }
@@ -66,7 +81,7 @@ define([
             var questions = [];
             for (var i = 0; i < this.applicationFieldSpecifications.length; i++) {
                 var fieldSpecification = this.applicationFieldSpecifications[i];
-                if (fieldSpecification.displayType !== "page" && fieldSpecification.displayType !== "panel" ) {
+                if (!isPanel(fieldSpecification)) {
                     questions.push(fieldSpecification);
                 }
             }
@@ -77,10 +92,11 @@ define([
             var questions = [];
             for (var i = 0; i < this.applicationFieldSpecifications.length; i++) {
                 var fieldSpecification = this.applicationFieldSpecifications[i];
-                if (fieldSpecification.isHeader === undefined && fieldSpecification.displayPanel === panelID) {
+                if (!isPanel(fieldSpecification) && fieldSpecification.displayPanel === panelID) {
                     questions.push(fieldSpecification);
                 }
             }
+            // console.log("buildQuestionsForPanel", panelID, questions);
             return questions;
         }
     });
