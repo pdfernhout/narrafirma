@@ -1,0 +1,64 @@
+--- Without defaults:
+
+{
+  id: 'panel_introduction',
+  displayName: 'Introduction',
+  displayType: 'page',
+  isHeader: false,
+  displayPanel: 'panel_introduction',
+  modelPath: 'project' 
+},
+
+{
+  id: 'project_introductionLabel',
+  dataType: 'none',
+  dataOptions: undefined,
+  required: false,
+  validators: undefined,
+  displayType: 'label',
+  displayConfiguration: undefined,
+  displayName: undefined,
+  displayPrompt: 'Welcome to NarraFirma. This page provides a brief overview to using the NarraFirma&#0153; software.',
+  displayPanel: 'panel_introduction',
+  model: 'ProjectModel' 
+},
+{
+    id: 'project_wwsBookLabel',
+    dataType: 'none',
+    dataOptions: undefined,
+    required: false,
+    validators: undefined,
+    displayType: 'label',
+    displayConfiguration: undefined,
+    displayName: undefined,
+    displayPrompt: 'This software is a companion for the book "Working with Stories in Your Community or Organization" (WWS) by Cynthia F. Kurtz. That book describes on approach to a process called "Participatory Narrative Inquiry" or "PNI" for short. You can get a copy of that book <a href="http://workingwithstories.org/">here</a>.',
+    displayPanel: 'panel_introduction',
+    model: 'ProjectModel' 
+},
+
+----- With defaults, including copying values from previous "page" or "panel" type:
+
+{
+  id: 'page_introduction',
+  displayName: 'Introduction',
+  displayType: 'page',
+  displayPanel: 'panel_introduction',
+  modelPath: 'project' 
+  modelName: 'ProjectModel',
+},
+{
+  id: 'project_introductionLabel',
+  dataType: 'none',
+  displayType: 'label',
+  displayPrompt: 'Welcome to NarraFirma. This page provides a brief overview to using the NarraFirma&#0153; software.',
+},
+{
+    id: 'project_wwsBookLabel',
+    dataType: 'none',
+    displayType: 'label',
+    displayPrompt: 'This software is a companion for the book "Working with Stories in Your Community or Organization" (WWS) by Cynthia F. Kurtz. That book describes on approach to a process called "Participatory Narrative Inquiry" or "PNI" for short. You can get a copy of that book <a href="http://workingwithstories.org/">here</a>.',
+},
+
+---
+
+Should required be the default? Maybe can specify when build models or panels?
