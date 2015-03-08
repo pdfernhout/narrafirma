@@ -11,7 +11,7 @@ require([
     "js/fieldSpecifications/loadAllFieldSpecifications",
     "js/storage",
     "js/survey",
-    "js/toaster",
+    "js/panelBuilder/toaster",
     "js/panelBuilder/translate",
     "js/panelBuilder/PanelBuilder",
     "js/panelBuilder/widgetSupport",

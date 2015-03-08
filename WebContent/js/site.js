@@ -1,5 +1,5 @@
 require([
-   "js/toaster",
+   "js/panelBuilder/toaster",
     "dojo/domReady!"
 ], function(
     toaster
