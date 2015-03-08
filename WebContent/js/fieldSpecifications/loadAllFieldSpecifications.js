@@ -1,6 +1,7 @@
 define([
     // dashboard
     "./dashboard/page_dashboard",
+    "./dashboard/page_introduction",
 
     // planning
     "./planning/page_planning",
@@ -106,6 +107,7 @@ define([
 ], function(
     // dashboard
     page_dashboard,
+    page_introduction,
 
     // planning
     page_planning,
@@ -214,6 +216,7 @@ define([
     function loadAllFieldSpecifications(fieldSpecificationCollection) {
         // ==================== SECTION dashboard ==========================
         fieldSpecificationCollection.addFieldSpecifications(page_dashboard);
+        fieldSpecificationCollection.addFieldSpecifications(page_introduction);
 
         // ==================== SECTION planning ==========================
         fieldSpecificationCollection.addFieldSpecifications(page_planning);
