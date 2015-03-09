@@ -80,7 +80,7 @@ define([
         
         var dialog;
         var dialogContentPane = new ContentPane({
-            // style: "width:100%; height:100%;"
+            // style: "width: 100%; height: 100%; min-height: 100%; min-width: 100%"
         });
         
         function hideDialogMethod(status) {
@@ -114,7 +114,7 @@ define([
         
         var dialogConfiguration = {
             dialogTitle: dialogTitle,
-            dialogStyle: "width: 800px; height: 600px",
+            dialogStyle: "width: 600px; height: 800px",
             dialogConstructionFunction: build_textEditorDialogContent,
             dialogOKButtonLabel: dialogOKButtonLabel,
             dialogOKCallback: dialogOKCallback
@@ -161,7 +161,7 @@ define([
         
         var dialogConfiguration = {
             dialogTitle: dialogTitle,
-            dialogStyle: "width: 600px; height: 800px",
+            dialogStyle: "max-width: 800px; max-height: 600px",
             dialogConstructionFunction: buildListChoiceDialogContent,
             dialogOKButtonLabel: dialogOKButtonLabel,
             dialogOKCallback: dialogOKCallback,
@@ -175,7 +175,8 @@ define([
     function buildListChoiceDialogContent(dialogContentPane, model, hideDialogMethod, dialogConfiguration) {
         console.log("buildListChoiceDialogContent", dialogConfiguration.choices);
         var layout = new LayoutContainer({
-            // style: "width:100%; height:100%;"
+            // style: "width: 100%; height: 100%; min-height: 100%; min-width: 100%"
+            // style: "width: 100%; height: 100%;"
             // style: "height: 90%; max-height: 90%; width: 98%; max-width: 98%"
             // style: "overflow: auto; height: 90%; max-height: 90%; width: 98%; max-width: 98%"
         });
@@ -184,7 +185,8 @@ define([
         var grid = new (declare([Grid, Selection, Keyboard, DijitRegistry, ColumnResizer]))({
             columns: dialogConfiguration.columns,
             region: 'center',
-            selectionMode: 'single'
+            selectionMode: 'single',
+            // style: "width: 100%; height: 100%; min-height: 100%; min-width: 100%"
             // style: "position: absolute; top: 0; bottom: 0; left: 0; right: 0; height: auto;"
             // style: "overflow: auto; height: 90%; max-height: 90%; width: 98%; max-width: 98%"
         });
@@ -204,14 +206,14 @@ define([
                 hideDialogMethod();
                 dialogConfiguration.dialogOKCallback(value, hideDialogMethod, dialogConfiguration);
             },
-            region: 'bottom'
+            region: 'top'
         });
         
         layout.addChild(grid);
         layout.addChild(okButton);
         
         layout.placeAt(dialogContentPane);
-   
+        
         grid.renderArray(dialogConfiguration.choices);
         
         dialogConfiguration.grid = grid;
