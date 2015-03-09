@@ -518,3 +518,4 @@ DONE split application design fields by page into separate files under fieldSpec
 DONE Removed page ID from each field specification and "inherit" it from page or panel specification
 DONE Think about if should mix in page specifications with fields? [Kept as is for now]
 DONE Split PanelBuilder add_* functions into ones specific to NarraFirma in applicationWidgets and more generic ones left in panelBuilder module
+DONE Fix bug introduced in translate approach where can pass in a string with a leading number sign ("#") and it is treated differently
