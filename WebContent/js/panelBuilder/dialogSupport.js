@@ -4,9 +4,9 @@ define([
     "dijit/ConfirmDialog",
     "dijit/layout/ContentPane",
     "dijit/Dialog",
+    'dgrid/Grid',
     "dojo/_base/lang",
     "dijit/layout/LayoutContainer",
-    "dijit/form/MultiSelect",
     "dojo/query",
     "dojo/Stateful",
     "dijit/form/Textarea",
@@ -19,9 +19,9 @@ define([
     ConfirmDialog,
     ContentPane,
     Dialog,
+    Grid,
     lang,
     LayoutContainer,
-    MultiSelect,
     query,
     Stateful,
     Textarea,
@@ -32,7 +32,7 @@ define([
     "use strict";
     
     // TODO: Translate: Change to taking a translate ID
-    // TODO: Buttons don't show up if window to narrow for dialog
+    // TODO: Buttons don't show up if window too narrow for dialog
     function confirm(message, okCallback) {
         var dialog = new ConfirmDialog({
             title: "Confirm",
@@ -43,9 +43,7 @@ define([
         });
         dialog.show();
     }
-    
-    // TODO: Should probably improve how IDs for translations work, by maybe just passing in string that either has # already or is used as is
-    
+
     function addButtonThatLaunchesDialog(contentPane, model, fieldSpecification, dialogConfiguration) {
         var callback = function() {
             openDialog(model, dialogConfiguration);
@@ -142,7 +140,8 @@ define([
         layout.placeAt(dialogContentPane);
     }
     
-    function openListChoiceDialog(choices, initialChoice, dialogTitle, dialogOKButtonLabel, dialogOKCallback) {
+    // columns are in dgrid format
+    function openListChoiceDialog(initialChoice, choices, columns, dialogTitle, dialogOKButtonLabel, dialogOKCallback) {
         
         var model = new Stateful({choice: initialChoice});
         
@@ -152,7 +151,8 @@ define([
             dialogConstructionFunction: buildListChoiceDialogContent,
             dialogOKButtonLabel: dialogOKButtonLabel,
             dialogOKCallback: dialogOKCallback,
-            choices: choices
+            choices: choices,
+            columns: columns
         };
         
         openDialog(model, dialogConfiguration);
@@ -163,31 +163,17 @@ define([
         var layout = new LayoutContainer({
         });
         
-        var choiceOptions = dialogConfiguration.choices;
-        /*
-        var choiceOptions = [];
-        for (var index = 0; index < dialogConfiguration.choices.length; index++) {
-            var choice = dialogConfiguration.choices[index];
-            // TODO: Maybe translate?
-            choiceOptions.push({label: "" + choice, value: choice});
-        }
-        */
-        
-        var multiSelect = new MultiSelect({
-            name: 'multiselect-popup',
-            value: model.get("choice"),
-            region: 'center',
-            style: "width: 100%; height:100%",
-            // style: "overflow: auto; height: 90%; max-height: 90%; width: 98%; max-width: 98%"            
+        var grid = new Grid({
+            columns: dialogConfiguration.columns
         });
-        
-        widgetSupport.setOptionsInMultiSelect(multiSelect, choiceOptions);
-        
+
         var okButton = new Button({
             label: translate(dialogConfiguration.dialogOKButtonLabel),
             type: "button",
             onClick: function() {
-                var value = multiSelect.get("value");
+                // var value = grid.get("value");
+                // TODO: Fix
+                var value = null;
                 console.log("Selected value", value);
                 hideDialogMethod();
                 dialogConfiguration.dialogOKCallback(value, hideDialogMethod, dialogConfiguration);
@@ -195,10 +181,12 @@ define([
             region: 'bottom'
         });
         
-        layout.addChild(multiSelect);
+        layout.addChild(grid);
         layout.addChild(okButton);
  
         layout.placeAt(dialogContentPane);
+        
+        grid.renderArray(dialogConfiguration.choices);
     }
 
     return {

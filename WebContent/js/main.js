@@ -100,12 +100,15 @@ require([
         
         versions.sort(function(a, b) {return a.timestamp.localeCompare(b.timestamp);});
         
+        /*
         var choices = [];
         _.forEach(versions, function(version) {
             choices.push({value: version, label: version.timestamp + " | " + version.sha256AndLength + " | " + version.committer});
         });
+        */
         // TODO: Translate
-        dialogSupport.openListChoiceDialog(choices, null, "Project versions", "Load selected version", function (choice) {
+        var columns = {timestamp: "Timestamp", committer: "Committer", sha256AndLength: "Reference"};
+        dialogSupport.openListChoiceDialog(null, versions, columns, "Project versions", "Load selected version", function (choice) {
             console.log("choice:", choice);
         });
             
