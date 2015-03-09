@@ -62,6 +62,12 @@ define([], function() {
     displayPrompt: 'To the left of most fields displayed in the application is a blue icon with an "i" in it. If you click on that icon, a separate help window will open with more information about that field and other fields on the same application page. You can try that now if you want.'
 },
 {
+    id: 'project_helpNavigationButtonsLabel',
+    dataType: 'none',
+    displayType: 'label',
+    displayPrompt: 'The NarraFirma software has several sections that correspond with phases of the PNI process. Only one section is open at a time. To navigate within the pages of a section, use the "Previous Page" and "Next Page" buttons in the navigation section at the top of each page. Or you can select a page within the section directly from the drop down list in the navigation section.'
+},
+{
     id: 'project_helpDashboardStatusLabel',
     dataType: 'none',
     displayType: 'label',
