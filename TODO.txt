@@ -135,11 +135,9 @@ Improve reports so look nice
 Make whole planning phase work (including report)
 
 DASHBOARD
-Main Dashboard
-Decide or distinguish between between an initial explanation page versus a first big dashboard
+Provide status of whether survey is active on main dashboard
 Implement countNumberOfVenuesChosen in domain (is this still needed? If not, remove stub code for it.)
 General notes should go after dashboard for each section
-Create widget for Main Dashboard that combines a button and a section status
 Think about how to save or retrieve general section dashboard status if decide to split up project file by section
 
 ALERTS
@@ -519,3 +517,6 @@ DONE Removed page ID from each field specification and "inherit" it from page or
 DONE Think about if should mix in page specifications with fields? [Kept as is for now]
 DONE Split PanelBuilder add_* functions into ones specific to NarraFirma in applicationWidgets and more generic ones left in panelBuilder module
 DONE Fix bug introduced in translate approach where can pass in a string with a leading number sign ("#") and it is treated differently
+DONE First cut for main Dashboard
+DONE Decide or distinguish between between an initial explanation page versus a first big dashboard [introduction pages comes later]
+DONE Create widget for Main Dashboard that combines a button and a section status
