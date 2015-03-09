@@ -399,7 +399,7 @@ define([
     };
     
     ClusteringDiagram.prototype.openSourceDialog = function(text) {
-        dialogSupport.openTextEditorDialog(text, "dialog_clusterDiagramSourceID", "clusterDiagramSource_titleID", "clusterDiagramSource_okButtonID", lang.hitch(this, this.updateSourceClicked));
+        dialogSupport.openTextEditorDialog(text, "#clusterDiagramSource_titleID", "#clusterDiagramSource_okButtonID", lang.hitch(this, this.updateSourceClicked));
      };
 
     ClusteringDiagram.prototype.recreateDisplayObjectsForAllItems = function() {

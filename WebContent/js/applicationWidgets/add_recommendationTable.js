@@ -17,8 +17,7 @@ define([
     
     function add_recommendationTable(panelBuilder, contentPane, model, fieldSpecification) {
         var dialogConfiguration = {
-            dialogContentPaneID: "recommendationsTable",
-            dialogTitleID: "title_recommendationsTable",
+            dialogTitle: "#title_recommendationsTable",
             dialogStyle: undefined,
             dialogConstructionFunction: lang.partial(build_recommendationTable, panelBuilder),
             fieldSpecification: fieldSpecification

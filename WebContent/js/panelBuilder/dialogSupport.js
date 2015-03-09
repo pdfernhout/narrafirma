@@ -46,7 +46,6 @@ define([
     
     /*
     var dialogConfiguration = {
-        dialogContentPaneID: "???",
         dialogTitleID: "???",
         dialogStyle: "height: 500px",
         dialogConstructionFunction: ???
@@ -80,7 +79,7 @@ define([
         console.log("openDialog", model, JSON.stringify(dialogConfiguration));
         
         var dialog;
-        var dialogContentPane = new ContentPane({id: dialogConfiguration.dialogContentPaneID});
+        var dialogContentPane = new ContentPane();
         
         function hideDialogMethod(status) {
             dialog.hide();
@@ -105,19 +104,18 @@ define([
         dialog.show();
     }
     
-    // dialogContentPaneID "textEditorDialog" dialogTitleID "title_textEditorDialog"
-    function openTextEditorDialog(text, dialogContentPaneID, dialogTitleID, dialogOKButtonID, dialogOKCallback) {
+    // dialogTitleID "title_textEditorDialog"
+    function openTextEditorDialog(text, dialogTitleID, dialogOKButtonID, dialogOKCallback) {
         
         var model = new Stateful({text: text});
         
         var dialogConfiguration = {
-                dialogContentPaneID: dialogContentPaneID,
-                dialogTitleID: dialogTitleID,
-                dialogStyle: "width: 600px; height: 800px",
-                dialogConstructionFunction: build_textEditorDialogContent,
-                dialogOKButtonID: dialogOKButtonID,
-                dialogOKCallback: dialogOKCallback
-            };
+            dialogTitleID: dialogTitleID,
+            dialogStyle: "width: 600px; height: 800px",
+            dialogConstructionFunction: build_textEditorDialogContent,
+            dialogOKButtonID: dialogOKButtonID,
+            dialogOKCallback: dialogOKCallback
+        };
         
         openDialog(model, dialogConfiguration);
     }
@@ -140,7 +138,10 @@ define([
         var okButton = new Button({
             label: translate(dialogConfiguration.dialogOKButtonID),
             type: "button",
-            onClick: function() {dialogConfiguration.dialogOKCallback(model.get("text"), hideDialogMethod, dialogConfiguration);},
+            onClick: function() {
+                var text = model.get("text");
+                dialogConfiguration.dialogOKCallback(text, hideDialogMethod, dialogConfiguration);
+            },
             region: 'bottom'
         });
         
@@ -150,19 +151,18 @@ define([
         layout.placeAt(dialogContentPane);
     }
     
-    function openListChoiceDialog(choices, initialChoice, dialogContentPaneID, dialogTitleID, dialogOKButtonID, dialogOKCallback) {
+    function openListChoiceDialog(choices, initialChoice, dialogTitleID, dialogOKButtonID, dialogOKCallback) {
         
         var model = new Stateful({choice: initialChoice});
         
         var dialogConfiguration = {
-                dialogContentPaneID: dialogContentPaneID,
-                dialogTitleID: dialogTitleID,
-                dialogStyle: "width: 600px; height: 800px",
-                dialogConstructionFunction: buildListChoiceDialogContent,
-                dialogOKButtonID: dialogOKButtonID,
-                dialogOKCallback: dialogOKCallback,
-                choices: choices
-            };
+            dialogTitleID: dialogTitleID,
+            dialogStyle: "width: 600px; height: 800px",
+            dialogConstructionFunction: buildListChoiceDialogContent,
+            dialogOKButtonID: dialogOKButtonID,
+            dialogOKCallback: dialogOKCallback,
+            choices: choices
+        };
         
         openDialog(model, dialogConfiguration);
     }

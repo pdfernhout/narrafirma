@@ -104,7 +104,8 @@ require([
         _.forEach(versions, function(version) {
             choices.push({value: version, label: version.timestamp + " | " + version.sha256AndLength + " | " + version.committer});
         });
-        dialogSupport.openListChoiceDialog(choices, null, "a content pane id?", "Please choose", "ok button", function (choice) {
+        // TODO: Translate
+        dialogSupport.openListChoiceDialog(choices, null, "Project versions", "Load selected version", function (choice) {
             console.log("choice:", choice);
         });
             
@@ -401,7 +402,7 @@ require([
     function importExportClicked() {
         console.log("importExportClicked");
         var projectDefinitionText = JSON.stringify(domain.projectData.projectAnswers, null, 2);
-        dialogSupport.openTextEditorDialog(projectDefinitionText, "dialog_projectImportExport", "projectImportExportDialog_title", "projectImportExportDialog_okButtonText", importButtonClicked);
+        dialogSupport.openTextEditorDialog(projectDefinitionText, "#projectImportExportDialog_title", "#projectImportExportDialog_okButtonText", importButtonClicked);
     }
     
     // TODO: somehow unify this with code in widget-questions-table?
