@@ -14,6 +14,7 @@ define([
     
     var debugTranslations = false;
     
+    // the tag field should have a leading "#" to ensure translation lookup, otherwise it is just returned as the same string passed in
     function translate(tag, defaultText) {
         if (debugTranslations) console.log("translating", tag);
         if (tag === "#undefined::prompt") throw new Error("bad translation tag using undefined which is likely a programming error");
@@ -29,12 +30,13 @@ define([
         }
         var id = tag.substring(1);
         var suppliedText = "";
+        /* Was thinking about supporting extra text at end, but seems not to work with spaces -- too common; could try pipe ("|")?
         var splitPoint = id.indexOf(" ");
         if (splitPoint !== -1) {
             suppliedText = id.substring(splitPoint + 1);
             id = id.substring(0, splitPoint);
         }
-        
+        */
         var result = pageMessages[id] || applicationMessages[id] || extraTranslations[id];
         if (result === undefined) {
             if (suppliedText) {
