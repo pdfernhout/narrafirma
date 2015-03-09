@@ -2,6 +2,7 @@ define([
     "./add_accumulatedItemsGrid",
     "./add_annotationsGrid",
     "./add_clusteringDiagram",
+    "./add_dashboardSectionStatusDisplay",
     "./add_excerptsList",
     "./add_function",
     "./add_graphBrowser",
@@ -21,6 +22,7 @@ define([
     add_accumulatedItemsGrid,
     add_annotationsGrid,
     add_clusteringDiagram,
+    add_dashboardSectionStatusDisplay,
     add_excerptsList,
     add_function,
     add_graphBrowser,
@@ -46,6 +48,7 @@ define([
         PanelBuilder.addPlugin("accumulatedItemsGrid", add_accumulatedItemsGrid);
         PanelBuilder.addPlugin("annotationsGrid", add_annotationsGrid);
         PanelBuilder.addPlugin("clusteringDiagram", add_clusteringDiagram);
+        PanelBuilder.addPlugin("dashboardSectionStatusDisplay", add_dashboardSectionStatusDisplay);
         PanelBuilder.addPlugin("excerptsList", add_excerptsList);
         PanelBuilder.addPlugin("function", add_function);
         PanelBuilder.addPlugin("graphBrowser", add_graphBrowser);

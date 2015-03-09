@@ -2,7 +2,7 @@ define([], function() {
     "use strict";
     return [
 {
-    id: 'panel_introduction',
+    id: 'page_introduction',
     displayName: 'Introduction',
     displayType: 'page',
     isHeader: false,

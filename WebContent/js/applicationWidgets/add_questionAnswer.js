@@ -18,7 +18,7 @@ define([
         if (value === null) value = translate("#question_not_yet_answered");
         if (value === undefined) {
             console.log("ERROR: missing question: ", referencedQuestionID);
-            throw new Error("ERROR: missing question: " + referencedQuestionID);            
+            // throw new Error("ERROR: missing question: " + referencedQuestionID);            
         }
         // console.log("domain.questions", domain, domain.questions);
         var question = domain.questions[referencedQuestionID];

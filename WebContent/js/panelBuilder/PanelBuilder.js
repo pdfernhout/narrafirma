@@ -82,6 +82,7 @@ var PanelBuilder = declare(null, {
 
     constructor: function(kwArgs) {
         this.currentQuestionContentPane = null;
+        this.currentInternalContentPane = null;
         this.panelSpecifications = null;
         this.buttonClickedCallback = null;
         
@@ -213,13 +214,16 @@ var PanelBuilder = declare(null, {
         // "*** " + 
         if (!fieldSpecification) throw new Error("null, undefined, or empty string for fieldSpecification");
         if (!fieldSpecification.id) throw new Error("null, undefined, or empty string for fieldSpecification id: " + JSON.stringify(fieldSpecification));
+        
         var id = fieldSpecification.id;
-        var questionText = translate(id + "::prompt", fieldSpecification.displayPrompt);
-        var questionContentPane = new ContentPane({
-        });
+   
+        var questionContentPane = new ContentPane();
+        
         domClass.add(questionContentPane.domNode, "questionExternal");
         questionContentPane.setAttribute("data-js-question-id", id);
         // questionContentPane.setAttribute("data-js-question-type", question.displayType);
+        
+        var questionText = translate(id + "::prompt", fieldSpecification.displayPrompt);
         // TODO: Fix the help that correct help actually pops up
         if (questionText) {
             var label = new ContentPane({
@@ -227,6 +231,7 @@ var PanelBuilder = declare(null, {
                 });
             label.placeAt(questionContentPane);
         }
+        
         questionContentPane.placeAt(contentPane);
         
         /* var helpWidget = add_button(questionContentPane, null, "button_help", [], function() {
@@ -234,14 +239,12 @@ var PanelBuilder = declare(null, {
         });
         */
         
-        var internalContentPane = new ContentPane({
-        });
+        var internalContentPane = new ContentPane();
         domClass.add(internalContentPane.domNode, "questionInternal");
         internalContentPane.placeAt(questionContentPane);
         
-        // TODO: Working on this!!!
-        // PDF STOPPED HERE!!!!!
         this.currentQuestionContentPane = questionContentPane;
+        this.currentInternalContentPane = internalContentPane;
         
         return internalContentPane;
     },
