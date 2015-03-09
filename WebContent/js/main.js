@@ -98,8 +98,13 @@ require([
         
         console.log("got versions", versions);
         
-        // TODO: Put up a dialog to choose from
-        dialogSupport.openListChoiceDialog(versions, null, "a content pane id?", "Please choose", "ok button", function (choice) {
+        versions.sort(function(a, b) {return a.timestamp.localeCompare(b.timestamp);});
+        
+        var choices = [];
+        _.forEach(versions, function(version) {
+            choices.push({value: version, label: version.timestamp + " | " + version.sha256AndLength + " | " + version.committer});
+        });
+        dialogSupport.openListChoiceDialog(choices, null, "a content pane id?", "Please choose", "ok button", function (choice) {
             console.log("choice:", choice);
         });
             

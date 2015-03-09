@@ -11,6 +11,7 @@ define([
     "dojo/Stateful",
     "dijit/form/Textarea",
     "./translate",
+    "./widgetSupport",
     "dojo/_base/window"
 ], function(
     at,
@@ -25,6 +26,7 @@ define([
     Stateful,
     Textarea,
     translate,
+    widgetSupport,
     win
 ){
     "use strict";
@@ -165,29 +167,40 @@ define([
         openDialog(model, dialogConfiguration);
     }
     
-    function buildListChoiceDialogContent(dialogContentPane, model, hideDialogMethod, dialogConfiguration) {    
+    function buildListChoiceDialogContent(dialogContentPane, model, hideDialogMethod, dialogConfiguration) {
+        console.log("buildListChoiceDialogContent", dialogConfiguration.choices);
         var layout = new LayoutContainer({
         });
         
+        var choiceOptions = dialogConfiguration.choices;
+        /*
         var choiceOptions = [];
         for (var index = 0; index < dialogConfiguration.choices.length; index++) {
             var choice = dialogConfiguration.choices[index];
             // TODO: Maybe translate?
             choiceOptions.push({label: "" + choice, value: choice});
         }
+        */
         
         var multiSelect = new MultiSelect({
             name: 'multiselect-popup',
-            value: at(model, "choice"),
-            option: choiceOptions,
-            region: 'center',  
-            style: "overflow: auto; height: 90%; max-height: 90%; width: 98%; max-width: 98%"            
+            value: model.get("choice"),
+            region: 'center',
+            style: "width: 100%; height:100%",
+            // style: "overflow: auto; height: 90%; max-height: 90%; width: 98%; max-width: 98%"            
         });
+        
+        widgetSupport.setOptionsInMultiSelect(multiSelect, choiceOptions);
         
         var okButton = new Button({
             label: translate(dialogConfiguration.dialogOKButtonID),
             type: "button",
-            onClick: function() {dialogConfiguration.dialogOKCallback(model.get("choice"), hideDialogMethod, dialogConfiguration);},
+            onClick: function() {
+                var value = multiSelect.get("value");
+                console.log("Selected value", value);
+                hideDialogMethod();
+                dialogConfiguration.dialogOKCallback(value, hideDialogMethod, dialogConfiguration);
+            },
             region: 'bottom'
         });
         
