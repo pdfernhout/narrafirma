@@ -231,11 +231,11 @@ require([
         // Show the current page again
         domStyle.set("pageDiv", "display", "block");
         
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+    
         // Because the page was hidden when created, all the grids need to be resized so grid knows how tall to make header so it is not overwritten
         currentPage.resize();
-        
-        window.scrollTo(0, 0);
-        
+            
         panelBuilder.updateQuestionsForPageChange();
         
         // Ensure the navigation has the list for this section
