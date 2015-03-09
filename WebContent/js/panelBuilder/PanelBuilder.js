@@ -79,8 +79,9 @@ addPlugin("toggleButton", add_toggleButton);
 
 // This class builds panels from question definitions
 var PanelBuilder = declare(null, {
-    
+
     constructor: function(kwArgs) {
+        this.currentQuestionContentPane = null;
         this.panelSpecifications = null;
         this.buttonClickedCallback = null;
         
@@ -237,6 +238,10 @@ var PanelBuilder = declare(null, {
         });
         domClass.add(internalContentPane.domNode, "questionInternal");
         internalContentPane.placeAt(questionContentPane);
+        
+        // TODO: Working on this!!!
+        // PDF STOPPED HERE!!!!!
+        this.currentQuestionContentPane = questionContentPane;
         
         return internalContentPane;
     },
