@@ -15,7 +15,7 @@ define([
     
     function add_label(panelBuilder, contentPane, model, fieldSpecification) {
         var label = new ContentPane({
-            content: panelBuilder.htmlForInformationIcon(panelBuilder.randomHelpPageURL(fieldSpecification.id)) + "&nbsp;&nbsp;" + translate("#" + fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt)
+            content: panelBuilder.htmlForInformationIcon(panelBuilder.randomHelpPageURL(fieldSpecification.id)) + "&nbsp;&nbsp;" + translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt)
         });
         label.placeAt(contentPane);
         return label;

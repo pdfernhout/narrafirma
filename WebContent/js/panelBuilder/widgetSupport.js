@@ -61,7 +61,7 @@ define([
         if (choices) {
             array.forEach(choices, function(each) {
                 // console.log("each1", each);
-                var label = translate("#" + id + "::selection:" + each, each);
+                var label = translate(id + "::selection:" + each, each);
                 options.push({label: label, value: each});
             });           
         } else if (optionsString) {
@@ -69,7 +69,7 @@ define([
                 // console.log("each2", each);
                 var translateID = id + "::selection:" + each;
                 if (optionsString === "yes\nno") translateID = "boolean_choice_" + each;
-                var label = translate("#" + translateID, each);
+                var label = translate(translateID, each);
                 options.push({label: label, value: each});
             });
         }
@@ -104,7 +104,7 @@ define([
                 // console.log("choice", id, each);
                 if (lang.isString(each)) {
                     // TODO: Add translation support here somehow
-                    var label = each; // translate("#" + id + "_choice_" + each, each);
+                    var label = each; // translate(id + "_choice_" + each, each);
                     options.push({name: label, id: each});
                 } else {
                     // TODO: Maybe bug in dojo select that it does not handle values that are not strings
@@ -137,7 +137,7 @@ define([
         var questionOptions = [];
         array.forEach(questions, function (question) {
             if (array.indexOf(filterableQuestionTypes, question.displayType) !== -1) {
-                questionOptions.push({label: translate("#" + question.id + "::shortName", question.displayName), value: question.id});
+                questionOptions.push({label: translate(question.id + "::shortName", question.displayName), value: question.id});
             }
         });
         return questionOptions;

@@ -28,12 +28,12 @@ define([
                 var label;
                 // console.log("choice", id, each);
                 if (lang.isString(each)) {
-                    label = translate("#" + fieldSpecification.id + "::selection:" + each, each);
+                    label = translate(fieldSpecification.id + "::selection:" + each, each);
                     options.push({name: label, id: each});
                 } else {
                     // TODO: Maybe bug in dojo select that it does not handle values that are not strings
                     // http://stackoverflow.com/questions/16205699/programatically-change-selected-option-of-a-dojo-form-select-that-is-populated-b
-                    label = translate("#" + fieldSpecification.id + "::selection:" + each.label, each.label);
+                    label = translate(fieldSpecification.id + "::selection:" + each.label, each.label);
                     options.push({name: label, id: each.value});
                 }
             });           

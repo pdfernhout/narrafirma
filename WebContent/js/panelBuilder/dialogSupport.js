@@ -59,7 +59,7 @@ define([
         };
         
         var button = new Button({
-            label: translate("#" + fieldSpecification.id, fieldSpecification.displayPrompt),
+            label: translate(fieldSpecification.id, fieldSpecification.displayPrompt),
             type: "button",
             onClick: callback
         });
@@ -88,7 +88,7 @@ define([
    
         dialog = new Dialog({
             // TODO: Translate
-            title: translate("#" + dialogConfiguration.dialogTitleID),
+            title: translate(dialogConfiguration.dialogTitleID),
             style: dialogConfiguration.dialogStyle,
             content: dialogContentPane
         });
@@ -136,7 +136,7 @@ define([
         });
         
         var okButton = new Button({
-            label: translate("#" + dialogConfiguration.dialogOKButtonID),
+            label: translate(dialogConfiguration.dialogOKButtonID),
             type: "button",
             onClick: function() {dialogConfiguration.dialogOKCallback(model.get("text"), hideDialogMethod, dialogConfiguration);},
             region: 'bottom'
@@ -185,7 +185,7 @@ define([
         });
         
         var okButton = new Button({
-            label: translate("#" + dialogConfiguration.dialogOKButtonID),
+            label: translate(dialogConfiguration.dialogOKButtonID),
             type: "button",
             onClick: function() {dialogConfiguration.dialogOKCallback(model.get("choice"), hideDialogMethod, dialogConfiguration);},
             region: 'bottom'

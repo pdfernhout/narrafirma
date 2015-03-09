@@ -13,7 +13,7 @@ define([
     
     function add_image(panelBuilder, contentPane, model, fieldSpecification) {
         var imageSource = fieldSpecification.displayConfiguration;
-        var questionText = translate("#" + fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt || "");
+        var questionText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt || "");
         var image = new ContentPane({
             content: questionText + "<br>" + '<img src="' + imageSource + '" alt="Image for question: ' + questionText + '">'
         });

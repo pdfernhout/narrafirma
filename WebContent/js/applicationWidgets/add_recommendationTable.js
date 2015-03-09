@@ -79,7 +79,7 @@ define([
         
         for (var questionName in recommendations.questions) {
             // TODO: Possible should improve this translation default, maybe by retrieving fieldSpecification for question and getting displayPrompt?
-            var questionText = translate("#" + questionName + "::prompt", "Missing translation for: " + questionName);
+            var questionText = translate(questionName + "::prompt", "Missing translation for: " + questionName);
             var yourAnswer = model.get(questionName);
             
             var questionTextContentPane = new ContentPane({"content": questionText, "colspan": 4, "align": "right"});

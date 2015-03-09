@@ -14,7 +14,7 @@ define([
     
     var debugTranslations = false;
     
-    // the tag field should have a leading "#" to ensure translation lookup, otherwise it is just returned as the same string passed in
+    // if the tag field has a leading "#", it is parsed into an id and a default string by splitting at the first pipe
     function translate(tag, defaultText) {
         if (debugTranslations) console.log("translating", tag);
         if (tag === "#undefined::prompt") throw new Error("bad translation tag using undefined which is likely a programming error");
@@ -25,18 +25,20 @@ define([
             return defaultText || "";
         }
         if (tag.charAt(0) !== "#") {
-            if (debugTranslations) console.log("translating with no leading hash mark, so returning what was passed in", tag);
+            var translation = pageMessages[tag] || applicationMessages[tag] || extraTranslations[tag];
+            if (translation) return translation;
+            if (debugTranslations) console.log("no translation available for:", tag);
+            if (defaultText) return defaultText;
             return tag;
         }
+        // Special translation is done if tag starts with a hash mark, where can also supply optional translation string at end
         var id = tag.substring(1);
         var suppliedText = "";
-        /* Was thinking about supporting extra text at end, but seems not to work with spaces -- too common; could try pipe ("|")?
-        var splitPoint = id.indexOf(" ");
+        var splitPoint = id.indexOf("|");
         if (splitPoint !== -1) {
             suppliedText = id.substring(splitPoint + 1);
             id = id.substring(0, splitPoint);
         }
-        */
         var result = pageMessages[id] || applicationMessages[id] || extraTranslations[id];
         if (result === undefined) {
             if (suppliedText) {
@@ -45,9 +47,9 @@ define([
                 result = defaultText;
             } else {
                 // Just return the tag, which starts with a # which should indicate an issue
-                result = "ERROR: missing text for: " + tag;
-                console.log("translate problem", result);
-                if (!debugTranslations) result = tag;
+                var error = "ERROR: missing text for: " + tag;
+                console.log("translate problem", error);
+                if (debugTranslations) result = error;
             }
         }
         if (debugTranslations) console.log("translating result: ", result, tag);

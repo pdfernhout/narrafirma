@@ -27,7 +27,7 @@ define([
                 // TODO: This may not translate correctly for checkboxes; may need to be translated individually
                 // console.log("trying to translate select", value);
                 // TODO: Possible big issue here with incorrect translation if values have spaces in them
-                value = translate("#" + value, value);
+                value = translate(value, value);
             }
         } else {
             console.log("calculate_questionAnswer: missing question definition for: ", referencedQuestionID);

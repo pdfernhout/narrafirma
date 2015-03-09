@@ -17,7 +17,7 @@ define([
         if (!callback) callback = lang.hitch(panelBuilder, panelBuilder.buttonClicked, contentPane, model, fieldSpecification);
         
         var button = new Button({
-            label: translate("#" + fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt),
+            label: translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt),
             type: "button",
             onClick: callback
         });

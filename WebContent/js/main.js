@@ -292,7 +292,7 @@ require([
                console.log("childPageID", childPageSpecification, childPageID);
                if (!childPageSpecification) console.log("Error: problem finding page definition for", childPageID);
                if (childPageSpecification && childPageSpecification.displayType === "page") {
-                   var prompt = translate("#" + childPageID + "::title", childPageSpecification.displayName) + " " + translate("#dashboard_status_label") + " ";
+                   var prompt = translate(childPageID + "::title", childPageSpecification.displayName) + " " + translate("#dashboard_status_label") + " ";
                    translate.addExtraTranslation(statusViewID + "::prompt", prompt);
                    console.log("about to call panelBuilder to add one questionAnswer for child page's status", childPageID);
                    panelBuilder.addQuestionWidget(pagePane, domain.projectData.projectAnswers, {id: statusViewID, displayType: "questionAnswer", displayConfiguration: [childPageID + "_pageStatus"]});
@@ -434,7 +434,7 @@ require([
             var panel = panels[panelIndex];
             
             // console.log("defining panel", panel.id);
-            var title = translate("#" + panel.id + "::title", panel.displayName);
+            var title = translate(panel.id + "::title", panel.displayName);
             if (panel.isHeader) {
                 title = "<i>" + title + "</i>";
             } else {

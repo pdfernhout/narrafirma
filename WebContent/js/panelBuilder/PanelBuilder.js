@@ -214,7 +214,7 @@ var PanelBuilder = declare(null, {
         if (!fieldSpecification) throw new Error("null, undefined, or empty string for fieldSpecification");
         if (!fieldSpecification.id) throw new Error("null, undefined, or empty string for fieldSpecification id: " + JSON.stringify(fieldSpecification));
         var id = fieldSpecification.id;
-        var questionText = translate("#" + id + "::prompt", fieldSpecification.displayPrompt);
+        var questionText = translate(id + "::prompt", fieldSpecification.displayPrompt);
         var questionContentPane = new ContentPane({
         });
         domClass.add(questionContentPane.domNode, "questionExternal");
@@ -277,7 +277,7 @@ var PanelBuilder = declare(null, {
             throw new Error("_add_calculatedText: calculate parameter should not be empty");
         }
         var calculatedText = calculate();
-        var baseText = translate("#" + fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
+        var baseText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
         var label = new ContentPane({
             content: baseText + calculatedText
         });
