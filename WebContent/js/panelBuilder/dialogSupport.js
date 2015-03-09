@@ -44,14 +44,6 @@ define([
         dialog.show();
     }
     
-    /*
-    var dialogConfiguration = {
-        dialogTitleID: "???",
-        dialogStyle: "height: 500px",
-        dialogConstructionFunction: ???
-    };
-    */
-    
     // TODO: Should probably improve how IDs for translations work, by maybe just passing in string that either has # already or is used as is
     
     function addButtonThatLaunchesDialog(contentPane, model, fieldSpecification, dialogConfiguration) {
@@ -89,7 +81,7 @@ define([
    
         dialog = new Dialog({
             // TODO: Translate
-            title: translate(dialogConfiguration.dialogTitleID),
+            title: translate(dialogConfiguration.dialogTitle),
             style: dialogConfiguration.dialogStyle,
             content: dialogContentPane
         });
@@ -104,16 +96,15 @@ define([
         dialog.show();
     }
     
-    // dialogTitleID "title_textEditorDialog"
-    function openTextEditorDialog(text, dialogTitleID, dialogOKButtonID, dialogOKCallback) {
+    function openTextEditorDialog(text, dialogTitle, dialogOKButtonLabel, dialogOKCallback) {
         
         var model = new Stateful({text: text});
         
         var dialogConfiguration = {
-            dialogTitleID: dialogTitleID,
+            dialogTitle: dialogTitle,
             dialogStyle: "width: 600px; height: 800px",
             dialogConstructionFunction: build_textEditorDialogContent,
-            dialogOKButtonID: dialogOKButtonID,
+            dialogOKButtonLabel: dialogOKButtonLabel,
             dialogOKCallback: dialogOKCallback
         };
         
@@ -136,7 +127,7 @@ define([
         });
         
         var okButton = new Button({
-            label: translate(dialogConfiguration.dialogOKButtonID),
+            label: translate(dialogConfiguration.dialogOKButtonLabel),
             type: "button",
             onClick: function() {
                 var text = model.get("text");
@@ -151,15 +142,15 @@ define([
         layout.placeAt(dialogContentPane);
     }
     
-    function openListChoiceDialog(choices, initialChoice, dialogTitleID, dialogOKButtonID, dialogOKCallback) {
+    function openListChoiceDialog(choices, initialChoice, dialogTitle, dialogOKButtonLabel, dialogOKCallback) {
         
         var model = new Stateful({choice: initialChoice});
         
         var dialogConfiguration = {
-            dialogTitleID: dialogTitleID,
+            dialogTitle: dialogTitle,
             dialogStyle: "width: 600px; height: 800px",
             dialogConstructionFunction: buildListChoiceDialogContent,
-            dialogOKButtonID: dialogOKButtonID,
+            dialogOKButtonLabel: dialogOKButtonLabel,
             dialogOKCallback: dialogOKCallback,
             choices: choices
         };
@@ -193,7 +184,7 @@ define([
         widgetSupport.setOptionsInMultiSelect(multiSelect, choiceOptions);
         
         var okButton = new Button({
-            label: translate(dialogConfiguration.dialogOKButtonID),
+            label: translate(dialogConfiguration.dialogOKButtonLabel),
             type: "button",
             onClick: function() {
                 var value = multiSelect.get("value");
