@@ -13,7 +13,14 @@ define([], function() {
             id: 'project_mainDashboardLabel',
             dataType: 'none',
             displayType: 'label',
-            displayPrompt: 'NarraFirma Dashboard (click on the "Home" icon to return here)<br>Click on a button to work with that section of the NarraFirma application.',
+            displayPrompt: 'NarraFirma Dashboard (click on the "Home" icon to return here)',
+         },
+         {
+             id: 'project_mainDashboard_launchIntroduction',
+             dataType: 'none',
+             displayType: 'button',
+             displayConfiguration: {action: 'guiOpenSection', section: 'page_introduction'},
+             displayPrompt: 'Go to introduction page'
          },
          {
              id: 'project_launchSection_planning',
