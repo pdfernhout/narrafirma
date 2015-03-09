@@ -1,13 +1,18 @@
 define([
     "dojox/mvc/at",
     "dijit/form/Button",
+    'dgrid/extensions/ColumnResizer',
     "dijit/ConfirmDialog",
     "dijit/layout/ContentPane",
+    'dojo/_base/declare',
     "dijit/Dialog",
+    'dgrid/extensions/DijitRegistry',
     'dgrid/Grid',
+    'dgrid/Keyboard',
     "dojo/_base/lang",
     "dijit/layout/LayoutContainer",
     "dojo/query",
+    'dgrid/Selection',
     "dojo/Stateful",
     "dijit/form/Textarea",
     "./translate",
@@ -16,13 +21,18 @@ define([
 ], function(
     at,
     Button,
+    ColumnResizer,
     ConfirmDialog,
     ContentPane,
+    declare,
     Dialog,
+    DijitRegistry,
     Grid,
+    Keyboard,
     lang,
     LayoutContainer,
     query,
+    Selection,
     Stateful,
     Textarea,
     translate,
@@ -69,14 +79,14 @@ define([
         console.log("openDialog", model, JSON.stringify(dialogConfiguration));
         
         var dialog;
-        var dialogContentPane = new ContentPane();
+        var dialogContentPane = new ContentPane({
+            // style: "width:100%; height:100%;"
+        });
         
         function hideDialogMethod(status) {
             dialog.hide();
         }
         
-        dialogConfiguration.dialogConstructionFunction(dialogContentPane, model, hideDialogMethod, dialogConfiguration);
-   
         dialog = new Dialog({
             // TODO: Translate
             title: translate(dialogConfiguration.dialogTitle),
@@ -91,7 +101,11 @@ define([
         });
                 
         dialog.startup(); 
+     
         dialog.show();
+        
+        // Calling this after dialog opened so dgrid resizes headers correctly for data
+        dialogConfiguration.dialogConstructionFunction(dialogContentPane, model, hideDialogMethod, dialogConfiguration); 
     }
     
     function openTextEditorDialog(text, dialogTitle, dialogOKButtonLabel, dialogOKCallback) {
@@ -100,7 +114,7 @@ define([
         
         var dialogConfiguration = {
             dialogTitle: dialogTitle,
-            dialogStyle: "width: 600px; height: 800px",
+            dialogStyle: "width: 800px; height: 600px",
             dialogConstructionFunction: build_textEditorDialogContent,
             dialogOKButtonLabel: dialogOKButtonLabel,
             dialogOKCallback: dialogOKCallback
@@ -161,19 +175,31 @@ define([
     function buildListChoiceDialogContent(dialogContentPane, model, hideDialogMethod, dialogConfiguration) {
         console.log("buildListChoiceDialogContent", dialogConfiguration.choices);
         var layout = new LayoutContainer({
+            // style: "width:100%; height:100%;"
+            // style: "height: 90%; max-height: 90%; width: 98%; max-width: 98%"
+            // style: "overflow: auto; height: 90%; max-height: 90%; width: 98%; max-width: 98%"
         });
         
-        var grid = new Grid({
-            columns: dialogConfiguration.columns
+        // Including DijitRegistry because nesting the grid inside of dijit layout container
+        var grid = new (declare([Grid, Selection, Keyboard, DijitRegistry, ColumnResizer]))({
+            columns: dialogConfiguration.columns,
+            region: 'center',
+            selectionMode: 'single'
+            // style: "position: absolute; top: 0; bottom: 0; left: 0; right: 0; height: auto;"
+            // style: "overflow: auto; height: 90%; max-height: 90%; width: 98%; max-width: 98%"
         });
 
         var okButton = new Button({
             label: translate(dialogConfiguration.dialogOKButtonLabel),
             type: "button",
             onClick: function() {
-                // var value = grid.get("value");
-                // TODO: Fix
+                console.log("grid selection", grid.selection, grid);
                 var value = null;
+                // Find first selection (and there should only be one)
+                for (var key in grid.selection) {
+                    if (grid.selection[key]) value = dialogConfiguration.choices[key];
+                    break;
+                }
                 console.log("Selected value", value);
                 hideDialogMethod();
                 dialogConfiguration.dialogOKCallback(value, hideDialogMethod, dialogConfiguration);
@@ -183,10 +209,12 @@ define([
         
         layout.addChild(grid);
         layout.addChild(okButton);
- 
-        layout.placeAt(dialogContentPane);
         
+        layout.placeAt(dialogContentPane);
+   
         grid.renderArray(dialogConfiguration.choices);
+        
+        dialogConfiguration.grid = grid;
     }
 
     return {
