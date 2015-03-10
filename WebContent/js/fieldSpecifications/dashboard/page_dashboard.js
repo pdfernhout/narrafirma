@@ -13,7 +13,7 @@ define([], function() {
             id: 'project_mainDashboardLabel',
             dataType: 'none',
             displayType: 'label',
-            displayPrompt: 'NarraFirma Dashboard (click on the "Home" icon to return here)',
+            displayPrompt: 'NarraFirma Dashboard (Click on the "Home" icon to return here. Click on buttons below to open the related section.)',
          },
          {
              id: 'project_mainDashboard_launchIntroduction',
