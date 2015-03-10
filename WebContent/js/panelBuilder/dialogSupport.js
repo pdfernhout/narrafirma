@@ -76,11 +76,11 @@ define([
     }
     
     function openDialog(model, dialogConfiguration) {  
-        console.log("openDialog", model, JSON.stringify(dialogConfiguration));
+        console.log("openDialog", model, dialogConfiguration.dialogTitle); // JSON.stringify(dialogConfiguration));
         
         var dialog;
         var dialogContentPane = new ContentPane({
-            // style: "width: 100%; height: 100%; min-height: 100%; min-width: 100%"
+            // min-height: 100%; min-width: 100%"
         });
         
         function hideDialogMethod(status) {
@@ -108,13 +108,16 @@ define([
         dialogConfiguration.dialogConstructionFunction(dialogContentPane, model, hideDialogMethod, dialogConfiguration); 
     }
     
+    // Caller needs to call the hideDialogMethod returned as the second arg of dialogOKCallback to close the dialog
     function openTextEditorDialog(text, dialogTitle, dialogOKButtonLabel, dialogOKCallback) {
+        if (!dialogTitle) dialogTitle = "Editor";
+        if (!dialogOKButtonLabel) dialogOKButtonLabel = "OK";
         
         var model = new Stateful({text: text});
         
         var dialogConfiguration = {
             dialogTitle: dialogTitle,
-            dialogStyle: "width: 600px; height: 800px",
+            dialogStyle: undefined,
             dialogConstructionFunction: build_textEditorDialogContent,
             dialogOKButtonLabel: dialogOKButtonLabel,
             dialogOKCallback: dialogOKCallback
@@ -133,9 +136,9 @@ define([
         var sourceTextarea = new Textarea({
             name: 'text',
             value: at(model, "text"),
-            placeHolder: dialogConfiguration.placeHolder, // "[]",
+            placeHolder: dialogConfiguration.placeHolder,
             region: 'center',  
-            style: "overflow: auto; height: 90%; max-height: 90%; width: 98%; max-width: 98%"
+            style: "min-height: 400px; min-width: 600px; max-height: 800px; max-width: 800px; overflow: auto"
         });
         
         var okButton = new Button({
@@ -156,12 +159,14 @@ define([
     
     // columns are in dgrid format
     function openListChoiceDialog(initialChoice, choices, columns, dialogTitle, dialogOKButtonLabel, dialogOKCallback) {
+        if (!dialogTitle) dialogTitle = "Choices";
+        if (!dialogOKButtonLabel) dialogOKButtonLabel = "Choose";
         
         var model = new Stateful({choice: initialChoice});
         
         var dialogConfiguration = {
             dialogTitle: dialogTitle,
-            dialogStyle: "max-width: 800px; max-height: 600px",
+            dialogStyle: undefined,
             dialogConstructionFunction: buildListChoiceDialogContent,
             dialogOKButtonLabel: dialogOKButtonLabel,
             dialogOKCallback: dialogOKCallback,
@@ -173,29 +178,24 @@ define([
     }
     
     function buildListChoiceDialogContent(dialogContentPane, model, hideDialogMethod, dialogConfiguration) {
-        console.log("buildListChoiceDialogContent", dialogConfiguration.choices);
+        console.log("buildListChoiceDialogContent", dialogConfiguration.dialogTitle);
         var layout = new LayoutContainer({
-            // style: "width: 100%; height: 100%; min-height: 100%; min-width: 100%"
-            // style: "width: 100%; height: 100%;"
-            // style: "height: 90%; max-height: 90%; width: 98%; max-width: 98%"
-            // style: "overflow: auto; height: 90%; max-height: 90%; width: 98%; max-width: 98%"
+            style: "min-height: 400px; min-width: 600px; max-height: 800px; max-width: 800px"
         });
         
         // Including DijitRegistry because nesting the grid inside of dijit layout container
         var grid = new (declare([Grid, Selection, Keyboard, DijitRegistry, ColumnResizer]))({
             columns: dialogConfiguration.columns,
             region: 'center',
-            selectionMode: 'single',
-            // style: "width: 100%; height: 100%; min-height: 100%; min-width: 100%"
-            // style: "position: absolute; top: 0; bottom: 0; left: 0; right: 0; height: auto;"
-            // style: "overflow: auto; height: 90%; max-height: 90%; width: 98%; max-width: 98%"
+            selectionMode: 'single'
+            // style: "min-height: 400px; min-width: 600px;"
         });
 
         var okButton = new Button({
             label: translate(dialogConfiguration.dialogOKButtonLabel),
             type: "button",
             onClick: function() {
-                console.log("grid selection", grid.selection, grid);
+                console.log("grid selection", grid.selection);
                 var value = null;
                 // Find first selection (and there should only be one)
                 for (var key in grid.selection) {
@@ -204,7 +204,7 @@ define([
                 }
                 console.log("Selected value", value);
                 hideDialogMethod();
-                dialogConfiguration.dialogOKCallback(value, hideDialogMethod, dialogConfiguration);
+                dialogConfiguration.dialogOKCallback(value, dialogConfiguration);
             },
             region: 'top'
         });
@@ -215,6 +215,11 @@ define([
         layout.placeAt(dialogContentPane);
         
         grid.renderArray(dialogConfiguration.choices);
+        
+        var selectedIndex = dialogConfiguration.choices.indexOf(model.get("choice"));
+        if (selectedIndex !== -1) {
+            grid.select(selectedIndex);
+        }
         
         dialogConfiguration.grid = grid;
     }
