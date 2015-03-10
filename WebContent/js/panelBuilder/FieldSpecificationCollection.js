@@ -98,5 +98,16 @@ define([
         return questions;
     };
     
+    FieldSpecifications.prototype.getPanelSpecificationForPanelID = function(panelID) {
+        var questions = [];
+        for (var i = 0; i < this.applicationFieldSpecifications.length; i++) {
+            var fieldSpecification = this.applicationFieldSpecifications[i];
+            if (isPanel(fieldSpecification) && fieldSpecification.id === panelID) {
+                return fieldSpecification;
+            }
+        }
+        return null;
+    };
+    
     return FieldSpecifications;
 });
