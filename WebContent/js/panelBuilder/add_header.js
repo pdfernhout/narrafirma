@@ -13,7 +13,7 @@ define([
     
     function add_header(panelBuilder, contentPane, model, fieldSpecification) {
         var label = new ContentPane({
-            content: panelBuilder.htmlForInformationIcon(panelBuilder.randomHelpPageURL(fieldSpecification.id)) + "&nbsp;&nbsp;" + "<b>" + translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt) + "</b>"
+            content: panelBuilder.htmlForInformationIcon(panelBuilder.helpPageURLForField(fieldSpecification)) + "&nbsp;&nbsp;" + "<b>" + translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt) + "</b>"
         });
         label.placeAt(contentPane);
         return label;

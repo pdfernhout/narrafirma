@@ -186,15 +186,20 @@ var PanelBuilder = declare(null, {
     
     /// Suport functions
     
-    // TODO: Remove this -- just for testing/demo purposes
-    randomHelpPageURL: function(id) {
-        var index = (Math.floor(Math.random() * 8) + 1);
-        var url = 'http://www.kurtz-fernhout.com/help100/0000000' + index + '.htm' + "#" + id;
+    helpPageURLForField: function(fieldSpecification) {
+        var section = fieldSpecification.helpSection;
+        var pageID = fieldSpecification.helpPage;
+        console.log("helpPageURLForField", fieldSpecification, section, pageID);
+        var url = "";   
+        if (section && pageID) {
+            url = '/help/' + section + "/help_" + pageID + '.html';
+        }
         return url;
     },
                 
     // TODO: Fix all this so attaching actual JavaScript function not text to be interpreted
     htmlForInformationIcon: function(url) {
+        if (!url) return "";
         var template = '<img src="{iconFile}" height=16 width=16 title="{title}" onclick="document.__narraFirma_launchApplication(\'{url}\', \'help\')">';
         return lang.replace(template, {
             // TODO: Remove unused images from project
@@ -227,7 +232,7 @@ var PanelBuilder = declare(null, {
         // TODO: Fix the help that correct help actually pops up
         if (questionText) {
             var label = new ContentPane({
-                content: this.htmlForInformationIcon(this.randomHelpPageURL(id)) + "&nbsp;&nbsp;" + questionText
+                content: this.htmlForInformationIcon(this.helpPageURLForField(fieldSpecification)) + "&nbsp;&nbsp;" + questionText
                 });
             label.placeAt(questionContentPane);
         }
