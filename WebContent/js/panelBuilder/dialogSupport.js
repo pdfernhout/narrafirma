@@ -100,8 +100,6 @@ define([
             dialog.destroyRecursive(); 
         });
                 
-        dialog.startup(); 
-     
         dialog.show();
         
         // Calling this after dialog opened so dgrid resizes headers correctly for data

@@ -370,7 +370,6 @@ define([
             dialog.destroyRecursive(); 
         });
         
-        dialog.startup();
         dialog.show();
     };
 

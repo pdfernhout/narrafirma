@@ -307,7 +307,6 @@ define([
             surveyDialog.destroyRecursive();
         });
                 
-        surveyDialog.startup();
         surveyDialog.show();
     }
     
