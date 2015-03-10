@@ -60,10 +60,12 @@ define([
         if (pageCount) percentDone = Math.round(100 * finishedPageCount / pageCount);
         
         // TODO: Translate
-        var statusText = sectionName + " status: All " + pageCount + " " + sectionName.toLowerCase() + " steps complete (100%)";
+        var statusText = " -- All " + pageCount + " steps complete (100%)";
         if (unfinishedPageCount) {
-            statusText = sectionName + " status: " + finishedPageCount + " " + sectionName.toLowerCase() + " " + stepPlural(finishedPageCount) + " of " + pageCount + " complete (" + percentDone + "%)";
+            statusText = " -- " + finishedPageCount + " " + stepPlural(finishedPageCount) + " of " + pageCount + " complete (" + percentDone + "%)";
         }
+        
+        if (pageCount === 0) statusText = "";
         
         console.log("statusText for pageStatus", statusText, pageStatus);
         // var statusText = "Unfinished count: " + pageCount + " with: " + JSON.stringify(pageStatus);
@@ -73,7 +75,7 @@ define([
             displayType: "label",
             displayPrompt: statusText,
         };
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, statusSpecification);
+        // var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, statusSpecification);
         
         /*
         var label = new ContentPane({
@@ -88,10 +90,10 @@ define([
             id: fieldSpecification.id + "_button",
             displayType: "button",
             // TODO: Translate
-            displayPrompt: "Open " + sectionName.toLowerCase() + " section",
+            displayPrompt: "<b>" + sectionName + "</b>" + statusText,
             displayConfiguration: fieldSpecification.displayConfiguration
             };
-        var button = panelBuilder.addQuestionWidget(questionContentPane, model, buttonFieldSpecification);
+        var button = panelBuilder.addQuestionWidget(contentPane, model, buttonFieldSpecification);
         
         // return label;
         return button;
