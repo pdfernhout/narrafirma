@@ -2,12 +2,14 @@ define([
     "dojox/mvc/at",
     "dijit/form/Button",
     "dijit/layout/ContentPane",
+    "dojo/dom-construct",
     "dojo/_base/lang",
     "./translate"
 ], function(
     at,
     Button,
     ContentPane,
+    domConstruct,
     lang,
     translate
 ){
@@ -23,6 +25,12 @@ define([
         });
 
         button.placeAt(contentPane);
+        
+        // TODO: Improve the naming of this, maybe by using displayConfiguration somehow, perhaps by changing the meaning of that field to something else
+        if (!fieldSpecification.displayPreventBreak) {
+            domConstruct.place("<br>", contentPane.domNode);
+        }
+        
         return button;
     }
 
