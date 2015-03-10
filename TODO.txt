@@ -64,7 +64,7 @@ Add way to clear out or reset old survey results? Or maybe partition them by sur
 
 LOAD/SAVE
 Think through how project is loaded and saved, especially what happens if multiple windows or users edit the same project
-Improve loading and saving of project so can look at versions
+Think about saving one file per page or model and using triples to index them related to one survey?
 Confirm reloading or closing page if have unsaved data
 Autosave, perhaps based on time or based on changing pages
 Improve feedback when there are no project versions or survey results; maybe distinguish between an error and nothing being saved yet
@@ -520,3 +520,8 @@ DONE Fix bug introduced in translate approach where can pass in a string with a 
 DONE First cut for main Dashboard
 DONE Decide or distinguish between between an initial explanation page versus a first big dashboard [introduction pages comes later]
 DONE Create widget for Main Dashboard that combines a button and a section status
+DONE Get dialog for choice from list working
+DONE Fix resizing issues in dialogs
+DONE Add testing directory with simple tests for dialogs
+DONE Switch to <!DOCTYPE html> tag for all HTML files instead of HTML 4.01 tag
+DONE Improve loading and saving of project so can look at versions
