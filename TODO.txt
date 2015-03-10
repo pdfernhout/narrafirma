@@ -16,11 +16,6 @@ DOMAIN
 Refactor code so have better defined domain models, probably with dmodel
 Think about saving and loading for smaller subparts of projects as seperate files
 
-HELP
-Figure out exactly how help text will be stored
-Generate stub help files from design specification with one div per interface item on a page
-Improve help system so it jumps to those specific help divs associated
-
 SITE
 Determine how (or if) to support multi-user sites
 Determine how (or if) to support multiple projects per user
@@ -527,3 +522,6 @@ DONE Fix resizing issues in dialogs
 DONE Add testing directory with simple tests for dialogs
 DONE Switch to <!DOCTYPE html> tag for all HTML files instead of HTML 4.01 tag
 DONE Improve loading and saving of project so can look at versions
+DONE Figure out exactly how help text will be stored
+DONE Generate stub help files from design specification with one div per interface item on a page
+DONE Improve help system so it jumps to those specific help divs associated
