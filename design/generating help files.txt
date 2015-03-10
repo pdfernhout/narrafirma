@@ -1,0 +1,291 @@
+generateHelpFiles Tue Mar 10 2015 10:52:39 GMT-0400 (EDT)
+following  page_participantGroups project_participantGroupsList grid
+following  page_projectStories project_projectStoriesList grid
+following  page_enterProjectStoryElements project_projectStoryElementsList grid
+following  page_chooseCollectionVenues project_venuesList grid
+following  page_writeStoryElicitingQuestions project_elicitingQuestionsList grid
+following  page_writeQuestionsAboutStories project_storyQuestionsList grid
+following  page_writeQuestionsAboutParticipants project_participantQuestionsList grid
+following  page_planStoryCollectionSessions project_collectionSessionPlansList grid
+following  panel_addStoryCollectionSession collectionSessionPlan_activitiesList grid
+following  page_enterCollectionSessionRecords project_collectionSessionRecordsList grid
+following  panel_addCollectionSessionRecord collectionSessionRecord_constructionsList grid
+following  page_reviewExcerpts project_savedExcerptsList grid
+following  page_interpretObservations project_observationsDisplayList grid
+following  panel_createOrEditObservation observation_firstInterpretation_excerptsList grid
+following  panel_createOrEditObservation observation_competingInterpretation_excerptsList grid
+following  panel_createOrEditObservation observation_thirdInterpretation_excerptsList grid
+following  page_describePerspectives project_perspectivesList grid
+following  panel_addPerspective perspective_linkedResultsList annotationsGrid
+following  panel_addPerspective perspective_linkedExcerptsList annotationsGrid
+following  panel_addPerspective perspective_linkedInterpretationsList annotationsGrid
+following  page_planSensemakingSessions project_sensemakingSessionPlansList grid
+following  panel_addSensemakingSessionPlan sensemakingSessionPlan_activitiesList grid
+following  page_enterSensemakingSessionRecords project_sensemakingSessionRecordsList grid
+following  panel_addSensemakingSessionRecord sensemakingSessionRecord_resonantStoriesList grid
+following  panel_addSensemakingSessionRecord sensemakingSessionRecord_outcomesList grid
+following  panel_addSensemakingSessionRecord sensemakingSessionRecord_constructionsList grid
+following  page_projectOutcomesForIntervention project_outcomesList grid
+following  page_designInterventions project_interventionPlansList grid
+following  page_recordInterventions project_interventionRecordsList grid
+following  page_gatherFeedback project_feedbackItemsList grid
+following  page_prepareProjectPresentation project_presentationElementsList grid
+following  page_projectRequests project_returnRequestsList grid
+helpFiles [ [ 'page_dashboard' ],
+  [ 'page_introduction' ],
+  [ 'page_planning' ],
+  [ 'page_projectFacts' ],
+  [ 'page_planningQuestionsDraft' ],
+  [ 'page_participantGroups', 'panel_addParticipantGroup' ],
+  [ 'page_aboutYou' ],
+  [ 'page_projectStories', 'panel_projectStory' ],
+  [ 'page_createProjectStoryElements' ],
+  [ 'page_enterProjectStoryElements', 'panel_addStoryElement' ],
+  [ 'page_assessStorySharing' ],
+  [ 'page_revisePNIPlanningQuestions' ],
+  [ 'page_writeProjectSynopsis' ],
+  [ 'page_readPlanningReport' ],
+  [ 'page_collectionDesign' ],
+  [ 'page_chooseCollectionVenues', 'panel_addVenue' ],
+  [ 'page_writeStoryElicitingQuestions',
+    'panel_addElicitingQuestion' ],
+  [ 'page_writeQuestionsAboutStories', 'panel_addStoryQuestion' ],
+  [ 'page_writeQuestionsAboutParticipants',
+    'panel_addParticipantQuestion' ],
+  [ 'page_designQuestionForm' ],
+  [ 'page_planStoryCollectionSessions',
+    'panel_addStoryCollectionSession',
+    'panel_addCollectionSessionActivity' ],
+  [ 'page_readCollectionDesignReport' ],
+  [ 'page_collectionProcess' ],
+  [ 'page_finalizeQuestionForms' ],
+  [ 'page_startStoryCollection' ],
+  [ 'page_enterStories' ],
+  [ 'page_reviewIncomingStories' ],
+  [ 'page_stopStoryCollection' ],
+  [ 'page_enterCollectionSessionRecords',
+    'panel_addCollectionSessionRecord',
+    'panel_newCollectionSessionConstruction' ],
+  [ 'page_readCollectionProcessReport' ],
+  [ 'page_catalysis' ],
+  [ 'page_browseStories' ],
+  [ 'page_themeStories' ],
+  [ 'page_browseGraphs' ],
+  [ 'page_reviewTrends' ],
+  [ 'page_reviewExcerpts', 'panel_createNewExcerpt' ],
+  [ 'page_interpretObservations',
+    'panel_createOrEditObservation',
+    'panel_selectExcerpt' ],
+  [ 'page_clusterInterpretations' ],
+  [ 'page_describePerspectives',
+    'panel_addPerspective',
+    'panel_annotateResultForPerspective',
+    'panel_annotateExcerptForPerspective',
+    'panel_annotateInterpretationForPerspective' ],
+  [ 'page_readCatalysisReport' ],
+  [ 'page_sensemaking' ],
+  [ 'page_planSensemakingSessions',
+    'panel_addSensemakingSessionPlan',
+    'panel_addSensemakingSessionActivity' ],
+  [ 'page_enterSensemakingSessionRecords',
+    'panel_addSensemakingSessionRecord',
+    'panel_addResonantStory',
+    'panel_newSensemakingSessionOutcome',
+    'panel_newSensemakingSessionConstruction' ],
+  [ 'page_readSensemakingReport' ],
+  [ 'page_intervention' ],
+  [ 'page_projectOutcomesForIntervention',
+    'panel_projectOutcome' ],
+  [ 'page_designInterventions', 'panel_addIntervention' ],
+  [ 'page_recordInterventions', 'panel_addInterventionRecord' ],
+  [ 'page_interventionReport' ],
+  [ 'page_return' ],
+  [ 'page_gatherFeedback', 'panel_enterFeedbackPiece' ],
+  [ 'page_reflectOnProject' ],
+  [ 'page_prepareProjectPresentation',
+    'panel_addPresentationElement' ],
+  [ 'page_projectRequests', 'panel_addNewReturnRequest' ],
+  [ 'page_returnReport' ],
+  [ 'page_projectReport' ] ]
+allAddedPanels [ 'page_dashboard',
+  'page_introduction',
+  'page_planning',
+  'page_projectFacts',
+  'page_planningQuestionsDraft',
+  'page_participantGroups',
+  'panel_addParticipantGroup',
+  'page_aboutYou',
+  'page_projectStories',
+  'panel_projectStory',
+  'page_createProjectStoryElements',
+  'page_enterProjectStoryElements',
+  'panel_addStoryElement',
+  'page_assessStorySharing',
+  'page_revisePNIPlanningQuestions',
+  'page_writeProjectSynopsis',
+  'page_readPlanningReport',
+  'page_collectionDesign',
+  'page_chooseCollectionVenues',
+  'panel_addVenue',
+  'page_writeStoryElicitingQuestions',
+  'panel_addElicitingQuestion',
+  'page_writeQuestionsAboutStories',
+  'panel_addStoryQuestion',
+  'page_writeQuestionsAboutParticipants',
+  'panel_addParticipantQuestion',
+  'page_designQuestionForm',
+  'page_planStoryCollectionSessions',
+  'panel_addStoryCollectionSession',
+  'panel_addCollectionSessionActivity',
+  'page_readCollectionDesignReport',
+  'page_collectionProcess',
+  'page_finalizeQuestionForms',
+  'page_startStoryCollection',
+  'page_enterStories',
+  'page_reviewIncomingStories',
+  'page_stopStoryCollection',
+  'page_enterCollectionSessionRecords',
+  'panel_addCollectionSessionRecord',
+  'panel_newCollectionSessionConstruction',
+  'page_readCollectionProcessReport',
+  'page_catalysis',
+  'page_browseStories',
+  'page_themeStories',
+  'page_browseGraphs',
+  'page_reviewTrends',
+  'page_reviewExcerpts',
+  'panel_createNewExcerpt',
+  'page_interpretObservations',
+  'panel_createOrEditObservation',
+  'panel_selectExcerpt',
+  'page_clusterInterpretations',
+  'page_describePerspectives',
+  'panel_addPerspective',
+  'panel_annotateResultForPerspective',
+  'panel_annotateExcerptForPerspective',
+  'panel_annotateInterpretationForPerspective',
+  'page_readCatalysisReport',
+  'page_sensemaking',
+  'page_planSensemakingSessions',
+  'panel_addSensemakingSessionPlan',
+  'panel_addSensemakingSessionActivity',
+  'page_enterSensemakingSessionRecords',
+  'panel_addSensemakingSessionRecord',
+  'panel_addResonantStory',
+  'panel_newSensemakingSessionOutcome',
+  'panel_newSensemakingSessionConstruction',
+  'page_readSensemakingReport',
+  'page_intervention',
+  'page_projectOutcomesForIntervention',
+  'panel_projectOutcome',
+  'page_designInterventions',
+  'panel_addIntervention',
+  'page_recordInterventions',
+  'panel_addInterventionRecord',
+  'page_interventionReport',
+  'page_return',
+  'page_gatherFeedback',
+  'panel_enterFeedbackPiece',
+  'page_reflectOnProject',
+  'page_prepareProjectPresentation',
+  'panel_addPresentationElement',
+  'page_projectRequests',
+  'panel_addNewReturnRequest',
+  'page_returnReport',
+  'page_projectReport' ]
+!!! No help for panel_addToObservation
+!!! No help for panel_addToExcerpt
+
+
+
+////////
+
+
+ page_dashboard
+ page_introduction
+ page_planning
+ page_projectFacts
+ page_planningQuestionsDraft
+ page_participantGroups
+     panel_addParticipantGroup
+ page_aboutYou
+ page_projectStories
+     panel_projectStory
+ page_createProjectStoryElements
+ page_enterProjectStoryElements
+     panel_addStoryElement
+ page_assessStorySharing
+ page_revisePNIPlanningQuestions
+ page_writeProjectSynopsis
+ page_readPlanningReport
+ page_collectionDesign
+ page_chooseCollectionVenues
+     panel_addVenue
+ page_writeStoryElicitingQuestions
+     panel_addElicitingQuestion
+ page_writeQuestionsAboutStories
+     panel_addStoryQuestion
+ page_writeQuestionsAboutParticipants
+     panel_addParticipantQuestion
+ page_designQuestionForm
+ page_planStoryCollectionSessions
+     panel_addStoryCollectionSession
+     panel_addCollectionSessionActivity
+ page_readCollectionDesignReport
+ page_collectionProcess
+ page_finalizeQuestionForms
+ page_startStoryCollection
+ page_enterStories
+ page_reviewIncomingStories
+ page_stopStoryCollection
+ page_enterCollectionSessionRecords
+     panel_addCollectionSessionRecord
+     panel_newCollectionSessionConstruction
+ page_readCollectionProcessReport
+ page_catalysis
+ page_browseStories
+ page_themeStories
+ page_browseGraphs
+ page_reviewTrends
+ page_reviewExcerpts
+     panel_createNewExcerpt
+ page_interpretObservations
+     panel_createOrEditObservation
+     panel_selectExcerpt
+ page_clusterInterpretations
+ page_describePerspectives
+     panel_addPerspective
+     panel_annotateResultForPerspective
+     panel_annotateExcerptForPerspective
+     panel_annotateInterpretationForPerspective
+ page_readCatalysisReport
+ page_sensemaking
+ page_planSensemakingSessions
+     panel_addSensemakingSessionPlan
+     panel_addSensemakingSessionActivity
+ page_enterSensemakingSessionRecords
+     panel_addSensemakingSessionRecord
+     panel_addResonantStory
+     panel_newSensemakingSessionOutcome
+     panel_newSensemakingSessionConstruction
+ page_readSensemakingReport
+ page_intervention
+ page_projectOutcomesForIntervention
+     panel_projectOutcome
+ page_designInterventions
+     panel_addIntervention
+ page_recordInterventions
+     panel_addInterventionRecord
+ page_interventionReport
+ page_return
+ page_gatherFeedback
+     panel_enterFeedbackPiece
+ page_reflectOnProject
+ page_prepareProjectPresentation
+     panel_addPresentationElement
+ page_projectRequests
+     panel_addNewReturnRequest
+ page_returnReport
+ page_projectReport
+ panel_addToObservation
+ panel_addToExcerpt
