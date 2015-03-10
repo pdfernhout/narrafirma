@@ -133,6 +133,8 @@ Add project configuration page?
 REPORTS
 Improve reports so look nice
 Make whole planning phase work (including report)
+Maybe replace reports with one page to export report (or export data)
+Maybe convert reports page to a summary page for each section
 
 DASHBOARD
 Provide status of whether survey is active on main dashboard
