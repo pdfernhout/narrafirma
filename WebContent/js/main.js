@@ -100,20 +100,15 @@ require([
         
         versions.sort(function(a, b) {return a.timestamp.localeCompare(b.timestamp);});
         
-        /*
-        var choices = [];
-        _.forEach(versions, function(version) {
-            choices.push({value: version, label: version.timestamp + " | " + version.sha256AndLength + " | " + version.committer});
-        });
-        */
         // TODO: Translate
         var columns = {timestamp: "Timestamp", committer: "Committer", sha256AndLength: "Reference"};
         dialogSupport.openListChoiceDialog(null, versions, columns, "Project versions", "Load selected version", function (choice) {
             console.log("choice:", choice);
+            if (choice) {
+                var sha256AndLength = choice.sha256AndLength;
+                storage.loadProjectVersion(sha256AndLength, switchToLoadedProjectData);
+            }
         });
-            
-        // STOPPED HERE
-        // TODO: Use dialogSupport.openDialog to create dialog similar to that for picking a template
     }
      
     function switchToLoadedProjectData(error, projectAnswers, envelope) {
@@ -169,7 +164,7 @@ require([
     
     function saveClicked(event) {
         console.log("save clicked", domain.projectData.projectAnswers);
-        storage.storeProjectAnswersVersion(domain.projectData.projectAnswers, currentProjectVersionReference, saveFinished);
+        storage.storeProjectVersion(domain.projectData.projectAnswers, currentProjectVersionReference, saveFinished);
     }
     
     function saveFinished(error, newVersionURI) {
