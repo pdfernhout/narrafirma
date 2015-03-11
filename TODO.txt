@@ -38,6 +38,9 @@ Record IP address of survey or use another means to see if someone taking it mul
 Ensure the survey taking app does no need to load entire domain from project editor app or load grid or story browser or other modules it does not really need.
 Ideally, all responses for selections (other than numerical sliders) should have unique IDs for each response and the stored response should have the ID as well as the chosen text at the time.
 Only store reference to questionnaire file resource, not the resource itself
+Support translations or other categories for multiple question texts or choice texts for a survey
+Some easy way for two or more survey sliders to be close together under the same label
+Ideally support more than one survey per project
 
 IDs
 Add support for short names (ids) for eliciting questions
@@ -51,13 +54,18 @@ Fix how story browser browses stories for separation of participant info from st
 Should there be a separate participant info browser or is that handled by story browser? If "story browser" does that, may need to rename story browser?
 Fix how graph browser shows graphs for separation of participant info from stories
 Update story browser when load latest stories from server (without need to press Filter button again)
+Fix issue with story browser no longer showing all questions
 
 EXPORT/IMPORT
+Add page to do import/export
 Add export button for survey results
 Maybe import button for survey results
 Add way to clear out or reset old survey results? Or maybe partition them by survey?
 
 LOAD/SAVE
+Put in place dojox.widget.Standby when loading or saving
+Have save and cancel button that requires saving before change pages
+Track when changes are made and model is "dirty"
 Think through how project is loaded and saved, especially what happens if multiple windows or users edit the same project
 Think about saving one file per page or model and using triples to index them related to one survey?
 Confirm reloading or closing page if have unsaved data
@@ -525,3 +533,4 @@ DONE Improve loading and saving of project so can look at versions
 DONE Figure out exactly how help text will be stored
 DONE Generate stub help files from design specification with one div per interface item on a page
 DONE Improve help system so it jumps to those specific help divs associated
+DONE Created test NarraFirma WordPress plugin (but does not save data)
