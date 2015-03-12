@@ -556,6 +556,8 @@ require([
         var pageControlsPane = new ContentPane();
         pageControlsPane.placeAt(navigationPane);
         
+        domConstruct.place('<span id="narrafirma-name">NarraFirma&#0153;</span>', pageControlsPane.domNode);
+        
         var homeButton = widgetSupport.newButton(pageControlsPane, "#button_home", homeButtonClicked);
         homeButton.set("showLabel", false);
         // homeButton.set("iconClass", "dijitEditorIcon dijitEditorIconOutdent");
