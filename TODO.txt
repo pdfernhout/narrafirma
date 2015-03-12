@@ -540,3 +540,5 @@ DONE Figure out exactly how help text will be stored
 DONE Generate stub help files from design specification with one div per interface item on a page
 DONE Improve help system so it jumps to those specific help divs associated
 DONE Created test NarraFirma WordPress plugin (but does not save data)
+DONE Add PanelBuilder method to create a new content pane and use it where reasonable
+DONE Fix missing hashtag in help URLs for specific div to go with item
