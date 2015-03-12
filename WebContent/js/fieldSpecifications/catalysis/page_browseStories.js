@@ -24,7 +24,7 @@ define([], function() {
         {
             id: "browseStories_totalResults",
             dataType: "none",
-            displayType: "function",
+            displayType: "functionResult",
             displayConfiguration: "totalNumberOfSurveyResults",
             displayPrompt: "Total number of survey results loaded from server: {{result}}"
         },

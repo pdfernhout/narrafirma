@@ -24,7 +24,7 @@ define([], function() {
         {
             id: "webStoryCollection_enabledTracker2",
             dataType: "none",
-            displayType: "function",
+            displayType: "functionResult",
             displayConfiguration: "isStoryCollectingEnabled",
             displayPrompt: "Web story collection enabled:"
         }

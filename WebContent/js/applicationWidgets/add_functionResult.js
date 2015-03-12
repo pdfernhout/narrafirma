@@ -20,7 +20,7 @@ define([
         return domain.callDashboardFunction(functionName, fieldSpecification);
     }
     
-    function add_function(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_functionResult(panelBuilder, contentPane, model, fieldSpecification) {
         var functionName = fieldSpecification.displayConfiguration;
      // TODO: Fix when refactor
         var calculate = lang.partial(calculate_function, panelBuilder, functionName, fieldSpecification);
@@ -35,5 +35,5 @@ define([
         return label;
     }
 
-    return add_function;
+    return add_functionResult;
 });
