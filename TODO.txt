@@ -542,3 +542,5 @@ DONE Add PanelBuilder method to create a new content pane and use it where reaso
 DONE Fix missing hashtag in help URLs for specific div to go with item
 DONE Implement countNumberOfVenuesChosen in domain (is this still needed? If not, remove stub code for it.) [Removed unused code]
 DONE Update story browser when load latest stories from server (without need to press Filter button again)
+DONE Removed unused code for add_questionAnswerCountOfTotalOnPage.js
+DONE Removed unused code for add_listCount.js
