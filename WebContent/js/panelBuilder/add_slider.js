@@ -1,14 +1,12 @@
 define([
     "dojox/mvc/at",
     "dojo/dom-construct",
-    "dijit/layout/ContentPane",
     "dijit/form/HorizontalRule",
     "dijit/form/HorizontalRuleLabels",
     "dijit/form/HorizontalSlider"
 ], function(
     at,
     domConstruct,
-    ContentPane,
     HorizontalRule,
     HorizontalRuleLabels,
     HorizontalSlider
@@ -84,7 +82,7 @@ define([
         }
 
         // TODO: Issue -- should return a new sort of component that can be placed an includes the slider and the rules and labels
-        var sliderContentPane = new ContentPane({
+        var sliderContentPane = panelBuilder.newContentPane({
             content: panelDiv
         });
 

@@ -1,11 +1,9 @@
 define([
     "dojox/mvc/at",
-    "dijit/layout/ContentPane",
     "dojo/_base/lang",
     "js/panelBuilder/translate"
 ], function(
     at,
-    ContentPane,
     lang,
     translate
 ){
@@ -14,7 +12,7 @@ define([
     function add_annotationsGrid(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
-        var label = new ContentPane({
+        var label = panelBuilder.newContentPane({
             // content: translate(id + "::prompt", fieldSpecification.displayPrompt)
             content: "<b>UNFINISHED add_annotationsGrid: " + fieldSpecification.id + "</b>"             
         });

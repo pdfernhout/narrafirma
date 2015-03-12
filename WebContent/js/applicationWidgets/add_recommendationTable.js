@@ -3,14 +3,12 @@ define([
     "dojo/_base/lang",
     "js/templates/recommendations",
     "js/panelBuilder/translate",
-    "dijit/layout/ContentPane",
     "dojox/layout/TableContainer"
 ], function(
     dialogSupport,
     lang,
     recommendations,
     translate,
-    ContentPane,
     TableContainer
 ){
     "use strict";
@@ -49,17 +47,17 @@ define([
         
         var recommendationsValues = [];
         
-        var columnHeader1ContentPane = new ContentPane({"content": "<i>Question</i>", "colspan": 4, "align": "right"});
+        var columnHeader1ContentPane = panelBuilder.newContentPane({"content": "<i>Question</i>", "colspan": 4, "align": "right"});
         table.addChild(columnHeader1ContentPane);
         recommendationsValues.push(null);
         
-        var columnHeader2ContentPane = new ContentPane({"content": "<i>Your answer</i>", "colspan": 2, "align": "right"});
+        var columnHeader2ContentPane = panelBuilder.newContentPane({"content": "<i>Your answer</i>", "colspan": 2, "align": "right"});
         table.addChild(columnHeader2ContentPane);
         recommendationsValues.push(null);
 
         for (var headerFieldIndex in fieldsForCategory) {
             var headerFieldName = fieldsForCategory[headerFieldIndex];
-            var columnHeaderFieldContentPane = new ContentPane({"content": "<i>" + headerFieldName + "</i>", "colspan": 1, "align": "right"});
+            var columnHeaderFieldContentPane = panelBuilder.newContentPane({"content": "<i>" + headerFieldName + "</i>", "colspan": 1, "align": "right"});
             table.addChild(columnHeaderFieldContentPane);
             recommendationsValues.push(null);
         }
@@ -81,11 +79,11 @@ define([
             var questionText = translate(questionName + "::prompt", "Missing translation for: " + questionName);
             var yourAnswer = model.get(questionName);
             
-            var questionTextContentPane = new ContentPane({"content": questionText, "colspan": 4, "align": "right"});
+            var questionTextContentPane = panelBuilder.newContentPane({"content": questionText, "colspan": 4, "align": "right"});
             table.addChild(questionTextContentPane);
             recommendationsValues.push(null);
             
-            var yourAnswerContentPane = new ContentPane({"content": yourAnswer, "colspan": 2, "align": "right"});
+            var yourAnswerContentPane = panelBuilder.newContentPane({"content": yourAnswer, "colspan": 2, "align": "right"});
             table.addChild(yourAnswerContentPane);
             recommendationsValues.push(null);
 
@@ -100,7 +98,7 @@ define([
                     var recommendationsForCategory = recommendationsForAnswer[categoryName];
                     if (recommendationsForCategory) recommendationValue = recommendationsForCategory[fieldName];
                 }
-                var fieldContentPane = new ContentPane({"content": "<i>" + recommendationValue + "</i>", "colspan": 1, "align": "right", "class": tagForRecommendationValue(recommendationNumber)});
+                var fieldContentPane = panelBuilder.newContentPane({"content": "<i>" + recommendationValue + "</i>", "colspan": 1, "align": "right", "class": tagForRecommendationValue(recommendationNumber)});
                 // TODO: Does not work as faster alternative: var fieldContentPane = domConstruct.create("span", {innerHTML: "<i>" + recommendationValue + "</i>", "colspan": 1, "align": "right", "class": tagForRecommendationValue(recommendationNumber)});
                 table.addChild(fieldContentPane);
             }

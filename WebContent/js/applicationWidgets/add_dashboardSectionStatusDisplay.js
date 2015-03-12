@@ -1,13 +1,11 @@
 define([
     "dojox/mvc/at",
     "js/domain",
-    "dijit/layout/ContentPane",
     "dojo/_base/lang",
     "js/panelBuilder/translate"
 ], function(
     at,
     domain,
-    ContentPane,
     lang,
     translate
 ){
@@ -78,7 +76,7 @@ define([
         // var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, statusSpecification);
         
         /*
-        var label = new ContentPane({
+        var label = panelBuilder.newContentPane({
             // content: translate(id + "::prompt", fieldSpecification.displayPrompt)
             // content: "<b>" + statusText + "</b>" 
             content: statusText

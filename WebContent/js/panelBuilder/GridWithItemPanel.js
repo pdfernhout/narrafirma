@@ -8,7 +8,6 @@ define([
     "dojox/uuid/generateRandomUuid",
     "./widgetSupport",
     "dgrid/extensions/ColumnResizer",
-    "dijit/layout/ContentPane",
     "dgrid/extensions/DijitRegistry",
     "dijit/form/Form",
     "dgrid/Keyboard",
@@ -26,7 +25,6 @@ define([
     generateRandomUuid,
     widgetSupport,
     ColumnResizer,
-    ContentPane,
     DijitRegistry,
     Form,
     Keyboard,
@@ -59,7 +57,7 @@ define([
         this.form = null;
         this.formType = null;
         this.formItem = null;
-        this.itemContentPane = new ContentPane();
+        this.itemContentPane = panelBuilder.newContentPane();
         
         // The button widgets created to interact with the current item
         this.buttons = {};
@@ -136,7 +134,7 @@ define([
    
         pagePane.addChild(this.grid);
         
-        var buttonContentPane = new ContentPane();
+        var buttonContentPane = panelBuilder.newContentPane();
         pagePane.addChild(buttonContentPane);
         
         this.grid.on("dgrid-select", function(event) {

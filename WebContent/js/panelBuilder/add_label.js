@@ -1,20 +1,18 @@
 define([
     "dojox/mvc/at",
     "dijit/form/Button",
-    "dijit/layout/ContentPane",
     "dojo/_base/lang",
     "./translate"
 ], function(
     at,
     Button,
-    ContentPane,
     lang,
     translate
 ){
     "use strict";
     
     function add_label(panelBuilder, contentPane, model, fieldSpecification) {
-        var label = new ContentPane({
+        var label = panelBuilder.newContentPane({
             content: panelBuilder.htmlForInformationIcon(panelBuilder.helpPageURLForField(fieldSpecification)) + "&nbsp;&nbsp;" + translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt)
         });
         label.placeAt(contentPane);
