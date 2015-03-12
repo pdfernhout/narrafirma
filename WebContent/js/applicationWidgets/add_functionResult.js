@@ -17,7 +17,7 @@ define([
     
     function calculate_function(panelBuilder, functionName, fieldSpecification) {
         console.log("calculate_function called", fieldSpecification);
-        return domain.callDashboardFunction(functionName, fieldSpecification);
+        return domain.calculateFunctionResultForGUI(functionName, fieldSpecification);
     }
     
     function add_functionResult(panelBuilder, contentPane, model, fieldSpecification) {

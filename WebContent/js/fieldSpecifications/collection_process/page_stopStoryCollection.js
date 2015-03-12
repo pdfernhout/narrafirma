@@ -26,7 +26,7 @@ define([], function() {
             dataType: "none",
             displayType: "functionResult",
             displayConfiguration: "isStoryCollectingEnabled",
-            displayPrompt: "Web story collection enabled:"
+            displayPrompt: "Web story collection enabled: <b>{{result}}</b>"
         }
     ];
 });

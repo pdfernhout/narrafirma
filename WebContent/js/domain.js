@@ -34,14 +34,16 @@ define([
     // TODO: When does this get updated?
     var questionnaireStatus = {questionnaireID: questionnaireID, active: false};
     
-    function callDashboardFunction(functionName, question) {
+    // Panel builder "functionResult" components will get routed through here to calculate their text.
+    // The domain should publish a topic with the same name as these functions when their value changes.
+    function calculateFunctionResultForGUI(functionName, question) {
         if (functionName === "totalNumberOfSurveyResults") {
-            return "<b>" + projectData.surveyResults.allCompletedSurveys.length + "</b>";
+            return projectData.surveyResults.allCompletedSurveys.length;
         } else if (functionName === "isStoryCollectingEnabled") {
             return isStoryCollectingEnabled(question);
         } else {
-            console.log("TODO: callDashboardFunction ", functionName, question);
-            return "callDashboardFunction UNFINISHED: " + functionName + " for: " + question.id;
+            console.log("TODO: calculateFunctionResultForGUI ", functionName, question);
+            return "calculateFunctionResultForGUI UNFINISHED: " + functionName + " for: " + question.id;
         }
     }
     
@@ -327,7 +329,7 @@ define([
     }
     
     function isStoryCollectingEnabled(question) {
-        return "<b>" + questionnaireStatus.active + "</b>";
+        return questionnaireStatus.active;
     }
     
     function copyStoryFormURL() {
@@ -588,7 +590,7 @@ define([
         "panelDefinitions": panelDefinitions,
         
         // functions called from page widgets
-        "callDashboardFunction": callDashboardFunction,
+        "calculateFunctionResultForGUI": calculateFunctionResultForGUI,
         "buttonClicked": buttonClicked,
         "calculate_report": calculate_report,
         "calculate_quizScoreResult": calculate_quizScoreResult,
