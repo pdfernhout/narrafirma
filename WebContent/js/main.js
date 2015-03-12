@@ -543,8 +543,10 @@ require([
         
         console.log("createLayout start");
         
+        // Startup needs to be called here to ensure a top level content pane is started
         navigationPane = new ContentPane({}, "navigationDiv");
         navigationPane.startup();
+        
         // Any items like buttons added to the navigationPane will have startup() called automatically,
         // since the navigationPane they are being added to has already been started
         
