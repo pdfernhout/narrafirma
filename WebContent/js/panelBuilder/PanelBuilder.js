@@ -97,6 +97,8 @@ var PanelBuilder = declare(null, {
         this.currentInternalContentPane = null;
         this.panelSpecifications = null;
         this.buttonClickedCallback = null;
+        this.currentHelpPage = null;
+        this.currentHelpSection = null;
         
         lang.mixin(this, kwArgs);
     },
@@ -105,42 +107,6 @@ var PanelBuilder = declare(null, {
     setPanelSpecifications: function(panelSpecifications) {
         this.panelSpecifications = panelSpecifications;
     },
-    
-    panelDefinitionForPanelID: function(panelID) {
-        if (!this.panelSpecifications) {
-            throw new Error("No panelSpecifications set in PanelBuilder so can not resolve panelID: " + panelID);
-        }
-        
-        var panelSpecification;
-        
-        if (_.isFunction(this.panelDefinitions)) {
-            panelSpecification = this.panelSpecifications(panelID);
-        } else {
-            panelSpecification = this.panelSpecifications[panelID];
-        }
-        
-        if (!panelSpecification) {
-            throw new Error("No panelSpecification found by PanelBuilder for panelID: " + panelID);
-        }
-        
-        console.log("panelDefinitionForPanelID", panelID, panelSpecification);
-        return panelSpecification;
-    },
-    
-    // Provide a way to tell buttons what to do when clicked
-    setButtonClickedCallback: function(callback) {
-        this.buttonClickedCallback = callback;
-    },
-    
-    buttonClicked: function(contentPane, model, fieldSpecification, value) {
-        if (!this.buttonClickedCallback) {
-            console.log("No buttonClickedCallback set in panelBuilder", this, fieldSpecification);
-            throw new Error("No buttonClickedCallback set for PanelBuilder");
-        }
-        this.buttonClickedCallback(this, contentPane, model, fieldSpecification, value);
-    },
-    
-    // TODO: Perhaps should handle contentPane differently, since it is getting overwritten by these next three methods
     
     addMissingWidgetPlaceholder: function(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
@@ -216,11 +182,54 @@ var PanelBuilder = declare(null, {
         return new ContentPane(configuration);
     },
     
+    // Set this correctly before building a page to provide default help when it is not in a field specification
+    setCurrentHelpPageAndSection: function(helpPage, helpSection) {
+        this.currentHelpPage = helpPage;
+        this.currentHelpSection = helpSection;
+    },
+
     /// Suport functions
     
+    panelDefinitionForPanelID: function(panelID) {
+        if (!this.panelSpecifications) {
+            throw new Error("No panelSpecifications set in PanelBuilder so can not resolve panelID: " + panelID);
+        }
+        
+        var panelSpecification;
+        
+        if (_.isFunction(this.panelDefinitions)) {
+            panelSpecification = this.panelSpecifications(panelID);
+        } else {
+            panelSpecification = this.panelSpecifications[panelID];
+        }
+        
+        if (!panelSpecification) {
+            throw new Error("No panelSpecification found by PanelBuilder for panelID: " + panelID);
+        }
+        
+        console.log("panelDefinitionForPanelID", panelID, panelSpecification);
+        return panelSpecification;
+    },
+    
+    // Provide a way to tell buttons what to do when clicked
+    setButtonClickedCallback: function(callback) {
+        this.buttonClickedCallback = callback;
+    },
+    
+    buttonClicked: function(contentPane, model, fieldSpecification, value) {
+        if (!this.buttonClickedCallback) {
+            console.log("No buttonClickedCallback set in panelBuilder", this, fieldSpecification);
+            throw new Error("No buttonClickedCallback set for PanelBuilder");
+        }
+        this.buttonClickedCallback(this, contentPane, model, fieldSpecification, value);
+    },
+    
+    // This will only be valid during the building process for a page
     helpPageURLForField: function(fieldSpecification) {
         var section = fieldSpecification.helpSection;
+        if (!section) section = this.currentHelpSection;
         var pageID = fieldSpecification.helpPage;
+        if (!pageID) pageID = this.currentHelpPage;
         console.log("helpPageURLForField", fieldSpecification, section, pageID);
         var url = "";   
         if (section && pageID) {
