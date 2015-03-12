@@ -230,10 +230,13 @@ var PanelBuilder = declare(null, {
         if (!section) section = this.currentHelpSection;
         var pageID = fieldSpecification.helpPage;
         if (!pageID) pageID = this.currentHelpPage;
-        console.log("helpPageURLForField", fieldSpecification, section, pageID);
+        var helpID = fieldSpecification.helpID;
+        if (!helpID) helpID = fieldSpecification.id;
+        console.log("helpPageURLForField", fieldSpecification, section, pageID, helpID);
         var url = "";   
         if (section && pageID) {
             url = '/help/' + section + "/help_" + pageID + '.html';
+            if (helpID) url += '#' + helpID;
         }
         return url;
     },
