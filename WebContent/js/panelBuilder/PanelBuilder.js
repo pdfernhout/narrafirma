@@ -18,6 +18,7 @@ define([
     "./browser",
     "dojo/_base/declare",
     'dojo/dom-class',
+    "dojo/dom-construct",
     "dojo/_base/lang",
     "./translate",
     "dijit/layout/ContentPane"
@@ -41,6 +42,7 @@ define([
     browser,
     declare,
     domClass,
+    domConstruct,
     lang,
     translate,
     ContentPane
@@ -174,6 +176,11 @@ var PanelBuilder = declare(null, {
             questions = panelOrPanelID.questions;
         }
         this.addQuestions(questions, contentPane, model);
+    },
+    
+    addHTML: function(contentPane, htmlText) {
+       var node = domConstruct.toDom(htmlText);
+       domConstruct.place(node, contentPane.domNode);
     },
     
     newContentPane: function(configuration) {

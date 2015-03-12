@@ -60,7 +60,7 @@ define([
         // TODO: Translate
         var statusText = " -- All " + pageCount + " steps complete (100%)";
         if (unfinishedPageCount) {
-            statusText = " -- " + finishedPageCount + " " + stepPlural(finishedPageCount) + " of " + pageCount + " complete (" + percentDone + "%)";
+            statusText = "" + finishedPageCount + " " + stepPlural(finishedPageCount) + " of " + pageCount + " complete (" + percentDone + "%)";
         }
         
         if (pageCount === 0) statusText = "";
@@ -88,10 +88,15 @@ define([
             id: fieldSpecification.id + "_button",
             displayType: "button",
             // TODO: Translate
-            displayPrompt: "<b>" + sectionName + "</b>" + statusText,
-            displayConfiguration: fieldSpecification.displayConfiguration
+            displayPrompt: "<b>" + sectionName + "</b>",
+            displayConfiguration: fieldSpecification.displayConfiguration,
+            displayPreventBreak: true,
+            displayClass: "narrafirma-dashboardStatusButton"
             };
         var button = panelBuilder.addQuestionWidget(contentPane, model, buttonFieldSpecification);
+        
+        var htmlText = '<span class="narrafirma-dashboardSectionStatusDisplayCompletion">' + statusText + '</span><br>';
+        panelBuilder.addHTML(contentPane, htmlText);
         
         // return label;
         return button;

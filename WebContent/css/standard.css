@@ -17,13 +17,24 @@ body {
    padding-left: 2em; 
 }
 
+/* make the dashboard buttons line up like they were in a table column */
+.narrafirma-dashboardStatusButton .dijitButtonNode {
+    min-width: 12em;
+    margin-top: 0.5em; 
+    margin-bottom: 0.5em; 
+}
+
+.narrafirma-dashboardSectionStatusDisplayCompletion {
+   margin-left: 1.0em;
+}
+
 form {
    padding-left: 2em;
 }
 
 #narrafirma-name {
-    padding-left: 0.5em; 
-    padding-right: 0.5em; 
+    margin-left: 0.5em; 
+    margin-right: 0.5em; 
 }
 
 /* See http://www.sitepen.com/blog/2012/05/03/css-styling-of-dgrid/ */

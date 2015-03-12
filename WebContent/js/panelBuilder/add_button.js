@@ -2,6 +2,7 @@ define([
     "dojox/mvc/at",
     "dijit/form/Button",
     "dijit/layout/ContentPane",
+    "dojo/dom-class",
     "dojo/dom-construct",
     "dojo/_base/lang",
     "./translate"
@@ -9,6 +10,7 @@ define([
     at,
     Button,
     ContentPane,
+    domClass,
     domConstruct,
     lang,
     translate
@@ -23,6 +25,8 @@ define([
             type: "button",
             onClick: callback
         });
+        
+        if (fieldSpecification.displayClass) domClass.add(button.domNode, fieldSpecification.displayClass);
 
         button.placeAt(contentPane);
         
