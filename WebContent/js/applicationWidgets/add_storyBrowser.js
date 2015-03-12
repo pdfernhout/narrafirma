@@ -268,7 +268,8 @@ define([
                  
                  var participantID = model.get("_participantID");
                  var participantData = domain.getParticipantDataForParticipantID(participantID);
-                 // console.log("build item panel participantID", participantID, model, participantData);
+                 // console.log("--------------------------- build item panel participantID", participantID, model, participantData);
+                 // console.log("questionnaire", questionnaire.participantQuestions, questionnaire);
                  var participantDataModel = new Stateful(participantData);
                  panelBuilder.addQuestions(questionnaire.participantQuestions, contentPane, participantDataModel);
              }
