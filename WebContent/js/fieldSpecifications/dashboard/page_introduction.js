@@ -71,7 +71,12 @@ define([], function() {
     id: 'project_helpDashboardStatusLabel',
     dataType: 'none',
     displayType: 'label',
-    displayPrompt: 'At the bottom of each page is a dropdown widget where you can set the "status" of the page to track your progress through tasks. Because you have read this far, you can mark the status of this page as "completely finished". You might instead choose "partially done" if perhaps you just skimmed this material and you intend to come back to this page for further review later, or perhaps as a reminder to purchase a copy of the Working With Stories book. Or, you could mark this page as "intentionally skipped" if you have done a project before and just jumped to the bottom of this page. That choice will then show up as the status of this page, which is also displayed on the first page in the related section, which in this case is the main dashboard.'
+    displayPrompt: 'At the bottom of each page (other than dashboard pages) is a dropdown widget where you can set the "status" ' +
+        'of the page to track your progress through tasks. You can mark the status of a page as "completely finished" if you feel ' +
+        'satisfied with it. You might instead choose "partially done" if you intend to come back to this page for further revisions later. ' +
+        'Or, you could mark a page as "intentionally skipped" if you have decided not to do that step of the PNI process. ' +
+        'That choice will be displayed on the first page in the related section of the application. ' +
+        'The choice is also used to calculate the percentage done indicators on the main dashboard.'
 },
 {
     id: 'project_getStartedLabel',

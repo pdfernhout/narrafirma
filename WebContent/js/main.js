@@ -269,32 +269,34 @@ require([
        
        panelBuilder.buildPanel(pageID, pagePane, domain.projectData.projectAnswers);
        
-       if (!pageSpecification.isHeader) {
-           var options = ["intentionally skipped", "partially done", "completely finished"];
-           var statusEntryID = pageID + "_pageStatus";
-           translate.addExtraTranslation(statusEntryID + "::prompt", translate("#dashboard_status_entry::prompt") + " ");
-           for (var optionIndex in options) {
-               var option = options[optionIndex];
-               translate.addExtraTranslation(statusEntryID + "::selection:" + option, translate("#dashboard_status_entry::selection:" + option));
-           }
-           panelBuilder.addQuestionWidget(pagePane, domain.projectData.projectAnswers, {id: statusEntryID, displayType: "select", dataOptions: options});
-       } else {
-           console.log("page dashboard as header", pageSpecification.id, pageSpecification.displayType, pageSpecification);
-           // Put in dashboard
-           var childPageIDs = domain.childPageIDListForHeaderID[pageID];
-           console.log("child pages", pageID, childPageIDs);
-           if (!childPageIDs) childPageIDs = [];
-           for (var childPageIndex = 0; childPageIndex < childPageIDs.length; childPageIndex++) {
-               var childPageID = childPageIDs[childPageIndex];
-               var statusViewID = childPageID + "_pageStatus_dashboard";
-               var childPageSpecification = pageSpecifications[childPageID];
-               console.log("childPageID", childPageSpecification, childPageID);
-               if (!childPageSpecification) console.log("Error: problem finding page definition for", childPageID);
-               if (childPageSpecification && childPageSpecification.displayType === "page") {
-                   var prompt = translate(childPageID + "::title", childPageSpecification.displayName) + " " + translate("#dashboard_status_label") + " ";
-                   translate.addExtraTranslation(statusViewID + "::prompt", prompt);
-                   console.log("about to call panelBuilder to add one questionAnswer for child page's status", childPageID);
-                   panelBuilder.addQuestionWidget(pagePane, domain.projectData.projectAnswers, {id: statusViewID, displayType: "questionAnswer", displayConfiguration: [childPageID + "_pageStatus"]});
+       if (pageSpecification.section !== "page_dashboard") {
+           if (!pageSpecification.isHeader) {
+               var options = ["intentionally skipped", "partially done", "completely finished"];
+               var statusEntryID = pageID + "_pageStatus";
+               translate.addExtraTranslation(statusEntryID + "::prompt", translate("#dashboard_status_entry::prompt") + " ");
+               for (var optionIndex in options) {
+                   var option = options[optionIndex];
+                   translate.addExtraTranslation(statusEntryID + "::selection:" + option, translate("#dashboard_status_entry::selection:" + option));
+               }
+               panelBuilder.addQuestionWidget(pagePane, domain.projectData.projectAnswers, {id: statusEntryID, displayType: "select", dataOptions: options});
+           } else {
+               console.log("page dashboard as header", pageSpecification.id, pageSpecification.displayType, pageSpecification);
+               // Put in dashboard
+               var childPageIDs = domain.childPageIDListForHeaderID[pageID];
+               console.log("child pages", pageID, childPageIDs);
+               if (!childPageIDs) childPageIDs = [];
+               for (var childPageIndex = 0; childPageIndex < childPageIDs.length; childPageIndex++) {
+                   var childPageID = childPageIDs[childPageIndex];
+                   var statusViewID = childPageID + "_pageStatus_dashboard";
+                   var childPageSpecification = pageSpecifications[childPageID];
+                   console.log("childPageID", childPageSpecification, childPageID);
+                   if (!childPageSpecification) console.log("Error: problem finding page definition for", childPageID);
+                   if (childPageSpecification && childPageSpecification.displayType === "page") {
+                       var prompt = translate(childPageID + "::title", childPageSpecification.displayName) + " " + translate("#dashboard_status_label") + " ";
+                       translate.addExtraTranslation(statusViewID + "::prompt", prompt);
+                       console.log("about to call panelBuilder to add one questionAnswer for child page's status", childPageID);
+                       panelBuilder.addQuestionWidget(pagePane, domain.projectData.projectAnswers, {id: statusViewID, displayType: "questionAnswer", displayConfiguration: [childPageID + "_pageStatus"]});
+                   }
                }
            }
        }
