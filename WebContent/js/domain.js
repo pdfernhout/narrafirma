@@ -31,14 +31,8 @@ define([
     // TODO: When does this get updated?
     var questionnaireStatus = {questionnaireID: questionnaireID, active: false};
     
-    function countNumberOfVenuesChosen(question) {
-        return "countNumberOfVenuesChosen UNFINISHED";
-    }
-    
     function callDashboardFunction(functionName, question) {
-        if (functionName === "countNumberOfVenuesChosen") {
-            return countNumberOfVenuesChosen(question);
-        } else if (functionName === "totalNumberOfSurveyResults") {
+        if (functionName === "totalNumberOfSurveyResults") {
             return "<b>" + projectData.surveyResults.allCompletedSurveys.length + "</b>";
         } else if (functionName === "isStoryCollectingEnabled") {
             return isStoryCollectingEnabled(question);
