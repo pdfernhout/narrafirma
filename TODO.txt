@@ -546,3 +546,6 @@ NOT DOING Only load PanelBuilder components as needed for built panels (using AM
 DONE Replace PanelBuilder.updateQuestionsForPageChange with different approach
 DONE See if still need updateQuestionsForPageChange or if can improve that somehow [Replaced with better approach]
 DONE Remove toaster gui dependency from domain by using publish/subscribe
+DONE Include "NarraFirmaTM" text in upper left corner of pages
+DONE Remove selection items about completion status from dashboard pages
+DONE Improve dashboard so buttons and status line up in columns
