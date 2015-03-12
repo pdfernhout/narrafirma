@@ -145,16 +145,13 @@ require([
         // TODO: Translate and improve this feedback
         toaster.toast("Finished loading project data");
         
-        /* TODO: !!!!!!!!!!!! Removed for now while testing changeover to field approach !!!!!!!!!!!!!!!
-         * 
         // TODO: Kludge of loading all stories when load data?
         console.log("Going to try to load latest stories from server");
-        domain.buttonFunctions.loadLatestStoriesFromServer(function (newEnvelopeCount) {
+        domain.loadLatestStoriesFromServer(function (newEnvelopeCount) {
             console.log("Forcing refresh of current page");
             // TODO: KLUDGE: Updating gui a second time so get flicker -- and maybe lose edits?
             if (newEnvelopeCount) showPage(currentPageID, "forceRefresh");
         });
-        */
         
         return;
     }
@@ -710,14 +707,11 @@ require([
         
         topic.subscribe("loadLatestStoriesFromServer", loadedMoreSurveyResults);
         
-        /* TODO: Commented out while testing changeover to fields
-        
         // Synchronizes the state of the domain for one status flag with what is on server
         domain.determineStatusOfCurrentQuestionnaire();
         
         // Get the latest project data
         loadLatestClicked();
-        */
         
         // turn off initial "please wait" display
         document.getElementById("pleaseWaitDiv").style.display = "none";
