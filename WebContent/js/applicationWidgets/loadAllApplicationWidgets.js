@@ -8,7 +8,6 @@ define([
     "./add_graphBrowser",
     "./add_listCount",
     "./add_questionAnswer",
-    "./add_questionAnswerCountOfTotalOnPage",
     "./add_questionsTable",
     "./add_quizScoreResult",
     "./add_recommendationTable",
@@ -28,7 +27,6 @@ define([
     add_graphBrowser,
     add_listCount,
     add_questionAnswer,
-    add_questionAnswerCountOfTotalOnPage,
     add_questionsTable,
     add_quizScoreResult,
     add_recommendationTable,
@@ -54,7 +52,6 @@ define([
         PanelBuilder.addPlugin("graphBrowser", add_graphBrowser);
         PanelBuilder.addPlugin("listCount", add_listCount);
         PanelBuilder.addPlugin("questionAnswer", add_questionAnswer);
-        PanelBuilder.addPlugin("questionAnswerCountOfTotalOnPage", add_questionAnswerCountOfTotalOnPage);
         PanelBuilder.addPlugin("questionsTable", add_questionsTable);
         PanelBuilder.addPlugin("quizScoreResult", add_quizScoreResult);
         PanelBuilder.addPlugin("recommendationTable", add_recommendationTable);
