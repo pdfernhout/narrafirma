@@ -545,3 +545,4 @@ DONE Removed unused code for add_listCount.js
 NOT DOING Only load PanelBuilder components as needed for built panels (using AMD) [Would make the architecture much more complicated.]
 DONE Replace PanelBuilder.updateQuestionsForPageChange with different approach
 DONE See if still need updateQuestionsForPageChange or if can improve that somehow [Replaced with better approach]
+DONE Remove toaster gui dependency from domain by using publish/subscribe
