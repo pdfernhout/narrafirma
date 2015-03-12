@@ -1,5 +1,6 @@
 define([
     "dojo/_base/array",
+    "dojo/_base/connect",
     "js/domain",
     "dojo/dom-construct",
     "dojo/_base/lang",
@@ -9,9 +10,11 @@ define([
     "dijit/layout/ContentPane",
     "dstore/Memory",
     "dojo/Stateful",
-    "dojox/layout/TableContainer"
+    "dojox/layout/TableContainer",
+    "dstore/Trackable"
 ], function(
     array,
+    connect,
     domain,
     domConstruct,
     lang,
@@ -21,7 +24,8 @@ define([
     ContentPane,
     Memory,
     Stateful,
-    TableContainer
+    TableContainer,
+    Trackable
 ){
     "use strict";
     
@@ -192,13 +196,9 @@ define([
 
         return filterPane;
     }
-    
-    function storiesChanged(storyBrowser, stories) {
-        // TODO
-    }
-    
+
     function questionsChanged(storyBrowser, questions) {
-        // TODO
+        // TODO: Should respond to the rest of the application changing the questions
     }
     
     function isMatch(story, questionChoice, selectedAnswerChoices) {
@@ -218,6 +218,12 @@ define([
         questionAnswer = "" + questionAnswer;
         // console.log("questionAnswer", questionAnswer);
         return selectedAnswerChoices.indexOf(questionAnswer) !== -1;
+    }
+    
+    function loadLatestStoriesFromServerCallback(storyBrowserInstance, allStories) {
+        // console.log("loadLatestStoriesFromServerCallback", storyBrowserInstance, allStories);
+        storyBrowserInstance.dataStore.setData(allStories);
+        setStoryListForCurrentFilters(storyBrowserInstance);
     }
     
     // TODO: Fix so the filters get updated as the story questions get changed
@@ -294,31 +300,49 @@ define([
         // table needs to be added to container after its children are added to it so that the layout will happen correctly, otherwise startup called too soon internally
         pagePane.addChild(table);
         
-        var storyList;
+        // TODO: Probably should become a class
+        var storyBrowserInstance = {
+            dataStore: dataStore,
+            filter1: filter1,
+            filter2: filter2,
+            storyList: null,
+            subscription: null,
+        };
         
-        var filterButton = widgetSupport.newButton(pagePane, "#button_Filter", function () {
-            // console.log("filter pressed");
-            var question1Choice = filter1.questionSelect.get("value");
-            var answers1Choices = filter1.answersMultiSelect.get("value");
-            // console.log("question1", question1Choice, "answers1", answers1Choices);
-            var question2Choice = filter2.questionSelect.get("value");
-            var answers2Choices = filter2.answersMultiSelect.get("value");
-            // console.log("question2", question2Choice, "answers2", answers2Choices);  
-            var filterFunction = function (item) {
-                var match1 = isMatch(item, question1Choice, answers1Choices);
-                var match2 = isMatch(item, question2Choice, answers2Choices);
-                return match1 && match2;
-            };
-            storyList.grid.set("collection", dataStore.filter(filterFunction));
-        });
+        var filterButton = widgetSupport.newButton(pagePane, "#button_Filter", lang.partial(setStoryListForCurrentFilters, storyBrowserInstance));
         
         // console.log("insertStoryBrowser middle 3", id);
         
         // Only allow view button for stories
         var configuration = {viewButton: true, includeAllFields: true};
-        storyList = new GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration);
+        storyBrowserInstance.storyList = new GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration);
+        
+        // TODO: Need to unsubscribe when widget removed
+        storyBrowserInstance.subscription = connect.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerCallback, storyBrowserInstance));
         
         console.log("insertStoryBrowser finished");
+        
+        return storyBrowserInstance;
+    }
+    
+    function setStoryListForCurrentFilters(storyBrowserInstance) {
+        // console.log("filter pressed", storyBrowserInstance);
+        var question1Choice = storyBrowserInstance.filter1.questionSelect.get("value");
+        var answers1Choices = storyBrowserInstance.filter1.answersMultiSelect.get("value");
+        // console.log("question1", question1Choice, "answers1", answers1Choices);
+        var question2Choice = storyBrowserInstance.filter2.questionSelect.get("value");
+        var answers2Choices = storyBrowserInstance.filter2.answersMultiSelect.get("value");
+        // console.log("question2", question2Choice, "answers2", answers2Choices);  
+        var filterFunction = function (item) {
+            var match1 = isMatch(item, question1Choice, answers1Choices);
+            var match2 = isMatch(item, question2Choice, answers2Choices);
+            return match1 && match2;
+        };
+        var filteredResults = storyBrowserInstance.dataStore.filter(filterFunction);
+        // console.log("Filtered results", filteredResults);
+        var newStore = Trackable.create(filteredResults);
+        storyBrowserInstance.storyList.grid.set("collection", newStore);
+        // console.log("finished setting list with newStore", newStore);
     }
     
     function add_storyBrowser(panelBuilder, contentPane, model, fieldSpecification) {

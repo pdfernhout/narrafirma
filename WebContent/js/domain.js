@@ -1,6 +1,7 @@
 // This supports globals shared by modules
 
 define([
+    "dojo/_base/connect",
     "exports",
     "dojo/_base/lang",
     "js/storage",
@@ -8,6 +9,7 @@ define([
     "js/panelBuilder/translate",
     "dojo/Stateful"
 ], function(
+    connect,
     exports,
     lang,
     storage,
@@ -282,6 +284,9 @@ define([
             buttonFunctions.updateQuestionsForPageChangeCallback();
             
             if (callback) callback(newEnvelopeCount);
+            
+            // Tell any listeners like story browsers that there are more stories
+            connect.publish("loadLatestStoriesFromServer", [allStories]);
         });
     }
     
