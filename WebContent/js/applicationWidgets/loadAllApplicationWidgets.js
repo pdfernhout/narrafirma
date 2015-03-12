@@ -6,7 +6,6 @@ define([
     "./add_excerptsList",
     "./add_function",
     "./add_graphBrowser",
-    "./add_listCount",
     "./add_questionAnswer",
     "./add_questionsTable",
     "./add_quizScoreResult",
@@ -25,7 +24,6 @@ define([
     add_excerptsList,
     add_function,
     add_graphBrowser,
-    add_listCount,
     add_questionAnswer,
     add_questionsTable,
     add_quizScoreResult,
@@ -50,7 +48,6 @@ define([
         PanelBuilder.addPlugin("excerptsList", add_excerptsList);
         PanelBuilder.addPlugin("function", add_function);
         PanelBuilder.addPlugin("graphBrowser", add_graphBrowser);
-        PanelBuilder.addPlugin("listCount", add_listCount);
         PanelBuilder.addPlugin("questionAnswer", add_questionAnswer);
         PanelBuilder.addPlugin("questionsTable", add_questionsTable);
         PanelBuilder.addPlugin("quizScoreResult", add_quizScoreResult);
