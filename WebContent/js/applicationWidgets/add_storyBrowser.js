@@ -1,9 +1,9 @@
 define([
     "dojo/_base/array",
-    "dojo/_base/connect",
     "js/domain",
     "dojo/dom-construct",
     "dojo/_base/lang",
+    "dojo/topic",
     "js/panelBuilder/translate",
     "js/panelBuilder/GridWithItemPanel",
     "js/panelBuilder/widgetSupport",
@@ -14,10 +14,10 @@ define([
     "dstore/Trackable"
 ], function(
     array,
-    connect,
     domain,
     domConstruct,
     lang,
+    topic,
     translate,
     GridWithItemPanel,
     widgetSupport,
@@ -318,10 +318,12 @@ define([
         storyBrowserInstance.storyList = new GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration);
         
         // TODO: Need to unsubscribe when widget removed
-        storyBrowserInstance.subscription = connect.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerCallback, storyBrowserInstance));
+        storyBrowserInstance.subscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerCallback, storyBrowserInstance));
+        
+        console.log("filterButton", filterButton);
         
         console.log("insertStoryBrowser finished");
-        
+
         return storyBrowserInstance;
     }
     

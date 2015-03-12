@@ -1,21 +1,22 @@
 // This supports globals shared by modules
 
 define([
-    "dojo/_base/connect",
     "exports",
     "dojo/_base/lang",
+    "dojo/Stateful",
     "js/storage",
     "js/panelBuilder/toaster",
-    "js/panelBuilder/translate",
-    "dojo/Stateful"
+    "dojo/topic",
+    "js/panelBuilder/translate"
 ], function(
-    connect,
     exports,
     lang,
+    Stateful,
     storage,
     toaster,
-    translate,
-    Stateful) {
+    topic,
+    translate
+) {
     "use strict";
     
     // TODO: Should not be doing UI work in here with toaster
@@ -286,7 +287,7 @@ define([
             if (callback) callback(newEnvelopeCount);
             
             // Tell any listeners like story browsers that there are more stories
-            connect.publish("loadLatestStoriesFromServer", [allStories]);
+            topic.publish("loadLatestStoriesFromServer", allStories);
         });
     }
     
