@@ -136,10 +136,7 @@ require([
             domain.projectData.projectAnswers.set(key, undefined);
         }
         
-        // Update derived values
-        panelBuilder.updateQuestionsForPageChange();
-        
-        // Reload page looking at to ensure it gets latest data...
+        // Rebuild the current page to ensure it gets latest data...
         showPage(currentPageID, "forceRefresh");
         
         // Store a reference so can pass it to storage as "previous" for next version to get chain or tree of versions
@@ -230,8 +227,6 @@ require([
     
         // Because the page was hidden when created, all the grids need to be resized so grid knows how tall to make header so it is not overwritten
         currentPage.resize();
-            
-        panelBuilder.updateQuestionsForPageChange();
         
         // Ensure the navigation has the list for this section
         if (currentSectionID !== pageSpecification.section) {   
