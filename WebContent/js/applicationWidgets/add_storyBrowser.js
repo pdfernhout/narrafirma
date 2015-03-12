@@ -317,8 +317,10 @@ define([
         var configuration = {viewButton: true, includeAllFields: true};
         storyBrowserInstance.storyList = new GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration);
         
-        // TODO: Need to unsubscribe when widget removed
         storyBrowserInstance.subscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerCallback, storyBrowserInstance));
+        
+        // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
+        filterButton.own(storyBrowserInstance.subscription);
         
         console.log("filterButton", filterButton);
         
