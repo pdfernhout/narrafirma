@@ -48,8 +48,6 @@ define([
 
 "use strict";
 
-// Users should call PanelBuilder.addStandardPlugins(); at the beginning of their application unless they add each plugin manually
-
 // Developer local debug flag to cause an Exception if a widget type is missing instead of put in placeholder panel
 var debugFailIfMissingWidgets = false;
 
@@ -66,7 +64,13 @@ function addPlugin(name, callback) {
     buildingFunctions[name] = callback;
 }
 
-// This function needs to be called at the start of an application by users as a class method, like:"PanelBuilder.addStandardPlugins();"
+// TODO: Think about how to load plugins only as needed at runtime.
+// Asynchronous callbacks are nice, until you realize you would need
+// to refactor a lot to introduce one deep down in your application.
+// In this case, it would be nice to load plugin functions only at runtime as panels require them.
+// However, to use the AMD approach, that would mean everything that asked the builder
+// to do anything would have to wait on a callback for the builder to finish.
+
 function addStandardPlugins() {
     // standard plugins
     addPlugin("boolean", add_boolean);
@@ -324,7 +328,8 @@ var PanelBuilder = declare(null, {
     });
 
     PanelBuilder.addPlugin = addPlugin;
-    PanelBuilder.addStandardPlugins = addStandardPlugins;
+
+    addStandardPlugins();
     
     return PanelBuilder;
 });

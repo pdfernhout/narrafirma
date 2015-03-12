@@ -619,7 +619,6 @@ require([
         // Initialize toaster
         toaster.createToasterWidget("navigationDiv");
         
-        PanelBuilder.addStandardPlugins();
         loadAllApplicationWidgets(PanelBuilder);
         
         console.log("loadAllFieldSpecifications", loadAllFieldSpecifications);
