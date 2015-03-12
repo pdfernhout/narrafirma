@@ -51,12 +51,11 @@ define([
 // Developer local debug flag to cause an Exception if a widget type is missing instead of put in placeholder panel
 var debugFailIfMissingWidgets = false;
 
+// This is the tag to put into prompting text for functionResult items where you want the result to go
+var ResultTagToReplace = "{{result}}";
+
 // TODO: Need a better approach for calling JavaScript function than this
 document.__narraFirma_launchApplication = browser.launchApplication;
-
-// TODO: Think about where this goes!!!
-// TODO: When do these get removed?  When page removed???
-var questionsRequiringRecalculationOnPageChanges = {};
 
 var buildingFunctions = {};
 
@@ -300,44 +299,41 @@ var PanelBuilder = declare(null, {
           
     ////// Support for questions that recalculate based on other questions
     
-    updateLabelUsingCalculation: function(data) {
+    updateLabelUsingCalculation: function(updateInfo) { 
         // console.log("recalculating label", data);
-        if (!data) {
-            throw new Error("updateLabelUsingCalculation: data should not be empty");
+        if (!updateInfo) {
+            throw new Error("updateLabelUsingCalculation: updateInfo should not be empty");
         }
-        if (!_.isFunction(data.calculate)) {
-            throw new Error("updateLabelUsingCalculation: data.calculate should be a function: " + JSON.stringify(data));
+        if (!_.isFunction(updateInfo.calculate)) {
+            throw new Error("updateLabelUsingCalculation: updateInfo.calculate should be a function: " + JSON.stringify(updateInfo));
         }
-        var calculatedText = data.calculate();
+        var calculatedText = updateInfo.calculate();
         // console.log("calculatedText ", calculatedText);
-        var newLabelText = data.baseText + " " + calculatedText; 
-        data.label.set("content", newLabelText);
-        // console.log("recalculated question: ", data.id, calculatedText);
-    },
-    
-    // TODO: Make a version of this that can be more selective in updates
-    updateQuestionsForPageChange: function() {
-        for (var questionID in questionsRequiringRecalculationOnPageChanges) {
-            var data = questionsRequiringRecalculationOnPageChanges[questionID];
-            this.updateLabelUsingCalculation(data);
+        var baseText = updateInfo.baseText;
+        var newLabelText;
+        if (baseText.indexOf(ResultTagToReplace) !== -1) {
+            newLabelText = baseText.replace(ResultTagToReplace, calculatedText);
+        } else {
+            newLabelText = baseText + " " + calculatedText;
         }
+        updateInfo.label.set("content", newLabelText);
+        // console.log("recalculated question: ", updateInfo.id, calculatedText);
     },
 
     _add_calculatedText: function(panelBuilder, contentPane, fieldSpecification, calculate) {
-        // var calculatedText = "(Initializing...)";
         if (!calculate) {
             throw new Error("_add_calculatedText: calculate parameter should not be empty");
         }
-        var calculatedText = calculate();
+
         var baseText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
-        var label = new ContentPane({
-            content: baseText + calculatedText
-        });
+        var label = new ContentPane();
         label.placeAt(contentPane);
         
         // TODO: How do these updates get removed????
         var updateInfo = {"id": fieldSpecification.id, "label": label, "baseText": baseText, "calculate": calculate};
-        questionsRequiringRecalculationOnPageChanges[fieldSpecification.id] = updateInfo;
+        label.updateInfo = updateInfo;
+        
+        this.updateLabelUsingCalculation(updateInfo);
 
         return label;
     }

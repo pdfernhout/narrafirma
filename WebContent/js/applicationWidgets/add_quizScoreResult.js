@@ -24,10 +24,12 @@ define([
         // Ensure this value is recalculated when dependent questions change by using watch
         for (var dependsOnIndex in dependsOn) {
             var questionID = dependsOn[dependsOnIndex];
-            // TODO: When do these watches get removed?
             // console.log("setting up watch on", questionID, "for", id, model);
          // TODO: Fix when refactor
-            model.watch(questionID, lang.hitch(panelBuilder, panelBuilder.updateLabelUsingCalculation, updateInfo));
+            var watcher = model.watch(questionID, lang.hitch(panelBuilder, panelBuilder.updateLabelUsingCalculation, updateInfo));
+            
+            // Klugde to get the label to free the watcher by calling remove when it is destroyed
+            label.own(watcher);
         }
         return label;
     }

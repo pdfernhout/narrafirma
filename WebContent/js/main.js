@@ -598,10 +598,6 @@ require([
         console.log("createLayout end");
     }
     
-    function updatePagesForDomainValueChange() {
-        panelBuilder.updateQuestionsForPageChange();
-    }
-    
     function openSurveyDialog() {
         // TODO: What version of questionnaire should be used? Should it really be the latest one? Or the one active on server?
         console.log("domain.projectData", domain.projectData);
@@ -625,17 +621,13 @@ require([
         // Setup the domain with the base model defined by field specifications
         domain.setupDomain(fieldSpecificationCollection);
 
-        // Setup important callback for page changes
-        domain.setPageChangeCallback(lang.hitch(panelBuilder, panelBuilder.updateQuestionsForPageChange));
-
         // Set up callback for requests to open a section
         domain.setOpenSectionCallback(showPage);
         
         // Callback for this button
         // TODO: Temp for testing
         domain.buttonFunctions.enterSurveyResult = openSurveyDialog;
-        domain.buttonFunctions.updateQuestionsForPageChangeCallback = updatePagesForDomainValueChange;
-        
+ 
         processAllPanels();
         
         // Tell the panelBuilder about the panelSpecifications

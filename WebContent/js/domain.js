@@ -281,13 +281,11 @@ define([
             
             console.log("===== All stories", allStories);
             
-            // TODO: Update GUI count -- ideally should be more selective in updating
-            buttonFunctions.updateQuestionsForPageChangeCallback();
-            
             if (callback) callback(newEnvelopeCount);
             
             // Tell any listeners like story browsers that there are more stories
             topic.publish("loadLatestStoriesFromServer", allStories);
+            topic.publish("totalNumberOfSurveyResults", allEnvelopes.length);
         });
     }
     
@@ -361,10 +359,6 @@ define([
         "loadLatestStoriesFromServer": loadLatestStoriesFromServer,
         // TODO: This next action is filled in by application in main
         "enterSurveyResult": null,
-        
-        // TODO: Improve this coarse updating so can just update when one function changes
-        // GUI should fill this in, and it is used as a callback when items are changed
-        "updateQuestionsForPageChangeCallback": null,
         
         "storyCollectionStart": storyCollectionStart,
         "storyCollectionStop": storyCollectionStop,

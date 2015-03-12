@@ -26,7 +26,7 @@ define([], function() {
             dataType: "none",
             displayType: "function",
             displayConfiguration: "totalNumberOfSurveyResults",
-            displayPrompt: "Total number of survey results loaded from server:"
+            displayPrompt: "Total number of survey results loaded from server: {{result}}"
         },
         {
             id: "webStoryCollection_collectedStoriesDuringCollection",
