@@ -211,6 +211,11 @@ var PanelBuilder = declare(null, {
         this.addQuestions(questions, contentPane, model);
     },
     
+    newContentPane: function(configuration) {
+        if (!configuration) return new ContentPane();
+        return new ContentPane(configuration);
+    },
+    
     /// Suport functions
     
     helpPageURLForField: function(fieldSpecification) {
