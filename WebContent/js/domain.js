@@ -5,7 +5,6 @@ define([
     "dojo/_base/lang",
     "dojo/Stateful",
     "js/storage",
-    "js/panelBuilder/toaster",
     "dojo/topic",
     "js/panelBuilder/translate"
 ], function(
@@ -13,14 +12,11 @@ define([
     lang,
     Stateful,
     storage,
-    toaster,
     topic,
     translate
 ) {
     "use strict";
     
-    // TODO: Should not be doing UI work in here with toaster
-
     // TODO: panelDefinitions probably should not be in domain
     var panelDefinitions = {};
     var questions = {};
@@ -249,14 +245,12 @@ define([
                 }
             }
             
-            // Checking on contentPane being set before put up alert in case loading called when load project document
             if (newEnvelopeCount === 0) {
-                // TODO: Translate
-                toaster.toast("No new survey results were found.");
+                console.log("loadLatestStoriesFromServer: No new survey results were found.");
+                topic.publish("loadLatestStoriesFromServer", newEnvelopeCount, null);
                 return;
             } else {
-                // TODO: Translate
-                toaster.toast("" + newEnvelopeCount + " new survey result(s) were found.");
+                console.log("loadLatestStoriesFromServer: There were " + newEnvelopeCount + " new survey result(s) found.");
             }
             
             // TODO: Only for debugging; need to think through the separating of stories and general survey data
@@ -279,7 +273,7 @@ define([
             if (callback) callback(newEnvelopeCount);
             
             // Tell any listeners like story browsers that there are more stories
-            topic.publish("loadLatestStoriesFromServer", allStories);
+            topic.publish("loadLatestStoriesFromServer", newEnvelopeCount, allStories);
             topic.publish("totalNumberOfSurveyResults", allEnvelopes.length);
         });
     }

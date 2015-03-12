@@ -1,6 +1,5 @@
 require([
     "dojo/i18n!js/nls/applicationMessages",
-    "dojo/_base/connect",
     "js/panelBuilder/dialogSupport",
     "js/domain",
     "dojo/dom-construct",
@@ -12,6 +11,7 @@ require([
     "js/storage",
     "js/survey",
     "js/panelBuilder/toaster",
+    "dojo/topic",
     "js/panelBuilder/translate",
     "js/panelBuilder/PanelBuilder",
     "js/panelBuilder/widgetSupport",
@@ -21,7 +21,6 @@ require([
     "dojo/domReady!"
 ], function(
     applicationMessages,
-    connect,
     dialogSupport,
     domain,
     domConstruct,
@@ -33,6 +32,7 @@ require([
     storage,
     survey,
     toaster,
+    topic,
     translate,
     PanelBuilder,
     widgetSupport,
@@ -606,6 +606,16 @@ require([
         survey.openSurveyDialog(questionnaire);
     }
     
+    function loadedMoreSurveyResults(newEnvelopeCount) {
+        if (newEnvelopeCount === 0) {
+            // TODO: Translate
+            toaster.toast("No new survey results were found.");
+        } else {
+            // TODO: Translate
+            toaster.toast("" + newEnvelopeCount + " new survey result(s) were found.");
+        }
+    }
+    
     function initialize() {
         translate.configure({}, applicationMessages);
         
@@ -642,7 +652,9 @@ require([
         createLayout();
         
         // Update if the URL hash fragment changes
-        connect.subscribe("/dojo/hashchange", urlHashFragmentChanged); 
+        topic.subscribe("/dojo/hashchange", urlHashFragmentChanged); 
+        
+        topic.subscribe("loadLatestStoriesFromServer", loadedMoreSurveyResults);
         
         /* TODO: Commented out while testing changeover to fields
         

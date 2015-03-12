@@ -220,7 +220,8 @@ define([
         return selectedAnswerChoices.indexOf(questionAnswer) !== -1;
     }
     
-    function loadLatestStoriesFromServerCallback(storyBrowserInstance, allStories) {
+    function loadLatestStoriesFromServerCallback(storyBrowserInstance, newEnvelopeCount, allStories) {
+        if (!newEnvelopeCount) return;
         // console.log("loadLatestStoriesFromServerCallback", storyBrowserInstance, allStories);
         storyBrowserInstance.dataStore.setData(allStories);
         setStoryListForCurrentFilters(storyBrowserInstance);
