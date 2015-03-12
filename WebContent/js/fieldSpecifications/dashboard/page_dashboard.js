@@ -1,7 +1,7 @@
 define([], function() {
     "use strict";
     return [
-        {
+       {
             id: "page_dashboard",
             displayName: "Dashboard",
             displayType: "page",
@@ -10,17 +10,10 @@ define([], function() {
             modelClass: "ProjectModel"
         },
         {
-            id: 'project_mainDashboardLabel',
-            dataType: 'none',
-            displayType: 'label',
-            displayPrompt: 'NarraFirma Dashboard (Click on the "Home" icon to return here. Click on buttons below to open the related section.)',
-         },
-         {
-             id: 'project_mainDashboard_launchIntroduction',
+             id: 'project_mainDashboardLabel',
              dataType: 'none',
-             displayType: 'button',
-             displayConfiguration: {action: 'guiOpenSection', section: 'page_introduction'},
-             displayPrompt: 'Go to introduction page'
+             displayType: 'label',
+             displayPrompt: '<b>NarraFirma Dashboard</b> (Click on the "Home" icon to return here. Click on buttons below to open the related section.)',
          },
          {
              id: 'project_launchSection_planning',
@@ -78,5 +71,26 @@ define([], function() {
              displayConfiguration: {action: 'guiOpenSection', section: 'page_projectReport'},
              displayPrompt: 'Project report'
          },
+         {
+             id: 'project_mainDashboardSeparator',
+             dataType: 'none',
+             displayType: 'label',
+             displayPrompt: '<b>Quick links</b> (You can also use the left/right arrows above to get to these pages)',
+         },
+         {
+             id: 'project_mainDashboard_launchIntroduction',
+             dataType: 'none',
+             displayType: 'button',
+             displayConfiguration: {action: 'guiOpenSection', section: 'page_introduction'},
+             displayPrompt: 'Go to introduction page',
+             displayPreventBreak: true
+        },
+        {
+             id: 'project_mainDashboard_launchImportExport',
+             dataType: 'none',
+             displayType: 'button',
+             displayConfiguration: {action: 'guiOpenSection', section: 'page_importExport'},
+             displayPrompt: 'Go to Import/Export page'
+        }
     ];
 });
