@@ -232,6 +232,7 @@ define([
         
         // TODO: Fix this show also handles participant questions somehow
         var questionnaire = domain.getCurrentQuestionnaire();
+        console.log("questionnaire", questionnaire);
         var storyQuestions = questionnaire.storyQuestions;
         
         // TODO: What about idea of having IDs that go with eliciting questions so store reference to ID not text prompt?
@@ -266,6 +267,7 @@ define([
                  
                  var participantID = model.get("_participantID");
                  var participantData = domain.getParticipantDataForParticipantID(participantID);
+                 // console.log("build item panel participantID", participantID, model, participantData);
                  var participantDataModel = new Stateful(participantData);
                  panelBuilder.addQuestions(questionnaire.participantQuestions, contentPane, participantDataModel);
              }
