@@ -45,13 +45,6 @@ define([
         }
     }
     
-    // Store page change callback to prevent circular reference when loading domain and question editor
-    var pageChangeCallback;
-    
-    function setPageChangeCallback(pageChangeCallbackNewValue) {
-        pageChangeCallback = pageChangeCallbackNewValue;
-    }
-    
     function copyDraftPNIQuestionVersionsIntoAnswers(contentPane, model, fieldSpecification, value) {
         var finalQuestionIDs = ["project_pniQuestions_goal_final", "project_pniQuestions_relationships_final",
                          "project_pniQuestions_focus_final", "project_pniQuestions_range_final",
@@ -320,7 +313,7 @@ define([
         storage.storeQuestionnaireStatus(questionnaireID, status, function(error) {
             console.log("Activated questionnaire", questionnaireID);
             questionnaireStatus = {questionnaireID: questionnaireID, active: true};
-            pageChangeCallback();
+            topic.publish("isStoryCollectingEnabled", questionnaireStatus);
         });
     }
     
@@ -329,7 +322,7 @@ define([
         storage.storeQuestionnaireStatus(questionnaireID, status, function(error) {
             console.log("Deactivated questionnaire", questionnaireID);
             questionnaireStatus = {questionnaireID: questionnaireID, active: false};
-            pageChangeCallback();
+            topic.publish("isStoryCollectingEnabled", questionnaireStatus);
         });
     }
     
@@ -579,7 +572,7 @@ define([
             if (error) {return console.log("Could not determine questionnaire status; assuming inactive", questionnaireID);}
             console.log("got questionnaire status", status);
             questionnaireStatus = status;
-            if (pageChangeCallback) pageChangeCallback();
+            topic.publish("isStoryCollectingEnabled", questionnaireStatus);
         });
     }
     
@@ -602,7 +595,6 @@ define([
         "buttonFunctions": buttonFunctions,
         
         // Configuring callbacks for button functions
-        "setPageChangeCallback": setPageChangeCallback,
         "setOpenSectionCallback": setOpenSectionCallback,
         
         "getCurrentQuestionnaire": getCurrentQuestionnaire,
