@@ -2,6 +2,7 @@ define([
     // dashboard
     "./dashboard/page_dashboard",
     "./dashboard/page_introduction",
+    "./dashboard/page_importExport",
 
     // planning
     "./planning/page_planning",
@@ -108,6 +109,7 @@ define([
     // dashboard
     page_dashboard,
     page_introduction,
+    page_importExport,
 
     // planning
     page_planning,
@@ -217,6 +219,7 @@ define([
         // ==================== SECTION dashboard ==========================
         fieldSpecificationCollection.addFieldSpecifications(page_dashboard);
         fieldSpecificationCollection.addFieldSpecifications(page_introduction);
+        fieldSpecificationCollection.addFieldSpecifications(page_importExport);
 
         // ==================== SECTION planning ==========================
         fieldSpecificationCollection.addFieldSpecifications(page_planning);

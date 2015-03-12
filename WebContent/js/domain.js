@@ -43,10 +43,17 @@ define([
         }
     }
     
-    function copyDraftPNIQuestionVersionsIntoAnswers(contentPane, model, fieldSpecification, value) {
-        var finalQuestionIDs = ["project_pniQuestions_goal_final", "project_pniQuestions_relationships_final",
-                         "project_pniQuestions_focus_final", "project_pniQuestions_range_final",
-                         "project_pniQuestions_scope_final", "project_pniQuestions_emphasis_final"];
+    function copyDraftPNIQuestionVersionsIntoAnswers() {
+        var model = projectData.projectAnswers;
+            
+        var finalQuestionIDs = [
+            "project_pniQuestions_goal_final",
+            "project_pniQuestions_relationships_final",
+            "project_pniQuestions_focus_final",
+            "project_pniQuestions_range_final",
+            "project_pniQuestions_scope_final",
+            "project_pniQuestions_emphasis_final"
+        ];
         
         var copiedAnswersCount = 0;
         
@@ -64,9 +71,7 @@ define([
             }
         }
         
-        var template = translate("#copyDraftPNIQuestion_template");
-        var message = template.replace("{{copiedAnswersCount}}", copiedAnswersCount);
-        alert(message);
+        return copiedAnswersCount;
     }
     
     function ensureUniqueQuestionIDs(usedIDs, editorQuestions) {
@@ -190,7 +195,6 @@ define([
             // TODO: Translate
             var message = "No eliciting questions were defined! Adding one with 'What happened?' for testing.";
             console.log("PROBLEM", message);
-            // alert(message);
             console.log("Adding an eliciting question for testing", message);
             var testElicitingQuestionInfo = {
                 text: "What happened?",
@@ -200,19 +204,6 @@ define([
             questionnaire.elicitingQuestions.push(testElicitingQuestionInfo);
         }
     }
-    
-    function printStoryForm(contentPane, model, fieldSpecification, value) {
-        console.log("printStoryForm unfinished");
-        
-        alert("unfinished");
-    }
-    
-    /*
-    function replaceArrayContents(destination, source) {
-        destination.length = 0;
-        destination.push.apply(destination, source);
-    }
-    */
     
     // Can also just pass in callback as first arg, rest are unused and are for compatibility with GUI calling system
     function loadLatestStoriesFromServer(contentPane, model, fieldSpecification, value, callback) {
@@ -292,7 +283,7 @@ define([
         return {};
     }
         
-    function storyCollectionStart(contentPane, model, fieldSpecification, value) {
+    function storyCollectionStart() {
         alert("also finalizing survey for testing...");
         
         var questionnaire = getCurrentQuestionnaire();
@@ -313,7 +304,7 @@ define([
         });
     }
     
-    function storyCollectionStop(contentPane, model, fieldSpecification, value) {
+    function storyCollectionStop() {
         var status = {questionnaireID: questionnaireID, active: false};
         storage.storeQuestionnaireStatus(questionnaireID, status, function(error) {
             console.log("Deactivated questionnaire", questionnaireID);
@@ -326,59 +317,6 @@ define([
         return questionnaireStatus.active;
     }
     
-    function copyStoryFormURL() {
-        alert("Story form URL is: " + "http://localhost:8080/survey.html");
-    }
-    
-    var openSectionCallback;
-    
-    function setOpenSectionCallback(callback) {
-        openSectionCallback = callback;
-    }
-    
-    function guiOpenSection(contentPane, model, fieldSpecification, value) {
-        var section = fieldSpecification.displayConfiguration.section;
-        console.log("guiOpenSection", section, fieldSpecification);
-        if (openSectionCallback) openSectionCallback(section);
-    }
-      
-    var buttonFunctions = {
-        "printStoryForm": printStoryForm,
-        "copyDraftPNIQuestionVersionsIntoAnswers": copyDraftPNIQuestionVersionsIntoAnswers,
-        "loadLatestStoriesFromServer": loadLatestStoriesFromServer,
-        // TODO: This next action is filled in by application in main
-        "enterSurveyResult": null,
-        
-        "storyCollectionStart": storyCollectionStart,
-        "storyCollectionStop": storyCollectionStop,
-        "copyStoryFormURL": copyStoryFormURL,
-        "guiOpenSection": guiOpenSection
-    };
-    
-    // dispatch the button click
-    function buttonClicked(contentPane, model, fieldSpecification, value) {
-         console.log("buttonClicked", fieldSpecification);
-         
-         var functionName = fieldSpecification.id;
-         if (fieldSpecification.displayConfiguration) {
-             if (_.isString(fieldSpecification.displayConfiguration)) {
-                 functionName = fieldSpecification.displayConfiguration;
-             } else {
-                 functionName = fieldSpecification.displayConfiguration.action;
-             }
-         }
-         
-         var actualFunction = buttonFunctions[functionName];
-         if (!actualFunction) {
-             var message = "Unfinished handling for: " + fieldSpecification.id + " with functionName: " + functionName;
-             console.log(message, contentPane, model, fieldSpecification, value);
-             alert(message);
-             return;
-         } else {
-             actualFunction(contentPane, model, fieldSpecification, value);
-         }
-    }
-
     function calculate_quizScoreResult(model, dependsOn) {
         // console.log("quiz score result", dependsOn);
         var total = 0;
@@ -534,8 +472,8 @@ define([
     
     // Application should call this at startup
     function setupDomain(fieldSpecificationCollection) {
-        var projectModel = fieldSpecificationCollection.buildModel("ProjectModel");
-        projectData.projectAnswers = new Stateful(projectModel);
+        var model = fieldSpecificationCollection.buildModel("ProjectModel");
+        projectData.projectAnswers = new Stateful(model);
         projectData.exportedSurveyQuestions = {};
         projectData.surveyResults = {};
         projectData.surveyResults.allCompletedSurveys = [];
@@ -585,13 +523,13 @@ define([
         
         // functions called from page widgets
         "calculateFunctionResultForGUI": calculateFunctionResultForGUI,
-        "buttonClicked": buttonClicked,
         "calculate_report": calculate_report,
         "calculate_quizScoreResult": calculate_quizScoreResult,
-        "buttonFunctions": buttonFunctions,
         
-        // Configuring callbacks for button functions
-        "setOpenSectionCallback": setOpenSectionCallback,
+        "copyDraftPNIQuestionVersionsIntoAnswers": copyDraftPNIQuestionVersionsIntoAnswers,
+        "storyCollectionStart": storyCollectionStart,
+        "storyCollectionStop": storyCollectionStop,
+        "loadLatestStoriesFromServer": loadLatestStoriesFromServer,
         
         "getCurrentQuestionnaire": getCurrentQuestionnaire,
         

@@ -551,18 +551,6 @@ require([
         
         // Document controls
         
-        var documentControlsPane = new ContentPane();
-        documentControlsPane.placeAt(navigationPane);
-        
-        saveButton = widgetSupport.newButton(navigationPane, "#button_save", saveClicked);
-
-        loadLatestButton = widgetSupport.newButton(navigationPane, "#button_loadLatest", loadLatestClicked);
-        loadVersionButton = widgetSupport.newButton(navigationPane, "#button_loadVersion", loadVersionClicked);
-
-        importExportButton = widgetSupport.newButton(navigationPane, "#button_importExport", importExportClicked);
-
-        var debugButton = widgetSupport.newButton(navigationPane, "#button_debug", debugButtonClicked);
-        
         // Page controls
         
         var pageControlsPane = new ContentPane();
@@ -583,7 +571,11 @@ require([
         
         nextPageButton = widgetSupport.newButton(pageControlsPane, "#button_nextPage", nextPageClicked);
         nextPageButton.set("iconClass", "rightButtonImage");
+        
+        saveButton = widgetSupport.newButton(pageControlsPane, "#button_save", saveClicked);
 
+        var debugButton = widgetSupport.newButton(pageControlsPane, "#button_debug", debugButtonClicked);
+        
         // Setup the first page
         var fragment = hash();
         console.log("fragment when page first loaded", fragment);
@@ -616,6 +608,71 @@ require([
         }
     }
     
+    ///////// Button functions 
+    
+    function copyStoryFormURL() {
+        alert("Story form URL is: " + "http://localhost:8080/survey.html");
+    }
+    
+    function guiOpenSection(contentPane, model, fieldSpecification, value) {
+        var section = fieldSpecification.displayConfiguration.section;
+        console.log("guiOpenSection", section, fieldSpecification);
+        showPage(section);
+    }
+    
+    function printStoryForm(contentPane, model, fieldSpecification, value) {
+        console.log("printStoryForm unfinished");
+        
+        alert("unfinished");
+    }
+    
+    function copyDraftPNIQuestionVersionsIntoAnswers() {
+        var copiedAnswersCount = domain.copyDraftPNIQuestionVersionsIntoAnswers();
+        var template = translate("#copyDraftPNIQuestion_template");
+        var message = template.replace("{{copiedAnswersCount}}", copiedAnswersCount);
+        alert(message);
+    }
+      
+    var buttonFunctions = {
+        "printStoryForm": printStoryForm,
+        "copyDraftPNIQuestionVersionsIntoAnswers": copyDraftPNIQuestionVersionsIntoAnswers,
+        "loadLatestStoriesFromServer": domain.loadLatestStoriesFromServer,
+        "enterSurveyResult": openSurveyDialog,
+        "storyCollectionStart": domain.storyCollectionStart,
+        "storyCollectionStop": domain.storyCollectionStop,
+        "copyStoryFormURL": copyStoryFormURL,
+        "guiOpenSection": guiOpenSection,
+        "loadLatest": loadLatestClicked,
+        "loadVersion": loadVersionClicked,
+        "importExportOld": importExportClicked
+    };
+    
+    // dispatch the button click
+    function buttonClicked(contentPane, model, fieldSpecification, value) {
+         console.log("buttonClicked", fieldSpecification);
+         
+         var functionName = fieldSpecification.id;
+         if (fieldSpecification.displayConfiguration) {
+             if (_.isString(fieldSpecification.displayConfiguration)) {
+                 functionName = fieldSpecification.displayConfiguration;
+             } else {
+                 functionName = fieldSpecification.displayConfiguration.action;
+             }
+         }
+         
+         var actualFunction = buttonFunctions[functionName];
+         if (!actualFunction) {
+             var message = "Unfinished handling for: " + fieldSpecification.id + " with functionName: " + functionName;
+             console.log(message, contentPane, model, fieldSpecification, value);
+             alert(message);
+             return;
+         } else {
+             actualFunction(contentPane, model, fieldSpecification, value);
+         }
+    }
+    
+    ///////////////
+    
     function initialize() {
         translate.configure({}, applicationMessages);
         
@@ -630,13 +687,6 @@ require([
         
         // Setup the domain with the base model defined by field specifications
         domain.setupDomain(fieldSpecificationCollection);
-
-        // Set up callback for requests to open a section
-        domain.setOpenSectionCallback(showPage);
-        
-        // Callback for this button
-        // TODO: Temp for testing
-        domain.buttonFunctions.enterSurveyResult = openSurveyDialog;
  
         processAllPanels();
         
@@ -646,7 +696,7 @@ require([
         
         // Tell the panelBuilder what do do if a button is clicked
         panelBuilder.setButtonClickedCallback(function(panelBuilder, contentPane, model, fieldSpecification, value) {
-            domain.buttonClicked(contentPane, model, fieldSpecification, value);
+            buttonClicked(contentPane, model, fieldSpecification, value);
         });
         
         createLayout();
