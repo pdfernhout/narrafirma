@@ -171,9 +171,7 @@ Remove any use of widgets in widgetSupport or other use of Dojo controls (e.g. B
 Add some general small independent tests of PanelBuilder functionality 
 
 REFACTORING
-See if still need updateQuestionsForPageChange or if can improve that somehow
 See if still need so many button functions in domain (or maybe any at all)
-Only load PanelBuilder components as needed for built panels (using AMD)
 Some way only load page and panel files as needed (with help URL being determined by PanelBuilder as it creates panel, and maybe specify panels in section by hand)
 Save and load data for each page instead of for entire project
 Save data for observations and so on as seperate documents so can do it incrementally
@@ -544,3 +542,6 @@ DONE Implement countNumberOfVenuesChosen in domain (is this still needed? If not
 DONE Update story browser when load latest stories from server (without need to press Filter button again)
 DONE Removed unused code for add_questionAnswerCountOfTotalOnPage.js
 DONE Removed unused code for add_listCount.js
+NOT DOING Only load PanelBuilder components as needed for built panels (using AMD) [Would make the architecture much more complicated.]
+DONE Replace PanelBuilder.updateQuestionsForPageChange with different approach
+DONE See if still need updateQuestionsForPageChange or if can improve that somehow [Replaced with better approach]
