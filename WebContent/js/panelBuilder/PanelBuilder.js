@@ -47,7 +47,12 @@ define([
 ){
 
 "use strict";
- 
+
+// Users should call PanelBuilder.addStandardPlugins(); at the beginning of their application unless they add each plugin manually
+
+// Developer local debug flag to cause an Exception if a widget type is missing instead of put in placeholder panel
+var debugFailIfMissingWidgets = false;
+
 // TODO: Need a better approach for calling JavaScript function than this
 document.__narraFirma_launchApplication = browser.launchApplication;
 
@@ -61,21 +66,24 @@ function addPlugin(name, callback) {
     buildingFunctions[name] = callback;
 }
 
-// standard plugins
-addPlugin("boolean", add_boolean);
-addPlugin("button", add_button);
-addPlugin("checkbox", add_checkbox);
-addPlugin("checkboxes", add_checkboxes);
-addPlugin("grid", add_grid);
-addPlugin("header", add_header);
-addPlugin("image", add_image);
-addPlugin("label", add_label);
-addPlugin("radiobuttons", add_radiobuttons);
-addPlugin("select", add_select);
-addPlugin("slider", add_slider);
-addPlugin("text", add_text);
-addPlugin("textarea", add_textarea);
-addPlugin("toggleButton", add_toggleButton);
+// This function needs to be called at the start of an application by users as a class method, like:"PanelBuilder.addStandardPlugins();"
+function addStandardPlugins() {
+    // standard plugins
+    addPlugin("boolean", add_boolean);
+    addPlugin("button", add_button);
+    addPlugin("checkbox", add_checkbox);
+    addPlugin("checkboxes", add_checkboxes);
+    addPlugin("grid", add_grid);
+    addPlugin("header", add_header);
+    addPlugin("image", add_image);
+    addPlugin("label", add_label);
+    addPlugin("radiobuttons", add_radiobuttons);
+    addPlugin("select", add_select);
+    addPlugin("slider", add_slider);
+    addPlugin("text", add_text);
+    addPlugin("textarea", add_textarea);
+    addPlugin("toggleButton", add_toggleButton);
+}
 
 // This class builds panels from question definitions
 var PanelBuilder = declare(null, {
@@ -130,14 +138,29 @@ var PanelBuilder = declare(null, {
     
     // TODO: Perhaps should handle contentPane differently, since it is getting overwritten by these next three methods
     
+    addMissingWidgetPlaceholder: function(panelBuilder, contentPane, model, fieldSpecification) {
+        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
+        
+        var label = new ContentPane({
+            // content: translate(id + "::prompt", fieldSpecification.displayPrompt)
+            content: "<b>Unsupported widget type: " + fieldSpecification.displayType + " for: " + fieldSpecification.id + "</b>"             
+        });
+        label.placeAt(questionContentPane);
+        return label;
+    },
+    
     addQuestionWidget: function(contentPane, model, fieldSpecification) {
         console.log("addQuestionWidget", fieldSpecification);
         
         var addFunction = buildingFunctions[fieldSpecification.displayType];
         if (!addFunction) {
-            var error = "ERROR: unsupported field display type: " + fieldSpecification.displayType;
-            console.log(error);
-            throw new Error(error);
+            if (debugFailIfMissingWidgets) {
+                // Would be thrown if you forget to call "PanelBuilder.addStandardPlugins();" or similar at the beginning of your application
+                var error = "ERROR: unsupported field display type: " + fieldSpecification.displayType;
+                console.log(error);
+                throw new Error(error);
+            }
+            addFunction = lang.hitch(this, this.addMissingWidgetPlaceholder);
         }
         if (_.isString(addFunction)) { 
             var addFunctionName = addFunction;
@@ -301,6 +324,7 @@ var PanelBuilder = declare(null, {
     });
 
     PanelBuilder.addPlugin = addPlugin;
+    PanelBuilder.addStandardPlugins = addStandardPlugins;
     
     return PanelBuilder;
 });

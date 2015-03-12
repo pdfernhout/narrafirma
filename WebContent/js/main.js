@@ -619,10 +619,11 @@ require([
         // Initialize toaster
         toaster.createToasterWidget("navigationDiv");
         
+        PanelBuilder.addStandardPlugins();
         loadAllApplicationWidgets(PanelBuilder);
         
         console.log("loadAllFieldSpecifications", loadAllFieldSpecifications);
-        // Load the applicaiton design
+        // Load the application design
         loadAllFieldSpecifications(fieldSpecificationCollection);
         
         // Setup the domain with the base model defined by field specifications
