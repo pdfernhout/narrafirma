@@ -31,22 +31,7 @@ define([
     
     // story browser support
     
-    // From: http://stackoverflow.com/questions/12815892/how-to-debug-javascript-when-it-goes-into-infinite-loops-and-recursive-calls-in
-    // TODO: IMPORTANT --- Temporary -- For development bug catching only -- REMOVE FOR PRODUCTION!!!!
-    var calls = 0;
-    function suspectToBeLoopingInfinitely() {
-      calls += 1;
-      console.log("==== calls", calls);
-      if (calls > 100) {
-          console.log("trying to start debugger");
-          debugger;
-          console.log("Did it halt?");
-      }
-    }
-    
     function filterPaneQuestionChoiceChanged(filterPane, newValue) {
-        // suspectToBeLoopingInfinitely();
-        
         // console.log("event", newValue);
         var question = null;
         for (var index = 0; index < filterPane.questions.length; index++) {
