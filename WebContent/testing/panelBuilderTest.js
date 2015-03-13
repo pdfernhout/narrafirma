@@ -39,4 +39,9 @@ require([
     contentPane.placeAt("pageDiv").startup();
     console.log("contentPane", contentPane);
 
+    var model = {};
+    
+    panelBuilder.addQuestions(questions, contentPane, model);
+    
+    console.log("model", model);
 });
