@@ -173,7 +173,12 @@ define([
         return options;
     }
     
-    function createFilterPane(id, questions, stories, containerPane) {
+    function clearFilterPane(storyBrowserInstance, filterPane) {
+        filterPane.questionSelect.set("value", null);
+        setStoryListForCurrentFilters(storyBrowserInstance);
+    }
+    
+    function createFilterPane(storyBrowserInstance, id, questions, stories, containerPane) {
         var contentPane = new ContentPane({
             id: id + "_content",
             style: "width: 95%;"
@@ -181,7 +186,15 @@ define([
         });
         
         containerPane.addChild(contentPane);
-         
+  
+        var filterPane = {};
+            
+        // TODO: Translate
+        contentPane.containerNode.appendChild(domConstruct.toDom('Filter by:'));
+        
+        // TODO: Translate
+        var clearButton = widgetSupport.newButton(contentPane, "Clear filter", lang.partial(clearFilterPane, storyBrowserInstance, filterPane));
+
         var questionSelect = widgetSupport.newSelect(contentPane, widgetSupport.optionsForAllQuestions(questions));
         questionSelect.set("style", "width: 98%; max-width: 98%");
         
@@ -190,10 +203,12 @@ define([
         var answersMultiSelect = widgetSupport.newMultiSelect([]);
         contentPane.addChild(answersMultiSelect);
         
-        var filterPane = {"contentPane": contentPane, "questionSelect": questionSelect, "answersMultiSelect": answersMultiSelect, "questions": questions, "stories": stories};
+        var filterPane2 = {"contentPane": contentPane, "questionSelect": questionSelect, "answersMultiSelect": answersMultiSelect, "questions": questions, "stories": stories};
 
+        for (var key in filterPane2) filterPane[key] = filterPane2[key];
+        
         questionSelect.on("change", lang.partial(filterPaneQuestionChoiceChanged, filterPane)); 
-
+        
         return filterPane;
     }
 
@@ -296,8 +311,17 @@ define([
         
         // console.log("insertStoryBrowser middle 2", id);
         
-        var filter1 = createFilterPane(id + "_1", questions, stories, table);
-        var filter2 = createFilterPane(id + "_2", questions, stories, table);
+     // TODO: Probably should become a class
+        var storyBrowserInstance = {
+            dataStore: dataStore,
+            filter1: null,
+            filter2: null,
+            storyList: null,
+            subscription: null,
+        };
+        
+        storyBrowserInstance.filter1 = createFilterPane(storyBrowserInstance, id + "_1", questions, stories, table);
+        storyBrowserInstance.filter2 = createFilterPane(storyBrowserInstance, id + "_2", questions, stories, table);
 
         // pagePane.containerNode.appendChild(domConstruct.toDom('<br>'));
         
@@ -305,13 +329,6 @@ define([
         pagePane.addChild(table);
         
         // TODO: Probably should become a class
-        var storyBrowserInstance = {
-            dataStore: dataStore,
-            filter1: filter1,
-            filter2: filter2,
-            storyList: null,
-            subscription: null,
-        };
         
         var filterButton = widgetSupport.newButton(pagePane, "#button_Filter", lang.partial(setStoryListForCurrentFilters, storyBrowserInstance));
         

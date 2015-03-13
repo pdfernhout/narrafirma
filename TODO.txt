@@ -141,6 +141,7 @@ DASHBOARD
 Provide status of whether survey is active on main dashboard
 General notes should go after dashboard for each section
 Think about how to save or retrieve general section dashboard status if decide to split up project file by section
+Odd behavior where under Firefox where did not see a scrollbar until resized text area when had lots of section notes
 
 ALERTS
 Help window displaying HTML instead of alert
@@ -549,3 +550,4 @@ DONE Include "NarraFirmaTM" text in upper left corner of pages
 DONE Remove selection items about completion status from dashboard pages
 DONE Improve dashboard so buttons and status line up in columns
 DONE Fix issue with story browser no longer showing all questions
+DONE Improve GUI support to clear filters in story browser
