@@ -92,6 +92,34 @@ define([
         }
     }
     
+    var displayTypeToDataTypeMap = {
+        label: "none",
+        image: "none",
+        textarea: 'string',
+        text: 'string',
+        grid: 'array',
+        header: "none",
+        select: "string",
+        clusteringDiagram: 'object',
+        quizScoreResult: "none",
+        button: "none",
+        report: "none",
+        recommendationTable: "none",
+        checkboxes: 'dictionary',
+        templateList: "none",
+        "function": "none",
+        storyBrowser: 'none',
+        storyThemer: 'none',
+        graphBrowser: 'none',
+        trendsReport: 'none',
+        observationsList: 'none',
+        accumulatedItemsGrid: 'none',
+        excerptsList: 'none',
+        annotationsGrid: 'none',
+        storiesList: 'none',
+        boolean: 'boolean'
+    };
+    
     function convertEditorQuestions(editorQuestions) {
         var adjustedQuestions = [];
         
@@ -120,7 +148,10 @@ define([
                     }
                 }
             }
-            adjustedQuestions.push({type: type, id: id, dataOptions: options, displayName: shortName, displayPrompt: prompt});
+            // TODO: dataType might be a number or boolean sometimes
+            var dataType = displayTypeToDataTypeMap[type];
+            if (!dataType) console.log("ERROR: Could not resolve dataType for ", question);
+            adjustedQuestions.push({dataType: dataType, displayType: type, id: id, dataOptions: options, displayName: shortName, displayPrompt: prompt});
         }
         
         return adjustedQuestions;

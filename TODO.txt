@@ -53,7 +53,6 @@ BROWSING
 Fix how story browser browses stories for separation of participant info from stories
 Should there be a separate participant info browser or is that handled by story browser? If "story browser" does that, may need to rename story browser?
 Fix how graph browser shows graphs for separation of participant info from stories
-Fix issue with story browser no longer showing all questions
 
 EXPORT/IMPORT
 Add page to do import/export
@@ -549,3 +548,4 @@ DONE Remove toaster gui dependency from domain by using publish/subscribe
 DONE Include "NarraFirmaTM" text in upper left corner of pages
 DONE Remove selection items about completion status from dashboard pages
 DONE Improve dashboard so buttons and status line up in columns
+DONE Fix issue with story browser no longer showing all questions
