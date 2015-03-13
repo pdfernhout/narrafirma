@@ -14,6 +14,13 @@ define([
     
     var debugTranslations = false;
     
+    function lookupTranslation(id) {
+        var result = pageMessages[id];
+        if (!result && result !== "") result = applicationMessages[id]
+        if (!result && result !== "") result = extraTranslations[id];
+        return result;
+    }
+    
     // if the tag field has a leading "#", it is parsed into an id and a default string by splitting at the first pipe
     function translate(tag, defaultText) {
         if (debugTranslations) console.log("translating", tag);
@@ -25,7 +32,7 @@ define([
             return defaultText || "";
         }
         if (tag.charAt(0) !== "#") {
-            var translation = pageMessages[tag] || applicationMessages[tag] || extraTranslations[tag];
+            var translation = lookupTranslation(tag);
             if (translation) return translation;
             if (debugTranslations) console.log("no translation available for:", tag);
             if (defaultText) return defaultText;
@@ -39,7 +46,7 @@ define([
             suppliedText = id.substring(splitPoint + 1);
             id = id.substring(0, splitPoint);
         }
-        var result = pageMessages[id] || applicationMessages[id] || extraTranslations[id];
+        var result = lookupTranslation(id);
         if (result === undefined) {
             if (suppliedText) {
                 result = suppliedText;
