@@ -561,17 +561,20 @@ require([
         homeButton.set("showLabel", false);
         // homeButton.set("iconClass", "dijitEditorIcon dijitEditorIconOutdent");
         homeButton.set("iconClass", "homeButtonImage");
+        homeButton.set("title", translate("#button_home_title"));
 
         // TODO: Select width should be determined from contents of select options using font metrics etc.
         pageNavigationSelect = newSpecialSelect(pageControlsPane, []);
         domStyle.set(pageNavigationSelect.domNode, "width", "400px");
         pageNavigationSelect.on("change", pageNavigationSelectChanged);
         
-        previousPageButton = widgetSupport.newButton(pageControlsPane, "#button_previousPage", previousPageClicked);
+        previousPageButton = widgetSupport.newButton(pageControlsPane, "", previousPageClicked);
         previousPageButton.set("iconClass", "leftButtonImage");
+        previousPageButton.set("title", translate("#button_previousPage"));
         
-        nextPageButton = widgetSupport.newButton(pageControlsPane, "#button_nextPage", nextPageClicked);
+        nextPageButton = widgetSupport.newButton(pageControlsPane, "", nextPageClicked);
         nextPageButton.set("iconClass", "rightButtonImage");
+        nextPageButton.set("title", translate("#button_nextPage"));
         
         saveButton = widgetSupport.newButton(pageControlsPane, "#button_save", saveClicked);
 

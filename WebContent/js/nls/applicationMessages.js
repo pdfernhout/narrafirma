@@ -16,8 +16,9 @@ define({
     
     // Translation of buttons
     button_home: "Home",
-    button_previousPage: " ",
-    button_nextPage: " ",
+    button_home_title: "Go home to main dashboard",
+    button_previousPage: "Previous Page",
+    button_nextPage: "Next Page",
     button_loadLatest: "Load latest",
     button_loadVersion: "Load version",
     button_save: "Save",
