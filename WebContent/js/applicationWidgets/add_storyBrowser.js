@@ -45,7 +45,7 @@ define([
     }
     
     function filterPaneQuestionChoiceChanged(filterPane, newValue) {
-        suspectToBeLoopingInfinitely();
+        // suspectToBeLoopingInfinitely();
         
         // console.log("event", newValue);
         var question = null;
@@ -207,7 +207,8 @@ define([
 
         for (var key in filterPane2) filterPane[key] = filterPane2[key];
         
-        questionSelect.on("change", lang.partial(filterPaneQuestionChoiceChanged, filterPane)); 
+        questionSelect.on("change", lang.partial(filterPaneQuestionChoiceChanged, filterPane));
+        answersMultiSelect.on("change", lang.partial(setStoryListForCurrentFilters, storyBrowserInstance)); 
         
         return filterPane;
     }
@@ -330,7 +331,7 @@ define([
         
         // TODO: Probably should become a class
         
-        var filterButton = widgetSupport.newButton(pagePane, "#button_Filter", lang.partial(setStoryListForCurrentFilters, storyBrowserInstance));
+        // var filterButton = widgetSupport.newButton(pagePane, "#button_Filter", lang.partial(setStoryListForCurrentFilters, storyBrowserInstance));
         
         // console.log("insertStoryBrowser middle 3", id);
         
@@ -341,9 +342,9 @@ define([
         storyBrowserInstance.subscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerCallback, storyBrowserInstance));
         
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
-        filterButton.own(storyBrowserInstance.subscription);
+        table.own(storyBrowserInstance.subscription);
         
-        console.log("filterButton", filterButton);
+        // console.log("filterButton", filterButton);
         
         console.log("insertStoryBrowser finished");
 
