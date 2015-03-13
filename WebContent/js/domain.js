@@ -151,7 +151,26 @@ define([
             // TODO: dataType might be a number or boolean sometimes
             var dataType = displayTypeToDataTypeMap[type];
             if (!dataType) console.log("ERROR: Could not resolve dataType for ", question);
-            adjustedQuestions.push({dataType: dataType, displayType: type, id: id, dataOptions: options, displayName: shortName, displayPrompt: prompt});
+            var dataOptions;
+            var displayConfiguration;
+            if (type === "select" || type === "checkboxes" || type === "radiobuttons") {
+                dataOptions = options;
+            } else {
+                if (options.length === 1) {
+                    displayConfiguration = options[1];
+                } else if (dataOptions.length > 1) {
+                    displayConfiguration = options;
+                }
+            }
+            adjustedQuestions.push({
+                dataType: dataType,
+                displayType: type,
+                id: id, 
+                dataOptions: dataOptions, 
+                displayName: shortName, 
+                displayPrompt: prompt,
+                displayConfiguration: displayConfiguration
+            });
         }
         
         return adjustedQuestions;
