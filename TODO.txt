@@ -551,3 +551,5 @@ DONE Remove selection items about completion status from dashboard pages
 DONE Improve dashboard so buttons and status line up in columns
 DONE Fix issue with story browser no longer showing all questions
 DONE Improve GUI support to clear filters in story browser
+DONE Improve story browser to dynamically update as you select filter options
+DONE Fix bugs in survey entry from previous refactoring changes for dataOptions and displayConfiguration fields
