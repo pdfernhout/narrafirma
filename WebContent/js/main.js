@@ -443,7 +443,7 @@ require([
                 title += " SPECIAL: " + panel.displayType;
             }
             
-            domain.panelDefinitions[panel.id] = panel;      
+            domain.panelDefinitions[panel.id] = panel;    
             
             // For panels that are a "page", add to top level pages choices and set up navigation
             if (panel.displayType === "page") {
@@ -470,13 +470,22 @@ require([
                 domain.questions[panel.id + "_pageStatus"] = {id: pageID + "_pageStatus", displayType: "select"};
             }
             
+            if (panel.section) lastSection = panel.section;
+            
             // TODO: Should this really be modifying the original???
             panel.title = title;
-            panel.questions = fieldSpecificationCollection.buildQuestionsForPanel(panel.id);
-            if (panel.section) lastSection = panel.section;
             panel.helpSection = lastSection;
-            panel.helpPage = lastPageID;
+            panel.helpPage = panel.id;
             panel.section = lastHeader;
+            
+            panel.questions = fieldSpecificationCollection.buildQuestionsForPanel(panel.id);
+            for (var fieldIndex = 0; fieldIndex < panel.questions.length; fieldIndex++) {
+                var fieldSpec = panel.questions[fieldIndex];
+                fieldSpec.helpSection = lastSection;
+                fieldSpec.helpPage = panel.id;
+            }
+
+            // console.log("Update panel", panel);
         }
         
         var questions = fieldSpecificationCollection.buildListOfQuestions();
@@ -489,48 +498,8 @@ require([
         
         // Add default translations for all questions; these can be overriden by local language files which would be searched first
         translate.addExtraTranslationsForQuestions(questions);
-        
-        var pages = fieldSpecificationCollection.buildListOfPages();
-        
-        // TODO: These two panels are not in any page
-        pages.push(domain.panelDefinitions["panel_addToObservation"]);
-        pages.push(domain.panelDefinitions["panel_addToExcerpt"]);
-        
-        var panelsWithHelp = [];
-        pages.forEach(function (page) {
-            console.log("page", page, page.id);
-            setHelpPageForPanel(page.helpSection, page.id, page.id, panelsWithHelp);
-        });
-        
     }
-    
-    // Recursive function
-    function setHelpPageForPanel(helpSection, helpPage, panelID, panelsWithHelp) {
-        console.log("setHelpPageForPanel", helpSection, helpPage, panelID);
-        if (panelsWithHelp.indexOf(panelID) !== -1) return;
-        if (!domain.panelDefinitions[panelID]) return console.log("ERROR: Missing panel when generating help for", helpSection, helpPage, panelID);
-        // console.log("processing", panelID);
-        // TODO: Duplicating these, but should be the same
-        domain.panelDefinitions[panelID].helpSection = helpSection;
-        domain.panelDefinitions[panelID].helpPage = helpPage;
-        
-        var fieldSpecs = fieldSpecificationCollection.buildQuestionsForPanel(panelID);
-        for (var i = 0; i < fieldSpecs.length; i++) {
-            var fieldSpec = fieldSpecs[i];
-            // TODO: Modifying original -- should be better way
-            fieldSpec.helpSection = helpSection;
-            fieldSpec.helpPage = helpPage;
-            if (_.isString(fieldSpec.displayConfiguration) && _.startsWith(fieldSpec.displayConfiguration, "panel_")) {
-                // console.log("following ", panelID, fieldSpec.id, fieldSpec.displayType);
-                setHelpPageForPanel(helpSection, helpPage, fieldSpec.displayConfiguration, panelsWithHelp);
-            }
-            /*
-            if (fieldSpec.displayType === "grid") {
-                addNestedPanel(fieldSpec.displayConfiguration);
-            }
-            */
-        }
-    }
+
     
     // Make all of the application pages selectable from the dropdown list and back/next buttons and put them in a TabContainer
     function createLayout() {
