@@ -23,37 +23,13 @@ require([
 ) {
     
     var allFieldSpecs;
+    var allPanels;
     
     var allAddedPanels = [];
     
     var helpFileTemplate = fs.readFileSync(__dirname + "/generateHelpFiles_template.html").toString();
     
     // console.log("helpFileTemplate", helpFileTemplate);
-    
-    function addNestedPanels(panelID, panels) {
-        // console.log("addNestedPanels", panelID);
-        if (panels.indexOf(panelID) !== -1) return;
-        // console.log("processing", panelID);
-        panels.push(panelID);
-        if (allAddedPanels.indexOf(panelID) !== -1) {
-            console.log("duplicate panel help for: ", panelID);
-        } else {
-            allAddedPanels.push(panelID);
-        }
-        var fieldSpecs = allFieldSpecs.buildQuestionsForPanel(panelID);
-        for (var i = 0; i < fieldSpecs.length; i++) {
-            var fieldSpec = fieldSpecs[i];
-            if (_.isString(fieldSpec.displayConfiguration) && _.startsWith(fieldSpec.displayConfiguration, "panel_")) {
-                // console.log("following ", panelID, fieldSpec.id, fieldSpec.displayType);
-                addNestedPanels(fieldSpec.displayConfiguration, panels);
-            }
-            /*
-            if (fieldSpec.displayType === "grid") {
-                addNestedPanel(fieldSpec.displayConfiguration);
-            }
-            */
-        }
-    }
     
     var output = "";
     
@@ -70,9 +46,11 @@ require([
         output += text + "\n";
     }
     
-    function addDivsForPanel(panelID) {
-        var fieldSpecs = allFieldSpecs.buildQuestionsForPanel(panelID);
-        var panelSpecification = allFieldSpecs.getPanelSpecificationForPanelID(panelID);
+    function addDivsForPanel(panelSpecification) {
+        var panelID = panelSpecification.id;
+        
+        var panelsUsed = [];
+        
         write('<div id="');
         write(panelID);
         write('" class="');
@@ -94,7 +72,7 @@ require([
         writeln('</div>');
         writeln();
         
-        fieldSpecs.forEach(function (fieldSpec) {
+        panelSpecification.panelFields.forEach(function(fieldSpec) {
             write('<div id="');
             write(fieldSpec.id);
             write('" class="field">');
@@ -114,6 +92,11 @@ require([
                 write('    <span class="displayConfiguration">');
                 write(JSON.stringify(fieldSpec.displayConfiguration));
                 writeln('</span>');
+                
+                if (_.isString(fieldSpec.displayConfiguration) && _.startsWith(fieldSpec.displayConfiguration, "panel_") && fieldSpec.displayType !== "button") {
+                    // console.log("following ", panelID, fieldSpec.id, fieldSpec.displayType);
+                    panelsUsed.push(fieldSpec.displayConfiguration);
+                }
             }
             
             write('    <span class="fieldPrompt">');
@@ -124,25 +107,62 @@ require([
             writeln();
         });
         
+        panelsUsed.forEach(function(panelID) {
+            var usedPanelSpec = allFieldSpecs.getPanelSpecificationForPanelID(panelID);
+            if (!usedPanelSpec) console.log("missing panel spec for", panelID);
+            writeln('<a href="help_' + panelID + '.html" class="narrafirma-helppage-panellink">Uses panel: ' + usedPanelSpec.displayName + '</a><br>'); 
+        });
+        
         writeln('</div>');
         writeln();
     }
     
-    function generateHelpFile(helpFileSpec) {
+    function generateHelpIndex(allPanels) {
         writeClear();
         
-        var pageID = helpFileSpec.shift();
+        var currentSection;
         
-        // console.log("", pageID);
-        
-        addDivsForPanel(pageID);
-        
-        helpFileSpec.forEach(function (panelID) {
-            // console.log("    ", panelID);
-            addDivsForPanel(panelID);
+        allPanels.forEach(function(panel) {
+            if (panel.section !== currentSection) {
+                currentSection = panel.section;
+                console.log("Section: ", currentSection);
+                writeln('<span class="narrafirma-helpindex-sectionheader"><b>' + _.capitalize(currentSection) + '</b><div>');
+            }
+            writeln('<a href="' + currentSection + '/help_' + panel.id + '.html" class="narrafirma-helppageindex-panellink paneltype-' + panel.displayType + '" id="' + panel.id + '">' + panel.displayName + '</a><br>');
         });
         
-        var panelSpec = allFieldSpecs.getPanelSpecificationForPanelID(pageID);
+        var fileName = outputDirectory + "/helpIndex.html";
+        
+        var fileContents = helpFileTemplate.replace("{{title}}", "NarraFirma Help Index").replace("{{output}}", output);
+        
+        fs.writeFileSync(fileName, fileContents);
+    }
+    
+    function generateHelpFile(panelSpec) {
+        writeClear();
+        
+        var panelID = panelSpec.id;
+
+        // console.log("", panelID);
+        
+        writeln('<a href="../helpIndex.html#' + panelID + '" class="narrafirma-helpindex-backlink">Go to main help index</a><br><br>');
+        
+        if (panelSpec.displayType === "panel") {
+            allPanels.forEach(function(possiblePageSpec) {
+                if (possiblePageSpec.displayType === "page") {
+                    possiblePageSpec.panelFields.forEach(function(fieldSpec) {
+                        // console.log("fieldSpec.displayConfiguration", fieldSpec.displayConfiguration, panelID);
+                        if (fieldSpec.displayConfiguration === panelID) {
+                            console.log("using panel on page", panelSpec.id, possiblePageSpec.id, fieldSpec.id);
+                            writeln('<a href="help_' + possiblePageSpec.id + '.html#' + fieldSpec.id + '" class="narrafirma-helppage-backlink">Used in page: ' + possiblePageSpec.displayName + '</a><br>'); 
+                        }
+                    });
+                }
+            });
+        }
+        
+        addDivsForPanel(panelSpec);
+        
         var section = panelSpec.section;
               
         var sectionDirectory = outputDirectory + section;
@@ -151,10 +171,10 @@ require([
             fs.mkdirSync(sectionDirectory);
         }
         
-        var fileName = outputDirectory + section + "/help_" + pageID + ".html";
+        var fileName = outputDirectory + section + "/help_" + panelID + ".html";
         console.log("Writing: ", fileName);
         
-        var title = "NarraFirma help on " + section + " :: " + pageID;
+        var title = "NarraFirma help on " + section + " :: " + panelSpec.displayName;
         var fileContents = helpFileTemplate.replace("{{title}}", title).replace("{{output}}", output);
   
         fs.writeFileSync(fileName, fileContents);
@@ -167,37 +187,22 @@ require([
         loadAllFieldSpecifications(allFieldSpecs);
         // console.log("fieldSpecificationCollection", allFieldSpecs); 
         
-        var pages = allFieldSpecs.buildListOfPages();
+        var panels = allFieldSpecs.buildListOfPanels();
         
         // console.log("pages", pages);
+
+        allPanels = allFieldSpecs.buildListOfPanels();
         
-        var helpFiles = [];
-        
-        pages.forEach(function (page) {
-            var panels = [];
-  
-            addNestedPanels(page.id, panels);
-            
-            helpFiles.push(panels);
+        allPanels.forEach(function(panel) {
+            panel.panelFields = allFieldSpecs.buildQuestionsForPanel(panel.id);
         });
         
-        // console.log("helpFiles", helpFiles);
-        
-        // console.log("allAddedPanels", allAddedPanels);
-        
-        var allPanels = allFieldSpecs.buildListOfPanels();
-        
-        allPanels.forEach(function (panel) {
-            if (allAddedPanels.indexOf(panel.id) === -1) {
-                // console.log("!!! No help for", panel.id);
-                helpFiles.push([panel.id]);
-            }
-        });
-        
-        helpFiles.forEach(function (helpFileSpec) {
-            generateHelpFile(helpFileSpec);
+        allPanels.forEach(function(panel) {
+            generateHelpFile(panel);
             // console.log("output", output);
         });
+        
+        generateHelpIndex(allPanels);
     }
     
     main();
