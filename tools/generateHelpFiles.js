@@ -149,15 +149,13 @@ require([
         
         if (panelSpec.displayType === "panel") {
             allPanels.forEach(function(possiblePageSpec) {
-                if (possiblePageSpec.displayType === "page") {
-                    possiblePageSpec.panelFields.forEach(function(fieldSpec) {
-                        // console.log("fieldSpec.displayConfiguration", fieldSpec.displayConfiguration, panelID);
-                        if (fieldSpec.displayConfiguration === panelID) {
-                            console.log("using panel on page", panelSpec.id, possiblePageSpec.id, fieldSpec.id);
-                            writeln('<a href="help_' + possiblePageSpec.id + '.html#' + fieldSpec.id + '" class="narrafirma-helppage-backlink">Used in page: ' + possiblePageSpec.displayName + '</a><br>'); 
-                        }
-                    });
-                }
+                possiblePageSpec.panelFields.forEach(function(fieldSpec) {
+                    // console.log("fieldSpec.displayConfiguration", fieldSpec.displayConfiguration, panelID);
+                    if (fieldSpec.displayConfiguration === panelID) {
+                        console.log("using panel on page", panelSpec.id, possiblePageSpec.id, fieldSpec.id);
+                        writeln('<a href="help_' + possiblePageSpec.id + '.html#' + fieldSpec.id + '" class="narrafirma-helppage-backlink">Used in ' + possiblePageSpec.displayType + ': ' + possiblePageSpec.displayName + '</a><br>'); 
+                    }
+                });
             });
         }
         
