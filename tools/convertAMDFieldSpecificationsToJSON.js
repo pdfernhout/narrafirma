@@ -18,7 +18,7 @@ var outputDirectory = __dirname + "/output/";
 
 require([
    "../WebContent/js/panelBuilder/PanelSpecificationCollection.js",
-   "../WebContent/js/fieldSpecifications/loadAllPanelSpecifications.js"
+   "../WebContent/js/applicationPanelSpecifications/loadAllPanelSpecifications.js"
 ], function(
     PanelSpecificationCollection,
     loadAllPanelSpecifications

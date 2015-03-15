@@ -7,7 +7,7 @@ require([
     "dojo/hash",
     "dojo/_base/lang",
     "js/applicationWidgets/loadAllApplicationWidgets",
-    "js/fieldSpecifications/loadAllPanelSpecifications",
+    "js/applicationPanelSpecifications/loadAllPanelSpecifications",
     "js/storage",
     "js/survey",
     "js/panelBuilder/toaster",
