@@ -3,10 +3,6 @@ define([
 ) {
     "use strict";
     
-    function isPanel(fieldSpecification) {
-        return fieldSpecification.displayType === "page" || fieldSpecification.displayType === "panel" ;
-    }
-    
     function FieldSpecifications() {
         // TODO: Think about whether can refactor to remove need for allFieldSpecifications array and/or map
         // Keep all questions together for use by things like calculating derived values from options for quiz score results
@@ -85,7 +81,7 @@ define([
         
         for (var i = 0; i < modelFieldSpecifications.length; i++) {
             var fieldSpecification = modelFieldSpecifications[i];
-            if (!isPanel(fieldSpecification) && fieldSpecification.modelClass === modelName && fieldSpecification.dataType !== "none") {
+            if (fieldSpecification.dataType !== "none") {
                 model[fieldSpecification.id] = this.initialDataForField(fieldSpecification);
             }
         }
@@ -115,6 +111,7 @@ define([
     
     // TODO: This is needed in one place in main.js; could the architecture be refactored further to remove that need?
     // Note that questions added this way don't belong to a specific panel.
+    // Note that fieldSpecifications added this way also will not be included in models
     FieldSpecifications.prototype.addFieldSpecification = function(fieldSpecification) {
         this.allFieldSpecifications.push(fieldSpecification);
         this.fieldIDToFieldSpecificationMap[fieldSpecification.id] = fieldSpecification;
