@@ -2,7 +2,7 @@ define([
     "dojox/mvc/at",
     "dijit/form/Button",
     "dojo/_base/lang",
-    "./translate"
+    "../translate"
 ], function(
     at,
     Button,

@@ -4,7 +4,7 @@ define([
     "./GridWithItemPanel",
     "dojo/_base/lang",
     "dstore/Memory",
-    "./translate"
+    "../translate"
 ], function(
     at,
     ContentPane,

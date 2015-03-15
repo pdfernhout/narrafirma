@@ -4,7 +4,7 @@ define([
     "dojo/_base/declare",
     "dojo/dom-construct",
     "dojo/on",
-    "./widgetSupport",
+    "../widgetSupport",
     "dijit/form/CheckBox",
     "dijit/_WidgetBase"
 ], function(

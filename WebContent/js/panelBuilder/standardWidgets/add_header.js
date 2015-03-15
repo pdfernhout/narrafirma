@@ -1,7 +1,7 @@
 define([
     "dojox/mvc/at",
     "dojo/_base/lang",
-    "./translate"
+    "../translate"
 ], function(
     at,
     lang,

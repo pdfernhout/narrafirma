@@ -3,7 +3,7 @@ define([
     "./CheckboxesWidget",
     "dijit/layout/ContentPane",
     "dojo/_base/lang",
-    "./translate"
+    "../translate"
 ], function(
     at,
     CheckboxesWidget,

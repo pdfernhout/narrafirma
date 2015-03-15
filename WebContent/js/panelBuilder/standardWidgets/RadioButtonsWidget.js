@@ -3,7 +3,7 @@ define([
     "dojo/_base/declare",
     "dojo/dom-construct",
     "dojo/on",
-    "./widgetSupport",
+    "../widgetSupport",
     "dijit/form/RadioButton",
     "dijit/_WidgetBase"
 ], function(

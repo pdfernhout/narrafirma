@@ -2,7 +2,7 @@ define([
     "js/panelBuilder/dialogSupport",
     "dojo/_base/lang",
     "js/templates/templates",
-    "js/panelBuilder/GridWithItemPanel",
+    "js/panelBuilder/standardWidgets/GridWithItemPanel",
     "dstore/Memory"
 ], function(
     dialogSupport,

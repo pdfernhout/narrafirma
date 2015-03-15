@@ -5,7 +5,7 @@ define([
     "dojo/_base/lang",
     "dojo/topic",
     "js/panelBuilder/translate",
-    "js/panelBuilder/GridWithItemPanel",
+    "js/panelBuilder/standardWidgets/GridWithItemPanel",
     "js/panelBuilder/widgetSupport",
     "dijit/layout/ContentPane",
     "dstore/Memory",

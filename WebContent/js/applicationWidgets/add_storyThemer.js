@@ -3,7 +3,7 @@ define([
     'dojox/html/entities',
     "dojox/uuid/generateRandomUuid",
     "js/panelBuilder/translate",
-    "js/panelBuilder/GridWithItemPanel",
+    "js/panelBuilder/standardWidgets/GridWithItemPanel",
     "dijit/form/ComboBox",
     "dijit/layout/ContentPane",
     "dojo/store/Memory",

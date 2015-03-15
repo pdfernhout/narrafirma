@@ -3,7 +3,7 @@ define([
     "dijit/layout/ContentPane",
     "dojo/_base/lang",
     "dijit/form/TextBox",
-    "./translate"
+    "../translate"
 ], function(
     at,
     ContentPane,

@@ -5,7 +5,7 @@ define([
     "dojo/dom-class",
     "dojo/dom-construct",
     "dojo/_base/lang",
-    "./translate"
+    "../translate"
 ], function(
     at,
     Button,
