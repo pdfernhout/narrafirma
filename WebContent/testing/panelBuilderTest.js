@@ -18,14 +18,7 @@ require([
     
     console.log("model", model);
 
-    var questions = [
-        {
-            id: "page_aboutYou",
-            displayName: "About you",
-            displayType: "page",
-            section: "planning",
-            modelClass: "ProjectModel"
-        },
+    var fieldSpecifications = [
         {
             id: "aboutYou_youHeader",
             dataType: "none",
@@ -44,7 +37,7 @@ require([
     ];
    
     
-    panelBuilder.addQuestions(questions, contentPane, model);
+    panelBuilder.addQuestions(fieldSpecifications, contentPane, model);
     
     var panel1 = {
         id: "panel_addResonantStory",
@@ -52,7 +45,7 @@ require([
         displayType: "panel",
         section: "sensemaking",
         modelClass: "ResonantStoryModel",
-        questions: [
+        panelFields: [
             {
                 id: "sensemakingSessionRecord_resonantStory_selection",
                 dataType: "none",
