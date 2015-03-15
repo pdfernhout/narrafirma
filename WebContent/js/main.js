@@ -278,7 +278,7 @@ require([
                    var option = options[optionIndex];
                    translate.addExtraTranslation(statusEntryID + "::selection:" + option, translate("#dashboard_status_entry::selection:" + option));
                }
-               panelBuilder.addQuestionWidget(pagePane, domain.projectData.projectAnswers, {id: statusEntryID, displayType: "select", dataOptions: options});
+               panelBuilder.buildField(pagePane, domain.projectData.projectAnswers, {id: statusEntryID, displayType: "select", dataOptions: options});
            } else {
                console.log("page dashboard as header", pageSpecification.id, pageSpecification.displayType, pageSpecification);
                // Put in dashboard
@@ -295,7 +295,7 @@ require([
                        var prompt = translate(childPageID + "::title", childPageSpecification.displayName) + " " + translate("#dashboard_status_label") + " ";
                        translate.addExtraTranslation(statusViewID + "::prompt", prompt);
                        console.log("about to call panelBuilder to add one questionAnswer for child page's status", childPageID);
-                       panelBuilder.addQuestionWidget(pagePane, domain.projectData.projectAnswers, {id: statusViewID, displayType: "questionAnswer", displayConfiguration: [childPageID + "_pageStatus"]});
+                       panelBuilder.buildField(pagePane, domain.projectData.projectAnswers, {id: statusViewID, displayType: "questionAnswer", displayConfiguration: [childPageID + "_pageStatus"]});
                    }
                }
            }

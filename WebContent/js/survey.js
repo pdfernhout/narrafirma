@@ -111,7 +111,7 @@ define([
         if (singlePrompt) storyQuestionsModel.set("elicitingQuestion", singlePrompt);
         surveyResultsWithModels.stories.push(storyQuestionsModel);
         
-        panelBuilder.addQuestions(allStoryQuestions, surveyPane, storyQuestionsModel);
+        panelBuilder.buildFields(allStoryQuestions, surveyPane, storyQuestionsModel);
         
         widgetSupport.newButton(surveyPane, "#button_previousPage", function() {
             console.log("button_previousPage");
@@ -236,7 +236,7 @@ define([
 
         var startPane = new ContentPane();
         
-        panelBuilder.addQuestions(startQuestions, startPane.containerNode, participantDataModel);
+        panelBuilder.buildFields(startQuestions, startPane.containerNode, participantDataModel);
         
         widgetSupport.newButton(startPane, "button_nextPage", function() {
             console.log("button_nextPage");
@@ -254,7 +254,7 @@ define([
         
         var participantPane = new ContentPane();
         
-        panelBuilder.addQuestions(questionnaire.participantQuestions, participantPane.containerNode, participantDataModel);
+        panelBuilder.buildFields(questionnaire.participantQuestions, participantPane.containerNode, participantDataModel);
         
         widgetSupport.newButton(participantPane, "#button_previousPage", function() {
             console.log("button_previousPage");
@@ -269,7 +269,7 @@ define([
         wizardPane.addChild(participantPane);
         
         var endPane = new ContentPane();
-        panelBuilder.addQuestions(endQuestions, endPane.containerNode, participantDataModel);
+        panelBuilder.buildFields(endQuestions, endPane.containerNode, participantDataModel);
         
         if (includeCancelButton) {
             widgetSupport.newButton(wizardPane, "#surveyCancel", function() {

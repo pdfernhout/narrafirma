@@ -90,7 +90,8 @@ function addStandardPlugins() {
     addPlugin("toggleButton", add_toggleButton);
 }
 
-// This class builds panels from question definitions
+// This class builds panels from field specifications.
+// Field specifications define what widget to display and how to hook that widget to a model.
 var PanelBuilder = declare(null, {
 
     constructor: function(kwArgs) {
@@ -120,8 +121,8 @@ var PanelBuilder = declare(null, {
         return label;
     },
     
-    addQuestionWidget: function(contentPane, model, fieldSpecification) {
-        console.log("addQuestionWidget", fieldSpecification);
+    buildField: function(contentPane, model, fieldSpecification) {
+        console.log("buildField", fieldSpecification);
         
         var addFunction = buildingFunctions[fieldSpecification.displayType];
         if (!addFunction) {
@@ -146,18 +147,18 @@ var PanelBuilder = declare(null, {
         return addFunction(this, contentPane, model, fieldSpecification);
     },
     
-    // Returns dictionary mapping from question IDs to widgets
-    addQuestions: function(questions, contentPane, model) {
-        console.log("addQuestions", questions);
-        if (!questions) {
-            throw new Error("questions are not defined");
+    // Returns dictionary mapping from field IDs to widgets
+    buildFields: function(fieldSpecifications, contentPane, model) {
+        console.log("buildFields", fieldSpecifications);
+        if (!fieldSpecifications) {
+            throw new Error("fieldSpecifications are not defined");
         }
         
         var widgets = {};
-        for (var questionIndex in questions) {
-            var question = questions[questionIndex];
-            var widget = this.addQuestionWidget(contentPane, model, question);
-            widgets[question.id] = widget;
+        for (var fieldSpecificationIndex in fieldSpecifications) {
+            var fieldSpecification = fieldSpecifications[fieldSpecificationIndex];
+            var widget = this.buildField(contentPane, model, fieldSpecification);
+            widgets[fieldSpecification.id] = widget;
         }
         return widgets;
     },
@@ -165,17 +166,17 @@ var PanelBuilder = declare(null, {
     // Build an entire panel; panel can be either a string ID referring to a panel or it can be a panel definition itself
     buildPanel: function(panelOrPanelID, contentPane, model) {
         console.log("buildPanel", panelOrPanelID);
-        var questions;
+        var fieldSpecifications;
         if (lang.isString(panelOrPanelID)) {
             var panel = this.panelDefinitionForPanelID(panelOrPanelID);
-            questions = panel.panelFields;
+            fieldSpecifications = panel.panelFields;
         } else if (panelOrPanelID.buildPanel) {
             // Call explicit constructor function
             return panelOrPanelID.buildPanel(this, contentPane, model);
         } else {
-            questions = panelOrPanelID.panelFields;
+            fieldSpecifications = panelOrPanelID.panelFields;
         }
-        this.addQuestions(questions, contentPane, model);
+        return this.buildFields(fieldSpecifications, contentPane, model);
     },
     
     addHTML: function(contentPane, htmlText) {
@@ -299,7 +300,7 @@ var PanelBuilder = declare(null, {
         return internalContentPane;
     },
           
-    ////// Support for questions that recalculate based on other questions
+    ////// Support for fields that recalculate based on other fields
     
     updateLabelUsingCalculation: function(updateInfo) { 
         // console.log("recalculating label", data);
@@ -319,7 +320,7 @@ var PanelBuilder = declare(null, {
             newLabelText = baseText + " " + calculatedText;
         }
         updateInfo.label.set("content", newLabelText);
-        // console.log("recalculated question: ", updateInfo.id, calculatedText);
+        // console.log("recalculated label: ", updateInfo.id, calculatedText);
     },
 
     _add_calculatedText: function(panelBuilder, contentPane, fieldSpecification, calculate) {

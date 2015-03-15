@@ -37,7 +37,7 @@ require([
     ];
    
     
-    panelBuilder.addQuestions(fieldSpecifications, contentPane, model);
+    panelBuilder.buildFields(fieldSpecifications, contentPane, model);
     
     var panel1 = {
         id: "panel_addResonantStory",

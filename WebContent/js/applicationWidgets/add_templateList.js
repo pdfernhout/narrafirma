@@ -93,7 +93,7 @@ define([
         }
 
          function buildPanel(builder, contentPane, model) {
-             builder.addQuestions(pageQuestions, contentPane, model);
+             builder.buildFields(pageQuestions, contentPane, model);
          }
          
          var itemPanelSpecification = {

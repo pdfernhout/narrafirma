@@ -93,7 +93,7 @@ define([
             displayPreventBreak: true,
             displayClass: "narrafirma-dashboardStatusButton"
             };
-        var button = panelBuilder.addQuestionWidget(contentPane, model, buttonFieldSpecification);
+        var button = panelBuilder.buildField(contentPane, model, buttonFieldSpecification);
         
         var htmlText = '<span class="narrafirma-dashboardSectionStatusDisplayCompletion">' + statusText + '</span><br>';
         panelBuilder.addHTML(contentPane, htmlText);

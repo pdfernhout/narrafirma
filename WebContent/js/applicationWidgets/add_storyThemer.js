@@ -68,10 +68,10 @@ define([
                  var participantDataModel = new Stateful(participantData);
                  
                  /*
-                 panelBuilder.addQuestions(questions, contentPane, model);
+                 panelBuilder.buildFields(questions, contentPane, model);
                  // TODO: Load correct participant data
                  
-                 panelBuilder.addQuestions(questionnaire.participantQuestions, contentPane, participantDataModel);
+                 panelBuilder.buildFields(questionnaire.participantQuestions, contentPane, participantDataModel);
                  */
                  
                  // Encode all user-supplied text to ensure it does not create HTML issues

@@ -264,7 +264,7 @@ define([
              "id": "storyBrowserQuestions",
              "questions": questions,
              buildPanel: function (panelBuilder, contentPane, model) {
-                 panelBuilder.addQuestions(questions, contentPane, model);
+                 panelBuilder.buildFields(questions, contentPane, model);
                  // TODO: Load correct participant data
                  
                  var participantID = model.get("_participantID");
@@ -272,7 +272,7 @@ define([
                  // console.log("--------------------------- build item panel participantID", participantID, model, participantData);
                  // console.log("questionnaire", questionnaire.participantQuestions, questionnaire);
                  var participantDataModel = new Stateful(participantData);
-                 panelBuilder.addQuestions(questionnaire.participantQuestions, contentPane, participantDataModel);
+                 panelBuilder.buildFields(questionnaire.participantQuestions, contentPane, participantDataModel);
              }
         };
 
