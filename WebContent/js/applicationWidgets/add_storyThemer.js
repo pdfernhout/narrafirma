@@ -53,9 +53,6 @@ define([
                
         var questions = [].concat(leadingStoryQuestions, storyQuestions);
         questions.push({id: "__survey_" + "participantData", displayName: "participantData", displayPrompt: "---- participant data below ----", displayType: "header", dataOptions:[]});
-        translate.addExtraTranslationsForQuestions(questions);
-        
-        translate.addExtraTranslationsForQuestions(participantQuestions);
         
         // TODO: add more participant and survey info, like timestamps and participant ID
         

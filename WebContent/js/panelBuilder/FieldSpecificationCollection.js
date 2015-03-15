@@ -101,10 +101,6 @@ define([
         return this.allPanels;
     };
     
-    FieldSpecifications.prototype.buildListOfQuestions = function() {
-        return this.allFieldSpecifications;
-    };
-    
     FieldSpecifications.prototype.getPageSpecificationForPageID = function(pageID) {
         return this.pageIDToPageSpecificatiomMap[pageID];
     };

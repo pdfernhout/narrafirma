@@ -16,7 +16,7 @@ define([
     
     function lookupTranslation(id) {
         var result = pageMessages[id];
-        if (!result && result !== "") result = applicationMessages[id]
+        if (!result && result !== "") result = applicationMessages[id];
         if (!result && result !== "") result = extraTranslations[id];
         return result;
     }
@@ -68,30 +68,6 @@ define([
         applicationMessages = applicationMessagesNew;
     }
     
-    function addExtraTranslationsForQuestion(question) {
-        // console.log("addExtraTranslationsForQuestion", question);
-        if (!question) throw new Error("question is null or undefined");
-        if (debugTranslations) console.log("adding extra translations for", question.id, question);
-        extraTranslations[question.id + "::prompt"] = question.displayPrompt;
-        extraTranslations[question.id + "::shortName"] = question.shortName;
-        for (var optionIndex in question.dataOptions) {
-            var option = question.dataOptions[optionIndex];
-            extraTranslations[question.id + "::selection:" + option] = option;
-        }
-    }
-    
-    function addExtraTranslationsForQuestions(questions) {
-        // console.log("addExtraTranslationsForQuestions", questions);
-        if (!questions) {
-            throw new Error("questions should not be undefined!");
-        }
-        for (var questionIndex = 0; questionIndex < questions.length; questionIndex++) {
-            var question = questions[questionIndex];
-            if (!question) throw new Error("question could not be found for: " + questionIndex + " in: " + JSON.stringify(questions));
-            addExtraTranslationsForQuestion(question);
-        }
-    }
-    
     function addExtraTranslation(id, text) {
         extraTranslations[id] = text;
     }
@@ -99,8 +75,6 @@ define([
     // Adding these to function just so can keep previous code the same as direct call to translate module
     translate.configure = configure;
     translate.addExtraTranslation = addExtraTranslation;
-    translate.addExtraTranslationsForQuestion = addExtraTranslationsForQuestion;
-    translate.addExtraTranslationsForQuestions = addExtraTranslationsForQuestions;
     
     return translate;
 });

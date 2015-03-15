@@ -102,7 +102,6 @@ define([
         
         // TODO: Translate
         allStoryQuestions[0].displayPrompt = "Story #" + addIndex;
-        translate.addExtraTranslationsForQuestions([allStoryQuestions[0]]);
         
         var storyQuestionsModel = new Stateful();
         storyQuestionsModel.set("__type", "org.workingwithstories.Story");
@@ -207,12 +206,6 @@ define([
         var allStoryQuestions = initialStoryQuestions.concat(questionnaire.storyQuestions);
         
         questionnaire.participantQuestions.unshift({id: "__survey_" + "participantHeader", displayName: "participantHeader", displayPrompt: "About you", displayType: "header", dataOptions: []});
-        
-        // TODO: Handle other implicit questions
-        translate.addExtraTranslationsForQuestions(startQuestions);
-        translate.addExtraTranslationsForQuestions(allStoryQuestions);
-        translate.addExtraTranslationsForQuestions(questionnaire.participantQuestions);
-        translate.addExtraTranslationsForQuestions(endQuestions);
         
         //var form = new Form();
         //form.set("style", "width: 800px; height 800px; overflow: auto;");

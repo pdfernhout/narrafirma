@@ -483,12 +483,6 @@ require([
 
             // console.log("Update panel", panel);
         }
-        
-        var questions = fieldSpecificationCollection.buildListOfQuestions();
-        
-        // TODO: Is this next call still still needed, since lookup works better with defaults? If not, can also remove method in FieldSpecificationCollection
-        // Add default translations for all questions; these can be overriden by local language files which would be searched first
-        translate.addExtraTranslationsForQuestions(questions);
     }
 
     
