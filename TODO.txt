@@ -171,6 +171,7 @@ Remove any use of widgets in widgetSupport or other use of Dojo controls (e.g. B
 Add some general small independent tests of PanelBuilder functionality 
 
 REFACTORING
+Rename "questions" with "fieldSpecifications" where appropriate and make similar changes away from using "question" to mean "fieldSpecification"
 See if still need so many button functions in domain (or maybe any at all)
 Some way only load page and panel files as needed (with help URL being determined by PanelBuilder as it creates panel, and maybe specify panels in section by hand)
 Save and load data for each page instead of for entire project
