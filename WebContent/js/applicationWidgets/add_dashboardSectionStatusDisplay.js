@@ -23,7 +23,7 @@ define([
         // TODO: Kludge of using field id to determine what section this refers to
         var pageID = fieldSpecification.id.replace("project_launchSection_", "page_");
         
-        var childPageIDs = domain.childPageIDListForHeaderID[pageID];
+        var childPageIDs = domain.getFieldSpecificationCollection().getChildPageIDListForHeaderID(pageID);
         console.log("child pages", pageID, childPageIDs);
         if (!childPageIDs) childPageIDs = [];
         

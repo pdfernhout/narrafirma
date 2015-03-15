@@ -23,8 +23,6 @@ define([
     var domain = {
       fieldSpecificationCollection: null,
 
-      childPageIDListForHeaderID: {},
-    
       projectData: {},
 
       questionnaireID: defaultQuestionnaireID,
@@ -420,8 +418,7 @@ define([
     function calculate_report(model, headerPageID) {
         // console.log("domain calculate_report", model, headerPageID);
         var report = "<br><br>";
-        var pageList = domain.childPageIDListForHeaderID[headerPageID];
-        // console.log("page list", pageList, headerPageID, childPageIDListForHeaderID);
+        var pageList = domain.fieldSpecificationCollection.getChildPageIDListForHeaderID(headerPageID);
         for (var pageIndex in pageList) {
             // Skip last report page in a section
             if (pageIndex === pageList.length - 1) break;
@@ -580,7 +577,6 @@ define([
         "projectData": domain.projectData,
         
         // Supporting GUI
-        "childPageIDListForHeaderID": domain.childPageIDListForHeaderID,
         "getFieldSpecificationCollection": getFieldSpecificationCollection,
         
         // functions called from page widgets

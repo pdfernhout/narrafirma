@@ -49,9 +49,6 @@ require([
     
     // For building panels based on field specifications
     var panelBuilder = new PanelBuilder();
-
-    // For knowing what pages the application support
-    var pageSpecifications = {}; 
     
     // For tricking what page the application is on
     var startPage = "page_dashboard";
@@ -169,10 +166,15 @@ require([
         toaster.toast("Finished saving");
     }
     
+    function getPageSpecification(pageID) {
+        // For now, any "page" defined in the fieldSpecificationCollection is available
+        return fieldSpecificationCollection.getPageSpecificationForPageID(pageID);
+    }
+    
     function urlHashFragmentChanged(newHash) {
         console.log("urlHashFragmentChanged", newHash);
         if (currentPageID !== newHash) {
-            var pageSpecification = pageSpecifications[newHash];
+            var pageSpecification = getPageSpecification(newHash);
             if (pageSpecification && pageSpecification.displayType === "page") {
                 showPage(newHash);
             } else {
@@ -192,7 +194,7 @@ require([
     function showPage(pageID, forceRefresh) {
         if (currentPageID === pageID && !forceRefresh) return;
         
-        var pageSpecification = pageSpecifications[pageID];
+        var pageSpecification = getPageSpecification(pageID);
         if (!pageSpecification) {
             console.log("no such page", pageID);
             alert("No such page: " + pageID);
@@ -225,9 +227,10 @@ require([
         // Because the page was hidden when created, all the grids need to be resized so grid knows how tall to make header so it is not overwritten
         currentPage.resize();
         
-        // Ensure the navigation has the list for this section
+        // Ensure the navigation dropdown has the list for this section
         if (currentSectionID !== pageSpecification.section) {   
             currentSectionID = pageSpecification.section;
+            console.log("getting options for", pageSpecification.section, pageSpecification);
             var options = pageSelectOptionsForSection(pageSpecification.section);
             pageNavigationSelect.set("options", options);
         }
@@ -239,7 +242,7 @@ require([
     function createPage(pageID, visible) {
         console.log("createPage", pageID);
         
-        var pageSpecification = pageSpecifications[pageID];
+        var pageSpecification = getPageSpecification(pageID);
        
         if (!pageSpecification) {
             console.log("ERROR: No definition for page: ", pageID);
@@ -279,13 +282,13 @@ require([
            } else {
                console.log("page dashboard as header", pageSpecification.id, pageSpecification.displayType, pageSpecification);
                // Put in dashboard
-               var childPageIDs = domain.childPageIDListForHeaderID[pageID];
+               var childPageIDs = fieldSpecificationCollection.getChildPageIDListForHeaderID(pageID);
                console.log("child pages", pageID, childPageIDs);
                if (!childPageIDs) childPageIDs = [];
                for (var childPageIndex = 0; childPageIndex < childPageIDs.length; childPageIndex++) {
                    var childPageID = childPageIDs[childPageIndex];
                    var statusViewID = childPageID + "_pageStatus_dashboard";
-                   var childPageSpecification = pageSpecifications[childPageID];
+                   var childPageSpecification = getPageSpecification(childPageID);
                    console.log("childPageID", childPageSpecification, childPageID);
                    if (!childPageSpecification) console.log("Error: problem finding page definition for", childPageID);
                    if (childPageSpecification && childPageSpecification.displayType === "page") {
@@ -325,7 +328,7 @@ require([
             alert("Something wrong with currentPageID");
             return;
         }
-        var pageSpecification = pageSpecifications[currentPageID];
+        var pageSpecification = getPageSpecification(currentPageID);
         var previousPageID = pageSpecification.previousPageID;
         if (previousPageID) {
             showPage(previousPageID);
@@ -342,7 +345,7 @@ require([
             alert("Something wrong with currentPageID");
             return;
         }
-        var pageSpecification = pageSpecifications[currentPageID];
+        var pageSpecification = getPageSpecification(currentPageID);
         var nextPageID = pageSpecification.nextPageID;
         if (nextPageID) {
             showPage(nextPageID);
@@ -406,16 +409,17 @@ require([
         return select;
     }
     
-    var pageSelectOptions = [];
-    
     function pageSelectOptionsForSection(sectionHeaderPageID) {
-        console.log("======== pageSelectOptionsForSection", sectionHeaderPageID, domain.childPageIDListForHeaderID);
-        var pageIDs = domain.childPageIDListForHeaderID[sectionHeaderPageID];
+        if (!sectionHeaderPageID) throw new Error("sectionHeaderPageID cannot be null or empty");
+        console.log("pageSelectOptionsForSection", sectionHeaderPageID);
+        var pageIDs = fieldSpecificationCollection.getChildPageIDListForHeaderID(sectionHeaderPageID);
         var options = [];
-        var title = pageSpecifications[sectionHeaderPageID].title;
+        var title = getPageSpecification(sectionHeaderPageID).title;
+        // It seems like a Dojo "select" widget has a limitation where it can only take strings as values.
+        // This means we need to look up page definitions indirectly based on a pageID usind a FieldSpecificationCollection instance.
         options.push({label: title, value: sectionHeaderPageID});
         _.forEach(pageIDs, function (pageID) {
-            title = pageSpecifications[pageID].title;
+            title = getPageSpecification(pageID).title;
             options.push({label: title, value: pageID});
         });
         return options;
@@ -446,30 +450,24 @@ require([
             // For panels that are a "page", add to top level pages choices and set up navigation
             if (panel.displayType === "page") {
                 var pageID = panel.id;
-                pageSpecifications[pageID] = panel;
                 // console.log("pushing page", panel);
                 // Make it easy to lookup previous and next pages from a page
-                if (lastPageID && !panel.isHeader) pageSpecifications[lastPageID].nextPageID = pageID;
-                if (!panel.isHeader) panel.previousPageID = lastPageID;
-                lastPageID = pageID;
-                
                 if (!panel.isHeader) {
-                    var list = domain.childPageIDListForHeaderID[lastHeader] || [];
-                    list.push(pageID);
-                    domain.childPageIDListForHeaderID[lastHeader] = list;
-                } else {
-                    lastHeader = pageID;
+                    var previousPage = getPageSpecification(lastPageID);
+                    previousPage.nextPageID = pageID;
+                    panel.previousPageID = lastPageID;
                 }
-                
-                // Looks like Dojo select has a limitation where it can only take strings as values.
-                // This means we need to look up page definitions indirectly based on a pageID usind a FieldSpecificationCollection instance.
-                pageSelectOptions.push({label: title, value: pageID});
+                lastPageID = pageID;
+
                 // Put in a dynamic question (incomplete for options) to be used to lookup page status.
                 // This is needed so add_qustionAnswer can check the field is a "select" to translate the options if needed
                 fieldSpecificationCollection.addFieldSpecification({id: pageID + "_pageStatus", displayType: "select"});
+                
+                if (panel.isHeader) {
+                    lastHeader = pageID;
+                    lastSection = panel.section;
+                }
             }
-            
-            if (panel.section) lastSection = panel.section;
             
             panel.title = title;
             panel.helpSection = lastSection;

@@ -19,7 +19,12 @@ define([
         this.allPages = [];
         this.pageIDToPageSpecificatiomMap = {};
         
+        this.childPageIDListForHeaderID = {};
+        
         this.modelClassToModelFieldSpecificationsMap = {};
+        
+        // For use while building pages; this assumes pages are added in some linear order where headers are added before child pages
+        this.lastHeader = null;
     }
     
     FieldSpecifications.prototype.addPanelWithFieldsFromJSONText = function(panelSpecificationJSONText) {
@@ -32,6 +37,14 @@ define([
         if (panelSpecification.displayType === "page") {
             this.allPages.push(panelSpecification);
             this.pageIDToPageSpecificatiomMap[panelSpecification.id] = panelSpecification;
+            
+            if (!panelSpecification.isHeader) {
+                var list = this.childPageIDListForHeaderID[this.lastHeader] || [];
+                list.push(panelSpecification.id);
+                this.childPageIDListForHeaderID[this.lastHeader] = list;
+            } else {
+                this.lastHeader = panelSpecification.id;
+            }
         }
         
         var model;
@@ -92,6 +105,10 @@ define([
         return this.allFieldSpecifications;
     };
     
+    FieldSpecifications.prototype.getPageSpecificationForPageID = function(pageID) {
+        return this.pageIDToPageSpecificatiomMap[pageID];
+    };
+    
     FieldSpecifications.prototype.getPanelSpecificationForPanelID = function(panelID) {
         return this.panelIDToPanelSpecificationMap[panelID];
     };
@@ -105,6 +122,10 @@ define([
     FieldSpecifications.prototype.addFieldSpecification = function(fieldSpecification) {
         this.allFieldSpecifications.push(fieldSpecification);
         this.fieldIDToFieldSpecificationMap[fieldSpecification.id] = fieldSpecification;
+    };
+    
+    FieldSpecifications.prototype.getChildPageIDListForHeaderID = function(fieldID) {
+        return this.childPageIDListForHeaderID[fieldID];
     };
     
     return FieldSpecifications;
