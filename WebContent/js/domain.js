@@ -18,23 +18,28 @@ define([
     "use strict";
     
     // TODO: panelDefinitions probably should not be in domain
-    var panelDefinitions = {};
-    var questions = {};
-    var childPageIDListForHeaderID = {};
-    
-    var projectData = {};
     
     // TODO: Fix hardcoded questionnaire ID
-    var questionnaireID = 'questionnaire-test-003';
+    var defaultQuestionnaireID = 'questionnaire-test-003';
+    
+    var domain = {
+      panelDefinitions: {},
+      questions: {},
+      childPageIDListForHeaderID: {},
+    
+      projectData: {},
+
+      questionnaireID: defaultQuestionnaireID,
     
     // TODO: When does this get updated?
-    var questionnaireStatus = {questionnaireID: questionnaireID, active: false};
+      questionnaireStatus: {questionnaireID: defaultQuestionnaireID, active: false},
+    };
     
     // Panel builder "functionResult" components will get routed through here to calculate their text.
     // The domain should publish a topic with the same name as these functions when their value changes.
     function calculateFunctionResultForGUI(functionName, question) {
         if (functionName === "totalNumberOfSurveyResults") {
-            return projectData.surveyResults.allCompletedSurveys.length;
+            return domain.projectData.surveyResults.allCompletedSurveys.length;
         } else if (functionName === "isStoryCollectingEnabled") {
             return isStoryCollectingEnabled(question);
         } else {
@@ -44,7 +49,7 @@ define([
     }
     
     function copyDraftPNIQuestionVersionsIntoAnswers() {
-        var model = projectData.projectAnswers;
+        var model = domain.projectData.projectAnswers;
             
         var finalQuestionIDs = [
             "project_pniQuestions_goal_final",
@@ -188,18 +193,18 @@ define([
                 __type: "org.workingwithstories.Questionnaire"
         };
         
-        questionnaire.title = projectData.projectAnswers.get("questionForm_title");
-        questionnaire.image = projectData.projectAnswers.get("questionForm_image");
-        questionnaire.startText = projectData.projectAnswers.get("questionForm_startText");
-        questionnaire.endText = projectData.projectAnswers.get("questionForm_endText"); 
+        questionnaire.title = domain.projectData.projectAnswers.get("questionForm_title");
+        questionnaire.image = domain.projectData.projectAnswers.get("questionForm_image");
+        questionnaire.startText = domain.projectData.projectAnswers.get("questionForm_startText");
+        questionnaire.endText = domain.projectData.projectAnswers.get("questionForm_endText"); 
 
-        var elicitingQuestions = projectData.projectAnswers.get("project_elicitingQuestionsList");
+        var elicitingQuestions = domain.projectData.projectAnswers.get("project_elicitingQuestionsList");
         console.log("elicitingQuestions", elicitingQuestions);
         
-        var storyQuestions = projectData.projectAnswers.get("project_storyQuestionsList");
+        var storyQuestions = domain.projectData.projectAnswers.get("project_storyQuestionsList");
         ensureUniqueQuestionIDs(usedIDs, storyQuestions);
         
-        var participantQuestions = projectData.projectAnswers.get("project_participantQuestionsList");
+        var participantQuestions = domain.projectData.projectAnswers.get("project_participantQuestionsList");
         ensureUniqueQuestionIDs(usedIDs, participantQuestions);
         
         // console.log("survey", survey);
@@ -277,7 +282,7 @@ define([
                             // Use the identifier for the resource the survey is in
                             surveyResult.id = newEnvelopeReference;
                         }
-                        projectData.surveyResults.allCompletedSurveys.push(surveyResult);
+                        domain.projectData.surveyResults.allCompletedSurveys.push(surveyResult);
                     } else {
                         console.log("ERROR: Missing surveyResult in newEnvelope", newEnvelope);
                     }
@@ -296,12 +301,12 @@ define([
             
             // TODO: Only for debugging; need to think through the separating of stories and general survey data
             // Preserve existing array -- just replace its contents
-            var allStories = projectData.surveyResults.allStories;
+            var allStories = domain.projectData.surveyResults.allStories;
             while (allStories.length > 0) {
                 allStories.pop();
             }
-            for (var responseIndex in projectData.surveyResults.allCompletedSurveys) {
-                var response = projectData.surveyResults.allCompletedSurveys[responseIndex];
+            for (var responseIndex in domain.projectData.surveyResults.allCompletedSurveys) {
+                var response = domain.projectData.surveyResults.allCompletedSurveys[responseIndex];
                 for (var storyIndex in response.stories) {
                     var story = response.stories[storyIndex];
                     console.log("=== story", story);
@@ -321,8 +326,8 @@ define([
     
     function getParticipantDataForParticipantID(participantID) {
         // TODO: Maybe optimize as a lookup map maintained when read in survey results
-        for (var responseIndex in projectData.surveyResults.allCompletedSurveys) {
-            var response = projectData.surveyResults.allCompletedSurveys[responseIndex];
+        for (var responseIndex in domain.projectData.surveyResults.allCompletedSurveys) {
+            var response = domain.projectData.surveyResults.allCompletedSurveys[responseIndex];
             if (response.participantData._participantID === participantID) {
                 console.log("getParticipantDataForParticipantID", participantID, response.participantData);
                 return response.participantData;
@@ -337,6 +342,7 @@ define([
         alert("also finalizing survey for testing...");
         
         var questionnaire = getCurrentQuestionnaire();
+        var questionnaireID = domain.questionnaireID;
         questionnaire.questionnaireID = questionnaireID;
         
         ensureAtLeastOneElicitingQuestion(questionnaire);
@@ -349,22 +355,22 @@ define([
         var status = {questionnaireID: questionnaireID, active: true};
         storage.storeQuestionnaireStatus(questionnaireID, status, function(error) {
             console.log("Activated questionnaire", questionnaireID);
-            questionnaireStatus = {questionnaireID: questionnaireID, active: true};
-            topic.publish("isStoryCollectingEnabled", questionnaireStatus);
+            domain.questionnaireStatus = {questionnaireID: questionnaireID, active: true};
+            topic.publish("isStoryCollectingEnabled", domain.questionnaireStatus);
         });
     }
     
     function storyCollectionStop() {
-        var status = {questionnaireID: questionnaireID, active: false};
-        storage.storeQuestionnaireStatus(questionnaireID, status, function(error) {
-            console.log("Deactivated questionnaire", questionnaireID);
-            questionnaireStatus = {questionnaireID: questionnaireID, active: false};
-            topic.publish("isStoryCollectingEnabled", questionnaireStatus);
+        var status = {questionnaireID: domain.questionnaireID, active: false};
+        storage.storeQuestionnaireStatus(domain.questionnaireID, status, function(error) {
+            console.log("Deactivated questionnaire", domain.questionnaireID);
+            domain.questionnaireStatus = {questionnaireID: domain.questionnaireID, active: false};
+            topic.publish("isStoryCollectingEnabled", domain.questionnaireStatus);
         });
     }
     
     function isStoryCollectingEnabled(question) {
-        return questionnaireStatus.active;
+        return domain.questionnaireStatus.active;
     }
     
     function calculate_quizScoreResult(model, dependsOn) {
@@ -377,7 +383,7 @@ define([
             var answerWeight = 0;
             if (questionAnswer) {
                 // console.log("questionAnswer", questionAnswer);
-                var choices = questions[questionID].dataOptions;
+                var choices = domain.questions[questionID].dataOptions;
                 answerWeight = choices.indexOf(questionAnswer) - 1;
                 // console.log("answerWeight", answerWeight);
                 if (answerWeight < 0) answerWeight = 0;
@@ -416,13 +422,13 @@ define([
     function calculate_report(model, headerPageID) {
         // console.log("domain calculate_report", model, headerPageID);
         var report = "<br><br>";
-        var pageList = childPageIDListForHeaderID[headerPageID];
+        var pageList = domain.childPageIDListForHeaderID[headerPageID];
         // console.log("page list", pageList, headerPageID, childPageIDListForHeaderID);
         for (var pageIndex in pageList) {
             // Skip last report page in a section
             if (pageIndex === pageList.length - 1) break;
             var pageID = pageList[pageIndex];
-            var panelDefinition = panelDefinitions[pageID];
+            var panelDefinition = domain.panelDefinitions[pageID];
             if (!panelDefinition) {
                 console.log("ERROR: Missing panelDefinition for pageID:", pageID);
                 continue;
@@ -434,10 +440,10 @@ define([
             var questions = panelDefinition.questions;
             for (var questionIndex in questions) {
                 var question = questions[questionIndex];
-                var value = projectData.projectAnswers.get(question.id);
+                var value = domain.projectData.projectAnswers.get(question.id);
                 if (question.displayType === "quizScoreResult") {
                     var dependsOn = question.displayConfiguration;
-                    value = calculate_quizScoreResult(projectData.projectAnswers, dependsOn);
+                    value = calculate_quizScoreResult(domain.projectData.projectAnswers, dependsOn);
                     // Don't count these as answered questions
                     questionsAnsweredCount--;
                 }
@@ -523,6 +529,9 @@ define([
     // Application should call this at startup
     function setupDomain(fieldSpecificationCollection) {
         var model = fieldSpecificationCollection.buildModel("ProjectModel");
+        
+        var projectData = domain.projectData;
+        
         projectData.projectAnswers = new Stateful(model);
         projectData.exportedSurveyQuestions = {};
         projectData.surveyResults = {};
@@ -552,11 +561,11 @@ define([
     }
     
     function determineStatusOfCurrentQuestionnaire() {
-        storage.loadLatestQuestionnaireStatus(questionnaireID, function(error, status, envelope) {
-            if (error) {return console.log("Could not determine questionnaire status; assuming inactive", questionnaireID);}
+        storage.loadLatestQuestionnaireStatus(domain.questionnaireID, function(error, status, envelope) {
+            if (error) {return console.log("Could not determine questionnaire status; assuming inactive", domain.questionnaireID);}
             console.log("got questionnaire status", status);
-            questionnaireStatus = status;
-            topic.publish("isStoryCollectingEnabled", questionnaireStatus);
+            domain.questionnaireStatus = status;
+            topic.publish("isStoryCollectingEnabled", domain.questionnaireStatus);
         });
     }
     
@@ -564,12 +573,12 @@ define([
         "setupDomain": setupDomain,
             
         // data collected
-        "projectData": projectData,
+        "projectData": domain.projectData,
         
         // Supporting GUI
-        "childPageIDListForHeaderID": childPageIDListForHeaderID,
-        "questions": questions,
-        "panelDefinitions": panelDefinitions,
+        "childPageIDListForHeaderID": domain.childPageIDListForHeaderID,
+        "questions": domain.questions,
+        "panelDefinitions": domain.panelDefinitions,
         
         // functions called from page widgets
         "calculateFunctionResultForGUI": calculateFunctionResultForGUI,
