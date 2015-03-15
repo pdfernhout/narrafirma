@@ -148,7 +148,7 @@ Help window displaying HTML instead of alert
 Look at all alerts in code and make into nicer GUI feedback
 
 TRANSLATION
-Better and more consistent approach for translation selections for selects, checkboxes, radiobuttons, and maybe other types
+Better and more consistent approach for translation selections for selects, checkboxes, radiobuttons, and maybe other types [this may be done enough based on other changes?]
 Translate report answers as needed for those types like selections
 Final review of all strings in code looking for TODO translate items or similar
 
@@ -558,5 +558,4 @@ DONE Use JSON files for panel and field specifation insteod of JavaScript (inclu
 DONE Refactor domain so it references a domain object internally for clarity and easier searching on domain.questions usage
 DONE Optimize lookup of panels and models in FieldSpecificationCollection
 DONE Consolidated all information about panels, pages, and fields into FieldSpecificationCollection instead of that class, domain.js, and main.js
-
-
+DONE Clean up left-over translation-related code for extra transaltions that is no longer needed
