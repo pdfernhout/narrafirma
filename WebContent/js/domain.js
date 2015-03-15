@@ -21,7 +21,7 @@ define([
     var defaultQuestionnaireID = 'questionnaire-test-003';
     
     var domain = {
-      fieldSpecificationCollection: null,
+      panelSpecificationCollection: null,
 
       projectData: {},
 
@@ -379,7 +379,7 @@ define([
             var answerWeight = 0;
             if (questionAnswer) {
                 // console.log("questionAnswer", questionAnswer);
-                var choices = domain.fieldSpecificationCollection.getFieldSpecificationForFieldID(questionID).dataOptions;
+                var choices = domain.panelSpecificationCollection.getFieldSpecificationForFieldID(questionID).dataOptions;
                 answerWeight = choices.indexOf(questionAnswer) - 1;
                 // console.log("answerWeight", answerWeight);
                 if (answerWeight < 0) answerWeight = 0;
@@ -418,12 +418,12 @@ define([
     function calculate_report(model, headerPageID) {
         // console.log("domain calculate_report", model, headerPageID);
         var report = "<br><br>";
-        var pageList = domain.fieldSpecificationCollection.getChildPageIDListForHeaderID(headerPageID);
+        var pageList = domain.panelSpecificationCollection.getChildPageIDListForHeaderID(headerPageID);
         for (var pageIndex in pageList) {
             // Skip last report page in a section
             if (pageIndex === pageList.length - 1) break;
             var pageID = pageList[pageIndex];
-            var panelDefinition = domain.fieldSpecificationCollection.getPanelSpecificationForPanelID(pageID);
+            var panelDefinition = domain.panelSpecificationCollection.getPanelSpecificationForPanelID(pageID);
             if (!panelDefinition) {
                 console.log("ERROR: Missing panelDefinition for pageID:", pageID);
                 continue;
@@ -522,10 +522,10 @@ define([
     }
     
     // Application should call this at startup
-    function setupDomain(fieldSpecificationCollection) {
-        domain.fieldSpecificationCollection = fieldSpecificationCollection;
+    function setupDomain(panelSpecificationCollection) {
+        domain.panelSpecificationCollection = panelSpecificationCollection;
         
-        var model = fieldSpecificationCollection.buildModel("ProjectModel");
+        var model = panelSpecificationCollection.buildModel("ProjectModel");
         
         var projectData = domain.projectData;
         
@@ -535,7 +535,7 @@ define([
         projectData.surveyResults.allCompletedSurveys = [];
         projectData.surveyResults.allStories = [];
         
-        var pages = fieldSpecificationCollection.buildListOfPages();
+        var pages = panelSpecificationCollection.buildListOfPages();
         
         for (var pageIndex = 0; pageIndex < pages.length; pageIndex++) {
             var page = pages[pageIndex];
@@ -566,8 +566,8 @@ define([
         });
     }
     
-    function getFieldSpecificationCollection() {
-        return domain.fieldSpecificationCollection;
+    function getPanelSpecificationCollection() {
+        return domain.panelSpecificationCollection;
     }
     
     var exportedFunctions = {
@@ -577,7 +577,7 @@ define([
         "projectData": domain.projectData,
         
         // Supporting GUI
-        "getFieldSpecificationCollection": getFieldSpecificationCollection,
+        "getPanelSpecificationCollection": getPanelSpecificationCollection,
         
         // functions called from page widgets
         "calculateFunctionResultForGUI": calculateFunctionResultForGUI,

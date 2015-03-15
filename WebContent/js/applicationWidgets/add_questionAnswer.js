@@ -21,7 +21,7 @@ define([
             // throw new Error("ERROR: missing question: " + referencedQuestionID);            
         }
 
-        var fieldSpecification = domain.getFieldSpecificationCollection().getFieldSpecificationForFieldID(referencedQuestionID);
+        var fieldSpecification = domain.getPanelSpecificationCollection().getFieldSpecificationForFieldID(referencedQuestionID);
         if (fieldSpecification) {
             if (fieldSpecification.displayType === "select" ||  fieldSpecification.displayType === "checkboxes" || fieldSpecification.displayType === "radiobuttons") {
                 // TODO: This may not translate correctly for checkboxes; may need to be translated individually

@@ -17,7 +17,7 @@ require([
     "js/panelBuilder/widgetSupport",
     "dijit/layout/ContentPane",
     "dijit/form/Select",
-    "js/panelBuilder/FieldSpecificationCollection",
+    "js/panelBuilder/PanelSpecificationCollection",
     "dojo/domReady!"
 ], function(
     applicationMessages,
@@ -38,14 +38,14 @@ require([
     widgetSupport,
     ContentPane,
     Select,
-    FieldSpecificationCollection
+    PanelSpecificationCollection
 ){
     "use strict";
 
     // TODO: Add page validation
     // TODO: Add translations for GUI strings used here
     
-    var fieldSpecificationCollection = new FieldSpecificationCollection();
+    var panelSpecificationCollection = new PanelSpecificationCollection();
     
     // For building panels based on field specifications
     var panelBuilder = new PanelBuilder();
@@ -167,8 +167,8 @@ require([
     }
     
     function getPageSpecification(pageID) {
-        // For now, any "page" defined in the fieldSpecificationCollection is available
-        return fieldSpecificationCollection.getPageSpecificationForPageID(pageID);
+        // For now, any "page" defined in the panelSpecificationCollection is available
+        return panelSpecificationCollection.getPageSpecificationForPageID(pageID);
     }
     
     function urlHashFragmentChanged(newHash) {
@@ -285,7 +285,7 @@ require([
            } else {
                console.log("page dashboard as header", pageSpecification.id, pageSpecification.displayType, pageSpecification);
                // Put in dashboard
-               var childPageIDs = fieldSpecificationCollection.getChildPageIDListForHeaderID(pageID);
+               var childPageIDs = panelSpecificationCollection.getChildPageIDListForHeaderID(pageID);
                console.log("child pages", pageID, childPageIDs);
                if (!childPageIDs) childPageIDs = [];
                for (var childPageIndex = 0; childPageIndex < childPageIDs.length; childPageIndex++) {
@@ -421,11 +421,11 @@ require([
     function pageSelectOptionsForSection(sectionHeaderPageID) {
         if (!sectionHeaderPageID) throw new Error("sectionHeaderPageID cannot be null or empty");
         console.log("pageSelectOptionsForSection", sectionHeaderPageID);
-        var pageIDs = fieldSpecificationCollection.getChildPageIDListForHeaderID(sectionHeaderPageID);
+        var pageIDs = panelSpecificationCollection.getChildPageIDListForHeaderID(sectionHeaderPageID);
         var options = [];
         var title = getPageSpecification(sectionHeaderPageID).title;
         // It seems like a Dojo "select" widget has a limitation where it can only take strings as values.
-        // This means we need to look up page definitions indirectly based on a pageID usind a FieldSpecificationCollection instance.
+        // This means we need to look up page definitions indirectly based on a pageID usind a PanelSpecificationCollection instance.
         options.push({label: title, value: sectionHeaderPageID});
         _.forEach(pageIDs, function (pageID) {
             title = getPageSpecification(pageID).title;
@@ -435,7 +435,7 @@ require([
     }
     
     function processAllPanels() {
-        var panels = fieldSpecificationCollection.buildListOfPanels();
+        var panels = panelSpecificationCollection.buildListOfPanels();
         console.log("processAllPanels", panels);
         
         var lastPageID = null;
@@ -470,7 +470,7 @@ require([
 
                 // Put in a dynamic question (incomplete for options) to be used to lookup page status.
                 // This is needed so add_qustionAnswer can check the field is a "select" to translate the options if needed
-                fieldSpecificationCollection.addFieldSpecification({id: pageID + "_pageStatus", displayType: "select"});
+                panelSpecificationCollection.addFieldSpecification({id: pageID + "_pageStatus", displayType: "select"});
                 
                 if (panel.isHeader) {
                     lastHeader = pageID;
@@ -650,15 +650,15 @@ require([
         
         console.log("loadAllFieldSpecifications", loadAllFieldSpecifications);
         // Load the application design
-        loadAllFieldSpecifications(fieldSpecificationCollection);
+        loadAllFieldSpecifications(panelSpecificationCollection);
         
         // Setup the domain with the base model defined by field specifications
-        domain.setupDomain(fieldSpecificationCollection);
+        domain.setupDomain(panelSpecificationCollection);
  
         processAllPanels();
         
         // Tell the panel builder how to build panels
-        panelBuilder.setPanelSpecifications(fieldSpecificationCollection);
+        panelBuilder.setPanelSpecifications(panelSpecificationCollection);
         
         // Tell the panelBuilder what do do if a button is clicked
         panelBuilder.setButtonClickedCallback(function(panelBuilder, contentPane, model, fieldSpecification, value) {

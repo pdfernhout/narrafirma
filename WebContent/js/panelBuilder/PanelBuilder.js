@@ -97,7 +97,7 @@ var PanelBuilder = declare(null, {
     constructor: function(kwArgs) {
         this.currentQuestionContentPane = null;
         this.currentInternalContentPane = null;
-        this.fieldSpecificationCollection = null;
+        this.panelSpecificationCollection = null;
         this.buttonClickedCallback = null;
         this.currentHelpPage = null;
         this.currentHelpSection = null;
@@ -106,8 +106,8 @@ var PanelBuilder = declare(null, {
     },
     
     // provide a way to find definitions needed to  build internal panels for some widgets like the GridWithItemPanel
-    setPanelSpecifications: function(fieldSpecificationCollection) {
-        this.fieldSpecificationCollection = fieldSpecificationCollection;
+    setPanelSpecifications: function(panelSpecificationCollection) {
+        this.panelSpecificationCollection = panelSpecificationCollection;
     },
     
     addMissingWidgetPlaceholder: function(panelBuilder, contentPane, model, fieldSpecification) {
@@ -197,13 +197,13 @@ var PanelBuilder = declare(null, {
 
     /// Suport functions
     
-    // TODO: Maybe rename this getPanelSpecificationForPanelID to match FieldSpecificationCollection?
+    // TODO: Maybe rename this getPanelSpecificationForPanelID to match PanelSpecificationCollection?
     panelDefinitionForPanelID: function(panelID) {
-        if (!this.fieldSpecificationCollection) {
-            throw new Error("No fieldSpecificationCollection set in PanelBuilder so can not resolve panelID: " + panelID);
+        if (!this.panelSpecificationCollection) {
+            throw new Error("No panelSpecificationCollection set in PanelBuilder so can not resolve panelID: " + panelID);
         }
         
-        var panelSpecification = this.fieldSpecificationCollection.getPanelSpecificationForPanelID(panelID);
+        var panelSpecification = this.panelSpecificationCollection.getPanelSpecificationForPanelID(panelID);
         
         if (!panelSpecification) {
             throw new Error("No panelSpecification found by PanelBuilder for panelID: " + panelID);

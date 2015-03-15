@@ -15,10 +15,10 @@ require = require('amdrequire');
 var outputDirectory = __dirname + "/output/";
 
 require([
-   "../WebContent/js/panelBuilder/FieldSpecificationCollection.js",
+   "../WebContent/js/panelBuilder/PanelSpecificationCollection.js",
    "../WebContent/js/fieldSpecifications/loadAllFieldSpecifications.js"
 ], function(
-    FieldSpecificationCollection,
+    PanelSpecificationCollection,
     loadAllFieldSpecifications
 ) {
     
@@ -181,7 +181,7 @@ require([
     function main() {
         console.log("generateHelpFiles", new Date());
         
-        allFieldSpecs = new FieldSpecificationCollection();
+        allFieldSpecs = new PanelSpecificationCollection();
         loadAllFieldSpecifications(allFieldSpecs);
         // console.log("fieldSpecificationCollection", allFieldSpecs); 
         
