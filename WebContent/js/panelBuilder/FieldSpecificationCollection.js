@@ -8,29 +8,50 @@ define([
     }
     
     function FieldSpecifications() {
-        this. applicationFieldSpecifications = [];
+        this.allFieldSpecifications = [];
+        
+        this.allPanels = [];
+        this.panelIDToPanelSpecificationMap = {};
+        
+        this.allPages = [];
+        this.pageIDToPageSpecificatiomMap = {};
+        
+        this.modelClassToModelFieldSpecificationsMap = {};
     }
     
-    FieldSpecifications.prototype.addFieldSpecifications = function(fieldSpecifications) {
+    FieldSpecifications.prototype.addPanelWithFieldsFromJSONText = function(panelSpecificationJSONText) {
+        var panelSpecification = JSON.parse(panelSpecificationJSONText);
         var displayPanel;
-        var modelClass; //  = "ProjectModel";
-        for (var i = 0; i < fieldSpecifications.length; i++) {
-            var fieldSpecification = fieldSpecifications[i];
-            if (isPanel(fieldSpecification)) {
-                displayPanel = fieldSpecification.id;
-                modelClass = fieldSpecification.modelClass;
-                fieldSpecification.displayPanel = displayPanel;
-            } else {
-                fieldSpecification.displayPanel = displayPanel;
-                fieldSpecification.modelClass = modelClass;
+        
+        this.allPanels.push(panelSpecification);
+        this.panelIDToPanelSpecificationMap[panelSpecification.id] = panelSpecification;
+        
+        if (panelSpecification.displayType === "page") {
+            this.allPages.push(panelSpecification);
+            this.pageIDToPageSpecificatiomMap[panelSpecification.id] = panelSpecification;
+        }
+        
+        var model;
+        var modelClass = panelSpecification.modelClass;
+        if (modelClass) {
+            model = this.modelClassToModelFieldSpecificationsMap[modelClass];
+            if (!model) {
+                model = [];
+                this.modelClassToModelFieldSpecificationsMap[modelClass] = model;
             }
-            this.applicationFieldSpecifications.push(fieldSpecification);
+        }
+        
+        for (var i = 0; i < panelSpecification.panelFields.length; i++) {
+            var fieldSpecification = panelSpecification.panelFields[i];
+            // TODO: Is the first or even second of these lines still needed?
+            fieldSpecification.displayPanel = panelSpecification.displayPanel;
+            fieldSpecification.modelClass = modelClass;
+            this.allFieldSpecifications.push(fieldSpecification);
+            if (model) model.push(fieldSpecification);
             // console.log("adding field specification", fieldSpecification);
         }
     };
-        
-    // TODO: Optimize the lookup of questions for panels, and maybe others, by using a dictionary which caches a list
-        
+     
     FieldSpecifications.prototype.initialDataForField = function(fieldSpecification) {
         var dataType = fieldSpecification.dataType;
         if (dataType === "string") return "";
@@ -43,8 +64,10 @@ define([
 
     FieldSpecifications.prototype.buildModel = function(modelName) {
         var model = {__type: modelName};
-        for (var i = 0; i < this.applicationFieldSpecifications.length; i++) {
-            var fieldSpecification = this.applicationFieldSpecifications[i];
+        var modelFieldSpecifications = this.modelClassToModelFieldSpecificationsMap[modelName];
+        
+        for (var i = 0; i < modelFieldSpecifications.length; i++) {
+            var fieldSpecification = modelFieldSpecifications[i];
             if (!isPanel(fieldSpecification) && fieldSpecification.modelClass === modelName && fieldSpecification.dataType !== "none") {
                 model[fieldSpecification.id] = this.initialDataForField(fieldSpecification);
             }
@@ -54,59 +77,23 @@ define([
     };
     
     FieldSpecifications.prototype.buildListOfPages = function() {
-        var pages = [];
-        for (var i = 0; i < this.applicationFieldSpecifications.length; i++) {
-            var fieldSpecification = this.applicationFieldSpecifications[i];
-            if (fieldSpecification.displayType === "page") {
-                pages.push(fieldSpecification);
-            }
-        }
-        return pages;
+        return this.allPages;
     };
     
     FieldSpecifications.prototype.buildListOfPanels = function() {
-        var panels = [];
-        for (var i = 0; i < this.applicationFieldSpecifications.length; i++) {
-            var fieldSpecification = this.applicationFieldSpecifications[i];
-            if (isPanel(fieldSpecification)) {
-                panels.push(fieldSpecification);
-            }
-        }
-        return panels;
+        return this.allPanels;
     };
     
     FieldSpecifications.prototype.buildListOfQuestions = function() {
-        var questions = [];
-        for (var i = 0; i < this.applicationFieldSpecifications.length; i++) {
-            var fieldSpecification = this.applicationFieldSpecifications[i];
-            if (!isPanel(fieldSpecification)) {
-                questions.push(fieldSpecification);
-            }
-        }
-        return questions;
+        return this.allFieldSpecifications;
     };
     
     FieldSpecifications.prototype.buildQuestionsForPanel = function(panelID) {
-        var questions = [];
-        for (var i = 0; i < this.applicationFieldSpecifications.length; i++) {
-            var fieldSpecification = this.applicationFieldSpecifications[i];
-            if (!isPanel(fieldSpecification) && fieldSpecification.displayPanel === panelID) {
-                questions.push(fieldSpecification);
-            }
-        }
-        // console.log("buildQuestionsForPanel", panelID, questions);
-        return questions;
+        return this.panelIDToPanelSpecificationMap[panelID].panelFields;
     };
     
     FieldSpecifications.prototype.getPanelSpecificationForPanelID = function(panelID) {
-        var questions = [];
-        for (var i = 0; i < this.applicationFieldSpecifications.length; i++) {
-            var fieldSpecification = this.applicationFieldSpecifications[i];
-            if (isPanel(fieldSpecification) && fieldSpecification.id === panelID) {
-                return fieldSpecification;
-            }
-        }
-        return null;
+        return this.panelIDToPanelSpecificationMap[panelID];
     };
     
     return FieldSpecifications;
