@@ -17,7 +17,7 @@ define([
         return "steps";
     }
     
-    function add_annotationsGrid(panelBuilder, contentPane, model, fieldSpecification) {
+    function add_dashboardSectionStatusDisplay(panelBuilder, contentPane, model, fieldSpecification) {
         var sectionName = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
         
         // TODO: Kludge of using field id to determine what section this refers to
@@ -102,5 +102,5 @@ define([
         return button;
     }
 
-    return add_annotationsGrid;
+    return add_dashboardSectionStatusDisplay;
 });
