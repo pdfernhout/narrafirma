@@ -9,6 +9,7 @@ define([
     
     function FieldSpecifications() {
         this.allFieldSpecifications = [];
+        this.fieldIDToFieldSpecificationMap = {};
         
         this.allPanels = [];
         this.panelIDToPanelSpecificationMap = {};
@@ -47,6 +48,7 @@ define([
             fieldSpecification.displayPanel = panelSpecification.displayPanel;
             fieldSpecification.modelClass = modelClass;
             this.allFieldSpecifications.push(fieldSpecification);
+            this.fieldIDToFieldSpecificationMap[fieldSpecification.id] = fieldSpecification;
             if (model) model.push(fieldSpecification);
             // console.log("adding field specification", fieldSpecification);
         }
@@ -94,6 +96,10 @@ define([
     
     FieldSpecifications.prototype.getPanelSpecificationForPanelID = function(panelID) {
         return this.panelIDToPanelSpecificationMap[panelID];
+    };
+    
+    FieldSpecifications.prototype.getFieldSpecificationForFieldID = function(fieldID) {
+        return this.fieldIDToFieldSpecificationMap[fieldID];
     };
     
     return FieldSpecifications;
