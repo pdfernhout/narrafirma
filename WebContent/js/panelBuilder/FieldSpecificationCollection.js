@@ -3,7 +3,7 @@ define([
 ) {
     "use strict";
     
-    function FieldSpecifications() {
+    function PanelSpecificationCollection() {
         // TODO: Think about whether can refactor to remove need for allFieldSpecifications array and/or map
         // Keep all questions together for use by things like calculating derived values from options for quiz score results
         this.allFieldSpecifications = [];
@@ -23,7 +23,7 @@ define([
         this.lastHeader = null;
     }
     
-    FieldSpecifications.prototype.addPanelWithFieldsFromJSONText = function(panelSpecificationJSONText) {
+    PanelSpecificationCollection.prototype.addPanelWithFieldsFromJSONText = function(panelSpecificationJSONText) {
         var panelSpecification = JSON.parse(panelSpecificationJSONText);
         var displayPanel;
         
@@ -65,7 +65,7 @@ define([
         }
     };
      
-    FieldSpecifications.prototype.initialDataForField = function(fieldSpecification) {
+    PanelSpecificationCollection.prototype.initialDataForField = function(fieldSpecification) {
         var dataType = fieldSpecification.dataType;
         if (dataType === "string") return "";
         if (dataType === "array") return [];
@@ -75,7 +75,7 @@ define([
         throw new Error("Unsupported model field dataType: " + dataType);
     };
 
-    FieldSpecifications.prototype.buildModel = function(modelName) {
+    PanelSpecificationCollection.prototype.buildModel = function(modelName) {
         var model = {__type: modelName};
         var modelFieldSpecifications = this.modelClassToModelFieldSpecificationsMap[modelName];
         
@@ -89,37 +89,37 @@ define([
         return model;
     };
     
-    FieldSpecifications.prototype.buildListOfPages = function() {
+    PanelSpecificationCollection.prototype.buildListOfPages = function() {
         return this.allPages;
     };
     
-    FieldSpecifications.prototype.buildListOfPanels = function() {
+    PanelSpecificationCollection.prototype.buildListOfPanels = function() {
         return this.allPanels;
     };
     
-    FieldSpecifications.prototype.getPageSpecificationForPageID = function(pageID) {
+    PanelSpecificationCollection.prototype.getPageSpecificationForPageID = function(pageID) {
         return this.pageIDToPageSpecificatiomMap[pageID];
     };
     
-    FieldSpecifications.prototype.getPanelSpecificationForPanelID = function(panelID) {
+    PanelSpecificationCollection.prototype.getPanelSpecificationForPanelID = function(panelID) {
         return this.panelIDToPanelSpecificationMap[panelID];
     };
     
-    FieldSpecifications.prototype.getFieldSpecificationForFieldID = function(fieldID) {
+    PanelSpecificationCollection.prototype.getFieldSpecificationForFieldID = function(fieldID) {
         return this.fieldIDToFieldSpecificationMap[fieldID];
     };
     
     // TODO: This is needed in one place in main.js; could the architecture be refactored further to remove that need?
     // Note that questions added this way don't belong to a specific panel.
     // Note that fieldSpecifications added this way also will not be included in models
-    FieldSpecifications.prototype.addFieldSpecification = function(fieldSpecification) {
+    PanelSpecificationCollection.prototype.addFieldSpecification = function(fieldSpecification) {
         this.allFieldSpecifications.push(fieldSpecification);
         this.fieldIDToFieldSpecificationMap[fieldSpecification.id] = fieldSpecification;
     };
     
-    FieldSpecifications.prototype.getChildPageIDListForHeaderID = function(fieldID) {
+    PanelSpecificationCollection.prototype.getChildPageIDListForHeaderID = function(fieldID) {
         return this.childPageIDListForHeaderID[fieldID];
     };
     
-    return FieldSpecifications;
+    return PanelSpecificationCollection;
 });
