@@ -553,3 +553,9 @@ DONE Fix issue with story browser no longer showing all questions
 DONE Improve GUI support to clear filters in story browser
 DONE Improve story browser to dynamically update as you select filter options
 DONE Fix bugs in survey entry from previous refactoring changes for dataOptions and displayConfiguration fields
+DONE Use JSON files for panel and field specifation insteod of JavaScript (including writing a tool to help with that)
+DONE Refactor domain so it references a domain object internally for clarity and easier searching on domain.questions usage
+DONE Optimize lookup of panels and models in FieldSpecificationCollection
+DONE Consolidated all information about panels, pages, and fields into FieldSpecificationCollection instead of that class, domain.js, and main.js
+
+
