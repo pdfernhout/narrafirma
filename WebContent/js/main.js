@@ -239,6 +239,8 @@ require([
         pageNavigationSelect.set("value", pageID);
     }
     
+    var completionStatusOptions = ["intentionally skipped", "partially done", "completely finished"];
+    
     function createPage(pageID, visible) {
         console.log("createPage", pageID);
         
@@ -271,14 +273,15 @@ require([
        
        if (pageSpecification.section !== "page_dashboard") {
            if (!pageSpecification.isHeader) {
-               var options = ["intentionally skipped", "partially done", "completely finished"];
                var statusEntryID = pageID + "_pageStatus";
-               translate.addExtraTranslation(statusEntryID + "::prompt", translate("#dashboard_status_entry::prompt") + " ");
-               for (var optionIndex in options) {
-                   var option = options[optionIndex];
-                   translate.addExtraTranslation(statusEntryID + "::selection:" + option, translate("#dashboard_status_entry::selection:" + option));
-               }
-               panelBuilder.buildField(pagePane, domain.projectData.projectAnswers, {id: statusEntryID, displayType: "select", dataOptions: options});
+               var completionStatusEntryFieldSpecification = {
+                   id: statusEntryID,
+                   displayType: "select",
+                   displayName: "Completion status",
+                   displayPrompt: translate("#dashboard_status_entry::prompt"),
+                   dataOptions: completionStatusOptions
+               };
+               panelBuilder.buildField(pagePane, domain.projectData.projectAnswers, completionStatusEntryFieldSpecification);
            } else {
                console.log("page dashboard as header", pageSpecification.id, pageSpecification.displayType, pageSpecification);
                // Put in dashboard
@@ -293,9 +296,15 @@ require([
                    if (!childPageSpecification) console.log("Error: problem finding page definition for", childPageID);
                    if (childPageSpecification && childPageSpecification.displayType === "page") {
                        var prompt = translate(childPageID + "::title", childPageSpecification.displayName) + " " + translate("#dashboard_status_label") + " ";
-                       translate.addExtraTranslation(statusViewID + "::prompt", prompt);
                        console.log("about to call panelBuilder to add one questionAnswer for child page's status", childPageID);
-                       panelBuilder.buildField(pagePane, domain.projectData.projectAnswers, {id: statusViewID, displayType: "questionAnswer", displayConfiguration: [childPageID + "_pageStatus"]});
+                       var completionStatusDisplayFieldSpecification = {
+                           id: statusViewID,
+                           displayType: "questionAnswer",
+                           displayName: prompt,
+                           displayPrompt: prompt,
+                           displayConfiguration: [childPageID + "_pageStatus"]
+                       };
+                       panelBuilder.buildField(pagePane, domain.projectData.projectAnswers, completionStatusDisplayFieldSpecification);
                    }
                }
            }
