@@ -94,7 +94,7 @@ define([
            radiobuttons: true
         };
         
-        array.forEach(itemPanelSpecification.questions, function (question) {
+        array.forEach(itemPanelSpecification.panelFields, function (question) {
             var includeField = false;
             if (configuration.includeAllFields) {
                 // TODO: improve this
@@ -306,7 +306,7 @@ define([
             });
             
             /* TODO: Some way to disable editing?
-            array.forEach(itemPanelSpecification.questions, function (question) {
+            array.forEach(itemPanelSpecification.panelFields, function (question) {
                 // TODO: This may not work for more complex question types or custom widgets?
                 var widget = registry.byId(question.id);
                 if (widget) {

@@ -92,16 +92,19 @@ define([
         return this.allFieldSpecifications;
     };
     
-    FieldSpecifications.prototype.buildQuestionsForPanel = function(panelID) {
-        return this.panelIDToPanelSpecificationMap[panelID].panelFields;
-    };
-    
     FieldSpecifications.prototype.getPanelSpecificationForPanelID = function(panelID) {
         return this.panelIDToPanelSpecificationMap[panelID];
     };
     
     FieldSpecifications.prototype.getFieldSpecificationForFieldID = function(fieldID) {
         return this.fieldIDToFieldSpecificationMap[fieldID];
+    };
+    
+    // TODO: This is needed in one place in main.js; could the architecture be refactored further to remove that need?
+    // Note that questions added this way don't belong to a specific panel.
+    FieldSpecifications.prototype.addFieldSpecification = function(fieldSpecification) {
+        this.allFieldSpecifications.push(fieldSpecification);
+        this.fieldIDToFieldSpecificationMap[fieldSpecification.id] = fieldSpecification;
     };
     
     return FieldSpecifications;

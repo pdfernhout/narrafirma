@@ -20,17 +20,17 @@ define([
             console.log("ERROR: missing question: ", referencedQuestionID);
             // throw new Error("ERROR: missing question: " + referencedQuestionID);            
         }
-        // console.log("domain.questions", domain, domain.questions);
-        var question = domain.questions[referencedQuestionID];
-        if (question) {
-            if (question.displayType === "select" ||  question.displayType === "checkboxes" || question.displayType === "radiobuttons") {
+
+        var fieldSpecification = domain.getFieldSpecificationCollection().getFieldSpecificationForFieldID(referencedQuestionID);
+        if (fieldSpecification) {
+            if (fieldSpecification.displayType === "select" ||  fieldSpecification.displayType === "checkboxes" || fieldSpecification.displayType === "radiobuttons") {
                 // TODO: This may not translate correctly for checkboxes; may need to be translated individually
                 // console.log("trying to translate select", value);
                 // TODO: Possible big issue here with incorrect translation if values have spaces in them
                 value = translate(value, value);
             }
         } else {
-            console.log("calculate_questionAnswer: missing question definition for: ", referencedQuestionID);
+            console.log("calculate_questionAnswer: missing fieldSpecification definition for: ", referencedQuestionID);
         }
         return "<b>" + value + "<b>";
     }

@@ -17,22 +17,20 @@ define([
 ) {
     "use strict";
     
-    // TODO: panelDefinitions probably should not be in domain
-    
     // TODO: Fix hardcoded questionnaire ID
     var defaultQuestionnaireID = 'questionnaire-test-003';
     
     var domain = {
-      panelDefinitions: {},
-      questions: {},
+      fieldSpecificationCollection: null,
+
       childPageIDListForHeaderID: {},
     
       projectData: {},
 
       questionnaireID: defaultQuestionnaireID,
     
-    // TODO: When does this get updated?
-      questionnaireStatus: {questionnaireID: defaultQuestionnaireID, active: false},
+      // TODO: When does this get updated?
+      questionnaireStatus: {questionnaireID: defaultQuestionnaireID, active: false}
     };
     
     // Panel builder "functionResult" components will get routed through here to calculate their text.
@@ -383,7 +381,7 @@ define([
             var answerWeight = 0;
             if (questionAnswer) {
                 // console.log("questionAnswer", questionAnswer);
-                var choices = domain.questions[questionID].dataOptions;
+                var choices = domain.fieldSpecificationCollection.getFieldSpecificationForFieldID(questionID).dataOptions;
                 answerWeight = choices.indexOf(questionAnswer) - 1;
                 // console.log("answerWeight", answerWeight);
                 if (answerWeight < 0) answerWeight = 0;
@@ -428,7 +426,7 @@ define([
             // Skip last report page in a section
             if (pageIndex === pageList.length - 1) break;
             var pageID = pageList[pageIndex];
-            var panelDefinition = domain.panelDefinitions[pageID];
+            var panelDefinition = domain.fieldSpecificationCollection.getPanelSpecificationForPanelID(pageID);
             if (!panelDefinition) {
                 console.log("ERROR: Missing panelDefinition for pageID:", pageID);
                 continue;
@@ -437,7 +435,7 @@ define([
             report += "<div>";
             report += "<i> *** " + translate(pageID + "::title", panelDefinition.displayName) + "</i>  ***<br><br>";
             var questionsAnsweredCount = 0;
-            var questions = panelDefinition.questions;
+            var questions = panelDefinition.panelFields;
             for (var questionIndex in questions) {
                 var question = questions[questionIndex];
                 var value = domain.projectData.projectAnswers.get(question.id);
@@ -528,6 +526,8 @@ define([
     
     // Application should call this at startup
     function setupDomain(fieldSpecificationCollection) {
+        domain.fieldSpecificationCollection = fieldSpecificationCollection;
+        
         var model = fieldSpecificationCollection.buildModel("ProjectModel");
         
         var projectData = domain.projectData;
@@ -569,6 +569,10 @@ define([
         });
     }
     
+    function getFieldSpecificationCollection() {
+        return domain.fieldSpecificationCollection;
+    }
+    
     var exportedFunctions = {
         "setupDomain": setupDomain,
             
@@ -577,8 +581,7 @@ define([
         
         // Supporting GUI
         "childPageIDListForHeaderID": domain.childPageIDListForHeaderID,
-        "questions": domain.questions,
-        "panelDefinitions": domain.panelDefinitions,
+        "getFieldSpecificationCollection": getFieldSpecificationCollection,
         
         // functions called from page widgets
         "calculateFunctionResultForGUI": calculateFunctionResultForGUI,

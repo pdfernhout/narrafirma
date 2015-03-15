@@ -96,7 +96,7 @@ var PanelBuilder = declare(null, {
     constructor: function(kwArgs) {
         this.currentQuestionContentPane = null;
         this.currentInternalContentPane = null;
-        this.panelSpecifications = null;
+        this.fieldSpecificationCollection = null;
         this.buttonClickedCallback = null;
         this.currentHelpPage = null;
         this.currentHelpSection = null;
@@ -105,8 +105,8 @@ var PanelBuilder = declare(null, {
     },
     
     // provide a way to find definitions needed to  build internal panels for some widgets like the GridWithItemPanel
-    setPanelSpecifications: function(panelSpecifications) {
-        this.panelSpecifications = panelSpecifications;
+    setPanelSpecifications: function(fieldSpecificationCollection) {
+        this.fieldSpecificationCollection = fieldSpecificationCollection;
     },
     
     addMissingWidgetPlaceholder: function(panelBuilder, contentPane, model, fieldSpecification) {
@@ -168,12 +168,12 @@ var PanelBuilder = declare(null, {
         var questions;
         if (lang.isString(panelOrPanelID)) {
             var panel = this.panelDefinitionForPanelID(panelOrPanelID);
-            questions = panel.questions;
+            questions = panel.panelFields;
         } else if (panelOrPanelID.buildPanel) {
             // Call explicit constructor function
             return panelOrPanelID.buildPanel(this, contentPane, model);
         } else {
-            questions = panelOrPanelID.questions;
+            questions = panelOrPanelID.panelFields;
         }
         this.addQuestions(questions, contentPane, model);
     },
@@ -196,18 +196,13 @@ var PanelBuilder = declare(null, {
 
     /// Suport functions
     
+    // TODO: Maybe rename this getPanelSpecificationForPanelID to match FieldSpecificationCollection?
     panelDefinitionForPanelID: function(panelID) {
-        if (!this.panelSpecifications) {
-            throw new Error("No panelSpecifications set in PanelBuilder so can not resolve panelID: " + panelID);
+        if (!this.fieldSpecificationCollection) {
+            throw new Error("No fieldSpecificationCollection set in PanelBuilder so can not resolve panelID: " + panelID);
         }
         
-        var panelSpecification;
-        
-        if (_.isFunction(this.panelDefinitions)) {
-            panelSpecification = this.panelSpecifications(panelID);
-        } else {
-            panelSpecification = this.panelSpecifications[panelID];
-        }
+        var panelSpecification = this.fieldSpecificationCollection.getPanelSpecificationForPanelID(panelID);
         
         if (!panelSpecification) {
             throw new Error("No panelSpecification found by PanelBuilder for panelID: " + panelID);

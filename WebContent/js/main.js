@@ -443,8 +443,6 @@ require([
                 title += " SPECIAL: " + panel.displayType;
             }
             
-            domain.panelDefinitions[panel.id] = panel;    
-            
             // For panels that are a "page", add to top level pages choices and set up navigation
             if (panel.displayType === "page") {
                 var pageID = panel.id;
@@ -463,24 +461,24 @@ require([
                     lastHeader = pageID;
                 }
                 
-                // Looks like Dojo select has a limitation where it can only take strings as values
-                // so can't pass page in as value here and need indirect panelDefinitions lookup dictionary
+                // Looks like Dojo select has a limitation where it can only take strings as values.
+                // This means we need to look up page definitions indirectly based on a pageID usind a FieldSpecificationCollection instance.
                 pageSelectOptions.push({label: title, value: pageID});
-                // Put in a dynamic question (incomplete for options) to be used to lookup page status; needed to check it is a select
-                domain.questions[panel.id + "_pageStatus"] = {id: pageID + "_pageStatus", displayType: "select"};
+                // Put in a dynamic question (incomplete for options) to be used to lookup page status.
+                // This is needed so add_qustionAnswer can check the field is a "select" to translate the options if needed
+                fieldSpecificationCollection.addFieldSpecification({id: pageID + "_pageStatus", displayType: "select"});
             }
             
             if (panel.section) lastSection = panel.section;
             
-            // TODO: Should this really be modifying the original???
             panel.title = title;
             panel.helpSection = lastSection;
             panel.helpPage = panel.id;
+            // TODO: Think abouw what "section" should really mean -- conceptual section (e.g. "catalysis") versus section header page ID (e.g. "page_catalysis");
             panel.section = lastHeader;
             
-            panel.questions = fieldSpecificationCollection.buildQuestionsForPanel(panel.id);
-            for (var fieldIndex = 0; fieldIndex < panel.questions.length; fieldIndex++) {
-                var fieldSpec = panel.questions[fieldIndex];
+            for (var fieldIndex = 0; fieldIndex < panel.panelFields.length; fieldIndex++) {
+                var fieldSpec = panel.panelFields[fieldIndex];
                 fieldSpec.helpSection = lastSection;
                 fieldSpec.helpPage = panel.id;
             }
@@ -490,12 +488,7 @@ require([
         
         var questions = fieldSpecificationCollection.buildListOfQuestions();
         
-        // Lump all questions together in domain for use by things like calculating derived values from options for quiz score results
-        for (var questionIndex in questions) {
-            var question = questions[questionIndex];
-            domain.questions[question.id] = question;
-        }
-        
+        // TODO: Is this next call still still needed, since lookup works better with defaults? If not, can also remove method in FieldSpecificationCollection
         // Add default translations for all questions; these can be overriden by local language files which would be searched first
         translate.addExtraTranslationsForQuestions(questions);
     }
@@ -663,9 +656,8 @@ require([
  
         processAllPanels();
         
-        // Tell the panelBuilder about the panelSpecifications
-        // var questions = fieldSpecificationCollection.buildQuestionsForPanel(panelID);
-        panelBuilder.setPanelSpecifications(domain.panelDefinitions);
+        // Tell the panel builder how to build panels
+        panelBuilder.setPanelSpecifications(fieldSpecificationCollection);
         
         // Tell the panelBuilder what do do if a button is clicked
         panelBuilder.setButtonClickedCallback(function(panelBuilder, contentPane, model, fieldSpecification, value) {
