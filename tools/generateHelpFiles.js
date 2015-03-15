@@ -16,10 +16,10 @@ var outputDirectory = __dirname + "/output/";
 
 require([
    "../WebContent/js/panelBuilder/PanelSpecificationCollection.js",
-   "../WebContent/js/fieldSpecifications/loadAllFieldSpecifications.js"
+   "../WebContent/js/fieldSpecifications/loadAllPanelSpecifications.js"
 ], function(
     PanelSpecificationCollection,
-    loadAllFieldSpecifications
+    loadAllPanelSpecifications
 ) {
     
     var allFieldSpecs;
@@ -182,7 +182,7 @@ require([
         console.log("generateHelpFiles", new Date());
         
         allFieldSpecs = new PanelSpecificationCollection();
-        loadAllFieldSpecifications(allFieldSpecs);
+        loadAllPanelSpecifications(allFieldSpecs);
         // console.log("fieldSpecificationCollection", allFieldSpecs); 
         
         var panels = allFieldSpecs.buildListOfPanels();

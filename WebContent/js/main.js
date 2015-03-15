@@ -7,7 +7,7 @@ require([
     "dojo/hash",
     "dojo/_base/lang",
     "js/applicationWidgets/loadAllApplicationWidgets",
-    "js/fieldSpecifications/loadAllFieldSpecifications",
+    "js/fieldSpecifications/loadAllPanelSpecifications",
     "js/storage",
     "js/survey",
     "js/panelBuilder/toaster",
@@ -28,7 +28,7 @@ require([
     hash,
     lang,
     loadAllApplicationWidgets,
-    loadAllFieldSpecifications,
+    loadAllPanelSpecifications,
     storage,
     survey,
     toaster,
@@ -648,9 +648,9 @@ require([
         
         loadAllApplicationWidgets(PanelBuilder);
         
-        console.log("loadAllFieldSpecifications", loadAllFieldSpecifications);
+        console.log("loadAllPanelSpecifications", loadAllPanelSpecifications);
         // Load the application design
-        loadAllFieldSpecifications(panelSpecificationCollection);
+        loadAllPanelSpecifications(panelSpecificationCollection);
         
         // Setup the domain with the base model defined by field specifications
         domain.setupDomain(panelSpecificationCollection);
