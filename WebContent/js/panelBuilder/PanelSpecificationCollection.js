@@ -83,7 +83,7 @@ define([
         var modelFieldSpecifications = this.modelClassToModelFieldSpecificationsMap[modelName];
         if (!modelFieldSpecifications) {
             console.log("ERROR: No model defined for model name", modelName);
-            return null;
+            throw new Error("No model defined for model name: " + modelName);
         }
         
         for (var i = 0; i < modelFieldSpecifications.length; i++) {

@@ -25,9 +25,12 @@ require([
     
     panels.addPanelWithFields(aboutYouPanelSpecification);
     
-    var modelMissing = panels.buildModel("ProjectModel");
-    
-    console.log("modelMissing (should be null)", modelMissing);
+    try {
+        var modelMissing = panels.buildModel("ProjectModel");
+        console.log("modelMissing (should not get here)", modelMissing);
+    } catch (e) {
+        console.log("missing model throws error OK", e);
+    }
     
     var testModel = panels.buildModel("TestModel");
     
