@@ -171,7 +171,16 @@ define([
         
         var configuration = {viewButton: true, includeAllFields: false, showTooltip: true, customButton: customButtonDefinition};
         
-        return new GridWithItemPanel(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, itemPanelSpecification, configuration);
+        var grid = new GridWithItemPanel(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, itemPanelSpecification, configuration);
+    
+        var cancelButtonSpecification = {
+            id: "templateChooserCancelButton",
+            displayType: "button",
+            displayName: "Cancel",
+            displayPrompt: "Cancel",
+            displayConfiguration: function() {hideDialogCallback();}
+        };
+        var cancelButton = panelBuilder.buildField(contentPane, model, cancelButtonSpecification);
     }
     
     return add_templateList;
