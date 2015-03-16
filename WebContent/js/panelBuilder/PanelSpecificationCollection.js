@@ -25,8 +25,11 @@ define([
     
     PanelSpecificationCollection.prototype.addPanelWithFieldsFromJSONText = function(panelSpecificationJSONText) {
         var panelSpecification = JSON.parse(panelSpecificationJSONText);
-        var displayPanel;
-        
+        this.addPanelWithFields(panelSpecification);
+    };
+    
+    PanelSpecificationCollection.prototype.addPanelWithFields = function(panelSpecification) {
+        // TODO: Maybe should copy panelSpecification to ensure it won't change if changed latar by caller?
         this.allPanels.push(panelSpecification);
         this.panelIDToPanelSpecificationMap[panelSpecification.id] = panelSpecification;
         
@@ -78,6 +81,10 @@ define([
     PanelSpecificationCollection.prototype.buildModel = function(modelName) {
         var model = {__type: modelName};
         var modelFieldSpecifications = this.modelClassToModelFieldSpecificationsMap[modelName];
+        if (!modelFieldSpecifications) {
+            console.log("ERROR: No model defined for model name", modelName);
+            return null;
+        }
         
         for (var i = 0; i < modelFieldSpecifications.length; i++) {
             var fieldSpecification = modelFieldSpecifications[i];
