@@ -159,7 +159,7 @@ define([
              id: "page_template",
              displayType: "panel",
              isHeader: false,
-             questions: pageQuestions,
+             panelFields: pageQuestions,
              buildPanel: buildPanel
          };
         

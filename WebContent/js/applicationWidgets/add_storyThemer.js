@@ -108,7 +108,7 @@ define([
                  var configuration2 = {removeButton: true, moveUpDownButtons: true, includeAllFields: true};
                  var itemPanelSpecification2 = {
                      "id": "storyThemeQuestions",
-                     questions: [
+                     panelFields: [
                          {id: "name", displayName: "Theme", displayPrompt: "Theme", displayType: "text", dataOptions:[]}
                      ]
                  };
