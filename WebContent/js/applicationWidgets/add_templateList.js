@@ -25,31 +25,31 @@ define([
     }
     
     var add_templateList_elicitationQuestions = [
-        {"id":"category", dataType: "string", "type":"text", "isInReport":true, "isGridColumn":true},
-        {"id":"id", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":true},
-        {"id":"text", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true}
+        {id: "category", dataType: "string", displayType:"text"},
+        {id: "id", dataType: "string", displayType: "text"},
+        {id: "text", dataType: "string", displayType: "textarea"}
     ];
    
    var add_templateList_storyOrParticipantQuestions = [
-        {"id":"category", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":true},
-        {"id":"id", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":false},
-        {"id":"shortName", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":true},
-        {"id":"text", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true},
-        {"id":"type", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":true}, // , "options":["boolean", "label", "header", "checkbox", "checkboxes", "text", "textarea", "select", "radiobuttons", "slider"]},
-        {"id":"options", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true}
-        // {"id":"templateQuestion_help", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true},
+        {id: "category", dataType: "string", displayType: "text"},
+        {id: "id", dataType: "string", displayType: "text"},
+        {id: "shortName", dataType: "string", displayType: "text"},
+        {id: "text", dataType: "string", displayType: "textarea"},
+        {id: "type", dataType: "string", displayType: "text"}, // , "options":["boolean", "label", "header", "checkbox", "checkboxes", "text", "textarea", "select", "radiobuttons", "slider"]},
+        {id: "options", dataType: "string", displayType: "textarea"}
+        // {id: "templateQuestion_help", dataType: "string", displayType: "textarea"},
     ];
    
    var add_templateList_activityQuestions = [
-        {"id":"name", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":true},
-        {"id":"type", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":true}, // , "options":["ice-breaker", "encountering stories (no task)", "encountering stories (simple task)", "discussing stories", "twice-told stories exercise", "timeline exercise", "landscape exercise", "story elements exercise", "composite stories exercise", "my own exercise", "other"]},
-        {"id":"plan", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true},
-        {"id":"optionalParts", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true},
-        {"id":"duration", dataType: "string", "displayType":"text", "isInReport":true, "isGridColumn":true},
-        {"id":"recording", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true},
-        {"id":"materials", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true},
-        {"id":"spaces", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true},
-        {"id":"facilitation", dataType: "string", "displayType":"textarea", "isInReport":true, "isGridColumn":true}
+        {id: "name", dataType: "string", displayType: "text"},
+        {id: "type", dataType: "string", displayType: "text"}, // , "options":["ice-breaker", "encountering stories (no task)", "encountering stories (simple task)", "discussing stories", "twice-told stories exercise", "timeline exercise", "landscape exercise", "story elements exercise", "composite stories exercise", "my own exercise", "other"]},
+        {id: "plan", dataType: "string", displayType: "textarea"},
+        {id: "optionalParts", dataType: "string", displayType: "textarea"},
+        {id: "duration", dataType: "string", displayType: "text"},
+        {id: "recording", dataType: "string", displayType: "textarea"},
+        {id: "materials", dataType: "string", displayType: "textarea"},
+        {id: "spaces", dataType: "string", displayType: "textarea"},
+        {id: "facilitation", dataType: "string", displayType: "textarea"}
     ];
    
    function useButtonClicked(templateListChoice, model, hideDialogCallback, gridWithDetail, event) {
@@ -156,18 +156,20 @@ define([
          }
          
          var itemPanelSpecification = {
-             "id": "page_template",
-             "displayType": "panel",
-             "isHeader": false,
-             "questions": pageQuestions,
-             "buildPanel": buildPanel
+             id: "page_template",
+             displayType: "panel",
+             isHeader: false,
+             questions: pageQuestions,
+             buildPanel: buildPanel
          };
         
         var customButtonDefinition = {
             id: "useTemplate", translationID: "button_UseTemplate",
             callback: lang.partial(useButtonClicked, templateListChoice, model, hideDialogCallback)
         };
+        
         var configuration = {viewButton: true, includeAllFields: false, showTooltip: true, customButton: customButtonDefinition};
+        
         return new GridWithItemPanel(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, itemPanelSpecification, configuration);
     }
     
