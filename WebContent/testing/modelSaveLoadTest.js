@@ -71,6 +71,17 @@ require([
         var projectID = "TestProject1234";
         var documentID = projectID + "-aboutYou";
         var committerID = "tester@example.com";
+        
+        console.log("trying to store");
+        storeModel(testModel, documentID, null, committerID, function(error, sha256AndLength) {
+            console.log("store result", error, sha256AndLength);
+            if (!error) {
+                console.log("trying to load");
+                loadLatestModelVersion(documentID, function(error, content, envelope) {
+                    console.log("load result", error, content, envelope);
+                });
+            }
+        });
     }
 
     test();
