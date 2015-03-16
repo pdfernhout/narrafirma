@@ -1,0 +1,58 @@
+<!DOCTYPE html> 
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<title>modelSaveLoad</title>
+
+<link rel="stylesheet" href="/dojo-debug/dojo/resources/dojo.css">
+<link rel="stylesheet" href="/dojo-debug/dijit/themes/dijit.css">
+<link rel="stylesheet" href="/dojo-debug/dijit/themes/claro/claro.css">
+<link rel="stylesheet" href="/dojo-debug/dojox/layout/resources/ResizeHandle.css">
+<link rel="stylesheet" href="/dojo-debug/dojox/widget/Wizard/Wizard.css">
+<link rel="stylesheet" href="/dojo-debug/dojox/widget/Toaster/Toaster.css">
+
+<link rel="stylesheet" href="/lib/dgrid/css/dgrid.css">
+<link rel="stylesheet" href="/lib/dgrid/css/skins/claro.css">
+<link rel="stylesheet" href="/lib/dgrid/css/extensions/ColumnResizer.css">
+
+<script type='text/javascript' src="/lib/lodash.js"></script>
+
+<script type='text/javascript'>
+    var dojoConfig;
+    (function() {
+        // Determine the containing location of this page by removing testing and the actual page name (e.g. "test.html") at the end
+        var baseDirectoryFromURL = location.pathname.replace(/\/testing\/[^/]+$/, '');
+        dojoConfig = {
+            async: true,
+            parseOnLoad: false,
+            // cacheBust: "1.10.4",
+            // Load dgrid and its dependencies from a local copy.
+            // More complexity is required because these are not in the same directory as dojo modules when loaded locally or dojo base is loaded from CDN
+            packages: [
+                { name: "js", location: baseDirectoryFromURL + "/js"},
+                { name: "lib", location: baseDirectoryFromURL + "/lib"},
+                { name: "dgrid", location: baseDirectoryFromURL + "/lib/dgrid" },
+                { name: "dstore", location: baseDirectoryFromURL + "/lib/dstore" },
+                { name: "put-selector", location: baseDirectoryFromURL + "/lib/put-selector" },
+                { name: "xstyle", location: baseDirectoryFromURL + "/lib/xstyle" }
+            ]
+        };
+    }());
+</script>
+
+<script src="/dojo-debug/dojo/dojo.js"></script>
+
+<link rel="stylesheet" href="/css/standard.css">
+
+<script src="modelSaveLoad.js"></script>
+
+</head>
+
+<body class="claro">
+    <noscript>Please enable JavaScript to use in this test.</noscript>
+    
+    <div id="pageDiv" style="overflow: auto"></div>
+</body>
+</html>
