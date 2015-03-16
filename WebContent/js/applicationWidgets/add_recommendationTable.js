@@ -25,7 +25,7 @@ define([
         return button;
     }
     
-    function build_recommendationTable(panelBuilder, dialogContentPane, model, hideDialogMethod, dialogConfiguration) {
+    function build_recommendationTable(panelBuilder, dialogContentPane, model, hideDialogCallback, dialogConfiguration) {
         var fieldSpecification = dialogConfiguration.fieldSpecification;
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(dialogContentPane, fieldSpecification);
 
@@ -116,6 +116,16 @@ define([
             if (widgets && widgets[0] && tag) widgets[0].className += " " + tag;
         }
         */
+        
+        var closeButtonSpecification = {
+                id: "recommendationTableCloseButton",
+                displayType: "button",
+                displayName: "Close",
+                displayPrompt: "Close",
+                displayConfiguration: function() {hideDialogCallback();}
+            };
+        
+        var closeButton = panelBuilder.buildField(dialogContentPane, model, closeButtonSpecification);
         
         return table;
     }
