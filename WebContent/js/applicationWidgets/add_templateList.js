@@ -16,7 +16,7 @@ define([
     function add_templateList(panelBuilder, contentPane, model, fieldSpecification) {
         var dialogConfiguration = {
             dialogTitle: "#title_chooseATemplate",
-            dialogStyle: "height: 900px",
+            dialogStyle: undefined,
             dialogConstructionFunction: lang.partial(makeTemplateListChooser, panelBuilder),
             fieldSpecification: fieldSpecification
         };
