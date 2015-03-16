@@ -8,7 +8,7 @@ require([
 ){
     "use strict";
     
-    console.log("modelSaveLoad.js");
+    console.log("modelCreationTest.js");
     
     // console.log("aboutYouPanelSpecificationText", aboutYouPanelSpecificationText);
     
