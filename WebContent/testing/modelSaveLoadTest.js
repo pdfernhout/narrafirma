@@ -22,4 +22,9 @@ require([
     
     console.log("testModel", testModel);
     
+    testModel.aboutYou_experience = "none";
+    testModel.aboutYou_help = "a lot";
+    testModel.aboutYou_tech = "some";
+    
+    console.log("testModel updated", testModel);
 });
