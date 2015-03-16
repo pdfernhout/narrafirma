@@ -57,8 +57,8 @@ define([
         // TODO: add more participant and survey info, like timestamps and participant ID
         
         var itemPanelSpecification = {
-             "id": "storyBrowserQuestions",
-             "questions": questions,
+             id: "storyBrowserQuestions",
+             panelFields: questions,
              buildPanel: function (panelBuilder, contentPane, model) {
                  var participantID = model.get("_participantID");
                  var participantData = domain.getParticipantDataForParticipantID(participantID);

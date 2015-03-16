@@ -258,8 +258,8 @@ define([
         // TODO: add more participant and survey info, like timestamps and participant ID
         
         var itemPanelSpecification = {
-             "id": "storyBrowserQuestions",
-             "questions": questions,
+             id: "storyBrowserQuestions",
+             panelFields: questions,
              buildPanel: function (panelBuilder, contentPane, model) {
                  panelBuilder.buildFields(questions, contentPane, model);
                  // TODO: Load correct participant data
