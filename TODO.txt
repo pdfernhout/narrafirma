@@ -171,7 +171,7 @@ Remove any use of widgets in widgetSupport or other use of Dojo controls (e.g. B
 Add some general small independent tests of PanelBuilder functionality 
 
 REFACTORING
-Rename "questions" with "fieldSpecifications" where appropriate and make similar changes away from using "question" to mean "fieldSpecification"
+Rename "questions" with "fieldSpecifications" where appropriate and make similar changes away from using "question" to mean "fieldSpecification" [partly done]
 See if still need so many button functions in domain (or maybe any at all)
 Some way only load page and panel files as needed (with help URL being determined by PanelBuilder as it creates panel, and maybe specify panels in section by hand)
 Save and load data for each page instead of for entire project
@@ -558,4 +558,11 @@ DONE Use JSON files for panel and field specifation insteod of JavaScript (inclu
 DONE Refactor domain so it references a domain object internally for clarity and easier searching on domain.questions usage
 DONE Optimize lookup of panels and models in FieldSpecificationCollection
 DONE Consolidated all information about panels, pages, and fields into FieldSpecificationCollection instead of that class, domain.js, and main.js
-DONE Clean up left-over translation-related code for extra transaltions that is no longer needed
+DONE Clean up left-over translation-related code for extra translations that is no longer needed
+DONE Refactor: Rename FieldSpecificationCollection to PanelSpecificationCollection and change "questions" to "panelFields" or "fields" as appropriate
+DONE Create test of panel builder that displays a panel
+DONE Create test of saving and loading a model using pointrel library
+DONE Create test of displaying panel that can save and load data to server that is displayed in panel
+DONE Fix sizing bug in templates chooser dialog where it is too narrow
+DONE Add cancel button to templates chooser dialog
+DONE Add close button to recommendations table dialog
