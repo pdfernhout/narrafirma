@@ -16,7 +16,7 @@ define([
     function add_templateList(panelBuilder, contentPane, model, fieldSpecification) {
         var dialogConfiguration = {
             dialogTitle: "#title_chooseATemplate",
-            dialogStyle: undefined,
+            dialogStyle: undefined, // "height: 1000px; width: 800px",
             dialogConstructionFunction: lang.partial(makeTemplateListChooser, panelBuilder),
             fieldSpecification: fieldSpecification
         };
@@ -116,6 +116,7 @@ define([
         var fieldSpecification = dialogConfiguration.fieldSpecification;
        
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
+        questionContentPane.set("style", "min-height: 400px; min-width: 600px");
         
         var templateListChoice = fieldSpecification.displayConfiguration;
         console.log("templateListChoice", templateListChoice);
