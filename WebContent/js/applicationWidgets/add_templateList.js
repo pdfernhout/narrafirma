@@ -116,7 +116,7 @@ define([
         var fieldSpecification = dialogConfiguration.fieldSpecification;
        
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        questionContentPane.set("style", "min-height: 400px; min-width: 600px");
+        questionContentPane.set("style", "min-height: 400px; min-width: 600px; max-width: 900px");
         
         var templateListChoice = fieldSpecification.displayConfiguration;
         console.log("templateListChoice", templateListChoice);
