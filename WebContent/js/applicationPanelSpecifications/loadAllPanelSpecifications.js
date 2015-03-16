@@ -217,111 +217,111 @@ define([
     
     function loadAllFieldSpecifications(panelSpecificationCollection) {
         // ==================== SECTION dashboard ==========================
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_dashboard);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_introduction);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_importExport);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_dashboard);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_introduction);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_importExport);
 
         // ==================== SECTION planning ==========================
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_planning);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_projectFacts);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_planningQuestionsDraft);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_participantGroups);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_addParticipantGroup);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_aboutYou);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_projectStories);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_projectStory);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_createProjectStoryElements);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_enterProjectStoryElements);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_addStoryElement);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_assessStorySharing);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_revisePNIPlanningQuestions);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_writeProjectSynopsis);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_readPlanningReport);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_planning);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_projectFacts);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_planningQuestionsDraft);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_participantGroups);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_addParticipantGroup);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_aboutYou);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_projectStories);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_projectStory);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_createProjectStoryElements);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_enterProjectStoryElements);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_addStoryElement);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_assessStorySharing);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_revisePNIPlanningQuestions);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_writeProjectSynopsis);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_readPlanningReport);
 
         // ==================== SECTION collection_design ==========================
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_collectionDesign);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_chooseCollectionVenues);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_addVenue);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_writeStoryElicitingQuestions);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_addElicitingQuestion);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_writeQuestionsAboutStories);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_addStoryQuestion);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_writeQuestionsAboutParticipants);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_addParticipantQuestion);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_designQuestionForm);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_planStoryCollectionSessions);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_addStoryCollectionSession);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_addCollectionSessionActivity);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_readCollectionDesignReport);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_collectionDesign);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_chooseCollectionVenues);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_addVenue);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_writeStoryElicitingQuestions);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_addElicitingQuestion);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_writeQuestionsAboutStories);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_addStoryQuestion);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_writeQuestionsAboutParticipants);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_addParticipantQuestion);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_designQuestionForm);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_planStoryCollectionSessions);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_addStoryCollectionSession);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_addCollectionSessionActivity);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_readCollectionDesignReport);
 
         // ==================== SECTION collection_process ==========================
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_collectionProcess);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_finalizeQuestionForms);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_startStoryCollection);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_enterStories);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_reviewIncomingStories);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_stopStoryCollection);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_enterCollectionSessionRecords);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_addCollectionSessionRecord);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_newCollectionSessionConstruction);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_readCollectionProcessReport);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_collectionProcess);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_finalizeQuestionForms);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_startStoryCollection);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_enterStories);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_reviewIncomingStories);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_stopStoryCollection);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_enterCollectionSessionRecords);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_addCollectionSessionRecord);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_newCollectionSessionConstruction);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_readCollectionProcessReport);
 
         // ==================== SECTION catalysis ==========================
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_catalysis);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_browseStories);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_themeStories);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_browseGraphs);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_reviewTrends);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_addToObservation);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_createOrEditObservation);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_selectExcerpt);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_addToExcerpt);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_createNewExcerpt);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_reviewExcerpts);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_interpretObservations);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_clusterInterpretations);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_describePerspectives);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_addPerspective);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_annotateResultForPerspective);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_annotateExcerptForPerspective);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_annotateInterpretationForPerspective);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_readCatalysisReport);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_catalysis);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_browseStories);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_themeStories);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_browseGraphs);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_reviewTrends);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_addToObservation);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_createOrEditObservation);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_selectExcerpt);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_addToExcerpt);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_createNewExcerpt);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_reviewExcerpts);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_interpretObservations);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_clusterInterpretations);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_describePerspectives);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_addPerspective);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_annotateResultForPerspective);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_annotateExcerptForPerspective);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_annotateInterpretationForPerspective);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_readCatalysisReport);
 
         // ==================== SECTION sensemaking ==========================
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_sensemaking);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_planSensemakingSessions);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_addSensemakingSessionPlan);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_addSensemakingSessionActivity);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_enterSensemakingSessionRecords);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_addSensemakingSessionRecord);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_addResonantStory);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_newSensemakingSessionOutcome);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_newSensemakingSessionConstruction);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_readSensemakingReport);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_sensemaking);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_planSensemakingSessions);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_addSensemakingSessionPlan);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_addSensemakingSessionActivity);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_enterSensemakingSessionRecords);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_addSensemakingSessionRecord);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_addResonantStory);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_newSensemakingSessionOutcome);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_newSensemakingSessionConstruction);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_readSensemakingReport);
 
         // ==================== SECTION intervention ==========================
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_intervention);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_projectOutcomesForIntervention);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_projectOutcome);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_designInterventions);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_addIntervention);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_recordInterventions);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_addInterventionRecord);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_interventionReport);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_intervention);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_projectOutcomesForIntervention);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_projectOutcome);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_designInterventions);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_addIntervention);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_recordInterventions);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_addInterventionRecord);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_interventionReport);
 
         // ==================== SECTION return ==========================
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_return);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_gatherFeedback);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_enterFeedbackPiece);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_reflectOnProject);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_prepareProjectPresentation);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_addPresentationElement);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_projectRequests);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(panel_addNewReturnRequest);
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_returnReport);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_return);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_gatherFeedback);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_enterFeedbackPiece);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_reflectOnProject);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_prepareProjectPresentation);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_addPresentationElement);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_projectRequests);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(panel_addNewReturnRequest);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_returnReport);
 
         // ==================== SECTION project_report ==========================
-        panelSpecificationCollection.addPanelWithFieldsFromJSONText(page_projectReport);
+        panelSpecificationCollection.addPanelSpecificationFromJSONText(page_projectReport);
     }
 
     return loadAllFieldSpecifications;

@@ -55,7 +55,7 @@ require([
         
         var panels = new PanelSpecificationCollection();
         
-        panels.addPanelWithFields(aboutYouPanelSpecification);
+        panels.addPanelSpecification(aboutYouPanelSpecification);
         
         var testModel = panels.buildModel("TestModel");
         

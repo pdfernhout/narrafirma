@@ -23,7 +23,7 @@ require([
     
     var panels = new PanelSpecificationCollection();
     
-    panels.addPanelWithFields(aboutYouPanelSpecification);
+    panels.addPanelSpecification(aboutYouPanelSpecification);
     
     try {
         var modelMissing = panels.buildModel("ProjectModel");

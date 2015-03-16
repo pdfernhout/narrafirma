@@ -23,12 +23,12 @@ define([
         this.lastHeader = null;
     }
     
-    PanelSpecificationCollection.prototype.addPanelWithFieldsFromJSONText = function(panelSpecificationJSONText) {
+    PanelSpecificationCollection.prototype.addPanelSpecificationFromJSONText = function(panelSpecificationJSONText) {
         var panelSpecification = JSON.parse(panelSpecificationJSONText);
-        this.addPanelWithFields(panelSpecification);
+        this.addPanelSpecification(panelSpecification);
     };
     
-    PanelSpecificationCollection.prototype.addPanelWithFields = function(panelSpecification) {
+    PanelSpecificationCollection.prototype.addPanelSpecification = function(panelSpecification) {
         // TODO: Maybe should copy panelSpecification to ensure it won't change if changed latar by caller?
         this.allPanels.push(panelSpecification);
         this.panelIDToPanelSpecificationMap[panelSpecification.id] = panelSpecification;
