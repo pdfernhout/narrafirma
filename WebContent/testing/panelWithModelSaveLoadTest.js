@@ -79,7 +79,6 @@ require([
         var loadLatestButtonSpecification = {
             id: "loadButton",
             displayType: "button",
-            displayName: "Load lastest",
             displayPrompt: "Load latest",
             displayConfiguration: loadLastestModelVersion,
             displayPreventBreak: true
@@ -90,7 +89,6 @@ require([
         var storeButtonSpecification = {
             id: "storeButton",
             displayType: "button",
-            displayName: "Store",
             displayPrompt: "Store",
             displayConfiguration: storeModelVersion
         };
