@@ -1,12 +1,14 @@
 require([
-    "dojo/text!js/applicationPanelSpecifications/planning/page_aboutYou.json",
+    "dojo/text!js/applicationPanelSpecifications/planning/page_participantGroups.json",
+    "dojo/text!js/applicationPanelSpecifications/planning/panel_addParticipantGroup.json",
     "js/panelBuilder/PanelBuilder",
     "js/panelBuilder/PanelSpecificationCollection",
     "js/pointrel20141201Client",
     "dojo/Stateful",
     "dojo/domReady!"
 ], function(
-    aboutYouPanelSpecificationText,
+    page_partipantGroupsPanelSpecificationText,
+    panel_addParticipantGroupSpecificationText,
     PanelBuilder,
     PanelSpecificationCollection,
     pointrel20141201Client,
@@ -53,17 +55,19 @@ require([
     function test() {
         console.log("panelWitGridSaveLoadTest.js");
         
-        var aboutYouPanelSpecification = JSON.parse(aboutYouPanelSpecificationText);
+        var page_partipantGroupsPanelSpecification = JSON.parse(page_partipantGroupsPanelSpecificationText);
         
-        console.log("aboutYouPanelSpecification", aboutYouPanelSpecification);
+        console.log("page_partipantGroupsPanelSpecification", page_partipantGroupsPanelSpecification);
         
-        aboutYouPanelSpecification.modelClass = "TestModel";
+        page_partipantGroupsPanelSpecification.modelClass = "Test2Model";
         
         var panels = new PanelSpecificationCollection();
         
-        panels.addPanelSpecification(aboutYouPanelSpecification);
+        panels.addPanelSpecification(page_partipantGroupsPanelSpecification);
         
-        var testModelTemplate = panels.buildModel("TestModel");
+        panels.addPanelSpecificationFromJSONText(panel_addParticipantGroupSpecificationText);
+        
+        var testModelTemplate = panels.buildModel("Test2Model");
         
         var testModel = new Stateful(testModelTemplate);
         
@@ -74,7 +78,7 @@ require([
         var contentPane = panelBuilder.newContentPane();
         contentPane.placeAt("pageDiv").startup();
         
-        panelBuilder.buildPanel("page_aboutYou", contentPane, testModel);
+        panelBuilder.buildPanel("page_participantGroups", contentPane, testModel);
         
         var loadLatestButtonSpecification = {
             id: "loadButton",
@@ -97,7 +101,7 @@ require([
         
         // Thinking project ID should be a UUID?
         var projectID = "TestProject1234";
-        var documentID = projectID + "-aboutYou";
+        var documentID = projectID + "-participantGroups";
         var committerID = "tester@example.com";
         
         function loadLastestModelVersion() {
