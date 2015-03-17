@@ -215,7 +215,7 @@ define([
 ) {
     "use strict";
     
-    function loadAllFieldSpecifications(panelSpecificationCollection) {
+    function loadAllPanelSpecifications(panelSpecificationCollection) {
         // ==================== SECTION dashboard ==========================
         panelSpecificationCollection.addPanelSpecificationFromJSONText(page_dashboard);
         panelSpecificationCollection.addPanelSpecificationFromJSONText(page_introduction);
@@ -324,5 +324,5 @@ define([
         panelSpecificationCollection.addPanelSpecificationFromJSONText(page_projectReport);
     }
 
-    return loadAllFieldSpecifications;
+    return loadAllPanelSpecifications;
 });
