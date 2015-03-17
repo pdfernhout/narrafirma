@@ -1,12 +1,10 @@
 require([
-    "dojo/text!js/applicationPanelSpecifications/planning/page_aboutYou.json",
     "js/panelBuilder/PanelBuilder",
     "js/panelBuilder/PanelSpecificationCollection",
     "js/pointrel20141201Client",
     "dojo/Stateful",
     "dojo/domReady!"
 ], function(
-    aboutYouPanelSpecificationText,
     PanelBuilder,
     PanelSpecificationCollection,
     pointrel20141201Client,
@@ -17,7 +15,7 @@ require([
     console.log("panelWithModelChooserSaveLoadTest.js");
     
     function storeModel(model, documentID, previous, committerID, callbackWhenDone) {
-        var contentType = "org.workingwithstories.TestModel";
+        var contentType = "org.workingwithstories.testing." + model.__type;
         var contentVersion = "0.1.0";
         
         var metadata = {
@@ -52,18 +50,18 @@ require([
         });
     }
     
-    function test() { 
-        var aboutYouPanelSpecification = JSON.parse(aboutYouPanelSpecificationText);
+    function buildPanel(panelSpecificationText) { 
+        var panelSpecification = JSON.parse(panelSpecificationText);
         
-        console.log("aboutYouPanelSpecification", aboutYouPanelSpecification);
+        console.log("panelSpecification", panelSpecification);
         
-        aboutYouPanelSpecification.modelClass = "TestModel";
+        panelSpecification.modelClass = "Test-" + panelSpecification.modelClass;
         
         var panels = new PanelSpecificationCollection();
         
-        panels.addPanelSpecification(aboutYouPanelSpecification);
+        panels.addPanelSpecification(panelSpecification);
         
-        var testModelTemplate = panels.buildModel("TestModel");
+        var testModelTemplate = panels.buildModel(panelSpecification.modelClass);
         
         var testModel = new Stateful(testModelTemplate);
         
@@ -74,7 +72,7 @@ require([
         var contentPane = panelBuilder.newContentPane();
         contentPane.placeAt("pageDiv").startup();
         
-        panelBuilder.buildPanel("page_aboutYou", contentPane, testModel);
+        panelBuilder.buildPanel(panelSpecification.id, contentPane, testModel);
         
         var loadLatestButtonSpecification = {
             id: "loadButton",
@@ -97,7 +95,7 @@ require([
         
         // Thinking project ID should be a UUID?
         var projectID = "TestProject1234";
-        var documentID = projectID + "-aboutYou";
+        var documentID = projectID + "-" + panelSpecification.modelClass;
         var committerID = "tester@example.com";
         
         function loadLastestModelVersion() {
@@ -133,5 +131,8 @@ require([
         }
     }
 
-    test();
+    var panelSectionAndFileName = "planning/page_aboutYou.json";
+    require(["dojo/text!js/applicationPanelSpecifications/" + panelSectionAndFileName], function(panelSpecificationText) {
+        buildPanel(panelSpecificationText);
+    });
 });
