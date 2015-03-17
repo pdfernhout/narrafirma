@@ -17,7 +17,7 @@ require([
     "use strict";
     
     function storeModel(model, documentID, previous, committerID, callbackWhenDone) {
-        var contentType = "org.workingwithstories.TestModel";
+        var contentType = "org.workingwithstories.Test2Model";
         var contentVersion = "0.1.0";
         
         var metadata = {
