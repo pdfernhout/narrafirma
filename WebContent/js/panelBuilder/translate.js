@@ -24,7 +24,7 @@ define([
     // if the tag field has a leading "#", it is parsed into an id and a default string by splitting at the first pipe
     function translate(tag, defaultText) {
         if (debugTranslations) console.log("translating", tag);
-        if (tag === "#undefined::prompt") throw new Error("bad translation tag using undefined which is likely a programming error");
+        if (tag === undefined || tag === "#undefined::prompt") throw new Error("bad translation tag using undefined which is likely a programming error");
         // if (debugTranslations && tag.charAt(0) !== "#") throw new Error("translation tag should have leading #  for: " + tag);
         // Kludge for extra domain translations for testing
         if (!tag) {
@@ -56,7 +56,11 @@ define([
                 // Just return the tag, which starts with a # which should indicate an issue
                 var error = "ERROR: missing text for: " + tag;
                 console.log("translate problem", error);
-                if (debugTranslations) result = error;
+                if (debugTranslations) {
+                    result = error;
+                } else {
+                    result = tag;
+                }
             }
         }
         if (debugTranslations) console.log("translating result: ", result, tag);

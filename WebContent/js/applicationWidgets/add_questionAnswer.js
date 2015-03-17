@@ -15,7 +15,7 @@ define([
     
     function calculate_questionAnswer(panelBuilder, model, referencedQuestionID) {
         var value = model.get(referencedQuestionID);
-        if (value === null) value = translate("#question_not_yet_answered");
+        if (value === null) value = translate("#question_not_yet_answered|(Not yet answered)");
         if (value === undefined) {
             console.log("ERROR: missing question: ", referencedQuestionID);
             // throw new Error("ERROR: missing question: " + referencedQuestionID);            

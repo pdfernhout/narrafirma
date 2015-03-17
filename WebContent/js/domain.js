@@ -391,7 +391,7 @@ define([
         }
         var possibleTotal = dependsOn.length * 3;
         var percent = Math.round(100 * total / possibleTotal);
-        var template = translate("#calculate_quizScoreResult_template");
+        var template = translate("#calculate_quizScoreResult_template", "{{total}} of a possible {{possibleTotal}} ({{percent}}%)");
         var response = template.replace("{{total}}", total).replace("{{possibleTotal}}", possibleTotal).replace("{{percent}}", "" + percent);
         return "<b>" + response + "</b>";
     }
@@ -452,7 +452,7 @@ define([
                 }
             }
             
-            if (questionsAnsweredCount === 0) report += translate("#no_questions_answered_on_page");
+            if (questionsAnsweredCount === 0) report += translate("#no_questions_answered_on_page", "(No questions answered on this page)");
             report += "</div><br>";
         }
         return report;

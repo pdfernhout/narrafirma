@@ -112,12 +112,12 @@ define([
         
         panelBuilder.buildFields(allStoryQuestions, surveyPane, storyQuestionsModel);
         
-        widgetSupport.newButton(surveyPane, "#button_previousPage", function() {
+        widgetSupport.newButton(surveyPane, "#button_previousPage|Previous page", function() {
             console.log("button_previousPage");
             wizardPane.back();
         });
         
-        var tellAnotherStoryButton = widgetSupport.newButton(surveyPane, "#button_tellAnotherStory", function() {
+        var tellAnotherStoryButton = widgetSupport.newButton(surveyPane, "#button_tellAnotherStory|Tell another story", function() {
             console.log("button_tellAnotherStory");
             if (!validateStoryQuestionsModel(storyQuestionsModel)) return;
             var children = wizardPane.getChildren();
@@ -129,7 +129,7 @@ define([
             wizardPane.forward();
         });
         
-        var dontTellAnotherStoryButton = widgetSupport.newButton(surveyPane, "#button_dontTellAnotherStory", function() {
+        var dontTellAnotherStoryButton = widgetSupport.newButton(surveyPane, "#button_dontTellAnotherStory|Done with adding stories", function() {
             console.log("button_dontTellAnotherStory");
             var canProceedIfNoStory = addIndex !== 1;
             if (!validateStoryQuestionsModel(storyQuestionsModel, canProceedIfNoStory)) return;
@@ -137,13 +137,13 @@ define([
         });
         
         /*
-        widgetSupport.newButton(surveyPane, "#button_deleteThisStory", function() {
+        widgetSupport.newButton(surveyPane, "#button_deleteThisStory|Delete this story", function() {
             console.log("button_nextPage");
             wizardPane.forward();
         });
         */
         
-        var nextPageButton = widgetSupport.newButton(surveyPane, "#button_nextPage", function() {
+        var nextPageButton = widgetSupport.newButton(surveyPane, "#button_nextPage|Next page", function() {
             console.log("button_nextPage");
             // TODO: Need to somehow require at least one story... But this allows previous stories to be deleted. Kludge for now that first story can't be blank.
             var canProceedIfNoStory = addIndex !== 1;
@@ -249,12 +249,12 @@ define([
         
         panelBuilder.buildFields(questionnaire.participantQuestions, participantPane.containerNode, participantDataModel);
         
-        widgetSupport.newButton(participantPane, "#button_previousPage", function() {
+        widgetSupport.newButton(participantPane, "#button_previousPage|Previous page", function() {
             console.log("button_previousPage");
             wizardPane.back();
         });
         
-        widgetSupport.newButton(participantPane, "#surveySubmit", function() {
+        widgetSupport.newButton(participantPane, "#surveySubmit|Submit survey", function() {
             console.log("Submit survey");
             submitSurvey(surveyResultsWithModels, wizardPane, doneCallback);
         });
@@ -265,7 +265,7 @@ define([
         panelBuilder.buildFields(endQuestions, endPane.containerNode, participantDataModel);
         
         if (includeCancelButton) {
-            widgetSupport.newButton(wizardPane, "#surveyCancel", function() {
+            widgetSupport.newButton(wizardPane, "#surveyCancel|Cancel", function() {
                 console.log("Cancel");
                 if (doneCallback) doneCallback("cancelled");
             });

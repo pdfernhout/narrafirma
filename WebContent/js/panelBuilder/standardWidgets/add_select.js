@@ -21,7 +21,7 @@ define([
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var options = [];
-        if (addNoSelectionOption) options.push({name: translate("#selection_has_not_been_made"), id: "", selected: true});
+        if (addNoSelectionOption) options.push({name: translate("#selection_has_not_been_made|(no selection)"), id: "", selected: true});
         var choices = fieldSpecification.dataOptions;
         if (choices) {
             array.forEach(choices, function(each) {

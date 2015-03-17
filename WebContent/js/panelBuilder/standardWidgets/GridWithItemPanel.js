@@ -162,11 +162,11 @@ define([
         });
                 
         if (configuration.addButton) {
-            this.buttons.addButton = widgetSupport.newButton(buttonContentPane, "#button_Add", lang.hitch(this, this.addButtonClicked));
+            this.buttons.addButton = widgetSupport.newButton(buttonContentPane, "#button_Add|Add", lang.hitch(this, this.addButtonClicked));
         }
         
         if (configuration.removeButton) {
-            this.buttons.removeButton = widgetSupport.newButton(buttonContentPane, "#button_Remove", lang.hitch(this, this.removeButtonClicked));
+            this.buttons.removeButton = widgetSupport.newButton(buttonContentPane, "#button_Remove|Remove", lang.hitch(this, this.removeButtonClicked));
         }
         
         this.navigateCallback = null;
@@ -176,7 +176,7 @@ define([
             // See: http://dojotoolkit.org/reference-guide/1.7/dojo/partial.html
             var viewButtonClickedPartial = lang.hitch(this, this.viewButtonClicked);
             var viewButtonID = id + "_view";
-            this.buttons.viewButton = widgetSupport.newButton(buttonContentPane, "#button_View", viewButtonClickedPartial);
+            this.buttons.viewButton = widgetSupport.newButton(buttonContentPane, "#button_View|View", viewButtonClickedPartial);
             // TODO: Should there be an option of double click as edit?
             // Support double click as view
             this.grid.on("dblclick", viewButtonClickedPartial);
@@ -184,16 +184,16 @@ define([
         }
 
         if (configuration.editButton) {
-            this.buttons.editButton = widgetSupport.newButton(buttonContentPane, "#button_Edit", lang.hitch(this, this.editButtonClicked));
+            this.buttons.editButton = widgetSupport.newButton(buttonContentPane, "#button_Edit|Edit", lang.hitch(this, this.editButtonClicked));
         }
         
         if (configuration.duplicateButton) {
-            this.buttons.duplicateButton = widgetSupport.newButton(buttonContentPane, "#button_Duplicate", lang.hitch(this, this.duplicateButtonClicked));
+            this.buttons.duplicateButton = widgetSupport.newButton(buttonContentPane, "#button_Duplicate|Duplicate", lang.hitch(this, this.duplicateButtonClicked));
         }
              
         if (configuration.moveUpDownButtons) {
-            this.buttons.upButton = widgetSupport.newButton(buttonContentPane, "#button_Up", lang.hitch(this, this.upButtonClicked));
-            this.buttons.downButton = widgetSupport.newButton(buttonContentPane, "#button_Down", lang.hitch(this, this.downButtonClicked));
+            this.buttons.upButton = widgetSupport.newButton(buttonContentPane, "#button_Up|Up", lang.hitch(this, this.upButtonClicked));
+            this.buttons.downButton = widgetSupport.newButton(buttonContentPane, "#button_Down|Down", lang.hitch(this, this.downButtonClicked));
         }
         
         if (configuration.customButton) {
@@ -202,10 +202,10 @@ define([
         }
          
         if (configuration.navigationButtons) {
-            this.buttons.navigateStartButton = widgetSupport.newButton(buttonContentPane, "#button_navigateStart", lang.hitch(this, this.navigateButtonClicked, "start"));
-            this.buttons.navigatePreviousButton = widgetSupport.newButton(buttonContentPane, "#button_navigatePrevious", lang.hitch(this, this.navigateButtonClicked, "previous"));
-            this.buttons.navigateNextButton = widgetSupport.newButton(buttonContentPane, "#button_navigateNext", lang.hitch(this, this.navigateButtonClicked, "next"));
-            this.buttons.navigateEndButton = widgetSupport.newButton(buttonContentPane, "#button_navigateEnd", lang.hitch(this, this.navigateButtonClicked, "end"));
+            this.buttons.navigateStartButton = widgetSupport.newButton(buttonContentPane, "#button_navigateStart|<<", lang.hitch(this, this.navigateButtonClicked, "start"));
+            this.buttons.navigatePreviousButton = widgetSupport.newButton(buttonContentPane, "#button_navigatePrevious|<", lang.hitch(this, this.navigateButtonClicked, "previous"));
+            this.buttons.navigateNextButton = widgetSupport.newButton(buttonContentPane, "#button_navigateNext|>", lang.hitch(this, this.navigateButtonClicked, "next"));
+            this.buttons.navigateEndButton = widgetSupport.newButton(buttonContentPane, "#button_navigateEnd|>>", lang.hitch(this, this.navigateButtonClicked, "end"));
         }
            
         pagePane.addChild(this.itemContentPane);
@@ -300,7 +300,7 @@ define([
         if (formType === "view") {
             borderColor = "blue";
             
-            widgetSupport.newButton(this.form, "#button_Done", function() {
+            widgetSupport.newButton(this.form, "#button_Done|Done", function() {
                 console.log("Done");
                 self.hideAndDestroyForm();
             });
@@ -318,8 +318,8 @@ define([
             });
             */
         } else {
-            widgetSupport.newButton(this.form, "#button_OK", lang.hitch(this, this.storeItem, statefulItem));
-            widgetSupport.newButton(this.form, "#button_Cancel", function() {
+            widgetSupport.newButton(this.form, "#button_OK|OK", lang.hitch(this, this.storeItem, statefulItem));
+            widgetSupport.newButton(this.form, "#button_Cancel|Cancel", function() {
                 console.log("Cancel chosen");          
                 // TODO: Confirm cancel if have entered data    
                 self.hideAndDestroyForm();

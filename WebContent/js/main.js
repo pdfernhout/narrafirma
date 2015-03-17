@@ -278,7 +278,7 @@ require([
                    id: statusEntryID,
                    displayType: "select",
                    displayName: "Completion status",
-                   displayPrompt: translate("#dashboard_status_entry::prompt"),
+                   displayPrompt: translate("#dashboard_status_entry::prompt", "The dashboard status of this page is:"),
                    dataOptions: completionStatusOptions
                };
                panelBuilder.buildField(pagePane, domain.projectData.projectAnswers, completionStatusEntryFieldSpecification);
@@ -295,7 +295,7 @@ require([
                    console.log("childPageID", childPageSpecification, childPageID);
                    if (!childPageSpecification) console.log("Error: problem finding page definition for", childPageID);
                    if (childPageSpecification && childPageSpecification.displayType === "page") {
-                       var prompt = translate(childPageID + "::title", childPageSpecification.displayName) + " " + translate("#dashboard_status_label") + " ";
+                       var prompt = translate(childPageID + "::title", childPageSpecification.displayName) + " " + translate("#dashboard_status_label", "status:") + " ";
                        console.log("about to call panelBuilder to add one questionAnswer for child page's status", childPageID);
                        var completionStatusDisplayFieldSpecification = {
                            id: statusViewID,
@@ -406,7 +406,7 @@ require([
     function importExportClicked() {
         console.log("importExportClicked");
         var projectDefinitionText = JSON.stringify(domain.projectData.projectAnswers, null, 2);
-        dialogSupport.openTextEditorDialog(projectDefinitionText, "#projectImportExportDialog_title", "#projectImportExportDialog_okButtonText", importButtonClicked);
+        dialogSupport.openTextEditorDialog(projectDefinitionText, "#projectImportExportDialog_title|Project Import/Export", "#projectImportExportDialog_okButtonText|OK", importButtonClicked);
     }
     
     // TODO: somehow unify this with code in widget-questions-table?
@@ -520,11 +520,11 @@ require([
         
         domConstruct.place('<span id="narrafirma-name">NarraFirma&#0153;</span>', pageControlsPane.domNode);
         
-        var homeButton = widgetSupport.newButton(pageControlsPane, "#button_home", homeButtonClicked);
+        var homeButton = widgetSupport.newButton(pageControlsPane, "#button_home|Home", homeButtonClicked);
         homeButton.set("showLabel", false);
         // homeButton.set("iconClass", "dijitEditorIcon dijitEditorIconOutdent");
         homeButton.set("iconClass", "homeButtonImage");
-        homeButton.set("title", translate("#button_home_title"));
+        homeButton.set("title", translate("#button_home_title|Go to main dashboard"));
 
         // TODO: Select width should be determined from contents of select options using font metrics etc.
         pageNavigationSelect = newSpecialSelect(pageControlsPane, []);
@@ -533,15 +533,15 @@ require([
         
         previousPageButton = widgetSupport.newButton(pageControlsPane, "", previousPageClicked);
         previousPageButton.set("iconClass", "leftButtonImage");
-        previousPageButton.set("title", translate("#button_previousPage"));
+        previousPageButton.set("title", translate("#button_previousPage", "Go to previous page"));
         
         nextPageButton = widgetSupport.newButton(pageControlsPane, "", nextPageClicked);
         nextPageButton.set("iconClass", "rightButtonImage");
-        nextPageButton.set("title", translate("#button_nextPage"));
+        nextPageButton.set("title", translate("#button_nextPage", "Go to next page"));
         
-        saveButton = widgetSupport.newButton(pageControlsPane, "#button_save", saveClicked);
+        saveButton = widgetSupport.newButton(pageControlsPane, "#button_save|Save", saveClicked);
 
-        var debugButton = widgetSupport.newButton(pageControlsPane, "#button_debug", debugButtonClicked);
+        var debugButton = widgetSupport.newButton(pageControlsPane, "#button_debug|Debug", debugButtonClicked);
         
         // Setup the first page
         var fragment = hash();
@@ -595,7 +595,7 @@ require([
     
     function copyDraftPNIQuestionVersionsIntoAnswers() {
         var copiedAnswersCount = domain.copyDraftPNIQuestionVersionsIntoAnswers();
-        var template = translate("#copyDraftPNIQuestion_template");
+        var template = translate("#copyDraftPNIQuestion_template", "Copied {{copiedAnswersCount}} answers\nNote that blank draft answers are not copied; non-blank final answers are not replaced");
         var message = template.replace("{{copiedAnswersCount}}", copiedAnswersCount);
         alert(message);
     }

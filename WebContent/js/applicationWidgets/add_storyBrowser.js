@@ -313,7 +313,7 @@ define([
         
         // TODO: Probably should become a class
         
-        // var filterButton = widgetSupport.newButton(pagePane, "#button_Filter", lang.partial(setStoryListForCurrentFilters, storyBrowserInstance));
+        // var filterButton = widgetSupport.newButton(pagePane, "#button_Filter|Filter", lang.partial(setStoryListForCurrentFilters, storyBrowserInstance));
         
         // console.log("insertStoryBrowser middle 3", id);
         
