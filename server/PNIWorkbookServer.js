@@ -90,14 +90,19 @@ function ensureAuthenticated(request, response, next) {
 
 // Main code
 
-console.log("PNIWorkbookServer server for nodejs started: " + Date());
+function applicationLog() {
+    var newArguments = [new Date().toISOString()].concat(Array.prototype.slice.call(arguments));
+    console.log.apply(console, newArguments);
+}
 
-console.log("__dirname", __dirname);
+applicationLog("================== PNIWorkbookServer server for nodejs started ================");
+
+applicationLog("__dirname", __dirname);
 
 var app = express();
 
 var logger = function(request, response, next) {
-    console.log("Request:", request.method, request.url);
+    applicationLog("Request:", request.method, request.url);
     next();
 };
 
@@ -176,7 +181,7 @@ app.get('/login', function(request, response){
   // res.render('login', { user: req.user, message: req.flash('error') });
     writePageStart(request, response);
     response.write(loginTemplate);
-    //console.log("request.flash('error')", request.flash("error"));
+    //applicationLog("request.flash('error')", request.flash("error"));
     var messages = request.flash("error");
     for (var index in messages) {
         response.write("<p><b>" + messages[index] + "</p></b>");
@@ -232,12 +237,12 @@ app.post("/survey/questions/:surveyID", function (request, response) {
     var indexEntry = getLatestIndexEntry(indexEntries);
     if (!indexEntry) {
         var errorMessage = "Survey definitions are missing timestamps";
-        console.log("ERROR: Should never get here", errorMessage);
+        applicationLog("ERROR: Should never get here", errorMessage);
         return response.json({status: "FAILED", message: errorMessage, questions: null});
     }
     pointrel20141201Server.fetchContentForReference(indexEntry.sha256AndLength, function(error, data) {
         if (error) {
-            console.log("ERROR reading question file: ", error);
+            applicationLog("ERROR reading question file: ", error);
             return response.json({status: "FAILED", message: error, questions: null});
         }
         var questionsEnvelope;
@@ -269,7 +274,7 @@ app.use(function(err, req, res, next){
 var server = http.createServer(app).listen(8080, function () {
   var host = server.address().address;
   var port = server.address().port;
-  console.log("PNIWorkbookServer app listening at http://%s:%s", host, port);
+  applicationLog("PNIWorkbookServer app listening at http://%s:%s", host, port);
 });
 
 // http://stackoverflow.com/questions/5998694/how-to-create-an-https-server-in-node-js
@@ -284,6 +289,6 @@ var sslOptions = {
 var server2 = https.createServer(sslOptions, app).listen(8081, function () {
   var host = server2.address().address;
   var port = server2.address().port;
-  console.log("PNIWorkbookServer app listening at https://%s:%s", host, port);
+  applicationLog("PNIWorkbookServer app listening at https://%s:%s", host, port);
 });
 
