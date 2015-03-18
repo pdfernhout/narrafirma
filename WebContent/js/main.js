@@ -58,13 +58,13 @@ require([
     
     // Navigation widgets
     var navigationPane;
+    var pageControlsPane;
+    var homeButton;
     var pageNavigationSelect;
     var previousPageButton;
     var nextPageButton;
-    var loadLatestButton;
-    var loadVersionButton;
     var saveButton;
-    var importExportButton;
+    var debugButton;
     
     // The mostly recently loaded project version
     var currentProjectVersionReference; 
@@ -496,12 +496,7 @@ require([
         }
     }
 
-    
-    // Make all of the application pages selectable from the dropdown list and back/next buttons and put them in a TabContainer
-    function createLayout() {
-        
-        console.log("createLayout start");
-        
+    function createNavigationPane() {
         // Startup needs to be called here to ensure a top level content pane is started
         navigationPane = new ContentPane({}, "navigationDiv");
         navigationPane.startup();
@@ -517,12 +512,12 @@ require([
         
         // Page controls
         
-        var pageControlsPane = new ContentPane();
+        pageControlsPane = new ContentPane();
         pageControlsPane.placeAt(navigationPane);
         
         domConstruct.place('<span id="narrafirma-name">NarraFirma&#0153;</span>', pageControlsPane.domNode);
         
-        var homeButton = widgetSupport.newButton(pageControlsPane, "#button_home|Home", homeButtonClicked);
+        homeButton = widgetSupport.newButton(pageControlsPane, "#button_home|Home", homeButtonClicked);
         homeButton.set("showLabel", false);
         // homeButton.set("iconClass", "dijitEditorIcon dijitEditorIconOutdent");
         homeButton.set("iconClass", "homeButtonImage");
@@ -543,7 +538,14 @@ require([
         
         saveButton = widgetSupport.newButton(pageControlsPane, "#button_save|Save", saveClicked);
 
-        var debugButton = widgetSupport.newButton(pageControlsPane, "#button_debug|Debug", debugButtonClicked);
+        debugButton = widgetSupport.newButton(pageControlsPane, "#button_debug|Debug", debugButtonClicked);
+    }
+    
+    // Make all of the application pages selectable from the dropdown list and back/next buttons and put them in a TabContainer
+    function createLayout() {
+        console.log("createLayout start");
+        
+        createNavigationPane();
         
         // Setup the first page
         var fragment = hash();
