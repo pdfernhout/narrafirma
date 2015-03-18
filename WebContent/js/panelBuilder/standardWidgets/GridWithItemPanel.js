@@ -35,6 +35,8 @@ define([
 ){
     "use strict";
     
+    var debugSelecting = false;
+    
     // This defines a gui component which has a grid, some buttons, and a detail panel do display the currently selected item or enter a new item
 
     // TODO: Probably need to prevent user surveys from having a question with a short name of "_id".
@@ -138,7 +140,7 @@ define([
         pagePane.addChild(buttonContentPane);
         
         this.grid.on("dgrid-select", function(event) {
-            console.log("dgrid-select");
+            if (debugSelecting) console.log("dgrid-select");
             self.selectedCount += event.rows.length;
             self.updateGridButtonsForSelectionAndForm();
             
@@ -147,7 +149,7 @@ define([
         });
         
         this.grid.on("dgrid-deselect", function(event) {
-            console.log("dgrid-deselect");
+            if (debugSelecting) console.log("dgrid-deselect");
             self.selectedCount -= event.rows.length;
             self.updateGridButtonsForSelectionAndForm();
             
@@ -156,7 +158,7 @@ define([
         });
         
         this.grid.on("dgrid-sort", function(event) {
-            console.log("dgrid-sort");
+            if (debugSelecting) console.log("dgrid-sort");
             // Sorting can change the enabling of the navigation buttons
             self.updateGridButtonsForSelectionAndFormLater();
         });
@@ -348,12 +350,12 @@ define([
     GridWithItemPanel.prototype.getSelectedItemID = function() {
         var selectedItemID = null;
         
-        console.log("getSelectedItemID", this.grid.selection);
+        if (debugSelecting) console.log("getSelectedItemID", this.grid.selection);
         for (var theSelection in this.grid.selection) {
             if (this.grid.selection[theSelection]) selectedItemID = theSelection;
         }
 
-        console.log("selectedItemID", selectedItemID);
+        if (debugSelecting) console.log("selectedItemID", selectedItemID);
         return selectedItemID;
     };
     
@@ -556,10 +558,10 @@ define([
             if (row) {
                 var idAbove = this.grid.up(row, 1, true).id;
                 var idBelow = this.grid.down(row, 1, true).id;
-                console.log("current", selectedItemID, "above", idAbove, "below", idBelow);
+                // console.log("current", selectedItemID, "above", idAbove, "below", idBelow);
                 atStart = idAbove === selectedItemID;
                 atEnd = idBelow === selectedItemID;
-                console.log("atStart", atStart, "atEnd", atEnd);
+                // console.log("atStart", atStart, "atEnd", atEnd);
             }
         }
         if (buttons.navigateStartButton) buttons.navigateStartButton.set("disabled", atStart);
