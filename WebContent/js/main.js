@@ -50,7 +50,7 @@ require([
     // For building panels based on field specifications
     var panelBuilder = new PanelBuilder();
     
-    // For tricking what page the application is on
+    // For tracking what page the application is on
     var startPage = "page_dashboard";
     var currentSectionID;
     var currentPageID;
