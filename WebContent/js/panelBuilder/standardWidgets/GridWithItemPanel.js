@@ -200,7 +200,11 @@ define([
         
         if (configuration.customButton) {
             var options = configuration.customButton;
-            this.buttons.customButton = widgetSupport.newButton(buttonContentPane, options.customButtonLabel, lang.partial(options.callback, this));
+            var customButtonClickedPartial = lang.partial(options.callback, this);
+            this.buttons.customButton = widgetSupport.newButton(buttonContentPane, options.customButtonLabel, customButtonClickedPartial);
+            if (!configuration.viewButton) {
+                this.grid.on("dblclick", customButtonClickedPartial);
+            }
         }
          
         if (configuration.navigationButtons) {
