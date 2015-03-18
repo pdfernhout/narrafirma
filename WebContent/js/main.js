@@ -418,17 +418,31 @@ require([
         return select;
     }
     
+    // Calculate title to be displayed in navigation select
+    function titleForPanel(panelSpecification) {
+        var title = translate(panelSpecification.id + "::title", panelSpecification.displayName);
+        if (panelSpecification.isHeader) {
+            title = "<i>" + title + "</i>";
+        } else {
+            title = "&nbsp;&nbsp;&nbsp;&nbsp;" + title;
+        }
+        if (panelSpecification.displayType !== "page") {
+            title += " SPECIAL: " + panelSpecification.displayType;
+        }
+        return title;
+    }
+    
     function pageSelectOptionsForSection(sectionHeaderPageID) {
         if (!sectionHeaderPageID) throw new Error("sectionHeaderPageID cannot be null or empty");
         console.log("pageSelectOptionsForSection", sectionHeaderPageID);
         var pageIDs = panelSpecificationCollection.getChildPageIDListForHeaderID(sectionHeaderPageID);
         var options = [];
-        var title = getPageSpecification(sectionHeaderPageID).title;
+        var title = titleForPanel(getPageSpecification(sectionHeaderPageID));
         // It seems like a Dojo "select" widget has a limitation where it can only take strings as values.
         // This means we need to look up page definitions indirectly based on a pageID usind a PanelSpecificationCollection instance.
         options.push({label: title, value: sectionHeaderPageID});
         _.forEach(pageIDs, function (pageID) {
-            title = getPageSpecification(pageID).title;
+            title = titleForPanel(getPageSpecification(pageID));
             options.push({label: title, value: pageID});
         });
         return options;
@@ -446,16 +460,7 @@ require([
             var panel = panels[panelIndex];
             
             // console.log("defining panel", panel.id);
-            var title = translate(panel.id + "::title", panel.displayName);
-            if (panel.isHeader) {
-                title = "<i>" + title + "</i>";
-            } else {
-                title = "&nbsp;&nbsp;&nbsp;&nbsp;" + title;
-            }
-            if (panel.displayType !== "page") {
-                title += " SPECIAL: " + panel.displayType;
-            }
-            
+
             // For panels that are a "page", add to top level pages choices and set up navigation
             if (panel.displayType === "page") {
                 var pageID = panel.id;
@@ -478,10 +483,9 @@ require([
                 }
             }
             
-            panel.title = title;
             panel.helpSection = lastSection;
             panel.helpPage = panel.id;
-            // TODO: Think abouw what "section" should really mean -- conceptual section (e.g. "catalysis") versus section header page ID (e.g. "page_catalysis");
+            // TODO: Think about what "section" should really mean -- conceptual section (e.g. "catalysis") versus section header page ID (e.g. "page_catalysis");
             panel.section = lastHeader;
             
             for (var fieldIndex = 0; fieldIndex < panel.panelFields.length; fieldIndex++) {
@@ -489,8 +493,6 @@ require([
                 fieldSpec.helpSection = lastSection;
                 fieldSpec.helpPage = panel.id;
             }
-
-            // console.log("Update panel", panel);
         }
     }
 
