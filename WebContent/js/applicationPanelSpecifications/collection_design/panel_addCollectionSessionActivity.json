@@ -4,7 +4,6 @@
     "displayType": "panel",
     "section": "collection_design",
     "modelClass": "CollectionSessionActivityModel",
-    "displayPanel": "panel_addCollectionSessionActivity",
     "panelFields": [
         {
             "id": "collectionSessionActivity_name",

@@ -5,7 +5,6 @@
     "isHeader": true,
     "section": "collection_process",
     "modelClass": "ProjectModel",
-    "displayPanel": "page_collectionProcess",
     "panelFields": [
         {
             "id": "collectionProcessIntro",

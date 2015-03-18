@@ -4,7 +4,6 @@
     "displayType": "panel",
     "section": "planning",
     "modelClass": "ParticipantGroupModel",
-    "displayPanel": "panel_addParticipantGroup",
     "panelFields": [
         {
             "id": "participantGroup_name",

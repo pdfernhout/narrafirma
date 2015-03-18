@@ -4,7 +4,6 @@
     "displayType": "panel",
     "section": "sensemaking",
     "modelClass": "ResonantStoryModel",
-    "displayPanel": "panel_addResonantStory",
     "panelFields": [
         {
             "id": "sensemakingSessionRecord_resonantStory_selection",

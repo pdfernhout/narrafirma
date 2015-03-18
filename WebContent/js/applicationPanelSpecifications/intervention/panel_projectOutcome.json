@@ -4,7 +4,6 @@
     "displayType": "panel",
     "section": "intervention",
     "modelClass": "ProjectOutcomeModel",
-    "displayPanel": "panel_projectOutcome",
     "panelFields": [
         {
             "id": "outcomes_group",

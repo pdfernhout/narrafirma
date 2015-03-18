@@ -4,7 +4,6 @@
     "displayType": "panel",
     "section": "catalysis",
     "modelClass": "SelectExcerptModel",
-    "displayPanel": "panel_selectExcerpt",
     "panelFields": [
         {
             "id": "selectExcerpt_excerptsListDisplay",

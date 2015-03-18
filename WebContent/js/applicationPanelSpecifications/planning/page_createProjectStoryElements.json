@@ -4,7 +4,6 @@
     "displayType": "page",
     "section": "planning",
     "modelClass": "ProjectModel",
-    "displayPanel": "page_createProjectStoryElements",
     "panelFields": [
         {
             "id": "project_storyElementsInstructions",

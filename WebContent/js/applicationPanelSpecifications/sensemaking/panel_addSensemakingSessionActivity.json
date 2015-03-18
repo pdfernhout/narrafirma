@@ -4,7 +4,6 @@
     "displayType": "panel",
     "section": "sensemaking",
     "modelClass": "SensemakingSessionActivityModel",
-    "displayPanel": "panel_addSensemakingSessionActivity",
     "panelFields": [
         {
             "id": "sensemakingSessionPlan_activity_name",

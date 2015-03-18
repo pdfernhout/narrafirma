@@ -4,7 +4,6 @@
     "displayType": "panel",
     "section": "collection_design",
     "modelClass": "ElicitingQuestionModel",
-    "displayPanel": "panel_addElicitingQuestion",
     "panelFields": [
         {
             "id": "elicitingQuestion_text",

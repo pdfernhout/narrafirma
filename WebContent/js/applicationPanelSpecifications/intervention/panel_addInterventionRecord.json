@@ -4,7 +4,6 @@
     "displayType": "panel",
     "section": "intervention",
     "modelClass": "InterventionRecordModel",
-    "displayPanel": "panel_addInterventionRecord",
     "panelFields": [
         {
             "id": "interventionRecord_name",

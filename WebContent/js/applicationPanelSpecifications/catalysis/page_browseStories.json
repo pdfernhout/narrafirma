@@ -4,7 +4,6 @@
     "displayType": "page",
     "section": "catalysis",
     "modelClass": "ProjectModel",
-    "displayPanel": "page_browseStories",
     "panelFields": [
         {
             "id": "browseStories_collectedStoriesAfterCollectionLabel",

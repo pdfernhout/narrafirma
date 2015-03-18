@@ -4,7 +4,6 @@
     "displayType": "panel",
     "section": "collection_design",
     "modelClass": "ParticipantQuestionModel",
-    "displayPanel": "panel_addParticipantQuestion",
     "panelFields": [
         {
             "id": "participantQuestion_text",

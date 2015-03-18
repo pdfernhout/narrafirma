@@ -4,7 +4,6 @@
     "displayType": "panel",
     "section": "collection_design",
     "modelClass": "VenueModel",
-    "displayPanel": "panel_addVenue",
     "panelFields": [
         {
             "id": "venue_name",

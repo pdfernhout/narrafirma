@@ -4,7 +4,6 @@
     "displayType": "page",
     "section": "collection_design",
     "modelClass": "ProjectModel",
-    "displayPanel": "page_chooseCollectionVenues",
     "panelFields": [
         {
             "id": "project_venuesIntro",

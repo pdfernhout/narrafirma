@@ -4,7 +4,6 @@
     "displayType": "panel",
     "section": "return",
     "modelClass": "PresentationElementModel",
-    "displayPanel": "panel_addPresentationElement",
     "panelFields": [
         {
             "id": "projectPresentationElement_name",

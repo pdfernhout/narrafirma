@@ -58,8 +58,7 @@ define([
         
         for (var i = 0; i < panelSpecification.panelFields.length; i++) {
             var fieldSpecification = panelSpecification.panelFields[i];
-            // TODO: Is the first or even second of these lines still needed?
-            fieldSpecification.displayPanel = panelSpecification.displayPanel;
+            // TODO: Is this modelClass line still needed?
             fieldSpecification.modelClass = modelClass;
             this.allFieldSpecifications.push(fieldSpecification);
             this.fieldIDToFieldSpecificationMap[fieldSpecification.id] = fieldSpecification;

@@ -4,7 +4,6 @@
     "displayType": "page",
     "section": "catalysis",
     "modelClass": "ProjectModel",
-    "displayPanel": "page_reviewExcerpts",
     "panelFields": [
         {
             "id": "project_savedExcerptsList",

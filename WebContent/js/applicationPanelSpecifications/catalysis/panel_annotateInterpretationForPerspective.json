@@ -4,7 +4,6 @@
     "displayType": "panel",
     "section": "catalysis",
     "modelClass": "AnnotateInterpretationForPerspectiveModel",
-    "displayPanel": "panel_annotateInterpretationForPerspective",
     "panelFields": [
         {
             "id": "perspective_interpretationLinkageNotes",

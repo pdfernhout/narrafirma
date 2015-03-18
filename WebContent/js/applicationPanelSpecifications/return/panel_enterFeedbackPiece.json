@@ -4,7 +4,6 @@
     "displayType": "panel",
     "section": "return",
     "modelClass": "EnterFeedbackPieceModel",
-    "displayPanel": "panel_enterFeedbackPiece",
     "panelFields": [
         {
             "id": "feedback_text",

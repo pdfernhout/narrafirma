@@ -4,7 +4,6 @@
     "displayType": "panel",
     "section": "planning",
     "modelClass": "ProjectStoryModel",
-    "displayPanel": "panel_projectStory",
     "panelFields": [
         {
             "id": "projectStory_scenario",

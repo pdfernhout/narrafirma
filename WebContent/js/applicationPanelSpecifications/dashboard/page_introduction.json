@@ -5,7 +5,6 @@
     "isHeader": false,
     "modelClass": "ProjectModel",
     "section": "dashboard",
-    "displayPanel": "page_introduction",
     "panelFields": [
         {
             "id": "project_introductionLabel",

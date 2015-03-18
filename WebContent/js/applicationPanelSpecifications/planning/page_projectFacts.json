@@ -4,7 +4,6 @@
     "displayType": "page",
     "section": "planning",
     "modelClass": "ProjectModel",
-    "displayPanel": "page_projectFacts",
     "panelFields": [
         {
             "id": "project_projectFacts",

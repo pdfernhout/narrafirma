@@ -5,7 +5,6 @@
     "isHeader": true,
     "section": "return",
     "modelClass": "ProjectModel",
-    "displayPanel": "page_return",
     "panelFields": [
         {
             "id": "returnIntroLabel",

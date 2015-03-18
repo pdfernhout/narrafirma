@@ -4,7 +4,6 @@
     "displayType": "panel",
     "section": "intervention",
     "modelClass": "InterventionModel",
-    "displayPanel": "panel_addIntervention",
     "panelFields": [
         {
             "id": "interventionPlan_name",

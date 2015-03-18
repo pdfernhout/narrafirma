@@ -126,7 +126,6 @@ require([
         "displayType": "panel",
         "section": "testing",
         "modelClass": "ModelItemModel",
-        "displayPanel": "panel_modelItem",
         "panelFields": [
             {
                 "id": "id",

@@ -4,7 +4,6 @@
     "displayType": "panel",
     "section": "return",
     "modelClass": "ReturnRequestModel",
-    "displayPanel": "panel_addNewReturnRequest",
     "panelFields": [
         {
             "id": "returnRequest_text",

@@ -4,7 +4,6 @@
     "displayType": "panel",
     "section": "collection_process",
     "modelClass": "CollectionSessionRecordModel",
-    "displayPanel": "panel_addCollectionSessionRecord",
     "panelFields": [
         {
             "id": "collectionSessionRecord_name",

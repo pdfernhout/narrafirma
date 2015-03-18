@@ -4,7 +4,6 @@
     "displayType": "page",
     "section": "sensemaking",
     "modelClass": "ProjectModel",
-    "displayPanel": "page_readSensemakingReport",
     "panelFields": [
         {
             "id": "sensemakingReportLabel",

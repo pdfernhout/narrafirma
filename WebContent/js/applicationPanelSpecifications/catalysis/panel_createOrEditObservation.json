@@ -4,7 +4,6 @@
     "displayType": "panel",
     "section": "catalysis",
     "modelClass": "ObservationModel",
-    "displayPanel": "panel_createOrEditObservation",
     "panelFields": [
         {
             "id": "observation_name",

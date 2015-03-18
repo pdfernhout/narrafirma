@@ -4,7 +4,6 @@
     "displayType": "panel",
     "section": "catalysis",
     "modelClass": "AnnotateExcerptForPerspectiveModel",
-    "displayPanel": "panel_annotateExcerptForPerspective",
     "panelFields": [
         {
             "id": "perspective_excerptLinkageNotes",

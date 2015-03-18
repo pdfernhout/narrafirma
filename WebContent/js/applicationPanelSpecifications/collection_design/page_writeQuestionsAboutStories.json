@@ -4,7 +4,6 @@
     "displayType": "page",
     "section": "collection_design",
     "modelClass": "ProjectModel",
-    "displayPanel": "page_writeQuestionsAboutStories",
     "panelFields": [
         {
             "id": "project_storyQuestionsLabel",

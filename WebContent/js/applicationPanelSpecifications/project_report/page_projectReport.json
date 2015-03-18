@@ -5,7 +5,6 @@
     "isHeader": true,
     "section": "project_report",
     "modelClass": "ProjectModel",
-    "displayPanel": "page_projectReport",
     "panelFields": [
         {
             "id": "wholeProjectReportLabel",

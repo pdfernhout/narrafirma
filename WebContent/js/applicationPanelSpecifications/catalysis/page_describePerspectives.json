@@ -4,7 +4,6 @@
     "displayType": "page",
     "section": "catalysis",
     "modelClass": "ProjectModel",
-    "displayPanel": "page_describePerspectives",
     "panelFields": [
         {
             "id": "project_perspectivesLabel",

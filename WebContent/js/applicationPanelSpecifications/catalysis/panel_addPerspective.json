@@ -4,7 +4,6 @@
     "displayType": "panel",
     "section": "catalysis",
     "modelClass": "PerspectiveModel",
-    "displayPanel": "panel_addPerspective",
     "panelFields": [
         {
             "id": "perspective_name",

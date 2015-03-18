@@ -4,7 +4,6 @@
     "displayType": "panel",
     "section": "collection_process",
     "modelClass": "NewCollectionSessionConstructionModel",
-    "displayPanel": "panel_newCollectionSessionConstruction",
     "panelFields": [
         {
             "id": "collectionSessionRecord_construction_name",

@@ -4,7 +4,6 @@
     "displayType": "page",
     "section": "return",
     "modelClass": "ProjectModel",
-    "displayPanel": "page_returnReport",
     "panelFields": [
         {
             "id": "returnReportLabel",

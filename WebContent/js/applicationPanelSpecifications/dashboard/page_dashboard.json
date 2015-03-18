@@ -5,7 +5,6 @@
     "isHeader": true,
     "section": "dashboard",
     "modelClass": "ProjectModel",
-    "displayPanel": "page_dashboard",
     "panelFields": [
         {
             "id": "project_mainDashboardLabel",

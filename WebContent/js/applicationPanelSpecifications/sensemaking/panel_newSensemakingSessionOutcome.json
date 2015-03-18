@@ -4,7 +4,6 @@
     "displayType": "panel",
     "section": "sensemaking",
     "modelClass": "NewSensemakingSessionOutcomeModel",
-    "displayPanel": "panel_newSensemakingSessionOutcome",
     "panelFields": [
         {
             "id": "sensemakingSessionRecord_outcome_type",

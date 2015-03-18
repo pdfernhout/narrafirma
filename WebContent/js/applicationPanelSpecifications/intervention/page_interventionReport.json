@@ -4,7 +4,6 @@
     "displayType": "page",
     "section": "intervention",
     "modelClass": "ProjectModel",
-    "displayPanel": "page_interventionReport",
     "panelFields": [
         {
             "id": "interventionReportLabel",

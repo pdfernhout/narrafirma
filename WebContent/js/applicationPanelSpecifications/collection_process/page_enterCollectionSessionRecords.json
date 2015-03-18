@@ -4,7 +4,6 @@
     "displayType": "page",
     "section": "collection_process",
     "modelClass": "ProjectModel",
-    "displayPanel": "page_enterCollectionSessionRecords",
     "panelFields": [
         {
             "id": "project_collectionRecordsIntroductionLabel",

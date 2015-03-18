@@ -5,7 +5,6 @@
     "isHeader": false,
     "modelClass": "ProjectModel",
     "section": "dashboard",
-    "displayPanel": "page_importExport",
     "panelFields": [
         {
             "id": "project_importExport_header",

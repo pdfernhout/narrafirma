@@ -5,7 +5,6 @@
     "isHeader": true,
     "section": "sensemaking",
     "modelClass": "ProjectModel",
-    "displayPanel": "page_sensemaking",
     "panelFields": [
         {
             "id": "sensemakingIntroLabel",
