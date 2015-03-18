@@ -127,6 +127,7 @@ Get tooltips working in dialogs (maybe Dojo bug?)
 Sorting issue: Initial sort order in grid may be order of items in underlying array, but you can't get back to that order once you sort by a column
 Bug if viewing data when remove it; the viewing panel remains open with old data
 Bug if move data item up or down; when you click on an item, it shows you what used to be in that position not what is currently there
+Add close button to top of item panel
 
 CONFIGURATION
 Add project configuration page?
@@ -174,6 +175,7 @@ REFACTORING
 Rename "questions" with "fieldSpecifications" where appropriate and make similar changes away from using "question" to mean "fieldSpecification" [partly done]
 See if still need so many button functions in domain (or maybe any at all)
 Some way only load page and panel files as needed (with help URL being determined by PanelBuilder as it creates panel, and maybe specify panels in section by hand)
+Load panel widgets only as needed by always creating contentPane for a widget and loading the contents later as available returning a promise, with ready callback in builder when all promises kept
 Save and load data for each page instead of for entire project
 Save data for observations and so on as seperate documents so can do it incrementally
 Maybe separate documents for each participant group?
@@ -566,3 +568,5 @@ DONE Create test of displaying panel that can save and load data to server that 
 DONE Fix sizing bug in templates chooser dialog where it is too narrow
 DONE Add cancel button to templates chooser dialog
 DONE Add close button to recommendations table dialog
+DONE Grid should be more configurable via field specifications
+DONE Create panelWithModelChooserSaveLoadTest where can save and load test models for all panels
