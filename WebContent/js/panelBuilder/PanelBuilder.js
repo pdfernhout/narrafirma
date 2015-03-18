@@ -101,6 +101,7 @@ var PanelBuilder = declare(null, {
         this.buttonClickedCallback = null;
         this.currentHelpPage = null;
         this.currentHelpSection = null;
+        this.applicationDirectory = "/";
         
         lang.mixin(this, kwArgs);
     },
@@ -256,7 +257,7 @@ var PanelBuilder = declare(null, {
             // TODO: Remove unused images from project
             // "/images/Info_blauw.png"
             // "/images/Blue_question_mark_icon.svg"
-            iconFile:'/images/Information_icon4.svg',
+            iconFile: this.applicationDirectory + 'images/Information_icon4.svg',
             title: "Click to open help system window on this topic...",
             url: url
         });

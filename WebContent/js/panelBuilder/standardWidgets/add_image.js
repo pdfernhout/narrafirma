@@ -13,7 +13,7 @@ define([
         var imageSource = fieldSpecification.displayConfiguration;
         var questionText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt || "");
         var image = panelBuilder.newContentPane({
-            content: questionText + "<br>" + '<img src="' + imageSource + '" alt="Image for question: ' + questionText + '">'
+            content: questionText + "<br>" + '<img src="' + panelBuilder.applicationDirectory + imageSource + '" alt="Image for question: ' + questionText + '">'
         });
         image.placeAt(contentPane);
         return image;
