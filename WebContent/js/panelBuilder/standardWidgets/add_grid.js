@@ -17,28 +17,50 @@ define([
 ){
     "use strict";
     
+    /* Defaults for displayConfiguration:
+     {
+       itemPanelID: undefined,
+       itemPanelSpecification: undefined,
+       idProperty: "_id",
+       gridConfiguration: {...}
+     */
     function add_grid(panelBuilder, contentPane, model, fieldSpecification) {
         // Grid with list of objects
         // console.log("add_grid");
         
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
-        var itemPanelSpecification = panelBuilder.panelDefinitionForPanelID(fieldSpecification.displayConfiguration);
+        var configuration = {};
+        
+        var itemPanelID = fieldSpecification.displayConfiguration;
+        if (!_.isString(itemPanelID)) {
+            configuration = fieldSpecification.displayConfiguration;
+            itemPanelID = configuration.itemPanelID;
+        }
+        
+        var itemPanelSpecification = configuration.itemPanelSpecification;
+        if (!itemPanelSpecification) {
+            itemPanelSpecification = panelBuilder.panelDefinitionForPanelID(itemPanelID);
+        }
         
         if (!itemPanelSpecification) {
             console.log("Trouble: no itemPanelSpecification for options: ", fieldSpecification);
         }
         
+        // TODO: May want to use at or similar to get the value in case this is a plain object?
         var data = model.get(fieldSpecification.id);
         if (!data) {
             data = [];
             model.set(fieldSpecification.id, data);
         }
         
+        var idProperty = configuration.idProperty;
+        if (!idProperty) idProperty = "_id";
+        
         // Store will modify underlying array
         var dataStore = new Memory({
             data: data,
-            idProperty: "_id"
+            idProperty: idProperty
         });
         
         var instance = {};
@@ -57,8 +79,10 @@ define([
         // This would not work if the content pane continued to exist when replacing this component
         contentPane.own(watcher);
         
-        var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
-        var grid = new GridWithItemPanel(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, itemPanelSpecification, configuration);
+        var gridConfiguration = configuration.gridConfiguration;
+        if (!gridConfiguration) gridConfiguration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
+        
+        var grid = new GridWithItemPanel(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, itemPanelSpecification, gridConfiguration);
         instance.grid = grid.grid;
         return grid;
     }

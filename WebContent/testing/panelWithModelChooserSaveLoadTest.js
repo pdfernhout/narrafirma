@@ -197,18 +197,19 @@ require([
             "id": "panels",
             "dataType": "array",
             "displayType": "grid",
-            "displayConfiguration": "panel_modelItem",
+            "displayConfiguration": {itemPanelID: "panel_modelItem", idProperty: "id"},
             "displayName": "Panels",
             "displayPrompt": "Panels"
         };
         
         var grid = panelBuilder.buildField(mainContentPane, model, gridFieldSpecification);
+        grid.grid.set("selectionMode", "single");
         
         var panelContentPane = panelBuilder.newContentPane();
         panelContentPane.placeAt(mainContentPane);
            
+        // STOPPED HERE!!!
         // TODO: Hook this up so it will build whatever panel is selected
-        // TODO: Also issue with blue selection staying on items when you click on another
         // buildPanel(panelSpecification);
     }
     
