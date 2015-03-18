@@ -379,6 +379,7 @@ define([
     
     function calculate_quizScoreResult(model, dependsOn) {
         // console.log("quiz score result", dependsOn);
+        if (!domain.panelSpecificationCollection) return "ERROR: domain.panelSpecificationCollection is not set";
         var total = 0;
         for (var dependsOnIndex = 0; dependsOnIndex < dependsOn.length; dependsOnIndex++) {
             var questionID = dependsOn[dependsOnIndex];
@@ -425,6 +426,7 @@ define([
 
     function calculate_report(model, headerPageID) {
         // console.log("domain calculate_report", model, headerPageID);
+        if (!domain.panelSpecificationCollection) return "ERROR: domain.panelSpecificationCollection is not set";
         var report = "<br><br>";
         var pageList = domain.panelSpecificationCollection.getChildPageIDListForHeaderID(headerPageID);
         for (var pageIndex in pageList) {
