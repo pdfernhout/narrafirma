@@ -23,7 +23,15 @@ define([
     var domain = {
       panelSpecificationCollection: null,
 
-      projectData: {},
+      // Initialize this here to make testing of domain easier without setupDomain being called
+      projectData: {
+          projectAnswers: new Stateful(),
+          exportedSurveyQuestions: {},
+          surveyResults: {
+              allCompletedSurveys: [],
+              allStories: []
+          }
+      },
 
       questionnaireID: defaultQuestionnaireID,
     
