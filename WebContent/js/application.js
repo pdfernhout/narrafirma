@@ -1,4 +1,4 @@
-require([
+define([
     "dojo/i18n!js/nls/applicationMessages",
     "js/panelBuilder/dialogSupport",
     "js/domain",
@@ -642,8 +642,7 @@ require([
          }
     }
     
-    ///////////////
-    
+    // The main starting point of the application
     function initialize() {
         translate.configure({}, applicationMessages);
         
@@ -686,5 +685,7 @@ require([
         document.getElementById("pleaseWaitDiv").style.display = "none";
     }
     
-    initialize();
+    return {
+        initialize: initialize
+    };
 });
