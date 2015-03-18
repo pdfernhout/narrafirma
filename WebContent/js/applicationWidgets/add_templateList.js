@@ -165,7 +165,8 @@ define([
          };
         
         var customButtonDefinition = {
-            id: "useTemplate", translationID: "button_UseTemplate",
+            id: "useTemplate",
+            customButtonLabel: "#button_UseTemplate|Use template",
             callback: lang.partial(useButtonClicked, templateListChoice, model, hideDialogCallback)
         };
         

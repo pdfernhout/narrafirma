@@ -198,7 +198,7 @@ define([
         
         if (configuration.customButton) {
             var options = configuration.customButton;
-            this.buttons.customButton = widgetSupport.newButton(buttonContentPane, options.translationID, lang.partial(options.callback, this));
+            this.buttons.customButton = widgetSupport.newButton(buttonContentPane, options.customButtonLabel, lang.partial(options.callback, this));
         }
          
         if (configuration.navigationButtons) {
