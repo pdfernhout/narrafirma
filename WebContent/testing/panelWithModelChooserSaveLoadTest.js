@@ -1,4 +1,5 @@
 require([
+    "js/applicationWidgets/loadAllApplicationWidgets",
     "js/applicationPanelSpecifications/loadAllPanelSpecifications",
     "js/panelBuilder/PanelBuilder",
     "js/panelBuilder/PanelSpecificationCollection",
@@ -6,6 +7,7 @@ require([
     "dojo/Stateful",
     "dojo/domReady!"
 ], function(
+    loadAllApplicationWidgets,
     loadAllPanelSpecifications,
     PanelBuilder,
     PanelSpecificationCollection,
@@ -179,6 +181,9 @@ require([
 
     // TODO: Load all panels and build list of them from panels loaded
     function test() {
+        // Add support for application-specific widgets
+        loadAllApplicationWidgets(PanelBuilder);
+        
         var panelSpecificationCollectionOriginal = new PanelSpecificationCollection();
         loadAllPanelSpecifications(panelSpecificationCollectionOriginal);
         
