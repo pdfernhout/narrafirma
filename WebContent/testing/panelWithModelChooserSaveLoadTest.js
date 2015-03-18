@@ -1,10 +1,12 @@
 require([
+    "js/applicationPanelSpecifications/loadAllPanelSpecifications",
     "js/panelBuilder/PanelBuilder",
     "js/panelBuilder/PanelSpecificationCollection",
     "js/pointrel20141201Client",
     "dojo/Stateful",
     "dojo/domReady!"
 ], function(
+    loadAllPanelSpecifications,
     PanelBuilder,
     PanelSpecificationCollection,
     pointrel20141201Client,
@@ -50,27 +52,14 @@ require([
         });
     }
     
-    function buildPanel(panelSpecificationText) { 
-        var panelSpecification = JSON.parse(panelSpecificationText);
-        
-        console.log("panelSpecification", panelSpecification);
-        
-        panelSpecification.modelClass = "Test-" + panelSpecification.modelClass;
-        
-        var panels = new PanelSpecificationCollection();
-        
-        panels.addPanelSpecification(panelSpecification);
+    function buildPanel(contentPane, panels, panelBuilder, panelSpecification) { 
+        console.log("buildPanel panelSpecification", panelSpecification);
         
         var testModelTemplate = panels.buildModel(panelSpecification.modelClass);
         
         var testModel = new Stateful(testModelTemplate);
         
         console.log("testModel", testModel);
-        
-        var panelBuilder = new PanelBuilder({panelSpecificationCollection: panels});
-        
-        var contentPane = panelBuilder.newContentPane();
-        contentPane.placeAt("pageDiv").startup();
         
         panelBuilder.buildPanel(panelSpecification.id, contentPane, testModel);
         
@@ -130,9 +119,98 @@ require([
             });
         }
     }
+    
+    var modelItemPanelSpecification = {
+        "id": "panel_modelItem",
+        "displayName": "Model item",
+        "displayType": "panel",
+        "section": "testing",
+        "modelClass": "ModelItemModel",
+        "displayPanel": "panel_modelItem",
+        "panelFields": [
+            {
+                "id": "id",
+                "dataType": "string",
+                "displayType": "text",
+                "displayName": "ID",
+                "displayPrompt": "ID"
+            },
+            {
+                "id": "section",
+                "dataType": "string",
+                "displayType": "text",
+                "displayName": "Section",
+                "displayPrompt": "Section"
+            },
+            {
+                "id": "displayName",
+                "dataType": "string",
+                "displayType": "text",
+                "displayName": "Name",
+                "displayPrompt": "Name"
+            },
+            {
+                "id": "displayType",
+                "dataType": "string",
+                "displayType": "text",
+                "displayName": "Type",
+                "displayPrompt": "Type"
+            },
+            {
+                "id": "modelClass",
+                "dataType": "string",
+                "displayType": "text",
+                "displayName": "Model Class",
+                "displayPrompt": "Model Class"
+            }
+        ]
+    };
 
-    var panelSectionAndFileName = "planning/page_aboutYou.json";
-    require(["dojo/text!js/applicationPanelSpecifications/" + panelSectionAndFileName], function(panelSpecificationText) {
-        buildPanel(panelSpecificationText);
-    });
+    // TODO: Load all panels and build list of them from panels loaded
+    function test() {
+        var panelSpecificationCollection = new PanelSpecificationCollection();
+        loadAllPanelSpecifications(panelSpecificationCollection);
+
+        var panelBuilder = new PanelBuilder({panelSpecificationCollection: panelSpecificationCollection});
+        
+        var mainContentPane = panelBuilder.newContentPane();
+        mainContentPane.placeAt("pageDiv").startup();
+        
+        var allPanels = panelSpecificationCollection.buildListOfPanels();
+        
+        // Change all the models
+        var panels = [];
+        allPanels.forEach(function(panelSpecification) {
+            if (panelSpecification.modelClass) panelSpecification.modelClass = "Test-" + panelSpecification.modelClass;
+            console.log("panelSpecification", panelSpecification);
+            panels.push(panelSpecification);
+        });
+        
+        // Add this panel to as it will be looked up by panel builder for grid
+        panelSpecificationCollection.addPanelSpecification(modelItemPanelSpecification);
+        
+        var model = new Stateful({
+            panels: panels
+        });
+        
+        var gridFieldSpecification = {
+            "id": "panels",
+            "dataType": "array",
+            "displayType": "grid",
+            "displayConfiguration": "panel_modelItem",
+            "displayName": "Panels",
+            "displayPrompt": "Panels"
+        };
+        
+        var grid = panelBuilder.buildField(mainContentPane, model, gridFieldSpecification);
+        
+        var panelContentPane = panelBuilder.newContentPane();
+        panelContentPane.placeAt(mainContentPane);
+           
+        // TODO: Hook this up so it will build whatever panel is selected
+        // TODO: Also issue with blue selection staying on items when you click on another
+        // buildPanel(panelSpecification);
+    }
+    
+    test();
 });
