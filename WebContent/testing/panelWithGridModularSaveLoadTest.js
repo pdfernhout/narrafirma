@@ -1,14 +1,10 @@
 require([
-    "dojo/text!js/applicationPanelSpecifications/planning/page_participantGroups.json",
-    "dojo/text!js/applicationPanelSpecifications/planning/panel_addParticipantGroup.json",
     "js/panelBuilder/PanelBuilder",
     "js/panelBuilder/PanelSpecificationCollection",
     "js/pointrel20141201Client",
     "dojo/Stateful",
     "dojo/domReady!"
 ], function(
-    page_partipantGroupsPanelSpecificationText,
-    panel_addParticipantGroupSpecificationText,
     PanelBuilder,
     PanelSpecificationCollection,
     pointrel20141201Client,
@@ -54,20 +50,67 @@ require([
         });
     }
     
+    var page_partipantGroupsPanelSpecification = {
+        "id": "page_participantGroups",
+        "displayName": "Describe participant groups",
+        "displayType": "page",
+        "section": "planning",
+        "modelClass": "ProjectModel",
+        "panelFields": [
+            {
+                "id": "project_aboutParticipantGroups",
+                "dataType": "none",
+                "displayType": "label",
+                "displayPrompt": "On this page you will think about groups of participants you want to involve in your project.\nExamples might be: doctors and patients; staff and customers; natives, immigrants, and tourists."
+            },
+            {
+                "id": "project_participantGroupsList",
+                "dataType": "array",
+                "required": true,
+                "displayType": "grid",
+                "displayConfiguration": "panel_addParticipantGroup",
+                "displayName": "Participant groups",
+                "displayPrompt": "Please add participant groups in the list below (typically up to three groups)."
+            }
+        ]
+    };
+    
+    var panel_addParticipantGroupSpecificationTextAbbreviated = {
+        "id": "panel_addParticipantGroup",
+        "displayName": "Participant group",
+        "displayType": "panel",
+        "section": "planning",
+        "modelClass": "ParticipantGroupModel",
+        "panelFields": [
+            {
+                "id": "participantGroup_name",
+                "dataType": "string",
+                "required": true,
+                "displayType": "text",
+                "displayName": "Name",
+                "displayPrompt": "Please name this group of participants (for example, \"doctors\", \"students\", \"staff\")."
+            },
+            {
+                "id": "participantGroup_description",
+                "dataType": "string",
+                "required": true,
+                "displayType": "textarea",
+                "displayName": "Description",
+                "displayPrompt": "Please describe this group of participants.\nFor example, you might want to record any observations you have made about this group.\nWhat do you know about them?"
+            }
+        ]
+    };
+    
     function test() {
-        var page_partipantGroupsPanelSpecification = JSON.parse(page_partipantGroupsPanelSpecificationText);
-        
-        console.log("page_partipantGroupsPanelSpecification", page_partipantGroupsPanelSpecification);
-        
-        page_partipantGroupsPanelSpecification.modelClass = "Test2Model";
+        page_partipantGroupsPanelSpecification.modelClass = "Test3Model";
         
         var panels = new PanelSpecificationCollection();
         
         panels.addPanelSpecification(page_partipantGroupsPanelSpecification);
         
-        panels.addPanelSpecificationFromJSONText(panel_addParticipantGroupSpecificationText);
+        panels.addPanelSpecification(panel_addParticipantGroupSpecificationTextAbbreviated);
         
-        var testModelTemplate = panels.buildModel("Test2Model");
+        var testModelTemplate = panels.buildModel("Test3Model");
         
         var testModel = new Stateful(testModelTemplate);
         
