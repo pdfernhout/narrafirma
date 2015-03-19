@@ -184,51 +184,51 @@ require([
         loadAllApplicationWidgets(PanelBuilder);
         
         var panelSpecificationCollectionOriginal = new PanelSpecificationCollection();
-        loadAllPanelSpecifications(panelSpecificationCollectionOriginal);
-        
-        var panelSpecificationCollectionCopyWithTestModels = new PanelSpecificationCollection();
-
-        // Change all the models; this will also invalidate the lookup by model name, which is why we need a copy
-        var panels = [];
-        var allPanelsOriginal = panelSpecificationCollectionOriginal.buildListOfPanels();
-        allPanelsOriginal.forEach(function(panelSpecification) {
-            if (panelSpecification.modelClass) panelSpecification.modelClass = "Test-" + panelSpecification.modelClass;
-            // console.log("panelSpecification", panelSpecification);
-            panels.push(panelSpecification);
-            panelSpecificationCollectionCopyWithTestModels.addPanelSpecification(panelSpecification);
+        loadAllPanelSpecifications(panelSpecificationCollectionOriginal, function() {
+            var panelSpecificationCollectionCopyWithTestModels = new PanelSpecificationCollection();
+    
+            // Change all the models; this will also invalidate the lookup by model name, which is why we need a copy
+            var panels = [];
+            var allPanelsOriginal = panelSpecificationCollectionOriginal.buildListOfPanels();
+            allPanelsOriginal.forEach(function(panelSpecification) {
+                if (panelSpecification.modelClass) panelSpecification.modelClass = "Test-" + panelSpecification.modelClass;
+                // console.log("panelSpecification", panelSpecification);
+                panels.push(panelSpecification);
+                panelSpecificationCollectionCopyWithTestModels.addPanelSpecification(panelSpecification);
+            });
+    
+            var panelBuilder = new PanelBuilder({panelSpecificationCollection: panelSpecificationCollectionCopyWithTestModels});
+            
+            var mainContentPane = panelBuilder.newContentPane();
+            mainContentPane.placeAt("pageDiv").startup();
+             
+            // Add this panel to as it will be looked up by panel builder for grid
+            panelSpecificationCollectionCopyWithTestModels.addPanelSpecification(modelItemPanelSpecification);
+            
+            var model = new Stateful({
+                panels: panels
+            });
+            
+            var panelContentPane = panelBuilder.newContentPane();
+            
+            var gridFieldSpecification = {
+                "id": "panels",
+                "dataType": "array",
+                "displayType": "grid",
+                "displayConfiguration": {
+                    itemPanelID: "panel_modelItem",
+                    idProperty: "id",
+                    gridConfiguration: {viewButton: false, customButton: {customButtonLabel: "Open panel", callback: _.partial(openPanel, panelContentPane, panelSpecificationCollectionCopyWithTestModels, panelBuilder)}}
+                },
+                "displayName": "Panels",
+                "displayPrompt": "Panels"
+            };
+            
+            var grid = panelBuilder.buildField(mainContentPane, model, gridFieldSpecification);
+            grid.grid.set("selectionMode", "single");
+            
+            panelContentPane.placeAt(mainContentPane);
         });
-
-        var panelBuilder = new PanelBuilder({panelSpecificationCollection: panelSpecificationCollectionCopyWithTestModels});
-        
-        var mainContentPane = panelBuilder.newContentPane();
-        mainContentPane.placeAt("pageDiv").startup();
-         
-        // Add this panel to as it will be looked up by panel builder for grid
-        panelSpecificationCollectionCopyWithTestModels.addPanelSpecification(modelItemPanelSpecification);
-        
-        var model = new Stateful({
-            panels: panels
-        });
-        
-        var panelContentPane = panelBuilder.newContentPane();
-        
-        var gridFieldSpecification = {
-            "id": "panels",
-            "dataType": "array",
-            "displayType": "grid",
-            "displayConfiguration": {
-                itemPanelID: "panel_modelItem",
-                idProperty: "id",
-                gridConfiguration: {viewButton: false, customButton: {customButtonLabel: "Open panel", callback: _.partial(openPanel, panelContentPane, panelSpecificationCollectionCopyWithTestModels, panelBuilder)}}
-            },
-            "displayName": "Panels",
-            "displayPrompt": "Panels"
-        };
-        
-        var grid = panelBuilder.buildField(mainContentPane, model, gridFieldSpecification);
-        grid.grid.set("selectionMode", "single");
-        
-        panelContentPane.placeAt(mainContentPane);
     }
     
     test();
