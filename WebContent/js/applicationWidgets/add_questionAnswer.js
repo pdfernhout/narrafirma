@@ -23,7 +23,11 @@ define([
 
         // This collection could be null during testing
         var panelSpecificationCollection = domain.getPanelSpecificationCollection();
-        if (!panelSpecificationCollection) return "ERROR: domain.panelSpecificationCollection is null";
+        if (!panelSpecificationCollection) {
+            var errorMessage = "ERROR: domain.panelSpecificationCollection is null";
+            console.log("ERROR", errorMessage);
+            return errorMessage;
+        }
         
         var fieldSpecification = panelSpecificationCollection.getFieldSpecificationForFieldID(referencedQuestionID);
         if (fieldSpecification) {

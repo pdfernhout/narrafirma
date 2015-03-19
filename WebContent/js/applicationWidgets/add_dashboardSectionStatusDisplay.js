@@ -27,9 +27,13 @@ define([
         
         // This collection could be null during testing
         var panelSpecificationCollection = domain.getPanelSpecificationCollection();
-        if (panelSpecificationCollection) return "ERROR: domain.panelSpecificationCollection is null";
+        if (!panelSpecificationCollection) {
+            var errorMessage = "ERROR: domain.panelSpecificationCollection is null";
+            console.log("ERROR", errorMessage);
+            return panelBuilder.addHTML(contentPane, '<div class="errorMessage">' + errorMessage + '</div>');
+        }
         
-        var childPageIDs = domain.getPanelSpecificationCollection().getChildPageIDListForHeaderID(pageID);
+        childPageIDs = panelSpecificationCollection.getChildPageIDListForHeaderID(pageID);
         console.log("child pages", pageID, childPageIDs);
         if (!childPageIDs) childPageIDs = [];
         
