@@ -23,6 +23,12 @@ define([
         // TODO: Kludge of using field id to determine what section this refers to
         var pageID = fieldSpecification.id.replace("project_launchSection_", "page_");
         
+        var childPageIDs;
+        
+        // This collection could be null during testing
+        var panelSpecificationCollection = domain.getPanelSpecificationCollection();
+        if (panelSpecificationCollection) return "ERROR: domain.panelSpecificationCollection is null";
+        
         var childPageIDs = domain.getPanelSpecificationCollection().getChildPageIDListForHeaderID(pageID);
         console.log("child pages", pageID, childPageIDs);
         if (!childPageIDs) childPageIDs = [];
