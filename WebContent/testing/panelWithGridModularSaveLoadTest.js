@@ -55,7 +55,7 @@ require([
         "displayName": "Describe participant groups",
         "displayType": "page",
         "section": "planning",
-        "modelClass": "ProjectModel",
+        "modelClass": "Test3Model",
         "panelFields": [
             {
                 "id": "project_aboutParticipantGroups",
@@ -65,7 +65,7 @@ require([
             },
             {
                 "id": "project_participantGroupsList",
-                "dataType": "array",
+                "dataType": "store",
                 "required": true,
                 "displayType": "grid",
                 "displayConfiguration": "panel_addParticipantGroup",
@@ -102,8 +102,6 @@ require([
     };
     
     function test() {
-        page_partipantGroupsPanelSpecification.modelClass = "Test3Model";
-        
         var panels = new PanelSpecificationCollection();
         
         panels.addPanelSpecification(page_partipantGroupsPanelSpecification);
@@ -113,6 +111,9 @@ require([
         var testModelTemplate = panels.buildModel("Test3Model");
         
         var testModel = new Stateful(testModelTemplate);
+        
+        // STOPPED HERE!!! Would need to implement additional support in PanelSpecificationCollection and add_grid for a "store" type in addition to current "array"
+        testModel.set("project_participantGroupsList", {type: "store", itemClass: "ParticipantGroupModel"});
         
         console.log("testModel", testModel);
         
