@@ -180,6 +180,7 @@ Save and load data for each page instead of for entire project
 Save data for observations and so on as seperate documents so can do it incrementally
 Maybe separate documents for each participant group?
 Maybe separate documents for each survey question?
+Only load panel information as needed for section (or request for specific panel)
 
 UNSURE
 Way to retrieve data about project participant groups [Is this still relevant?]
@@ -293,6 +294,8 @@ One project outcome item created per participant group
 Check time server on startup in server to see if accurate enough when timestamping versions; maybe same for client
 
 Survey - maybe add unique ID so long survey results can be saved as progressed through and finished later if you have the unique ID....
+
+Make sections optional in loadAllPanelSpecifications to make that code more reuseable
 
 ==== DONE
 
@@ -570,3 +573,5 @@ DONE Add cancel button to templates chooser dialog
 DONE Add close button to recommendations table dialog
 DONE Grid should be more configurable via field specifications
 DONE Create panelWithModelChooserSaveLoadTest where can save and load test models for all panels
+DONE Load panel navigation information from JSON
+DONE Move loadAllPanelSpecifications into PanelSpecificationCollection and pass in needed information about navigation and base path
