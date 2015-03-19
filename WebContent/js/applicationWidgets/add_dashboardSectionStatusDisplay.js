@@ -1,11 +1,9 @@
 define([
     "dojox/mvc/at",
-    "js/domain",
     "dojo/_base/lang",
     "js/panelBuilder/translate"
 ], function(
     at,
-    domain,
     lang,
     translate
 ){
@@ -26,9 +24,9 @@ define([
         var childPageIDs;
         
         // This collection could be null during testing
-        var panelSpecificationCollection = domain.getPanelSpecificationCollection();
+        var panelSpecificationCollection = panelBuilder.panelSpecificationCollection;
         if (!panelSpecificationCollection) {
-            var errorMessage = "ERROR: domain.panelSpecificationCollection is null";
+            var errorMessage = "ERROR: panelBuilder.panelSpecificationCollection is null";
             console.log("ERROR", errorMessage);
             return panelBuilder.addHTML(contentPane, '<div class="errorMessage">' + errorMessage + '</div>');
         }

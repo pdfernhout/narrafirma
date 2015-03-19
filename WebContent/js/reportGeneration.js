@@ -1,10 +1,9 @@
 define(["js/domain", "js/panelBuilder/translate"], function(domain, translate) {
    "use strict";
    
-   function calculate_report(model, headerPageID) {
-        // console.log("domain calculate_report", model, headerPageID);
-       var panelSpecificationCollection = domain.getPanelSpecificationCollection();
-        if (!panelSpecificationCollection) return "ERROR: domain.panelSpecificationCollection is not set";
+   function calculate_report(panelSpecificationCollection, model, headerPageID) {
+        // console.log("calculate_report", panelSpecificationsCollection, model, headerPageID);
+        if (!panelSpecificationCollection) return "ERROR: in calculate_report, panelSpecificationCollection is not set";
         var report = "<br><br>";
         var pageList = panelSpecificationCollection.getChildPageIDListForHeaderID(headerPageID);
         for (var pageIndex in pageList) {

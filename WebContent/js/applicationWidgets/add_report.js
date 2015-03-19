@@ -15,7 +15,7 @@ define([
     
     function add_report(panelBuilder, contentPane, model, fieldSpecification) {
         var headerPageID = "page_" + fieldSpecification.displayConfiguration;
-        var calculate = lang.partial(reportGeneration.calculate_report, model, headerPageID);
+        var calculate = lang.partial(reportGeneration.calculate_report, panelBuilder.panelSpecificationCollection, model, headerPageID);
      // TODO: Fix when refactor
         return panelBuilder._add_calculatedText(panelBuilder, contentPane, fieldSpecification, calculate);
     }

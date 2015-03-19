@@ -14,8 +14,6 @@ define([
     "use strict";
     
     var domain = {
-      panelSpecificationCollection: null,
-
       // Initialize this here to make testing of domain easier without setupDomain being called
       projectData: {
           projectAnswers: new Stateful()
@@ -83,8 +81,6 @@ define([
 
     // Application should call this at startup
     function setupDomain(panelSpecificationCollection) {
-        domain.panelSpecificationCollection = panelSpecificationCollection;
-        
         var model = panelSpecificationCollection.buildModel("ProjectModel");
         
         var projectData = domain.projectData;
@@ -113,18 +109,11 @@ define([
         console.log("projectData", projectData);
     }
 
-    function getPanelSpecificationCollection() {
-        return domain.panelSpecificationCollection;
-    }
-    
     var exportedFunctions = {
         "setupDomain": setupDomain,
             
         // data collected
         "projectData": domain.projectData,
-        
-        // Supporting GUI
-        "getPanelSpecificationCollection": getPanelSpecificationCollection,
         
         // functions called from page widgets
         "calculate_quizScoreResult": calculate_quizScoreResult,
