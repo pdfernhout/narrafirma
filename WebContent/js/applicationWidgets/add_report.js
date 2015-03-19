@@ -1,13 +1,13 @@
 define([
     "dojox/mvc/at",
     "dijit/layout/ContentPane",
-    "js/domain",
+    "js/report",
     "dojo/_base/lang",
     "js/panelBuilder/translate"
 ], function(
     at,
     ContentPane,
-    domain,
+    report,
     lang,
     translate
 ){
@@ -15,7 +15,7 @@ define([
     
     function add_report(panelBuilder, contentPane, model, fieldSpecification) {
         var headerPageID = "page_" + fieldSpecification.displayConfiguration;
-        var calculate = lang.partial(domain.calculate_report, model, headerPageID);
+        var calculate = lang.partial(report.calculate_report, model, headerPageID);
      // TODO: Fix when refactor
         return panelBuilder._add_calculatedText(panelBuilder, contentPane, fieldSpecification, calculate);
     }
