@@ -642,8 +642,43 @@ define([
          }
     }
     
+    // TODO: Temporary for generating JSON navigation data from AMD module
+    function generateNavigationDataInJSON() {
+        var sections = [];
+        var currentSection;
+        var currentPage;
+        var allPanels = panelSpecificationCollection.buildListOfPanels();
+        allPanels.forEach(function(panel) {
+            console.log("panel", panel.displayType, panel.id, panel.section, panel.displayName);
+            if (panel.isHeader) {
+                if (currentSection) sections.push(currentSection);
+                currentSection = {
+                    section: panel.section,
+                    sectionName: panel.displayName,
+                    pages: []
+                };
+            }
+            var navigationInfo = {
+                panelID: panel.id,
+                panelName: panel.displayName
+            };
+            if (panel.displayType === "page") {
+                currentSection.pages.push(navigationInfo);
+                currentPage = navigationInfo;
+            } else {
+                if (!currentPage.extraPanels) currentPage.extraPanels = [];
+                currentPage.extraPanels.push(navigationInfo);
+            }
+        });
+        
+        console.log("JSON for navigation:");
+        console.log(JSON.stringify(sections, null, 4));
+    }
+    
     // The main starting point of the application
     function initialize() {
+        console.log("=======", new Date().toISOString(), "application.initialize() called");
+        
         translate.configure({}, applicationMessages);
         
         // Initialize toaster
@@ -654,6 +689,8 @@ define([
         console.log("loadAllPanelSpecifications", loadAllPanelSpecifications);
         // Load the application design
         loadAllPanelSpecifications(panelSpecificationCollection);
+        
+        // generateNavigationDataInJSON();
         
         // Setup the domain with the base model defined by field specifications
         domain.setupDomain(panelSpecificationCollection);
