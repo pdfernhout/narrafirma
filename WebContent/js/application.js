@@ -125,20 +125,20 @@ define([
         var key;
         for (key in projectAnswers) {
             if (projectAnswers.hasOwnProperty(key)) {
-                domain.projectData.projectAnswers.set(key, projectAnswers[key]);
+                domain.projectAnswers.set(key, projectAnswers[key]);
             }
         }
         // TODO: A little dangerous to remove stuff, should this be kept?
         var fieldsToRemove = {};
-        for (key in domain.projectData.projectAnswers) {
-            if (domain.projectData.projectAnswers.hasOwnProperty(key) && !projectAnswers.hasOwnProperty(key)) {
+        for (key in domain.projectAnswers) {
+            if (domain.projectAnswers.hasOwnProperty(key) && !projectAnswers.hasOwnProperty(key)) {
                 // Stateful model adds "_watchCallbacks" so don't remove it
                 if (!_.startsWith(key, "_")) fieldsToRemove[key] = true;
             }
         }
         for (key in fieldsToRemove) {
-            console.log("removing old field/data", key, domain.projectData.projectAnswers.get(key));
-            domain.projectData.projectAnswers.set(key, undefined);
+            console.log("removing old field/data", key, domain.projectAnswers.get(key));
+            domain.projectAnswers.set(key, undefined);
         }
         
         // Rebuild the current page to ensure it gets latest data...
@@ -162,8 +162,8 @@ define([
     }
     
     function saveClicked(event) {
-        console.log("save clicked", domain.projectData.projectAnswers);
-        storage.storeProjectVersion(domain.projectData.projectAnswers, currentProjectVersionReference, saveFinished);
+        console.log("save clicked", domain.projectAnswers);
+        storage.storeProjectVersion(domain.projectAnswers, currentProjectVersionReference, saveFinished);
     }
     
     function saveFinished(error, newVersionURI) {
@@ -277,7 +277,7 @@ define([
         
        // console.log("Made content pane", pageID);
        
-       panelBuilder.buildPanel(pageID, pagePane, domain.projectData.projectAnswers);
+       panelBuilder.buildPanel(pageID, pagePane, domain.projectAnswers);
        
        if (pageSpecification.section !== "page_dashboard") {
            if (!pageSpecification.isHeader) {
@@ -289,7 +289,7 @@ define([
                    displayPrompt: translate("#dashboard_status_entry::prompt", "The dashboard status of this page is:"),
                    dataOptions: completionStatusOptions
                };
-               panelBuilder.buildField(pagePane, domain.projectData.projectAnswers, completionStatusEntryFieldSpecification);
+               panelBuilder.buildField(pagePane, domain.projectAnswers, completionStatusEntryFieldSpecification);
            } else {
                console.log("page dashboard as header", pageSpecification.id, pageSpecification.displayType, pageSpecification);
                // Put in dashboard
@@ -312,7 +312,7 @@ define([
                            displayPrompt: prompt,
                            displayConfiguration: [childPageID + "_pageStatus"]
                        };
-                       panelBuilder.buildField(pagePane, domain.projectData.projectAnswers, completionStatusDisplayFieldSpecification);
+                       panelBuilder.buildField(pagePane, domain.projectAnswers, completionStatusDisplayFieldSpecification);
                    }
                }
            }
@@ -383,7 +383,7 @@ define([
     }
     
     function debugButtonClicked() {
-        console.log("debug domain.projectData", domain.projectData);
+        console.log("debug domain surveyCollection panelSpecificationCollection", domain, surveyCollection, panelSpecificationCollection);
     }
     
     function importButtonClicked(projectDefinitionText, hideDialogMethod) {     
@@ -413,7 +413,7 @@ define([
         
     function importExportClicked() {
         console.log("importExportClicked");
-        var projectDefinitionText = JSON.stringify(domain.projectData.projectAnswers, null, 2);
+        var projectDefinitionText = JSON.stringify(domain.projectAnswers, null, 2);
         dialogSupport.openTextEditorDialog(projectDefinitionText, "#projectImportExportDialog_title|Project Import/Export", "#projectImportExportDialog_okButtonText|OK", importButtonClicked);
     }
     
@@ -571,7 +571,7 @@ define([
     
     function openSurveyDialog() {
         // TODO: What version of questionnaire should be used? Should it really be the latest one? Or the one active on server?
-        console.log("domain.projectData", domain.projectData);
+        console.log("openSurveyDialog domain", domain);
         var questionnaire = questionnaireGeneration.getCurrentQuestionnaire();
         
         survey.openSurveyDialog(questionnaire);

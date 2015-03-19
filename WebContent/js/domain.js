@@ -15,13 +15,11 @@ define([
     
     var domain = {
       // Initialize this here to make testing of domain easier without setupDomain being called
-      projectData: {
-          projectAnswers: new Stateful()
-      }
+      projectAnswers: new Stateful()
     };
     
     function copyDraftPNIQuestionVersionsIntoAnswers() {
-        var model = domain.projectData.projectAnswers;
+        var model = domain.projectAnswers;
             
         var finalQuestionIDs = [
             "project_pniQuestions_goal_final",
@@ -57,7 +55,6 @@ define([
         var total = 0;
         for (var dependsOnIndex = 0; dependsOnIndex < dependsOn.length; dependsOnIndex++) {
             var questionID = dependsOn[dependsOnIndex];
-            // console.log("projectData", projectData);
             var questionAnswer = model.get(questionID);
             var answerWeight = 0;
             if (questionAnswer) {
@@ -83,9 +80,7 @@ define([
     function setupDomain(panelSpecificationCollection) {
         var model = panelSpecificationCollection.buildModel("ProjectModel");
         
-        var projectData = domain.projectData;
-        
-        projectData.projectAnswers = new Stateful(model);
+        domain.projectAnswers = new Stateful(model);
 
         var pages = panelSpecificationCollection.buildListOfPages();
         
@@ -93,27 +88,28 @@ define([
             var page = pages[pageIndex];
             if (!page.isHeader) {
                 var pageID = page.id;
-                projectData.projectAnswers[pageID + "_pageStatus"] = null;
+                domain.projectAnswers[pageID + "_pageStatus"] = null;
             }
         }
         
         /*
-        for (var fieldName in projectData.projectAnswers) {
-            var fieldValue = projectData.projectAnswers[fieldName];
+         Maybe this can be adapted for saving and loading individual pages?
+        for (var fieldName in domain.projectAnswers) {
+            var fieldValue = domain.projectAnswers[fieldName];
             if (fieldValue instanceof Array) {
-                projectData.projectAnswers[fieldName] = new StatefulArray(fieldValue);
+                domain.projectAnswers[fieldName] = new StatefulArray(fieldValue);
             }
         }
         */
         
-        console.log("projectData", projectData);
+        console.log("setupDomain result: domain", domain);
     }
 
     var exportedFunctions = {
         "setupDomain": setupDomain,
             
         // data collected
-        "projectData": domain.projectData,
+        "projectAnswers": domain.projectAnswers,
         
         // functions called from page widgets
         "calculate_quizScoreResult": calculate_quizScoreResult,

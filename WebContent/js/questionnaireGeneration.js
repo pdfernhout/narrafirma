@@ -115,18 +115,18 @@ define(["js/domain", "js/panelBuilder/translate"], function(domain, translate) {
                __type: "org.workingwithstories.Questionnaire"
        };
        
-       questionnaire.title = domain.projectData.projectAnswers.get("questionForm_title");
-       questionnaire.image = domain.projectData.projectAnswers.get("questionForm_image");
-       questionnaire.startText = domain.projectData.projectAnswers.get("questionForm_startText");
-       questionnaire.endText = domain.projectData.projectAnswers.get("questionForm_endText"); 
+       questionnaire.title = domain.projectAnswers.get("questionForm_title");
+       questionnaire.image = domain.projectAnswers.get("questionForm_image");
+       questionnaire.startText = domain.projectAnswers.get("questionForm_startText");
+       questionnaire.endText = domain.projectAnswers.get("questionForm_endText"); 
 
-       var elicitingQuestions = domain.projectData.projectAnswers.get("project_elicitingQuestionsList");
+       var elicitingQuestions = domain.projectAnswers.get("project_elicitingQuestionsList");
        console.log("elicitingQuestions", elicitingQuestions);
        
-       var storyQuestions = domain.projectData.projectAnswers.get("project_storyQuestionsList");
+       var storyQuestions = domain.projectAnswers.get("project_storyQuestionsList");
        ensureUniqueQuestionIDs(usedIDs, storyQuestions);
        
-       var participantQuestions = domain.projectData.projectAnswers.get("project_participantQuestionsList");
+       var participantQuestions = domain.projectAnswers.get("project_participantQuestionsList");
        ensureUniqueQuestionIDs(usedIDs, participantQuestions);
        
        // console.log("survey", survey);

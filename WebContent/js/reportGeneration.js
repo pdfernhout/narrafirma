@@ -22,10 +22,10 @@ define(["js/domain", "js/panelBuilder/translate"], function(domain, translate) {
             var questions = panelDefinition.panelFields;
             for (var questionIndex in questions) {
                 var question = questions[questionIndex];
-                var value = domain.projectData.projectAnswers.get(question.id);
+                var value = domain.projectAnswers.get(question.id);
                 if (question.displayType === "quizScoreResult") {
                     var dependsOn = question.displayConfiguration;
-                    value = domain.calculate_quizScoreResult(domain.projectData.projectAnswers, dependsOn);
+                    value = domain.calculate_quizScoreResult(domain.projectAnswers, dependsOn);
                     // Don't count these as answered questions
                     questionsAnsweredCount--;
                 }
