@@ -297,6 +297,8 @@ Survey - maybe add unique ID so long survey results can be saved as progressed t
 
 Make sections optional in loadAllPanelSpecifications to make that code more reuseable
 
+Remove panel's displayName, isHeader, and section fields since now defined by navigation and that is duplicated information; example regex to find them: ^    "displayName": "[^"]*",
+
 ==== DONE
 
 DONE Checkboxes for multiple choices
