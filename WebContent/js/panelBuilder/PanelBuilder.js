@@ -3,6 +3,7 @@ define([
     "./standardWidgets/add_button",
     "./standardWidgets/add_checkbox",
     "./standardWidgets/add_checkboxes",
+    "./standardWidgets/add_functionResult",
     "./standardWidgets/add_grid",
     "./standardWidgets/add_header",
     "./standardWidgets/add_image",
@@ -27,6 +28,7 @@ define([
     add_button,
     add_checkbox,
     add_checkboxes,
+    add_functionResult,
     add_grid,
     add_header,
     add_image,
@@ -78,6 +80,7 @@ function addStandardPlugins() {
     addPlugin("button", add_button);
     addPlugin("checkbox", add_checkbox);
     addPlugin("checkboxes", add_checkboxes);
+    addPlugin("functionResult", add_functionResult);
     addPlugin("grid", add_grid);
     addPlugin("header", add_header);
     addPlugin("image", add_image);

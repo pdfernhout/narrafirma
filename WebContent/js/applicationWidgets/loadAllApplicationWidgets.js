@@ -4,7 +4,6 @@ define([
     "./add_clusteringDiagram",
     "./add_dashboardSectionStatusDisplay",
     "./add_excerptsList",
-    "./add_functionResult",
     "./add_graphBrowser",
     "./add_questionAnswer",
     "./add_questionsTable",
@@ -22,7 +21,6 @@ define([
     add_clusteringDiagram,
     add_dashboardSectionStatusDisplay,
     add_excerptsList,
-    add_functionResult,
     add_graphBrowser,
     add_questionAnswer,
     add_questionsTable,
@@ -46,7 +44,6 @@ define([
         PanelBuilder.addPlugin("clusteringDiagram", add_clusteringDiagram);
         PanelBuilder.addPlugin("dashboardSectionStatusDisplay", add_dashboardSectionStatusDisplay);
         PanelBuilder.addPlugin("excerptsList", add_excerptsList);
-        PanelBuilder.addPlugin("functionResult", add_functionResult);
         PanelBuilder.addPlugin("graphBrowser", add_graphBrowser);
         PanelBuilder.addPlugin("questionAnswer", add_questionAnswer);
         PanelBuilder.addPlugin("questionsTable", add_questionsTable);
