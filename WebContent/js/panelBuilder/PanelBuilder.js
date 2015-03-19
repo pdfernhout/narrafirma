@@ -99,6 +99,7 @@ var PanelBuilder = declare(null, {
         this.currentInternalContentPane = null;
         this.panelSpecificationCollection = null;
         this.buttonClickedCallback = null;
+        this.calculateFunctionResultCallback = null;
         this.currentHelpPage = null;
         this.currentHelpSection = null;
         this.applicationDirectory = "/";
@@ -230,6 +231,22 @@ var PanelBuilder = declare(null, {
             throw new Error("No buttonClickedCallback set for PanelBuilder");
         }
         this.buttonClickedCallback(this, contentPane, model, fieldSpecification, value);
+    },
+    
+    setCalculateFunctionResultCallback: function(callback) {
+        this.calculateFunctionResultCallback = callback;
+    },
+    
+    calculateFunctionResult: function(contentPane, model, fieldSpecification) {
+        if (_.isFunction(fieldSpecification.displayConfiguration)) {
+            // Do callback; this can't be defined in JSON, but can be defined in an application
+            return fieldSpecification.displayConfiguration();
+        }
+        if (!this.calculateFunctionResultCallback) {
+            console.log("No calculateFunctionResultCallback set in panelBuilder", this, fieldSpecification);
+            throw new Error("No calculateFunctionResultCallback set for PanelBuilder");
+        }
+        return this.calculateFunctionResultCallback(this, contentPane, model, fieldSpecification, fieldSpecification.displayConfiguration);
     },
     
     // This will only be valid during the building process for a page

@@ -3,19 +3,13 @@
 define([
     "exports",
     "dojo/_base/lang",
-    "js/questionnaireGeneration",
     "dojo/Stateful",
-    "js/storage",
-    "js/surveyCollection",
     "dojo/topic",
     "js/panelBuilder/translate"
 ], function(
     exports,
     lang,
-    questionnaireGeneration,
     Stateful,
-    storage,
-    surveyCollection,
     topic,
     translate
 ) {
@@ -29,20 +23,6 @@ define([
           projectAnswers: new Stateful()
       }
     };
-    
-    // TODO: This functionality should get moved somewhere else, like routed through the panelBuilder into the application?
-    // Panel builder "functionResult" components will get routed through here to calculate their text.
-    // The domain should publish a topic with the same name as these functions when their value changes.
-    function calculateFunctionResultForGUI(functionName, question) {
-        if (functionName === "totalNumberOfSurveyResults") {
-            return surveyCollection.allCompletedSurveys.length;
-        } else if (functionName === "isStoryCollectingEnabled") {
-            return surveyCollection.isStoryCollectingEnabled(question);
-        } else {
-            console.log("TODO: calculateFunctionResultForGUI ", functionName, question);
-            return "calculateFunctionResultForGUI UNFINISHED: " + functionName + " for: " + question.id;
-        }
-    }
     
     function copyDraftPNIQuestionVersionsIntoAnswers() {
         var model = domain.projectData.projectAnswers;
@@ -149,7 +129,6 @@ define([
         "getPanelSpecificationCollection": getPanelSpecificationCollection,
         
         // functions called from page widgets
-        "calculateFunctionResultForGUI": calculateFunctionResultForGUI,
         "calculate_quizScoreResult": calculate_quizScoreResult,
         
         "copyDraftPNIQuestionVersionsIntoAnswers": copyDraftPNIQuestionVersionsIntoAnswers

@@ -627,7 +627,7 @@ define([
     };
     
     // dispatch the button click
-    function buttonClicked(contentPane, model, fieldSpecification, value) {
+    function buttonClicked(panelBuilder, contentPane, model, fieldSpecification, value) {
          console.log("buttonClicked", fieldSpecification);
          
          var functionName = fieldSpecification.id;
@@ -648,6 +648,19 @@ define([
          } else {
              actualFunction(contentPane, model, fieldSpecification, value);
          }
+    }
+    
+    // Panel builder "functionResult" components will get routed through here to calculate their text.
+    // The application should publish a topic with the same name as these functions when their value changes.
+    function calculateFunctionResultForGUI(panelBuilder, contentPane, model, fieldSpecification, functionName) {
+        if (functionName === "totalNumberOfSurveyResults") {
+            return surveyCollection.allCompletedSurveys.length;
+        } else if (functionName === "isStoryCollectingEnabled") {
+            return surveyCollection.isStoryCollectingEnabled(fieldSpecification);
+        } else {
+            console.log("TODO: calculateFunctionResultForGUI ", functionName, fieldSpecification);
+            return "calculateFunctionResultForGUI UNFINISHED: " + functionName + " for: " + fieldSpecification.id;
+        }
     }
     
     // TODO: Temporary for generating JSON navigation data from AMD module
@@ -707,9 +720,9 @@ define([
             panelBuilder.setPanelSpecifications(panelSpecificationCollection);
             
             // Tell the panelBuilder what do do if a button is clicked
-            panelBuilder.setButtonClickedCallback(function(panelBuilder, contentPane, model, fieldSpecification, value) {
-                buttonClicked(contentPane, model, fieldSpecification, value);
-            });
+            panelBuilder.setButtonClickedCallback(buttonClicked);
+            
+            panelBuilder.setCalculateFunctionResultCallback(calculateFunctionResultForGUI);
             
             createLayout();
             
