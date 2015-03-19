@@ -12,6 +12,7 @@ define([
     "js/questionnaireGeneration",
     "js/storage",
     "js/survey",
+    "js/surveyCollection",
     "js/panelBuilder/toaster",
     "dojo/topic",
     "js/panelBuilder/translate",
@@ -35,6 +36,7 @@ define([
     questionnaireGeneration,
     storage,
     survey,
+    surveyCollection,
     toaster,
     topic,
     translate,
@@ -86,7 +88,7 @@ define([
         console.log("load version clicked");
                 
         // TODO: Kludge of loading all stories when load data?
-        // domain.buttonFunctions.loadLatestStoriesFromServer();
+        // surveyCollection.loadLatestStoriesFromServer();
  
         // TODO: Check for unsaved data before loading project...
         storage.loadAllProjectVersions(loadedProjectVersions);
@@ -150,7 +152,7 @@ define([
         
         // TODO: Kludge of loading all stories when load data?
         console.log("Going to try to load latest stories from server");
-        domain.loadLatestStoriesFromServer(function (newEnvelopeCount) {
+        surveyCollection.loadLatestStoriesFromServer(function (newEnvelopeCount) {
             console.log("Forcing refresh of current page");
             // TODO: KLUDGE: Updating gui a second time so get flicker -- and maybe lose edits?
             if (newEnvelopeCount) showPage(currentPageID, "forceRefresh");
@@ -613,10 +615,10 @@ define([
     var buttonFunctions = {
         "printStoryForm": printStoryForm,
         "copyDraftPNIQuestionVersionsIntoAnswers": copyDraftPNIQuestionVersionsIntoAnswers,
-        "loadLatestStoriesFromServer": domain.loadLatestStoriesFromServer,
+        "loadLatestStoriesFromServer": surveyCollection.loadLatestStoriesFromServer,
         "enterSurveyResult": openSurveyDialog,
-        "storyCollectionStart": domain.storyCollectionStart,
-        "storyCollectionStop": domain.storyCollectionStop,
+        "storyCollectionStart": surveyCollection.storyCollectionStart,
+        "storyCollectionStop": surveyCollection.storyCollectionStop,
         "copyStoryFormURL": copyStoryFormURL,
         "guiOpenSection": guiOpenSection,
         "loadLatest": loadLatestClicked,
@@ -717,7 +719,7 @@ define([
             topic.subscribe("loadLatestStoriesFromServer", loadedMoreSurveyResults);
             
             // Synchronizes the state of the domain for one status flag with what is on server
-            domain.determineStatusOfCurrentQuestionnaire();
+            surveyCollection.determineStatusOfCurrentQuestionnaire();
             
             // Get the latest project data
             loadLatestClicked();

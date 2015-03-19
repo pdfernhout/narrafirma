@@ -1,8 +1,8 @@
 define([
-    "js/domain",
     'dojox/html/entities',
     "dojox/uuid/generateRandomUuid",
     "js/questionnaireGeneration",
+    "js/surveyCollection",
     "js/panelBuilder/translate",
     "js/panelBuilder/standardWidgets/GridWithItemPanel",
     "dijit/form/ComboBox",
@@ -12,10 +12,10 @@ define([
     "dojo/Stateful",
     "js/panelBuilder/widgetSupport"
 ], function(
-    domain,
     entities,
     generateRandomUuid,
     questionnaireGeneration,
+    surveyCollection,
     translate,
     GridWithItemPanel,
     ComboBox,
@@ -63,7 +63,7 @@ define([
              panelFields: questions,
              buildPanel: function (panelBuilder, contentPane, model) {
                  var participantID = model.get("_participantID");
-                 var participantData = domain.getParticipantDataForParticipantID(participantID);
+                 var participantData = surveyCollection.getParticipantDataForParticipantID(participantID);
                  var participantDataModel = new Stateful(participantData);
                  
                  /*
@@ -168,7 +168,7 @@ define([
              }
         };
 
-        var stories = domain.projectData.surveyResults.allStories;
+        var stories = surveyCollection.allStories;
 
         // Store will modify underlying array
         var dataStore = new MemoryDstore({

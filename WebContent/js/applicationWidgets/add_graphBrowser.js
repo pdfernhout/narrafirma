@@ -1,10 +1,10 @@
 define([
     "dojo/_base/array",
-    "js/domain",
     "dojo/dom",
     "dojo/dom-construct",
     "dojo/_base/lang",
     "js/questionnaireGeneration",
+    "js/surveyCollection",
     "js/panelBuilder/widgetSupport",
     "dojox/charting/Chart",
     "dojox/charting/plot2d/Columns",
@@ -13,11 +13,11 @@ define([
     "dojox/layout/TableContainer"
 ], function(
     array,
-    domain,
     dom,
     domConstruct,
     lang,
     questionnaireGeneration,
+    surveyCollection,
     widgetSupport,
     Chart,
     Columns,
@@ -184,7 +184,7 @@ define([
         var plotLabels = [];
         var results = {};
         
-        var stories = domain.projectData.surveyResults.allStories;
+        var stories = surveyCollection.allStories;
         for (var storyIndex in stories) {
             var story = stories[storyIndex];
             var xValue = correctForUnanswered(question, story[question.id]);
@@ -255,7 +255,7 @@ define([
         var plotItems = [];
         var results = {};
         
-        var stories = domain.projectData.surveyResults.allStories;
+        var stories = surveyCollection.allStories;
         for (var storyIndex in stories) {
             var story = stories[storyIndex];
             var xValue = correctForUnanswered(scaleQuestion, story[scaleQuestion.id]);
@@ -354,7 +354,7 @@ define([
     function scatterPlot(mainChartDiv, xAxisQuestion, yAxisQuestion) {
         // collect data
         var plotItems = [];
-        var stories = domain.projectData.surveyResults.allStories;
+        var stories = surveyCollection.allStories;
         for (var index in stories) {
             var story = stories[index];
             var xValue = correctForUnanswered(xAxisQuestion, story[xAxisQuestion.id]);
@@ -445,7 +445,7 @@ define([
         // collect data
         var results = {};
         var grandTotal = 0;
-        var stories = domain.projectData.surveyResults.allStories;
+        var stories = surveyCollection.allStories;
         for (var index in stories) {
             var story = stories[index];
             var xValue = correctForUnanswered(xAxisQuestion, story[xAxisQuestion.id]);
@@ -631,7 +631,7 @@ define([
               
         // collect data
         var plotItems = [];
-        var stories = domain.projectData.surveyResults.allStories;
+        var stories = surveyCollection.allStories;
         for (var index in stories) {
             var story = stories[index];
             var xValue = correctForUnanswered(xAxisQuestion, story[xAxisQuestionID]);

@@ -1,9 +1,9 @@
 define([
     "dojo/_base/array",
-    "js/domain",
     "dojo/dom-construct",
     "dojo/_base/lang",
     "js/questionnaireGeneration",
+    "js/surveyCollection",
     "dojo/topic",
     "js/panelBuilder/translate",
     "js/panelBuilder/standardWidgets/GridWithItemPanel",
@@ -15,10 +15,10 @@ define([
     "dstore/Trackable"
 ], function(
     array,
-    domain,
     domConstruct,
     lang,
     questionnaireGeneration,
+    surveyCollection,
     topic,
     translate,
     GridWithItemPanel,
@@ -267,7 +267,7 @@ define([
                  // TODO: Load correct participant data
                  
                  var participantID = model.get("_participantID");
-                 var participantData = domain.getParticipantDataForParticipantID(participantID);
+                 var participantData = surveyCollection.getParticipantDataForParticipantID(participantID);
                  // console.log("--------------------------- build item panel participantID", participantID, model, participantData);
                  // console.log("questionnaire", questionnaire.participantQuestions, questionnaire);
                  var participantDataModel = new Stateful(participantData);
@@ -275,7 +275,7 @@ define([
              }
         };
 
-        var stories = domain.projectData.surveyResults.allStories;
+        var stories = surveyCollection.allStories;
 
         // Store will modify underlying array
         var dataStore = new Memory({
