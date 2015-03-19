@@ -686,40 +686,39 @@ define([
         
         loadAllApplicationWidgets(PanelBuilder);
         
-        console.log("loadAllPanelSpecifications", loadAllPanelSpecifications);
         // Load the application design
-        loadAllPanelSpecifications(panelSpecificationCollection);
-        
-        // generateNavigationDataInJSON();
-        
-        // Setup the domain with the base model defined by field specifications
-        domain.setupDomain(panelSpecificationCollection);
- 
-        processAllPanels();
-        
-        // Tell the panel builder how to build panels
-        panelBuilder.setPanelSpecifications(panelSpecificationCollection);
-        
-        // Tell the panelBuilder what do do if a button is clicked
-        panelBuilder.setButtonClickedCallback(function(panelBuilder, contentPane, model, fieldSpecification, value) {
-            buttonClicked(contentPane, model, fieldSpecification, value);
+        loadAllPanelSpecifications(panelSpecificationCollection, function() {
+            // generateNavigationDataInJSON();
+            
+            // Setup the domain with the base model defined by field specifications
+            domain.setupDomain(panelSpecificationCollection);
+     
+            processAllPanels();
+            
+            // Tell the panel builder how to build panels
+            panelBuilder.setPanelSpecifications(panelSpecificationCollection);
+            
+            // Tell the panelBuilder what do do if a button is clicked
+            panelBuilder.setButtonClickedCallback(function(panelBuilder, contentPane, model, fieldSpecification, value) {
+                buttonClicked(contentPane, model, fieldSpecification, value);
+            });
+            
+            createLayout();
+            
+            // Update if the URL hash fragment changes
+            topic.subscribe("/dojo/hashchange", urlHashFragmentChanged); 
+            
+            topic.subscribe("loadLatestStoriesFromServer", loadedMoreSurveyResults);
+            
+            // Synchronizes the state of the domain for one status flag with what is on server
+            domain.determineStatusOfCurrentQuestionnaire();
+            
+            // Get the latest project data
+            loadLatestClicked();
+            
+            // turn off initial "please wait" display
+            document.getElementById("pleaseWaitDiv").style.display = "none";
         });
-        
-        createLayout();
-        
-        // Update if the URL hash fragment changes
-        topic.subscribe("/dojo/hashchange", urlHashFragmentChanged); 
-        
-        topic.subscribe("loadLatestStoriesFromServer", loadedMoreSurveyResults);
-        
-        // Synchronizes the state of the domain for one status flag with what is on server
-        domain.determineStatusOfCurrentQuestionnaire();
-        
-        // Get the latest project data
-        loadLatestClicked();
-        
-        // turn off initial "please wait" display
-        document.getElementById("pleaseWaitDiv").style.display = "none";
     }
     
     return {
