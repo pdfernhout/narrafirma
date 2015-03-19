@@ -9,6 +9,7 @@ define([
     "js/applicationWidgets/loadAllApplicationWidgets",
     "js/panelBuilder/loadAllPanelSpecifications",
     "dojo/text!js/applicationPanelSpecifications/navigation.json",
+    "js/questionnaireGeneration",
     "js/storage",
     "js/survey",
     "js/panelBuilder/toaster",
@@ -31,6 +32,7 @@ define([
     loadAllApplicationWidgets,
     loadAllPanelSpecifications,
     navigationJSONText,
+    questionnaireGeneration,
     storage,
     survey,
     toaster,
@@ -568,7 +570,7 @@ define([
     function openSurveyDialog() {
         // TODO: What version of questionnaire should be used? Should it really be the latest one? Or the one active on server?
         console.log("domain.projectData", domain.projectData);
-        var questionnaire = domain.getCurrentQuestionnaire();
+        var questionnaire = questionnaireGeneration.getCurrentQuestionnaire();
         
         survey.openSurveyDialog(questionnaire);
     }

@@ -3,6 +3,7 @@ define([
     "js/domain",
     "dojo/dom-construct",
     "dojo/_base/lang",
+    "js/questionnaireGeneration",
     "dojo/topic",
     "js/panelBuilder/translate",
     "js/panelBuilder/standardWidgets/GridWithItemPanel",
@@ -17,6 +18,7 @@ define([
     domain,
     domConstruct,
     lang,
+    questionnaireGeneration,
     topic,
     translate,
     GridWithItemPanel,
@@ -233,7 +235,7 @@ define([
         console.log("insertStoryBrowser start", id);
         
         // TODO: Fix this show also handles participant questions somehow
-        var questionnaire = domain.getCurrentQuestionnaire();
+        var questionnaire = questionnaireGeneration.getCurrentQuestionnaire();
         console.log("questionnaire", questionnaire);
         var storyQuestions = questionnaire.storyQuestions;
         

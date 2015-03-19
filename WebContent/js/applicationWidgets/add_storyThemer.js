@@ -2,6 +2,7 @@ define([
     "js/domain",
     'dojox/html/entities',
     "dojox/uuid/generateRandomUuid",
+    "js/questionnaireGeneration",
     "js/panelBuilder/translate",
     "js/panelBuilder/standardWidgets/GridWithItemPanel",
     "dijit/form/ComboBox",
@@ -14,6 +15,7 @@ define([
     domain,
     entities,
     generateRandomUuid,
+    questionnaireGeneration,
     translate,
     GridWithItemPanel,
     ComboBox,
@@ -32,7 +34,7 @@ define([
         console.log("insertStoryThemer start", id);
         
         // TODO: Fix this show also handles participant questions somehow
-        var questionnaire = domain.getCurrentQuestionnaire();
+        var questionnaire = questionnaireGeneration.getCurrentQuestionnaire();
         var storyQuestions = questionnaire.storyQuestions;
         var participantQuestions = questionnaire.participantQuestions;
         

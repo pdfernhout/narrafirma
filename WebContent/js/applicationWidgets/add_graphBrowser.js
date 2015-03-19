@@ -4,6 +4,7 @@ define([
     "dojo/dom",
     "dojo/dom-construct",
     "dojo/_base/lang",
+    "js/questionnaireGeneration",
     "js/panelBuilder/widgetSupport",
     "dojox/charting/Chart",
     "dojox/charting/plot2d/Columns",
@@ -16,6 +17,7 @@ define([
     dom,
     domConstruct,
     lang,
+    questionnaireGeneration,
     widgetSupport,
     Chart,
     Columns,
@@ -572,7 +574,7 @@ define([
         var chartDiv = domConstruct.empty("chartDiv");
         
         // TODO: Fix this so it also handles participant questions somehow
-        var surveyQuestions = domain.getCurrentQuestionnaire().storyQuestions;
+        var surveyQuestions = questionnaireGeneration.getCurrentQuestionnaire().storyQuestions;
         
         var xAxisQuestion = questionForID(surveyQuestions, xAxisQuestionID);
         var yAxisQuestion = questionForID(surveyQuestions, yAxisQuestionID);
@@ -718,7 +720,7 @@ define([
         
         // TODO: Fix this so it also handles participant questions somehow
         // TODO: Update these as they change...
-        var questions = domain.getCurrentQuestionnaire().storyQuestions;
+        var questions = questionnaireGeneration.getCurrentQuestionnaire().storyQuestions;
         
         var optionsForAllQuestions = widgetSupport.optionsForAllQuestions(questions);
         
