@@ -4,13 +4,11 @@ define([
     "exports",
     "dojo/_base/lang",
     "dojo/Stateful",
-    "dojo/topic",
     "js/panelBuilder/translate"
 ], function(
     exports,
     lang,
     Stateful,
-    topic,
     translate
 ) {
     "use strict";
