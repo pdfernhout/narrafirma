@@ -23,9 +23,11 @@ define([
         this.lastHeader = null;
     }
     
+    // TODO: Maybe should remove this function? Currently only used by one test
     PanelSpecificationCollection.prototype.addPanelSpecificationFromJSONText = function(panelSpecificationJSONText) {
         var panelSpecification = JSON.parse(panelSpecificationJSONText);
         this.addPanelSpecification(panelSpecification);
+        return panelSpecification;
     };
     
     PanelSpecificationCollection.prototype.addPanelSpecification = function(panelSpecification) {
