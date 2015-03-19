@@ -1,7 +1,7 @@
 require([
     "dojo/i18n!js/nls/applicationMessages",
     "dojo/dom",
-    "js/survey",
+    "js/surveyBuilder",
     "js/panelBuilder/translate",
     "dojo/domReady!"
 ], function(

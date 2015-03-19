@@ -11,7 +11,7 @@ define([
     "dojo/text!js/applicationPanelSpecifications/navigation.json",
     "js/questionnaireGeneration",
     "js/storage",
-    "js/survey",
+    "js/surveyBuilder",
     "js/surveyCollection",
     "js/panelBuilder/toaster",
     "dojo/topic",
