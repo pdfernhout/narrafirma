@@ -7,7 +7,8 @@ define([
     "dojo/hash",
     "dojo/_base/lang",
     "js/applicationWidgets/loadAllApplicationWidgets",
-    "js/applicationPanelSpecifications/loadAllPanelSpecifications",
+    "js/panelBuilder/loadAllPanelSpecifications",
+    "dojo/text!js/applicationPanelSpecifications/navigation.json",
     "js/storage",
     "js/survey",
     "js/panelBuilder/toaster",
@@ -29,6 +30,7 @@ define([
     lang,
     loadAllApplicationWidgets,
     loadAllPanelSpecifications,
+    navigationJSONText,
     storage,
     survey,
     toaster,
@@ -43,7 +45,9 @@ define([
     "use strict";
 
     // TODO: Add page validation
-    // TODO: Add translations for GUI strings used here
+ 
+    var navigationSections = JSON.parse(navigationJSONText);
+    var loadingBase = "dojo/text!js/applicationPanelSpecifications/";
     
     var panelSpecificationCollection = new PanelSpecificationCollection();
     
@@ -687,7 +691,7 @@ define([
         loadAllApplicationWidgets(PanelBuilder);
         
         // Load the application design
-        loadAllPanelSpecifications(panelSpecificationCollection, function() {
+        loadAllPanelSpecifications(panelSpecificationCollection, navigationSections, loadingBase, function() {
             // generateNavigationDataInJSON();
             
             // Setup the domain with the base model defined by field specifications

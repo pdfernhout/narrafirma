@@ -1,17 +1,40 @@
 define([
-    "dojo/text!js/applicationPanelSpecifications/navigation.json",   
 ], function(
-    navigationJSONText
 ) {
     "use strict";
     
-    function loadAllPanelSpecifications(panelSpecificationCollection, callback) {
-        // Load all the panels specified in navigation.json
-        
-        var loadingBase = "dojo/text!js/applicationPanelSpecifications/";
-        
-        var navigationSections = JSON.parse(navigationJSONText);
-        
+    // Load all the panels from JSON files specified in navigationSections array
+    // see navigation.json for an example of the format
+    // The "extraPanels" are child panels used by grids and similar widgets on the page (including recursively)
+    /*
+     [
+         {
+            "section": "planning",
+            "sectionName": "Planning",
+            "pages": [
+                {
+                    "panelID": "page_planning",
+                    "panelName": "Planning"
+                },
+                {
+                    "panelID": "page_participantGroups",
+                    "panelName": "Describe participant groups",
+                    "extraPanels": [
+                        {
+                            "panelID": "panel_addParticipantGroup",
+                            "panelName": "Participant group"
+                        }
+                    ]
+                }, ...
+         }, ...
+     ]
+     */
+    
+    // loadingBase should be something like:
+    // var loadingBase = "dojo/text!js/applicationPanelSpecifications/";
+    
+    function loadAllPanelSpecifications(panelSpecificationCollection, navigationSections, loadingBase, callback) {
+        console.log("loadAllPanelSpecifications", loadingBase, navigationSections);
         var requireList = [];
         var panelMetadata = [];
         

@@ -1,6 +1,7 @@
 require([
     "js/applicationWidgets/loadAllApplicationWidgets",
-    "js/applicationPanelSpecifications/loadAllPanelSpecifications",
+    "js/panelBuilder/loadAllPanelSpecifications",
+    "dojo/text!js/applicationPanelSpecifications/navigation.json",  
     "js/panelBuilder/PanelBuilder",
     "js/panelBuilder/PanelSpecificationCollection",
     "js/pointrel20141201Client",
@@ -9,6 +10,7 @@ require([
 ], function(
     loadAllApplicationWidgets,
     loadAllPanelSpecifications,
+    navigationJSONText,
     PanelBuilder,
     PanelSpecificationCollection,
     pointrel20141201Client,
@@ -184,7 +186,11 @@ require([
         loadAllApplicationWidgets(PanelBuilder);
         
         var panelSpecificationCollectionOriginal = new PanelSpecificationCollection();
-        loadAllPanelSpecifications(panelSpecificationCollectionOriginal, function() {
+        
+        var navigationSections = JSON.parse(navigationJSONText);
+        var loadingBase = "dojo/text!js/applicationPanelSpecifications/";
+        
+        loadAllPanelSpecifications(panelSpecificationCollectionOriginal, navigationSections, loadingBase, function() {
             var panelSpecificationCollectionCopyWithTestModels = new PanelSpecificationCollection();
     
             // Change all the models; this will also invalidate the lookup by model name, which is why we need a copy
