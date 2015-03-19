@@ -130,10 +130,6 @@ define(["js/domain", "js/panelBuilder/translate"], function(domain, translate) {
        ensureUniqueQuestionIDs(usedIDs, participantQuestions);
        
        // console.log("survey", survey);
-       
-       // Ensure we have an entire fresh copy
-       // projectData.exportedSurveyQuestions = JSON.parse(JSON.stringify(survey));
-       // console.log("projectData.exportedSurveyQuestions", projectData.exportedSurveyQuestions);
            
        questionnaire.elicitingQuestions = [];
        for (var elicitingQuestionIndex in elicitingQuestions) {
