@@ -461,7 +461,7 @@ define([
                 lastPageID = pageID;
 
                 // Put in a dynamic question (incomplete for options) to be used to lookup page status.
-                // This is needed so add_qustionAnswer can check the field is a "select" to translate the options if needed
+                // This is needed so add_questionAnswer can check the field is a "select" to translate the options if needed
                 panelSpecificationCollection.addFieldSpecification({id: pageID + "_pageStatus", displayType: "select"});
                 
                 if (panel.isHeader) {

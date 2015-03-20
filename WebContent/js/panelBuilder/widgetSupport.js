@@ -75,7 +75,7 @@ define([
     function newButton(addToDiv, label, callback) {
         var translatedLabel = translate(label);
         
-        // TODO: Maybe should not be passingin an ID??? Just let Dojo assign one
+        // TODO: Maybe should not be passing in an ID??? Just let Dojo assign one
         var button = new Button({
             label: translatedLabel,
             type: "button",
