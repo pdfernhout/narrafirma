@@ -1,10 +1,6 @@
 define([
-    "dojox/mvc/at",
-    "dojo/_base/lang",
     "js/panelBuilder/translate"
 ], function(
-    at,
-    lang,
     translate
 ){
     "use strict";

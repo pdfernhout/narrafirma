@@ -14,8 +14,7 @@ define([
     "./standardWidgets/add_text",
     "./standardWidgets/add_textarea",
     "./standardWidgets/add_toggleButton",
-    
-    "dojo/_base/array",
+
     "./browser",
     "dojo/_base/declare",
     'dojo/dom-class',
@@ -39,8 +38,7 @@ define([
     add_text,
     add_textarea,
     add_toggleButton,
-    
-    array,
+
     browser,
     declare,
     domClass,

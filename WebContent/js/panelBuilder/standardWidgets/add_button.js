@@ -1,15 +1,11 @@
 define([
-    "dojox/mvc/at",
     "dijit/form/Button",
-    "dijit/layout/ContentPane",
     "dojo/dom-class",
     "dojo/dom-construct",
     "dojo/_base/lang",
     "../translate"
 ], function(
-    at,
     Button,
-    ContentPane,
     domClass,
     domConstruct,
     lang,

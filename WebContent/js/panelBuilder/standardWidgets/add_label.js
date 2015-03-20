@@ -1,12 +1,6 @@
 define([
-    "dojox/mvc/at",
-    "dijit/form/Button",
-    "dojo/_base/lang",
     "../translate"
 ], function(
-    at,
-    Button,
-    lang,
     translate
 ){
     "use strict";

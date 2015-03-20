@@ -1,13 +1,7 @@
 define([
-    "dojox/mvc/at",
-    "dijit/layout/ContentPane",
-    "js/domain",
     "dojo/_base/lang",
     "js/panelBuilder/translate"
 ], function(
-    at,
-    ContentPane,
-    domain,
     lang,
     translate
 ){

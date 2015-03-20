@@ -1,7 +1,6 @@
 define([
     "dojo/_base/array",
     "dojox/mvc/at",
-    "dijit/layout/ContentPane",
     "dijit/form/FilteringSelect",
     "dojo/_base/lang",
     "dojo/store/Memory",
@@ -9,7 +8,6 @@ define([
 ], function(
     array,
     at,
-    ContentPane,
     FilteringSelect,
     lang,
     Memory,

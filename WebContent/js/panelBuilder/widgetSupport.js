@@ -1,29 +1,23 @@
 define([
     "dojo/_base/array",
-    "dojox/mvc/at",
     "dijit/form/Button",
-    "dijit/layout/ContentPane",
     "dojo/dom-construct",
     "dijit/form/FilteringSelect",
     "dojo/_base/lang",
     "dojo/store/Memory",
     "dijit/form/MultiSelect",
     "dojo/query",
-    "dojo/Stateful",
     "./translate",
     "dojo/_base/window"
 ], function(
     array,
-    at,
     Button,
-    ContentPane,
     domConstruct,
     FilteringSelect,
     lang,
     Memory,
     MultiSelect,
     query,
-    Stateful,
     translate,
     win
 ){
