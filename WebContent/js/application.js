@@ -605,8 +605,39 @@ define([
         alert("unfinished");
     }
     
+    function copyDraftPNIQuestionVersionsIntoAnswers_Basic() {
+        var model = domain.projectAnswers;
+            
+        var finalQuestionIDs = [
+            "project_pniQuestions_goal_final",
+            "project_pniQuestions_relationships_final",
+            "project_pniQuestions_focus_final",
+            "project_pniQuestions_range_final",
+            "project_pniQuestions_scope_final",
+            "project_pniQuestions_emphasis_final"
+        ];
+        
+        var copiedAnswersCount = 0;
+        
+        for (var index in finalQuestionIDs) {
+            var finalQuestionID = finalQuestionIDs[index];
+            var draftQuestionID = finalQuestionID.replace("_final", "_draft");
+            // console.log("finalQuestionID/draftQuestionID", finalQuestionID, draftQuestionID);
+            var finalValue = model.get(finalQuestionID);
+            if (!finalValue) {
+                var draftValue = model.get(draftQuestionID);
+                if (draftValue) {
+                    model.set(finalQuestionID, draftValue);
+                    copiedAnswersCount++;
+                }
+            }
+        }
+        
+        return copiedAnswersCount;
+    }
+    
     function copyDraftPNIQuestionVersionsIntoAnswers() {
-        var copiedAnswersCount = domain.copyDraftPNIQuestionVersionsIntoAnswers();
+        var copiedAnswersCount = copyDraftPNIQuestionVersionsIntoAnswers_Basic();
         var template = translate("#copyDraftPNIQuestion_template", "Copied {{copiedAnswersCount}} answers\nNote that blank draft answers are not copied; non-blank final answers are not replaced");
         var message = template.replace("{{copiedAnswersCount}}", copiedAnswersCount);
         alert(message);

@@ -17,37 +17,6 @@ define([
       // Initialize this here to make testing of domain easier without setupDomain being called
       projectAnswers: new Stateful()
     };
-    
-    function copyDraftPNIQuestionVersionsIntoAnswers() {
-        var model = domain.projectAnswers;
-            
-        var finalQuestionIDs = [
-            "project_pniQuestions_goal_final",
-            "project_pniQuestions_relationships_final",
-            "project_pniQuestions_focus_final",
-            "project_pniQuestions_range_final",
-            "project_pniQuestions_scope_final",
-            "project_pniQuestions_emphasis_final"
-        ];
-        
-        var copiedAnswersCount = 0;
-        
-        for (var index in finalQuestionIDs) {
-            var finalQuestionID = finalQuestionIDs[index];
-            var draftQuestionID = finalQuestionID.replace("_final", "_draft");
-            // console.log("finalQuestionID/draftQuestionID", finalQuestionID, draftQuestionID);
-            var finalValue = model.get(finalQuestionID);
-            if (!finalValue) {
-                var draftValue = model.get(draftQuestionID);
-                if (draftValue) {
-                    model.set(finalQuestionID, draftValue);
-                    copiedAnswersCount++;
-                }
-            }
-        }
-        
-        return copiedAnswersCount;
-    }
 
     // Application should call this at startup
     function setupDomain(panelSpecificationCollection) {
@@ -83,8 +52,6 @@ define([
             
         // data collected
         "projectAnswers": domain.projectAnswers,
-  
-        "copyDraftPNIQuestionVersionsIntoAnswers": copyDraftPNIQuestionVersionsIntoAnswers
     };
     
     lang.mixin(exports, exportedFunctions);
