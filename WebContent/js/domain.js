@@ -48,33 +48,6 @@ define([
         
         return copiedAnswersCount;
     }
-    
-    function calculate_quizScoreResult(model, dependsOn) {
-        // console.log("quiz score result", dependsOn);
-        if (!domain.panelSpecificationCollection) return "ERROR: domain.panelSpecificationCollection is not set";
-        var total = 0;
-        for (var dependsOnIndex = 0; dependsOnIndex < dependsOn.length; dependsOnIndex++) {
-            var questionID = dependsOn[dependsOnIndex];
-            var questionAnswer = model.get(questionID);
-            var answerWeight = 0;
-            if (questionAnswer) {
-                // console.log("questionAnswer", questionAnswer);
-                var choices = domain.panelSpecificationCollection.getFieldSpecificationForFieldID(questionID).dataOptions;
-                answerWeight = choices.indexOf(questionAnswer) - 1;
-                // console.log("answerWeight", answerWeight);
-                if (answerWeight < 0) answerWeight = 0;
-                total += answerWeight;
-            } else {
-               // Nothing 
-            }
-            // console.log("questionAnswer", questionID, questionAnswer, answerWeight, total);
-        }
-        var possibleTotal = dependsOn.length * 3;
-        var percent = Math.round(100 * total / possibleTotal);
-        var template = translate("#calculate_quizScoreResult_template", "{{total}} of a possible {{possibleTotal}} ({{percent}}%)");
-        var response = template.replace("{{total}}", total).replace("{{possibleTotal}}", possibleTotal).replace("{{percent}}", "" + percent);
-        return "<b>" + response + "</b>";
-    }
 
     // Application should call this at startup
     function setupDomain(panelSpecificationCollection) {
@@ -110,10 +83,7 @@ define([
             
         // data collected
         "projectAnswers": domain.projectAnswers,
-        
-        // functions called from page widgets
-        "calculate_quizScoreResult": calculate_quizScoreResult,
-        
+  
         "copyDraftPNIQuestionVersionsIntoAnswers": copyDraftPNIQuestionVersionsIntoAnswers
     };
     

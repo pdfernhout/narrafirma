@@ -1,4 +1,12 @@
-define(["js/domain", "js/panelBuilder/translate"], function(domain, translate) {
+define([
+    "js/domain",
+    "js/applicationWidgets/add_quizScoreResult",
+    "js/panelBuilder/translate"
+], function(
+    domain,
+    add_quizScoreResult,
+    translate
+) {
    "use strict";
    
    function calculate_report(panelSpecificationCollection, model, headerPageID) {
@@ -25,7 +33,7 @@ define(["js/domain", "js/panelBuilder/translate"], function(domain, translate) {
                 var value = domain.projectAnswers.get(question.id);
                 if (question.displayType === "quizScoreResult") {
                     var dependsOn = question.displayConfiguration;
-                    value = domain.calculate_quizScoreResult(domain.projectAnswers, dependsOn);
+                    value = add_quizScoreResult.calculate_quizScoreResult(panelSpecificationCollection, domain.projectAnswers, dependsOn);
                     // Don't count these as answered questions
                     questionsAnsweredCount--;
                 }
