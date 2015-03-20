@@ -74,23 +74,6 @@ define([
         if (pageCount === 0) statusText = "";
         
         console.log("statusText for pageStatus", statusText, pageStatus);
-        // var statusText = "Unfinished count: " + pageCount + " with: " + JSON.stringify(pageStatus);
-        
-        var statusSpecification = {
-            id: fieldSpecification.id + "_status",
-            displayType: "label",
-            displayPrompt: statusText
-        };
-        // var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, statusSpecification);
-        
-        /*
-        var label = panelBuilder.newContentPane({
-            // content: translate(id + "::prompt", fieldSpecification.displayPrompt)
-            // content: "<b>" + statusText + "</b>" 
-            content: statusText
-        });
-        label.placeAt(questionContentPane);
-        */
         
         var buttonFieldSpecification = {
             id: fieldSpecification.id + "_button",

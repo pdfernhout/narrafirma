@@ -29,7 +29,6 @@ define([
             // These need to be created here so that the instances do not share one copy if made above
             this.radioButtons = {};
             this.options = widgetSupport.buildOptions(this.questionID, this.choices, this.optionsString);
-            var self = this;
         },
     
         buildRendering: function() {
