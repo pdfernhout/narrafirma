@@ -116,31 +116,14 @@ define([
         });
     }
      
-    function switchToLoadedProjectData(error, projectAnswers, envelope) {
+    function switchToLoadedProjectData(error, projectAnswersLoaded, envelope) {
         if (error) {
             alert("A problem happened when trying to load the latest version of the project:\n" + error);
             return;
         }
-        console.log("loading saved version", projectAnswers);
-        var key;
-        for (key in projectAnswers) {
-            if (projectAnswers.hasOwnProperty(key)) {
-                domain.projectAnswers.set(key, projectAnswers[key]);
-            }
-        }
-        // TODO: A little dangerous to remove stuff, should this be kept?
-        var fieldsToRemove = {};
-        for (key in domain.projectAnswers) {
-            if (domain.projectAnswers.hasOwnProperty(key) && !projectAnswers.hasOwnProperty(key)) {
-                // Stateful model adds "_watchCallbacks" so don't remove it
-                if (!_.startsWith(key, "_")) fieldsToRemove[key] = true;
-            }
-        }
-        for (key in fieldsToRemove) {
-            console.log("removing old field/data", key, domain.projectAnswers.get(key));
-            domain.projectAnswers.set(key, undefined);
-        }
-        
+        console.log("loading saved version", projectAnswersLoaded);
+        domain.updateModelWithNewValues(domain.projectAnswers, projectAnswersLoaded);
+
         // Rebuild the current page to ensure it gets latest data...
         showPage(currentPageID, "forceRefresh");
         
