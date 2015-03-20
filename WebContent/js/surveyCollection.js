@@ -2,14 +2,12 @@ define([
     "dojo/_base/lang",
     "js/questionnaireGeneration",
     "js/storage",
-    "dojo/topic",
-    "js/panelBuilder/translate"
+    "dojo/topic"
 ], function(
    lang,
    questionnaireGeneration,
    storage,
-   topic,
-   translate
+   topic
 ) {
    "use strict";
    

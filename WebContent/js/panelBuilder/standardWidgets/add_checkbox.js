@@ -1,15 +1,9 @@
 define([
     "dojox/mvc/at",
-    "dijit/form/CheckBox",
-    "dijit/layout/ContentPane",
-    "dojo/_base/lang",
-    "../translate"
+    "dijit/form/CheckBox"
 ], function(
     at,
-    CheckBox,
-    ContentPane,
-    lang,
-    translate
+    CheckBox
 ){
     "use strict";
     

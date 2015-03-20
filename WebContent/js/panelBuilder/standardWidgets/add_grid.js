@@ -1,19 +1,11 @@
 define([
-    "dojox/mvc/at",
-    "dijit/layout/ContentPane",
     "./GridWithItemPanel",
-    "dojo/_base/lang",
     "dstore/Memory",
-    "dstore/Trackable",
-    "../translate"
+    "dstore/Trackable"
 ], function(
-    at,
-    ContentPane,
     GridWithItemPanel,
-    lang,
     Memory,
-    Trackable,
-    translate
+    Trackable
 ){
     "use strict";
     

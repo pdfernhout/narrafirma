@@ -1,15 +1,9 @@
 define([
     "dojox/mvc/at",
-    "dijit/layout/ContentPane",
-    "dojo/_base/lang",
-    "./RadioButtonsWidget",
-    "../translate"
+    "./RadioButtonsWidget"
 ], function(
     at,
-    ContentPane,
-    lang,
-    RadioButtonsWidget,
-    translate
+    RadioButtonsWidget
 ){
     "use strict";
     

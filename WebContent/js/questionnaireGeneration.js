@@ -1,4 +1,4 @@
-define(["js/domain", "js/panelBuilder/translate"], function(domain, translate) {
+define(["js/domain"], function(domain) {
    "use strict";
    
    function ensureUniqueQuestionIDs(usedIDs, editorQuestions) {

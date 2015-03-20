@@ -1,15 +1,7 @@
 define([
-    "dojox/mvc/at",
-    "./CheckboxesWidget",
-    "dijit/layout/ContentPane",
-    "dojo/_base/lang",
-    "../translate"
+    "./CheckboxesWidget"
 ], function(
-    at,
-    CheckboxesWidget,
-    ContentPane,
-    lang,
-    translate
+    CheckboxesWidget
 ){
     "use strict";
     

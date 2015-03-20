@@ -1,15 +1,9 @@
 define([
     "dojox/mvc/at",
-    "dijit/layout/ContentPane",
-    "dojo/_base/lang",
-    "dijit/form/SimpleTextarea",
-    "../translate"
+    "dijit/form/SimpleTextarea"
 ], function(
     at,
-    ContentPane,
-    lang,
-    SimpleTextarea,
-    translate
+    SimpleTextarea
 ){
     "use strict";
     

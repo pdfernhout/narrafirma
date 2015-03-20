@@ -9,15 +9,11 @@ define([
     'dgrid/extensions/DijitRegistry',
     'dgrid/Grid',
     'dgrid/Keyboard',
-    "dojo/_base/lang",
     "dijit/layout/LayoutContainer",
-    "dojo/query",
     'dgrid/Selection',
     "dojo/Stateful",
     "dijit/form/Textarea",
-    "./translate",
-    "./widgetSupport",
-    "dojo/_base/window"
+    "./translate"
 ], function(
     at,
     Button,
@@ -29,15 +25,11 @@ define([
     DijitRegistry,
     Grid,
     Keyboard,
-    lang,
     LayoutContainer,
-    query,
     Selection,
     Stateful,
     Textarea,
-    translate,
-    widgetSupport,
-    win
+    translate
 ){
     "use strict";
     

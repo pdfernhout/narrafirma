@@ -1,15 +1,9 @@
 define([
     "dojox/mvc/at",
-    "dijit/layout/ContentPane",
-    "dojo/_base/lang",
-    "dijit/form/ToggleButton",
-    "../translate"
+    "dijit/form/ToggleButton"
 ], function(
     at,
-    ContentPane,
-    lang,
-    ToggleButton,
-    translate
+    ToggleButton
 ){
     "use strict";
     

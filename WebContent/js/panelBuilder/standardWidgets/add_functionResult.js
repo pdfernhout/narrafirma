@@ -1,17 +1,9 @@
 define([
-    "dojox/mvc/at",
-    "dijit/layout/ContentPane",
-    "js/domain",
     "dojo/_base/lang",
-    "dojo/topic",
-    "js/panelBuilder/translate"
+    "dojo/topic"
 ], function(
-    at,
-    ContentPane,
-    domain,
     lang,
-    topic,
-    translate
+    topic
 ){
     "use strict";
     
