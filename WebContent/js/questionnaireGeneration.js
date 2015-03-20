@@ -85,7 +85,7 @@ define(["js/domain", "js/panelBuilder/translate"], function(domain, translate) {
            } else {
                if (options.length === 1) {
                    displayConfiguration = options[1];
-               } else if (dataOptions.length > 1) {
+               } else if (options.length > 1) {
                    displayConfiguration = options;
                }
            }
