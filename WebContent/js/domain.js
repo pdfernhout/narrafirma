@@ -35,35 +35,6 @@ define([
                 console.log("removing old field/data", key, model.get(key));
                 model.set(key, undefined);
             }
-        },
-
-        // Application should call this at startup
-        setupDomain: function(panelSpecificationCollection) {
-            var modelTemplate = panelSpecificationCollection.buildModel("ProjectModel");
-            
-            domain.updateModelWithNewValues(domain.projectAnswers, modelTemplate);
-
-            var pages = panelSpecificationCollection.buildListOfPages();
-            
-            for (var pageIndex = 0; pageIndex < pages.length; pageIndex++) {
-                var page = pages[pageIndex];
-                if (!page.isHeader) {
-                    var pageID = page.id;
-                    domain.projectAnswers[pageID + "_pageStatus"] = null;
-                }
-            }
-            
-            /*
-             Maybe this can be adapted for saving and loading individual pages?
-            for (var fieldName in domain.projectAnswers) {
-                var fieldValue = domain.projectAnswers[fieldName];
-                if (fieldValue instanceof Array) {
-                    domain.projectAnswers[fieldName] = new StatefulArray(fieldValue);
-                }
-            }
-            */
-            
-            console.log("setupDomain result: domain", domain);
         }
     };
     
