@@ -1,15 +1,9 @@
 // This supports globals shared by modules
 
 define([
-    "exports",
-    "dojo/_base/lang",
-    "dojo/Stateful",
-    "js/panelBuilder/translate"
+    "dojo/Stateful"
 ], function(
-    exports,
-    lang,
-    Stateful,
-    translate
+    Stateful
 ) {
     "use strict";
     
@@ -47,12 +41,10 @@ define([
         console.log("setupDomain result: domain", domain);
     }
 
-    var exportedFunctions = {
+    return {
         "setupDomain": setupDomain,
             
         // data collected
         "projectAnswers": domain.projectAnswers,
     };
-    
-    lang.mixin(exports, exportedFunctions);
 });
