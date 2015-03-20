@@ -227,7 +227,7 @@ define([
         "confirm": confirm,
         "openDialog": openDialog,
         "openTextEditorDialog": openTextEditorDialog,
-        "openListChoiceDialog": openListChoiceDialog,
+        "openListChoiceDialog": openListChoiceDialog
     };
    
 });

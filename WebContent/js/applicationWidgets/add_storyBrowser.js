@@ -302,7 +302,7 @@ define([
             filter1: null,
             filter2: null,
             storyList: null,
-            subscription: null,
+            subscription: null
         };
         
         storyBrowserInstance.filter1 = createFilterPane(storyBrowserInstance, id + "_1", questions, stories, table);

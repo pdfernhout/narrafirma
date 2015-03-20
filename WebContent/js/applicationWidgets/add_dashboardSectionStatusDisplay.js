@@ -79,7 +79,7 @@ define([
         var statusSpecification = {
             id: fieldSpecification.id + "_status",
             displayType: "label",
-            displayPrompt: statusText,
+            displayPrompt: statusText
         };
         // var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, statusSpecification);
         

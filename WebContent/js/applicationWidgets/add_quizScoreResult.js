@@ -15,7 +15,7 @@ define([
     
     function calculate_quizScoreResult(panelSpecificationCollection, model, dependsOn) {
         // console.log("quiz score result", dependsOn);
-        if (!panelSpecificationCollection) return "ERROR ir calculate_quizScoreResult: panelSpecificationCollection is not set";
+        if (!panelSpecificationCollection) return "ERROR in calculate_quizScoreResult: panelSpecificationCollection is not set";
         var total = 0;
         for (var dependsOnIndex = 0; dependsOnIndex < dependsOn.length; dependsOnIndex++) {
             var questionID = dependsOn[dependsOnIndex];
@@ -28,8 +28,6 @@ define([
                 // console.log("answerWeight", answerWeight);
                 if (answerWeight < 0) answerWeight = 0;
                 total += answerWeight;
-            } else {
-               // Nothing 
             }
             // console.log("questionAnswer", questionID, questionAnswer, answerWeight, total);
         }
@@ -55,7 +53,7 @@ define([
          // TODO: Fix when refactor
             var watcher = model.watch(questionID, lang.hitch(panelBuilder, panelBuilder.updateLabelUsingCalculation, updateInfo));
             
-            // Klugde to get the label to free the watcher by calling remove when it is destroyed
+            // Kludge to get the label to free the watcher by calling remove when it is destroyed
             label.own(watcher);
         }
         return label;
