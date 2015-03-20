@@ -7,7 +7,7 @@ require([
 ], function(
     applicationMessages,
     dom,
-    survey,
+    surveyBuilder,
     translate
 ){
     "use strict";
@@ -30,7 +30,7 @@ require([
         console.log("createLayout");
            
         // TODO: Fix hardcoded ID!!
-        survey.getQuestionnaireFromServer(questionnaireID, function(error, questionnaire, envelope) {
+        surveyBuilder.getQuestionnaireFromServer(questionnaireID, function(error, questionnaire, envelope) {
             if (error) {
                 // TODO: Translate
                 document.getElementById("pleaseWaitDiv").innerHTML = "Something went wrong loading the survey questionnaire from the server";
@@ -40,7 +40,7 @@ require([
             console.log("got questionnaire from server", questionnaireID, questionnaire);
             
             var surveyDiv = dom.byId("surveyDiv");
-            var form = survey.buildSurveyForm(questionnaire, finishedSurvey, false);
+            var form = surveyBuilder.buildSurveyForm(questionnaire, finishedSurvey, false);
             form.placeAt(surveyDiv);
             // Startup must be called here as form is being added directly to the rest of document visual hierarchy
             form.startup();
@@ -55,7 +55,7 @@ require([
         translate.configure({}, applicationMessages);
         
         // Determine status of current questionnaire
-        survey.getStatusFromServer(questionnaireID, function(error, status, envelope) {
+        surveyBuilder.getStatusFromServer(questionnaireID, function(error, status, envelope) {
             if (error || !status.active) {
                 // TODO: Translate
                 document.getElementById("pleaseWaitDiv").innerHTML = "The survey is not currently active: " + questionnaireID;

@@ -35,7 +35,7 @@ define([
     navigationJSONText,
     questionnaireGeneration,
     storage,
-    survey,
+    surveyBuilder,
     surveyCollection,
     toaster,
     topic,
@@ -555,7 +555,7 @@ define([
         console.log("openSurveyDialog domain", domain);
         var questionnaire = questionnaireGeneration.getCurrentQuestionnaire();
         
-        survey.openSurveyDialog(questionnaire);
+        surveyBuilder.openSurveyDialog(questionnaire);
     }
     
     function loadedMoreSurveyResults(newEnvelopeCount) {
