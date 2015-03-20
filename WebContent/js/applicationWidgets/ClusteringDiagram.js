@@ -43,9 +43,9 @@ define([
     
     var defaultSurfaceWidthInPixels = 800;
     var defaultSurfaceHeightInPixels = 400;
-    
+
     function uuidFast() {
-    	return generateRandomUuid();
+        return generateRandomUuid();
     }
 
     // Caution: "this" may be undefined for functions called by this unless "bind" or "hitch" is used
@@ -208,7 +208,6 @@ define([
             } else {
              // TODO: Translate
                 alert("Please select an item to update first");
-                return;
             }
         });
 

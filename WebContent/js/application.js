@@ -140,8 +140,6 @@ define([
             // TODO: KLUDGE: Updating gui a second time so get flicker -- and maybe lose edits?
             if (newEnvelopeCount) showPage(currentPageID, "forceRefresh");
         });
-        
-        return;
     }
     
     function saveClicked(event) {
@@ -658,7 +656,6 @@ define([
              var message = "Unfinished handling for: " + fieldSpecification.id + " with functionName: " + functionName;
              console.log(message, contentPane, model, fieldSpecification, value);
              alert(message);
-             return;
          } else {
              actualFunction(contentPane, model, fieldSpecification, value);
          }
