@@ -338,25 +338,23 @@ function respondForResourcePost(request, response) {
     }
     
     var requestTimestamp = requestEnvelope.timestamp;
-    if (requestTimestamp !== undefined) {
-        if (requestTimestamp === true) {
-            // Add server timestamp
-            requestEnvelope.timestamp = getCurrentTimestamp();
-        } else {
-            // Check if using a future time and reject if so
-            // TODO: allow perhaps for some configurable limited time drift like 10 seconds)
-            var maximumAllowedTimestamp = calculateMaximumAllowedTimestamp();
-            if (isTimestampInFuture(requestTimestamp, maximumAllowedTimestamp)) {
-                return sendFailureMessage(response, 406, "Not acceptable: Please check you computer's clock; request timestamp of: " + requestTimestamp + " is further in the future than the currently maximum allowed timestamp of: " + maximumAllowedTimestamp);
-            }
-            var triples = requestEnvelope.triples;
-            if (triples) {
-                for (var i = 0; i < triples.length; i++) {
-                    var triple = triples[i];
-                    var tripleTimestamp = triple.timestamp;
-                    if (tripleTimestamp && isTimestampInFuture(tripleTimestamp, maximumAllowedTimestamp)) {
-                        return sendFailureMessage(response, 406, "Not acceptable: Please check you computer's clock; triple timestamp of: " + tripleTimestamp + " for triple[" + i + "] is further in the future than the currently maximum allowed timestamp of: " + maximumAllowedTimestamp);
-                    }
+    if (!requestTimestamp || requestTimestamp === true) {
+        // Add server timestamp
+        requestEnvelope.timestamp = getCurrentTimestamp();
+    } else {
+        // Check if using a future time and reject if so
+        // TODO: allow perhaps for some configurable limited time drift like 10 seconds)
+        var maximumAllowedTimestamp = calculateMaximumAllowedTimestamp();
+        if (isTimestampInFuture(requestTimestamp, maximumAllowedTimestamp)) {
+            return sendFailureMessage(response, 406, "Not acceptable: Please check you computer's clock; request timestamp of: " + requestTimestamp + " is further in the future than the currently maximum allowed timestamp of: " + maximumAllowedTimestamp);
+        }
+        var triples = requestEnvelope.triples;
+        if (triples) {
+            for (var i = 0; i < triples.length; i++) {
+                var triple = triples[i];
+                var tripleTimestamp = triple.timestamp;
+                if (tripleTimestamp && isTimestampInFuture(tripleTimestamp, maximumAllowedTimestamp)) {
+                    return sendFailureMessage(response, 406, "Not acceptable: Please check you computer's clock; triple timestamp of: " + tripleTimestamp + " for triple[" + i + "] is further in the future than the currently maximum allowed timestamp of: " + maximumAllowedTimestamp);
                 }
             }
         }
