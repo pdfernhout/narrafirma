@@ -1,20 +1,20 @@
 require([
-    "js/pointrel20141201DocumentCollection",
+    "js/PointrelCache",
     "dojo/domReady!"
 ], function(
-    DocumentCollection
+    PointrelCache
 ){
     "use strict";
     
-    console.log("documentCollectionTest.js");
+    console.log("PointrelCacheTest.js");
     console.log("will run for one minute");
 
-    var documentCollection = new DocumentCollection();
+    var pointrelCache = new PointrelCache();
     
-    documentCollection.startup();
+    pointrelCache.startup();
     
     window.setInterval(function() {
         console.log("shutting down test after one minute");
-        documentCollection.shutdown();
+        pointrelCache.shutdown();
     }, 60000);
 });
