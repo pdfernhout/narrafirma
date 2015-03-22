@@ -412,7 +412,7 @@ function respondForID(request, response) {
         return sendFailureMessage(response, 404, "Not found");
     }
     
-    // Return the first -- should signal error if more than one?
+    // Return all the document versions
     return response.json({status: 'OK', message: "Index for ID", idRequested: id, indexEntries: indexEntryList});
 }
 
@@ -439,7 +439,7 @@ function respondForTag(request, response) {
         documentEntriesList.push(documentEntry);
     }
     
-    // Return the first -- should signal error if more than one?
+    // Return all the matching documents
     return response.json({status: 'OK', message: "Index for Tag", tagRequested: tag, documentEntries: documentEntriesList});
 }
 
