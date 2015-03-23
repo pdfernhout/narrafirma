@@ -66,6 +66,7 @@ define([
         console.log("addExtraFieldSpecificationsForPageSpecification", pageID, pageSpecification);
         if (pageSpecification.section !== "dashboard") {
             if (!pageSpecification.isHeader) {
+                // Regular page -- add a footer where the page status can be set
                 var statusEntryID = pageID + "_pageStatus";
                 var completionStatusEntryFieldSpecification = {
                     id: statusEntryID,
@@ -74,13 +75,15 @@ define([
                     displayPrompt: translate("#dashboard_status_entry::prompt", "The dashboard status of this page is:"),
                     dataOptions: completionStatusOptions
                 };
-                pageSpecification.panelFields.push(completionStatusEntryFieldSpecification);
+                domain.panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, completionStatusEntryFieldSpecification);
             } else {
+                // Dashboard page
                 console.log("page dashboard as header", pageSpecification.id, pageSpecification.displayType, pageSpecification);
                 // Put in dashboard
                 var childPageIDs = domain.panelSpecificationCollection.getChildPageIDListForHeaderID(pageID);
                 console.log("child pages", pageID, childPageIDs);
                 if (!childPageIDs) childPageIDs = [];
+                // Add a display to this page for each child page in the same section
                 for (var childPageIndex = 0; childPageIndex < childPageIDs.length; childPageIndex++) {
                     var childPageID = childPageIDs[childPageIndex];
                     var statusViewID = childPageID + "_pageStatus_dashboard";
@@ -97,7 +100,7 @@ define([
                             displayPrompt: prompt,
                             displayConfiguration: [childPageID + "_pageStatus"]
                         };
-                        pageSpecification.panelFields.push(completionStatusDisplayFieldSpecification);
+                        domain.panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, completionStatusDisplayFieldSpecification);  
                     }
                 }
             }
@@ -301,7 +304,9 @@ define([
             surveyCollection.determineStatusOfCurrentQuestionnaire();
             
             // Get the latest project data
-            buttonActions.loadLatest();
+            // TODO: This is not working due to ongoing refactoring
+            console.log("TODO: fix data loading -- ongoing refactoring");
+            // buttonActions.loadLatest();
             
             // turn off initial "please wait" display
             document.getElementById("pleaseWaitDiv").style.display = "none";

@@ -48,10 +48,9 @@ define([
             }
         }
         
-        var model;
         var modelClass = panelSpecification.modelClass;
         if (modelClass) {
-            model = this.modelClassToModelFieldSpecificationsMap[modelClass];
+            var model = this.modelClassToModelFieldSpecificationsMap[modelClass];
             if (!model) {
                 model = [];
                 this.modelClassToModelFieldSpecificationsMap[modelClass] = model;
@@ -60,13 +59,24 @@ define([
         
         for (var i = 0; i < panelSpecification.panelFields.length; i++) {
             var fieldSpecification = panelSpecification.panelFields[i];
-            // TODO: Is this modelClass line still needed?
-            fieldSpecification.modelClass = modelClass;
-            this.allFieldSpecifications.push(fieldSpecification);
-            this.fieldIDToFieldSpecificationMap[fieldSpecification.id] = fieldSpecification;
-            if (model) model.push(fieldSpecification);
-            // console.log("adding field specification", fieldSpecification);
+            this.addFieldSpecification(modelClass, fieldSpecification);
         }
+    };
+    
+    PanelSpecificationCollection.prototype.addFieldSpecification = function(modelClass, fieldSpecification) {
+        // console.log("adding field specification", fieldSpecification);
+        var model = this.modelClassToModelFieldSpecificationsMap[modelClass];
+        // TODO: Is this modelClass line still needed?
+        fieldSpecification.modelClass = modelClass;
+        this.allFieldSpecifications.push(fieldSpecification);
+        this.fieldIDToFieldSpecificationMap[fieldSpecification.id] = fieldSpecification;
+        if (model) model.push(fieldSpecification);
+    };
+    
+    PanelSpecificationCollection.prototype.addFieldSpecificationToPanelSpecification = function(panelSpecification, fieldSpecification) {
+        panelSpecification.panelFields.push(fieldSpecification);
+        // Assumes the model has already been created if needed when the panel was added
+        this.addFieldSpecification(panelSpecification.modelClass, fieldSpecification);
     };
      
     PanelSpecificationCollection.prototype.initialDataForField = function(fieldSpecification) {
