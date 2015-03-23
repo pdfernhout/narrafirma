@@ -125,7 +125,7 @@ var PanelBuilder = declare(null, {
     },
     
     buildField: function(contentPane, model, fieldSpecification) {
-        console.log("buildField", fieldSpecification);
+        // console.log("buildField", fieldSpecification);
         
         var addFunction = buildingFunctions[fieldSpecification.displayType];
         if (!addFunction) {
@@ -152,7 +152,7 @@ var PanelBuilder = declare(null, {
     
     // Returns dictionary mapping from field IDs to widgets
     buildFields: function(fieldSpecifications, contentPane, model) {
-        console.log("buildFields", fieldSpecifications);
+        // console.log("buildFields", fieldSpecifications);
         if (!fieldSpecifications) {
             throw new Error("fieldSpecifications are not defined");
         }
@@ -258,7 +258,7 @@ var PanelBuilder = declare(null, {
         if (!pageID) pageID = this.currentHelpPage;
         var helpID = fieldSpecification.helpID;
         if (!helpID) helpID = fieldSpecification.id;
-        console.log("helpPageURLForField", fieldSpecification, section, pageID, helpID);
+        // console.log("helpPageURLForField", fieldSpecification, section, pageID, helpID);
         var url = "";   
         if (section && pageID) {
             url = '/help/' + section + "/help_" + pageID + '.html';

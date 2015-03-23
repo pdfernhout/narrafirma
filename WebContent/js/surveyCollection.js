@@ -70,7 +70,7 @@ define([
                var response = allCompletedSurveys[responseIndex];
                for (var storyIndex in response.stories) {
                    var story = response.stories[storyIndex];
-                   console.log("=== story", story);
+                   // console.log("=== story", story);
                    allStories.push(story);
                }
            }
