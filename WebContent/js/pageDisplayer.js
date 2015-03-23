@@ -68,10 +68,17 @@ define([
     function createPage(pageID, visible) {
         console.log("createPage", pageID);
 
-        // TODO: Fix this for multi-page saving and loading in different documents
-        var modelForPage = domain.projectAnswers;
-
         var pageSpecification = domain.getPageSpecification(pageID);
+        
+        var pageModelName = pageSpecification.modelClass;
+        if (!pageModelName) {
+            console.log("Page model name is not set in", pageID, pageSpecification);
+            throw new Error("Page model is not defined for " + pageID);
+        }
+        domain.changePageModel(pageModelName);
+        var modelForPage = domain.currentPageModel;
+        
+        // TODO: Need to load the data from the server or check for it in the cache!!!
 
         if (!pageSpecification) {
             console.log("ERROR: No definition for page: ", pageID);

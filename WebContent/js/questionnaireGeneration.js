@@ -115,6 +115,8 @@ define(["js/domain"], function(domain) {
                __type: "org.workingwithstories.Questionnaire"
        };
        
+       throw new Error("questionnaireGeneration.getCurrentQuestionnaire -- no longer works due to ongoing refactoring to use a current page model");
+       
        questionnaire.title = domain.projectAnswers.get("questionForm_title");
        questionnaire.image = domain.projectAnswers.get("questionForm_image");
        questionnaire.startText = domain.projectAnswers.get("questionForm_startText");

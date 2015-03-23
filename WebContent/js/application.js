@@ -262,34 +262,6 @@ define([
         console.log("JSON for navigation:");
         console.log(JSON.stringify(sections, null, 4));
     }
-   
-    function setupDomain() {
-        var modelTemplate = domain.panelSpecificationCollection.buildModel("ProjectModel");
-        
-        modelUtility.updateModelWithNewValues(domain.projectAnswers, modelTemplate);
-
-        var pages = domain.panelSpecificationCollection.buildListOfPages();
-        
-        for (var pageIndex = 0; pageIndex < pages.length; pageIndex++) {
-            var page = pages[pageIndex];
-            if (!page.isHeader) {
-                var pageID = page.id;
-                domain.projectAnswers[pageID + "_pageStatus"] = null;
-            }
-        }
-        
-        /*
-         Maybe this can be adapted for saving and loading individual pages?
-        for (var fieldName in domain.projectAnswers) {
-            var fieldValue = domain.projectAnswers[fieldName];
-            if (fieldValue instanceof Array) {
-                domain.projectAnswers[fieldName] = new StatefulArray(fieldValue);
-            }
-        }
-        */
-        
-        console.log("setupDomain result: domain", domain);
-    }
     
     // The main starting point of the application
     function initialize() {
@@ -305,12 +277,9 @@ define([
         // Load the application design
         loadAllPanelSpecifications(domain.panelSpecificationCollection, navigationSections, loadingBase, function() {
             // generateNavigationDataInJSON();
-            
-            // Setup the domain with the base model defined by field specifications
-            setupDomain();
      
             processAllPanels();
-            
+
             // Tell the panel builder how to build panels
             panelBuilder.setPanelSpecifications(domain.panelSpecificationCollection);
             

@@ -72,6 +72,8 @@ define([
             return;
         }
         console.log("loading saved version", projectAnswersLoaded);
+        
+        throw new Error("No longer working due to ongoing refactoring for current page model");
         modelUtility.updateModelWithNewValues(domain.projectAnswers, projectAnswersLoaded);
 
         // Rebuild the current page to ensure it gets latest data...
@@ -94,6 +96,7 @@ define([
 
     function saveClicked() {
         console.log("save clicked", domain.projectAnswers);
+        throw new Error("No longer working due to ongoing refactoring for current page model");
         storage.storeProjectVersion(domain.projectAnswers, currentProjectVersionReference, saveFinished);
     }
 
@@ -136,6 +139,7 @@ define([
 
     function importExportClicked() {
         console.log("importExportClicked");
+        throw new Error("No longer working due to ongoing refactoring for current page model");
         var projectDefinitionText = JSON.stringify(domain.projectAnswers, null, 2);
         dialogSupport.openTextEditorDialog(projectDefinitionText, "#projectImportExportDialog_title|Project Import/Export", "#projectImportExportDialog_okButtonText|OK", importButtonClicked);
     }
@@ -167,6 +171,8 @@ define([
     }
 
     function copyDraftPNIQuestionVersionsIntoAnswers_Basic() {
+        throw new Error("No longer working due to ongoing refactoring for current page model");
+        
         var model = domain.projectAnswers;
 
         var finalQuestionIDs = [
