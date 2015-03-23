@@ -577,3 +577,6 @@ DONE Grid should be more configurable via field specifications
 DONE Create panelWithModelChooserSaveLoadTest where can save and load test models for all panels
 DONE Load panel navigation information from JSON
 DONE Move loadAllPanelSpecifications into PanelSpecificationCollection and pass in needed information about navigation and base path
+DONE Remove unused imports and do other cleanup
+DONE Make intial version of PointrelCache for testing polling
+DONE Refactor application.js into more modules by responsibility (navigation, page display, button actions)
