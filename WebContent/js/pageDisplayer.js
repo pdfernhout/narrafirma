@@ -77,8 +77,6 @@ define([
         navigationPane.setCurrentPageSpecification(pageID, pageSpecification);
     }
 
-    var completionStatusOptions = ["intentionally skipped", "partially done", "completely finished"];
-
     function createPage(pageID, visible) {
         console.log("createPage", pageID);
 
@@ -111,55 +109,6 @@ define([
         // console.log("Made content pane", pageID);
 
         panelBuilder.buildPanel(pageID, pagePane, modelForPage);
-
-        if (pageSpecification.section !== "page_dashboard") {
-            if (!pageSpecification.isHeader) {
-                var statusEntryID = pageID + "_pageStatus";
-                var completionStatusEntryFieldSpecification = {
-                    id: statusEntryID,
-                    displayType: "select",
-                    displayName: "Completion status",
-                    displayPrompt: translate("#dashboard_status_entry::prompt", "The dashboard status of this page is:"),
-                    dataOptions: completionStatusOptions
-                };
-                panelBuilder.buildField(pagePane, modelForPage, completionStatusEntryFieldSpecification);
-            } else {
-                console.log("page dashboard as header", pageSpecification.id, pageSpecification.displayType, pageSpecification);
-                // Put in dashboard
-                var childPageIDs = panelSpecificationCollection.getChildPageIDListForHeaderID(pageID);
-                console.log("child pages", pageID, childPageIDs);
-                if (!childPageIDs) childPageIDs = [];
-                for (var childPageIndex = 0; childPageIndex < childPageIDs.length; childPageIndex++) {
-                    var childPageID = childPageIDs[childPageIndex];
-                    var statusViewID = childPageID + "_pageStatus_dashboard";
-                    var childPageSpecification = getPageSpecification(childPageID);
-                    console.log("childPageID", childPageSpecification, childPageID);
-                    if (!childPageSpecification) console.log("Error: problem finding page definition for", childPageID);
-                    if (childPageSpecification && childPageSpecification.displayType === "page") {
-                        var prompt = translate(childPageID + "::title", childPageSpecification.displayName) + " " + translate("#dashboard_status_label", "status:") + " ";
-                        console.log("about to call panelBuilder to add one questionAnswer for child page's status", childPageID);
-                        var completionStatusDisplayFieldSpecification = {
-                            id: statusViewID,
-                            displayType: "questionAnswer",
-                            displayName: prompt,
-                            displayPrompt: prompt,
-                            displayConfiguration: [childPageID + "_pageStatus"]
-                        };
-                        panelBuilder.buildField(pagePane, modelForPage, completionStatusDisplayFieldSpecification);
-                    }
-                }
-            }
-        }
-
-        /*
-         var nextPageButtonQuestion = {
-         "id": pageID + "_nextPageButton",
-         "displayPrompt": "Mark page complete and proceed to next page",
-         "displayType": "button"
-         };
-
-         questionEditor.insertQuestionIntoDiv(nextPageButtonQuestion, pagePane);
-         */
 
         // console.log("about to set visibility", pageID);
         if (visible) {

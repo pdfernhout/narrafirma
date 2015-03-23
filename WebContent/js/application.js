@@ -61,6 +61,60 @@ define([
             }
         }
     }
+    
+    var completionStatusOptions = ["intentionally skipped", "partially done", "completely finished"];
+
+    function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecification) {
+        console.log("addExtraFieldSpecificationsForPageSpecification", pageID, pageSpecification);
+        if (pageSpecification.section !== "dashboard") {
+            if (!pageSpecification.isHeader) {
+                var statusEntryID = pageID + "_pageStatus";
+                var completionStatusEntryFieldSpecification = {
+                    id: statusEntryID,
+                    displayType: "select",
+                    displayName: "Completion status",
+                    displayPrompt: translate("#dashboard_status_entry::prompt", "The dashboard status of this page is:"),
+                    dataOptions: completionStatusOptions
+                };
+                pageSpecification.panelFields.push(completionStatusEntryFieldSpecification);
+            } else {
+                console.log("page dashboard as header", pageSpecification.id, pageSpecification.displayType, pageSpecification);
+                // Put in dashboard
+                var childPageIDs = panelSpecificationCollection.getChildPageIDListForHeaderID(pageID);
+                console.log("child pages", pageID, childPageIDs);
+                if (!childPageIDs) childPageIDs = [];
+                for (var childPageIndex = 0; childPageIndex < childPageIDs.length; childPageIndex++) {
+                    var childPageID = childPageIDs[childPageIndex];
+                    var statusViewID = childPageID + "_pageStatus_dashboard";
+                    var childPageSpecification = panelSpecificationCollection.getPageSpecificationForPageID(childPageID);
+                    console.log("childPageID", childPageSpecification, childPageID);
+                    if (!childPageSpecification) console.log("Error: problem finding page definition for", childPageID);
+                    if (childPageSpecification && childPageSpecification.displayType === "page") {
+                        var prompt = translate(childPageID + "::title", childPageSpecification.displayName) + " " + translate("#dashboard_status_label", "status:") + " ";
+                        console.log("about to call panelBuilder to add one questionAnswer for child page's status", childPageID);
+                        var completionStatusDisplayFieldSpecification = {
+                            id: statusViewID,
+                            displayType: "questionAnswer",
+                            displayName: prompt,
+                            displayPrompt: prompt,
+                            displayConfiguration: [childPageID + "_pageStatus"]
+                        };
+                        pageSpecification.panelFields.push(completionStatusDisplayFieldSpecification);
+                    }
+                }
+            }
+        }
+
+        /*
+         var nextPageButtonQuestion = {
+         "id": pageID + "_nextPageButton",
+         "displayPrompt": "Mark page complete and proceed to next page",
+         "displayType": "button"
+         };
+
+         questionEditor.insertQuestionIntoDiv(nextPageButtonQuestion, pagePane);
+         */
+    }
 
     function processAllPanels() {
         var panels = panelSpecificationCollection.buildListOfPanels();
@@ -95,6 +149,8 @@ define([
                     lastHeader = pageID;
                     lastSection = panel.section;
                 }
+                
+                addExtraFieldSpecificationsForPageSpecification(pageID, panel);
             }
             
             panel.helpSection = lastSection;
