@@ -59,11 +59,9 @@ define([
             // var options = buildOptions(id, this.choices, this.optionsString);
             
             array.forEach(this.options, function (option) {
-                var choiceID = id + "::selection:" + option.value;
-                // console.log("creating checkbox", choiceID);
+                // console.log("creating checkbox", id, option);
                 var checkBox = new CheckBox({
-                    value: option.value,
-                    "id": choiceID
+                    value: option.value
                 });
                 checkBox.placeAt(div);
                 var startupValue = self.value; // self.get("value");
@@ -81,6 +79,7 @@ define([
                     // TODO: send changed message?
                 });
                 self.checkboxes[option.value] = checkBox;
+                var choiceID = checkBox.attr('id');
                 div.appendChild(domConstruct.toDom('<label for="' + choiceID + '">' + option.label + '</label><br>'));
             });
             

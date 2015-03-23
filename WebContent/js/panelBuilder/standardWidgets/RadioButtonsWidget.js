@@ -45,14 +45,12 @@ define([
             array.forEach(this.options, function (option) {
                 if (!first) div.appendChild(domConstruct.toDom('<br>'));
                 first = false;
-                var choiceID = id + "_choice_" + option.value;
                 var isChecked = (self.value === option.value);
-                // console.log("radio init checked", choiceID, isChecked, option.value, self.value);
+                // console.log("radio init checked", id, isChecked, option.value, self.value);
                 var radioButton = new RadioButton({
                     checked: isChecked,
                     value: option.value,
-                    name: id,
-                    "id": choiceID
+                    name: id
                 });
                 radioButton.placeAt(div);
                 on(radioButton, "click", function(event) {
@@ -61,6 +59,7 @@ define([
                     // console.log("radio clicked", event.target.value);
                 });
                 self.radioButtons[option.value] = radioButton;
+                var choiceID = radioButton.attr('id');
                 div.appendChild(domConstruct.toDom('<label for="' + choiceID + '">' + option.label + '</label><br>'));
             });
             
