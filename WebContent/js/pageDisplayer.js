@@ -65,7 +65,7 @@ define([
         navigationPane.setCurrentPageSpecification(pageID, pageSpecification);
     }
 
-    function createPage(pageID, visible) {
+    function createPage(pageID) {
         console.log("createPage", pageID);
 
         var pageSpecification = domain.getPageSpecification(pageID);
@@ -86,7 +86,6 @@ define([
         }
 
         var pagePane = new ContentPane({
-            "id": pageID,
             title: pageSpecification.title,
             // Shorten width so grid scroll bar shows up not clipped
             // Also, looks like nested ContentPanes tend to walk off the right side of the page for some reason
@@ -109,13 +108,6 @@ define([
             console.log("Error when trying to build panel", pageID, modelForPage, e);
             // TODO: Translate
             alert("Something went wrong when trying to display this page.\nCheck the console for details");
-        }
-
-        // console.log("about to set visibility", pageID);
-        if (visible) {
-            domStyle.set(pageID, "display", "block");
-        } else {
-            domStyle.set(pageID, "display", "none");
         }
 
         return pagePane;
