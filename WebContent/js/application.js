@@ -9,7 +9,6 @@ define([
     "dojo/text!js/applicationPanelSpecifications/navigation.json",
     "js/pageDisplayer",
     "js/panelBuilder/PanelBuilder",
-    "js/panelBuilder/PanelSpecificationCollection",
     "js/surveyCollection",
     "js/panelBuilder/toaster",
     "dojo/topic",
@@ -27,7 +26,6 @@ define([
     navigationJSONText,
     pageDisplayer,
     PanelBuilder,
-    PanelSpecificationCollection,
     surveyCollection,
     toaster,
     topic,
@@ -41,8 +39,6 @@ define([
     var navigationSections = JSON.parse(navigationJSONText);
     var loadingBase = "dojo/text!js/applicationPanelSpecifications/";
 
-    var panelSpecificationCollection = new PanelSpecificationCollection();
-
     // For building panels based on field specifications
     var panelBuilder = new PanelBuilder();
 
@@ -51,7 +47,7 @@ define([
     function urlHashFragmentChanged(newHash) {
         console.log("urlHashFragmentChanged", newHash);
         if (pageDisplayer.getCurrentPageID() !== newHash) {
-            var pageSpecification = pageDisplayer.getPageSpecification(newHash);
+            var pageSpecification = domain.getPageSpecification(newHash);
             if (pageSpecification && pageSpecification.displayType === "page") {
                 pageDisplayer.showPage(newHash);
             } else {
@@ -80,13 +76,13 @@ define([
             } else {
                 console.log("page dashboard as header", pageSpecification.id, pageSpecification.displayType, pageSpecification);
                 // Put in dashboard
-                var childPageIDs = panelSpecificationCollection.getChildPageIDListForHeaderID(pageID);
+                var childPageIDs = domain.panelSpecificationCollection.getChildPageIDListForHeaderID(pageID);
                 console.log("child pages", pageID, childPageIDs);
                 if (!childPageIDs) childPageIDs = [];
                 for (var childPageIndex = 0; childPageIndex < childPageIDs.length; childPageIndex++) {
                     var childPageID = childPageIDs[childPageIndex];
                     var statusViewID = childPageID + "_pageStatus_dashboard";
-                    var childPageSpecification = panelSpecificationCollection.getPageSpecificationForPageID(childPageID);
+                    var childPageSpecification = domain.getPageSpecification(childPageID);
                     console.log("childPageID", childPageSpecification, childPageID);
                     if (!childPageSpecification) console.log("Error: problem finding page definition for", childPageID);
                     if (childPageSpecification && childPageSpecification.displayType === "page") {
@@ -117,7 +113,7 @@ define([
     }
 
     function processAllPanels() {
-        var panels = panelSpecificationCollection.buildListOfPanels();
+        var panels = domain.panelSpecificationCollection.buildListOfPanels();
         console.log("processAllPanels", panels);
         
         var lastPageID = null;
@@ -135,7 +131,7 @@ define([
                 // console.log("pushing page", panel);
                 // Make it easy to lookup previous and next pages from a page
                 if (!panel.isHeader) {
-                    var previousPage = panelSpecificationCollection.getPageSpecificationForPageID(lastPageID);
+                    var previousPage = domain.getPageSpecification(lastPageID);
                     previousPage.nextPageID = pageID;
                     panel.previousPageID = lastPageID;
                 }
@@ -143,7 +139,7 @@ define([
 
                 // Put in a dynamic question (incomplete for options) to be used to lookup page status.
                 // This is needed so add_questionAnswer can check the field is a "select" to translate the options if needed
-                panelSpecificationCollection.addFieldSpecification({id: pageID + "_pageStatus", displayType: "select"});
+                domain.panelSpecificationCollection.addFieldSpecification({id: pageID + "_pageStatus", displayType: "select"});
                 
                 if (panel.isHeader) {
                     lastHeader = pageID;
@@ -237,7 +233,7 @@ define([
         var sections = [];
         var sectionBeingProcessed;
         var pageBeingProcessed;
-        var allPanels = panelSpecificationCollection.buildListOfPanels();
+        var allPanels = domain.panelSpecificationCollection.buildListOfPanels();
         allPanels.forEach(function(panel) {
             console.log("panel", panel.displayType, panel.id, panel.section, panel.displayName);
             if (panel.isHeader) {
@@ -266,11 +262,11 @@ define([
     }
    
     function setupDomain() {
-        var modelTemplate = panelSpecificationCollection.buildModel("ProjectModel");
+        var modelTemplate = domain.panelSpecificationCollection.buildModel("ProjectModel");
         
         domain.updateModelWithNewValues(domain.projectAnswers, modelTemplate);
 
-        var pages = panelSpecificationCollection.buildListOfPages();
+        var pages = domain.panelSpecificationCollection.buildListOfPages();
         
         for (var pageIndex = 0; pageIndex < pages.length; pageIndex++) {
             var page = pages[pageIndex];
@@ -305,7 +301,7 @@ define([
         loadAllApplicationWidgets(PanelBuilder);
         
         // Load the application design
-        loadAllPanelSpecifications(panelSpecificationCollection, navigationSections, loadingBase, function() {
+        loadAllPanelSpecifications(domain.panelSpecificationCollection, navigationSections, loadingBase, function() {
             // generateNavigationDataInJSON();
             
             // Setup the domain with the base model defined by field specifications
@@ -314,14 +310,14 @@ define([
             processAllPanels();
             
             // Tell the panel builder how to build panels
-            panelBuilder.setPanelSpecifications(panelSpecificationCollection);
+            panelBuilder.setPanelSpecifications(domain.panelSpecificationCollection);
             
             // Tell the panelBuilder what do do if a button is clicked
             panelBuilder.setButtonClickedCallback(buttonClicked);
             
             panelBuilder.setCalculateFunctionResultCallback(calculateFunctionResultForGUI);
 
-            pageDisplayer.configure(panelSpecificationCollection, panelBuilder);
+            pageDisplayer.configurePageDisplayer(panelBuilder);
 
             createLayout();
             

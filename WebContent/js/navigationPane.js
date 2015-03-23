@@ -1,5 +1,6 @@
 define([
     "dijit/layout/ContentPane",
+    "js/domain",
     "dojo/dom-construct",
     "dojo/dom-style",
     "dijit/form/Select",
@@ -7,6 +8,7 @@ define([
     "js/panelBuilder/widgetSupport"
 ], function(
     ContentPane,
+    domain,
     domConstruct,
     domStyle,
     Select,
@@ -153,15 +155,15 @@ define([
         console.log("pageSelectOptionsForSection", sectionHeaderPageID);
 
         // TODO: Rethink if this should be asking the pageDisplayer for this information about navigation
-        var pageIDs = pageDisplayer.getChildPageIDListForHeaderID(sectionHeaderPageID);
+        var pageIDs = domain.panelSpecificationCollection.getChildPageIDListForHeaderID(sectionHeaderPageID);
 
         var options = [];
-        var title = titleForPanel(pageDisplayer.getPageSpecification(sectionHeaderPageID));
+        var title = titleForPanel(domain.getPageSpecification(sectionHeaderPageID));
         // It seems like a Dojo "select" widget has a limitation where it can only take strings as values.
         // This means we need to look up page definitions indirectly based on a pageID usind a PanelSpecificationCollection instance.
         options.push({label: title, value: sectionHeaderPageID});
         _.forEach(pageIDs, function (pageID) {
-            title = titleForPanel(pageDisplayer.getPageSpecification(pageID));
+            title = titleForPanel(domain.getPageSpecification(pageID));
             options.push({label: title, value: pageID});
         });
         return options;

@@ -21,29 +21,17 @@ define([
     var currentPageID;
     var currentPage;
 
-    var panelSpecificationCollection;
     var panelBuilder;
 
     // Call this once at the beginning of the application
-    function configure(thePanelSpecificationCollection, thePanelBuilder) {
-        panelSpecificationCollection = thePanelSpecificationCollection;
+    function configurePageDisplayer(thePanelBuilder) {
         panelBuilder = thePanelBuilder;
-    }
-
-    function getPageSpecification(pageID) {
-        // For now, any "page" defined in the panelSpecificationCollection is available
-        return panelSpecificationCollection.getPageSpecificationForPageID(pageID);
-    }
-
-    // TODO: Rethink if this should be here -- currently called by navigationPane
-    function getChildPageIDListForHeaderID(headerID) {
-        return panelSpecificationCollection.getChildPageIDListForHeaderID(headerID);
     }
 
     function showPage(pageID, forceRefresh) {
         if (currentPageID === pageID && !forceRefresh) return;
 
-        var pageSpecification = getPageSpecification(pageID);
+        var pageSpecification = domain.getPageSpecification(pageID);
         if (!pageSpecification) {
             console.log("no such page", pageID);
             alert("No such page: " + pageID);
@@ -83,7 +71,7 @@ define([
         // TODO: Fix this for multi-page saving and loading in different documents
         var modelForPage = domain.projectAnswers;
 
-        var pageSpecification = getPageSpecification(pageID);
+        var pageSpecification = domain.getPageSpecification(pageID);
 
         if (!pageSpecification) {
             console.log("ERROR: No definition for page: ", pageID);
@@ -125,12 +113,8 @@ define([
     }
 
     return {
-        configure: configure,
+        configurePageDisplayer: configurePageDisplayer,
         showPage: showPage,
         getCurrentPageID: getCurrentPageID,
-        getPageSpecification: getPageSpecification,
-
-        // TODO: Rethink whether this should be here -- currently called from navigationPane
-        getChildPageIDListForHeaderID: getChildPageIDListForHeaderID
     };
 });
