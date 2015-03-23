@@ -155,8 +155,7 @@ define([
             
             panel.helpSection = lastSection;
             panel.helpPage = panel.id;
-            // TODO: Think about what "section" should really mean -- conceptual section (e.g. "catalysis") versus section header page ID (e.g. "page_catalysis");
-            panel.section = lastHeader;
+            panel.sectionHeaderPageID = lastHeader;
             
             for (var fieldIndex = 0; fieldIndex < panel.panelFields.length; fieldIndex++) {
                 var fieldSpec = panel.panelFields[fieldIndex];

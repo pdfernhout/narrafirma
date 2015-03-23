@@ -179,8 +179,8 @@ define([
         // Ensure the navigation dropdown has the list for this section
         if (currentSectionID !== pageSpecification.section) {
             currentSectionID = pageSpecification.section;
-            // console.log("getting options for", pageSpecification.section, pageSpecification);
-            var options = pageSelectOptionsForSection(pageSpecification.section);
+            // console.log("getting options for", pageSpecification.sectionHeaderPageID, pageSpecification);
+            var options = pageSelectOptionsForSection(pageSpecification.sectionHeaderPageID);
             // console.log("options", options);
             pageNavigationSelect.set("options", options);
         }
