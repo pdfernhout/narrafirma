@@ -5,6 +5,7 @@ define([
     "dojo/hash",
     "js/applicationWidgets/loadAllApplicationWidgets",
     "js/panelBuilder/loadAllPanelSpecifications",
+    "js/modelUtility",
     "js/navigationPane",
     "dojo/text!js/applicationPanelSpecifications/navigation.json",
     "js/pageDisplayer",
@@ -22,6 +23,7 @@ define([
     hash,
     loadAllApplicationWidgets,
     loadAllPanelSpecifications,
+    modelUtility,
     navigationPane,
     navigationJSONText,
     pageDisplayer,
@@ -264,7 +266,7 @@ define([
     function setupDomain() {
         var modelTemplate = domain.panelSpecificationCollection.buildModel("ProjectModel");
         
-        domain.updateModelWithNewValues(domain.projectAnswers, modelTemplate);
+        modelUtility.updateModelWithNewValues(domain.projectAnswers, modelTemplate);
 
         var pages = domain.panelSpecificationCollection.buildListOfPages();
         

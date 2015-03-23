@@ -1,6 +1,7 @@
 define([
     "js/panelBuilder/dialogSupport",
     "js/domain",
+    "js/modelUtility",
     "js/pageDisplayer",
     "js/questionnaireGeneration",
     "js/storage",
@@ -12,6 +13,7 @@ define([
 ], function(
     dialogSupport,
     domain,
+    modelUtility,
     pageDisplayer,
     questionnaireGeneration,
     storage,
@@ -70,7 +72,7 @@ define([
             return;
         }
         console.log("loading saved version", projectAnswersLoaded);
-        domain.updateModelWithNewValues(domain.projectAnswers, projectAnswersLoaded);
+        modelUtility.updateModelWithNewValues(domain.projectAnswers, projectAnswersLoaded);
 
         // Rebuild the current page to ensure it gets latest data...
         pageDisplayer.showPage(pageDisplayer.getCurrentPageID(), "forceRefresh");
