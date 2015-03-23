@@ -75,14 +75,14 @@ define([
     // The mostly recently loaded project version
     var currentProjectVersionReference; 
     
-    function loadLatestClicked(event) {
+    function loadLatestClicked() {
         console.log("load latest clicked");
                 
         // TODO: Check for unsaved data before loading project...
         storage.loadLatestProjectVersion(switchToLoadedProjectData);
     }
     
-    function loadVersionClicked(event) {
+    function loadVersionClicked() {
         console.log("load version clicked");
                 
         // TODO: Kludge of loading all stories when load data?
@@ -140,13 +140,13 @@ define([
         });
     }
     
-    function saveClicked(event) {
+    function saveClicked() {
         console.log("save clicked", domain.projectAnswers);
         storage.storeProjectVersion(domain.projectAnswers, currentProjectVersionReference, saveFinished);
     }
     
     function saveFinished(error, newVersionURI) {
-        if (error) {return alert("could not write new version:\n" + error);}
+        if (error) {alert("could not write new version:\n" + error); return;}
         // TODO: Translate and improve this feedback
         console.log("Save finished to file", newVersionURI);
         currentProjectVersionReference = newVersionURI;
@@ -172,8 +172,7 @@ define([
         }
     }
     
-    function pageNavigationSelectChanged(event) {
-        var pageID = event;
+    function pageNavigationSelectChanged(pageID) {
         console.log("changing page to:", pageID);
         showPage(pageID);
     }
@@ -235,7 +234,7 @@ define([
        
         if (!pageSpecification) {
             console.log("ERROR: No definition for page: ", pageID);
-            return;
+            return null;
         }
         
         var pagePane = new ContentPane({
@@ -251,7 +250,7 @@ define([
        // Dojo seems to require these pages be in the visual hierarchy before some components like grid that are added to them are have startUp called.
        // Otherwise the grid header is not sized correctly and will be overwritten by data
        // This is as opposed to what one might think would reduce resizing and redrawing by adding the page only after components are added
-       pagePane.placeAt("pageDiv");
+       pagePane.placeAt("pageDiv", "last");
        pagePane.startup();
         
        // console.log("Made content pane", pageID);
@@ -317,7 +316,7 @@ define([
        return pagePane;
     }
 
-    function previousPageClicked(event) {
+    function previousPageClicked() {
         // console.log("previousPageClicked", event);
         if (!currentPageID) {
             // Should never get here
@@ -334,7 +333,7 @@ define([
         }
     }
     
-    function nextPageClicked(event) {
+    function nextPageClicked() {
         // console.log("nextPageClicked", event);
         if (!currentPageID) {
             // Should never get here
@@ -401,7 +400,7 @@ define([
         var select = new Select({
             options: options
         });
-        select.placeAt(addToDiv);
+        select.placeAt(addToDiv, "last");
         return select;
     }
     
@@ -500,7 +499,7 @@ define([
         // Page controls
         
         pageControlsPane = new ContentPane();
-        pageControlsPane.placeAt(navigationPane);
+        pageControlsPane.placeAt(navigationPane, "last");
         
         domConstruct.place('<span id="narrafirma-name">NarraFirma&#0153;</span>', pageControlsPane.domNode);
         
