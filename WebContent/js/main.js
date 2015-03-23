@@ -1,4 +1,4 @@
-require(["js/application.js"], function(application) {
+require(["js/application"], function(application) {
     "use strict";
     
     application.initialize();
