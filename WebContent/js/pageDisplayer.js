@@ -103,7 +103,13 @@ define([
 
         // console.log("Made content pane", pageID);
 
-        panelBuilder.buildPanel(pageID, pagePane, modelForPage);
+        try {
+            panelBuilder.buildPanel(pageID, pagePane, modelForPage);
+        } catch (e) {
+            console.log("Error when trying to build panel", pageID, modelForPage, e);
+            // TODO: Translate
+            alert("Something went wrong when trying to display this page.\nCheck the console for details");
+        }
 
         // console.log("about to set visibility", pageID);
         if (visible) {
