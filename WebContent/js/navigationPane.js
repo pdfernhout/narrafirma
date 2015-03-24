@@ -28,15 +28,13 @@ define([
     var nextPageButton;
 
     var pageDisplayer;
-    var homePage;
 
     var currentSectionID;
     var currentPageSpecification;
 
-    function createNavigationPane(thePageDisplayer, theHomePage) {
+    function createNavigationPane(thePageDisplayer) {
         console.log("thePageDisplayer", thePageDisplayer);
         pageDisplayer = thePageDisplayer;
-        homePage = theHomePage;
 
         // Startup needs to be called here to ensure a top level content pane is started
         navigationPane = new ContentPane({}, "navigationDiv");
@@ -87,7 +85,7 @@ define([
 
     function homeButtonClicked() {
         console.log("homeButtonClicked");
-        pageDisplayer.showPage(homePage);
+        pageDisplayer.showPage(domain.startPage);
     }
 
     function previousPageClicked() {

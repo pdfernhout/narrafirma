@@ -44,20 +44,10 @@ define([
     // For building panels based on field specifications
     var panelBuilder = new PanelBuilder();
 
-    var startPage = "page_dashboard";
-    
     function urlHashFragmentChanged(newHash) {
         console.log("urlHashFragmentChanged", newHash);
-        if (pageDisplayer.getCurrentPageID() !== newHash) {
-            var pageSpecification = domain.getPageSpecification(newHash);
-            if (pageSpecification && pageSpecification.displayType === "page") {
-                pageDisplayer.showPage(newHash);
-            } else {
-                console.log("unsupported url hash fragment", newHash);
-                alert("A page was not found for: " + newHash);
-                if (newHash !== startPage) urlHashFragmentChanged(startPage);
-            }
-        }
+        // Page displayer will handle cases where the hash is not valid
+        pageDisplayer.showPage(newHash);
     }
     
     var completionStatusOptions = ["intentionally skipped", "partially done", "completely finished"];
@@ -170,7 +160,7 @@ define([
     function createLayout() {
         console.log("createLayout start");
 
-        var pageControlsPane = navigationPane.createNavigationPane(pageDisplayer, startPage);
+        var pageControlsPane = navigationPane.createNavigationPane(pageDisplayer);
 
         var saveButton = widgetSupport.newButton(pageControlsPane, "#button_save|Save", buttonActions.saveClicked);
         var debugButton = widgetSupport.newButton(pageControlsPane, "#button_debug|Debug", buttonActions.debugButtonClicked);
@@ -181,7 +171,7 @@ define([
         if (fragment) {
             urlHashFragmentChanged(fragment);
         } else {
-            urlHashFragmentChanged(startPage);
+            urlHashFragmentChanged(domain.startPage);
         }
 
         console.log("createLayout end");

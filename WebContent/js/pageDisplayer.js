@@ -18,7 +18,7 @@ define([
     "use strict";
 
     // For tracking what page the application is on
-    var currentPageID;
+    var currentPageID = null;
     var currentPage;
 
     var panelBuilder;
@@ -29,13 +29,29 @@ define([
     }
 
     function showPage(pageID, forceRefresh) {
+        if (!pageID) pageID = domain.startPage;
         if (currentPageID === pageID && !forceRefresh) return;
 
         var pageSpecification = domain.getPageSpecification(pageID);
-        if (!pageSpecification) {
+        
+        // Assume that if we have a panel specification for a page that it is OK to go to it
+        if (!pageSpecification || pageSpecification.displayType !== "page") {
             console.log("no such page", pageID);
             alert("No such page: " + pageID);
+            // Put back the hash if there was a valid one there already
+            if (currentPageID !== null && currentPageID !== pageID) hash(currentPageID);
             return;
+        }
+        
+        if (currentPageID !== null && domain.hasUnsavedChangesForCurrentPage()) {
+            // TODO: Fix this so requests you either revert or save changes first?
+            // TODO: Translate
+            var confirmResult = confirm("You have unsaved changes. Proceed anyway?");
+            if (!confirmResult) {
+                // Put back the old hash if it is valid and changed
+                if (currentPageID !== null && currentPageID !== pageID) hash(currentPageID);
+                return;
+            }
         }
 
         // Hide the current page temporarily
@@ -50,8 +66,11 @@ define([
 
         currentPage = createPage(pageID, true);
 
-        currentPageID = pageID;
-        hash(currentPageID);
+        if (currentPageID !== pageID) {
+            console.log("setting currentPageID to", pageID);
+            currentPageID = pageID;
+            hash(currentPageID);
+        }
 
         // Show the current page again
         domStyle.set("pageDiv", "display", "block");

@@ -14,8 +14,15 @@ define([
     // Singleton domain object shared across application
     var domain = {
 
+        startPage: "page_dashboard",
+            
         currentPageModel: new Stateful(),
         currentPageModelTemplate: null,
+        
+        hasUnsavedChangesForCurrentPage: function() {
+            // TODO: Fix this
+            return true;
+        },
         
         changePageModel: function(modelName) {
             var pageModel = new Stateful();
