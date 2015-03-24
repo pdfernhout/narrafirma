@@ -17,27 +17,45 @@ define([
         startPage: "page_dashboard",
             
         currentPageModel: new Stateful(),
+        
         currentPageModelTemplate: null,
+        
+        currentPageDocumentEnvelope: null,
         
         hasUnsavedChangesForCurrentPage: function() {
             // TODO: Fix this
             return true;
         },
         
-        changePageModel: function(modelName) {
+        changeCurrentPageModel: function(modelName) {
             var pageModel = new Stateful();
             
             var pageModelTemplate = domain.panelSpecificationCollection.buildModel(modelName);
             if (!pageModelTemplate) {
                 // TODO: What is the correct behavior here if the model definition is missing -- to prevent other errors?
-                console.log("Missing model template for", modelName);
+                console.log("ERROR: Missing model template for", modelName);
                 throw new Error("Missing model template for: " + modelName);
             } else {
                 modelUtility.updateModelWithNewValues(pageModel, pageModelTemplate);
             }
             
             domain.currentPageModel = pageModel;
-            domain.currentPageModelTemplate = pageModelTemplate; 
+            domain.currentPageModelTemplate = pageModelTemplate;
+            domain.currentPageDocumentEnvelope = null;
+        },
+        
+        changeCurrentPageData: function (documentEnvelope) {
+            domain.currentPageDocumentEnvelope = documentEnvelope;
+            if (domain.currentPageDocumentEnvelope) {
+                modelUtility.updateModelWithNewValues(domain.currentPageModel, documentEnvelope.content);
+            } else {
+                // Reset the model
+                if (!domain.currentPageModelTemplate) {
+                    console.log("ERROR: Missing currentPageModelTemplate");
+                } else {
+                    modelUtility.updateModelWithNewValues(domain.currentPageModel, domain.currentPageModelTemplate, "copyOnlyModelFields", "removeOtherFieldsFromModel");
+                }
+            }
         },
         
         // This will hold information about all the panels used
