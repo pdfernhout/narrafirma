@@ -1,9 +1,35 @@
-define([], function() {
+define(["dojox/mvc/getPlainValue",], function(getPlainValue) {
     "use strict";
     
-    return {
-        updateModelWithNewValues: function(model, newValues, copyOnlyModelFieldsFlag, removeOtherFieldsFromModelFlag) {
+    // TODO: Note that this approach depends on object keys maintaining their order, which is not guaranteed by the JS standards but most browsers support it
+    // isObject and copyObjectWithSortedKeys are from Mirko Kiefer (with added semicolons):
+    // https://raw.githubusercontent.com/mirkokiefer/canonical-json/master/index2.js
+    var isObject = function(a) {
+        return Object.prototype.toString.call(a) === '[object Object]';
+    };
+    var copyObjectWithSortedKeys = function(object) {
+        if (isObject(object)) {
+            var newObj = {};
+            var keysSorted = Object.keys(object).sort();
             var key;
+            for (var i = 0, len = keysSorted.length; i < len; i++) {
+                key = keysSorted[i];
+                newObj[key] = copyObjectWithSortedKeys(object[key]);
+            }
+            return newObj;
+        } else if (Array.isArray(object)) {
+            return object.map(copyObjectWithSortedKeys);
+        } else {
+            return object;
+        }
+    };
+        
+    return {
+        updateModelWithNewValues: function(model, newValuesOriginal, copyOnlyModelFieldsFlag, removeOtherFieldsFromModelFlag) {
+            var key;
+            
+            // Make a deep copy of the original values to ensure any arrays or objects are full deep copies
+            var newValues = JSON.parse(JSON.stringify(newValuesOriginal));
             
             // Copy new data into model
             for (key in newValues) {
@@ -27,6 +53,20 @@ define([], function() {
                     model.set(key, undefined);
                 }
             }
+        },
+        
+        
+        
+        isModelChanged: function(model, initialValues) {
+            var initialValuesJSON = JSON.stringify(copyObjectWithSortedKeys(initialValues), null, 4);
+            var currentValuesJSON = JSON.stringify(copyObjectWithSortedKeys(getPlainValue(model)), null, 4);
+            var isChanged = initialValuesJSON !== currentValuesJSON;
+            if (isChanged || true) {
+                console.log("changed from to", initialValues, model);
+                console.log("initial", initialValuesJSON);
+                console.log("current", currentValuesJSON);
+            }
+            return isChanged;
         }
     };  
 });

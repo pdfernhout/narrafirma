@@ -24,7 +24,14 @@ define([
         
         hasUnsavedChangesForCurrentPage: function() {
             // TODO: Fix this
-            return true;
+            if (domain.currentPageDocumentEnvelope) {
+                return modelUtility.isModelChanged(domain.currentPageModel, domain.currentPageDocumentEnvelope.content);
+            } else if (domain.currentPageModelTemplate) {
+                return modelUtility.isModelChanged(domain.currentPageModel, domain.currentPageModelTemplate);
+            } else {
+                console.log("ERROR: No way to be sure if model changed?");
+                return false;
+            }
         },
         
         changeCurrentPageModel: function(modelName) {
