@@ -30,13 +30,14 @@ define([
     var standby;
     var standbyStartTimer;
     
-    var standbyStartWait_ms = 250;
+    var standbyStartWait_ms = 100;
 
     // Call this once at the beginning of the application
     function configurePageDisplayer(thePanelBuilder) {
         panelBuilder = thePanelBuilder;
         
-        standby = new Standby({target: "pageDiv"});
+        // TODO: Since pageDiv is hidden while it is being built, hide the navigationDiv to provide feedback
+        standby = new Standby({target: "navigationDiv"});
         document.body.appendChild(standby.domNode);
         standby.startup();
     }
