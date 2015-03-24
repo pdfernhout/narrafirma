@@ -5,6 +5,7 @@ define([
     "dojo/dom-style",
     "dojo/hash",
     "js/navigationPane",
+    "dojox/widget/Standby",
     "js/storage",
     "js/panelBuilder/translate"
 ], function(
@@ -14,6 +15,7 @@ define([
     domStyle,
     hash,
     navigationPane,
+    Standby,
     storage,
     translate
 ) {
@@ -24,10 +26,19 @@ define([
     var currentPage;
 
     var panelBuilder;
+    
+    var standby;
+    var standbyStartTimer;
+    
+    var standbyStartWait_ms = 250;
 
     // Call this once at the beginning of the application
     function configurePageDisplayer(thePanelBuilder) {
         panelBuilder = thePanelBuilder;
+        
+        standby = new Standby({target: "pageDiv"});
+        document.body.appendChild(standby.domNode);
+        standby.startup();
     }
 
     function showPage(pageID, forceRefresh) {
@@ -56,6 +67,13 @@ define([
             }
         }
 
+        // Start standby if the data load is taking longer then standbyStartWait_ms time
+        standbyStartTimer = window.setTimeout(function() {
+            console.log("Start standby timer");
+            standby.show();
+            standbyStartTimer = null;
+        }, standbyStartWait_ms);
+        
         // Hide the current page temporarily
         domStyle.set("pageDiv", "display", "none");
 
@@ -73,26 +91,42 @@ define([
             currentPageID = pageID;
             hash(currentPageID);
         }
-
-        // Show the current page again
-        domStyle.set("pageDiv", "display", "block");
-
-        document.body.scrollTop = document.documentElement.scrollTop = 0;
-
-        // Ensure navigation select is pointing to this page; this may trigger an update but it should be ignored as we're already on this page
-        navigationPane.setCurrentPageSpecification(pageID, pageSpecification);
-        
-        // Because the page was hidden when created, all the grids need to be resized so grid knows how tall to make header so it is not overwritten
-        currentPage.resize();
         
         // Load the data for the current page
         // TODO: Improve this to be per page
         // TODO: Add some kind of please wait while loading...
         storage.loadLatestProjectVersion(function (error, content, envelope) {
             console.log("loaded data", error, content, envelope);
-            domain.changeCurrentPageData(envelope);
+            
+            if (!error) {
+                domain.changeCurrentPageData(envelope);
+            } else {
+                console.log("ERROR: Problem loading data for page", pageID);
+                // TODO: Need to distinguish if just starting out and no data file for page from some server issue
+                alert("Problem loading data for page");
+            }
+            
+            if (standbyStartTimer) {
+                console.log("Clear standby timer start");
+                window.clearTimeout(standbyStartTimer);
+                standbyStartTimer = null;
+            }
+            console.log("hiding standby if it is started");
+            standby.hide();
+            
+            // Show the current page again
+            domStyle.set("pageDiv", "display", "block");
+
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
+
+            // Ensure navigation select is pointing to this page; this may trigger an update but it should be ignored as we're already on this page
+            navigationPane.setCurrentPageSpecification(pageID, pageSpecification);
+            
+            // Because the page was hidden when created, all the grids need to be resized so grid knows how tall to make header so it is not overwritten
+            currentPage.resize();
         });
         
+        // TODO: What if standby reset fails for some reason, like a problem with loadLastestProjectVersion?
     }
 
     function createPage(pageID) {
