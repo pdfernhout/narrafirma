@@ -300,6 +300,16 @@ define([
             
             // turn off initial "please wait" display
             document.getElementById("pleaseWaitDiv").style.display = "none";
+            
+            // From: https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload
+            window.addEventListener("beforeunload", function (e) {
+                if (!domain.hasUnsavedChangesForCurrentPage()) return null;
+                    
+                var confirmationMessage = "You have unsaved changes";
+
+                (e || window.event).returnValue = confirmationMessage;     // Gecko and Trident
+                return confirmationMessage;                                // Gecko and WebKit
+              });
         });
     }
     
