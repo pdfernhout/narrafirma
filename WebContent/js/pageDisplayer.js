@@ -5,6 +5,7 @@ define([
     "dojo/dom-style",
     "dojo/hash",
     "js/navigationPane",
+    "js/storage",
     "js/panelBuilder/translate"
 ], function(
     ContentPane,
@@ -13,6 +14,7 @@ define([
     domStyle,
     hash,
     navigationPane,
+    storage,
     translate
 ) {
     "use strict";
@@ -77,11 +79,20 @@ define([
 
         document.body.scrollTop = document.documentElement.scrollTop = 0;
 
-        // Because the page was hidden when created, all the grids need to be resized so grid knows how tall to make header so it is not overwritten
-        currentPage.resize();
-
         // Ensure navigation select is pointing to this page; this may trigger an update but it should be ignored as we're already on this page
         navigationPane.setCurrentPageSpecification(pageID, pageSpecification);
+        
+        // Because the page was hidden when created, all the grids need to be resized so grid knows how tall to make header so it is not overwritten
+        currentPage.resize();
+        
+        // Load the data for the current page
+        // TODO: Improve this to be per page
+        // TODO: Add some kind of please wait while loading...
+        storage.loadLatestProjectVersion(function (error, content, envelope) {
+            console.log("loaded data", error, content, envelope);
+            domain.changeCurrentPageData(envelope);
+        });
+        
     }
 
     function createPage(pageID) {
@@ -94,7 +105,7 @@ define([
             console.log("Page model name is not set in", pageID, pageSpecification);
             throw new Error("Page model is not defined for " + pageID);
         }
-        domain.changePageModel(pageModelName);
+        domain.changeCurrentPageModel(pageModelName);
         var modelForPage = domain.currentPageModel;
         
         // TODO: Need to load the data from the server or check for it in the cache!!!
