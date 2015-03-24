@@ -55,8 +55,6 @@ define(["dojox/mvc/getPlainValue",], function(getPlainValue) {
             }
         },
         
-        
-        
         isModelChanged: function(model, initialValues) {
             var initialValuesJSON = JSON.stringify(copyObjectWithSortedKeys(initialValues), null, 4);
             var currentValuesJSON = JSON.stringify(copyObjectWithSortedKeys(getPlainValue(model)), null, 4);
