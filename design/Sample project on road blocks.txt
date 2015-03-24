@@ -406,7 +406,7 @@
   "page_projectRequests_pageStatus": null,
   "page_addNewReturnRequest_pageStatus": null,
   "page_returnReport_pageStatus": null,
-  "project_storyElementsAnswersClusteringDiagram": {
+  "project_projectStoryElementsAnswersClusteringDiagram": {
     "surfaceWidthInPixels": 808,
     "surfaceHeightInPixels": 498,
     "items": [
