@@ -41,6 +41,25 @@ define([
         document.body.appendChild(standby.domNode);
         standby.startup();
     }
+    
+    function startStandby() {
+        // Start standby if the data load is taking longer then standbyStartWait_ms time
+        standbyStartTimer = window.setTimeout(function() {
+            console.log("Start standby timer");
+            standby.show();
+            standbyStartTimer = null;
+        }, standbyStartWait_ms);
+    }
+    
+    function stopStandby() {
+        if (standbyStartTimer) {
+            console.log("Clear standby timer start");
+            window.clearTimeout(standbyStartTimer);
+            standbyStartTimer = null;
+        }
+        console.log("hiding standby if it is started");
+        standby.hide();
+    }
 
     function showPage(pageID, forceRefresh) {
         if (!pageID) pageID = domain.startPage;
@@ -68,12 +87,7 @@ define([
             }
         }
 
-        // Start standby if the data load is taking longer then standbyStartWait_ms time
-        standbyStartTimer = window.setTimeout(function() {
-            console.log("Start standby timer");
-            standby.show();
-            standbyStartTimer = null;
-        }, standbyStartWait_ms);
+        startStandby();
         
         // Hide the current page temporarily
         domStyle.set("pageDiv", "display", "none");
@@ -85,7 +99,14 @@ define([
             domConstruct.destroy(currentPage.domNode);
         }
 
-        currentPage = createPage(pageID, true);
+        try {
+            currentPage = createPage(pageID, true);
+        } catch (e) {
+            console.log("ERROR: When trying to create page", pageID, e);
+            stopStandby();
+            alert("Something when wrong trying to create this page");
+            return;
+        }
 
         if (currentPageID !== pageID) {
             console.log("setting currentPageID to", pageID);
@@ -107,13 +128,7 @@ define([
                 alert("Problem loading data for page");
             }
             
-            if (standbyStartTimer) {
-                console.log("Clear standby timer start");
-                window.clearTimeout(standbyStartTimer);
-                standbyStartTimer = null;
-            }
-            console.log("hiding standby if it is started");
-            standby.hide();
+            stopStandby();
             
             // Show the current page again
             domStyle.set("pageDiv", "display", "block");
@@ -172,7 +187,7 @@ define([
         } catch (e) {
             console.log("Error when trying to build panel", pageID, modelForPage, e);
             // TODO: Translate
-            alert("Something went wrong when trying to display this page.\nCheck the console for details");
+            alert("Something went wrong when trying to build this page.\nCheck the console for details");
         }
 
         return pagePane;
