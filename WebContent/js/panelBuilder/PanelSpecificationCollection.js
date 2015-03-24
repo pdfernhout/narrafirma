@@ -31,6 +31,7 @@ define([
     };
     
     PanelSpecificationCollection.prototype.addPanelSpecification = function(panelSpecification) {
+        // console.log("addPanelSpecification", panelSpecification);
         // TODO: Maybe should copy panelSpecification to ensure it won't change if changed latar by caller?
         this.allPanels.push(panelSpecification);
         this.panelIDToPanelSpecificationMap[panelSpecification.id] = panelSpecification;
@@ -57,15 +58,19 @@ define([
             }
         }
         
+        // console.log("about to loop over panelFields", panelSpecification.panelFields.length);
         for (var i = 0; i < panelSpecification.panelFields.length; i++) {
             var fieldSpecification = panelSpecification.panelFields[i];
+            // console.log("about to call addFieldSpecification", fieldSpecification);
             this.addFieldSpecification(modelClass, fieldSpecification);
+            // console.log("done with call");
         }
     };
     
     PanelSpecificationCollection.prototype.addFieldSpecification = function(modelClass, fieldSpecification) {
-        // console.log("adding field specification", fieldSpecification);
+        // console.log("addFieldSpecification called", modelClass, fieldSpecification);
         var model = this.modelClassToModelFieldSpecificationsMap[modelClass];
+        // console.log("adding field specification", modelClass, fieldSpecification, model);
         // TODO: Is this modelClass line still needed?
         fieldSpecification.modelClass = modelClass;
         this.allFieldSpecifications.push(fieldSpecification);
@@ -86,10 +91,12 @@ define([
         if (dataType === "dictionary") return {};
         if (dataType === "object") return {};
         if (dataType === "boolean") return false;
-        throw new Error("Unsupported model field dataType: " + dataType);
+        console.log("ERROR: Unsupported model field dataType", dataType, fieldSpecification);
+        throw new Error("Unsupported model field dataType: " + dataType + " for field: " + fieldSpecification.id);
     };
 
     PanelSpecificationCollection.prototype.buildModel = function(modelName) {
+        console.log("buildModel request", modelName);
         var model = {__type: modelName};
         var modelFieldSpecifications = this.modelClassToModelFieldSpecificationsMap[modelName];
         if (!modelFieldSpecifications) {
@@ -99,11 +106,12 @@ define([
         
         for (var i = 0; i < modelFieldSpecifications.length; i++) {
             var fieldSpecification = modelFieldSpecifications[i];
-            if (fieldSpecification.dataType !== "none") {
+            if (!fieldSpecification.dataType) console.log("WARNING: Missing dataType for fieldSpecification", fieldSpecification);
+            if (fieldSpecification.dataType && fieldSpecification.dataType !== "none") {
                 model[fieldSpecification.id] = this.initialDataForField(fieldSpecification);
             }
         }
-        console.log("buildModel", modelName, model);
+        console.log("buildModel result", modelName, model);
         return model;
     };
     
@@ -125,14 +133,6 @@ define([
     
     PanelSpecificationCollection.prototype.getFieldSpecificationForFieldID = function(fieldID) {
         return this.fieldIDToFieldSpecificationMap[fieldID];
-    };
-    
-    // TODO: This is needed in one place in main.js; could the architecture be refactored further to remove that need?
-    // Note that questions added this way don't belong to a specific panel.
-    // Note that fieldSpecifications added this way also will not be included in models
-    PanelSpecificationCollection.prototype.addFieldSpecification = function(fieldSpecification) {
-        this.allFieldSpecifications.push(fieldSpecification);
-        this.fieldIDToFieldSpecificationMap[fieldSpecification.id] = fieldSpecification;
     };
     
     PanelSpecificationCollection.prototype.getChildPageIDListForHeaderID = function(fieldID) {

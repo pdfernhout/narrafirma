@@ -53,38 +53,40 @@ define([
     var completionStatusOptions = ["intentionally skipped", "partially done", "completely finished"];
 
     function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecification) {
-        console.log("addExtraFieldSpecificationsForPageSpecification", pageID, pageSpecification);
+        // console.log("addExtraFieldSpecificationsForPageSpecification", pageSpecification.section, pageID, pageSpecification);
         if (pageSpecification.section !== "dashboard") {
             if (!pageSpecification.isHeader) {
                 // Regular page -- add a footer where the page status can be set
                 var statusEntryID = pageID + "_pageStatus";
                 var completionStatusEntryFieldSpecification = {
                     id: statusEntryID,
+                    dataType: "string",
+                    dataOptions: completionStatusOptions,
                     displayType: "select",
                     displayName: "Completion status",
-                    displayPrompt: translate("#dashboard_status_entry::prompt", "The dashboard status of this page is:"),
-                    dataOptions: completionStatusOptions
+                    displayPrompt: translate("#dashboard_status_entry::prompt", "The dashboard status of this page is:")
                 };
                 domain.panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, completionStatusEntryFieldSpecification);
             } else {
                 // Dashboard page
-                console.log("page dashboard as header", pageSpecification.id, pageSpecification.displayType, pageSpecification);
+                // console.log("page dashboard as header", pageSpecification.id, pageSpecification.displayType, pageSpecification);
                 // Put in dashboard
                 var childPageIDs = domain.panelSpecificationCollection.getChildPageIDListForHeaderID(pageID);
-                console.log("child pages", pageID, childPageIDs);
+                // console.log("child pages", pageID, childPageIDs);
                 if (!childPageIDs) childPageIDs = [];
                 // Add a display to this page for each child page in the same section
                 for (var childPageIndex = 0; childPageIndex < childPageIDs.length; childPageIndex++) {
                     var childPageID = childPageIDs[childPageIndex];
                     var statusViewID = childPageID + "_pageStatus_dashboard";
                     var childPageSpecification = domain.getPageSpecification(childPageID);
-                    console.log("childPageID", childPageSpecification, childPageID);
+                    // console.log("childPageID", childPageSpecification, childPageID);
                     if (!childPageSpecification) console.log("Error: problem finding page definition for", childPageID);
                     if (childPageSpecification && childPageSpecification.displayType === "page") {
                         var prompt = translate(childPageID + "::title", childPageSpecification.displayName) + " " + translate("#dashboard_status_label", "status:") + " ";
-                        console.log("about to call panelBuilder to add one questionAnswer for child page's status", childPageID);
+                        // console.log("about to call panelBuilder to add one questionAnswer for child page's status", childPageID);
                         var completionStatusDisplayFieldSpecification = {
                             id: statusViewID,
+                            dataType: "none",
                             displayType: "questionAnswer",
                             displayName: prompt,
                             displayPrompt: prompt,
@@ -132,10 +134,6 @@ define([
                 }
                 lastPageID = pageID;
 
-                // Put in a dynamic question (incomplete for options) to be used to lookup page status.
-                // This is needed so add_questionAnswer can check the field is a "select" to translate the options if needed
-                domain.panelSpecificationCollection.addFieldSpecification({id: pageID + "_pageStatus", displayType: "select"});
-                
                 if (panel.isHeader) {
                     lastHeader = pageID;
                     lastSection = panel.section;
