@@ -45,10 +45,6 @@ define([
         // Any items like buttons added to the navigationPane will have startup() called automatically,
         // since the navigationPane they are being added to has already been started
 
-        // var imageButton = widgets.newButton("wwsImageButton", "Working With Stories image button", navigationPane, wwsButtonClicked);
-        // imageButton.set("showLabel", false);
-        // imageButton.set("iconClass", "wwsButtonImage");
-
         // Document controls
 
         // Page controls
@@ -87,11 +83,6 @@ define([
         });
         select.placeAt(addToDiv, "last");
         return select;
-    }
-
-    function wwsButtonClicked() {
-        console.log("wwsButtonClicked");
-        location.href = "http://www.workingwithstories.org/";
     }
 
     function homeButtonClicked() {
