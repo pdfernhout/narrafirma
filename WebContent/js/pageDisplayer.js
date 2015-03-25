@@ -76,6 +76,7 @@ define([
             return;
         }
         
+        // Check for unsaved changes before changing page
         if (currentPageID !== null && domain.hasUnsavedChangesForCurrentPage()) {
             // TODO: Fix this so requests you either revert or save changes first?
             // TODO: Translate
@@ -87,34 +88,62 @@ define([
             }
         }
 
+        // Get ready to put up a standby widget in case this all takes a long time, especially loading the data from the server
         startStandby();
         
         // Hide the current page temporarily
         domStyle.set("pageDiv", "display", "none");
 
+        // Get rid of the old page using dojo destroy in order to prevent memory leaks
         if (currentPageID && currentPage) {
             // domStyle.set(currentPageID, "display", "none");
             console.log("destroying", currentPageID, currentPage);
             currentPage.destroyRecursive();
             domConstruct.destroy(currentPage.domNode);
         }
+        
+        // Get ready to create a model for this page if we have a model for it
+        var pageModelName = pageSpecification.modelClass;
+        if (!pageModelName) {
+            console.log("ERROR: Page model name is not set in", pageID, pageSpecification);
+            stopStandby();
+            // TODO: Translate
+            alert("Something when wrong trying to create the model for this page");
+            return;
+        }
 
+        // Tell the domain to create a new model for this page to use to store data for the page and signal changes to GUI
         try {
-            currentPage = createPage(pageID, true);
+            domain.changeCurrentPageModel(pageSpecification, pageModelName);
+        } catch (e) {
+            console.log("ERROR: changeCurrentPageModel had exception", pageID, pageSpecification, pageModelName, e);
+            stopStandby();
+            // TODO: Translate
+            alert("Something when wrong trying to set the model for this page");
+            return;
+        }
+        
+        var modelForPage = domain.currentPageModel;
+
+        // Create the display widgets for this page
+        try {
+            currentPage = createPage(pageID, pageSpecification, modelForPage);
         } catch (e) {
             console.log("ERROR: When trying to create page", pageID, e);
             stopStandby();
+            // TODO: Translate
             alert("Something when wrong trying to create this page");
             return;
         }
 
+        // Make sure the hash is pointing to this page if this is not a forced refresh
         if (currentPageID !== pageID) {
             console.log("setting currentPageID to", pageID);
             currentPageID = pageID;
             hash(currentPageID);
         }
         
-        // Load the data for the current page
+        // Load the data for the current page from the server
         // TODO: Improve this to be per page
         // TODO: Add some kind of please wait while loading...
         storage.loadLatestProjectVersion(function (error, content, envelope) {
@@ -129,6 +158,7 @@ define([
             } else {
                 console.log("ERROR: Problem loading data for page", pageID);
                 // TODO: Need to distinguish if just starting out and no data file for page from some server issue
+                // TODO: Translate
                 alert("Problem loading data for page");
             }
             
@@ -149,15 +179,9 @@ define([
         // TODO: What if standby reset fails for some reason, like a problem with loadLastestProjectVersion?
     }
 
-    function createPage(pageID) {
+    // Create all the widgets for the current page using the panelBuilder which builds the page from the pageSpecification
+    function createPage(pageID, pageSpecification, modelForPage) {
         console.log("createPage", pageID);
-
-        var pageSpecification = domain.getPageSpecification(pageID);
-        
-        if (!pageSpecification) {
-            console.log("ERROR: No definition for page: ", pageID);
-            return null;
-        }
         
         var pagePane = new ContentPane({
             title: pageSpecification.title,
@@ -176,16 +200,8 @@ define([
 
         // console.log("Made content pane", pageID);
 
-        var pageModelName = pageSpecification.modelClass;
-        if (!pageModelName) {
-            console.log("Page model name is not set in", pageID, pageSpecification);
-            throw new Error("Page model is not defined for " + pageID);
-        }
-
-        domain.changeCurrentPageModel(pageSpecification, pageModelName);
-        var modelForPage = domain.currentPageModel;
-        
         try {
+            // Tell the panelBuilder to create all the widgets for this page
             panelBuilder.buildPanel(pageID, pagePane, modelForPage);
         } catch (e) {
             console.log("Error when trying to build panel", pageID, modelForPage, e);
