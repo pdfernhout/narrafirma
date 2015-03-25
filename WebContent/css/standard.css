@@ -17,6 +17,19 @@ body {
    padding-left: 2em; 
 }
 
+.pleaseWaitOverlay {
+    /* background-color: #E0EEEE; */
+    background-image: url('../images/dojo-Standby-loading.gif');
+    background-repeat: no-repeat;
+    background-position: top center;
+    position: absolute;
+    z-index: 1001;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
 /* make the dashboard buttons line up like they were in a table column */
 .narrafirma-dashboardStatusButton .dijitButtonNode {
     min-width: 12em;

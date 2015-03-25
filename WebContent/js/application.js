@@ -298,6 +298,7 @@ define([
             
             // turn off initial "please wait" display
             document.getElementById("pleaseWaitDiv").style.display = "none";
+            document.getElementById("navigationDiv").style.display = "block";
             
             // From: https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload
             window.addEventListener("beforeunload", function (e) {
