@@ -184,20 +184,30 @@ define([
             // activeResize: true,
             animateSizing: false,
             // style: "bottom: 4px; right: 4px;",
-            onResize: lang.hitch(this, this.updateSizeOfCanvas)
+            onResize: lang.hitch(this, this.updateSizeOfCanvasFromResizeHandle)
         }).placeAt(divForResizing);
         // TODO: Unsure if need this: handle.startup();
     };
     
-    ClusteringDiagram.prototype.updateSizeOfCanvas = function() {
+    ClusteringDiagram.prototype.updateSizeOfCanvasFromResizeHandle = function() {
         var newWidth = this.divForResizing.clientWidth;
         var newHeight = this.divForResizing.clientHeight;
-        console.log("resize!", newWidth, newHeight);
+        
+        console.log("resize from ResizeHandle drag", newWidth, newHeight);
         this._mainSurface.setDimensions(newWidth, newHeight);
         
         this.diagram.surfaceWidthInPixels = newWidth;
         this.diagram.surfaceHeightInPixels = newHeight;
         this.incrementChangesCount();
+    };
+    
+    ClusteringDiagram.prototype.updateSizeOfCanvasFromModel = function() {
+        var newWidth = this.diagram.surfaceWidthInPixels;
+        var newHeight = this.diagram.surfaceHeightInPixels;
+        
+        console.log("resize from model change", newWidth, newHeight);
+        this.divForResizing.setAttribute("style", "width: " + this.diagram.surfaceWidthInPixels + "px; height: " + this.diagram.surfaceHeightInPixels + "px; border: solid 1px; position: relative");
+        this._mainSurface.setDimensions(newWidth, newHeight);
     };
 
     ClusteringDiagram.prototype.addItemEditor = function() {
@@ -375,21 +385,28 @@ define([
     ClusteringDiagram.prototype.updateSourceClicked = function(sourceText, hideDialogMethod) {     
         console.log("updateSourceClicked", sourceText);
 
+        var newDiagram;
         try {
-            this.diagram = JSON.parse(sourceText);
+            newDiagram = JSON.parse(sourceText);
         } catch(e) {
             alert("Problem parsing source\n" + e);
             return;
         }
         hideDialogMethod();
 
-        console.log("parsed diagram", this.diagram);
-
-        this.recreateDisplayObjectsForAllItems();
+        console.log("parsed diagram", newDiagram);
+        this.updateDiagram(newDiagram);
         this.incrementChangesCount();
+    };
+
+    ClusteringDiagram.prototype.updateDiagram = function(newDiagram) {
+        // console.log("updateDiagram", newDiagram);
+        this.diagram = newDiagram;
+        this.recreateDisplayObjectsForAllItems();
         console.log("Updated OK");
         
         this.clearSelection();
+        this.updateSizeOfCanvasFromModel();
     };
     
     ClusteringDiagram.prototype.clearSelection = function() {
