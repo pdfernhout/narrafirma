@@ -1,27 +1,18 @@
 define([
+    "js/domain",
     "js/pointrel20141201Client",
     "js/versions"
 ], function(
+    domain,
     pointrel20141201Client,
     versions
 ) {  
     "use strict";
 
-    // TODO: Fix credentials
-    var userID = "anonymous";
-    
-    // var savedVersions = [];
-    
-    // TODO: Fix hardcoded projectAnswersDocumentID
-    var projectAnswersDocumentID = "Test-PNIWorkbook-003";
-    
-    // TODO: Fix hardcoded surveyResultHyperdocumentID
-    var surveyResultHyperdocumentID = "Test-PNIWorkbook-003-Surveys";
-   
     /* Project Version */
     
     function storeProjectVersion(projectAnswers, previous, callbackWhenDone) {
-        var metadata = {id: projectAnswersDocumentID, previous: previous, tags: [], contentType: versions.projectAnswersContentType, contentVersion: versions.projectAnswersContentVersion, author: null, committer: userID, timestamp: true};        
+        var metadata = {id: domain.projectAnswersDocumentID, previous: previous, tags: [], contentType: versions.projectAnswersContentType, contentVersion: versions.projectAnswersContentVersion, author: null, committer: domain.userID, timestamp: true};        
         pointrel20141201Client.storeInNewEnvelope(projectAnswers, metadata, function(error, serverResponse) {
             if (error) {
                 console.log("could not write new version:\n" + error);
@@ -35,7 +26,7 @@ define([
     
     function loadAllProjectVersions(loadedProjectVersionsCallback) {
         console.log("loadAllProjectVersions");
-        pointrel20141201Client.queryByID(projectAnswersDocumentID, function(error, result) {
+        pointrel20141201Client.queryByID(domain.projectAnswersDocumentID, function(error, result) {
             if (error) {
                 if (error === "No items found for id") error = "No stored versions could be loaded -- have any project versions been saved?";
                 return loadedProjectVersionsCallback(error);
@@ -46,7 +37,7 @@ define([
     
     function loadLatestProjectVersion(switchToLoadedProjectAnswersCallback) {
         console.log("============= loadLatestProjectVersion");
-        pointrel20141201Client.loadLatestEnvelopeForID(projectAnswersDocumentID, function(error, envelope) {
+        pointrel20141201Client.loadLatestEnvelopeForID(domain.projectAnswersDocumentID, function(error, envelope) {
             if (error) {
                 if (error === "No items found for id") error = "No stored versions could be loaded -- have any project versions been saved?";
                 return switchToLoadedProjectAnswersCallback(error);
@@ -76,7 +67,7 @@ define([
     function storeSurveyResult(surveyResult, callback) {
         // Store the result
         console.log("============= storeSurveyResult", surveyResult);
-        var metadata = {id: surveyResult.responseID, tags: [surveyResultHyperdocumentID], contentType: versions.surveyResultContentType, contentVersion: versions.surveyResultContentVersion, author: null, committer: userID, timestamp: true};
+        var metadata = {id: surveyResult.responseID, tags: [domain.surveyResultHyperdocumentID], contentType: versions.surveyResultContentType, contentVersion: versions.surveyResultContentVersion, author: null, committer: domain.userID, timestamp: true};
         pointrel20141201Client.storeInNewEnvelope(surveyResult, metadata, function(error, serverResponse) {
             if (error) {
                 if (callback) callback(error);
@@ -93,7 +84,7 @@ define([
     
     function loadLatestSurveyResults(loadedSurveyResultsCallback) {
         console.log("============= loadLatestSurveyResults");
-        pointrel20141201Client.loadEnvelopesForTag(surveyResultEnvelopes, surveyResultHyperdocumentID, function(error, referenceToEnvelopeMap, newItems) {
+        pointrel20141201Client.loadEnvelopesForTag(surveyResultEnvelopes, domain.surveyResultHyperdocumentID, function(error, referenceToEnvelopeMap, newItems) {
             if (error) { return loadedNewSurveyResults(loadedSurveyResultsCallback, error); }
             loadedNewSurveyResults(loadedSurveyResultsCallback, null, referenceToEnvelopeMap, newItems);           
         });
@@ -117,7 +108,7 @@ define([
     /* Questionnaire Version */
     
     function storeQuestionnaireVersion(questionnaireID, questionnaire, callback) {
-        var metadata = {id: null, tags: [questionnaireID], contentType: versions.questionnaireContentType, contentVersion: versions.questionnaireContentVersion, author: null, committer: userID, timestamp: true};        
+        var metadata = {id: null, tags: [questionnaireID], contentType: versions.questionnaireContentType, contentVersion: versions.questionnaireContentVersion, author: null, committer: domain.userID, timestamp: true};        
         console.log("============= storeQuestionnaireVersion", questionnaireID, questionnaire);
         pointrel20141201Client.storeInNewEnvelope(questionnaire, metadata, function(error, serverResponse) {
             if (error) {
@@ -147,7 +138,7 @@ define([
     // TODO: What if the user's clock is wrong? How to reset status?
     function storeQuestionnaireStatus(questionnaireID, questionnaireStatus, callback) {
         console.log("============= storeQuestionnaireStatus", questionnaireID);
-        var metadata = {id: null, tags: ["questionnaireStatus::" + questionnaireID], contentType: versions.questionnaireStatusContentType, contentVersion: versions.questionnaireStatusContentVersion, author: null, committer: userID, timestamp: true};        
+        var metadata = {id: null, tags: ["questionnaireStatus::" + questionnaireID], contentType: versions.questionnaireStatusContentType, contentVersion: versions.questionnaireStatusContentVersion, author: null, committer: domain.userID, timestamp: true};        
         pointrel20141201Client.storeInNewEnvelope(questionnaireStatus, metadata, function(error, serverResponse) {
             if (error) {
                 console.log("ERROR storeQuestionnaireVersion: could not write new questionnaire status:\n" + error);

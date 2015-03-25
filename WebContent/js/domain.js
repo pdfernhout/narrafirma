@@ -13,6 +13,17 @@ define([
     
     // Singleton domain object shared across application
     var domain = {
+            
+        // TODO: Fix credentials
+        userID: "anonymous",
+        
+        // savedVersions: [],
+        
+        // TODO: Fix hardcoded projectAnswersDocumentID
+        projectAnswersDocumentID: "Test-PNIWorkbook-003",
+        
+        // TODO: Fix hardcoded surveyResultHyperdocumentID
+        surveyResultHyperdocumentID: "Test-PNIWorkbook-003-Surveys",
 
         // The home page -- should be a constant
         startPage: "page_dashboard",
