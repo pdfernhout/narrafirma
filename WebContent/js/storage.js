@@ -51,6 +51,11 @@ define([
                 if (error === "No items found for id") error = "No stored versions could be loaded -- have any project versions been saved?";
                 return switchToLoadedProjectAnswersCallback(error);
             }
+            // TODO: Temporary fixup for test data
+            if (envelope.content.project_storyElementsAnswersClusteringDiagram && (!envelope.content.project_projectStoryElementsAnswersClusteringDiagram || !envelope.content.project_projectStoryElementsAnswersClusteringDiagram.surfaceWidthInPixels)) {
+                console.log("Fixing up test data", envelope.content.project_storyElementsAnswersClusteringDiagram);
+                envelope.content.project_projectStoryElementsAnswersClusteringDiagram = envelope.content.project_storyElementsAnswersClusteringDiagram;
+            }
             switchToLoadedProjectAnswersCallback(null, envelope.content, envelope);           
         });
     }
