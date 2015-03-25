@@ -121,7 +121,11 @@ define([
             console.log("loaded data", error, content, envelope);
             
             if (!error) {
-                domain.changeCurrentPageData(envelope);
+                try {
+                    domain.changeCurrentPageData(envelope);
+                } catch (e) {
+                    console.log("ERROR: Problem calling changeCurrentPageData", envelope, e);
+                }
             } else {
                 console.log("ERROR: Problem loading data for page", pageID);
                 // TODO: Need to distinguish if just starting out and no data file for page from some server issue
