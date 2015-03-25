@@ -45,6 +45,7 @@ define([
             } else {
                 modelUtility.updateModelWithNewValues(pageModel, pageModelTemplate);
             }
+            console.log("changeCurrentPageModel", modelName, pageModelTemplate);
             
             domain.currentPageModel = pageModel;
             domain.currentPageModelTemplate = pageModelTemplate;
