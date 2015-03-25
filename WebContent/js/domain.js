@@ -31,7 +31,7 @@ define([
         // This will hold information about all the panels used
         panelSpecificationCollection: new PanelSpecificationCollection(),
         
-        // The page specifaction for the current page, which provides the page ID and section
+        // The page specification for the current page, which provides the page ID and section
         currentPageSpecification: null,
 
         // The Stateful model holding the data used by the current page
