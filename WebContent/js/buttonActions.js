@@ -30,12 +30,18 @@ define([
     function loadLatestClicked() {
         console.log("load latest clicked");
 
+        // TODO: Fix this
+        throw new Error("No longer working due to ongoing refactoring for current page model");
+        
         // TODO: Check for unsaved data before loading project...
         storage.loadLatestProjectVersion(switchToLoadedProjectData);
     }
 
     function loadVersionClicked() {
         console.log("load version clicked");
+        
+        // TODO: Fix this
+        throw new Error("No longer working due to ongoing refactoring for current page model");
 
         // TODO: Kludge of loading all stories when load data?
         // surveyCollection.loadLatestStoriesFromServer();
@@ -114,6 +120,9 @@ define([
 
     function importButtonClicked(projectDefinitionText, hideDialogMethod) {
         console.log("importButtonClicked", projectDefinitionText);
+        
+        // TODO: Fix this
+        throw new Error("No longer working due to ongoing refactoring for current page model");
 
         var updatedProjectAnswers;
 
