@@ -386,7 +386,7 @@ function respondForResourcePost(request, response) {
         
         addToIndexes(request.body, sha256AndLength);
         
-        return response.json({status: 'OK', message: 'Wrote content', sha256AndLength: sha256AndLength});
+        return response.json({status: 'OK', message: 'Wrote content', sha256AndLength: sha256AndLength, envelopeTimestamp: requestEnvelope.timestamp});
         
     });
 }
