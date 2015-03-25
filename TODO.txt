@@ -1,7 +1,11 @@
 ==== NarraFirma TODO list:
 
 PRIORITY
-- catalysis
+- seperate save and load for each page
+- versions for each page
+- multiple projects
+- WordPress plugin data save and load
+- catalysis (at least one step like graph or themer)
 
 CRASH
 Story browser (Catalysis section second page, but also review stories during collection) seems to sometimes cause and endless loop in Firexfox or Chrome causing memory use growth and beach ball. Maybe some resize bug in dojo or dgrid?
@@ -580,3 +584,10 @@ DONE Move loadAllPanelSpecifications into PanelSpecificationCollection and pass 
 DONE Remove unused imports and do other cleanup
 DONE Make intial version of PointrelCache for testing polling
 DONE Refactor application.js into more modules by responsibility (navigation, page display, button actions)
+DONE Remove all explicit setting of an id when creating a dijit to minimize errors from duplicate IDs from other programming issues
+DONE Add confirmation request when changing pages or closing page if data has changed
+DONE Start loading data on every page change
+DONE Add Standby widget when loading data for pages
+DONE Add exception handling for problems when displaying a page
+DONE Fix cluster diagram so it reloads data when model changed
+DONE Fix inconsistency for story project clustering diagram id and displayConfiguration; add temporary kludge when loading data for change
