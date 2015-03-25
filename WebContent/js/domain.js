@@ -14,13 +14,25 @@ define([
     // Singleton domain object shared across application
     var domain = {
 
+        // The home page -- should be a constant
         startPage: "page_dashboard",
-            
+        
+        // This will hold information about all the panels used
+        panelSpecificationCollection: new PanelSpecificationCollection(),
+        
+        // The page specifaction for the current page, which provides the page ID and section
+        currentPageSpecification: null,
+
+        // The Stateful model holding the data used by the current page
         currentPageModel: new Stateful(),
         
+        // A template of default values for the current model -- used also to check if it has changed
         currentPageModelTemplate: null,
         
+        // The data loaded for the current page -- used also to check if it has changed
         currentPageDocumentEnvelope: null,
+        
+        /////////////// API calls below
         
         hasUnsavedChangesForCurrentPage: function() {
             // TODO: Fix this
@@ -34,7 +46,7 @@ define([
             }
         },
         
-        changeCurrentPageModel: function(modelName) {
+        changeCurrentPageModel: function(pageSpecification, modelName) {
             var pageModel = new Stateful();
             
             var pageModelTemplate = domain.panelSpecificationCollection.buildModel(modelName);
@@ -47,6 +59,7 @@ define([
             }
             console.log("changeCurrentPageModel", modelName, pageModelTemplate);
             
+            domain.currentPageSpecification = pageSpecification;
             domain.currentPageModel = pageModel;
             domain.currentPageModelTemplate = pageModelTemplate;
             domain.currentPageDocumentEnvelope = null;
@@ -66,9 +79,6 @@ define([
             }
         },
         
-        // This will hold information about all the panels used
-        panelSpecificationCollection: new PanelSpecificationCollection(),
-    
         // Convenience method for most common case of finding page specification
         getPageSpecification: function(pageID) {
             // For now, any "page" defined in the panelSpecificationCollection is available

@@ -154,21 +154,11 @@ define([
 
         var pageSpecification = domain.getPageSpecification(pageID);
         
-        var pageModelName = pageSpecification.modelClass;
-        if (!pageModelName) {
-            console.log("Page model name is not set in", pageID, pageSpecification);
-            throw new Error("Page model is not defined for " + pageID);
-        }
-        domain.changeCurrentPageModel(pageModelName);
-        var modelForPage = domain.currentPageModel;
-        
-        // TODO: Need to load the data from the server or check for it in the cache!!!
-
         if (!pageSpecification) {
             console.log("ERROR: No definition for page: ", pageID);
             return null;
         }
-
+        
         var pagePane = new ContentPane({
             title: pageSpecification.title,
             // Shorten width so grid scroll bar shows up not clipped
@@ -186,6 +176,15 @@ define([
 
         // console.log("Made content pane", pageID);
 
+        var pageModelName = pageSpecification.modelClass;
+        if (!pageModelName) {
+            console.log("Page model name is not set in", pageID, pageSpecification);
+            throw new Error("Page model is not defined for " + pageID);
+        }
+
+        domain.changeCurrentPageModel(pageSpecification, pageModelName);
+        var modelForPage = domain.currentPageModel;
+        
         try {
             panelBuilder.buildPanel(pageID, pagePane, modelForPage);
         } catch (e) {
