@@ -65,13 +65,16 @@ define([
         changeCurrentPageModel: function(pageSpecification, modelName) {
             var pageModel = new Stateful();
             
-            var pageModelTemplate = domain.panelSpecificationCollection.buildModel(modelName);
-            if (!pageModelTemplate) {
-                // TODO: What is the correct behavior here if the model definition is missing -- to prevent other errors?
-                console.log("ERROR: Missing model template for", modelName);
-                throw new Error("Missing model template for: " + modelName);
-            } else {
-                modelUtility.updateModelWithNewValues(pageModel, pageModelTemplate);
+            var pageModelTemplate = null;
+            if (modelName) {
+                pageModelTemplate = domain.panelSpecificationCollection.buildModel(modelName);
+                if (!pageModelTemplate) {
+                    // TODO: What is the correct behavior here if the model definition is missing -- to prevent other errors?
+                    console.log("ERROR: Missing model template for", modelName);
+                    throw new Error("Missing model template for: " + modelName);
+                } else {
+                    modelUtility.updateModelWithNewValues(pageModel, pageModelTemplate);
+                }
             }
             console.log("changeCurrentPageModel", modelName, pageModelTemplate);
             

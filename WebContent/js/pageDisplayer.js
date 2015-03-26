@@ -104,7 +104,7 @@ define([
         
         // Get ready to create a model for this page if we have a model for it
         var pageModelName = pageSpecification.modelClass;
-        if (!pageModelName) {
+        if (pageModelName === undefined) {
             console.log("ERROR: Page model name is not set in", pageID, pageSpecification);
             stopStandby();
             // TODO: Translate
@@ -142,6 +142,8 @@ define([
             currentPageID = pageID;
             hash(currentPageID);
         }
+        
+        // TODO: Need handling for pages without page models...
         
         // Load the data for the current page from the server
         // TODO: Improve this to be per page
