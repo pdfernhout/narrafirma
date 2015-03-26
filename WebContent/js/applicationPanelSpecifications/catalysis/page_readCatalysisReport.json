@@ -3,7 +3,7 @@
     "displayName": "Read catalysis report",
     "displayType": "page",
     "section": "catalysis",
-    "modelClass": "ProjectModel",
+    "modelClass": "ReadCatalysisReportPage",
     "panelFields": [
         {
             "id": "catalysisReport_introductionLabel",

@@ -3,7 +3,7 @@
     "displayName": "Create new excerpt",
     "displayType": "panel",
     "section": "catalysis",
-    "modelClass": "CreateNewExcerptModel",
+    "modelClass": "Excerpt",
     "panelFields": [
         {
             "id": "excerpt_name",

@@ -3,7 +3,7 @@
     "displayName": "Sensemaking session outcome",
     "displayType": "panel",
     "section": "sensemaking",
-    "modelClass": "NewSensemakingSessionOutcomeModel",
+    "modelClass": "NewSensemakingSessionOutcome",
     "panelFields": [
         {
             "id": "sensemakingSessionRecord_outcome_type",

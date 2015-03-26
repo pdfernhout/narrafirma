@@ -3,7 +3,7 @@
     "displayName": "Add element to project presentation outline",
     "displayType": "panel",
     "section": "return",
-    "modelClass": "PresentationElementModel",
+    "modelClass": "PresentationElement",
     "panelFields": [
         {
             "id": "projectPresentationElement_name",

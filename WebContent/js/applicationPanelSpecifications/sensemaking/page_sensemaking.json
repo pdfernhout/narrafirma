@@ -4,7 +4,7 @@
     "displayType": "page",
     "isHeader": true,
     "section": "sensemaking",
-    "modelClass": "ProjectModel",
+    "modelClass": "SensemakingPage",
     "panelFields": [
         {
             "id": "sensemakingIntroLabel",

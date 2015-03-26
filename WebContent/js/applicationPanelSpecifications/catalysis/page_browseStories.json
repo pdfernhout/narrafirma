@@ -3,7 +3,7 @@
     "displayName": "Browse stories",
     "displayType": "page",
     "section": "catalysis",
-    "modelClass": "ProjectModel",
+    "modelClass": "BrowseStoriesPage",
     "panelFields": [
         {
             "id": "browseStories_collectedStoriesAfterCollectionLabel",

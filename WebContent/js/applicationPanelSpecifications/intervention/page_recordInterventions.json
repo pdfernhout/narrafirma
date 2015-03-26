@@ -3,7 +3,7 @@
     "displayName": "Enter intervention records",
     "displayType": "page",
     "section": "intervention",
-    "modelClass": "ProjectModel",
+    "modelClass": "EnterInterventionRecordsPage",
     "panelFields": [
         {
             "id": "project_interventionRecordsLabel",

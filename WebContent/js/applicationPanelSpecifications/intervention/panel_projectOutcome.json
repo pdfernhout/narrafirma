@@ -3,7 +3,7 @@
     "displayName": "Project outcomes",
     "displayType": "panel",
     "section": "intervention",
-    "modelClass": "ProjectOutcomeModel",
+    "modelClass": "ProjectOutcome",
     "panelFields": [
         {
             "id": "outcomes_group",

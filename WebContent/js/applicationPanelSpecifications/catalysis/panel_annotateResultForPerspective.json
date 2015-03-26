@@ -3,7 +3,7 @@
     "displayName": "Annotate result for perspective",
     "displayType": "panel",
     "section": "catalysis",
-    "modelClass": "AnnotateResultForPerspectiveModel",
+    "modelClass": "ResultAnnotationForPerspective",
     "panelFields": [
         {
             "id": "perspective_resultLinkageNotes",

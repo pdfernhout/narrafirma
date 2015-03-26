@@ -4,7 +4,7 @@
     "displayType": "page",
     "isHeader": true,
     "section": "planning",
-    "modelClass": "ProjectModel",
+    "modelClass": "PlanningPage",
     "panelFields": [
         {
             "id": "project_projectPlanningLabel",

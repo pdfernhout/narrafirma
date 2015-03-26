@@ -3,7 +3,7 @@
     "displayName": "Add story collection session record",
     "displayType": "panel",
     "section": "collection_process",
-    "modelClass": "CollectionSessionRecordModel",
+    "modelClass": "CollectionSessionRecord",
     "panelFields": [
         {
             "id": "collectionSessionRecord_name",

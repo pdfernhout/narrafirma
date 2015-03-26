@@ -3,7 +3,7 @@
     "displayName": "Story collection construction",
     "displayType": "panel",
     "section": "collection_process",
-    "modelClass": "NewCollectionSessionConstructionModel",
+    "modelClass": "CollectionSessionConstruction",
     "panelFields": [
         {
             "id": "collectionSessionRecord_construction_name",

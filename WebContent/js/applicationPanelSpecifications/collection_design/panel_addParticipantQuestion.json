@@ -3,7 +3,7 @@
     "displayName": "Add participant question",
     "displayType": "panel",
     "section": "collection_design",
-    "modelClass": "ParticipantQuestionModel",
+    "modelClass": "ParticipantQuestion",
     "panelFields": [
         {
             "id": "participantQuestion_text",

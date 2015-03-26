@@ -3,7 +3,7 @@
     "displayName": "Import & Export",
     "displayType": "page",
     "isHeader": false,
-    "modelClass": "ProjectModel",
+    "modelClass": null,
     "section": "dashboard",
     "panelFields": [
         {

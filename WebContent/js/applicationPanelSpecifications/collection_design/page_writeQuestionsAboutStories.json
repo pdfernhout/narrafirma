@@ -3,7 +3,7 @@
     "displayName": "Write questions about stories",
     "displayType": "page",
     "section": "collection_design",
-    "modelClass": "ProjectModel",
+    "modelClass": "WriteQuestionsAboutStoriesPage",
     "panelFields": [
         {
             "id": "project_storyQuestionsLabel",

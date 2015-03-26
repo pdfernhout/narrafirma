@@ -3,7 +3,7 @@
     "displayName": "Sensemaking construction",
     "displayType": "panel",
     "section": "sensemaking",
-    "modelClass": "NewSensemakingSessionConstructionModel",
+    "modelClass": "NewSensemakingSessionConstruction",
     "panelFields": [
         {
             "id": "sensemakingSessionRecord_construction_name",

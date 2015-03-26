@@ -3,7 +3,7 @@
     "displayName": "Add story eliciting question",
     "displayType": "panel",
     "section": "collection_design",
-    "modelClass": "ElicitingQuestionModel",
+    "modelClass": "ElicitingQuestion",
     "panelFields": [
         {
             "id": "elicitingQuestion_text",

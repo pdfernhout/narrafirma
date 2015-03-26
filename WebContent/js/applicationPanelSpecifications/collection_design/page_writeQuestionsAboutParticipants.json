@@ -3,7 +3,7 @@
     "displayName": "Write questions about participants",
     "displayType": "page",
     "section": "collection_design",
-    "modelClass": "ProjectModel",
+    "modelClass": "WriteQuestionsAboutParticipantsPage",
     "panelFields": [
         {
             "id": "project_participantQuestionsLabel",

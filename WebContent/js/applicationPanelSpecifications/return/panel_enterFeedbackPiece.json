@@ -3,7 +3,7 @@
     "displayName": "Enter piece of feedback on project",
     "displayType": "panel",
     "section": "return",
-    "modelClass": "EnterFeedbackPieceModel",
+    "modelClass": "FeedbackPiece",
     "panelFields": [
         {
             "id": "feedback_text",

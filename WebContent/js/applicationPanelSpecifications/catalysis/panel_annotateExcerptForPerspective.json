@@ -3,7 +3,7 @@
     "displayName": "Annotate excerpt for perspective",
     "displayType": "panel",
     "section": "catalysis",
-    "modelClass": "AnnotateExcerptForPerspectiveModel",
+    "modelClass": "ExcerptAnnotationForPerspective",
     "panelFields": [
         {
             "id": "perspective_excerptLinkageNotes",

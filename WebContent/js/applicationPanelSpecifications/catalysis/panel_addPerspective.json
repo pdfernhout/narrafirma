@@ -3,7 +3,7 @@
     "displayName": "Add or change perspective",
     "displayType": "panel",
     "section": "catalysis",
-    "modelClass": "PerspectiveModel",
+    "modelClass": "Perspective",
     "panelFields": [
         {
             "id": "perspective_name",

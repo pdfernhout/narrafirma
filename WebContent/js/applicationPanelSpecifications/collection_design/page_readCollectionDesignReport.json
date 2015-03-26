@@ -3,7 +3,7 @@
     "displayName": "Read collection design report",
     "displayType": "page",
     "section": "collection_design",
-    "modelClass": "ProjectModel",
+    "modelClass": "ReadCollectionDesignReportPage",
     "panelFields": [
         {
             "id": "project_readCollectionDesignReportIntroductionLabel",

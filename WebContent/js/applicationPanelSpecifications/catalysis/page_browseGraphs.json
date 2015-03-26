@@ -3,7 +3,7 @@
     "displayName": "Browse graphs",
     "displayType": "page",
     "section": "catalysis",
-    "modelClass": "ProjectModel",
+    "modelClass": "BrowseGraphsPage",
     "panelFields": [
         {
             "id": "graphBrowserLabel",

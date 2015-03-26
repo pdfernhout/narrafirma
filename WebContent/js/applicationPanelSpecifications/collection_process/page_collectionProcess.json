@@ -4,7 +4,7 @@
     "displayType": "page",
     "isHeader": true,
     "section": "collection_process",
-    "modelClass": "ProjectModel",
+    "modelClass": "CollectionProcessPage",
     "panelFields": [
         {
             "id": "collectionProcessIntro",

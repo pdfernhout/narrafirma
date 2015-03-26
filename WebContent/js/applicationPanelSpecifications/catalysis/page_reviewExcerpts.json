@@ -3,7 +3,7 @@
     "displayName": "Review excerpts",
     "displayType": "page",
     "section": "catalysis",
-    "modelClass": "ProjectModel",
+    "modelClass": "ReviewExcerptsPage",
     "panelFields": [
         {
             "id": "project_savedExcerptsList",

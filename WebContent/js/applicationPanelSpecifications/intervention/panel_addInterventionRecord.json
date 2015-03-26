@@ -3,7 +3,7 @@
     "displayName": "Add intervention record",
     "displayType": "panel",
     "section": "intervention",
-    "modelClass": "InterventionRecordModel",
+    "modelClass": "InterventionRecord",
     "panelFields": [
         {
             "id": "interventionRecord_name",

@@ -3,7 +3,7 @@
     "displayName": "Add story element",
     "displayType": "panel",
     "section": "planning",
-    "modelClass": "StoryElementModel",
+    "modelClass": "StoryElement",
     "panelFields": [
         {
             "id": "storyElement_name",

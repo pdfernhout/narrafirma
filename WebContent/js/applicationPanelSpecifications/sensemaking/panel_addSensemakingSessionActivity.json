@@ -3,7 +3,7 @@
     "displayName": "Add sensemaking session activity",
     "displayType": "panel",
     "section": "sensemaking",
-    "modelClass": "SensemakingSessionActivityModel",
+    "modelClass": "SensemakingSessionActivityPlan",
     "panelFields": [
         {
             "id": "sensemakingSessionPlan_activity_name",

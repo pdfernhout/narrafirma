@@ -3,7 +3,7 @@
     "displayName": "Add resonant story",
     "displayType": "panel",
     "section": "sensemaking",
-    "modelClass": "ResonantStoryModel",
+    "modelClass": "ResonantStory",
     "panelFields": [
         {
             "id": "sensemakingSessionRecord_resonantStory_selection",

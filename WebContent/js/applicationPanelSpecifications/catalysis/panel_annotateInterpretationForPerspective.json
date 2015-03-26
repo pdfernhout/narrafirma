@@ -3,7 +3,7 @@
     "displayName": "Annotate interpretation for perspective",
     "displayType": "panel",
     "section": "catalysis",
-    "modelClass": "AnnotateInterpretationForPerspectiveModel",
+    "modelClass": "InterpretationAnnotationForPerspective",
     "panelFields": [
         {
             "id": "perspective_interpretationLinkageNotes",

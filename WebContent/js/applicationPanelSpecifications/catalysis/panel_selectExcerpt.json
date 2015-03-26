@@ -3,7 +3,7 @@
     "displayName": "Add excerpt to interpretation",
     "displayType": "panel",
     "section": "catalysis",
-    "modelClass": "SelectExcerptModel",
+    "modelClass": null,
     "panelFields": [
         {
             "id": "selectExcerpt_excerptsListDisplay",

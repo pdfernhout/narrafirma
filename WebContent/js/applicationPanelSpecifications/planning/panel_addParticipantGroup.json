@@ -3,7 +3,7 @@
     "displayName": "Participant group",
     "displayType": "panel",
     "section": "planning",
-    "modelClass": "ParticipantGroupModel",
+    "modelClass": "ParticipantGroup",
     "panelFields": [
         {
             "id": "participantGroup_name",

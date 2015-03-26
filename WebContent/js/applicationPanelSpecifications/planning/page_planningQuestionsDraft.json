@@ -3,7 +3,7 @@
     "displayName": "Answer PNI Planning questions",
     "displayType": "page",
     "section": "planning",
-    "modelClass": "ProjectModel",
+    "modelClass": "PlanningQuestionsDraftPage",
     "panelFields": [
         {
             "id": "project_draftQuestionsLabel",

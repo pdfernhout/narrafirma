@@ -3,7 +3,7 @@
     "displayName": "Add story question",
     "displayType": "panel",
     "section": "collection_design",
-    "modelClass": "StoryQuestionModel",
+    "modelClass": "StoryQuestion",
     "panelFields": [
         {
             "id": "storyQuestion_text",

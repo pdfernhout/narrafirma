@@ -3,7 +3,7 @@
     "displayName": "Add to observation",
     "displayType": "panel",
     "section": "catalysis",
-    "modelClass": "ToObservationModel",
+    "modelClass": null,
     "panelFields": [
         {
             "id": "addToObservation_introduction",

@@ -3,7 +3,7 @@
     "displayName": "Add text to excerpt",
     "displayType": "panel",
     "section": "catalysis",
-    "modelClass": "ToExcerptModel",
+    "modelClass": null,
     "panelFields": [
         {
             "id": "addToExcerpt_excerptsListChoose",

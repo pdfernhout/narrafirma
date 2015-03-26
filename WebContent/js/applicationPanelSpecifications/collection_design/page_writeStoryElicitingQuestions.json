@@ -3,7 +3,7 @@
     "displayName": "Write story eliciting questions",
     "displayType": "page",
     "section": "collection_design",
-    "modelClass": "ProjectModel",
+    "modelClass": "WriteStoryElicitingQuestionsPage",
     "panelFields": [
         {
             "id": "project_elicitingQuestionsLabel",

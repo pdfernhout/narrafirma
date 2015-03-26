@@ -3,7 +3,7 @@
     "displayName": "Cluster interpretations",
     "displayType": "page",
     "section": "catalysis",
-    "modelClass": "ProjectModel",
+    "modelClass": "ClusterInterpretationsPage",
     "panelFields": [
         {
             "id": "project_interpretationsClusteringLabel",

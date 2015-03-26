@@ -3,7 +3,7 @@
     "displayName": "Design intervention plans",
     "displayType": "page",
     "section": "intervention",
-    "modelClass": "ProjectModel",
+    "modelClass": "DesignInterventionsPage",
     "panelFields": [
         {
             "id": "project_interventionLabel",

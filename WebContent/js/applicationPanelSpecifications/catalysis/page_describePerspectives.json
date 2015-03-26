@@ -3,7 +3,7 @@
     "displayName": "Describe perspectives",
     "displayType": "page",
     "section": "catalysis",
-    "modelClass": "ProjectModel",
+    "modelClass": "DescribePerspectivesPage",
     "panelFields": [
         {
             "id": "project_perspectivesLabel",

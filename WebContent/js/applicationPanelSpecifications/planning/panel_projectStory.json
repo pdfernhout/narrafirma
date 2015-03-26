@@ -3,7 +3,7 @@
     "displayName": "Project story",
     "displayType": "panel",
     "section": "planning",
-    "modelClass": "ProjectStoryModel",
+    "modelClass": "ProjectStory",
     "panelFields": [
         {
             "id": "projectStory_scenario",

@@ -3,7 +3,7 @@
     "displayName": "Revise PNI Planning questions",
     "displayType": "page",
     "section": "planning",
-    "modelClass": "ProjectModel",
+    "modelClass": "PlanningQuestionsRevisedPage",
     "panelFields": [
         {
             "id": "project_improvePlanningDrafts",

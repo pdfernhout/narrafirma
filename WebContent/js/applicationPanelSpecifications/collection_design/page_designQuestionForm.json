@@ -3,7 +3,7 @@
     "displayName": "Design question form",
     "displayType": "page",
     "section": "collection_design",
-    "modelClass": "ProjectModel",
+    "modelClass": "DesignQuestionFormPage",
     "panelFields": [
         {
             "id": "questionForm_Label",

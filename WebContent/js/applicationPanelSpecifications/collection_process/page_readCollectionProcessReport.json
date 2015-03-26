@@ -3,7 +3,7 @@
     "displayName": "Read collection process report",
     "displayType": "page",
     "section": "collection_process",
-    "modelClass": "ProjectModel",
+    "modelClass": "ReadCollectionProcessReportPage",
     "panelFields": [
         {
             "id": "project_collectionProcessReportLabel",

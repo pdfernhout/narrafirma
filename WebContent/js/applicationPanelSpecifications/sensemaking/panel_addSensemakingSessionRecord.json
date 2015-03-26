@@ -3,7 +3,7 @@
     "displayName": "Add sensemaking session record",
     "displayType": "panel",
     "section": "sensemaking",
-    "modelClass": "SensemakingSessionRecordModel",
+    "modelClass": "SensemakingSessionRecord",
     "panelFields": [
         {
             "id": "sensemakingSessionRecord_name",

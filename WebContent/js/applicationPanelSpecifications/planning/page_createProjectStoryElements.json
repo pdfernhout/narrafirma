@@ -3,7 +3,7 @@
     "displayName": "Create project story elements",
     "displayType": "page",
     "section": "planning",
-    "modelClass": "ProjectModel",
+    "modelClass": "CreateProjectStoryElementsPage",
     "panelFields": [
         {
             "id": "project_projectStoryElementsInstructions",

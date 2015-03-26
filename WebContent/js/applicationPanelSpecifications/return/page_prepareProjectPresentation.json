@@ -3,7 +3,7 @@
     "displayName": "Prepare outline of project presentation",
     "displayType": "page",
     "section": "return",
-    "modelClass": "ProjectModel",
+    "modelClass": "PrepareProjectPresentationPage",
     "panelFields": [
         {
             "id": "project_presentationLabel",

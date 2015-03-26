@@ -3,7 +3,7 @@
     "displayName": "Enter project request",
     "displayType": "panel",
     "section": "return",
-    "modelClass": "ReturnRequestModel",
+    "modelClass": "ReturnRequest",
     "panelFields": [
         {
             "id": "returnRequest_text",

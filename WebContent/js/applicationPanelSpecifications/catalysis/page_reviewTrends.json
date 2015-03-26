@@ -3,7 +3,7 @@
     "displayName": "Review trends",
     "displayType": "page",
     "section": "catalysis",
-    "modelClass": "ProjectModel",
+    "modelClass": "ReviewTrendsPage",
     "panelFields": [
         {
             "id": "reviewTrendsLabel",

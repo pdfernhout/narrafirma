@@ -3,7 +3,7 @@
     "displayName": "Enter sensemaking session plan",
     "displayType": "panel",
     "section": "sensemaking",
-    "modelClass": "SensemakingSessionPlanModel",
+    "modelClass": "SensemakingSessionPlan",
     "panelFields": [
         {
             "id": "sensemakingSessionPlan_name",

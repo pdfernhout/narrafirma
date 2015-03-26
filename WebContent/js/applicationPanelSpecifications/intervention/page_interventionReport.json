@@ -3,7 +3,7 @@
     "displayName": "Read intervention report",
     "displayType": "page",
     "section": "intervention",
-    "modelClass": "ProjectModel",
+    "modelClass": "ReadInterventionReportPage",
     "panelFields": [
         {
             "id": "interventionReportLabel",

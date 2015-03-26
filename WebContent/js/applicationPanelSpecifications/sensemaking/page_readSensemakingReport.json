@@ -3,7 +3,7 @@
     "displayName": "Read sensemaking report",
     "displayType": "page",
     "section": "sensemaking",
-    "modelClass": "ProjectModel",
+    "modelClass": "ReadSensemakingReportPage",
     "panelFields": [
         {
             "id": "sensemakingReportLabel",

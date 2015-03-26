@@ -3,7 +3,7 @@
     "displayName": "Enter project facts",
     "displayType": "page",
     "section": "planning",
-    "modelClass": "ProjectModel",
+    "modelClass": "ProjectFactsPage",
     "panelFields": [
         {
             "id": "project_projectFacts",

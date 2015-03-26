@@ -3,7 +3,7 @@
     "displayName": "Plan an intervention",
     "displayType": "panel",
     "section": "intervention",
-    "modelClass": "InterventionModel",
+    "modelClass": "InterventionPlan",
     "panelFields": [
         {
             "id": "interventionPlan_name",

@@ -3,7 +3,7 @@
     "displayName": "Assess story sharing",
     "displayType": "page",
     "section": "planning",
-    "modelClass": "ProjectModel",
+    "modelClass": "AssessStoreSharingPage",
     "panelFields": [
         {
             "id": "assessment_intro",

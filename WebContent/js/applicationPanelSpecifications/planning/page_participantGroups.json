@@ -3,7 +3,7 @@
     "displayName": "Describe participant groups",
     "displayType": "page",
     "section": "planning",
-    "modelClass": "ProjectModel",
+    "modelClass": "ParticipantGroupsPage",
     "panelFields": [
         {
             "id": "project_aboutParticipantGroups",
