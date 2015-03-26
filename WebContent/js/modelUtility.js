@@ -67,6 +67,8 @@ define(["dojox/mvc/getPlainValue",], function(getPlainValue) {
             }
             */
             return isChanged;
-        }
+        },
+        
+        getPlainValue: getPlainValue
     };  
 });
