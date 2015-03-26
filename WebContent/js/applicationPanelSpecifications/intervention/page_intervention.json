@@ -4,21 +4,13 @@
     "displayType": "page",
     "isHeader": true,
     "section": "intervention",
-    "modelClass": "InterventionSectionDashboardActivity",
+    "modelClass": "InterventionSectionHeader",
     "panelFields": [
         {
             "id": "interventionIntroLabel",
             "dataType": "none",
             "displayType": "label",
-            "displayPrompt": "In the intervention phase of your PNI project, you will plan interventions and record information about them."
-        },
-        {
-            "id": "project_generalNotes_intervention",
-            "dataType": "string",
-            "required": true,
-            "displayType": "textarea",
-            "displayName": "Intervention notes",
-            "displayPrompt": "You can enter some general notes on intervention in this project here."
+            "displayPrompt": "In the intervention phase of your PNI project, you will plan interventions and record information about them.<br><br>Below are links to each step of this phase, along with any reminders you may have entered on them."
         }
     ]
 }

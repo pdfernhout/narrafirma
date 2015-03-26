@@ -4,21 +4,13 @@
     "displayType": "page",
     "isHeader": true,
     "section": "sensemaking",
-    "modelClass": "SensemakingSectionDashboardActivity",
+    "modelClass": "SensemakingSectionHeader",
     "panelFields": [
         {
             "id": "sensemakingIntroLabel",
             "dataType": "none",
             "displayType": "label",
-            "displayPrompt": "In the sensemaking phase of your PNI project, you will plan sensemaking sessions and record what happened in them."
-        },
-        {
-            "id": "project_generalNotes_sensemaking",
-            "dataType": "string",
-            "required": true,
-            "displayType": "textarea",
-            "displayName": "Sensemaking notes",
-            "displayPrompt": "You can enter some general notes on sensemaking in this project here."
+            "displayPrompt": "In the sensemaking phase of your PNI project, you will plan sensemaking sessions and record what happened in them.<br><br>Below are links to each step of this phase, along with any reminders you may have entered on them."
         }
     ]
 }
