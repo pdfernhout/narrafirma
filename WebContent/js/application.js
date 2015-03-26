@@ -62,7 +62,7 @@ define([
                     dataType: "string",
                     displayType: "textarea",
                     displayName: "Reminder",
-                    displayPrompt: translate("#dashboard_status_entry::prompt", "You can enter reminders or other notes about this page here which will appear on the dashboard:")
+                    displayPrompt: translate("#dashboard_status_entry::prompt", "You can enter optional reminders or other notes about this page here which will appear on the dashboard:")
                 };
                 domain.panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, completionStatusEntryFieldSpecification);
             } else {
