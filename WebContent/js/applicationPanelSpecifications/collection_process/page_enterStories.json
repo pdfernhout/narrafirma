@@ -3,7 +3,7 @@
     "displayName": "Enter stories",
     "displayType": "page",
     "section": "collection_process",
-    "modelClass": "EnterStoriesPage",
+    "modelClass": "EnterStoriesActivity",
     "panelFields": [
         {
             "id": "printQuestionsForm_enterStories",

@@ -3,7 +3,7 @@
     "displayName": "Read planning report",
     "displayType": "page",
     "section": "planning",
-    "modelClass": "ReadPlanningReportPage",
+    "modelClass": "ReadPlanningReportActivity",
     "panelFields": [
         {
             "id": "project_readPlanningReportIntroductionLabel",

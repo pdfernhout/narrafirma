@@ -3,7 +3,7 @@
     "displayName": "Enter story collection session records",
     "displayType": "page",
     "section": "collection_process",
-    "modelClass": "EnterCollectionSessionRecordsPage",
+    "modelClass": "EnterCollectionSessionRecordsActivity",
     "panelFields": [
         {
             "id": "project_collectionRecordsIntroductionLabel",

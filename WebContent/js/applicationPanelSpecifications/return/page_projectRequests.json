@@ -3,7 +3,7 @@
     "displayName": "Respond to requests for post-project support",
     "displayType": "page",
     "section": "return",
-    "modelClass": "ProjectRequestsPage",
+    "modelClass": "ProjectRequestsActivity",
     "panelFields": [
         {
             "id": "project_returnRequestsLabel",

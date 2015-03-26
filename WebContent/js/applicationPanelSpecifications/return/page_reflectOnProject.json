@@ -3,7 +3,7 @@
     "displayName": "Reflect on the project",
     "displayType": "page",
     "section": "return",
-    "modelClass": "ReflectOnProjectPage",
+    "modelClass": "ReflectOnProjectActivity",
     "panelFields": [
         {
             "id": "project_reflectLabel",

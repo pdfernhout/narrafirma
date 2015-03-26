@@ -3,7 +3,7 @@
     "displayName": "Answer questions about project outcomes",
     "displayType": "page",
     "section": "intervention",
-    "modelClass": "ProjectOutcomesPage",
+    "modelClass": "ProjectOutcomesActivity",
     "panelFields": [
         {
             "id": "project_outcomesList",

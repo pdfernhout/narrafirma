@@ -4,7 +4,7 @@
     "displayType": "page",
     "isHeader": true,
     "section": "sensemaking",
-    "modelClass": "SensemakingSectionDashboardPage",
+    "modelClass": "SensemakingSectionDashboardActivity",
     "panelFields": [
         {
             "id": "sensemakingIntroLabel",

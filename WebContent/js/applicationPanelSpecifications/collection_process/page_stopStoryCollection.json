@@ -3,7 +3,7 @@
     "displayName": "Stop story collection",
     "displayType": "page",
     "section": "collection_process",
-    "modelClass": "StopStoryCollectionPage",
+    "modelClass": "StopStoryCollectionActivity",
     "panelFields": [
         {
             "id": "webStoryCollection_stopCollectionLabel2",

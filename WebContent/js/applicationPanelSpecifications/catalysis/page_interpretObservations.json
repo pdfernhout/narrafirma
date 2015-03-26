@@ -3,7 +3,7 @@
     "displayName": "Review and interpret observations",
     "displayType": "page",
     "section": "catalysis",
-    "modelClass": "InterpretObservationsPage",
+    "modelClass": "InterpretObservationsActivity",
     "panelFields": [
         {
             "id": "project_observationsDisplayList",

@@ -3,7 +3,7 @@
     "displayName": "Enter project story elements",
     "displayType": "page",
     "section": "planning",
-    "modelClass": "EnterProjectStoryElementsPage",
+    "modelClass": "EnterProjectStoryElementsActivity",
     "panelFields": [
         {
             "id": "project_projectStoryElementsList",

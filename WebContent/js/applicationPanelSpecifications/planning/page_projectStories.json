@@ -3,7 +3,7 @@
     "displayName": "Tell project stories",
     "displayType": "page",
     "section": "planning",
-    "modelClass": "ProjectStoriesPage",
+    "modelClass": "ProjectStoriesActivity",
     "panelFields": [
         {
             "id": "project_projectStoriesList",

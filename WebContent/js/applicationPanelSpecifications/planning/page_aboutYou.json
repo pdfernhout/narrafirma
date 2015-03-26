@@ -3,7 +3,7 @@
     "displayName": "About you",
     "displayType": "page",
     "section": "planning",
-    "modelClass": "AboutYouPage",
+    "modelClass": "AboutYouActivity",
     "panelFields": [
         {
             "id": "aboutYou_youHeader",

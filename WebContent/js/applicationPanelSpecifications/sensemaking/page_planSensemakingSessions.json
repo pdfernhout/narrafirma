@@ -3,7 +3,7 @@
     "displayName": "Plan sensemaking sessions",
     "displayType": "page",
     "section": "sensemaking",
-    "modelClass": "PlanSensemakingSessionsPage",
+    "modelClass": "PlanSensemakingSessionsActivity",
     "panelFields": [
         {
             "id": "project_sensemakingSessionPlansLabel",

@@ -4,7 +4,7 @@
     "displayType": "page",
     "isHeader": true,
     "section": "collection_design",
-    "modelClass": "CollectionDesignSectionDashboardPage",
+    "modelClass": "CollectionDesignSectionDashboardActivity",
     "panelFields": [
         {
             "id": "project_collectionDesignStartLabel",

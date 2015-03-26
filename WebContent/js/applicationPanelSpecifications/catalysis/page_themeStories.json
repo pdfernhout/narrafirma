@@ -3,7 +3,7 @@
     "displayName": "Theme stories",
     "displayType": "page",
     "section": "catalysis",
-    "modelClass": "ThemeStoriesPage",
+    "modelClass": "ThemeStoriesActivity",
     "panelFields": [
         {
             "id": "themeStoriesLabel",

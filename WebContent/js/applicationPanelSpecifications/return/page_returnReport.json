@@ -3,7 +3,7 @@
     "displayName": "Read return report",
     "displayType": "page",
     "section": "return",
-    "modelClass": "ReadReturnReportPage",
+    "modelClass": "ReadReturnReportActivity",
     "panelFields": [
         {
             "id": "returnReportLabel",

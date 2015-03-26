@@ -3,7 +3,7 @@
     "displayName": "Start story collection",
     "displayType": "page",
     "section": "collection_process",
-    "modelClass": "StartStoryCollectionPage",
+    "modelClass": "StartStoryCollectionActivity",
     "panelFields": [
         {
             "id": "webStoryCollection_startCollectionLabel",

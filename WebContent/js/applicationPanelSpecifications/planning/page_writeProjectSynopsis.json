@@ -3,7 +3,7 @@
     "displayName": "Write project synopsis",
     "displayType": "page",
     "section": "planning",
-    "modelClass": "WriteProjectSynopsisPage",
+    "modelClass": "WriteProjectSynopsisActivity",
     "panelFields": [
         {
             "id": "project_synopsis",

@@ -3,7 +3,7 @@
     "displayName": "Review incoming stories",
     "displayType": "page",
     "section": "collection_process",
-    "modelClass": "ReviewIncomingStoriesPage",
+    "modelClass": "ReviewIncomingStoriesActivity",
     "panelFields": [
         {
             "id": "collectedStoriesDuringCollectionLabel",

@@ -3,7 +3,7 @@
     "displayName": "Print question forms",
     "displayType": "page",
     "section": "collection_process",
-    "modelClass": "FinalizeQuestionFormsPage",
+    "modelClass": "FinalizeQuestionFormsActivity",
     "panelFields": [
         {
             "id": "printQuestionsForm_introduction",
