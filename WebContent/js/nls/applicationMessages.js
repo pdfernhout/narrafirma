@@ -6,12 +6,7 @@ define({
      // Do not translate text in double braces since they are identifiers looked up and replaced by the program at runtime
      // For example: {{total}} should stay the same in the translation
 
-    // Used for entering dashboard page status
-    "dashboard_status_entry::prompt":  "The dashboard status of this page is:",
-    "dashboard_status_entry::selection:intentionally skipped": "intentionally skipped",
-    "dashboard_status_entry::selection:partially done": "partially done",
-    "dashboard_status_entry::selection:completely finished": "completely finished",
-    dashboard_status_label: "status:", 
+    dashboard_status_label: "reminders:", 
     question_not_yet_answered: "(Not Yet Entered)",
     
     // Translation of buttons

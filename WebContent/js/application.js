@@ -50,21 +50,19 @@ define([
         pageDisplayer.showPage(newHash);
     }
     
-    var completionStatusOptions = ["intentionally skipped", "partially done", "completely finished"];
-
     function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecification) {
         // console.log("addExtraFieldSpecificationsForPageSpecification", pageSpecification.section, pageID, pageSpecification);
         if (pageSpecification.section !== "dashboard") {
             if (!pageSpecification.isHeader) {
+                // TODO: Change the id of this field to have notes or reminder
                 // Regular page -- add a footer where the page status can be set
                 var statusEntryID = pageID + "_pageStatus";
                 var completionStatusEntryFieldSpecification = {
                     id: statusEntryID,
                     dataType: "string",
-                    dataOptions: completionStatusOptions,
-                    displayType: "select",
-                    displayName: "Completion status",
-                    displayPrompt: translate("#dashboard_status_entry::prompt", "The dashboard status of this page is:")
+                    displayType: "textarea",
+                    displayName: "Reminder",
+                    displayPrompt: translate("#dashboard_status_entry::prompt", "You can enter reminders or other notes about this page here which will appear on the dashboard:")
                 };
                 domain.panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, completionStatusEntryFieldSpecification);
             } else {
@@ -82,7 +80,11 @@ define([
                     // console.log("childPageID", childPageSpecification, childPageID);
                     if (!childPageSpecification) console.log("Error: problem finding page definition for", childPageID);
                     if (childPageSpecification && childPageSpecification.displayType === "page") {
-                        var prompt = translate(childPageID + "::title", childPageSpecification.displayName) + " " + translate("#dashboard_status_label", "status:") + " ";
+                        var prompt = translate(childPageID + "::title", childPageSpecification.displayName);
+                        // Wrap the prompt as a link to the page
+                        prompt = '<a href="#' + childPageID + '">' + prompt + '</a>';
+                        // + " " + translate("#dashboard_status_label", "reminders:")
+                        prompt = prompt  + " ";
                         // console.log("about to call panelBuilder to add one questionAnswer for child page's status", childPageID);
                         var completionStatusDisplayFieldSpecification = {
                             id: statusViewID,
