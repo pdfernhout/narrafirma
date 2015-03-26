@@ -436,5 +436,19 @@
                 "panelName": "Read return report"
             }
         ]
+    },
+    {
+        "section": "project_report",
+        "sectionName": "Project Report",
+        "pages": [
+            {
+                "panelID": "page_projectReport",
+                "panelName": "Project report"
+            },
+            {
+                "panelID": "page_printProjectReport",
+                "panelName": "Print project report"
+            }
+        ]
     }
 ]
