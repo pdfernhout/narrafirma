@@ -15,8 +15,10 @@ define([
             // throw new Error("ERROR: missing question: " + referencedQuestionID);  
             value = null;
         }
-        if (value === null) value = translate("#question_not_yet_answered|(Not yet answered)");
-
+        
+        // if (value === null) value = translate("#question_not_yet_answered|(Not yet answered)");
+        if (value === null) value = "";
+            
         // This collection could be null during testing
         var panelSpecificationCollection = panelBuilder.panelSpecificationCollection;
         if (!panelSpecificationCollection) {
