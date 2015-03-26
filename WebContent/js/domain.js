@@ -19,6 +19,8 @@ define([
         
         // savedVersions: [],
         
+        projectID: "Test-PNIWorkbook-004",
+        
         // TODO: Fix hardcoded projectAnswersDocumentID
         projectAnswersDocumentID: "Test-PNIWorkbook-003",
         
@@ -33,6 +35,9 @@ define([
         
         // The page specification for the current page, which provides the page ID and section
         currentPageSpecification: null,
+        
+        // The type of model currently being stored
+        currentPageModelName: null,
 
         // The Stateful model holding the data used by the current page
         currentPageModel: new Stateful(),
@@ -71,6 +76,7 @@ define([
             console.log("changeCurrentPageModel", modelName, pageModelTemplate);
             
             domain.currentPageSpecification = pageSpecification;
+            domain.currentPageModelName = modelName;
             domain.currentPageModel = pageModel;
             domain.currentPageModelTemplate = pageModelTemplate;
             domain.currentPageDocumentEnvelope = null;
