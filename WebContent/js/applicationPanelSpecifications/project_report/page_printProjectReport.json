@@ -1,6 +1,6 @@
 {
     "id": "page_printProjectReport",
-    "displayName": "Print poject report",
+    "displayName": "Print project report",
     "displayType": "page",
     "section": "project_report",
     "modelClass": "PrintProjectReport",
