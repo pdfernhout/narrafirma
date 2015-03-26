@@ -23,6 +23,8 @@ define([
         });
         
         if (fieldSpecification.displayClass) domClass.add(button.domNode, fieldSpecification.displayClass);
+        
+        if (fieldSpecification.displayIconClass) button.set("iconClass", fieldSpecification.displayIconClass);
 
         button.placeAt(contentPane);
         

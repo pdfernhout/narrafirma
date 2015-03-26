@@ -101,7 +101,7 @@ form {
 }
 
 .homeButtonImage {
-	display: block;
+	/* display: block; */
     background-image: url(../images/ionicicons/home.svg);
     background-repeat: no-repeat;
     background-size: auto 100%;

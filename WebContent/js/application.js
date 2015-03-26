@@ -98,17 +98,39 @@ define([
                     }
                 }
             }
+            // Add button at bottom of each page to move forward
+            if (pageSpecification.nextPageID) {
+                // TODO: Translate
+                var buttonPrompt = "Proceed to next activity";
+                if (!pageSpecification.previousPageID) buttonPrompt = "Proceed to first activity";
+                var nextPageButtonSpecification = {
+                    "id": pageID + "_nextPageButton",
+                    "dataType": "none",
+                    "displayPrompt": buttonPrompt,
+                    "displayType": "button",
+                    "displayConfiguration": {
+                        "action": "guiOpenSection",
+                        "section": pageSpecification.nextPageID
+                    },
+                    displayIconClass: "rightButtonImage"
+                };
+                domain.panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, nextPageButtonSpecification); 
+            } else {
+                // TODO: Translate
+                var returnToDashboardButtonSpecification = {
+                    "id": pageID + "_returnToDashboardButton",
+                    "dataType": "none",
+                    "displayPrompt": "Return to main dashboard",
+                    "displayType": "button",
+                    "displayConfiguration": {
+                        "action": "guiOpenSection",
+                        "section": domain.startPage
+                    },
+                    displayIconClass: "homeButtonImage"
+                };
+                domain.panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, returnToDashboardButtonSpecification); 
+            }
         }
-
-        /*
-         var nextPageButtonQuestion = {
-         "id": pageID + "_nextPageButton",
-         "displayPrompt": "Mark page complete and proceed to next page",
-         "displayType": "button"
-         };
-
-         questionEditor.insertQuestionIntoDiv(nextPageButtonQuestion, pagePane);
-         */
     }
 
     function processAllPanels() {
@@ -116,32 +138,45 @@ define([
         console.log("processAllPanels", panels);
         
         var lastPageID = null;
-        var lastHeader = null;
-        var lastSection = null;
+        var panelIndex;
+        var panel;
         
-        for (var panelIndex = 0; panelIndex < panels.length; panelIndex++) {
-            var panel = panels[panelIndex];
+        // Loop to setup navigation
+        for (panelIndex = 0; panelIndex < panels.length; panelIndex++) {
+            panel = panels[panelIndex];
             
-            // console.log("defining panel", panel.id);
+            // console.log("defining navigatation for panel", panel.id);
 
             // For panels that are a "page", add to top level pages choices and set up navigation
             if (panel.displayType === "page") {
-                var pageID = panel.id;
                 // console.log("pushing page", panel);
                 // Make it easy to lookup previous and next pages from a page
                 if (!panel.isHeader) {
                     var previousPage = domain.getPageSpecification(lastPageID);
-                    previousPage.nextPageID = pageID;
+                    previousPage.nextPageID = panel.id;
                     panel.previousPageID = lastPageID;
                 }
-                lastPageID = pageID;
+                lastPageID = panel.id;
+            }
+        }
+        
+        var lastHeader = null;
+        var lastSection = null;
+        
+        // A separate loop is needed here to ensure page navigation links have been set up when determining additional buttons for pages
+        for (panelIndex = 0; panelIndex < panels.length; panelIndex++) {
+            panel = panels[panelIndex];
+            
+            if (panel.isHeader) {
+                lastHeader = panel.id;
+                lastSection = panel.section;
+            }
+            
+            // console.log("defining panel extra fields and help", panel.id);
 
-                if (panel.isHeader) {
-                    lastHeader = pageID;
-                    lastSection = panel.section;
-                }
-                
-                addExtraFieldSpecificationsForPageSpecification(pageID, panel);
+            // For panels that are a "page", add extra buttons
+            if (panel.displayType === "page") {
+                addExtraFieldSpecificationsForPageSpecification(panel.id, panel);
             }
             
             panel.helpSection = lastSection;
