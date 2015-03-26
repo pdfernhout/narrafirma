@@ -8,6 +8,7 @@ define([
     "use strict";
     
     function calculate_questionAnswer(panelBuilder, model, referencedQuestionID) {
+        // console.log("calculate_questionAnswer", panelBuilder, model, referencedQuestionID);
         var value = model.get(referencedQuestionID);
         if (value === undefined) {
             console.log("ERROR: missing question: ", referencedQuestionID);
@@ -35,16 +36,32 @@ define([
         } else {
             console.log("calculate_questionAnswer: missing fieldSpecification definition for: ", referencedQuestionID);
         }
-        return "<b>" + value + "<b>";
+        
+        // console.log("calculate_questionAnswer value", value);
+        return value;
     }
 
+    // TODO: This will not work when questions are on other pages with newer system
     function add_questionAnswer(panelBuilder, contentPane, model, fieldSpecification) {
         var referencedQuestionID = fieldSpecification.displayConfiguration;
         if (!referencedQuestionID) throw new Error("missing referencedQuestionID for field: " + fieldSpecification.id + " all: " + JSON.stringify(fieldSpecification));
-     // TODO: Fix when refactor
+
         var calculate = lang.partial(calculate_questionAnswer, panelBuilder, model, referencedQuestionID);
-     // TODO: Fix when refactor
-        return panelBuilder._add_calculatedText(panelBuilder, contentPane, fieldSpecification, calculate);
+        
+        var label = panelBuilder._add_calculatedText(panelBuilder, contentPane, fieldSpecification, calculate);
+        
+        // TODO: Recalculating next two variables wheres they are also calculated in _add_calculatedText
+        var baseText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
+        
+        var updateInfo = {"id": fieldSpecification.id, "label": label, "baseText": baseText, "calculate": calculate};
+        
+        var watcher = model.watch(referencedQuestionID, lang.hitch(panelBuilder, panelBuilder.updateLabelUsingCalculation, updateInfo));
+        
+        // Klugde to get the contentPane to free the watcher by calling remove when it is destroyed
+        // This would not work if the content pane continued to exist when replacing this component
+        contentPane.own(watcher);
+        
+        return label;
     }
 
     return add_questionAnswer;
