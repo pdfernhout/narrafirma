@@ -56,13 +56,13 @@ define([
             if (!pageSpecification.isHeader) {
                 // TODO: Change the id of this field to have notes or reminder
                 // Regular page -- add a footer where the page status can be set
-                var statusEntryID = pageID + "_pageStatus";
+                var statusEntryID = pageID + "_reminders";
                 var completionStatusEntryFieldSpecification = {
                     id: statusEntryID,
                     dataType: "string",
                     displayType: "textarea",
-                    displayName: "Reminder",
-                    displayPrompt: translate("#dashboard_status_entry::prompt", "You can enter optional reminders or other notes about this page here which will appear on the dashboard:")
+                    displayName: "Reminders",
+                    displayPrompt: translate("#dashboard_status_entry::prompt", "You can enter reminders about this page here which will appear on this section's dashboard:")
                 };
                 domain.panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, completionStatusEntryFieldSpecification);
             } else {
@@ -75,7 +75,7 @@ define([
                 // Add a display to this page for each child page in the same section
                 for (var childPageIndex = 0; childPageIndex < childPageIDs.length; childPageIndex++) {
                     var childPageID = childPageIDs[childPageIndex];
-                    var statusViewID = childPageID + "_pageStatus_dashboard";
+                    var statusViewID = childPageID + "_reminders_dashboard";
                     var childPageSpecification = domain.getPageSpecification(childPageID);
                     // console.log("childPageID", childPageSpecification, childPageID);
                     if (!childPageSpecification) console.log("Error: problem finding page definition for", childPageID);
@@ -92,7 +92,7 @@ define([
                             displayType: "questionAnswer",
                             displayName: prompt,
                             displayPrompt: prompt,
-                            displayConfiguration: [childPageID + "_pageStatus"]
+                            displayConfiguration: [childPageID + "_reminders"]
                         };
                         domain.panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, completionStatusDisplayFieldSpecification);  
                     }
