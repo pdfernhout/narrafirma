@@ -180,6 +180,12 @@ define([
         // TODO: What version of questionnaire should be used? Should it really be the latest one? Or the one active on server?
         console.log("openSurveyDialog domain", domain);
         var questionnaire = domain.currentQuestionnaire;
+        
+        if (!questionnaire) {
+            // TODO: Translate
+            alert("No current questionnaire has been finalized");
+            return;
+        }
 
         surveyBuilder.openSurveyDialog(questionnaire);
     }

@@ -53,11 +53,7 @@ define([
 
         // TODO: This field should be updated with a heartbeat or by other means to pick up changes to it by other users
         // The most recently loaded (or saved) questionnarie
-        currentQuestionnaire: {
-            elicitingQuestions: [],
-            storyQuestions: [],
-            participantQuestions: []
-        },
+        currentQuestionnaire: null,
         
         /////////////// API calls below
         
