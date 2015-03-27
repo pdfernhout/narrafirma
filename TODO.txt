@@ -1,7 +1,6 @@
 ==== NarraFirma TODO list:
 
 PRIORITY
-- seperate save and load for each page
 - versions for each page
 - multiple projects
 - WordPress plugin data save and load
@@ -16,15 +15,15 @@ NarraFirma is a trademark of Cynthia F. Kurtz and is used by permission for the 
 Reference: https://www.mozilla.org/en-US/foundation/trademarks/policy/
 And: http://wordpressfoundation.org/trademark-policy/
 
-DOMAIN
-Refactor code so have better defined domain models, probably with dmodel
-Think about saving and loading for smaller subparts of projects as seperate files
-
 SITE
 Determine how (or if) to support multi-user sites
 Determine how (or if) to support multiple projects per user
 Settle on some authentication approach for authoring/administration
 Decide on approach for logging in and controlling access to changing project definition
+
+PLUGIN
+WordPress plugin support for Pointrel save/load/triples
+Create entire WordPress plugin based on current stub version
 
 RECOMMENDATIONS
 Support recommendationTable
@@ -44,7 +43,7 @@ Ideally, all responses for selections (other than numerical sliders) should have
 Only store reference to questionnaire file resource, not the resource itself
 Support translations or other categories for multiple question texts or choice texts for a survey
 Some easy way for two or more survey sliders to be close together under the same label
-Ideally support more than one survey per project
+Problem when opened up road block survey with Firefox and developer console and it was too tall and when closed console the top close button became inacessible as offscreen
 
 IDs
 Add support for short names (ids) for eliciting questions
@@ -65,12 +64,12 @@ Maybe import button for survey results
 Add way to clear out or reset old survey results? Or maybe partition them by survey?
 
 LOAD/SAVE
-Put in place dojox.widget.Standby when loading or saving
-Have save and cancel button that requires saving before change pages
-Track when changes are made and model is "dirty"
+Have revert button to go back to previous version or clear out changes in progress on a page
+Handle questionnaire update after it is loaded in story browser
+Handle questionnaire update after it is loaded in story themer
+Handle questionnaire update after it is loaded in graph
+Put in place dojox.widget.Standby when saving
 Think through how project is loaded and saved, especially what happens if multiple windows or users edit the same project
-Think about saving one file per page or model and using triples to index them related to one survey?
-Confirm reloading or closing page if have unsaved data
 Autosave, perhaps based on time or based on changing pages
 Improve feedback when there are no project versions or survey results; maybe distinguish between an error and nothing being saved yet
 
@@ -144,8 +143,7 @@ Maybe convert reports page to a summary page for each section
 
 DASHBOARD
 Provide status of whether survey is active on main dashboard
-General notes should go after dashboard for each section
-Think about how to save or retrieve general section dashboard status if decide to split up project file by section
+Decide what goes on main home dashboard now that changed from page status to textual reminders
 Odd behavior where under Firefox where did not see a scrollbar until resized text area when had lots of section notes
 
 ALERTS
@@ -153,7 +151,6 @@ Help window displaying HTML instead of alert
 Look at all alerts in code and make into nicer GUI feedback
 
 TRANSLATION
-Better and more consistent approach for translation selections for selects, checkboxes, radiobuttons, and maybe other types [this may be done enough based on other changes?]
 Translate report answers as needed for those types like selections
 Final review of all strings in code looking for TODO translate items or similar
 
@@ -164,37 +161,28 @@ No short name for type: trendsReport field: reviewTrends_display text: Trends re
 No short name for type: observationsList field: observationsListChoose text: Choose an observation from this list to which to add the selected result, or create a new observation.
 No short name for type: excerptsList field: selectExcerpt_excerptsListDisplay text: Collected excerpts
 No short name for type: excerptsList field: addToExcerpt_excerptsListChoose text: Choose an excerpt from this list to which to add the selected text, or create a new excerpt.
-No short name for type: clusterSpace field: clusterInterpretations_clusterSpace text: Cluster interpretations into perspectives
 No short name for type: annotationsGrid field: perspective_linkedResultsList text: Results linked to this perspective
 No short name for type: annotationsGrid field: perspective_linkedExcerptsList text: Excerpts linked to this perspective
 No short name for type: annotationsGrid field: perspective_linkedInterpretationsList text: Interpretations linked to this perspective
-
-PANEL BUILDER
-Refactor how dependent values are calculated so that code is not in PanelBuilder
-Separate generic widgets from project-specific widgets, and have project-specific widgets added as plugins by main application
-Remove any use of widgets in widgetSupport or other use of Dojo controls (e.g. Button) directly and only use PanelBuilder for creating GUI
-Add some general small independent tests of PanelBuilder functionality 
 
 REFACTORING
 Rename "questions" with "fieldSpecifications" where appropriate and make similar changes away from using "question" to mean "fieldSpecification" [partly done]
 See if still need so many button functions in domain (or maybe any at all)
 Some way only load page and panel files as needed (with help URL being determined by PanelBuilder as it creates panel, and maybe specify panels in section by hand)
 Load panel widgets only as needed by always creating contentPane for a widget and loading the contents later as available returning a promise, with ready callback in builder when all promises kept
-Save and load data for each page instead of for entire project
 Save data for observations and so on as seperate documents so can do it incrementally
 Maybe separate documents for each participant group?
 Maybe separate documents for each survey question?
 Only load panel information as needed for section (or request for specific panel)
 
 UNSURE
-Way to retrieve data about project participant groups [Is this still relevant?]
-Implement showHideCollectedStories in domain buttonClicked [Not sure what this means now or if still relevant]
+Way to retrieve data about project participant groups [Is this still relevant? Probably yes, if we did "checkboxes with pull" for picking what groups an activity applies to instead of text entry]
 Support imageUploader
 Support storyBrowserCount
 
 ======= CYNTHIA
 
-Write up sample NarraFirma product offering descriptions for review
+Write up sample NarraFirma product offering descriptions for review (including for website)
 Finish templates
 Create recommendations file
 Create help
@@ -204,7 +192,6 @@ Forgot to put "memorable" in eliciting question types
 
 Better mobile support for taking survey on cell phones
 
-Some sort of continue button at bottom of page to progress through steps
 Validation of page data as progress through a step
 
 Validation in general when progress through tabs and error reporting
@@ -281,8 +268,6 @@ Replace Dojo's isString which is deprecated (and similar basic functionality) wi
 
 ==== Might not do
 
-Wordpress plugin
-
 Grid widget option specification to control button availability
 
 Story list using dgrid with accordion for story
@@ -302,6 +287,8 @@ Survey - maybe add unique ID so long survey results can be saved as progressed t
 Make sections optional in loadAllPanelSpecifications to make that code more reuseable
 
 Remove panel's displayName, isHeader, and section fields since now defined by navigation and that is duplicated information; example regex to find them: ^    "displayName": "[^"]*",
+
+Remove any use of widgets in widgetSupport or other use of Dojo controls (e.g. Button) directly and only use PanelBuilder for creating GUI
 
 ==== DONE
 
@@ -536,6 +523,7 @@ DONE Removed page ID from each field specification and "inherit" it from page or
 DONE Think about if should mix in page specifications with fields? [Kept as is for now]
 DONE Split PanelBuilder add_* functions into ones specific to NarraFirma in applicationWidgets and more generic ones left in panelBuilder module
 DONE Fix bug introduced in translate approach where can pass in a string with a leading number sign ("#") and it is treated differently
+DONE Better and more consistent approach for translation selections for selects, checkboxes, radiobuttons, and maybe other types [this seems done enough based on other changes]
 DONE First cut for main Dashboard
 DONE Decide or distinguish between between an initial explanation page versus a first big dashboard [introduction pages comes later]
 DONE Create widget for Main Dashboard that combines a button and a section status
@@ -571,6 +559,9 @@ DONE Optimize lookup of panels and models in FieldSpecificationCollection
 DONE Consolidated all information about panels, pages, and fields into FieldSpecificationCollection instead of that class, domain.js, and main.js
 DONE Clean up left-over translation-related code for extra translations that is no longer needed
 DONE Refactor: Rename FieldSpecificationCollection to PanelSpecificationCollection and change "questions" to "panelFields" or "fields" as appropriate
+DONE Refactor how dependent values are calculated so that code is not in PanelBuilder [probably good enough for now]
+DONE Separate generic widgets from project-specific widgets, and have project-specific widgets added as plugins by main application
+DONE Add some general small independent tests of PanelBuilder functionality 
 DONE Create test of panel builder that displays a panel
 DONE Create test of saving and loading a model using pointrel library
 DONE Create test of displaying panel that can save and load data to server that is displayed in panel
@@ -585,9 +576,38 @@ DONE Remove unused imports and do other cleanup
 DONE Make intial version of PointrelCache for testing polling
 DONE Refactor application.js into more modules by responsibility (navigation, page display, button actions)
 DONE Remove all explicit setting of an id when creating a dijit to minimize errors from duplicate IDs from other programming issues
+DONE Track when changes are made and model is "dirty"
 DONE Add confirmation request when changing pages or closing page if data has changed
+DONE Have save and cancel button that requires saving before change pages [essentially same as above]
+DONE Confirm reloading or closing page if have unsaved data
 DONE Start loading data on every page change
 DONE Add Standby widget when loading data for pages
 DONE Add exception handling for problems when displaying a page
 DONE Fix cluster diagram so it reloads data when model changed
 DONE Fix inconsistency for story project clustering diagram id and displayConfiguration; add temporary kludge when loading data for change
+DONE Improve startup please wait loading messages
+DONE Improve naming of model classes in panel specifications
+DONE Refactor code so have better defined domain models, probably with dmodel [just using Stateful and a current page]
+DONE Move global data out of various modules and into domain
+DONE Improve recommendations table (Cynthia)
+DONE Set up initial NarraFirma WordPress website
+DONE Add some intial content to website
+DONE Fix CSS references in help files
+DONE Improve Pointrel server to return timestamp for saved resources
+DONE Add help button to navigation section and only display help per page by removing information icons
+DONE Add navigation buttons at bottom of pages to go forward or home if at end of section
+DONE Some sort of continue button at bottom of page to progress through steps [same as above]
+DONE Think about saving and loading for smaller subparts of projects as seperate files
+DONE Think about saving one file per page or model and using triples to index them related to one survey?
+DONE Save and load the data for the project with one document per page instead of one document for entire project
+DONE Save and load data for each page instead of for entire project [same as above]
+DONE Add triple indexing for all data saved for a page so it can be more easily retrieved by other pages
+DONE Get questionAnswer widget to retrieve current value from Pointrel server using triple query
+DONE General notes should go after dashboard for each section [removed these entirely]
+DONE Think about how to save or retrieve general section dashboard status if decide to split up project file by section
+DONE Use a text field instead of a select to add reminders about page status; display those on section dashboards using Pointrel triple indexing
+DONE Store and load questionnaire built from multiple server requests for Pointrel triple indexing
+DONE Add page for print project report to project report section; add related stub help page
+NOT DOING Ideally support more than one survey per project [Alternative to create a new project may be good enough; also would make GUI more confusing]
+DONE No short name for type: clusterSpace field: clusterInterpretations_clusterSpace text: Cluster interpretations into perspectives [now using clustering diagram]
+NOT DOING Implement showHideCollectedStories in domain buttonClicked [Not sure what this means now or if still relevant; think it is obsolete task]
