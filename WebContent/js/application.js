@@ -92,7 +92,7 @@ define([
                             displayType: "questionAnswer",
                             displayName: prompt,
                             displayPrompt: prompt,
-                            displayConfiguration: [childPageID + "_reminders"]
+                            displayConfiguration: childPageID + "_reminders"
                         };
                         domain.panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, completionStatusDisplayFieldSpecification);  
                     }
