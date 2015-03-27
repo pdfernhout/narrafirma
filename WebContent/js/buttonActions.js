@@ -160,7 +160,7 @@ define([
     function openSurveyDialog() {
         // TODO: What version of questionnaire should be used? Should it really be the latest one? Or the one active on server?
         console.log("openSurveyDialog domain", domain);
-        var questionnaire = questionnaireGeneration.getCurrentQuestionnaire();
+        var questionnaire = domain.currentQuestionnaire;
 
         surveyBuilder.openSurveyDialog(questionnaire);
     }

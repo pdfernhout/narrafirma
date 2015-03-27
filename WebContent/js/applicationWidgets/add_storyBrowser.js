@@ -1,5 +1,6 @@
 define([
     "dojo/_base/array",
+    "js/domain",
     "dojo/dom-construct",
     "dojo/_base/lang",
     "js/questionnaireGeneration",
@@ -14,6 +15,7 @@ define([
     "dstore/Trackable"
 ], function(
     array,
+    domain,
     domConstruct,
     lang,
     questionnaireGeneration,
@@ -233,7 +235,7 @@ define([
         console.log("insertStoryBrowser start", id);
         
         // TODO: Fix this show also handles participant questions somehow
-        var questionnaire = questionnaireGeneration.getCurrentQuestionnaire();
+        var questionnaire = domain.currentQuestionnaire;
         console.log("questionnaire", questionnaire);
         var storyQuestions = questionnaire.storyQuestions;
         

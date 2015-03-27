@@ -1,6 +1,7 @@
 define([
     "dojo/_base/array",
     "dojo/dom",
+    "js/domain",
     "dojo/dom-construct",
     "dojo/_base/lang",
     "js/questionnaireGeneration",
@@ -14,6 +15,7 @@ define([
 ], function(
     array,
     dom,
+    domain,
     domConstruct,
     lang,
     questionnaireGeneration,
@@ -574,7 +576,7 @@ define([
         var chartDiv = domConstruct.empty("chartDiv");
         
         // TODO: Fix this so it also handles participant questions somehow
-        var surveyQuestions = questionnaireGeneration.getCurrentQuestionnaire().storyQuestions;
+        var surveyQuestions = domain.currentQuestionnaire.storyQuestions;
         
         var xAxisQuestion = questionForID(surveyQuestions, xAxisQuestionID);
         var yAxisQuestion = questionForID(surveyQuestions, yAxisQuestionID);
@@ -720,7 +722,7 @@ define([
         
         // TODO: Fix this so it also handles participant questions somehow
         // TODO: Update these as they change...
-        var questions = questionnaireGeneration.getCurrentQuestionnaire().storyQuestions;
+        var questions = domain.currentQuestionnaire.storyQuestions;
         
         var optionsForAllQuestions = widgetSupport.optionsForAllQuestions(questions);
         

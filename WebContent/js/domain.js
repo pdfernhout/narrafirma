@@ -11,6 +11,9 @@ define([
 ) {
     "use strict";
     
+    // TODO: Fix hardcoded questionnaire ID
+    var defaultQuestionnaireID = 'questionnaire-test-003';
+    
     // Singleton domain object shared across application
     var domain = {
             
@@ -44,6 +47,17 @@ define([
         
         // The data loaded for the current page -- used also to check if it has changed
         currentPageDocumentEnvelope: null,
+        
+        // TODO: Fix hardcoded questionnaire ID
+        currentQuestionnaireID: defaultQuestionnaireID,
+
+        // TODO: This field should be updated with a heartbeat or by other means to pick up changes to it by other users
+        // The most recently loaded (or saved) questionnarie
+        currentQuestionnaire: {
+            elicitingQuestions: [],
+            storyQuestions: [],
+            participantQuestions: []
+        },
         
         /////////////// API calls below
         

@@ -1,4 +1,5 @@
 define([
+    "js/domain",
     'dojox/html/entities',
     "dojox/uuid/generateRandomUuid",
     "js/questionnaireGeneration",
@@ -11,6 +12,7 @@ define([
     "dojo/Stateful",
     "js/panelBuilder/widgetSupport"
 ], function(
+    domain,
     entities,
     generateRandomUuid,
     questionnaireGeneration,
@@ -32,7 +34,7 @@ define([
         console.log("insertStoryThemer start", id);
         
         // TODO: Fix this show also handles participant questions somehow
-        var questionnaire = questionnaireGeneration.getCurrentQuestionnaire();
+        var questionnaire = domain.currentQuestionnaire;
         var storyQuestions = questionnaire.storyQuestions;
         var participantQuestions = questionnaire.participantQuestions;
         

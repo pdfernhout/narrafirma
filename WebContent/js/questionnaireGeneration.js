@@ -1,4 +1,14 @@
-define(["js/domain"], function(domain) {
+define([
+   "dojo/promise/all",
+   "dojo/Deferred",
+   "js/domain",
+   "js/storage"
+], function(
+   all,
+   Deferred,
+   domain,
+   storage
+) {
    "use strict";
    
    function ensureUniqueQuestionIDs(usedIDs, editorQuestions) {
@@ -103,9 +113,32 @@ define(["js/domain"], function(domain) {
        return adjustedQuestions;
    }
    
+   function fetchValuePromise(entity, attribute) {
+       var deferred = new Deferred();
+       // TODO: Ignoring entity for now, change this if make more general
+       storage.loadLatestValueForProjectField(attribute, function(value) {
+           console.log("Got value", entity, attribute, value);
+           deferred.resolve(value);
+       });
+       return deferred.promise;
+   }
+   
+   function requestValues(entity, attributes, callback) {
+       var promises = {};
+       
+       for (var index = 0; index <= attributes.length; index++) {
+           var attribute = attributes[index];
+           promises[attribute] = fetchValuePromise(entity, attribute);
+       }
+       
+       all(promises).then(function(values) {
+           callback(null, values);
+       });  
+   }
+   
    // TODO: How to save the fact we have exported this in the project? Make a copy??? Or keep original in document somewhere? Versus what is returned from server for surveys?
    // TODO: This needs to be improved for asking multiple questions, maybe spanning multiple pages
-   function getCurrentQuestionnaire() {
+   function generateQuestionnaire(callback) {
        var usedIDs = {};
        usedIDs.__createdIDCount = 0;
 
@@ -115,53 +148,62 @@ define(["js/domain"], function(domain) {
                __type: "org.workingwithstories.Questionnaire"
        };
        
-       throw new Error("questionnaireGeneration.getCurrentQuestionnaire -- no longer works due to ongoing refactoring to use a current page model");
-       
-       questionnaire.title = domain.projectAnswers.get("questionForm_title");
-       questionnaire.image = domain.projectAnswers.get("questionForm_image");
-       questionnaire.startText = domain.projectAnswers.get("questionForm_startText");
-       questionnaire.endText = domain.projectAnswers.get("questionForm_endText"); 
-
-       var elicitingQuestions = domain.projectAnswers.get("project_elicitingQuestionsList");
-       console.log("elicitingQuestions", elicitingQuestions);
-       
-       var storyQuestions = domain.projectAnswers.get("project_storyQuestionsList");
-       ensureUniqueQuestionIDs(usedIDs, storyQuestions);
-       
-       var participantQuestions = domain.projectAnswers.get("project_participantQuestionsList");
-       ensureUniqueQuestionIDs(usedIDs, participantQuestions);
-       
-       // console.log("survey", survey);
+       requestValues(domain.projectID, [
+           "questionForm_image",
+           "questionForm_startText",
+           "questionForm_endText",
+           "project_elicitingQuestionsList",
+           "project_storyQuestionsList",
+           "project_participantQuestionsList"
+       ], function (error, dataFromServer) {
+           if (error) callback(null);
            
-       questionnaire.elicitingQuestions = [];
-       for (var elicitingQuestionIndex in elicitingQuestions) {
-           var storySolicitationQuestionText = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_text;
-           // TODO: var storySolicitationQuestionShortName = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_shortName;
-           var storySolicitationQuestionType = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_type;
-           var elicitingQuestionInfo = {
-               text: storySolicitationQuestionText,
-               // TODO: id: storySolicitationQuestionShortName,
-               type: storySolicitationQuestionType
-           };
-           questionnaire.elicitingQuestions.push(elicitingQuestionInfo);
-       }
-       
-       /*
-       if (startText) questions.push({storyQuestion_shortName: "startText", storyQuestion_text: startText, storyQuestion_type: "label"});
-       questions.push({storyQuestion_shortName: "story", storyQuestion_text: storySolicitationQuestion, storyQuestion_type: "textarea"});
-       questions.push({storyQuestion_shortName: "name", storyQuestion_text: "Please give your story a name", storyQuestion_type: "text"});
-       if (storyQuestionList) questions = questions.concat(storyQuestionList);
-       if (participantQuestionList) questions = questions.concat(participantQuestionList);
-       if (endText) questions.push({storyQuestion_shortName: "endText", storyQuestion_text: endText, storyQuestion_type: "label"});
-       */
-       
-       // console.log("all survey questions", questions);
-       
-       questionnaire.storyQuestions = convertEditorQuestions(storyQuestions);
-       questionnaire.participantQuestions = convertEditorQuestions(participantQuestions);
-          
-       console.log("getCurrentQuestionnaire result", questionnaire);
-       return questionnaire;
+           questionnaire.title = dataFromServer["questionForm_title"];
+           questionnaire.image = dataFromServer["questionForm_image"];
+           questionnaire.startText = dataFromServer["questionForm_startText"];
+           questionnaire.endText = dataFromServer["questionForm_endText"]; 
+    
+           var elicitingQuestions = dataFromServer["project_elicitingQuestionsList"];
+           console.log("elicitingQuestions", elicitingQuestions);
+           
+           var storyQuestions = dataFromServer["project_storyQuestionsList"];
+           ensureUniqueQuestionIDs(usedIDs, storyQuestions);
+           
+           var participantQuestions = dataFromServer["project_participantQuestionsList"];
+           ensureUniqueQuestionIDs(usedIDs, participantQuestions);
+           
+           // console.log("survey", survey);
+               
+           questionnaire.elicitingQuestions = [];
+           for (var elicitingQuestionIndex in elicitingQuestions) {
+               var storySolicitationQuestionText = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_text;
+               // TODO: var storySolicitationQuestionShortName = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_shortName;
+               var storySolicitationQuestionType = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_type;
+               var elicitingQuestionInfo = {
+                   text: storySolicitationQuestionText,
+                   // TODO: id: storySolicitationQuestionShortName,
+                   type: storySolicitationQuestionType
+               };
+               questionnaire.elicitingQuestions.push(elicitingQuestionInfo);
+           }
+           
+           /*
+           if (startText) questions.push({storyQuestion_shortName: "startText", storyQuestion_text: startText, storyQuestion_type: "label"});
+           questions.push({storyQuestion_shortName: "story", storyQuestion_text: storySolicitationQuestion, storyQuestion_type: "textarea"});
+           questions.push({storyQuestion_shortName: "name", storyQuestion_text: "Please give your story a name", storyQuestion_type: "text"});
+           if (storyQuestionList) questions = questions.concat(storyQuestionList);
+           if (participantQuestionList) questions = questions.concat(participantQuestionList);
+           if (endText) questions.push({storyQuestion_shortName: "endText", storyQuestion_text: endText, storyQuestion_type: "label"});
+           */
+           
+           // console.log("all survey questions", questions);
+           
+           questionnaire.storyQuestions = convertEditorQuestions(storyQuestions);
+           questionnaire.participantQuestions = convertEditorQuestions(participantQuestions);
+              
+           console.log("generateQuestionnaire result", questionnaire);
+           callback(questionnaire);
+       });
    }
    
    function ensureAtLeastOneElicitingQuestion(questionnaire) {
@@ -181,7 +223,7 @@ define(["js/domain"], function(domain) {
    }
    
    return {
-       getCurrentQuestionnaire: getCurrentQuestionnaire,
+       generateQuestionnaire: generateQuestionnaire,
        ensureAtLeastOneElicitingQuestion: ensureAtLeastOneElicitingQuestion
    };
 });

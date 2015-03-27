@@ -1,26 +1,23 @@
 define([
+    "js/domain",
     "dojo/_base/lang",
     "js/questionnaireGeneration",
     "js/storage",
     "dojo/topic"
 ], function(
-   lang,
-   questionnaireGeneration,
-   storage,
-   topic
+    domain,
+    lang,
+    questionnaireGeneration,
+    storage,
+    topic
 ) {
    "use strict";
    
-   // TODO: Fix hardcoded questionnaire ID
-   var defaultQuestionnaireID = 'questionnaire-test-003';
-   
    var allCompletedSurveys = [];
    var allStories = [];
-   
-   var currentQuestionnaireID = defaultQuestionnaireID;
-   
+
    // TODO: When does this get updated?
-   var questionnaireStatus = {questionnaireID: defaultQuestionnaireID, active: false};
+   var questionnaireStatus = {questionnaireID: domain.currentQuestionnaireID, active: false};
    
    // Can also just pass in callback as first arg, rest are unused and are for compatibility with GUI calling system
    function loadLatestStoriesFromServer(contentPane, model, fieldSpecification, value, callback) {
@@ -102,12 +99,14 @@ define([
    function storyCollectionStart() {
        alert("also finalizing survey for testing...");
        
-       var questionnaire = questionnaireGeneration.getCurrentQuestionnaire();
-       var questionnaireID = currentQuestionnaireID;
+       var questionnaire = questionnaireGeneration.generateQuestionnaire();
+       var questionnaireID = domain.currentQuestionnaireID;
        
        questionnaire.questionnaireID = questionnaireID;
        
        questionnaireGeneration.ensureAtLeastOneElicitingQuestion(questionnaire);
+       
+       domain.currentQuestionnaire = questionnaire;
        
        storage.storeQuestionnaireVersion(questionnaireID, questionnaire, function(error) {
            if (error) { return alert("Could not store questionnaire"); }
@@ -123,7 +122,7 @@ define([
    }
    
    function storyCollectionStop() {
-       var questionnaireID = currentQuestionnaireID;
+       var questionnaireID = domain.currentQuestionnaireID;
        var status = {questionnaireID: questionnaireID, active: false};
        storage.storeQuestionnaireStatus(questionnaireID, status, function(error) {
            console.log("Deactivated questionnaire", questionnaireID);
@@ -136,14 +135,30 @@ define([
        return questionnaireStatus.active;
    }
    
+   function loadCurrentQuestionnaire() {
+       // TODO: Fix hardcoded questionnaire ID
+       storage.loadLatestQuestionnaireVersion(domain.currentQuestionnaireID, function(error, questionnaire) {
+           if (error) {
+               // Don't alert, because it is possible nothing has been saved
+               console.log("Problem loading latest questionnaire version", error);
+           } else {
+               topic.publish("currentQuestionnaire", questionnaireStatus);
+               domain.currentQuestionnaire = questionnaire;
+           }
+       });
+   }
    
    function determineStatusOfCurrentQuestionnaire() {
-       storage.loadLatestQuestionnaireStatus(currentQuestionnaireID, function(error, status, envelope) {
-           if (error) {return console.log("Could not determine questionnaire status; assuming inactive", currentQuestionnaireID);}
+       storage.loadLatestQuestionnaireStatus(domain.currentQuestionnaireID, function(error, status, envelope) {
+           if (error) {return console.log("Could not determine questionnaire status; assuming inactive", domain.currentQuestionnaireID);}
            console.log("got questionnaire status", status);
            questionnaireStatus = status;
            topic.publish("isStoryCollectingEnabled", questionnaireStatus);
        });
+   }
+   
+   function getQuestionnaireFromServer(questionnaireID, callback) {
+       storage.loadLatestQuestionnaireVersion(questionnaireID, callback);
    }
    
    return {
@@ -156,6 +171,8 @@ define([
        loadLatestStoriesFromServer: loadLatestStoriesFromServer,
        
        isStoryCollectingEnabled: isStoryCollectingEnabled,
+       
+       loadCurrentQuestionnaire: loadCurrentQuestionnaire,
        
        // Application using storyCollection need to call this at start to have current status of questionnaire
        determineStatusOfCurrentQuestionnaire: determineStatusOfCurrentQuestionnaire,

@@ -325,6 +325,10 @@ define([
             
             topic.subscribe("loadLatestStoriesFromServer", loadedMoreSurveyResults);
             
+            // TODO: What happens when questionnaire is loaded after story browser, themer, or graph page is built?
+            // Synchronizes the state of the domain questionnaire with what is on server
+            surveyCollection.loadCurrentQuestionnaire();
+            
             // Synchronizes the state of the domain for one status flag with what is on server
             surveyCollection.determineStatusOfCurrentQuestionnaire();
             
@@ -342,7 +346,7 @@ define([
 
                 (e || window.event).returnValue = confirmationMessage;     // Gecko and Trident
                 return confirmationMessage;                                // Gecko and WebKit
-              });
+            });
         });
     }
     
