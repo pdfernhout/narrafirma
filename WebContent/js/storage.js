@@ -15,13 +15,27 @@ define([
         var metadata = {
             id: documentID,
             previous: previousVersionID,
-            tags: [],
             contentType: versions.projectAnswersContentType + "." + modelName,
             contentVersion: versions.projectAnswersContentVersion,
-            author: null,
-            committer: domain.userID,
-            timestamp: true
-        };        
+            committer: domain.userID
+        };
+        
+        // TODO: This creates duplicate data in the file; perhaps modify server so can just send request that it do this? But then server is more complex?
+        // Create triples for indexing and "publishing" this data as part of a whole (the document)
+        // Just index every field without an underscore for now -- it is probably used by the reporting
+        var triples = [];
+        for (var key in pageVersion) {
+            if (key.charAt(0) === "_") continue;
+            if (pageVersion.hasOwnProperty(key)) {
+                triples.push({
+                    a: domain.projectID,
+                    b: key,
+                    c: pageVersion[key]
+                });
+            }
+        }
+        metadata.triples = triples;
+        
         pointrel20141201Client.storeInNewEnvelope(pageVersion, metadata, function(error, serverResponse) {
             if (error) {
                 console.log("could not write new page version:\n" + error);
@@ -32,10 +46,18 @@ define([
             
             // Create an envelope that should approximate the one now on the server, since the server does not return what was stored
             var pseudoEnvelope = metadata;
+            
+            // Set the reference information to what the server returned for the resource
             pseudoEnvelope.__sha256HashAndLength = sha256HashAndLength;
-            // metadata we sent will not have the correct timestamp as we asked the server to fill it in, so setting the value based on what the server returned
+            
+            // The metadata we sent will not have the correct timestamp since we did not supply it to use server time.
+            // We did that because the server time is probably more accurate than the client time.
+            // So, we are now setting the timestamp value based on what the server returned.
             pseudoEnvelope.timestamp = serverResponse.envelopeTimestamp;
+            
+            // Set the content to what we know we stored
             pseudoEnvelope.content = pageVersion;
+            
             callbackWhenDone(null, pseudoEnvelope);
         });
     }
