@@ -88,7 +88,10 @@ define([
         changeCurrentPageData: function (documentEnvelope) {
             domain.currentPageDocumentEnvelope = documentEnvelope;
             if (domain.currentPageDocumentEnvelope) {
-                modelUtility.updateModelWithNewValues(domain.currentPageModel, documentEnvelope.content);
+                // TODO: Copying only model-defined data for now, which will produce warnings of unsaved changes as migrate test data
+                // TODO: Probably want to eventually change this back to copy all data, in order to preserve data from future versions where model has added fields
+                // TODO: Changing it back will also avoid unsaved changes warnings if there is new document data added later by other modules
+                modelUtility.updateModelWithNewValues(domain.currentPageModel, documentEnvelope.content, "copyOnlyModelFields");
             } else {
                 // Reset the model
                 if (!domain.currentPageModelTemplate) {
