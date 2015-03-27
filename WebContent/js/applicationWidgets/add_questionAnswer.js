@@ -10,6 +10,7 @@ define([
     "use strict";
     
     function div_for_value(value) {
+        if (value === undefined || value === null) value = "";
         return '<div class="narrafirma-questionAnswer">' + value + '</div>';
     }
     
