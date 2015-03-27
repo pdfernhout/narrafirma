@@ -21,9 +21,6 @@ define([
         
         projectID: "Test-PNIWorkbook-004",
         
-        // TODO: Fix hardcoded projectAnswersDocumentID
-        projectAnswersDocumentID: "Test-PNIWorkbook-003",
-        
         // TODO: Fix hardcoded surveyResultHyperdocumentID
         surveyResultHyperdocumentID: "Test-PNIWorkbook-003-Surveys",
 

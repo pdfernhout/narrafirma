@@ -74,8 +74,6 @@ define([
     }
     
     function loadLatestPageVersion(documentID, callbackWhenDone) {
-        // TODO: Temporary for loading test data
-        // documentID = domain.projectAnswersDocumentID;
         console.log("============= loadLatestPageVersion");
         pointrel20141201Client.loadLatestEnvelopeForID(documentID, function(error, envelope) {
             if (error) {
