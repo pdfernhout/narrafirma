@@ -27,16 +27,6 @@ define([
     // The mostly recently loaded project version
     var currentProjectVersionReference;
 
-    function loadLatestClicked() {
-        console.log("load latest clicked");
-
-        // TODO: Fix this
-        throw new Error("No longer working due to ongoing refactoring for current page model");
-        
-        // TODO: Check for unsaved data before loading project...
-        storage.loadLatestProjectVersion(switchToLoadedProjectData);
-    }
-
     function loadVersionClicked() {
         console.log("load version clicked");
         
@@ -113,7 +103,7 @@ define([
         // TODO: Two design questions.
         // How to connect project ID to page ID or model? Use JSON? Or just use a convention like a pipe bar? Or use a period?
         // And whether to use page ID or instead model name? Thinking model name is more specific to model
-        var documentID = domain.projectID + "." + modelName;
+        var documentID = domain.getDocumentIDForCurrentPage();
         
         // TODO: Somewhere should check that we are not overwritting a version someone else saved, or at least to confirm that
         storage.storePageVersion(pageVersion, documentID, modelName, previousVersionID, saveFinished);
@@ -246,7 +236,6 @@ define([
         // Called directly from application
         "loadVersion": loadVersionClicked,
         "importExportOld": importExportClicked,
-        "loadLatest": loadLatestClicked,
         "saveClicked": saveClicked,
         "debugButtonClicked": debugButtonClicked
     };
