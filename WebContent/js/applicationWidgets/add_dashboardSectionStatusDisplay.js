@@ -82,6 +82,9 @@ define([
             };
         var button = panelBuilder.buildField(contentPane, model, buttonFieldSpecification);
         
+        // TODO: Need to rethinking what this does for changes elsewhere to page status storage to reminders
+        statusText = "";
+        
         var htmlText = '<span class="narrafirma-dashboardSectionStatusDisplayCompletion">' + statusText + '</span><br>';
         panelBuilder.addHTML(contentPane, htmlText);
         
