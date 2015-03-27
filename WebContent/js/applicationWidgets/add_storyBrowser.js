@@ -234,6 +234,7 @@ define([
     function insertStoryBrowser(panelBuilder, pagePane, model, id) {
         console.log("insertStoryBrowser start", id);
         
+        // TODO: Handle the fact that currentQuestionnaire may be null if this is the first page loaded, and also may update as topic
         // TODO: Fix this show also handles participant questions somehow
         var questionnaire = domain.currentQuestionnaire;
         console.log("questionnaire", questionnaire);

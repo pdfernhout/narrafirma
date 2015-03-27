@@ -575,6 +575,7 @@ define([
         });
         var chartDiv = domConstruct.empty("chartDiv");
         
+        // TODO: Handle the fact that currentQuestionnaire may be null if this is the first page loaded, and also may update as topic
         // TODO: Fix this so it also handles participant questions somehow
         var surveyQuestions = domain.currentQuestionnaire.storyQuestions;
         
@@ -720,6 +721,7 @@ define([
             title: "Graph results"
         });
         
+        // TODO: Handle the fact that currentQuestionnaire may be null if this is the first page loaded, and also may update as topic
         // TODO: Fix this so it also handles participant questions somehow
         // TODO: Update these as they change...
         var questions = domain.currentQuestionnaire.storyQuestions;
