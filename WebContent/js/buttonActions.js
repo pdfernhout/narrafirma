@@ -102,15 +102,29 @@ define([
 
     function saveClicked() {
         console.log("save clicked", domain.projectAnswers);
-        throw new Error("No longer working due to ongoing refactoring for current page model");
-        storage.storeProjectVersion(domain.projectAnswers, currentProjectVersionReference, saveFinished);
+
+        var pageVersion = modelUtility.getPlainValue(domain.currentPageModel);
+        var modelName = domain.currentPageModelName;
+        
+        var previousVersionID = null;
+        // TODO: Maybe want a better sort of reference, as in "documentIDHash_timestamp_contentsHash_length"?
+        if (domain.currentPageDocumentEnvelope) previousVersionID = domain.currentPageDocumentEnvelope.__sha256HashAndLength;
+        
+        // TODO: Two design questions.
+        // How to connect project ID to page ID or model? Use JSON? Or just use a convention like a pipe bar? Or use a period?
+        // And whether to use page ID or instead model name? Thinking model name is more specific to model
+        var documentID = domain.projectID + "." + modelName;
+        
+        // TODO: Somewhere should check that we are not overwritting a version someone else saved, or at least to confirm that
+        storage.storePageVersion(pageVersion, documentID, modelName, previousVersionID, saveFinished);
     }
 
-    function saveFinished(error, newVersionURI) {
-        if (error) {alert("could not write new version:\n" + error); return;}
+    function saveFinished(error, envelope) {
         // TODO: Translate and improve this feedback
-        console.log("Save finished to file", newVersionURI);
-        currentProjectVersionReference = newVersionURI;
+        if (error) {alert("could not write new version:\n" + error); return;}
+        console.log("Save finished to file", envelope.__sha256HashAndLength);
+        // Update the envelope in the domain so that future tests for whether page was changed will be based on what was just saved
+        domain.currentPageDocumentEnvelope = envelope;
         toaster.toast("Finished saving");
     }
 

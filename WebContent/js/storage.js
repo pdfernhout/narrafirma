@@ -11,16 +11,31 @@ define([
 
     /* Project Version */
     
-    function storeProjectVersion(projectAnswers, previous, callbackWhenDone) {
-        var metadata = {id: domain.projectAnswersDocumentID, previous: previous, tags: [], contentType: versions.projectAnswersContentType, contentVersion: versions.projectAnswersContentVersion, author: null, committer: domain.userID, timestamp: true};        
-        pointrel20141201Client.storeInNewEnvelope(projectAnswers, metadata, function(error, serverResponse) {
+    function storePageVersion(pageVersion, documentID, modelName, previousVersionID, callbackWhenDone) {
+        var metadata = {
+            id: documentID,
+            previous: previousVersionID,
+            tags: [],
+            contentType: versions.projectAnswersContentType + "." + modelName,
+            contentVersion: versions.projectAnswersContentVersion,
+            author: null,
+            committer: domain.userID,
+            timestamp: true
+        };        
+        pointrel20141201Client.storeInNewEnvelope(pageVersion, metadata, function(error, serverResponse) {
             if (error) {
-                console.log("could not write new version:\n" + error);
+                console.log("could not write new page version:\n" + error);
                 return callbackWhenDone(error);
             }
             var sha256HashAndLength = serverResponse.sha256AndLength;
             console.log("wrote sha256HashAndLength:", sha256HashAndLength);
-            callbackWhenDone(null, sha256HashAndLength);
+            
+            // Create an envelope that should approximate the one now on the server, since the server does not return what was stored
+            var pseudoEnvelope = metadata;
+            pseudoEnvelope.__sha256HashAndLength = sha256HashAndLength;
+            // metadata we sent will not have the correct timestamp as we asked the server to fill it in, so setting the value based on what the server returned
+            pseudoEnvelope.timestamp = serverResponse.envelopeTimestamp;
+            callbackWhenDone(null, pseudoEnvelope);
         });
     }
     
@@ -190,7 +205,7 @@ define([
     // setup();
     
     return {
-        "storeProjectVersion": storeProjectVersion,
+        "storePageVersion": storePageVersion,
         "loadLatestProjectVersion": loadLatestProjectVersion,
         "loadProjectVersion": loadProjectVersion,
         "loadAllProjectVersions": loadAllProjectVersions,
