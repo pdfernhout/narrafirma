@@ -35,6 +35,7 @@ define([
             pseudoEnvelope.__sha256HashAndLength = sha256HashAndLength;
             // metadata we sent will not have the correct timestamp as we asked the server to fill it in, so setting the value based on what the server returned
             pseudoEnvelope.timestamp = serverResponse.envelopeTimestamp;
+            pseudoEnvelope.content = pageVersion;
             callbackWhenDone(null, pseudoEnvelope);
         });
     }
