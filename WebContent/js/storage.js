@@ -99,7 +99,7 @@ define([
         pointrel20141201Client.queryByTriple(domain.projectID, fieldID, null, "latest", function(error, result) {
             if (error) {
                 console.log("ERROR: " + error);
-                callbackWhenDone("");
+                callbackWhenDone(null);
             }
             callbackWhenDone(result.result);
         });
