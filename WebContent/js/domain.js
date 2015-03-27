@@ -51,7 +51,7 @@ define([
         /////////////// API calls below
         
         hasUnsavedChangesForCurrentPage: function() {
-            // TODO: Fix this
+            if (!domain.currentPageModelName) return false;
             if (domain.currentPageDocumentEnvelope) {
                 return modelUtility.isModelChanged(domain.currentPageModel, domain.currentPageDocumentEnvelope.content);
             } else if (domain.currentPageModelTemplate) {
