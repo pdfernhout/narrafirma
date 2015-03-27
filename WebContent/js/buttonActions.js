@@ -1,4 +1,5 @@
 define([
+    "js/panelBuilder/browser",
     "js/panelBuilder/dialogSupport",
     "js/domain",
     "js/modelUtility",
@@ -11,6 +12,7 @@ define([
     "js/panelBuilder/translate",
     "dojo/domReady!"
 ], function(
+    browser,
     dialogSupport,
     domain,
     modelUtility,
@@ -116,6 +118,23 @@ define([
         // Update the envelope in the domain so that future tests for whether page was changed will be based on what was just saved
         domain.currentPageDocumentEnvelope = envelope;
         toaster.toast("Finished saving");
+    }
+    
+    function helpButtonClicked() {
+        // TODO: Remove printing out domain and surveyCollection here
+        console.log("helpButtonClicked", domain, surveyCollection);
+        
+        var pageSpecification = domain.currentPageSpecification;
+        if (!pageSpecification) {
+            console.log("no pageSpecification for current page", domain);
+            return;
+        }
+        
+        var helpURL = '/help/' + pageSpecification.section + "/help_" + pageSpecification.id + '.html';
+        
+        console.log("opening help url", helpURL);
+        
+        browser.launchApplication(helpURL, 'help');
     }
 
     function debugButtonClicked() {
@@ -237,6 +256,7 @@ define([
         "loadVersion": loadVersionClicked,
         "importExportOld": importExportClicked,
         "saveClicked": saveClicked,
+        "helpButtonClicked": helpButtonClicked,
         "debugButtonClicked": debugButtonClicked
     };
 });

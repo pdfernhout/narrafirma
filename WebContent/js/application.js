@@ -198,7 +198,8 @@ define([
         var pageControlsPane = navigationPane.createNavigationPane(pageDisplayer);
 
         var saveButton = widgetSupport.newButton(pageControlsPane, "#button_save|Save", buttonActions.saveClicked);
-        var debugButton = widgetSupport.newButton(pageControlsPane, "#button_debug|Debug", buttonActions.debugButtonClicked);
+        var helpButton = widgetSupport.newButton(pageControlsPane, "#button_help|Help", buttonActions.helpButtonClicked);
+        // var debugButton = widgetSupport.newButton(pageControlsPane, "#button_debug|Debug", buttonActions.debugButtonClicked);
 
         // Setup the first page
         var fragment = hash();
