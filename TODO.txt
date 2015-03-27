@@ -24,6 +24,7 @@ Decide on approach for logging in and controlling access to changing project def
 PLUGIN
 WordPress plugin support for Pointrel save/load/triples
 Create entire WordPress plugin based on current stub version
+Roles/Accounts & Security
 
 RECOMMENDATIONS
 Support recommendationTable
@@ -34,7 +35,9 @@ Improve template list generation tool to support storyCollectionActivities and s
 
 SURVEY GENERAL
 Switch to using Dojo Mobile for the surveys
+Better mobile support for taking survey on cell phones
 Figure out what URLs will look like for administration/authoring vs. survey taking (multiple?) vs. (maybe) project
+Have survey entry page support different surveys
 Figure out GUI for "finalizing" a survey as opposed to storing current version when enable survey
 Have survey page use special server method so does not use Pointrel system directly or need authentication
 Record IP address of survey or use another means to see if someone taking it multiple times
@@ -44,6 +47,18 @@ Only store reference to questionnaire file resource, not the resource itself
 Support translations or other categories for multiple question texts or choice texts for a survey
 Some easy way for two or more survey sliders to be close together under the same label
 Problem when opened up road block survey with Firefox and developer console and it was too tall and when closed console the top close button became inacessible as offscreen
+
+SURVEY QUESTIONS
+Survey - Better validation that at least one story entered instead of forcing first story entry pane to have a story even if second or later panes have stories
+Survey - checkbox for is question answer required (maybe later)
+Survey - start page required (what do do if nothing entered)
+Survey - improve styling on radio buttons for question or alternative approach (maybe later)
+Survey - delete button w/confirm
+Survey - reorder story numbers
+Survey - can't delete last story
+Survey - maximum number stories (maybe later)
+Survey - back button in browser -- deal with so don't lose data
+Remove redundant code when calculating survey questions for story and name in survey and story browser
 
 IDs
 Add support for short names (ids) for eliciting questions
@@ -62,6 +77,7 @@ Add page to do import/export
 Add export button for survey results
 Maybe import button for survey results
 Add way to clear out or reset old survey results? Or maybe partition them by survey?
+Backup
 
 LOAD/SAVE
 Have revert button to go back to previous version or clear out changes in progress on a page
@@ -69,6 +85,7 @@ Handle questionnaire update after it is loaded in story browser
 Handle questionnaire update after it is loaded in story themer
 Handle questionnaire update after it is loaded in graph
 Put in place dojox.widget.Standby when saving
+Improve save/load feedback [same as above at this point]
 Think through how project is loaded and saved, especially what happens if multiple windows or users edit the same project
 Autosave, perhaps based on time or based on changing pages
 Improve feedback when there are no project versions or survey results; maybe distinguish between an error and nothing being saved yet
@@ -86,6 +103,8 @@ Implement printStoryForm in domain buttonClicked (what do do about entering mult
 
 STORY THEMER
 Support storyThemer -- a widget where people look at each story, give it 1-3 themes, then merge the themes into smaller numbers of themes
+Page to enter themes for stories
+Page to cluster themes into final themes
 
 GRAPH BROWSER
 Support graphBrowser "add to observation" button
@@ -137,6 +156,7 @@ Add project configuration page?
 
 REPORTS
 Improve reports so look nice
+Generate HTML reports that can be downloaded
 Make whole planning phase work (including report)
 Maybe replace reports with one page to export report (or export data)
 Maybe convert reports page to a summary page for each section
@@ -175,6 +195,17 @@ Maybe separate documents for each participant group?
 Maybe separate documents for each survey question?
 Only load panel information as needed for section (or request for specific panel)
 
+BUILD
+Learn how to use Dojo build process to minimize application
+
+VALIDATION
+Think about validation and how or when or if it should be done
+Validation of page data as progress through a step
+Validation in general when progress through tabs and error reporting
+Validation of text fields for empty
+Validation of text fields for length
+Validation for checkBoxes limited by maximum number of choices as validation error
+
 UNSURE
 Way to retrieve data about project participant groups [Is this still relevant? Probably yes, if we did "checkboxes with pull" for picking what groups an activity applies to instead of text entry]
 Support imageUploader
@@ -188,58 +219,19 @@ Create recommendations file
 Create help
 Forgot to put "memorable" in eliciting question types
 
-==== Later:
+==== Wish list:
 
-Better mobile support for taking survey on cell phones
-
-Validation of page data as progress through a step
-
-Validation in general when progress through tabs and error reporting
-Validation of text fields for empty
-Validation of text fields for length
-Validation for checkBoxes limited by maximum number of choices as validation error
-
-Resize Tab container when add Graph
 Chart with hover for story
 Chart where can select a set of stories
 
-Saving project data to a file server as make progress
 Think about what happens to data if questions change somehow in future versions of the software
 
-Backup
-
-Roles/Accounts & Security
-
-Page to enter themes for stories
-Page to cluster themes into final themes
-
-Disabled or hidden tabs which are enabled as progress
-
-Learn how to use Dojo build process to minimize application
-
-Add support for adding multiple surveys per project
-Have survey entry page support different surveys
-
-SURVEY QUESTIONS
-Survey - Better validation that at least one story entered instead of forcing first story entry pane to have a story even if second or later panes have stories
-Survey - checkbox for is question answer required (maybe later)
-Survey - start page required (what do do if nothing entered)
-Survey - improve styling on radio buttons for question or alternative approach (maybe later)
-Survey - delete button w/confirm
-Survey - reorder story numbers
-Survey - can't delete last story
-Survey - maximum number stories (maybe later)
-Survey - back button in browser -- deal with so don't lose data
-Remove redundant code when calculating survey questions for story and name in survey and story browser
-
-==== Wish list:
+Improve dashboards, perhaps with green checkmarks and thinking through completion feedback to be better
 
 Support for socket.io to track recently added survey results and whether survey is enabled
 
 Add support for surveys that can be in multiple languages
 Add support for providing story browser filter options based on analyzing data from surveys to collect all actual choices as well as current questionnaire(s)
-
-Improve dashboards, perhaps with green checkmarks and thinking through completion feedback to be better
 
 Remember previous filtering options for any question in story browser
 
@@ -255,25 +247,17 @@ Unit tests
 
 Continuous integration server that runs tests
 
-Multi-user aspects
-
-Improve startup wait progress
+Multi-user aspects [partially done with separate save/load of pages]
 
 Generate PDF reports
 Generate CSV output
-
-Improve save/load feedback
 
 Replace Dojo's isString which is deprecated (and similar basic functionality) with lodash calls
 
 ==== Might not do
 
-Grid widget option specification to control button availability
-
 Story list using dgrid with accordion for story
 Support checkBoxesWithPull -- a set of check boxes where the display texts are drawn from a list entered previously (like for participant list)
-
-Improve take survey page like with support for separate pages
 
 Way to edit a story or participant info (with versioning) if needed? (Can use Pointrel approach with latest document version.)
 Editing survey results for consistency with version control based on survey ID?
@@ -471,6 +455,7 @@ DONE Story collection sessions -- change question to label (Cynthia)
 DONE Fix how selected eliciting question in select box is not entirely visible
 DONE Indenting question entry areas under question text using CSS for questionInternal and questionExternal classes
 DONE Support adding more than one story in survey form GUI
+DONE Improve take survey page like with support for separate pages
 DONE Look into Dojo resizing bug in Wizard and StackedContainer when at 100% size and it grows height (seems to be fixed if use "doLayout: false"); comment out PDF debugging code in dijit/layout/_LayooutWidget.js
 DONE Survey - submit button on participant info
 DONE Survey - improve display of title
@@ -569,6 +554,7 @@ DONE Fix sizing bug in templates chooser dialog where it is too narrow
 DONE Add cancel button to templates chooser dialog
 DONE Add close button to recommendations table dialog
 DONE Grid should be more configurable via field specifications
+DONE Grid widget option specification to control button availability [same as above]
 DONE Create panelWithModelChooserSaveLoadTest where can save and load test models for all panels
 DONE Load panel navigation information from JSON
 DONE Move loadAllPanelSpecifications into PanelSpecificationCollection and pass in needed information about navigation and base path
@@ -586,6 +572,7 @@ DONE Add exception handling for problems when displaying a page
 DONE Fix cluster diagram so it reloads data when model changed
 DONE Fix inconsistency for story project clustering diagram id and displayConfiguration; add temporary kludge when loading data for change
 DONE Improve startup please wait loading messages
+DONE Improve startup wait progress [same as above]
 DONE Improve naming of model classes in panel specifications
 DONE Refactor code so have better defined domain models, probably with dmodel [just using Stateful and a current page]
 DONE Move global data out of various modules and into domain
@@ -601,6 +588,7 @@ DONE Think about saving and loading for smaller subparts of projects as seperate
 DONE Think about saving one file per page or model and using triples to index them related to one survey?
 DONE Save and load the data for the project with one document per page instead of one document for entire project
 DONE Save and load data for each page instead of for entire project [same as above]
+DONE Saving project data to a file server as make progress [Pretty much same as above]
 DONE Add triple indexing for all data saved for a page so it can be more easily retrieved by other pages
 DONE Get questionAnswer widget to retrieve current value from Pointrel server using triple query
 DONE General notes should go after dashboard for each section [removed these entirely]
@@ -609,5 +597,8 @@ DONE Use a text field instead of a select to add reminders about page status; di
 DONE Store and load questionnaire built from multiple server requests for Pointrel triple indexing
 DONE Add page for print project report to project report section; add related stub help page
 NOT DOING Ideally support more than one survey per project [Alternative to create a new project may be good enough; also would make GUI more confusing]
+NOT DOING Add support for adding multiple surveys per project [Same as above]
 DONE No short name for type: clusterSpace field: clusterInterpretations_clusterSpace text: Cluster interpretations into perspectives [now using clustering diagram]
 NOT DOING Implement showHideCollectedStories in domain buttonClicked [Not sure what this means now or if still relevant; think it is obsolete task]
+NOT DOING Disabled or hidden tabs which are enabled as progress
+NOT DOING Resize Tab container when add Graph [obsolete task as no longer have tabbed notebook GUI]
