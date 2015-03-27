@@ -101,8 +101,8 @@ define([
             // Add button at bottom of each page to move forward
             if (pageSpecification.nextPageID) {
                 // TODO: Translate
-                var buttonPrompt = "Proceed to next activity";
-                if (!pageSpecification.previousPageID) buttonPrompt = "Proceed to first activity";
+                var buttonPrompt = "Next";
+                if (!pageSpecification.previousPageID) buttonPrompt = "Next";
                 var nextPageButtonSpecification = {
                     "id": pageID + "_nextPageButton",
                     "dataType": "none",
@@ -120,7 +120,7 @@ define([
                 var returnToDashboardButtonSpecification = {
                     "id": pageID + "_returnToDashboardButton",
                     "dataType": "none",
-                    "displayPrompt": "Return to main dashboard",
+                    "displayPrompt": "Go to project home page",
                     "displayType": "button",
                     "displayConfiguration": {
                         "action": "guiOpenSection",
