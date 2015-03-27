@@ -143,12 +143,17 @@ define([
             hash(currentPageID);
         }
         
-        // TODO: Need handling for pages without page models...
+        // Load the data for the current page from the server, if that is needed
         
-        // Load the data for the current page from the server
-        // TODO: Improve this to be per page
-        // TODO: Add some kind of please wait while loading...
-        storage.loadLatestProjectVersion(function (error, content, envelope) {
+        var documentID = domain.getDocumentIDForCurrentPage();
+        
+        if (!documentID) {
+            // Current page does not need a document loaded for it
+            finishShowingPage(pageID, pageSpecification);
+            return;
+        }
+        
+        storage.loadLatestPageVersion(documentID, function (error, content, envelope) {
             console.log("loaded data", error, content, envelope);
             
             if (!error) {
@@ -163,22 +168,26 @@ define([
                 // TODO: Translate
                 alert("Problem loading data for page");
             }
-            
-            stopStandby();
-            
-            // Show the current page again
-            domStyle.set("pageDiv", "display", "block");
-
-            document.body.scrollTop = document.documentElement.scrollTop = 0;
-
-            // Ensure navigation select is pointing to this page; this may trigger an update but it should be ignored as we're already on this page
-            navigationPane.setCurrentPageSpecification(pageID, pageSpecification);
-            
-            // Because the page was hidden when created, all the grids need to be resized so grid knows how tall to make header so it is not overwritten
-            currentPage.resize();
+ 
+            finishShowingPage(pageID, pageSpecification);
         });
         
         // TODO: What if standby reset fails for some reason, like a problem with loadLastestProjectVersion?
+    }
+    
+    function finishShowingPage(pageID, pageSpecification) { 
+        // Show the current page again
+        domStyle.set("pageDiv", "display", "block");
+
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+
+        // Ensure navigation select is pointing to this page; this may trigger an update but it should be ignored as we're already on this page
+        navigationPane.setCurrentPageSpecification(pageID, pageSpecification);
+        
+        // Because the page was hidden when created, all the grids need to be resized so grid knows how tall to make header so it is not overwritten
+        currentPage.resize();
+        
+        stopStandby();
     }
 
     // Create all the widgets for the current page using the panelBuilder which builds the page from the pageSpecification

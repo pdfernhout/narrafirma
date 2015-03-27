@@ -51,19 +51,14 @@ define([
         });
     }
     
-    function loadLatestProjectVersion(switchToLoadedProjectAnswersCallback) {
-        console.log("============= loadLatestProjectVersion");
-        pointrel20141201Client.loadLatestEnvelopeForID(domain.projectAnswersDocumentID, function(error, envelope) {
+    function loadLatestPageVersion(documentID, callbackWhenDone) {
+        console.log("============= loadLatestPageVersion");
+        pointrel20141201Client.loadLatestEnvelopeForID(documentID, function(error, envelope) {
             if (error) {
-                if (error === "No items found for id") error = "No stored versions could be loaded -- have any project versions been saved?";
-                return switchToLoadedProjectAnswersCallback(error);
+                if (error === "No items found for id") error = "No stored versions could be loaded -- have any page versions been saved?";
+                return callbackWhenDone(error);
             }
-            // TODO: Temporary fixup for test data
-            if (envelope.content.project_storyElementsAnswersClusteringDiagram && (!envelope.content.project_projectStoryElementsAnswersClusteringDiagram || !envelope.content.project_projectStoryElementsAnswersClusteringDiagram.surfaceWidthInPixels)) {
-                console.log("Fixing up test data", envelope.content.project_storyElementsAnswersClusteringDiagram);
-                envelope.content.project_projectStoryElementsAnswersClusteringDiagram = envelope.content.project_storyElementsAnswersClusteringDiagram;
-            }
-            switchToLoadedProjectAnswersCallback(null, envelope.content, envelope);           
+            callbackWhenDone(null, envelope.content, envelope);           
         });
     }
     
@@ -207,7 +202,7 @@ define([
     
     return {
         "storePageVersion": storePageVersion,
-        "loadLatestProjectVersion": loadLatestProjectVersion,
+        "loadLatestPageVersion": loadLatestPageVersion,
         "loadProjectVersion": loadProjectVersion,
         "loadAllProjectVersions": loadAllProjectVersions,
         "storeSurveyResult": storeSurveyResult,

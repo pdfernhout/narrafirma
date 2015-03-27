@@ -328,10 +328,7 @@ define([
             // Synchronizes the state of the domain for one status flag with what is on server
             surveyCollection.determineStatusOfCurrentQuestionnaire();
             
-            // Get the latest project data
-            // TODO: This is not working due to ongoing refactoring
-            console.log("TODO: fix data loading -- ongoing refactoring");
-            // buttonActions.loadLatest();
+            // The latest data for just the current page will be loaded when the page is created
             
             // turn off initial "please wait" display
             document.getElementById("pleaseWaitDiv").style.display = "none";
