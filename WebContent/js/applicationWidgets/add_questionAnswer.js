@@ -9,6 +9,10 @@ define([
 ){
     "use strict";
     
+    function div_for_value(value) {
+        return '<div class="narrafirma-questionAnswer">' + value + '</div>';
+    }
+    
     function calculate_questionAnswer(panelBuilder, model, referencedQuestionID) {
         // console.log("calculate_questionAnswer", panelBuilder, model, referencedQuestionID);
         var value = model.get(referencedQuestionID);
@@ -42,7 +46,7 @@ define([
         }
         
         // console.log("calculate_questionAnswer value", value);
-        return value;
+        return div_for_value(value);
     }
 
     // TODO: This will not work when questions are on other pages with newer system
@@ -73,7 +77,7 @@ define([
         // Request the field for the project from the server, and update the status when ready
         storage.loadLatestValueForProjectField(referencedQuestionID, function(value) {
             console.log("add_questionAnswer server query result", value);
-            var updateInfo = {"id": fieldSpecification.id, "label": label, "baseText": baseText, "calculate": function() {return value;}};
+            var updateInfo = {"id": fieldSpecification.id, "label": label, "baseText": baseText, "calculate": function() {return div_for_value(value);}};
             panelBuilder.updateLabelUsingCalculation(updateInfo);
         });
         

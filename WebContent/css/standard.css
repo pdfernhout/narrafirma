@@ -38,7 +38,15 @@ body {
 }
 
 .narrafirma-dashboardSectionStatusDisplayCompletion {
-   margin-left: 1.0em;
+    margin-left: 1.0em;
+}
+
+.narrafirma-questionAnswer {
+    /* Border looks bad, especially when no data:
+    border-style: solid;
+    border-width: thin;
+    */
+    font-style: italic;
 }
 
 form {
