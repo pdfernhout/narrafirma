@@ -163,10 +163,10 @@ define([
                     console.log("ERROR: Problem calling changeCurrentPageData", envelope, e);
                 }
             } else {
-                console.log("ERROR: Problem loading data for page", pageID);
+                console.log("ERROR: Problem loading data for page", pageID, error);
                 // TODO: Need to distinguish if just starting out and no data file for page from some server issue
                 // TODO: Translate
-                alert("Problem loading data for page");
+                // alert("Problem loading data for page");
             }
  
             finishShowingPage(pageID, pageSpecification);
