@@ -33,6 +33,8 @@ define(["dojox/mvc/getPlainValue",], function(getPlainValue) {
             
             // Copy new data into model
             for (key in newValues) {
+                // If copying only model fields, don't copy keys with underscores to ensure our model __type gets fixed if needed
+                if (copyOnlyModelFieldsFlag && key.charAt(0) === "_") continue;
                 if (newValues.hasOwnProperty(key) && (!copyOnlyModelFieldsFlag || model.get(key) !== undefined)) {
                     model.set(key, newValues[key]);
                 }
