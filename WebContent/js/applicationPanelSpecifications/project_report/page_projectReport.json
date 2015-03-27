@@ -4,7 +4,7 @@
     "displayType": "page",
     "isHeader": true,
     "section": "project_report",
-    "modelClass": "ProjectReportSectionHeader",
+    "modelClass": null,
     "panelFields": [
         {
             "id": "projectReportIntroLabel",

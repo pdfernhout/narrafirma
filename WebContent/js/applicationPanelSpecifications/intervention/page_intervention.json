@@ -4,7 +4,7 @@
     "displayType": "page",
     "isHeader": true,
     "section": "intervention",
-    "modelClass": "InterventionSectionHeader",
+    "modelClass": null,
     "panelFields": [
         {
             "id": "interventionIntroLabel",
