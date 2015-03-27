@@ -55,6 +55,13 @@ define([
         // The most recently loaded (or saved) questionnarie
         currentQuestionnaire: null,
         
+        allCompletedSurveys: [],
+        
+        allStories: [],
+
+        // TODO: When does this get updated?
+        questionnaireStatus: {questionnaireID: defaultQuestionnaireID, active: false},
+        
         /////////////// API calls below
         
         hasUnsavedChangesForCurrentPage: function() {

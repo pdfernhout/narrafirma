@@ -275,7 +275,7 @@ define([
              }
         };
 
-        var stories = surveyCollection.allStories;
+        var stories = domain.allStories;
 
         // Store will modify underlying array
         var dataStore = new Memory({

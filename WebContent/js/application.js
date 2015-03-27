@@ -250,7 +250,7 @@ define([
     // The application should publish a topic with the same name as these functions when their value changes.
     function calculateFunctionResultForGUI(panelBuilder, contentPane, model, fieldSpecification, functionName) {
         if (functionName === "totalNumberOfSurveyResults") {
-            return surveyCollection.allCompletedSurveys.length;
+            return domain.allCompletedSurveys.length;
         } else if (functionName === "isStoryCollectingEnabled") {
             return surveyCollection.isStoryCollectingEnabled(fieldSpecification);
         } else {

@@ -13,12 +13,6 @@ define([
 ) {
    "use strict";
    
-   var allCompletedSurveys = [];
-   var allStories = [];
-
-   // TODO: When does this get updated?
-   var questionnaireStatus = {questionnaireID: domain.currentQuestionnaireID, active: false};
-   
    // Can also just pass in callback as first arg, rest are unused and are for compatibility with GUI calling system
    function loadLatestStoriesFromServer(contentPane, model, fieldSpecification, value, callback) {
        console.log("loadLatestStoriesFromServer called");
@@ -41,7 +35,7 @@ define([
                            // Use the identifier for the resource the survey is in
                            surveyResult.id = newEnvelopeReference;
                        }
-                       allCompletedSurveys.push(surveyResult);
+                       domain.allCompletedSurveys.push(surveyResult);
                    } else {
                        console.log("ERROR: Missing surveyResult in newEnvelope", newEnvelope);
                    }
@@ -60,32 +54,32 @@ define([
            
            // TODO: Only for debugging; need to think through the separating of stories and general survey data
            // Preserve existing array -- just replace its contents
-           while (allStories.length > 0) {
-               allStories.pop();
+           while (domain.allStories.length > 0) {
+               domain.allStories.pop();
            }
-           for (var responseIndex in allCompletedSurveys) {
-               var response = allCompletedSurveys[responseIndex];
+           for (var responseIndex in domain.allCompletedSurveys) {
+               var response = domain.allCompletedSurveys[responseIndex];
                for (var storyIndex in response.stories) {
                    var story = response.stories[storyIndex];
                    // console.log("=== story", story);
-                   allStories.push(story);
+                   domain.allStories.push(story);
                }
            }
            
-           console.log("===== All stories", allStories);
+           console.log("===== All stories", domain.allStories);
            
            if (callback) callback(newEnvelopeCount);
            
            // Tell any listeners like story browsers that there are more stories
-           topic.publish("loadLatestStoriesFromServer", newEnvelopeCount, allStories);
+           topic.publish("loadLatestStoriesFromServer", newEnvelopeCount, domain.allStories);
            topic.publish("totalNumberOfSurveyResults", allEnvelopes.length);
        });
    }
    
    function getParticipantDataForParticipantID(participantID) {
        // TODO: Maybe optimize as a lookup map maintained when read in survey results
-       for (var responseIndex in allCompletedSurveys) {
-           var response = allCompletedSurveys[responseIndex];
+       for (var responseIndex in domain.allCompletedSurveys) {
+           var response = domain.allCompletedSurveys[responseIndex];
            if (response.participantData._participantID === participantID) {
                console.log("getParticipantDataForParticipantID", participantID, response.participantData);
                return response.participantData;
@@ -116,8 +110,8 @@ define([
        var status = {questionnaireID: questionnaireID, active: true};
        storage.storeQuestionnaireStatus(questionnaireID, status, function(error) {
            console.log("Activated questionnaire", questionnaireID);
-           questionnaireStatus = {questionnaireID: questionnaireID, active: true};
-           topic.publish("isStoryCollectingEnabled", questionnaireStatus);
+           domain.questionnaireStatus = {questionnaireID: questionnaireID, active: true};
+           topic.publish("isStoryCollectingEnabled", domain.questionnaireStatus);
        });
    }
    
@@ -126,13 +120,13 @@ define([
        var status = {questionnaireID: questionnaireID, active: false};
        storage.storeQuestionnaireStatus(questionnaireID, status, function(error) {
            console.log("Deactivated questionnaire", questionnaireID);
-           questionnaireStatus = {questionnaireID: questionnaireID, active: false};
-           topic.publish("isStoryCollectingEnabled", questionnaireStatus);
+           domain.questionnaireStatus = {questionnaireID: questionnaireID, active: false};
+           topic.publish("isStoryCollectingEnabled", domain.questionnaireStatus);
        });
    }
    
    function isStoryCollectingEnabled(question) {
-       return questionnaireStatus.active;
+       return domain.questionnaireStatus.active;
    }
    
    function loadCurrentQuestionnaire() {
@@ -142,7 +136,7 @@ define([
                // Don't alert, because it is possible nothing has been saved
                console.log("Problem loading latest questionnaire version", error);
            } else {
-               topic.publish("currentQuestionnaire", questionnaireStatus);
+               topic.publish("currentQuestionnaire", domain.questionnaireStatus);
                domain.currentQuestionnaire = questionnaire;
            }
        });
@@ -152,8 +146,8 @@ define([
        storage.loadLatestQuestionnaireStatus(domain.currentQuestionnaireID, function(error, status, envelope) {
            if (error) {return console.log("Could not determine questionnaire status; assuming inactive", domain.currentQuestionnaireID);}
            console.log("got questionnaire status", status);
-           questionnaireStatus = status;
-           topic.publish("isStoryCollectingEnabled", questionnaireStatus);
+           domain.questionnaireStatus = status;
+           topic.publish("isStoryCollectingEnabled", domain.questionnaireStatus);
        });
    }
    
@@ -162,9 +156,6 @@ define([
    }
    
    return {
-       allCompletedSurveys: allCompletedSurveys,
-       allStories: allStories,
-       
        storyCollectionStart: storyCollectionStart,
        storyCollectionStop: storyCollectionStop,
        

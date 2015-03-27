@@ -186,7 +186,7 @@ define([
         var plotLabels = [];
         var results = {};
         
-        var stories = surveyCollection.allStories;
+        var stories = domain.allStories;
         for (var storyIndex in stories) {
             var story = stories[storyIndex];
             var xValue = correctForUnanswered(question, story[question.id]);
@@ -257,7 +257,7 @@ define([
         var plotItems = [];
         var results = {};
         
-        var stories = surveyCollection.allStories;
+        var stories = domain.allStories;
         for (var storyIndex in stories) {
             var story = stories[storyIndex];
             var xValue = correctForUnanswered(scaleQuestion, story[scaleQuestion.id]);
@@ -356,7 +356,7 @@ define([
     function scatterPlot(mainChartDiv, xAxisQuestion, yAxisQuestion) {
         // collect data
         var plotItems = [];
-        var stories = surveyCollection.allStories;
+        var stories = domain.allStories;
         for (var index in stories) {
             var story = stories[index];
             var xValue = correctForUnanswered(xAxisQuestion, story[xAxisQuestion.id]);
@@ -447,7 +447,7 @@ define([
         // collect data
         var results = {};
         var grandTotal = 0;
-        var stories = surveyCollection.allStories;
+        var stories = domain.allStories;
         for (var index in stories) {
             var story = stories[index];
             var xValue = correctForUnanswered(xAxisQuestion, story[xAxisQuestion.id]);
@@ -633,7 +633,7 @@ define([
               
         // collect data
         var plotItems = [];
-        var stories = surveyCollection.allStories;
+        var stories = domain.allStories;
         for (var index in stories) {
             var story = stories[index];
             var xValue = correctForUnanswered(xAxisQuestion, story[xAxisQuestionID]);
