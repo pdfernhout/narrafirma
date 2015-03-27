@@ -6,8 +6,12 @@ define([
     "use strict";
     
     function add_label(panelBuilder, contentPane, model, fieldSpecification) {
+        var content = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
+        if (panelBuilder.addHelpIcons) {
+            content = panelBuilder.htmlForInformationIcon(panelBuilder.helpPageURLForField(fieldSpecification)) + "&nbsp;&nbsp;" + content;
+        }
         var label = panelBuilder.newContentPane({
-            content: panelBuilder.htmlForInformationIcon(panelBuilder.helpPageURLForField(fieldSpecification)) + "&nbsp;&nbsp;" + translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt)
+            content: content
         });
         label.placeAt(contentPane);
         return label;

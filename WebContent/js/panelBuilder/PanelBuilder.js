@@ -101,6 +101,7 @@ var PanelBuilder = declare(null, {
         this.panelSpecificationCollection = null;
         this.buttonClickedCallback = null;
         this.calculateFunctionResultCallback = null;
+        this.addHelpIcons = false;
         this.currentHelpPage = null;
         this.currentHelpSection = null;
         this.applicationDirectory = "/";
@@ -299,11 +300,15 @@ var PanelBuilder = declare(null, {
         // questionContentPane.setAttribute("data-js-question-type", question.displayType);
         
         var questionText = translate(id + "::prompt", fieldSpecification.displayPrompt);
-        // TODO: Fix the help that correct help actually pops up
+
+        var content = questionText;
+        if (this.addHelpIcons) {
+            content = this.htmlForInformationIcon(this.helpPageURLForField(fieldSpecification)) + "&nbsp;&nbsp;" + content;
+        }
         if (questionText) {
             var label = new ContentPane({
-                content: this.htmlForInformationIcon(this.helpPageURLForField(fieldSpecification)) + "&nbsp;&nbsp;" + questionText
-                });
+                content: content
+            });
             label.placeAt(questionContentPane);
         }
         
