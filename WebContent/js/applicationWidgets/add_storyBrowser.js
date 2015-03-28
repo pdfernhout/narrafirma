@@ -8,10 +8,8 @@ define([
     "js/panelBuilder/standardWidgets/GridWithItemPanel",
     "js/panelBuilder/widgetSupport",
     "dijit/layout/ContentPane",
-    "dstore/Memory",
     "dojo/Stateful",
-    "dojox/layout/TableContainer",
-    "dstore/Trackable"
+    "dojox/layout/TableContainer"
 ], function(
     array,
     domain,
@@ -22,10 +20,8 @@ define([
     GridWithItemPanel,
     widgetSupport,
     ContentPane,
-    Memory,
     Stateful,
-    TableContainer,
-    Trackable
+    TableContainer
 ){
     "use strict";
     
@@ -279,10 +275,7 @@ define([
         var stories = domain.allStories;
         
         // Store will modify underlying array
-        var dataStore = new Memory({
-            data: stories,
-            idProperty: "_storyID"
-        });
+        var dataStore = GridWithItemPanel.newMemoryTrackableStore(stories, "_storyID");
         
         // console.log("insertStoryBrowser middle 1", id);
         
@@ -355,9 +348,9 @@ define([
             return match1 && match2;
         };
         var filteredResults = storyBrowserInstance.dataStore.filter(filterFunction);
-        // console.log("Filtered results", filteredResults);
-        var newStore = Trackable.create(filteredResults);
-        storyBrowserInstance.storyList.grid.set("collection", newStore);
+        console.log("Filtered results", filteredResults);
+        // var newStore = GridWithItemPanel.newMemoryTrackableStore(filteredResults.data, "_storyID");
+        storyBrowserInstance.storyList.grid.set("collection", filteredResults);
         // console.log("finished setting list with newStore", newStore);
     }
     
