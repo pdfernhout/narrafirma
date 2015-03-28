@@ -87,7 +87,6 @@ define([
         
         // console.log("making grid");
         this.grid = new(declare([OnDemandGrid, DijitRegistry, Keyboard, Selection, ColumnResizer]))({
-            id: id,
             // "sort": "order",
             collection: this.store,
             columns: columns,
