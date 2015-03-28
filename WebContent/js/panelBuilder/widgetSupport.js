@@ -87,7 +87,8 @@ define([
         return button;
     }
     
-    function newSelect(addToDiv, choices, addNoSelectionOption) {
+    // TODO: Maybe overly general because it supports passing in array of strings? Otherwise could remove this except for adding extra field
+    function makeOptionsFromSelectFromChoices(choices, addNoSelectionOption) {
         var options = [];
         
         // TODO: Is it OK to pass an item with a blank ID to a data store?
@@ -110,6 +111,30 @@ define([
             console.log("ERROR: No choices or options defined for select");
         }
         
+        function compareNames(a, b) {
+            var aName = a.name.toLowerCase();
+            var bName = b.name.toLowerCase();
+            
+            if (aName < bName) return -1;
+            if (aName > bName) return 1;
+            return 0;
+        }
+        
+        options.sort(compareNames);
+        
+        return options;
+    }
+    
+    function updateSelectChoices(select, choices, addNoSelectionOption) {
+        var options = makeOptionsFromSelectFromChoices(choices, addNoSelectionOption);
+        
+        var dataStore = select.get("store");
+        dataStore.setData(options);
+    }
+    
+    function newSelect(addToDiv, choices, addNoSelectionOption) {
+        var options = makeOptionsFromSelectFromChoices(choices, addNoSelectionOption);
+        
         var dataStore = new Memory({"data": options});
         
         var select = new FilteringSelect({
@@ -131,7 +156,9 @@ define([
         var questionOptions = [];
         array.forEach(questions, function (question) {
             if (array.indexOf(filterableQuestionTypes, question.displayType) !== -1) {
-                questionOptions.push({label: translate(question.id + "::shortName", question.displayName), value: question.id});
+                var defaultText = question.displayName;
+                if (!defaultText) defaultText = question.displayPrompt;
+                questionOptions.push({label: translate(question.id + "::shortName", defaultText), value: question.id});
             }
         });
         return questionOptions;
@@ -142,6 +169,7 @@ define([
         "optionsForAllQuestions": optionsForAllQuestions,
         newButton: newButton,
         newSelect: newSelect,
+        updateSelectChoices: updateSelectChoices,
         setOptionsInMultiSelect: setOptionsInMultiSelect,
         newMultiSelect: newMultiSelect
     };
