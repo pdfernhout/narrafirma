@@ -578,15 +578,15 @@ define([
             if (row) {
                 var idAbove = this.grid.up(row, 1, true).id;
                 var idBelow = this.grid.down(row, 1, true).id;
-                // console.log("current", selectedItemID, "above", idAbove, "below", idBelow);
+                // console.log("current", selectedItemID, "selectedCount", this.selectedCount, "above", idAbove, "below", idBelow);
                 atStart = idAbove === selectedItemID;
                 atEnd = idBelow === selectedItemID;
                 // console.log("atStart", atStart, "atEnd", atEnd);
             }
         }
         if (buttons.navigateStartButton) buttons.navigateStartButton.set("disabled", atStart);
-        if (buttons.navigatePreviousButton) buttons.navigatePreviousButton.set("disabled", atStart || !selectedItemID || this.grid.selectedCount !== 1);
-        if (buttons.navigateNextButton) buttons.navigateNextButton.set("disabled", atEnd || !selectedItemID || this.grid.selectedCount !== 1);
+        if (buttons.navigatePreviousButton) buttons.navigatePreviousButton.set("disabled", atStart || !selectedItemID || this.selectedCount !== 1);
+        if (buttons.navigateNextButton) buttons.navigateNextButton.set("disabled", atEnd || !selectedItemID || this.selectedCount !== 1);
         if (buttons.navigateEndButton) buttons.navigateEndButton.set("disabled", atEnd);
     };
     
