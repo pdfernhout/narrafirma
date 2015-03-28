@@ -2,14 +2,12 @@ define([
     "js/panelBuilder/dialogSupport",
     "dojo/_base/lang",
     "js/templates/templates",
-    "js/panelBuilder/standardWidgets/GridWithItemPanel",
-    "dstore/Memory"
+    "js/panelBuilder/standardWidgets/GridWithItemPanel"
 ], function(
     dialogSupport,
     lang,
     templates,
-    GridWithItemPanel,
-    MemoryDstore
+    GridWithItemPanel
 ){
     "use strict";
 
@@ -132,10 +130,7 @@ define([
             templateQuestions = [];
         }
         
-        var dataStore = new MemoryDstore({
-            data: templateQuestions,
-            idProperty: "id"
-        });
+        var dataStore = GridWithItemPanel.newMemoryTrackableStore(templateQuestions, "id");
         
         var pageQuestions;
         

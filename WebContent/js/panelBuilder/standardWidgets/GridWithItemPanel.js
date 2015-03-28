@@ -11,6 +11,7 @@ define([
     "dgrid/extensions/DijitRegistry",
     "dijit/form/Form",
     "dgrid/Keyboard",
+    'dstore/Memory',
     "dgrid/Selection",
     "dojo/Stateful",
     "dstore/Trackable",
@@ -28,6 +29,7 @@ define([
     DijitRegistry,
     Form,
     Keyboard,
+    Memory,
     Selection,
     Stateful,
     Trackable,
@@ -43,11 +45,11 @@ define([
     
     // Possible configuration options
     // var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, navigationButtons: true, includeAllFields: false};
-    function GridWithItemPanel(panelBuilder, pagePane, id, originalDataStore, itemPanelSpecification, configuration) {
+    function GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration) {
         var self = this;
         
         console.log("=========== creating GridWithItemPanel with itemPanelSpecification", itemPanelSpecification);
-        console.log("constructing GridWithItemPanel", id, originalDataStore);
+        console.log("constructing GridWithItemPanel", id, dataStore);
         
         if (!itemPanelSpecification) {
             console.log("Trouble: no itemPanelSpecification", id, pagePane);
@@ -73,11 +75,8 @@ define([
         // The dgrid that will display all items
         this.grid = null;
 
-        this.originalDataStore = originalDataStore;
-
-        // TODO: may need to check if already observable so don't do extra wrapping.
-        // var dataStore = new Observable(originalDataStore);
-        this.store = Trackable.create(originalDataStore);
+        // dataStore should be trackable!!!
+        this.store = dataStore;
 
         // only for testing!!!
         // configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
@@ -589,6 +588,15 @@ define([
         if (buttons.navigatePreviousButton) buttons.navigatePreviousButton.set("disabled", atStart || !selectedItemID || this.grid.selectedCount !== 1);
         if (buttons.navigateNextButton) buttons.navigateNextButton.set("disabled", atEnd || !selectedItemID || this.grid.selectedCount !== 1);
         if (buttons.navigateEndButton) buttons.navigateEndButton.set("disabled", atEnd);
+    };
+    
+    // Class level function, so no "prototype"
+    GridWithItemPanel.newMemoryTrackableStore = function(data, idProperty) {
+        if (!idProperty) idProperty = "id";
+        return new (declare([Memory, Trackable]))({
+            data: data,
+            idProperty: idProperty
+        });
     };
     
     return GridWithItemPanel;
