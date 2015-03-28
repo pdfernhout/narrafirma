@@ -157,6 +157,42 @@ define([
        storage.loadLatestQuestionnaireVersion(questionnaireID, callback);
    }
    
+   function collectQuestionsForCurrentQuestionnaire() {
+       // TODO: Handle the fact that currentQuestionnaire may be null if this is called from  the first page loaded, and also may update as topic
+       // TODO: Fix this show also handles participant questions somehow
+       var questionnaire = domain.currentQuestionnaire;
+       console.log("questionnaire", questionnaire);
+       
+       if (!questionnaire) return [];
+       
+       var storyQuestions = questionnaire.storyQuestions;
+       
+       // TODO: What about idea of having IDs that go with eliciting questions so store reference to ID not text prompt?
+       var elicitingQuestionPrompts = [];
+       for (var elicitingQuestionIndex = 0; elicitingQuestionIndex < questionnaire.elicitingQuestions.length; elicitingQuestionIndex++) {
+           var elicitingQuestionSpecification = questionnaire.elicitingQuestions[elicitingQuestionIndex];
+           elicitingQuestionPrompts.push(elicitingQuestionSpecification.text);
+       }
+       
+       // TODO: Remove redundancy
+       var leadingStoryQuestions = [];
+       leadingStoryQuestions.unshift({id: "__survey_" + "storyName", displayName: "Story Name", displayPrompt: "Please give your story a name", displayType: "text", dataOptions:[]});
+       leadingStoryQuestions.unshift({id: "__survey_" + "storyText", displayName: "Story Text", displayPrompt: "Please enter your response to the question above in the space below", displayType: "textarea", dataOptions:[]});
+       leadingStoryQuestions.unshift({id: "__survey_" + "elicitingQuestion", displayName: "Eliciting Question", displayPrompt: "Please choose a question you would like to respond to", displayType: "select", dataOptions: elicitingQuestionPrompts});
+
+       // console.log("DEBUG questions used by story browser", questions);
+              
+       var questions = [].concat(leadingStoryQuestions, storyQuestions);
+       questions.push({id: "__survey_" + "participantData", displayName: "Participant Data", displayPrompt: "---- participant data below ----", displayType: "header", dataOptions:[]});
+
+       // TODO: add more participant and survey info, like timestamps and participant ID
+       
+       // Participant data has elsewhere been copied into story, so these questions can access it directly
+       questions = questions.concat(questionnaire.participantQuestions);
+       
+       return questions;
+   }
+   
    return {
        storyCollectionStart: storyCollectionStart,
        storyCollectionStop: storyCollectionStop,
@@ -170,6 +206,8 @@ define([
        // Application using storyCollection need to call this at start to have current status of questionnaire
        determineStatusOfCurrentQuestionnaire: determineStatusOfCurrentQuestionnaire,
        
-       getParticipantDataForParticipantID: getParticipantDataForParticipantID
+       getParticipantDataForParticipantID: getParticipantDataForParticipantID,
+       
+       collectQuestionsForCurrentQuestionnaire: collectQuestionsForCurrentQuestionnaire
    };
 });
