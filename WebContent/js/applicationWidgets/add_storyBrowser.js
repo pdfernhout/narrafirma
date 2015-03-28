@@ -31,23 +31,31 @@ define([
     
     // story browser support
     
+    // TODO: Probably should make this a class
+    
     function filterPaneQuestionChoiceChanged(filterPane, newValue) {
         // console.log("event", newValue);
         var question = null;
-        for (var index = 0; index < filterPane.questions.length; index++) {
-            var questionToCheck = filterPane.questions[index];
+        
+        var questions = filterPane.storyBrowserInstance.questions;
+        for (var index = 0; index < questions.length; index++) {
+            var questionToCheck = questions[index];
             if (questionToCheck.id === newValue) {
                 question = questionToCheck;
                 break;
             }
         }
+        
         if (!question) {
             if (newValue) console.log("could not find question for id", newValue);
             widgetSupport.setOptionsInMultiSelect(filterPane.answersMultiSelect, []);
             return;
         }
+        
         //console.log("question", question);
-        var options = optionsFromQuestion(question, filterPane.stories);
+        
+        var stories = filterPane.storyBrowserInstance.dataStore.data;
+        var options = optionsFromQuestion(question, stories);
         widgetSupport.setOptionsInMultiSelect(filterPane.answersMultiSelect, options);
     }
     
@@ -188,7 +196,12 @@ define([
         var answersMultiSelect = widgetSupport.newMultiSelect([]);
         contentPane.addChild(answersMultiSelect);
         
-        var filterPane2 = {"contentPane": contentPane, "questionSelect": questionSelect, "answersMultiSelect": answersMultiSelect, "questions": questions, "stories": stories};
+        var filterPane2 = {
+            contentPane: contentPane,
+            questionSelect: questionSelect,
+            answersMultiSelect: answersMultiSelect,
+            storyBrowserInstance: storyBrowserInstance
+        };
 
         for (var key in filterPane2) filterPane[key] = filterPane2[key];
         
@@ -197,9 +210,21 @@ define([
         
         return filterPane;
     }
-
-    function questionsChanged(storyBrowser, questions) {
-        // TODO: Should respond to the rest of the application changing the questions
+    
+    function currentQuestionnaireChanged(storyBrowserInstance, currentQuestionnaire) {
+        // Update filters
+        var questions = collectQuestionsForCurrentQuestionnaire();
+        storyBrowserInstance.questions = questions;
+        
+        var choices = widgetSupport.optionsForAllQuestions(questions);
+        widgetSupport.updateSelectChoices(storyBrowserInstance.filter1.questionSelect, choices);
+        widgetSupport.updateSelectChoices(storyBrowserInstance.filter2.questionSelect, choices);
+        
+        // TODO: What to do about current selection in these widgets?
+        
+        // Update item panel in grid
+        var itemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
+        storyBrowserInstance.storyList.changeItemPanelSpecification(itemPanelSpecification);
     }
     
     function isMatch(story, questionChoice, selectedAnswerChoices) {
@@ -221,21 +246,26 @@ define([
         return selectedAnswerChoices.indexOf(questionAnswer) !== -1;
     }
     
-    function loadLatestStoriesFromServerCallback(storyBrowserInstance, newEnvelopeCount, allStories) {
+    function loadLatestStoriesFromServerChanged(storyBrowserInstance, newEnvelopeCount, allStories) {
         if (!newEnvelopeCount) return;
-        // console.log("loadLatestStoriesFromServerCallback", storyBrowserInstance, allStories);
+        // console.log("loadLatestStoriesFromServerChanged", storyBrowserInstance, allStories);
         storyBrowserInstance.dataStore.setData(allStories);
+        
+        // Need to update choices in filters or clear them out
+        filterPaneQuestionChoiceChanged(storyBrowserInstance.filter1, storyBrowserInstance.filter1.questionSelect.get("value"));
+        filterPaneQuestionChoiceChanged(storyBrowserInstance.filter2, storyBrowserInstance.filter2.questionSelect.get("value"));
+        
         setStoryListForCurrentFilters(storyBrowserInstance);
     }
     
-    // TODO: Fix so the filters get updated as the story questions get changed
-    function insertStoryBrowser(panelBuilder, pagePane, model, id) {
-        console.log("insertStoryBrowser start", id);
-        
+    function collectQuestionsForCurrentQuestionnaire() {
         // TODO: Handle the fact that currentQuestionnaire may be null if this is the first page loaded, and also may update as topic
         // TODO: Fix this show also handles participant questions somehow
         var questionnaire = domain.currentQuestionnaire;
         console.log("questionnaire", questionnaire);
+        
+        if (!questionnaire) return [];
+        
         var storyQuestions = questionnaire.storyQuestions;
         
         // TODO: What about idea of having IDs that go with eliciting questions so store reference to ID not text prompt?
@@ -255,27 +285,33 @@ define([
                
         var questions = [].concat(leadingStoryQuestions, storyQuestions);
         questions.push({id: "__survey_" + "participantData", displayName: "Participant Data", displayPrompt: "---- participant data below ----", displayType: "header", dataOptions:[]});
+
+        // Participant data has elsewhere been copied into story, so these questions can access it directly
+        questions = questions.concat(questionnaire.participantQuestions);
         
+        return questions;
+    }
+    
+    function makeItemPanelSpecificationForQuestions(questions) {
         // TODO: add more participant and survey info, like timestamps and participant ID
         
         var itemPanelSpecification = {
              id: "storyBrowserQuestions",
              panelFields: questions,
-             buildPanel: function (panelBuilder, contentPane, model) {
-                 panelBuilder.buildFields(questions, contentPane, model);
-                 // TODO: Load correct participant data
-                 
-                 var participantID = model.get("_participantID");
-                 var participantData = surveyCollection.getParticipantDataForParticipantID(participantID);
-                 // console.log("--------------------------- build item panel participantID", participantID, model, participantData);
-                 // console.log("questionnaire", questionnaire.participantQuestions, questionnaire);
-                 var participantDataModel = new Stateful(participantData);
-                 panelBuilder.buildFields(questionnaire.participantQuestions, contentPane, participantDataModel);
-             }
         };
-
+        
+        return itemPanelSpecification;
+    }
+    
+    // TODO: Fix so the filters get updated as the story questions get changed
+    function insertStoryBrowser(panelBuilder, pagePane, model, id) {
+        console.log("insertStoryBrowser start", id);
+        
+        var questions = collectQuestionsForCurrentQuestionnaire();
+        var itemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
+        
         var stories = domain.allStories;
-
+        
         // Store will modify underlying array
         var dataStore = new Memory({
             data: stories,
@@ -301,7 +337,7 @@ define([
             filter1: null,
             filter2: null,
             storyList: null,
-            subscription: null
+            questions: questions
         };
         
         storyBrowserInstance.filter1 = createFilterPane(storyBrowserInstance, id + "_1", questions, stories, table);
@@ -319,13 +355,18 @@ define([
         // console.log("insertStoryBrowser middle 3", id);
         
         // Only allow view button for stories
-        var configuration = {viewButton: true, includeAllFields: true};
+        var configuration = {viewButton: true, includeAllFields: false};
         storyBrowserInstance.storyList = new GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration);
         
-        storyBrowserInstance.subscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerCallback, storyBrowserInstance));
+        var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerChanged, storyBrowserInstance));
         
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
-        table.own(storyBrowserInstance.subscription);
+        table.own(loadLatestStoriesFromServerSubscription);
+        
+        var currentQuestionnaireSubscription = topic.subscribe("currentQuestionnaire", lang.partial(currentQuestionnaireChanged, storyBrowserInstance));
+        
+        // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
+        table.own(currentQuestionnaireSubscription);
         
         // console.log("filterButton", filterButton);
         
