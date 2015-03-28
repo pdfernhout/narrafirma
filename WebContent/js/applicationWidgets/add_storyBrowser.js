@@ -170,24 +170,22 @@ define([
     }
     
     function createFilterPane(storyBrowserInstance, id, questions, stories, containerPane) {
-        var contentPane = new ContentPane({
-            id: id + "_content",
-            style: "width: 95%;"
-            // doLayout: false
-        });
+        var contentPane = new ContentPane();
         
         containerPane.addChild(contentPane);
   
         var filterPane = {};
             
         // TODO: Translate
-        contentPane.containerNode.appendChild(domConstruct.toDom('Filter by:'));
+        contentPane.containerNode.appendChild(domConstruct.toDom('Filter by: '));
+        
+        var questionSelect = widgetSupport.newSelect(contentPane, widgetSupport.optionsForAllQuestions(questions));
+        // questionSelect.set("style", "width: 98%; max-width: 98%");
+        // questionSelect.set("style", "min-width: 50%");
         
         // TODO: Translate
-        var clearButton = widgetSupport.newButton(contentPane, "Clear filter", lang.partial(clearFilterPane, storyBrowserInstance, filterPane));
-
-        var questionSelect = widgetSupport.newSelect(contentPane, widgetSupport.optionsForAllQuestions(questions));
-        questionSelect.set("style", "width: 98%; max-width: 98%");
+        var clearButton = widgetSupport.newButton(contentPane, "Clear", lang.partial(clearFilterPane, storyBrowserInstance, filterPane));
+        // domStyle.set(clearButton.domNode, "float", "right");
         
         contentPane.containerNode.appendChild(domConstruct.toDom('<br>'));
         
@@ -282,11 +280,9 @@ define([
         // console.log("insertStoryBrowser middle 1", id);
         
         var table = new TableContainer({
-            id: id + "_table",
             cols: 2,
             showLabels: false,
             customClass: "storyFilterTable",
-            style: "width: 98%;",
             spacing: 10
         });
         
