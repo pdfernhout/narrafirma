@@ -81,7 +81,6 @@ Backup
 
 LOAD/SAVE
 Have revert button to go back to previous version or clear out changes in progress on a page
-Handle questionnaire update after it is loaded in story browser
 Handle questionnaire update after it is loaded in story themer
 Handle questionnaire update after it is loaded in graph
 Put in place dojox.widget.Standby when saving
@@ -205,6 +204,9 @@ Validation in general when progress through tabs and error reporting
 Validation of text fields for empty
 Validation of text fields for length
 Validation for checkBoxes limited by maximum number of choices as validation error
+
+OTHER
+Read-only support for panels
 
 UNSURE
 Way to retrieve data about project participant groups [Is this still relevant? Probably yes, if we did "checkboxes with pull" for picking what groups an activity applies to instead of text entry]
@@ -602,3 +604,4 @@ DONE No short name for type: clusterSpace field: clusterInterpretations_clusterS
 NOT DOING Implement showHideCollectedStories in domain buttonClicked [Not sure what this means now or if still relevant; think it is obsolete task]
 NOT DOING Disabled or hidden tabs which are enabled as progress
 NOT DOING Resize Tab container when add Graph [obsolete task as no longer have tabbed notebook GUI]
+DONE Handle questionnaire update after it is loaded in story browser
