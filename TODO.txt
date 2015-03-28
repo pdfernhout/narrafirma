@@ -81,7 +81,6 @@ Backup
 
 LOAD/SAVE
 Have revert button to go back to previous version or clear out changes in progress on a page
-Handle questionnaire update after it is loaded in story themer
 Handle questionnaire update after it is loaded in graph
 Put in place dojox.widget.Standby when saving
 Improve save/load feedback [same as above at this point]
@@ -605,3 +604,4 @@ NOT DOING Implement showHideCollectedStories in domain buttonClicked [Not sure w
 NOT DOING Disabled or hidden tabs which are enabled as progress
 NOT DOING Resize Tab container when add Graph [obsolete task as no longer have tabbed notebook GUI]
 DONE Handle questionnaire update after it is loaded in story browser
+DONE Handle questionnaire update after it is loaded in story themer
