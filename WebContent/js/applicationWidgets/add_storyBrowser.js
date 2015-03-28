@@ -53,6 +53,7 @@ define([
         var stories = filterPane.storyBrowserInstance.dataStore.data;
         var options = optionsFromQuestion(question, stories);
         widgetSupport.setOptionsInMultiSelect(filterPane.answersMultiSelect, options);
+        setStoryListForCurrentFilters(filterPane.storyBrowserInstance);
     }
     
     // TODO: Translate
@@ -70,7 +71,8 @@ define([
         array.forEach(stories, function(item) {
             // console.log("optionsFromQuestion item", item, question.id, item[question.id]);
             var choice = item[question.id];
-            if (!choice) {
+            if (choice === undefined || choice === null || choice === "") {
+                // Do not include "0" as unanswered
                 // console.log("&&&& Undefined or empty choice", choice);
                 choice = unansweredIndicator;
             }
