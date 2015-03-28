@@ -1,7 +1,6 @@
 ==== NarraFirma TODO list:
 
 PRIORITY
-- versions for each page
 - multiple projects
 - WordPress plugin data save and load
 - catalysis (at least one step like graph or themer)
@@ -80,13 +79,16 @@ Add way to clear out or reset old survey results? Or maybe partition them by sur
 Backup
 
 LOAD/SAVE
-Have revert button to go back to previous version or clear out changes in progress on a page
+Have revert button to go back to previous version for each page or clear out changes in progress on a page
 Handle questionnaire update after it is loaded in graph
 Put in place dojox.widget.Standby when saving
 Improve save/load feedback [same as above at this point]
 Think through how project is loaded and saved, especially what happens if multiple windows or users edit the same project
 Autosave, perhaps based on time or based on changing pages
 Improve feedback when there are no project versions or survey results; maybe distinguish between an error and nothing being saved yet
+Resolve issue with hardcoded project ID
+Resolve issue with hardcoded survey ID
+Resolve issue with hardcoded questionnaire ID
 
 LOGGING
 Think through logging in the server, perhaps using a library
