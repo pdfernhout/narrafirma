@@ -169,6 +169,12 @@ form {
     overflow: auto;
 }
 
+.storyFilterTable-valueCell {
+    width: 50%;
+    max-width: 50%;
+    min-width: 50%;
+}
+
 /* for the recommendationsTable */
 .wwsRecommendationsTable-labelCell {
 
