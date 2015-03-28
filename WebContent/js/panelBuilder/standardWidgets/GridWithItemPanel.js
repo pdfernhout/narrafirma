@@ -46,8 +46,14 @@ define([
     function GridWithItemPanel(panelBuilder, pagePane, id, originalDataStore, itemPanelSpecification, configuration) {
         var self = this;
         
+        console.log("=========== creating GridWithItemPanel with itemPanelSpecification", itemPanelSpecification);
         console.log("constructing GridWithItemPanel", id, originalDataStore);
         
+        if (!itemPanelSpecification) {
+            console.log("Trouble: no itemPanelSpecification", id, pagePane);
+        }
+        
+        this.configuration = configuration;
         this.panelBuilder = panelBuilder;
 
         // A count of how many items are currently selected
@@ -78,51 +84,7 @@ define([
 
         // TODO: Need to set better info for fields and meanings to display and index on
         
-        var columns = [];
-        
-        if (!itemPanelSpecification) {
-            console.log("Trouble: no itemPanelSpecification", id, pagePane);
-        }
-        
-        console.log("=========== creating GridWithItemPanel with itemPanelSpecification", itemPanelSpecification);
-        
-        var maxColumnCount = 5;
-        var columnCount = 0;
-        
-        var displayTypesToDisplay = {
-           text: true,
-           textarea: true,
-           select: true,
-           radiobuttons: true
-        };
-        
-        array.forEach(itemPanelSpecification.panelFields, function (question) {
-            var includeField = false;
-            if (configuration.includeAllFields) {
-                // TODO: improve this
-                if (configuration.includeAllFields === true) {
-                    if (question.displayType !== "label" && question.displayType !== "header") includeField = true;
-                } else if (configuration.includeAllFields !== false) {
-                    // Assume it is an array of field IDs to include
-                    includeField = array.indexOf(configuration.includeAllFields, question.id) !== -1;
-                }
-            } else {
-                if (columnCount < maxColumnCount) {
-                    if (displayTypesToDisplay[question.displayType]) includeField = true;
-                    columnCount++;
-                }
-            }
-            // console.log("includeField", includeField, question.id);
-            if (includeField) {
-                var newColumn =  {
-                    field: question.id,
-                    label: translate(question.id + "::shortName", question.displayName),
-                    formatter: lang.hitch(self, self.formatObjectsIfNeeded),
-                    sortable: !configuration.moveUpDownButtons
-                };
-                columns.push(newColumn);
-            }
-        });
+        var columns = this.computeColumnsForItemPanelSpecification(configuration, itemPanelSpecification);
         
         // console.log("making grid");
         this.grid = new(declare([OnDemandGrid, DijitRegistry, Keyboard, Selection, ColumnResizer]))({
@@ -239,6 +201,61 @@ define([
         // Requires the rest of this to be setup, especially this.buttons and this.selectedCount
         this.updateGridButtonsForSelectionAndForm();
     }
+    
+    GridWithItemPanel.prototype.computeColumnsForItemPanelSpecification = function() {
+        var self = this;
+        
+        var columns = [];
+        
+        var maxColumnCount = 5;
+        var columnCount = 0;
+        
+        var displayTypesToDisplay = {
+           text: true,
+           textarea: true,
+           select: true,
+           radiobuttons: true
+        };
+        
+        var configuration = this.configuration;
+        
+        array.forEach(this.itemPanelSpecification.panelFields, function (question) {
+            var includeField = false;
+            if (configuration.includeAllFields) {
+                // TODO: improve this
+                if (configuration.includeAllFields === true) {
+                    if (question.displayType !== "label" && question.displayType !== "header") includeField = true;
+                } else if (configuration.includeAllFields !== false) {
+                    // Assume it is an array of field IDs to include
+                    includeField = array.indexOf(configuration.includeAllFields, question.id) !== -1;
+                }
+            } else {
+                if (columnCount < maxColumnCount) {
+                    if (displayTypesToDisplay[question.displayType]) includeField = true;
+                    columnCount++;
+                }
+            }
+            // console.log("includeField", includeField, question.id);
+            if (includeField) {
+                var newColumn =  {
+                    field: question.id,
+                    label: translate(question.id + "::shortName", question.displayName),
+                    formatter: lang.hitch(self, self.formatObjectsIfNeeded),
+                    sortable: !configuration.moveUpDownButtons
+                };
+                columns.push(newColumn);
+            }
+        });
+        
+        return columns;
+    };
+    
+    GridWithItemPanel.prototype.changeItemPanelSpecification = function(itemPanelSpecification) {
+        // TODO: Maybe should close any currently open panel?
+        this.itemPanelSpecification = itemPanelSpecification;
+        var columns = this.computeColumnsForItemPanelSpecification();
+        this.grid.set("columns", columns);
+    };
     
     GridWithItemPanel.prototype.hideAndDestroyForm = function() {
         // The next line is needed to get rid of duplicate IDs for next time the form is opened:
