@@ -36,6 +36,22 @@ define([
                            surveyResult.id = newEnvelopeReference;
                        }
                        domain.allCompletedSurveys.push(surveyResult);
+                       
+                       // Now add stories in survey to allStories, with extra participant information
+                       var stories = surveyResult.stories;
+                       for (var storyIndex in stories) {
+                           var story = stories[storyIndex];
+                           // console.log("=== story", story);
+                           
+                           // Add participant info for story
+                           var participantData = surveyResult.participantData;
+                           for (var key in participantData) {
+                               if (key !== "__type") {
+                                   story[key] = participantData[key];
+                               }
+                           }
+                           domain.allStories.push(story);
+                       }
                    } else {
                        console.log("ERROR: Missing surveyResult in newEnvelope", newEnvelope);
                    }
@@ -50,20 +66,6 @@ define([
                return;
            } else {
                console.log("loadLatestStoriesFromServer: There were " + newEnvelopeCount + " new survey result(s) found.");
-           }
-           
-           // TODO: Only for debugging; need to think through the separating of stories and general survey data
-           // Preserve existing array -- just replace its contents
-           while (domain.allStories.length > 0) {
-               domain.allStories.pop();
-           }
-           for (var responseIndex in domain.allCompletedSurveys) {
-               var response = domain.allCompletedSurveys[responseIndex];
-               for (var storyIndex in response.stories) {
-                   var story = response.stories[storyIndex];
-                   // console.log("=== story", story);
-                   domain.allStories.push(story);
-               }
            }
            
            console.log("===== All stories", domain.allStories);
@@ -136,8 +138,8 @@ define([
                // Don't alert, because it is possible nothing has been saved
                console.log("Problem loading latest questionnaire version", error);
            } else {
-               topic.publish("currentQuestionnaire", domain.questionnaireStatus);
                domain.currentQuestionnaire = questionnaire;
+               topic.publish("currentQuestionnaire", domain.currentQuestionnaire);
            }
        });
    }
