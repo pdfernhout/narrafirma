@@ -87,7 +87,7 @@ define([
         for (var i = 0; i < bucketCount; i++) {
             var bucketLow = i * bucketSize;
             var bucketHigh = i * bucketSize + bucketSize;
-            if (!placed && ((value < bucketHigh) || (i === bucketCount - 1))) {
+            if (!placed && ((value < bucketHigh) || (value && i === bucketCount - 1))) {
                 sliderText += "<b>|</b>";
                 placed = true;
             } else {
@@ -103,7 +103,7 @@ define([
             var option = fieldSpecification.dataOptions[i];
             // console.log("checkboxes", option, fieldSpecification, value);
             if (result) result += ", ";
-            if (value[option]) {
+            if (value && value[option]) {
                 result += '<span class="narrafirma-themer-checkboxes-selected">' + option + '</span>';
             } else {
                 result += '<span class="narrafirma-themer-checkboxes-unselected">' + option + '</span>';
@@ -127,7 +127,7 @@ define([
     }
     
     function displayHTMLForField(model, fieldSpecification, nobreak) {
-        if (!model.get(fieldSpecification.id)) return "";
+        // if (!model.get(fieldSpecification.id)) return "";
         var value = model.get(fieldSpecification.id);
         // TODO: extra checking here for problems with test data -- could probably be changed back to just displayName eventually
         var fieldName = fieldSpecification.displayName || fieldSpecification.displayPrompt;
