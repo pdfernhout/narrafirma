@@ -72,7 +72,14 @@ define([
         storyThemesStore.add(existingTheme);
     }
     
-    function displayHTMLForSlider(fieldName, value, lowLabel, highLabel) {
+    function displayHTMLForSlider(fieldName, value, fieldSpecification) {
+        if (fieldSpecification.displayConfiguration.length !== 2) {
+            console.log("missing displayConfiguration for slider", fieldSpecification);
+            return "ERROR: Problem displaying slider " + fieldSpecification.id;
+        }
+        // Assumes values go from 0 to 100; places 100.0 in last bucket
+        var lowLabel = fieldSpecification.displayConfiguration[0];
+        var highLabel = fieldSpecification.displayConfiguration[1];
         var sliderText = "";
         var bucketCount = 20;
         var bucketSize = 100.0 / bucketCount;
@@ -87,7 +94,7 @@ define([
                 sliderText += "-";
             }
         }
-        return fieldName + ': <span class="narrafirma-themer-slider-label">' + lowLabel + '</span> ' + sliderText + ' <span class="narrafirma-themer-slider-label">' + highLabel + '</span>'; 
+        return '<tr><td class="narrafirma-themer-slider-name">' + fieldName + '</td><td class="narrafirma-themer-slider-label-left">' + lowLabel + '</td><td class="narrafirma-themer-slider-contents">' + sliderText + '</td><td class="narrafirma-themer-slider-label-right">' + highLabel + '</td></tr>\n'; 
     }
     
     function displayHTMLForCheckboxes(fieldName, value) {
@@ -113,19 +120,14 @@ define([
         return fieldName + ": " + result;
     }
     
-    function displayHTMLForField(model, fieldSpecification) {
+    function displayHTMLForField(model, fieldSpecification, nobreak) {
         if (!model.get(fieldSpecification.id)) return "";
         var value = model.get(fieldSpecification.id);
         // TODO: extra checking here for problems with test data -- could probably be changed back to just displayName eventually
         var fieldName = fieldSpecification.displayName || fieldSpecification.displayPrompt;
         var result = fieldName + ": " + value;
         if (fieldSpecification.displayType === "slider") {
-            if (fieldSpecification.displayConfiguration.length === 2) {
-                // Assumes values go from 0 to 100; places 100.0 in last bucket
-                var lowLabel = fieldSpecification.displayConfiguration[0];
-                var highLabel = fieldSpecification.displayConfiguration[1];
-                result =  displayHTMLForSlider(fieldName, value, lowLabel, highLabel);
-            }
+            result =  displayHTMLForSlider(fieldName, value, fieldSpecification);
         }
         if (fieldSpecification.displayType === "checkboxes") {
             result = displayHTMLForCheckboxes(fieldName, value);
@@ -133,7 +135,8 @@ define([
         if (fieldSpecification.displayType === "select") {
             result = displayHTMLForSelect(fieldName, value, fieldSpecification);
         }
-        return result + "<br><br>";  
+        if (nobreak) return result;
+        return result + "<br><br>\n";  
     }
     
     function buildThemerPanel(panelBuilder, contentPane, model) {    
@@ -144,21 +147,32 @@ define([
         
         var currentQuestionnaire = domain.currentQuestionnaire;
         
-        var storyQuestions = [];
-        if (currentQuestionnaire) storyQuestions = currentQuestionnaire.storyQuestions;
+        var questions = [];
+        if (currentQuestionnaire) questions = questions.concat(currentQuestionnaire.storyQuestions);
+        if (currentQuestionnaire) questions = questions.concat(currentQuestionnaire.participantQuestions);
         
-        for (var i = 0; i < storyQuestions.length; i++) {
-            var storyQuestion = storyQuestions[i];
-            otherFields += displayHTMLForField(model, storyQuestion);
+        var question;
+        var i;
+        
+        // Put sliders in a table at the start, so loop twice with different conditions
+        
+        for (i = 0; i < questions.length; i++) {
+            question = questions[i];
+            if (question.displayType !== "slider") continue;
+            console.log("making slider", question);
+            if (!otherFields) otherFields += "<table>\n";
+            otherFields += displayHTMLForField(model, question, "nobreak");
+        }
+        if (otherFields) otherFields += "\n</table>\n<br>\n";
+        
+        for (i = 0; i < questions.length; i++) {
+            question = questions[i];
+            if (question.displayType === "slider") continue;
+            console.log("making other than slider", question);
+            otherFields += displayHTMLForField(model, question);
         }
         
-        var participantQuestions = [];
-        if (currentQuestionnaire) participantQuestions = currentQuestionnaire.participantQuestions;
-        
-        for (i = 0; i < participantQuestions.length; i++) {
-            var participantQuestion = participantQuestions[i];
-            otherFields += displayHTMLForField(model, participantQuestion);
-        }
+        console.log("otherFields", otherFields);
         
         var storyPane = new ContentPane({
             content:

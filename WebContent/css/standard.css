@@ -58,17 +58,34 @@ form {
     margin-right: 0.5em; 
 }
 
+/* story themer */
+
 .narrafirma-themer-select-selected {
-  font-size: 150%;
-  font-weight: bold; 
+    font-size: 150%;
+    font-weight: bold; 
 }
 
 .narrafirma-themer-select-unselected {
     font-size: 75%;
 }
 
-.narrafirma-themer-slider-label {
+.narrafirma-themer-slider-name {
+    /* text-align: right; */
+    font-weight: bold;
+}
+
+.narrafirma-themer-slider-label-left {
     font-size: 75%;
+    text-align: right;
+}
+
+.narrafirma-themer-slider-label-right {
+    font-size: 75%;
+    text-align: left;
+}
+
+.narrafirma-themer-slider-contents {
+    padding: 1em;
 }
 
 /* See http://www.sitepen.com/blog/2012/05/03/css-styling-of-dgrid/ */
