@@ -72,12 +72,68 @@ define([
         storyThemesStore.add(existingTheme);
     }
     
-    function displayDataForField(model, fieldSpecification) {
+    function displayHTMLForSlider(fieldName, value, lowLabel, highLabel) {
+        var sliderText = "";
+        var bucketCount = 20;
+        var bucketSize = 100.0 / bucketCount;
+        var placed = false;
+        for (var i = 0; i < bucketCount; i++) {
+            var bucketLow = i * bucketSize;
+            var bucketHigh = i * bucketSize + bucketSize;
+            if (!placed && ((value < bucketHigh) || (i === bucketCount - 1))) {
+                sliderText += "<b>|</b>";
+                placed = true;
+            } else {
+                sliderText += "-";
+            }
+        }
+        return fieldName + ': <span class="narrafirma-themer-slider-label">' + lowLabel + '</span> ' + sliderText + ' <span class="narrafirma-themer-slider-label">' + highLabel + '</span>'; 
+    }
+    
+    function displayHTMLForCheckboxes(fieldName, value) {
+        var result = "";
+        for (var key in value) { 
+            if (result) result += ", ";
+            if (value[key]) result += key;
+        }
+        return fieldName + ": " + result;
+    }
+    
+    function displayHTMLForSelect(fieldName, value, fieldSpecification) {
+        var result = "";
+        for (var i = 0; i < fieldSpecification.dataOptions.length; i++) {
+            var option = fieldSpecification.dataOptions[i];
+            if (result) result += " ";
+            if (value === option) {
+                result += '<span class="narrafirma-themer-select-selected">' + option + '</span>';
+            } else {
+                result += '<span class="narrafirma-themer-select-unselected">' + option + '</span>';
+            }
+        }
+        return fieldName + ": " + result;
+    }
+    
+    function displayHTMLForField(model, fieldSpecification) {
         if (!model.get(fieldSpecification.id)) return "";
+        var value = model.get(fieldSpecification.id);
         // TODO: extra checking here for problems with test data -- could probably be changed back to just displayName eventually
         var fieldName = fieldSpecification.displayName || fieldSpecification.displayPrompt;
-        return fieldName + ": " + JSON.stringify(model.get(fieldSpecification.id)) + "<br>";
-        
+        var result = fieldName + ": " + value;
+        if (fieldSpecification.displayType === "slider") {
+            if (fieldSpecification.displayConfiguration.length === 2) {
+                // Assumes values go from 0 to 100; places 100.0 in last bucket
+                var lowLabel = fieldSpecification.displayConfiguration[0];
+                var highLabel = fieldSpecification.displayConfiguration[1];
+                result =  displayHTMLForSlider(fieldName, value, lowLabel, highLabel);
+            }
+        }
+        if (fieldSpecification.displayType === "checkboxes") {
+            result = displayHTMLForCheckboxes(fieldName, value);
+        }
+        if (fieldSpecification.displayType === "select") {
+            result = displayHTMLForSelect(fieldName, value, fieldSpecification);
+        }
+        return result + "<br><br>";  
     }
     
     function buildThemerPanel(panelBuilder, contentPane, model) {    
@@ -93,7 +149,7 @@ define([
         
         for (var i = 0; i < storyQuestions.length; i++) {
             var storyQuestion = storyQuestions[i];
-            otherFields += displayDataForField(model, storyQuestion);
+            otherFields += displayHTMLForField(model, storyQuestion);
         }
         
         var participantQuestions = [];
@@ -101,7 +157,7 @@ define([
         
         for (i = 0; i < participantQuestions.length; i++) {
             var participantQuestion = participantQuestions[i];
-            otherFields += displayDataForField(model, participantQuestion);
+            otherFields += displayHTMLForField(model, participantQuestion);
         }
         
         var storyPane = new ContentPane({
