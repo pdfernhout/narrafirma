@@ -14,6 +14,7 @@ define([
         return '<div class="narrafirma-questionAnswer">' + value + '</div>';
     }
     
+    /* TODO: This is only really needed for translation which is not fully worked out, but maybe OK enough without it?
     function calculate_questionAnswer(panelBuilder, model, referencedQuestionID) {
         // console.log("calculate_questionAnswer", panelBuilder, model, referencedQuestionID);
         var value = model.get(referencedQuestionID);
@@ -39,7 +40,7 @@ define([
             if (fieldSpecification.displayType === "select" ||  fieldSpecification.displayType === "checkboxes" || fieldSpecification.displayType === "radiobuttons") {
                 // TODO: This may not translate correctly for checkboxes; may need to be translated individually
                 // console.log("trying to translate select", value);
-                // TODO: Possible big issue here with incorrect translation if values have spaces in them
+                // TODO: Possible issue here with incorrect translation if values leading "#" and then have a pipe bar in them
                 value = translate(value, value);
             }
         } else {
@@ -49,6 +50,7 @@ define([
         // console.log("calculate_questionAnswer value", value);
         return div_for_value(value);
     }
+    */
 
     // TODO: This will not work when questions are on other pages with newer system
     function add_questionAnswer(panelBuilder, contentPane, model, fieldSpecification) {
@@ -56,9 +58,9 @@ define([
         var referencedQuestionID = fieldSpecification.displayConfiguration;
         if (!referencedQuestionID) throw new Error("missing referencedQuestionID for field: " + fieldSpecification.id + " all: " + JSON.stringify(fieldSpecification));
 
-        var calculate = lang.partial(calculate_questionAnswer, panelBuilder, model, referencedQuestionID);
+        // var calculate = lang.partial(calculate_questionAnswer, panelBuilder, model, referencedQuestionID);
         
-        var label = panelBuilder._add_calculatedText(panelBuilder, contentPane, fieldSpecification, calculate);
+        var label = panelBuilder._add_calculatedText(panelBuilder, contentPane, fieldSpecification, function() {return div_for_value(null);});
         
         // TODO: Recalculating next two variables wheres they are also calculated in _add_calculatedText
         var baseText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
