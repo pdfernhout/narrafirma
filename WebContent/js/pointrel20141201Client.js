@@ -353,8 +353,9 @@ define([
         
         if (serverQueryType === null) {
             var errorMessage = "Unsupported query type in call to queryByTriple";
-            console.log(errorMessage);
-            throw new Error(errorMessage);
+            var error = new Error(errorMessage);
+            console.log(errorMessage, arguments, error);
+            throw error;
             // callback("Unsupported query type", null);
         }
         
@@ -416,7 +417,7 @@ define([
             var indexEntries = queryResult.indexEntries;
             
             var promises = [];
-            for (var index = 0; index <= indexEntries.length; index++) {
+            for (var index = 0; index < indexEntries.length; index++) {
                 var indexEntry = indexEntries[index];
                 if (!referenceToEnvelopeMap[indexEntry.sha256AndLength]) {
                     if (!indexEntry.sha256AndLength) {
