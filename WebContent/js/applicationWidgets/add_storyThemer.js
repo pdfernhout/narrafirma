@@ -72,6 +72,14 @@ define([
         storyThemesStore.add(existingTheme);
     }
     
+    function displayDataForField(model, fieldSpecification) {
+        if (!model.get(fieldSpecification.id)) return "";
+        // TODO: extra checking here for problems with test data -- could probably be changed back to just displayName eventually
+        var fieldName = fieldSpecification.displayName || fieldSpecification.displayPrompt;
+        return fieldName + ": " + JSON.stringify(model.get(fieldSpecification.id)) + "<br>";
+        
+    }
+    
     function buildThemerPanel(panelBuilder, contentPane, model) {    
         // Encode all user-supplied text to ensure it does not create HTML issues
         var storyName = entities.encode(model.get("__survey_storyName"));
@@ -85,9 +93,7 @@ define([
         
         for (var i = 0; i < storyQuestions.length; i++) {
             var storyQuestion = storyQuestions[i];
-            // otherFields[storyQuestion.shortName] = model.get(storyQuestion.id);
-            if (!model.get(storyQuestion.id)) continue;
-            otherFields += storyQuestion.shortName + ": " + JSON.stringify(model.get(storyQuestion.id)) + "<br>";
+            otherFields += displayDataForField(model, storyQuestion);
         }
         
         var participantQuestions = [];
@@ -95,7 +101,7 @@ define([
         
         for (i = 0; i < participantQuestions.length; i++) {
             var participantQuestion = participantQuestions[i];
-            otherFields += participantQuestion.shortName + ": " + JSON.stringify(model.get(participantQuestion.id)) + "<br>";
+            otherFields += displayDataForField(model, participantQuestion);
         }
         
         var storyPane = new ContentPane({
