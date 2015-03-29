@@ -60,12 +60,12 @@ form {
 
 /* story themer */
 
-.narrafirma-themer-select-selected {
+.narrafirma-themer-select-selected, .narrafirma-themer-checkboxes-selected {
     font-size: 150%;
     font-weight: bold; 
 }
 
-.narrafirma-themer-select-unselected {
+.narrafirma-themer-select-unselected, .narrafirma-themer-checkboxes-unselected {
     font-size: 75%;
 }
 

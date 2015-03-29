@@ -72,7 +72,7 @@ define([
         storyThemesStore.add(existingTheme);
     }
     
-    function displayHTMLForSlider(fieldName, value, fieldSpecification) {
+    function displayHTMLForSlider(fieldSpecification, fieldName, value) {
         if (fieldSpecification.displayConfiguration.length !== 2) {
             console.log("missing displayConfiguration for slider", fieldSpecification);
             return "ERROR: Problem displaying slider " + fieldSpecification.id;
@@ -97,20 +97,26 @@ define([
         return '<tr><td class="narrafirma-themer-slider-name">' + fieldName + '</td><td class="narrafirma-themer-slider-label-left">' + lowLabel + '</td><td class="narrafirma-themer-slider-contents">' + sliderText + '</td><td class="narrafirma-themer-slider-label-right">' + highLabel + '</td></tr>\n'; 
     }
     
-    function displayHTMLForCheckboxes(fieldName, value) {
+    function displayHTMLForCheckboxes(fieldSpecification, fieldName, value) {
         var result = "";
-        for (var key in value) { 
+        for (var i = 0; i < fieldSpecification.dataOptions.length; i++) {
+            var option = fieldSpecification.dataOptions[i];
+            // console.log("checkboxes", option, fieldSpecification, value);
             if (result) result += ", ";
-            if (value[key]) result += key;
+            if (value[option]) {
+                result += '<span class="narrafirma-themer-checkboxes-selected">' + option + '</span>';
+            } else {
+                result += '<span class="narrafirma-themer-checkboxes-unselected">' + option + '</span>';
+            }
         }
         return fieldName + ": " + result;
     }
     
-    function displayHTMLForSelect(fieldName, value, fieldSpecification) {
+    function displayHTMLForSelect(fieldSpecification, fieldName, value) {
         var result = "";
         for (var i = 0; i < fieldSpecification.dataOptions.length; i++) {
             var option = fieldSpecification.dataOptions[i];
-            if (result) result += " ";
+            if (result) result += ", ";
             if (value === option) {
                 result += '<span class="narrafirma-themer-select-selected">' + option + '</span>';
             } else {
@@ -127,13 +133,13 @@ define([
         var fieldName = fieldSpecification.displayName || fieldSpecification.displayPrompt;
         var result = fieldName + ": " + value;
         if (fieldSpecification.displayType === "slider") {
-            result =  displayHTMLForSlider(fieldName, value, fieldSpecification);
+            result =  displayHTMLForSlider(fieldSpecification, fieldName, value);
         }
         if (fieldSpecification.displayType === "checkboxes") {
-            result = displayHTMLForCheckboxes(fieldName, value);
+            result = displayHTMLForCheckboxes(fieldSpecification, fieldName, value);
         }
         if (fieldSpecification.displayType === "select") {
-            result = displayHTMLForSelect(fieldName, value, fieldSpecification);
+            result = displayHTMLForSelect(fieldSpecification, fieldName, value);
         }
         if (nobreak) return result;
         return result + "<br><br>\n";  
