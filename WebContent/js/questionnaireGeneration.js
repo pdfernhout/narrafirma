@@ -30,19 +30,26 @@ define([
    }
    
    var displayTypeToDataTypeMap = {
+       // Used in questionnaire and other parts of the application
+       boolean: 'boolean',
        label: "none",
-       image: "none",
-       textarea: 'string',
-       text: 'string',
-       grid: 'array',
        header: "none",
+       checkbox: 'boolean',
+       checkboxes: 'dictionary',
+       text: 'string',
+       textarea: 'string',
        select: "string",
+       radiobuttons: "string",
+       slider: "number",
+       
+       // Used only in other parts of the application
+       image: "none",
+       grid: 'array',
        clusteringDiagram: 'object',
        quizScoreResult: "none",
        button: "none",
        report: "none",
        recommendationTable: "none",
-       checkboxes: 'dictionary',
        templateList: "none",
        "function": "none",
        storyBrowser: 'none',
@@ -53,8 +60,7 @@ define([
        accumulatedItemsGrid: 'none',
        excerptsList: 'none',
        annotationsGrid: 'none',
-       storiesList: 'none',
-       boolean: 'boolean'
+       storiesList: 'none'
    };
    
    function convertEditorQuestions(editorQuestions) {
@@ -126,7 +132,7 @@ define([
    function requestValues(entity, attributes, callback) {
        var promises = {};
        
-       for (var index = 0; index <= attributes.length; index++) {
+       for (var index = 0; index < attributes.length; index++) {
            var attribute = attributes[index];
            promises[attribute] = fetchValuePromise(entity, attribute);
        }
