@@ -96,6 +96,11 @@ define([
     }
     
     function loadLatestValueForProjectField(fieldID, callbackWhenDone) {
+        if (!fieldID) {
+            var error = Error("loadLatestValueForProjectField: no field ID specified");
+            console.log("ERROR", error);
+            throw error;
+        }
         pointrel20141201Client.queryByTriple(domain.projectID, fieldID, null, "latest", function(error, result) {
             if (error) {
                 console.log("ERROR: " + error);
