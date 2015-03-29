@@ -91,30 +91,40 @@ define([
        console.log("ERROR getParticipantDataForParticipantID: participantID not found", participantID);
        return {};
    }
+   
+   function finalizeSurvey() {
+       questionnaireGeneration.generateQuestionnaire(function (questionnaire) {
+           var questionnaireID = domain.currentQuestionnaireID;
+           questionnaire.questionnaireID = questionnaireID;
+           
+           questionnaireGeneration.ensureAtLeastOneElicitingQuestion(questionnaire);
+           
+           domain.currentQuestionnaire = questionnaire;
+           
+           console.log("storyCollectionStart finalized questionnaire", questionnaire);
+           
+           storage.storeQuestionnaireVersion(questionnaireID, questionnaire, function(error) {
+               if (error) { return alert("Could not store questionnaire"); }
+               console.log("stored questionnaire", questionnaire);
+               alert("Stored questionnaire as:" + questionnaireID);
+           });
+       });
+   }
        
    function storyCollectionStart() {
-       alert("also finalizing survey for testing...");
+       console.log("storyCollectionStart");
        
-       var questionnaire = questionnaireGeneration.generateQuestionnaire();
        var questionnaireID = domain.currentQuestionnaireID;
-       
-       questionnaire.questionnaireID = questionnaireID;
-       
-       questionnaireGeneration.ensureAtLeastOneElicitingQuestion(questionnaire);
-       
-       domain.currentQuestionnaire = questionnaire;
-       
-       storage.storeQuestionnaireVersion(questionnaireID, questionnaire, function(error) {
-           if (error) { return alert("Could not store questionnaire"); }
-           alert("Store questionnaire as:" + questionnaireID);
-       });
-       
        var status = {questionnaireID: questionnaireID, active: true};
        storage.storeQuestionnaireStatus(questionnaireID, status, function(error) {
-           console.log("Activated questionnaire", questionnaireID);
-           domain.questionnaireStatus = {questionnaireID: questionnaireID, active: true};
+           console.log("Activated questionnaire", questionnaireID, status);
+           domain.questionnaireStatus = status;
            topic.publish("isStoryCollectingEnabled", domain.questionnaireStatus);
        });
+       
+       // TODO: Probably should have separate finalizing step
+       alert("also finalizing survey for testing...");
+       finalizeSurvey();
    }
    
    function storyCollectionStop() {
@@ -138,6 +148,7 @@ define([
                // Don't alert, because it is possible nothing has been saved
                console.log("Problem loading latest questionnaire version", error);
            } else {
+               console.log("loadCurrentQuestionnaire", questionnaire);
                domain.currentQuestionnaire = questionnaire;
                topic.publish("currentQuestionnaire", domain.currentQuestionnaire);
            }
@@ -151,10 +162,6 @@ define([
            domain.questionnaireStatus = status;
            topic.publish("isStoryCollectingEnabled", domain.questionnaireStatus);
        });
-   }
-   
-   function getQuestionnaireFromServer(questionnaireID, callback) {
-       storage.loadLatestQuestionnaireVersion(questionnaireID, callback);
    }
    
    function collectQuestionsForCurrentQuestionnaire() {
