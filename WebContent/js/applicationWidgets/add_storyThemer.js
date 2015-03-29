@@ -81,7 +81,7 @@ define([
         var lowLabel = fieldSpecification.displayConfiguration[0];
         var highLabel = fieldSpecification.displayConfiguration[1];
         var sliderText = "";
-        var bucketCount = 20;
+        var bucketCount = 40;
         var bucketSize = 100.0 / bucketCount;
         var placed = false;
         for (var i = 0; i < bucketCount; i++) {
