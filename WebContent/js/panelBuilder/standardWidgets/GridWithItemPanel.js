@@ -217,32 +217,42 @@ define([
         
         var configuration = this.configuration;
         
-        array.forEach(this.itemPanelSpecification.panelFields, function (question) {
-            var includeField = false;
-            if (configuration.includeAllFields) {
-                // TODO: improve this
-                if (configuration.includeAllFields === true) {
-                    if (question.displayType !== "label" && question.displayType !== "header") includeField = true;
-                } else if (configuration.includeAllFields !== false) {
-                    // Assume it is an array of field IDs to include
-                    includeField = array.indexOf(configuration.includeAllFields, question.id) !== -1;
+        var fieldsToInclude = [];
+        var panelFields = this.itemPanelSpecification.panelFields;
+        
+        // Put the columns in the order supplied if using includeAllFields, otherwise put them in order of panel specification
+        if (configuration.includeAllFields.constructor === Array) {
+            array.forEach(configuration.includeAllFields, function (fieldName) {
+                array.forEach(panelFields, function (fieldSpecification) {
+                    if (fieldSpecification.id === fieldName) fieldsToInclude.push(fieldSpecification);
+                });
+            });
+        } else {
+            array.forEach(panelFields, function (fieldSpecification) {
+                var includeField = false;
+                if (configuration.includeAllFields) {
+                    // TODO: improve this check if need to exclude other fields?
+                    if (fieldSpecification.displayType !== "label" && fieldSpecification.displayType !== "header") {
+                        fieldsToInclude.push(fieldSpecification);
+                    }
+                } else {
+                    if (columnCount < maxColumnCount) {
+                        if (displayTypesToDisplay[fieldSpecification.displayType]) fieldsToInclude.push(fieldSpecification);
+                        columnCount++;
+                    }
                 }
-            } else {
-                if (columnCount < maxColumnCount) {
-                    if (displayTypesToDisplay[question.displayType]) includeField = true;
-                    columnCount++;
-                }
-            }
-            // console.log("includeField", includeField, question.id);
-            if (includeField) {
-                var newColumn =  {
-                    field: question.id,
-                    label: translate(question.id + "::shortName", question.displayName),
-                    formatter: lang.hitch(self, self.formatObjectsIfNeeded),
-                    sortable: !configuration.moveUpDownButtons
-                };
-                columns.push(newColumn);
-            }
+            });
+        }
+        
+        array.forEach(fieldsToInclude, function (fieldSpecification) {
+            // console.log("includeField", includeField, fieldSpecification.id);
+            var newColumn =  {
+                field: fieldSpecification.id,
+                label: translate(fieldSpecification.id + "::shortName", fieldSpecification.displayName),
+                formatter: lang.hitch(self, self.formatObjectsIfNeeded),
+                sortable: !configuration.moveUpDownButtons
+            };
+            columns.push(newColumn);
         });
         
         return columns;
