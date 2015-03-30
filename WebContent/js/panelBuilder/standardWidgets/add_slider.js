@@ -52,6 +52,9 @@ define([
         
         slider.placeAt(panelDiv);
          
+        // TODO: Review these two uses of containerNode
+        // TODO: also, do the HorizontalRule and HorizontalRuleLabels need startup() to be called if not added to a content pane directly?
+        
         //if (!hasTextLabels) {}
         // Create the rules
         var rulesNode = domConstruct.create("div", {}, slider.containerNode);
