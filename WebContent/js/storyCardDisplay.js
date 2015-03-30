@@ -1,6 +1,10 @@
 define(["js/domain", "dojox/html/entities"], function(domain, entities) {
     "use strict";
     
+    function wrap(elementType, cssClass, text) {
+        return '<' + elementType + ' class="' + cssClass + '">' + text + '</' + elementType + '>';
+    }
+    
     function displayHTMLForSlider(fieldSpecification, fieldName, value) {
         if (fieldSpecification.displayConfiguration.length !== 2) {
             console.log("missing displayConfiguration for slider", fieldSpecification);
@@ -23,7 +27,12 @@ define(["js/domain", "dojox/html/entities"], function(domain, entities) {
                 sliderText += "-";
             }
         }
-        return '<tr><td class="narrafirma-themer-slider-name">' + fieldName + '</td><td class="narrafirma-themer-slider-label-left">' + lowLabel + '</td><td class="narrafirma-themer-slider-contents">' + sliderText + '</td><td class="narrafirma-themer-slider-label-right">' + highLabel + '</td></tr>\n'; 
+        return '<tr>' +
+            wrap("td", "narrafirma-story-card-slider-name", fieldName) +
+            wrap("td", "narrafirma-story-card-slider-label-left", lowLabel) +
+            wrap("td", "narrafirma-story-card-slider-contents", sliderText) +
+            wrap("td", "narrafirma-story-card-slider-label-right", highLabel) +
+            '</tr>\n'; 
     }
     
     function displayHTMLForCheckboxes(fieldSpecification, fieldName, value) {
@@ -34,9 +43,9 @@ define(["js/domain", "dojox/html/entities"], function(domain, entities) {
             // console.log("checkboxes", option, fieldSpecification, value);
             if (result) result += ", ";
             if (value && value[option]) {
-                result += '<span class="narrafirma-themer-checkboxes-selected">' + option + '</span>';
+                result += wrap("span", "narrafirma-story-card-checkboxes-selected", option);
             } else {
-                result += '<span class="narrafirma-themer-checkboxes-unselected">' + option + '</span>';
+                result += wrap("span", "narrafirma-story-card-checkboxes-unselected", option);
             }
         }
         return fieldName + ": " + result;
@@ -49,9 +58,9 @@ define(["js/domain", "dojox/html/entities"], function(domain, entities) {
             var option = fieldSpecification.dataOptions[i];
             if (result) result += ", ";
             if (value === option) {
-                result += '<span class="narrafirma-themer-select-selected">' + option + '</span>';
+                result += wrap("span", "narrafirma-story-card-select-selected", option);
             } else {
-                result += '<span class="narrafirma-themer-select-unselected">' + option + '</span>';
+                result += wrap("span", "narrafirma-story-card-select-unselected", option);
             }
         }
         return fieldName + ": " + result;
@@ -77,10 +86,11 @@ define(["js/domain", "dojox/html/entities"], function(domain, entities) {
         return result + "<br><br>\n";  
     }
     
-    function generateStoryCardContent(model) {
+    function generateStoryCardContent(storyModel, includeElicitingQuestion) {
         // Encode all user-supplied text to ensure it does not create HTML issues
-        var storyName = entities.encode(model.get("__survey_storyName"));
-        var storyText = entities.encode(model.get("__survey_storyText"));
+        var elicitingQuestion = entities.encode(storyModel.get("__survey_elicitingQuestion"));
+        var storyName = entities.encode(storyModel.get("__survey_storyName"));
+        var storyText = entities.encode(storyModel.get("__survey_storyText"));
         var otherFields = "";
         
         var currentQuestionnaire = domain.currentQuestionnaire;
@@ -99,7 +109,7 @@ define(["js/domain", "dojox/html/entities"], function(domain, entities) {
             if (question.displayType !== "slider") continue;
             console.log("making slider", question);
             if (!otherFields) otherFields += "<table>\n";
-            otherFields += displayHTMLForField(model, question, "nobreak");
+            otherFields += displayHTMLForField(storyModel, question, "nobreak");
         }
         if (otherFields) otherFields += "\n</table>\n<br>\n";
         
@@ -107,13 +117,22 @@ define(["js/domain", "dojox/html/entities"], function(domain, entities) {
             question = questions[i];
             if (question.displayType === "slider") continue;
             console.log("making other than slider", question);
-            otherFields += displayHTMLForField(model, question);
+            otherFields += displayHTMLForField(storyModel, question);
         }
         
         console.log("otherFields", otherFields);
         
-        var storyCardContent = "<b><h2>" + storyName + "</h2></b>" + otherFields + "<br><br>" + storyText;
+        var textForElicitingQuestion = "";
+        if (includeElicitingQuestion) {
+            textForElicitingQuestion = wrap("div", "narrafirma-story-card-eliciting-question", elicitingQuestion) + "<br>";
+        }
+        
+        var storyCardContent = wrap("div", "narrafirma-story-card-story-title", storyName) + "<br>" + otherFields + "<hr>" + textForElicitingQuestion + wrap("div", "narrafirma-story-card-story-text", storyText);
         
         return storyCardContent;
     }
+    
+    return {
+        generateStoryCardContent: generateStoryCardContent
+    };
 });

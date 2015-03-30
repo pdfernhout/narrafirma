@@ -58,33 +58,45 @@ form {
     margin-right: 0.5em; 
 }
 
-/* story themer */
+/* story card display */
 
-.narrafirma-themer-select-selected, .narrafirma-themer-checkboxes-selected {
+.narrafirma-story-card-story-title {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.narrafirma-story-card-story-text {
+}
+
+.narrafirma-story-card-eliciting-question {
+    font-size: 75%;
+}
+
+.narrafirma-story-card-select-selected, .narrafirma-story-card-checkboxes-selected {
     font-size: 150%;
     font-weight: bold; 
 }
 
-.narrafirma-themer-select-unselected, .narrafirma-themer-checkboxes-unselected {
+.narrafirma-story-card-select-unselected, .narrafirma-story-card-checkboxes-unselected {
     font-size: 75%;
 }
 
-.narrafirma-themer-slider-name {
+.narrafirma-story-card-slider-name {
     /* text-align: right; */
     font-weight: bold;
 }
 
-.narrafirma-themer-slider-label-left {
+.narrafirma-story-card-slider-label-left {
     font-size: 75%;
     text-align: right;
 }
 
-.narrafirma-themer-slider-label-right {
+.narrafirma-story-card-slider-label-right {
     font-size: 75%;
     text-align: left;
 }
 
-.narrafirma-themer-slider-contents {
+.narrafirma-story-card-slider-contents {
     padding: 1em;
 }
 

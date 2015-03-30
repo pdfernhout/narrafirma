@@ -3,6 +3,7 @@ define([
     "js/domain",
     "dojo/dom-construct",
     "dojo/_base/lang",
+    "js/storyCardDisplay",
     "js/surveyCollection",
     "dojo/topic",
     "js/panelBuilder/standardWidgets/GridWithItemPanel",
@@ -15,6 +16,7 @@ define([
     domain,
     domConstruct,
     lang,
+    storyCardDisplay,
     surveyCollection,
     topic,
     GridWithItemPanel,
@@ -254,12 +256,22 @@ define([
         setStoryListForCurrentFilters(storyBrowserInstance);
     }
     
+    function buildStoryDisplayPanel(panelBuilder, contentPane, model) {
+        var storyContent = storyCardDisplay.generateStoryCardContent(model, "includeElicitingQuestion");
+        
+        var storyPane = new ContentPane({
+            content: storyContent           
+        });
+        storyPane.placeAt(contentPane);
+    }
+    
     function makeItemPanelSpecificationForQuestions(questions) {
         // TODO: add more participant and survey info, like timestamps and participant ID
         
         var itemPanelSpecification = {
              id: "storyBrowserQuestions",
-             panelFields: questions
+             panelFields: questions,
+             buildPanel: buildStoryDisplayPanel
         };
         
         return itemPanelSpecification;
@@ -312,7 +324,7 @@ define([
         // console.log("insertStoryBrowser middle 3", id);
         
         // Only allow view button for stories
-        var configuration = {viewButton: true, includeAllFields: false};
+        var configuration = {viewButton: true, includeAllFields: ["__survey_storyName", "__survey_storyText"]};
         storyBrowserInstance.storyList = new GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration);
         
         var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerChanged, storyBrowserInstance));
