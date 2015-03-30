@@ -333,6 +333,9 @@ define([
             // Synchronizes the state of the domain for one status flag with what is on server
             surveyCollection.determineStatusOfCurrentQuestionnaire();
             
+            // Load all the latest stories
+            surveyCollection.loadLatestStoriesFromServer();
+            
             // The latest data for just the current page will be loaded when the page is created
             
             // turn off initial "please wait" display
