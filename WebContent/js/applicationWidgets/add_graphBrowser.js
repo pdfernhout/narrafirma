@@ -42,8 +42,8 @@ define([
     // TODO: Need to be able to associate related stories with everything on screen so can browse them when clicked
     
     var unansweredKey = "{Unanswered}";
-    var singleChartStyle = "width: 800px; height: 600px;";
-    var multipleChartStyle = "width: 200px; height: 150; float: left;";
+    var singleChartStyle = "width: 600px; height: 400px;";
+    var multipleChartStyle = "width: 250px; height: 250; float: left;";
     var chartEnclosureStyle = "width: 850px; height: 650px; margin: 5px auto 0px auto;";
         
     function correctForUnanswered(question, value) {
@@ -189,7 +189,7 @@ define([
         }
     }
     
-    function barChart(mainChartDiv, question) {
+    function barChart(graphBrowserInstance, question) {
          
         // collect data
         var plotItems = [];
@@ -232,11 +232,11 @@ define([
         
         console.log("plot items", plotItems);
 
-        var chartDiv = domConstruct.create("div", {style: singleChartStyle}, "chartDiv");
+        var chartPane = newChartPane(graphBrowserInstance, singleChartStyle);
         
         var chartTitle = "" + question.id;
         
-        var chart = new Chart(chartDiv, {
+        var chart = new Chart(chartPane.domNode, {
             title: chartTitle
         });
         console.log("Made chart");
@@ -258,8 +258,8 @@ define([
     }
     
     // choiceQuestion and option may be undefined if this is just a simple histogram for all values
-    function histogramChart(mainChartDiv, scaleQuestion, choiceQuestion, choice) {
-        // console.log("mainChartDiv, scaleQuestion", mainChartDiv, scaleQuestion);
+    function histogramChart(graphBrowserInstance, scaleQuestion, choiceQuestion, choice) {
+        // console.log("graphBrowserInstance, scaleQuestion", graphBrowserInstance, scaleQuestion);
         
         // TODO: Statistics
         
@@ -304,12 +304,12 @@ define([
         var style = singleChartStyle;
         if (choiceQuestion) style = multipleChartStyle;
 
-        var chartDiv = domConstruct.create("div", {style: style}, "chartDiv");
+        var chartPane = newChartPane(graphBrowserInstance, style);
         
         var chartTitle = "" + scaleQuestion.id;
         if (choiceQuestion) chartTitle = "" + choice;
         
-        var chart = new Chart(chartDiv, {
+        var chart = new Chart(chartPane.domNode, {
             title: chartTitle
         });
         console.log("Made chart");
@@ -330,7 +330,7 @@ define([
         chart.render(); 
     }
     
-    function multipleHistograms(mainChartDiv, choiceQuestion, scaleQuestion) {
+    function multipleHistograms(graphBrowserInstance, choiceQuestion, scaleQuestion) {
         var options = [];
         var index;
         if (choiceQuestion.displayType !== "checkbox" && choiceQuestion.displayType !== "checkboxes") {
@@ -346,24 +346,27 @@ define([
         }
         // TODO: Could push extra options based on actual data choices (in case question changed at some point)
         
+        // TODO: This may be wrong
+        var noStyle = {};
+        var chartPane = newChartPane(graphBrowserInstance, noStyle);
+        
         var title = "" + scaleQuestion.id + " vs. " + choiceQuestion.id + " ...";
         // var content = new ContentPane({content: title, style: "text-align: center;"});
-        var content = domConstruct.toDom('<span style="text-align: center;"><b>' + title + '</b></span>');
-        var chartDiv = dom.byId("chartDiv");
-        chartDiv.appendChild(content);
+        var content = domConstruct.toDom('<span style="text-align: center;"><b>' + title + '</b></span><br>');
         
-        domConstruct.create("br", {}, "chartDiv");
+        chartPane.domNode.appendChild(content);
         
         for (index in options) {
             var option = options[index];
-            histogramChart(mainChartDiv, scaleQuestion, choiceQuestion, option);
+            histogramChart(graphBrowserInstance, scaleQuestion, choiceQuestion, option);
         }
         
         // End the float
-        domConstruct.create("br", {style: "clear: left;"}, "chartDiv");
+        var clearFloat = domConstruct.create("br", {style: "clear: left;"});
+        chartPane.domNode.appendChild(clearFloat);
     }
     
-    function scatterPlot(mainChartDiv, xAxisQuestion, yAxisQuestion) {
+    function scatterPlot(graphBrowserInstance, xAxisQuestion, yAxisQuestion) {
         // collect data
         var plotItems = [];
         var stories = domain.allStories;
@@ -380,11 +383,11 @@ define([
         }
         // console.log("plot items", plotItems);
 
-        var chartDiv = domConstruct.create("div", {style: singleChartStyle}, "chartDiv");
+        var chartPane = newChartPane(graphBrowserInstance, singleChartStyle);
         
         var chartTitle = "" + xAxisQuestion.id + " vs. " + yAxisQuestion.id;
         
-        var chart = new Chart(chartDiv, {
+        var chart = new Chart(chartPane.domNode, {
             title: chartTitle
         });
         console.log("Made chart");
@@ -444,7 +447,7 @@ define([
         chart.render(); 
     }
     
-    function contingencyTable(mainChartDiv, xAxisQuestion, yAxisQuestion) {
+    function contingencyTable(graphBrowserInstance, xAxisQuestion, yAxisQuestion) {
         var columnLabels = {};
         var rowLabels = {};
         
@@ -517,7 +520,7 @@ define([
         }
         var rowCount = rowLabelsArray.length;
         
-        var chartDiv = domConstruct.create("div", {style: singleChartStyle}, "chartDiv");
+        var chartPane = newChartPane(graphBrowserInstance, singleChartStyle);
         
         var table = new TableContainer({
             cols: columnCount + 2,
@@ -525,8 +528,9 @@ define([
             customClass: "contingencyTable",
             style: "width: 98%;",
             spacing: 10
-        }, chartDiv);
+        });
         
+        chartPane.addChild(table);
         
         var content;
         var row;
@@ -568,25 +572,31 @@ define([
         table.addChild(content);
     }
     
-    
-    function updateGraph(graphResultsPane) {
-        console.log("updateGraph", graphResultsPane);
+    function newChartPane(graphBrowserInstance, style) {
+        var chartPane = new ContentPane({style: style});
+        graphBrowserInstance.chartPanes.push(chartPane);
+        graphBrowserInstance.graphResultsPane.addChild(chartPane);
         
-        var xAxisQuestionID = graphResultsPane.xAxisSelect.get("value");
-        var yAxisQuestionID = graphResultsPane.yAxisSelect.get("value");
+        return chartPane;
+    }
+    
+    function updateGraph(graphBrowserInstance) {
+        console.log("updateGraph", graphBrowserInstance);
+        
+        var xAxisQuestionID = graphBrowserInstance.xAxisSelect.get("value");
+        var yAxisQuestionID = graphBrowserInstance.yAxisSelect.get("value");
         
         // TODO: Translated or improve checking or provide alternate handling if only one selected
         if (!xAxisQuestionID && !yAxisQuestionID) return alert("Please select a question for one or both graph axes");
         
-        // Remove old graph(s) and create a place to put one
-        var widgets = dijit.findWidgets("chartDiv");
-        array.forEach(widgets, function(widget) {
-            widget.destroyRecursive(true);
-        });
-        var chartDiv = domConstruct.empty("chartDiv");
+        // Remove old graph(s)
+        while (graphBrowserInstance.chartPanes.length) {
+            var chartPane = graphBrowserInstance.chartPanes.pop();
+            chartPane.destroyRecursive(false);
+        }
         
-        var xAxisQuestion = questionForID(graphResultsPane.questions, xAxisQuestionID);
-        var yAxisQuestion = questionForID(graphResultsPane.questions, yAxisQuestionID);
+        var xAxisQuestion = questionForID(graphBrowserInstance.questions, xAxisQuestionID);
+        var yAxisQuestion = questionForID(graphBrowserInstance.questions, yAxisQuestionID);
         
         // Ensure xAxisQuestion is always defined
         if (!xAxisQuestion) {
@@ -613,23 +623,23 @@ define([
         
         if (xType === "choice" && yType === null) {
             console.log("plot choice: Bar graph");
-            console.log("barGraph", chartDiv, xAxisQuestion);
-            barChart(graphResultsPane, xAxisQuestion);
+            console.log("barGraph", xAxisQuestion);
+            barChart(graphBrowserInstance, xAxisQuestion);
         } else if (xType === "choice" && yType === "choice") {
             console.log("plot choice: Contingency table");
-            contingencyTable(graphResultsPane, xAxisQuestion, yAxisQuestion);
+            contingencyTable(graphBrowserInstance, xAxisQuestion, yAxisQuestion);
         } else if (xType === "choice" && yType === "scale") {
             console.log("plot choice: Multiple histograms");
-            multipleHistograms(graphResultsPane, xAxisQuestion, yAxisQuestion);
+            multipleHistograms(graphBrowserInstance, xAxisQuestion, yAxisQuestion);
         } else if (xType === "scale" && yType === null) {
             console.log("plot choice: Histogram");
-            histogramChart(graphResultsPane, xAxisQuestion);
+            histogramChart(graphBrowserInstance, xAxisQuestion);
         } else if (xType === "scale" && yType === "choice") {
             console.log("plot choice: Multiple histograms");
-            multipleHistograms(graphResultsPane, yAxisQuestion, xAxisQuestion);
+            multipleHistograms(graphBrowserInstance, yAxisQuestion, xAxisQuestion);
         } else if (xType === "scale" && yType === "scale") {
             console.log("plot choice: Scatter plot");
-            scatterPlot(graphResultsPane, xAxisQuestion, yAxisQuestion);
+            scatterPlot(graphBrowserInstance, xAxisQuestion, yAxisQuestion);
         } else {
             console.log("ERROR: Unexpected graph type");
             alert("ERROR: Unexpected graph type");
@@ -685,13 +695,11 @@ define([
         
         console.log("plot items", plotItems);
         
-
-        
-        var chart1Div = domConstruct.create("div", {style: singleChartStyle}, "chartDiv");
+        var chartPane = newChartPane(graphBrowserInstance, singleChartStyle);
         
         var chart1Title = "" + xAxisQuestionID + " vs. " + yAxisQuestionID;
         
-        var chart1 = new Chart(chart1Div, {
+        var chart1 = new Chart(chartPane.domNode, {
             title: chart1Title
         });
         console.log("Made chart");
@@ -719,31 +727,24 @@ define([
         */
     }
     
-    function currentQuestionnaireChanged(graphResultsPane, currentQuestionnaire) {
+    function currentQuestionnaireChanged(graphBrowserInstance, currentQuestionnaire) {
         // Update selects for new question choices
         var questions = surveyCollection.collectQuestionsForCurrentQuestionnaire();
-        graphResultsPane.questions = questions;
+        graphBrowserInstance.questions = questions;
         
         var choices = widgetSupport.optionsForAllQuestions(questions);
-        widgetSupport.updateSelectChoices(graphResultsPane.xAxisSelect, choices);
-        widgetSupport.updateSelectChoices(graphResultsPane.yAxisSelect, choices);
+        widgetSupport.updateSelectChoices(graphBrowserInstance.xAxisSelect, choices);
+        widgetSupport.updateSelectChoices(graphBrowserInstance.yAxisSelect, choices);
     }
     
-    function loadLatestStoriesFromServerChanged(graphResultsPane, newEnvelopeCount, allStories) {
-        console.log("loadLatestStoriesFromServerChanged", graphResultsPane, newEnvelopeCount, allStories);
+    function loadLatestStoriesFromServerChanged(graphBrowserInstance, newEnvelopeCount, allStories) {
+        console.log("loadLatestStoriesFromServerChanged", graphBrowserInstance, newEnvelopeCount, allStories);
         if (!newEnvelopeCount) return;
         
         // TODO: Update graphs if needed
     }
         
     function insertGraphBrowser(contentPane, model, fieldSpecification) {       
-        // Graph results pane
-        
-        var graphResultsPane = new ContentPane({
-            // TODO: Translate
-            title: "Graph results"
-        });
-        
         var questions = surveyCollection.collectQuestionsForCurrentQuestionnaire();
         var choices = widgetSupport.optionsForAllQuestions(questions);
         
@@ -757,24 +758,33 @@ define([
         var yAxisSelect = widgetSupport.newSelect(contentPane, choices);
         yAxisSelect.set("style", "width: 48%; max-width: 40%");
         
-        var pane = graphResultsPane.containerNode;
-        var updateGraphButton = widgetSupport.newButton(pane, "#updateGraph|Update graph", lang.partial(updateGraph, graphResultsPane));
-        pane.appendChild(document.createElement("br"));
+        var graphResultsPane = new ContentPane({
+            // TODO: Translate
+            title: "Graph results",
+            style: chartEnclosureStyle
+        });
         
-        // TODO: Translate "Survey Graph"
-        pane.appendChild(domConstruct.toDom('<br><div id="surveyGraphDiv"></div><div id="chartDiv" style="' + chartEnclosureStyle + '"></div>'));
+        var graphBrowserInstance = {
+            graphResultsPane: graphResultsPane,
+            chartPanes: [], 
+            xAxisSelect: xAxisSelect,
+            yAxisSelect: yAxisSelect,
+            questions: questions
+        };
+         
+        var updateGraphButton = widgetSupport.newButton(contentPane, "#updateGraph|Update graph", lang.partial(updateGraph, graphBrowserInstance));
+        
+        contentPane.containerNode.appendChild(document.createElement("br"));
+        contentPane.containerNode.appendChild(document.createElement("br"));
+        
         contentPane.addChild(graphResultsPane);
         
-        graphResultsPane.xAxisSelect = xAxisSelect;
-        graphResultsPane.yAxisSelect = yAxisSelect;
-        graphResultsPane.questions = questions;
-        
-        var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerChanged, graphResultsPane));
+        var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerChanged, graphBrowserInstance));
         
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
         contentPane.own(loadLatestStoriesFromServerSubscription);
         
-        var currentQuestionnaireSubscription = topic.subscribe("currentQuestionnaire", lang.partial(currentQuestionnaireChanged, graphResultsPane));
+        var currentQuestionnaireSubscription = topic.subscribe("currentQuestionnaire", lang.partial(currentQuestionnaireChanged, graphBrowserInstance));
         
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
         contentPane.own(currentQuestionnaireSubscription);
