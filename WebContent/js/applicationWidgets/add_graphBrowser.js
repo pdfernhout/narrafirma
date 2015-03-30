@@ -261,8 +261,6 @@ define([
         chart.addSeries("Series 1", plotItems);
         
         chart.render();
-        
-        chartPane.addChild(chart);
     }
     
     // choiceQuestion and option may be undefined if this is just a simple histogram for all values
@@ -337,8 +335,6 @@ define([
         chart.addSeries("Series 1", plotItems);
         
         chart.render(); 
-        
-        chartPane.addChild(chart);
     }
     
     function multipleHistograms(graphBrowserInstance, choiceQuestion, scaleQuestion) {
@@ -456,8 +452,6 @@ define([
         chart.addSeries("Series 1", plotItems);
         
         chart.render(); 
-        
-        chartPane.addChild(chart);
     }
     
     function contingencyTable(graphBrowserInstance, xAxisQuestion, yAxisQuestion) {
@@ -745,7 +739,7 @@ define([
         var questions = surveyCollection.collectQuestionsForCurrentQuestionnaire();
         graphBrowserInstance.questions = questions;
         
-        var choices = widgetSupport.optionsForAllQuestions(questions);
+        var choices = widgetSupport.optionsForAllQuestions(questions, "excludeTextQuestions");
         widgetSupport.updateSelectChoices(graphBrowserInstance.xAxisSelect, choices);
         widgetSupport.updateSelectChoices(graphBrowserInstance.yAxisSelect, choices);
     }
@@ -759,7 +753,7 @@ define([
         
     function insertGraphBrowser(contentPane, model, fieldSpecification) {       
         var questions = surveyCollection.collectQuestionsForCurrentQuestionnaire();
-        var choices = widgetSupport.optionsForAllQuestions(questions);
+        var choices = widgetSupport.optionsForAllQuestions(questions, "excludeTextQuestions");
         
         var xAxisSelect = widgetSupport.newSelect(contentPane, choices);
         xAxisSelect.set("style", "width: 48%; max-width: 40%");
