@@ -42,7 +42,7 @@ define([
     // TODO: Need to be able to associate related stories with everything on screen so can browse them when clicked
     
     var unansweredKey = "{Unanswered}";
-    var singleChartStyle = "width: 800px; height: 600px;";
+    var singleChartStyle = "width: 700px; height: 500px;";
     var multipleChartStyle = "width: 200px; height: 200; float: left;";
     var chartEnclosureStyle = "width: 850px; height: 650px; margin: 5px auto 0px auto;";
         
@@ -60,6 +60,12 @@ define([
         }
         console.log("ERROR: question not found for id", id, questions);
         return null;
+    }
+    
+    function nameForQuestion(question) {
+        if (question.displayName) return question.displayName;
+        if (question.displayPrompt) return question.displayPrompt;
+        return question.id;
     }
     
     function positionForQuestionAnswer(question, answer) {
@@ -234,7 +240,7 @@ define([
 
         var chartPane = newChartPane(graphBrowserInstance, singleChartStyle);
         
-        var chartTitle = "" + question.id;
+        var chartTitle = "" + nameForQuestion(question);
         
         var chart = new Chart(chartPane.domNode, {
             title: chartTitle
@@ -254,7 +260,9 @@ define([
 
         chart.addSeries("Series 1", plotItems);
         
-        chart.render(); 
+        chart.render();
+        
+        chartPane.addChild(chart);
     }
     
     // choiceQuestion and option may be undefined if this is just a simple histogram for all values
@@ -306,7 +314,8 @@ define([
 
         var chartPane = newChartPane(graphBrowserInstance, style);
         
-        var chartTitle = "" + scaleQuestion.id;
+        var chartTitle = "" + nameForQuestion(scaleQuestion);
+        // TODO: Maybe should translate choice?
         if (choiceQuestion) chartTitle = "" + choice;
         
         var chart = new Chart(chartPane.domNode, {
@@ -328,6 +337,8 @@ define([
         chart.addSeries("Series 1", plotItems);
         
         chart.render(); 
+        
+        chartPane.addChild(chart);
     }
     
     function multipleHistograms(graphBrowserInstance, choiceQuestion, scaleQuestion) {
@@ -350,7 +361,7 @@ define([
         var noStyle = {};
         var chartPane = newChartPane(graphBrowserInstance, noStyle);
         
-        var title = "" + scaleQuestion.id + " vs. " + choiceQuestion.id + " ...";
+        var title = "" + nameForQuestion(scaleQuestion) + " vs. " + nameForQuestion(choiceQuestion) + " ...";
         // var content = new ContentPane({content: title, style: "text-align: center;"});
         var content = domConstruct.toDom('<span style="text-align: center;"><b>' + title + '</b></span><br>');
         
@@ -385,7 +396,7 @@ define([
 
         var chartPane = newChartPane(graphBrowserInstance, singleChartStyle);
         
-        var chartTitle = "" + xAxisQuestion.id + " vs. " + yAxisQuestion.id;
+        var chartTitle = "" + nameForQuestion(xAxisQuestion) + " vs. " + nameForQuestion(yAxisQuestion);
         
         var chart = new Chart(chartPane.domNode, {
             title: chartTitle
@@ -445,6 +456,8 @@ define([
         chart.addSeries("Series 1", plotItems);
         
         chart.render(); 
+        
+        chartPane.addChild(chart);
     }
     
     function contingencyTable(graphBrowserInstance, xAxisQuestion, yAxisQuestion) {
@@ -534,10 +547,10 @@ define([
         var row;
         var column;
         
-        content = new ContentPane({content: "&lt;- <b>" + xAxisQuestion.id + "</b> -&gt;", colspan: columnCount + 2, style: "text-align: center;"});
+        content = new ContentPane({content: "&lt;- <b>" + nameForQuestion(xAxisQuestion) + "</b> -&gt;", colspan: columnCount + 2, style: "text-align: center;"});
         table.addChild(content);
         
-        content = new ContentPane({content: "V <b>" + yAxisQuestion.id + "</b> V", colspan: 1});
+        content = new ContentPane({content: "V <b>" + nameForQuestion(yAxisQuestion) + "</b> V", colspan: 1});
         table.addChild(content);
         
         for (column = 0; column < columnCount; column++) {
