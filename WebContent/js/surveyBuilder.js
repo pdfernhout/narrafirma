@@ -227,7 +227,7 @@ define([
 
         var startPane = new ContentPane();
         
-        panelBuilder.buildFields(startQuestions, startPane.containerNode, participantDataModel);
+        panelBuilder.buildFields(startQuestions, startPane, participantDataModel);
         
         widgetSupport.newButton(startPane, "button_nextPage", function() {
             console.log("button_nextPage");
@@ -245,7 +245,7 @@ define([
         
         var participantPane = new ContentPane();
         
-        panelBuilder.buildFields(questionnaire.participantQuestions, participantPane.containerNode, participantDataModel);
+        panelBuilder.buildFields(questionnaire.participantQuestions, participantPane, participantDataModel);
         
         widgetSupport.newButton(participantPane, "#button_previousPage|Previous page", function() {
             console.log("button_previousPage");
@@ -260,7 +260,7 @@ define([
         wizardPane.addChild(participantPane);
         
         var endPane = new ContentPane();
-        panelBuilder.buildFields(endQuestions, endPane.containerNode, participantDataModel);
+        panelBuilder.buildFields(endQuestions, endPane, participantDataModel);
         
         if (includeCancelButton) {
             widgetSupport.newButton(wizardPane, "#surveyCancel|Cancel", function() {
