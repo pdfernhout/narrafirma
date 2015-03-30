@@ -83,7 +83,7 @@ define([
 
         // TODO: Kludge of loading all stories when load data?
         console.log("Going to try to load latest stories from server");
-        surveyCollection.loadLatestStoriesFromServer(function (newEnvelopeCount) {
+        surveyCollection.loadLatestStoriesFromServer(null, null, null, null, function (newEnvelopeCount) {
             console.log("Forcing refresh of current page");
             // TODO: KLUDGE: Updating gui a second time so get flicker -- and maybe lose edits?
             if (newEnvelopeCount) pageDisplayer.showPage(pageDisplayer.getCurrentPageID(), "forceRefresh");
