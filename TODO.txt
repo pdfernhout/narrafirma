@@ -80,7 +80,6 @@ Backup
 
 LOAD/SAVE
 Have revert button to go back to previous version for each page or clear out changes in progress on a page
-Handle questionnaire update after it is loaded in graph
 Put in place dojox.widget.Standby when saving
 Improve save/load feedback [same as above at this point]
 Think through how project is loaded and saved, especially what happens if multiple windows or users edit the same project
@@ -618,3 +617,5 @@ DONE Fix issues with generating questionnaire using callback
 DONE Fix issue with dijit dropdown box being odd size [was CSS issue]
 DONE Implement story card display
 DONE Use story card display in story browser
+DONE Fix issue where graph throwing exception due to missing loaded modules used internally by graph module
+DONE Handle questionnaire update after it is loaded in graph
