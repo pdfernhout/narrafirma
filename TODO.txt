@@ -206,6 +206,12 @@ Validation of text fields for empty
 Validation of text fields for length
 Validation for checkBoxes limited by maximum number of choices as validation error
 
+PRINTING
+Decide between HTML, PDF, RTF, Open Office or other for initial printing generation
+Print reports
+Print story cards
+Page to print story cards
+
 OTHER
 Read-only support for panels
 
@@ -607,3 +613,8 @@ NOT DOING Disabled or hidden tabs which are enabled as progress
 NOT DOING Resize Tab container when add Graph [obsolete task as no longer have tabbed notebook GUI]
 DONE Handle questionnaire update after it is loaded in story browser
 DONE Handle questionnaire update after it is loaded in story themer
+DONE Improve story browser filter panes to only take up 50% of panel width each
+DONE Fix issues with generating questionnaire using callback
+DONE Fix issue with dijit dropdown box being odd size [was CSS issue]
+DONE Implement story card display
+DONE Use story card display in story browser
