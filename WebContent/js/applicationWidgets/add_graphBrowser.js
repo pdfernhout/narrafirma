@@ -6,9 +6,15 @@ define([
     "dojo/_base/lang",
     "js/surveyCollection",
     "js/panelBuilder/widgetSupport",
+    "dojox/charting/plot2d/Bars",
     "dojox/charting/Chart",
     "dojox/charting/plot2d/Columns",
     "dijit/layout/ContentPane",
+    // Note that "Default" and maybe some other chart modules seem to be referenced dynamically by graph.
+    // So they need to be loaded even if they are not refeneced directly in module.
+    "dojox/charting/axis2d/Default",
+    "dojox/charting/plot2d/Lines",
+    "dojox/charting/plot2d/Markers",
     "dojox/charting/plot2d/Scatter",
     "dojox/layout/TableContainer"
 ], function(
@@ -19,9 +25,13 @@ define([
     lang,
     surveyCollection,
     widgetSupport,
+    Bars,
     Chart,
     Columns,
     ContentPane,
+    Default,
+    Lines,
+    Markers,
     Scatter,
     TableContainer
 ){
