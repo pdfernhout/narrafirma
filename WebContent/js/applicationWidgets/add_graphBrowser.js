@@ -42,8 +42,8 @@ define([
     // TODO: Need to be able to associate related stories with everything on screen so can browse them when clicked
     
     var unansweredKey = "{Unanswered}";
-    var singleChartStyle = "width: 600px; height: 400px;";
-    var multipleChartStyle = "width: 250px; height: 250; float: left;";
+    var singleChartStyle = "width: 800px; height: 600px;";
+    var multipleChartStyle = "width: 200px; height: 200; float: left;";
     var chartEnclosureStyle = "width: 850px; height: 650px; margin: 5px auto 0px auto;";
         
     function correctForUnanswered(question, value) {
@@ -530,8 +530,6 @@ define([
             spacing: 10
         });
         
-        chartPane.addChild(table);
-        
         var content;
         var row;
         var column;
@@ -559,17 +557,19 @@ define([
                 content = new ContentPane({content: "<b>" + cellValue + "</b>", colspan: 1});
                 table.addChild(content);
             }
-            content = new ContentPane({content: "" + results[JSON.stringify({y: rowLabelsArray[row]})], "colspan": 1});
+            content = new ContentPane({content: "" + (results[JSON.stringify({y: rowLabelsArray[row]})] || 0), "colspan": 1});
             table.addChild(content);
         }
         content = new ContentPane({content: "<i>[Column Total]</i>", colspan: 1});
         table.addChild(content);
         for (column = 0; column < columnCount; column++) {
-            content = new ContentPane({content: "" + results[JSON.stringify({x: columnLabelsArray[column]})], colspan: 1});
+            content = new ContentPane({content: "" + (results[JSON.stringify({x: columnLabelsArray[column]})] || 0), colspan: 1});
             table.addChild(content);
         }
         content = new ContentPane({content: "" + grandTotal, colspan: 1});
         table.addChild(content);
+        
+        chartPane.addChild(table);
     }
     
     function newChartPane(graphBrowserInstance, style) {
