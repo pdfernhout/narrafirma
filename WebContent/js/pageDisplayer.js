@@ -230,6 +230,6 @@ define([
     return {
         configurePageDisplayer: configurePageDisplayer,
         showPage: showPage,
-        getCurrentPageID: getCurrentPageID,
+        getCurrentPageID: getCurrentPageID
     };
 });

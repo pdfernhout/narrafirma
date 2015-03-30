@@ -684,7 +684,7 @@ define([
         var chart1Title = "" + xAxisQuestionID + " vs. " + yAxisQuestionID;
         
         var chart1 = new Chart(chart1Div, {
-            title: chart1Title,
+            title: chart1Title
         });
         console.log("Made chart");
         

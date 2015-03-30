@@ -259,7 +259,7 @@ define([
         
         var itemPanelSpecification = {
              id: "storyBrowserQuestions",
-             panelFields: questions,
+             panelFields: questions
         };
         
         return itemPanelSpecification;
