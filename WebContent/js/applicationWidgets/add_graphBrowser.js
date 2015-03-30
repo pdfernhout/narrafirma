@@ -5,6 +5,7 @@ define([
     "dojo/dom-construct",
     "dojo/_base/lang",
     "js/surveyCollection",
+    "dojo/topic",
     "js/panelBuilder/widgetSupport",
     "dojox/charting/plot2d/Bars",
     "dojox/charting/Chart",
@@ -24,6 +25,7 @@ define([
     domConstruct,
     lang,
     surveyCollection,
+    topic,
     widgetSupport,
     Bars,
     Chart,
@@ -583,12 +585,8 @@ define([
         });
         var chartDiv = domConstruct.empty("chartDiv");
         
-        // TODO: Handle the fact that currentQuestionnaire may be null if this is the first page loaded, and also may update as topic
-        // TODO: Fix this so it also handles participant questions somehow
-        var surveyQuestions = domain.currentQuestionnaire.storyQuestions;
-        
-        var xAxisQuestion = questionForID(surveyQuestions, xAxisQuestionID);
-        var yAxisQuestion = questionForID(surveyQuestions, yAxisQuestionID);
+        var xAxisQuestion = questionForID(graphResultsPane.questions, xAxisQuestionID);
+        var yAxisQuestion = questionForID(graphResultsPane.questions, yAxisQuestionID);
         
         // Ensure xAxisQuestion is always defined
         if (!xAxisQuestion) {
@@ -720,6 +718,23 @@ define([
         chart1.render(); 
         */
     }
+    
+    function currentQuestionnaireChanged(graphResultsPane, currentQuestionnaire) {
+        // Update selects for new question choices
+        var questions = surveyCollection.collectQuestionsForCurrentQuestionnaire();
+        graphResultsPane.questions = questions;
+        
+        var choices = widgetSupport.optionsForAllQuestions(questions);
+        widgetSupport.updateSelectChoices(graphResultsPane.xAxisSelect, choices);
+        widgetSupport.updateSelectChoices(graphResultsPane.yAxisSelect, choices);
+    }
+    
+    function loadLatestStoriesFromServerChanged(graphResultsPane, newEnvelopeCount, allStories) {
+        console.log("loadLatestStoriesFromServerChanged", graphResultsPane, newEnvelopeCount, allStories);
+        if (!newEnvelopeCount) return;
+        
+        // TODO: Update graphs if needed
+    }
         
     function insertGraphBrowser(contentPane, model, fieldSpecification) {       
         // Graph results pane
@@ -729,21 +744,17 @@ define([
             title: "Graph results"
         });
         
-        // TODO: Handle the fact that currentQuestionnaire may be null if this is the first page loaded, and also may update as topic
-        // TODO: Fix this so it also handles participant questions somehow
-        // TODO: Update these as they change...
-        var questions = domain.currentQuestionnaire.storyQuestions;
+        var questions = surveyCollection.collectQuestionsForCurrentQuestionnaire();
+        var choices = widgetSupport.optionsForAllQuestions(questions);
         
-        var optionsForAllQuestions = widgetSupport.optionsForAllQuestions(questions);
-        
-        var xAxisSelect = widgetSupport.newSelect(contentPane, optionsForAllQuestions);
+        var xAxisSelect = widgetSupport.newSelect(contentPane, choices);
         xAxisSelect.set("style", "width: 48%; max-width: 40%");
         
         // TODO: Translate
         var content = new ContentPane({content: " versus ", style: "display: inline;"});
         contentPane.addChild(content);
         
-        var yAxisSelect = widgetSupport.newSelect(contentPane, optionsForAllQuestions);
+        var yAxisSelect = widgetSupport.newSelect(contentPane, choices);
         yAxisSelect.set("style", "width: 48%; max-width: 40%");
         
         var pane = graphResultsPane.containerNode;
@@ -756,6 +767,17 @@ define([
         
         graphResultsPane.xAxisSelect = xAxisSelect;
         graphResultsPane.yAxisSelect = yAxisSelect;
+        graphResultsPane.questions = questions;
+        
+        var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerChanged, graphResultsPane));
+        
+        // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
+        contentPane.own(loadLatestStoriesFromServerSubscription);
+        
+        var currentQuestionnaireSubscription = topic.subscribe("currentQuestionnaire", lang.partial(currentQuestionnaireChanged, graphResultsPane));
+        
+        // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
+        contentPane.own(currentQuestionnaireSubscription);
         
         return graphResultsPane;
     }
