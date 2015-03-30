@@ -72,7 +72,7 @@ define([
     }
     
     // TODO: Two GUI components without translation here temporarily
-    function newButton(addToDiv, label, callback) {
+    function newButton(parentContentPane, label, callback) {
         var translatedLabel = translate(label);
         
         // TODO: Maybe should not be passing in an ID??? Just let Dojo assign one
@@ -81,8 +81,8 @@ define([
             type: "button",
             onClick: callback
         });
-        if (addToDiv) {
-            button.placeAt(addToDiv);
+        if (parentContentPane) {
+            button.placeAt(parentContentPane);
         }
         return button;
     }
@@ -132,7 +132,7 @@ define([
         dataStore.setData(options);
     }
     
-    function newSelect(addToDiv, choices, addNoSelectionOption) {
+    function newSelect(parentContentPane, choices, addNoSelectionOption) {
         var options = makeOptionsFromSelectFromChoices(choices, addNoSelectionOption);
         
         var dataStore = new Memory({"data": options});
@@ -144,7 +144,7 @@ define([
                 required: false
                 // style: "width: 100%"
         });
-        select.placeAt(addToDiv);
+        select.placeAt(parentContentPane);
         return select;
     }
     
