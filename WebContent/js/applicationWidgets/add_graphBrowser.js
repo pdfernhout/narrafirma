@@ -747,7 +747,7 @@ define([
         yAxisSelect.set("style", "width: 48%; max-width: 40%");
         
         var pane = graphResultsPane.containerNode;
-        var takeSurveyButton = widgetSupport.newButton(pane, "#updateGraph|Update graph", lang.partial(updateGraph, graphResultsPane));
+        var updateGraphButton = widgetSupport.newButton(pane, "#updateGraph|Update graph", lang.partial(updateGraph, graphResultsPane));
         pane.appendChild(document.createElement("br"));
         
         // TODO: Translate "Survey Graph"
