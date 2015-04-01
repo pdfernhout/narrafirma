@@ -249,3 +249,23 @@ form {
 .recommendationLow {
     background-color: DarkRed;
 }
+
+/* d3 brush in graphs */
+
+.brush .extent {
+  fill-opacity: .1;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+.node {
+  stroke: green;
+  stroke-width: 1.5px;
+  fill: green;
+}
+
+.node .selected {
+  stroke: blue;
+  fill: blue;
+}
+

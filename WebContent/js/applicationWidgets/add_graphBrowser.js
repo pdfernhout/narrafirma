@@ -459,6 +459,7 @@ define([
     }
 
     // Reference for initial scatter chart: http://bl.ocks.org/bunkat/2595950
+    // Reference for brushing: http://bl.ocks.org/mbostock/4560481
     function d3ScatterPlot(graphBrowserInstance, xAxisQuestion, yAxisQuestion) {
         // collect data
         var plotItems = [];
@@ -488,21 +489,21 @@ define([
         var width = fullWidth - margin.left - margin.right;
         var height = fullHeight - margin.top - margin.bottom;
         
-        var x = d3.scale.linear()
+        var xScale = d3.scale.linear()
             .domain([0, d3.max(plotItems, function(plotItem) { return plotItem.x; })])
             .range([0, width]);
 
-        var y = d3.scale.linear()
+        var yScale = d3.scale.linear()
             .domain([0, d3.max(plotItems, function(plotItem) { return plotItem.y; })])
-            .range([height, 0]);        
-
+            .range([height, 0]);       
+        
         var chart = d3.select(chartPane.domNode)
-            .append('svg:svg')
+            .append('svg')
             .attr('width', width + margin.right + margin.left)
             .attr('height', height + margin.top + margin.bottom)
             .attr('class', 'chart');
         
-        var main = chart.append('g')
+        var chartBody = chart.append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
             .attr('width', width)
             .attr('height', height)
@@ -510,15 +511,15 @@ define([
         
         // draw the x axis
         var xAxis = d3.svg.axis()
-            .scale(x)
+            .scale(xScale)
             .orient('bottom');
 
-        main.append('g')
+        chartBody.append('g')
             .attr('transform', 'translate(0,' + height + ')')
-            .attr('class', 'main axis date')
+            .attr('class', 'chart axis date')
             .call(xAxis);
         
-        main.append("text")
+        chartBody.append("text")
             .attr("class", "x label")
             .attr("text-anchor", "end")
             .attr("x", width)
@@ -527,15 +528,15 @@ define([
         
         // draw the y axis
         var yAxis = d3.svg.axis()
-            .scale(y)
+            .scale(yScale)
             .orient('left');
 
-        main.append('g')
+        chartBody.append('g')
             .attr('transform', 'translate(0,0)')
             .attr('class', 'main axis date')
             .call(yAxis);
         
-        main.append("text")
+        chartBody.append("text")
             .attr("class", "y label")
             .attr("text-anchor", "end")
             .attr("y", 6)
@@ -543,16 +544,35 @@ define([
             .attr("transform", "rotate(-90)")
             .text(nameForQuestion(yAxisQuestion));
         
-        var g = main.append("svg:g"); 
+        var node = chartBody.append("g")
+                .attr("class", "node")
+            .selectAll("circle")
+                .data(plotItems)
+            .enter().append("circle")
+                .attr("r", 8)
+                .attr("cx", function (plotItem) { return xScale(plotItem.x); } )
+                .attr("cy", function (plotItem) { return yScale(plotItem.y); } );
         
-        g.selectAll("scatter-dots")
-          .data(plotItems)
-          .enter().append("svg:circle")
-              .attr("cx", function (plotItem) { return x(plotItem.x); } )
-              .attr("cy", function (plotItem) { return y(plotItem.y); } )
-              .attr("r", 8)
-              .append("svg:title")
-              .text(function(plotItem) { return plotItem.story.__survey_storyName; });
+        // Add tooltips
+        node
+            .append("svg:title")
+            .text(function(plotItem) { return plotItem.story.__survey_storyName; });
+    
+        var brush = chartBody.append("g")
+            .attr("class", "brush")
+            .call(d3.svg.brush()
+                .x(xScale)
+                .y(yScale)
+                .on("brushend", brushend)
+            );
+                
+        function brushend() {
+            console.log("brushend", brush);
+            var extent = d3.event.target.extent();
+            node.classed("selected", function(d) {
+              return extent[0][0] <= d.x && d.x < extent[1][0] && extent[0][1] <= d.y && d.y < extent[1][1];
+            });
+        }
     }
     
     function contingencyTable(graphBrowserInstance, xAxisQuestion, yAxisQuestion) {
