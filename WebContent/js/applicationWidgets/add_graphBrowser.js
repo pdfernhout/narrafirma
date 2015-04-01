@@ -570,9 +570,13 @@ define([
         function brushend() {
             console.log("brushend", brush);
             var extent = d3.event.target.extent();
-            node.classed("selected", function(d) {
-              return extent[0][0] <= d.x && d.x < extent[1][0] && extent[0][1] <= d.y && d.y < extent[1][1];
+            var selectedStories = [];
+            node.classed("selected", function(plotItem) {
+              var selected = extent[0][0] <= plotItem.x && plotItem.x < extent[1][0] && extent[0][1] <= plotItem.y && plotItem.y < extent[1][1];
+              if (selected) selectedStories.push(plotItem.story);
+              return selected;
             });
+            console.log("Selected stories", selectedStories);
         }
     }
     
