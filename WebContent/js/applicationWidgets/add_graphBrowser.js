@@ -199,71 +199,7 @@ define([
             }
         }
     }
-    
-    function dojoBarChart(graphBrowserInstance, question) {
-         
-        // collect data
-        var plotItems = [];
-        var plotLabels = [];
-        
-        var results = {};
-        preloadResultsForQuestionOptions(results, question);
-        
-        var stories = domain.allStories;
-        for (var storyIndex in stories) {
-            var story = stories[storyIndex];
-            var xValue = correctForUnanswered(question, story[question.id]);
-            
-            var xHasCheckboxes = lang.isObject(xValue);
-            // fast path
-            if (!xHasCheckboxes) {
-                incrementMapSlot(results, xValue);
-            } else {
-                console.log(question, xValue);
-                for (var xIndex in xValue) {
-                    if (xValue[xIndex]) incrementMapSlot(results, xIndex);
-                }
-            }
-        }
-        
-        // Keep unanswered at start
-        var key = unansweredKey;
-        plotLabels.push({value: resultIndex, text: key});
-        plotItems.push({x: resultIndex, y: results[key]});
-        
-        for (key in results) {
-            if (key === unansweredKey) continue;
-            plotLabels.push({value: resultIndex, text: key});
-            plotItems.push({x: resultIndex, y: results[key]});
-        }
-        
-        console.log("plot items", plotItems);
 
-        var chartPane = newChartPane(graphBrowserInstance, singleChartStyle);
-        
-        var chartTitle = "" + nameForQuestion(question);
-        
-        var chart = new Chart(chartPane.domNode, {
-            title: chartTitle
-        });
-        console.log("Made chart");
-        
-        // TODO: Set theme
-        
-        chart.addPlot("default", {
-            type: Columns,
-            markers: true,
-            gap: 5
-        });
-        
-        chart.addAxis("x", {labels: plotLabels, fixLower: "major", fixUpper: "major"});
-        chart.addAxis("y", {vertical: true, fixLower: "major", fixUpper: "major" });
-
-        chart.addSeries("Series 1", plotItems);
-        
-        chart.render();
-    }
-    
     function d3BarChart(graphBrowserInstance, question) {
         
         // collect data
