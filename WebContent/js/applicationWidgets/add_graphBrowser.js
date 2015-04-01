@@ -491,11 +491,11 @@ define([
         var height = fullHeight - margin.top - margin.bottom;
         
         var xScale = d3.scale.linear()
-            .domain([0, d3.max(plotItems, function(plotItem) { return plotItem.x; })])
+            .domain([0, 100])
             .range([0, width]);
 
         var yScale = d3.scale.linear()
-            .domain([0, d3.max(plotItems, function(plotItem) { return plotItem.y; })])
+            .domain([0, 100])
             .range([height, 0]);       
         
         var chart = d3.select(chartPane.domNode)
