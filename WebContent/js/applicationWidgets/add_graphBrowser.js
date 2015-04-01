@@ -567,7 +567,13 @@ define([
         // Add tooltips
         nodes
             .append("svg:title")
-            .text(function(plotItem) { return plotItem.story.__survey_storyName; });
+            .text(function(plotItem) {
+                var tooltipText =
+                    "Title: " + plotItem.story.__survey_storyName +
+                    "\nID: " + plotItem.story._storyID + 
+                    "\nText: " + plotItem.story.__survey_storyText;
+                return tooltipText;
+            });
         
         // Support starting a drag over a node
         nodes.on('mousedown', function(){
