@@ -518,6 +518,13 @@ define([
             .attr('class', 'main axis date')
             .call(xAxis);
         
+        main.append("text")
+            .attr("class", "x label")
+            .attr("text-anchor", "end")
+            .attr("x", width)
+            .attr("y", height - 6)
+            .text(nameForQuestion(xAxisQuestion));
+        
         // draw the y axis
         var yAxis = d3.svg.axis()
             .scale(y)
@@ -527,7 +534,15 @@ define([
             .attr('transform', 'translate(0,0)')
             .attr('class', 'main axis date')
             .call(yAxis);
-            
+        
+        main.append("text")
+            .attr("class", "y label")
+            .attr("text-anchor", "end")
+            .attr("y", 6)
+            .attr("dy", ".75em")
+            .attr("transform", "rotate(-90)")
+            .text(nameForQuestion(yAxisQuestion));
+        
         var g = main.append("svg:g"); 
         
         g.selectAll("scatter-dots")
