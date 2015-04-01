@@ -904,14 +904,14 @@ define([
         
         var xAxisSelect = widgetSupport.newSelect(contentPane, choices);
         xAxisSelect.set("style", "width: 48%; max-width: 40%");
-        
+ 
         // TODO: Translate
         var content = new ContentPane({content: " versus ", style: "display: inline;"});
         contentPane.addChild(content);
         
         var yAxisSelect = widgetSupport.newSelect(contentPane, choices);
         yAxisSelect.set("style", "width: 48%; max-width: 40%");
-        
+  
         var graphResultsPane = new ContentPane({
             // TODO: Translate
             title: "Graph results",
@@ -925,8 +925,11 @@ define([
             yAxisSelect: yAxisSelect,
             questions: questions
         };
-         
-        var updateGraphButton = widgetSupport.newButton(contentPane, "#updateGraph|Update graph", lang.partial(updateGraph, graphBrowserInstance));
+        
+        xAxisSelect.on("change", lang.partial(updateGraph, graphBrowserInstance));  
+        yAxisSelect.on("change", lang.partial(updateGraph, graphBrowserInstance));
+
+        // var updateGraphButton = widgetSupport.newButton(contentPane, "#updateGraph|Update graph", lang.partial(updateGraph, graphBrowserInstance));
         
         contentPane.containerNode.appendChild(document.createElement("br"));
         contentPane.containerNode.appendChild(document.createElement("br"));
