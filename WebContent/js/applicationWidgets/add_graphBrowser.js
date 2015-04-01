@@ -460,6 +460,7 @@ define([
 
     // Reference for initial scatter chart: http://bl.ocks.org/bunkat/2595950
     // Reference for brushing: http://bl.ocks.org/mbostock/4560481
+    // Reference for brush and tooltip: http://wrobstory.github.io/2013/11/D3-brush-and-tooltip.html
     function d3ScatterPlot(graphBrowserInstance, xAxisQuestion, yAxisQuestion) {
         // collect data
         var plotItems = [];
@@ -544,7 +545,17 @@ define([
             .attr("transform", "rotate(-90)")
             .text(nameForQuestion(yAxisQuestion));
         
-        var node = chartBody.append("g")
+        // Append brush before data to ensure titles are drown
+        var brush = chartBody.append("g")
+            .attr("class", "brush")
+            .call(d3.svg.brush()
+                .x(xScale)
+                .y(yScale)
+                .clamp([false, false])
+                .on("brushend", brushend)
+            );
+        
+        var nodes = chartBody.append("g")
                 .attr("class", "node")
             .selectAll("circle")
                 .data(plotItems)
@@ -554,24 +565,26 @@ define([
                 .attr("cy", function (plotItem) { return yScale(plotItem.y); } );
         
         // Add tooltips
-        node
+        nodes
             .append("svg:title")
             .text(function(plotItem) { return plotItem.story.__survey_storyName; });
-    
-        var brush = chartBody.append("g")
-            .attr("class", "brush")
-            .call(d3.svg.brush()
-                .x(xScale)
-                .y(yScale)
-                .clamp([false, false])
-                .on("brushend", brushend)
-            );
+        
+        // Support starting a drag over a node
+        nodes.on('mousedown', function(){
+            var brushElements = chartBody.select(".brush").node();
+            var newClickEvent = new Event('mousedown');
+            newClickEvent.pageX = d3.event.pageX;
+            newClickEvent.clientX = d3.event.clientX;
+            newClickEvent.pageY = d3.event.pageY;
+            newClickEvent.clientY = d3.event.clientY;
+            brushElements.dispatchEvent(newClickEvent);
+          });
 
         function brushend() {
             console.log("brushend", brush);
             var extent = d3.event.target.extent();
             var selectedStories = [];
-            node.classed("selected", function(plotItem) {
+            nodes.classed("selected", function(plotItem) {
               var selected = extent[0][0] <= plotItem.x && plotItem.x < extent[1][0] && extent[0][1] <= plotItem.y && plotItem.y < extent[1][1];
               if (selected) selectedStories.push(plotItem.story);
               return selected;
