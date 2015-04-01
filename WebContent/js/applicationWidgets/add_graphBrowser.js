@@ -571,6 +571,8 @@ define([
                 var tooltipText =
                     "Title: " + plotItem.story.__survey_storyName +
                     "\nID: " + plotItem.story._storyID + 
+                    "\nX (" + nameForQuestion(xAxisQuestion) + "):" + plotItem.x +
+                    "\nY (" + nameForQuestion(yAxisQuestion) + "):" + plotItem.y +
                     "\nText: " + plotItem.story.__survey_storyText;
                 return tooltipText;
             });
