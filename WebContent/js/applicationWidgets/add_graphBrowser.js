@@ -535,7 +535,9 @@ define([
           .enter().append("svg:circle")
               .attr("cx", function (plotItem) { return x(plotItem.x); } )
               .attr("cy", function (plotItem) { return y(plotItem.y); } )
-              .attr("r", 8);
+              .attr("r", 8)
+              .append("svg:title")
+              .text(function(plotItem) { return plotItem.story.__survey_storyName; });
     }
     
     function contingencyTable(graphBrowserInstance, xAxisQuestion, yAxisQuestion) {
