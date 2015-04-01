@@ -563,9 +563,10 @@ define([
             .call(d3.svg.brush()
                 .x(xScale)
                 .y(yScale)
+                .clamp([false, false])
                 .on("brushend", brushend)
             );
-                
+
         function brushend() {
             console.log("brushend", brush);
             var extent = d3.event.target.extent();
