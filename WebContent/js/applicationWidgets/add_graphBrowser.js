@@ -183,7 +183,7 @@ define([
         var oldCount = map[key];
         if (!oldCount) oldCount = 0;
         map[key] = oldCount + 1;
-        console.log("incrementMapSlot to map", key, map[key], map);
+        // console.log("incrementMapSlot to map", key, map[key], map);
     }
     
     function preloadResultsForQuestionOptions(results, question) {
@@ -212,24 +212,24 @@ define([
         var stories = domain.allStories;
         for (var storyIndex in stories) {
             var story = stories[storyIndex];
-            console.log("story", story);
+            // console.log("story", story);
             var xValue = correctForUnanswered(question, story[question.id]);
             
             var xHasCheckboxes = lang.isObject(xValue);
             // fast path
             if (!xHasCheckboxes) {
-                console.log("no loop xValue", xValue);
+                // console.log("no loop xValue", xValue);
                 incrementMapSlot(results, xValue);
             } else {
                 console.log(question, xValue);
                 for (var xIndex in xValue) {
-                    console.log("loop xIndex", xIndex, xValue[xIndex]);
+                    // console.log("loop xIndex", xIndex, xValue[xIndex]);
                     if (xValue[xIndex]) incrementMapSlot(results, xIndex);
                 }
             }
         }
         
-        console.log("results", results);
+        // console.log("results", results);
          
         // Keep unanswered at start
         var key = unansweredKey;
@@ -242,7 +242,7 @@ define([
             plotItems.push({name: key, value: results[key]});
         }
         
-        console.log("plot items", plotItems);
+        // console.log("plot items", plotItems);
 
         var chartPane = newChartPane(graphBrowserInstance, singleChartStyle);
         
@@ -615,7 +615,7 @@ define([
           });
 
         function brushend() {
-            console.log("brushend", brush);
+            // console.log("brushend", brush);
             var extent = d3.event.target.extent();
             var selectedStories = [];
             nodes.classed("selected", function(plotItem) {
