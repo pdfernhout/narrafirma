@@ -1,5 +1,6 @@
 define([
     "dojo/_base/array",
+    "lib/d3/d3",
     "dojo/dom",
     "js/domain",
     "dojo/dom-construct",
@@ -20,6 +21,7 @@ define([
     "dojox/layout/TableContainer"
 ], function(
     array,
+    d3,
     dom,
     domain,
     domConstruct,
@@ -38,6 +40,8 @@ define([
     TableContainer
 ){
     "use strict";
+    
+    console.log("=================================== d3", d3);
 
     // TODO: Need to be able to associate related stories with everything on screen so can browse them when clicked
     
@@ -373,7 +377,7 @@ define([
         chartPane.domNode.appendChild(clearFloat);
     }
     
-    function scatterPlot(graphBrowserInstance, xAxisQuestion, yAxisQuestion) {
+    function dojoScatterPlot(graphBrowserInstance, xAxisQuestion, yAxisQuestion) {
         // collect data
         var plotItems = [];
         var stories = domain.allStories;
@@ -452,6 +456,86 @@ define([
         chart.addSeries("Series 1", plotItems);
         
         chart.render(); 
+    }
+
+    // Reference for initial scatter chart: http://bl.ocks.org/bunkat/2595950
+    function d3ScatterPlot(graphBrowserInstance, xAxisQuestion, yAxisQuestion) {
+        // collect data
+        var plotItems = [];
+        var stories = domain.allStories;
+        for (var index in stories) {
+            var story = stories[index];
+            var xValue = correctForUnanswered(xAxisQuestion, story[xAxisQuestion.id]);
+            var yValue = correctForUnanswered(yAxisQuestion, story[yAxisQuestion.id]);
+            
+            // TODO: What do do about unanswered?
+            if (xValue === unansweredKey || yValue === unansweredKey) continue;
+            
+            var plotItem = newPlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story);
+            plotItems.push(plotItem);
+        }
+        // console.log("plot items", plotItems);
+
+        var chartPane = newChartPane(graphBrowserInstance, singleChartStyle);
+        
+        var chartTitle = "" + nameForQuestion(xAxisQuestion) + " vs. " + nameForQuestion(yAxisQuestion);
+        
+        // ----------- Diverges from Dojo Chart
+        
+        var fullWidth = 700;
+        var fullHeight = 500;
+        var margin = {top: 20, right: 15, bottom: 60, left: 60};
+        var width = fullWidth - margin.left - margin.right;
+        var height = fullHeight - margin.top - margin.bottom;
+        
+        var x = d3.scale.linear()
+            .domain([0, d3.max(plotItems, function(plotItem) { return plotItem.x; })])
+            .range([0, width]);
+
+        var y = d3.scale.linear()
+            .domain([0, d3.max(plotItems, function(plotItem) { return plotItem.y; })])
+            .range([height, 0]);        
+
+        var chart = d3.select(chartPane.domNode)
+            .append('svg:svg')
+            .attr('width', width + margin.right + margin.left)
+            .attr('height', height + margin.top + margin.bottom)
+            .attr('class', 'chart');
+        
+        var main = chart.append('g')
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+            .attr('width', width)
+            .attr('height', height)
+            .attr('class', 'scatterPlotMain');
+        
+        // draw the x axis
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient('bottom');
+
+        main.append('g')
+            .attr('transform', 'translate(0,' + height + ')')
+            .attr('class', 'main axis date')
+            .call(xAxis);
+        
+        // draw the y axis
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient('left');
+
+        main.append('g')
+            .attr('transform', 'translate(0,0)')
+            .attr('class', 'main axis date')
+            .call(yAxis);
+            
+        var g = main.append("svg:g"); 
+        
+        g.selectAll("scatter-dots")
+          .data(plotItems)
+          .enter().append("svg:circle")
+              .attr("cx", function (plotItem) { return x(plotItem.x); } )
+              .attr("cy", function (plotItem) { return y(plotItem.y); } )
+              .attr("r", 8);
     }
     
     function contingencyTable(graphBrowserInstance, xAxisQuestion, yAxisQuestion) {
@@ -646,7 +730,7 @@ define([
             multipleHistograms(graphBrowserInstance, yAxisQuestion, xAxisQuestion);
         } else if (xType === "scale" && yType === "scale") {
             console.log("plot choice: Scatter plot");
-            scatterPlot(graphBrowserInstance, xAxisQuestion, yAxisQuestion);
+            d3ScatterPlot(graphBrowserInstance, xAxisQuestion, yAxisQuestion);
         } else {
             console.log("ERROR: Unexpected graph type");
             alert("ERROR: Unexpected graph type");
