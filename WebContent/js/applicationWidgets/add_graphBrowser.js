@@ -201,8 +201,8 @@ define([
     }
 
     function d3BarChart(graphBrowserInstance, question) {
+        // Collect data
         
-        // collect data
         var plotItems = [];
         var xLabels = [];
         
@@ -243,13 +243,13 @@ define([
         }
         
         // console.log("plot items", plotItems);
+        
+        // Build chart
 
         var chartPane = newChartPane(graphBrowserInstance, singleChartStyle);
         
         var chartTitle = "" + nameForQuestion(question);
-        
-        // Diverges from dojo here
-       
+
         var fullWidth = 700;
         var fullHeight = 500;
         var margin = {top: 20, right: 15, bottom: 60, left: 60};
@@ -380,7 +380,8 @@ define([
         
         // TODO: Statistics
         
-        // collect data
+        // Collect data
+        
         var plotItems = [];
         var results = {};
         
@@ -417,6 +418,8 @@ define([
         }
         
         // console.log("plot items", plotItems);
+        
+        // Build chart
         
         var style = singleChartStyle;
         if (choiceQuestion) style = multipleChartStyle;
@@ -488,7 +491,8 @@ define([
     // Reference for brushing: http://bl.ocks.org/mbostock/4560481
     // Reference for brush and tooltip: http://wrobstory.github.io/2013/11/D3-brush-and-tooltip.html
     function d3ScatterPlot(graphBrowserInstance, xAxisQuestion, yAxisQuestion) {
-        // collect data
+        // Collect data
+        
         var plotItems = [];
         var stories = domain.allStories;
         for (var index in stories) {
@@ -504,12 +508,12 @@ define([
         }
         // console.log("plot items", plotItems);
 
+        // Build chart
+        
         var chartPane = newChartPane(graphBrowserInstance, singleChartStyle);
         
         var chartTitle = "" + nameForQuestion(xAxisQuestion) + " vs. " + nameForQuestion(yAxisQuestion);
-        
-        // ----------- Diverges from Dojo Chart
-        
+
         var fullWidth = 700;
         var fullHeight = 500;
         var margin = {top: 20, right: 15, bottom: 60, left: 60};
@@ -628,6 +632,8 @@ define([
     }
     
     function contingencyTable(graphBrowserInstance, xAxisQuestion, yAxisQuestion) {
+        // Collect data
+        
         var columnLabels = {};
         var rowLabels = {};
         
@@ -699,6 +705,8 @@ define([
             rowLabelsArray.push(rowName);
         }
         var rowCount = rowLabelsArray.length;
+        
+        // Build chart
         
         var chartPane = newChartPane(graphBrowserInstance, singleChartStyle);
         
