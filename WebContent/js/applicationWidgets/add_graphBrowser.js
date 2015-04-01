@@ -183,6 +183,7 @@ define([
         var oldCount = map[key];
         if (!oldCount) oldCount = 0;
         map[key] = oldCount + 1;
+        console.log("incrementMapSlot to map", key, map[key], map);
     }
     
     function preloadResultsForQuestionOptions(results, question) {
@@ -199,12 +200,14 @@ define([
         }
     }
     
-    function barChart(graphBrowserInstance, question) {
+    function dojoBarChart(graphBrowserInstance, question) {
          
         // collect data
         var plotItems = [];
         var plotLabels = [];
+        
         var results = {};
+        preloadResultsForQuestionOptions(results, question);
         
         var stories = domain.allStories;
         for (var storyIndex in stories) {
@@ -223,21 +226,15 @@ define([
             }
         }
         
-        var resultIndex = 1;
-        
-        preloadResultsForQuestionOptions(results, question);
-        
         // Keep unanswered at start
         var key = unansweredKey;
         plotLabels.push({value: resultIndex, text: key});
         plotItems.push({x: resultIndex, y: results[key]});
-        resultIndex++;
         
         for (key in results) {
             if (key === unansweredKey) continue;
             plotLabels.push({value: resultIndex, text: key});
             plotItems.push({x: resultIndex, y: results[key]});
-            resultIndex++;
         }
         
         console.log("plot items", plotItems);
@@ -265,6 +262,180 @@ define([
         chart.addSeries("Series 1", plotItems);
         
         chart.render();
+    }
+    
+    function d3BarChart(graphBrowserInstance, question) {
+        
+        // collect data
+        var plotItems = [];
+        var xLabels = [];
+        
+        var results = {};
+        preloadResultsForQuestionOptions(results, question);
+        
+        var stories = domain.allStories;
+        for (var storyIndex in stories) {
+            var story = stories[storyIndex];
+            console.log("story", story);
+            var xValue = correctForUnanswered(question, story[question.id]);
+            
+            var xHasCheckboxes = lang.isObject(xValue);
+            // fast path
+            if (!xHasCheckboxes) {
+                console.log("no loop xValue", xValue);
+                incrementMapSlot(results, xValue);
+            } else {
+                console.log(question, xValue);
+                for (var xIndex in xValue) {
+                    console.log("loop xIndex", xIndex, xValue[xIndex]);
+                    if (xValue[xIndex]) incrementMapSlot(results, xIndex);
+                }
+            }
+        }
+        
+        console.log("results", results);
+         
+        // Keep unanswered at start
+        var key = unansweredKey;
+        xLabels.push(key);
+        plotItems.push({name: key, value: results[key]});
+        
+        for (key in results) {
+            if (key === unansweredKey) continue;
+            xLabels.push(key);
+            plotItems.push({name: key, value: results[key]});
+        }
+        
+        console.log("plot items", plotItems);
+
+        var chartPane = newChartPane(graphBrowserInstance, singleChartStyle);
+        
+        var chartTitle = "" + nameForQuestion(question);
+        
+        // Diverges from dojo here
+       
+        var fullWidth = 700;
+        var fullHeight = 500;
+        var margin = {top: 20, right: 15, bottom: 60, left: 60};
+        var width = fullWidth - margin.left - margin.right;
+        var height = fullHeight - margin.top - margin.bottom;
+        
+        var xScale = d3.scale.ordinal()
+            .domain(xLabels)
+            .rangeRoundBands([0, width], 0.1);
+
+        var yScale = d3.scale.linear()
+            .domain([0, d3.max(plotItems, function(plotItem) { return plotItem.value; })])
+            .range([height, 0]);       
+        
+        var chart = d3.select(chartPane.domNode)
+            .append('svg')
+            .attr('width', width + margin.right + margin.left)
+            .attr('height', height + margin.top + margin.bottom)
+            .attr('class', 'barChart');
+        
+        var chartBody = chart.append('g')
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+            .attr('width', width)
+            .attr('height', height)
+            .attr('class', 'barChartMain');
+        
+        // draw the x axis
+        var xAxis = d3.svg.axis()
+            .scale(xScale)
+            .orient('bottom');
+
+        chartBody.append('g')
+            .attr('transform', 'translate(0,' + height + ')')
+            .attr('class', 'barchart x axis')
+            .call(xAxis);
+        
+        // TODO: Improve x axis label that can get written over
+        chartBody.append("text")
+            .attr("class", "barchart x label")
+            .attr("text-anchor", "end")
+            .attr("x", width)
+            .attr("y", height - 6)
+            .text(nameForQuestion(question));
+        
+        // draw the y axis
+        var yAxis = d3.svg.axis()
+            .scale(yScale)
+            .tickFormat(d3.format("d"))
+            .orient('left');
+
+        chartBody.append('g')
+            .attr('transform', 'translate(0,0)')
+            .attr('class', 'barchart y axis')
+            .call(yAxis);
+        
+        // TODO: Improve y axis label
+        chartBody.append("text")
+            .attr("class", "barchart y label")
+            .attr("text-anchor", "end")
+            .attr("y", 6)
+            .attr("dy", ".75em")
+            .attr("transform", "rotate(-90)")
+            .text("Count");
+        
+        /*
+        // Append brush before data to ensure titles are drown
+        var brush = chartBody.append("g")
+            .attr("class", "brush")
+            .call(d3.svg.brush()
+                .x(xScale)
+                .y(yScale)
+                .clamp([false, false])
+                .on("brushend", brushend)
+            );
+        */
+        
+        var bars = chartBody.selectAll("rect")
+                .data(plotItems)
+            .enter().append("rect")
+                .attr("class", "bar")
+                .attr("x", function(plotItem) { return xScale(plotItem.name); })
+                .attr("y", function(plotItem) { return yScale(plotItem.value); })
+                .attr("height", function(plotItem) { return height - yScale(plotItem.value); })
+                .attr("width", xScale.rangeBand());
+        
+        /*
+        // Add tooltips
+        nodes
+            .append("svg:title")
+            .text(function(plotItem) {
+                var tooltipText =
+                    "Title: " + plotItem.story.__survey_storyName +
+                    "\nID: " + plotItem.story._storyID + 
+                    "\nX (" + nameForQuestion(xAxisQuestion) + "):" + plotItem.x +
+                    "\nY (" + nameForQuestion(yAxisQuestion) + "):" + plotItem.y +
+                    "\nText: " + plotItem.story.__survey_storyText;
+                return tooltipText;
+            });
+        
+        // Support starting a drag over a node
+        nodes.on('mousedown', function(){
+            var brushElements = chartBody.select(".brush").node();
+            var newClickEvent = new Event('mousedown');
+            newClickEvent.pageX = d3.event.pageX;
+            newClickEvent.clientX = d3.event.clientX;
+            newClickEvent.pageY = d3.event.pageY;
+            newClickEvent.clientY = d3.event.clientY;
+            brushElements.dispatchEvent(newClickEvent);
+          });
+
+        function brushend() {
+            console.log("brushend", brush);
+            var extent = d3.event.target.extent();
+            var selectedStories = [];
+            bars.classed("selected", function(plotItem) {
+              var selected = extent[0][0] <= plotItem.x && plotItem.x < extent[1][0] && extent[0][1] <= plotItem.y && plotItem.y < extent[1][1];
+              if (selected) selectedStories.push(plotItem.story);
+              return selected;
+            });
+            console.log("Selected stories", selectedStories);
+        }
+        */
     }
     
     // choiceQuestion and option may be undefined if this is just a simple histogram for all values
@@ -436,7 +607,7 @@ define([
 
         chartBody.append('g')
             .attr('transform', 'translate(0,' + height + ')')
-            .attr('class', 'chart axis date')
+            .attr('class', 'x axis')
             .call(xAxis);
         
         chartBody.append("text")
@@ -453,7 +624,7 @@ define([
 
         chartBody.append('g')
             .attr('transform', 'translate(0,0)')
-            .attr('class', 'main axis date')
+            .attr('class', 'y axis')
             .call(yAxis);
         
         chartBody.append("text")
@@ -697,7 +868,7 @@ define([
         if (xType === "choice" && yType === null) {
             console.log("plot choice: Bar graph");
             console.log("barGraph", xAxisQuestion);
-            barChart(graphBrowserInstance, xAxisQuestion);
+            d3BarChart(graphBrowserInstance, xAxisQuestion);
         } else if (xType === "choice" && yType === "choice") {
             console.log("plot choice: Contingency table");
             contingencyTable(graphBrowserInstance, xAxisQuestion, yAxisQuestion);
