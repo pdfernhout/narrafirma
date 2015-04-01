@@ -252,7 +252,7 @@ define([
 
         var fullWidth = 700;
         var fullHeight = 500;
-        var margin = {top: 20, right: 15, bottom: 60, left: 60};
+        var margin = {top: 20, right: 15, bottom: 90, left: 60};
         var width = fullWidth - margin.left - margin.right;
         var height = fullHeight - margin.top - margin.bottom;
         
@@ -286,12 +286,11 @@ define([
             .attr('class', 'barchart x axis')
             .call(xAxis);
         
-        // TODO: Improve x axis label that can get written over
         chartBody.append("text")
             .attr("class", "barchart x label")
-            .attr("text-anchor", "end")
-            .attr("x", width)
-            .attr("y", height - 6)
+            .attr("text-anchor", "middle")
+            .attr("x", width / 2)
+            .attr("y", height + 60)
             .text(nameForQuestion(question));
         
         // draw the y axis
