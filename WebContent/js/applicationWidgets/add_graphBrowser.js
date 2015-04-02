@@ -317,7 +317,6 @@ define([
             .attr("transform", "rotate(-90)")
             .text("Count");
         
-        /*
         // Append brush before data to ensure titles are drown
         var brush = chartBody.append("g")
             .attr("class", "brush")
@@ -327,9 +326,8 @@ define([
                 .clamp([false, false])
                 .on("brushend", brushend)
             );
-        */
         
-        var bars = chartBody.selectAll("rect")
+        var bars = chartBody.selectAll("bars")
                 .data(plotItems)
             .enter().append("rect")
                 .attr("class", "bar")
@@ -368,19 +366,19 @@ define([
           });
         */
         
-        /*
         function brushend() {
             console.log("brushend", brush);
             var extent = d3.event.target.extent();
-            var selectedStories = [];
+            console.log("extent", extent);
+            var selectedAnswers = [];
             bars.classed("selected", function(plotItem) {
-              var selected = extent[0] <= xScale(plotItem.value) && xScale(plotItem.value) < extent[1];
-              if (selected) selectedStories.push(plotItem.story);
+              console.log("xScale value", xScale(plotItem.name));
+              var selected = extent[0][0] <= xScale(plotItem.name) && xScale(plotItem.name) < extent[1][0];
+              if (selected) selectedAnswers.push(plotItem.name);
               return selected;
             });
-            console.log("Selected stories", selectedStories);
+            console.log("Selected answers", selectedAnswers);
         }
-        */
     }
     
     // choiceQuestion and option may be undefined if this is just a simple histogram for all values
