@@ -276,10 +276,17 @@ define([
         var xScale = d3.scale.ordinal()
             .domain(xLabels)
             .rangeRoundBands([0, width], 0.1);
+        
+        var maxItemsPerBar = d3.max(plotItems, function(plotItem) { return plotItem.value; });
 
         var yScale = d3.scale.linear()
-            .domain([0, d3.max(plotItems, function(plotItem) { return plotItem.value; })])
-            .range([height, 0]);       
+            .domain([0, maxItemsPerBar])
+            .range([height, 0]);
+        
+        // Extra version of scale for calculating heights without subtracting as in height - yScale(value)
+        var yHeightScale = d3.scale.linear()
+            .domain([0, maxItemsPerBar])
+            .range([0, height]);
         
         var chart = d3.select(chartPane.domNode).append('svg')
             .attr('width', width + margin.right + margin.left)
@@ -353,7 +360,7 @@ define([
             .attr("style", "stroke: rgb(0,0,0); fill: white;")
             .attr("x", function(plotItem) { return 0; })
             .attr("y", function(plotItem) { return 0; })
-            .attr("height", function(plotItem) { return height - yScale(plotItem.value); })
+            .attr("height", function(plotItem) { return yHeightScale(plotItem.value); })
             .attr("width", xScale.rangeBand());
         
         // Overlay stories on each bar...
@@ -361,8 +368,8 @@ define([
                 .data(function(plotItem) { return plotItem.stories; })
             .enter().append("text")
                 .attr("x", function (d, i) { /* console.log("attr x i d this", i, d, this); */ return 0;})
-                .attr("y", function (d, i) { return yScale(i + 1.5); })
-                .attr("text-anchor", "middle")
+                .attr("y", function (d, i) { return yHeightScale(i); /* console.log("d i", d, i); return yScale(maxItemsPerBar - i); */ })
+                .attr("text-anchor", "left")
                 .text(function(story) { return story.__survey_storyName; });
         
         // Add tooltips
