@@ -45,7 +45,7 @@ define([
 
     // TODO: Need to be able to associate related stories with everything on screen so can browse them when clicked
     
-    var unansweredKey = "{Unanswered}";
+    var unansweredKey = "{N/A}";
     var singleChartStyle = "width: 700px; height: 500px;";
     var multipleChartStyle = "width: 200px; height: 200; float: left;";
     var chartEnclosureStyle = "width: 850px; height: 650px; margin: 5px auto 0px auto;";
@@ -277,8 +277,13 @@ define([
             .attr('class', 'barChartMain');
         
         // draw the x axis
+        // TODO: Improve the way labels are drawn or ellipsed based on chart size and font size and number of bars
         var xAxis = d3.svg.axis()
             .scale(xScale)
+            .tickFormat(function (label, i) {
+                if (label.length <= 9) return label;
+                return label.substring(0, 6) + "..."; 
+            })
             .orient('bottom');
 
         chartBody.append('g')
@@ -304,7 +309,6 @@ define([
             .attr('class', 'barchart y axis')
             .call(yAxis);
         
-        // TODO: Improve y axis label
         chartBody.append("text")
             .attr("class", "barchart y label")
             .attr("text-anchor", "end")
@@ -334,20 +338,24 @@ define([
                 .attr("height", function(plotItem) { return height - yScale(plotItem.value); })
                 .attr("width", xScale.rangeBand());
         
-        /*
         // Add tooltips
-        nodes
+        bars
             .append("svg:title")
             .text(function(plotItem) {
+                var tooltipText = plotItem.name;
+                /*
                 var tooltipText =
                     "Title: " + plotItem.story.__survey_storyName +
                     "\nID: " + plotItem.story._storyID + 
                     "\nX (" + nameForQuestion(xAxisQuestion) + "):" + plotItem.x +
                     "\nY (" + nameForQuestion(yAxisQuestion) + "):" + plotItem.y +
                     "\nText: " + plotItem.story.__survey_storyText;
+                */
                 return tooltipText;
             });
         
+        /*
+         * 
         // Support starting a drag over a node
         nodes.on('mousedown', function(){
             var brushElements = chartBody.select(".brush").node();
@@ -358,13 +366,15 @@ define([
             newClickEvent.clientY = d3.event.clientY;
             brushElements.dispatchEvent(newClickEvent);
           });
-
+        */
+        
+        /*
         function brushend() {
             console.log("brushend", brush);
             var extent = d3.event.target.extent();
             var selectedStories = [];
             bars.classed("selected", function(plotItem) {
-              var selected = extent[0][0] <= plotItem.x && plotItem.x < extent[1][0] && extent[0][1] <= plotItem.y && plotItem.y < extent[1][1];
+              var selected = extent[0] <= xScale(plotItem.value) && xScale(plotItem.value) < extent[1];
               if (selected) selectedStories.push(plotItem.story);
               return selected;
             });
