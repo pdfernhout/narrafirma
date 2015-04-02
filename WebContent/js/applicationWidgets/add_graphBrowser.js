@@ -367,8 +367,8 @@ define([
         var barStories = bars.selectAll(".story")
                 .data(function(plotItem) { return plotItem.stories; })
             .enter().append("text")
-                .attr("x", function (d, i) { /* console.log("attr x i d this", i, d, this); */ return 0;})
-                .attr("y", function (d, i) { return yHeightScale(i); /* console.log("d i", d, i); return yScale(maxItemsPerBar - i); */ })
+                .attr("x", function (d, i) { return xScale.rangeBand() / 2; })
+                .attr("y", function (d, i) { return yHeightScale(i + 0.5); })
                 .attr("text-anchor", "left")
                 .text(function(story) { return story.__survey_storyName; });
         
