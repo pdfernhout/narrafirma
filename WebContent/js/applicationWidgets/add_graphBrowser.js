@@ -366,31 +366,25 @@ define([
         // Overlay stories on each bar...
         var barStories = bars.selectAll(".story")
                 .data(function(plotItem) { return plotItem.stories; })
-            .enter().append("text")
-                .attr("x", function (d, i) { return xScale.rangeBand() / 2; })
-                .attr("y", function (d, i) { return yHeightScale(i + 0.5); })
-                .attr("text-anchor", "left")
-                .text(function(story) { return story.__survey_storyName; });
+            .enter().append("rect")
+                .attr("style", function(d, i) { return "stroke: rgb(0,0,0); fill: " + ((i % 2 === 0) ? "black" : "grey") + ";"; })
+                .attr("x", function(plotItem) { return 0; })
+                .attr("y", function(plotItem, i) { return yHeightScale(i); })
+                .attr("height", function(plotItem) { return yHeightScale(1); })
+                .attr("width", xScale.rangeBand());
         
         // Add tooltips
-        bars.append("svg:title")
-            .text(function(plotItem) {
-                var tooltipText = plotItem.name;
-                /*
+        barStories.append("svg:title")
+            .text(function(story) {
                 var tooltipText =
-                    "Title: " + plotItem.story.__survey_storyName +
-                    "\nID: " + plotItem.story._storyID + 
-                    "\nX (" + nameForQuestion(xAxisQuestion) + "):" + plotItem.x +
-                    "\nY (" + nameForQuestion(yAxisQuestion) + "):" + plotItem.y +
-                    "\nText: " + plotItem.story.__survey_storyText;
-                */
+                    "Title: " + story.__survey_storyName +
+                    "\nID: " + story._storyID + 
+                    "\n" + nameForQuestion(question) + ":" + story[question.id];
                 return tooltipText;
             });
         
-        /*
-         * 
         // Support starting a drag over a node
-        nodes.on('mousedown', function(){
+        barStories.on('mousedown', function(){
             var brushElements = chartBody.select(".brush").node();
             var newClickEvent = new Event('mousedown');
             newClickEvent.pageX = d3.event.pageX;
@@ -399,7 +393,6 @@ define([
             newClickEvent.clientY = d3.event.clientY;
             brushElements.dispatchEvent(newClickEvent);
           });
-        */
         
         function brushend() {
             console.log("brushend", brush);
@@ -408,7 +401,8 @@ define([
             var selectedPlotItems = [];
             bars.classed("selected", function(plotItem) {
               console.log("xScale value", xScale(plotItem.name));
-              var selected = extent[0][0] <= xScale(plotItem.name) && xScale(plotItem.name) < extent[1][0];
+              var midPoint = xScale(plotItem.name) + xScale.rangeBand() / 2;
+              var selected = extent[0][0] <= midPoint  && midPoint < extent[1][0];
               if (selected) selectedPlotItems.push(plotItem);
               return selected;
             });
