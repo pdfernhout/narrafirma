@@ -281,8 +281,7 @@ define([
             .domain([0, d3.max(plotItems, function(plotItem) { return plotItem.value; })])
             .range([height, 0]);       
         
-        var chart = d3.select(chartPane.domNode)
-            .append('svg')
+        var chart = d3.select(chartPane.domNode).append('svg')
             .attr('width', width + margin.right + margin.left)
             .attr('height', height + margin.top + margin.bottom)
             .attr('class', 'barChart');
@@ -344,7 +343,7 @@ define([
                 .on("brushend", brushend)
             );
         
-        var bars = chartBody.selectAll("bars")
+        var bars = chartBody.selectAll(".bar")
                 .data(plotItems)
             .enter().append("rect")
                 .attr("class", "bar")
@@ -354,8 +353,7 @@ define([
                 .attr("width", xScale.rangeBand());
         
         // Add tooltips
-        bars
-            .append("svg:title")
+        bars.append("svg:title")
             .text(function(plotItem) {
                 var tooltipText = plotItem.name;
                 /*
