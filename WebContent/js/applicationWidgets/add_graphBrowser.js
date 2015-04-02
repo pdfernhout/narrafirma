@@ -186,6 +186,14 @@ define([
         // console.log("incrementMapSlot to map", key, map[key], map);
     }
     
+    function pushToMapSlot(map, key, value) {
+        var values = map[key];
+        if (!values) values = [];
+        values.push(value);
+        map[key] = values;
+        // console.log("pushToMapSlot", key, value, map[key]);
+    }
+    
     function preloadResultsForQuestionOptions(results, question) {
         /*jshint -W069 */
         var type = question.displayType;
@@ -206,8 +214,15 @@ define([
         var plotItems = [];
         var xLabels = [];
         
+        var key;
+
         var results = {};
+        
         preloadResultsForQuestionOptions(results, question);
+        // change 0 to [] for preloaded results
+        for (key in results) {
+            results[key] = [];
+        }
         
         var stories = domain.allStories;
         for (var storyIndex in stories) {
@@ -219,27 +234,29 @@ define([
             // fast path
             if (!xHasCheckboxes) {
                 // console.log("no loop xValue", xValue);
-                incrementMapSlot(results, xValue);
+                pushToMapSlot(results, xValue, story);
             } else {
                 console.log(question, xValue);
                 for (var xIndex in xValue) {
                     // console.log("loop xIndex", xIndex, xValue[xIndex]);
-                    if (xValue[xIndex]) incrementMapSlot(results, xIndex);
+                    if (xValue[xIndex]) pushToMapSlot(results, xIndex, story);
                 }
             }
         }
         
         // console.log("results", results);
          
-        // Keep unanswered at start
-        var key = unansweredKey;
-        xLabels.push(key);
-        plotItems.push({name: key, value: results[key]});
+        // Keep unanswered at start if present
+        key = unansweredKey;
+        if (results[key]) {
+            xLabels.push(key);
+            plotItems.push({name: key, stories: results[key], value: results[key].length});
+        }
         
         for (key in results) {
             if (key === unansweredKey) continue;
             xLabels.push(key);
-            plotItems.push({name: key, value: results[key]});
+            plotItems.push({name: key, stories: results[key], value: results[key].length});
         }
         
         // console.log("plot items", plotItems);
@@ -370,14 +387,14 @@ define([
             console.log("brushend", brush);
             var extent = d3.event.target.extent();
             console.log("extent", extent);
-            var selectedAnswers = [];
+            var selectedPlotItems = [];
             bars.classed("selected", function(plotItem) {
               console.log("xScale value", xScale(plotItem.name));
               var selected = extent[0][0] <= xScale(plotItem.name) && xScale(plotItem.name) < extent[1][0];
-              if (selected) selectedAnswers.push(plotItem.name);
+              if (selected) selectedPlotItems.push(plotItem);
               return selected;
             });
-            console.log("Selected answers", selectedAnswers);
+            console.log("Selected plotItems", selectedPlotItems);
         }
     }
     
