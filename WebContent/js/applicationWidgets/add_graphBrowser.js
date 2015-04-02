@@ -345,12 +345,25 @@ define([
         
         var bars = chartBody.selectAll(".bar")
                 .data(plotItems)
-            .enter().append("rect")
+            .enter().append("g")
                 .attr("class", "bar")
-                .attr("x", function(plotItem) { return xScale(plotItem.name); })
-                .attr("y", function(plotItem) { return yScale(plotItem.value); })
-                .attr("height", function(plotItem) { return height - yScale(plotItem.value); })
-                .attr("width", xScale.rangeBand());
+                .attr('transform', function(plotItem) { return 'translate(' + xScale(plotItem.name) + ',' + yScale(plotItem.value) + ')'; });
+            
+       var barBackground = bars.append("rect")
+            .attr("style", "stroke: rgb(0,0,0); fill: white;")
+            .attr("x", function(plotItem) { return 0; })
+            .attr("y", function(plotItem) { return 0; })
+            .attr("height", function(plotItem) { return height - yScale(plotItem.value); })
+            .attr("width", xScale.rangeBand());
+        
+        // Overlay stories on each bar...
+        var barStories = bars.selectAll(".story")
+                .data(function(plotItem) { return plotItem.stories; })
+            .enter().append("text")
+                .attr("x", function (d, i) { /* console.log("attr x i d this", i, d, this); */ return 0;})
+                .attr("y", function (d, i) { return yScale(i + 1.5); })
+                .attr("text-anchor", "middle")
+                .text(function(story) { return story.__survey_storyName; });
         
         // Add tooltips
         bars.append("svg:title")
