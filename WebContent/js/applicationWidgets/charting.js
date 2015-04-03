@@ -143,7 +143,7 @@ define([
         return result;
     }
 
-    function d3BarChart(graphBrowserInstance, question) {
+    function d3BarChart(graphBrowserInstance, question, storiesSelectedCallback) {
         // Collect data
         
         var allPlotItems = [];
@@ -335,21 +335,29 @@ define([
             var extent = d3.event.target.extent();
             // console.log("extent", extent);
             var selectedPlotItems = [];
+            var selectedStories = [];
             bars.classed("selected", function(plotItem) {
               // console.log("xScale value", xScale(plotItem.name));
               var midPoint = xScale(plotItem.name) + xScale.rangeBand() / 2;
               var selected = extent[0][0] <= midPoint  && midPoint < extent[1][0];
-              if (selected) selectedPlotItems.push(plotItem);
+              if (selected) {
+                  selectedPlotItems.push(plotItem);
+                  for (var i = 0; i < plotItem.stories.length; i++) {
+                      var story = plotItem.stories[i];
+                      if (selectedStories.indexOf(story) === -1) selectedStories.push(story);
+                  }
+              }
               return selected;
             });
             console.log("Selected plotItems", selectedPlotItems);
+            storiesSelectedCallback(graphBrowserInstance, selectedStories);
         }
     }
     
     // Histogram reference for d3: http://bl.ocks.org/mbostock/3048450
     
-    // choiceQuestion and option may be undefined if this is just a simple histogram for all values
-    function d3HistogramChart(graphBrowserInstance, scaleQuestion, choiceQuestion, choice) {
+    // choiceQuestion and choice may be undefined if this is just a simple histogram for all values
+    function d3HistogramChart(graphBrowserInstance, scaleQuestion, choiceQuestion, choice, storiesSelectedCallback) {
         // console.log("graphBrowserInstance, scaleQuestion", graphBrowserInstance, scaleQuestion);
         
         // TODO: Statistics
@@ -550,22 +558,32 @@ define([
             var extent = d3.event.target.extent();
             // console.log("extent", extent);
             var selectedPlotItems = [];
+            var selectedStories = [];
             bars.classed("selected", function(plotItems) {
               // console.log("plotItems", plotItems);
               var midPoint = plotItems.x + data[0].dx / 2;
               // console.log("midPoint", midPoint, plotItems.x);
               var selected = extent[0][0] <= midPoint  && midPoint < extent[1][0];
-              if (selected) selectedPlotItems.push.apply(selectedPlotItems, plotItems);
+              if (selected) {
+                  console.log("histogram brush", plotItems);
+                  selectedPlotItems.push.apply(selectedPlotItems, plotItems);
+                  for (var i = 0; i < plotItems.length; i++) {
+                      var item = plotItems[i];
+                      console.log("histogram story", i, item, item.story);
+                      selectedStories.push(item.story);
+                  }
+              }
               // console.log("selected", selected);
               return selected;
             });
             console.log("Selected plotItems", selectedPlotItems);
+            storiesSelectedCallback(graphBrowserInstance, selectedStories);
         }
         
         // TODO: Put up title
     }
     
-    function multipleHistograms(graphBrowserInstance, choiceQuestion, scaleQuestion) {
+    function multipleHistograms(graphBrowserInstance, choiceQuestion, scaleQuestion, storiesSelectedCallback) {
         var options = [];
         var index;
         if (choiceQuestion.displayType !== "checkbox" && choiceQuestion.displayType !== "checkboxes") {
@@ -593,7 +611,8 @@ define([
         
         for (index in options) {
             var option = options[index];
-            d3HistogramChart(graphBrowserInstance, scaleQuestion, choiceQuestion, option);
+            // TODO: Maybe need to pass which chart to the storiesSelectedCallback
+            d3HistogramChart(graphBrowserInstance, scaleQuestion, choiceQuestion, option, storiesSelectedCallback);
         }
         
         // End the float
@@ -604,7 +623,7 @@ define([
     // Reference for initial scatter chart: http://bl.ocks.org/bunkat/2595950
     // Reference for brushing: http://bl.ocks.org/mbostock/4560481
     // Reference for brush and tooltip: http://wrobstory.github.io/2013/11/D3-brush-and-tooltip.html
-    function d3ScatterPlot(graphBrowserInstance, xAxisQuestion, yAxisQuestion) {
+    function d3ScatterPlot(graphBrowserInstance, xAxisQuestion, yAxisQuestion, storiesSelectedCallback) {
         // Collect data
         
         var allPlotItems = [];
@@ -741,10 +760,11 @@ define([
               return selected;
             });
             console.log("Selected stories", selectedStories);
+            storiesSelectedCallback(graphBrowserInstance, selectedStories);
         }
     }
     
-    function contingencyTable(graphBrowserInstance, xAxisQuestion, yAxisQuestion) {
+    function contingencyTable(graphBrowserInstance, xAxisQuestion, yAxisQuestion, storiesSelectedCallback) {
         // Collect data
         
         var columnLabels = {};

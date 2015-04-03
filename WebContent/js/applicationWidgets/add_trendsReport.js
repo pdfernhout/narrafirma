@@ -99,26 +99,30 @@ define([
         var q2 = pattern.questions[1];
         switch (type) {
             case "bar":
-                charting.d3BarChart(graphBrowserInstance, q1);
+                charting.d3BarChart(graphBrowserInstance, q1, updateStoriesPane);
                 break;
             case "table":
-                charting.contingencyTable(graphBrowserInstance, q1, q2);
+                charting.contingencyTable(graphBrowserInstance, q1, q2, updateStoriesPane);
                 break;
             case "histogram":
-                charting.d3HistogramChart(graphBrowserInstance, q1);
+                charting.d3HistogramChart(graphBrowserInstance, q1, null, null, updateStoriesPane);
                 break;
             case "multiple histogram":
                 // Choice question needs to come before scale question in args
-                charting.multipleHistograms(graphBrowserInstance, q2, q1);
+                charting.multipleHistograms(graphBrowserInstance, q2, q1, updateStoriesPane);
                 break;
             case "scatter":
-                charting.d3ScatterPlot(graphBrowserInstance, q1, q2);
+                charting.d3ScatterPlot(graphBrowserInstance, q1, q2, updateStoriesPane);
                 break;        
            default:
                 console.log("ERROR: Unexpected graph type");
                 alert("ERROR: Unexpected graph type");
                 break;
         }
+    }
+    
+    function updateStoriesPane(graphBrowserInstance, stories) {
+        graphBrowserInstance.storiesPane.set("content", "<pre>" + JSON.stringify(stories, null, 4) + "</pre>");
     }
 
     function add_trendsReport(panelBuilder, contentPane, model, fieldSpecification) {
@@ -137,7 +141,8 @@ define([
             chartPanes: [], 
             questions: questions,
             allStories: domain.allStories,
-            patterns: null
+            patterns: null,
+            storiesPane: null
         };
         
         var patterns = buildPatternList(graphBrowserInstance);
@@ -166,6 +171,13 @@ define([
         });
         
         contentPane.addChild(graphResultsPane);
+        
+        var storiesPane = new ContentPane({
+            content: "Stories go here..."        
+        });
+        storiesPane.placeAt(contentPane);
+        
+        graphBrowserInstance.storiesPane = storiesPane;
         
         return label;
     }
