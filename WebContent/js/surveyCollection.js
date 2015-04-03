@@ -1,15 +1,19 @@
 define([
+    "dojo/_base/array",
     "js/domain",
     "dojo/_base/lang",
     "js/questionnaireGeneration",
     "js/storage",
-    "dojo/topic"
+    "dojo/topic",
+    "js/panelBuilder/translate"
 ], function(
+    array,
     domain,
     lang,
     questionnaireGeneration,
     storage,
-    topic
+    topic,
+    translate
 ) {
    "use strict";
    
@@ -200,6 +204,24 @@ define([
        return questions;
    }
    
+   // Types of questions that have data associated with them for filters and graphs
+   var filterableQuestionTypes = ["select", "slider", "boolean", "text", "checkbox", "checkboxes", "radiobuttons"];
+
+   // function updateFilterPaneForCurrentQuestions(questions) {
+   function optionsForAllQuestions(questions, excludeTextQuestionsFlag) {
+       var questionOptions = [];
+       array.forEach(questions, function (question) {
+           if (array.indexOf(filterableQuestionTypes, question.displayType) !== -1) {
+               if (!excludeTextQuestionsFlag || question.displayType !== "text") {
+                   var defaultText = question.displayName;
+                   if (!defaultText) defaultText = question.displayPrompt;
+                   questionOptions.push({label: translate(question.id + "::shortName", defaultText), value: question.id});
+               }
+           }
+       });
+       return questionOptions;
+   }
+   
    return {
        storyCollectionStart: storyCollectionStart,
        storyCollectionStop: storyCollectionStop,
@@ -215,6 +237,8 @@ define([
        
        getParticipantDataForParticipantID: getParticipantDataForParticipantID,
        
-       collectQuestionsForCurrentQuestionnaire: collectQuestionsForCurrentQuestionnaire
+       collectQuestionsForCurrentQuestionnaire: collectQuestionsForCurrentQuestionnaire,
+       
+       optionsForAllQuestions: optionsForAllQuestions
    };
 });

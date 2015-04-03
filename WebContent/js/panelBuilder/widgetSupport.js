@@ -147,28 +147,9 @@ define([
         select.placeAt(parentContentPane);
         return select;
     }
-    
-    // Types of questions that have data associated with them for filters and graphs
-    var filterableQuestionTypes = ["select", "slider", "boolean", "text", "checkbox", "checkboxes", "radiobuttons"];
-
-    // function updateFilterPaneForCurrentQuestions(questions) {
-    function optionsForAllQuestions(questions, excludeTextQuestionsFlag) {
-        var questionOptions = [];
-        array.forEach(questions, function (question) {
-            if (array.indexOf(filterableQuestionTypes, question.displayType) !== -1) {
-                if (!excludeTextQuestionsFlag || question.displayType !== "text") {
-                    var defaultText = question.displayName;
-                    if (!defaultText) defaultText = question.displayPrompt;
-                    questionOptions.push({label: translate(question.id + "::shortName", defaultText), value: question.id});
-                }
-            }
-        });
-        return questionOptions;
-    }
 
     return {
-        "buildOptions": buildOptions,
-        "optionsForAllQuestions": optionsForAllQuestions,
+        buildOptions: buildOptions,
         newButton: newButton,
         newSelect: newSelect,
         updateSelectChoices: updateSelectChoices,

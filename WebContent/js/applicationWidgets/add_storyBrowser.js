@@ -181,7 +181,7 @@ define([
         // TODO: Translate
         contentPane.containerNode.appendChild(domConstruct.toDom('Filter by: '));
         
-        var questionSelect = widgetSupport.newSelect(contentPane, widgetSupport.optionsForAllQuestions(questions));
+        var questionSelect = surveyCollection.newSelect(contentPane, widgetSupport.optionsForAllQuestions(questions));
         // questionSelect.set("style", "width: 98%; max-width: 98%");
         // questionSelect.set("style", "min-width: 50%");
         
@@ -214,7 +214,7 @@ define([
         var questions = surveyCollection.collectQuestionsForCurrentQuestionnaire();
         storyBrowserInstance.questions = questions;
         
-        var choices = widgetSupport.optionsForAllQuestions(questions);
+        var choices = surveyCollection.optionsForAllQuestions(questions);
         widgetSupport.updateSelectChoices(storyBrowserInstance.filter1.questionSelect, choices);
         widgetSupport.updateSelectChoices(storyBrowserInstance.filter2.questionSelect, choices);
         
