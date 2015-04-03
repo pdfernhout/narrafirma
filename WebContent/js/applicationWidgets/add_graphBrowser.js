@@ -154,7 +154,7 @@ define([
     function d3BarChart(graphBrowserInstance, question) {
         // Collect data
         
-        var plotItems = [];
+        var allPlotItems = [];
         var xLabels = [];
         
         var key;
@@ -193,16 +193,16 @@ define([
         key = unansweredKey;
         if (results[key]) {
             xLabels.push(key);
-            plotItems.push({name: key, stories: results[key], value: results[key].length});
+            allPlotItems.push({name: key, stories: results[key], value: results[key].length});
         }
         
         for (key in results) {
             if (key === unansweredKey) continue;
             xLabels.push(key);
-            plotItems.push({name: key, stories: results[key], value: results[key].length});
+            allPlotItems.push({name: key, stories: results[key], value: results[key].length});
         }
         
-        // console.log("plot items", plotItems);
+        // console.log("plot items", allPlotItems);
         
         // Build chart
 
@@ -220,7 +220,7 @@ define([
             .domain(xLabels)
             .rangeRoundBands([0, width], 0.1);
         
-        var maxItemsPerBar = d3.max(plotItems, function(plotItem) { return plotItem.value; });
+        var maxItemsPerBar = d3.max(allPlotItems, function(plotItem) { return plotItem.value; });
 
         var yScale = d3.scale.linear()
             .domain([0, maxItemsPerBar])
@@ -293,7 +293,7 @@ define([
             );
         
         var bars = chartBody.selectAll(".bar")
-                .data(plotItems)
+                .data(allPlotItems)
             .enter().append("g")
                 .attr("class", "bar")
                 .attr('transform', function(plotItem) { return 'translate(' + xScale(plotItem.name) + ',' + yScale(plotItem.value) + ')'; });
@@ -384,11 +384,11 @@ define([
                 }
                 if (skip) continue;
             }
-            var plotItem = {story: story, value: xValue};
+            var newPlotItem = {story: story, value: xValue};
             if (xValue === unansweredKey) {
-                unanswered.push(plotItem);
+                unanswered.push(newPlotItem);
             } else {
-                values.push(plotItem);
+                values.push(newPlotItem);
             }
         }
         
@@ -450,19 +450,22 @@ define([
             .attr('width', width)
             .attr('height', height)
             .attr('class', 'histogramMain');
-            
+        
+        // Append brush before data to ensure titles are drown
+        var brush = chartBody.append("g")
+            .attr("class", "brush")
+            .call(d3.svg.brush()
+                .x(xScale)
+                .y(yScale)
+                .clamp([false, false])
+                .on("brushend", brushend)
+            );
+        
         var bars = chartBody.selectAll(".bar")
             .data(data)
           .enter().append("g")
             .attr("class", "bar")
             .attr("transform", function(d) { return "translate(" + xScale(d.x) + "," + yScale(d.y) + ")"; });
-        
-        /*
-        bars.append("rect")
-            .attr("x", 1)
-            .attr("width", xScale(data[0].dx) - 1)
-            .attr("height", function(d) { return height - yScale(d.y); });
-        */
         
         // Overlay stories on each bar...
         var barStories = bars.selectAll(".story")
@@ -539,6 +542,34 @@ define([
             chartBody.selectAll('.axis').style({ 'stroke-width': '1px', 'fill': 'gray'});
         }
         
+        // Support starting a drag over a node
+        barStories.on('mousedown', function(){
+            var brushElements = chartBody.select(".brush").node();
+            var newClickEvent = new Event('mousedown');
+            newClickEvent.pageX = d3.event.pageX;
+            newClickEvent.clientX = d3.event.clientX;
+            newClickEvent.pageY = d3.event.pageY;
+            newClickEvent.clientY = d3.event.clientY;
+            brushElements.dispatchEvent(newClickEvent);
+          });
+        
+        function brushend() {
+            console.log("brushend", brush);
+            var extent = d3.event.target.extent();
+            console.log("extent", extent);
+            var selectedPlotItems = [];
+            bars.classed("selected", function(plotItems) {
+              console.log("plotItems", plotItems);
+              var midPoint = plotItems.x + data[0].dx / 2;
+              console.log("midPoint", midPoint, plotItems.x);
+              var selected = extent[0][0] <= midPoint  && midPoint < extent[1][0];
+              if (selected) selectedPlotItems.push.apply(selectedPlotItems, plotItems);
+              console.log("selected", selected);
+              return selected;
+            });
+            console.log("Selected plotItems", selectedPlotItems);
+        }
+        
         // TODO: Put up title
     }
     
@@ -584,7 +615,7 @@ define([
     function d3ScatterPlot(graphBrowserInstance, xAxisQuestion, yAxisQuestion) {
         // Collect data
         
-        var plotItems = [];
+        var allPlotItems = [];
         var stories = domain.allStories;
         for (var index in stories) {
             var story = stories[index];
@@ -594,10 +625,10 @@ define([
             // TODO: What do do about unanswered?
             if (xValue === unansweredKey || yValue === unansweredKey) continue;
             
-            var plotItem = newPlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story);
-            plotItems.push(plotItem);
+            var newPlotItem = newPlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story);
+            allPlotItems.push(newPlotItem);
         }
-        // console.log("plot items", plotItems);
+        // console.log("plot items", allPlotItems);
 
         // Build chart
         
@@ -678,7 +709,7 @@ define([
         var nodes = chartBody.append("g")
                 .attr("class", "node")
             .selectAll("circle")
-                .data(plotItems)
+                .data(allPlotItems)
             .enter().append("circle")
                 .attr("r", 8)
                 .attr("cx", function (plotItem) { return xScale(plotItem.x); } )
