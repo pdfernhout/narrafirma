@@ -579,13 +579,18 @@ define([
             .scale(xScale)
             .orient("bottom");
         
-        var svg = d3.select(chartPane.domNode).append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-          .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-        
-        var bar = svg.selectAll(".bar")
+        var chart = d3.select(chartPane.domNode).append('svg')
+            .attr('width', width + margin.right + margin.left)
+            .attr('height', height + margin.top + margin.bottom)
+            .attr('class', 'chart');
+    
+        var chartBody = chart.append('g')
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+            .attr('width', width)
+            .attr('height', height)
+            .attr('class', 'histogramMain');
+            
+        var bar = chartBody.selectAll(".bar")
             .data(data)
           .enter().append("g")
             .attr("class", "bar")
@@ -596,17 +601,31 @@ define([
             .attr("width", xScale(data[0].dx) - 1)
             .attr("height", function(d) { return height - yScale(d.y); });
         
-        bar.append("text")
-            .attr("dy", ".75em")
-            .attr("y", 6)
-            .attr("x", xScale(data[0].dx) / 2)
-            .attr("text-anchor", "middle")
-            .text(function(d) { return formatCount(d.y); });
-
-        svg.append("g")
+        // Draw the x axis
+        chartBody.append("g")
             .attr("class", "x axis")
             .attr("transform", "translate(0," + height + ")")
             .call(xAxis);
+        
+        // draw the y axis
+        var yAxis = d3.svg.axis()
+            .scale(yScale)
+            .tickFormat(d3.format("d"))
+            .orient('left');
+
+        chartBody.append('g')
+            .attr('transform', 'translate(0,0)')
+            .attr('class', 'y axis')
+            .call(yAxis);
+        
+        chartBody.append("text")
+            .attr("class", "y label")
+            .attr("text-anchor", "end")
+            .attr("y", 6)
+            .attr("dy", ".75em")
+            .attr("transform", "rotate(-90)")
+            // TODO: Translate
+            .text("Frequency");
         
         // TODO: Put up title
     }
@@ -688,8 +707,7 @@ define([
             .domain([0, 100])
             .range([height, 0]);       
         
-        var chart = d3.select(chartPane.domNode)
-            .append('svg')
+        var chart = d3.select(chartPane.domNode).append('svg')
             .attr('width', width + margin.right + margin.left)
             .attr('height', height + margin.top + margin.bottom)
             .attr('class', 'chart');
