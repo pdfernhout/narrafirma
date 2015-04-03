@@ -145,6 +145,11 @@ define([
         if (label.length <= maximumCharacters) return label;
         return label.substring(0, maximumCharacters - 3) + "..."; 
     }
+    
+    // TODO: Put elipsis starting between words so no words are cut off
+    function limitStoryTextLength(text) {
+        return limitLabelLength(text, 500);
+    }
 
     function d3BarChart(graphBrowserInstance, question) {
         // Collect data
@@ -304,6 +309,7 @@ define([
         var barStories = bars.selectAll(".story")
                 .data(function(plotItem) { return plotItem.stories; })
             .enter().append("rect")
+                .attr('class', 'story')
                 .attr("style", function(d, i) { return "stroke: rgb(0,0,0); fill: " + ((i % 2 === 0) ? "black" : "grey") + ";"; })
                 .attr("x", function(plotItem) { return 0; })
                 .attr("y", function(plotItem, i) { return yHeightScale(i); })
@@ -315,8 +321,9 @@ define([
             .text(function(story) {
                 var tooltipText =
                     "Title: " + story.__survey_storyName +
-                    "\nID: " + story._storyID + 
-                    "\n" + nameForQuestion(question) + ":" + story[question.id];
+                    // "\nID: " + story._storyID + 
+                    "\n" + nameForQuestion(question) + ":" + story[question.id] +
+                    "\nText: " + limitStoryTextLength(story.__survey_storyText);
                 return tooltipText;
             });
         
@@ -377,11 +384,11 @@ define([
                 }
                 if (skip) continue;
             }
-            var item = {story: story, value: xValue};
+            var plotItem = {story: story, value: xValue};
             if (xValue === unansweredKey) {
-                unanswered.push(item);
+                unanswered.push(plotItem);
             } else {
-                values.push(item);
+                values.push(plotItem);
             }
         }
         
@@ -450,16 +457,18 @@ define([
             .attr("class", "bar")
             .attr("transform", function(d) { return "translate(" + xScale(d.x) + "," + yScale(d.y) + ")"; });
         
+        /*
         bars.append("rect")
             .attr("x", 1)
             .attr("width", xScale(data[0].dx) - 1)
             .attr("height", function(d) { return height - yScale(d.y); });
+        */
         
-        /*
         // Overlay stories on each bar...
         var barStories = bars.selectAll(".story")
-                .data(function(plotItem) { return plotItem.stories; })
+                .data(function(plotItem) { return plotItem; })
             .enter().append("rect")
+                .attr('class', 'story')
                 .attr("style", function(d, i) { return "stroke: rgb(0,0,0); fill: " + ((i % 2 === 0) ? "black" : "grey") + ";"; })
                 .attr("x", function(plotItem) { return 0; })
                 .attr("y", function(plotItem, i) { return yHeightScale(i); })
@@ -468,13 +477,14 @@ define([
         
         // Add tooltips
         barStories.append("svg:title")
-            .text(function(story) {
+            .text(function(plotItem) {
+                var story = plotItem.story;
                 var tooltipText =
                     "Title: " + story.__survey_storyName +
-                    "\n" + story.__survey_storyText;
+                    "\n" + nameForQuestion(scaleQuestion) + ": " + plotItem.value +
+                    "\nText: " + limitStoryTextLength(story.__survey_storyText);
                 return tooltipText;
             });
-        */
         
         // Draw the x axis
         var xAxis = d3.svg.axis()
@@ -680,10 +690,10 @@ define([
             .text(function(plotItem) {
                 var tooltipText =
                     "Title: " + plotItem.story.__survey_storyName +
-                    "\nID: " + plotItem.story._storyID + 
-                    "\nX (" + nameForQuestion(xAxisQuestion) + "):" + plotItem.x +
-                    "\nY (" + nameForQuestion(yAxisQuestion) + "):" + plotItem.y +
-                    "\nText: " + plotItem.story.__survey_storyText;
+                    // "\nID: " + plotItem.story._storyID + 
+                    "\nX (" + nameForQuestion(xAxisQuestion) + "): " + plotItem.x +
+                    "\nY (" + nameForQuestion(yAxisQuestion) + "): " + plotItem.y +
+                    "\nText: " + limitStoryTextLength(story.__survey_storyText);
                 return tooltipText;
             });
         
