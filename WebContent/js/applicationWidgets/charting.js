@@ -80,7 +80,7 @@ define([
         return position;  
     }
     
-    function newPlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story) {
+    function makePlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story) {
         // console.log("newPlotItem", xAxisQuestion, yAxisQuestion, xValue, yValue, story);
         
         // Plot onto a 100 x 100 value to work with sliders
@@ -602,7 +602,7 @@ define([
             // TODO: What do do about unanswered?
             if (xValue === unansweredKey || yValue === unansweredKey) continue;
             
-            var newPlotItem = newPlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story);
+            var newPlotItem = makePlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story);
             allPlotItems.push(newPlotItem);
         }
         // console.log("plot items", allPlotItems);
