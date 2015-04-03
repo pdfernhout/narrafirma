@@ -127,6 +127,21 @@ define([
     function limitStoryTextLength(text) {
         return limitLabelLength(text, 500);
     }
+    
+    function displayTextForAnswer(answer) {
+        console.log("displayTextForAnswer", answer);
+        if (!answer && answer !== 0) return "";
+        var hasCheckboxes = lang.isObject(answer);
+        if (!hasCheckboxes) return answer;
+        var result = "";
+        for (var key in answer) {
+            if (answer[key]) {
+                if (result) result += ", ";
+                result += key;
+            }
+        }
+        return result;
+    }
 
     function d3BarChart(graphBrowserInstance, question) {
         // Collect data
@@ -299,7 +314,7 @@ define([
                 var tooltipText =
                     "Title: " + story.__survey_storyName +
                     // "\nID: " + story._storyID + 
-                    "\n" + nameForQuestion(question) + ":" + story[question.id] +
+                    "\n" + nameForQuestion(question) + ": " + displayTextForAnswer(story[question.id]) +
                     "\nText: " + limitStoryTextLength(story.__survey_storyText);
                 return tooltipText;
             });
