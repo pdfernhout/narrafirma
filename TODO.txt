@@ -83,6 +83,7 @@ Have revert button to go back to previous version for each page or clear out cha
 Put in place dojox.widget.Standby when saving
 Improve save/load feedback [same as above at this point]
 Think through how project is loaded and saved, especially what happens if multiple windows or users edit the same project
+Think about save/load architecture and Pointrel design in relation to handling lots of observations for pattern permutations
 Autosave, perhaps based on time or based on changing pages
 Improve feedback when there are no project versions or survey results; maybe distinguish between an error and nothing being saved yet
 Resolve issue with hardcoded project ID
@@ -110,7 +111,7 @@ Support graphBrowser "add to observation" button
 Support graphBrowser contingency table with statistical results
 Support graphBrowser standard deviation and mean for histograms
 Support graphBrowser common maximum for multiple histograms
-Support graphBrowser displaying related stories for visible data point or bar or line
+Support graphBrowser displaying related stories for visible data point or bar or line [partial, selection done for all but contingency, no display yet]
 
 TRENDS
 Support trendsReport -- shows text and graphs in report based on top differences in statistical tests,  has "add to observation" button
@@ -135,8 +136,8 @@ Observations list should not have "add" button, because observations can only be
 Support accumulatedItemsGrid -- for results selected to include in an observation
 Support annotationsGrid -- for results, excerpts, or interpretations linked to a perspective
 Support storiesList -- for choosing a resonant story
-Think more about catalysis part
 Implement exportPresentationOutline in domain buttonClicked
+Convert contingency table from HTML table to D3 chart with brush selection of stories
 
 GRID
 When viewing grid data, it should not look editable
@@ -619,3 +620,8 @@ DONE Implement story card display
 DONE Use story card display in story browser
 DONE Fix issue where graph throwing exception due to missing loaded modules used internally by graph module
 DONE Handle questionnaire update after it is loaded in graph
+DONE Design discussions on catalysis and how patterns page might work driven by all pattern (question) permutations in a grid (C&P)
+DONE Think more about catalysis part [same as above]
+DONE Switch to D3 for charting instead of dojo for scatter plot, bar chart, and histogram
+DONE Get brush selection to work using D3 for scatter plot, bar chart, and histogram
+DONE Move chart construction from add_graphBrowser into separate charting module
