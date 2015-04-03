@@ -8,16 +8,7 @@ define([
     "js/surveyCollection",
     "dojo/topic",
     "js/panelBuilder/widgetSupport",
-    "dojox/charting/plot2d/Bars",
-    "dojox/charting/Chart",
-    "dojox/charting/plot2d/Columns",
     "dijit/layout/ContentPane",
-    // Note that "Default" and maybe some other chart modules seem to be referenced dynamically by graph.
-    // So they need to be loaded even if they are not refeneced directly in module.
-    "dojox/charting/axis2d/Default",
-    "dojox/charting/plot2d/Lines",
-    "dojox/charting/plot2d/Markers",
-    "dojox/charting/plot2d/Scatter",
     "dojox/layout/TableContainer"
 ], function(
     array,
@@ -29,14 +20,7 @@ define([
     surveyCollection,
     topic,
     widgetSupport,
-    Bars,
-    Chart,
-    Columns,
     ContentPane,
-    Default,
-    Lines,
-    Markers,
-    Scatter,
     TableContainer
 ){
     "use strict";
@@ -126,57 +110,6 @@ define([
         var x = positionForQuestionAnswer(xAxisQuestion, xValue);
         var y = positionForQuestionAnswer(yAxisQuestion, yValue);
         return {x: x, y: y, story: story};
-    }
-    
-    function addAxis(chart, axis, question) {
-        // TODO: Translate, especially booleans
-        var type = question.displayType;
-        if (type === "boolean" || type === "checkbox") {
-            chart.addAxis(axis, {
-               labels: [
-                   {value: -100, text: unansweredKey},
-                   {value: 0, text: "No"},
-                   {value: 100, text: "Yes"}
-               ], 
-               vertical: axis === "y",
-               includeZero: true
-            });
-        } else if (type === "slider") {
-            chart.addAxis(axis, {
-                labels: [
-                    {value: -10, text: unansweredKey},
-                    {value: 0, text: "0"},
-                    {value: 10, text: "10"},
-                    {value: 20, text: "20"},
-                    {value: 30, text: "30"},
-                    {value: 40, text: "40"},
-                    {value: 50, text: "50"},
-                    {value: 60, text: "60"},
-                    {value: 70, text: "70"},
-                    {value: 80, text: "80"},
-                    {value: 90, text: "90"},
-                    {value: 100, text: "100"}
-               ],
-               vertical: axis === "y",
-               includeZero: true
-            });
-        } else {
-            var increment = 100 / (question.dataOptions.length - 1);
-            var labels = [
-               {value: -increment, text: unansweredKey}
-            ];
-            for (var i = 0; i < question.dataOptions.length; i++) {
-                labels.push({value: i * increment, text: question.dataOptions[i]});
-            }
-            chart.addAxis(axis, {
-                labels: labels,
-                vertical: axis === "y",
-                includeZero: true
-            });
-        }
-        
-        // Ideas:
-        // chart1.addAxis("y", {vertical: true, fixLower: "major", fixUpper: "major"});
     }
     
     function incrementMapSlot(map, key) {
@@ -414,86 +347,6 @@ define([
         }
     }
     
-    // choiceQuestion and option may be undefined if this is just a simple histogram for all values
-    function histogramChart(graphBrowserInstance, scaleQuestion, choiceQuestion, choice) {
-        // console.log("graphBrowserInstance, scaleQuestion", graphBrowserInstance, scaleQuestion);
-        
-        // TODO: Statistics
-        
-        // Collect data
-        
-        var plotItems = [];
-        var results = {};
-        
-        var stories = domain.allStories;
-        for (var storyIndex in stories) {
-            var story = stories[storyIndex];
-            var xValue = correctForUnanswered(scaleQuestion, story[scaleQuestion.id]);
-            if (choiceQuestion) {
-                // Only count results where the choice matches
-                var choiceValue = correctForUnanswered(choiceQuestion, story[choiceQuestion.id]);
-                var skip = false;
-                if (choiceQuestion.displayType === "checkboxes") {
-                    if (!choiceValue[choice]) skip = true;
-                } else {
-                    if (choiceValue !== choice) skip = true;
-                }
-                if (skip) continue;
-            }
-            incrementMapSlot(results, xValue);
-        }
-        
-        var resultIndex = 1;
-        
-        // TODO: What about unanswered?
-        
-        //var key = unansweredKey;
-        //plotLabels.push({value: resultIndex, text: key});
-        //plotItems.push({x: resultIndex, y: results[key]});
-        //resultIndex++;
-        
-        // Do not include unanswered
-        // TODO: Put unanswered count somewhere on chart
-        //plotItems.push({x: -1, y: results[unansweredKey]});
-        
-        for (var i = 0; i < 100; i++) {
-            plotItems.push({x: i, y: results[i]});
-        }
-        
-        // console.log("plot items", plotItems);
-        
-        // Build chart
-        
-        var style = singleChartStyle;
-        if (choiceQuestion) style = multipleChartStyle;
-
-        var chartPane = newChartPane(graphBrowserInstance, style);
-        
-        var chartTitle = "" + nameForQuestion(scaleQuestion);
-        // TODO: Maybe should translate choice?
-        if (choiceQuestion) chartTitle = "" + choice;
-        
-        var chart = new Chart(chartPane.domNode, {
-            title: chartTitle
-        });
-        console.log("Made chart");
-        
-        // TODO: Set theme
-        
-        chart.addPlot("default", {
-            type: Columns,
-            markers: true,
-            gap: 5
-        });
-        
-        chart.addAxis("x", {fixLower: "none", fixUpper: "major", includeZero: true});
-        chart.addAxis("y", {vertical: true, fixLower: "major", fixUpper: "major" });
-
-        chart.addSeries("Series 1", plotItems);
-        
-        chart.render(); 
-    }
-    
     // Histogram reference for d3: http://bl.ocks.org/mbostock/3048450
     
     // choiceQuestion and option may be undefined if this is just a simple histogram for all values
@@ -504,10 +357,9 @@ define([
         
         // Collect data
         
-        // TODO: Both next variables no longer used?
-        var plotItems = [];
-        var results = {};
-        
+        // Do not include unanswered in  histogram
+        // TODO: Put a total for unanswered somewhere
+        var unanswered = [];
         var values = [];
         
         var stories = domain.allStories;
@@ -525,28 +377,15 @@ define([
                 }
                 if (skip) continue;
             }
-            incrementMapSlot(results, xValue);
-            values.push({story: story, value: xValue});
+            var item = {story: story, value: xValue};
+            if (xValue === unansweredKey) {
+                unanswered.push(item);
+            } else {
+                values.push(item);
+            }
         }
         
         var resultIndex = 1;
-        
-        // TODO: What about unanswered?
-        
-        //var key = unansweredKey;
-        //plotLabels.push({value: resultIndex, text: key});
-        //plotItems.push({x: resultIndex, y: results[key]});
-        //resultIndex++;
-        
-        // Do not include unanswered
-        // TODO: Put unanswered count somewhere on chart
-        //plotItems.push({x: -1, y: results[unansweredKey]});
-        
-        for (var i = 0; i < 100; i++) {
-            plotItems.push({x: i, y: results[i]});
-        }
-        
-        // console.log("plot items", plotItems);
         
         // Build chart
         
@@ -572,19 +411,27 @@ define([
         // TODO: Maybe should translate choice?
         if (choiceQuestion) chartTitle = "" + choice;
         
+        // A formatter for counts.
+        var formatCount = d3.format(",.0f");
+        
         var xScale = d3.scale.linear()
             .domain([0, 100])
             .range([0, width]);
         
         // Generate a histogram using twenty uniformly-spaced bins.
         var data = d3.layout.histogram().bins(xScale.ticks(20)).value(function (d) { return d.value; })(values);
-        
-        // A formatter for counts.
-        var formatCount = d3.format(",.0f");
+
+        // TODO: May want to consider unanswered here if decide to plot it to the side
+        var maxValue = d3.max(data, function(d) { return d.y; });
         
         var yScale = d3.scale.linear()
-            .domain([0, d3.max(data, function(d) { return d.y; })])
+            .domain([0, maxValue])
             .range([height, 0]);
+        
+        // Extra version of scale for calculating heights without subtracting as in height - yScale(value)
+        var yHeightScale = d3.scale.linear()
+            .domain([0, maxValue])
+            .range([0, height]);
 
         var chart = d3.select(chartPane.domNode).append('svg')
             .attr('width', width + margin.right + margin.left)
@@ -597,16 +444,37 @@ define([
             .attr('height', height)
             .attr('class', 'histogramMain');
             
-        var bar = chartBody.selectAll(".bar")
+        var bars = chartBody.selectAll(".bar")
             .data(data)
           .enter().append("g")
             .attr("class", "bar")
             .attr("transform", function(d) { return "translate(" + xScale(d.x) + "," + yScale(d.y) + ")"; });
         
-        bar.append("rect")
+        bars.append("rect")
             .attr("x", 1)
             .attr("width", xScale(data[0].dx) - 1)
             .attr("height", function(d) { return height - yScale(d.y); });
+        
+        /*
+        // Overlay stories on each bar...
+        var barStories = bars.selectAll(".story")
+                .data(function(plotItem) { return plotItem.stories; })
+            .enter().append("rect")
+                .attr("style", function(d, i) { return "stroke: rgb(0,0,0); fill: " + ((i % 2 === 0) ? "black" : "grey") + ";"; })
+                .attr("x", function(plotItem) { return 0; })
+                .attr("y", function(plotItem, i) { return yHeightScale(i); })
+                .attr("height", function(plotItem) { return yHeightScale(1); })
+                .attr("width", xScale(data[0].dx) - 1);
+        
+        // Add tooltips
+        barStories.append("svg:title")
+            .text(function(story) {
+                var tooltipText =
+                    "Title: " + story.__survey_storyName +
+                    "\n" + story.__survey_storyText;
+                return tooltipText;
+            });
+        */
         
         // Draw the x axis
         var xAxis = d3.svg.axis()
@@ -1045,86 +913,6 @@ define([
             alert("ERROR: Unexpected graph type");
             return;
         }
-
-        /*
-              
-        // collect data
-        var plotItems = [];
-        var stories = domain.allStories;
-        for (var index in stories) {
-            var story = stories[index];
-            var xValue = correctForUnanswered(xAxisQuestion, story[xAxisQuestionID]);
-            var yValue = correctForUnanswered(yAxisQuestion, story[yAxisQuestionID]);
-            
-            var plotItem;
-            var xHasCheckboxes = lang.isObject(xValue);
-            var yHasCheckboxes = lang.isObject(yValue);
-            // fast path
-            if (!xHasCheckboxes && !yHasCheckboxes) {
-                plotItem = newPlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story);
-                plotItems.push(plotItem);
-            } else {
-                // one or both may be checkboxes, so do a loop for each and create plot items for every combination         
-                var key;
-                var xValues = [];
-                var yValues = [];
-                if (xHasCheckboxes) {
-                    // checkboxes
-                    for (key in xValue) {
-                        if (xValue[key]) xValues.push(key);
-                    }
-                } else {
-                    xValues.push(xValue);                
-                }
-                if (yHasCheckboxes) {
-                    // checkboxes
-                    for (key in yValue) {
-                        if (yValue[key]) yValues.push(key);
-                    }
-                } else {
-                    yValues.push(yValue);                
-                }
-                for (var xIndex in xValues) {
-                    for (var yIndex in yValues) {
-                        plotItem = newPlotItem(xAxisQuestion, yAxisQuestion, xValues[xIndex], yValues[yIndex], story);
-                        plotItems.push(plotItem); 
-                    }
-                }
-            }
-        }
-        
-        console.log("plot items", plotItems);
-        
-        var chartPane = newChartPane(graphBrowserInstance, singleChartStyle);
-        
-        var chart1Title = "" + xAxisQuestionID + " vs. " + yAxisQuestionID;
-        
-        var chart1 = new Chart(chartPane.domNode, {
-            title: chart1Title
-        });
-        console.log("Made chart");
-        
-        chart1.addPlot("default", {
-            type: Scatter,
-            //markers: true,
-            //gap: 5
-            // margins: {
-            //     l: 10,
-            //     r: 10,
-            //     t: 10,
-            //     b: 10
-            // },
-             // hAxis: xAxisQuestionID,
-             // vAxis: yAxisQuestionID,
-             // ticks: false
-        });
-        
-        addAxis(chart1, "x", xAxisQuestion);
-        addAxis(chart1, "y", yAxisQuestion);
-
-        chart1.addSeries("Series 1", plotItems);
-        chart1.render(); 
-        */
     }
     
     function currentQuestionnaireChanged(graphBrowserInstance, currentQuestionnaire) {
