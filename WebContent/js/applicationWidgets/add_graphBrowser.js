@@ -356,7 +356,7 @@ define([
                 .attr("class", "bar")
                 .attr('transform', function(plotItem) { return 'translate(' + xScale(plotItem.name) + ',' + yScale(plotItem.value) + ')'; });
             
-       var barBackground = bars.append("rect")
+        var barBackground = bars.append("rect")
             .attr("style", "stroke: rgb(0,0,0); fill: white;")
             .attr("x", function(plotItem) { return 0; })
             .attr("y", function(plotItem) { return 0; })
@@ -448,7 +448,10 @@ define([
         //plotItems.push({x: resultIndex, y: results[key]});
         //resultIndex++;
         
-        plotItems.push({x: -1, y: results[unansweredKey]});
+        // Do not include unanswered
+        // TODO: Put unanswered count somewhere on chart
+        //plotItems.push({x: -1, y: results[unansweredKey]});
+        
         for (var i = 0; i < 100; i++) {
             plotItems.push({x: i, y: results[i]});
         }
@@ -487,6 +490,127 @@ define([
         chart.render(); 
     }
     
+    // Histogram reference for d3: http://bl.ocks.org/mbostock/3048450
+    
+    // choiceQuestion and option may be undefined if this is just a simple histogram for all values
+    function d3HistogramChart(graphBrowserInstance, scaleQuestion, choiceQuestion, choice) {
+        // console.log("graphBrowserInstance, scaleQuestion", graphBrowserInstance, scaleQuestion);
+        
+        // TODO: Statistics
+        
+        // Collect data
+        
+        // TODO: Both next variables no longer used?
+        var plotItems = [];
+        var results = {};
+        
+        var values = [];
+        
+        var stories = domain.allStories;
+        for (var storyIndex in stories) {
+            var story = stories[storyIndex];
+            var xValue = correctForUnanswered(scaleQuestion, story[scaleQuestion.id]);
+            if (choiceQuestion) {
+                // Only count results where the choice matches
+                var choiceValue = correctForUnanswered(choiceQuestion, story[choiceQuestion.id]);
+                var skip = false;
+                if (choiceQuestion.displayType === "checkboxes") {
+                    if (!choiceValue[choice]) skip = true;
+                } else {
+                    if (choiceValue !== choice) skip = true;
+                }
+                if (skip) continue;
+            }
+            incrementMapSlot(results, xValue);
+            values.push({story: story, value: xValue});
+        }
+        
+        var resultIndex = 1;
+        
+        // TODO: What about unanswered?
+        
+        //var key = unansweredKey;
+        //plotLabels.push({value: resultIndex, text: key});
+        //plotItems.push({x: resultIndex, y: results[key]});
+        //resultIndex++;
+        
+        // Do not include unanswered
+        // TODO: Put unanswered count somewhere on chart
+        //plotItems.push({x: -1, y: results[unansweredKey]});
+        
+        for (var i = 0; i < 100; i++) {
+            plotItems.push({x: i, y: results[i]});
+        }
+        
+        // console.log("plot items", plotItems);
+        
+        // Build chart
+        
+        var style = singleChartStyle;
+        if (choiceQuestion) style = multipleChartStyle;
+
+        var chartPane = newChartPane(graphBrowserInstance, style);
+        
+        var chartTitle = "" + nameForQuestion(scaleQuestion);
+        // TODO: Maybe should translate choice?
+        if (choiceQuestion) chartTitle = "" + choice;
+        
+        var fullWidth = 700;
+        var fullHeight = 500;
+        var margin = {top: 20, right: 15, bottom: 60, left: 60};
+        var width = fullWidth - margin.left - margin.right;
+        var height = fullHeight - margin.top - margin.bottom;
+        
+        var xScale = d3.scale.linear()
+            .domain([0, 100])
+            .range([0, width]);
+        
+        // Generate a histogram using twenty uniformly-spaced bins.
+        var data = d3.layout.histogram().bins(xScale.ticks(20)).value(function (d) { return d.value; })(values);
+        
+        // A formatter for counts.
+        var formatCount = d3.format(",.0f");
+        
+        var yScale = d3.scale.linear()
+            .domain([0, d3.max(data, function(d) { return d.y; })])
+            .range([height, 0]);
+
+        var xAxis = d3.svg.axis()
+            .scale(xScale)
+            .orient("bottom");
+        
+        var svg = d3.select(chartPane.domNode).append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        
+        var bar = svg.selectAll(".bar")
+            .data(data)
+          .enter().append("g")
+            .attr("class", "bar")
+            .attr("transform", function(d) { return "translate(" + xScale(d.x) + "," + yScale(d.y) + ")"; });
+        
+        bar.append("rect")
+            .attr("x", 1)
+            .attr("width", xScale(data[0].dx) - 1)
+            .attr("height", function(d) { return height - yScale(d.y); });
+        
+        bar.append("text")
+            .attr("dy", ".75em")
+            .attr("y", 6)
+            .attr("x", xScale(data[0].dx) / 2)
+            .attr("text-anchor", "middle")
+            .text(function(d) { return formatCount(d.y); });
+
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis);
+        
+        // TODO: Put up title
+    }
+    
     function multipleHistograms(graphBrowserInstance, choiceQuestion, scaleQuestion) {
         var options = [];
         var index;
@@ -515,7 +639,7 @@ define([
         
         for (index in options) {
             var option = options[index];
-            histogramChart(graphBrowserInstance, scaleQuestion, choiceQuestion, option);
+            d3HistogramChart(graphBrowserInstance, scaleQuestion, choiceQuestion, option);
         }
         
         // End the float
@@ -857,7 +981,7 @@ define([
             multipleHistograms(graphBrowserInstance, xAxisQuestion, yAxisQuestion);
         } else if (xType === "scale" && yType === null) {
             console.log("plot choice: Histogram");
-            histogramChart(graphBrowserInstance, xAxisQuestion);
+            d3HistogramChart(graphBrowserInstance, xAxisQuestion);
         } else if (xType === "scale" && yType === "choice") {
             console.log("plot choice: Multiple histograms");
             multipleHistograms(graphBrowserInstance, yAxisQuestion, xAxisQuestion);
