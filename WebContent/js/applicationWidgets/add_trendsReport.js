@@ -44,10 +44,14 @@ define([
             result.push({type: "bar", name: nameForQuestion(question1) + " (C)", questions: [question1]});
         });
         
-        // TODO: Should mirror duplicates and self-matching be allowed?
+        // Prevent mirror duplicates and self-matching questions
+        var usedQuestions;
         
+        usedQuestions = [];
         nominalQuestions.forEach(function (question1) {
+            usedQuestions.push(question1);
             nominalQuestions.forEach(function (question2) {
+                if (usedQuestions.indexOf(question2) !== -1) return;
                 result.push({type: "table", name: nameForQuestion(question1) + " (C) vs. " + nameForQuestion(question2) + " (C)", questions: [question1, question2]});
             });
         });
@@ -62,8 +66,11 @@ define([
             });
         });
         
+        usedQuestions = [];
         ratioQuestions.forEach(function (question1) {
+            usedQuestions.push(question1);
             ratioQuestions.forEach(function (question2) {
+                if (usedQuestions.indexOf(question2) !== -1) return;
                 result.push({type: "scatter", name: nameForQuestion(question1) + " (S) vs. " + nameForQuestion(question2) + " (S)", questions: [question1, question2]});
             });
         });
