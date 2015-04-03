@@ -207,6 +207,11 @@ define([
             }
         }
     }
+    
+    function limitLabelLength(label, maximumCharacters) {
+        if (label.length <= maximumCharacters) return label;
+        return label.substring(0, maximumCharacters - 3) + "..."; 
+    }
 
     function d3BarChart(graphBrowserInstance, question) {
         // Collect data
@@ -304,8 +309,7 @@ define([
         var xAxis = d3.svg.axis()
             .scale(xScale)
             .tickFormat(function (label, i) {
-                if (label.length <= 9) return label;
-                return label.substring(0, 6) + "..."; 
+                return limitLabelLength(label, 9); 
             })
             .orient('bottom');
 
@@ -546,20 +550,27 @@ define([
         
         // Build chart
         
-        var style = singleChartStyle;
-        if (choiceQuestion) style = multipleChartStyle;
+        var fullWidth = 700;
+        var fullHeight = 500;
+        
+        var isSmallFormat = !!choiceQuestion;
 
+        var style = singleChartStyle;
+        if (isSmallFormat) {
+            style = multipleChartStyle;
+            fullWidth = 200;
+            fullHeight = 200;
+        }
+
+        var margin = {top: 20, right: 15, bottom: 60, left: 60};
+        var width = fullWidth - margin.left - margin.right;
+        var height = fullHeight - margin.top - margin.bottom;
+        
         var chartPane = newChartPane(graphBrowserInstance, style);
         
         var chartTitle = "" + nameForQuestion(scaleQuestion);
         // TODO: Maybe should translate choice?
         if (choiceQuestion) chartTitle = "" + choice;
-        
-        var fullWidth = 700;
-        var fullHeight = 500;
-        var margin = {top: 20, right: 15, bottom: 60, left: 60};
-        var width = fullWidth - margin.left - margin.right;
-        var height = fullHeight - margin.top - margin.bottom;
         
         var xScale = d3.scale.linear()
             .domain([0, 100])
@@ -575,10 +586,6 @@ define([
             .domain([0, d3.max(data, function(d) { return d.y; })])
             .range([height, 0]);
 
-        var xAxis = d3.svg.axis()
-            .scale(xScale)
-            .orient("bottom");
-        
         var chart = d3.select(chartPane.domNode).append('svg')
             .attr('width', width + margin.right + margin.left)
             .attr('height', height + margin.top + margin.bottom)
@@ -602,30 +609,57 @@ define([
             .attr("height", function(d) { return height - yScale(d.y); });
         
         // Draw the x axis
+        var xAxis = d3.svg.axis()
+        .scale(xScale)
+        .orient("bottom");
+    
+        if (isSmallFormat) xAxis.tickValues(xScale.domain());
+    
         chartBody.append("g")
             .attr("class", "x axis")
             .attr("transform", "translate(0," + height + ")")
             .call(xAxis);
+        
+        if (choiceQuestion) {
+            var choiceLabel = limitLabelLength(choice, 18); 
+            var choiceLabelSVG = chartBody.append("text")
+                .attr("class", "histogram choice label")
+                .attr("text-anchor", "middle")
+                .attr("x", width / 2)
+                .attr("y", height + 40)
+                .text(choiceLabel);
+            
+            choiceLabelSVG.append("svg:title")
+                .text(choice);
+        }
         
         // draw the y axis
         var yAxis = d3.svg.axis()
             .scale(yScale)
             .tickFormat(d3.format("d"))
             .orient('left');
+        
+        if (isSmallFormat) yAxis.tickValues(yScale.domain());
 
         chartBody.append('g')
             .attr('transform', 'translate(0,0)')
             .attr('class', 'y axis')
             .call(yAxis);
         
-        chartBody.append("text")
-            .attr("class", "y label")
-            .attr("text-anchor", "end")
-            .attr("y", 6)
-            .attr("dy", ".75em")
-            .attr("transform", "rotate(-90)")
-            // TODO: Translate
-            .text("Frequency");
+        if (!isSmallFormat) {
+            chartBody.append("text")
+                .attr("class", "y label")
+                .attr("text-anchor", "end")
+                .attr("y", 6)
+                .attr("dy", ".75em")
+                .attr("transform", "rotate(-90)")
+                // TODO: Translate
+                .text("Frequency");
+        }
+        
+        if (isSmallFormat) {
+            chartBody.selectAll('.axis').style({ 'stroke-width': '1px', 'fill': 'gray'});
+        }
         
         // TODO: Put up title
     }
