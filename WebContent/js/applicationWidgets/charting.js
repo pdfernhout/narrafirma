@@ -156,7 +156,7 @@ define([
                 // console.log("no loop xValue", xValue);
                 pushToMapSlot(results, xValue, story);
             } else {
-                console.log(question, xValue);
+                // console.log(question, xValue);
                 for (var xIndex in xValue) {
                     // console.log("loop xIndex", xIndex, xValue[xIndex]);
                     if (xValue[xIndex]) pushToMapSlot(results, xIndex, story);
@@ -318,10 +318,10 @@ define([
         function brushend() {
             console.log("brushend", brush);
             var extent = d3.event.target.extent();
-            console.log("extent", extent);
+            // console.log("extent", extent);
             var selectedPlotItems = [];
             bars.classed("selected", function(plotItem) {
-              console.log("xScale value", xScale(plotItem.name));
+              // console.log("xScale value", xScale(plotItem.name));
               var midPoint = xScale(plotItem.name) + xScale.rangeBand() / 2;
               var selected = extent[0][0] <= midPoint  && midPoint < extent[1][0];
               if (selected) selectedPlotItems.push(plotItem);
@@ -533,15 +533,15 @@ define([
         function brushend() {
             console.log("brushend", brush);
             var extent = d3.event.target.extent();
-            console.log("extent", extent);
+            // console.log("extent", extent);
             var selectedPlotItems = [];
             bars.classed("selected", function(plotItems) {
-              console.log("plotItems", plotItems);
+              // console.log("plotItems", plotItems);
               var midPoint = plotItems.x + data[0].dx / 2;
-              console.log("midPoint", midPoint, plotItems.x);
+              // console.log("midPoint", midPoint, plotItems.x);
               var selected = extent[0][0] <= midPoint  && midPoint < extent[1][0];
               if (selected) selectedPlotItems.push.apply(selectedPlotItems, plotItems);
-              console.log("selected", selected);
+              // console.log("selected", selected);
               return selected;
             });
             console.log("Selected plotItems", selectedPlotItems);
