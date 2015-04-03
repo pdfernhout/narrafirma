@@ -46,7 +46,7 @@ define([
         // TODO: How to display sliders when unanswered? Add one here?
         // TODO: Check that answer is numerical
         if (question.displayType === "slider") {
-            console.log("slider answer", answer);
+            // console.log("slider answer", answer);
             if (answer === unansweredKey) return -10;
             return answer;
         }
