@@ -15,7 +15,7 @@ body { text-align: left; background-color: white; }
 #header h2 { font: 15px verdana,tahoma; padding: 0; margin: 0px; color: #6F7850; }
 
 .page {
-	margin: 10px;
+	margin: 4px;
 }
 
 .section {
@@ -28,11 +28,12 @@ body { text-align: left; background-color: white; }
 
 .narrafirma-helpindex-backlink {
 	font: 60% verdana,tahoma;
+	margin-left: 4px;
+	margin-top: 10px;
 }
 
 .helpHeader {
 	font: 120% verdana,tahoma;
-	//font-weight: bold;
 	margin-top: 30px;
 	margin-bottom: 10px;
 	padding-bottom: 3px;
@@ -41,9 +42,9 @@ body { text-align: left; background-color: white; }
 
 .helpSubHeader {
 	font: 100% verdana,tahoma;
-	//font-weight: bold;
+	font-style: italic;
     margin-top: 10px;
-	margin-bottom: 4px;
+	margin-bottom: 6px;
 }
 
 .helpText {
@@ -52,7 +53,7 @@ body { text-align: left; background-color: white; }
 
 .helpQuestionText {
 	font: 90% verdana,tahoma;
-	margin-left: 20px;
+	//margin-left: 20px;
 }
 
 .bookQuote {
