@@ -1,0 +1,84 @@
+body { text-align: left; background-color: white; }
+
+#page 
+{ 
+  margin: auto; 
+  width: 90%; 
+  border: 3px solid #6F7850;
+  font: 85% verdana,tahoma;
+  text-align: left;
+  display: block;
+}
+
+#header    { clear: both; margin: 20px; }
+#header h1 { font: 35px verdana,tahoma; padding: 0; margin: 0px; color: #6F7850; }
+#header h2 { font: 15px verdana,tahoma; padding: 0; margin: 0px; color: #6F7850; }
+
+.page {
+	margin: 10px;
+}
+
+.section {
+	font-style: italic;
+}
+#helpPageName {
+	font-weight: bold;
+	font: 180% verdana,tahoma;
+}
+
+.narrafirma-helpindex-backlink {
+	font: 60% verdana,tahoma;
+}
+
+.helpHeader {
+	font: 120% verdana,tahoma;
+	//font-weight: bold;
+	margin-top: 30px;
+	margin-bottom: 10px;
+	padding-bottom: 3px;
+	border-bottom: 3px solid black;
+}
+
+.helpSubHeader {
+	font: 100% verdana,tahoma;
+	//font-weight: bold;
+    margin-top: 10px;
+	margin-bottom: 4px;
+}
+
+.helpText {
+	font: 90% verdana,tahoma;
+}
+
+.helpQuestionText {
+	font: 90% verdana,tahoma;
+	margin-left: 20px;
+}
+
+.bookQuote {
+	margin: 10px;
+}
+
+.bookQuoteHeader {
+	margin: 10px;
+	font-weight: bold;
+}
+
+.seeBookPages {
+	font: 80% verdana,tahoma;
+}
+
+.field {
+	font-style: normal;
+}
+
+.narrafirma-helpindex-sectionheader {
+	padding: 10px;
+	display: block;
+	border: 3px solid black;
+}
+
+a.narrafirma-helppageindex-panellink:link {
+	margin-left: 20px;
+}
+
