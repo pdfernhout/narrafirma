@@ -1,16 +1,20 @@
 define([
     "dojo/_base/array",
+    "dijit/layout/BorderContainer",
     "./charting",
     "dijit/layout/ContentPane",
     "js/domain",
     "js/panelBuilder/standardWidgets/GridWithItemPanel",
+    "js/storyCardDisplay",
     "js/surveyCollection"
 ], function(
     array,
+    BorderContainer,
     charting,
     ContentPane,
     domain,
     GridWithItemPanel,
+    storyCardDisplay,
     surveyCollection
 ){
     "use strict";
@@ -140,15 +144,39 @@ define([
         graphBrowserInstance.storiesPane.set("content", "<pre>" + JSON.stringify(stories, null, 4) + "</pre>");
     }
 
+    // TODO: Next two functions from add_storyBrowser and so are duplicate code
+    
+    function buildStoryDisplayPanel(panelBuilder, contentPane, model) {
+        var storyContent = storyCardDisplay.generateStoryCardContent(model, "includeElicitingQuestion");
+        
+        var storyPane = new ContentPane({
+            content: storyContent           
+        });
+        storyPane.placeAt(contentPane);
+    }
+    
+    function makeItemPanelSpecificationForQuestions(questions) {
+        // TODO: add more participant and survey info, like timestamps and participant ID
+        
+        var storyItemPanelSpecification = {
+             id: "storyBrowserQuestions",
+             panelFields: questions,
+             buildPanel: buildStoryDisplayPanel
+        };
+        
+        return storyItemPanelSpecification;
+    }
+
     function add_trendsReport(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        
+
         var questions = surveyCollection.collectQuestionsForCurrentQuestionnaire();
         
         var graphResultsPane = new ContentPane({
             // TODO: Translate
             title: "Graph results",
-            style: chartEnclosureStyle
+            style: chartEnclosureStyle,
+            region: "bottom"
         });
         
         var graphBrowserInstance = {
@@ -181,6 +209,7 @@ define([
         });
         */
         
+        
         var patternsListStore = GridWithItemPanel.newMemoryTrackableStore(patterns, "id");
         
         var patternsGridConfiguration = {navigationButtons: true, includeAllFields: true};
@@ -199,17 +228,51 @@ define([
                 {id: "observation", displayName: "Observation", dataOptions:[]}
             ]
         };
-        var patternsGrid = new GridWithItemPanel(panelBuilder, contentPane, "patternsList", patternsListStore, patternsPanelSpecification, patternsGridConfiguration);
+        
+        // TODO: Splitter does not seem to work as expected; it has no height. This does not help: https://www.sitepen.com/blog/2013/05/02/dojo-faq-bordercontainer-not-visible/
+        var splitterPane = new ContentPane(); // BorderContainer({style:'border:1px solid black'});
+        contentPane.addChild(splitterPane);
+        var gridContainerPane = new ContentPane({region: "center", splitter: true});
+        splitterPane.addChild(gridContainerPane);
+        splitterPane.addChild(graphResultsPane);
+        splitterPane.startup();
+        splitterPane.resize();
+        
+        var patternsGrid = new GridWithItemPanel(panelBuilder, gridContainerPane, "patternsList", patternsListStore, patternsPanelSpecification, patternsGridConfiguration);
         console.log("patternsGrid", patternsGrid);
-        
-        contentPane.addChild(graphResultsPane);
-        
+
         var storiesPane = new ContentPane({
             content: "Stories go here..."        
         });
         storiesPane.placeAt(contentPane);
         
         graphBrowserInstance.storiesPane = storiesPane;
+        
+        var storyItemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
+        
+        var selectedStories = [];
+ 
+        // Store will modify underlying array
+        var selectedStoriesStore = GridWithItemPanel.newMemoryTrackableStore(selectedStories, "_storyID");
+        
+        // Only allow view button for stories
+        var configuration = {viewButton: true, navigationButtons: true, includeAllFields: ["__survey_storyName", "__survey_storyText"]};
+        var storyList = new GridWithItemPanel(panelBuilder, contentPane, "storyGrid", selectedStoriesStore, storyItemPanelSpecification, configuration);
+        storyList.grid.set("selectionMode", "single");       
+        
+        var observationPanelSpecification = {
+            "id": "observationPanel",
+            panelFields: [
+                {id: "observation", displayName: "Observation", displayPrompt: "Add observation", displayType: "textarea", dataOptions:[]}
+            ]
+        };
+        
+        // TODO: Fix model as Stateful
+        // TODO: Need to update model as pattern changes
+        var observationModel = {};
+        var observationPane = new ContentPane();
+        contentPane.addChild(observationPane);
+        panelBuilder.buildPanel(observationPanelSpecification, observationPane, observationModel);
         
         // TODO: Not sure what to return or if it matters
         return questionContentPane;
