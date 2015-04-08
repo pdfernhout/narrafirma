@@ -538,21 +538,26 @@ define([
     GridWithItemPanel.prototype.navigateButtonClicked = function(direction, event) {
         console.log("navigate button pressed", direction);
         var selectedItemID = this.getSelectedItemID();
-        var newRow;
+        var nextRow = null;
         
         // TODO: Kludge of going to end at moving a million times, but would fail if more than a million items
         if (direction === "start") {
-            newRow = this.grid.up(selectedItemID, 1000000, true);
+            nextRow = this.grid.up(selectedItemID, 1000000, true);
         } else if (direction === "previous" && selectedItemID) {
-            newRow = this.grid.up(selectedItemID, 1, true);
+            nextRow = this.grid.up(selectedItemID, 1, true);
         } else if (direction === "next" && selectedItemID) {
-            newRow = this.grid.down(selectedItemID, 1, true);
+            nextRow = this.grid.down(selectedItemID, 1, true);
         } else if (direction === "end") {
-            newRow = this.grid.down(selectedItemID, 1000000, true);
+            nextRow = this.grid.down(selectedItemID, 1000000, true);
         }
-        if (newRow) {
+        if (nextRow) {
             if (selectedItemID) this.grid.deselect(selectedItemID);
-            this.grid.select(newRow);
+            this.grid.select(nextRow);
+            console.log("nextRow", nextRow);
+            // This next commented line moves the entire window, which is not what we want; maybe a bug in dgrid?
+            // nextRow.element.scrollIntoView();
+            // TODO: This behavior is not ideal, because it moves the grid even when the item is visible
+            this.grid.scrollTo({y: this.grid.rowHeight * nextRow.element.rowIndex});
             if (this.formType === "view" && this.navigateCallback) this.navigateCallback();
         }
     };
