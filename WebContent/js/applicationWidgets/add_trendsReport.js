@@ -141,7 +141,9 @@ define([
     }
     
     function updateStoriesPane(graphBrowserInstance, stories) {
-        graphBrowserInstance.storiesPane.set("content", "<pre>" + JSON.stringify(stories, null, 4) + "</pre>");
+        graphBrowserInstance.selectedStories = stories;
+        graphBrowserInstance.selectedStoriesStore.setData(stories);
+        graphBrowserInstance.storyList.grid.set("collection", graphBrowserInstance.selectedStoriesStore);
     }
 
     // TODO: Next two functions from add_storyBrowser and so are duplicate code
@@ -185,31 +187,15 @@ define([
             questions: questions,
             allStories: domain.allStories,
             patterns: null,
-            storiesPane: null
+            selectedStories: null,
+            selectedStoriesStore: null, 
+            storyList: null
         };
         
         var patterns = buildPatternList(graphBrowserInstance);
         
         graphBrowserInstance.patterns = patterns;
-        
-        /*
-        var patternHTML = "";
-        var i = 0;
-        patterns.forEach(function (pattern) {
-            patternHTML += '<br><a href="#page_reviewTrends" id="trend-' + i + '">' + pattern.name + '</a>';
-            i = i + 1;
-        });
-        
-        i = 0;
-        patterns.forEach(function (pattern) {
-            var a = document.getElementById("trend-" + i);
-            var choice = i;
-            a.onclick = function () { chooseGraph(graphBrowserInstance, choice); return false; };
-            i++;
-        });
-        */
-        
-        
+       
         var patternsListStore = GridWithItemPanel.newMemoryTrackableStore(patterns, "id");
         
         var patternsGridConfiguration = {navigationButtons: true, includeAllFields: true};
@@ -240,13 +226,6 @@ define([
         
         var patternsGrid = new GridWithItemPanel(panelBuilder, gridContainerPane, "patternsList", patternsListStore, patternsPanelSpecification, patternsGridConfiguration);
         console.log("patternsGrid", patternsGrid);
-
-        var storiesPane = new ContentPane({
-            content: "Stories go here..."        
-        });
-        storiesPane.placeAt(contentPane);
-        
-        graphBrowserInstance.storiesPane = storiesPane;
         
         var storyItemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
         
@@ -259,6 +238,10 @@ define([
         var configuration = {viewButton: true, navigationButtons: true, includeAllFields: ["__survey_storyName", "__survey_storyText"]};
         var storyList = new GridWithItemPanel(panelBuilder, contentPane, "storyGrid", selectedStoriesStore, storyItemPanelSpecification, configuration);
         storyList.grid.set("selectionMode", "single");       
+        
+        graphBrowserInstance.selectedStories = selectedStories;
+        graphBrowserInstance.selectedStoriesStore = selectedStoriesStore;
+        graphBrowserInstance.storyList = storyList;
         
         var observationPanelSpecification = {
             "id": "observationPanel",
