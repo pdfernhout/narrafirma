@@ -5,6 +5,7 @@ define([
     "dijit/layout/ContentPane",
     "js/domain",
     "js/panelBuilder/standardWidgets/GridWithItemPanel",
+    "dojo/Stateful",
     "js/storyCardDisplay",
     "js/surveyCollection"
 ], function(
@@ -14,6 +15,7 @@ define([
     ContentPane,
     domain,
     GridWithItemPanel,
+    Stateful,
     storyCardDisplay,
     surveyCollection
 ){
@@ -189,7 +191,9 @@ define([
             patterns: null,
             selectedStories: null,
             selectedStoriesStore: null, 
-            storyList: null
+            storyList: null,
+            observationModel: new Stateful({observation: ""}),
+            currentPattern: null
         };
         
         var patterns = buildPatternList(graphBrowserInstance);
@@ -199,9 +203,24 @@ define([
         var patternsListStore = GridWithItemPanel.newMemoryTrackableStore(patterns, "id");
         
         var patternsGridConfiguration = {navigationButtons: true, includeAllFields: true};
-        patternsGridConfiguration.selectCallback = function (grid, item) {
-            console.log("Select in grid", grid, item);
-            chooseGraph(graphBrowserInstance, item);
+        patternsGridConfiguration.selectCallback = function (grid, selectedPattern) {
+            console.log("Select in grid", grid, selectedPattern);
+            var observation;
+            if (graphBrowserInstance.currentPattern) {
+                // save observation
+                observation = graphBrowserInstance.observationModel.get("observation");
+                graphBrowserInstance.currentPattern.observation = observation;
+                patternsListStore.put(graphBrowserInstance.currentPattern);
+            }
+            chooseGraph(graphBrowserInstance, selectedPattern);
+            observation = "";
+            if (selectedPattern) observation = selectedPattern.observation;
+            graphBrowserInstance.observationModel.set("observation", observation);
+            graphBrowserInstance.currentPattern = selectedPattern;
+            
+            graphBrowserInstance.selectedStories = [];
+            graphBrowserInstance.selectedStoriesStore.setData(graphBrowserInstance.selectedStories);
+            graphBrowserInstance.storyList.grid.set("collection", graphBrowserInstance.selectedStoriesStore);
         };
         
         var patternsPanelSpecification = {
@@ -250,12 +269,9 @@ define([
             ]
         };
         
-        // TODO: Fix model as Stateful
-        // TODO: Need to update model as pattern changes
-        var observationModel = {};
         var observationPane = new ContentPane();
         contentPane.addChild(observationPane);
-        panelBuilder.buildPanel(observationPanelSpecification, observationPane, observationModel);
+        panelBuilder.buildPanel(observationPanelSpecification, observationPane, graphBrowserInstance.observationModel);
         
         // TODO: Not sure what to return or if it matters
         return questionContentPane;
