@@ -50,11 +50,11 @@ define([
         
         var questionCount = 0;
         function nextID() {
-            return "" + questionCount++;
+            return ("00000" + questionCount++).slice(-5);
         }
      
         nominalQuestions.forEach(function (question1) {
-            result.push({id: nextID(), graphType: "bar", patternName: nameForQuestion(question1) + " (C)", questions: [question1]});
+            result.push({id: nextID(), observation: "", graphType: "bar", patternName: nameForQuestion(question1) + " (C)", questions: [question1]});
         });
         
         // Prevent mirror duplicates and self-matching questions
@@ -65,17 +65,17 @@ define([
             usedQuestions.push(question1);
             nominalQuestions.forEach(function (question2) {
                 if (usedQuestions.indexOf(question2) !== -1) return;
-                result.push({id: nextID(), graphType: "table", patternName: nameForQuestion(question1) + " (C) vs. " + nameForQuestion(question2) + " (C)", questions: [question1, question2]});
+                result.push({id: nextID(), observation: "", graphType: "table", patternName: nameForQuestion(question1) + " (C) vs. " + nameForQuestion(question2) + " (C)", questions: [question1, question2]});
             });
         });
         
         ratioQuestions.forEach(function (question1) {
-            result.push({id: nextID(), graphType: "histogram", patternName: nameForQuestion(question1) + " (S)", questions: [question1]});
+            result.push({id: nextID(), observation: "", graphType: "histogram", patternName: nameForQuestion(question1) + " (S)", questions: [question1]});
         });
         
         ratioQuestions.forEach(function (question1) {
             nominalQuestions.forEach(function (question2) {
-                result.push({id: nextID(), graphType: "multiple histogram", patternName: nameForQuestion(question1) + " (S) vs. " + nameForQuestion(question2) + " (C)", questions: [question1, question2]});
+                result.push({id: nextID(), observation: "", graphType: "multiple histogram", patternName: nameForQuestion(question1) + " (S) vs. " + nameForQuestion(question2) + " (C)", questions: [question1, question2]});
             });
         });
         
@@ -84,7 +84,7 @@ define([
             usedQuestions.push(question1);
             ratioQuestions.forEach(function (question2) {
                 if (usedQuestions.indexOf(question2) !== -1) return;
-                result.push({id: nextID(), graphType: "scatter", patternName: nameForQuestion(question1) + " (S) vs. " + nameForQuestion(question2) + " (S)", questions: [question1, question2]});
+                result.push({id: nextID(), observation: "", graphType: "scatter", patternName: nameForQuestion(question1) + " (S) vs. " + nameForQuestion(question2) + " (S)", questions: [question1, question2]});
             });
         });
         
@@ -92,7 +92,7 @@ define([
         ratioQuestions.forEach(function (question1) {
             ratioQuestions.forEach(function (question2) {
                 nominalQuestions.forEach(function (question3) {
-                    result.push({id: nextID(), graphType: "multiple scatter", patternName: nameForQuestion(question1) + " (S)" + " vs. " + nameForQuestion(question2) + " (S) vs. " + nameForQuestion(question3) + " (C)", questions: [question1, question2, question3]});
+                    result.push({id: nextID(), observation: "", graphType: "multiple scatter", patternName: nameForQuestion(question1) + " (S)" + " vs. " + nameForQuestion(question2) + " (S) vs. " + nameForQuestion(question3) + " (C)", questions: [question1, question2, question3]});
                 });
             });
         });
@@ -209,8 +209,11 @@ define([
             if (graphBrowserInstance.currentPattern) {
                 // save observation
                 observation = graphBrowserInstance.observationModel.get("observation");
-                graphBrowserInstance.currentPattern.observation = observation;
-                patternsListStore.put(graphBrowserInstance.currentPattern);
+                var oldObservation = graphBrowserInstance.currentPattern.observation || "";
+                if (oldObservation !== observation) {
+                    graphBrowserInstance.currentPattern.observation = observation;
+                    patternsListStore.put(graphBrowserInstance.currentPattern);
+                }
             }
             chooseGraph(graphBrowserInstance, selectedPattern);
             observation = "";
@@ -226,6 +229,7 @@ define([
         var patternsPanelSpecification = {
             "id": "storyThemeQuestions",
             panelFields: [
+                {id: "id", displayName: "Index"},
                 {id: "patternName", displayName: "Pattern name", dataOptions:[]},
                 {id: "graphType", displayName: "Graph type", dataOptions:[]},
                 {id: "significance", displayName: "Significance", dataOptions:[]},
