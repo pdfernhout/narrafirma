@@ -3,12 +3,14 @@ define([
     "./charting",
     "dijit/layout/ContentPane",
     "js/domain",
+    "js/panelBuilder/standardWidgets/GridWithItemPanel",
     "js/surveyCollection"
 ], function(
     array,
     charting,
     ContentPane,
     domain,
+    GridWithItemPanel,
     surveyCollection
 ){
     "use strict";
@@ -39,9 +41,14 @@ define([
                 nominalQuestions.push(question);
             }
         });
+        
+        var questionCount = 0;
+        function nextID() {
+            return "" + questionCount++;
+        }
      
         nominalQuestions.forEach(function (question1) {
-            result.push({type: "bar", name: nameForQuestion(question1) + " (C)", questions: [question1]});
+            result.push({id: nextID(), graphType: "bar", patternName: nameForQuestion(question1) + " (C)", questions: [question1]});
         });
         
         // Prevent mirror duplicates and self-matching questions
@@ -52,17 +59,17 @@ define([
             usedQuestions.push(question1);
             nominalQuestions.forEach(function (question2) {
                 if (usedQuestions.indexOf(question2) !== -1) return;
-                result.push({type: "table", name: nameForQuestion(question1) + " (C) vs. " + nameForQuestion(question2) + " (C)", questions: [question1, question2]});
+                result.push({id: nextID(), graphType: "table", patternName: nameForQuestion(question1) + " (C) vs. " + nameForQuestion(question2) + " (C)", questions: [question1, question2]});
             });
         });
         
         ratioQuestions.forEach(function (question1) {
-            result.push({type: "histogram", name: nameForQuestion(question1) + " (S)", questions: [question1]});
+            result.push({id: nextID(), graphType: "histogram", patternName: nameForQuestion(question1) + " (S)", questions: [question1]});
         });
         
         ratioQuestions.forEach(function (question1) {
             nominalQuestions.forEach(function (question2) {
-                result.push({type: "multiple histogram", name: nameForQuestion(question1) + " (S) vs. " + nameForQuestion(question2) + " (C)", questions: [question1, question2]});
+                result.push({id: nextID(), graphType: "multiple histogram", patternName: nameForQuestion(question1) + " (S) vs. " + nameForQuestion(question2) + " (C)", questions: [question1, question2]});
             });
         });
         
@@ -71,7 +78,7 @@ define([
             usedQuestions.push(question1);
             ratioQuestions.forEach(function (question2) {
                 if (usedQuestions.indexOf(question2) !== -1) return;
-                result.push({type: "scatter", name: nameForQuestion(question1) + " (S) vs. " + nameForQuestion(question2) + " (S)", questions: [question1, question2]});
+                result.push({id: nextID(), graphType: "scatter", patternName: nameForQuestion(question1) + " (S) vs. " + nameForQuestion(question2) + " (S)", questions: [question1, question2]});
             });
         });
         
@@ -79,7 +86,7 @@ define([
         ratioQuestions.forEach(function (question1) {
             ratioQuestions.forEach(function (question2) {
                 nominalQuestions.forEach(function (question3) {
-                    result.push({name: nameForQuestion(question1) + " (S)" + " vs. " + nameForQuestion(question2) + " (S) vs. " + nameForQuestion(question3) + " (C)", questions: [question1, question2, question3]});
+                    result.push({id: nextID(), graphType: "multiple scatter", patternName: nameForQuestion(question1) + " (S)" + " vs. " + nameForQuestion(question2) + " (S) vs. " + nameForQuestion(question3) + " (C)", questions: [question1, question2, question3]});
                 });
             });
         });
@@ -89,8 +96,8 @@ define([
         return result;
     }
     
-    function chooseGraph(graphBrowserInstance, i) {
-        console.log("chooseGraph", i);
+    function chooseGraph(graphBrowserInstance, pattern) {
+        console.log("chooseGraph", pattern);
         
         // Remove old graph(s)
         while (graphBrowserInstance.chartPanes.length) {
@@ -98,9 +105,10 @@ define([
             chartPane.destroyRecursive(false);
         }
         
-        var pattern = graphBrowserInstance.patterns[i];
-        var name = pattern.name;
-        var type = pattern.type;
+        if (pattern === null) return;
+        
+        var name = pattern.patternName;
+        var type = pattern.graphType;
         console.log("pattern", name, type);
         var q1 = pattern.questions[0];
         var q2 = pattern.questions[1];
@@ -156,18 +164,13 @@ define([
         
         graphBrowserInstance.patterns = patterns;
         
+        /*
         var patternHTML = "";
         var i = 0;
         patterns.forEach(function (pattern) {
             patternHTML += '<br><a href="#page_reviewTrends" id="trend-' + i + '">' + pattern.name + '</a>';
             i = i + 1;
         });
-        
-        var label = new ContentPane({
-            // content: translate(id + "::prompt", fieldSpecification.displayPrompt)
-            content: "<b>UNFINISHED add_trendsReport: " + fieldSpecification.id + "</b>" + patternHTML         
-        });
-        label.placeAt(questionContentPane);
         
         i = 0;
         patterns.forEach(function (pattern) {
@@ -176,6 +179,28 @@ define([
             a.onclick = function () { chooseGraph(graphBrowserInstance, choice); return false; };
             i++;
         });
+        */
+        
+        var patternsListStore = GridWithItemPanel.newMemoryTrackableStore(patterns, "id");
+        
+        var patternsGridConfiguration = {navigationButtons: true, includeAllFields: true};
+        patternsGridConfiguration.selectCallback = function (grid, item) {
+            console.log("Select in grid", grid, item);
+            chooseGraph(graphBrowserInstance, item);
+        };
+        
+        var patternsPanelSpecification = {
+            "id": "storyThemeQuestions",
+            panelFields: [
+                {id: "patternName", displayName: "Pattern name", dataOptions:[]},
+                {id: "graphType", displayName: "Graph type", dataOptions:[]},
+                {id: "significance", displayName: "Significance", dataOptions:[]},
+                {id: "reviewed", displayName: "Reviewed", dataOptions:[]},
+                {id: "observation", displayName: "Observation", dataOptions:[]}
+            ]
+        };
+        var patternsGrid = new GridWithItemPanel(panelBuilder, contentPane, "patternsList", patternsListStore, patternsPanelSpecification, patternsGridConfiguration);
+        console.log("patternsGrid", patternsGrid);
         
         contentPane.addChild(graphResultsPane);
         
@@ -186,7 +211,8 @@ define([
         
         graphBrowserInstance.storiesPane = storiesPane;
         
-        return label;
+        // TODO: Not sure what to return or if it matters
+        return questionContentPane;
     }
 
     return add_trendsReport;

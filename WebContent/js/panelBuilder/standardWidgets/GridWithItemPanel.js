@@ -37,7 +37,7 @@ define([
 ){
     "use strict";
     
-    var debugSelecting = false;
+    var debugSelecting = true;
     
     // This defines a gui component which has a grid, some buttons, and a detail panel do display the currently selected item or enter a new item
 
@@ -104,6 +104,11 @@ define([
             self.selectedCount += event.rows.length;
             self.updateGridButtonsForSelectionAndForm();
             
+            // Defer updating until later to ensure grid settles down with selecting
+            if (configuration.selectCallback) setTimeout(function () {
+                configuration.selectCallback(self, self.getSelectedItem());
+            }, 0);
+            
             // TODO: Track first selected item if view open -- this does not work as a deselect called before select always
             // if (grid.formType === "view") self.viewButtonClicked(event);
         });
@@ -112,6 +117,9 @@ define([
             if (debugSelecting) console.log("dgrid-deselect");
             self.selectedCount -= event.rows.length;
             self.updateGridButtonsForSelectionAndForm();
+            
+            // Defer updating until later to ensure grid settles down with selecting
+            if (configuration.selectCallback) setTimeout(lang.partial(configuration.selectCallback, self, null), 0);
             
             // TODO: Track first selected item if view open -- this does not work as a deselect called before select always
             // if (grid.formType === "view") self.viewButtonClicked(event);
@@ -245,7 +253,7 @@ define([
         }
         
         array.forEach(fieldsToInclude, function (fieldSpecification) {
-            // console.log("includeField", includeField, fieldSpecification.id);
+            console.log("includeField", fieldSpecification);
             var newColumn =  {
                 field: fieldSpecification.id,
                 label: translate(fieldSpecification.id + "::shortName", fieldSpecification.displayName),
@@ -253,6 +261,7 @@ define([
                 sortable: !configuration.moveUpDownButtons
             };
             columns.push(newColumn);
+            console.log("newColumn", newColumn);
         });
         
         return columns;
