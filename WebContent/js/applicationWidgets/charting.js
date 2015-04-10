@@ -143,6 +143,23 @@ define([
         return result;
     }
 
+    // Support functions using d3
+    
+    // Support starting a drag when mouse is over a node
+    function supportStartingDragOverNode(chartBody, nodes) {
+        nodes.on('mousedown', function() {
+            var brushElements = chartBody.select(".brush").node();
+            var newClickEvent = new Event('mousedown');
+            newClickEvent.pageX = d3.event.pageX;
+            newClickEvent.clientX = d3.event.clientX;
+            newClickEvent.pageY = d3.event.pageY;
+            newClickEvent.clientY = d3.event.clientY;
+            brushElements.dispatchEvent(newClickEvent);
+        });
+    }
+    
+    // -------------
+    
     function d3BarChart(graphBrowserInstance, question, storiesSelectedCallback) {
         // Collect data
         
@@ -328,16 +345,7 @@ define([
                 return tooltipText;
             });
         
-        // Support starting a drag over a node
-        barStories.on('mousedown', function(){
-            var brushElements = chartBody.select(".brush").node();
-            var newClickEvent = new Event('mousedown');
-            newClickEvent.pageX = d3.event.pageX;
-            newClickEvent.clientX = d3.event.clientX;
-            newClickEvent.pageY = d3.event.pageY;
-            newClickEvent.clientY = d3.event.clientY;
-            brushElements.dispatchEvent(newClickEvent);
-          });
+        supportStartingDragOverNode(chartBody, barStories);
         
         function brushend() {
             // console.log("brushend", brush);
@@ -562,16 +570,7 @@ define([
             chartBody.selectAll('.axis').style({ 'stroke-width': '1px', 'fill': 'gray'});
         }
         
-        // Support starting a drag over a node
-        barStories.on('mousedown', function(){
-            var brushElements = chartBody.select(".brush").node();
-            var newClickEvent = new Event('mousedown');
-            newClickEvent.pageX = d3.event.pageX;
-            newClickEvent.clientX = d3.event.clientX;
-            newClickEvent.pageY = d3.event.pageY;
-            newClickEvent.clientY = d3.event.clientY;
-            brushElements.dispatchEvent(newClickEvent);
-          });
+        supportStartingDragOverNode(chartBody, barStories);
         
         function brushend() {
             // console.log("brushend", brush);
@@ -769,16 +768,7 @@ define([
                 return tooltipText;
             });
         
-        // Support starting a drag over a node
-        nodes.on('mousedown', function(){
-            var brushElements = chartBody.select(".brush").node();
-            var newClickEvent = new Event('mousedown');
-            newClickEvent.pageX = d3.event.pageX;
-            newClickEvent.clientX = d3.event.clientX;
-            newClickEvent.pageY = d3.event.pageY;
-            newClickEvent.clientY = d3.event.clientY;
-            brushElements.dispatchEvent(newClickEvent);
-          });
+        supportStartingDragOverNode(chartBody, nodes);
 
         function brushend() {
             // console.log("brushend", brush);
@@ -1024,16 +1014,7 @@ define([
                 return tooltipText;
             });
 
-        // Support starting a drag over a node
-        nodes.on('mousedown', function(){
-            var brushElements = chartBody.select(".brush").node();
-            var newClickEvent = new Event('mousedown');
-            newClickEvent.pageX = d3.event.pageX;
-            newClickEvent.clientX = d3.event.clientX;
-            newClickEvent.pageY = d3.event.pageY;
-            newClickEvent.clientY = d3.event.clientY;
-            brushElements.dispatchEvent(newClickEvent);
-          });
+        supportStartingDragOverNode(chartBody, nodes);
 
         function brushend() {
             // console.log("brushend", brush);
