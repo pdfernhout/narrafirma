@@ -215,6 +215,23 @@ define([
         };
     }
     
+    function addXAxisLabel(chart, label, labelLengthLimit) {
+        if (labelLengthLimit === undefined) labelLengthLimit = 64;
+
+        var shortenedLabel = limitLabelLength(label, labelLengthLimit); 
+        var shortenedLabelSVG = chart.chart.append("text")
+            .attr("class", "x label")
+            .attr("text-anchor", "middle")
+            .attr("x", chart.margin.left + chart.width / 2)
+            .attr("y", chart.fullHeight - 16)
+            .text(shortenedLabel);
+        
+        if (label.length > labelLengthLimit) {
+            shortenedLabelSVG.append("svg:title")
+                .text(label);
+        }
+    }
+    
     // -------------
     
     function d3BarChart(graphBrowserInstance, question, storiesSelectedCallback) {
@@ -299,12 +316,7 @@ define([
             .attr('class', 'x axis')
             .call(xAxis);
         
-        chartBody.append("text")
-            .attr("class", "x label")
-            .attr("text-anchor", "middle")
-            .attr("x", chart.width / 2)
-            .attr("y", chart.height + 60)
-            .text(nameForQuestion(question));
+        addXAxisLabel(chart, nameForQuestion(question));
         
         // draw the y axis
         
@@ -479,16 +491,9 @@ define([
             .call(xAxis);
         
         if (choiceQuestion) {
-            var choiceLabel = limitLabelLength(choice, 18); 
-            var choiceLabelSVG = chartBody.append("text")
-                .attr("class", "choice label")
-                .attr("text-anchor", "middle")
-                .attr("x", chart.width / 2)
-                .attr("y", chart.height + 40)
-                .text(choiceLabel);
-            
-            choiceLabelSVG.append("svg:title")
-                .text(choice);
+            addXAxisLabel(chart, choice, 18);
+        } else {
+            addXAxisLabel(chart, nameForQuestion(scaleQuestion));
         }
         
         // draw the y axis
@@ -680,12 +685,7 @@ define([
             .attr('class', 'x axis')
             .call(xAxis);
         
-        chartBody.append("text")
-            .attr("class", "x label")
-            .attr("text-anchor", "end")
-            .attr("x", chart.width)
-            .attr("y", chart.height - 6)
-            .text(nameForQuestion(xAxisQuestion));
+        addXAxisLabel(chart, nameForQuestion(xAxisQuestion));
         
         // draw the y axis
         
@@ -878,12 +878,7 @@ define([
                     return "rotate(-65)";
                 });
         
-        chartBody.append("text")
-            .attr("class", "x label")
-            .attr("text-anchor", "end")
-            .attr("x", chart.width)
-            .attr("y", chart.height - 6)
-            .text(nameForQuestion(xAxisQuestion));
+        addXAxisLabel(chart, nameForQuestion(xAxisQuestion));
         
         // Y axis and label
         
