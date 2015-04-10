@@ -337,17 +337,17 @@ define([
             var selectedPlotItems = [];
             var selectedStories = [];
             bars.classed("selected", function(plotItem) {
-              // console.log("xScale value", xScale(plotItem.name));
-              var midPoint = xScale(plotItem.name) + xScale.rangeBand() / 2;
-              var selected = extent[0][0] <= midPoint  && midPoint < extent[1][0];
-              if (selected) {
-                  selectedPlotItems.push(plotItem);
-                  for (var i = 0; i < plotItem.stories.length; i++) {
-                      var story = plotItem.stories[i];
-                      if (selectedStories.indexOf(story) === -1) selectedStories.push(story);
-                  }
-              }
-              return selected;
+                // console.log("xScale value", xScale(plotItem.name));
+                var midPoint = xScale(plotItem.name) + xScale.rangeBand() / 2;
+                var selected = extent[0][0] <= midPoint  && midPoint < extent[1][0];
+                if (selected) {
+                    selectedPlotItems.push(plotItem);
+                    for (var i = 0; i < plotItem.stories.length; i++) {
+                        var story = plotItem.stories[i];
+                        if (selectedStories.indexOf(story) === -1) selectedStories.push(story);
+                    }
+                }
+                return selected;
             });
             console.log("Selected plotItems", selectedPlotItems);
             storiesSelectedCallback(graphBrowserInstance, selectedStories);
@@ -778,6 +778,7 @@ define([
         
         // collect data
         var results = {};
+        var plotItemStories = {};
         var grandTotal = 0;
         var stories = graphBrowserInstance.allStories;
         for (var index in stories) {
@@ -792,6 +793,7 @@ define([
                 incrementMapSlot(results, JSON.stringify({x: xValue, y: yValue}));
                 incrementMapSlot(results, JSON.stringify({x: xValue}));
                 incrementMapSlot(results, JSON.stringify({y: yValue}));
+                pushToMapSlot(plotItemStories, JSON.stringify({x: xValue, y: yValue}), story);
                 grandTotal++;
             } else {
                 // one or both may be checkboxes, so do a loop for each and create plot items for every combination         
@@ -820,6 +822,7 @@ define([
                         incrementMapSlot(results, JSON.stringify({x: xValues[xIndex], y: yValues[yIndex]}));
                         incrementMapSlot(results, JSON.stringify({x: xValues[xIndex]}));
                         incrementMapSlot(results, JSON.stringify({y: yValues[yIndex]}));
+                        pushToMapSlot(plotItemStories, JSON.stringify({x: xValues[xIndex], y: yValues[yIndex]}), story);
                         grandTotal++;
                     }
                 }
@@ -843,8 +846,11 @@ define([
             var c = columnLabelsArray[ci];
             for (var ri in rowLabelsArray) {
                 var r = rowLabelsArray[ri];
-                var value = results[JSON.stringify({x: c, y: r})] || 0;
-                var plotItem = {x: c, y: r, value: value};
+                var indexSelector = JSON.stringify({x: c, y: r});
+                var value = results[indexSelector] || 0;
+                var storiesForNewPlotItem = plotItemStories[indexSelector] || [];
+                console.log("stories for new plot item", storiesForNewPlotItem, indexSelector);
+                var plotItem = {x: c, y: r, value: value, stories: storiesForNewPlotItem};
                 console.log("plotItem", plotItem);
                 allPlotItems.push(plotItem);
             }
@@ -933,6 +939,8 @@ define([
             .attr("transform", "rotate(-90)")
             .text(nameForQuestion(yAxisQuestion));
         
+        
+        // TODO: Finish drawing tick lines
         /*
         console.log("xAxis", xAxis);
         xAxis.tickValues().append('line')
@@ -940,7 +948,17 @@ define([
             .attr("x2", function (d) { return xScale(d) + xScale.rangeBand() / 2.0; })
             .attr("y1", function (d) { return yScale(0); })
             .attr("y2", function (d) { return yScale(height); });
-*/
+        */
+        
+        // Append brush before data to ensure titles are drown
+        var brush = chartBody.append("g")
+            .attr("class", "brush")
+            .call(d3.svg.brush()
+                .x(xScale)
+                .y(yScale)
+                .clamp([false, false])
+                .on("brushend", brushend)
+            );
         
         // Compute a scaling factor to map plotItem values onto a widgth and height
         var xValueMultiplier = xScale.rangeBand() / maxPlotItemValue / 2.0;
@@ -957,8 +975,36 @@ define([
                 .attr("cx", function (plotItem) { return xScale(plotItem.x) + xScale.rangeBand() / 2.0; } )
                 .attr("cy", function (plotItem) { return yScale(plotItem.y) + yScale.rangeBand() / 2.0; } );
 
-        // TODO: Finish!
-        
+        // Support starting a drag over a node
+        nodes.on('mousedown', function(){
+            var brushElements = chartBody.select(".brush").node();
+            var newClickEvent = new Event('mousedown');
+            newClickEvent.pageX = d3.event.pageX;
+            newClickEvent.clientX = d3.event.clientX;
+            newClickEvent.pageY = d3.event.pageY;
+            newClickEvent.clientY = d3.event.clientY;
+            brushElements.dispatchEvent(newClickEvent);
+          });
+
+        function brushend() {
+            // console.log("brushend", brush);
+            var extent = d3.event.target.extent();
+            var selectedStories = [];
+            nodes.classed("selected", function(plotItem) {
+                var midPointX = xScale(plotItem.x) + xScale.rangeBand() / 2;
+                var midPointY = yScale(plotItem.y) + yScale.rangeBand() / 2;
+                var selected = extent[0][0] <= midPointX && midPointX < extent[1][0] && extent[0][1] <= midPointY && midPointY < extent[1][1];
+                if (selected && plotItem.stories) {
+                    for (var i = 0; i < plotItem.stories.length; i++) {
+                        var story = plotItem.stories[i];
+                        if (selectedStories.indexOf(story) === -1) selectedStories.push(story);
+                    }
+                }
+                return selected;
+            });
+            console.log("Selected stories", selectedStories);
+            storiesSelectedCallback(graphBrowserInstance, selectedStories);
+        } 
     }
     
     function newChartPane(graphBrowserInstance, style) {
