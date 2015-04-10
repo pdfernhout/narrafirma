@@ -288,10 +288,10 @@ define([
                 .data(allPlotItems)
             .enter().append("g")
                 .attr("class", "bar")
-                .attr('transform', function(plotItem) { return 'translate(' + xScale(plotItem.name) + ',' + yScale(plotItem.value) + ')'; });
+                .attr('transform', function(plotItem) { return 'translate(' + xScale(plotItem.name) + ',' + yScale(0) + ')'; });
             
         var barBackground = bars.append("rect")
-            .attr("style", "stroke: rgb(0,0,0); fill: white;")
+            // .attr("style", "stroke: rgb(0,0,0); fill: white;")
             .attr("x", function(plotItem) { return 0; })
             .attr("y", function(plotItem) { return 0; })
             .attr("height", function(plotItem) { return yHeightScale(plotItem.value); })
@@ -301,10 +301,9 @@ define([
         var barStories = bars.selectAll(".story")
                 .data(function(plotItem) { return plotItem.stories; })
             .enter().append("rect")
-                .attr('class', 'story')
-                .attr("style", function(d, i) { return "stroke: rgb(0,0,0); fill: " + ((i % 2 === 0) ? "black" : "grey") + ";"; })
+                .attr('class', function (d, i) { return "story " + ((i % 2 === 0) ? "even" : "odd");})
                 .attr("x", function(plotItem) { return 0; })
-                .attr("y", function(plotItem, i) { return yHeightScale(i); })
+                .attr("y", function(plotItem, i) { return yHeightScale(-i - 1); })
                 .attr("height", function(plotItem) { return yHeightScale(1); })
                 .attr("width", xScale.rangeBand());
         
@@ -347,6 +346,8 @@ define([
                         if (selectedStories.indexOf(story) === -1) selectedStories.push(story);
                     }
                 }
+                // console.log("this", this, d3.select(this).selectAll(".story"));
+                // d3.select(this).selectAll(".story").classed("selected", selected);
                 return selected;
             });
             console.log("Selected plotItems", selectedPlotItems);
@@ -465,16 +466,15 @@ define([
             .data(data)
           .enter().append("g")
             .attr("class", "bar")
-            .attr("transform", function(d) { return "translate(" + xScale(d.x) + "," + yScale(d.y) + ")"; });
+            .attr("transform", function(d) { return "translate(" + xScale(d.x) + "," + yScale(0) + ")"; });
         
         // Overlay stories on each bar...
         var barStories = bars.selectAll(".story")
                 .data(function(plotItem) { return plotItem; })
             .enter().append("rect")
-                .attr('class', 'story')
-                .attr("style", function(d, i) { return "stroke: rgb(0,0,0); fill: " + ((i % 2 === 0) ? "black" : "grey") + ";"; })
+                .attr('class', function (d, i) { return "story " + ((i % 2 === 0) ? "even" : "odd");})
                 .attr("x", function(plotItem) { return 0; })
-                .attr("y", function(plotItem, i) { return yHeightScale(i); })
+                .attr("y", function(plotItem, i) { return yHeightScale(-i - 1); })
                 .attr("height", function(plotItem) { return yHeightScale(1); })
                 .attr("width", xScale(data[0].dx) - 1);
         

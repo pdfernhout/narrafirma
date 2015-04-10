@@ -269,6 +269,26 @@ form {
   fill: blue;
 }
 
+.bar {
+  fill: none;
+}
+
+.story.even {
+  fill: grey;
+}
+
+.story.odd {
+  fill: silver;
+}
+
+.selected .story.even {
+  fill: blue;
+}
+
+.selected .story.odd {
+  fill: aqua;
+}
+
 .contingencyChart .observed {
   stroke: red;
   stroke-width: 1.5px;
