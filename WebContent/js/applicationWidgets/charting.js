@@ -72,10 +72,10 @@ define([
         }
         
         var answerIndex = options.indexOf(answer);
-        console.log("answerIndex", answerIndex);
+        // console.log("answerIndex", answerIndex);
 
         var position = 100 * answerIndex / (options.length - 1);
-        console.log("calculated position: ", position);
+        // console.log("calculated position: ", position);
 
         return position;  
     }
@@ -129,7 +129,7 @@ define([
     }
     
     function displayTextForAnswer(answer) {
-        console.log("displayTextForAnswer", answer);
+        // console.log("displayTextForAnswer", answer);
         if (!answer && answer !== 0) return "";
         var hasCheckboxes = lang.isObject(answer);
         if (!hasCheckboxes) return answer;
@@ -330,7 +330,7 @@ define([
           });
         
         function brushend() {
-            console.log("brushend", brush);
+            // console.log("brushend", brush);
             var extent = d3.event.target.extent();
             // console.log("extent", extent);
             var selectedPlotItems = [];
@@ -350,7 +350,7 @@ define([
                 // d3.select(this).selectAll(".story").classed("selected", selected);
                 return selected;
             });
-            console.log("Selected plotItems", selectedPlotItems);
+            console.log("Selected stories", selectedStories);
             storiesSelectedCallback(graphBrowserInstance, selectedStories);
         }
     }
@@ -554,7 +554,7 @@ define([
           });
         
         function brushend() {
-            console.log("brushend", brush);
+            // console.log("brushend", brush);
             var extent = d3.event.target.extent();
             // console.log("extent", extent);
             var selectedPlotItems = [];
@@ -565,18 +565,18 @@ define([
               // console.log("midPoint", midPoint, plotItems.x);
               var selected = extent[0][0] <= midPoint  && midPoint < extent[1][0];
               if (selected) {
-                  console.log("histogram brush", plotItems);
+                  // console.log("histogram brush", plotItems);
                   selectedPlotItems.push.apply(selectedPlotItems, plotItems);
                   for (var i = 0; i < plotItems.length; i++) {
                       var item = plotItems[i];
-                      console.log("histogram story", i, item, item.story);
+                      // console.log("histogram story", i, item, item.story);
                       selectedStories.push(item.story);
                   }
               }
               // console.log("selected", selected);
               return selected;
             });
-            console.log("Selected plotItems", selectedPlotItems);
+            console.log("Selected stories", selectedStories);
             storiesSelectedCallback(graphBrowserInstance, selectedStories);
         }
         
@@ -849,9 +849,9 @@ define([
                 var indexSelector = JSON.stringify({x: c, y: r});
                 var value = results[indexSelector] || 0;
                 var storiesForNewPlotItem = plotItemStories[indexSelector] || [];
-                console.log("stories for new plot item", storiesForNewPlotItem, indexSelector);
+                // console.log("stories for new plot item", storiesForNewPlotItem, indexSelector);
                 var plotItem = {x: c, y: r, value: value, stories: storiesForNewPlotItem};
-                console.log("plotItem", plotItem);
+                // console.log("plotItem", plotItem);
                 allPlotItems.push(plotItem);
             }
         }
@@ -942,7 +942,7 @@ define([
         
         // TODO: Finish drawing tick lines
         /*
-        console.log("xAxis", xAxis);
+        // console.log("xAxis", xAxis);
         xAxis.tickValues().append('line')
             .attr("x1", function (d) { return xScale(d) + xScale.rangeBand() / 2.0; })
             .attr("x2", function (d) { return xScale(d) + xScale.rangeBand() / 2.0; })
