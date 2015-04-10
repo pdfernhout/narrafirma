@@ -233,10 +233,6 @@ define([
         
         if (configure.drawLongAxisLines) xAxis.tickSize(-(chart.height));
 
-        var axisLabelGroup = chart.chartBody.append('g')
-            .attr('transform', 'translate(0,' + chart.height + ')')
-            .attr('class', 'x axis');
-        
         if (!configure.rotateAxisLabels) {
             chart.chartBody.append('g')
                 .attr('transform', 'translate(0,' + chart.height + ')')
@@ -256,6 +252,36 @@ define([
         }
         
         return xAxis;
+    }
+    
+    // This function is very similar to the one for addXAxis, except for transform, tickFormat, CSS classes, and not needing rotate
+    // yAxis = addYAxis(chart, yScale, {labelLengthLimit: 64, isSmallFormat: false, drawLongAxisLines: false});
+    function addYAxis(chart, yScale, configure) {
+        if (!configure) configure = {};
+        
+        var yAxis = d3.svg.axis()
+            .scale(yScale)
+            .orient('left');
+        
+        if (configure.labelLengthLimit) {
+            yAxis.tickFormat(function (label, i) {
+                return limitLabelLength(label, configure.labelLengthLimit); 
+            });
+        } else {
+            // TODO: Is this really needed?
+            yAxis.tickFormat(d3.format("d"));
+        }
+        
+        if (configure.isSmallFormat) yAxis.tickValues(yScale.domain());
+        
+        if (configure.drawLongAxisLines) yAxis.tickSize(-(chart.width));
+
+        chart.chartBody.append('g')
+            // .attr('transform', 'translate(0,0)')
+            .attr('class', 'y axis')
+            .call(yAxis);
+
+        return yAxis;
     }
     
     function addXAxisLabel(chart, label, labelLengthLimit) {
@@ -383,15 +409,7 @@ define([
             .domain([0, maxItemsPerBar])
             .range([0, chart.height]);
         
-        var yAxis = d3.svg.axis()
-            .scale(yScale)
-            .tickFormat(d3.format("d"))
-            .orient('left');
-
-        chartBody.append('g')
-            .attr('transform', 'translate(0,0)')
-            .attr('class', 'y axis')
-            .call(yAxis);
+        var yAxis = addYAxis(chart, yScale);
         
         addYAxisLabel(chart, "Count");
         
@@ -551,24 +569,14 @@ define([
             .domain([0, maxValue])
             .range([0, chart.height]);
         
-        var yAxis = d3.svg.axis()
-            .scale(yScale)
-            .tickFormat(d3.format("d"))
-            .orient('left');
-        
-        if (isSmallFormat) yAxis.tickValues(yScale.domain());
-
-        chartBody.append('g')
-            .attr('transform', 'translate(0,0)')
-            .attr('class', 'y axis')
-            .call(yAxis);
+        var yAxis = addYAxis(chart, yScale, {isSmallFormat: isSmallFormat});
         
         if (!isSmallFormat) {
             addYAxisLabel(chart, "Frequency");
         }
         
         if (isSmallFormat) {
-            chartBody.selectAll('.axis').style({ 'stroke-width': '1px', 'fill': 'gray'});
+            chartBody.selectAll('.axis').style({'stroke-width': '1px', 'fill': 'gray'});
         }
         
         // Append brush before data to ensure titles are drown
@@ -717,14 +725,7 @@ define([
             .domain([0, 100])
             .range([chart.height, 0]);       
     
-        var yAxis = d3.svg.axis()
-            .scale(yScale)
-            .orient('left');
-
-        chartBody.append('g')
-            .attr('transform', 'translate(0,0)')
-            .attr('class', 'y axis')
-            .call(yAxis);
+        var yAxis = addYAxis(chart, yScale);
         
         addYAxisLabel(chart, nameForQuestion(yAxisQuestion));
         
@@ -887,18 +888,7 @@ define([
             .domain(rowLabelsArray)
             .rangeRoundBands([chart.height, 0], 0.1); 
         
-        var yAxis = d3.svg.axis()
-            .scale(yScale)
-            .tickFormat(function (label, i) {
-                return limitLabelLength(label, 15); 
-            })
-            .orient('left')
-            .tickSize(-(chart.width));
-    
-        chartBody.append('g')
-            .attr('transform', 'translate(0,0)')
-            .attr('class', 'y axis')
-            .call(yAxis);
+        var yAxis = addYAxis(chart, yScale, {labelLengthLimit: 15, drawLongAxisLines: true});
         
         addYAxisLabel(chart, nameForQuestion(yAxisQuestion));
         
