@@ -880,20 +880,19 @@ define([
             .attr('height', height)
             .attr('class', 'contingencyChartMain');
         
-        // draw the x axis
+        // X axis and label
         
         var xScale = d3.scale.ordinal()
             .domain(columnLabelsArray)
             .rangeRoundBands([0, width], 0.1);
-
-        var maxPlotItemValue = d3.max(allPlotItems, function(plotItem) { return plotItem.value; });
 
         var xAxis = d3.svg.axis()
             .scale(xScale)
             .tickFormat(function (label, i) {
                 return limitLabelLength(label, 15); 
             })
-            .orient('bottom');
+            .orient('bottom')
+            .tickSize(-height);
     
         chartBody.append('g')
             .attr('transform', 'translate(0,' + height + ')')
@@ -913,7 +912,7 @@ define([
             .attr("y", height - 6)
             .text(nameForQuestion(xAxisQuestion));
         
-        // draw the y axis
+        // Y axis and label
         
         var yScale = d3.scale.ordinal()
             .domain(rowLabelsArray)
@@ -924,7 +923,8 @@ define([
             .tickFormat(function (label, i) {
                 return limitLabelLength(label, 15); 
             })
-            .orient('left');
+            .orient('left')
+            .tickSize(-width);
     
         chartBody.append('g')
             .attr('transform', 'translate(0,0)')
@@ -939,17 +939,6 @@ define([
             .attr("transform", "rotate(-90)")
             .text(nameForQuestion(yAxisQuestion));
         
-        
-        // TODO: Finish drawing tick lines
-        /*
-        // console.log("xAxis", xAxis);
-        xAxis.tickValues().append('line')
-            .attr("x1", function (d) { return xScale(d) + xScale.rangeBand() / 2.0; })
-            .attr("x2", function (d) { return xScale(d) + xScale.rangeBand() / 2.0; })
-            .attr("y1", function (d) { return yScale(0); })
-            .attr("y2", function (d) { return yScale(height); });
-        */
-        
         // Append brush before data to ensure titles are drown
         var brush = chartBody.append("g")
             .attr("class", "brush")
@@ -961,6 +950,7 @@ define([
             );
         
         // Compute a scaling factor to map plotItem values onto a widgth and height
+        var maxPlotItemValue = d3.max(allPlotItems, function(plotItem) { return plotItem.value; });
         var xValueMultiplier = xScale.rangeBand() / maxPlotItemValue / 2.0;
         var yValueMultiplier = yScale.rangeBand() / maxPlotItemValue / 2.0;
 

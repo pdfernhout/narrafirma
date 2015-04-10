@@ -307,7 +307,11 @@ form {
   fill: none;
 }
 
-.grid .tick {
-    stroke: lightgrey;
-    opacity: 0.7;
+.contingencyChart .axis path {
+  display: none;
+}
+
+.contingencyChart .axis line {
+  shape-rendering: crispEdges;
+  stroke: #000;
 }
