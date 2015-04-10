@@ -292,11 +292,11 @@ form {
   fill: silver;
 }
 
-.selected .story.even {
+.story.even.selected {
   fill: blue;
 }
 
-.selected .story.odd {
+.story.odd.selected {
   fill: aqua;
 }
 

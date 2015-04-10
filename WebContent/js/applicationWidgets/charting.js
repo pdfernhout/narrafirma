@@ -20,7 +20,7 @@ define([
     var unansweredKey = "{N/A}";
     var singleChartStyle = "width: 700px; height: 500px;";
     var multipleChartStyle = "width: 200px; height: 200; float: left;";
-     
+
     function correctForUnanswered(question, value) {
         if (question.displayType === "checkbox" && !value) return "no";
         if (value === undefined || value === null || value === "") return unansweredKey;
@@ -36,7 +36,7 @@ define([
     function positionForQuestionAnswer(question, answer) {
         // console.log("positionForQuestionAnswer", question, answer);
         
-     // TODO: Confirm checkbox values are also yes/no...
+        // TODO: Confirm checkbox values are also yes/no...
         if (question.displayType === "boolean" || question.displayType === "checkbox") {
             if (answer === "no") return 0;
             if (answer === "yes") return 100;
@@ -319,9 +319,9 @@ define([
                 .text(label);
         }
     }
-    
-    // -------------
-    
+
+    // ---- Charts
+
     function d3BarChart(graphBrowserInstance, question, storiesSelectedCallback) {
         // Collect data
         
@@ -341,25 +341,19 @@ define([
         var stories = graphBrowserInstance.allStories;
         for (var storyIndex in stories) {
             var story = stories[storyIndex];
-            // console.log("story", story);
             var xValue = correctForUnanswered(question, story[question.id]);
             
             var xHasCheckboxes = lang.isObject(xValue);
             // fast path
             if (!xHasCheckboxes) {
-                // console.log("no loop xValue", xValue);
-                pushToMapSlot(results, xValue, story);
+                pushToMapSlot(results, xValue, {story: story, value: xValue});
             } else {
-                // console.log(question, xValue);
                 for (var xIndex in xValue) {
-                    // console.log("loop xIndex", xIndex, xValue[xIndex]);
-                    if (xValue[xIndex]) pushToMapSlot(results, xIndex, story);
+                    if (xValue[xIndex]) pushToMapSlot(results, xIndex, {story: story, value: xIndex});
                 }
             }
         }
         
-        // console.log("results", results);
-         
         // Keep unanswered at start if present
         key = unansweredKey;
         if (results[key]) {
@@ -372,9 +366,7 @@ define([
             xLabels.push(key);
             allPlotItems.push({name: key, stories: results[key], value: results[key].length});
         }
-        
-        // console.log("plot items", allPlotItems);
-        
+
         // Build chart
         // TODO: Improve the way labels are drawn or ellipsed based on chart size and font size and number of bars
 
@@ -441,7 +433,8 @@ define([
         
         // Add tooltips
         storyDisplayItems.append("svg:title")
-            .text(function(story) {
+            .text(function(storyItem) {
+                var story = storyItem.story;
                 var tooltipText =
                     "Title: " + story.__survey_storyName +
                     // "\nID: " + story._storyID + 
@@ -452,22 +445,13 @@ define([
         
         supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems);
         
+        function isPlotItemSelected(extent, plotItem) {
+            var midPoint = xScale(plotItem.value) + xScale.rangeBand() / 2;
+            return extent[0][0] <= midPoint && midPoint < extent[1][0];
+        }
+        
         function brushend() {
-            var extent = d3.event.target.extent();
-            var selectedStories = [];
-            bars.classed("selected", function(plotItem) {
-                var midPoint = xScale(plotItem.name) + xScale.rangeBand() / 2;
-                var selected = extent[0][0] <= midPoint  && midPoint < extent[1][0];
-                if (selected) {
-                    for (var i = 0; i < plotItem.stories.length; i++) {
-                        var story = plotItem.stories[i];
-                        if (selectedStories.indexOf(story) === -1) selectedStories.push(story);
-                    }
-                }
-                return selected;
-            });
-            console.log("Selected stories", selectedStories);
-            storiesSelectedCallback(graphBrowserInstance, selectedStories);
+            updateSelectedStories(storyDisplayItems, graphBrowserInstance, storiesSelectedCallback, isPlotItemSelected);
         }
     }
     
@@ -576,10 +560,10 @@ define([
         var brush = createBrush(chartBody, xScale, yScale, brushend);
         
         var bars = chartBody.selectAll(".bar")
-            .data(data)
+              .data(data)
           .enter().append("g")
-            .attr("class", "bar")
-            .attr("transform", function(d) { return "translate(" + xScale(d.x) + "," + yScale(0) + ")"; });
+              .attr("class", "bar")
+              .attr("transform", function(d) { return "translate(" + xScale(d.x) + "," + yScale(0) + ")"; });
         
         // Overlay stories on each bar...
         var storyDisplayItems = bars.selectAll(".story")
@@ -604,22 +588,14 @@ define([
         
         supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems);
         
+        function isPlotItemSelected(extent, plotItem) {
+            var midPoint = plotItem.value + data[0].dx / 2;
+            var selected = extent[0][0] <= midPoint && midPoint < extent[1][0];
+            return selected;
+        }
+        
         function brushend() {
-            var extent = d3.event.target.extent();
-            var selectedStories = [];
-            bars.classed("selected", function(plotItems) {
-              var midPoint = plotItems.x + data[0].dx / 2;
-              var selected = extent[0][0] <= midPoint  && midPoint < extent[1][0];
-              if (selected) {
-                  for (var i = 0; i < plotItems.length; i++) {
-                      var item = plotItems[i];
-                      selectedStories.push(item.story);
-                  }
-              }
-              return selected;
-            });
-            console.log("Selected stories", selectedStories);
-            storiesSelectedCallback(graphBrowserInstance, selectedStories);
+            updateSelectedStories(storyDisplayItems, graphBrowserInstance, storiesSelectedCallback, isPlotItemSelected);
         }
         
         // TODO: Put up title
@@ -681,7 +657,6 @@ define([
             var newPlotItem = makePlotItem(xAxisQuestion, yAxisQuestion, xValue, yValue, story);
             allPlotItems.push(newPlotItem);
         }
-        // console.log("plot items", allPlotItems);
 
         // Build chart
         
@@ -739,16 +714,12 @@ define([
         
         supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems);
 
+        function isPlotItemSelected(extent, plotItem) {
+            return extent[0][0] <= plotItem.x && plotItem.x < extent[1][0] && extent[0][1] <= plotItem.y && plotItem.y < extent[1][1];
+        }
+        
         function brushend() {
-            var extent = d3.event.target.extent();
-            var selectedStories = [];
-            storyDisplayItems.classed("selected", function(plotItem) {
-              var selected = extent[0][0] <= plotItem.x && plotItem.x < extent[1][0] && extent[0][1] <= plotItem.y && plotItem.y < extent[1][1];
-              if (selected) selectedStories.push(plotItem.story);
-              return selected;
-            });
-            console.log("Selected stories", selectedStories);
-            storiesSelectedCallback(graphBrowserInstance, selectedStories);
+            updateSelectedStories(storyDisplayItems, graphBrowserInstance, storiesSelectedCallback, isPlotItemSelected);
         }
     }
     
@@ -837,9 +808,7 @@ define([
                 var indexSelector = JSON.stringify({x: c, y: r});
                 var value = results[indexSelector] || 0;
                 var storiesForNewPlotItem = plotItemStories[indexSelector] || [];
-                // console.log("stories for new plot item", storiesForNewPlotItem, indexSelector);
                 var plotItem = {x: c, y: r, value: value, stories: storiesForNewPlotItem};
-                // console.log("plotItem", plotItem);
                 allPlotItems.push(plotItem);
             }
         }
@@ -896,7 +865,6 @@ define([
         // Add tooltips
         storyDisplayClusters.append("svg:title")
             .text(function(plotItem) {
-                // console.log("---------------------- plotItem", plotItem);
                 var tooltipText = 
                 "X (" + nameForQuestion(xAxisQuestion) + "): " + plotItem.x +
                 "\nY (" + nameForQuestion(yAxisQuestion) + "): " + plotItem.y;
@@ -914,24 +882,42 @@ define([
 
         supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayClusters);
 
+        function isPlotItemSelected(extent, plotItem) {
+            var midPointX = xScale(plotItem.x) + xScale.rangeBand() / 2;
+            var midPointY = yScale(plotItem.y) + yScale.rangeBand() / 2;
+            var selected = extent[0][0] <= midPointX && midPointX < extent[1][0] && extent[0][1] <= midPointY && midPointY < extent[1][1];
+            return selected;
+        }
+        
         function brushend() {
-            var extent = d3.event.target.extent();
-            var selectedStories = [];
-            storyDisplayClusters.classed("selected", function(plotItem) {
-                var midPointX = xScale(plotItem.x) + xScale.rangeBand() / 2;
-                var midPointY = yScale(plotItem.y) + yScale.rangeBand() / 2;
-                var selected = extent[0][0] <= midPointX && midPointX < extent[1][0] && extent[0][1] <= midPointY && midPointY < extent[1][1];
-                if (selected && plotItem.stories) {
+            updateSelectedStories(storyDisplayClusters, graphBrowserInstance, storiesSelectedCallback, isPlotItemSelected);
+        }
+    }
+    
+    // ---- Support updating stories in browser
+    
+    function updateSelectedStories(storyDisplayItemsOrClusters, graphBrowserInstance, storiesSelectedCallback, selectionTestFunction) {
+        var extent = d3.event.target.extent();
+        var selectedStories = [];
+        storyDisplayItemsOrClusters.classed("selected", function(plotItem) {
+            var selected = selectionTestFunction(extent, plotItem);
+            var story;
+            if (selected) {
+                if (plotItem.stories) {
                     for (var i = 0; i < plotItem.stories.length; i++) {
-                        var story = plotItem.stories[i];
+                        story = plotItem.stories[i];
                         if (selectedStories.indexOf(story) === -1) selectedStories.push(story);
                     }
+                } else {
+                    story = plotItem.story;
+                    if (!story) throw new Error("Expected story in plotItem");
+                    if (selectedStories.indexOf(story) === -1) selectedStories.push(story);
                 }
-                return selected;
-            });
-            console.log("Selected stories", selectedStories);
-            storiesSelectedCallback(graphBrowserInstance, selectedStories);
-        } 
+            }
+            return selected;
+        });
+        console.log("updateSelectedStories", selectedStories);
+        storiesSelectedCallback(graphBrowserInstance, selectedStories);
     }
     
     function newChartPane(graphBrowserInstance, style) {
