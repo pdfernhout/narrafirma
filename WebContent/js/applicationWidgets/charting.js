@@ -215,6 +215,49 @@ define([
         };
     }
     
+    // addXAxis(chart, xScale, {labelLengthLimit: 64, isSmallFormat: false, drawLongAxisLines: false, rotateAxisLabels: false});
+    function addXAxis(chart, xScale, configure) {
+        if (!configure) configure = {};
+        
+        var xAxis = d3.svg.axis()
+            .scale(xScale)
+            .orient('bottom');
+        
+        if (configure.labelLengthLimit) {
+            xAxis.tickFormat(function (label, i) {
+                return limitLabelLength(label, configure.labelLengthLimit); 
+            });
+        }
+        
+        if (configure.isSmallFormat) xAxis.tickValues(xScale.domain());
+        
+        if (configure.drawLongAxisLines) xAxis.tickSize(-(chart.height));
+
+        var axisLabelGroup = chart.chartBody.append('g')
+            .attr('transform', 'translate(0,' + chart.height + ')')
+            .attr('class', 'x axis');
+        
+        if (!configure.rotateAxisLabels) {
+            chart.chartBody.append('g')
+                .attr('transform', 'translate(0,' + chart.height + ')')
+                .attr('class', 'x axis')
+                .call(xAxis);
+        } else {
+            chart.chartBody.append('g')
+                .attr('transform', 'translate(0,' + chart.height + ')')
+                .attr('class', 'x axis')
+                .call(xAxis).call(xAxis).selectAll("text")
+                    .style("text-anchor", "end")
+                    .attr("dx", "-0.8em")
+                    .attr("dy", "0.15em")
+                    .attr("transform", function(d) {
+                        return "rotate(-65)";
+                    });
+        }
+        
+        return xAxis;
+    }
+    
     function addXAxisLabel(chart, label, labelLengthLimit) {
         if (labelLengthLimit === undefined) labelLengthLimit = 64;
 
@@ -323,17 +366,7 @@ define([
             .domain(xLabels)
             .rangeRoundBands([0, chart.width], 0.1);
     
-        var xAxis = d3.svg.axis()
-            .scale(xScale)
-            .tickFormat(function (label, i) {
-                return limitLabelLength(label, 9); 
-            })
-            .orient('bottom');
-
-        chartBody.append('g')
-            .attr('transform', 'translate(0,' + chart.height + ')')
-            .attr('class', 'x axis')
-            .call(xAxis);
+        var xAxis = addXAxis(chart, xScale, {labelLengthLimit: 9});
         
         addXAxisLabel(chart, nameForQuestion(question));
         
@@ -493,16 +526,7 @@ define([
             .domain([0, 100])
             .range([0, chart.width]);
     
-        var xAxis = d3.svg.axis()
-            .scale(xScale)
-            .orient("bottom");
-    
-        if (isSmallFormat) xAxis.tickValues(xScale.domain());
-    
-        chartBody.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + chart.height + ")")
-            .call(xAxis);
+        var xAxis = addXAxis(chart, xScale, {isSmallFormat: isSmallFormat});
         
         if (choiceQuestion) {
             addXAxisLabel(chart, choice, 18);
@@ -683,14 +707,7 @@ define([
             .domain([0, 100])
             .range([0, chart.width]);
 
-        var xAxis = d3.svg.axis()
-            .scale(xScale)
-            .orient('bottom');
-
-        chartBody.append('g')
-            .attr('transform', 'translate(0,' + chart.height + ')')
-            .attr('class', 'x axis')
-            .call(xAxis);
+        var xAxis = addXAxis(chart, xScale);
         
         addXAxisLabel(chart, nameForQuestion(xAxisQuestion));
         
@@ -860,24 +877,7 @@ define([
             .domain(columnLabelsArray)
             .rangeRoundBands([0, chart.width], 0.1);
 
-        var xAxis = d3.svg.axis()
-            .scale(xScale)
-            .tickFormat(function (label, i) {
-                return limitLabelLength(label, 11); 
-            })
-            .orient('bottom')
-            .tickSize(-(chart.height));
-    
-        chartBody.append('g')
-            .attr('transform', 'translate(0,' + chart.height + ')')
-            .attr('class', 'x axis')
-            .call(xAxis).selectAll("text")
-                .style("text-anchor", "end")
-                .attr("dx", "-0.8em")
-                .attr("dy", "0.15em")
-                .attr("transform", function(d) {
-                    return "rotate(-65)";
-                });
+        var xAxis = addXAxis(chart, xScale, {labelLengthLimit: 11, drawLongAxisLines: true, rotateAxisLabels: true});
         
         addXAxisLabel(chart, nameForQuestion(xAxisQuestion));
         
