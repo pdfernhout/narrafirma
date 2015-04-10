@@ -170,6 +170,51 @@ define([
         return brush;
     }
     
+    function makeChartFramework(chartPane, chartType, isSmallFormat, margin) {
+        var fullWidth = 700;
+        var fullHeight = 500;
+        
+        if (isSmallFormat) {
+            fullWidth = 200;
+            fullHeight = 200;
+        }
+        var width = fullWidth - margin.left - margin.right;
+        var height = fullHeight - margin.top - margin.bottom;
+       
+        var chart = d3.select(chartPane.domNode).append('svg')
+            .attr('width', width + margin.right + margin.left)
+            .attr('height', height + margin.top + margin.bottom)
+            .attr('class', 'chart ' + chartType);
+    
+        var chartBackground = chart.append("rect")
+            .attr('width', fullWidth)
+            .attr('height', fullHeight)
+            .attr('class', 'chartBackground');
+        
+        var chartBody = chart.append('g')
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+            .attr('width', width)
+            .attr('height', height)
+            .attr('class', 'chartBody');
+
+        var chartBodyBackground = chartBody.append("rect")
+            .attr('width', width)
+            .attr('height', height)
+            .attr('class', 'chartBodyBackground');
+        
+        return {
+            fullWidth: fullWidth,
+            fullHeight: fullHeight,
+            margin: margin,
+            width: width,
+            height: height,
+            chart: chart,
+            chartBackground: chartBackground,
+            chartBody: chartBody,
+            chartBodyBackground: chartBodyBackground
+        };
+    }
+    
     // -------------
     
     function d3BarChart(graphBrowserInstance, question, storiesSelectedCallback) {
@@ -232,38 +277,15 @@ define([
         
         var chartTitle = "" + nameForQuestion(question);
 
-        var fullWidth = 700;
-        var fullHeight = 500;
         var margin = {top: 20, right: 15, bottom: 90, left: 60};
-        var width = fullWidth - margin.left - margin.right;
-        var height = fullHeight - margin.top - margin.bottom;
-        
-        var chart = d3.select(chartPane.domNode).append('svg')
-            .attr('width', width + margin.right + margin.left)
-            .attr('height', height + margin.top + margin.bottom)
-            .attr('class', 'chart barChart');
-        
-        var chartBackground = chart.append("rect")
-            .attr('width', fullWidth)
-            .attr('height', fullHeight)
-            .attr('class', 'chartBackground');
-        
-        var chartBody = chart.append('g')
-            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-            .attr('width', width)
-            .attr('height', height)
-            .attr('class', 'chartBody');
-        
-        var chartBodyBackground = chartBody.append("rect")
-            .attr('width', width)
-            .attr('height', height)
-            .attr('class', 'chartBodyBackground');
+        var chart = makeChartFramework(chartPane, "barChart", false, margin);
+        var chartBody = chart.chartBody;
         
         // draw the x axis
 
         var xScale = d3.scale.ordinal()
             .domain(xLabels)
-            .rangeRoundBands([0, width], 0.1);
+            .rangeRoundBands([0, chart.width], 0.1);
     
         var xAxis = d3.svg.axis()
             .scale(xScale)
@@ -273,15 +295,15 @@ define([
             .orient('bottom');
 
         chartBody.append('g')
-            .attr('transform', 'translate(0,' + height + ')')
+            .attr('transform', 'translate(0,' + chart.height + ')')
             .attr('class', 'x axis')
             .call(xAxis);
         
         chartBody.append("text")
             .attr("class", "x label")
             .attr("text-anchor", "middle")
-            .attr("x", width / 2)
-            .attr("y", height + 60)
+            .attr("x", chart.width / 2)
+            .attr("y", chart.height + 60)
             .text(nameForQuestion(question));
         
         // draw the y axis
@@ -290,12 +312,12 @@ define([
 
         var yScale = d3.scale.linear()
             .domain([0, maxItemsPerBar])
-            .range([height, 0]);
+            .range([chart.height, 0]);
         
         // Extra version of scale for calculating heights without subtracting as in height - yScale(value)
         var yHeightScale = d3.scale.linear()
             .domain([0, maxItemsPerBar])
-            .range([0, height]);
+            .range([0, chart.height]);
         
         var yAxis = d3.svg.axis()
             .scale(yScale)
@@ -434,43 +456,16 @@ define([
         }
  
         var chartPane = newChartPane(graphBrowserInstance, style);
-
-        var fullWidth = 700;
-        var fullHeight = 500;
-        if (isSmallFormat) {
-            fullWidth = 200;
-            fullHeight = 200;
-        }
-        var margin = {top: 20, right: 15, bottom: 60, left: 60};
-        var width = fullWidth - margin.left - margin.right;
-        var height = fullHeight - margin.top - margin.bottom;
-       
-        var chart = d3.select(chartPane.domNode).append('svg')
-            .attr('width', width + margin.right + margin.left)
-            .attr('height', height + margin.top + margin.bottom)
-            .attr('class', 'chart histogram');
-    
-        var chartBackground = chart.append("rect")
-            .attr('width', fullWidth)
-            .attr('height', fullHeight)
-            .attr('class', 'chartBackground');
         
-        var chartBody = chart.append('g')
-            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-            .attr('width', width)
-            .attr('height', height)
-            .attr('class', 'chartBody');
-
-        var chartBodyBackground = chartBody.append("rect")
-            .attr('width', width)
-            .attr('height', height)
-            .attr('class', 'chartBodyBackground');
+        var margin = {top: 20, right: 15, bottom: 60, left: 60};
+        var chart = makeChartFramework(chartPane, "histogram", isSmallFormat, margin);
+        var chartBody = chart.chartBody;
         
         // Draw the x axis
         
         var xScale = d3.scale.linear()
             .domain([0, 100])
-            .range([0, width]);
+            .range([0, chart.width]);
     
         var xAxis = d3.svg.axis()
             .scale(xScale)
@@ -480,7 +475,7 @@ define([
     
         chartBody.append("g")
             .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
+            .attr("transform", "translate(0," + chart.height + ")")
             .call(xAxis);
         
         if (choiceQuestion) {
@@ -488,8 +483,8 @@ define([
             var choiceLabelSVG = chartBody.append("text")
                 .attr("class", "choice label")
                 .attr("text-anchor", "middle")
-                .attr("x", width / 2)
-                .attr("y", height + 40)
+                .attr("x", chart.width / 2)
+                .attr("y", chart.height + 40)
                 .text(choiceLabel);
             
             choiceLabelSVG.append("svg:title")
@@ -506,12 +501,12 @@ define([
         
         var yScale = d3.scale.linear()
             .domain([0, maxValue])
-            .range([height, 0]);
+            .range([chart.height, 0]);
         
         // Extra version of scale for calculating heights without subtracting as in height - yScale(value)
         var yHeightScale = d3.scale.linear()
             .domain([0, maxValue])
-            .range([0, height]);
+            .range([0, chart.height]);
         
         var yAxis = d3.svg.axis()
             .scale(yScale)
@@ -666,60 +661,37 @@ define([
         
         var chartTitle = "" + nameForQuestion(xAxisQuestion) + " vs. " + nameForQuestion(yAxisQuestion);
 
-        var fullWidth = 700;
-        var fullHeight = 500;
         var margin = {top: 20, right: 15, bottom: 60, left: 60};
-        var width = fullWidth - margin.left - margin.right;
-        var height = fullHeight - margin.top - margin.bottom;
-
-        var chart = d3.select(chartPane.domNode).append('svg')
-            .attr('width', width + margin.right + margin.left)
-            .attr('height', height + margin.top + margin.bottom)
-            .attr('class', 'chart scatterPlot');
-        
-        var chartBackground = chart.append("rect")
-            .attr('width', fullWidth)
-            .attr('height', fullHeight)
-            .attr('class', 'chartBackground');
-        
-        var chartBody = chart.append('g')
-            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-            .attr('width', width)
-            .attr('height', height)
-            .attr('class', 'chartBody');
-        
-        var chartBodyBackground = chartBody.append("rect")
-            .attr('width', width)
-            .attr('height', height)
-            .attr('class', 'chartBodyBackground');
+        var chart = makeChartFramework(chartPane, "scatterPlot", false, margin);
+        var chartBody = chart.chartBody;
         
         // draw the x axis
         
         var xScale = d3.scale.linear()
             .domain([0, 100])
-            .range([0, width]);
+            .range([0, chart.width]);
 
         var xAxis = d3.svg.axis()
             .scale(xScale)
             .orient('bottom');
 
         chartBody.append('g')
-            .attr('transform', 'translate(0,' + height + ')')
+            .attr('transform', 'translate(0,' + chart.height + ')')
             .attr('class', 'x axis')
             .call(xAxis);
         
         chartBody.append("text")
             .attr("class", "x label")
             .attr("text-anchor", "end")
-            .attr("x", width)
-            .attr("y", height - 6)
+            .attr("x", chart.width)
+            .attr("y", chart.height - 6)
             .text(nameForQuestion(xAxisQuestion));
         
         // draw the y axis
         
         var yScale = d3.scale.linear()
             .domain([0, 100])
-            .range([height, 0]);       
+            .range([chart.height, 0]);       
     
         var yAxis = d3.svg.axis()
             .scale(yScale)
@@ -877,38 +849,15 @@ define([
         
         var chartTitle = "" + nameForQuestion(xAxisQuestion) + " vs. " + nameForQuestion(yAxisQuestion);
 
-        var fullWidth = 700;
-        var fullHeight = 500;
         var margin = {top: 20, right: 15, bottom: 120, left: 120};
-        var width = fullWidth - margin.left - margin.right;
-        var height = fullHeight - margin.top - margin.bottom;
-        
-        var chart = d3.select(chartPane.domNode).append('svg')
-            .attr('width', width + margin.right + margin.left)
-            .attr('height', height + margin.top + margin.bottom)
-            .attr('class', 'chart contingencyChart');
-        
-        var chartBackground = chart.append("rect")
-            .attr('width', fullWidth)
-            .attr('height', fullHeight)
-            .attr('class', 'chartBackground');
-        
-        var chartBody = chart.append('g')
-            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-            .attr('width', width)
-            .attr('height', height)
-            .attr('class', 'chartBody');
-        
-        var chartBodyBackground = chartBody.append("rect")
-            .attr('width', width)
-            .attr('height', height)
-            .attr('class', 'chartBodyBackground');
+        var chart = makeChartFramework(chartPane, "contingencyChart", false, margin);
+        var chartBody = chart.chartBody;
         
         // X axis and label
         
         var xScale = d3.scale.ordinal()
             .domain(columnLabelsArray)
-            .rangeRoundBands([0, width], 0.1);
+            .rangeRoundBands([0, chart.width], 0.1);
 
         var xAxis = d3.svg.axis()
             .scale(xScale)
@@ -916,10 +865,10 @@ define([
                 return limitLabelLength(label, 15); 
             })
             .orient('bottom')
-            .tickSize(-height);
+            .tickSize(-(chart.height));
     
         chartBody.append('g')
-            .attr('transform', 'translate(0,' + height + ')')
+            .attr('transform', 'translate(0,' + chart.height + ')')
             .attr('class', 'x axis')
             .call(xAxis).selectAll("text")
                 .style("text-anchor", "end")
@@ -932,15 +881,15 @@ define([
         chartBody.append("text")
             .attr("class", "x label")
             .attr("text-anchor", "end")
-            .attr("x", width)
-            .attr("y", height - 6)
+            .attr("x", chart.width)
+            .attr("y", chart.height - 6)
             .text(nameForQuestion(xAxisQuestion));
         
         // Y axis and label
         
         var yScale = d3.scale.ordinal()
             .domain(rowLabelsArray)
-            .rangeRoundBands([height, 0], 0.1); 
+            .rangeRoundBands([chart.height, 0], 0.1); 
         
         var yAxis = d3.svg.axis()
             .scale(yScale)
@@ -948,7 +897,7 @@ define([
                 return limitLabelLength(label, 15); 
             })
             .orient('left')
-            .tickSize(-width);
+            .tickSize(-(chart.width));
     
         chartBody.append('g')
             .attr('transform', 'translate(0,0)')
