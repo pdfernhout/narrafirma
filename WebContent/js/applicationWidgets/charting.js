@@ -232,6 +232,25 @@ define([
         }
     }
     
+    function addYAxisLabel(chart, label, labelLengthLimit) {
+        if (labelLengthLimit === undefined) labelLengthLimit = 64;
+
+        var shortenedLabel = limitLabelLength(label, labelLengthLimit); 
+        var shortenedLabelSVG = chart.chart.append("text")
+            .attr("class", "y label")
+            .attr("text-anchor", "middle")
+            // Y and X are flipped because of the rotate
+            .attr("y", 16)
+            .attr("x", -(chart.margin.top + chart.height / 2))
+            .attr("transform", "rotate(-90)")
+            .text(shortenedLabel);
+        
+        if (label.length > labelLengthLimit) {
+            shortenedLabelSVG.append("svg:title")
+                .text(label);
+        }
+    }
+    
     // -------------
     
     function d3BarChart(graphBrowserInstance, question, storiesSelectedCallback) {
@@ -341,13 +360,7 @@ define([
             .attr('class', 'y axis')
             .call(yAxis);
         
-        chartBody.append("text")
-            .attr("class", "y label")
-            .attr("text-anchor", "end")
-            .attr("y", 6)
-            .attr("dy", ".75em")
-            .attr("transform", "rotate(-90)")
-            .text("Count");
+        addYAxisLabel(chart, "Count");
         
         // Append brush before data to ensure titles are drown
         var brush = createBrush(chartBody, xScale, yScale, brushend);
@@ -470,6 +483,7 @@ define([
         var chartPane = newChartPane(graphBrowserInstance, style);
         
         var margin = {top: 20, right: 15, bottom: 60, left: 60};
+        if (isSmallFormat) margin.left = 25;
         var chart = makeChartFramework(chartPane, "histogram", isSmallFormat, margin);
         var chartBody = chart.chartBody;
         
@@ -526,14 +540,7 @@ define([
             .call(yAxis);
         
         if (!isSmallFormat) {
-            chartBody.append("text")
-                .attr("class", "y label")
-                .attr("text-anchor", "end")
-                .attr("y", 6)
-                .attr("dy", ".75em")
-                .attr("transform", "rotate(-90)")
-                // TODO: Translate
-                .text("Frequency");
+            addYAxisLabel(chart, "Frequency");
         }
         
         if (isSmallFormat) {
@@ -702,13 +709,7 @@ define([
             .attr('class', 'y axis')
             .call(yAxis);
         
-        chartBody.append("text")
-            .attr("class", "y label")
-            .attr("text-anchor", "end")
-            .attr("y", 6)
-            .attr("dy", ".75em")
-            .attr("transform", "rotate(-90)")
-            .text(nameForQuestion(yAxisQuestion));
+        addYAxisLabel(chart, nameForQuestion(yAxisQuestion));
         
         // Append brush before data to ensure titles are drown
         var brush = createBrush(chartBody, xScale, yScale, brushend);
@@ -849,7 +850,7 @@ define([
         
         var chartTitle = "" + nameForQuestion(xAxisQuestion) + " vs. " + nameForQuestion(yAxisQuestion);
 
-        var margin = {top: 20, right: 15, bottom: 120, left: 120};
+        var margin = {top: 20, right: 15, bottom: 120, left: 140};
         var chart = makeChartFramework(chartPane, "contingencyChart", false, margin);
         var chartBody = chart.chartBody;
         
@@ -862,7 +863,7 @@ define([
         var xAxis = d3.svg.axis()
             .scale(xScale)
             .tickFormat(function (label, i) {
-                return limitLabelLength(label, 15); 
+                return limitLabelLength(label, 11); 
             })
             .orient('bottom')
             .tickSize(-(chart.height));
@@ -899,13 +900,7 @@ define([
             .attr('class', 'y axis')
             .call(yAxis);
         
-        chartBody.append("text")
-            .attr("class", "y label")
-            .attr("text-anchor", "end")
-            .attr("y", 6)
-            .attr("dy", ".75em")
-            .attr("transform", "rotate(-90)")
-            .text(nameForQuestion(yAxisQuestion));
+        addYAxisLabel(chart, nameForQuestion(yAxisQuestion));
         
         // Append brush before data to ensure titles are drown
         var brush = createBrush(chartBody, xScale, yScale, brushend);
