@@ -974,6 +974,25 @@ define([
                 .attr("ry", function (plotItem) { return yValueMultiplier * plotItem.value; } )
                 .attr("cx", function (plotItem) { return xScale(plotItem.x) + xScale.rangeBand() / 2.0; } )
                 .attr("cy", function (plotItem) { return yScale(plotItem.y) + yScale.rangeBand() / 2.0; } );
+        
+        // Add tooltips
+        nodes.append("svg:title")
+            .text(function(plotItem) {
+                // console.log("---------------------- plotItem", plotItem);
+                var tooltipText = 
+                "X (" + nameForQuestion(xAxisQuestion) + "): " + plotItem.x +
+                "\nY (" + nameForQuestion(yAxisQuestion) + "): " + plotItem.y;
+                if (!plotItem.stories || plotItem.stories.length === 0) {
+                    tooltipText += "\n------ No stories ------";
+                } else {
+                    tooltipText += "\n------ Stories ------";
+                    for (var i = 0; i < plotItem.stories.length; i++) {
+                        var story = plotItem.stories[i];
+                        tooltipText += "\n" + story.__survey_storyName;
+                    }
+                }
+                return tooltipText;
+            });
 
         // Support starting a drag over a node
         nodes.on('mousedown', function(){

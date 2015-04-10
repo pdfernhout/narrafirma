@@ -292,7 +292,7 @@ form {
 .contingencyChart .observed {
   stroke: red;
   stroke-width: 1.5px;
-  fill: none;
+  fill: white;
 }
 
 .contingencyChart .observed .selected {
