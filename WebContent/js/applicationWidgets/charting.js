@@ -764,7 +764,7 @@ define([
         }
     }
     
-    function contingencyTable(graphBrowserInstance, xAxisQuestion, yAxisQuestion, storiesSelectedCallback) {
+    function d3ContingencyTable(graphBrowserInstance, xAxisQuestion, yAxisQuestion, storiesSelectedCallback) {
         // Collect data
         
         var columnLabels = {};
@@ -785,7 +785,6 @@ define([
             var xValue = correctForUnanswered(xAxisQuestion, story[xAxisQuestion.id]);
             var yValue = correctForUnanswered(yAxisQuestion, story[yAxisQuestion.id]);
             
-            var plotItem;
             var xHasCheckboxes = lang.isObject(xValue);
             var yHasCheckboxes = lang.isObject(yValue);
             // fast path
@@ -839,58 +838,127 @@ define([
         }
         var rowCount = rowLabelsArray.length;
         
-        // Build chart
+        var allPlotItems = [];
+        for (var ci in columnLabelsArray) {
+            var c = columnLabelsArray[ci];
+            for (var ri in rowLabelsArray) {
+                var r = rowLabelsArray[ri];
+                var value = results[JSON.stringify({x: c, y: r})] || 0;
+                var plotItem = {x: c, y: r, value: value};
+                console.log("plotItem", plotItem);
+                allPlotItems.push(plotItem);
+            }
+        }
         
+        // Build chart
+        // TODO: Improve the way labels are drawn or ellipsed based on chart size and font size and number of rows and columns
+
         var chartPane = newChartPane(graphBrowserInstance, singleChartStyle);
         
-        var table = new TableContainer({
-            cols: columnCount + 2,
-            showLabels: false,
-            customClass: "contingencyTable",
-            style: "width: 98%;",
-            spacing: 10
-        });
+        var chartTitle = "" + nameForQuestion(xAxisQuestion) + " vs. " + nameForQuestion(yAxisQuestion);
+
+        var fullWidth = 700;
+        var fullHeight = 500;
+        var margin = {top: 20, right: 15, bottom: 120, left: 120};
+        var width = fullWidth - margin.left - margin.right;
+        var height = fullHeight - margin.top - margin.bottom;
         
-        var content;
-        var row;
-        var column;
+        var chart = d3.select(chartPane.domNode).append('svg')
+            .attr('width', width + margin.right + margin.left)
+            .attr('height', height + margin.top + margin.bottom)
+            .attr('class', 'contingencyChart');
         
-        content = new ContentPane({content: "&lt;- <b>" + nameForQuestion(xAxisQuestion) + "</b> -&gt;", colspan: columnCount + 2, style: "text-align: center;"});
-        table.addChild(content);
+        var chartBody = chart.append('g')
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+            .attr('width', width)
+            .attr('height', height)
+            .attr('class', 'contingencyChartMain');
         
-        content = new ContentPane({content: "V <b>" + nameForQuestion(yAxisQuestion) + "</b> V", colspan: 1});
-        table.addChild(content);
+        // draw the x axis
         
-        for (column = 0; column < columnCount; column++) {
-            content = new ContentPane({content: "<i>" + columnLabelsArray[column] + "</i>", colspan: 1});
-            table.addChild(content);
-        }
-        content = new ContentPane({content: "<i>[Row Total]</i>", colspan: 1});
-        table.addChild(content);
+        var xScale = d3.scale.ordinal()
+            .domain(columnLabelsArray)
+            .rangeRoundBands([0, width], 0.1);
+
+        var maxPlotItemValue = d3.max(allPlotItems, function(plotItem) { return plotItem.value; });
+
+        var xAxis = d3.svg.axis()
+            .scale(xScale)
+            .tickFormat(function (label, i) {
+                return limitLabelLength(label, 15); 
+            })
+            .orient('bottom');
+    
+        chartBody.append('g')
+            .attr('transform', 'translate(0,' + height + ')')
+            .attr('class', 'contingencyChart x axis')
+            .call(xAxis).selectAll("text")
+                .style("text-anchor", "end")
+                .attr("dx", "-0.8em")
+                .attr("dy", "0.15em")
+                .attr("transform", function(d) {
+                    return "rotate(-65)";
+                });
         
-        for (row = 0; row < rowCount; row++) {
-            content = new ContentPane({content: "<i>" + rowLabelsArray[row] + "</i>", colspan: 1});
-            table.addChild(content);
-            
-            for (column = 0; column < columnCount; column++) {
-                var cellValue = results[JSON.stringify({x: columnLabelsArray[column], y: rowLabelsArray[row]})];
-                if (!cellValue) cellValue = 0;
-                content = new ContentPane({content: "<b>" + cellValue + "</b>", colspan: 1});
-                table.addChild(content);
-            }
-            content = new ContentPane({content: "" + (results[JSON.stringify({y: rowLabelsArray[row]})] || 0), "colspan": 1});
-            table.addChild(content);
-        }
-        content = new ContentPane({content: "<i>[Column Total]</i>", colspan: 1});
-        table.addChild(content);
-        for (column = 0; column < columnCount; column++) {
-            content = new ContentPane({content: "" + (results[JSON.stringify({x: columnLabelsArray[column]})] || 0), colspan: 1});
-            table.addChild(content);
-        }
-        content = new ContentPane({content: "" + grandTotal, colspan: 1});
-        table.addChild(content);
+        chartBody.append("text")
+            .attr("class", "contingencyChart x label")
+            .attr("text-anchor", "end")
+            .attr("x", width)
+            .attr("y", height - 6)
+            .text(nameForQuestion(xAxisQuestion));
         
-        chartPane.addChild(table);
+        // draw the y axis
+        
+        var yScale = d3.scale.ordinal()
+            .domain(rowLabelsArray)
+            .rangeRoundBands([height, 0], 0.1); 
+        
+        var yAxis = d3.svg.axis()
+            .scale(yScale)
+            .tickFormat(function (label, i) {
+                return limitLabelLength(label, 15); 
+            })
+            .orient('left');
+    
+        chartBody.append('g')
+            .attr('transform', 'translate(0,0)')
+            .attr('class', 'contingencyChart y axis')
+            .call(yAxis);
+        
+        chartBody.append("text")
+            .attr("class", "contingencyChart y label")
+            .attr("text-anchor", "end")
+            .attr("y", 6)
+            .attr("dy", ".75em")
+            .attr("transform", "rotate(-90)")
+            .text(nameForQuestion(yAxisQuestion));
+        
+        /*
+        console.log("xAxis", xAxis);
+        xAxis.tickValues().append('line')
+            .attr("x1", function (d) { return xScale(d) + xScale.rangeBand() / 2.0; })
+            .attr("x2", function (d) { return xScale(d) + xScale.rangeBand() / 2.0; })
+            .attr("y1", function (d) { return yScale(0); })
+            .attr("y2", function (d) { return yScale(height); });
+*/
+        
+        // Compute a scaling factor to map plotItem values onto a widgth and height
+        var xValueMultiplier = xScale.rangeBand() / maxPlotItemValue / 2.0;
+        var yValueMultiplier = yScale.rangeBand() / maxPlotItemValue / 2.0;
+
+        var nodes = chartBody.append("g")
+                .attr("class", "contingencyChart observed")
+            .selectAll("ellipse")
+                .data(allPlotItems)
+            .enter().append("ellipse")
+                // TODO: Scale size of plot item
+                .attr("rx", function (plotItem) { return xValueMultiplier * plotItem.value; } )
+                .attr("ry", function (plotItem) { return yValueMultiplier * plotItem.value; } )
+                .attr("cx", function (plotItem) { return xScale(plotItem.x) + xScale.rangeBand() / 2.0; } )
+                .attr("cy", function (plotItem) { return yScale(plotItem.y) + yScale.rangeBand() / 2.0; } );
+
+        // TODO: Finish!
+        
     }
     
     function newChartPane(graphBrowserInstance, style) {
@@ -906,7 +974,7 @@ define([
         d3HistogramChart: d3HistogramChart,
         multipleHistograms: multipleHistograms,
         d3ScatterPlot: d3ScatterPlot,
-        contingencyTable: contingencyTable
+        contingencyTable: d3ContingencyTable
     };
     
 });

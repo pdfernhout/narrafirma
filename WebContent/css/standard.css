@@ -269,3 +269,19 @@ form {
   fill: blue;
 }
 
+.contingencyChart .observed {
+  stroke: red;
+  stroke-width: 1.5px;
+  fill: none;
+}
+
+.contingencyChart .expected {
+  stroke: grey;
+  stroke-width: 1.5px;
+  fill: none;
+}
+
+.grid .tick {
+    stroke: lightgrey;
+    opacity: 0.7;
+}
