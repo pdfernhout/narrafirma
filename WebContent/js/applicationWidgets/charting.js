@@ -453,24 +453,17 @@ define([
         supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems);
         
         function brushend() {
-            // console.log("brushend", brush);
             var extent = d3.event.target.extent();
-            // console.log("extent", extent);
-            var selectedPlotItems = [];
             var selectedStories = [];
             bars.classed("selected", function(plotItem) {
-                // console.log("xScale value", xScale(plotItem.name));
                 var midPoint = xScale(plotItem.name) + xScale.rangeBand() / 2;
                 var selected = extent[0][0] <= midPoint  && midPoint < extent[1][0];
                 if (selected) {
-                    selectedPlotItems.push(plotItem);
                     for (var i = 0; i < plotItem.stories.length; i++) {
                         var story = plotItem.stories[i];
                         if (selectedStories.indexOf(story) === -1) selectedStories.push(story);
                     }
                 }
-                // console.log("this", this, d3.select(this).selectAll(".story"));
-                // d3.select(this).selectAll(".story").classed("selected", selected);
                 return selected;
             });
             console.log("Selected stories", selectedStories);
@@ -612,26 +605,17 @@ define([
         supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems);
         
         function brushend() {
-            // console.log("brushend", brush);
             var extent = d3.event.target.extent();
-            // console.log("extent", extent);
-            var selectedPlotItems = [];
             var selectedStories = [];
             bars.classed("selected", function(plotItems) {
-              // console.log("plotItems", plotItems);
               var midPoint = plotItems.x + data[0].dx / 2;
-              // console.log("midPoint", midPoint, plotItems.x);
               var selected = extent[0][0] <= midPoint  && midPoint < extent[1][0];
               if (selected) {
-                  // console.log("histogram brush", plotItems);
-                  selectedPlotItems.push.apply(selectedPlotItems, plotItems);
                   for (var i = 0; i < plotItems.length; i++) {
                       var item = plotItems[i];
-                      // console.log("histogram story", i, item, item.story);
                       selectedStories.push(item.story);
                   }
               }
-              // console.log("selected", selected);
               return selected;
             });
             console.log("Selected stories", selectedStories);
@@ -756,7 +740,6 @@ define([
         supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems);
 
         function brushend() {
-            // console.log("brushend", brush);
             var extent = d3.event.target.extent();
             var selectedStories = [];
             storyDisplayItems.classed("selected", function(plotItem) {
@@ -932,7 +915,6 @@ define([
         supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayClusters);
 
         function brushend() {
-            // console.log("brushend", brush);
             var extent = d3.event.target.extent();
             var selectedStories = [];
             storyDisplayClusters.classed("selected", function(plotItem) {
