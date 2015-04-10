@@ -226,13 +226,23 @@ define([
         var chart = d3.select(chartPane.domNode).append('svg')
             .attr('width', width + margin.right + margin.left)
             .attr('height', height + margin.top + margin.bottom)
-            .attr('class', 'barChart');
+            .attr('class', 'chart barChart');
+        
+        var chartBackground = chart.append("rect")
+            .attr('width', fullWidth)
+            .attr('height', fullHeight)
+            .attr('class', 'chartBackground');
         
         var chartBody = chart.append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
             .attr('width', width)
             .attr('height', height)
-            .attr('class', 'barChartMain');
+            .attr('class', 'chartBody');
+        
+        var chartBodyBackground = chartBody.append("rect")
+            .attr('width', width)
+            .attr('height', height)
+            .attr('class', 'chartBodyBackground');
         
         // draw the x axis
         // TODO: Improve the way labels are drawn or ellipsed based on chart size and font size and number of bars
@@ -245,11 +255,11 @@ define([
 
         chartBody.append('g')
             .attr('transform', 'translate(0,' + height + ')')
-            .attr('class', 'barchart x axis')
+            .attr('class', 'x axis')
             .call(xAxis);
         
         chartBody.append("text")
-            .attr("class", "barchart x label")
+            .attr("class", "x label")
             .attr("text-anchor", "middle")
             .attr("x", width / 2)
             .attr("y", height + 60)
@@ -263,11 +273,11 @@ define([
 
         chartBody.append('g')
             .attr('transform', 'translate(0,0)')
-            .attr('class', 'barchart y axis')
+            .attr('class', 'y axis')
             .call(yAxis);
         
         chartBody.append("text")
-            .attr("class", "barchart y label")
+            .attr("class", "y label")
             .attr("text-anchor", "end")
             .attr("y", 6)
             .attr("dy", ".75em")
@@ -444,13 +454,23 @@ define([
         var chart = d3.select(chartPane.domNode).append('svg')
             .attr('width', width + margin.right + margin.left)
             .attr('height', height + margin.top + margin.bottom)
-            .attr('class', 'chart');
+            .attr('class', 'chart histogram');
     
+        var chartBackground = chart.append("rect")
+            .attr('width', fullWidth)
+            .attr('height', fullHeight)
+            .attr('class', 'chartBackground');
+        
         var chartBody = chart.append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
             .attr('width', width)
             .attr('height', height)
-            .attr('class', 'histogramMain');
+            .attr('class', 'chartBody');
+
+        var chartBodyBackground = chartBody.append("rect")
+            .attr('width', width)
+            .attr('height', height)
+            .attr('class', 'chartBodyBackground');
         
         // Append brush before data to ensure titles are drown
         var brush = chartBody.append("g")
@@ -504,7 +524,7 @@ define([
         if (choiceQuestion) {
             var choiceLabel = limitLabelLength(choice, 18); 
             var choiceLabelSVG = chartBody.append("text")
-                .attr("class", "histogram choice label")
+                .attr("class", "choice label")
                 .attr("text-anchor", "middle")
                 .attr("x", width / 2)
                 .attr("y", height + 40)
@@ -664,13 +684,23 @@ define([
         var chart = d3.select(chartPane.domNode).append('svg')
             .attr('width', width + margin.right + margin.left)
             .attr('height', height + margin.top + margin.bottom)
-            .attr('class', 'chart');
+            .attr('class', 'chart scatterPlot');
+        
+        var chartBackground = chart.append("rect")
+            .attr('width', fullWidth)
+            .attr('height', fullHeight)
+            .attr('class', 'chartBackground');
         
         var chartBody = chart.append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
             .attr('width', width)
             .attr('height', height)
-            .attr('class', 'scatterPlotMain');
+            .attr('class', 'chartBody');
+        
+        var chartBodyBackground = chartBody.append("rect")
+            .attr('width', width)
+            .attr('height', height)
+            .attr('class', 'chartBodyBackground');
         
         // draw the x axis
         var xAxis = d3.svg.axis()
@@ -872,13 +902,23 @@ define([
         var chart = d3.select(chartPane.domNode).append('svg')
             .attr('width', width + margin.right + margin.left)
             .attr('height', height + margin.top + margin.bottom)
-            .attr('class', 'contingencyChart');
+            .attr('class', 'chart contingencyChart');
+        
+        var chartBackground = chart.append("rect")
+            .attr('width', fullWidth)
+            .attr('height', fullHeight)
+            .attr('class', 'chartBackground');
         
         var chartBody = chart.append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
             .attr('width', width)
             .attr('height', height)
-            .attr('class', 'contingencyChartMain');
+            .attr('class', 'chartBody');
+        
+        var chartBodyBackground = chartBody.append("rect")
+            .attr('width', width)
+            .attr('height', height)
+            .attr('class', 'chartBodyBackground');
         
         // X axis and label
         
@@ -896,7 +936,7 @@ define([
     
         chartBody.append('g')
             .attr('transform', 'translate(0,' + height + ')')
-            .attr('class', 'contingencyChart x axis')
+            .attr('class', 'x axis')
             .call(xAxis).selectAll("text")
                 .style("text-anchor", "end")
                 .attr("dx", "-0.8em")
@@ -906,7 +946,7 @@ define([
                 });
         
         chartBody.append("text")
-            .attr("class", "contingencyChart x label")
+            .attr("class", "x label")
             .attr("text-anchor", "end")
             .attr("x", width)
             .attr("y", height - 6)
@@ -928,11 +968,11 @@ define([
     
         chartBody.append('g')
             .attr('transform', 'translate(0,0)')
-            .attr('class', 'contingencyChart y axis')
+            .attr('class', 'y axis')
             .call(yAxis);
         
         chartBody.append("text")
-            .attr("class", "contingencyChart y label")
+            .attr("class", "y label")
             .attr("text-anchor", "end")
             .attr("y", 6)
             .attr("dy", ".75em")
@@ -955,7 +995,7 @@ define([
         var yValueMultiplier = yScale.rangeBand() / maxPlotItemValue / 2.0;
 
         var nodes = chartBody.append("g")
-                .attr("class", "contingencyChart observed")
+                .attr("class", "observed")
             .selectAll("ellipse")
                 .data(allPlotItems)
             .enter().append("ellipse")

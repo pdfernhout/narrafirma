@@ -250,7 +250,18 @@ form {
     background-color: DarkRed;
 }
 
-/* d3 brush in graphs */
+/* d3 charting */
+/* A CSS stylesheet is like a GUI control system for twidling with widget options */
+
+.chartBackground {
+    stroke: black;
+    fill: none;
+}
+
+.chartBodyBackground {
+    stroke: black;
+    fill: none;
+}
 
 .brush .extent {
   fill-opacity: .1;
@@ -313,5 +324,5 @@ form {
 
 .contingencyChart .axis line {
   shape-rendering: crispEdges;
-  stroke: #000;
+  stroke: gray;
 }
