@@ -269,13 +269,13 @@ form {
   shape-rendering: crispEdges;
 }
 
-.node {
+.scatterPlot .story {
   stroke: green;
   stroke-width: 1.5px;
   fill: green;
 }
 
-.node .selected {
+.scatterPlot .story.selected {
   stroke: blue;
   fill: blue;
 }
@@ -300,13 +300,13 @@ form {
   fill: aqua;
 }
 
-.contingencyChart .observed {
+.contingencyChart .storyCluster.observed {
   stroke: red;
   stroke-width: 1.5px;
   fill: white;
 }
 
-.contingencyChart .observed .selected {
+.contingencyChart .storyCluster.observed.selected {
   stroke: red;
   stroke-width: 1.5px;
   fill: blue;

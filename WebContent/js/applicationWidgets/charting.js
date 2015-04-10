@@ -146,7 +146,7 @@ define([
     // ---- Support functions using d3
     
     // Support starting a drag when mouse is over a node
-    function supportStartingDragOverNode(chartBody, storyDisplayItems) {
+    function supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems) {
         storyDisplayItems.on('mousedown', function() {
             var brushElements = chartBody.select(".brush").node();
             var newClickEvent = new Event('mousedown');
@@ -350,7 +350,7 @@ define([
                 return tooltipText;
             });
         
-        supportStartingDragOverNode(chartBody, storyDisplayItems);
+        supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems);
         
         function brushend() {
             // console.log("brushend", brush);
@@ -568,7 +568,7 @@ define([
             chartBody.selectAll('.axis').style({ 'stroke-width': '1px', 'fill': 'gray'});
         }
         
-        supportStartingDragOverNode(chartBody, storyDisplayItems);
+        supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems);
         
         function brushend() {
             // console.log("brushend", brush);
@@ -737,11 +737,10 @@ define([
         // Append brush before data to ensure titles are drown
         var brush = createBrush(chartBody, xScale, yScale, brushend);
         
-        var storyDisplayItems = chartBody.append("g")
-                .attr("class", "node")
-            .selectAll("circle")
+        var storyDisplayItems = chartBody.selectAll(".story")
                 .data(allPlotItems)
             .enter().append("circle")
+                .attr("class", "story")
                 .attr("r", 8)
                 .attr("cx", function (plotItem) { return xScale(plotItem.x); } )
                 .attr("cy", function (plotItem) { return yScale(plotItem.y); } );
@@ -759,7 +758,7 @@ define([
                 return tooltipText;
             });
         
-        supportStartingDragOverNode(chartBody, storyDisplayItems);
+        supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems);
 
         function brushend() {
             // console.log("brushend", brush);
@@ -968,11 +967,10 @@ define([
         var xValueMultiplier = xScale.rangeBand() / maxPlotItemValue / 2.0;
         var yValueMultiplier = yScale.rangeBand() / maxPlotItemValue / 2.0;
 
-        var storyDisplayItems = chartBody.append("g")
-                .attr("class", "observed")
-            .selectAll("ellipse")
+        var storyDisplayClusters = chartBody.selectAll(".storyCluster")
                 .data(allPlotItems)
             .enter().append("ellipse")
+                .attr("class", "storyCluster observed")
                 // TODO: Scale size of plot item
                 .attr("rx", function (plotItem) { return xValueMultiplier * plotItem.value; } )
                 .attr("ry", function (plotItem) { return yValueMultiplier * plotItem.value; } )
@@ -980,7 +978,7 @@ define([
                 .attr("cy", function (plotItem) { return yScale(plotItem.y) + yScale.rangeBand() / 2.0; } );
         
         // Add tooltips
-        storyDisplayItems.append("svg:title")
+        storyDisplayClusters.append("svg:title")
             .text(function(plotItem) {
                 // console.log("---------------------- plotItem", plotItem);
                 var tooltipText = 
@@ -998,13 +996,13 @@ define([
                 return tooltipText;
             });
 
-        supportStartingDragOverNode(chartBody, storyDisplayItems);
+        supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayClusters);
 
         function brushend() {
             // console.log("brushend", brush);
             var extent = d3.event.target.extent();
             var selectedStories = [];
-            storyDisplayItems.classed("selected", function(plotItem) {
+            storyDisplayClusters.classed("selected", function(plotItem) {
                 var midPointX = xScale(plotItem.x) + xScale.rangeBand() / 2;
                 var midPointY = yScale(plotItem.y) + yScale.rangeBand() / 2;
                 var selected = extent[0][0] <= midPointX && midPointX < extent[1][0] && extent[0][1] <= midPointY && midPointY < extent[1][1];
