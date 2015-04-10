@@ -146,8 +146,8 @@ define([
     // ---- Support functions using d3
     
     // Support starting a drag when mouse is over a node
-    function supportStartingDragOverNode(chartBody, nodes) {
-        nodes.on('mousedown', function() {
+    function supportStartingDragOverNode(chartBody, storyDisplayItems) {
+        storyDisplayItems.on('mousedown', function() {
             var brushElements = chartBody.select(".brush").node();
             var newClickEvent = new Event('mousedown');
             newClickEvent.pageX = d3.event.pageX;
@@ -330,7 +330,7 @@ define([
             .attr("width", xScale.rangeBand());
         
         // Overlay stories on each bar...
-        var barStories = bars.selectAll(".story")
+        var storyDisplayItems = bars.selectAll(".story")
                 .data(function(plotItem) { return plotItem.stories; })
             .enter().append("rect")
                 .attr('class', function (d, i) { return "story " + ((i % 2 === 0) ? "even" : "odd");})
@@ -340,7 +340,7 @@ define([
                 .attr("width", xScale.rangeBand());
         
         // Add tooltips
-        barStories.append("svg:title")
+        storyDisplayItems.append("svg:title")
             .text(function(story) {
                 var tooltipText =
                     "Title: " + story.__survey_storyName +
@@ -350,7 +350,7 @@ define([
                 return tooltipText;
             });
         
-        supportStartingDragOverNode(chartBody, barStories);
+        supportStartingDragOverNode(chartBody, storyDisplayItems);
         
         function brushend() {
             // console.log("brushend", brush);
@@ -495,7 +495,7 @@ define([
             .attr("transform", function(d) { return "translate(" + xScale(d.x) + "," + yScale(0) + ")"; });
         
         // Overlay stories on each bar...
-        var barStories = bars.selectAll(".story")
+        var storyDisplayItems = bars.selectAll(".story")
                 .data(function(plotItem) { return plotItem; })
             .enter().append("rect")
                 .attr('class', function (d, i) { return "story " + ((i % 2 === 0) ? "even" : "odd");})
@@ -505,7 +505,7 @@ define([
                 .attr("width", xScale(data[0].dx) - 1);
         
         // Add tooltips
-        barStories.append("svg:title")
+        storyDisplayItems.append("svg:title")
             .text(function(plotItem) {
                 var story = plotItem.story;
                 var tooltipText =
@@ -568,7 +568,7 @@ define([
             chartBody.selectAll('.axis').style({ 'stroke-width': '1px', 'fill': 'gray'});
         }
         
-        supportStartingDragOverNode(chartBody, barStories);
+        supportStartingDragOverNode(chartBody, storyDisplayItems);
         
         function brushend() {
             // console.log("brushend", brush);
@@ -737,7 +737,7 @@ define([
         // Append brush before data to ensure titles are drown
         var brush = createBrush(chartBody, xScale, yScale, brushend);
         
-        var nodes = chartBody.append("g")
+        var storyDisplayItems = chartBody.append("g")
                 .attr("class", "node")
             .selectAll("circle")
                 .data(allPlotItems)
@@ -747,7 +747,7 @@ define([
                 .attr("cy", function (plotItem) { return yScale(plotItem.y); } );
         
         // Add tooltips
-        nodes
+        storyDisplayItems
             .append("svg:title")
             .text(function(plotItem) {
                 var tooltipText =
@@ -759,13 +759,13 @@ define([
                 return tooltipText;
             });
         
-        supportStartingDragOverNode(chartBody, nodes);
+        supportStartingDragOverNode(chartBody, storyDisplayItems);
 
         function brushend() {
             // console.log("brushend", brush);
             var extent = d3.event.target.extent();
             var selectedStories = [];
-            nodes.classed("selected", function(plotItem) {
+            storyDisplayItems.classed("selected", function(plotItem) {
               var selected = extent[0][0] <= plotItem.x && plotItem.x < extent[1][0] && extent[0][1] <= plotItem.y && plotItem.y < extent[1][1];
               if (selected) selectedStories.push(plotItem.story);
               return selected;
@@ -968,7 +968,7 @@ define([
         var xValueMultiplier = xScale.rangeBand() / maxPlotItemValue / 2.0;
         var yValueMultiplier = yScale.rangeBand() / maxPlotItemValue / 2.0;
 
-        var nodes = chartBody.append("g")
+        var storyDisplayItems = chartBody.append("g")
                 .attr("class", "observed")
             .selectAll("ellipse")
                 .data(allPlotItems)
@@ -980,7 +980,7 @@ define([
                 .attr("cy", function (plotItem) { return yScale(plotItem.y) + yScale.rangeBand() / 2.0; } );
         
         // Add tooltips
-        nodes.append("svg:title")
+        storyDisplayItems.append("svg:title")
             .text(function(plotItem) {
                 // console.log("---------------------- plotItem", plotItem);
                 var tooltipText = 
@@ -998,13 +998,13 @@ define([
                 return tooltipText;
             });
 
-        supportStartingDragOverNode(chartBody, nodes);
+        supportStartingDragOverNode(chartBody, storyDisplayItems);
 
         function brushend() {
             // console.log("brushend", brush);
             var extent = d3.event.target.extent();
             var selectedStories = [];
-            nodes.classed("selected", function(plotItem) {
+            storyDisplayItems.classed("selected", function(plotItem) {
                 var midPointX = xScale(plotItem.x) + xScale.rangeBand() / 2;
                 var midPointY = yScale(plotItem.y) + yScale.rangeBand() / 2;
                 var selected = extent[0][0] <= midPointX && midPointX < extent[1][0] && extent[0][1] <= midPointY && midPointY < extent[1][1];
