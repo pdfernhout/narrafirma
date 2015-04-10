@@ -143,7 +143,7 @@ define([
         return result;
     }
 
-    // Support functions using d3
+    // ---- Support functions using d3
     
     // Support starting a drag when mouse is over a node
     function supportStartingDragOverNode(chartBody, nodes) {
@@ -156,6 +156,18 @@ define([
             newClickEvent.clientY = d3.event.clientY;
             brushElements.dispatchEvent(newClickEvent);
         });
+    }
+    
+    function createBrush(chartBody, xScale, yScale, brushendCallback) {
+        var brush = chartBody.append("g")
+            .attr("class", "brush")
+            .call(d3.svg.brush()
+                .x(xScale)
+                .y(yScale)
+                .clamp([false, false])
+                .on("brushend", brushendCallback)
+            );
+        return brush;
     }
     
     // -------------
@@ -302,14 +314,7 @@ define([
             .text("Count");
         
         // Append brush before data to ensure titles are drown
-        var brush = chartBody.append("g")
-            .attr("class", "brush")
-            .call(d3.svg.brush()
-                .x(xScale)
-                .y(yScale)
-                .clamp([false, false])
-                .on("brushend", brushend)
-            );
+        var brush = createBrush(chartBody, xScale, yScale, brushend);
         
         var bars = chartBody.selectAll(".bar")
                 .data(allPlotItems)
@@ -481,14 +486,7 @@ define([
             .attr('class', 'chartBodyBackground');
         
         // Append brush before data to ensure titles are drown
-        var brush = chartBody.append("g")
-            .attr("class", "brush")
-            .call(d3.svg.brush()
-                .x(xScale)
-                .y(yScale)
-                .clamp([false, false])
-                .on("brushend", brushend)
-            );
+        var brush = createBrush(chartBody, xScale, yScale, brushend);
         
         var bars = chartBody.selectAll(".bar")
             .data(data)
@@ -737,14 +735,7 @@ define([
             .text(nameForQuestion(yAxisQuestion));
         
         // Append brush before data to ensure titles are drown
-        var brush = chartBody.append("g")
-            .attr("class", "brush")
-            .call(d3.svg.brush()
-                .x(xScale)
-                .y(yScale)
-                .clamp([false, false])
-                .on("brushend", brushend)
-            );
+        var brush = createBrush(chartBody, xScale, yScale, brushend);
         
         var nodes = chartBody.append("g")
                 .attr("class", "node")
@@ -970,14 +961,7 @@ define([
             .text(nameForQuestion(yAxisQuestion));
         
         // Append brush before data to ensure titles are drown
-        var brush = chartBody.append("g")
-            .attr("class", "brush")
-            .call(d3.svg.brush()
-                .x(xScale)
-                .y(yScale)
-                .clamp([false, false])
-                .on("brushend", brushend)
-            );
+        var brush = createBrush(chartBody, xScale, yScale, brushend);
         
         // Compute a scaling factor to map plotItem values onto a widgth and height
         var maxPlotItemValue = d3.max(allPlotItems, function(plotItem) { return plotItem.value; });
