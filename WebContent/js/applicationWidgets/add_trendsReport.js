@@ -5,9 +5,11 @@ define([
     "dijit/layout/ContentPane",
     "js/domain",
     "js/panelBuilder/standardWidgets/GridWithItemPanel",
+    "dojo/_base/lang",
     "dojo/Stateful",
     "js/storyCardDisplay",
-    "js/surveyCollection"
+    "js/surveyCollection",
+    "dojo/topic"
 ], function(
     array,
     BorderContainer,
@@ -15,9 +17,11 @@ define([
     ContentPane,
     domain,
     GridWithItemPanel,
+    lang,
     Stateful,
     storyCardDisplay,
-    surveyCollection
+    surveyCollection,
+    topic
 ){
     "use strict";
     
@@ -170,7 +174,60 @@ define([
         
         return storyItemPanelSpecification;
     }
-
+    
+    function currentQuestionnaireChanged(graphBrowserInstance, currentQuestionnaire) {
+        // TODO: What to do about current selection in these widgets?
+        
+        // Deselect current pattern; could try to preserve selection
+        patternSelected(graphBrowserInstance, graphBrowserInstance.patternsGrid, null);
+        
+        // TODO: Need to preserve old state with observations from patternList first... Except when starting up...
+        if (graphBrowserInstance.patterns.length) {
+            console.log("ERROR: Unfinished: TODO: Should be preserving existing observations here if not already saved???");
+        }
+        
+        var questions = surveyCollection.collectQuestionsForCurrentQuestionnaire();
+        graphBrowserInstance.questions = questions;
+        
+        var patterns = buildPatternList(graphBrowserInstance);
+        graphBrowserInstance.patterns = patterns;
+        graphBrowserInstance.patternsListStore.setData(patterns);
+        graphBrowserInstance.patternsGrid.grid.set("collection", graphBrowserInstance.patternsListStore);
+    }
+    
+    function loadLatestStoriesFromServerChanged(graphBrowserInstance, newEnvelopeCount, allStories) {
+        if (!newEnvelopeCount) return;
+        
+        graphBrowserInstance.allStories = allStories;
+        
+        if (graphBrowserInstance.currentPattern) {
+            chooseGraph(graphBrowserInstance, graphBrowserInstance.currentPattern);
+        }
+    }
+    
+    function patternSelected(graphBrowserInstance, grid, selectedPattern) {
+        console.log("Select in grid", grid, selectedPattern);
+        var observation;
+        if (graphBrowserInstance.currentPattern) {
+            // save observation
+            observation = graphBrowserInstance.observationModel.get("observation");
+            var oldObservation = graphBrowserInstance.currentPattern.observation || "";
+            if (oldObservation !== observation) {
+                graphBrowserInstance.currentPattern.observation = observation;
+                graphBrowserInstance.patternsListStore.put(graphBrowserInstance.currentPattern);
+            }
+        }
+        chooseGraph(graphBrowserInstance, selectedPattern);
+        observation = "";
+        if (selectedPattern) observation = selectedPattern.observation;
+        graphBrowserInstance.observationModel.set("observation", observation);
+        graphBrowserInstance.currentPattern = selectedPattern;
+        
+        graphBrowserInstance.selectedStories = [];
+        graphBrowserInstance.selectedStoriesStore.setData(graphBrowserInstance.selectedStories);
+        graphBrowserInstance.storyList.grid.set("collection", graphBrowserInstance.selectedStoriesStore);
+    }
+    
     function add_trendsReport(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
 
@@ -189,6 +246,8 @@ define([
             questions: questions,
             allStories: domain.allStories,
             patterns: null,
+            patternsListStore: null,
+            patternsGrid: null,
             selectedStories: null,
             selectedStoriesStore: null, 
             storyList: null,
@@ -197,34 +256,13 @@ define([
         };
         
         var patterns = buildPatternList(graphBrowserInstance);
-        
         graphBrowserInstance.patterns = patterns;
        
         var patternsListStore = GridWithItemPanel.newMemoryTrackableStore(patterns, "id");
+        graphBrowserInstance.patternsListStore = patternsListStore;
         
         var patternsGridConfiguration = {navigationButtons: true, includeAllFields: true};
-        patternsGridConfiguration.selectCallback = function (grid, selectedPattern) {
-            console.log("Select in grid", grid, selectedPattern);
-            var observation;
-            if (graphBrowserInstance.currentPattern) {
-                // save observation
-                observation = graphBrowserInstance.observationModel.get("observation");
-                var oldObservation = graphBrowserInstance.currentPattern.observation || "";
-                if (oldObservation !== observation) {
-                    graphBrowserInstance.currentPattern.observation = observation;
-                    patternsListStore.put(graphBrowserInstance.currentPattern);
-                }
-            }
-            chooseGraph(graphBrowserInstance, selectedPattern);
-            observation = "";
-            if (selectedPattern) observation = selectedPattern.observation;
-            graphBrowserInstance.observationModel.set("observation", observation);
-            graphBrowserInstance.currentPattern = selectedPattern;
-            
-            graphBrowserInstance.selectedStories = [];
-            graphBrowserInstance.selectedStoriesStore.setData(graphBrowserInstance.selectedStories);
-            graphBrowserInstance.storyList.grid.set("collection", graphBrowserInstance.selectedStoriesStore);
-        };
+        patternsGridConfiguration.selectCallback = lang.partial(patternSelected, graphBrowserInstance);
         
         var patternsPanelSpecification = {
             "id": "storyThemeQuestions",
@@ -248,7 +286,7 @@ define([
         splitterPane.resize();
         
         var patternsGrid = new GridWithItemPanel(panelBuilder, gridContainerPane, "patternsList", patternsListStore, patternsPanelSpecification, patternsGridConfiguration);
-        console.log("patternsGrid", patternsGrid);
+        graphBrowserInstance.patternsGrid = patternsGrid;
         
         var storyItemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
         
@@ -276,6 +314,16 @@ define([
         var observationPane = new ContentPane();
         contentPane.addChild(observationPane);
         panelBuilder.buildPanel(observationPanelSpecification, observationPane, graphBrowserInstance.observationModel);
+        
+        var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerChanged, graphBrowserInstance));
+        
+        // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
+        graphResultsPane.own(loadLatestStoriesFromServerSubscription);
+        
+        var currentQuestionnaireSubscription = topic.subscribe("currentQuestionnaire", lang.partial(currentQuestionnaireChanged, graphBrowserInstance));
+        
+        // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
+        graphResultsPane.own(currentQuestionnaireSubscription);
         
         // TODO: Not sure what to return or if it matters
         return questionContentPane;
