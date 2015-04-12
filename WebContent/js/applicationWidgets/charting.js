@@ -159,14 +159,24 @@ define([
     }
     
     function createBrush(chartBody, xScale, yScale, brushendCallback) {
-        var brush = chartBody.append("g")
+        // If yScale is null, constrain brush to just work across the x range of the chart
+        
+        var brush = d3.svg.brush()
+            .x(xScale)
+            .on("brushend", brushendCallback);
+        
+        if (yScale) brush.y(yScale);
+        
+        var brushGroup = chartBody.append("g")
             .attr("class", "brush")
-            .call(d3.svg.brush()
-                .x(xScale)
-                .y(yScale)
-                // .clamp([false, false])
-                .on("brushend", brushendCallback)
-            );
+            .call(brush);
+        
+        if (!yScale) {
+            brushGroup.selectAll("rect")
+                .attr("y", 0)
+                .attr("height", chartBody.attr("height"));
+        }
+    
         return brush;
     }
     
@@ -406,7 +416,7 @@ define([
         addYAxisLabel(chart, "Count");
         
         // Append brush before data to ensure titles are drown
-        var brush = createBrush(chartBody, xScale, yScale, brushend);
+        var brush = createBrush(chartBody, xScale, null, brushend);
         
         var bars = chartBody.selectAll(".bar")
                 .data(allPlotItems)
@@ -447,7 +457,7 @@ define([
         
         function isPlotItemSelected(extent, plotItem) {
             var midPoint = xScale(plotItem.value) + xScale.rangeBand() / 2;
-            return extent[0][0] <= midPoint && midPoint <= extent[1][0];
+            return extent[0] <= midPoint && midPoint <= extent[1];
         }
         
         function brushend() {
@@ -564,7 +574,7 @@ define([
         }
         
         // Append brush before data to ensure titles are drown
-        var brush = createBrush(chartBody, xScale, yScale, brushend);
+        var brush = createBrush(chartBody, xScale, null, brushend);
         
         var bars = chartBody.selectAll(".bar")
               .data(data)
@@ -598,7 +608,7 @@ define([
         function isPlotItemSelected(extent, plotItem) {
             // We don't want to compute a midPoint based on plotItem.value which can be anywhere in the bin; we want to use the stored bin.x.
             var midPoint = plotItem.xBinStart + data[0].dx / 2;
-            var selected = extent[0][0] <= midPoint && midPoint <= extent[1][0];
+            var selected = extent[0] <= midPoint && midPoint <= extent[1];
             return selected;
         }
         
