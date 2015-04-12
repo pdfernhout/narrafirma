@@ -534,6 +534,13 @@ define([
         // Generate a histogram using twenty uniformly-spaced bins.
         var data = d3.layout.histogram().bins(xScale.ticks(20)).value(function (d) { return d.value; })(values);
 
+        // Set the bin for each plotItem
+        data.forEach(function (bin) {
+            bin.forEach(function (plotItem) {
+                plotItem.xBinStart = bin.x;
+            });
+        });
+
         // TODO: May want to consider unanswered here if decide to plot it to the side
         var maxValue = d3.max(data, function(d) { return d.y; });
         
@@ -589,7 +596,8 @@ define([
         supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems);
         
         function isPlotItemSelected(extent, plotItem) {
-            var midPoint = plotItem.value + data[0].dx / 2;
+            // We don't want to compute a midPoint based on plotItem.value which can be anywhere in the bin; we want to use the stored bin.x.
+            var midPoint = plotItem.xBinStart + data[0].dx / 2;
             var selected = extent[0][0] <= midPoint && midPoint < extent[1][0];
             return selected;
         }
