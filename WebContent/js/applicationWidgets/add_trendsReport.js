@@ -334,7 +334,19 @@ define([
             // Find observation textarea and other needed data
             var observationTextarea = widgets.observation;
             var textModel = graphBrowserInstance.observationModel;
-            var textToInsert = '{ "selection": ' + JSON.stringify(graphBrowserInstance.currentGraph.brush.brush.extent()) + '  }';
+            var textToInsert = "";
+            if (_.isArray(graphBrowserInstance.currentGraph)) {
+                textToInsert += '{ "selection": [ ';
+                var first = true;
+                graphBrowserInstance.currentGraph.forEach(function (subchart) {
+                    if (!first) textToInsert += ', ';
+                    textToInsert += JSON.stringify(subchart.brush.brush.extent());
+                    first = false;
+                });
+                textToInsert += '] }';
+            } else {
+                textToInsert = '{ "selection": ' + JSON.stringify(graphBrowserInstance.currentGraph.brush.brush.extent()) + '  }';
+            }
             
             // Replace the currently selected text in the textarea (or insert at caret if nothing selected)
             var textarea = observationTextarea.textbox;
@@ -379,9 +391,26 @@ define([
                 return;
             }
             console.log("new extent", extent);
-            graphBrowserInstance.currentGraph.brush.brush.extent(extent);
-            graphBrowserInstance.currentGraph.brush.brush(graphBrowserInstance.currentGraph.brush.brushGroup);
-            graphBrowserInstance.currentGraph.brushend();
+            
+            // TODO: Should check chart itself too
+            if (_.isArray(graphBrowserInstance.currentGraph)) {
+                var graphs = graphBrowserInstance.currentGraph;
+                var extents = extent;
+                if (!_.isArray(extents)) {
+                    alert("Incorrect format for selection -- should be an array of extents");
+                } else {
+                    for (var i = 0; i < Math.max(graphs.length, extents.length); i++) {
+                        var graph = graphs[i];
+                        graph.brush.brush.extent(extents[i]);
+                        graph.brush.brush(graph.brush.brushGroup);
+                        graph.brushend();
+                    }
+                }
+            } else {
+                graphBrowserInstance.currentGraph.brush.brush.extent(extent);
+                graphBrowserInstance.currentGraph.brush.brush(graphBrowserInstance.currentGraph.brush.brushGroup);
+                graphBrowserInstance.currentGraph.brushend();
+            }
         }
         
         var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerChanged, graphBrowserInstance));
