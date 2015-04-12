@@ -306,14 +306,40 @@ define([
         
         var observationPanelSpecification = {
             "id": "observationPanel",
-            panelFields: [
-                {id: "observation", displayName: "Observation", displayPrompt: "Add observation", displayType: "textarea", dataOptions:[]}
+            panelFields: [        
+                {id: "insertGraphSelection", displayPrompt: "Insert graph selection", displayType: "button", displayConfiguration: insertGraphSelection},
+                {id: "resetGraphSelection", displayPrompt: "Reset graph selection using saved selection chosen in observation", displayType: "button", displayConfiguration: resetGraphSelection},
+                {id: "observation", displayName: "Observation", displayPrompt: "Add observation", displayType: "textarea"}
             ]
         };
         
         // var observationPane = new ContentPane();
         // contentPane.addChild(observationPane);
-        panelBuilder.buildPanel(observationPanelSpecification, contentPane, graphBrowserInstance.observationModel);
+        var widgets = panelBuilder.buildPanel(observationPanelSpecification, contentPane, graphBrowserInstance.observationModel);
+        
+        function insertGraphSelection() {
+            // Find observation textarea and other needed data
+            var observationTextarea = widgets.observation;
+            var textModel = graphBrowserInstance.observationModel;
+            var textToInsert = "[selection bounds]";
+            
+            // Replace the currently selected text in the textarea (or insert at caret if nothing selected)
+            var textarea = observationTextarea.textbox;
+            var selectionStart = textarea.selectionStart;
+            var selectionEnd = textarea.selectionEnd;
+            var oldText = textModel.get("observation");
+            var newText = oldText.substring(0, selectionStart) + textToInsert + oldText.substring(selectionEnd);
+            textModel.set("observation", newText);
+            textarea.selectionStart = selectionStart;
+            textarea.selectionEnd = selectionStart + textToInsert.length;
+            textarea.focus();
+        }
+        
+        function resetGraphSelection() {
+            console.log("resetGraphSelection");
+            
+            // TODO
+        }
         
         var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerChanged, graphBrowserInstance));
         
