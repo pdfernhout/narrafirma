@@ -320,6 +320,8 @@ define([
         // contentPane.addChild(observationPane);
         var widgets = panelBuilder.buildPanel(observationPanelSpecification, contentPane, graphBrowserInstance.observationModel);
         
+        // TODO: Consolidate duplicate code from these two functions
+        
         function insertGraphSelection() {
             if (!graphBrowserInstance.currentGraph) {
                 // TODO: Translated
@@ -332,7 +334,7 @@ define([
             // Find observation textarea and other needed data
             var observationTextarea = widgets.observation;
             var textModel = graphBrowserInstance.observationModel;
-            var textToInsert = "[" + JSON.stringify(graphBrowserInstance.currentGraph.brush.brush.extent()) + "]";
+            var textToInsert = '{ "selection": ' + JSON.stringify(graphBrowserInstance.currentGraph.brush.brush.extent()) + '  }';
             
             // Replace the currently selected text in the textarea (or insert at caret if nothing selected)
             var textarea = observationTextarea.textbox;
@@ -366,7 +368,16 @@ define([
             var selectedText = oldText.substring(selectionStart, selectionEnd);
             textarea.focus();
             
-            var extent = JSON.parse(selectedText);
+            var extent = null;
+            try {
+                extent = JSON.parse(selectedText).selection;
+            } catch (e) {
+                console.log("JSON parse error", e);
+            }
+            if (!extent) {
+                alert('The selected text was not a complete valid stored selection:\n"' + selectedText + '"');
+                return;
+            }
             console.log("new extent", extent);
             graphBrowserInstance.currentGraph.brush.brush.extent(extent);
             graphBrowserInstance.currentGraph.brush.brush(graphBrowserInstance.currentGraph.brush.brushGroup);
