@@ -177,7 +177,7 @@ define([
                 .attr("height", chartBody.attr("height"));
         }
     
-        return brush;
+        return {brush: brush, brushGroup: brushGroup};
     }
     
     function makeChartFramework(chartPane, chartType, isSmallFormat, margin) {
@@ -416,7 +416,7 @@ define([
         addYAxisLabel(chart, "Count");
         
         // Append brush before data to ensure titles are drown
-        var brush = createBrush(chartBody, xScale, null, brushend);
+        chart.brush = createBrush(chartBody, xScale, null, brushend);
         
         var bars = chartBody.selectAll(".bar")
                 .data(allPlotItems)
@@ -461,8 +461,11 @@ define([
         }
         
         function brushend() {
-            updateSelectedStories(storyDisplayItems, graphBrowserInstance, storiesSelectedCallback, isPlotItemSelected);
+            updateSelectedStories(chart, storyDisplayItems, graphBrowserInstance, storiesSelectedCallback, isPlotItemSelected);
         }
+        chart.brushend = brushend;
+        
+        return chart;
     }
     
     // Histogram reference for d3: http://bl.ocks.org/mbostock/3048450
@@ -574,7 +577,7 @@ define([
         }
         
         // Append brush before data to ensure titles are drown
-        var brush = createBrush(chartBody, xScale, null, brushend);
+        chart.brush = createBrush(chartBody, xScale, null, brushend);
         
         var bars = chartBody.selectAll(".bar")
               .data(data)
@@ -613,10 +616,13 @@ define([
         }
         
         function brushend() {
-            updateSelectedStories(storyDisplayItems, graphBrowserInstance, storiesSelectedCallback, isPlotItemSelected);
+            updateSelectedStories(chart, storyDisplayItems, graphBrowserInstance, storiesSelectedCallback, isPlotItemSelected);
         }
+        chart.brushend = brushend;
         
         // TODO: Put up title
+        
+        return chart;
     }
     
     function multipleHistograms(graphBrowserInstance, choiceQuestion, scaleQuestion, storiesSelectedCallback) {
@@ -645,15 +651,19 @@ define([
         
         chartPane.domNode.appendChild(content);
         
+        var charts = [];
         for (index in options) {
             var option = options[index];
             // TODO: Maybe need to pass which chart to the storiesSelectedCallback
-            d3HistogramChart(graphBrowserInstance, scaleQuestion, choiceQuestion, option, storiesSelectedCallback);
+            var subchart = d3HistogramChart(graphBrowserInstance, scaleQuestion, choiceQuestion, option, storiesSelectedCallback);
+            charts.push(subchart);
         }
         
         // End the float
         var clearFloat = domConstruct.create("br", {style: "clear: left;"});
         chartPane.domNode.appendChild(clearFloat);
+        
+        return charts;
     }
     
     // Reference for initial scatter chart: http://bl.ocks.org/bunkat/2595950
@@ -707,7 +717,7 @@ define([
         addYAxisLabel(chart, nameForQuestion(yAxisQuestion));
         
         // Append brush before data to ensure titles are drown
-        var brush = createBrush(chartBody, xScale, yScale, brushend);
+        chart.brush = createBrush(chartBody, xScale, yScale, brushend);
         
         var storyDisplayItems = chartBody.selectAll(".story")
                 .data(allPlotItems)
@@ -737,8 +747,11 @@ define([
         }
         
         function brushend() {
-            updateSelectedStories(storyDisplayItems, graphBrowserInstance, storiesSelectedCallback, isPlotItemSelected);
+            updateSelectedStories(chart, storyDisplayItems, graphBrowserInstance, storiesSelectedCallback, isPlotItemSelected);
         }
+        chart.brushend = brushend;
+        
+        return chart;
     }
     
     function d3ContingencyTable(graphBrowserInstance, xAxisQuestion, yAxisQuestion, storiesSelectedCallback) {
@@ -863,7 +876,7 @@ define([
         addYAxisLabel(chart, nameForQuestion(yAxisQuestion));
         
         // Append brush before data to ensure titles are drown
-        var brush = createBrush(chartBody, xScale, yScale, brushend);
+        chart.brush = createBrush(chartBody, xScale, yScale, brushend);
         
         // Compute a scaling factor to map plotItem values onto a widgth and height
         var maxPlotItemValue = d3.max(allPlotItems, function(plotItem) { return plotItem.value; });
@@ -908,14 +921,17 @@ define([
         }
         
         function brushend() {
-            updateSelectedStories(storyDisplayClusters, graphBrowserInstance, storiesSelectedCallback, isPlotItemSelected);
+            updateSelectedStories(chart, storyDisplayClusters, graphBrowserInstance, storiesSelectedCallback, isPlotItemSelected);
         }
+        chart.brushend = brushend;
+        
+        return chart;
     }
     
     // ---- Support updating stories in browser
     
-    function updateSelectedStories(storyDisplayItemsOrClusters, graphBrowserInstance, storiesSelectedCallback, selectionTestFunction) {
-        var extent = d3.event.target.extent();
+    function updateSelectedStories(chart, storyDisplayItemsOrClusters, graphBrowserInstance, storiesSelectedCallback, selectionTestFunction) {
+        var extent = chart.brush.brush.extent();
         var selectedStories = [];
         storyDisplayItemsOrClusters.classed("selected", function(plotItem) {
             var selected = selectionTestFunction(extent, plotItem);

@@ -122,28 +122,30 @@ define([
         console.log("pattern", name, type);
         var q1 = pattern.questions[0];
         var q2 = pattern.questions[1];
+        var currentGraph = null;
         switch (type) {
             case "bar":
-                charting.d3BarChart(graphBrowserInstance, q1, updateStoriesPane);
+                currentGraph = charting.d3BarChart(graphBrowserInstance, q1, updateStoriesPane);
                 break;
             case "table":
-                charting.contingencyTable(graphBrowserInstance, q1, q2, updateStoriesPane);
+                currentGraph = charting.contingencyTable(graphBrowserInstance, q1, q2, updateStoriesPane);
                 break;
             case "histogram":
-                charting.d3HistogramChart(graphBrowserInstance, q1, null, null, updateStoriesPane);
+                currentGraph = charting.d3HistogramChart(graphBrowserInstance, q1, null, null, updateStoriesPane);
                 break;
             case "multiple histogram":
                 // Choice question needs to come before scale question in args
-                charting.multipleHistograms(graphBrowserInstance, q2, q1, updateStoriesPane);
+                currentGraph = charting.multipleHistograms(graphBrowserInstance, q2, q1, updateStoriesPane);
                 break;
             case "scatter":
-                charting.d3ScatterPlot(graphBrowserInstance, q1, q2, updateStoriesPane);
+                currentGraph = charting.d3ScatterPlot(graphBrowserInstance, q1, q2, updateStoriesPane);
                 break;        
            default:
                 console.log("ERROR: Unexpected graph type");
                 alert("ERROR: Unexpected graph type");
                 break;
         }
+        graphBrowserInstance.currentGraph = currentGraph;
     }
     
     function updateStoriesPane(graphBrowserInstance, stories) {
@@ -256,7 +258,8 @@ define([
             selectedStoriesStore: null, 
             storyList: null,
             observationModel: new Stateful({observation: ""}),
-            currentPattern: null
+            currentPattern: null,
+            currentGraph: null
         };
         
         var patterns = buildPatternList(graphBrowserInstance);
@@ -318,10 +321,18 @@ define([
         var widgets = panelBuilder.buildPanel(observationPanelSpecification, contentPane, graphBrowserInstance.observationModel);
         
         function insertGraphSelection() {
+            if (!graphBrowserInstance.currentGraph) {
+                // TODO: Translated
+                alert("Please select a pattern first");
+                return;
+            }
+            
+            console.log("graphBrowserInstance.currentGraph", graphBrowserInstance.currentGraph);
+            
             // Find observation textarea and other needed data
             var observationTextarea = widgets.observation;
             var textModel = graphBrowserInstance.observationModel;
-            var textToInsert = "[selection bounds]";
+            var textToInsert = "[" + JSON.stringify(graphBrowserInstance.currentGraph.brush.brush.extent()) + "]";
             
             // Replace the currently selected text in the textarea (or insert at caret if nothing selected)
             var textarea = observationTextarea.textbox;
@@ -337,8 +348,29 @@ define([
         
         function resetGraphSelection() {
             console.log("resetGraphSelection");
+            if (!graphBrowserInstance.currentGraph) {
+                // TODO: Translated
+                alert("Please select a pattern first");
+                return;
+            }
             
-            // TODO
+            // TODO: Need better approach to finding brush extent text and safely parsing it
+            
+            // Find observation textarea and other needed data
+            var observationTextarea = widgets.observation;
+            var textModel = graphBrowserInstance.observationModel;
+            var textarea = observationTextarea.textbox;
+            var selectionStart = textarea.selectionStart;
+            var selectionEnd = textarea.selectionEnd;
+            var oldText = textModel.get("observation");
+            var selectedText = oldText.substring(selectionStart, selectionEnd);
+            textarea.focus();
+            
+            var extent = JSON.parse(selectedText);
+            console.log("new extent", extent);
+            graphBrowserInstance.currentGraph.brush.brush.extent(extent);
+            graphBrowserInstance.currentGraph.brush.brush(graphBrowserInstance.currentGraph.brush.brushGroup);
+            graphBrowserInstance.currentGraph.brushend();
         }
         
         var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerChanged, graphBrowserInstance));
