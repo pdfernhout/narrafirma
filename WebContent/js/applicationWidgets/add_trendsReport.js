@@ -311,9 +311,9 @@ define([
             ]
         };
         
-        var observationPane = new ContentPane();
-        contentPane.addChild(observationPane);
-        panelBuilder.buildPanel(observationPanelSpecification, observationPane, graphBrowserInstance.observationModel);
+        // var observationPane = new ContentPane();
+        // contentPane.addChild(observationPane);
+        panelBuilder.buildPanel(observationPanelSpecification, contentPane, graphBrowserInstance.observationModel);
         
         var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerChanged, graphBrowserInstance));
         
