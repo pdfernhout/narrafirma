@@ -164,7 +164,7 @@ define([
             .call(d3.svg.brush()
                 .x(xScale)
                 .y(yScale)
-                .clamp([false, false])
+                // .clamp([false, false])
                 .on("brushend", brushendCallback)
             );
         return brush;
@@ -447,7 +447,7 @@ define([
         
         function isPlotItemSelected(extent, plotItem) {
             var midPoint = xScale(plotItem.value) + xScale.rangeBand() / 2;
-            return extent[0][0] <= midPoint && midPoint < extent[1][0];
+            return extent[0][0] <= midPoint && midPoint <= extent[1][0];
         }
         
         function brushend() {
@@ -598,7 +598,7 @@ define([
         function isPlotItemSelected(extent, plotItem) {
             // We don't want to compute a midPoint based on plotItem.value which can be anywhere in the bin; we want to use the stored bin.x.
             var midPoint = plotItem.xBinStart + data[0].dx / 2;
-            var selected = extent[0][0] <= midPoint && midPoint < extent[1][0];
+            var selected = extent[0][0] <= midPoint && midPoint <= extent[1][0];
             return selected;
         }
         
@@ -723,7 +723,7 @@ define([
         supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems);
 
         function isPlotItemSelected(extent, plotItem) {
-            return extent[0][0] <= plotItem.x && plotItem.x < extent[1][0] && extent[0][1] <= plotItem.y && plotItem.y < extent[1][1];
+            return extent[0][0] <= plotItem.x && plotItem.x <= extent[1][0] && extent[0][1] <= plotItem.y && plotItem.y <= extent[1][1];
         }
         
         function brushend() {
@@ -893,7 +893,7 @@ define([
         function isPlotItemSelected(extent, plotItem) {
             var midPointX = xScale(plotItem.x) + xScale.rangeBand() / 2;
             var midPointY = yScale(plotItem.y) + yScale.rangeBand() / 2;
-            var selected = extent[0][0] <= midPointX && midPointX < extent[1][0] && extent[0][1] <= midPointY && midPointY < extent[1][1];
+            var selected = extent[0][0] <= midPointX && midPointX <= extent[1][0] && extent[0][1] <= midPointY && midPointY <= extent[1][1];
             return selected;
         }
         
