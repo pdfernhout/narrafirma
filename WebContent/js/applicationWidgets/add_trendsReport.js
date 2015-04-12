@@ -193,6 +193,10 @@ define([
         graphBrowserInstance.patterns = patterns;
         graphBrowserInstance.patternsListStore.setData(patterns);
         graphBrowserInstance.patternsGrid.grid.set("collection", graphBrowserInstance.patternsListStore);
+        
+        // Update item panel in story list so it has the correct header
+        var itemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
+        graphBrowserInstance.storyList.changeItemPanelSpecification(itemPanelSpecification);
     }
     
     function loadLatestStoriesFromServerChanged(graphBrowserInstance, newEnvelopeCount, allStories) {
@@ -248,7 +252,7 @@ define([
             patterns: null,
             patternsListStore: null,
             patternsGrid: null,
-            selectedStories: null,
+            selectedStories: [],
             selectedStoriesStore: null, 
             storyList: null,
             observationModel: new Stateful({observation: ""}),
@@ -289,19 +293,15 @@ define([
         graphBrowserInstance.patternsGrid = patternsGrid;
         
         var storyItemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
-        
-        var selectedStories = [];
  
         // Store will modify underlying array
-        var selectedStoriesStore = GridWithItemPanel.newMemoryTrackableStore(selectedStories, "_storyID");
+        var selectedStoriesStore = GridWithItemPanel.newMemoryTrackableStore(graphBrowserInstance.selectedStories, "_storyID");
+        graphBrowserInstance.selectedStoriesStore = selectedStoriesStore;
         
         // Only allow view button for stories
         var configuration = {viewButton: true, navigationButtons: true, includeAllFields: ["__survey_storyName", "__survey_storyText"]};
         var storyList = new GridWithItemPanel(panelBuilder, contentPane, "storyGrid", selectedStoriesStore, storyItemPanelSpecification, configuration);
-        storyList.grid.set("selectionMode", "single");       
-        
-        graphBrowserInstance.selectedStories = selectedStories;
-        graphBrowserInstance.selectedStoriesStore = selectedStoriesStore;
+        storyList.grid.set("selectionMode", "single");
         graphBrowserInstance.storyList = storyList;
         
         var observationPanelSpecification = {
