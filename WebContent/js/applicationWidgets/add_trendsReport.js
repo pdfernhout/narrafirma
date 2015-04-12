@@ -320,6 +320,7 @@ define([
         // contentPane.addChild(observationPane);
         var widgets = panelBuilder.buildPanel(observationPanelSpecification, contentPane, graphBrowserInstance.observationModel);
         
+        // TODO: selections should be stored in original domain units, not scaled display units
         // TODO: Consolidate duplicate code from these two functions
         
         function insertGraphSelection() {

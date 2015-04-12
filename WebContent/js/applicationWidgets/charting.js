@@ -625,6 +625,8 @@ define([
         return chart;
     }
     
+    // TODO: Need to update this to pass instance for self into histograms so they can clear the selections in other histograms
+    // TODO: Also need to track the most recent histogram with an actual selection so can save and restore that from trends report
     function multipleHistograms(graphBrowserInstance, choiceQuestion, scaleQuestion, storiesSelectedCallback) {
         var options = [];
         var index;
