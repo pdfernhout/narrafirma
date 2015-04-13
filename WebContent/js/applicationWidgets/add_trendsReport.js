@@ -361,25 +361,60 @@ define([
             textarea.focus();
         }
         
+        function scanForSelectionJSON(text, selectionStart, selectionEnd) {
+            // Find the text for a selection surrounding the current insertion point
+            // This assumes there are not nested objects with nested braces
+            var start;
+            var end;
+            
+            // Special case of entire selection -- but could return more complex nested object...
+            if (selectionStart !== selectionEnd) {
+                if (text.charAt(selectionStart) === "{" && text.charAt(selectionEnd - 1) === "}") {
+                    return text.substring(selectionStart, selectionEnd);
+                }
+            }
+            
+            for (start = selectionStart - 1; start >= 0; start--) {
+                if (text.charAt(start) === "}") return null;
+                if (text.charAt(start) === "{") break;
+            }
+            if (start < 0) return null;
+            // Now find the end
+            for (end = start; end < text.length; end++) {
+                if (text.charAt(end) === "}") break;
+            }
+            if (end >= text.length) return null;
+            return text.substring(start, end + 1);
+        }
+        
         function resetGraphSelection() {
             console.log("resetGraphSelection");
             if (!graphBrowserInstance.currentGraph) {
-                // TODO: Translated
+                // TODO: Translate
                 alert("Please select a pattern first");
                 return;
             }
             
             // TODO: Need better approach to finding brush extent text and safely parsing it
-            
+
             // Find observation textarea and other needed data
             var observationTextarea = widgets.observation;
             var textModel = graphBrowserInstance.observationModel;
             var textarea = observationTextarea.textbox;
+            var oldText = textModel.get("observation");
+
+            textarea.focus();
+
             var selectionStart = textarea.selectionStart;
             var selectionEnd = textarea.selectionEnd;
-            var oldText = textModel.get("observation");
-            var selectedText = oldText.substring(selectionStart, selectionEnd);
-            textarea.focus();
+
+            // var selectedText = oldText.substring(selectionStart, selectionEnd);
+            var selectedText = scanForSelectionJSON(oldText, selectionStart, selectionEnd);
+            if (!selectedText) {
+                // TODO: Translate
+                alert("The text insertion point was not inside a graph selection description.\nTry clicking inside the {...} items first.");
+                return;
+            }
             
             var extent = null;
             try {
@@ -388,7 +423,8 @@ define([
                 console.log("JSON parse error", e);
             }
             if (!extent) {
-                alert('The selected text was not a complete valid stored selection:\n"' + selectedText + '"');
+                // TODO: Translate
+                alert('The selected text was not a complete valid stored selection.\nTry clicking inside the {...} items first.');
                 return;
             }
             console.log("new extent", extent);
@@ -398,6 +434,7 @@ define([
                 var graphs = graphBrowserInstance.currentGraph;
                 var extents = extent;
                 if (!_.isArray(extents)) {
+                    // TODO: Translate
                     alert("Incorrect format for selection -- should be an array of extents");
                 } else {
                     for (var i = 0; i < Math.max(graphs.length, extents.length); i++) {
