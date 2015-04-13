@@ -259,7 +259,9 @@ define([
             storyList: null,
             observationModel: new Stateful({observation: ""}),
             currentPattern: null,
-            currentGraph: null
+            currentGraph: null,
+            currentSelection: null,
+            currentSubgraph: null
         };
         
         var patterns = buildPatternList(graphBrowserInstance);
@@ -437,11 +439,20 @@ define([
                     // TODO: Translate
                     alert("Incorrect format for selection -- should be an array of extents");
                 } else {
-                    for (var i = 0; i < Math.max(graphs.length, extents.length); i++) {
+                    var storyListUpdated = false;
+                    var iterations = Math.max(graphs.length, extents.length);
+                    for (var i = 0; i < iterations; i++) {
                         var graph = graphs[i];
                         graph.brush.brush.extent(extents[i]);
                         graph.brush.brush(graph.brush.brushGroup);
-                        graph.brushend();
+                        // Only update story list if there is a valid selection, or to ensure it is empty for the last one if no one has a selection
+                        var doNotUpdateStoryList = (extents[i][0] === 0 && extents[i][1] === 0);
+                        if (i === iterations - 1 && !storyListUpdated) {
+                         // TODO: This is inefficient as the last one will also clear the graphs again...
+                            doNotUpdateStoryList = false;
+                        }
+                        graph.brushend(doNotUpdateStoryList);
+                        storyListUpdated = storyListUpdated || !doNotUpdateStoryList;
                     }
                 }
             } else {

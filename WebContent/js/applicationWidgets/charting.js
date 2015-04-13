@@ -615,8 +615,20 @@ define([
             return selected;
         }
         
-        function brushend() {
-            updateSelectedStories(chart, storyDisplayItems, graphBrowserInstance, storiesSelectedCallback, isPlotItemSelected);
+        function brushend(doNotUpdateStoryList) {
+            // Clear selections in other graphs
+            if (_.isArray(graphBrowserInstance.currentGraph) && !doNotUpdateStoryList) {
+                graphBrowserInstance.currentGraph.forEach(function (otherGraph) {
+                    if (otherGraph !== chart) {
+                        otherGraph.brush.brush.clear();
+                        otherGraph.brush.brush(otherGraph.brush.brushGroup);
+                        otherGraph.brushend("doNotUpdateStoryList");
+                    }
+                });
+            }
+            var callback = storiesSelectedCallback;
+            if (doNotUpdateStoryList) callback = null;
+            updateSelectedStories(chart, storyDisplayItems, graphBrowserInstance, callback, isPlotItemSelected);
         }
         chart.brushend = brushend;
         
@@ -952,8 +964,10 @@ define([
             }
             return selected;
         });
-        console.log("updateSelectedStories", selectedStories);
-        storiesSelectedCallback(graphBrowserInstance, selectedStories);
+        if (storiesSelectedCallback) {
+            console.log("updateSelectedStories doing callback", selectedStories);
+            storiesSelectedCallback(graphBrowserInstance, selectedStories);
+        }
     }
     
     function newChartPane(graphBrowserInstance, style) {
