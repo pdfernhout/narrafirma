@@ -1,0 +1,11 @@
+An observation
+
+A first selection:
+
+{ "selection": [180.98333740234375,373.98333740234375]  }
+
+A second selection: 
+
+{ "selection": [368.98333740234375,457.98333740234375]  }
+
+More text
