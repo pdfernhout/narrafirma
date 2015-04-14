@@ -382,39 +382,6 @@ define([
         }
         
         charting.restoreSelection(graph, selection);
-
-        /*
-        
-        // TODO: Should check chart itself too
-        if (_.isArray(graph)) {
-            var graphs = graphBrowserInstance.currentGraph;
-            var extents = extent;
-            if (!_.isArray(extents)) {
-                // TODO: Translate
-                alert("Incorrect format for selection -- should be an array of extents");
-            } else {
-                var storyListUpdated = false;
-                var iterations = Math.max(graphs.length, extents.length);
-                for (var i = 0; i < iterations; i++) {
-                    var graph = graphs[i];
-                    graph.brush.brush.extent(extents[i]);
-                    graph.brush.brush(graph.brush.brushGroup);
-                    // Only update story list if there is a valid selection, or to ensure it is empty for the last one if no one has a selection
-                    var doNotUpdateStoryList = (extents[i][0] === 0 && extents[i][1] === 0);
-                    if (i === iterations - 1 && !storyListUpdated) {
-                     // TODO: This is inefficient as the last one will also clear the graphs again...
-                        doNotUpdateStoryList = false;
-                    }
-                    graph.brushend(doNotUpdateStoryList);
-                    storyListUpdated = storyListUpdated || !doNotUpdateStoryList;
-                }
-            }
-        } else {
-            graph.brush.brush.extent(extent);
-            graphBrowserInstance.currentGraph.brush.brush(graphBrowserInstance.currentGraph.brush.brushGroup);
-            graphBrowserInstance.currentGraph.brushend();
-        }
-        */
     }
     
     function add_trendsReport(panelBuilder, contentPane, model, fieldSpecification) {
