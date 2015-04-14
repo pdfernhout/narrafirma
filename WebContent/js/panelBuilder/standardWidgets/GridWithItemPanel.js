@@ -57,9 +57,6 @@ define([
         
         this.configuration = configuration;
         this.panelBuilder = panelBuilder;
-
-        // A count of how many items are currently selected
-        this.selectedCount = 0;
                         
         this.itemPanelSpecification = itemPanelSpecification;
         
@@ -101,7 +98,6 @@ define([
         
         this.grid.on("dgrid-select", function(event) {
             if (debugSelecting) console.log("dgrid-select");
-            self.selectedCount += event.rows.length;
             self.updateGridButtonsForSelectionAndForm();
             
             // Defer updating until later to ensure grid settles down with selecting
@@ -115,7 +111,6 @@ define([
         
         this.grid.on("dgrid-deselect", function(event) {
             if (debugSelecting) console.log("dgrid-deselect");
-            self.selectedCount -= event.rows.length;
             self.updateGridButtonsForSelectionAndForm();
             
             // Defer updating until later to ensure grid settles down with selecting
@@ -204,7 +199,7 @@ define([
         }
         */
 
-        // Requires the rest of this to be setup, especially this.buttons and this.selectedCount
+        // Requires the rest of this to be setup, especially this.buttons
         this.updateGridButtonsForSelectionAndForm();
     }
     
@@ -397,6 +392,16 @@ define([
         return selectedItemID;
     };
     
+    GridWithItemPanel.prototype.getSelectedCount = function() {
+        var selectedCount = 0;
+        for (var theSelection in this.grid.selection) {
+            if (this.grid.selection[theSelection]) selectedCount++;
+        }
+
+        if (debugSelecting) console.log("selectedCount", selectedCount);
+        return selectedCount;
+    };
+    
     GridWithItemPanel.prototype.getSelectedItem = function() {
         var selectedItemID = this.getSelectedItemID();
         
@@ -577,7 +582,8 @@ define([
     
     GridWithItemPanel.prototype.updateGridButtonsForSelectionAndForm = function() {
         var buttons = this.buttons;
-        var hasSelection = this.selectedCount;
+        var selectedCount = this.getSelectedCount();
+        var hasSelection = selectedCount !== 0;
         
         var isAdding = (this.formType === "add");
         if (buttons.addButton) buttons.addButton.set("disabled", isAdding);
@@ -601,15 +607,15 @@ define([
             if (row) {
                 var idAbove = this.grid.up(row, 1, true).id;
                 var idBelow = this.grid.down(row, 1, true).id;
-                // console.log("current", selectedItemID, "selectedCount", this.selectedCount, "above", idAbove, "below", idBelow);
+                console.log("current", selectedItemID, "selectedCount", selectedCount, "above", idAbove, "below", idBelow);
                 atStart = idAbove === selectedItemID;
                 atEnd = idBelow === selectedItemID;
-                // console.log("atStart", atStart, "atEnd", atEnd);
+                console.log("atStart", atStart, "atEnd", atEnd);
             }
         }
         if (buttons.navigateStartButton) buttons.navigateStartButton.set("disabled", atStart);
-        if (buttons.navigatePreviousButton) buttons.navigatePreviousButton.set("disabled", atStart || !selectedItemID || this.selectedCount !== 1);
-        if (buttons.navigateNextButton) buttons.navigateNextButton.set("disabled", atEnd || !selectedItemID || this.selectedCount !== 1);
+        if (buttons.navigatePreviousButton) buttons.navigatePreviousButton.set("disabled", atStart || !selectedItemID || selectedCount !== 1);
+        if (buttons.navigateNextButton) buttons.navigateNextButton.set("disabled", atEnd || !selectedItemID || selectedCount !== 1);
         if (buttons.navigateEndButton) buttons.navigateEndButton.set("disabled", atEnd);
     };
     
