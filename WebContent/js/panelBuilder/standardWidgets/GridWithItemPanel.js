@@ -269,6 +269,13 @@ define([
         this.grid.set("columns", columns);
     };
     
+    // Call this to deal with probable dgrid bug that it can't handle store data changing and also so rest of GUI will update
+    GridWithItemPanel.prototype.dataStoreChanged = function(newDataStore) {
+        this.grid.clearSelection();
+        this.grid.set("collection", newDataStore);
+        this.updateGridButtonsForSelectionAndForm();
+    };
+    
     GridWithItemPanel.prototype.hideAndDestroyForm = function() {
         // The next line is needed to get rid of duplicate IDs for next time the form is opened:
         this.itemContentPane.set("style", "display: none");
@@ -558,7 +565,7 @@ define([
         if (nextRow) {
             if (selectedItemID) this.grid.deselect(selectedItemID);
             this.grid.select(nextRow);
-            console.log("nextRow", nextRow);
+            // console.log("nextRow", nextRow);
             // This next commented line moves the entire window, which is not what we want; maybe a bug in dgrid?
             // nextRow.element.scrollIntoView();
             // TODO: This behavior is not ideal, because it moves the grid even when the item is visible
@@ -607,10 +614,10 @@ define([
             if (row) {
                 var idAbove = this.grid.up(row, 1, true).id;
                 var idBelow = this.grid.down(row, 1, true).id;
-                console.log("current", selectedItemID, "selectedCount", selectedCount, "above", idAbove, "below", idBelow);
+                // console.log("current", selectedItemID, "selectedCount", selectedCount, "above", idAbove, "below", idBelow);
                 atStart = idAbove === selectedItemID;
                 atEnd = idBelow === selectedItemID;
-                console.log("atStart", atStart, "atEnd", atEnd);
+                // console.log("atStart", atStart, "atEnd", atEnd);
             }
         }
         if (buttons.navigateStartButton) buttons.navigateStartButton.set("disabled", atStart);

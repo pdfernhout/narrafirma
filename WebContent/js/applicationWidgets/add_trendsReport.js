@@ -158,7 +158,7 @@ define([
     function updateStoriesPane(graphBrowserInstance, stories) {
         graphBrowserInstance.selectedStories = stories;
         graphBrowserInstance.selectedStoriesStore.setData(stories);
-        graphBrowserInstance.storyList.grid.set("collection", graphBrowserInstance.selectedStoriesStore);
+        graphBrowserInstance.storyList.dataStoreChanged(graphBrowserInstance.selectedStoriesStore);
     }
 
     // TODO: Next two functions from add_storyBrowser and so are duplicate code
@@ -201,7 +201,7 @@ define([
         var patterns = buildPatternList(graphBrowserInstance);
         graphBrowserInstance.patterns = patterns;
         graphBrowserInstance.patternsListStore.setData(patterns);
-        graphBrowserInstance.patternsGrid.grid.set("collection", graphBrowserInstance.patternsListStore);
+        graphBrowserInstance.patternsGrid.dataStoreChanged(graphBrowserInstance.patternsListStore);
         
         // Update item panel in story list so it has the correct header
         var itemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
@@ -238,7 +238,7 @@ define([
         
         graphBrowserInstance.selectedStories = [];
         graphBrowserInstance.selectedStoriesStore.setData(graphBrowserInstance.selectedStories);
-        graphBrowserInstance.storyList.grid.set("collection", graphBrowserInstance.selectedStoriesStore);
+        graphBrowserInstance.storyList.dataStoreChanged(graphBrowserInstance.selectedStoriesStore);
     }
     
     function insertGraphSelection(graphBrowserInstance) {

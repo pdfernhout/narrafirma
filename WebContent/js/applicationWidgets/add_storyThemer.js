@@ -133,7 +133,7 @@ define([
         // console.log("loadLatestStoriesFromServerChanged", storyBrowserInstance, allStories);
         storyThemerInstance.dataStore.setData(allStories);
         // Apparently, trackable stored don't send a general update message when you change their data, so explicitely set grid store here to force update
-        storyThemerInstance.storyList.grid.set("collection", storyThemerInstance.dataStore);
+        storyThemerInstance.storyList.dataStoreChanged(storyThemerInstance.dataStore);
     }
     
     // TODO: Fix so the filters get updated as the story questions get changed

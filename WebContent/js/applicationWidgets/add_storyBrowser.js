@@ -360,7 +360,7 @@ define([
         var filteredResults = storyBrowserInstance.dataStore.filter(filterFunction);
         console.log("Filtered results", filteredResults);
         // var newStore = GridWithItemPanel.newMemoryTrackableStore(filteredResults.data, "_storyID");
-        storyBrowserInstance.storyList.grid.set("collection", filteredResults);
+        storyBrowserInstance.storyList.dataStoreChanged(filteredResults);
         // console.log("finished setting list with newStore", newStore);
     }
     

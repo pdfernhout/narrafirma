@@ -57,7 +57,7 @@ define([
             var newData = model.get(fieldSpecification.id);
             dataStore.setData(newData);
             // Apparently, trackable stored don't send a general update message when you change their data, so explicitely set grid store here to force update
-            instance.grid.set("collection", dataStore);
+            instance.dataStoreChanged(dataStore);
         });
         
         // Klugde to get the contentPane to free the watcher by calling remove when it is destroyed
@@ -68,7 +68,7 @@ define([
         if (!gridConfiguration) gridConfiguration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
         
         var grid = new GridWithItemPanel(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, itemPanelSpecification, gridConfiguration);
-        instance.grid = grid.grid;
+        instance.grid = grid;
         return grid;
     }
 
