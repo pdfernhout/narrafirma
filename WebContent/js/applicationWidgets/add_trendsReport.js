@@ -241,6 +241,143 @@ define([
         graphBrowserInstance.storyList.grid.set("collection", graphBrowserInstance.selectedStoriesStore);
     }
     
+    function insertGraphSelection(graphBrowserInstance) {
+        if (!graphBrowserInstance.currentGraph) {
+            // TODO: Translated
+            alert("Please select a pattern first");
+            return;
+        }
+        
+        console.log("graphBrowserInstance.currentGraph", graphBrowserInstance.currentGraph);
+        
+        // Find observation textarea and other needed data
+        var observationTextarea = graphBrowserInstance.widgets.observation;
+        var textModel = graphBrowserInstance.observationModel;
+        var textToInsert = "";
+        if (_.isArray(graphBrowserInstance.currentGraph)) {
+            textToInsert += '{ "selection": [ ';
+            var first = true;
+            graphBrowserInstance.currentGraph.forEach(function (subchart) {
+                if (!first) textToInsert += ', ';
+                textToInsert += JSON.stringify(subchart.brush.brush.extent());
+                first = false;
+            });
+            textToInsert += '] }';
+        } else {
+            textToInsert = '{ "selection": ' + JSON.stringify(graphBrowserInstance.currentGraph.brush.brush.extent()) + '  }';
+        }
+        
+        // Replace the currently selected text in the textarea (or insert at caret if nothing selected)
+        var textarea = observationTextarea.textbox;
+        var selectionStart = textarea.selectionStart;
+        var selectionEnd = textarea.selectionEnd;
+        var oldText = textModel.get("observation");
+        var newText = oldText.substring(0, selectionStart) + textToInsert + oldText.substring(selectionEnd);
+        textModel.set("observation", newText);
+        textarea.selectionStart = selectionStart;
+        textarea.selectionEnd = selectionStart + textToInsert.length;
+        textarea.focus();
+    }
+    
+    function scanForSelectionJSON(text, selectionStart, selectionEnd) {
+        // Find the text for a selection surrounding the current insertion point
+        // This assumes there are not nested objects with nested braces
+        var start;
+        var end;
+        
+        // Special case of entire selection -- but could return more complex nested object...
+        if (selectionStart !== selectionEnd) {
+            if (text.charAt(selectionStart) === "{" && text.charAt(selectionEnd - 1) === "}") {
+                return text.substring(selectionStart, selectionEnd);
+            }
+        }
+        
+        for (start = selectionStart - 1; start >= 0; start--) {
+            if (text.charAt(start) === "}") return null;
+            if (text.charAt(start) === "{") break;
+        }
+        if (start < 0) return null;
+        // Now find the end
+        for (end = start; end < text.length; end++) {
+            if (text.charAt(end) === "}") break;
+        }
+        if (end >= text.length) return null;
+        return text.substring(start, end + 1);
+    }
+    
+    function resetGraphSelection(graphBrowserInstance) {
+        console.log("resetGraphSelection");
+        if (!graphBrowserInstance.currentGraph) {
+            // TODO: Translate
+            alert("Please select a pattern first");
+            return;
+        }
+        
+        // TODO: Need better approach to finding brush extent text and safely parsing it
+
+        // Find observation textarea and other needed data
+        var observationTextarea = graphBrowserInstance.widgets.observation;
+        var textModel = graphBrowserInstance.observationModel;
+        var textarea = observationTextarea.textbox;
+        var oldText = textModel.get("observation");
+
+        textarea.focus();
+
+        var selectionStart = textarea.selectionStart;
+        var selectionEnd = textarea.selectionEnd;
+
+        // var selectedText = oldText.substring(selectionStart, selectionEnd);
+        var selectedText = scanForSelectionJSON(oldText, selectionStart, selectionEnd);
+        if (!selectedText) {
+            // TODO: Translate
+            alert("The text insertion point was not inside a graph selection description.\nTry clicking inside the {...} items first.");
+            return;
+        }
+        
+        var extent = null;
+        try {
+            extent = JSON.parse(selectedText).selection;
+        } catch (e) {
+            console.log("JSON parse error", e);
+        }
+        if (!extent) {
+            // TODO: Translate
+            alert('The selected text was not a complete valid stored selection.\nTry clicking inside the {...} items first.');
+            return;
+        }
+        console.log("new extent", extent);
+        
+        // TODO: Should check chart itself too
+        if (_.isArray(graphBrowserInstance.currentGraph)) {
+            var graphs = graphBrowserInstance.currentGraph;
+            var extents = extent;
+            if (!_.isArray(extents)) {
+                // TODO: Translate
+                alert("Incorrect format for selection -- should be an array of extents");
+            } else {
+                var storyListUpdated = false;
+                var iterations = Math.max(graphs.length, extents.length);
+                for (var i = 0; i < iterations; i++) {
+                    var graph = graphs[i];
+                    graph.brush.brush.extent(extents[i]);
+                    graph.brush.brush(graph.brush.brushGroup);
+                    // Only update story list if there is a valid selection, or to ensure it is empty for the last one if no one has a selection
+                    var doNotUpdateStoryList = (extents[i][0] === 0 && extents[i][1] === 0);
+                    if (i === iterations - 1 && !storyListUpdated) {
+                     // TODO: This is inefficient as the last one will also clear the graphs again...
+                        doNotUpdateStoryList = false;
+                    }
+                    graph.brushend(doNotUpdateStoryList);
+                    storyListUpdated = storyListUpdated || !doNotUpdateStoryList;
+                }
+            }
+        } else {
+            graphBrowserInstance.currentGraph.brush.brush.extent(extent);
+            graphBrowserInstance.currentGraph.brush.brush(graphBrowserInstance.currentGraph.brush.brushGroup);
+            graphBrowserInstance.currentGraph.brushend();
+        }
+    }
+    
     function add_trendsReport(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
 
@@ -321,8 +458,8 @@ define([
         var observationPanelSpecification = {
             "id": "observationPanel",
             panelFields: [        
-                {id: "insertGraphSelection", displayPrompt: "Insert graph selection", displayType: "button", displayConfiguration: insertGraphSelection},
-                {id: "resetGraphSelection", displayPrompt: "Reset graph selection using saved selection chosen in observation", displayType: "button", displayConfiguration: resetGraphSelection},
+                {id: "insertGraphSelection", displayPrompt: "Insert graph selection", displayType: "button", displayConfiguration: lang.partial(insertGraphSelection, graphBrowserInstance)},
+                {id: "resetGraphSelection", displayPrompt: "Reset graph selection using saved selection chosen in observation", displayType: "button", displayConfiguration: lang.partial(resetGraphSelection, graphBrowserInstance)},
                 {id: "observation", displayName: "Observation", displayPrompt: "Add observation", displayType: "textarea"}
             ]
         };
@@ -330,146 +467,10 @@ define([
         // var observationPane = new ContentPane();
         // contentPane.addChild(observationPane);
         var widgets = panelBuilder.buildPanel(observationPanelSpecification, contentPane, graphBrowserInstance.observationModel);
+        graphBrowserInstance.widgets = widgets;
         
         // TODO: selections should be stored in original domain units, not scaled display units
         // TODO: Consolidate duplicate code from these two functions
-        
-        function insertGraphSelection() {
-            if (!graphBrowserInstance.currentGraph) {
-                // TODO: Translated
-                alert("Please select a pattern first");
-                return;
-            }
-            
-            console.log("graphBrowserInstance.currentGraph", graphBrowserInstance.currentGraph);
-            
-            // Find observation textarea and other needed data
-            var observationTextarea = widgets.observation;
-            var textModel = graphBrowserInstance.observationModel;
-            var textToInsert = "";
-            if (_.isArray(graphBrowserInstance.currentGraph)) {
-                textToInsert += '{ "selection": [ ';
-                var first = true;
-                graphBrowserInstance.currentGraph.forEach(function (subchart) {
-                    if (!first) textToInsert += ', ';
-                    textToInsert += JSON.stringify(subchart.brush.brush.extent());
-                    first = false;
-                });
-                textToInsert += '] }';
-            } else {
-                textToInsert = '{ "selection": ' + JSON.stringify(graphBrowserInstance.currentGraph.brush.brush.extent()) + '  }';
-            }
-            
-            // Replace the currently selected text in the textarea (or insert at caret if nothing selected)
-            var textarea = observationTextarea.textbox;
-            var selectionStart = textarea.selectionStart;
-            var selectionEnd = textarea.selectionEnd;
-            var oldText = textModel.get("observation");
-            var newText = oldText.substring(0, selectionStart) + textToInsert + oldText.substring(selectionEnd);
-            textModel.set("observation", newText);
-            textarea.selectionStart = selectionStart;
-            textarea.selectionEnd = selectionStart + textToInsert.length;
-            textarea.focus();
-        }
-        
-        function scanForSelectionJSON(text, selectionStart, selectionEnd) {
-            // Find the text for a selection surrounding the current insertion point
-            // This assumes there are not nested objects with nested braces
-            var start;
-            var end;
-            
-            // Special case of entire selection -- but could return more complex nested object...
-            if (selectionStart !== selectionEnd) {
-                if (text.charAt(selectionStart) === "{" && text.charAt(selectionEnd - 1) === "}") {
-                    return text.substring(selectionStart, selectionEnd);
-                }
-            }
-            
-            for (start = selectionStart - 1; start >= 0; start--) {
-                if (text.charAt(start) === "}") return null;
-                if (text.charAt(start) === "{") break;
-            }
-            if (start < 0) return null;
-            // Now find the end
-            for (end = start; end < text.length; end++) {
-                if (text.charAt(end) === "}") break;
-            }
-            if (end >= text.length) return null;
-            return text.substring(start, end + 1);
-        }
-        
-        function resetGraphSelection() {
-            console.log("resetGraphSelection");
-            if (!graphBrowserInstance.currentGraph) {
-                // TODO: Translate
-                alert("Please select a pattern first");
-                return;
-            }
-            
-            // TODO: Need better approach to finding brush extent text and safely parsing it
-
-            // Find observation textarea and other needed data
-            var observationTextarea = widgets.observation;
-            var textModel = graphBrowserInstance.observationModel;
-            var textarea = observationTextarea.textbox;
-            var oldText = textModel.get("observation");
-
-            textarea.focus();
-
-            var selectionStart = textarea.selectionStart;
-            var selectionEnd = textarea.selectionEnd;
-
-            // var selectedText = oldText.substring(selectionStart, selectionEnd);
-            var selectedText = scanForSelectionJSON(oldText, selectionStart, selectionEnd);
-            if (!selectedText) {
-                // TODO: Translate
-                alert("The text insertion point was not inside a graph selection description.\nTry clicking inside the {...} items first.");
-                return;
-            }
-            
-            var extent = null;
-            try {
-                extent = JSON.parse(selectedText).selection;
-            } catch (e) {
-                console.log("JSON parse error", e);
-            }
-            if (!extent) {
-                // TODO: Translate
-                alert('The selected text was not a complete valid stored selection.\nTry clicking inside the {...} items first.');
-                return;
-            }
-            console.log("new extent", extent);
-            
-            // TODO: Should check chart itself too
-            if (_.isArray(graphBrowserInstance.currentGraph)) {
-                var graphs = graphBrowserInstance.currentGraph;
-                var extents = extent;
-                if (!_.isArray(extents)) {
-                    // TODO: Translate
-                    alert("Incorrect format for selection -- should be an array of extents");
-                } else {
-                    var storyListUpdated = false;
-                    var iterations = Math.max(graphs.length, extents.length);
-                    for (var i = 0; i < iterations; i++) {
-                        var graph = graphs[i];
-                        graph.brush.brush.extent(extents[i]);
-                        graph.brush.brush(graph.brush.brushGroup);
-                        // Only update story list if there is a valid selection, or to ensure it is empty for the last one if no one has a selection
-                        var doNotUpdateStoryList = (extents[i][0] === 0 && extents[i][1] === 0);
-                        if (i === iterations - 1 && !storyListUpdated) {
-                         // TODO: This is inefficient as the last one will also clear the graphs again...
-                            doNotUpdateStoryList = false;
-                        }
-                        graph.brushend(doNotUpdateStoryList);
-                        storyListUpdated = storyListUpdated || !doNotUpdateStoryList;
-                    }
-                }
-            } else {
-                graphBrowserInstance.currentGraph.brush.brush.extent(extent);
-                graphBrowserInstance.currentGraph.brush.brush(graphBrowserInstance.currentGraph.brush.brushGroup);
-                graphBrowserInstance.currentGraph.brushend();
-            }
-        }
         
         var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerChanged, graphBrowserInstance));
         
