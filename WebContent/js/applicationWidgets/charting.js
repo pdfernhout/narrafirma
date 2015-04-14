@@ -396,6 +396,7 @@ define([
             .rangeRoundBands([0, chart.width], 0.1);
         
         chart.xScale = xScale;
+        chart.xQuestion = question;
     
         var xAxis = addXAxis(chart, xScale, {labelLengthLimit: 9});
         
@@ -540,6 +541,7 @@ define([
             .range([0, chart.width]);
     
         chart.xScale = xScale;
+        chart.xQuestion = scaleQuestion;
         
         var xAxis = addXAxis(chart, xScale, {isSmallFormat: isSmallFormat});
         
@@ -569,6 +571,8 @@ define([
             .range([chart.height, 0]);
         
         chart.yScale = yScale;
+        chart.subgraphQuestion = choiceQuestion;
+        chart.subgraphChoice = choice;
         
         // Extra version of scale for calculating heights without subtracting as in height - yScale(value)
         var yHeightScale = d3.scale.linear()
@@ -679,7 +683,6 @@ define([
             var option = options[index];
             // TODO: Maybe need to pass which chart to the storiesSelectedCallback
             var subchart = d3HistogramChart(graphBrowserInstance, scaleQuestion, choiceQuestion, option, storiesSelectedCallback);
-            subchart.subgraphOption = option;
             charts.push(subchart);
         }
         
@@ -727,6 +730,7 @@ define([
             .range([0, chart.width]);
 
         chart.xScale = xScale;
+        chart.xQuestion = xAxisQuestion;
         
         var xAxis = addXAxis(chart, xScale);
         
@@ -739,6 +743,7 @@ define([
             .range([chart.height, 0]);       
     
         chart.yScale = yScale;
+        chart.yQuestion = yAxisQuestion;
         
         var yAxis = addYAxis(chart, yScale);
         
@@ -890,6 +895,7 @@ define([
             .rangeRoundBands([0, chart.width], 0.1);
 
         chart.xScale = xScale;
+        chart.xQuestion = xAxisQuestion;
         
         var xAxis = addXAxis(chart, xScale, {labelLengthLimit: 11, drawLongAxisLines: true, rotateAxisLabels: true});
         
@@ -902,6 +908,7 @@ define([
             .rangeRoundBands([chart.height, 0], 0.1); 
         
         chart.yScale = yScale;
+        chart.yQuestion = yAxisQuestion;
         
         var yAxis = addYAxis(chart, yScale, {labelLengthLimit: 15, drawLongAxisLines: true});
         
@@ -962,6 +969,11 @@ define([
     
     // ---- Support updating stories in browser
     
+    // The complementary decodeBraces function is in add_trendsReport.js
+    function encodeBraces(optionText) {
+        return optionText.replace("{", "&#123;").replace("}", "&#125;"); 
+    }
+    
     function setCurrentSelection(chart, graphBrowserInstance, extent) {
         // console.log("setCurrentSelection", extent, chart.width, chart.height, chart.chartType);
         
@@ -990,7 +1002,7 @@ define([
         var x2;
         var y1;
         var y2;
-        var percentages;
+        var selection;
         var width = chart.width;
         var height = chart.height;
         if (chart.chartType === "histogram" || chart.chartType === "scatterPlot") {
@@ -1003,18 +1015,30 @@ define([
             x2 = Math.round(100 * extent[1][0] / width);
             y1 = Math.round(100 * extent[0][1] / height);
             y2 = Math.round(100 * extent[1][1] / height);
-            percentages = {x1: x1, x2: x2, y1: y1, y2: y2};
+            selection = {
+                xAxis: encodeBraces(nameForQuestion(chart.xQuestion)),
+                x1: x1,
+                x2: x2,
+                yAxis: encodeBraces(nameForQuestion(chart.yQuestion)),
+                y1: y1,
+                y2: y2
+            };
         } else {
             x1 = Math.round(100 * extent[0] / width);
             x2 = Math.round(100 * extent[1] / width);
-            percentages = {x1: x1, x2: x2};
+            selection = {
+                xAxis: encodeBraces(nameForQuestion(chart.xQuestion)),
+                x1: x1,
+                x2: x2
+            };
         }
         
-        // console.log("percentages", percentages);
+        // console.log("selection", selection);
         
-        graphBrowserInstance.currentSelectionExtentPercentages = percentages;
+        graphBrowserInstance.currentSelectionExtentPercentages = selection;
         if (_.isArray(graphBrowserInstance.currentGraph)) {
-            graphBrowserInstance.currentSelectionSubgraph = chart.subgraphOption;
+            selection.subgraphQuestion = encodeBraces(nameForQuestion(chart.subgraphQuestion));
+            selection.subgraphChoice = encodeBraces(chart.subgraphChoice);
         }
     }
     

@@ -252,10 +252,6 @@ define([
     //    return SHA256(optionText, digests.outputTypes.Hex);
     //}
     
-    function encodeBraces(optionText) {
-        return optionText.replace("{", "&#123;").replace("}", "&#125;"); 
-    }
-    
     function decodeBraces(optionText) {
         return optionText.replace("&#123;", "{").replace("&#125;", "}"); 
     }
@@ -284,9 +280,6 @@ define([
         var observationTextarea = graphBrowserInstance.widgets.observation;
         var textModel = graphBrowserInstance.observationModel;
         var selection = graphBrowserInstance.currentSelectionExtentPercentages;
-        if (_.isArray(graphBrowserInstance.currentGraph)) {
-            selection.subgraph = encodeBraces(graphBrowserInstance.currentSelectionSubgraph);
-        }
         var textToInsert = JSON.stringify(selection);
         
         // Replace the currently selected text in the textarea (or insert at caret if nothing selected)
@@ -373,16 +366,16 @@ define([
         
         var graph = graphBrowserInstance.currentGraph;
         if (_.isArray(graph)) {
-            var optionText = selection.subgraph;
+            var optionText = selection.subgraphChoice;
             if (!optionText) {
                 // TODO: Translate
-                alert("No subgraph specified in selection");
+                alert("No subgraphChoice specified in stored selection");
                 return;
             }
             optionText = decodeBraces(optionText);
             var graphs = graphBrowserInstance.currentGraph;
             graphs.forEach(function (subgraph) {
-                if (subgraph.subgraphOption === optionText) {
+                if (subgraph.subgraphChoice === optionText) {
                     graph = subgraph;
                 }
             });
