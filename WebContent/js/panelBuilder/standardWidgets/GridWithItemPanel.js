@@ -37,7 +37,7 @@ define([
 ){
     "use strict";
     
-    var debugSelecting = true;
+    var debugSelecting = false;
     
     // This defines a gui component which has a grid, some buttons, and a detail panel do display the currently selected item or enter a new item
 
@@ -548,7 +548,7 @@ define([
     };
     
     GridWithItemPanel.prototype.navigateButtonClicked = function(direction, event) {
-        console.log("navigate button pressed", direction);
+        if (debugSelecting) console.log("navigate button pressed", direction);
         var selectedItemID = this.getSelectedItemID();
         var nextRow = null;
         
@@ -565,7 +565,7 @@ define([
         if (nextRow) {
             if (selectedItemID) this.grid.deselect(selectedItemID);
             this.grid.select(nextRow);
-            // console.log("nextRow", nextRow);
+            if (debugSelecting) console.log("nextRow", nextRow);
             // This next commented line moves the entire window, which is not what we want; maybe a bug in dgrid?
             // nextRow.element.scrollIntoView();
             // TODO: This behavior is not ideal, because it moves the grid even when the item is visible
@@ -591,7 +591,8 @@ define([
         var buttons = this.buttons;
         var selectedCount = this.getSelectedCount();
         var hasSelection = selectedCount !== 0;
-        
+        if (debugSelecting) console.log("hasSelection selectedCount", hasSelection, selectedCount);
+            
         var isAdding = (this.formType === "add");
         if (buttons.addButton) buttons.addButton.set("disabled", isAdding);
         
@@ -614,10 +615,10 @@ define([
             if (row) {
                 var idAbove = this.grid.up(row, 1, true).id;
                 var idBelow = this.grid.down(row, 1, true).id;
-                // console.log("current", selectedItemID, "selectedCount", selectedCount, "above", idAbove, "below", idBelow);
+                if (debugSelecting) console.log("current", selectedItemID, "selectedCount", selectedCount, "above", idAbove, "below", idBelow);
                 atStart = idAbove === selectedItemID;
                 atEnd = idBelow === selectedItemID;
-                // console.log("atStart", atStart, "atEnd", atEnd);
+                if (debugSelecting) console.log("atStart", atStart, "atEnd", atEnd);
             }
         }
         if (buttons.navigateStartButton) buttons.navigateStartButton.set("disabled", atStart);
