@@ -219,6 +219,7 @@ define([
             width: width,
             height: height,
             chart: chart,
+            chartType: chartType,
             chartBackground: chartBackground,
             chartBody: chartBody,
             chartBodyBackground: chartBodyBackground
@@ -393,6 +394,8 @@ define([
         var xScale = d3.scale.ordinal()
             .domain(xLabels)
             .rangeRoundBands([0, chart.width], 0.1);
+        
+        chart.xScale = xScale;
     
         var xAxis = addXAxis(chart, xScale, {labelLengthLimit: 9});
         
@@ -405,6 +408,8 @@ define([
         var yScale = d3.scale.linear()
             .domain([0, maxItemsPerBar])
             .range([chart.height, 0]);
+        
+        chart.yScale = yScale;
         
         // Extra version of scale for calculating heights without subtracting as in height - yScale(value)
         var yHeightScale = d3.scale.linear()
@@ -534,6 +539,8 @@ define([
             .domain([0, 100])
             .range([0, chart.width]);
     
+        chart.xScale = xScale;
+        
         var xAxis = addXAxis(chart, xScale, {isSmallFormat: isSmallFormat});
         
         if (choiceQuestion) {
@@ -560,6 +567,8 @@ define([
         var yScale = d3.scale.linear()
             .domain([0, maxValue])
             .range([chart.height, 0]);
+        
+        chart.yScale = yScale;
         
         // Extra version of scale for calculating heights without subtracting as in height - yScale(value)
         var yHeightScale = d3.scale.linear()
@@ -670,6 +679,7 @@ define([
             var option = options[index];
             // TODO: Maybe need to pass which chart to the storiesSelectedCallback
             var subchart = d3HistogramChart(graphBrowserInstance, scaleQuestion, choiceQuestion, option, storiesSelectedCallback);
+            subchart.subgraphOption = option;
             charts.push(subchart);
         }
         
@@ -716,6 +726,8 @@ define([
             .domain([0, 100])
             .range([0, chart.width]);
 
+        chart.xScale = xScale;
+        
         var xAxis = addXAxis(chart, xScale);
         
         addXAxisLabel(chart, nameForQuestion(xAxisQuestion));
@@ -726,6 +738,8 @@ define([
             .domain([0, 100])
             .range([chart.height, 0]);       
     
+        chart.yScale = yScale;
+        
         var yAxis = addYAxis(chart, yScale);
         
         addYAxisLabel(chart, nameForQuestion(yAxisQuestion));
@@ -875,6 +889,8 @@ define([
             .domain(columnLabelsArray)
             .rangeRoundBands([0, chart.width], 0.1);
 
+        chart.xScale = xScale;
+        
         var xAxis = addXAxis(chart, xScale, {labelLengthLimit: 11, drawLongAxisLines: true, rotateAxisLabels: true});
         
         addXAxisLabel(chart, nameForQuestion(xAxisQuestion));
@@ -884,6 +900,8 @@ define([
         var yScale = d3.scale.ordinal()
             .domain(rowLabelsArray)
             .rangeRoundBands([chart.height, 0], 0.1); 
+        
+        chart.yScale = yScale;
         
         var yAxis = addYAxis(chart, yScale, {labelLengthLimit: 15, drawLongAxisLines: true});
         
@@ -944,8 +962,67 @@ define([
     
     // ---- Support updating stories in browser
     
+    function setCurrentSelection(chart, graphBrowserInstance, extent) {
+        // console.log("setCurrentSelection", extent, chart.width, chart.height, chart.chartType);
+        
+        /* Chart types and scaling
+        Bar
+        X Ordinal
+        X in screen coordinates
+        
+        Histogram
+        X Linear
+        Y Linear
+        X was already scaled to 100
+        
+        Scatter
+        X Linear
+        Y Linear
+        X, Y were already scaled to 100
+        
+        Table
+        X Ordinal
+        Y Ordinal    
+        X, Y needed to be scaled
+        */
+         
+        var x1;
+        var x2;
+        var y1;
+        var y2;
+        var percentages;
+        var width = chart.width;
+        var height = chart.height;
+        if (chart.chartType === "histogram" || chart.chartType === "scatterPlot") {
+            // console.log("already scaled", chart.chartType);
+            width = 100;
+            height = 100;
+        }
+        if (_.isArray(extent[0])) {
+            x1 = Math.round(100 * extent[0][0] / width);
+            x2 = Math.round(100 * extent[1][0] / width);
+            y1 = Math.round(100 * extent[0][1] / height);
+            y2 = Math.round(100 * extent[1][1] / height);
+            percentages = {x1: x1, x2: x2, y1: y1, y2: y2};
+        } else {
+            x1 = Math.round(100 * extent[0] / width);
+            x2 = Math.round(100 * extent[1] / width);
+            percentages = {x1: x1, x2: x2};
+        }
+        
+        // console.log("percentages", percentages);
+        
+        graphBrowserInstance.currentSelectionExtentPercentages = percentages;
+        if (_.isArray(graphBrowserInstance.currentGraph)) {
+            graphBrowserInstance.currentSelectionSubgraph = chart.subgraphOption;
+        }
+    }
+    
     function updateSelectedStories(chart, storyDisplayItemsOrClusters, graphBrowserInstance, storiesSelectedCallback, selectionTestFunction) {
         var extent = chart.brush.brush.extent();
+        
+        setCurrentSelection(chart, graphBrowserInstance, extent);
+        
         var selectedStories = [];
         storyDisplayItemsOrClusters.classed("selected", function(plotItem) {
             var selected = selectionTestFunction(extent, plotItem);
@@ -970,6 +1047,25 @@ define([
         }
     }
     
+    function restoreSelection(chart, selection) {
+        var extent;
+        if (chart.chartType === "histogram") {
+            extent = [selection.x1, selection.x2];
+        } else if (chart.chartType === "scatterPlot") {
+            extent = [[selection.x1, selection.y1], [selection.x2, selection.y2]];
+        } else if (chart.chartType === "barChart") {
+            extent = [selection.x1 * chart.width / 100, selection.x2 * chart.width / 100];
+        } else if (chart.chartType === "contingencyChart") {
+            extent = [[selection.x1 * chart.width / 100, selection.y1 * chart.height / 100], [selection.x2 * chart.width / 100, selection.y2 * chart.height / 100]];
+        } else {
+            return false;
+        }
+        chart.brush.brush.extent(extent);
+        chart.brush.brush(chart.brush.brushGroup);
+        chart.brushend();
+        return true;
+    }
+    
     function newChartPane(graphBrowserInstance, style) {
         var chartPane = new ContentPane({style: style});
         graphBrowserInstance.chartPanes.push(chartPane);
@@ -983,7 +1079,10 @@ define([
         d3HistogramChart: d3HistogramChart,
         multipleHistograms: multipleHistograms,
         d3ScatterPlot: d3ScatterPlot,
-        contingencyTable: d3ContingencyTable
+        contingencyTable: d3ContingencyTable,
+        
+        // Selecting
+        restoreSelection: restoreSelection
     };
     
 });

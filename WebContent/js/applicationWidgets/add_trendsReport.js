@@ -3,9 +3,11 @@ define([
     "dijit/layout/BorderContainer",
     "./charting",
     "dijit/layout/ContentPane",
+    // "dojox/encoding/digests/_base",
     "js/domain",
     "js/panelBuilder/standardWidgets/GridWithItemPanel",
     "dojo/_base/lang",
+    // "dojox/encoding/digests/SHA256",
     "dojo/Stateful",
     "js/storyCardDisplay",
     "js/surveyCollection",
@@ -15,9 +17,11 @@ define([
     BorderContainer,
     charting,
     ContentPane,
+    // digests,
     domain,
     GridWithItemPanel,
     lang,
+    // SHA256,
     Stateful,
     storyCardDisplay,
     surveyCollection,
@@ -31,7 +35,7 @@ define([
     
     // Types of questions that have data associated with them for filters and graphs
     var nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons"];
-
+    
     // TODO: Duplicate code for this function copied from charting
     function nameForQuestion(question) {
         if (question.displayName) return question.displayName;
@@ -153,6 +157,8 @@ define([
                 break;
         }
         graphBrowserInstance.currentGraph = currentGraph;
+        graphBrowserInstance.currentSelectionExtentPercentages = null;
+        graphBrowserInstance.currentSelectionSubgraph = null;
     }
     
     function updateStoriesPane(graphBrowserInstance, stories) {
@@ -241,10 +247,28 @@ define([
         graphBrowserInstance.storyList.dataStoreChanged(graphBrowserInstance.selectedStoriesStore);
     }
     
+    // Do not store the option texts directly in selection as they might have braces
+    //function sha256ForOption(optionText) {
+    //    return SHA256(optionText, digests.outputTypes.Hex);
+    //}
+    
+    function encodeBraces(optionText) {
+        return optionText.replace("{", "&#123;").replace("}", "&#125;"); 
+    }
+    
+    function decodeBraces(optionText) {
+        return optionText.replace("&#123;", "{").replace("&#125;", "}"); 
+    }
+
     function insertGraphSelection(graphBrowserInstance) {
         if (!graphBrowserInstance.currentGraph) {
             // TODO: Translated
             alert("Please select a pattern first");
+            return;
+        }
+        
+        if (!graphBrowserInstance.currentSelectionExtentPercentages) {
+            alert("Please select something in a graph first");
             return;
         }
         
@@ -259,19 +283,11 @@ define([
         // Find observation textarea and other needed data
         var observationTextarea = graphBrowserInstance.widgets.observation;
         var textModel = graphBrowserInstance.observationModel;
-        var textToInsert = "";
+        var selection = graphBrowserInstance.currentSelectionExtentPercentages;
         if (_.isArray(graphBrowserInstance.currentGraph)) {
-            textToInsert += '{ "selection": [ ';
-            var first = true;
-            graphBrowserInstance.currentGraph.forEach(function (subchart) {
-                if (!first) textToInsert += ', ';
-                textToInsert += JSON.stringify(subchart.brush.brush.extent());
-                first = false;
-            });
-            textToInsert += '] }';
-        } else {
-            textToInsert = '{ "selection": ' + JSON.stringify(graphBrowserInstance.currentGraph.brush.brush.extent()) + '  }';
+            selection.subgraph = encodeBraces(graphBrowserInstance.currentSelectionSubgraph);
         }
+        var textToInsert = JSON.stringify(selection);
         
         // Replace the currently selected text in the textarea (or insert at caret if nothing selected)
         var textarea = observationTextarea.textbox;
@@ -340,21 +356,44 @@ define([
             return;
         }
         
-        var extent = null;
+        var selection = null;
         try {
-            extent = JSON.parse(selectedText).selection;
+            selection = JSON.parse(selectedText);
         } catch (e) {
             console.log("JSON parse error", e);
         }
-        if (!extent) {
+        
+        if (!selection) {
             // TODO: Translate
             alert('The selected text was not a complete valid stored selection.\nTry clicking inside the {...} items first.');
             return;
         }
-        console.log("new extent", extent);
+        
+        console.log("selection from user", selection);
+        
+        var graph = graphBrowserInstance.currentGraph;
+        if (_.isArray(graph)) {
+            var optionText = selection.subgraph;
+            if (!optionText) {
+                // TODO: Translate
+                alert("No subgraph specified in selection");
+                return;
+            }
+            optionText = decodeBraces(optionText);
+            var graphs = graphBrowserInstance.currentGraph;
+            graphs.forEach(function (subgraph) {
+                if (subgraph.subgraphOption === optionText) {
+                    graph = subgraph;
+                }
+            });
+        }
+        
+        charting.restoreSelection(graph, selection);
+
+        /*
         
         // TODO: Should check chart itself too
-        if (_.isArray(graphBrowserInstance.currentGraph)) {
+        if (_.isArray(graph)) {
             var graphs = graphBrowserInstance.currentGraph;
             var extents = extent;
             if (!_.isArray(extents)) {
@@ -378,10 +417,11 @@ define([
                 }
             }
         } else {
-            graphBrowserInstance.currentGraph.brush.brush.extent(extent);
+            graph.brush.brush.extent(extent);
             graphBrowserInstance.currentGraph.brush.brush(graphBrowserInstance.currentGraph.brush.brushGroup);
             graphBrowserInstance.currentGraph.brushend();
         }
+        */
     }
     
     function add_trendsReport(panelBuilder, contentPane, model, fieldSpecification) {
@@ -411,8 +451,8 @@ define([
             currentPattern: null,
             currentGraph: null,
             // TODO: These are not used yet
-            currentSelection: null,
-            currentSubgraph: null
+            currentSelectionExtentPercentages: null,
+            currentSelectionSubgraph: null
         };
         
         var patterns = buildPatternList(graphBrowserInstance);
