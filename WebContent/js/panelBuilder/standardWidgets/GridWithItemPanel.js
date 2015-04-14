@@ -141,11 +141,11 @@ define([
             // See: http://dojotoolkit.org/reference-guide/1.7/dojo/partial.html
             var viewButtonClickedPartial = lang.hitch(this, this.viewButtonClicked);
             var viewButtonID = id + "_view";
-            this.buttons.viewButton = widgetSupport.newButton(buttonContentPane, "#button_View|View", viewButtonClickedPartial);
+            this.buttons.viewButton = widgetSupport.newButton(buttonContentPane, "#button_View|View", lang.hitch(this, this.viewButtonClicked, null));
             // TODO: Should there be an option of double click as edit?
             // Support double click as view
-            this.grid.on("dblclick", viewButtonClickedPartial);
-            this.navigateCallback = viewButtonClickedPartial;
+            this.grid.on("dblclick", lang.hitch(this, this.viewButtonClicked, "forceOpen"));
+            this.navigateCallback = lang.hitch(this, this.viewButtonClicked, "forceOpen");
         }
 
         if (configuration.editButton) {
@@ -273,7 +273,12 @@ define([
     GridWithItemPanel.prototype.dataStoreChanged = function(newDataStore) {
         this.grid.clearSelection();
         this.grid.set("collection", newDataStore);
-        this.updateGridButtonsForSelectionAndForm();
+        if (this.formType === "add") {
+            // TODO: Not sure what to do about add or edit in progress... Just leaving them there for now...
+            this.hideAndDestroyForm();
+        } else {
+            this.updateGridButtonsForSelectionAndForm();
+        }
     };
     
     GridWithItemPanel.prototype.hideAndDestroyForm = function() {
@@ -335,6 +340,11 @@ define([
         this.formItem = statefulItem;
         
         this.form.set("style", "width: 800px; height 800px; overflow: auto;");
+        
+        // TODO: Should confirm close if editing or adding
+        // TODO: Should have a close icon with X instead of cancel
+        // var closeBox = widgetSupport.newButton(this.form, "#button_Close|Close", lang.hitch(this, this.hideAndDestroyForm));
+        // Doesn't work: closeBox.set("style", "text-align: right;");
 
         this.panelBuilder.buildPanel(this.itemPanelSpecification, this.form, statefulItem);
         
@@ -444,7 +454,7 @@ define([
         return selectedItem;
     };
     
-    GridWithItemPanel.prototype.viewButtonClicked = function(event) {
+    GridWithItemPanel.prototype.viewButtonClicked = function(forceOpen, event) {
         console.log("view button pressed or double click", event);
         
         var selectedItem = this.getSelectedItem();
@@ -455,7 +465,12 @@ define([
             return;
         }
         
-        this.openFormForItem("view", selectedItem);
+        if (!forceOpen && this.formType === "view") {
+            // Toggle the view
+            this.hideAndDestroyForm();
+        } else {
+            this.openFormForItem("view", selectedItem);
+        }
     };
     
     GridWithItemPanel.prototype.removeButtonClicked = function(event) {
