@@ -250,6 +250,12 @@ define([
         
         console.log("graphBrowserInstance.currentGraph", graphBrowserInstance.currentGraph);
         
+        if (scanForSelectionJSON(graphBrowserInstance)) {
+            // TODO: Translate
+            alert("The insertion would change a previously saved selection within a {...} section;\nplease pick a different insertion point.");
+            return;
+        }
+        
         // Find observation textarea and other needed data
         var observationTextarea = graphBrowserInstance.widgets.observation;
         var textModel = graphBrowserInstance.observationModel;
@@ -279,7 +285,17 @@ define([
         textarea.focus();
     }
     
-    function scanForSelectionJSON(text, selectionStart, selectionEnd) {
+    function scanForSelectionJSON(graphBrowserInstance, doFocus) {
+        var observationTextarea = graphBrowserInstance.widgets.observation;
+        var textModel = graphBrowserInstance.observationModel;
+        var textarea = observationTextarea.textbox;
+        var text = textModel.get("observation");
+
+        if (doFocus) textarea.focus();
+
+        var selectionStart = textarea.selectionStart;
+        var selectionEnd = textarea.selectionEnd;
+        
         // Find the text for a selection surrounding the current insertion point
         // This assumes there are not nested objects with nested braces
         var start;
@@ -316,18 +332,8 @@ define([
         // TODO: Need better approach to finding brush extent text and safely parsing it
 
         // Find observation textarea and other needed data
-        var observationTextarea = graphBrowserInstance.widgets.observation;
-        var textModel = graphBrowserInstance.observationModel;
-        var textarea = observationTextarea.textbox;
-        var oldText = textModel.get("observation");
-
-        textarea.focus();
-
-        var selectionStart = textarea.selectionStart;
-        var selectionEnd = textarea.selectionEnd;
-
         // var selectedText = oldText.substring(selectionStart, selectionEnd);
-        var selectedText = scanForSelectionJSON(oldText, selectionStart, selectionEnd);
+        var selectedText = scanForSelectionJSON(graphBrowserInstance, true);
         if (!selectedText) {
             // TODO: Translate
             alert("The text insertion point was not inside a graph selection description.\nTry clicking inside the {...} items first.");
@@ -458,8 +464,8 @@ define([
         var observationPanelSpecification = {
             "id": "observationPanel",
             panelFields: [        
-                {id: "insertGraphSelection", displayPrompt: "Insert graph selection", displayType: "button", displayConfiguration: lang.partial(insertGraphSelection, graphBrowserInstance)},
-                {id: "resetGraphSelection", displayPrompt: "Reset graph selection using saved selection chosen in observation", displayType: "button", displayConfiguration: lang.partial(resetGraphSelection, graphBrowserInstance)},
+                {id: "insertGraphSelection", displayPrompt: "Save current graph selection into observation", displayType: "button", displayPreventBreak: true, displayConfiguration: lang.partial(insertGraphSelection, graphBrowserInstance)},
+                {id: "resetGraphSelection", displayPrompt: "Restore graph selection using saved selection chosen in observation", displayType: "button", displayConfiguration: lang.partial(resetGraphSelection, graphBrowserInstance)},
                 {id: "observation", displayName: "Observation", displayPrompt: "Add observation", displayType: "textarea"}
             ]
         };
