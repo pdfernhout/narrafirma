@@ -26,7 +26,8 @@ define([
     "use strict";
     
     // TODO: Duplicate style code of add_graphBrowser
-    var chartEnclosureStyle = "width: 850px; height: 650px; margin: 5px auto 0px auto;";
+    // var chartEnclosureStyle = "width: 850px; height: 650px; margin: 5px auto 0px auto;";
+    var chartEnclosureStyle = "min-height: 200px;";
     
     // Types of questions that have data associated with them for filters and graphs
     var nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons"];
@@ -115,7 +116,13 @@ define([
             chartPane.destroyRecursive(false);
         }
         
-        if (pattern === null) return;
+        if (pattern === null) {
+            // TODO: Translate
+            var suggestionPane = new ContentPane({content: "<b>Please select a pattern to see a graph...<b>"});
+            graphBrowserInstance.chartPanes.push(suggestionPane);
+            graphBrowserInstance.graphResultsPane.addChild(suggestionPane);
+            return;
+        }
         
         var name = pattern.patternName;
         var type = pattern.graphType;
@@ -260,6 +267,7 @@ define([
             observationModel: new Stateful({observation: ""}),
             currentPattern: null,
             currentGraph: null,
+            // TODO: These are not used yet
             currentSelection: null,
             currentSubgraph: null
         };
@@ -291,10 +299,11 @@ define([
         var gridContainerPane = new ContentPane({region: "center", splitter: true});
         splitterPane.addChild(gridContainerPane);
         splitterPane.addChild(graphResultsPane);
-        splitterPane.startup();
-        splitterPane.resize();
+        //splitterPane.startup();
+        //splitterPane.resize();
         
         var patternsGrid = new GridWithItemPanel(panelBuilder, gridContainerPane, "patternsList", patternsListStore, patternsPanelSpecification, patternsGridConfiguration);
+        patternsGrid.grid.set("selectionMode", "single");
         graphBrowserInstance.patternsGrid = patternsGrid;
         
         var storyItemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
@@ -471,6 +480,9 @@ define([
         
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
         graphResultsPane.own(currentQuestionnaireSubscription);
+        
+        // Put up a "please pick pattern" message
+        chooseGraph(graphBrowserInstance, null);
         
         // TODO: Not sure what to return or if it matters
         return questionContentPane;
