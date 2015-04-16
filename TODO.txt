@@ -33,6 +33,8 @@ Fix how templates list popup has too much scrolling and is not sized well; perha
 Improve template list generation tool to support storyCollectionActivities and sensemakingActivities
 
 SURVEY GENERAL
+Support multiple surveys per project
+Add page about finalizing a survey
 Switch to using Dojo Mobile for the surveys
 Better mobile support for taking survey on cell phones
 Figure out what URLs will look like for administration/authoring vs. survey taking (multiple?) vs. (maybe) project
@@ -115,6 +117,8 @@ Support graphBrowser displaying related stories for visible data point or bar or
 
 TRENDS
 Support trendsReport -- shows text and graphs in report based on top differences in statistical tests,  has "add to observation" button
+Create pattern list on trends report for browsing graphs and making observations
+Save and load pattern list with observations on trends report
 
 CLUSTERING
 Support clusterSpace -- used in catalysis to cluster interpretations it is a graphical OR grid way of putting like with like, the option tells you what is to be clustered
@@ -122,13 +126,15 @@ Support multiple item selection in clustering diagram
 Issue where background is transparent when go to view or change the source in clustering diagram
 
 OBSERVATION LIST
-Support observationsList -- used to list all the previously made observations
+Support observationsList -- used to list all the previously made observations (now part of trends report)
 
 VENUES
 Venues table needs fixing -- one for each participant group
 Should "venues" name be changed, as could be confusing as to meaning "location"? But "venue" can also mean "forum" or "soapbox" so maybe OK?
 
 CATALYSIS
+Support multiple catalysis reports by choosing questionnaire and data set (survey results)
+Need page where user can add new researcher-defined questions and answers to stories (and maybe participants?)
 Catalysis -- story browser needs two buttons that pull up pages to put things in lists: addToObservation:"page_addToObservation";addToExcerpt:"page_addToExcerpt"
 Need to be able to select text in existing story to AddToExcerpts
 Need to figure out some way to represent RESULTS in observations (story browser queries/results, graphs, statistical tests)
@@ -138,6 +144,9 @@ Support annotationsGrid -- for results, excerpts, or interpretations linked to a
 Support storiesList -- for choosing a resonant story
 Implement exportPresentationOutline in domain buttonClicked
 Convert contingency table from HTML table to D3 chart with brush selection of stories
+
+SENSEMAKING
+Add page about printing story cards
 
 GRID
 When viewing grid data, it should not look editable
@@ -194,6 +203,11 @@ Save data for observations and so on as seperate documents so can do it incremen
 Maybe separate documents for each participant group?
 Maybe separate documents for each survey question?
 Only load panel information as needed for section (or request for specific panel)
+
+STORAGE
+Modify Pointrel system to have better support for tracking all new additions to a collection
+Modify Pointrel system to have better support for selecting a subset of stored resources relevant to a project section or page 
+Modify Pointrel system to have better support for client-side searching if have a copy of all relevant resources from a remote collection
 
 BUILD
 Learn how to use Dojo build process to minimize application
@@ -625,3 +639,10 @@ DONE Think more about catalysis part [same as above]
 DONE Switch to D3 for charting instead of dojo for scatter plot, bar chart, and histogram
 DONE Get brush selection to work using D3 for scatter plot, bar chart, and histogram
 DONE Move chart construction from add_graphBrowser into separate charting module
+DONE Initial version of pattern list in trends report
+DONE Have pattern list select graphs in trend report
+DONE Support having user enter observations for a graph in trends report
+DONE Support selecting (brushing) of stories in all graphs
+DONE Put selected stories from graphs into a stories list in trends report
+DONE Save and restore selection (brush) in D3 graphs as JSON text added to observation in trends report
+DONE Design thinking and discussions about priorities and supporting multiple questionnaires, survey results (datasets), and catalysis reports 
