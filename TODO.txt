@@ -44,7 +44,6 @@ H Finish "Create project story elements" page in planning phase
 L Move "diagram source" button to last in row above cluster space
 L Change button names from "new item" to "new" - etc
 L Change button name from "update" to "edit"
-DONE Support clusterSpace -- used in catalysis to cluster interpretations it is a graphical OR grid way of putting like with like, the option tells you what is to be clustered
 X Support multiple item selection in clustering diagram
 X Issue where background is transparent when go to view or change the source in clustering diagram
 
@@ -111,8 +110,6 @@ X Backup
 
 LOAD/SAVE
 X Have revert button to go back to previous version for each page or clear out changes in progress on a page
-DONE? Put in place dojox.widget.Standby when saving
-DONE? Improve save/load feedback [same as above at this point]
 H Think through how project is loaded and saved, especially what happens if multiple windows or users edit the same project
     Think about save/load architecture and Pointrel design in relation to handling lots of observations for pattern permutations
 X Autosave, perhaps based on time or based on changing pages
@@ -145,15 +142,12 @@ X Support graphBrowser "add to observation" button
 H Support graphBrowser contingency table with statistical results
 H Support graphBrowser standard deviation and mean for histograms
 L Support graphBrowser common maximum for multiple histograms
-DONE Support graphBrowser displaying related stories for visible data point or bar or line [partial, selection done for all but contingency, no display yet]
 
 TRENDS REPORT -> PATTERN BROWSER
 H Rename trendsReport to Pattern Browser
 H Move options (how large should subsets, what significance threshold) to popup under patterns list
 H Support trendsReport -- shows text and graphs in report based on top differences in statistical tests
 L Rename "save current graph selection to observation" buttons under graphs
-DONE Create pattern list on trends report for browsing graphs and making observations
-DONE Convert contingency table from HTML table to D3 chart with brush selection of stories
 H Save and load pattern list with observations on trends report
 H Support adding interpretations to observations in trendsReport (pattern browser)
 
@@ -168,9 +162,6 @@ H Create catalysis report - including results (graphs, statistical results)
                Pattern (graph)
 H Print catalysis report
 
-OBSERVATION LIST
-DONE Support observationsList -- used to list all the previously made observations (now part of trends report)
-
 CATALYSIS
 H Need page at start to create new or choose existing catalysis report to work on
 H Remove story browser from catalysis section (but leave in story collection section)
@@ -178,12 +169,7 @@ H Remove graph browser from catalysis section (and put in story collection secti
 H Remove "review excerpts" page
 H Move "review and intepret observations" functionality to patterns browser
 H Support multiple catalysis reports by choosing questionnaire and data set (survey results)
-DONE-ENOUGH Catalysis -- story browser needs two buttons that pull up pages to put things in lists: addToObservation:"page_addToObservation";addToExcerpt:"page_addToExcerpt"
 X Need to be able to select text in existing story to AddToExcerpts
-OBSOLETE Need to figure out some way to represent RESULTS in observations (story browser queries/results, graphs, statistical tests)
-OBSOLETE Observations list should not have "add" button, because observations can only be added using "add to observation" button on story browser, graph browser, trends report (but it should have an edit button)
-OBSOLETE Support accumulatedItemsGrid -- for results selected to include in an observation
-OBSOLETE Support annotationsGrid -- for results, excerpts, or interpretations linked to a perspective
 X Support storiesList -- for choosing a resonant story
 
 SENSEMAKING
@@ -217,7 +203,6 @@ H Maybe convert reports page to a summary page for each section (where they put 
 X Improve reports so look nice
 X Generate HTML reports that can be downloaded
 X Maybe replace reports with one page to export report (or export data)
-DONE Make whole planning phase work (including report) [no reports]
 
 DASHBOARD
 H Provide status of whether survey is active on main dashboard
@@ -237,12 +222,6 @@ DESIGN FILE
 X Resolve these issues from conversion or add them to list of types not needing a short name:
 X No short name for type: storyThemer field: themeStories text: Theme stories
 X No short name for type: trendsReport field: reviewTrends_display text: Trends report
-OBSOLETE No short name for type: observationsList field: observationsListChoose text: Choose an observation from this list to which to add the selected result, or create a new observation.
-OBSOLETE No short name for type: excerptsList field: selectExcerpt_excerptsListDisplay text: Collected excerpts
-OBSOLETE No short name for type: excerptsList field: addToExcerpt_excerptsListChoose text: Choose an excerpt from this list to which to add the selected text, or create a new excerpt.
-OBSOLETE No short name for type: annotationsGrid field: perspective_linkedResultsList text: Results linked to this perspective
-OBSOLETE No short name for type: annotationsGrid field: perspective_linkedExcerptsList text: Excerpts linked to this perspective
-OBSOLETE No short name for type: annotationsGrid field: perspective_linkedInterpretationsList text: Interpretations linked to this perspective
 
 REFACTORING
 X Rename "questions" with "fieldSpecifications" where appropriate and make similar changes away from using "question" to mean "fieldSpecification" [partly done]
@@ -271,9 +250,8 @@ X Validation of text fields for length
 X Validation for checkBoxes limited by maximum number of choices as validation error
 
 PRINTING
-DONE Decide between HTML, PDF, RTF, Open Office or other for initial printing generation [HTML]
-X Print section reports
-H Print story cards
+X Print section reports as HTML
+H Print story cards as HTML
 H Page to print story cards
 
 UNSURE
@@ -285,7 +263,6 @@ X Support storyBrowserCount
 
 H Write up sample NarraFirma product offering descriptions for review (including for website)
 H Finish templates
-DONE Create recommendations file
 H Create help
 H On Story question page, move "what type of question is this" extra text to help
 X Forgot to put "memorable" in eliciting question types ("What type of question is this?")
@@ -700,4 +677,26 @@ DONE Support having user enter observations for a graph in trends report
 DONE Support selecting (brushing) of stories in all graphs
 DONE Put selected stories from graphs into a stories list in trends report
 DONE Save and restore selection (brush) in D3 graphs as JSON text added to observation in trends report
-DONE Design thinking and discussions about priorities and supporting multiple questionnaires, survey results (datasets), and catalysis reports 
+DONE Design thinking and discussions about priorities and supporting multiple questionnaires, survey results (datasets), and catalysis reports
+DONE Triage TODO list
+DONE Support clusterSpace -- used in catalysis to cluster interpretations it is a graphical OR grid way of putting like with like, the option tells you what is to be clustered
+DONE Put in place dojox.widget.Standby when saving
+DONE Improve save/load feedback [same as above at this point]
+DONE Support graphBrowser displaying related stories for visible data point or bar or line [partial, selection done for all but contingency, no display yet]
+DONE Create pattern list on trends report for browsing graphs and making observations
+DONE Convert contingency table from HTML table to D3 chart with brush selection of stories
+DONE Support observationsList -- used to list all the previously made observations (now part of trends report)
+DONE-ENOUGH Catalysis -- story browser needs two buttons that pull up pages to put things in lists: addToObservation:"page_addToObservation";addToExcerpt:"page_addToExcerpt"
+OBSOLETE Need to figure out some way to represent RESULTS in observations (story browser queries/results, graphs, statistical tests)
+OBSOLETE Observations list should not have "add" button, because observations can only be added using "add to observation" button on story browser, graph browser, trends report (but it should have an edit button)
+OBSOLETE Support accumulatedItemsGrid -- for results selected to include in an observation
+OBSOLETE Support annotationsGrid -- for results, excerpts, or interpretations linked to a perspective
+DONE Make whole planning phase work (including report) [no reports][Except, summary page is seperate issue, and clustering is a seperate issue, so still to be done]
+OBSOLETE No short name for type: observationsList field: observationsListChoose text: Choose an observation from this list to which to add the selected result, or create a new observation.
+OBSOLETE No short name for type: excerptsList field: selectExcerpt_excerptsListDisplay text: Collected excerpts
+OBSOLETE No short name for type: excerptsList field: addToExcerpt_excerptsListChoose text: Choose an excerpt from this list to which to add the selected text, or create a new excerpt.
+OBSOLETE No short name for type: annotationsGrid field: perspective_linkedResultsList text: Results linked to this perspective
+OBSOLETE No short name for type: annotationsGrid field: perspective_linkedExcerptsList text: Excerpts linked to this perspective
+OBSOLETE No short name for type: annotationsGrid field: perspective_linkedInterpretationsList text: Interpretations linked to this perspective
+DONE Decide between HTML, PDF, RTF, Open Office or other for initial printing generation [HTML]
+DONE Create recommendations file (CFK)
