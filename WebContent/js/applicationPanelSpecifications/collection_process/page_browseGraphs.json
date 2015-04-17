@@ -1,15 +1,15 @@
 {
     "id": "page_browseGraphs",
-    "displayName": "Browse graphs",
+    "displayName": "Spot check graphs",
     "displayType": "page",
-    "section": "catalysis",
+    "section": "collection_process",
     "modelClass": "BrowseGraphsActivity",
     "panelFields": [
         {
             "id": "graphBrowserLabel",
             "dataType": "none",
             "displayType": "label",
-            "displayPrompt": "On this page you can look at patterns in the answers people gave about their stories,\nand save patterns to observations for later use."
+            "displayPrompt": "On this page you can take a preliminary look at patterns in the answers people gave about their incoming stories. This is intended mainly to spot check for issues related to the questionnaire design. These graphs will be reviewed more systematically in the catalysis section."
         },
         {
             "id": "graphBrowserDisplay",

@@ -185,6 +185,9 @@
                 "panelID": "page_reviewIncomingStories",
                 "panelName": "Review incoming stories"
             },
+            {   "panelID": "page_browseGraphs",
+                "panelName": "Spot check graphs for incoming stories"
+            },
             {
                 "panelID": "page_stopStoryCollection",
                 "panelName": "Stop story collection"
@@ -218,16 +221,8 @@
                 "panelName": "Catalysis"
             },
             {
-                "panelID": "page_browseStories",
-                "panelName": "Browse stories"
-            },
-            {
                 "panelID": "page_themeStories",
                 "panelName": "Theme stories"
-            },
-            {
-                "panelID": "page_browseGraphs",
-                "panelName": "Browse graphs"
             },
             {
                 "panelID": "page_reviewTrends",
