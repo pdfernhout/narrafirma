@@ -52,9 +52,6 @@ H Support recommendationTable
     Recommendations table needs fixing -- one for each participant group
     For intervention, the recommendations have to come from a separate file (recommendations_intervention_filledin.csv)
 
-VENUES
-X Should "venues" name be changed, as could be confusing as to meaning "location"? But "venue" can also mean "forum" or "soapbox" so maybe OK?
-
 TEMPLATES
 W Fix how templates list popup has too much scrolling and is not sized well; perhaps start with grid item view pane open?
 H Improve template list generation tool to support storyCollectionActivities and sensemakingActivities
@@ -700,3 +697,4 @@ OBSOLETE No short name for type: annotationsGrid field: perspective_linkedExcerp
 OBSOLETE No short name for type: annotationsGrid field: perspective_linkedInterpretationsList text: Interpretations linked to this perspective
 DONE Decide between HTML, PDF, RTF, Open Office or other for initial printing generation [HTML]
 DONE Create recommendations file (CFK)
+DONE Should "venues" name be changed, as could be confusing as to meaning "location"? But "venue" can also mean "forum" or "soapbox" so maybe OK? [Not changing]
