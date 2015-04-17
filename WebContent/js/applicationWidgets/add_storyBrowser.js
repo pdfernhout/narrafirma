@@ -181,7 +181,7 @@ define([
         // TODO: Translate
         contentPane.containerNode.appendChild(domConstruct.toDom('Filter by: '));
         
-        var questionSelect = surveyCollection.newSelect(contentPane, widgetSupport.optionsForAllQuestions(questions));
+        var questionSelect = widgetSupport.newSelect(contentPane, surveyCollection.optionsForAllQuestions(questions));
         // questionSelect.set("style", "width: 98%; max-width: 98%");
         // questionSelect.set("style", "min-width: 50%");
         
