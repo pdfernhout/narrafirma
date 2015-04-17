@@ -94,9 +94,7 @@ X Make sure that short name IDs entered by user when defining questions are uniq
 ? Ensure short name IDs entered by user do not conflict with automatically created ones or story text and story name
 
 BROWSING
-X Fix how story browser browses stories for separation of participant info from stories
-X Should there be a separate participant info browser or is that handled by story browser? If "story browser" does that, may need to rename story browser?
-X Fix how graph browser shows graphs for separation of participant info from stories
+H Fix bug with optionsForAllQuestions introduced into story browser
 
 EXPORT/IMPORT
 H Add page to do import/export
@@ -138,6 +136,7 @@ X Support graphBrowser "add to observation" button
 H Support graphBrowser contingency table with statistical results
 H Support graphBrowser standard deviation and mean for histograms
 L Support graphBrowser common maximum for multiple histograms
+L Have list of selected stories in graph browser in collection process section
 
 TRENDS REPORT -> PATTERN BROWSER
 H Rename trendsReport to Pattern Browser
@@ -211,11 +210,6 @@ X Look at all alerts in code and make into nicer GUI feedback
 TRANSLATION
 X Translate report answers as needed for those types like selections
 X Final review of all strings in code looking for TODO translate items or similar
-
-DESIGN FILE
-X Resolve these issues from conversion or add them to list of types not needing a short name:
-X No short name for type: storyThemer field: themeStories text: Theme stories
-X No short name for type: trendsReport field: reviewTrends_display text: Trends report
 
 REFACTORING
 X Rename "questions" with "fieldSpecifications" where appropriate and make similar changes away from using "question" to mean "fieldSpecification" [partly done]
@@ -698,3 +692,8 @@ DONE Should "venues" name be changed, as could be confusing as to meaning "locat
 DONE Remove story browser from catalysis section (but leave in story collection section)
 DONE Move graphBrowser to collection process phase
 DONE Remove graph browser from catalysis section (and put in collection process section) [same as above]
+NOT DOING Fix how story browser browses stories for separation of participant info from stories
+NOT DOING Should there be a separate participant info browser or is that handled by story browser? If "story browser" does that, may need to rename story browser?
+NOT DOING Fix how graph browser shows graphs for separation of participant info from stories
+DONE Design File: No short name for type: storyThemer field: themeStories text: Theme stories [fixed when added story themer widget]
+DONE Design File: No short name for type: trendsReport field: reviewTrends_display text: Trends report [fixed when added trends report widget]
