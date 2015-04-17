@@ -53,8 +53,8 @@ H Support recommendationTable
     For intervention, the recommendations have to come from a separate file (recommendations_intervention_filledin.csv)
 
 TEMPLATES
-W Fix how templates list popup has too much scrolling and is not sized well; perhaps start with grid item view pane open?
 H Improve template list generation tool to support storyCollectionActivities and sensemakingActivities
+W Fix how templates list popup has too much scrolling and is not sized well; perhaps start with grid item view pane open?
 
 SURVEY GENERAL
 H Support multiple surveys per project
@@ -62,17 +62,17 @@ H Support multiple surveys per project
     Figure out what URLs will look like for administration/authoring vs. survey taking (multiple?) vs. (maybe) project
 H Add page about finalizing a survey
     Figure out GUI for "finalizing" a survey as opposed to storing current version when enable survey
-W Switch to using Dojo Mobile for the surveys
-W Better mobile support for taking survey on cell phones
 H Have survey page use special server method so does not use Pointrel system directly or need authentication
-X Record IP address of survey or use another means to see if someone taking it multiple times
+H Problem when opened up road block survey with Firefox and developer console and it was too tall and when closed console the top close button became inacessible as offscreen
 ? Ensure the survey taking app does not need to load entire domain from project editor app or load grid or story browser or other modules it does not really need.
 L Ideally, all responses for selections (other than numerical sliders) should have unique IDs for each response and the stored response should have the ID as well as the chosen text at the time.
     Add support for short names (ids) for all options for survey questions
+X Record IP address of survey or use another means to see if someone taking it multiple times
 X Only store reference to questionnaire file resource, not the resource itself
 X Support translations or other categories for multiple question texts or choice texts for a survey
 X Some easy way for two or more survey sliders to be close together under the same label
-H Problem when opened up road block survey with Firefox and developer console and it was too tall and when closed console the top close button became inacessible as offscreen
+W Switch to using Dojo Mobile for the surveys
+W Better mobile support for taking survey on cell phones
 
 SURVEY QUESTIONS
 L Remove "What type of question is this?" question from story-eliciting questions page
@@ -88,10 +88,10 @@ X Survey - back button in browser -- deal with so don't lose data
 X Remove redundant code when calculating survey questions for story and name in survey and story browser
 
 IDs
+? Ensure short name IDs entered by user do not conflict with automatically created ones or story text and story name
 L Add support for short names (ids) for eliciting questions
 X Improve how options are specified for questions in question designer rather than use text box
 X Make sure that short name IDs entered by user when defining questions are unique among themselves and don't have a leading underscore (or at least aren't "_id")
-? Ensure short name IDs entered by user do not conflict with automatically created ones or story text and story name
 
 EXPORT/IMPORT
 H Add page to do import/export
@@ -101,14 +101,14 @@ X Add way to clear out or reset old survey results? Or maybe partition them by s
 X Backup
 
 LOAD/SAVE
-X Have revert button to go back to previous version for each page or clear out changes in progress on a page
 H Think through how project is loaded and saved, especially what happens if multiple windows or users edit the same project
     Think about save/load architecture and Pointrel design in relation to handling lots of observations for pattern permutations
-X Autosave, perhaps based on time or based on changing pages
 H Improve feedback when there are no project versions or survey results; maybe distinguish between an error and nothing being saved yet
 H Resolve issue with hardcoded project ID
 H Resolve issue with hardcoded survey ID
 H Resolve issue with hardcoded questionnaire ID
+X Have revert button to go back to previous version for each page or clear out changes in progress on a page
+X Autosave, perhaps based on time or based on changing pages
 
 LOGGING
 X Think through logging in the server, perhaps using a library
@@ -129,7 +129,6 @@ X Generalize storyThemer into tagging - or researcher added questions
 X Page to cluster themes into final themes
 
 GRAPH BROWSER 
-X Support graphBrowser "add to observation" button
 H Support graphBrowser contingency table with statistical results
 H Support graphBrowser standard deviation and mean for histograms
 L Support graphBrowser common maximum for multiple histograms
@@ -139,9 +138,9 @@ TRENDS REPORT -> PATTERN BROWSER
 H Rename trendsReport to Pattern Browser
 H Move options (how large should subsets, what significance threshold) to popup under patterns list
 H Support trendsReport -- shows text and graphs in report based on top differences in statistical tests
-L Rename "save current graph selection to observation" buttons under graphs
 H Save and load pattern list with observations on trends report
 H Support adding interpretations to observations in trendsReport (pattern browser)
+L Rename "save current graph selection to observation" buttons under graphs
 
 CLUSTERING (CATALYSIS)
 H Support clustering interpretations into perspectives in catalysis (on page after pattern browser) WITH A TABLE
@@ -165,12 +164,16 @@ X Support storiesList -- for choosing a resonant story
 SENSEMAKING
 H Add page about printing story cards
 H Implement "print session agenda" (to HTML)
-H Change "storiesList" functionality to - they have to poste in the name/text of the story. with a textarea
+H Change "storiesList" functionality to - they have to paste in the name/text of the story. with a textarea
 
 RETURN
 H Implement exportPresentationOutline in domain buttonClicked
 
 GRID
+H Bug if move data item up or down; when you click on an item, it shows you what used to be in that position not what is currently there
+L Add close button to top of item panel
+L Better information about what is going on in item panel - whether view, edit, duplicate
+L When duplicate list item, add "copy" to name (different for each)
 L When viewing grid data, it should not look editable
     Read-only version of checkboxes and radiobutton widgets, used by grid (assuming that is how the read only data is presented)
 X Popup for add item from grid -- should have better label in title as to what type of thing is added
@@ -179,10 +182,6 @@ X Uncomment and test tooltip code in grid table
 X Get tooltips working in dialogs (maybe Dojo bug?)
 X Sorting issue: Initial sort order in grid may be order of items in underlying array, but you can't get back to that order once you sort by a column
 X Bug if viewing data when remove it; the viewing panel remains open with old data
-H Bug if move data item up or down; when you click on an item, it shows you what used to be in that position not what is currently there
-L Add close button to top of item panel
-L Better information about what is going on in item panel - whether view, edit, duplicate
-L When duplicate list item, add "copy" to name (different for each)
 
 CONFIGURATION
 ? Add project configuration page?
@@ -196,9 +195,9 @@ X Maybe replace reports with one page to export report (or export data)
 
 DASHBOARD
 H Provide status of whether survey is active on main dashboard
+H Reminder entered (on first planning page) did not show up on planning dashbaord page
 X Decide what goes on main home dashboard now that changed from page status to textual reminders
 X Odd behavior under Firefox where did not see a scrollbar until resized text area when had lots of section notes
-H Reminder entered (on first planning page) did not show up on planning dashbaord page
 
 ALERTS
 X Help window displaying HTML instead of alert
@@ -209,13 +208,13 @@ X Translate report answers as needed for those types like selections
 X Final review of all strings in code looking for TODO translate items or similar
 
 REFACTORING
+? Save data for observations and so on as separate documents so can do it incrementally
+? Maybe separate documents for each participant group?
+? Maybe separate documents for each survey question?
 X Rename "questions" with "fieldSpecifications" where appropriate and make similar changes away from using "question" to mean "fieldSpecification" [partly done]
 X See if still need so many button functions in domain (or maybe any at all)
 X Some way only load page and panel files as needed (with help URL being determined by PanelBuilder as it creates panel, and maybe specify panels in section by hand)
 X Load panel widgets only as needed by always creating contentPane for a widget and loading the contents later as available returning a promise, with ready callback in builder when all promises kept
-? Save data for observations and so on as separate documents so can do it incrementally
-? Maybe separate documents for each participant group?
-? Maybe separate documents for each survey question?
 X Only load panel information as needed for section (or request for specific panel)
 
 STORAGE
@@ -235,9 +234,9 @@ X Validation of text fields for length
 X Validation for checkBoxes limited by maximum number of choices as validation error
 
 PRINTING
-X Print section reports as HTML
 H Print story cards as HTML
 H Page to print story cards
+X Print section reports as HTML
 
 UNSURE
 X Way to retrieve data about project participant groups [Is this still relevant? Probably yes, if we did "checkboxes with pull" for picking what groups an activity applies to instead of text entry]
@@ -250,11 +249,11 @@ H Write up sample NarraFirma product offering descriptions for review (including
 H Finish templates
 H Create help
 H On Story question page, move "what type of question is this" extra text to help
-X Forgot to put "memorable" in eliciting question types ("What type of question is this?")
 H Clean up introduction page
 H Fix wording on dashboard pages (and all wording related to reminders)
 L Fix CSS styling so reminder section of page is different
 L Improve general CSS styling on all pages (forms)
+X Forgot to put "memorable" in eliciting question types ("What type of question is this?")
 
 ==== Wish list:
 
@@ -695,3 +694,4 @@ NOT DOING Fix how graph browser shows graphs for separation of participant info 
 DONE Design File: No short name for type: storyThemer field: themeStories text: Theme stories [fixed when added story themer widget]
 DONE Design File: No short name for type: trendsReport field: reviewTrends_display text: Trends report [fixed when added trends report widget]
 DONE H Fix bug with optionsForAllQuestions introduced into story browser
+OBSOLETE Support graphBrowser "add to observation" button
