@@ -5,244 +5,299 @@ PRIORITY
 - WordPress plugin data save and load
 - catalysis (at least one step like graph or themer)
 
+BIG OPTIONAL FUNCTIONALITY AREAS
+- multiple projects, surveys, catalysis reports
+- visual clustering in planning phase
+- theming and tagging
+
 CRASH
-Story browser (Catalysis section second page, but also review stories during collection) seems to sometimes cause and endless loop in Firexfox or Chrome causing memory use growth and beach ball. Maybe some resize bug in dojo or dgrid?
+? Story browser (Catalysis section second page, but also review stories during collection) seems to sometimes cause and endless loop in Firexfox or Chrome causing memory use growth and beach ball. Maybe some resize bug in dojo or dgrid?
 
 NAME
-Add trademark disclaimer/limitation for NarraFirma, perhaps similar to:
-NarraFirma is a trademark of Cynthia F. Kurtz and is used by permission for the main distribution of this software.
-Reference: https://www.mozilla.org/en-US/foundation/trademarks/policy/
-And: http://wordpressfoundation.org/trademark-policy/
+H Add trademark disclaimer/limitation for NarraFirma, perhaps similar to:
+    NarraFirma is a trademark of Cynthia F. Kurtz and is used by permission for the main distribution of this software.
+	Reference: https://www.mozilla.org/en-US/foundation/trademarks/policy/
+	And: http://wordpressfoundation.org/trademark-policy/
 
 SITE
-Determine how (or if) to support multi-user sites
-Determine how (or if) to support multiple projects per user
-Settle on some authentication approach for authoring/administration
-Decide on approach for logging in and controlling access to changing project definition
+H Support multi-user sites
+H Support multiple projects per user
+H Need a project creation page
+H Need a way for a user to choose a project to work on
+H Settle on some authentication approach for authoring/administration
+H Decide on approach for logging in and controlling access to changing project definition
 
 PLUGIN
-WordPress plugin support for Pointrel save/load/triples
-Create entire WordPress plugin based on current stub version
-Roles/Accounts & Security
+H WordPress plugin support for Pointrel save/load/triples
+H Create entire WordPress plugin based on current stub version
+H Roles/Accounts & Security
+
+CLUSTERING (PLANNING)
+H Finish "Create project story elements" page in planning phase
+    Make three sections with instructions between
+    	1. choose element type (drop down)
+    	2. cluster space - instructions are to add answers and cluster the answers to produce "answer cluster names"
+    	3. cluster space - instructions are to copy "answer cluster names" (by hand), add attributes, then cluster the attributes into "story elements"
+    	4. list - copy end cluster "story elements" to list, and desribe each (with fields from "enter project story elements" page
+    Remove "Enter project story elements" page
+    OR Move directions for clustering project story elements into help system for next page
+L Move "diagram source" button to last in row above cluster space
+L Change button names from "new item" to "new" - etc
+L Change button name from "update" to "edit"
+DONE Support clusterSpace -- used in catalysis to cluster interpretations it is a graphical OR grid way of putting like with like, the option tells you what is to be clustered
+X Support multiple item selection in clustering diagram
+X Issue where background is transparent when go to view or change the source in clustering diagram
 
 RECOMMENDATIONS
-Support recommendationTable
-
-TEMPLATES
-Fix how templates list popup has too much scrolling and is not sized well; perhaps start with grid item view pane open?
-Improve template list generation tool to support storyCollectionActivities and sensemakingActivities
-
-SURVEY GENERAL
-Support multiple surveys per project
-Add page about finalizing a survey
-Switch to using Dojo Mobile for the surveys
-Better mobile support for taking survey on cell phones
-Figure out what URLs will look like for administration/authoring vs. survey taking (multiple?) vs. (maybe) project
-Have survey entry page support different surveys
-Figure out GUI for "finalizing" a survey as opposed to storing current version when enable survey
-Have survey page use special server method so does not use Pointrel system directly or need authentication
-Record IP address of survey or use another means to see if someone taking it multiple times
-Ensure the survey taking app does no need to load entire domain from project editor app or load grid or story browser or other modules it does not really need.
-Ideally, all responses for selections (other than numerical sliders) should have unique IDs for each response and the stored response should have the ID as well as the chosen text at the time.
-Only store reference to questionnaire file resource, not the resource itself
-Support translations or other categories for multiple question texts or choice texts for a survey
-Some easy way for two or more survey sliders to be close together under the same label
-Problem when opened up road block survey with Firefox and developer console and it was too tall and when closed console the top close button became inacessible as offscreen
-
-SURVEY QUESTIONS
-Survey - Better validation that at least one story entered instead of forcing first story entry pane to have a story even if second or later panes have stories
-Survey - checkbox for is question answer required (maybe later)
-Survey - start page required (what do do if nothing entered)
-Survey - improve styling on radio buttons for question or alternative approach (maybe later)
-Survey - delete button w/confirm
-Survey - reorder story numbers
-Survey - can't delete last story
-Survey - maximum number stories (maybe later)
-Survey - back button in browser -- deal with so don't lose data
-Remove redundant code when calculating survey questions for story and name in survey and story browser
-
-IDs
-Add support for short names (ids) for eliciting questions
-Add support for short names (ids) for all options for survey questions
-Improve how options are specified for questions in question designer rather than use text box
-Make sure that short name IDs entered by user when defining questions are unique among themselves and don't have a leading underscore (or at least aren't "_id")
-Ensure short name IDs entered by user do not conflict with automatically created ones or story text and story name
-
-BROWSING
-Fix how story browser browses stories for separation of participant info from stories
-Should there be a separate participant info browser or is that handled by story browser? If "story browser" does that, may need to rename story browser?
-Fix how graph browser shows graphs for separation of participant info from stories
-
-EXPORT/IMPORT
-Add page to do import/export
-Add export button for survey results
-Maybe import button for survey results
-Add way to clear out or reset old survey results? Or maybe partition them by survey?
-Backup
-
-LOAD/SAVE
-Have revert button to go back to previous version for each page or clear out changes in progress on a page
-Put in place dojox.widget.Standby when saving
-Improve save/load feedback [same as above at this point]
-Think through how project is loaded and saved, especially what happens if multiple windows or users edit the same project
-Think about save/load architecture and Pointrel design in relation to handling lots of observations for pattern permutations
-Autosave, perhaps based on time or based on changing pages
-Improve feedback when there are no project versions or survey results; maybe distinguish between an error and nothing being saved yet
-Resolve issue with hardcoded project ID
-Resolve issue with hardcoded survey ID
-Resolve issue with hardcoded questionnaire ID
-
-LOGGING
-Think through logging in the server, perhaps using a library
-Ensure useful server logs are kept
-Fix issue with PNIWorkbookServer.conf that it uses logs directory that is not server-data/logs
-Think through logging in the client, perhaps using a library
-Client application could report errors to server or another service
-Client application could report usage metrics to server or another service
-
-PRINTING
-Implement printStoryForm in domain buttonClicked (what do do about entering multiple stories?)
-
-STORY THEMER
-Support storyThemer -- a widget where people look at each story, give it 1-3 themes, then merge the themes into smaller numbers of themes
-Page to enter themes for stories
-Page to cluster themes into final themes
-
-GRAPH BROWSER
-Support graphBrowser "add to observation" button
-Support graphBrowser contingency table with statistical results
-Support graphBrowser standard deviation and mean for histograms
-Support graphBrowser common maximum for multiple histograms
-Support graphBrowser displaying related stories for visible data point or bar or line [partial, selection done for all but contingency, no display yet]
-
-TRENDS
-Support trendsReport -- shows text and graphs in report based on top differences in statistical tests,  has "add to observation" button
-Create pattern list on trends report for browsing graphs and making observations
-Save and load pattern list with observations on trends report
-
-CLUSTERING
-Support clusterSpace -- used in catalysis to cluster interpretations it is a graphical OR grid way of putting like with like, the option tells you what is to be clustered
-Support multiple item selection in clustering diagram
-Issue where background is transparent when go to view or change the source in clustering diagram
-
-OBSERVATION LIST
-Support observationsList -- used to list all the previously made observations (now part of trends report)
+H Support recommendationTable
+    Recommendations table needs fixing -- one for each participant group
+    For intervention, the recommendations have to come from a separate file (recommendations_intervention_filledin.csv)
 
 VENUES
-Venues table needs fixing -- one for each participant group
-Should "venues" name be changed, as could be confusing as to meaning "location"? But "venue" can also mean "forum" or "soapbox" so maybe OK?
+X Should "venues" name be changed, as could be confusing as to meaning "location"? But "venue" can also mean "forum" or "soapbox" so maybe OK?
 
-CATALYSIS
-Support multiple catalysis reports by choosing questionnaire and data set (survey results)
-Need page where user can add new researcher-defined questions and answers to stories (and maybe participants?)
-Catalysis -- story browser needs two buttons that pull up pages to put things in lists: addToObservation:"page_addToObservation";addToExcerpt:"page_addToExcerpt"
-Need to be able to select text in existing story to AddToExcerpts
-Need to figure out some way to represent RESULTS in observations (story browser queries/results, graphs, statistical tests)
-Observations list should not have "add" button, because observations can only be added using "add to observation" button on story browser, graph browser, trends report (but it should have an edit button)
-Support accumulatedItemsGrid -- for results selected to include in an observation
-Support annotationsGrid -- for results, excerpts, or interpretations linked to a perspective
-Support storiesList -- for choosing a resonant story
-Implement exportPresentationOutline in domain buttonClicked
-Convert contingency table from HTML table to D3 chart with brush selection of stories
+TEMPLATES
+W Fix how templates list popup has too much scrolling and is not sized well; perhaps start with grid item view pane open?
+H Improve template list generation tool to support storyCollectionActivities and sensemakingActivities
 
-SENSEMAKING
-Add page about printing story cards
+SURVEY GENERAL
+H Support multiple surveys per project
+    Have survey entry page support different surveys
+    Figure out what URLs will look like for administration/authoring vs. survey taking (multiple?) vs. (maybe) project
+H Add page about finalizing a survey
+    Figure out GUI for "finalizing" a survey as opposed to storing current version when enable survey
+W Switch to using Dojo Mobile for the surveys
+W Better mobile support for taking survey on cell phones
+H Have survey page use special server method so does not use Pointrel system directly or need authentication
+X Record IP address of survey or use another means to see if someone taking it multiple times
+? Ensure the survey taking app does not need to load entire domain from project editor app or load grid or story browser or other modules it does not really need.
+L Ideally, all responses for selections (other than numerical sliders) should have unique IDs for each response and the stored response should have the ID as well as the chosen text at the time.
+    Add support for short names (ids) for all options for survey questions
+X Only store reference to questionnaire file resource, not the resource itself
+X Support translations or other categories for multiple question texts or choice texts for a survey
+X Some easy way for two or more survey sliders to be close together under the same label
+H Problem when opened up road block survey with Firefox and developer console and it was too tall and when closed console the top close button became inacessible as offscreen
 
-GRID
-When viewing grid data, it should not look editable
-Read-only version of checkboxes and radiobutton widgets, used by grid (assuming that is how the read only data is presented)
-Popup for add item from grid -- should have better label in title as to what type of thing is added
-CSS styling of nested box in grid
-Uncomment and test tooltip code in grid table
-Get tooltips working in dialogs (maybe Dojo bug?)
-Sorting issue: Initial sort order in grid may be order of items in underlying array, but you can't get back to that order once you sort by a column
-Bug if viewing data when remove it; the viewing panel remains open with old data
-Bug if move data item up or down; when you click on an item, it shows you what used to be in that position not what is currently there
-Add close button to top of item panel
+SURVEY QUESTIONS
+L Remove "What type of question is this?" question from story-eliciting questions page
+X Survey - Better validation that at least one story entered instead of forcing first story entry pane to have a story even if second or later panes have stories
+X Survey - add checkbox for "is question answer required" (maybe later)
+X Survey - start page required (what do do if nothing entered)
+X Survey - improve styling on radio buttons for question or alternative approach (maybe later)
+X Survey - delete button w/confirm
+X Survey - reorder story numbers
+X Survey - can't delete last story
+X Survey - maximum number stories (maybe later)
+X Survey - back button in browser -- deal with so don't lose data
+X Remove redundant code when calculating survey questions for story and name in survey and story browser
 
-CONFIGURATION
-Add project configuration page?
+IDs
+L Add support for short names (ids) for eliciting questions
+X Improve how options are specified for questions in question designer rather than use text box
+X Make sure that short name IDs entered by user when defining questions are unique among themselves and don't have a leading underscore (or at least aren't "_id")
+? Ensure short name IDs entered by user do not conflict with automatically created ones or story text and story name
 
-REPORTS
-Improve reports so look nice
-Generate HTML reports that can be downloaded
-Make whole planning phase work (including report)
-Maybe replace reports with one page to export report (or export data)
-Maybe convert reports page to a summary page for each section
+BROWSING
+X Fix how story browser browses stories for separation of participant info from stories
+X Should there be a separate participant info browser or is that handled by story browser? If "story browser" does that, may need to rename story browser?
+X Fix how graph browser shows graphs for separation of participant info from stories
 
-DASHBOARD
-Provide status of whether survey is active on main dashboard
-Decide what goes on main home dashboard now that changed from page status to textual reminders
-Odd behavior where under Firefox where did not see a scrollbar until resized text area when had lots of section notes
+EXPORT/IMPORT
+H Add page to do import/export
+X Add export button for survey results
+X Maybe import button for survey results
+X Add way to clear out or reset old survey results? Or maybe partition them by survey?
+X Backup
 
-ALERTS
-Help window displaying HTML instead of alert
-Look at all alerts in code and make into nicer GUI feedback
+LOAD/SAVE
+X Have revert button to go back to previous version for each page or clear out changes in progress on a page
+DONE? Put in place dojox.widget.Standby when saving
+DONE? Improve save/load feedback [same as above at this point]
+H Think through how project is loaded and saved, especially what happens if multiple windows or users edit the same project
+    Think about save/load architecture and Pointrel design in relation to handling lots of observations for pattern permutations
+X Autosave, perhaps based on time or based on changing pages
+H Improve feedback when there are no project versions or survey results; maybe distinguish between an error and nothing being saved yet
+H Resolve issue with hardcoded project ID
+H Resolve issue with hardcoded survey ID
+H Resolve issue with hardcoded questionnaire ID
 
-TRANSLATION
-Translate report answers as needed for those types like selections
-Final review of all strings in code looking for TODO translate items or similar
-
-DESIGN FILE
-Resolve these issues from conversion or add them to list of types not needing a short name:
-No short name for type: storyThemer field: themeStories text: Theme stories
-No short name for type: trendsReport field: reviewTrends_display text: Trends report
-No short name for type: observationsList field: observationsListChoose text: Choose an observation from this list to which to add the selected result, or create a new observation.
-No short name for type: excerptsList field: selectExcerpt_excerptsListDisplay text: Collected excerpts
-No short name for type: excerptsList field: addToExcerpt_excerptsListChoose text: Choose an excerpt from this list to which to add the selected text, or create a new excerpt.
-No short name for type: annotationsGrid field: perspective_linkedResultsList text: Results linked to this perspective
-No short name for type: annotationsGrid field: perspective_linkedExcerptsList text: Excerpts linked to this perspective
-No short name for type: annotationsGrid field: perspective_linkedInterpretationsList text: Interpretations linked to this perspective
-
-REFACTORING
-Rename "questions" with "fieldSpecifications" where appropriate and make similar changes away from using "question" to mean "fieldSpecification" [partly done]
-See if still need so many button functions in domain (or maybe any at all)
-Some way only load page and panel files as needed (with help URL being determined by PanelBuilder as it creates panel, and maybe specify panels in section by hand)
-Load panel widgets only as needed by always creating contentPane for a widget and loading the contents later as available returning a promise, with ready callback in builder when all promises kept
-Save data for observations and so on as seperate documents so can do it incrementally
-Maybe separate documents for each participant group?
-Maybe separate documents for each survey question?
-Only load panel information as needed for section (or request for specific panel)
-
-STORAGE
-Modify Pointrel system to have better support for tracking all new additions to a collection
-Modify Pointrel system to have better support for selecting a subset of stored resources relevant to a project section or page 
-Modify Pointrel system to have better support for client-side searching if have a copy of all relevant resources from a remote collection
-
-BUILD
-Learn how to use Dojo build process to minimize application
-
-VALIDATION
-Think about validation and how or when or if it should be done
-Validation of page data as progress through a step
-Validation in general when progress through tabs and error reporting
-Validation of text fields for empty
-Validation of text fields for length
-Validation for checkBoxes limited by maximum number of choices as validation error
+LOGGING
+X Think through logging in the server, perhaps using a library
+    Ensure useful server logs are kept
+    Fix issue with PNIWorkbookServer.conf that it uses logs directory that is not server-data/logs
+X Think through logging in the client, perhaps using a library
+    Client application could report errors to server or another service
+    Client application could report usage metrics to server or another service
 
 PRINTING
-Decide between HTML, PDF, RTF, Open Office or other for initial printing generation
-Print reports
-Print story cards
-Page to print story cards
+H Implement printStoryForm in domain buttonClicked (what do do about entering multiple stories?)
 
-OTHER
-Read-only support for panels
+STORY THEMER
+X Generalize storyThemer into tagging - or researcher added questions
+    Support storyThemer -- a widget where people look at each story, give it 1-3 themes, then merge the themes into smaller numbers of themes
+    Page to enter themes for stories
+    Need page where user can add new researcher-defined questions and answers to stories (and maybe participants?)
+X Page to cluster themes into final themes
+
+GRAPH BROWSER 
+H Move graphBrowser to collection process phase
+X Support graphBrowser "add to observation" button
+H Support graphBrowser contingency table with statistical results
+H Support graphBrowser standard deviation and mean for histograms
+L Support graphBrowser common maximum for multiple histograms
+DONE Support graphBrowser displaying related stories for visible data point or bar or line [partial, selection done for all but contingency, no display yet]
+
+TRENDS REPORT -> PATTERN BROWSER
+H Rename trendsReport to Pattern Browser
+H Move options (how large should subsets, what significance threshold) to popup under patterns list
+H Support trendsReport -- shows text and graphs in report based on top differences in statistical tests
+L Rename "save current graph selection to observation" buttons under graphs
+DONE Create pattern list on trends report for browsing graphs and making observations
+DONE Convert contingency table from HTML table to D3 chart with brush selection of stories
+H Save and load pattern list with observations on trends report
+H Support adding interpretations to observations in trendsReport (pattern browser)
+
+CLUSTERING (CATALYSIS)
+H Support clustering interpretations into perspectives in catalysis (on page after pattern browser) WITH A TABLE
+
+CATALYSIS REPORT
+H Create catalysis report - including results (graphs, statistical results)
+   Perspective
+       Interpretation
+           Observation
+               Pattern (graph)
+H Print catalysis report
+
+OBSERVATION LIST
+DONE Support observationsList -- used to list all the previously made observations (now part of trends report)
+
+CATALYSIS
+H Need page at start to create new or choose existing catalysis report to work on
+H Remove story browser from catalysis section (but leave in story collection section)
+H Remove graph browser from catalysis section (and put in story collection section)
+H Remove "review excerpts" page
+H Move "review and intepret observations" functionality to patterns browser
+H Support multiple catalysis reports by choosing questionnaire and data set (survey results)
+DONE-ENOUGH Catalysis -- story browser needs two buttons that pull up pages to put things in lists: addToObservation:"page_addToObservation";addToExcerpt:"page_addToExcerpt"
+X Need to be able to select text in existing story to AddToExcerpts
+OBSOLETE Need to figure out some way to represent RESULTS in observations (story browser queries/results, graphs, statistical tests)
+OBSOLETE Observations list should not have "add" button, because observations can only be added using "add to observation" button on story browser, graph browser, trends report (but it should have an edit button)
+OBSOLETE Support accumulatedItemsGrid -- for results selected to include in an observation
+OBSOLETE Support annotationsGrid -- for results, excerpts, or interpretations linked to a perspective
+X Support storiesList -- for choosing a resonant story
+
+SENSEMAKING
+H Add page about printing story cards
+H Implement "print session agenda" (to HTML)
+H Change "storiesList" functionality to - they have to poste in the name/text of the story. with a textarea
+
+RETURN
+H Implement exportPresentationOutline in domain buttonClicked
+
+GRID
+L When viewing grid data, it should not look editable
+    Read-only version of checkboxes and radiobutton widgets, used by grid (assuming that is how the read only data is presented)
+X Popup for add item from grid -- should have better label in title as to what type of thing is added
+X CSS styling of nested box in grid
+X Uncomment and test tooltip code in grid table
+X Get tooltips working in dialogs (maybe Dojo bug?)
+X Sorting issue: Initial sort order in grid may be order of items in underlying array, but you can't get back to that order once you sort by a column
+X Bug if viewing data when remove it; the viewing panel remains open with old data
+H Bug if move data item up or down; when you click on an item, it shows you what used to be in that position not what is currently there
+L Add close button to top of item panel
+L Better information about what is going on in item panel - whether view, edit, duplicate
+L When duplicate list item, add "copy" to name (different for each)
+
+CONFIGURATION
+? Add project configuration page?
+
+REPORTS
+H Remove all reports
+H Maybe convert reports page to a summary page for each section (where they put in final notes on that phase)
+X Improve reports so look nice
+X Generate HTML reports that can be downloaded
+X Maybe replace reports with one page to export report (or export data)
+DONE Make whole planning phase work (including report) [no reports]
+
+DASHBOARD
+H Provide status of whether survey is active on main dashboard
+X Decide what goes on main home dashboard now that changed from page status to textual reminders
+X Odd behavior under Firefox where did not see a scrollbar until resized text area when had lots of section notes
+H Reminder entered (on first planning page) did not show up on planning dashbaord page
+
+ALERTS
+X Help window displaying HTML instead of alert
+X Look at all alerts in code and make into nicer GUI feedback
+
+TRANSLATION
+X Translate report answers as needed for those types like selections
+X Final review of all strings in code looking for TODO translate items or similar
+
+DESIGN FILE
+X Resolve these issues from conversion or add them to list of types not needing a short name:
+X No short name for type: storyThemer field: themeStories text: Theme stories
+X No short name for type: trendsReport field: reviewTrends_display text: Trends report
+OBSOLETE No short name for type: observationsList field: observationsListChoose text: Choose an observation from this list to which to add the selected result, or create a new observation.
+OBSOLETE No short name for type: excerptsList field: selectExcerpt_excerptsListDisplay text: Collected excerpts
+OBSOLETE No short name for type: excerptsList field: addToExcerpt_excerptsListChoose text: Choose an excerpt from this list to which to add the selected text, or create a new excerpt.
+OBSOLETE No short name for type: annotationsGrid field: perspective_linkedResultsList text: Results linked to this perspective
+OBSOLETE No short name for type: annotationsGrid field: perspective_linkedExcerptsList text: Excerpts linked to this perspective
+OBSOLETE No short name for type: annotationsGrid field: perspective_linkedInterpretationsList text: Interpretations linked to this perspective
+
+REFACTORING
+X Rename "questions" with "fieldSpecifications" where appropriate and make similar changes away from using "question" to mean "fieldSpecification" [partly done]
+X See if still need so many button functions in domain (or maybe any at all)
+X Some way only load page and panel files as needed (with help URL being determined by PanelBuilder as it creates panel, and maybe specify panels in section by hand)
+X Load panel widgets only as needed by always creating contentPane for a widget and loading the contents later as available returning a promise, with ready callback in builder when all promises kept
+? Save data for observations and so on as separate documents so can do it incrementally
+? Maybe separate documents for each participant group?
+? Maybe separate documents for each survey question?
+X Only load panel information as needed for section (or request for specific panel)
+
+STORAGE
+H Modify Pointrel system to have better support for tracking all new additions to a collection
+L Modify Pointrel system to have better support for selecting a subset of stored resources relevant to a project section or page 
+L Modify Pointrel system to have better support for client-side searching if have a copy of all relevant resources from a remote collection
+
+BUILD
+X Learn how to use Dojo build process to minimize application
+
+VALIDATION
+X Think about validation and how or when or if it should be done
+X Validation of page data as progress through a step
+X Validation in general when progress through tabs and error reporting
+X Validation of text fields for empty
+X Validation of text fields for length
+X Validation for checkBoxes limited by maximum number of choices as validation error
+
+PRINTING
+DONE Decide between HTML, PDF, RTF, Open Office or other for initial printing generation [HTML]
+X Print section reports
+H Print story cards
+H Page to print story cards
 
 UNSURE
-Way to retrieve data about project participant groups [Is this still relevant? Probably yes, if we did "checkboxes with pull" for picking what groups an activity applies to instead of text entry]
-Support imageUploader
-Support storyBrowserCount
+X Way to retrieve data about project participant groups [Is this still relevant? Probably yes, if we did "checkboxes with pull" for picking what groups an activity applies to instead of text entry]
+X Support imageUploader
+X Support storyBrowserCount
 
 ======= CYNTHIA
 
-Write up sample NarraFirma product offering descriptions for review (including for website)
-Finish templates
-Create recommendations file
-Create help
-Forgot to put "memorable" in eliciting question types
+H Write up sample NarraFirma product offering descriptions for review (including for website)
+H Finish templates
+DONE Create recommendations file
+H Create help
+H On Story question page, move "what type of question is this" extra text to help
+X Forgot to put "memorable" in eliciting question types ("What type of question is this?")
+H Clean up introduction page
+H Fix wording on dashboard pages (and all wording related to reminders)
+L Fix CSS styling so reminder section of page is different
+L Improve general CSS styling on all pages (forms)
 
 ==== Wish list:
+
+User can duplicate a project
+User can delete a project
 
 Chart with hover for story
 Chart where can select a set of stories
