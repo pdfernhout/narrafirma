@@ -57,7 +57,7 @@ define([
             var newData = model.get(fieldSpecification.id);
             dataStore.setData(newData);
             // Apparently, trackable stored don't send a general update message when you change their data, so explicitely set grid store here to force update
-            instance.dataStoreChanged(dataStore);
+            instance.grid.dataStoreChanged(dataStore);
         });
         
         // Klugde to get the contentPane to free the watcher by calling remove when it is destroyed
