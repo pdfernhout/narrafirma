@@ -93,9 +93,6 @@ X Improve how options are specified for questions in question designer rather th
 X Make sure that short name IDs entered by user when defining questions are unique among themselves and don't have a leading underscore (or at least aren't "_id")
 ? Ensure short name IDs entered by user do not conflict with automatically created ones or story text and story name
 
-BROWSING
-H Fix bug with optionsForAllQuestions introduced into story browser
-
 EXPORT/IMPORT
 H Add page to do import/export
 X Add export button for survey results
@@ -697,3 +694,4 @@ NOT DOING Should there be a separate participant info browser or is that handled
 NOT DOING Fix how graph browser shows graphs for separation of participant info from stories
 DONE Design File: No short name for type: storyThemer field: themeStories text: Theme stories [fixed when added story themer widget]
 DONE Design File: No short name for type: trendsReport field: reviewTrends_display text: Trends report [fixed when added trends report widget]
+DONE H Fix bug with optionsForAllQuestions introduced into story browser
