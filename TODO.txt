@@ -134,7 +134,6 @@ X Generalize storyThemer into tagging - or researcher added questions
 X Page to cluster themes into final themes
 
 GRAPH BROWSER 
-H Move graphBrowser to collection process phase
 X Support graphBrowser "add to observation" button
 H Support graphBrowser contingency table with statistical results
 H Support graphBrowser standard deviation and mean for histograms
@@ -161,8 +160,6 @@ H Print catalysis report
 
 CATALYSIS
 H Need page at start to create new or choose existing catalysis report to work on
-H Remove story browser from catalysis section (but leave in story collection section)
-H Remove graph browser from catalysis section (and put in story collection section)
 H Remove "review excerpts" page
 H Move "review and intepret observations" functionality to patterns browser
 H Support multiple catalysis reports by choosing questionnaire and data set (survey results)
@@ -698,3 +695,6 @@ OBSOLETE No short name for type: annotationsGrid field: perspective_linkedInterp
 DONE Decide between HTML, PDF, RTF, Open Office or other for initial printing generation [HTML]
 DONE Create recommendations file (CFK)
 DONE Should "venues" name be changed, as could be confusing as to meaning "location"? But "venue" can also mean "forum" or "soapbox" so maybe OK? [Not changing]
+DONE Remove story browser from catalysis section (but leave in story collection section)
+DONE Move graphBrowser to collection process phase
+DONE Remove graph browser from catalysis section (and put in collection process section) [same as above]
