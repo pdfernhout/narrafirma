@@ -59,11 +59,7 @@
             },
             {
                 "panelID": "page_createProjectStoryElements",
-                "panelName": "Create project story elements"
-            },
-            {
-                "panelID": "page_enterProjectStoryElements",
-                "panelName": "Enter project story elements",
+                "panelName": "Create project story elements",
                 "extraPanels": [
                     {
                         "panelID": "panel_addStoryElement",

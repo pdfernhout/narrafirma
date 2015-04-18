@@ -137,7 +137,7 @@ define([
             .attr('height', height)
             .attr('class', 'clustering');
         
-        this._mainSurface.append("circle").attr("cx", 25).attr("cy", 25).attr("r", 25).style("fill", "purple").on("mousedown", lang.hitch(this, function () {console.log("purple circle clicked");}));
+        // this._mainSurface.append("circle").attr("cx", 25).attr("cy", 25).attr("r", 25).style("fill", "purple").on("mousedown", lang.hitch(this, function () {console.log("purple circle clicked");}));
 
         this.background = this._mainSurface.append("rect")
             .attr('width', width)
