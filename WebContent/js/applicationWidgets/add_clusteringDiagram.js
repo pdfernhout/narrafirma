@@ -17,7 +17,7 @@ define([
         var clusteringDiagram = new ClusteringDiagram(questionContentPane, model, fieldSpecification.id, diagramName, true);
         
         var watcher = model.watch(diagramName, function() {
-            console.log("updating clusteringDiagram for model field change", model, fieldSpecification);
+            // console.log("updating clusteringDiagram for model field change", model, fieldSpecification);
             var newData = model.get(diagramName);
             clusteringDiagram.updateDiagram(newData);
         });

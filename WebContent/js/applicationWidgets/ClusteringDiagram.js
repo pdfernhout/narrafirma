@@ -68,7 +68,6 @@ define([
         console.log("Creating ClusteringDiagram", contentPane, model, id, diagramName);
 
         this.autosave = autosave;
-        this.changesCount = 0;
         this.lastSelectedItem = null;
         this.mainContentPane = contentPane;
         this.diagramName = diagramName;
@@ -81,12 +80,17 @@ define([
             this.diagram = {
                 surfaceWidthInPixels: defaultSurfaceWidthInPixels,
                 surfaceHeightInPixels: defaultSurfaceHeightInPixels,
-                items: this.diagram
+                items: this.diagram,
+                changesCount: 0
             };
         }
         
         if (!this.diagram.items) {
             this.diagram.items = [];
+        }
+        
+        if (!this.diagram.changesCount) {
+            this.diagram.changesCount = 0;
         }
         
         console.log("diagram", JSON.stringify(this.diagram, null, 2));
@@ -110,7 +114,7 @@ define([
     }
     
     ClusteringDiagram.prototype.incrementChangesCount = function() {
-        this.changesCount++;
+        this.diagram.changesCount++;
         if (this.autosave) {
             this.saveChanges();
         }
@@ -171,29 +175,28 @@ define([
             .attr('height', height)
             .attr('class', 'clustering');
         
-        // this._mainSurface.append("circle").attr("cx", 25).attr("cy", 25).attr("r", 25).style("fill", "purple"); 
+        this._mainSurface.append("circle").attr("cx", 25).attr("cy", 25).attr("r", 25).style("fill", "purple").on("mousedown", lang.hitch(this, function () {console.log("purple circle clicked");}));
 
+        this.background = this._mainSurface.append("rect")
+            .attr('width', width)
+            .attr('height', height)
+            .attr('class', 'clusteringDiagramBackground')
+            .style('fill', 'white')
+            .on("mousedown", lang.hitch(this, function () {
+                console.log("mousedown in background");
+                this.selectItem(null);
+                // console.log("mousedown item", item);
+            }));
+        
         this.mainSurface = this._mainSurface.append('g')
             //.attr('width', width)
             //.attr('height', height)
             .attr('class', 'mainSurface');
         
-        this.background = this.mainSurface.append("rect")
-            .attr('width', width)
-            .attr('height', height)
-            .attr('class', 'background')
-            .style('fill', 'red')
-            .on("mousedown", lang.hitch(this, function (e) {
-                // console.log("triggered down", e);
-                this.selectItem(null);
-                // console.log("mousedown item", item);
-            }));
-        
-        console.log("setup main surface", this);
+        // console.log("setup main surface", this);
             
         this.recreateDisplayObjectsForAllItems();
 
-        /*
         var handle = new ResizeHandle({
             targetId: divUUID,
             // Need either activeResize true or animateSizing false so that onResize will only be called when totally done resizing
@@ -204,9 +207,8 @@ define([
             // style: "bottom: 4px; right: 4px;",
             onResize: lang.hitch(this, this.updateSizeOfCanvasFromResizeHandle)
         }).placeAt(divForResizing);
-        // TODO: Unsure if need this? Probably need this as made and added div outside of existing connected ContentPane
+        // Need to call startup as made div and added it outside of existing connected ContentPane
         handle.startup();
-        */
     };
     
     ClusteringDiagram.prototype.updateSizeOfCanvasFromResizeHandle = function() {
@@ -215,9 +217,11 @@ define([
         
         console.log("resize from ResizeHandle drag", newWidth, newHeight);
         this._mainSurface.attr("width", newWidth).attr("height", newHeight);
+        this.background.attr('width', newWidth).attr('height', newHeight);
         
         this.diagram.surfaceWidthInPixels = newWidth;
         this.diagram.surfaceHeightInPixels = newHeight;
+        
         this.incrementChangesCount();
     };
     
@@ -228,6 +232,7 @@ define([
         console.log("resize from model change", newWidth, newHeight);
         this.divForResizing.setAttribute("style", "width: " + this.diagram.surfaceWidthInPixels + "px; height: " + this.diagram.surfaceHeightInPixels + "px; border: solid 1px; position: relative");
         this._mainSurface.attr("width", newWidth).attr("height", newHeight);
+        this.background.attr('width', newWidth).attr('height', newHeight);
     };
 
     ClusteringDiagram.prototype.addItemEditor = function() {
@@ -297,6 +302,7 @@ define([
         // Documentation for ColorPalette says it returns a "Color" but it seems to really return a hex string
         if (bodyColor) item.bodyColor = bodyColor;
         if (!dialogHolder.isExistingItem) {
+            console.log("not existing item", dialogHolder);
             this.diagram.items.push(item);
             var displayObject = this.addDisplayObjectForItem(this.mainSurface, item);
         } else {
@@ -420,10 +426,25 @@ define([
     };
 
     ClusteringDiagram.prototype.updateDiagram = function(newDiagram) {
-        // console.log("updateDiagram", newDiagram);
+        // console.log("updateDiagram", this.diagram, newDiagram);
+        if (this.diagram.changesCount === newDiagram.changesCount) {
+            // console.log("Changes count match at", newDiagram.changesCount);
+            // Optimize out reflections of our changes back to us if the diagrams are the same
+            // Extra cautious to compare JSON; otherwise probably could just return
+            if (JSON.stringify(this.diagram) === JSON.stringify(newDiagram)) {
+                console.log("updateDiagram: new diagram seems identical to the old; not updating");
+                return;
+            }
+        } else {
+            console.log("updateDiagram: changes counts do not match", this.diagram.changesCount, newDiagram.changesCount);
+        }
+        
         this.diagram = newDiagram;
+        // Fixup changes count for legacy documents
+        if (!this.diagram.changesCount) this.diagram.changesCount = 0;
+        
         this.recreateDisplayObjectsForAllItems();
-        console.log("Updated OK");
+        console.log("updateDiagram: Updated OK");
         
         this.clearSelection();
         this.updateSizeOfCanvasFromModel();
@@ -495,6 +516,10 @@ define([
     // TODO: Clean up duplication here and elsewhere with calculating border color and width
     ClusteringDiagram.prototype.selectItem = function(item) {
         console.log("selectItem", item);
+        if (item === this.lastSelectedItem) {
+            console.log("lastSelectedItem and new selected item are the same; not updating");
+            return;
+        }
         if (this.lastSelectedItem) {
             console.log("lastSelected", this.lastSelectedItem);
             var lastSelectedDisplayObject = this.itemToDisplayObjectMap[this.lastSelectedItem.uuid];
@@ -560,13 +585,36 @@ define([
         
         this.addText(group, item.text, radius * 1.5, textStyle);
 
-        console.log("group", group);
-        console.log("itemCircle", itemCircle);
+        // console.log("group", group);
+        // console.log("itemCircle", itemCircle);
 
         group.on("mousedown", lang.hitch(this, function () {
-            console.log("mousedown item", item);
+            // console.log("mousedown item", item);
             this.selectItem(item);
         }));
+        
+        var self = this;
+        var drag = d3.behavior.drag();
+        
+        // drag.origin({x: item.x, y: item.y});
+        
+        drag.on("dragstart", function () {
+            // console.log("dragstart item", item);
+            self.selectItem(item);
+        });
+        
+        drag.on("drag", function () {
+            // console.log("drag item", item);
+            item.x += d3.event.dx;
+            item.y += d3.event.dy;
+            group.attr('transform', 'translate(' + item.x + ',' + item.y + ')');
+        });
+        
+        drag.on("dragend", function() {
+            self.incrementChangesCount();
+        });
+        
+        group.call(drag);
 
         /*
         group.on("dblclick", lang.hitch(this, function (e) {
@@ -575,123 +623,9 @@ define([
         }));
         */
 
-        /* TODO:
-        var moveable = new Moveable(group);
-        moveable.item = item;
-
-        moveable.onMoveStart = lang.hitch(this, function (mover, shift) {
-            // Kludge for Android as not setting on mouse down
-            this.updateItemDisplay(item);
-        });
-        
-        moveable.onMoved = lang.hitch(this, function (mover, shift) {
-            item.x += shift.dx;
-            item.y += shift.dy;
-        });
-
-        moveable.onMoveStop = lang.hitch(this, function (mover, shift) {
-            this.incrementChangesCount();
-        });
-
-        group.applyTransform(gfx.matrix.translate(item.x, item.y));
-*/
         this.itemToDisplayObjectMap[item.uuid] = group;
         return group;
     };
-    
-    /*
-    // Idea from dojo gfx
-    // TODO: Not considering class styling for this text...
-    var measuringNode = null;
-    function getTextWidth(itemText, textStyle){
-        if (!measuringNode) {
-            measuringNode = document.createElement("div");
-            console.log("measuringNode", measuringNode);
-            d3.select(measuringNode)
-                .attr("position", "absolute")
-                //.attr("top", "-10000px")
-                //.attr("left", "-10000px")
-                //.attr("visibility", "hidden")
-                .attr("class", "measuringNode")
-                .attr("width", "auto")
-                .attr("height", "auto")
-                .style("padding", 0)
-                .attr("white-space", "nowrap");
-            document.body.appendChild(measuringNode);
-        }
-        d3.select(measuringNode)
-            .style("font-family", textStyle.family)
-            .style("font-size", textStyle.size)
-            .style("font-weight", textStyle.weight);
-        measuringNode.innerHTML = itemText;
-        // var bbox = measuringNode.getBBox();
-        
-        var result = {width: measuringNode.clientWidth, height: measuringNode.clientHeight};
-        console.log("getTextWidth", itemText, result);
-        //measuringNode.innerHTML = "";
-        return result;
-    }
-    */
-    
-    // wrap function from: http://bl.ocks.org/mbostock/7555321
-    // changed to remove JSLint warning on while loop
-    // Changed to have individual var lines
-    // Changed to deal with words longer than maxWidth
-    // Changed to deal with computing width of text that is not yet displayed
-    /*
-    function wrap(text, maxWidth, textStyle) {
-        text.each(function() {
-            var text = d3.select(this);
-            var words = text.text().split(/\s+/).reverse();
-            var word;
-            var line = [];
-            var lineNumber = 0;
-            var lineHeight = 1.1; // ems
-            var y = text.attr("y");
-            console.log('text.attr("dy")', text.attr("dy"));
-            var dy = parseFloat(text.attr("dy") || 0);
-            var tspan = text.text(null).append("tspan")
-                .attr("x", 0)
-                .attr("y", y)
-                .attr("dy", dy + "em");
-
-            word = words.pop();
-            while (word) {
-                console.log("---------- word", word);
-                line.push(word);
-                var lineText = line.join(" ");
-                tspan.text(lineText);
-                // var computedTextLength = tspan.node().getComputedTextLength();
-                var computedTextLength = getTextWidth(lineText, textStyle).width;
-                console.log("computedTextLength", computedTextLength);
-                if (computedTextLength > maxWidth) {
-                    // Problem if any word longer than line?
-                    if (line.length > 1) {
-                        line.pop();
-                        word = null;
-                    }
-                    tspan.text(line.join(" "));
-                    if (!word) {
-                        line = [];
-                        word = "";
-                    } else {
-                        line = [word];
-                    }
-                    var dyValue = ++lineNumber * lineHeight + dy;
-                    console.log("dyValue", dyValue, lineNumber, lineHeight, dy);
-                    if (words.length > 0) {
-                        tspan = text.append("tspan")
-                            .attr("x", 0)
-                            .attr("y", y)
-                            .attr("dy", dyValue + "em")
-                            .text(word);
-                    }
-                }
-                word = words.pop();
-            }
-        });
-    }
-    */
     
     // TODO: Unfortunate mix of canvas into an SVG app
     // Only straightforward way (without Dojo gfx) to get the text width, given the page may be hidden while making this, which causes text width to return 0 for SVG
@@ -701,15 +635,15 @@ define([
         // re-use canvas object for better performance
         var canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
         var context = canvas.getContext("2d");
-        context.font = "norma normal " + textStyle.weight + " " + textStyle.size + " " + textStyle.family;
+        context.font = "normal normal " + textStyle.weight + " " + textStyle.size + " " + textStyle.family;
         var metrics = context.measureText(text);
         var result = metrics.width;
-        console.log("getTextWidth", text, result);
+        // console.log("getTextWidth", text, result);
         return result;
     }
     
     function myWrap(text, itemText, textStyle, maxWidth) {
-        console.log("myWrap", itemText, textStyle, maxWidth);
+        // console.log("myWrap", itemText, textStyle, maxWidth);
         var lineHeight_em = 1.1;
         var words = itemText.split(/\s+/);
         var lines = [];
@@ -722,10 +656,10 @@ define([
             if (line === "") {
                 line = word;
             } else if (getTextWidth(line + " " + word, textStyle) < maxWidth) {
-                console.log("word fits", word);
+                // console.log("word fits", word);
                 line += " " + word;
             } else {
-                console.log("word does not fit", word, "|", line);
+                // console.log("word does not fit", word, "|", line);
                 lines.push(line);
                 line = word;
             }
@@ -741,7 +675,7 @@ define([
                 .attr("dy", (lineNumber++) * lineHeight_em  + "em")
                 .text(line)
                 .style("fill", "black");
-            console.log("tspan", tspan);
+            // console.log("tspan", tspan);
         }); 
     }
 
