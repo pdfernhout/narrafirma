@@ -41,11 +41,8 @@ H Finish "Create project story elements" page in planning phase
     	4. list - copy end cluster "story elements" to list, and desribe each (with fields from "enter project story elements" page
     Remove "Enter project story elements" page
     OR Move directions for clustering project story elements into help system for next page
-L Move "diagram source" button to last in row above cluster space
 L Change button names from "new item" to "new" - etc
-L Change button name from "update" to "edit"
 X Support multiple item selection in clustering diagram
-X Issue where background is transparent when go to view or change the source in clustering diagram
 
 RECOMMENDATIONS
 H Support recommendationTable
@@ -696,3 +693,6 @@ DONE Design File: No short name for type: trendsReport field: reviewTrends_displ
 DONE Fix bug with optionsForAllQuestions introduced into story browser
 OBSOLETE Support graphBrowser "add to observation" button
 DONE Convert clustering diagram to use D3 instead of Dojo GFX
+DONE Issue where background is transparent when go to view or change the source in clustering diagram [previously fixed]
+DONE Move "diagram source" button to last in row above cluster space
+DONE Change button name from "update" to "edit"
