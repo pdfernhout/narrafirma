@@ -693,5 +693,6 @@ NOT DOING Should there be a separate participant info browser or is that handled
 NOT DOING Fix how graph browser shows graphs for separation of participant info from stories
 DONE Design File: No short name for type: storyThemer field: themeStories text: Theme stories [fixed when added story themer widget]
 DONE Design File: No short name for type: trendsReport field: reviewTrends_display text: Trends report [fixed when added trends report widget]
-DONE H Fix bug with optionsForAllQuestions introduced into story browser
+DONE Fix bug with optionsForAllQuestions introduced into story browser
 OBSOLETE Support graphBrowser "add to observation" button
+DONE Convert clustering diagram to use D3 instead of Dojo GFX
