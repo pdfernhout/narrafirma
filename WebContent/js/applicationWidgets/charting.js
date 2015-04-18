@@ -203,8 +203,6 @@ define([
         
         var chartBody = chart.append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-            .attr('width', width)
-            .attr('height', height)
             .attr('class', 'chartBody');
 
         var chartBodyBackground = chartBody.append("rect")
