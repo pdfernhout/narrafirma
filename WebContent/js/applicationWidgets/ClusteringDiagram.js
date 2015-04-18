@@ -104,56 +104,18 @@ define([
 
         this.setupMainButtons();
 
-        //this.newBreak();
-
-        this.addItemEditor();
-
         this.setupMainSurface();
         
         this.addItemDisplay();
     }
     
     ClusteringDiagram.prototype.incrementChangesCount = function() {
+        // console.log("incrementChangesCount", new Error());
         this.diagram.changesCount++;
         if (this.autosave) {
+            // console.log("Saving changes");
             this.saveChanges();
         }
-    };
-    
-    ClusteringDiagram.prototype.newBreak = function() {
-        var newBr = document.createElement("br");
-        this.mainContentPane.domNode.appendChild(newBr);
-
-        return newBr;
-    };
-
-    ClusteringDiagram.prototype.newButton = function(name, label, callback) {
-        var theButton = new Button({
-            label: label,
-            onClick: lang.hitch(this, callback)
-        }, name);
-        this.mainContentPane.addChild(theButton);
-
-        return theButton;
-    };
-
-    ClusteringDiagram.prototype.setupMainButtons = function() {
-
-        if (!this.autosave) {
-            var saveChangesButton = this.newButton("saveChangesButton", "Save Changes", function () {
-                console.log("About to save");
-                this.saveChanges();
-            });
-        }
-        
-        var sourceButton = this.newButton("sourceButton", "Diagram Source", function () {
-            this.openSourceDialog(JSON.stringify(this.diagram, null, 2));
-        });
-        
-        var addButton = this.newButton("addButton", "New item", function () {
-            var newItem = this.newItem();
-            this.openEntryDialog(newItem, false);
-        });
     };
 
     ClusteringDiagram.prototype.setupMainSurface = function() {
@@ -235,9 +197,33 @@ define([
         this.background.attr('width', newWidth).attr('height', newHeight);
     };
 
-    ClusteringDiagram.prototype.addItemEditor = function() {
+    
+    ClusteringDiagram.prototype.newBreak = function() {
+        var newBr = document.createElement("br");
+        this.mainContentPane.domNode.appendChild(newBr);
+
+        return newBr;
+    };
+
+    ClusteringDiagram.prototype.newButton = function(name, label, callback) {
+        var theButton = new Button({
+            label: label,
+            onClick: lang.hitch(this, callback)
+        }, name);
+        this.mainContentPane.addChild(theButton);
+
+        return theButton;
+    };
+
+    ClusteringDiagram.prototype.setupMainButtons = function() {
         // TODO: Translate
-        var updateItemButton = this.newButton("updateItemButton", "Update item", function () {
+        var addButton = this.newButton("newItemButton", "New item", function () {
+            var newItem = this.newItem();
+            this.openEntryDialog(newItem, false);
+        });
+        
+        // TODO: Translate
+        var updateItemButton = this.newButton("editItemButton", "Edit item", function () {
             if (this.lastSelectedItem) {
                 this.openEntryDialog(this.lastSelectedItem, true);
             } else {
@@ -246,6 +232,7 @@ define([
             }
         });
 
+        // TODO: Translate
         var deleteButton = this.newButton("deleteButton", "Delete item", function () {
             if (!this.lastSelectedItem) {
                 // TODO: Translate
@@ -259,9 +246,21 @@ define([
                 this.incrementChangesCount();
             }));
         });
+        
+        if (!this.autosave) {
+            // TODO: Translate
+            var saveChangesButton = this.newButton("saveChangesButton", "Save Changes", function () {
+                console.log("About to save");
+                this.saveChanges();
+            });
+        }
+        
+        // TODO: Translate
+        var sourceButton = this.newButton("sourceButton", "Diagram Source", function () {
+            this.openSourceDialog(JSON.stringify(this.diagram, null, 2));
+        });
     };
-    
-    
+
     ClusteringDiagram.prototype.addItemDisplay = function() {    
         this.textBox = new ContentPane({content: "", style: "text-overflow: ellipsis;"});
         this.mainContentPane.addChild(this.textBox);
@@ -432,19 +431,19 @@ define([
             // Optimize out reflections of our changes back to us if the diagrams are the same
             // Extra cautious to compare JSON; otherwise probably could just return
             if (JSON.stringify(this.diagram) === JSON.stringify(newDiagram)) {
-                console.log("updateDiagram: new diagram seems identical to the old; not updating");
+                // console.log("updateDiagram: new diagram seems identical to the old; not updating");
                 return;
             }
-        } else {
-            console.log("updateDiagram: changes counts do not match", this.diagram.changesCount, newDiagram.changesCount);
-        }
+        } // else {
+            // console.log("updateDiagram: changes counts do not match", this.diagram.changesCount, newDiagram.changesCount);
+        // }
         
         this.diagram = newDiagram;
         // Fixup changes count for legacy documents
         if (!this.diagram.changesCount) this.diagram.changesCount = 0;
         
         this.recreateDisplayObjectsForAllItems();
-        console.log("updateDiagram: Updated OK");
+        // console.log("updateDiagram: Updated OK");
         
         this.clearSelection();
         this.updateSizeOfCanvasFromModel();
@@ -484,8 +483,8 @@ define([
         // this.textBox.set("value", item.text);
         // this.urlBox.set("value", item.url);
         // TODO: Translate labels
-        this.textBox.set("content", "Name: " + item.text);
-        this.urlBox.set("content", "Notes: " + item.url);
+        this.textBox.set("content", "Name: " + (item.text || ""));
+        this.urlBox.set("content", "Notes: " + (item.url || ""));
     };
     
     var defaultBodyColor = "#00009B"; // light blue
@@ -515,13 +514,13 @@ define([
 
     // TODO: Clean up duplication here and elsewhere with calculating border color and width
     ClusteringDiagram.prototype.selectItem = function(item) {
-        console.log("selectItem", item);
+        // console.log("selectItem", item);
         if (item === this.lastSelectedItem) {
-            console.log("lastSelectedItem and new selected item are the same; not updating");
+            // console.log("lastSelectedItem and new selected item are the same; not updating");
             return;
         }
         if (this.lastSelectedItem) {
-            console.log("lastSelected", this.lastSelectedItem);
+            // console.log("lastSelected", this.lastSelectedItem);
             var lastSelectedDisplayObject = this.itemToDisplayObjectMap[this.lastSelectedItem.uuid];
             lastSelectedDisplayObject.circle
                 // .style("stroke", lastSelectedDisplayObject.borderColor)
@@ -598,9 +597,12 @@ define([
         
         // drag.origin({x: item.x, y: item.y});
         
+        var moved = false;
+        
         drag.on("dragstart", function () {
             // console.log("dragstart item", item);
             self.selectItem(item);
+            moved = false;
         });
         
         drag.on("drag", function () {
@@ -608,10 +610,11 @@ define([
             item.x += d3.event.dx;
             item.y += d3.event.dy;
             group.attr('transform', 'translate(' + item.x + ',' + item.y + ')');
+            moved = true;
         });
         
         drag.on("dragend", function() {
-            self.incrementChangesCount();
+            if (moved) self.incrementChangesCount();
         });
         
         group.call(drag);
