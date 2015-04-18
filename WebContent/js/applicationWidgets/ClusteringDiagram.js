@@ -217,13 +217,19 @@ define([
 
     ClusteringDiagram.prototype.setupMainButtons = function() {
         // TODO: Translate
-        var addButton = this.newButton("newItemButton", "New item", function () {
+        var addItemButton = this.newButton("newItemButton", "New item", function () {
             var newItem = this.newItem();
             this.openEntryDialog(newItem, false);
         });
         
+        var addClusterButton = this.newButton("newClusterButton", "New cluster", function () {
+            var newItem = this.newItem();
+            newItem.type = "cluster";
+            this.openEntryDialog(newItem, false);
+        });
+        
         // TODO: Translate
-        var updateItemButton = this.newButton("editItemButton", "Edit item", function () {
+        var updateItemButton = this.newButton("editItemButton", "Edit", function () {
             if (this.lastSelectedItem) {
                 this.openEntryDialog(this.lastSelectedItem, true);
             } else {
@@ -233,7 +239,7 @@ define([
         });
 
         // TODO: Translate
-        var deleteButton = this.newButton("deleteButton", "Delete item", function () {
+        var deleteButton = this.newButton("deleteButton", "Delete", function () {
             if (!this.lastSelectedItem) {
                 // TODO: Translate
                 alert("Please select an item to delete first");
@@ -349,8 +355,10 @@ define([
         var dialogHolder = {};
         
         // TODO: Translate
-        var buttonLabel = "Create item";
-        if (isExistingItem) buttonLabel = "Update item";
+        var type = "item";
+        if (item.type) type = item.type;
+        var buttonLabel = "Create " + type;
+        if (isExistingItem) buttonLabel = "Update " + type;
         
         var okButton = new Button({
             colspan: 1,
@@ -385,8 +393,8 @@ define([
         layout.addChild(cancelButton);
         
         // TODO: Translate
-        var title = "New Item";
-        if (isExistingItem) title = "Change Item";
+        var title = "New " + type;
+        if (isExistingItem) title = "Change " + type;
  
         var dialog = new Dialog({
             title: title,
@@ -504,6 +512,7 @@ define([
         item.x = 200;
         item.y = 200;
         item.uuid = uuidFast();
+        item.type = "item";
         // item.bodyColor = defaultBodyColor;
         // item.borderWidth = defaultBorderWidth;
         // item.borderColor = defaultBorderColor;
@@ -547,6 +556,7 @@ define([
         
         var borderWidth = item.borderWidth;
         if (!borderWidth) borderWidth = defaultBorderWidth;
+        // if (item.type === "cluster") borderWidth = borderWidth * 2;
         
         var radius = item.radius;
         if (!radius) radius = defaultRadius;
@@ -554,31 +564,67 @@ define([
         var textStyle = item.textStyle;
         if (!textStyle) textStyle = defaultTextStyle;
 
-        var group = surface.append('g')
-            .attr('transform', 'translate(' + item.x + ',' + item.y + ')')
-            .attr('class', 'item');
+        var group;
+        if (item.type === "cluster") {
+            group = surface.insert('g', ':first-child')
+                .attr('transform', 'translate(' + item.x + ',' + item.y + ')')
+                .attr('class', 'item');
+        } else {
+            group = surface.append('g')
+                .attr('transform', 'translate(' + item.x + ',' + item.y + ')')
+                .attr('class', 'item');
+        }
 
         // TODO: Does this work with SVG elements? Are they really D3 selections? Or maybe could also map data to element with D3?
         group.item = item;
 
         // console.log("group etc.", group, item, bodyColor, borderColor, borderWidth, radius, textStyle);
 
-        var circle = {cx: 0, cy: 0, r: radius };
+        if (item.type === "cluster") {
+            // TODO: Maybe no longer set a different color based on url if you can set border color yourself?? 
+            // if (item.url) item.borderColor = defaultHasNoteBorderColor;
         
-        // TODO: Maybe no longer set a different color based on url if you can set border color yourself?? 
-        // if (item.url) item.borderColor = defaultHasNoteBorderColor;
+            var clusterRectangle = group.append("rect")
+                .attr("x", -radius * 2)
+                .attr("y", -radius * 2)
+                .attr("width", radius * 4)
+                .attr("height", radius * 4)
+                .style("fill", d3.rgb(bodyColor).brighter())
+                // Make translucent
+                .style("opacity", 0.25)
+                .style("stroke", d3.rgb(borderColor))
+                .style("stroke-width", borderWidth * 2);
+            
+            var clusterRectangle = group.append("rect")
+                .attr("x", -radius)
+                .attr("y", -radius)
+                .attr("width", radius * 2)
+                .attr("height", radius * 2)
+                .style("fill", d3.rgb(bodyColor))
+                // Make translucent
+                .style("opacity", 0.75)
+                .style("stroke", d3.rgb(borderColor))
+                .style("stroke-width", borderWidth);
+            
+            group.clusterRectangle = clusterRectangle;
+            
+        } else {
+            // TODO: Maybe no longer set a different color based on url if you can set border color yourself?? 
+            // if (item.url) item.borderColor = defaultHasNoteBorderColor;
         
-        var itemCircle = group.append("circle")
-            .attr("r", radius)
-            .attr("cx", 0)
-            .attr("cy", 0)
-            .style("fill", d3.rgb(bodyColor))
-            // Make translucent
-            .style("opacity", 0.5)
-            .style("stroke", d3.rgb(borderColor))
-            .style("stroke-width", borderWidth);
+            var itemCircle = group.append("circle")
+                .attr("r", radius)
+                .attr("cx", 0)
+                .attr("cy", 0)
+                .style("fill", d3.rgb(bodyColor))
+                // Make translucent
+                .style("opacity", 0.5)
+                .style("stroke", d3.rgb(borderColor))
+                .style("stroke-width", borderWidth);
+            
+            group.circle = itemCircle;
+        }
         
-        group.circle = itemCircle;
         group.borderColor = borderColor;
         group.borderWidth = borderWidth;
         
