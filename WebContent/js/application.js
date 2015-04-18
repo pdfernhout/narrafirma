@@ -38,7 +38,17 @@ define([
 
     // TODO: Add page validation
 
-    var navigationSections = JSON.parse(navigationJSONText);
+    var navigationSections = [];
+    try {
+        navigationSections = JSON.parse(navigationJSONText);
+    } catch (e) {
+        console.log("problem parsing navigationJSONText", navigationJSONText);
+        console.log("Error", e);
+        alert('There was a problem parsing the file "navigation.json"; the application can not run.');
+        document.getElementById("pleaseWaitDiv").style.display = "none";
+        document.body.appendChild(document.createTextNode("Startup failed! Please contact your NarraFirma hosting provider."));
+        throw new Error("Unable to start due to malformed navigation.json file");
+    }
     var loadingBase = "dojo/text!js/applicationPanelSpecifications/";
 
     // For building panels based on field specifications
