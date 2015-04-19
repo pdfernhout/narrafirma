@@ -584,29 +584,29 @@ define([
             // TODO: Maybe no longer set a different color based on url if you can set border color yourself?? 
             // if (item.url) item.borderColor = defaultHasNoteBorderColor;
         
-            var clusterRectangle = group.append("rect")
-                .attr("x", -radius * 2)
-                .attr("y", -radius * 2)
-                .attr("width", radius * 4)
-                .attr("height", radius * 4)
+            var clusterRectangleOuter = group.append("circle")
+                .attr("r", radius * 3)
+                .attr("cx", 0)
+                .attr("cy", 0)
                 .style("fill", d3.rgb(bodyColor).brighter())
                 // Make translucent
                 .style("opacity", 0.25)
                 .style("stroke", d3.rgb(borderColor))
                 .style("stroke-width", borderWidth * 2);
             
-            var clusterRectangle = group.append("rect")
-                .attr("x", -radius)
-                .attr("y", -radius)
-                .attr("width", radius * 2)
-                .attr("height", radius * 2)
+            /*
+            var clusterRectangleInner = group.append("circle")
+                .attr("r", radius)
+                .attr("cx", 0)
+                .attr("cy", 0)
                 .style("fill", d3.rgb(bodyColor))
                 // Make translucent
                 .style("opacity", 0.75)
                 .style("stroke", d3.rgb(borderColor))
                 .style("stroke-width", borderWidth);
+            */
             
-            group.clusterRectangle = clusterRectangle;
+            group.circle = clusterRectangleOuter;
             
         } else {
             // TODO: Maybe no longer set a different color based on url if you can set border color yourself?? 
