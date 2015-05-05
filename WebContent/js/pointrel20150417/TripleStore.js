@@ -74,12 +74,12 @@ define([
             
             // console.log("TripleStore: About to publish changes...");
             
-            topic.publish("TripleStore.addTriple", triple, message);
+            topic.publish(makeTopicKey({type: "TripleStore.addTriple"}), triple, message);
             
             // TODO: Improve this dispatching so don't have to do JSON string conversion
             // Some other common events. Other variations would need to be listened for using the more general event above
             // TODO: Maybe want to distinguish when a later C value is put in that superceeds an old C value
-            console.log("publish", makeTopicKey({type: "TripleStore.addForAB", a: triple.a, b: triple.b}));
+            // console.log("publish", makeTopicKey({type: "TripleStore.addForAB", a: triple.a, b: triple.b}));
             topic.publish(makeTopicKey({type: "TripleStore.addForA", a: triple.a}), triple, message);
             topic.publish(makeTopicKey({type: "TripleStore.addForAB", a: triple.a, b: triple.b}), triple, message);
             topic.publish(makeTopicKey({type: "TripleStore.addForBC", b: triple.b, c: triple.c}), triple, message);
@@ -93,7 +93,7 @@ define([
         // TODO: Should these subscriptions be stored in this object or be caller responsibility?
         
         if (a === undefined && b === undefined && c === undefined) {
-            return topic.subscribe("TripleStore.addTriple", callback);
+            return topic.subscribe(makeTopicKey({type: "TripleStore.addTriple"}), callback);
         }
         
         if (a !== undefined) {
@@ -119,11 +119,14 @@ define([
     // TODO: Ignoring actual timestamps, so only "latest" by receipt is considered, but that is not correct
     // TODO: need to use actual timestamp in sorted comparison to deal with collissions
     TripleStore.prototype.queryLatest = function (a, b, c) {
+        console.log("queryLatest", a, b, c);
         for (var i = this.tripleMessages.length - 1; i >= 0; i--) {
             var tripleMessage = this.tripleMessages[i];
-            if (a === undefined || tripleMessage.change.a === a &&
-                b === undefined || tripleMessage.change.b === b &&
-                c === undefined || tripleMessage.change.c === c) {
+            // console.log("queryLatest loop", i, tripleMessage);
+            if ((a === undefined || tripleMessage.change.triple.a === a) &&
+                (b === undefined || tripleMessage.change.triple.b === b) &&
+                (c === undefined || tripleMessage.change.triple.c === c)) {
+                console.log("match", tripleMessage.change.triple);
                 return tripleMessage.change.triple;
             }         
         }
