@@ -3,11 +3,13 @@
 define([
     "js/modelUtility",
     "js/panelBuilder/PanelSpecificationCollection",
-    "dojo/Stateful"
+    "dojo/Stateful",
+    "js/project"
 ], function(
     modelUtility,
     PanelSpecificationCollection,    
-    Stateful
+    Stateful,
+    project
 ) {
     "use strict";
     
@@ -65,6 +67,9 @@ define([
         /////////////// API calls below
         
         hasUnsavedChangesForCurrentPage: function() {
+            // TODO: Fix
+            return false;
+            
             if (!domain.currentPageModelName) return false;
             if (domain.currentPageDocumentEnvelope) {
                 return modelUtility.isModelChanged(domain.currentPageModel, domain.currentPageDocumentEnvelope.content);
@@ -76,7 +81,17 @@ define([
             }
         },
         
+        subscriptions: [],
+        
         changeCurrentPageModel: function(pageSpecification, modelName) {
+            console.log("changeCurrentPageModel", modelName);
+            
+            // Remove old subscriptions when move to a new page
+            domain.subscriptions.forEach(function (subscription) {
+                subscription.remove();
+            });
+            domain.subscription = [];
+            
             var pageModel = new Stateful();
             
             var pageModelTemplate = null;
@@ -91,6 +106,61 @@ define([
                 }
             }
             console.log("changeCurrentPageModel", modelName, pageModelTemplate);
+            
+            function subscribe(model, fieldName) {
+                model._saved[fieldName] = model.get(fieldName);
+                var subscription = project.subscribe("test-project", fieldName, undefined, function(triple, message) {
+                    // console.log(" ---------- updateWhenTripleStoreChanges", triple, message);
+                    var newValue = triple.c;
+                    // TODO: Should warn if saved an get differ because going to lose changes
+                    var editedValue = model.get(fieldName);
+                    // TODO: User might have cleared the field; need better way to detect initial changes...
+                    if (editedValue && model._saved[fieldName] !== editedValue) {
+                        console.log("About to lose user entered data in field", fieldName, "user-edited:", editedValue, "new:", newValue)
+                    }
+                    model._saved[fieldName] = newValue;
+                    if (editedValue !== newValue) {
+                        console.log("notified of changed data in store, so updating field", fieldName, newValue);
+                        // TODO: Problem -- this will trigger an watch, which will lead to writing out the value
+                        model.set(fieldName, newValue);
+                    }
+                    // formSaved[fieldName] = newValue;
+                });
+                domain.subscriptions.push(subscription);
+            }
+            
+            // TODO: Need to unwatch when leave page
+            function watch(model, fieldName) {
+                var subscription = model.watch(fieldName, function(name, oldValue, newValue) {
+                    console.log("Watch changed", fieldName, oldValue, newValue);
+                    if (model._saved[fieldName] !== newValue) {
+                        model._saved[fieldName] = newValue;
+                        console.log("storing new value for field", fieldName, newValue);
+                        project.add("test-project", fieldName, newValue);
+                    }
+                });
+                domain.subscriptions.push(subscription);
+            }
+            
+            console.log("project", project);
+            
+            for (var fieldName in pageModel) {
+                if (pageModel.hasOwnProperty(fieldName)) {
+                    console.log("pageModel fieldName", fieldName);
+                    if (fieldName.charAt(0) === "_") continue;
+                    var triple = project.queryLatest("test-project", fieldName, undefined);
+                    console.log("got triple for query", fieldName, triple, project);
+                    if (triple) {
+                        if (fieldName === "project_reportEndText") {
+                            console.log("DEBUG problem fieldName");
+                        }
+                        pageModel.set(fieldName, triple.c);
+                    }
+                    pageModel._saved = {};
+                    subscribe(pageModel, fieldName);
+                    watch(pageModel, fieldName);
+                }
+            }
             
             domain.currentPageSpecification = pageSpecification;
             domain.currentPageModelName = modelName;
