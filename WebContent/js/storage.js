@@ -105,6 +105,7 @@ define([
             if (error) {
                 console.log("ERROR: " + error);
                 callbackWhenDone(null);
+                return;
             }
             callbackWhenDone(result.result);
         });
