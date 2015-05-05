@@ -21,7 +21,13 @@ var methodOverride = require("method-override");
 var sessionModule = require("express-session");
 
 // the server library
-var pointrel20141201Server = require("./pointrel20141201Server");
+// var pointrel20141201Server = require("./pointrel20141201Server");
+
+var pointrel20150417Server = require("./pointrel20150417Server");
+
+//TODO: Need better loading and project management than this
+pointrel20150417Server.addJournalSync("testing");
+pointrel20150417Server.indexAllJournals();
 
 // TODO: think about authentication
 var config = {
@@ -111,8 +117,12 @@ app.use(logger);
 // TODO: May need to move this and split up JSON parsing functionality
 // TODO: Could there be an issue with bodyParser with undeleted temp files?
 // includes support to parse JSON-encoded bodies (and saving the rawBody)
-pointrel20141201Server.initialize(app);
+// pointrel20141201Server.initialize(app);
 // app.use(bodyParser.json());
+app.use(bodyParser.json({
+    limit: '10mb'
+    // verify: bodyParserVerifyAddSHA256
+}));
 
 // to support URL-encoded bodies
 app.use(bodyParser.urlencoded({
@@ -218,6 +228,14 @@ app.get("/test", function (request, response) {
     writeTestPage(request, response);
 });
 
+
+// TODO: Fix this
+app.post("/survey/questions/:surveyID", function (request, response) {
+    applicationLog("ERROR TODO UNFINISHED");
+    return response.json({status: "FAILED", message: "Unfinished", questions: null});
+});
+
+/*
 function getLatestIndexEntry(indexEntries) {
     var latest = null;
     for (var i = 0; i < indexEntries.length; i++) {
@@ -255,6 +273,7 @@ app.post("/survey/questions/:surveyID", function (request, response) {
         return response.json({status: "OK", message: "Retrieved survey", questions: questionsEnvelope.content});
     });
 });
+*/
 
 app.use("/$", ensureAuthenticated,   function(req, res) {
     res.redirect('/index.html');
@@ -264,6 +283,21 @@ app.use("/", ensureAuthenticated, express.static(__dirname + "/../WebContent"));
 
 // TODO: For developer testing only; remove in final version
 app.use("/dojo-debug", express.static(__dirname + "/../../PNIWorkbookLibraries/dojo-release-1.10.0-src"));
+
+function senderIPAddressForRequest(request) {
+    return request.headers['x-forwarded-for'] || 
+        request.connection.remoteAddress || 
+        request.socket.remoteAddress ||
+        request.connection.socket.remoteAddress;
+}
+
+app.post("/api/pointrel20150417", function(request, response) {
+    // response.json({"error": "server unfinished!"});
+    // TODO: Exception handling?
+    pointrel20150417Server.processRequest(request.body, function(requestResultMessage) {
+        response.json(requestResultMessage);
+    }, senderIPAddressForRequest(request));
+});
 
 app.use(function(err, req, res, next){
     console.error(err.stack);
