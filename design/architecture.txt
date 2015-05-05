@@ -20,3 +20,58 @@ These definitions can also often be used to build domain models using the dataTy
 The dataType field can be any of "string", "boolean", "number", or "object".
 
 The panelBuilder package defines a PanelBuilder class that can build a GUI in HTML from these field specifications.
+
+======
+
+The NarraFirma application consists of these main sections:
+* Project Creation and Choice (meta)
+* Project-specific Dashboard / Section Launcher / Introduction / Import&Export / Project-specific configuration
+* Planning
+* Questionnaire Creation (Collection Design)
+* Questionnaire Use (Collection Process)
+* Catalysis
+* Sensemaking
+* Intervention
+* Return
+* Project Report / Summary
+
+Pages are mostly stand-alone, but sometimes referenced between pages.
+Examples include:
+[All] The section dashboards pull a page status message from all the pages in that section
+[All] A final report in a section (may be going away) pulls data from all previous pages
+[Planning] The revisePNIPlanningQuestions page pulls data from a previous page
+[Collection Process] Survey results entered on one page in Collection Process are used in the story browser and graph browser on later pages
+[Catalysis] Data entered in story theming is used in the pattern/trend browser
+[Catalysis] (Potentially) story excerpts selected in story browser or patter browser are reviewed on a later page
+[Catalysis] (Potentially, probably going away) Observations collected from browse, graph, and trends page are reviewed later
+[Catalysis] Interpretations made in the pattern/trend browser are clustered on a later page
+[Catalysis] Perspectives resulting from clustering interpretations are described on a later page
+[Catalysis] The catalysis report draws from previous pages
+ 
+The sections are mostly stand-alone, but with some exceptions:
+Import&Export needs to access and modify all data in the rest of the application
+The project title set in Planning may need to be accessible in other sections for display?
+Questionnaires made in Collection Design need to be imported by the Collection Process.
+Survey results collected or imported during Collection Process need to be imported (as sets) to Catalysis (including their questionnaires).
+Project Report needs to be able to access all data in the rest of the application
+(Potentially) Participant group names need to be referenced in multiple sections (if not typed in as text edit) -- especially in Intervention/ProjectOutcomes
+Recommendations for participant questions, sessions, and venues in Collection Design, Sensemaking, and Intervention are based on answers in Planning section
+(Potentially) Preparing project presentation may involve referring to previous data on all project pages (but does not currently)
+
+Other interactions:
+Turning on and off data collection requires interacting with some server-related storage for questionnaire status and the questionnaire itself
+Projects need to be created somehow with presumably a list of projects maintained somewhere
+Projects have authorized users and/or roles that need to be stored and retrieved somewhere
+Validation code needs to check the user and allowed permissions for each message accepted by the server for a project
+
+However, even one "exception" means something is not "stand-alone" computationally.
+So, in practice, pages need to refer to data from other pages in sections, and sections need to refer to data from other sections.
+And survey gathering needs to refer to data stored from a project.
+And a project list needs to know about every project and some basic data about it (at least title, but maybe description and users and last update).
+A project log or chat needs to span an entire project for all pages.
+Authentication for allowed users and/or roles (including maybe credentials) probably would be stored in one place instead of in each project?
+
+Still, most (if not potentially all but maybe title) of the interactions between sections happen when the user presses a button.
+So, potentially those could be handled differently from the rest that related to displaying data on a page.
+
+
