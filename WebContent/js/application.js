@@ -216,7 +216,14 @@ define([
         var helpButton = widgetSupport.newButton(pageControlsPane, "#button_help|Help", buttonActions.helpButtonClicked);
         // var debugButton = widgetSupport.newButton(pageControlsPane, "#button_debug|Debug", buttonActions.debugButtonClicked);
 
-        // Setup the first page
+        // TODO: Improve status reporting
+        serverStatusPane = panelBuilder.newContentPane({content: "Server status: unknown"});
+        serverStatusPane.placeAt(pageControlsPane);
+        
+        console.log("createLayout end");
+    }
+    
+    function setupFirstPage() {
         var fragment = hash();
         console.log("fragment when page first loaded", fragment);
         if (fragment) {
@@ -224,12 +231,6 @@ define([
         } else {
             urlHashFragmentChanged(domain.startPage);
         }
-
-        // TODO: Improve status reporting
-        serverStatusPane = panelBuilder.newContentPane({content: "Server status: unknown"});
-        serverStatusPane.placeAt(pageControlsPane);
-        
-        console.log("createLayout end");
     }
     
     function updateServerStatus(text) {
@@ -367,12 +368,20 @@ define([
             
             // TODO: What to do while waiting for data for a project to load from server the first time? Assuming authenticated OK etc.???
             
-            // turn off initial "please wait" display
-            document.getElementById("pleaseWaitDiv").style.display = "none";
-            document.getElementById("navigationDiv").style.display = "block";
+            // TODO: This assumes we have picked a project, and are actually loading data and have not errored out
+            // TODO: Need some kind of progress indicator of messages loaded...
+            project.pointrelClient.idleCallback = function () {
+                setupFirstPage();
+                
+                // turn off initial "please wait" display
+                document.getElementById("pleaseWaitDiv").style.display = "none";
+                document.getElementById("navigationDiv").style.display = "block";
+            };
             
             // From: https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload
             window.addEventListener("beforeunload", function (e) {
+                // TODO: IMPORTANT Ensure the current text field if any does the equivalent of a blur to commit its data...
+                
                 if (!domain.hasUnsavedChangesForCurrentPage()) return null;
                     
                 var confirmationMessage = "You have unsaved changes";
