@@ -6,7 +6,6 @@ define([
     "dojo/hash",
     "js/navigationPane",
     "dojox/widget/Standby",
-    "js/storage",
     "js/panelBuilder/translate"
 ], function(
     ContentPane,
@@ -16,7 +15,6 @@ define([
     hash,
     navigationPane,
     Standby,
-    storage,
     translate
 ) {
     "use strict";
@@ -152,27 +150,10 @@ define([
             finishShowingPage(pageID, pageSpecification);
             return;
         }
-        
-        storage.loadLatestPageVersion(documentID, function (error, content, envelope) {
-            console.log("loaded data", error, content, envelope);
-            
-            if (!error) {
-                try {
-                    domain.changeCurrentPageData(envelope);
-                } catch (e) {
-                    console.log("ERROR: Problem calling changeCurrentPageData", envelope, e);
-                }
-            } else {
-                console.log("ERROR: Problem loading data for page", pageID, error);
-                // TODO: Need to distinguish if just starting out and no data file for page from some server issue
-                // TODO: Translate
-                // alert("Problem loading data for page");
-            }
  
-            finishShowingPage(pageID, pageSpecification);
-        });
+        finishShowingPage(pageID, pageSpecification);
         
-        // TODO: What if standby reset fails for some reason, like a problem with loadLastestProjectVersion?
+        // TODO: What if standby reset fails for some reasonn?
     }
     
     function finishShowingPage(pageID, pageSpecification) { 

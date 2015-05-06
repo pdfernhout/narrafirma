@@ -10,7 +10,7 @@ define([
     "dojo/text!js/applicationPanelSpecifications/navigation.json",
     "js/pageDisplayer",
     "js/panelBuilder/PanelBuilder",
-    "js/project",
+    "js/Project",
     "js/surveyCollection",
     "js/panelBuilder/toaster",
     "dojo/topic",
@@ -29,7 +29,7 @@ define([
     navigationJSONText,
     pageDisplayer,
     PanelBuilder,
-    project,
+    Project,
     surveyCollection,
     toaster,
     topic,
@@ -39,6 +39,9 @@ define([
     "use strict";
 
     // TODO: Add page validation
+    
+    var project;
+    var serverStatusPane;
 
     var navigationSections = [];
     try {
@@ -222,7 +225,17 @@ define([
             urlHashFragmentChanged(domain.startPage);
         }
 
+        // TODO: Improve status reporting
+        serverStatusPane = panelBuilder.newContentPane({content: "Server status: unknown"});
+        serverStatusPane.placeAt(pageControlsPane);
+        
         console.log("createLayout end");
+    }
+    
+    function updateServerStatus(text) {
+        // The serverStatusPane may be created only after we start talking to the server
+        if (!serverStatusPane) return;
+        serverStatusPane.set("content", "Server status: " + text);
     }
     
     function loadedMoreSurveyResults(newEnvelopeCount) {
@@ -315,6 +328,9 @@ define([
         
         loadAllApplicationWidgets(PanelBuilder);
         
+        project = new Project(updateServerStatus);
+        domain.project = project;
+        
         // Load the application design
         loadAllPanelSpecifications(domain.panelSpecificationCollection, navigationSections, loadingBase, function() {
             // generateNavigationDataInJSON();
@@ -349,7 +365,7 @@ define([
             // Load all the latest stories
             surveyCollection.loadLatestStoriesFromServer();
             
-            // The latest data for just the current page will be loaded when the page is created
+            // TODO: What to do while waiting for data for a project to load from server the first time? Assuming authenticated OK etc.???
             
             // turn off initial "please wait" display
             document.getElementById("pleaseWaitDiv").style.display = "none";

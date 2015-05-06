@@ -57,12 +57,9 @@ define([
         if (!referencedQuestionID) throw new Error("missing referencedQuestionID for field: " + fieldSpecification.id + " all: " + JSON.stringify(fieldSpecification));
 
         var calculate = function () {
-            var triple = panelBuilder.project.queryLatest("test-project", referencedQuestionID, undefined);
-            console.log("got triple for query", referencedQuestionID, triple, panelBuilder.project);
-            if (triple) {
-                return triple.c;
-            }
-            return "";
+            var value = panelBuilder.project.getFieldValue(referencedQuestionID);
+            if (value === undefined || value === null) value = "";
+            return value;
         };
         
         var label = panelBuilder._add_calculatedText(panelBuilder, contentPane, fieldSpecification, function() {return div_for_value(calculate());});
@@ -72,8 +69,7 @@ define([
         
         var updateInfo = {"id": fieldSpecification.id, "label": label, "baseText": baseText, "calculate": calculate};
         
-        // TODO: Fix hardcoded project ID
-        var watcher = panelBuilder.project.subscribe("test-project", referencedQuestionID, undefined, function(triple, message) {
+        var watcher = panelBuilder.project.watchFieldValue(referencedQuestionID, function(triple, message) {
             panelBuilder.updateLabelUsingCalculation(updateInfo);
         });
         

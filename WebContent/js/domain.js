@@ -3,13 +3,11 @@
 define([
     "js/modelUtility",
     "js/panelBuilder/PanelSpecificationCollection",
-    "dojo/Stateful",
-    "js/project"
+    "dojo/Stateful"
 ], function(
     modelUtility,
     PanelSpecificationCollection,    
-    Stateful,
-    project
+    Stateful
 ) {
     "use strict";
     
@@ -25,6 +23,9 @@ define([
         // savedVersions: [],
         
         projectID: "Test-PNIWorkbook-004",
+        
+        // Application will fill this in
+        project: null,
         
         // TODO: Fix hardcoded surveyResultHyperdocumentID
         surveyResultHyperdocumentID: "Test-PNIWorkbook-003-Surveys",
@@ -109,14 +110,14 @@ define([
             
             function subscribe(model, fieldName) {
                 model._saved[fieldName] = model.get(fieldName);
-                var subscription = project.subscribe("test-project", fieldName, undefined, function(triple, message) {
+                var subscription = domain.project.watchFieldValue(fieldName, function(triple, message) {
                     // console.log(" ---------- updateWhenTripleStoreChanges", triple, message);
                     var newValue = triple.c;
                     // TODO: Should warn if saved an get differ because going to lose changes
                     var editedValue = model.get(fieldName);
                     // TODO: User might have cleared the field; need better way to detect initial changes...
                     if (editedValue && model._saved[fieldName] !== editedValue) {
-                        console.log("About to lose user entered data in field", fieldName, "user-edited:", editedValue, "new:", newValue)
+                        console.log("About to lose user entered data in field", fieldName, "user-edited:", editedValue, "new:", newValue);
                     }
                     model._saved[fieldName] = newValue;
                     if (editedValue !== newValue) {
@@ -136,22 +137,22 @@ define([
                     if (model._saved[fieldName] !== newValue) {
                         model._saved[fieldName] = newValue;
                         console.log("storing new value for field", fieldName, newValue);
-                        project.add("test-project", fieldName, newValue);
+                        domain.project.setFieldValue(fieldName, newValue, oldValue);
                     }
                 });
                 domain.subscriptions.push(subscription);
             }
             
-            console.log("project", project);
+            console.log("project", domain.project);
             
             for (var fieldName in pageModel) {
                 if (pageModel.hasOwnProperty(fieldName)) {
                     console.log("pageModel fieldName", fieldName);
                     if (fieldName.charAt(0) === "_") continue;
-                    var triple = project.queryLatest("test-project", fieldName, undefined);
-                    console.log("got triple for query", fieldName, triple, project);
-                    if (triple) {
-                        pageModel.set(fieldName, triple.c);
+                    var value = domain.project.getFieldValue(fieldName);
+                    console.log("got value for query", fieldName, value);
+                    if (value !== undefined && value !== null) {
+                        pageModel.set(fieldName, value);
                     }
                     pageModel._saved = {};
                     subscribe(pageModel, fieldName);
@@ -164,23 +165,6 @@ define([
             domain.currentPageModel = pageModel;
             domain.currentPageModelTemplate = pageModelTemplate;
             domain.currentPageDocumentEnvelope = null;
-        },
-        
-        changeCurrentPageData: function (documentEnvelope) {
-            domain.currentPageDocumentEnvelope = documentEnvelope;
-            if (domain.currentPageDocumentEnvelope) {
-                // TODO: Copying only model-defined data for now, which will produce warnings of unsaved changes as migrate test data
-                // TODO: Probably want to eventually change this back to copy all data, in order to preserve data from future versions where model has added fields
-                // TODO: Changing it back will also avoid unsaved changes warnings if there is new document data added later by other modules
-                modelUtility.updateModelWithNewValues(domain.currentPageModel, documentEnvelope.content, "copyOnlyModelFields");
-            } else {
-                // Reset the model
-                if (!domain.currentPageModelTemplate) {
-                    console.log("ERROR: Missing currentPageModelTemplate");
-                } else {
-                    modelUtility.updateModelWithNewValues(domain.currentPageModel, domain.currentPageModelTemplate, "copyOnlyModelFields", "removeOtherFieldsFromModel");
-                }
-            }
         },
         
         getDocumentIDForCurrentPage: function() {
