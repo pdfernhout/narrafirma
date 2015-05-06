@@ -1,13 +1,11 @@
 define([
     "lib/d3/d3",
-    "js/domain",
     "dojo/dom-construct",
     "dojo/_base/lang",
     "dijit/layout/ContentPane",
     "dojox/layout/TableContainer"
 ], function(
     d3,
-    domain,
     domConstruct,
     lang,
     ContentPane,
