@@ -282,7 +282,7 @@ app.use("/$", ensureAuthenticated,   function(req, res) {
 app.use("/", ensureAuthenticated, express.static(__dirname + "/../WebContent"));
 
 // TODO: For developer testing only; remove in final version
-app.use("/dojo-debug", express.static(__dirname + "/../../PNIWorkbookLibraries/dojo-release-1.10.0-src"));
+app.use("/dojo-debug", express.static(__dirname + "/../../PNIWorkbookLibraries/dojo-release-1.10.4-src"));
 
 function senderIPAddressForRequest(request) {
     return request.headers['x-forwarded-for'] || 
