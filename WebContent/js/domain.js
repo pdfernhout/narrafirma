@@ -151,9 +151,6 @@ define([
                     var triple = project.queryLatest("test-project", fieldName, undefined);
                     console.log("got triple for query", fieldName, triple, project);
                     if (triple) {
-                        if (fieldName === "project_reportEndText") {
-                            console.log("DEBUG problem fieldName");
-                        }
                         pageModel.set(fieldName, triple.c);
                     }
                     pageModel._saved = {};
