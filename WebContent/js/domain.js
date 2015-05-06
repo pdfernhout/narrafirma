@@ -20,10 +20,6 @@ define([
         // TODO: Fix credentials
         userID: "anonymous",
         
-        // savedVersions: [],
-        
-        projectID: "Test-PNIWorkbook-004",
-        
         // Application will fill this in
         project: null,
         
@@ -165,14 +161,6 @@ define([
             domain.currentPageModel = pageModel;
             domain.currentPageModelTemplate = pageModelTemplate;
             domain.currentPageDocumentEnvelope = null;
-        },
-        
-        getDocumentIDForCurrentPage: function() {
-            if (!domain.currentPageModelName) return null;
-            // TODO: May want to make the second section lowercase
-            // TODO: Is a dot the best way to seperate these sections/
-            // TODO: Improve data storage system so can use JSON for a document ID
-            return domain.projectID + "." + domain.currentPageModelName;
         },
         
         // Convenience method for most common case of finding page specification

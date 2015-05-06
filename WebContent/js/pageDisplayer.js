@@ -141,16 +141,6 @@ define([
             hash(currentPageID);
         }
         
-        // Load the data for the current page from the server, if that is needed
-        
-        var documentID = domain.getDocumentIDForCurrentPage();
-        
-        if (!documentID) {
-            // Current page does not need a document loaded for it
-            finishShowingPage(pageID, pageSpecification);
-            return;
-        }
- 
         finishShowingPage(pageID, pageSpecification);
         
         // TODO: What if standby reset fails for some reasonn?

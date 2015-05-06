@@ -154,7 +154,7 @@ define([
                __type: "org.workingwithstories.Questionnaire"
        };
        
-       requestValues(domain.projectID, [
+       requestValues(domain.project.projectIdentifier, [
            "questionForm_image",
            "questionForm_startText",
            "questionForm_endText",
