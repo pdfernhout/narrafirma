@@ -10,6 +10,7 @@ define([
     "dojo/text!js/applicationPanelSpecifications/navigation.json",
     "js/pageDisplayer",
     "js/panelBuilder/PanelBuilder",
+    "js/project",
     "js/surveyCollection",
     "js/panelBuilder/toaster",
     "dojo/topic",
@@ -28,6 +29,7 @@ define([
     navigationJSONText,
     pageDisplayer,
     PanelBuilder,
+    project,
     surveyCollection,
     toaster,
     topic,
@@ -321,6 +323,7 @@ define([
 
             // Tell the panel builder how to build panels
             panelBuilder.setPanelSpecifications(domain.panelSpecificationCollection);
+            panelBuilder.project = project;
             
             // Tell the panelBuilder what do do if a button is clicked
             panelBuilder.setButtonClickedCallback(buttonClicked);

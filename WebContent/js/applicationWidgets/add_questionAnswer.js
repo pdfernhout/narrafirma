@@ -1,10 +1,8 @@
 define([
     "dojo/_base/lang",
-    "js/project",
     "js/panelBuilder/translate"
 ], function(
     lang,
-    project,
     translate
 ){
     "use strict";
@@ -59,8 +57,8 @@ define([
         if (!referencedQuestionID) throw new Error("missing referencedQuestionID for field: " + fieldSpecification.id + " all: " + JSON.stringify(fieldSpecification));
 
         var calculate = function () {
-            var triple = project.queryLatest("test-project", referencedQuestionID, undefined);
-            console.log("got triple for query", referencedQuestionID, triple, project);
+            var triple = panelBuilder.project.queryLatest("test-project", referencedQuestionID, undefined);
+            console.log("got triple for query", referencedQuestionID, triple, panelBuilder.project);
             if (triple) {
                 return triple.c;
             }
@@ -75,7 +73,7 @@ define([
         var updateInfo = {"id": fieldSpecification.id, "label": label, "baseText": baseText, "calculate": calculate};
         
         // TODO: Fix hardcoded project ID
-        var watcher = project.subscribe("test-project", referencedQuestionID, undefined, function(triple, message) {
+        var watcher = panelBuilder.project.subscribe("test-project", referencedQuestionID, undefined, function(triple, message) {
             panelBuilder.updateLabelUsingCalculation(updateInfo);
         });
         
