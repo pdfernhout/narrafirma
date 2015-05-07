@@ -1,5 +1,7 @@
 NarraFirma architecture
 
+==== GUI Building
+
 The application consists (overall) of "panels".
 Some panels are used as "pages" to be displayed.
 Some panels are used by widgets (especially the grid widget) to display nested information inside an enclosing panel.
@@ -21,7 +23,7 @@ The dataType field can be any of "string", "boolean", "number", or "object".
 
 The panelBuilder package defines a PanelBuilder class that can build a GUI in HTML from these field specifications.
 
-======
+==== Data interactions between pages and sections
 
 The NarraFirma application consists of these main sections:
 * Project Creation and Choice (meta)
@@ -73,5 +75,17 @@ Authentication for allowed users and/or roles (including maybe credentials) prob
 
 Still, most (if not potentially all but maybe title) of the interactions between sections happen when the user presses a button.
 So, potentially those could be handled differently from the rest that related to displaying data on a page.
+
+==== Major domain modules and classes
+
+main -- loads and initializes applications
+
+application -- module representing a singleton application, creates a Project which is stored in the domain module
+
+domain -- a global place to store key application data, plus some related functionality for building models for pages
+
+Project -- stores project data in a TripleStore which tracks a Pointrel journal via a PointrelClient instance
+
+
 
 
