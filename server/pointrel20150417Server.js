@@ -34,6 +34,14 @@ var journalsDirectory = serverDataDirectory + "journals/";
 // The more frequently records are written to the server, the smaller this value should be
 var maximumTimeDriftAllowed_ms = 10000;
 
+// You might not want to cache message contents if you have a lot of big media files in applications
+// However, caching from the start is the right default for small projects (like with, say, typically less than 100 MB of data)
+var cacheMessageContents = true;
+
+// Constants about including message results in query responses
+var maximumQueryResponseLimit = 100;
+var maximumMessageBodyBytes = 1000000;
+
 // Standard nodejs modules
 var fs = require('fs');
 
@@ -105,7 +113,7 @@ function resetIndexesForJournal(journal) {
 
 // TODO: Fix so loads all journals after determining identifiers from storage?
 function indexAllJournals() {
-    log("indexAllJournals", journals);
+    log("=================================== indexAllJournals", journals);
     
     // TODO: Load journals from disk
     for (var key in journals) {
@@ -126,8 +134,27 @@ function indexAllJournals() {
 
 // The power of deleting code that is not currently used to reduce clutter? Knowing it is rewriteable again or findable in other versions?
 
+// Returns null if can not read file, which means client should ignore the message as unobtainable
+function readMessageContentsFromFile(receivedRecord) {
+    var fileContents;
+    var message;
+    try {
+        fileContents = fs.readFileSync(receivedRecord.fullFileName);
+    } catch (e) {
+        console.log("Problem reading message file", receivedRecord, e);
+        return null;
+    }
+    try {
+        message = JSON.parse(fileContents);
+    } catch (e) {
+        console.log("Problem parsing message file", receivedRecord, e);
+        return null;
+    }
+    return message;
+}
+
 // TODO: Maybe wasteful to store full file name if it can be calculated
-function ingestMessage(journal, receivedTimestamp, sha256AndLength, fullFileName, topicSHA256, topicTimestamp) {
+function ingestMessage(journal, receivedTimestamp, sha256AndLength, fullFileName, topicSHA256, topicTimestamp, messageContents) {
     if (!topicSHA256) topicSHA256 = null;
     if (!topicTimestamp) topicTimestamp = null;
     
@@ -139,6 +166,14 @@ function ingestMessage(journal, receivedTimestamp, sha256AndLength, fullFileName
         fullFileName: fullFileName,
         loadingSequence : journal.allMessagesSortedByReceivedTimestamp.length + 1
     };
+    
+    if (cacheMessageContents) {
+        if (messageContents) {
+            receivedRecord.messageContents = messageContents;
+        } else {
+            receivedRecord.messageContents = readMessageContentsFromFile(receivedRecord);
+        }
+    }
     
     // console.log("ingestMessage", receivedRecord);
     
@@ -244,6 +279,24 @@ function respondForReportStatusRequest(callback) {
 
 //--- Loading and storing messages on disk
 
+function setOutgoingMessageTrace(requesterIPAddress, journal, message, makeCopy) {
+    if (makeCopy) message = JSON.parse(JSON.stringify(message));
+    // TODO: More thinking about the meaning of a trace???
+    // TODO: Add more info about who requested this information
+    // TODO: Maybe add other things, like requester IP or user identifier?
+    var sentTimestamp = utility.getCurrentUniqueTimestamp();
+    var traceEntry = {
+        sentByJournalIdentifier: journal.journalIdentifier,
+        sentByServer: serverName,
+        // TODO: How to best identify from where or from whom this is requested from???
+        requesterIPAddress: requesterIPAddress,
+        sentTimestamp: sentTimestamp
+    };
+    if (!message.__pointrel_trace) message.__pointrel_trace = [];
+    message.__pointrel_trace.push(traceEntry);
+    return message;
+}
+
 function respondForLoadMessageRequest(requesterIPAddress, journal, sha256AndLength, callback) {
     if (!isSHA256AndLengthIndexed(journal, sha256AndLength)) {
         return callback(makeFailureResponse(404, "No message indexed for sha256AndLength", {sha256AndLength: sha256AndLength}));
@@ -253,6 +306,14 @@ function respondForLoadMessageRequest(requesterIPAddress, journal, sha256AndLeng
     if (!receivedRecord) {
         return callback(makeFailureResponse(404, "No message file found for sha256AndLength", {sha256AndLength: sha256AndLength}));        
     }
+    
+    var message;
+    
+    if (receivedRecord.messageContents) {
+        message = setOutgoingMessageTrace(requesterIPAddress, journal, receivedRecord.messageContents, true);
+        return callback(makeSuccessResponse(200, "Success", {detail: 'Read content', sha256AndLength: sha256AndLength, message: message}));
+    }
+    
     // console.log("respondForLoadMessage", receivedRecord);
     var fullFileName = receivedRecord.fullFileName;
     fs.readFile(fullFileName, "utf8", function (error, data) {
@@ -272,21 +333,9 @@ function respondForLoadMessageRequest(requesterIPAddress, journal, sha256AndLeng
             return callback(makeFailureResponse(500, "Server error", {detail: 'Problem parsing JSON from file', sha256AndLength: sha256AndLength, error: exception}));
         }
         
-        // TODO: More thinking about the meaning of a trace???
-        // TODO: Add more info about who requested this information
-        // TODO: Maybe add other things, like requester IP or user identifier?
-        var sentTimestamp = utility.getCurrentUniqueTimestamp();
-        var traceEntry = {
-            sentByJournalIdentifier: journal.journalIdentifier,
-            sentByServer: serverName,
-            // TODO: How to best identify from where or from whom this is requested from???
-            requesterIPAddress: requesterIPAddress,
-            sentTimestamp: sentTimestamp
-        };
-        if (!parsedJSON.__pointrel_trace) parsedJSON.__pointrel_trace = [];
-        parsedJSON.__pointrel_trace.push(traceEntry);
+        message = setOutgoingMessageTrace(requesterIPAddress, journal, parsedJSON, false);
         
-        return callback(makeSuccessResponse(200, "Success", {detail: 'Read content', sha256AndLength: sha256AndLength, message: parsedJSON}));
+        return callback(makeSuccessResponse(200, "Success", {detail: 'Read content', sha256AndLength: sha256AndLength, message: message}));
     });
 }
 
@@ -395,19 +444,21 @@ function respondForStoreMessageRequest(senderIPAddress, journal, message, callba
             return callback(makeFailureResponse(500, "Server error: writeFile: '" + error + "'"));
         }
         
-        ingestMessage(journal, receivedTimestamp, sha256AndLength, fullFileName, topicSHA256, topicTimestamp);
+        ingestMessage(journal, receivedTimestamp, sha256AndLength, fullFileName, topicSHA256, topicTimestamp, message);
 
         return callback(makeSuccessResponse(200, "Success", {detail: 'Wrote content', sha256AndLength: sha256AndLength, receivedTimestamp: receivedTimestamp}));
     });
 }
 
-function respondForQueryForNextMessageRequest(journal, topicIdentifier, fromTimestampExclusive, limitCount, callback) {
+function respondForQueryForNextMessageRequest(requesterIPAddress, journal, topicIdentifier, fromTimestampExclusive, limitCount, includeMessageContents, callback) {
     // TODO: Optimize to read from end rather than scan entire list when given specific start date
     // TODO: And/or use some kind of sorted map so can quickly find message versions after a certain date
-    log("=========================== respondForQueryForNext", fromTimestampExclusive, limitCount);
+    log("======== respondForQueryForNext", fromTimestampExclusive, limitCount);
     
     var now = utility.getCurrentUniqueTimestamp();
     
+    if (limitCount > maximumQueryResponseLimit) limitCount = maximumQueryResponseLimit;
+
     var messagesSortedByReceivedTimestamp;
     if (topicIdentifier === undefined) {
         messagesSortedByReceivedTimestamp = journal.allMessagesSortedByReceivedTimestamp;
@@ -426,12 +477,28 @@ function respondForQueryForNextMessageRequest(journal, topicIdentifier, fromTime
     
     var receivedRecordsForClient = [];
     var lastReceivedTimestampConsidered = null;
+    var totalMessageBodyBytesIncluded = 0; 
+    var bytesForMessage;
     var i;
     for (i = 0; i < messagesSortedByReceivedTimestamp.length; i++) {
         var receivedRecord = messagesSortedByReceivedTimestamp[i];
         if (checkForMatch) {
             if (utility.compareISOTimestamps(receivedRecord.receivedTimestamp, fromTimestampExclusive) <= 0) continue;
             checkForMatch = false;
+        }
+        // Don't send any more messages with bodies if this next one would go over the limit, but always send at least one
+        if (includeMessageContents) {
+            try {
+                // console.log("receivedRecord.sha256AndLength", receivedRecord.sha256AndLength);
+                bytesForMessage = parseInt(receivedRecord.sha256AndLength.split("_")[1]);
+            } catch (e) {
+                console.log("Problem parsing length from sha256", receivedRecord);
+                // TODO: What should this value be on a failure? Can we assume we will not be able to read the file too?
+                bytesForMessage = 0;
+            }
+            var wouldExceedMaximimumBytes = (totalMessageBodyBytesIncluded + bytesForMessage > maximumMessageBodyBytes);
+            // console.log("bytesForMessage", i, bytesForMessage, wouldExceedMaximimumBytes, totalMessageBodyBytesIncluded + bytesForMessage);
+            if (i > 0 && wouldExceedMaximimumBytes) break;   
         }
         var receivedRecordForClient = {
             receivedTimestamp: receivedRecord.receivedTimestamp,
@@ -440,6 +507,24 @@ function respondForQueryForNextMessageRequest(journal, topicIdentifier, fromTime
             topicTimestamp: receivedRecord.topicTimestamp,
             _debugLoadingSequence: receivedRecord.loadingSequence
         };
+        if (includeMessageContents) {
+            var message;
+            var copyMessage = false;
+            // TODO: Need to set limits on size of returned record
+            // TODO: What if record got deleted or failed to load at startup but is available now? Would the sequency be wrong?
+            if (receivedRecord.messageContents) {
+                // TODO: Need to copy this, and set the outgoing trace
+                message = receivedRecord.messageContents;
+                copyMessage = true;
+            } else {
+                message = readMessageContentsFromFile(receivedRecord);
+            }
+            if (message) {
+                message = setOutgoingMessageTrace(requesterIPAddress, journal, message, copyMessage);
+                totalMessageBodyBytesIncluded += bytesForMessage;
+            }
+            receivedRecordForClient.messageContents = message;   
+        }
         receivedRecordsForClient.push(receivedRecordForClient);
         if (limitCount && receivedRecordsForClient.length >= limitCount) break;
     }
@@ -455,7 +540,7 @@ function respondForQueryForNextMessageRequest(journal, topicIdentifier, fromTime
 }
    
 function respondForQueryForLatestMessageRequest(journal, topicIdentifier, callback) {
-    log("=========================== respondForQueryForLatestMessage", topicIdentifier);
+    log("======== respondForQueryForLatestMessage", topicIdentifier);
     
     var messagesSortedByReceivedTimestamp;
     if (topicIdentifier === undefined) {
@@ -478,6 +563,8 @@ function respondForQueryForLatestMessageRequest(journal, topicIdentifier, callba
     }
     
     var now = utility.getCurrentUniqueTimestamp();
+    // TODO: perhaps return message contents with trace set
+    // TODO: Restrict data sent back for record to not include fullFileName
     return callback(makeSuccessResponse(200, "Success", {detail: 'latest',  currentTimestamp: now, latestRecord: latestRecord}));
 }
     
@@ -487,7 +574,7 @@ function respondForQueryForLatestMessageRequest(journal, topicIdentifier, callba
 // Callback has one argument, response, which has a "success" field of true/false a
 // A response also has other fields including a statusCode, a description, and possible extra fields
 function processRequest(apiRequest, callback, senderIPAddress) {
-    log("====================================== processRequest", JSON.stringify(apiRequest));
+    log("======== processRequest", JSON.stringify(apiRequest));
     
     if (!apiRequest) {
         return callback(makeFailureResponse(406, "Not acceptable: apiRequest is missing"));
@@ -524,7 +611,7 @@ function processRequest(apiRequest, callback, senderIPAddress) {
     if (requestType === "pointrel20150417_loadMessage") {
         return respondForLoadMessageRequest(senderIPAddress, journal, apiRequest.sha256AndLength, callback);
     } else if (requestType === "pointrel20150417_queryForNextMessage") {
-        return respondForQueryForNextMessageRequest(journal, apiRequest.topicIdentifier, apiRequest.fromTimestampExclusive, apiRequest.limitCount, callback);
+        return respondForQueryForNextMessageRequest(senderIPAddress, journal, apiRequest.topicIdentifier, apiRequest.fromTimestampExclusive, apiRequest.limitCount, apiRequest.includeMessageContents, callback);
     } else if (requestType === "pointrel20150417_queryForLatestMessage") {
         return respondForQueryForLatestMessageRequest(journal, apiRequest.topicIdentifier, callback);
     } else if (requestType === "pointrel20150417_storeMessage") {

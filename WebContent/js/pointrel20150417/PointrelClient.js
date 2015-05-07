@@ -76,6 +76,11 @@ define([
         this.frequencyOfChecks_ms = defaultCheckFrequency_ms;
         this.timer = null;
         
+        // By default, includeMessageContents of true will retrieve the message contents when polling to reduce back-and-forth latency to server
+        // Clients might want to turn this off if they cache messages locally
+        // or if they application selectively downloads big messages like images or other media perhaps depending on the topic they are in
+        this.includeMessageContents = true;
+        
         // This field is used to ensure only one request at a time is sent to the server
         this.outstandingServerRequestSentAtTimestamp = null;
         
@@ -101,6 +106,9 @@ define([
         this.idleCallback = null;
     }
     
+    // This should be called to start the polling process to keep a client up-to-date with what is in a Journal
+    // You should not start polling though if you just want to get the latest message in a topic
+    //  like for an application that selectively loads just a bit of published data
     PointrelClient.prototype.startup = function() {
         console.log(new Date().toISOString(), "starting up PointrelClient", this);
         if (this.apiURL === "loopback") {
@@ -111,6 +119,7 @@ define([
         }
     };
     
+    // Call this to shut down polling, like when you destroy a related GUI component
     PointrelClient.prototype.shutdown = function() {
         console.log(new Date().toISOString(), "shutting down PointrelClient", this);
         this.stopTimer();
@@ -249,7 +258,7 @@ define([
                     console.log("ERROR: Message store failure; discarding outgoing message", response, self.outgoingMessageQueue[0]);
                     self.serverStatus("Message store failure: " + response.statusCode + " :: " + response.description);
                 } else {
-                    self.serverStatus("OK");
+                    self.okStatus();
                     self.messageSentCount++;
                 }
                 self.outgoingMessageQueue.shift();
@@ -268,6 +277,10 @@ define([
                 self.outstandingServerRequestSentAtTimestamp = null;
             });
         }
+    };
+    
+    PointrelClient.prototype.okStatus = function() {
+        this.serverStatus("OK (sent: " + this.messageSentCount + ", received:" + this.messageReceivedCount + ")");
     };
     
     PointrelClient.prototype.filterMessages = function(filterFunction) {
@@ -377,7 +390,12 @@ define([
     PointrelClient.prototype.getCurrentUniqueTimestamp = getCurrentUniqueTimestamp;
     
     PointrelClient.prototype.messageReceived = function(message) {
-        if (debugMessaging) console.log("messageReceived", JSON.stringify(message, null, 2));
+        // if (debugMessaging) console.log("messageReceived", JSON.stringify(message, null, 2));
+        
+        if (!message) {
+            console.log("ERROR: Problem with server response. No message!");
+            return;
+        }
         
         this.messageReceivedCount++;
         
@@ -478,10 +496,12 @@ define([
         
         if (debugMessaging) console.log("Polling server for changes...");
         var apiRequest = {
-            "action": "pointrel20150417_queryForNextMessage",
-            "journalIdentifier": this.journalIdentifier,
-            "fromTimestampExclusive": this.lastReceivedTimestampConsidered,
-            "limitCount": 100
+            action: "pointrel20150417_queryForNextMessage",
+            journalIdentifier: this.journalIdentifier,
+            fromTimestampExclusive: this.lastReceivedTimestampConsidered,
+            // The server may return less than this number of message if including message contents and they exceed about 1MB in total
+            limitCount: 100,
+            includeMessageContents: this.includeMessageContents
         };
         if (this.topicIdentifier !== undefined) {
             apiRequest.topicIdentifier = this.topicIdentifier;
@@ -495,8 +515,8 @@ define([
         var self = this;
         request.post(this.apiURL, {
             data: JSON.stringify(apiRequest),
-            // Two second timeout
-            timeout: 2000,
+            // Ten second timeout, longer to account for reading multiple records on server
+            timeout: 10000,
             handleAs: "json",
             headers: {
                 "Content-Type": 'application/json; charset=utf-8',
@@ -508,21 +528,37 @@ define([
                 console.log("Response was a failure", response);
                 self.serverStatus("Polling response failure: " + response.statusCode + " :: " + response.description);
             } else {
-                self.serverStatus("OK");
+                self.okStatus();
                 for (var i = 0; i < response.receivedRecords.length; i++) {
                     var receivedRecord = response.receivedRecords[i];
-                    if (debugMessaging) console.log("New message", receivedRecord);
-                    self.incomingMessageRecords.push(receivedRecord);
+                    // if (debugMessaging) console.log("New message", receivedRecord);
+                    if (receivedRecord.messageContents !== undefined) {
+                        /// console.log("got contents directly", receivedRecord);
+                        if (receivedRecord.messageContents !== null) {
+                            self.messageReceived(receivedRecord.messageContents);
+                        } else {
+                            // Would be issue with the messages becoming out of order if did not just reject messages
+                            //   with null contents when requesting contents with polling result, like if did a retry instead
+                            console.log("Message contents not available for message", receivedRecord);
+                        }
+                        // delete receivedRecord.messageContents;
+                    } else {
+                        self.incomingMessageRecords.push(receivedRecord);
+                    }
                 }
                 self.lastReceivedTimestampConsidered = response.lastReceivedTimestampConsidered;
             }
             self.outstandingServerRequestSentAtTimestamp = null;
             if (response.receivedRecords.length) {
-                self.fetchIncomingMessage();
+                // Schedule another request immediately if getting contents..
+                setTimeout(function () {
+                    self.sendFetchOrPollIfNeeded();
+                }, 0);
             } else {
                 if (self.idleCallback) {
                     var callback = self.idleCallback;
                     self.idleCallback = null;
+                    console.log("Doing one-time idle callback");
                     callback();
                 }
             }
@@ -542,6 +578,13 @@ define([
         if (this.outstandingServerRequestSentAtTimestamp) return;
         if (debugMessaging) console.log("Trying to fetch incoming message");
         var incomingMessageRecord = this.incomingMessageRecords[0];
+        
+        if (incomingMessageRecord.messageContents) {
+            self.incomingMessageRecords.shift();
+            self.messageReceived(incomingMessageRecord.messageContents);
+            self.sendFetchOrPollIfNeeded();
+            return;
+        }
         
         if (debugMessaging) console.log("Retrieving new message...");
         var apiRequest = {
@@ -565,7 +608,7 @@ define([
                 "Accept": "application/json"
             }
         }).then(function(response) {
-            self.serverStatus("OK");
+            self.okStatus();
             if (debugMessaging) console.log("Got load response", response);
             self.outstandingServerRequestSentAtTimestamp = null;
             self.incomingMessageRecords.shift();
