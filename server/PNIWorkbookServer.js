@@ -21,8 +21,6 @@ var methodOverride = require("method-override");
 var sessionModule = require("express-session");
 
 // the server library
-// var pointrel20141201Server = require("./pointrel20141201Server");
-
 var pointrel20150417Server = require("./pointrel20150417Server");
 
 //TODO: Need better loading and project management than this
@@ -114,14 +112,10 @@ var logger = function(request, response, next) {
 
 app.use(logger);
 
-// TODO: May need to move this and split up JSON parsing functionality
-// TODO: Could there be an issue with bodyParser with undeleted temp files?
+// TODO: Could there be an issue with bodyParser with undeleted temp files? (Mentioned somewhere online)
 // includes support to parse JSON-encoded bodies (and saving the rawBody)
-// pointrel20141201Server.initialize(app);
-// app.use(bodyParser.json());
 app.use(bodyParser.json({
     limit: '10mb'
-    // verify: bodyParserVerifyAddSHA256
 }));
 
 // to support URL-encoded bodies
@@ -236,16 +230,7 @@ app.post("/survey/questions/:surveyID", function (request, response) {
 });
 
 /*
-function getLatestIndexEntry(indexEntries) {
-    var latest = null;
-    for (var i = 0; i < indexEntries.length; i++) {
-        var indexEntry = indexEntries[i];
-        if (!latest || indexEntries[i].timestamp >= latest.timestamp)
-            latest = indexEntries[i];
-    }
-    return latest;
-}
-
+TODO: Delete this. Just kept temporarily for reference when finishing the above function
 app.post("/survey/questions/:surveyID", function (request, response) {
     var surveyID = request.params.surveyID;
     var indexEntries = pointrel20141201Server.referencesForTag(surveyID);
