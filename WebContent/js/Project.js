@@ -13,22 +13,18 @@ define([
 ) {  
     "use strict";
     
-    var Project = function(updateServerStatus) {
-        // TODO: Fix hardcoded values
+    var serverURL = "/api/pointrel20150417";
+    
+    var Project = function(journalIdentifier, projectIdentifier, userIdentifier, updateServerStatus) {
+        this.journalIdentifier = journalIdentifier;
+        this.projectIdentifier = projectIdentifier;
+        this.userIdentifier = userIdentifier;
+
+        this.pointrelClient = new PointrelClient(serverURL, this.journalIdentifier, this.userIdentifier, receivedMessage, updateServerStatus);
         
-        this.projectIdentifier = "test-project";
-        
-        // TODO: userID is hardcoded
-        var userID = "tester1";
-        
+        // For now, listen on all topics in the journal
+        // TODO: Think about how to move topicIdentifier into pointrelClient initialization
         // var topicIdentifier = "project001";
-        
-        var serverURL = "/api/pointrel20150417";
-        
-        // TODO: Journal name is hardcoded...
-        this.pointrelClient = new PointrelClient(serverURL, "testing", userID, receivedMessage, updateServerStatus);
-        
-        // TODO: Think about how to move this into pointrelClient initialization
         // pointrelClient.topicIdentifier = topicIdentifier;
         
         this.tripleStore = new TripleStore(this.pointrelClient, "testing");

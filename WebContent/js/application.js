@@ -328,7 +328,12 @@ define([
         
         loadAllApplicationWidgets(PanelBuilder);
         
-        project = new Project(updateServerStatus);
+        // TODO: Fix hardcoded values
+        var journalIdentifier = "testing";
+        var projectIdentifier = "test-project";
+        var userID = "tester1";
+        
+        project = new Project(journalIdentifier, projectIdentifier, userID, updateServerStatus);
         domain.project = project;
         
         // Load the application design
