@@ -4,7 +4,6 @@ define([
     "js/domain",
     "js/modelUtility",
     "js/pageDisplayer",
-    "js/storage",
     "js/surveyBuilder",
     "js/surveyCollection",
     "js/panelBuilder/toaster",
@@ -16,7 +15,6 @@ define([
     domain,
     modelUtility,
     pageDisplayer,
-    storage,
     surveyBuilder,
     surveyCollection,
     toaster,
@@ -26,97 +24,6 @@ define([
 
     // The mostly recently loaded project version
     var currentProjectVersionReference;
-
-    function loadVersionClicked() {
-        console.log("load version clicked");
-        
-        // TODO: Fix this
-        throw new Error("No longer working due to ongoing refactoring for current page model");
-
-        // TODO: Kludge of loading all stories when load data?
-        // surveyCollection.loadLatestStoriesFromServer();
-
-        // TODO: Check for unsaved data before loading project...
-        storage.loadAllProjectVersions(loadedProjectVersions);
-    }
-
-    function loadedProjectVersions(error, versions) {
-        console.log("loadedProjectVersions", error, versions);
-        if (error) {
-            alert("A problem happened when trying to load all the versions of the project:\n" + error);
-            return;
-        }
-
-        console.log("got versions", versions);
-
-        versions.sort(function(a, b) {return a.timestamp.localeCompare(b.timestamp);});
-
-        // TODO: Translate
-        var columns = {timestamp: "Timestamp", committer: "Committer", sha256AndLength: "Reference"};
-        dialogSupport.openListChoiceDialog(null, versions, columns, "Project versions", "Load selected version", function (choice) {
-            console.log("choice:", choice);
-            if (choice) {
-                var sha256AndLength = choice.sha256AndLength;
-                storage.loadProjectVersion(sha256AndLength, switchToLoadedProjectData);
-            }
-        });
-    }
-
-    function switchToLoadedProjectData(error, projectAnswersLoaded, envelope) {
-        if (error) {
-            alert("A problem happened when trying to load the latest version of the project:\n" + error);
-            return;
-        }
-        console.log("loading saved version", projectAnswersLoaded);
-        
-        throw new Error("No longer working due to ongoing refactoring for current page model");
-        modelUtility.updateModelWithNewValues(domain.projectAnswers, projectAnswersLoaded);
-
-        // Rebuild the current page to ensure it gets latest data...
-        pageDisplayer.showPage(pageDisplayer.getCurrentPageID(), "forceRefresh");
-
-        // Store a reference so can pass it to storage as "previous" for next version to get chain or tree of versions
-        currentProjectVersionReference = envelope.__sha256HashAndLength;
-
-        // TODO: Translate and improve this feedback
-        toaster.toast("Finished loading project data");
-
-        // TODO: Kludge of loading all stories when load data?
-        console.log("Going to try to load latest stories from server");
-        surveyCollection.loadLatestStoriesFromServer(null, null, null, null, function (newEnvelopeCount) {
-            console.log("Forcing refresh of current page");
-            // TODO: KLUDGE: Updating gui a second time so get flicker -- and maybe lose edits?
-            if (newEnvelopeCount) pageDisplayer.showPage(pageDisplayer.getCurrentPageID(), "forceRefresh");
-        });
-    }
-
-    function saveClicked() {
-        console.log("save clicked", domain.projectAnswers);
-
-        var pageVersion = modelUtility.getPlainValue(domain.currentPageModel);
-        var modelName = domain.currentPageModelName;
-        
-        var previousVersionID = null;
-        // TODO: Maybe want a better sort of reference, as in "documentIDHash_timestamp_contentsHash_length"?
-        if (domain.currentPageDocumentEnvelope) previousVersionID = domain.currentPageDocumentEnvelope.__sha256HashAndLength;
-        
-        // TODO: Two design questions.
-        // How to connect project ID to page ID or model? Use JSON? Or just use a convention like a pipe bar? Or use a period?
-        // And whether to use page ID or instead model name? Thinking model name is more specific to model
-        var documentID = domain.getDocumentIDForCurrentPage();
-        
-        // TODO: Somewhere should check that we are not overwritting a version someone else saved, or at least to confirm that
-        storage.storePageVersion(pageVersion, documentID, modelName, previousVersionID, saveFinished);
-    }
-
-    function saveFinished(error, envelope) {
-        // TODO: Translate and improve this feedback
-        if (error) {alert("could not write new version:\n" + error); return;}
-        console.log("Save finished to file", envelope.__sha256HashAndLength);
-        // Update the envelope in the domain so that future tests for whether page was changed will be based on what was just saved
-        domain.currentPageDocumentEnvelope = envelope;
-        toaster.toast("Finished saving");
-    }
     
     function helpButtonClicked() {
         // TODO: Remove printing out domain and surveyCollection here
@@ -160,7 +67,7 @@ define([
         dialogSupport.confirm("This will overwrite your current project design.\nAny active survey and any previously stored survey results will remain as-is,\nhowever any new project design might have a different survey design.\nAre you sure you want to replace the current project definition?", function() {
 
             // TODO: Not sure what to do for what is essentially a new currentProjectVersionReference defined here
-            switchToLoadedProjectData(null, updatedProjectAnswers, {__sha256HashAndLength: null});
+            // TODO: Needs finishing!!!
 
             console.log("Updated OK");
             hideDialogMethod();
@@ -257,9 +164,7 @@ define([
         "guiOpenSection": guiOpenSection,
 
         // Called directly from application
-        "loadVersion": loadVersionClicked,
         "importExportOld": importExportClicked,
-        "saveClicked": saveClicked,
         "helpButtonClicked": helpButtonClicked,
         "debugButtonClicked": debugButtonClicked
     };
