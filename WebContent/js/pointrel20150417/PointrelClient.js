@@ -162,7 +162,7 @@ define([
         this.sendMessage(message);
         
         return message;
-    }
+    };
     
     // Deprecated to for client to call directly; use createAndSendMessage
     // TODO: No callback?
@@ -580,9 +580,9 @@ define([
         var incomingMessageRecord = this.incomingMessageRecords[0];
         
         if (incomingMessageRecord.messageContents) {
-            self.incomingMessageRecords.shift();
-            self.messageReceived(incomingMessageRecord.messageContents);
-            self.sendFetchOrPollIfNeeded();
+            this.incomingMessageRecords.shift();
+            this.messageReceived(incomingMessageRecord.messageContents);
+            this.sendFetchOrPollIfNeeded();
             return;
         }
         
