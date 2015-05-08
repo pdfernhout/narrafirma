@@ -29,8 +29,19 @@ define([
         
         this.tripleStore = new TripleStore(this.pointrelClient, "testing");
         console.log("tripleStore", this.tripleStore);
-        
-        this.pointrelClient.startup();
+    };
+    
+    Project.prototype.startup = function(callback) {
+        this.pointrelClient.reportJournalStatus(function(error, response) {
+            console.log("reportJournalStatus response", error, response);
+            if (error) {
+                console.log("Failed to startup project", error);
+                callback(error);
+            } else {
+                this.pointrelClient.startup();
+                callback(null, response);
+            }
+        });
     };
     
     Project.prototype.getFieldValue = function(fieldName) {

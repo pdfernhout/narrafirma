@@ -40,7 +40,15 @@ define([
 
     // TODO: Add page validation
     
+    // Singleton instance variables
+    // TODO: Fix hardcoded values
+    var journalIdentifier;
+    var projectIdentifier;
+    var userIdentifier;
+
     var project;
+    
+    // GUI
     var serverStatusPane;
 
     var navigationSections = [];
@@ -328,14 +336,33 @@ define([
         
         loadAllApplicationWidgets(PanelBuilder);
         
-        // TODO: Fix hardcoded values
-        var journalIdentifier = "testing";
-        var projectIdentifier = "test-project";
-        var userID = "tester1";
+        // Kludge: Ensure key information is available
+        if (!userIdentifier) userIdentifier = prompt("User identifier?", "tester1");
+        if (!userIdentifier) return;
+        if (!projectIdentifier) projectIdentifier = prompt("Project identifier?", "test-project");
+        if (!projectIdentifier) return;
+        // TODO: Should this be managed separately?
+        journalIdentifier = projectIdentifier; 
         
-        project = new Project(journalIdentifier, projectIdentifier, userID, updateServerStatus);
+        project = new Project(journalIdentifier, projectIdentifier, userIdentifier, updateServerStatus);
         domain.project = project;
         
+        console.log("Made project", project);
+        
+        project.startup(function (error) {
+            if (error) {
+                alert("Problem connecting to project journal on server. Application will not run.");
+                document.getElementById("pleaseWaitDiv").style.display = "none";
+                // TODO: Sanitize journalIdentifier
+                document.body.innerHTML += '<br>Problem connecting to project journal on server for: "<b>' + journalIdentifier + '</b>"';
+                return;
+            } else {
+                loadApplicationDesign();
+            }
+        });
+    }
+        
+    function loadApplicationDesign() {
         // Load the application design
         loadAllPanelSpecifications(domain.panelSpecificationCollection, navigationSections, loadingBase, function() {
             // generateNavigationDataInJSON();
@@ -362,13 +389,13 @@ define([
             
             // TODO: What happens when questionnaire is loaded after story browser, themer, or graph page is built?
             // Synchronizes the state of the domain questionnaire with what is on server
-            surveyCollection.loadCurrentQuestionnaire();
+            // TODO: Fix for new Pointrel approach: surveyCollection.loadCurrentQuestionnaire();
             
             // Synchronizes the state of the domain for one status flag with what is on server
-            surveyCollection.determineStatusOfCurrentQuestionnaire();
+            // TODO: Fix for new Pointrel approach: surveyCollection.determineStatusOfCurrentQuestionnaire();
             
             // Load all the latest stories
-            surveyCollection.loadLatestStoriesFromServer();
+            // TODO: Fix for new Pointrel approach:  surveyCollection.loadLatestStoriesFromServer();
             
             // TODO: What to do while waiting for data for a project to load from server the first time? Assuming authenticated OK etc.???
             
