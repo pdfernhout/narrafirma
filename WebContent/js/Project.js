@@ -32,13 +32,14 @@ define([
     };
     
     Project.prototype.startup = function(callback) {
+        var self = this;
         this.pointrelClient.reportJournalStatus(function(error, response) {
             console.log("reportJournalStatus response", error, response);
             if (error) {
                 console.log("Failed to startup project", error);
                 callback(error);
             } else {
-                this.pointrelClient.startup();
+                self.pointrelClient.startup();
                 callback(null, response);
             }
         });
