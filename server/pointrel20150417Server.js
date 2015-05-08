@@ -68,7 +68,7 @@ function makeJournal(journalIdentifier, journalDirectory) {
         topicSHA256ToTopicMap: {},
         // This array is sorted by received timestamp
         // TODO: Replace with Node.js Binary Search Tree like https://github.com/louischatriot/node-binary-search-tree
-        allMessagesSortedByReceivedTimestamp: []
+        allMessageReceivedRecordsSortedByTimestamp: []
     };
     return journal;
 }
@@ -108,7 +108,7 @@ function isSHA256AndLengthIndexed(journal, sha256AndLength) {
 }
 
 function resetIndexesForJournal(journal) {
-    journal.allMessagesSortedByReceivedTimestamp = [];
+    journal.allMessageReceivedRecordsSortedByTimestamp = [];
 }
 
 // TODO: Fix so loads all journals after determining identifiers from storage?
@@ -164,7 +164,7 @@ function ingestMessage(journal, receivedTimestamp, sha256AndLength, fullFileName
         topicSHA256: topicSHA256,
         topicTimestamp: topicTimestamp,
         fullFileName: fullFileName,
-        loadingSequence : journal.allMessagesSortedByReceivedTimestamp.length + 1
+        loadingSequence : journal.allMessageReceivedRecordsSortedByTimestamp.length + 1
     };
     
     if (cacheMessageContents) {
@@ -177,7 +177,7 @@ function ingestMessage(journal, receivedTimestamp, sha256AndLength, fullFileName
     
     // console.log("ingestMessage", receivedRecord);
     
-    utility.addItemToSortedArray(journal.allMessagesSortedByReceivedTimestamp, receivedRecord, utility.compareReceivedRecords);
+    utility.addItemToSortedArray(journal.allMessageReceivedRecordsSortedByTimestamp, receivedRecord, utility.compareReceivedRecords);
     journal.sha256AndLengthToReceivedRecordMap[sha256AndLength] = receivedRecord;
     
     // Only index topics if data was supplied
@@ -273,12 +273,12 @@ function indexAllMessagesInDirectory(journal, directory) {
 //---  Status request
 
 function respondForReportJournalStatusRequest(journal, callback) {
-    var allMessages = journal.allMessagesSortedByReceivedTimestamp;
+    var sortedReceivedRecords = journal.allMessageReceivedRecordsSortedByTimestamp;
     var earliestRecord = null;
     var latestRecord = null;
-    if (allMessages.length) {
-        earliestRecord = makeReceivedRecordForClient(allMessages[0]);
-        latestRecord = makeReceivedRecordForClient(allMessages[allMessages.length - 1]);
+    if (sortedReceivedRecords.length) {
+        earliestRecord = makeReceivedRecordForClient(sortedReceivedRecords[0]);
+        latestRecord = makeReceivedRecordForClient(sortedReceivedRecords[sortedReceivedRecords.length - 1]);
     }
     
     callback(makeSuccessResponse(200, "Success", {
@@ -288,7 +288,7 @@ function respondForReportJournalStatusRequest(journal, callback) {
         journalIdentifier: journal.journalIdentifier,
         journalEarliestRecord: earliestRecord,
         journalLatestRecord: latestRecord,
-        journalRecordCount: allMessages.length,
+        journalRecordCount: sortedReceivedRecords.length,
         readOnly: false,
         // TODO: Report permissions based on authentication
         permissions: {
@@ -494,7 +494,7 @@ function respondForQueryForNextMessageRequest(requesterIPAddress, journal, topic
 
     var messagesSortedByReceivedTimestamp;
     if (topicIdentifier === undefined) {
-        messagesSortedByReceivedTimestamp = journal.allMessagesSortedByReceivedTimestamp;
+        messagesSortedByReceivedTimestamp = journal.allMessageReceivedRecordsSortedByTimestamp;
     } else {
         var topicSHA256 = utility.calculateCanonicalSHA256ForObject(topicIdentifier);
         var topic = journal.topicSHA256ToTopicMap[topicSHA256];
@@ -533,7 +533,7 @@ function respondForQueryForNextMessageRequest(requesterIPAddress, journal, topic
             // console.log("bytesForMessage", i, bytesForMessage, wouldExceedMaximimumBytes, totalMessageBodyBytesIncluded + bytesForMessage);
             if (i > 0 && wouldExceedMaximimumBytes) break;   
         }
-        var receivedRecordForClient = makeReceivedRecordForClient(receivedRecordForClient, includeMessageContents);
+        var receivedRecordForClient = makeReceivedRecordForClient(receivedRecord);
         if (includeMessageContents) {
             var message;
             var copyMessage = false;
@@ -571,7 +571,7 @@ function respondForQueryForLatestMessageRequest(journal, topicIdentifier, callba
     
     var messagesSortedByReceivedTimestamp;
     if (topicIdentifier === undefined) {
-        messagesSortedByReceivedTimestamp = journal.allMessagesSortedByReceivedTimestamp;
+        messagesSortedByReceivedTimestamp = journal.allMessageReceivedRecordsSortedByTimestamp;
     } else {
         var topicSHA256 = utility.calculateCanonicalSHA256ForObject(topicIdentifier);
         var topic = journal.topicSHA256ToTopicMap[topicSHA256];
@@ -601,52 +601,56 @@ function respondForQueryForLatestMessageRequest(journal, topicIdentifier, callba
 // Callback has one argument, response, which has a "success" field of true/false a
 // A response also has other fields including a statusCode, a description, and possible extra fields
 function processRequest(apiRequest, callback, senderIPAddress) {
-    log("======== processRequest", JSON.stringify(apiRequest));
-    
-    if (!apiRequest) {
-        return callback(makeFailureResponse(400, "Not acceptable: apiRequest is missing"));
-    }
-    
-    if (!apiRequest.action) {
-        return callback(makeFailureResponse(400, "Not acceptable: action field missing in apiRequest", {apiRequest: apiRequest}));
-    }
-    
-    // Using "action" for WordPress compatibility
-    // TODO: Make this string a constant
-    if (!utility.startsWith(apiRequest.action, "pointrel20150417_")) {
-        return callback(makeFailureResponse(400, "Not acceptable: Unsupported action in apiRequest (must start with pointrel20150417_)"));
-    }
-    
-    var journalIdentifier = apiRequest.journalIdentifier;
-    
-    if (!journalIdentifier) return callback(makeFailureResponse(400, "journalIdentifier field is not defined in apiRequest"));
-    
-    var journal = journals[JSON.stringify(journalIdentifier)];
-    
-    // TODO: Could check for security authorization here
-    
-    if (!journal) return callback(makeFailureResponse(404, "No such journal", {journalIdentifier: journalIdentifier}));
-    
-    // TODO: Could support multiple requests if apiRequest is an array.
-    
-    var requestType = apiRequest.action;
-    
-    // Problem!!! Confusion between "message" as a general term (like "Discipline of Organizing") with its own identifier and versions
-    // vs. whatever we're storing here which is immutable object with an identifier that is the sha256AndLength.
-    // So, being clear that to load a specific message you need its sha256AndLength.
-    
-    if (requestType === "pointrel20150417_loadMessage") {
-        return respondForLoadMessageRequest(senderIPAddress, journal, apiRequest.sha256AndLength, callback);
-    } else if (requestType === "pointrel20150417_queryForNextMessage") {
-        return respondForQueryForNextMessageRequest(senderIPAddress, journal, apiRequest.topicIdentifier, apiRequest.fromTimestampExclusive, apiRequest.limitCount, apiRequest.includeMessageContents, callback);
-    } else if (requestType === "pointrel20150417_queryForLatestMessage") {
-        return respondForQueryForLatestMessageRequest(journal, apiRequest.topicIdentifier, callback);
-    } else if (requestType === "pointrel20150417_storeMessage") {
-        return respondForStoreMessageRequest(senderIPAddress, journal, apiRequest.message, callback);
-    } else if (requestType === "pointrel20150417_reportJournalStatus") {
-        return respondForReportJournalStatusRequest(journal, callback);
-    } else {
-        return callback(makeFailureResponse(501, "Not Implemented: requestType not supported", {requestType: requestType}));
+    try {
+        log("======== processRequest", JSON.stringify(apiRequest));
+        
+        if (!apiRequest) {
+            return callback(makeFailureResponse(400, "Not acceptable: apiRequest is missing"));
+        }
+        
+        if (!apiRequest.action) {
+            return callback(makeFailureResponse(400, "Not acceptable: action field missing in apiRequest", {apiRequest: apiRequest}));
+        }
+        
+        // Using "action" for WordPress compatibility
+        // TODO: Make this string a constant
+        if (!utility.startsWith(apiRequest.action, "pointrel20150417_")) {
+            return callback(makeFailureResponse(400, "Not acceptable: Unsupported action in apiRequest (must start with pointrel20150417_)"));
+        }
+        
+        var journalIdentifier = apiRequest.journalIdentifier;
+        
+        if (!journalIdentifier) return callback(makeFailureResponse(400, "journalIdentifier field is not defined in apiRequest"));
+        
+        var journal = journals[JSON.stringify(journalIdentifier)];
+        
+        // TODO: Could check for security authorization here
+        
+        if (!journal) return callback(makeFailureResponse(404, "No such journal", {journalIdentifier: journalIdentifier}));
+        
+        // TODO: Could support multiple requests if apiRequest is an array.
+        
+        var requestType = apiRequest.action;
+        
+        // Problem!!! Confusion between "message" as a general term (like "Discipline of Organizing") with its own identifier and versions
+        // vs. whatever we're storing here which is immutable object with an identifier that is the sha256AndLength.
+        // So, being clear that to load a specific message you need its sha256AndLength.
+        
+        if (requestType === "pointrel20150417_loadMessage") {
+            return respondForLoadMessageRequest(senderIPAddress, journal, apiRequest.sha256AndLength, callback);
+        } else if (requestType === "pointrel20150417_queryForNextMessage") {
+            return respondForQueryForNextMessageRequest(senderIPAddress, journal, apiRequest.topicIdentifier, apiRequest.fromTimestampExclusive, apiRequest.limitCount, apiRequest.includeMessageContents, callback);
+        } else if (requestType === "pointrel20150417_queryForLatestMessage") {
+            return respondForQueryForLatestMessageRequest(journal, apiRequest.topicIdentifier, callback);
+        } else if (requestType === "pointrel20150417_storeMessage") {
+            return respondForStoreMessageRequest(senderIPAddress, journal, apiRequest.message, callback);
+        } else if (requestType === "pointrel20150417_reportJournalStatus") {
+            return respondForReportJournalStatusRequest(journal, callback);
+        } else {
+            return callback(makeFailureResponse(501, "Not Implemented: requestType not supported", {requestType: requestType}));
+        }
+    } catch (e) {
+        return callback(makeFailureResponse(500, "Server error", {error: e.stack}));
     }
 }
 
