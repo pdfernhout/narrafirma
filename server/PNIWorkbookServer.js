@@ -12,13 +12,6 @@ var https = require('https');
 
 var express = require('express');
 var bodyParser = require('body-parser');
-// Authentication-related
-var passport = require("passport");
-var passportLocal = require("passport-local");
-var flash = require('connect-flash');
-var cookieParser = require("cookie-parser");
-var methodOverride = require("method-override");
-var sessionModule = require("express-session");
 
 // the server library
 var pointrel20150417Server = require("./pointrel20150417Server");
@@ -27,70 +20,13 @@ var pointrel20150417Server = require("./pointrel20150417Server");
 pointrel20150417Server.addJournalSync("testing");
 pointrel20150417Server.indexAllJournals();
 
+// For authentatication
+var authentication = require("./authentication");
+
 // TODO: think about authentication
 var config = {
     requireAuthentication: false
 };
-
-// For authentication test; see: https://github.com/jaredhanson/passport-local/blob/master/examples/express3/app.js
-var LocalStrategy = passportLocal.Strategy;
-var users = [
-    { id: 1, username: 'bob', password: 'secret', email: 'bob@example.com' },
-    { id: 2, username: 'joe', password: 'birthday', email: 'joe@example.com' }
-];
-
-function findById(id, callback) {
-    var idx = id - 1;
-    if (users[idx]) {
-        callback(null, users[idx]);
-    } else {
-        callback(new Error('User ' + id + ' does not exist'));
-    }
-}
-
-function findByUsername(username, callback) {
-  for (var i in users) { 
-    var user = users[i];
-    if (user.username === username) {
-      return callback(null, user);
-    }
-  }
-  return callback(null, null);
-}
-
-passport.serializeUser(function(user, done) {
-    done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-  findById(id, function (err, user) {
-    done(err, user);
-  });
-});
-
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-    // asynchronous verification, for effect...
-    process.nextTick(function () {
-      
-      // Find the user by username.  If there is no user with the given
-      // username, or the password is not correct, set the user to `false` to
-      // indicate failure and set a flash message.  Otherwise, return the
-      // authenticated `user`.
-      findByUsername(username, function(err, user) {
-        if (err) { return done(err); }
-        if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
-        if (user.password !== password) { return done(null, false, { message: 'Invalid password' }); }
-        return done(null, user);
-      });
-    });
-  }
-));
-
-function ensureAuthenticated(request, response, next) {
-  if (!config.requireAuthentication || request.isAuthenticated()) { return next(); }
-  response.redirect('/login');
-}
 
 // Main code
 
@@ -121,107 +57,9 @@ app.use(bodyParser.json({
 // to support URL-encoded bodies
 app.use(bodyParser.urlencoded({
   extended: true
-})); 
-
-// All added for passport authentication
-// app.use(express.logger());
-app.use(cookieParser());
-app.use(methodOverride());
-app.use(sessionModule({secret: 'tools of abundance', saveUninitialized: true, resave: true}));
-app.use(flash());
-app.use(passport.initialize());
-app.use(passport.session());
-
-// Authentication routes
-
-function writePageStart(request, response) {
-    var user = request.user;
-    response.write("<html><body>");
-    if (!user) {
-        response.write("<p>");
-        response.write('<a href="/">Home</a> | ');
-        response.write('<a href="/login">Log In</a>');
-        response.write("<p>");
-        response.write("<h2>Welcome! Please log in.</h2>");
-    } else {
-        response.write("<p>");
-        response.write('<a href="/">Home</a> |');
-        response.write('<a href="/login">Log In</a> | ');
-        response.write('<a href="/logout">Log Out</a>');
-        response.write("<p>");
-        response.write("<h2>Hello, " + user.username + ".</h2>");
-    }
-}
-
-function writePageEnd(request, response) {
-    response.end("</body></html>");
-}
-
-app.get('/account', ensureAuthenticated, function(request, response) {
-    var user = request.user;
-    // res.render('account', { user: req.user })
-    writePageStart(request, response);
-    response.write("<p>Username: " + user.username + "</p>");
-    response.write("<p>Email: " + user.email + "</p>");
-    writePageEnd(request, response);
-});
-
-var loginTemplate = '<form action="/login" method="post">\n' +
-'<div>\n' +
-'<label>Username:</label>\n' +
-'<input type="text" name="username"/><br/>\n' +
-'</div>\n' +
-'<div>\n' +
-'<label>Password:</label>\n' +
-'<input type="password" name="password"/>\n' +
-'</div>\n' +
-'<div>\n' +
-'<input type="submit" value="Submit"/>\n' +
-'</div>\n' +
-'</form>\n' +
-'<p><small>Hint - bob:secret</small></p>';
-
-app.get('/login', function(request, response){
-  // res.render('login', { user: req.user, message: req.flash('error') });
-    writePageStart(request, response);
-    response.write(loginTemplate);
-    //applicationLog("request.flash('error')", request.flash("error"));
-    var messages = request.flash("error");
-    for (var index in messages) {
-        response.write("<p><b>" + messages[index] + "</p></b>");
-    }
-    writePageEnd(request, response);
-});
-
-app.post('/login', 
-  passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }),
-  function(req, res) {
-    res.redirect('/test');
-  });
-
-app.get('/logout', function(req, res){
-  req.logout();
-  res.redirect('/test');
-});
-
-
-function writeTestPage(request, response) {
-    // response.sendFile(pointrelConfig.baseDirectory + "index.html");
-    // response.sendFile(baseDirectoryNormalized + "index.html");
-    writePageStart(request, response);
-    response.write("Example of authentication with passport; authenticated " + request.isAuthenticated());
-    var label = "Pointrel App";
-    if (config.requireAuthentication) label += " (only available if authenticated)";
-    if (request.isAuthenticated()) response.write('<br><a href="/pointrel/pointrel-app">' + label + '</a>');
-    writePageEnd(request, response);
-}
+}));
 
 // Application routes
-
-app.get("/test", function (request, response) {
-    writeTestPage(request, response);
-});
-
 
 // TODO: Fix this
 app.post("/survey/questions/:surveyID", function (request, response) {
@@ -260,11 +98,14 @@ app.post("/survey/questions/:surveyID", function (request, response) {
 });
 */
 
-app.use("/$", ensureAuthenticated,   function(req, res) {
+// Set up authentication routes and config
+authentication.initialize(app, config);
+
+app.use("/$", authentication.ensureAuthenticated, function(req, res) {
     res.redirect('/index.html');
 });
 
-app.use("/", ensureAuthenticated, express.static(__dirname + "/../WebContent"));
+app.use("/", authentication.ensureAuthenticated, express.static(__dirname + "/../WebContent"));
 
 // TODO: For developer testing only; remove in final version
 app.use("/dojo-debug", express.static(__dirname + "/../../PNIWorkbookLibraries/dojo-release-1.10.4-src"));
