@@ -65,9 +65,11 @@ function makeJournal(journalIdentifier, journalDirectory) {
         journalIdentifier: journalIdentifier,
         journalDirectory: journalDirectory,
         sha256AndLengthToReceivedRecordMap: [],
-        topicSHA256ToTopicMap: {}
+        topicSHA256ToTopicMap: {},
+        // This array is sorted by received timestamp
+        // TODO: Replace with Node.js Binary Search Tree like https://github.com/louischatriot/node-binary-search-tree
+        allMessagesSortedByReceivedTimestamp: []
     };
-    resetIndexesForJournal(journal);
     return journal;
 }
 
@@ -106,8 +108,6 @@ function isSHA256AndLengthIndexed(journal, sha256AndLength) {
 }
 
 function resetIndexesForJournal(journal) {
-    // This array is sorted by received timestamp
-    // TODO: Replace with Node.js Binary Search Tree like https://github.com/louischatriot/node-binary-search-tree
     journal.allMessagesSortedByReceivedTimestamp = [];
 }
 
@@ -272,10 +272,32 @@ function indexAllMessagesInDirectory(journal, directory) {
 
 //---  Status request
 
-function respondForReportStatusRequest(callback) {
-    callback(makeSuccessResponse(200, "Success", {status: 'OK', version: pointrelServerVersion, currentUniqueTimestamp: utility.getCurrentUniqueTimestamp()}));
+function respondForReportJournalStatusRequest(journal, callback) {
+    var allMessages = journal.allMessagesSortedByReceivedTimestamp;
+    var earliestRecord = null;
+    var latestRecord = null;
+    if (allMessages.length) {
+        earliestRecord = makeReceivedRecordForClient(allMessages[0]);
+        latestRecord = makeReceivedRecordForClient(allMessages[allMessages.length - 1]);
+    }
+    
+    callback(makeSuccessResponse(200, "Success", {
+        status: 'OK',
+        version: pointrelServerVersion,
+        currentUniqueTimestamp: utility.getCurrentUniqueTimestamp(),
+        journalIdentifier: journal.journalIdentifier,
+        journalEarliestRecord: earliestRecord,
+        journalLatestRecord: latestRecord,
+        journalRecordCount: allMessages.length,
+        readOnly: false,
+        // TODO: Report permissions based on authentication
+        permissions: {
+            read: true,
+            write: true,
+            admin: true
+        }
+    }));
 }
-
 
 //--- Loading and storing messages on disk
 
@@ -450,6 +472,17 @@ function respondForStoreMessageRequest(senderIPAddress, journal, message, callba
     });
 }
 
+function makeReceivedRecordForClient(receivedRecord) {
+    var receivedRecordForClient = {
+        receivedTimestamp: receivedRecord.receivedTimestamp,
+        sha256AndLength: receivedRecord.sha256AndLength,
+        topicSHA256: receivedRecord.topicSHA256,
+        topicTimestamp: receivedRecord.topicTimestamp,
+        _debugLoadingSequence: receivedRecord.loadingSequence
+    };
+    return receivedRecordForClient;
+}
+
 function respondForQueryForNextMessageRequest(requesterIPAddress, journal, topicIdentifier, fromTimestampExclusive, limitCount, includeMessageContents, callback) {
     // TODO: Optimize to read from end rather than scan entire list when given specific start date
     // TODO: And/or use some kind of sorted map so can quickly find message versions after a certain date
@@ -500,13 +533,7 @@ function respondForQueryForNextMessageRequest(requesterIPAddress, journal, topic
             // console.log("bytesForMessage", i, bytesForMessage, wouldExceedMaximimumBytes, totalMessageBodyBytesIncluded + bytesForMessage);
             if (i > 0 && wouldExceedMaximimumBytes) break;   
         }
-        var receivedRecordForClient = {
-            receivedTimestamp: receivedRecord.receivedTimestamp,
-            sha256AndLength: receivedRecord.sha256AndLength,
-            topicSHA256: receivedRecord.topicSHA256,
-            topicTimestamp: receivedRecord.topicTimestamp,
-            _debugLoadingSequence: receivedRecord.loadingSequence
-        };
+        var receivedRecordForClient = makeReceivedRecordForClient(receivedRecordForClient, includeMessageContents);
         if (includeMessageContents) {
             var message;
             var copyMessage = false;
@@ -577,28 +604,28 @@ function processRequest(apiRequest, callback, senderIPAddress) {
     log("======== processRequest", JSON.stringify(apiRequest));
     
     if (!apiRequest) {
-        return callback(makeFailureResponse(406, "Not acceptable: apiRequest is missing"));
+        return callback(makeFailureResponse(400, "Not acceptable: apiRequest is missing"));
     }
     
     if (!apiRequest.action) {
-        return callback(makeFailureResponse(406, "Not acceptable: action field missing in apiRequest", {apiRequest: apiRequest}));
+        return callback(makeFailureResponse(400, "Not acceptable: action field missing in apiRequest", {apiRequest: apiRequest}));
     }
     
     // Using "action" for WordPress compatibility
     // TODO: Make this string a constant
     if (!utility.startsWith(apiRequest.action, "pointrel20150417_")) {
-        return callback(makeFailureResponse(406, "Not acceptable: Unsupported action in apiRequest (must start with pointrel20150417_)"));
+        return callback(makeFailureResponse(400, "Not acceptable: Unsupported action in apiRequest (must start with pointrel20150417_)"));
     }
     
     var journalIdentifier = apiRequest.journalIdentifier;
     
-    if (!journalIdentifier) return callback(makeFailureResponse(406, "journalIdentifier field is not defined in apiRequest"));
+    if (!journalIdentifier) return callback(makeFailureResponse(400, "journalIdentifier field is not defined in apiRequest"));
     
     var journal = journals[JSON.stringify(journalIdentifier)];
     
     // TODO: Could check for security authorization here
     
-    if (!journal) return callback(makeFailureResponse(406, "No such journal"));
+    if (!journal) return callback(makeFailureResponse(404, "No such journal", {journalIdentifier: journalIdentifier}));
     
     // TODO: Could support multiple requests if apiRequest is an array.
     
@@ -616,8 +643,8 @@ function processRequest(apiRequest, callback, senderIPAddress) {
         return respondForQueryForLatestMessageRequest(journal, apiRequest.topicIdentifier, callback);
     } else if (requestType === "pointrel20150417_storeMessage") {
         return respondForStoreMessageRequest(senderIPAddress, journal, apiRequest.message, callback);
-    } else if (requestType === "pointrel20150417_reportStatus") {
-        return respondForReportStatusRequest(callback);
+    } else if (requestType === "pointrel20150417_reportJournalStatus") {
+        return respondForReportJournalStatusRequest(journal, callback);
     } else {
         return callback(makeFailureResponse(501, "Not Implemented: requestType not supported", {requestType: requestType}));
     }

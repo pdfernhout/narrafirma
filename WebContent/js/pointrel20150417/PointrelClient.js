@@ -253,17 +253,21 @@ define([
                 }
             }).then(function(response) {
                 if (debugMessaging) console.log("Got store response", response);
+                self.outstandingServerRequestSentAtTimestamp = null;
                 if (!response.success) {
-                    // TODO: Assuming this is a permanent problem and so OK to discard themessage
-                    console.log("ERROR: Message store failure; discarding outgoing message", response, self.outgoingMessageQueue[0]);
+                    console.log("ERROR: Message store failure", response, self.outgoingMessageQueue[0]);
                     self.serverStatus("Message store failure: " + response.statusCode + " :: " + response.description);
+                    // TODO: Need to decide whether to discard the message based on the nature of the problem
+                    // Should leave it in the queue if it is not malformed and it is just a possibly temporary problem with server
+                    // TODO: If the message we sent was rejected because it was malformed or a duplicate, we should discard it
+                    // Do not continue with requests until next poll...
+                    return;
                 } else {
                     self.okStatus();
                     self.messageSentCount++;
+                    self.outgoingMessageQueue.shift();
                 }
-                self.outgoingMessageQueue.shift();
-                self.outstandingServerRequestSentAtTimestamp = null;
-                
+
                 // Keep sending outgoing messages if there are any more, or do other task as needed
                 // Do this as a timeout so the event loop can finish its cycle first
                 setTimeout(function () {
@@ -275,6 +279,68 @@ define([
                 self.serverStatus("Problem storing message to server: " + error.message + "<br>You may need to reload the page to synchronize it with the current state of the server if a message was rejected for some reason.");
                 console.log("Got store error", error.message);
                 self.outstandingServerRequestSentAtTimestamp = null;
+            });
+        }
+    };
+    
+    PointrelClient.prototype.reportJournalStatus = function(callback) {
+        if (this.apiURL === "loopback") {
+            callback({
+                success: true, 
+                statusCode: 200,
+                description: "Success",
+                timestamp: getCurrentUniqueTimestamp(),
+                status: 'OK',
+                version: pointrelServerVersion,
+                currentUniqueTimestamp: utility.getCurrentUniqueTimestamp(),
+                journalIdentifier: journal.journalIdentifier,
+                journalEarliestRecord: earliestRecord,
+                journalLatestRecord: latestRecord,
+                journalRecordCount: allMessages.length,
+                readOnly: false,
+                permissions: {
+                    read: true,
+                    write: true,
+                    admin: true
+                }
+            });
+        } else {
+            // Send to a real server immediately
+
+            var apiRequest = {
+                "action": "pointrel20150417_reportJournalStatus",
+                "journalIdentifier": this.journalIdentifier
+            };
+            if (debugMessaging) console.log("sending reportJournalStatus request", apiRequest);
+            
+            this.serverStatus("requesting journal status " + this.outstandingServerRequestSentAtTimestamp);
+            
+            var self = this;
+            request.post(this.apiURL, {
+                data: JSON.stringify(apiRequest),
+                // Two second timeout
+                timeout: 2000,
+                handleAs: "json",
+                headers: {
+                    "Content-Type": 'application/json; charset=utf-8',
+                    "Accept": "application/json"
+                }
+            }).then(function(response) {
+                if (debugMessaging) console.log("Got journal status response", response);
+                if (!response.success) {
+                    // TODO: Assuming this is a permanent problem and so OK to discard themessage
+                    console.log("ERROR: report journal status failure", response);
+                    self.serverStatus("Report journal status failure: " + response.statusCode + " :: " + response.description);
+                    callback(response);
+                } else {
+                    self.okStatus();
+                    callback(null, response);
+                }
+             }, function(error) {
+                // TODO: Need to check for rejected status and then remove the message from the outgoing queue
+                self.serverStatus("Problem storing message to server: " + error.message + "<br>You may need to reload the page to synchronize it with the current state of the server if a message was rejected for some reason.");
+                console.log("Got server error for report journal status", error.message);
+                callback(error);
             });
         }
     };
@@ -549,7 +615,7 @@ define([
                 self.lastReceivedTimestampConsidered = response.lastReceivedTimestampConsidered;
             }
             self.outstandingServerRequestSentAtTimestamp = null;
-            if (response.receivedRecords.length) {
+            if (response.receivedRecords && response.receivedRecords.length) {
                 // Schedule another request immediately if getting contents..
                 setTimeout(function () {
                     self.sendFetchOrPollIfNeeded();
