@@ -46,7 +46,8 @@ require([
                 "dataType": "string",
                 "displayType": "text",
                 "displayName": "Project identifier",
-                "displayPrompt": "Project identifier"
+                "displayPrompt": "Project identifier",
+                readOnly: true
             },
             {
                 "id": "name",
@@ -58,7 +59,7 @@ require([
             {
                 "id": "description",
                 "dataType": "string",
-                "displayType": "text",
+                "displayType": "textarea",
                 "displayName": "Description",
                 "displayPrompt": "Description"
             },
