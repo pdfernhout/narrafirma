@@ -13,6 +13,10 @@ define([
             value: at(model, fieldSpecification.id)
         });
         textBox.set("style", "width: 40em");
+        if (fieldSpecification.readOnly) {
+            textBox.attr("readOnly", true);
+            textBox.attr("disabled", true);
+        }
         textBox.placeAt(questionContentPane);
         return textBox;
     }
