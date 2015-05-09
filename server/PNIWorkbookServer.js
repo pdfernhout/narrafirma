@@ -14,6 +14,7 @@ var bodyParser = require('body-parser');
 
 // the server library
 var pointrel20150417Server = require("./pointrel20150417Server");
+var utility = require("./pointrel20150417Utility");
 
 // TODO: Need better loading and project management than this
 // pointrel20150417Server.addJournalSync("testing");
@@ -134,12 +135,83 @@ function senderIPAddressForRequest(request) {
         request.connection.socket.remoteAddress;
 }
 
+function getAccessConfigurationForJournal(journalIdentifier, callback) {
+    var request = {
+        action: "pointrel20150417_queryForLatestMessage",
+        journalIdentifier: "NarraFirma-administration",
+        topicIdentifier: "ProjectAdministration"
+    };
+    pointrel20150417Server.processRequest(request, function (result) {
+        console.log("getAccessConfigurationForJournal response", result, journalIdentifier);
+        // TODO: Need to think more about what happens if authentication data might be messed up
+        if (!result.success) return callback(null);
+        if (!result.latestRecord) return callback(null);
+        if (!result.latestRecord.messageContents) return callback(null);
+        if (result.latestRecord.messageContents.messageType !== "ProjectAdministration-SetAll") return callback(null);
+        var accessConfiguration = result.latestRecord.messageContents.change;
+        for (var i = 0; i < accessConfiguration.projects.length; i++) {
+            var project = accessConfiguration.projects[i];
+            // TODO: Should support any type of journal identifier, not just strings
+            if (project.id === journalIdentifier) {
+                return callback(project);
+            }
+        }
+        return callback(null);
+    });
+}
+
+function splitAtWhitspace(text) {
+    return text.split(/(\s+)/);
+}
+
 app.post("/api/pointrel20150417", function(request, response) {
-    // response.json({"error": "server unfinished!"});
-    // TODO: Exception handling?
-    pointrel20150417Server.processRequest(request.body, function(requestResultMessage) {
-        response.json(requestResultMessage);
-    }, senderIPAddressForRequest(request));
+    var body = request.body;
+    // TODO: Ensure journal exists and user has permissions
+    var journalIdentifier = body.journalIdentifier;
+    var userIdentifier = body.userIdentifier;
+    if (!userIdentifier) userIdentifier = "anonymous";
+    var action = body.action; // "pointrel20150417_storeMessage"
+    console.log("request", journalIdentifier, userIdentifier, action);
+    if (journalIdentifier) {
+        var writeRequested = (action === "pointrel20150417_storeMessage");
+        getAccessConfigurationForJournal(journalIdentifier, function(accessConfiguration) {
+            console.log("accessConfiguration", accessConfiguration);
+            var permitted;
+            if (accessConfiguration) {
+                // Check if access is permitted
+                if (writeRequested) {
+                    var editors = splitAtWhitspace(accessConfiguration.editors);
+                    console.log("writers", editors);
+                    // TODO: Need to look at roles as well as name matches
+                    permitted = (editors.indexOf(userIdentifier) !== -1);
+                } else {
+                    var viewers = splitAtWhitspace(accessConfiguration.viewers);
+                    console.log("viewers", viewers);
+                    // TODO: Need to look at roles as well as name matches
+                    permitted = (viewers.indexOf(userIdentifier) !== -1);
+                }
+                // TODO: Need to think about survey takers
+            } else {
+                permitted = true;
+            }
+            if (!permitted) {
+                console.log("Forbidden");
+                var action = "read";
+                if (writeRequested) action = "write";
+                response.json(utility.makeFailureResponse(403, 'Forbidden -- user is not authorized to ' + action, {userIdentifier: userIdentifier, journalIdentifier: journalIdentifier, writeRequested: writeRequested}));
+            } else {
+                // Do the request if approved
+                pointrel20150417Server.processRequest(request.body, function(requestResultMessage) {
+                    response.json(requestResultMessage);
+                }, senderIPAddressForRequest(request));
+            }
+        });
+    } else {
+        // This will just fail becaues there is no journal identifier
+        pointrel20150417Server.processRequest(request.body, function(requestResultMessage) {
+            response.json(requestResultMessage);
+        }, senderIPAddressForRequest(request));
+    }
 });
 
 app.use(function(err, req, res, next){
