@@ -569,6 +569,18 @@ function respondForQueryForNextMessageRequest(requesterIPAddress, journal, topic
 function respondForQueryForLatestMessageRequest(journal, topicIdentifier, callback) {
     log("======== respondForQueryForLatestMessage", topicIdentifier);
     
+    var latestRecord = latestReceivedRecordForTopic(journal, topicIdentifier);
+    
+    var now = utility.getCurrentUniqueTimestamp();
+    // TODO: perhaps return message contents with trace set
+    // TODO: Restrict data sent back for record to not include fullFileName
+    return callback(makeSuccessResponse(200, "Success", {detail: 'latest',  currentTimestamp: now, latestRecord: latestRecord}));
+}
+
+// TODO: need to filter what is sent back to client instead of returning entire latestRecord
+// TODO: querying for latest message is expecting result, but might need to actually retrieve it
+
+function latestReceivedRecordForTopic(journal, topicIdentifier) {
     var messagesSortedByReceivedTimestamp;
     if (topicIdentifier === undefined) {
         messagesSortedByReceivedTimestamp = journal.allMessageReceivedRecordsSortedByTimestamp;
@@ -589,10 +601,7 @@ function respondForQueryForLatestMessageRequest(journal, topicIdentifier, callba
         latestRecord = null;
     }
     
-    var now = utility.getCurrentUniqueTimestamp();
-    // TODO: perhaps return message contents with trace set
-    // TODO: Restrict data sent back for record to not include fullFileName
-    return callback(makeSuccessResponse(200, "Success", {detail: 'latest',  currentTimestamp: now, latestRecord: latestRecord}));
+    return latestRecord;
 }
     
 
