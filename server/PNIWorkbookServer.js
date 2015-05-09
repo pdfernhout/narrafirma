@@ -198,7 +198,7 @@ app.post("/api/pointrel20150417", function(request, response) {
                 console.log("Forbidden");
                 var action = "read";
                 if (writeRequested) action = "write";
-                response.json(utility.makeFailureResponse(403, 'Forbidden -- user is not authorized to ' + action, {userIdentifier: userIdentifier, journalIdentifier: journalIdentifier, writeRequested: writeRequested}));
+                response.json(utility.makeFailureResponse(403, 'Forbidden -- user "' + userIdentifier + '" is not authorized to ' + action + " in " + JSON.stringify(journalIdentifier), {userIdentifier: userIdentifier, journalIdentifier: journalIdentifier, writeRequested: writeRequested}));
             } else {
                 // Do the request if approved
                 pointrel20150417Server.processRequest(request.body, function(requestResultMessage) {
