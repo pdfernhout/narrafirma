@@ -3,7 +3,7 @@ require([
     "dijit/layout/ContentPane",
     "js/panelBuilder/PanelBuilder",
     "js/panelBuilder/PanelSpecificationCollection",
-    // TODO: "js/pointrel20141201Client",
+    "js/pointrel20150417/PointrelClient",
     "dojo/Stateful",
     "dojo/domReady!"
 ], function(
@@ -11,6 +11,7 @@ require([
     ContentPane,
     PanelBuilder,
     PanelSpecificationCollection,
+    PointrelClient,
     Stateful
 ){
     "use strict";
@@ -32,6 +33,64 @@ require([
         
         buildGrid(contentPane);
     }
+    
+    var userRoles = [
+        "admin",
+        "editor",
+        "author",
+        "contributor",
+        "subscriber",
+        "anonymous"
+    ];
+    
+    // TODO: Translate
+    var userPanelSpecification = {
+        "id": "panel_user",
+        "displayName": "User",
+        "displayType": "panel",
+        "section": "admin",
+        "modelClass": "User",
+        "panelFields": [
+            {
+                "id": "id",
+                "dataType": "string",
+                "displayType": "text",
+                "displayName": "System user identifier",
+                "displayPrompt": "System user identifier",
+                readOnly: true
+            },
+            {
+                "id": "loginIdentifier",
+                "dataType": "string",
+                "displayType": "text",
+                "displayName": "Login identifier",
+                "displayPrompt": "Login identifier",
+            },
+            {
+                "id": "password",
+                "dataType": "string",
+                "displayType": "text",
+                "displayName": "Password",
+                "displayPrompt": "Password"
+            },
+            {
+                "id": "role",
+                "dataType": "string",
+                "dataOptions": userRoles,
+                "required": true,
+                "displayType": "select",
+                "displayName": "Role",
+                "displayPrompt": "Role"
+            },
+            {
+                "id": "fullName",
+                "dataType": "string",
+                "displayType": "text",
+                "displayName": "User name",
+                "displayPrompt": "User name"
+            }
+        ]
+    };
     
     // TODO: Translate
     var projectDescriptionPanelSpecification = {
@@ -90,18 +149,82 @@ require([
     function buildGrid(mainContentPane) {
         var panelSpecificationCollection = new PanelSpecificationCollection();
         
-        // Add this panel to as it will be looked up by panel builder for grid
+        // Add panels to be looked up by panel builder for grid
+        panelSpecificationCollection.addPanelSpecification(userPanelSpecification);
         panelSpecificationCollection.addPanelSpecification(projectDescriptionPanelSpecification);
 
         var panelBuilder = new PanelBuilder({panelSpecificationCollection: panelSpecificationCollection});
         
         var model = new Stateful({
+            roleToEditProject: "editor",
+            roleToViewProject: "subscriber",
+            roleToTakeSurvey: "anonymous",
+            users: [],
             projects: []
         });
         
         var panelContentPane = panelBuilder.newContentPane();
         
-        var gridFieldSpecification = {
+        var roleToEditProjectSpecification = {
+            "id": "roleToEditProject",
+            "dataType": "string",
+            "dataOptions": userRoles,
+            "required": true,
+            "displayType": "select",
+            "displayName": "Role to edit project",
+            "displayPrompt": "Role required to edit project"
+        };
+        
+        panelBuilder.buildField(panelContentPane, model, roleToEditProjectSpecification);
+        
+        var roleToViewProjectSpecification = {
+            "id": "roleToViewProject",
+            "dataType": "string",
+            "dataOptions": userRoles,
+            "required": true,
+            "displayType": "select",
+            "displayName": "Role to view project",
+            "displayPrompt": "Role required to view project"
+        };
+        
+        panelBuilder.buildField(panelContentPane, model, roleToViewProjectSpecification);
+        
+        var roleToTakeSurveySpecification = {
+            "id": "roleToTakeSurvey",
+            "dataType": "string",
+            "dataOptions": userRoles,
+            "required": true,
+            "displayType": "select",
+            "displayName": "Role to take survey",
+            "displayPrompt": "Role required to take survey"
+        };
+        
+        panelBuilder.buildField(panelContentPane, model, roleToTakeSurveySpecification);
+        
+        var userGridSpecification = {
+            id: "users",
+            dataType: "array",
+            displayType: "grid",
+            displayConfiguration: {
+                itemPanelID: "panel_user",
+                idProperty: "id",
+                gridConfiguration: {
+                    viewButton: true,
+                    editButton: true,
+                    addButton: true,
+                    removeButton: true,
+                    includeAllFields: ["id", "loginIdentifier", "role", "fullName"]
+                }
+                // , customButton: {customButtonLabel: "Open panel", callback: _.partial(openPanel, panelContentPane, panelSpecificationCollection, panelBuilder)}}
+            },
+            displayName: "Users",
+            displayPrompt: "Users"
+        };
+        
+        var userGrid = panelBuilder.buildField(panelContentPane, model, userGridSpecification);
+        userGrid.grid.set("selectionMode", "single");
+            
+        var projectGridSpecification = {
             id: "projects",
             dataType: "array",
             displayType: "grid",
@@ -121,8 +244,8 @@ require([
             displayPrompt: "Projects"
         };
         
-        var grid = panelBuilder.buildField(mainContentPane, model, gridFieldSpecification);
-        grid.grid.set("selectionMode", "single");
+        var projectGrid = panelBuilder.buildField(panelContentPane, model, projectGridSpecification);
+        projectGrid.grid.set("selectionMode", "single");
         
         panelContentPane.placeAt(mainContentPane);
     }
