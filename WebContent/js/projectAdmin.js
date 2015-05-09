@@ -60,11 +60,11 @@ require([
                 readOnly: true
             },
             {
-                "id": "loginIdentifier",
+                "id": "email",
                 "dataType": "string",
                 "displayType": "text",
-                "displayName": "Login identifier",
-                "displayPrompt": "Login identifier",
+                "displayName": "Email",
+                "displayPrompt": "Email",
             },
             {
                 "id": "password",
@@ -113,35 +113,41 @@ require([
                 "dataType": "string",
                 "displayType": "text",
                 "displayName": "Name",
-                "displayPrompt": "Name"
+                "displayPrompt": "Project Name"
             },
             {
                 "id": "description",
                 "dataType": "string",
                 "displayType": "textarea",
                 "displayName": "Description",
-                "displayPrompt": "Description"
+                "displayPrompt": "Project Description"
             },
             {
-                "id": "admins",
+                "id": "roleToEditProject",
                 "dataType": "string",
-                "displayType": "text",
-                "displayName": "Admins",
-                "displayPrompt": "Admins (separated by space)"
+                "dataOptions": userRoles,
+                "required": true,
+                "displayType": "select",
+                "displayName": "Role to edit project",
+                "displayPrompt": "Role required to edit project"
             },
             {
-                "id": "editors",
+                "id": "roleToViewProject",
                 "dataType": "string",
-                "displayType": "text",
-                "displayName": "Editors",
-                "displayPrompt": "Editors"
+                "dataOptions": userRoles,
+                "required": true,
+                "displayType": "select",
+                "displayName": "Role to view project",
+                "displayPrompt": "Role required to view project"
             },
             {
-                "id": "viewers",
+                "id": "roleToTakeSurvey",
                 "dataType": "string",
-                "displayType": "text",
-                "displayName": "Viewers",
-                "displayPrompt": "Viewers"
+                "dataOptions": userRoles,
+                "required": true,
+                "displayType": "select",
+                "displayName": "Role to take survey",
+                "displayPrompt": "Role required to take survey"
             }
         ]
     };
@@ -156,50 +162,11 @@ require([
         var panelBuilder = new PanelBuilder({panelSpecificationCollection: panelSpecificationCollection});
         
         var model = new Stateful({
-            roleToEditProject: "editor",
-            roleToViewProject: "subscriber",
-            roleToTakeSurvey: "anonymous",
             users: [],
             projects: []
         });
         
         var panelContentPane = panelBuilder.newContentPane();
-        
-        var roleToEditProjectSpecification = {
-            "id": "roleToEditProject",
-            "dataType": "string",
-            "dataOptions": userRoles,
-            "required": true,
-            "displayType": "select",
-            "displayName": "Role to edit project",
-            "displayPrompt": "Role required to edit project"
-        };
-        
-        panelBuilder.buildField(panelContentPane, model, roleToEditProjectSpecification);
-        
-        var roleToViewProjectSpecification = {
-            "id": "roleToViewProject",
-            "dataType": "string",
-            "dataOptions": userRoles,
-            "required": true,
-            "displayType": "select",
-            "displayName": "Role to view project",
-            "displayPrompt": "Role required to view project"
-        };
-        
-        panelBuilder.buildField(panelContentPane, model, roleToViewProjectSpecification);
-        
-        var roleToTakeSurveySpecification = {
-            "id": "roleToTakeSurvey",
-            "dataType": "string",
-            "dataOptions": userRoles,
-            "required": true,
-            "displayType": "select",
-            "displayName": "Role to take survey",
-            "displayPrompt": "Role required to take survey"
-        };
-        
-        panelBuilder.buildField(panelContentPane, model, roleToTakeSurveySpecification);
         
         var userGridSpecification = {
             id: "users",
