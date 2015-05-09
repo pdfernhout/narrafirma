@@ -13,12 +13,12 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 // the server library
-var pointrel20150417Server = require("./pointrel20150417Server");
-var utility = require("./pointrel20150417Utility");
+var pointrelServer = require("./pointrel20150417/pointrelServer");
+var pointrelUtility = require("./pointrel20150417/pointrelUtility");
 
 // TODO: Need better loading and project management than this
-// pointrel20150417Server.addJournalSync("testing");
-pointrel20150417Server.addJournalSync("NarraFirma-administration");
+// pointrelServer.addJournalSync("testing");
+pointrelServer.addJournalSync("NarraFirma-administration");
 // TODO: Copying config data from Pointrel module
 var journalDirectory = "../server-data/" + "journals/";
 var fileNames;
@@ -33,10 +33,10 @@ for (var fileNameIndex = 0; fileNameIndex < fileNames.length; fileNameIndex++) {
     var stat = fs.statSync(journalDirectory + fileName);
     if (stat.isDirectory()) {
         console.log("Adding journal: ", fileName);
-        pointrel20150417Server.addJournalSync(fileName);
+        pointrelServer.addJournalSync(fileName);
     }
 }
-pointrel20150417Server.indexAllJournals();
+pointrelServer.indexAllJournals();
 
 // For authentication
 var authentication = require("./authentication");
@@ -141,7 +141,7 @@ function getAccessConfigurationForJournal(journalIdentifier, callback) {
         journalIdentifier: "NarraFirma-administration",
         topicIdentifier: "ProjectAdministration"
     };
-    pointrel20150417Server.processRequest(request, function (result) {
+    pointrelServer.processRequest(request, function (result) {
         console.log("getAccessConfigurationForJournal response", result, journalIdentifier);
         // TODO: Need to think more about what happens if authentication data might be messed up
         if (!result.success) return callback(null);
@@ -205,17 +205,17 @@ app.post("/api/pointrel20150417", function(request, response) {
                 console.log("Forbidden");
                 var action = "read";
                 if (writeRequested) action = "write";
-                response.json(utility.makeFailureResponse(403, 'Forbidden -- user "' + userIdentifier + '" is not authorized to ' + action + " in " + JSON.stringify(journalIdentifier), {userIdentifier: userIdentifier, journalIdentifier: journalIdentifier, writeRequested: writeRequested}));
+                response.json(pointrelUtility.makeFailureResponse(403, 'Forbidden -- user "' + userIdentifier + '" is not authorized to ' + action + " in " + JSON.stringify(journalIdentifier), {userIdentifier: userIdentifier, journalIdentifier: journalIdentifier, writeRequested: writeRequested}));
             } else {
                 // Do the request if approved
-                pointrel20150417Server.processRequest(request.body, function(requestResultMessage) {
+                pointrelServer.processRequest(request.body, function(requestResultMessage) {
                     response.json(requestResultMessage);
                 }, senderIPAddressForRequest(request));
             }
         });
     } else {
         // This will just fail becaues there is no journal identifier
-        pointrel20150417Server.processRequest(request.body, function(requestResultMessage) {
+        pointrelServer.processRequest(request.body, function(requestResultMessage) {
             response.json(requestResultMessage);
         }, senderIPAddressForRequest(request));
     }

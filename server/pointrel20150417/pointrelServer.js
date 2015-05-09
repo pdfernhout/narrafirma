@@ -46,7 +46,7 @@ var maximumMessageBodyBytes = 1000000;
 var fs = require('fs');
 
 // Our modules
-var utility = require('./pointrel20150417Utility');
+var utility = require('./pointrelUtility');
 var log = utility.log;
 var makeSuccessResponse = utility.makeSuccessResponse;
 var makeFailureResponse = utility.makeFailureResponse;
