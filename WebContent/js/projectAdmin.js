@@ -1,6 +1,7 @@
 require([
     "js/panelBuilder/toaster",
     "dijit/layout/ContentPane",
+    "dojox/mvc/getPlainValue",
     "js/panelBuilder/PanelBuilder",
     "js/panelBuilder/PanelSpecificationCollection",
     "js/pointrel20150417/PointrelClient",
@@ -9,6 +10,7 @@ require([
 ], function(
     toaster,
     ContentPane,
+    getPlainValue,
     PanelBuilder,
     PanelSpecificationCollection,
     PointrelClient,
@@ -31,7 +33,7 @@ require([
         
         // toaster.toast("Running...");
         
-        buildGrid(contentPane);
+        buildGUI(contentPane);
     }
     
     var userRoles = [
@@ -152,7 +154,17 @@ require([
         ]
     };
     
-    function buildGrid(mainContentPane) {
+    // TODO: implement and call
+    function loadModel(model) {
+    }
+    
+    function saveButtonClicked(model) {
+        var plainValue = getPlainValue(model);
+        console.log("saveButtonClicked plainValue", plainValue);
+        // TODO
+    }
+    
+    function buildGUI(mainContentPane) {
         var panelSpecificationCollection = new PanelSpecificationCollection();
         
         // Add panels to be looked up by panel builder for grid
@@ -213,6 +225,17 @@ require([
         
         var projectGrid = panelBuilder.buildField(panelContentPane, model, projectGridSpecification);
         projectGrid.grid.set("selectionMode", "single");
+        
+        var saveButtonSpecification = {
+            id: "saveButton",
+            displayType: "button",
+            displayName: "Save",
+            displayPrompt: "Save",
+            displayConfiguration: function() {
+                saveButtonClicked(model);
+            }
+        };
+        var saveButton = panelBuilder.buildField(panelContentPane, model, saveButtonSpecification);
         
         panelContentPane.placeAt(mainContentPane);
     }
