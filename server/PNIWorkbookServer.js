@@ -164,6 +164,12 @@ function splitAtWhitspace(text) {
     return text.split(/(\s+)/);
 }
 
+function isPermitted(userIdentifier, usersOrGroups) {
+    if (usersOrGroups.indexOf(userIdentifier) !== -1) return true;
+    // TODO: Improve to check for groups
+    return false;
+}
+
 app.post("/api/pointrel20150417", function(request, response) {
     var body = request.body;
     // TODO: Ensure journal exists and user has permissions
@@ -178,17 +184,18 @@ app.post("/api/pointrel20150417", function(request, response) {
             console.log("accessConfiguration", accessConfiguration);
             var permitted;
             if (accessConfiguration) {
+                // TODO: Find user to know about groups
                 // Check if access is permitted
                 if (writeRequested) {
                     var editors = splitAtWhitspace(accessConfiguration.editors);
                     console.log("writers", editors);
                     // TODO: Need to look at roles as well as name matches
-                    permitted = (editors.indexOf(userIdentifier) !== -1);
+                    permitted = isPermitted(userIdentifier, editors);
                 } else {
                     var viewers = splitAtWhitspace(accessConfiguration.viewers);
                     console.log("viewers", viewers);
                     // TODO: Need to look at roles as well as name matches
-                    permitted = (viewers.indexOf(userIdentifier) !== -1);
+                    permitted = isPermitted(userIdentifier, viewers);
                 }
                 // TODO: Need to think about survey takers
             } else {
