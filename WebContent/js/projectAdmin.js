@@ -25,6 +25,9 @@ require([
     
     var allProjectsModel;
     
+    // GUI
+    var serverStatusPane;
+    
     function initialize() {
         console.log("initialize called in site.js");
         toaster.createToasterWidget(document.getElementById("pleaseWaitDiv"));
@@ -35,6 +38,9 @@ require([
         contentPane.placeAt(document.body);
         contentPane.startup();
         
+        serverStatusPane = new ContentPane({content: "Server status: unknown"});
+        serverStatusPane.placeAt(contentPane);
+        
         // turn off initial "please wait" display
         document.getElementById("pleaseWaitDiv").style.display = "none";
         
@@ -43,7 +49,7 @@ require([
         var userIdentifier = prompt("User identifier?", "administrator");
         if (!userIdentifier) return;
         
-        pointrelClient = new PointrelClient("/api/pointrel20150417", journalIdentifier, userIdentifier);
+        pointrelClient = new PointrelClient("/api/pointrel20150417", journalIdentifier, userIdentifier, null, updateServerStatus);
 
         var allProjectsModel = new Stateful({
             users: [],
@@ -69,6 +75,13 @@ require([
                 
             }
         });
+    }
+    
+    function updateServerStatus(text) {
+        console.log("++++++++++++++++++++++++++++++++++++++++ updateServerStatus", text);
+        // The serverStatusPane may be created only after we start talking to the server
+        if (!serverStatusPane) return;
+        serverStatusPane.set("content", "Server status: " + text);
     }
     
     function loadAllProjectsModel(model, callback) {
@@ -179,8 +192,8 @@ require([
                 "dataType": "string",
                 "displayType": "text",
                 "displayName": "Project identifier",
-                "displayPrompt": "Project identifier",
-                readOnly: true
+                "displayPrompt": "Project identifier"
+                // readOnly: true
             },
             {
                 "id": "name",
