@@ -22,6 +22,8 @@ require([
     
     var pointrelClient;
     
+    var allProjectsModel;
+    
     function initialize() {
         console.log("initialize called in site.js");
         toaster.createToasterWidget(document.getElementById("pleaseWaitDiv"));
@@ -37,9 +39,29 @@ require([
         
         // toaster.toast("Running...");
         
-        pointrelClient = new PointrelClient(journalIdentifier, projectIdentifier, userIdentifier, updateServerStatus);
+        var userIdentifier = prompt("User identifier?", "administrator");
+        if (!userIdentifier) return;
         
-        buildGUI(contentPane);
+        pointrelClient = new PointrelClient("/api/pointrel20150417", journalIdentifier, userIdentifier);
+
+        var allProjectsModel = new Stateful({
+            users: [],
+            projects: []
+        });
+        
+        pointrelClient.reportJournalStatus(function(error, response) {
+            console.log("reportJournalStatus response", error, response);
+            if (error) {
+                console.log("Failed to startup project", error);
+                alert("Problem connecting to journal on server. Application will not run.");
+                document.getElementById("pleaseWaitDiv").style.display = "none";
+                // TODO: Sanitize journalIdentifier
+                document.body.innerHTML += '<br>Problem connecting to project journal on server for: "<b>' + journalIdentifier + '</b>"';
+            } else {
+                loadAllProjectsModel(allProjectsModel);
+                buildGUI(contentPane, allProjectsModel);
+            }
+        });
     }
     
     var userRoles = [
@@ -153,17 +175,18 @@ require([
         ]
     };
     
-    // TODO: implement and call
-    function loadModel(model) {
+    function loadAllProjectsModel(model) {
+        console.log("loadAllProjectsModel initial", model);
     }
     
     function saveButtonClicked(model) {
         var plainValue = getPlainValue(model);
         console.log("saveButtonClicked plainValue", plainValue);
-        // TODO
+        
+        pointrelClient.createAndSendChangeMessage("ProjectAdministration", "ProjectAdministration-SetAll", model);
     }
     
-    function buildGUI(mainContentPane) {
+    function buildGUI(mainContentPane, model) {
         var panelSpecificationCollection = new PanelSpecificationCollection();
         
         // Add panels to be looked up by panel builder for grid
@@ -171,11 +194,6 @@ require([
         panelSpecificationCollection.addPanelSpecification(projectDescriptionPanelSpecification);
 
         var panelBuilder = new PanelBuilder({panelSpecificationCollection: panelSpecificationCollection});
-        
-        var model = new Stateful({
-            users: [],
-            projects: []
-        });
         
         var panelContentPane = panelBuilder.newContentPane();
         
