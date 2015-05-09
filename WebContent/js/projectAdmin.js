@@ -18,6 +18,10 @@ require([
 ){
     "use strict";
     
+    var journalIdentifier = "NarraFirma-administration";
+    
+    var pointrelClient;
+    
     function initialize() {
         console.log("initialize called in site.js");
         toaster.createToasterWidget(document.getElementById("pleaseWaitDiv"));
@@ -32,6 +36,8 @@ require([
         document.getElementById("pleaseWaitDiv").style.display = "none";
         
         // toaster.toast("Running...");
+        
+        pointrelClient = new PointrelClient(journalIdentifier, projectIdentifier, userIdentifier, updateServerStatus);
         
         buildGUI(contentPane);
     }
@@ -68,6 +74,7 @@ require([
                 "displayName": "Email",
                 "displayPrompt": "Email",
             },
+            // TODO: Use password hash! Add button to set it.
             {
                 "id": "password",
                 "dataType": "string",
