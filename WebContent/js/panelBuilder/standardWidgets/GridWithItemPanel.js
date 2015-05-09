@@ -224,7 +224,7 @@ define([
         var panelFields = this.itemPanelSpecification.panelFields;
         
         // Put the columns in the order supplied if using includeAllFields, otherwise put them in order of panel specification
-        if (configuration.includeAllFields.constructor === Array) {
+        if (configuration.includeAllFields && configuration.includeAllFields.constructor === Array) {
             array.forEach(configuration.includeAllFields, function (fieldName) {
                 array.forEach(panelFields, function (fieldSpecification) {
                     if (fieldSpecification.id === fieldName) fieldsToInclude.push(fieldSpecification);
