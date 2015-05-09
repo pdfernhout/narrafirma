@@ -9,18 +9,34 @@ var http = require('http');
 var https = require('https');
 
 // The modules below require npm installation
-
 var express = require('express');
 var bodyParser = require('body-parser');
 
 // the server library
 var pointrel20150417Server = require("./pointrel20150417Server");
 
-//TODO: Need better loading and project management than this
-pointrel20150417Server.addJournalSync("testing");
+// TODO: Need better loading and project management than this
+// pointrel20150417Server.addJournalSync("testing");
+// TODO: Copying config data from Pointrel module
+var journalDirectory = "../server-data/" + "journals/";
+var fileNames;
+try {
+    fileNames = fs.readdirSync(journalDirectory);
+} catch (error) {
+    console.log("Problem reading directory %s error: %s", journalDirectory, error);
+}
+for (var fileNameIndex = 0; fileNameIndex < fileNames.length; fileNameIndex++) {
+    var fileName = fileNames[fileNameIndex];
+    if (fileName.charAt(0) === ".") continue;
+    var stat = fs.statSync(journalDirectory + fileName);
+    if (stat.isDirectory()) {
+        console.log("Adding journal: ", fileName);
+        pointrel20150417Server.addJournalSync(fileName);
+    }
+}
 pointrel20150417Server.indexAllJournals();
 
-// For authentatication
+// For authentication
 var authentication = require("./authentication");
 
 // TODO: think about authentication
