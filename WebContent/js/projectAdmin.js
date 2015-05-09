@@ -19,6 +19,7 @@ require([
     "use strict";
     
     var journalIdentifier = "NarraFirma-administration";
+    var projectAdministrationTopic = "ProjectAdministration";
     
     var pointrelClient;
     
@@ -58,10 +59,54 @@ require([
                 // TODO: Sanitize journalIdentifier
                 document.body.innerHTML += '<br>Problem connecting to project journal on server for: "<b>' + journalIdentifier + '</b>"';
             } else {
-                loadAllProjectsModel(allProjectsModel);
-                buildGUI(contentPane, allProjectsModel);
+                loadAllProjectsModel(allProjectsModel, function (error) {
+                    if (error) {
+                        // It is possible no data was ever set
+                        console.log("error", error);
+                    }
+                    buildGUI(contentPane, allProjectsModel);
+                });
+                
             }
         });
+    }
+    
+    function loadAllProjectsModel(model, callback) {
+        console.log("loadAllProjectsModel initial", model);
+        
+        pointrelClient.fetchLatestMessageForTopic(projectAdministrationTopic, function(error, response) {
+            if (error) {
+                callback(error);
+            } else {
+                var message = null;
+                if (response.latestRecord) {
+                    message = response.latestRecord.messageContents;
+                }
+                if (!message) {
+                    console.log("No latest message was available");
+                    callback(null);
+                    return;
+                }
+                if (message.messageType !== "ProjectAdministration-SetAll") {
+                    console.log("Unexpected response messageType", response);
+                    callback("Unexpected response messageType");
+                } else {
+                    var newModel = message.change;
+                    for (var key in newModel) {
+                        model.set(key, newModel[key]);
+                    }
+                    callback(null);
+                }
+            }
+        });
+    }
+    
+    function saveButtonClicked(model) {
+        var plainValue = getPlainValue(model);
+        console.log("saveButtonClicked plainValue", plainValue);
+        
+        // TODO: Need callback to report status on save...
+        pointrelClient.createAndSendChangeMessage(projectAdministrationTopic, "ProjectAdministration-SetAll", model);
     }
     
     var userRoles = [
@@ -174,17 +219,6 @@ require([
             }
         ]
     };
-    
-    function loadAllProjectsModel(model) {
-        console.log("loadAllProjectsModel initial", model);
-    }
-    
-    function saveButtonClicked(model) {
-        var plainValue = getPlainValue(model);
-        console.log("saveButtonClicked plainValue", plainValue);
-        
-        pointrelClient.createAndSendChangeMessage("ProjectAdministration", "ProjectAdministration-SetAll", model);
-    }
     
     function buildGUI(mainContentPane, model) {
         var panelSpecificationCollection = new PanelSpecificationCollection();
