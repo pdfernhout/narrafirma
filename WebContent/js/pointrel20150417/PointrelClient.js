@@ -73,6 +73,7 @@ define([
         this.journalIdentifier = journalIdentifier;
         this.userIdentifier = userIdentifier;
         
+        this.started = false;
         this.frequencyOfChecks_ms = defaultCheckFrequency_ms;
         this.timer = null;
         
@@ -114,6 +115,7 @@ define([
         if (this.apiURL === "loopback") {
             console.log("No polling done on loopback");
         } else {
+            this.started = true;
             this.startTimer();
             this.pollServerForNewMessages();
         }
@@ -123,6 +125,7 @@ define([
     PointrelClient.prototype.shutdown = function() {
         console.log(new Date().toISOString(), "shutting down PointrelClient", this);
         this.stopTimer();
+        this.started = false;
     };
     
     
@@ -166,8 +169,12 @@ define([
     
     // Deprecated to for client to call directly; use createAndSendMessage
     // TODO: No callback?
-    PointrelClient.prototype.sendMessage = function(message) {
+    PointrelClient.prototype.sendMessage = function(message, callback) {
         if (debugMessaging) console.log("sendMessage", this.areOutgoingMessagesSuspended, message);
+        if (callback && this.started) {
+            console.log("Programming ERROR: trying to use callback and polling at same time");
+            throw new Error("Programming ERROR: trying to use callback and polling at same time");
+        }
         
         // Calculate the sha256AndLength without the pointrel fields
         delete message.__pointrel_sha256AndLength;
@@ -198,7 +205,7 @@ define([
         // TODO: Extra copyObjectWithSortedKeys is not needed, but makes log messages look nicer so leaving for now
         message = copyObjectWithSortedKeys(message);
         this.outgoingMessageQueue.push(message);
-        this.sendOutgoingMessage();
+        this.sendOutgoingMessage(callback);
     };
     
     PointrelClient.prototype.suspendOutgoingMessages = function(suspend) {
@@ -210,7 +217,7 @@ define([
         }
     };
     
-    PointrelClient.prototype.sendOutgoingMessage = function() {
+    PointrelClient.prototype.sendOutgoingMessage = function(callback) {
         if (debugMessaging) console.log("sendOutgoingMessage");
         if (this.areOutgoingMessagesSuspended) return;
         if (this.outgoingMessageQueue.length === 0) return;
@@ -232,9 +239,9 @@ define([
             var message = this.outgoingMessageQueue[0]; 
            
             var apiRequest = {
-                "action": "pointrel20150417_storeMessage",
-                "journalIdentifier": this.journalIdentifier,
-                "message": message
+                action: "pointrel20150417_storeMessage",
+                journalIdentifier: this.journalIdentifier,
+                message: message
             };
             if (debugMessaging) console.log("sending store message request", apiRequest);
             
@@ -270,17 +277,80 @@ define([
 
                 // Keep sending outgoing messages if there are any more, or do other task as needed
                 // Do this as a timeout so the event loop can finish its cycle first
-                setTimeout(function () {
-                    // Could instead just send outgoing messages and let the timer restart the others, this will cause some extra polls
-                    self.sendFetchOrPollIfNeeded();
-                }, 0);
+                // Only do this if polling has been started; otherwis just assume user is sending individual messages
+                if (callback) callback(null, response);
+                if (self.started) {
+                    setTimeout(function () {
+                        // Could instead just send outgoing messages and let the timer restart the others, this will cause some extra polls
+                        self.sendFetchOrPollIfNeeded();
+                    }, 0);
+                }
             }, function(error) {
                 // TODO: Need to check for rejected status and then remove the message from the outgoing queue
                 self.serverStatus("Problem storing message to server: " + error.message + "<br>You may need to reload the page to synchronize it with the current state of the server if a message was rejected for some reason.");
                 console.log("Got store error", error.message);
                 self.outstandingServerRequestSentAtTimestamp = null;
+                if (callback) callback(error);
             });
         }
+    };
+    
+    PointrelClient.prototype.fetchLatestMessageForTopic = function(topicIdentifier, callback) {
+        var self = this;
+        if (this.apiURL === "loopback") {
+            callback(null, {
+                success: true, 
+                statusCode: 200,
+                description: "Success",
+                detail: "latest",
+                timestamp: getCurrentUniqueTimestamp(),
+                status: 'OK',
+                currentTimestamp: this.getCurrentUniqueTimestamp(),
+                latestRecord: {
+                    messageContents: self.latestMessageForTopic(topicIdentifier),
+                    // TODO: Fill these in correctly
+                    sha256AndLength: null, 
+                    receivedTimestamp: null,
+                    topicTimestamp: null
+                }
+            });
+        } else {
+            // Send to a real server immediately
+
+            var apiRequest = {
+                action: "pointrel20150417_queryForLatestMessage",
+                journalIdentifier: this.journalIdentifier,
+                topicIdentifier: topicIdentifier
+            };
+            if (debugMessaging) console.log("sending queryForLatestMessage request", apiRequest);
+            
+            this.serverStatus("requesting latest message " + this.outstandingServerRequestSentAtTimestamp);
+            
+            request.post(this.apiURL, {
+                data: JSON.stringify(apiRequest),
+                // Two second timeout
+                timeout: 2000,
+                handleAs: "json",
+                headers: {
+                    "Content-Type": 'application/json; charset=utf-8',
+                    "Accept": "application/json"
+                }
+            }).then(function(response) {
+                if (debugMessaging) console.log("Got latest message for topic response", response);
+                if (!response.success) {
+                    console.log("ERROR: report queryForLatestMessage failure", response);
+                    self.serverStatus("Report queryForLatestMessage failure: " + response.statusCode + " :: " + response.description);
+                    callback(response);
+                } else {
+                    self.okStatus();
+                    callback(null, response);
+                }
+             }, function(error) {
+                self.serverStatus("Problem fetching latest message for topic from server: " + error.message);
+                console.log("Got server error when fetching latest message for topic from server", error.message);
+                callback(error);
+            });
+        }        
     };
     
     PointrelClient.prototype.reportJournalStatus = function(callback) {
@@ -309,8 +379,8 @@ define([
             // Send to a real server immediately
 
             var apiRequest = {
-                "action": "pointrel20150417_reportJournalStatus",
-                "journalIdentifier": this.journalIdentifier
+                action: "pointrel20150417_reportJournalStatus",
+                journalIdentifier: this.journalIdentifier
             };
             if (debugMessaging) console.log("sending reportJournalStatus request", apiRequest);
             
@@ -329,7 +399,6 @@ define([
             }).then(function(response) {
                 if (debugMessaging) console.log("Got journal status response", response);
                 if (!response.success) {
-                    // TODO: Assuming this is a permanent problem and so OK to discard themessage
                     console.log("ERROR: report journal status failure", response);
                     self.serverStatus("Report journal status failure: " + response.statusCode + " :: " + response.description);
                     callback(response);
@@ -338,8 +407,7 @@ define([
                     callback(null, response);
                 }
              }, function(error) {
-                // TODO: Need to check for rejected status and then remove the message from the outgoing queue
-                self.serverStatus("Problem storing message to server: " + error.message + "<br>You may need to reload the page to synchronize it with the current state of the server if a message was rejected for some reason.");
+                self.serverStatus("Problem requesting status for journal from server: " + error.message);
                 console.log("Got server error for report journal status", error.message);
                 callback(error);
             });
@@ -348,6 +416,18 @@ define([
     
     PointrelClient.prototype.okStatus = function() {
         this.serverStatus("OK (sent: " + this.messageSentCount + ", received:" + this.messageReceivedCount + ")");
+    };
+    
+    PointrelClient.prototype.latestMessageForTopic = function(topicIdentifier) {
+        // TODO: Inefficient to search all messages; keep sorted message list per topic or just track latest for each topic?
+        var messages = this.messagesSortedByReceivedTimeArray;
+        for (var i = messages.length - 1; i >= 0; i--) {
+            var message = messages[i];
+            if (message._topicIdentifier === topicIdentifier) {
+                return message;
+            }
+        }
+        return null;
     };
     
     PointrelClient.prototype.filterMessages = function(filterFunction) {
