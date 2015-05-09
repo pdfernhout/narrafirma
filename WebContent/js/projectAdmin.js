@@ -76,13 +76,11 @@ require([
                 "displayPrompt": "Password"
             },
             {
-                "id": "role",
+                "id": "groups",
                 "dataType": "string",
-                "dataOptions": userRoles,
-                "required": true,
-                "displayType": "select",
-                "displayName": "Role",
-                "displayPrompt": "Role"
+                "displayType": "text",
+                "displayName": "Groups",
+                "displayPrompt": "Groups (space separated; standard groups include admin, editor, author, contributor, and subscriber)"
             },
             {
                 "id": "fullName",
@@ -125,31 +123,25 @@ require([
                 "displayPrompt": "Project Description"
             },
             {
-                "id": "roleToEditProject",
+                "id": "editors",
                 "dataType": "string",
-                "dataOptions": userRoles,
-                "required": true,
-                "displayType": "select",
-                "displayName": "Role to edit project",
-                "displayPrompt": "Role required to edit project"
+                "displayType": "text",
+                "displayName": "Editors",
+                "displayPrompt": "Editors (space separated; can be group like admin, editor, author, contributor, subscriber, or anonymous)"
             },
             {
-                "id": "roleToViewProject",
+                "id": "viewers",
                 "dataType": "string",
-                "dataOptions": userRoles,
-                "required": true,
-                "displayType": "select",
-                "displayName": "Role to view project",
-                "displayPrompt": "Role required to view project"
+                "displayType": "text",
+                "displayName": "Viewers",
+                "displayPrompt": "Viewers (space separated; can be group)"
             },
             {
-                "id": "roleToTakeSurvey",
+                "id": "surveyTakers",
                 "dataType": "string",
-                "dataOptions": userRoles,
-                "required": true,
-                "displayType": "select",
-                "displayName": "Role to take survey",
-                "displayPrompt": "Role required to take survey"
+                "displayType": "text",
+                "displayName": "Survey takers",
+                "displayPrompt": "Survey takers (space separated; can be group)"
             }
         ]
     };
@@ -192,7 +184,7 @@ require([
                     editButton: true,
                     addButton: true,
                     removeButton: true,
-                    includeAllFields: ["id", "loginIdentifier", "role", "fullName"]
+                    includeAllFields: ["id", "fullName", "email", "groups"]
                 }
                 // , customButton: {customButtonLabel: "Open panel", callback: _.partial(openPanel, panelContentPane, panelSpecificationCollection, panelBuilder)}}
             },
