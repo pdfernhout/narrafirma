@@ -240,6 +240,7 @@ define([
            
             var apiRequest = {
                 action: "pointrel20150417_storeMessage",
+                userIdentifier: this.userIdentifier,
                 journalIdentifier: this.journalIdentifier,
                 message: message
             };
@@ -319,6 +320,7 @@ define([
 
             var apiRequest = {
                 action: "pointrel20150417_queryForLatestMessage",
+                userIdentifier: this.userIdentifier,
                 journalIdentifier: this.journalIdentifier,
                 topicIdentifier: topicIdentifier
             };
@@ -380,6 +382,7 @@ define([
 
             var apiRequest = {
                 action: "pointrel20150417_reportJournalStatus",
+                userIdentifier: this.userIdentifier,
                 journalIdentifier: this.journalIdentifier
             };
             if (debugMessaging) console.log("sending reportJournalStatus request", apiRequest);
@@ -644,6 +647,7 @@ define([
         if (debugMessaging) console.log("Polling server for changes...");
         var apiRequest = {
             action: "pointrel20150417_queryForNextMessage",
+            userIdentifier: this.userIdentifier,
             journalIdentifier: this.journalIdentifier,
             fromTimestampExclusive: this.lastReceivedTimestampConsidered,
             // The server may return less than this number of message if including message contents and they exceed about 1MB in total
@@ -735,9 +739,10 @@ define([
         
         if (debugMessaging) console.log("Retrieving new message...");
         var apiRequest = {
-            "action": "pointrel20150417_loadMessage",
-            "journalIdentifier": this.journalIdentifier,
-            "sha256AndLength": incomingMessageRecord.sha256AndLength
+            action: "pointrel20150417_loadMessage",
+            userIdentifier: this.userIdentifier,
+            journalIdentifier: this.journalIdentifier,
+            sha256AndLength: incomingMessageRecord.sha256AndLength
         };
 
         if (debugMessaging) console.log("sending load request", apiRequest);
