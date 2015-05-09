@@ -293,15 +293,11 @@ define([
 
     GridWithItemPanel.prototype.storeItem = function(statefulItem) {
         console.log("OK clicked", statefulItem);
-
-        var uniqueItemID = generateRandomUuid();
-        
+ 
         var plainValue = getPlainValue(statefulItem);
         console.log("grid plainValue", plainValue);
 
         if (this.formType === "add") {
-            var idProperty = this.store.idProperty;
-            plainValue[idProperty] = uniqueItemID;
             this.store.add(plainValue);
         } else {
             this.store.put(plainValue);
@@ -392,6 +388,11 @@ define([
         console.log("add button pressed", event);
         
         var newItem = {};
+        
+        var uniqueItemID = generateRandomUuid();
+        var idProperty = this.store.idProperty;
+        newItem[idProperty] = uniqueItemID;
+
         var statefulItem = new Stateful(newItem);
         
         this.openFormForItem("add", statefulItem);  
