@@ -1,6 +1,7 @@
 define([
     "dojo/i18n!js/nls/applicationMessages",
     "js/buttonActions",
+    "js/panelBuilder/dialogSupport",
     "js/domain",
     "dojo/hash",
     "js/applicationWidgets/loadAllApplicationWidgets",
@@ -20,6 +21,7 @@ define([
 ], function(
     applicationMessages,
     buttonActions,
+    dialogSupport,
     domain,
     hash,
     loadAllApplicationWidgets,
@@ -243,7 +245,7 @@ define([
     function updateServerStatus(text) {
         // The serverStatusPane may be created only after we start talking to the server
         if (!serverStatusPane) return;
-        serverStatusPane.set("content", "Server status: " + text);
+        serverStatusPane.set("content", "Project: " + project.journalIdentifier + "; Server status: " + text);
     }
     
     function loadedMoreSurveyResults(newEnvelopeCount) {
@@ -325,6 +327,21 @@ define([
         console.log(JSON.stringify(sections, null, 4));
     }
     
+    function chooseProject(userIdentifier, callback) {
+        console.log("chooseProject");
+        
+        // TODO: Determin projects based on userIdentifier
+
+        var projects = [{id: "testing"}, {id: "other"}];
+        
+        // TODO: Translate
+        var columns = {id: "Project identifier"};
+        dialogSupport.openListChoiceDialog(null, projects, columns, "Projects", "Select a project to work on", function (choice) {
+            console.log("choice:", choice);
+            callback(choice);
+        });
+    }
+    
     // The main starting point of the application
     function initialize() {
         console.log("=======", new Date().toISOString(), "application.initialize() called");
@@ -336,29 +353,39 @@ define([
         
         loadAllApplicationWidgets(PanelBuilder);
         
+        document.getElementById("pleaseWaitDiv").style.display = "none";
+        
         // Kludge: Ensure key information is available
         if (!userIdentifier) userIdentifier = prompt("User identifier?", "tester1");
         if (!userIdentifier) return;
-        if (!projectIdentifier) projectIdentifier = prompt("Project identifier?", "test-project");
-        if (!projectIdentifier) return;
-        // TODO: Should this be managed separately?
-        journalIdentifier = projectIdentifier; 
         
-        project = new Project(journalIdentifier, projectIdentifier, userIdentifier, updateServerStatus);
-        domain.project = project;
-        
-        console.log("Made project", project);
-        
-        project.startup(function (error) {
-            if (error) {
-                alert("Problem connecting to project journal on server. Application will not run.");
-                document.getElementById("pleaseWaitDiv").style.display = "none";
-                // TODO: Sanitize journalIdentifier
-                document.body.innerHTML += '<br>Problem connecting to project journal on server for: "<b>' + journalIdentifier + '</b>"';
-                return;
-            } else {
-                loadApplicationDesign();
-            }
+        chooseProject(userIdentifier, function (projectChoice) {
+            if (!projectChoice) return;
+            
+            projectIdentifier = projectChoice.id;
+            if (!projectIdentifier) return;
+            
+            document.getElementById("pleaseWaitDiv").style.display = "block";
+            
+            // TODO: Should this be managed separately?
+            journalIdentifier = projectIdentifier; 
+            
+            project = new Project(journalIdentifier, projectIdentifier, userIdentifier, updateServerStatus);
+            domain.project = project;
+            
+            console.log("Made project", project);
+            
+            project.startup(function (error) {
+                if (error) {
+                    alert("Problem connecting to project journal on server. Application will not run.");
+                    document.getElementById("pleaseWaitDiv").style.display = "none";
+                    // TODO: Sanitize journalIdentifier
+                    document.body.innerHTML += '<br>Problem connecting to project journal on server for: "<b>' + journalIdentifier + '</b>"';
+                    return;
+                } else {
+                    loadApplicationDesign();
+                }
+            });
         });
     }
         
