@@ -17,6 +17,7 @@ var pointrel20150417Server = require("./pointrel20150417Server");
 
 // TODO: Need better loading and project management than this
 // pointrel20150417Server.addJournalSync("testing");
+pointrel20150417Server.addJournalSync("NarraFirma-administration");
 // TODO: Copying config data from Pointrel module
 var journalDirectory = "../server-data/" + "journals/";
 var fileNames;
