@@ -14,7 +14,9 @@ var bodyParser = require('body-parser');
 
 // the server library
 var pointrelServer = require("./pointrel20150417/pointrelServer");
-var pointrelUtility = require("./pointrel20150417/pointrelUtility");
+
+var accessControl = require("./accessControl");
+accessControl.initialize();
 
 // TODO: Need better loading and project management than this
 // pointrelServer.addJournalSync("testing");
@@ -140,90 +142,12 @@ function senderIPAddressForRequest(request) {
         request.connection.socket.remoteAddress;
 }
 
-function getAccessConfigurationForJournal(journalIdentifier, callback) {
-    var request = {
-        action: "pointrel20150417_queryForLatestMessage",
-        journalIdentifier: "NarraFirma-administration",
-        topicIdentifier: "ProjectAdministration"
-    };
-    pointrelServer.processRequest(request, function (result) {
-        console.log("getAccessConfigurationForJournal response", result, journalIdentifier);
-        // TODO: Need to think more about what happens if authentication data might be messed up
-        if (!result.success) return callback(null);
-        if (!result.latestRecord) return callback(null);
-        if (!result.latestRecord.messageContents) return callback(null);
-        if (result.latestRecord.messageContents.messageType !== "ProjectAdministration-SetAll") return callback(null);
-        var accessConfiguration = result.latestRecord.messageContents.change;
-        for (var i = 0; i < accessConfiguration.projects.length; i++) {
-            var project = accessConfiguration.projects[i];
-            // TODO: Should support any type of journal identifier, not just strings
-            if (project.id === journalIdentifier) {
-                return callback(project);
-            }
-        }
-        return callback(null);
-    });
-}
-
-function splitAtWhitspace(text) {
-    return text.split(/(\s+)/);
-}
-
-function isPermitted(userIdentifier, usersOrGroups) {
-    if (usersOrGroups.indexOf(userIdentifier) !== -1) return true;
-    // TODO: Improve to check for groups
-    return false;
-}
-
 app.post("/api/pointrel20150417", function(request, response) {
-    var body = request.body;
-    // TODO: Ensure journal exists and user has permissions
-    var journalIdentifier = body.journalIdentifier;
-    var userIdentifier = body.userIdentifier;
-    if (!userIdentifier) userIdentifier = "anonymous";
-    var action = body.action; // "pointrel20150417_storeMessage"
-    console.log("request", journalIdentifier, userIdentifier, action);
-    if (journalIdentifier) {
-        var writeRequested = (action === "pointrel20150417_storeMessage");
-        getAccessConfigurationForJournal(journalIdentifier, function(accessConfiguration) {
-            console.log("accessConfiguration", accessConfiguration);
-            var permitted;
-            if (accessConfiguration) {
-                // TODO: Find user to know about groups
-                // Check if access is permitted
-                if (writeRequested) {
-                    var editors = splitAtWhitspace(accessConfiguration.editors);
-                    console.log("writers", editors);
-                    // TODO: Need to look at roles as well as name matches
-                    permitted = isPermitted(userIdentifier, editors);
-                } else {
-                    var viewers = splitAtWhitspace(accessConfiguration.viewers);
-                    console.log("viewers", viewers);
-                    // TODO: Need to look at roles as well as name matches
-                    permitted = isPermitted(userIdentifier, viewers);
-                }
-                // TODO: Need to think about survey takers
-            } else {
-                permitted = true;
-            }
-            if (!permitted) {
-                console.log("Forbidden");
-                var action = "read";
-                if (writeRequested) action = "write";
-                response.json(pointrelUtility.makeFailureResponse(403, 'Forbidden -- user "' + userIdentifier + '" is not authorized to ' + action + " in " + JSON.stringify(journalIdentifier), {userIdentifier: userIdentifier, journalIdentifier: journalIdentifier, writeRequested: writeRequested}));
-            } else {
-                // Do the request if approved
-                pointrelServer.processRequest(request.body, function(requestResultMessage) {
-                    response.json(requestResultMessage);
-                }, senderIPAddressForRequest(request));
-            }
-        });
-    } else {
-        // This will just fail becaues there is no journal identifier
-        pointrelServer.processRequest(request.body, function(requestResultMessage) {
-            response.json(requestResultMessage);
-        }, senderIPAddressForRequest(request));
-    }
+    // response.json({"error": "server unfinished!"});
+    // TODO: Exception handling?
+    pointrelServer.processRequest(request.body, function(requestResultMessage) {
+        response.json(requestResultMessage);
+    }, senderIPAddressForRequest(request));
 });
 
 app.use(function(err, req, res, next){
