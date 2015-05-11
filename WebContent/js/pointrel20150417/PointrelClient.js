@@ -158,7 +158,7 @@ define([
     */
     
     // TODO: No callback?
-    PointrelClient.prototype.createAndSendChangeMessage = function(topicIdentifier, messageType, change, other) {
+    PointrelClient.prototype.createAndSendChangeMessage = function(topicIdentifier, messageType, change, other, callback) {
         var timestamp = this.getCurrentUniqueTimestamp();
         
         var message = {
@@ -179,7 +179,7 @@ define([
             }
         }
         
-        this.sendMessage(message);
+        this.sendMessage(message, callback);
         
         return message;
     };
