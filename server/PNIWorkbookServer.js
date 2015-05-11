@@ -39,7 +39,12 @@ for (var fileNameIndex = 0; fileNameIndex < fileNames.length; fileNameIndex++) {
 pointrelServer.indexAllJournals();
 
 // For authentication
-var authentication = require("./authentication");
+// var authentication = require("./authentication");
+// TODO: Stub authentication; either remove or decide how to make it work with passport; may not need with Pointrel authentication/authorization?
+var authentication = {
+    initialize: function () {return true;},
+    ensureAuthenticated: function (request, response, next) { return next(); }
+};
 
 // TODO: think about authentication
 var config = {
