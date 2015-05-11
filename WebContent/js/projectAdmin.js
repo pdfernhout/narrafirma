@@ -49,7 +49,10 @@ require([
         var userIdentifier = prompt("User identifier?", "administrator");
         if (!userIdentifier) return;
         
-        pointrelClient = new PointrelClient("/api/pointrel20150417", journalIdentifier, userIdentifier, null, updateServerStatus);
+        var userCredentials = prompt("User password?", "test");
+        if (!userCredentials) return;
+        
+        pointrelClient = new PointrelClient("/api/pointrel20150417", journalIdentifier, userIdentifier, userCredentials, null, updateServerStatus);
 
         var allProjectsModel = new Stateful({
             users: [],

@@ -12,15 +12,17 @@ function initialize() {
 }
 
 function isAuthenticated(userIdentifier, userCredentials) {
-    // console.log("isAuthenticated", userIdentifier, userCredentials);
+    console.log("isAuthenticated", userIdentifier, userCredentials);
+    var result = false;
     var user = getAccessConfigurationForUser(userIdentifier);
-    if (user && user.password === userCredentials) return true;
-    return false;
+    if (user && user.password === userCredentials) result = true;
+    console.log("isAuthenticated:", result);
+    return result;
 }
 
 function splitAtWhitspace(text) {
     if (!text) return [];
-    return text.split(/(\s+)/);
+    return text.match(/\S+/g);
 }
 
 function isUserInAccessList(userIdentifier, accessListOfUsersAndGroups) {
@@ -28,6 +30,7 @@ function isUserInAccessList(userIdentifier, accessListOfUsersAndGroups) {
     // Also check for group matches as well as name matches
     // Find user object to know about groups user is in
     var user = getAccessConfigurationForUser(userIdentifier);
+    if (user === null) user = anonymousUser;
     var groups = splitAtWhitspace(user.groups);
     for (var i = 0; i < groups.length; i++) {
         var group = groups[i];
@@ -42,7 +45,10 @@ function isAuthorized(journalIdentifier, userIdentifier, requestedAction) {
     var accessConfigurationForJournal = getAccessConfigurationForJournal(journalIdentifier);
     
     // No restrictions have been set up -- TODO: Should the default be the other way? Then need superuser?
-    if (!accessConfigurationForJournal) return true;
+    if (!accessConfigurationForJournal) {
+        console.log("No access control has been set up for", journalIdentifier);
+        return true;
+    }
     
     var permitted = false;
     
@@ -61,6 +67,7 @@ function isAuthorized(journalIdentifier, userIdentifier, requestedAction) {
     
     // TODO: Need to think about admin function
     // TODO: Need to think about survey takers
+    console.log("permitted", permitted);
     return permitted;
 }
 
@@ -72,27 +79,24 @@ function getAccessConfiguration() {
         topicIdentifier: "ProjectAdministration"
     };
     var result = null;
-    // Important: Assuming processRequest for this request actually synchronous in practice and that message caching is enabled
-    pointrelServer.processRequest(request, function (response) {
-        // console.log("getAccessConfigurationForJournal response", response);
-        // TODO: Need to think more about what happens if authentication data might be messed up
-        if (!response.success || !response.latestRecord || !response.latestRecord.messageContents || response.latestRecord.messageContents.messageType !== "ProjectAdministration-SetAll") {
-            result = null;
-        } else {
-            var accessConfiguration = response.latestRecord.messageContents.change;
-            result = accessConfiguration;
-        }
-    });
-    // console.log("accessConfiguration result", result);
-    return result;
+    
+    var message = pointrelServer.latestMessageForTopicSync("NarraFirma-administration", "ProjectAdministration");
+    // TODO: Need to think more about what happens if authentication data might be messed up
+    if (!message) return null;
+    
+    var accessConfiguration = message.change;
+    // console.log("accessConfiguration", accessConfiguration);
+    return accessConfiguration;
 }
 
 function getAccessConfigurationForJournal(journalIdentifier) {
+    console.log("getAccessConfigurationForJournal", journalIdentifier);
     var accessConfiguration = getAccessConfiguration();
     if (!accessConfiguration) return null;
 
     for (var i = 0; i < accessConfiguration.projects.length; i++) {
         var project = accessConfiguration.projects[i];
+        console.log("project", project);
         // TODO: Should support any type of journal identifier, not just strings
         if (project.id === journalIdentifier) {
             return project;
@@ -108,6 +112,8 @@ var anonymousUser = {
 };
 
 function getAccessConfigurationForUser(userIdentifier) {
+    if (!userIdentifier) return null;
+    
     var accessConfiguration = getAccessConfiguration();
     if (!accessConfiguration) return null;
 
@@ -118,7 +124,7 @@ function getAccessConfigurationForUser(userIdentifier) {
             return user;
         }
     }
-    return anonymousUser;
+    return null;
 }
 
 exports.initialize = initialize;
