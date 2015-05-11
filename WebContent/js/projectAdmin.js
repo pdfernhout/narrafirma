@@ -49,10 +49,15 @@ require([
         var userIdentifier = prompt("User identifier?", "administrator");
         if (!userIdentifier) return;
         
-        var userCredentials = prompt("User password?", "test");
-        if (!userCredentials) return;
+        var userPassword = prompt("User password?", "test");
+        if (!userPassword) return;
         
-        pointrelClient = new PointrelClient("/api/pointrel20150417", journalIdentifier, userIdentifier, userCredentials, null, updateServerStatus);
+        var userCredentials = {
+            userIdentifier: userIdentifier,
+            userPassword: userPassword
+        };
+        
+        pointrelClient = new PointrelClient("/api/pointrel20150417", journalIdentifier, userCredentials, null, updateServerStatus);
 
         var allProjectsModel = new Stateful({
             users: [],
@@ -120,9 +125,18 @@ require([
     function saveButtonClicked(model) {
         var plainValue = getPlainValue(model);
         console.log("saveButtonClicked plainValue", plainValue);
+        toaster.toast("Saving...");
         
         // TODO: Need callback to report status on save...
-        pointrelClient.createAndSendChangeMessage(projectAdministrationTopic, "ProjectAdministration-SetAll", model);
+        pointrelClient.createAndSendChangeMessage(projectAdministrationTopic, "ProjectAdministration-SetAll", model, null, function (error, response) {
+            console.log("createAndSendChangeMessage", error, response);
+            if (error) {
+                toaster.toast("Save failed; see console for details");
+            } else {
+                // TODO: Maybe need to check response status?
+                toaster.toast("Saved OK");
+            }
+        });
     }
     
     var userRoles = [
