@@ -23,24 +23,11 @@
 // TODO: Should documents use 128-bit NTP timestamps based on NTP epoch?
 // TODO: Think more about different types of timestamp: contributed when, authored when, about event when, primary source when, other?
 
-var pointrelServerVersion = "pointrel20150417-0.0.3";
+// The current pointrel server version -- bump this up as significant changes are made, especially to the communication API
+var pointrelServerVersion = "pointrel20150417-0.0.4";
+
+// All stored message files will have this suffix added to them
 var messageFileSuffix = ".pce";
-
-var apiBaseURL = '/api/pointrel20150417';
-var serverDataDirectory = "../server-data/";
-var journalsDirectory = serverDataDirectory + "journals/";
-
-// The constant maximumTimeDriftAllowed_ms is the maximum time drift allowed for messages to be in the future to allow for slightly different clocks
-// The more frequently records are written to the server, the smaller this value should be
-var maximumTimeDriftAllowed_ms = 10000;
-
-// You might not want to cache message contents if you have a lot of big media files in applications
-// However, caching from the start is the right default for small projects (like with, say, typically less than 100 MB of data)
-var cacheMessageContents = true;
-
-// Constants about including message results in query responses
-var maximumQueryResponseLimit = 100;
-var maximumMessageBodyBytes = 1000000;
 
 // Standard nodejs modules
 var fs = require('fs');
@@ -54,10 +41,49 @@ var makeFailureResponse = utility.makeFailureResponse;
 //--- Journals
 // TODO: Protect agains __proto__ and so on (was StringMap, might do differently)
 var journals = {};
-var serverName = "server";
 
-function setServerName(name) {
-    serverName = name;
+var configuration = {
+    // The identifier used in setting the trace in incoming and outgoing messages
+    serverName: "server",
+    
+    // The endpoint where we expect the client to send Ajax requests
+    apiBaseURL: '/api/pointrel20150417',
+    
+    // This field is not currently used, but presumably is where more general server configuration information could be stored
+    serverDataDirectory: "../server-data/",
+    
+    // Where to create and store journal files
+    journalsDirectory: "../server-data/journals/",
+        
+     // The option maximumTimeDriftAllowed_ms is the maximum time drift allowed for messages to be in the future to allow for slightly different clocks
+     // The more frequently records are written to the server, the smaller this value should be
+    maximumTimeDriftAllowed_ms: 10000,
+    
+    // You might not want to cache message contents if you have a lot of big media files in applications
+    // However, caching from the start is the right default for small projects (like with, say, typically less than 100 MB of data)
+    cacheMessageContents: true,
+    
+    /// Limits for including message results in query responses
+    maximumQueryResponseLimit: 100,
+    maximumMessageBodyBytes: 1000000,
+    
+    // Whether to allow requests to be attempeted even if unauthenticated; otherwise athentication is only checked for identifer users
+    // Note that even if this is set to flag, journal access may fail if the anonymous user is not allowed
+    isAnonymousAccessAllowed: true,
+    
+    // An optional function that should return a boolean if a user is authenticated
+    // isAuthenticated(userIdentifier, userCredentials)
+    isAuthenticatedCallback: null,
+    
+    // An optional function that should return a boolean if a request is authorized for the user
+    // isAuthorized(journalIdentifier, userIdentifier, requestedAction)
+    isAuthorizedCallback: null
+};
+
+function configure(options) {
+    for (var key in options) {
+        configuration[key] = options[key];
+    }
 }
 
 function makeJournal(journalIdentifier, journalDirectory) {
@@ -87,7 +113,7 @@ function addJournalSync(journalIdentifier) {
    }
    
    
-   var journalDirectory = journalsDirectory + journalIdentifier + "/";
+   var journalDirectory = configuration.journalsDirectory + journalIdentifier + "/";
 
    if (!fs.existsSync(journalDirectory)){
        fs.mkdirSync(journalDirectory);
@@ -167,7 +193,7 @@ function ingestMessage(journal, receivedTimestamp, sha256AndLength, fullFileName
         loadingSequence : journal.allMessageReceivedRecordsSortedByTimestamp.length + 1
     };
     
-    if (cacheMessageContents) {
+    if (configuration.cacheMessageContents) {
         if (messageContents) {
             receivedRecord.messageContents = messageContents;
         } else {
@@ -207,7 +233,7 @@ function ingestMessage(journal, receivedTimestamp, sha256AndLength, fullFileName
 function indexAllMessagesInDirectory(journal, directory) {
     // TODO: If files are added while reindexing is going on and reindexing takes a long time, the new files could be reject as later than this maximum
     // log("indexAllMessagesInDirectory", directory);
-    var maximumAllowedTimestamp = utility.calculateMaximumAllowedTimestamp(maximumTimeDriftAllowed_ms);
+    var maximumAllowedTimestamp = utility.calculateMaximumAllowedTimestamp(configuration.maximumTimeDriftAllowed_ms);
     
     var fileNames;
     try {
@@ -272,7 +298,7 @@ function indexAllMessagesInDirectory(journal, directory) {
 
 //---  Status request
 
-function respondForReportJournalStatusRequest(journal, callback) {
+function respondForReportJournalStatusRequest(journal, isAuthorizedPartial, callback) {
     var sortedReceivedRecords = journal.allMessageReceivedRecordsSortedByTimestamp;
     var earliestRecord = null;
     var latestRecord = null;
@@ -281,22 +307,35 @@ function respondForReportJournalStatusRequest(journal, callback) {
         latestRecord = makeReceivedRecordForClient(sortedReceivedRecords[sortedReceivedRecords.length - 1]);
     }
     
-    callback(makeSuccessResponse(200, "Success", {
+    var readAuthorization = isAuthorizedPartial("read");
+    var writeAuthorization = isAuthorizedPartial("write");
+    var adminAuthorization = isAuthorizedPartial("admin");
+    
+    var response =  {
         status: 'OK',
         version: pointrelServerVersion,
         currentUniqueTimestamp: utility.getCurrentUniqueTimestamp(),
         journalIdentifier: journal.journalIdentifier,
-        journalEarliestRecord: earliestRecord,
-        journalLatestRecord: latestRecord,
-        journalRecordCount: sortedReceivedRecords.length,
-        readOnly: false,
-        // TODO: Report permissions based on authentication
         permissions: {
-            read: true,
-            write: true,
-            admin: true
+            // TODO: What about partial authorization for only some messages?
+            read: readAuthorization,
+            write: writeAuthorization,
+            admin: adminAuthorization
         }
-    }));
+    };
+    
+    if (readAuthorization) {
+        response.journalEarliestRecord = earliestRecord;
+        response.journalLatestRecord = latestRecord;
+        response.journalRecordCount = sortedReceivedRecords.length;
+    }
+    
+    if (writeAuthorization) {
+        // Not sure what I really mean by this flag; sort of that the journal is currently in readOnly mode on the server end?
+        response.readOnly = false;
+    }
+    
+    callback(makeSuccessResponse(200, "Success", response));
 }
 
 //--- Loading and storing messages on disk
@@ -309,7 +348,7 @@ function setOutgoingMessageTrace(requesterIPAddress, journal, message, makeCopy)
     var sentTimestamp = utility.getCurrentUniqueTimestamp();
     var traceEntry = {
         sentByJournalIdentifier: journal.journalIdentifier,
-        sentByServer: serverName,
+        sentByServer: configuration.serverName,
         // TODO: How to best identify from where or from whom this is requested from???
         requesterIPAddress: requesterIPAddress,
         sentTimestamp: sentTimestamp
@@ -428,7 +467,7 @@ function respondForStoreMessageRequest(senderIPAddress, journal, message, callba
     // TODO: Maybe add other things, like requester IP or user identifier?
     var traceEntry = {
         receivedByJournalIdentifier: journal.journalIdentifier,
-        receivedByServer: serverName,
+        receivedByServer: configuration.serverName,
         // TODO: How to best identify from where or from whom this is received from???
         senderIPAddress: senderIPAddress,
         receivedTimestamp: receivedTimestamp
@@ -490,7 +529,7 @@ function respondForQueryForNextMessageRequest(requesterIPAddress, journal, topic
     
     var now = utility.getCurrentUniqueTimestamp();
     
-    if (limitCount > maximumQueryResponseLimit) limitCount = maximumQueryResponseLimit;
+    if (limitCount > configuration.maximumQueryResponseLimit) limitCount = configuration.maximumQueryResponseLimit;
 
     var messagesSortedByReceivedTimestamp;
     if (topicIdentifier === undefined) {
@@ -529,7 +568,7 @@ function respondForQueryForNextMessageRequest(requesterIPAddress, journal, topic
                 // TODO: What should this value be on a failure? Can we assume we will not be able to read the file too?
                 bytesForMessage = 0;
             }
-            var wouldExceedMaximimumBytes = (totalMessageBodyBytesIncluded + bytesForMessage > maximumMessageBodyBytes);
+            var wouldExceedMaximimumBytes = (totalMessageBodyBytesIncluded + bytesForMessage > configuration.maximumMessageBodyBytes);
             // console.log("bytesForMessage", i, bytesForMessage, wouldExceedMaximimumBytes, totalMessageBodyBytesIncluded + bytesForMessage);
             if (i > 0 && wouldExceedMaximimumBytes) break;   
         }
@@ -637,14 +676,41 @@ function processRequest(apiRequest, callback, senderIPAddress) {
         
         if (!journal) return callback(makeFailureResponse(404, "No such journal", {journalIdentifier: journalIdentifier}));
         
-        // TODO: Could support multiple requests if apiRequest is an array.
+        var userIdentifier = apiRequest.userIdentifier;
+        var userCredentials = apiRequest.userCredentials;
+        
+        // Returning 403 for unauthenticated instead of 401 because we are using custom authentication; see:
+        // http://stackoverflow.com/questions/3297048/403-forbidden-vs-401-unauthorized-http-responses/14713094#14713094
+        if (!configuration.isAnonymousAccessAllowed && !userIdentifier) {
+            return callback(makeFailureResponse(403, "Unauthenticated -- anonyomous access is not permitted", {userIdentifier: userIdentifier}));
+        }
+        
+        if (userIdentifier && configuration.isAuthenticatedCallback) {
+            var authenticated = configuration.isAuthenticatedCallback(userIdentifier, userCredentials);
+            if (!authenticated) {
+                return callback(makeFailureResponse(403, "Unauthenticated", {userIdentifier: userIdentifier}));
+            }
+        }
         
         var requestType = apiRequest.action;
         
-        // Problem!!! Confusion between "message" as a general term (like "Discipline of Organizing") with its own identifier and versions
-        // vs. whatever we're storing here which is immutable object with an identifier that is the sha256AndLength.
-        // So, being clear that to load a specific message you need its sha256AndLength.
-        
+        if (requestType !== "pointrel20150417_reportJournalStatus") {
+            var requestedCapability = "read";
+            if (requestType === "pointrel20150417_storeMessage") requestedCapability = "write";
+
+            var authorized = true;
+            if (configuration.isAuthorizedCallback) {
+                // TODO: Could get more fine-grained authorization for messageType
+                authorized = configuration.isAuthorizedCallback(journalIdentifier, userIdentifier, requestedCapability);
+            }
+            
+            if (!authorized) {
+                if (!userIdentifier) userIdentifier = "anonymous";
+                var message = 'Forbidden -- user "' + userIdentifier + '" is not authorized to "' + requestedCapability + '" in ' + JSON.stringify(journalIdentifier);
+                return callback(makeFailureResponse(403, message, {userIdentifier: userIdentifier, journalIdentifier: journalIdentifier, requestedCapability: requestedCapability}));
+            }
+        }
+            
         if (requestType === "pointrel20150417_loadMessage") {
             return respondForLoadMessageRequest(senderIPAddress, journal, apiRequest.sha256AndLength, callback);
         } else if (requestType === "pointrel20150417_queryForNextMessage") {
@@ -654,7 +720,15 @@ function processRequest(apiRequest, callback, senderIPAddress) {
         } else if (requestType === "pointrel20150417_storeMessage") {
             return respondForStoreMessageRequest(senderIPAddress, journal, apiRequest.message, callback);
         } else if (requestType === "pointrel20150417_reportJournalStatus") {
-            return respondForReportJournalStatusRequest(journal, callback);
+            var isAuthorizedPartial = function (requestedCapability) {
+                if (configuration.isAuthorizedCallback) {
+                    // TODO: Could get more fine-grained authorization for messageType
+                    return configuration.isAuthorizedCallback(journalIdentifier, userIdentifier, requestedCapability);
+                } else {
+                    return true;
+                }
+            };
+            return respondForReportJournalStatusRequest(journal, isAuthorizedPartial, callback);
         } else {
             return callback(makeFailureResponse(501, "Not Implemented: requestType not supported", {requestType: requestType}));
         }
@@ -665,7 +739,7 @@ function processRequest(apiRequest, callback, senderIPAddress) {
 
 //--- Exports
 
-exports.setServerName = setServerName;
+exports.configure = configure;
 exports.addJournalSync = addJournalSync;
 exports.processRequest = processRequest;
 exports.getCurrentUniqueTimestamp = utility.getCurrentUniqueTimestamp;
