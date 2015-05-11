@@ -64,7 +64,7 @@ define([
     // TODO: Flag if you don't want to receive incoming messages that you sent if they are in the order sent
     // TODO: (Maybe) Flag if you don't want to recieve any of the messages that you sent...
     
-    function PointrelClient(apiURL, journalIdentifier, userIdentifier, messageReceivedCallback, serverStatusCallback) {
+    function PointrelClient(apiURL, journalIdentifier, userIdentifier, userCredentials, messageReceivedCallback, serverStatusCallback) {
         if (!apiURL) throw new Error("No apiURL supplied");
         if (!journalIdentifier) throw new Error("No journalIdentifier supplied");
         if (!userIdentifier) throw new Error("No userIdentifier supplied");
@@ -72,6 +72,14 @@ define([
         this.apiURL = apiURL;
         this.journalIdentifier = journalIdentifier;
         this.userIdentifier = userIdentifier;
+        
+        // private variable to protect against access by other code; see: http://javascript.crockford.com/private.html
+        var _userCredentials = userCredentials;
+        
+        // privileged method that can access private variable
+        this.prepareApiRequestForSending = function(apiRequest) {
+            apiRequest.userCredentials = _userCredentials;
+        };
         
         this.started = false;
         this.frequencyOfChecks_ms = defaultCheckFrequency_ms;
@@ -245,6 +253,7 @@ define([
                 message: message
             };
             if (debugMessaging) console.log("sending store message request", apiRequest);
+            this.prepareApiRequestForSending(apiRequest);
             
             this.outstandingServerRequestSentAtTimestamp = new Date();
             this.serverStatus("storing " + this.outstandingServerRequestSentAtTimestamp);
@@ -325,7 +334,9 @@ define([
                 topicIdentifier: topicIdentifier
             };
             if (debugMessaging) console.log("sending queryForLatestMessage request", apiRequest);
+            this.prepareApiRequestForSending(apiRequest);
             
+            // Do not set outstandingServerRequestSentAtTimestamp as this is an immediate request that does not block polling
             this.serverStatus("requesting latest message " + this.outstandingServerRequestSentAtTimestamp);
             
             request.post(this.apiURL, {
@@ -386,7 +397,9 @@ define([
                 journalIdentifier: this.journalIdentifier
             };
             if (debugMessaging) console.log("sending reportJournalStatus request", apiRequest);
+            this.prepareApiRequestForSending(apiRequest);
             
+            // Do not set outstandingServerRequestSentAtTimestamp as this is an immediate request that does not block polling
             this.serverStatus("requesting journal status " + this.outstandingServerRequestSentAtTimestamp);
             
             var self = this;
@@ -657,12 +670,13 @@ define([
         if (this.topicIdentifier !== undefined) {
             apiRequest.topicIdentifier = this.topicIdentifier;
         }
-        
         if (debugMessaging) console.log("sending polling request", apiRequest);
+        this.prepareApiRequestForSending(apiRequest);
+        
         // TODO: What do do if it fails? Leave message on outgoing queue?
         this.outstandingServerRequestSentAtTimestamp = new Date();
-        
         this.serverStatus("polling " + this.outstandingServerRequestSentAtTimestamp);
+        
         var self = this;
         request.post(this.apiURL, {
             data: JSON.stringify(apiRequest),
@@ -738,14 +752,16 @@ define([
         }
         
         if (debugMessaging) console.log("Retrieving new message...");
+        
         var apiRequest = {
             action: "pointrel20150417_loadMessage",
             userIdentifier: this.userIdentifier,
             journalIdentifier: this.journalIdentifier,
             sha256AndLength: incomingMessageRecord.sha256AndLength
         };
-
         if (debugMessaging) console.log("sending load request", apiRequest);
+        this.prepareApiRequestForSending(apiRequest);
+        
         this.outstandingServerRequestSentAtTimestamp = new Date();
         this.serverStatus("loading " + this.outstandingServerRequestSentAtTimestamp);
         
