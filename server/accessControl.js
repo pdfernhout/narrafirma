@@ -15,7 +15,7 @@ function isAuthenticated(userIdentifier, userCredentials) {
     console.log("isAuthenticated", userIdentifier, userCredentials);
     var result = false;
     var user = getAccessConfigurationForUser(userIdentifier);
-    if (user && user.password === userCredentials) result = true;
+    if (user && user.password === userCredentials.userPassword) result = true;
     console.log("isAuthenticated:", result);
     return result;
 }
