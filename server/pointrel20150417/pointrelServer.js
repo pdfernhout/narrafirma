@@ -223,7 +223,8 @@ function ingestMessage(journal, receivedTimestamp, sha256AndLength, fullFileName
         if (topic.latestReceivedRecordByTopicTimestamp === null) {
             topic.latestReceivedRecordByTopicTimestamp = receivedRecord;
         } else {
-            if (utility.compareReceivedRecordsByTopicTimestamp(topic.latestReceivedRecordByTopicTimestamp, receivedRecord) > 0) {
+            // Note that these records should never be equal -- which might indicated a duplicate sha256AndLength in records which should be prevented
+            if (utility.compareReceivedRecordsByTopicTimestamp(receivedRecord, topic.latestReceivedRecordByTopicTimestamp) >= 0) {
                 topic.latestReceivedRecordByTopicTimestamp = receivedRecord;
             }
         }
@@ -260,8 +261,9 @@ function indexAllMessagesInDirectory(journal, directory) {
             // Reconstruct sha256AndLength using parts in fileName
             var sha256AndLength = segments[2] + "_" + segments[3];
             
-            var topicSHA256;
-            var topicTimestamp;
+            // Need to be reassigned every time through loop so does not use previous values
+            var topicSHA256 = null;
+            var topicTimestamp = null;
             
             if (segments.length === 7) {
                 // Reconstruct topic SHA using parts in fileName
@@ -620,19 +622,23 @@ function respondForQueryForLatestMessageRequest(journal, topicIdentifier, callba
 // TODO: querying for latest message is expecting result, but might need to actually retrieve it
 
 function latestReceivedRecordForTopic(journal, topicIdentifier) {
+    // console.log("latestReceivedRecordForTopic", topicIdentifier);
     var messagesSortedByReceivedTimestamp;
     if (topicIdentifier === undefined) {
         messagesSortedByReceivedTimestamp = journal.allMessageReceivedRecordsSortedByTimestamp;
     } else {
+        // console.log("have topic identifier");
         var topicSHA256 = utility.calculateCanonicalSHA256ForObject(topicIdentifier);
+        // console.log("topicSHA256", topicSHA256);
         var topic = journal.topicSHA256ToTopicMap[topicSHA256];
+        // console.log("topic", topic);
         if (!topic) {
             messagesSortedByReceivedTimestamp = [];
         } else {
             messagesSortedByReceivedTimestamp = topic.receivedRecords;
         }
     }
-    
+    // console.log("messagesSortedByReceivedTimestamp.length", messagesSortedByReceivedTimestamp.length);
     var latestRecord;
     if (messagesSortedByReceivedTimestamp && messagesSortedByReceivedTimestamp.length) {
         latestRecord = messagesSortedByReceivedTimestamp[messagesSortedByReceivedTimestamp.length - 1];
@@ -642,7 +648,32 @@ function latestReceivedRecordForTopic(journal, topicIdentifier) {
     
     return latestRecord;
 }
+
+// This is latest message by topic timestamp, not by received timestamp, unless byReceivedTimestamp set to true
+function latestMessageForTopicSync(journalIdentifier, topicIdentifier, byReceivedTimestamp) {
+    var journal = journals[JSON.stringify(journalIdentifier)];
+    if (!journal) return null;
     
+    var receivedRecord = null;
+    
+    if (byReceivedTimestamp) {
+        receivedRecord = latestReceivedRecordForTopic(journal, topicIdentifier);
+    } else {
+        if (topicIdentifier === undefined) {
+            throw new Error("topicIdentifier must be defined if byReceivedTimestamp is not true");
+        }
+        var topicSHA256 = utility.calculateCanonicalSHA256ForObject(topicIdentifier);
+        var topic = journal.topicSHA256ToTopicMap[topicSHA256];
+        if (topic) receivedRecord = topic.latestReceivedRecordByTopicTimestamp;
+    }
+    
+    if (!receivedRecord) return null;
+    var message = receivedRecord.messageContents;
+    if (!receivedRecord.messageContents) {
+        message = readMessageContentsFromFile(receivedRecord);
+    }
+    return message;
+}
 
 //--- Dispatching requests
 
@@ -744,3 +775,4 @@ exports.addJournalSync = addJournalSync;
 exports.processRequest = processRequest;
 exports.getCurrentUniqueTimestamp = utility.getCurrentUniqueTimestamp;
 exports.indexAllJournals = indexAllJournals;
+exports.latestMessageForTopicSync = latestMessageForTopicSync;
