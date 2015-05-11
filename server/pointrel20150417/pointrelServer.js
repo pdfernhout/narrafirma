@@ -71,7 +71,7 @@ var configuration = {
     // Note that even if this is set to flag, journal access may fail if the anonymous user is not allowed
     isAnonymousAccessAllowed: true,
     
-    // An optional function that should return a boolean if a user is authenticated
+    // An optional function that should return a boolean if a user is authenticated; userCredentials typicall has userIdentifier and userPassword
     // isAuthenticated(userIdentifier, userCredentials)
     isAuthenticatedCallback: null,
     
@@ -342,7 +342,7 @@ function respondForReportJournalStatusRequest(journal, isAuthorizedPartial, call
 
 //--- Loading and storing messages on disk
 
-function setOutgoingMessageTrace(requesterIPAddress, journal, message, makeCopy) {
+function setOutgoingMessageTrace(userIdentifier, requesterIPAddress, journal, message, makeCopy) {
     if (makeCopy) message = JSON.parse(JSON.stringify(message));
     // TODO: More thinking about the meaning of a trace???
     // TODO: Add more info about who requested this information
@@ -353,6 +353,7 @@ function setOutgoingMessageTrace(requesterIPAddress, journal, message, makeCopy)
         sentByServer: configuration.serverName,
         // TODO: How to best identify from where or from whom this is requested from???
         requesterIPAddress: requesterIPAddress,
+        userIdentifier: userIdentifier,
         sentTimestamp: sentTimestamp
     };
     if (!message.__pointrel_trace) message.__pointrel_trace = [];
@@ -360,7 +361,7 @@ function setOutgoingMessageTrace(requesterIPAddress, journal, message, makeCopy)
     return message;
 }
 
-function respondForLoadMessageRequest(requesterIPAddress, journal, sha256AndLength, callback) {
+function respondForLoadMessageRequest(userIdentifier, requesterIPAddress, journal, sha256AndLength, callback) {
     if (!isSHA256AndLengthIndexed(journal, sha256AndLength)) {
         return callback(makeFailureResponse(404, "No message indexed for sha256AndLength", {sha256AndLength: sha256AndLength}));
     }
@@ -373,7 +374,7 @@ function respondForLoadMessageRequest(requesterIPAddress, journal, sha256AndLeng
     var message;
     
     if (receivedRecord.messageContents) {
-        message = setOutgoingMessageTrace(requesterIPAddress, journal, receivedRecord.messageContents, true);
+        message = setOutgoingMessageTrace(userIdentifier, requesterIPAddress, journal, receivedRecord.messageContents, true);
         return callback(makeSuccessResponse(200, "Success", {detail: 'Read content', sha256AndLength: sha256AndLength, message: message}));
     }
     
@@ -396,7 +397,7 @@ function respondForLoadMessageRequest(requesterIPAddress, journal, sha256AndLeng
             return callback(makeFailureResponse(500, "Server error", {detail: 'Problem parsing JSON from file', sha256AndLength: sha256AndLength, error: exception}));
         }
         
-        message = setOutgoingMessageTrace(requesterIPAddress, journal, parsedJSON, false);
+        message = setOutgoingMessageTrace(userIdentifier, requesterIPAddress, journal, parsedJSON, false);
         
         return callback(makeSuccessResponse(200, "Success", {detail: 'Read content', sha256AndLength: sha256AndLength, message: message}));
     });
@@ -407,7 +408,7 @@ function sanitizeISOTimestamp(timestamp) {
     return timestamp;
 }
 
-function respondForStoreMessageRequest(senderIPAddress, journal, message, callback) {
+function respondForStoreMessageRequest(userIdentifier, senderIPAddress, journal, message, callback) {
     console.log("respondForStoreMessage");
     
     // TODO: Need some way to verify protocol or expectations the client is using, like a client verison...
@@ -472,6 +473,7 @@ function respondForStoreMessageRequest(senderIPAddress, journal, message, callba
         receivedByServer: configuration.serverName,
         // TODO: How to best identify from where or from whom this is received from???
         senderIPAddress: senderIPAddress,
+        userIdentifier: userIdentifier,
         receivedTimestamp: receivedTimestamp
     };
     
@@ -524,7 +526,7 @@ function makeReceivedRecordForClient(receivedRecord) {
     return receivedRecordForClient;
 }
 
-function respondForQueryForNextMessageRequest(requesterIPAddress, journal, topicIdentifier, fromTimestampExclusive, limitCount, includeMessageContents, callback) {
+function respondForQueryForNextMessageRequest(userIdentifier, requesterIPAddress, journal, topicIdentifier, fromTimestampExclusive, limitCount, includeMessageContents, callback) {
     // TODO: Optimize to read from end rather than scan entire list when given specific start date
     // TODO: And/or use some kind of sorted map so can quickly find message versions after a certain date
     log("======== respondForQueryForNext", fromTimestampExclusive, limitCount);
@@ -588,7 +590,7 @@ function respondForQueryForNextMessageRequest(requesterIPAddress, journal, topic
                 message = readMessageContentsFromFile(receivedRecord);
             }
             if (message) {
-                message = setOutgoingMessageTrace(requesterIPAddress, journal, message, copyMessage);
+                message = setOutgoingMessageTrace(userIdentifier, requesterIPAddress, journal, message, copyMessage);
                 totalMessageBodyBytesIncluded += bytesForMessage;
             }
             receivedRecordForClient.messageContents = message;   
@@ -707,8 +709,12 @@ function processRequest(apiRequest, callback, senderIPAddress) {
         
         if (!journal) return callback(makeFailureResponse(404, "No such journal", {journalIdentifier: journalIdentifier}));
         
-        var userIdentifier = apiRequest.userIdentifier;
         var userCredentials = apiRequest.userCredentials;
+        if (!userCredentials || typeof userCredentials !== 'object') userCredentials = {};
+        
+        // TODO: May want to check that messages stamped with a userIdentifier match the userIdentifier in the credentials?
+
+        var userIdentifier = userCredentials.userIdentifier;
         
         // Returning 403 for unauthenticated instead of 401 because we are using custom authentication; see:
         // http://stackoverflow.com/questions/3297048/403-forbidden-vs-401-unauthorized-http-responses/14713094#14713094
@@ -743,13 +749,14 @@ function processRequest(apiRequest, callback, senderIPAddress) {
         }
             
         if (requestType === "pointrel20150417_loadMessage") {
-            return respondForLoadMessageRequest(senderIPAddress, journal, apiRequest.sha256AndLength, callback);
+            return respondForLoadMessageRequest(userIdentifier, senderIPAddress, journal, apiRequest.sha256AndLength, callback);
         } else if (requestType === "pointrel20150417_queryForNextMessage") {
-            return respondForQueryForNextMessageRequest(senderIPAddress, journal, apiRequest.topicIdentifier, apiRequest.fromTimestampExclusive, apiRequest.limitCount, apiRequest.includeMessageContents, callback);
+            return respondForQueryForNextMessageRequest(userIdentifier, senderIPAddress, journal, apiRequest.topicIdentifier, apiRequest.fromTimestampExclusive, apiRequest.limitCount, apiRequest.includeMessageContents, callback);
         } else if (requestType === "pointrel20150417_queryForLatestMessage") {
+            // TODO: May want to include the userIdentifier and senderIPAddress in the message trace?
             return respondForQueryForLatestMessageRequest(journal, apiRequest.topicIdentifier, callback);
         } else if (requestType === "pointrel20150417_storeMessage") {
-            return respondForStoreMessageRequest(senderIPAddress, journal, apiRequest.message, callback);
+            return respondForStoreMessageRequest(userIdentifier, senderIPAddress, journal, apiRequest.message, callback);
         } else if (requestType === "pointrel20150417_reportJournalStatus") {
             var isAuthorizedPartial = function (requestedCapability) {
                 if (configuration.isAuthorizedCallback) {
