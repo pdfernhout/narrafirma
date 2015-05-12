@@ -111,7 +111,7 @@ var loginTemplate = '<form action="/login" method="post">\n' +
 function writeTestPage(request, response, config) {
     // response.sendFile(pointrelConfig.baseDirectory + "index.html");
     // response.sendFile(baseDirectoryNormalized + "index.html");
-    writePageStart(request, response, "test");
+    writePageStart(request, response, "start");
     response.write("Example of authentication with passport; authenticated " + request.isAuthenticated());
     if (request.isAuthenticated()) response.write('<br><a href="/index.html">NarraFirma project application</a>');
     if (request.isAuthenticated()) response.write('<br><a href="/project-admin.html">NarraFirma administration</a>');
@@ -169,15 +169,15 @@ function initialize(app, newConfig) {
     app.post('/login', 
       passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }),
       function(req, res) {
-        res.redirect('/test');
+        res.redirect('/start');
       });
     
     app.get('/logout', function(req, res){
       req.logout();
-      res.redirect('/test');
+      res.redirect('/start');
     });
     
-    app.get("/test", function (request, response) {
+    app.get("/start", function (request, response) {
         writeTestPage(request, response, config);
     });
 }
