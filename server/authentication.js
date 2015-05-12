@@ -14,8 +14,8 @@ var sessionModule = require("express-session");
 // For authentication test; see: https://github.com/jaredhanson/passport-local/blob/master/examples/express3/app.js
 var LocalStrategy = passportLocal.Strategy;
 var users = [
-    { id: 1, username: 'bob', password: 'secret', email: 'bob@example.com' },
-    { id: 2, username: 'joe', password: 'birthday', email: 'joe@example.com' }
+    { id: 1, userIdentifier: 'bob', password: 'secret', email: 'bob@example.com' },
+    { id: 2, userIdentifier: 'joe', password: 'birthday', email: 'joe@example.com' }
 ];
 
 function findById(id, callback) {
@@ -27,10 +27,10 @@ function findById(id, callback) {
     }
 }
 
-function findByUsername(username, callback) {
+function findByUsername(userIdentifier, callback) {
   for (var i in users) { 
     var user = users[i];
-    if (user.username === username) {
+    if (user.userIdentifier === userIdentifier) {
       return callback(null, user);
     }
   }
@@ -48,17 +48,17 @@ passport.deserializeUser(function(id, done) {
 });
 
 passport.use(new LocalStrategy(
-  function(username, password, done) {
+  function(userIdentifier, password, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
       
-      // Find the user by username.  If there is no user with the given
-      // username, or the password is not correct, set the user to `false` to
+      // Find the user by userIdentifier.  If there is no user with the given
+      // userIdentifier, or the password is not correct, set the user to `false` to
       // indicate failure and set a flash message.  Otherwise, return the
       // authenticated `user`.
-      findByUsername(username, function(err, user) {
+      findByUsername(userIdentifier, function(err, user) {
         if (err) { return done(err); }
-        if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
+        if (!user) { return done(null, false, { message: 'Unknown user ' + userIdentifier }); }
         if (user.password !== password) { return done(null, false, { message: 'Invalid password' }); }
         return done(null, user);
       });
@@ -82,7 +82,7 @@ function writePageStart(request, response, pageType) {
         response.write(' | <a href="/logout">Log Out</a>');
         if (pageType !== "account") response.write(' | <a href="/account">Account</a>');
         response.write("<p>");
-        response.write("<h2>Hello, " + user.username + ".</h2>");
+        response.write("<h2>Hello, " + user.userIdentifier + ".</h2>");
     }
 }
 
@@ -147,7 +147,7 @@ function initialize(app, newConfig) {
         var user = request.user;
         // res.render('account', { user: req.user })
         writePageStart(request, response, "account");
-        response.write("<p>Username: " + user.username + "</p>");
+        response.write("<p>Username: " + user.userIdentifier + "</p>");
         response.write("<p>Email: " + user.email + "</p>");
         writePageEnd(request, response);
     });
