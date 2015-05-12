@@ -113,9 +113,8 @@ function writeTestPage(request, response, config) {
     // response.sendFile(baseDirectoryNormalized + "index.html");
     writePageStart(request, response, "test");
     response.write("Example of authentication with passport; authenticated " + request.isAuthenticated());
-    var label = "NarraFirma Admin App";
-    if (config.requireAuthentication) label += " (only available if authenticated)";
-    if (request.isAuthenticated()) response.write('<br><a href="/project-admin.html">' + label + '</a>');
+    if (request.isAuthenticated()) response.write('<br><a href="/index.html">NarraFirma project application</a>');
+    if (request.isAuthenticated()) response.write('<br><a href="/project-admin.html">NarraFirma administration</a>');
     writePageEnd(request, response);
 }
 
