@@ -679,11 +679,24 @@ function latestMessageForTopicSync(journalIdentifier, topicIdentifier, byReceive
 
 //--- Dispatching requests
 
+function senderIPAddressForRequest(request) {
+    return request.headers['x-forwarded-for'] || 
+        request.connection.remoteAddress || 
+        request.socket.remoteAddress ||
+        request.connection.socket.remoteAddress;
+}
+
 // Callback has one argument, response, which has a "success" field of true/false a
 // A response also has other fields including a statusCode, a description, and possible extra fields
-function processRequest(apiRequest, callback, senderIPAddress) {
+function processRequest(apiRequest, callback, request) {
     try {
-        log("======== processRequest", JSON.stringify(apiRequest));
+        var senderIPAddress;
+        if (request) senderIPAddress = senderIPAddressForRequest(request);
+        
+        var user;
+        if (request && request.user) user = request.user;
+         
+        log("======== processRequest", senderIPAddress, JSON.stringify(user), JSON.stringify(apiRequest));
         
         if (!apiRequest) {
             return callback(makeFailureResponse(400, "Not acceptable: apiRequest is missing"));
@@ -714,7 +727,17 @@ function processRequest(apiRequest, callback, senderIPAddress) {
         
         // TODO: May want to check that messages stamped with a userIdentifier match the userIdentifier in the credentials?
 
+        // We don't need to authenticate the user's credentials if the claimed user was authenticated already by the server
+        var isAlreadyAuthenticated = false;
         var userIdentifier = userCredentials.userIdentifier;
+        if (user) {
+            if (!userIdentifier) {
+                userIdentifier = user.userIdentifier;
+                isAlreadyAuthenticated = true;
+            } else {
+                if (user.userIdentifier === userIdentifier) isAlreadyAuthenticated = true;
+            }
+        }
         
         // Returning 403 for unauthenticated instead of 401 because we are using custom authentication; see:
         // http://stackoverflow.com/questions/3297048/403-forbidden-vs-401-unauthorized-http-responses/14713094#14713094
@@ -722,7 +745,7 @@ function processRequest(apiRequest, callback, senderIPAddress) {
             return callback(makeFailureResponse(403, "Unauthenticated -- anonyomous access is not permitted", {userIdentifier: userIdentifier}));
         }
         
-        if (userIdentifier && configuration.isAuthenticatedCallback) {
+        if (!isAlreadyAuthenticated && userIdentifier && configuration.isAuthenticatedCallback) {
             var authenticated = configuration.isAuthenticatedCallback(userIdentifier, userCredentials);
             if (!authenticated) {
                 return callback(makeFailureResponse(403, "Unauthenticated", {userIdentifier: userIdentifier}));
@@ -747,7 +770,7 @@ function processRequest(apiRequest, callback, senderIPAddress) {
                 return callback(makeFailureResponse(403, message, {userIdentifier: userIdentifier, journalIdentifier: journalIdentifier, requestedCapability: requestedCapability}));
             }
         }
-            
+           
         if (requestType === "pointrel20150417_loadMessage") {
             return respondForLoadMessageRequest(userIdentifier, senderIPAddress, journal, apiRequest.sha256AndLength, callback);
         } else if (requestType === "pointrel20150417_queryForNextMessage") {
