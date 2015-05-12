@@ -129,12 +129,14 @@ app.post("/survey/questions/:surveyID", function (request, response) {
 // Set up authentication routes and config
 authentication.initialize(app, config);
 
+app.get("/currentUser", authentication.ensureAuthenticatedForJSON, function(request, response) {
+    response.json({
+        success: true,
+        userIdentifier: request.user.userIdentifier
+     });
+});
+
 app.post("/api/pointrel20150417", authentication.ensureAuthenticatedForJSON, function(request, response) {
-    // response.json({"error": "server unfinished!"});
-    // TODO: Exception handling?
-    if (request.user) {
-        // Passport thinks we are authenticated... ???
-    }
     pointrelServer.processRequest(request.body, function(requestResultMessage) {
         response.json(requestResultMessage);
     }, request);
