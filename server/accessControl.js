@@ -2,7 +2,7 @@
 "use strict";
 
 var pointrelServer = require("./pointrel20150417/pointrelServer");
-var pointrelUtility = require("./pointrel20150417/pointrelUtility");
+// var pointrelUtility = require("./pointrel20150417/pointrelUtility");
 
 function initialize() {
     pointrelServer.configure({
