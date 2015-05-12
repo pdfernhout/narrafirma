@@ -5,6 +5,7 @@ require([
     "js/panelBuilder/PanelBuilder",
     "js/panelBuilder/PanelSpecificationCollection",
     "js/pointrel20150417/PointrelClient",
+    "dojo/request",
     "dojo/Stateful",
     "dojo/domReady!"
 ], function(
@@ -14,6 +15,7 @@ require([
     PanelBuilder,
     PanelSpecificationCollection,
     PointrelClient,
+    request,
     Stateful
 ){
     "use strict";
@@ -28,12 +30,12 @@ require([
     // GUI
     var serverStatusPane;
     
-    function initialize() {
+    function initialize(userIdentifier) {
         console.log("initialize called in site.js");
         toaster.createToasterWidget(document.getElementById("pleaseWaitDiv"));
         
         var contentPane = new ContentPane({
-            content: "<b>Project Administration Tool</b>"
+            content: "<b>Project Administration Tool</b> " + " | Logged in as: " + userIdentifier + ' <a href="/logout">Log Out</a>'
         });
         contentPane.placeAt(document.body);
         contentPane.startup();
@@ -46,16 +48,7 @@ require([
         
         // toaster.toast("Running...");
         
-        var userIdentifier = prompt("User identifier?", "administrator");
-        if (!userIdentifier) return;
-        
-        var userPassword = prompt("User password?", "test");
-        if (!userPassword) return;
-        
-        var userCredentials = {
-            userIdentifier: userIdentifier,
-            userPassword: userPassword
-        };
+        var userCredentials = {userIdentifier: userIdentifier};
         
         pointrelClient = new PointrelClient("/api/pointrel20150417", journalIdentifier, userCredentials, null, updateServerStatus);
 
@@ -73,12 +66,20 @@ require([
                 // TODO: Sanitize journalIdentifier
                 document.body.innerHTML += '<br>Problem connecting to project journal on server for: "<b>' + journalIdentifier + '</b>"';
             } else {
+                var permissions = response.permissions;
+                if (!permissions.read) {
+                    alert("No read access");
+                    return;
+                }
+                if (!permissions.write) {
+                    alert("No write access");
+                }
                 loadAllProjectsModel(allProjectsModel, function (error) {
                     if (error) {
                         // It is possible no data was ever set
                         console.log("error", error);
                     }
-                    buildGUI(contentPane, allProjectsModel);
+                    buildGUI(contentPane, allProjectsModel, permissions.write);
                 });
                 
             }
@@ -250,7 +251,7 @@ require([
         ]
     };
     
-    function buildGUI(mainContentPane, model) {
+    function buildGUI(mainContentPane, model, writeAccess) {
         var panelSpecificationCollection = new PanelSpecificationCollection();
         
         // Add panels to be looked up by panel builder for grid
@@ -316,11 +317,19 @@ require([
                 saveButtonClicked(model);
             }
         };
-        var saveButton = panelBuilder.buildField(panelContentPane, model, saveButtonSpecification);
+        
+        if (writeAccess) {
+            var saveButton = panelBuilder.buildField(panelContentPane, model, saveButtonSpecification);
+        }
         
         panelContentPane.placeAt(mainContentPane);
     }
     
-
-    initialize();
+    request("/currentUser", {handleAs: "json", preventCache: true}).then(function(data) {
+        if (data.success) {
+            initialize(data.userIdentifier);
+        } else {
+            alert("Something went wrong determining the current user identifier");
+        }
+    })
 });
