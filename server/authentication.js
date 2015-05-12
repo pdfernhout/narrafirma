@@ -15,7 +15,10 @@ var sessionModule = require("express-session");
 var LocalStrategy = passportLocal.Strategy;
 var users = [
     { id: 1, userIdentifier: 'bob', password: 'secret', email: 'bob@example.com' },
-    { id: 2, userIdentifier: 'joe', password: 'birthday', email: 'joe@example.com' }
+    { id: 2, userIdentifier: 'joe', password: 'secret', email: 'joe@example.com' },
+    { id: 3, userIdentifier: 'pdfernhout', password: 'secret', email: 'pdfernhout@kurtz-fernhout.com' },
+    { id: 4, userIdentifier: 'cfkurtz', password: 'secret', email: 'cfkurtz@kurtz-fernhout.com' },
+    { id: 5, userIdentifier: 'administrator', password: 'secret', email: 'administrator@narrafirma.com' }
 ];
 
 function findById(id, callback) {
@@ -103,7 +106,7 @@ var loginTemplate = '<form action="/login" method="post">\n' +
 '<input type="submit" value="Submit"/>\n' +
 '</div>\n' +
 '</form>\n' +
-'<p><small>Hint - bob:secret</small></p>';
+'<p><small>Hint - pdfernhout,administrator,cfkurtz,joe,bob:secret</small></p>';
 
 function writeTestPage(request, response, config) {
     // response.sendFile(pointrelConfig.baseDirectory + "index.html");
