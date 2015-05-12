@@ -41,16 +41,19 @@ for (var fileNameIndex = 0; fileNameIndex < fileNames.length; fileNameIndex++) {
 pointrelServer.indexAllJournals();
 
 // For authentication
-// var authentication = require("./authentication");
-// TODO: Stub authentication; either remove or decide how to make it work with passport; may not need with Pointrel authentication/authorization?
-var authentication = {
+var authentication = require("./authentication");
+
+// This can be used to stub out the passport authentication:
+/*
+    var authentication = {
     initialize: function () {return true;},
     ensureAuthenticated: function (request, response, next) { return next(); }
 };
+*/
 
 // TODO: think about authentication
 var config = {
-    requireAuthentication: false
+    requireAuthentication: true
 };
 
 // Main code
@@ -126,6 +129,24 @@ app.post("/survey/questions/:surveyID", function (request, response) {
 // Set up authentication routes and config
 authentication.initialize(app, config);
 
+function senderIPAddressForRequest(request) {
+    return request.headers['x-forwarded-for'] || 
+        request.connection.remoteAddress || 
+        request.socket.remoteAddress ||
+        request.connection.socket.remoteAddress;
+}
+
+app.post("/api/pointrel20150417", authentication.ensureAuthenticatedForJSON, function(request, response) {
+    // response.json({"error": "server unfinished!"});
+    // TODO: Exception handling?
+    if (request.user) {
+        // Passport thinks we are authenticated... ???
+    }
+    pointrelServer.processRequest(request.body, function(requestResultMessage) {
+        response.json(requestResultMessage);
+    }, senderIPAddressForRequest(request));
+});
+
 app.use("/$", authentication.ensureAuthenticated, function(req, res) {
     res.redirect('/index.html');
 });
@@ -134,21 +155,6 @@ app.use("/", authentication.ensureAuthenticated, express.static(__dirname + "/..
 
 // TODO: For developer testing only; remove in final version
 app.use("/dojo-debug", express.static(__dirname + "/../../PNIWorkbookLibraries/dojo-release-1.10.4-src"));
-
-function senderIPAddressForRequest(request) {
-    return request.headers['x-forwarded-for'] || 
-        request.connection.remoteAddress || 
-        request.socket.remoteAddress ||
-        request.connection.socket.remoteAddress;
-}
-
-app.post("/api/pointrel20150417", function(request, response) {
-    // response.json({"error": "server unfinished!"});
-    // TODO: Exception handling?
-    pointrelServer.processRequest(request.body, function(requestResultMessage) {
-        response.json(requestResultMessage);
-    }, senderIPAddressForRequest(request));
-});
 
 app.use(function(err, req, res, next){
     console.error(err.stack);

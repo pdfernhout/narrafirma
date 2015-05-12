@@ -356,8 +356,16 @@ define([
         document.getElementById("pleaseWaitDiv").style.display = "none";
         
         // Kludge: Ensure key information is available
-        if (!userIdentifier) userIdentifier = prompt("User identifier?", "tester1");
+        if (!userIdentifier) userIdentifier = prompt("User identifier?", "pdfernhout@kurtz-fernhout.com");
         if (!userIdentifier) return;
+        
+        var userPassword = prompt("User password?", "test");
+        if (!userPassword) return;
+        
+        var userCredentials = {
+            userIdentifier: userIdentifier,
+            userPassword: userPassword
+        };
         
         chooseProject(userIdentifier, function (projectChoice) {
             if (!projectChoice) return;
@@ -370,7 +378,7 @@ define([
             // TODO: Should this be managed separately?
             journalIdentifier = projectIdentifier; 
             
-            project = new Project(journalIdentifier, projectIdentifier, userIdentifier, updateServerStatus);
+            project = new Project(journalIdentifier, projectIdentifier, userCredentials, updateServerStatus);
             domain.project = project;
             
             console.log("Made project", project);

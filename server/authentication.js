@@ -1,6 +1,8 @@
 /*jslint node: true */
 "use strict";
 
+var pointrelUtility = require("./pointrel20150417/pointrelUtility");
+
 // Authentication-related
 var passport = require("passport");
 var passportLocal = require("passport-local");
@@ -64,20 +66,21 @@ passport.use(new LocalStrategy(
   }
 ));
 
-function writePageStart(request, response) {
+function writePageStart(request, response, pageType) {
     var user = request.user;
     response.write("<html><body>");
     if (!user) {
         response.write("<p>");
-        response.write('<a href="/">Home</a> | ');
-        response.write('<a href="/login">Log In</a>');
-        response.write("<p>");
-        response.write("<h2>Welcome! Please log in.</h2>");
+        // response.write('<a href="/">Home</a> | ');
+        if (pageType !== "login") response.write('<a href="/login">Login page</a>');
+        if (pageType !== "login") response.write("<p>");
+        response.write("<h2>Welcome to NarraFirma! Please log in.</h2>");
     } else {
         response.write("<p>");
-        response.write('<a href="/">Home</a> |');
-        response.write('<a href="/login">Log In</a> | ');
-        response.write('<a href="/logout">Log Out</a>');
+        response.write('<a href="/index.html">Start NarraFirma</a>');
+        // if (pageType !== "login") response.write('<a href="/login">Log In</a> | ');
+        response.write(' | <a href="/logout">Log Out</a>');
+        if (pageType !== "account") response.write(' | <a href="/account">Account</a>');
         response.write("<p>");
         response.write("<h2>Hello, " + user.username + ".</h2>");
     }
@@ -105,11 +108,11 @@ var loginTemplate = '<form action="/login" method="post">\n' +
 function writeTestPage(request, response, config) {
     // response.sendFile(pointrelConfig.baseDirectory + "index.html");
     // response.sendFile(baseDirectoryNormalized + "index.html");
-    writePageStart(request, response);
+    writePageStart(request, response, "test");
     response.write("Example of authentication with passport; authenticated " + request.isAuthenticated());
-    var label = "Pointrel App";
+    var label = "NarraFirma Admin App";
     if (config.requireAuthentication) label += " (only available if authenticated)";
-    if (request.isAuthenticated()) response.write('<br><a href="/pointrel/pointrel-app">' + label + '</a>');
+    if (request.isAuthenticated()) response.write('<br><a href="/project-admin.html">' + label + '</a>');
     writePageEnd(request, response);
 }
 
@@ -118,6 +121,11 @@ var config = null;
 function ensureAuthenticated(request, response, next) {
     if (!config.requireAuthentication || request.isAuthenticated()) { return next(); }
     response.redirect('/login');
+}
+
+function ensureAuthenticatedForJSON(request, response, next) {
+    if (!config.requireAuthentication || request.isAuthenticated()) { return next(); }
+    response.json(pointrelUtility.makeFailureResponse(403, "Unauthenticated"));
 }
 
 function initialize(app, newConfig) {
@@ -138,7 +146,7 @@ function initialize(app, newConfig) {
     app.get('/account', ensureAuthenticated, function(request, response) {
         var user = request.user;
         // res.render('account', { user: req.user })
-        writePageStart(request, response);
+        writePageStart(request, response, "account");
         response.write("<p>Username: " + user.username + "</p>");
         response.write("<p>Email: " + user.email + "</p>");
         writePageEnd(request, response);
@@ -146,7 +154,7 @@ function initialize(app, newConfig) {
     
     app.get('/login', function(request, response){
       // res.render('login', { user: req.user, message: req.flash('error') });
-        writePageStart(request, response);
+        writePageStart(request, response, "login");
         response.write(loginTemplate);
         //applicationLog("request.flash('error')", request.flash("error"));
         var messages = request.flash("error");
@@ -173,4 +181,5 @@ function initialize(app, newConfig) {
 }
 
 exports.ensureAuthenticated = ensureAuthenticated;
+exports.ensureAuthenticatedForJSON = ensureAuthenticatedForJSON;
 exports.initialize = initialize;
