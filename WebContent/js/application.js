@@ -220,10 +220,12 @@ define([
     function createLayout() {
         console.log("createLayout start");
 
-        var pageControlsPane = navigationPane.createNavigationPane(pageDisplayer);
+        var pageControlsPane = navigationPane.createNavigationPane(pageDisplayer, userIdentifier);
 
         var helpButton = widgetSupport.newButton(pageControlsPane, "#button_help|Help", buttonActions.helpButtonClicked);
         // var debugButton = widgetSupport.newButton(pageControlsPane, "#button_debug|Debug", buttonActions.debugButtonClicked);
+        
+        var logoutButton = widgetSupport.newButton(pageControlsPane, "#button_logout|Logout (" + userIdentifier + ")", buttonActions.logoutButtonClicked);
 
         // TODO: Improve status reporting
         serverStatusPane = panelBuilder.newContentPane({content: "Server status: unknown"});
@@ -343,7 +345,7 @@ define([
     }
     
     // The main starting point of the application
-    function initialize() {
+    function initialize(userIdentifierFromServer) {
         console.log("=======", new Date().toISOString(), "application.initialize() called");
         
         translate.configure({}, applicationMessages);
@@ -355,16 +357,10 @@ define([
         
         document.getElementById("pleaseWaitDiv").style.display = "none";
         
-        // Kludge: Ensure key information is available
-        if (!userIdentifier) userIdentifier = prompt("User identifier?", "pdfernhout@kurtz-fernhout.com");
-        if (!userIdentifier) return;
-        
-        var userPassword = prompt("User password?", "test");
-        if (!userPassword) return;
+        userIdentifier = userIdentifierFromServer;
         
         var userCredentials = {
             userIdentifier: userIdentifier,
-            userPassword: userPassword
         };
         
         chooseProject(userIdentifier, function (projectChoice) {

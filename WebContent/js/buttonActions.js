@@ -152,6 +152,10 @@ define([
         var message = template.replace("{{copiedAnswersCount}}", copiedAnswersCount);
         alert(message);
     }
+    
+    function logoutButtonClicked() {
+        window.location.href = "/logout";
+    }
 
     return {
         "printStoryForm": printStoryForm,
@@ -166,6 +170,7 @@ define([
         // Called directly from application
         "importExportOld": importExportClicked,
         "helpButtonClicked": helpButtonClicked,
-        "debugButtonClicked": debugButtonClicked
+        "debugButtonClicked": debugButtonClicked,
+        logoutButtonClicked: logoutButtonClicked
     };
 });
