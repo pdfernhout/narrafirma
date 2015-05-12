@@ -130,7 +130,7 @@ app.post("/survey/questions/:surveyID", function (request, response) {
 authentication.initialize(app, config);
 
 app.get("/currentUser", authentication.ensureAuthenticatedForJSON, function(request, response) {
-    response.json({
+    response.jsonp({
         success: true,
         userIdentifier: request.user.userIdentifier
      });
