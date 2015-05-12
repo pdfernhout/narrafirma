@@ -129,13 +129,6 @@ app.post("/survey/questions/:surveyID", function (request, response) {
 // Set up authentication routes and config
 authentication.initialize(app, config);
 
-function senderIPAddressForRequest(request) {
-    return request.headers['x-forwarded-for'] || 
-        request.connection.remoteAddress || 
-        request.socket.remoteAddress ||
-        request.connection.socket.remoteAddress;
-}
-
 app.post("/api/pointrel20150417", authentication.ensureAuthenticatedForJSON, function(request, response) {
     // response.json({"error": "server unfinished!"});
     // TODO: Exception handling?
@@ -144,7 +137,7 @@ app.post("/api/pointrel20150417", authentication.ensureAuthenticatedForJSON, fun
     }
     pointrelServer.processRequest(request.body, function(requestResultMessage) {
         response.json(requestResultMessage);
-    }, senderIPAddressForRequest(request));
+    }, request);
 });
 
 app.use("/$", authentication.ensureAuthenticated, function(req, res) {
