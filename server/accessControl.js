@@ -4,6 +4,12 @@
 var pointrelServer = require("./pointrel20150417/pointrelServer");
 // var pointrelUtility = require("./pointrel20150417/pointrelUtility");
 
+//TODO: Fix this to have better user ID and maybe other information
+var anonymousUser = {
+   userIdentifier: "anonymous",
+   groups: ""
+};
+
 function initialize() {
     pointrelServer.configure({
         isAuthenticatedCallback: isAuthenticated,
@@ -39,14 +45,17 @@ function isUserInAccessList(userIdentifier, accessListOfUsersAndGroups) {
     return false;
 }
 
-function isAuthorized(journalIdentifier, userIdentifier, requestedAction) {
-    console.log("isAuthorized", journalIdentifier, userIdentifier, requestedAction);
+function isAuthorized(journalIdentifierOrObject, userIdentifier, requestedAction) {
+    console.log("isAuthorized", journalIdentifierOrObject, userIdentifier, requestedAction);
 
-    var accessConfigurationForJournal = getAccessConfigurationForJournal(journalIdentifier);
+    var accessConfigurationForJournal = journalIdentifierOrObject;
+    if (typeof journalIdentifierOrObject === "string") {
+       accessConfigurationForJournal = getAccessConfigurationForJournal(journalIdentifierOrObject);
+    }
     
     // No restrictions have been set up -- TODO: Should the default be the other way? Then need superuser?
     if (!accessConfigurationForJournal) {
-        console.log("No access control has been set up for", journalIdentifier);
+        console.log("No access control has been set up for", journalIdentifierOrObject);
         return true;
     }
     
@@ -105,12 +114,6 @@ function getAccessConfigurationForJournal(journalIdentifier) {
     return null;
 }
 
-// TODO: Fix this to have better user ID and maybe other information
-var anonymousUser = {
-   email: "anonymous",
-   groups: ""
-};
-
 function getAccessConfigurationForUser(userIdentifier) {
     if (!userIdentifier) return null;
     
@@ -120,11 +123,38 @@ function getAccessConfigurationForUser(userIdentifier) {
     for (var i = 0; i < accessConfiguration.users.length; i++) {
         var user = accessConfiguration.users[i];
         // TODO: Should support any type of user identifier, not just strings
-        if (user.email === userIdentifier) {
+        // TODO: Have email in their temporarily for backward compatiability; remove eventually
+        if (user.email === userIdentifier || user.userIdentifier === userIdentifier) {
             return user;
         }
     }
     return null;
 }
 
+function projectsForUser(userIdentifier) {
+    var results = [];
+    
+    var accessConfiguration = getAccessConfiguration();
+    
+    for (var i = 0; i < accessConfiguration.projects.length; i++) {
+        var project = accessConfiguration.projects[i];
+        // console.log("project", project);
+
+        var canAccess = isAuthorized(project, userIdentifier, "read") || isAuthorized(project, userIdentifier, "write");
+        
+        if (canAccess) {
+            var projectInformation = {
+                id: project.id,
+                name: project.name,
+                description: project.description
+            };
+            
+            results.push(projectInformation);
+        }
+    }
+    
+    return results;
+}
+
 exports.initialize = initialize;
+exports.projectsForUser = projectsForUser;

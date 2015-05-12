@@ -12,6 +12,7 @@ define([
     "js/pageDisplayer",
     "js/panelBuilder/PanelBuilder",
     "js/Project",
+    "dojo/request",
     "js/surveyCollection",
     "js/panelBuilder/toaster",
     "dojo/topic",
@@ -32,6 +33,7 @@ define([
     pageDisplayer,
     PanelBuilder,
     Project,
+    request,
     surveyCollection,
     toaster,
     topic,
@@ -39,7 +41,7 @@ define([
     widgetSupport
 ){
     "use strict";
-
+    
     // TODO: Add page validation
     
     // Singleton instance variables
@@ -332,12 +334,28 @@ define([
     function chooseProject(userIdentifier, callback) {
         console.log("chooseProject");
         
-        // TODO: Determin projects based on userIdentifier
+        // Determine projects based on userIdentifier
 
-        var projects = [{id: "testing"}, {id: "other"}];
-        
+        request("/projectsForCurrentUser", {handleAs: "json", preventCache: true}).then(function(data) {
+            console.log("projects", data);
+            if (data && data.success) {
+                if (!data.projects || !data.projects.length) {
+                    alert("There are no projects accessible by the current user");
+                } else {
+                    chooseProjectFromList(data.projects, callback);
+                }
+            } else {
+                alert("Something went wrong determining projects for the current user (error #2)");
+            }
+        }, function(error) {
+            console.log("error", error);
+            alert("Something went wrong determining projects for the current user");
+        });
+    }
+    
+    function chooseProjectFromList(projects, callback) {
         // TODO: Translate
-        var columns = {id: "Project identifier"};
+        var columns = {id: "Project identifier", name: "Project name", description: "Project description"};
         dialogSupport.openListChoiceDialog(null, projects, columns, "Projects", "Select a project to work on", function (choice) {
             console.log("choice:", choice);
             callback(choice);
@@ -346,6 +364,19 @@ define([
     
     // The main starting point of the application
     function initialize(userIdentifierFromServer) {
+        request("/currentUser", {handleAs: "json", preventCache: true}).then(function(data) {
+            if (data.success) {
+                initialize2(data.userIdentifier);
+            } else {
+                alert("Something went wrong determining the current user identifier (error #2)");
+            }
+        }, function(error) {
+            console.log("error", error);
+            alert("Something went wrong determining projects the current user identifier");
+        });
+    }
+        
+    function initialize2(userIdentifierFromServer) {
         console.log("=======", new Date().toISOString(), "application.initialize() called");
         
         translate.configure({}, applicationMessages);
