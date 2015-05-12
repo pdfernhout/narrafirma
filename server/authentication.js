@@ -75,14 +75,15 @@ function writePageStart(request, response, pageType) {
     if (!user) {
         response.write("<p>");
         // response.write('<a href="/">Home</a> | ');
-        if (pageType !== "login") response.write('<a href="/login">Login page</a>');
-        if (pageType !== "login") response.write("<p>");
-        response.write("<h2>Welcome to NarraFirma! Please log in.</h2>");
+        // if (pageType !== "login") response.write('<a href="/login">Login page</a>');
+        // if (pageType !== "login") response.write("<p>");
+        response.write('<h2>Welcome to NarraFirma!</h2>');
+        if (pageType !== "login") response.write(' Please <b><a href="/login">log in</a></b>.');
     } else {
         response.write("<p>");
-        response.write('<a href="/index.html">Start NarraFirma</a>');
+        // response.write('<a href="/index.html">Start NarraFirma</a>');
         // if (pageType !== "login") response.write('<a href="/login">Log In</a> | ');
-        response.write(' | <a href="/logout">Log Out</a>');
+        response.write('<a href="/logout">Logout</a>');
         if (pageType !== "account") response.write(' | <a href="/account">Account</a>');
         response.write("<p>");
         response.write("<h2>Hello, " + user.userIdentifier + ".</h2>");
@@ -103,7 +104,7 @@ var loginTemplate = '<form action="/login" method="post">\n' +
 '<input type="password" name="password"/>\n' +
 '</div>\n' +
 '<div>\n' +
-'<input type="submit" value="Submit"/>\n' +
+'<input type="submit" value="Login"/>\n' +
 '</div>\n' +
 '</form>\n' +
 '<p><small>Hint - pdfernhout,administrator,cfkurtz,joe,bob:secret</small></p>';
@@ -112,9 +113,9 @@ function writeTestPage(request, response, config) {
     // response.sendFile(pointrelConfig.baseDirectory + "index.html");
     // response.sendFile(baseDirectoryNormalized + "index.html");
     writePageStart(request, response, "start");
-    response.write("Example of authentication with passport; authenticated " + request.isAuthenticated());
-    if (request.isAuthenticated()) response.write('<br><a href="/index.html">NarraFirma project application</a>');
-    if (request.isAuthenticated()) response.write('<br><a href="/project-admin.html">NarraFirma administration</a>');
+    // response.write("Example of authentication with passport; authenticated " + request.isAuthenticated());
+    if (request.isAuthenticated()) response.write('<br><a href="/index.html">Start NarraFirma project application</a>');
+    if (request.isAuthenticated()) response.write('<br><a href="/project-admin.html">Start NarraFirma administration</a>');
     writePageEnd(request, response);
 }
 
