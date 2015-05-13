@@ -21,23 +21,6 @@ accessControl.initialize();
 // TODO: Need better loading and project management than this
 // pointrelServer.addJournalSync("testing");
 pointrelServer.addJournalSync("NarraFirma-administration");
-// TODO: Copying config data from Pointrel module
-var journalDirectory = "../server-data/" + "journals/";
-var fileNames;
-try {
-    fileNames = fs.readdirSync(journalDirectory);
-} catch (error) {
-    console.log("Problem reading directory %s error: %s", journalDirectory, error);
-}
-for (var fileNameIndex = 0; fileNameIndex < fileNames.length; fileNameIndex++) {
-    var fileName = fileNames[fileNameIndex];
-    if (fileName.charAt(0) === ".") continue;
-    var stat = fs.statSync(journalDirectory + fileName);
-    if (stat.isDirectory()) {
-        console.log("Adding journal: ", fileName);
-        pointrelServer.addJournalSync(fileName);
-    }
-}
 pointrelServer.indexAllJournals();
 
 // For authentication
@@ -129,6 +112,12 @@ app.post("/survey/questions/:surveyID", function (request, response) {
 // Set up authentication routes and config
 authentication.initialize(app, config);
 
+// TODO: Move similar support into Pointrel server when getting current user information
+// TODO: Also add support for creating (and maybe deleting?) journals
+// TODO: Should a title and description and other information be associated with a journal?
+// TODO: If so, should it be in one "admin" journal, in each journal, or in a parallel "meta" admin journal for each journal?
+// TODO: Likewise, where should authorization information be stored? One admin, in each journal, in a parallel "meta" journal for each journal?
+// TODO: Change to "role" based system (somewhat like MongoDB)
 app.get("/projectsForCurrentUser", authentication.ensureAuthenticatedForJSON, function(request, response) {
     var userIdentifier = request.user.userIdentifier;
     var projects = accessControl.projectsForUser(userIdentifier);
