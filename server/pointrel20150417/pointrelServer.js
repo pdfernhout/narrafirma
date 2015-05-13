@@ -677,6 +677,13 @@ function latestMessageForTopicSync(journalIdentifier, topicIdentifier, byReceive
     return message;
 }
 
+function respondForCurrentUserInformation(userIdentifierFromServerRequest, callback) {
+    log("======== respondForCurrentUserInformation", userIdentifierFromServerRequest);
+    
+    return callback(makeSuccessResponse(200, "Success", {userIdentifier: userIdentifierFromServerRequest}));
+}
+
+
 //--- Dispatching requests
 
 function senderIPAddressForRequest(request) {
@@ -712,30 +719,28 @@ function processRequest(apiRequest, callback, request) {
             return callback(makeFailureResponse(400, "Not acceptable: Unsupported action in apiRequest (must start with pointrel20150417_)"));
         }
         
-        var journalIdentifier = apiRequest.journalIdentifier;
-        
-        if (!journalIdentifier) return callback(makeFailureResponse(400, "journalIdentifier field is not defined in apiRequest"));
-        
-        var journal = journals[JSON.stringify(journalIdentifier)];
-        
-        // TODO: Could check for security authorization here
-        
-        if (!journal) return callback(makeFailureResponse(404, "No such journal", {journalIdentifier: journalIdentifier}));
-        
         var userCredentials = apiRequest.userCredentials;
         if (!userCredentials || typeof userCredentials !== 'object') userCredentials = {};
         
         // TODO: May want to check that messages stamped with a userIdentifier match the userIdentifier in the credentials?
 
+        var userIdentifierFromServerRequest;
+        if (user) {
+            userIdentifierFromServerRequest = user.userIdentifier;
+        }
+        
         // We don't need to authenticate the user's credentials if the claimed user was authenticated already by the server
         var isAlreadyAuthenticated = false;
         var userIdentifier = userCredentials.userIdentifier;
         if (user) {
+            userIdentifierFromServerRequest = user.userIdentifier;
             if (!userIdentifier) {
-                userIdentifier = user.userIdentifier;
+                userIdentifier = userIdentifierFromServerRequest;
                 isAlreadyAuthenticated = true;
             } else {
-                if (user.userIdentifier === userIdentifier) isAlreadyAuthenticated = true;
+                if (userIdentifier && userIdentifier === userIdentifierFromServerRequest) {
+                    isAlreadyAuthenticated = true;
+                }
             }
         }
         
@@ -753,6 +758,24 @@ function processRequest(apiRequest, callback, request) {
         }
         
         var requestType = apiRequest.action;
+        
+        // Requests not requiring a specific journal
+        
+        if (requestType === "pointrel20150417_currentUserInformation") {
+            return respondForCurrentUserInformation(userIdentifierFromServerRequest, callback);
+        }
+        
+        // Requests requiring a specific journal
+        
+        var journalIdentifier = apiRequest.journalIdentifier;
+        
+        if (!journalIdentifier) return callback(makeFailureResponse(400, "journalIdentifier field is not defined in apiRequest"));
+        
+        var journal = journals[JSON.stringify(journalIdentifier)];
+        
+        // TODO: Could check for security authorization here
+        
+        if (!journal) return callback(makeFailureResponse(404, "No such journal", {journalIdentifier: journalIdentifier}));
         
         if (requestType !== "pointrel20150417_reportJournalStatus") {
             var requestedCapability = "read";
@@ -773,14 +796,22 @@ function processRequest(apiRequest, callback, request) {
            
         if (requestType === "pointrel20150417_loadMessage") {
             return respondForLoadMessageRequest(userIdentifier, senderIPAddress, journal, apiRequest.sha256AndLength, callback);
-        } else if (requestType === "pointrel20150417_queryForNextMessage") {
+        }
+        
+        if (requestType === "pointrel20150417_queryForNextMessage") {
             return respondForQueryForNextMessageRequest(userIdentifier, senderIPAddress, journal, apiRequest.topicIdentifier, apiRequest.fromTimestampExclusive, apiRequest.limitCount, apiRequest.includeMessageContents, callback);
-        } else if (requestType === "pointrel20150417_queryForLatestMessage") {
+        }
+        
+        if (requestType === "pointrel20150417_queryForLatestMessage") {
             // TODO: May want to include the userIdentifier and senderIPAddress in the message trace?
             return respondForQueryForLatestMessageRequest(journal, apiRequest.topicIdentifier, callback);
-        } else if (requestType === "pointrel20150417_storeMessage") {
+        }
+        
+        if (requestType === "pointrel20150417_storeMessage") {
             return respondForStoreMessageRequest(userIdentifier, senderIPAddress, journal, apiRequest.message, callback);
-        } else if (requestType === "pointrel20150417_reportJournalStatus") {
+        }
+        
+        if (requestType === "pointrel20150417_reportJournalStatus") {
             var isAuthorizedPartial = function (requestedCapability) {
                 if (configuration.isAuthorizedCallback) {
                     // TODO: Could get more fine-grained authorization for messageType
@@ -790,9 +821,10 @@ function processRequest(apiRequest, callback, request) {
                 }
             };
             return respondForReportJournalStatusRequest(journal, isAuthorizedPartial, callback);
-        } else {
-            return callback(makeFailureResponse(501, "Not Implemented: requestType not supported", {requestType: requestType}));
         }
+        
+        // Catchall for unsupported request
+        return callback(makeFailureResponse(501, "Not Implemented: requestType not supported", {requestType: requestType}));
     } catch (e) {
         return callback(makeFailureResponse(500, "Server error", {error: e.stack}));
     }

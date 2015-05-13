@@ -344,7 +344,7 @@ define([
             this.prepareApiRequestForSending(apiRequest);
             
             // Do not set outstandingServerRequestSentAtTimestamp as this is an immediate request that does not block polling
-            this.serverStatus("requesting latest message " + this.outstandingServerRequestSentAtTimestamp);
+            this.serverStatus("requesting latest message " + new Date().toISOString());
             
             request.post(this.apiURL, {
                 data: JSON.stringify(apiRequest),
@@ -406,7 +406,7 @@ define([
             this.prepareApiRequestForSending(apiRequest);
             
             // Do not set outstandingServerRequestSentAtTimestamp as this is an immediate request that does not block polling
-            this.serverStatus("requesting journal status " + this.outstandingServerRequestSentAtTimestamp);
+            this.serverStatus("requesting journal status " + new Date().toISOString());
             
             var self = this;
             request.post(this.apiURL, {
@@ -431,6 +431,56 @@ define([
              }, function(error) {
                 self.serverStatus("Problem requesting status for journal from server: " + error.message);
                 console.log("Got server error for report journal status", error.message);
+                callback(error);
+            });
+        }
+    };
+    
+    PointrelClient.prototype.getCurrentUserInformation = function(callback) {
+        if (this.apiURL === "loopback") {
+            callback({
+                success: true, 
+                statusCode: 200,
+                description: "Success",
+                timestamp: getCurrentUniqueTimestamp(),
+                status: 'OK',
+                userIdentifier: this.userIdentifier
+            });
+        } else {
+            // Send to a real server immediately
+
+            var apiRequest = {
+                action: "pointrel20150417_currentUserInformation",
+            };
+            if (debugMessaging) console.log("sending currentUserInformation request", apiRequest);
+            // Do not send credentials: this.prepareApiRequestForSending(apiRequest);
+            
+            // Do not set outstandingServerRequestSentAtTimestamp as this is an immediate request that does not block polling
+            this.serverStatus("requesting current user information " + new Date().toISOString());
+            
+            var self = this;
+            request.post(this.apiURL, {
+                data: JSON.stringify(apiRequest),
+                // Two second timeout
+                timeout: 2000,
+                handleAs: "json",
+                headers: {
+                    "Content-Type": 'application/json; charset=utf-8',
+                    "Accept": "application/json"
+                }
+            }).then(function(response) {
+                if (debugMessaging) console.log("Got currentUserInformation response", response);
+                if (!response.success) {
+                    console.log("ERROR: currentUserInformation request failure", response);
+                    self.serverStatus("Current user information request failure: " + response.statusCode + " :: " + response.description);
+                    callback(response);
+                } else {
+                    self.okStatus();
+                    callback(null, response);
+                }
+             }, function(error) {
+                self.serverStatus("Problem requesting current user information from server: " + error.message);
+                console.log("Got server error for current user information", error.message);
                 callback(error);
             });
         }
