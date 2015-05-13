@@ -54,6 +54,10 @@ var configuration = {
     
     // Where to create and store journal files
     journalsDirectory: "../server-data/journals/",
+    
+    // Whether to just store everything in "memory" (used for testing), to a "file", or other in the future
+    // TODO: Maybe support this per journal?
+    storageType: "file",
         
      // The option maximumTimeDriftAllowed_ms is the maximum time drift allowed for messages to be in the future to allow for slightly different clocks
      // The more frequently records are written to the server, the smaller this value should be
@@ -71,14 +75,25 @@ var configuration = {
     // Note that even if this is set to flag, journal access may fail if the anonymous user is not allowed
     isAnonymousAccessAllowed: true,
     
-    // An optional function that should return a boolean if a user is authenticated; userCredentials typicall has userIdentifier and userPassword
+    // An optional function that should return a boolean if a user is authenticated; userCredentials typically has userIdentifier and userPassword
+    // Typically this should be set to pointrcelAccessControl.isAuthenticated
     // isAuthenticated(userIdentifier, userCredentials)
-    isAuthenticatedCallback: null,
     
+    isAuthenticatedCallback: null,
     // An optional function that should return a boolean if a request is authorized for the user
+    // Typically this should be set to pointrcelAccessControl.isAuthorized
     // isAuthorized(journalIdentifier, userIdentifier, requestedAction)
-    isAuthorizedCallback: null
+    isAuthorizedCallback: null,
+    
+    // An optional callback to return an object listing the journals a user can access and the permissions authorized
+    // Typically this should be set to pointrelAccessControl.determineJournalsAccessibleByUser
+    // determineJournalsAccessibleByUserCallback(userIdentifier)
+    determineJournalsAccessibleByUserCallback: null
 };
+
+function isUsingFiles() {
+    return configuration.storageType === "file";
+}
 
 function configure(options) {
     for (var key in options) {
@@ -112,12 +127,13 @@ function addJournalSync(journalIdentifier) {
        throw new Error("addJournalSync: journalIdentifier is more than 63 characters long");
    }
    
-   
    var journalDirectory = configuration.journalsDirectory + journalIdentifier + "/";
 
-   if (!fs.existsSync(journalDirectory)){
-       fs.mkdirSync(journalDirectory);
-       log("Made directory: " + journalDirectory);
+   if (isUsingFiles()) {
+       if (!fs.existsSync(journalDirectory)){
+           fs.mkdirSync(journalDirectory);
+           log("Made directory: " + journalDirectory);
+       }
    }
  
    var journal = makeJournal(journalIdentifier, journalDirectory);
@@ -137,9 +153,32 @@ function resetIndexesForJournal(journal) {
     journal.allMessageReceivedRecordsSortedByTimestamp = [];
 }
 
-// TODO: Fix so loads all journals after determining identifiers from storage?
+// Loads all journals after determining identifiers from storage
 function indexAllJournals() {
-    log("=================================== indexAllJournals", journals);
+    log("=================================== indexAllJournals");
+    
+    var journalsDirectory = configuration.journalsDirectory;
+    
+    if (!isUsingFiles()) return;
+        
+    var fileNames;
+    try {
+        fileNames = fs.readdirSync(journalsDirectory);
+    } catch (error) {
+        console.log("ERROR: Problem reading directory", journalsDirectory, error);
+    }
+    for (var fileNameIndex = 0; fileNameIndex < fileNames.length; fileNameIndex++) {
+        var fileName = fileNames[fileNameIndex];
+        if (fileName.charAt(0) === ".") continue;
+        var stat = fs.statSync(journalsDirectory + fileName);
+        if (stat.isDirectory()) {
+            console.log("Adding journal: ", fileName);
+            // TODO: Wasteful in this case that addJournalSync will check again if the journal exists
+            addJournalSync(fileName);
+        }
+    }
+
+    log("indexAllJournals found journals", journals);
     
     // TODO: Load journals from disk
     for (var key in journals) {
@@ -158,10 +197,21 @@ function indexAllJournals() {
     log("Done with indexAllJournals");
 }
 
+// Intended to be used by other pointrel modules, not by the client
+function getAllJournalIdentifiers() {
+    var result = [];
+    for (var key in journals) {
+        result.push(journals[key].journalIdentifier);
+    }
+    return result;
+}
+
 // The power of deleting code that is not currently used to reduce clutter? Knowing it is rewriteable again or findable in other versions?
 
 // Returns null if can not read file, which means client should ignore the message as unobtainable
 function readMessageContentsFromFile(receivedRecord) {
+    if (!isUsingFiles()) return undefined;
+    
     var fileContents;
     var message;
     try {
@@ -501,18 +551,25 @@ function respondForStoreMessageRequest(userIdentifier, senderIPAddress, journal,
     log("about to store", sha256AndLength);
     // log("prettyJSON", prettyJSON);
     
-    // TODO: Write to a temp file first and then move it
-    // TODO: maybe change permission mode from default?
-    log("about to write file: %s", fullFileName);
-    fs.writeFile(fullFileName, buffer, function (error) {
-        if (error) {
-            return callback(makeFailureResponse(500, "Server error: writeFile: '" + error + "'"));
-        }
-        
+    // Using local function to ingest and do callback because two paths to call this code, one directlay and one in a file callback
+    function finish() {
         ingestMessage(journal, receivedTimestamp, sha256AndLength, fullFileName, topicSHA256, topicTimestamp, message);
-
         return callback(makeSuccessResponse(200, "Success", {detail: 'Wrote content', sha256AndLength: sha256AndLength, receivedTimestamp: receivedTimestamp}));
-    });
+    }
+    
+    if (isUsingFiles()) {
+        // TODO: Write to a temp file first and then move it
+        // TODO: maybe change permission mode from default?
+        log("about to write file: %s", fullFileName);
+        fs.writeFile(fullFileName, buffer, function (error) {
+            if (error) {
+                return callback(makeFailureResponse(500, "Server error: writeFile: '" + error + "'"));
+            }
+            return finish();
+        });
+    } else {
+        return finish();
+    }
 }
 
 function makeReceivedRecordForClient(receivedRecord) {
@@ -680,7 +737,17 @@ function latestMessageForTopicSync(journalIdentifier, topicIdentifier, byReceive
 function respondForCurrentUserInformation(userIdentifierFromServerRequest, callback) {
     log("======== respondForCurrentUserInformation", userIdentifierFromServerRequest);
     
-    return callback(makeSuccessResponse(200, "Success", {userIdentifier: userIdentifierFromServerRequest}));
+    var result = {
+        userIdentifier: userIdentifierFromServerRequest
+    };
+    
+    // TODO: Maybe only do this is a flag is set in the request?
+    if (configuration.determineJournalsAccessibleByUserCallback) {
+        var journalPermissions = configuration.determineJournalsAccessibleByUserCallback(userIdentifierFromServerRequest);
+        result.journalPermissions = journalPermissions;
+    }
+    
+    return callback(makeSuccessResponse(200, "Success", result));
 }
 
 
@@ -743,6 +810,8 @@ function processRequest(apiRequest, callback, request) {
                 }
             }
         }
+        
+        // console.log("userIdentifierFromServerRequest:", userIdentifierFromServerRequest, "userIdentifier:", userIdentifier, "user:", user);
         
         // Returning 403 for unauthenticated instead of 401 because we are using custom authentication; see:
         // http://stackoverflow.com/questions/3297048/403-forbidden-vs-401-unauthorized-http-responses/14713094#14713094
@@ -838,3 +907,4 @@ exports.processRequest = processRequest;
 exports.getCurrentUniqueTimestamp = utility.getCurrentUniqueTimestamp;
 exports.indexAllJournals = indexAllJournals;
 exports.latestMessageForTopicSync = latestMessageForTopicSync;
+exports.getAllJournalIdentifiers = getAllJournalIdentifiers;
