@@ -325,11 +325,14 @@ require([
         panelContentPane.placeAt(mainContentPane);
     }
     
-    request("/currentUser", {handleAs: "json", preventCache: true}).then(function(data) {
-        if (data.success) {
-            initialize(data.userIdentifier);
-        } else {
+    // Throwaway single-use pointrel client instance which does not access a specific journal
+    var singleUsePointrelClient = new PointrelClient("/api/pointrel20150417", "unused", {});
+    singleUsePointrelClient.getCurrentUserInformation(function(error, response) {
+        if (error) {
+            console.log("error", error, response);
             alert("Something went wrong determining the current user identifier");
+            return;
         }
-    })
+        initialize(response.userIdentifier);
+    });
 });

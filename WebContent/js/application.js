@@ -11,6 +11,7 @@ define([
     "dojo/text!js/applicationPanelSpecifications/navigation.json",
     "js/pageDisplayer",
     "js/panelBuilder/PanelBuilder",
+    "js/pointrel20150417/PointrelClient",
     "js/Project",
     "dojo/request",
     "js/surveyCollection",
@@ -32,6 +33,7 @@ define([
     navigationJSONText,
     pageDisplayer,
     PanelBuilder,
+    PointrelClient,
     Project,
     request,
     surveyCollection,
@@ -364,15 +366,14 @@ define([
     
     // The main starting point of the application
     function initialize(userIdentifierFromServer) {
-        request("/currentUser", {handleAs: "json", preventCache: true}).then(function(data) {
-            if (data.success) {
-                initialize2(data.userIdentifier);
-            } else {
-                alert("Something went wrong determining the current user identifier (error #2)");
+        // Throwaway single-use pointrel client instance which does not access a specific journal
+        var singleUsePointrelClient = new PointrelClient("/api/pointrel20150417", "unused", {});
+        singleUsePointrelClient.getCurrentUserInformation(function(error, response) {
+            if (error) {
+                console.log("error", error, response);
+                alert("Something went wrong determining the current user identifier");
             }
-        }, function(error) {
-            console.log("error", error);
-            alert("Something went wrong determining projects the current user identifier");
+            initialize2(response.userIdentifier);
         });
     }
         

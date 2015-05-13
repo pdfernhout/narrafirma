@@ -129,13 +129,6 @@ app.post("/survey/questions/:surveyID", function (request, response) {
 // Set up authentication routes and config
 authentication.initialize(app, config);
 
-app.get("/currentUser", authentication.ensureAuthenticatedForJSON, function(request, response) {
-    response.jsonp({
-        success: true,
-        userIdentifier: request.user.userIdentifier
-     });
-});
-
 app.get("/projectsForCurrentUser", authentication.ensureAuthenticatedForJSON, function(request, response) {
     var userIdentifier = request.user.userIdentifier;
     var projects = accessControl.projectsForUser(userIdentifier);
