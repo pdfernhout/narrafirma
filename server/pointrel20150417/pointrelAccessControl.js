@@ -50,7 +50,8 @@ var superuserInformation;
 function initialize(superuserInformationOrFilename) {
     pointrelServer.configure({
         isAuthenticatedCallback: isAuthenticated,
-        isAuthorizedCallback: isAuthorized
+        isAuthorizedCallback: isAuthorized,
+        determineJournalsAccessibleByUserCallback: determineJournalsAccessibleByUser
     });
     if (!superuserInformationOrFilename) superuserInformationOrFilename = defaultSuperuserInformationFilename;
     if (typeof superuserInformationOrFilename === "string") {
