@@ -140,13 +140,16 @@ function projectsForUser(userIdentifier) {
         var project = accessConfiguration.projects[i];
         // console.log("project", project);
 
-        var canAccess = isAuthorized(project, userIdentifier, "read") || isAuthorized(project, userIdentifier, "write");
-        
-        if (canAccess) {
+        var canRead = isAuthorized(project, userIdentifier, "read");
+        var canWrite = isAuthorized(project, userIdentifier, "write");
+
+        if (canRead || canWrite) {
             var projectInformation = {
                 id: project.id,
                 name: project.name,
-                description: project.description
+                description: project.description,
+                canRead: canRead,
+                canWrite: canWrite
             };
             
             results.push(projectInformation);
