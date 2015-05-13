@@ -186,7 +186,7 @@ function isAuthorized(journalIdentifier, userIdentifier, requestedAction) {
     }
     
     // Handle regular user
-    var userInformation = getUserInformationForUser(userIdentifier);
+    var userInformation = getUserInformation(userIdentifier);
     
     if (!userInformation) {
         console.log("ERROR: isAuthorized: userInformation was missing for", userIdentifier);
@@ -201,7 +201,20 @@ function isAuthorized(journalIdentifier, userIdentifier, requestedAction) {
     return unionOfPermissionsForUser[requestedAction] || false;
 }
 
-function getUserInformationForUser(userIdentifier) {
+function getUserInformation(userIdentifier) {
+    if (superuserInformation && userIdentifier === superuserInformation.userIdentifier) {
+        // Handle superuser specially
+        // TODO: Maybe fill in more information?
+        return {
+            userIdentifier: userIdentifier,
+            name: "superuser",
+            email: null,
+            rolesForJournals: {
+                // TODO: What to put here?
+            }
+        };
+    }
+    
     var userInformationTopicForUser = {type: "userInformation", userIdentifier: userIdentifier};
     var message = pointrelServer.latestMessageForTopicSync(usersJournalIdentifier, userInformationTopicForUser);
     
@@ -243,7 +256,7 @@ function determineJournalsAccessibleByUser(userIdentifier) {
     } 
     
     // Handle regular user
-    var userInformation = getUserInformationForUser(userIdentifier);
+    var userInformation = getUserInformation(userIdentifier);
     
     if (!userInformation) {
         console.log("ERROR: determineJournalsAccessibleByUser: userInformation was missing for", userIdentifier);
@@ -264,3 +277,4 @@ exports.initialize = initialize;
 exports.isAuthenticated = isAuthenticated;
 exports.isAuthorized = isAuthorized;
 exports.determineJournalsAccessibleByUser = determineJournalsAccessibleByUser;
+exports.getUserInformation = getUserInformation;
