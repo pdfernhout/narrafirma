@@ -1,6 +1,7 @@
 /*jslint node: true */
 "use strict";
 
+var pointrelAccessControl = require("./pointrel20150417/pointrelAccessControl");
 var pointrelUtility = require("./pointrel20150417/pointrelUtility");
 
 // Authentication-related
@@ -13,60 +14,37 @@ var sessionModule = require("express-session");
 
 // For authentication test; see: https://github.com/jaredhanson/passport-local/blob/master/examples/express3/app.js
 var LocalStrategy = passportLocal.Strategy;
-var users = [
-    { id: 1, userIdentifier: 'bob', password: 'secret', email: 'bob@example.com' },
-    { id: 2, userIdentifier: 'joe', password: 'secret', email: 'joe@example.com' },
-    { id: 3, userIdentifier: 'pdfernhout', password: 'secret', email: 'pdfernhout@kurtz-fernhout.com' },
-    { id: 4, userIdentifier: 'cfkurtz', password: 'secret', email: 'cfkurtz@kurtz-fernhout.com' },
-    { id: 5, userIdentifier: 'administrator', password: 'secret', email: 'administrator@narrafirma.com' }
-];
 
-function findById(id, callback) {
-    var idx = id - 1;
-    if (users[idx]) {
-        callback(null, users[idx]);
-    } else {
-        callback(new Error('User ' + id + ' does not exist'));
-    }
-}
-
-function findByUsername(userIdentifier, callback) {
-  for (var i in users) { 
-    var user = users[i];
-    if (user.userIdentifier === userIdentifier) {
-      return callback(null, user);
-    }
-  }
-  return callback(null, null);
-}
+// Users are represented as:
+// {userIdentifier: "name"}
 
 passport.serializeUser(function(user, done) {
-    done(null, user.id);
+    done(null, user.userIdentifier);
 });
 
 passport.deserializeUser(function(id, done) {
-  findById(id, function (err, user) {
-    done(err, user);
-  });
+    done(null, {userIdentifier: id});
 });
 
 passport.use(new LocalStrategy(
-  function(userIdentifier, password, done) {
-    // asynchronous verification, for effect...
-    process.nextTick(function () {
-      
-      // Find the user by userIdentifier.  If there is no user with the given
-      // userIdentifier, or the password is not correct, set the user to `false` to
-      // indicate failure and set a flash message.  Otherwise, return the
-      // authenticated `user`.
-      findByUsername(userIdentifier, function(err, user) {
-        if (err) { return done(err); }
-        if (!user) { return done(null, false, { message: 'Unknown user ' + userIdentifier }); }
-        if (user.password !== password) { return done(null, false, { message: 'Invalid password' }); }
+    function(userIdentifier, password, done) {
+        var userCredentials = {
+            userIdentifier: userIdentifier, 
+            userPassword: password
+        };
+        
+        var authenticated = pointrelAccessControl.isAuthenticated(userIdentifier, userCredentials);
+        
+        // If there is no user with the given userIdentifier, or the password is not correct,
+        // set the user to `false` to indicate failure and set a flash message
+        if (!authenticated) {
+            return done(null, false, {message: 'Authentication failed for: ' + userIdentifier});
+        }
+        
+        // Otherwise, return the authenticated `user` which will be stored in the request and accessible by that code
+        var user = {userIdentifier: userIdentifier};
         return done(null, user);
-      });
-    });
-  }
+    }
 ));
 
 function writePageStart(request, response, pageType) {

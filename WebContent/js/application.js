@@ -333,52 +333,45 @@ define([
         console.log(JSON.stringify(sections, null, 4));
     }
     
-    function chooseProject(userIdentifier, callback) {
-        console.log("chooseProject");
-        
-        // Determine projects based on userIdentifier
-
-        request("/projectsForCurrentUser", {handleAs: "json", preventCache: true}).then(function(data) {
-            console.log("projects", data);
-            if (data && data.success) {
-                if (!data.projects || !data.projects.length) {
-                    alert("There are no projects accessible by the current user");
-                } else {
-                    chooseProjectFromList(data.projects, callback);
-                }
-            } else {
-                alert("Something went wrong determining projects for the current user (error #2)");
-            }
-        }, function(error) {
-            console.log("error", error);
-            alert("Something went wrong determining projects for the current user");
-        });
-    }
-    
-    function chooseProjectFromList(projects, callback) {
-        // TODO: Translate
-        var columns = {id: "Project identifier", name: "Project name", description: "Project description"};
-        dialogSupport.openListChoiceDialog(null, projects, columns, "Projects", "Select a project to work on", function (choice) {
-            console.log("choice:", choice);
-            callback(choice);
-        });
-    }
+    var narrafirmaProjectPrefix = "NarraFirmaProject-";
     
     // The main starting point of the application
-    function initialize(userIdentifierFromServer) {
+    function initialize() {
+        console.log("=======", new Date().toISOString(), "application.initialize() called");
+        
         // Throwaway single-use pointrel client instance which does not access a specific journal
         var singleUsePointrelClient = new PointrelClient("/api/pointrel20150417", "unused", {});
         singleUsePointrelClient.getCurrentUserInformation(function(error, response) {
             if (error) {
                 console.log("error", error, response);
                 alert("Something went wrong determining the current user identifier");
+                return;
             }
-            initialize2(response.userIdentifier);
+            console.log("initialize response", response);
+            var projects = [];
+            for (var key in response.journalPermissions) {
+                if (!_.startsWith(key, narrafirmaProjectPrefix)) continue;
+                var permissions = response.journalPermissions[key];
+                projects.push({
+                    id: key.substring(narrafirmaProjectPrefix.length),
+                    read: permissions.read,
+                    write: permissions.write,
+                    admin: permissions.admin
+                });
+            }
+            
+            if (!projects.length) {
+                document.getElementById("pleaseWaitDiv").style.display = "none";
+                document.body.innerHTML += '<br><b>No projects. The NarraFirma application can not run. Please contact your NarraFirma project administrator.</b>';
+                alert("There are no projects accessible by the current user; please contact your NarraFirma administrator");
+                return;
+            }
+            
+            chooseAProjectToOpen(response.userIdentifier, projects);
         });
     }
         
-    function initialize2(userIdentifierFromServer) {
-        console.log("=======", new Date().toISOString(), "application.initialize() called");
+    function chooseAProjectToOpen(userIdentifierFromServer, projects) {
         
         translate.configure({}, applicationMessages);
         
@@ -395,7 +388,9 @@ define([
             userIdentifier: userIdentifier,
         };
         
-        chooseProject(userIdentifier, function (projectChoice) {
+        // TODO: Translate
+        var columns = {id: "Project identifier", name: "Project name", description: "Project description"};
+        dialogSupport.openListChoiceDialog(null, projects, columns, "Projects", "Select a project to work on", function (projectChoice) {
             if (!projectChoice) return;
             
             projectIdentifier = projectChoice.id;
@@ -413,10 +408,10 @@ define([
             
             project.startup(function (error) {
                 if (error) {
-                    alert("Problem connecting to project journal on server. Application will not run.");
                     document.getElementById("pleaseWaitDiv").style.display = "none";
                     // TODO: Sanitize journalIdentifier
                     document.body.innerHTML += '<br>Problem connecting to project journal on server for: "<b>' + journalIdentifier + '</b>"';
+                    alert("Problem connecting to project journal on server. Application will not run.");
                     return;
                 } else {
                     loadApplicationDesign();

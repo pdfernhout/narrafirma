@@ -15,8 +15,10 @@ var bodyParser = require('body-parser');
 // the server library
 var pointrelServer = require("./pointrel20150417/pointrelServer");
 
-var accessControl = require("./accessControl");
-accessControl.initialize();
+var pointrelAccessControl = require("./pointrel20150417/pointrelAccessControl");
+
+// TODO IMPORTANT: Remove hardcoded superuser credentials -- just for dev testing
+pointrelAccessControl.initialize({"userIdentifier": "superuser", "userPassword": "secret"});
 
 // TODO: Need better loading and project management than this
 // pointrelServer.addJournalSync("testing");
@@ -34,7 +36,6 @@ var authentication = require("./authentication");
 };
 */
 
-// TODO: think about authentication
 var config = {
     requireAuthentication: true
 };
@@ -112,21 +113,9 @@ app.post("/survey/questions/:surveyID", function (request, response) {
 // Set up authentication routes and config
 authentication.initialize(app, config);
 
-// TODO: Move similar support into Pointrel server when getting current user information
 // TODO: Also add support for creating (and maybe deleting?) journals
 // TODO: Should a title and description and other information be associated with a journal?
 // TODO: If so, should it be in one "admin" journal, in each journal, or in a parallel "meta" admin journal for each journal?
-// TODO: Likewise, where should authorization information be stored? One admin, in each journal, in a parallel "meta" journal for each journal?
-// TODO: Change to "role" based system (somewhat like MongoDB)
-app.get("/projectsForCurrentUser", authentication.ensureAuthenticatedForJSON, function(request, response) {
-    var userIdentifier = request.user.userIdentifier;
-    var projects = accessControl.projectsForUser(userIdentifier);
-    response.json({
-        success: true,
-        userIdentifier: request.user.userIdentifier,
-        projects: projects
-     });
-});
 
 app.post("/api/pointrel20150417", authentication.ensureAuthenticatedForJSON, function(request, response) {
     pointrelServer.processRequest(request.body, function(requestResultMessage) {
