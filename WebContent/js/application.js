@@ -253,7 +253,7 @@ define([
     function updateServerStatus(text) {
         // The serverStatusPane may be created only after we start talking to the server
         if (!serverStatusPane) return;
-        serverStatusPane.set("content", "Project: " + project.journalIdentifier + "; Server status: " + text);
+        serverStatusPane.set("content", "Project: " + project.journalIdentifier.substring(narrafirmaProjectPrefix.length) + "; Server status: " + text);
     }
     
     function loadedMoreSurveyResults(newEnvelopeCount) {
