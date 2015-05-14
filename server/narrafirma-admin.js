@@ -18,11 +18,6 @@ function main() {
     var myArgs = process.argv.slice(2);
     //console.log('myArgs: ', myArgs);
     
-    if (myArgs.length < 2) {
-        printUsage();
-        return;
-    }
-    
     var command = myArgs[0];
     
     // TODO: Probably should read this from a standard location
@@ -38,18 +33,25 @@ function main() {
     // TODO: More validation
     
     if (command === "add-project") {
+        if (myArgs.length < 2) return printUsage();
         addProject(myArgs[1]);
         return;
     }
     
     if (command === "add-user") {
-        if (myArgs.length < 3) return console.log("Password is needed as third argument");
+        if (myArgs.length < 3) return printUsage();
         addUser(myArgs[1], myArgs[2]);
         return;
     }
     
+    if (command === "list-users") {
+        if (myArgs.length !== 1) return printUsage();
+        listUsers();
+        return;
+    }
+    
     if (command === "grant-project-user-role") {
-        if (myArgs.length < 3) return console.log("userIdentifier is needed as third argument");
+        if (myArgs.length < 3) return printUsage();
         grantRole(myArgs[1], myArgs[2], myArgs[3] || "readerWriter");
         return;
     }
@@ -167,6 +169,10 @@ function setUserPassword(userIdentifier, password) {
             console.log("OK:", JSON.stringify(response, null, 2));
         }
     }, serverRequestWithAuthenticatedSuperuser);
+}
+
+function listUsers() {
+    console.log("not yet implemented");
 }
 
 main();
