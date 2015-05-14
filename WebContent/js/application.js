@@ -46,6 +46,8 @@ define([
     
     // TODO: Add page validation
     
+    var narrafirmaProjectPrefix = "NarraFirmaProject-";
+    
     // Singleton instance variables
     // TODO: Fix hardcoded values
     var journalIdentifier;
@@ -333,8 +335,6 @@ define([
         console.log(JSON.stringify(sections, null, 4));
     }
     
-    var narrafirmaProjectPrefix = "NarraFirmaProject-";
-    
     // The main starting point of the application
     function initialize() {
         console.log("=======", new Date().toISOString(), "application.initialize() called");
@@ -353,7 +353,8 @@ define([
                 if (!_.startsWith(key, narrafirmaProjectPrefix)) continue;
                 var permissions = response.journalPermissions[key];
                 projects.push({
-                    id: key.substring(narrafirmaProjectPrefix.length),
+                    id: key,
+                    name: key.substring(narrafirmaProjectPrefix.length),
                     read: permissions.read,
                     write: permissions.write,
                     admin: permissions.admin
@@ -389,7 +390,7 @@ define([
         };
         
         // TODO: Translate
-        var columns = {id: "Project identifier", name: "Project name", description: "Project description"};
+        var columns = {name: "Project name", id: "Project journal", write: "Editable"};
         dialogSupport.openListChoiceDialog(null, projects, columns, "Projects", "Select a project to work on", function (projectChoice) {
             if (!projectChoice) return;
             
