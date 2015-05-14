@@ -22,7 +22,7 @@ pointrelAccessControl.initialize({"userIdentifier": "superuser", "userPassword":
 
 // TODO: Need better loading and project management than this
 // pointrelServer.addJournalSync("testing");
-pointrelServer.addJournalSync("NarraFirma-administration");
+// pointrelServer.addJournalSync("NarraFirma-administration");
 pointrelServer.indexAllJournals();
 
 // For authentication
