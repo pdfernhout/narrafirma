@@ -1,0 +1,24 @@
+{
+    "id": "page_designQuestionnaires",
+    "displayName": "Design questionnaires",
+    "displayType": "page",
+    "section": "collection_design",
+    "modelClass": "DesignQuestionnaires",
+    "panelFields": [
+        {
+            "id": "questionnaires_Label",
+            "dataType": "none",
+            "displayType": "label",
+            "displayPrompt": "On this page you design one or more questionnaires, selecting from the questions you have previously entered and entering other questionnaire-specific text."
+        },
+        {
+            "id": "project_questionnaires",
+            "dataType": "array",
+            "required": true,
+            "displayType": "grid",
+            "displayConfiguration": "panel_addQuestionnaire",
+            "displayName": "Questionnaires",
+            "displayPrompt": "Add one or more questionnaires for collecting stories."
+        }
+    ]
+}

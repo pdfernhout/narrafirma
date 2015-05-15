@@ -134,8 +134,14 @@
                 ]
             },
             {
-                "panelID": "page_designQuestionForm",
-                "panelName": "Design question form"
+                "panelID": "page_designQuestionnaires",
+                "panelName": "Design questionnaires",
+                "extraPanels": [
+                    {
+                        "panelID": "panel_addQuestionnaire",
+                        "panelName": "Add questionnaire"
+                    }
+                ]
             },
             {
                 "panelID": "page_planStoryCollectionSessions",
