@@ -45,9 +45,10 @@ define([
                 var isValueInChoices = updateChoices(newChoices, model.get(fieldSpecification.id));
                 // console.log("isValueInChoices", isValueInChoices);
                 if (!isValueInChoices) {
+                    console.log("Selected value no longer in specified choices", currentValue, choices);
                     // TODO: Should this be null or an empty string?
                     // TODO: Should the GUI really be enforcing this rule?
-                    model.set(fieldSpecification.id, "");
+                    // model.set(fieldSpecification.id, "");
                 }
             });
             select.own(subscription);
