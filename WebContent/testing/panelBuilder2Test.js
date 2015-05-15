@@ -1,8 +1,14 @@
 require([
     "js/panelBuilder/PanelBuilder",
+    "js/panelBuilder/PanelSpecificationCollection",
+    "dojo/text!js/applicationPanelSpecifications/planning/panel_addParticipantGroup.json",
+    "dojo/Stateful",
     "dojo/domReady!"
 ], function(
-    PanelBuilder
+    PanelBuilder,
+    PanelSpecificationCollection,
+    panel_addParticipantGroupSpecificationText,
+    Stateful
 ) {
     "use strict";
     
@@ -18,25 +24,34 @@ require([
     
     console.log("panelBuilder2Test.js");
     
-    var panelBuilder = new PanelBuilder();
+    var panels = new PanelSpecificationCollection();
+    panels.addPanelSpecificationFromJSONText(panel_addParticipantGroupSpecificationText);
+
+    // var testModelTemplate = panels.buildModel("Test2Model");
+    // var testModel = new Stateful(testModelTemplate);
+
+    var panelBuilder = new PanelBuilder({panelSpecificationCollection: panels});
     
     var contentPane = panelBuilder.newContentPane();
     contentPane.placeAt("pageDiv").startup();
     console.log("contentPane", contentPane);
     
-    var model = {};
+    var model = new Stateful();
     
     console.log("model", model);
 
     var fieldSpecifications =  [
-       {
-            "id": "aboutYou_youHeader",
-            "dataType": "none",
-            "displayType": "header",
-            "displayPrompt": "About you"
+        {
+            "id": "project_participantGroupsList",
+            "dataType": "array",
+            "required": true,
+            "displayType": "grid",
+            "displayConfiguration": "panel_addParticipantGroup",
+            "displayName": "Participant groups",
+            "displayPrompt": "Please add participant groups in the list below (typically up to three groups)."
         },
         {
-            "id": "aboutYou_experience",
+            "id": "project_primaryGroup",
             "dataType": "string",
             "dataOptions": [
                 "none",
@@ -46,8 +61,8 @@ require([
             ],
             "required": true,
             "displayType": "select",
-            "displayName": "Experience",
-            "displayPrompt": "How much experience do you have facilitating PNI projects?"
+            "displayName": "Primary group",
+            "displayPrompt": "Which group is most important to this project?"
         },
         {
             "id": "addToObservation_createNewObservationWithResultButton",
