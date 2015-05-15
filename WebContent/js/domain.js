@@ -104,21 +104,23 @@ define([
             }
             console.log("changeCurrentPageModel", modelName, pageModelTemplate);
             
+            // Saving JSON.stringify-ed versions of data in case it is an array or object that might be changed directly
+            
             function subscribe(model, fieldName) {
-                model._saved[fieldName] = model.get(fieldName);
+                model._saved[fieldName] = JSON.stringify(model.get(fieldName));
                 var subscription = domain.project.watchFieldValue(fieldName, function(triple, message) {
                     // console.log(" ---------- updateWhenTripleStoreChanges", triple, message);
                     var newValue = triple.c;
                     // TODO: Should warn if saved an get differ because going to lose changes
                     var editedValue = model.get(fieldName);
                     // TODO: User might have cleared the field; need better way to detect initial changes...
-                    if (editedValue && model._saved[fieldName] !== editedValue) {
+                    if (editedValue && model._saved[fieldName] !== JSON.stringify(editedValue)) {
                         console.log("About to lose user entered data in field", fieldName, "user-edited:", editedValue, "new:", newValue);
                     }
-                    model._saved[fieldName] = newValue;
-                    if (editedValue !== newValue) {
+                    model._saved[fieldName] = JSON.stringify(newValue);
+                    if (JSON.stringify(editedValue) !== JSON.stringify(newValue)) {
                         console.log("notified of changed data in store, so updating field", fieldName, newValue);
-                        // TODO: Problem -- this will trigger an watch, which will lead to writing out the value
+                        // This will trigger a watch, which would lead to writing out the value except for a check if value has changed
                         model.set(fieldName, newValue);
                     }
                     // formSaved[fieldName] = newValue;
@@ -126,12 +128,12 @@ define([
                 domain.subscriptions.push(subscription);
             }
             
-            // TODO: Need to unwatch when leave page
             function watch(model, fieldName) {
                 var subscription = model.watch(fieldName, function(name, oldValue, newValue) {
                     console.log("Watch changed", fieldName, oldValue, newValue);
-                    if (model._saved[fieldName] !== newValue) {
-                        model._saved[fieldName] = newValue;
+                    // Use JSON comparison to handle situation of arrays changing contents but remaining the same array (likewise for objects)
+                    if (model._saved[fieldName] !== JSON.stringify(newValue)) {
+                        model._saved[fieldName] = JSON.stringify(newValue);
                         console.log("storing new value for field", fieldName, newValue);
                         domain.project.setFieldValue(fieldName, newValue, oldValue);
                     }
