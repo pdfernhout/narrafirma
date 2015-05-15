@@ -1,13 +1,11 @@
 require([
     "js/panelBuilder/PanelBuilder",
     "js/panelBuilder/PanelSpecificationCollection",
-    "dojo/text!js/applicationPanelSpecifications/planning/panel_addParticipantGroup.json",
     "dojo/Stateful",
     "dojo/domReady!"
 ], function(
     PanelBuilder,
     PanelSpecificationCollection,
-    panel_addParticipantGroupSpecificationText,
     Stateful
 ) {
     "use strict";
@@ -24,21 +22,63 @@ require([
     
     console.log("panelBuilder2Test.js");
     
-    var panels = new PanelSpecificationCollection();
-    panels.addPanelSpecificationFromJSONText(panel_addParticipantGroupSpecificationText);
-
     // var testModelTemplate = panels.buildModel("Test2Model");
     // var testModel = new Stateful(testModelTemplate);
-
+    
+    var model = new Stateful();
+    
+    model.set("project_participantGroupsList", [
+        {
+            "_id": "016ca591-2f29-4c2c-821a-0a3e29473092",
+            "participantGroup_name": "One"
+        },
+        {
+            "_id": "5d6e3727-47f5-442e-81cf-4c5cff26a774",
+            "participantGroup_name": "Two"
+        }
+    ]);
+    
+    model.set("project_primaryGroup", "One");
+    
+    model.watch("project_primaryGroup", function(name, oldValue, newValue) {
+        console.log("@@@@ Model field changed: name, oldValue, newValue", name, oldValue, newValue);
+    });
+    
+    console.log("model", model);
+    
+    var panel_addParticipantGroup = {
+        "id": "panel_addParticipantGroup",
+        "displayName": "Participant group",
+        "displayType": "panel",
+        "section": "planning",
+        "modelClass": "ParticipantGroup",
+        "panelFields": [
+            {
+                "id": "participantGroup_name",
+                "dataType": "string",
+                "required": true,
+                "displayType": "text",
+                "displayName": "Name",
+                "displayPrompt": "Please name this group of participants (for example, \"doctors\", \"students\", \"staff\")."
+            },
+            {
+                "id": "participantGroup_description",
+                "dataType": "string",
+                "required": true,
+                "displayType": "textarea",
+                "displayName": "Description",
+                "displayPrompt": "Please describe this group of participants.\nFor example, you might want to record any observations you have made about this group.\nWhat do you know about them?"
+            },
+        ]
+    };
+    
+    var panels = new PanelSpecificationCollection();
+    panels.addPanelSpecification(panel_addParticipantGroup);
     var panelBuilder = new PanelBuilder({panelSpecificationCollection: panels});
     
     var contentPane = panelBuilder.newContentPane();
     contentPane.placeAt("pageDiv").startup();
     console.log("contentPane", contentPane);
-    
-    var model = new Stateful();
-    
-    console.log("model", model);
 
     var fieldSpecifications =  [
         {
@@ -53,12 +93,10 @@ require([
         {
             "id": "project_primaryGroup",
             "dataType": "string",
-            "dataOptions": [
-                "none",
-                "a little",
-                "some",
-                "a lot"
-            ],
+            // "dataOptions": ["one", "two", "three"],
+            "dataOptions": "project_participantGroupsList",
+            "dataOptionValueKey": "participantGroup_name",
+            // "displayDataOptionField": "name",
             "required": true,
             "displayType": "select",
             "displayName": "Primary group",
