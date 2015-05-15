@@ -1,9 +1,9 @@
 {
-    "id": "page_designQuestionForm",
-    "displayName": "Design question form",
-    "displayType": "page",
+    "id": "panel_addQuestionnaire",
+    "displayName": "Add questionnaire",
+    "displayType": "panel",
     "section": "collection_design",
-    "modelClass": "DesignQuestionFormActivity",
+    "modelClass": "DesignQuestionnaire",
     "panelFields": [
         {
             "id": "questionForm_Label",
