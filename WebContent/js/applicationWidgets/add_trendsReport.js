@@ -445,7 +445,7 @@ define([
         //splitterPane.startup();
         //splitterPane.resize();
         
-        var patternsGrid = new GridWithItemPanel(panelBuilder, gridContainerPane, "patternsList", patternsListStore, patternsPanelSpecification, patternsGridConfiguration);
+        var patternsGrid = new GridWithItemPanel(panelBuilder, gridContainerPane, "patternsList", patternsListStore, patternsPanelSpecification, patternsGridConfiguration, model);
         patternsGrid.grid.set("selectionMode", "single");
         graphBrowserInstance.patternsGrid = patternsGrid;
         
@@ -457,7 +457,7 @@ define([
         
         // Only allow view button for stories
         var configuration = {viewButton: true, navigationButtons: false, includeAllFields: ["__survey_storyName", "__survey_storyText"]};
-        var storyList = new GridWithItemPanel(panelBuilder, contentPane, "storyGrid", selectedStoriesStore, storyItemPanelSpecification, configuration);
+        var storyList = new GridWithItemPanel(panelBuilder, contentPane, "storyGrid", selectedStoriesStore, storyItemPanelSpecification, configuration, model);
         storyList.grid.set("selectionMode", "single");
         graphBrowserInstance.storyList = storyList;
         

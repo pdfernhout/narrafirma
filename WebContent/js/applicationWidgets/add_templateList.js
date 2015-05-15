@@ -167,7 +167,7 @@ define([
         
         var configuration = {viewButton: true, includeAllFields: false, showTooltip: true, customButton: customButtonDefinition};
         
-        var grid = new GridWithItemPanel(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, itemPanelSpecification, configuration);
+        var grid = new GridWithItemPanel(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, itemPanelSpecification, configuration, model);
     
         var cancelButtonSpecification = {
             id: "templateChooserCancelButton",

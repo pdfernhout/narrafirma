@@ -59,8 +59,16 @@ define([
         
         var instance = {};
         
-        var watcher = model.watch(fieldSpecification.id, function() {
-            console.log("updating grid for model field change", model, fieldSpecification);
+        var watcher = model.watch(fieldSpecification.id, function(name, oldValue, newValue) {
+            // console.log("updating grid for model field change", model, fieldSpecification);
+            
+            if (oldValue === newValue) {
+                // Ignore the value changed coming from the grid itself when it changes data
+                // TODO: Could also do JSON comparison -- think about better way to handle this in general (same for clustering diagram)
+                // console.log("+++++++++++++++++++++ Ignoring change most likely coming from grid itself");
+                return;
+            }
+            
             // Update data store
             // TODO: Will not close any detail panels dependent on old data
             var newData = model.get(fieldSpecification.id);
@@ -76,7 +84,7 @@ define([
         var gridConfiguration = configuration.gridConfiguration;
         if (!gridConfiguration) gridConfiguration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
         
-        var grid = new GridWithItemPanel(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, itemPanelSpecification, gridConfiguration);
+        var grid = new GridWithItemPanel(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, itemPanelSpecification, gridConfiguration, model);
         instance.grid = grid;
         return grid;
     }

@@ -45,7 +45,7 @@ define([
     
     // Possible configuration options
     // var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, navigationButtons: true, includeAllFields: false};
-    function GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration) {
+    function GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration, model) {
         var self = this;
         
         console.log("=========== creating GridWithItemPanel with itemPanelSpecification", itemPanelSpecification);
@@ -57,6 +57,9 @@ define([
         
         this.configuration = configuration;
         this.panelBuilder = panelBuilder;
+        
+        this.model = model;
+        this.fieldId = id;
                         
         this.itemPanelSpecification = itemPanelSpecification;
         
@@ -290,6 +293,13 @@ define([
         this.formItem = null;
         this.updateGridButtonsForSelectionAndForm();
     };
+    
+    GridWithItemPanel.prototype.sendFieldChangedMessageToModel = function(statefulItem) {
+        if (this.model && this.fieldId) {
+            // Try to signal to any watches that the array has changed
+            this.model.set(this.fieldId, this.model.get(this.fieldId));
+        }
+    };
 
     GridWithItemPanel.prototype.storeItem = function(statefulItem) {
         console.log("OK clicked", statefulItem);
@@ -302,6 +312,8 @@ define([
         } else {
             this.store.put(plainValue);
         }
+        
+        this.sendFieldChangedMessageToModel();
                 
         console.log("put store for add form");
         
@@ -483,6 +495,7 @@ define([
             for (var itemID in self.grid.selection) {
                 self.store.remove(itemID);
             }
+            self.sendFieldChangedMessageToModel();
         });
     };
     
@@ -537,6 +550,7 @@ define([
         }
         // Tell grid to update for moved items
         this.grid.refresh();
+        this.sendFieldChangedMessageToModel();
     };
     
     GridWithItemPanel.prototype.downButtonClicked = function(event) {
@@ -561,6 +575,7 @@ define([
         }
         // Tell grid to update for moved items
         this.grid.refresh();
+        this.sendFieldChangedMessageToModel();
     };
     
     GridWithItemPanel.prototype.navigateButtonClicked = function(direction, event) {

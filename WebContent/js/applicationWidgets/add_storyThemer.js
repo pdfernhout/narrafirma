@@ -99,7 +99,7 @@ define([
                 {id: "name", displayName: "Theme", displayPrompt: "Theme", displayType: "text", dataOptions:[]}
             ]
         };
-        var themeList = new GridWithItemPanel(panelBuilder, themesPane, "storyThemeList", storyThemesStore, itemPanelSpecification2, configuration2);
+        var themeList = new GridWithItemPanel(panelBuilder, themesPane, "storyThemeList", storyThemesStore, itemPanelSpecification2, configuration2, model);
         console.log("themeList", themeList);
         
         var allThemes = [];
@@ -156,7 +156,7 @@ define([
         
         // Only allow view button for stories
         var configuration = {viewButton: true, navigationButtons: true, includeAllFields: ["__survey_storyName", "__survey_storyText"]};
-        var storyList = new GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration);
+        var storyList = new GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration, model);
         storyList.grid.set("selectionMode", "single");
         
         var storyThemerInstance = {

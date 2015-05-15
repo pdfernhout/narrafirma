@@ -325,7 +325,7 @@ define([
         
         // Only allow view button for stories
         var configuration = {viewButton: true, includeAllFields: ["__survey_storyName", "__survey_storyText"]};
-        storyBrowserInstance.storyList = new GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration);
+        storyBrowserInstance.storyList = new GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration, model);
         
         var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerChanged, storyBrowserInstance));
         
