@@ -222,7 +222,7 @@ var PanelBuilder = declare(null, {
         this.buttonClickedCallback = callback;
     },
     
-    buttonClicked: function(contentPane, model, fieldSpecification, value) {
+    buttonClicked: function(contentPane, model, fieldSpecification, event) {
         if (_.isFunction(fieldSpecification.displayConfiguration)) {
             // Do callback; this can't be defined in JSON, but can be defined in an application
             fieldSpecification.displayConfiguration();
@@ -232,7 +232,7 @@ var PanelBuilder = declare(null, {
             console.log("No buttonClickedCallback set in panelBuilder", this, fieldSpecification);
             throw new Error("No buttonClickedCallback set for PanelBuilder");
         }
-        this.buttonClickedCallback(this, contentPane, model, fieldSpecification, value);
+        this.buttonClickedCallback(this, contentPane, model, fieldSpecification, event);
     },
     
     setCalculateFunctionResultCallback: function(callback) {
