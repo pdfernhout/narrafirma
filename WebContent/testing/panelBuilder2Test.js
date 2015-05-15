@@ -103,6 +103,30 @@ require([
             "displayPrompt": "Which group is most important to this project?"
         },
         {
+            "id": "project_primaryGroup",
+            "dataType": "string",
+            // "dataOptions": ["one", "two", "three"],
+            "dataOptions": "project_participantGroupsList",
+            "dataOptionValueKey": "participantGroup_name",
+            // "displayDataOptionField": "name",
+            "required": true,
+            "displayType": "radiobuttons",
+            "displayName": "Primary group",
+            "displayPrompt": "Which group is most important to this project?"
+        },
+        {
+            "id": "project_contactedGroups",
+            "dataType": "string",
+            // "dataOptions": ["one", "two", "three"],
+            "dataOptions": "project_participantGroupsList",
+            "dataOptionValueKey": "participantGroup_name",
+            // "displayDataOptionField": "name",
+            "required": true,
+            "displayType": "checkboxes",
+            "displayName": "Contancted groups",
+            "displayPrompt": "Which groups have been previously contacted about this project?"
+        },
+        {
             "id": "addToObservation_createNewObservationWithResultButton",
             "dataType": "none",
             "displayType": "button",
