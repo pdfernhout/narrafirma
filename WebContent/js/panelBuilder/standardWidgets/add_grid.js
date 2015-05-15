@@ -82,7 +82,7 @@ define([
         contentPane.own(watcher);
         
         var gridConfiguration = configuration.gridConfiguration;
-        if (!gridConfiguration) gridConfiguration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, includeAllFields: false};
+        if (!gridConfiguration) gridConfiguration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: false, includeAllFields: false};
         
         var grid = new GridWithItemPanel(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, itemPanelSpecification, gridConfiguration, model);
         instance.grid = grid;
