@@ -64,7 +64,13 @@ define([
             for (var panelIndex = 0; panelIndex < requireList.length; panelIndex++) {
                 var panelJSONText = arguments[panelIndex];
                 var panelInfo = panelMetadata[panelIndex];
-                var panelSpecification = JSON.parse(panelJSONText);
+                var panelSpecification;
+                try {
+                    panelSpecification = JSON.parse(panelJSONText);
+                } catch (e) {
+                    console.log("Parsing problem for page or panel", panelInfo);
+                    throw e;
+                }
                 if (panelSpecification.id !== panelInfo.panelID) {
                     console.log("panelID mismatch", panelInfo, panelSpecification);
                     throw new Error("panelID does not match id in file for panel: " + panelInfo.panelID);
