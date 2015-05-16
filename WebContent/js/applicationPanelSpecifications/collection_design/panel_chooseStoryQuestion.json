@@ -1,0 +1,19 @@
+{
+    "id": "panel_chooseStoryQuestion",
+    "displayName": "Choose a story question",
+    "displayType": "panel",
+    "section": "collection_design",
+    "modelClass": "StoryQuestionChoice",
+    "panelFields": [
+        {
+            "id": "storyQuestion",
+            "dataType": "string",
+            "dataOptions": "project_storyQuestionsList",
+            "dataOptionValueKey": "storyQuestion_shortName",
+            "required": true,
+            "displayType": "select",
+            "displayName": "Question choice",
+            "displayPrompt": "Choose a story question."
+        }
+    ]
+}

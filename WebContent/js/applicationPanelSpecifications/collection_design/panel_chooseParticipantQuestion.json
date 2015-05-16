@@ -1,0 +1,19 @@
+{
+    "id": "panel_chooseParticipantQuestion",
+    "displayName": "Choose a participant question",
+    "displayType": "panel",
+    "section": "collection_design",
+    "modelClass": "ParticipantQuestionChoice",
+    "panelFields": [
+        {
+            "id": "participantQuestion",
+            "dataType": "string",
+            "dataOptions": "project_participantQuestionsList",
+            "dataOptionValueKey": "participantQuestion_shortName",
+            "required": true,
+            "displayType": "select",
+            "displayName": "Question choice",
+            "displayPrompt": "Choose a participant question."
+        }
+    ]
+}

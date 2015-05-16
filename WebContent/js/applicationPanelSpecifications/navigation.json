@@ -140,7 +140,19 @@
                     {
                         "panelID": "panel_addQuestionnaire",
                         "panelName": "Add questionnaire"
-                    }
+                    },
+                    {
+                        "panelID": "panel_chooseElicitingQuestion",
+                        "panelName": "Choose eliciting question"
+                    },
+                    {
+                        "panelID": "panel_chooseStoryQuestion",
+                        "panelName": "Choose story question"
+                    },
+                    {
+                        "panelID": "panel_chooseParticipantQuestion",
+                        "panelName": "Choose participant question"
+                    } 
                 ]
             },
             {

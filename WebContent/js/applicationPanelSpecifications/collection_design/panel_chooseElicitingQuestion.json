@@ -1,0 +1,19 @@
+{
+    "id": "panel_chooseElicitingQuestion",
+    "displayName": "Choose a story eliciting question",
+    "displayType": "panel",
+    "section": "collection_design",
+    "modelClass": "ElicitingQuestionChoice",
+    "panelFields": [
+        {
+            "id": "elicitingQuestion",
+            "dataType": "string",
+            "dataOptions": "project_elicitingQuestionsList",
+            "dataOptionValueKey": "elicitingQuestion_shortName",
+            "required": true,
+            "displayType": "select",
+            "displayName": "Question choice",
+            "displayPrompt": "Choose a story-eliciting question."
+        }
+    ]
+}
