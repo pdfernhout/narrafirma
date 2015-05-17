@@ -197,6 +197,8 @@ X Translate report answers as needed for those types like selections
 X Final review of all strings in code looking for TODO translate items or similar
 
 REFACTORING
+H Move to single model for project
+H Remove global domain and replace with referencs to project or objects passed around
 ? Save data for observations and so on as separate documents so can do it incrementally
 ? Maybe separate documents for each participant group?
 ? Maybe separate documents for each survey question?
@@ -697,3 +699,7 @@ DONE Need a project creation page [Done using narrafirma-admin command line tool
 DONE Need a way for a user to choose a project to work on
 DONE Settle on some authentication approach for authoring/administration [For nodejs]
 DONE Decide on approach for logging in and controlling access to changing project definition [Changes done via command line tool for now as superuser]
+DONE Have select support getting options from an array elsewhere in the model
+DONE Have GridWithItemPanel signal the array has changed when objects in it are added, removed, or changed
+DONE Create first cut at questionnaire design page with subpanels (still not working 100% though due to other needed refactoring)
+ 
