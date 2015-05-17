@@ -42,6 +42,7 @@ Examples include:
 [All] The section dashboards pull a page status message from all the pages in that section
 [All] A final report in a section (may be going away) pulls data from all previous pages
 [Planning] The revisePNIPlanningQuestions page pulls data from a previous page
+[Collection Design] The eliciting questions, story questions, and participant questions entered earlier are referred to during questionnaire creation
 [Collection Process] Survey results entered on one page in Collection Process are used in the story browser and graph browser on later pages
 [Catalysis] Data entered in story theming is used in the pattern/trend browser
 [Catalysis] (Potentially) story excerpts selected in story browser or patter browser are reviewed on a later page
