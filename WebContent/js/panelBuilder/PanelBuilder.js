@@ -172,7 +172,7 @@ var PanelBuilder = declare(null, {
         console.log("buildPanel", panelOrPanelID);
         var fieldSpecifications;
         if (lang.isString(panelOrPanelID)) {
-            var panel = this.panelDefinitionForPanelID(panelOrPanelID);
+            var panel = this.getPanelDefinitionForPanelID(panelOrPanelID);
             fieldSpecifications = panel.panelFields;
         } else if (panelOrPanelID.buildPanel) {
             // Call explicit constructor function
@@ -201,8 +201,7 @@ var PanelBuilder = declare(null, {
 
     /// Suport functions
     
-    // TODO: Maybe rename this getPanelSpecificationForPanelID to match PanelSpecificationCollection?
-    panelDefinitionForPanelID: function(panelID) {
+    getPanelDefinitionForPanelID: function(panelID) {
         if (!this.panelSpecificationCollection) {
             throw new Error("No panelSpecificationCollection set in PanelBuilder so can not resolve panelID: " + panelID);
         }
@@ -213,8 +212,24 @@ var PanelBuilder = declare(null, {
             throw new Error("No panelSpecification found by PanelBuilder for panelID: " + panelID);
         }
         
-        console.log("panelDefinitionForPanelID", panelID, panelSpecification);
+        console.log("getPanelDefinitionForPanelID", panelID, panelSpecification);
         return panelSpecification;
+    },
+    
+    // Convenience method for most common case of finding page specification
+    getPageSpecificationForPageID: function(pageID) {
+        if (!this.panelSpecificationCollection) {
+            throw new Error("No panelSpecificationCollection set in PanelBuilder so can not resolve pageID: " + pageID);
+        }
+        
+        var pageSpecification = this.panelSpecificationCollection.getPageSpecificationForPageID(pageID);
+        
+        if (!pageSpecification) {
+            throw new Error("No pageSpecification found by PanelBuilder for pageID: " + pageID);
+        }
+        
+        console.log("getPageSpecificationForPageID", pageID, pageSpecification);
+        return pageSpecification;
     },
     
     // Provide a way to tell buttons what to do when clicked

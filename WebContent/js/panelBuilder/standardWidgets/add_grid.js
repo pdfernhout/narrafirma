@@ -28,7 +28,7 @@ define([
         
         var itemPanelSpecification = configuration.itemPanelSpecification;
         if (!itemPanelSpecification) {
-            itemPanelSpecification = panelBuilder.panelDefinitionForPanelID(itemPanelID);
+            itemPanelSpecification = panelBuilder.getPanelDefinitionForPanelID(itemPanelID);
         }
         
         if (!itemPanelSpecification) {

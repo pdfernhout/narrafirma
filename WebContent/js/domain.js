@@ -2,11 +2,9 @@
 
 define([
     "js/modelUtility",
-    "js/panelBuilder/PanelSpecificationCollection",
     "dojo/Stateful"
 ], function(
     modelUtility,
-    PanelSpecificationCollection,    
     Stateful
 ) {
     "use strict";
@@ -25,12 +23,6 @@ define([
         
         // TODO: Fix hardcoded surveyResultHyperdocumentID
         surveyResultHyperdocumentID: "Test-PNIWorkbook-003-Surveys",
-
-        // The home page -- should be a constant
-        startPage: "page_dashboard",
-        
-        // This will hold information about all the panels used
-        panelSpecificationCollection: new PanelSpecificationCollection(),
         
         // The page specification for the current page, which provides the page ID and section
         currentPageSpecification: null,
@@ -163,12 +155,6 @@ define([
             domain.currentPageModel = pageModel;
             domain.currentPageModelTemplate = pageModelTemplate;
             domain.currentPageDocumentEnvelope = null;
-        },
-        
-        // Convenience method for most common case of finding page specification
-        getPageSpecification: function(pageID) {
-            // For now, any "page" defined in the panelSpecificationCollection is available
-            return domain.panelSpecificationCollection.getPageSpecificationForPageID(pageID);
         }
     };
     

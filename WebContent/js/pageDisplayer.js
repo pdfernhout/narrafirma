@@ -22,6 +22,8 @@ define([
     // For tracking what page the application is on
     var currentPageID = null;
     var currentPage;
+    
+    var startPage;
 
     var panelBuilder;
     
@@ -31,8 +33,9 @@ define([
     var standbyStartWait_ms = 100;
 
     // Call this once at the beginning of the application
-    function configurePageDisplayer(thePanelBuilder) {
+    function configurePageDisplayer(thePanelBuilder, theStartPage) {
         panelBuilder = thePanelBuilder;
+        startPage = theStartPage;
         
         // TODO: Since pageDiv is hidden while it is being built, hide the navigationDiv to provide feedback
         standby = new Standby({target: "navigationDiv"});
@@ -60,10 +63,10 @@ define([
     }
 
     function showPage(pageID, forceRefresh) {
-        if (!pageID) pageID = domain.startPage;
+        if (!pageID) pageID = startPage;
         if (currentPageID === pageID && !forceRefresh) return;
 
-        var pageSpecification = domain.getPageSpecification(pageID);
+        var pageSpecification = panelBuilder.getPageSpecificationForPageID(pageID);
         
         // Assume that if we have a panel specification for a page that it is OK to go to it
         if (!pageSpecification || pageSpecification.displayType !== "page") {

@@ -11,6 +11,7 @@ define([
     "dojo/text!js/applicationPanelSpecifications/navigation.json",
     "js/pageDisplayer",
     "js/panelBuilder/PanelBuilder",
+    "js/panelBuilder/PanelSpecificationCollection",
     "js/pointrel20150417/PointrelClient",
     "js/Project",
     "dojo/request",
@@ -33,6 +34,7 @@ define([
     navigationJSONText,
     pageDisplayer,
     PanelBuilder,
+    PanelSpecificationCollection,
     PointrelClient,
     Project,
     request,
@@ -48,8 +50,10 @@ define([
     
     var narrafirmaProjectPrefix = "NarraFirmaProject-";
     
+    // The home page -- should be a constant
+    var startPage = "page_dashboard";
+    
     // Singleton instance variables
-    // TODO: Fix hardcoded values
     var journalIdentifier;
     var projectIdentifier;
     var userIdentifier;
@@ -74,6 +78,9 @@ define([
 
     // For building panels based on field specifications
     var panelBuilder = new PanelBuilder();
+    
+    // This will hold information about all the panels used
+    var panelSpecificationCollection = new PanelSpecificationCollection();
 
     function urlHashFragmentChanged(newHash) {
         console.log("urlHashFragmentChanged", newHash);
@@ -95,19 +102,19 @@ define([
                     displayName: "Reminders",
                     displayPrompt: translate("#dashboard_status_entry::prompt", "You can enter reminders about this page here which will appear on this section's dashboard:")
                 };
-                domain.panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, completionStatusEntryFieldSpecification);
+                panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, completionStatusEntryFieldSpecification);
             } else {
                 // Dashboard page
                 // console.log("page dashboard as header", pageSpecification.id, pageSpecification.displayType, pageSpecification);
                 // Put in dashboard
-                var childPageIDs = domain.panelSpecificationCollection.getChildPageIDListForHeaderID(pageID);
+                var childPageIDs = panelSpecificationCollection.getChildPageIDListForHeaderID(pageID);
                 // console.log("child pages", pageID, childPageIDs);
                 if (!childPageIDs) childPageIDs = [];
                 // Add a display to this page for each child page in the same section
                 for (var childPageIndex = 0; childPageIndex < childPageIDs.length; childPageIndex++) {
                     var childPageID = childPageIDs[childPageIndex];
                     var statusViewID = childPageID + "_reminders_dashboard";
-                    var childPageSpecification = domain.getPageSpecification(childPageID);
+                    var childPageSpecification = panelSpecificationCollection.getPageSpecificationForPageID(childPageID);
                     // console.log("childPageID", childPageSpecification, childPageID);
                     if (!childPageSpecification) console.log("Error: problem finding page definition for", childPageID);
                     if (childPageSpecification && childPageSpecification.displayType === "page") {
@@ -125,7 +132,7 @@ define([
                             displayPrompt: prompt,
                             displayConfiguration: childPageID + "_reminders"
                         };
-                        domain.panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, completionStatusDisplayFieldSpecification);  
+                        panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, completionStatusDisplayFieldSpecification);  
                     }
                 }
             }
@@ -145,7 +152,7 @@ define([
                     },
                     displayIconClass: "rightButtonImage"
                 };
-                domain.panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, nextPageButtonSpecification); 
+                panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, nextPageButtonSpecification); 
             } else {
                 // TODO: Translate
                 var returnToDashboardButtonSpecification = {
@@ -155,17 +162,17 @@ define([
                     "displayType": "button",
                     "displayConfiguration": {
                         "action": "guiOpenSection",
-                        "section": domain.startPage
+                        "section": startPage
                     },
                     displayIconClass: "homeButtonImage"
                 };
-                domain.panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, returnToDashboardButtonSpecification); 
+                panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, returnToDashboardButtonSpecification); 
             }
         }
     }
 
     function processAllPanels() {
-        var panels = domain.panelSpecificationCollection.buildListOfPanels();
+        var panels = panelSpecificationCollection.buildListOfPanels();
         console.log("processAllPanels", panels);
         
         var lastPageID = null;
@@ -183,7 +190,7 @@ define([
                 // console.log("pushing page", panel);
                 // Make it easy to lookup previous and next pages from a page
                 if (!panel.isHeader) {
-                    var previousPage = domain.getPageSpecification(lastPageID);
+                    var previousPage = panelSpecificationCollection.getPageSpecificationForPageID(lastPageID);
                     previousPage.nextPageID = panel.id;
                     panel.previousPageID = lastPageID;
                 }
@@ -226,7 +233,7 @@ define([
     function createLayout() {
         console.log("createLayout start");
 
-        var pageControlsPane = navigationPane.createNavigationPane(pageDisplayer, userIdentifier);
+        var pageControlsPane = navigationPane.createNavigationPane(pageDisplayer, panelSpecificationCollection, startPage);
 
         var helpButton = widgetSupport.newButton(pageControlsPane, "#button_help|Help", buttonActions.helpButtonClicked);
         // var debugButton = widgetSupport.newButton(pageControlsPane, "#button_debug|Debug", buttonActions.debugButtonClicked);
@@ -246,7 +253,7 @@ define([
         if (fragment) {
             urlHashFragmentChanged(fragment);
         } else {
-            urlHashFragmentChanged(domain.startPage);
+            urlHashFragmentChanged(startPage);
         }
     }
     
@@ -307,7 +314,7 @@ define([
         var sections = [];
         var sectionBeingProcessed;
         var pageBeingProcessed;
-        var allPanels = domain.panelSpecificationCollection.buildListOfPanels();
+        var allPanels = panelSpecificationCollection.buildListOfPanels();
         allPanels.forEach(function(panel) {
             console.log("panel", panel.displayType, panel.id, panel.section, panel.displayName);
             if (panel.isHeader) {
@@ -423,13 +430,13 @@ define([
         
     function loadApplicationDesign() {
         // Load the application design
-        loadAllPanelSpecifications(domain.panelSpecificationCollection, navigationSections, loadingBase, function() {
+        loadAllPanelSpecifications(panelSpecificationCollection, navigationSections, loadingBase, function() {
             // generateNavigationDataInJSON();
      
             processAllPanels();
 
             // Tell the panel builder how to build panels
-            panelBuilder.setPanelSpecifications(domain.panelSpecificationCollection);
+            panelBuilder.setPanelSpecifications(panelSpecificationCollection);
             panelBuilder.project = project;
             
             // Tell the panelBuilder what do do if a button is clicked

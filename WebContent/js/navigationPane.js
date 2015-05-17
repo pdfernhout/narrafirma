@@ -1,6 +1,5 @@
 define([
     "dijit/layout/ContentPane",
-    "js/domain",
     "dojo/dom-construct",
     "dojo/dom-style",
     "dijit/form/Select",
@@ -8,7 +7,6 @@ define([
     "js/panelBuilder/widgetSupport"
 ], function(
     ContentPane,
-    domain,
     domConstruct,
     domStyle,
     Select,
@@ -28,13 +26,17 @@ define([
     var nextPageButton;
 
     var pageDisplayer;
-
+    var panelSpecificationCollection;
+    var startPage;
+    
     var currentSectionID;
     var currentPageSpecification;
 
-    function createNavigationPane(thePageDisplayer) {
+    function createNavigationPane(thePageDisplayer, thePanelSpecificationCollection, theStartPage) {
         console.log("thePageDisplayer", thePageDisplayer);
         pageDisplayer = thePageDisplayer;
+        panelSpecificationCollection = thePanelSpecificationCollection;
+        startPage = theStartPage;
 
         // Startup needs to be called here to ensure a top level content pane is started
         navigationPane = new ContentPane({}, "navigationDiv");
@@ -85,7 +87,7 @@ define([
 
     function homeButtonClicked() {
         console.log("homeButtonClicked");
-        pageDisplayer.showPage(domain.startPage);
+        pageDisplayer.showPage(startPage);
     }
 
     function previousPageClicked() {
@@ -144,15 +146,15 @@ define([
         console.log("pageSelectOptionsForSection", sectionHeaderPageID);
 
         // TODO: Rethink if this should be asking the pageDisplayer for this information about navigation
-        var pageIDs = domain.panelSpecificationCollection.getChildPageIDListForHeaderID(sectionHeaderPageID);
+        var pageIDs = panelSpecificationCollection.getChildPageIDListForHeaderID(sectionHeaderPageID);
 
         var options = [];
-        var title = titleForPanel(domain.getPageSpecification(sectionHeaderPageID));
+        var title = titleForPanel(panelSpecificationCollection.getPageSpecificationForPageID(sectionHeaderPageID));
         // It seems like a Dojo "select" widget has a limitation where it can only take strings as values.
         // This means we need to look up page definitions indirectly based on a pageID usind a PanelSpecificationCollection instance.
         options.push({label: title, value: sectionHeaderPageID});
         _.forEach(pageIDs, function (pageID) {
-            title = titleForPanel(domain.getPageSpecification(pageID));
+            title = titleForPanel(panelSpecificationCollection.getPageSpecificationForPageID(pageID));
             options.push({label: title, value: pageID});
         });
         return options;
