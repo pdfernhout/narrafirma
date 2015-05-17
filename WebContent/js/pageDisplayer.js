@@ -117,7 +117,8 @@ define([
 
         // Tell the domain to create a new model for this page to use to store data for the page and signal changes to GUI
         try {
-            domain.changeCurrentPageModel(pageSpecification, pageModelName);
+            // TODO: Remover reference to domain
+            domain.changeCurrentPageModel(panelBuilder.panelSpecificationCollection, pageSpecification, pageModelName);
         } catch (e) {
             console.log("ERROR: changeCurrentPageModel had exception", pageID, pageSpecification, pageModelName, e);
             stopStandby();

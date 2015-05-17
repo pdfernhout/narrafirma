@@ -181,9 +181,14 @@ define([
         // Ensure select is pointing to this page; this may trigger an update but it should be ignored as we're already on this page
         pageNavigationSelect.set("value", pageID);
     }
+    
+    function getCurrentPageSpecification() {
+        return currentPageSpecification;
+    }
 
     return {
         createNavigationPane: createNavigationPane,
-        setCurrentPageSpecification: setCurrentPageSpecification
+        setCurrentPageSpecification: setCurrentPageSpecification,
+        getCurrentPageSpecification: getCurrentPageSpecification
     };
 });

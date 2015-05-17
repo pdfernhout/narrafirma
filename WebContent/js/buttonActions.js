@@ -3,6 +3,7 @@ define([
     "js/panelBuilder/dialogSupport",
     "js/domain",
     "js/modelUtility",
+    "js/navigationPane",
     "js/pageDisplayer",
     "js/surveyBuilder",
     "js/surveyCollection",
@@ -14,6 +15,7 @@ define([
     dialogSupport,
     domain,
     modelUtility,
+    navigationPane,
     pageDisplayer,
     surveyBuilder,
     surveyCollection,
@@ -26,12 +28,10 @@ define([
     var currentProjectVersionReference;
     
     function helpButtonClicked() {
-        // TODO: Remove printing out domain and surveyCollection here
-        console.log("helpButtonClicked", domain, surveyCollection);
-        
-        var pageSpecification = domain.currentPageSpecification;
+        var pageSpecification = navigationPane.getCurrentPageSpecification();
+        console.log("helpButtonClicked", pageSpecification);
         if (!pageSpecification) {
-            console.log("no pageSpecification for current page", domain);
+            console.log("no pageSpecification for current page");
             return;
         }
         

@@ -14,30 +14,12 @@ define([
     
     // Singleton domain object shared across application
     var domain = {
-            
-        // TODO: Fix credentials
-        userID: "anonymous",
         
         // Application will fill this in
         project: null,
         
-        // TODO: Fix hardcoded surveyResultHyperdocumentID
-        surveyResultHyperdocumentID: "Test-PNIWorkbook-003-Surveys",
-        
-        // The page specification for the current page, which provides the page ID and section
-        currentPageSpecification: null,
-        
-        // The type of model currently being stored
-        currentPageModelName: null,
-
         // The Stateful model holding the data used by the current page
         currentPageModel: new Stateful(),
-        
-        // A template of default values for the current model -- used also to check if it has changed
-        currentPageModelTemplate: null,
-        
-        // The data loaded for the current page -- used also to check if it has changed
-        currentPageDocumentEnvelope: null,
         
         // TODO: Fix hardcoded questionnaire ID
         currentQuestionnaireID: defaultQuestionnaireID,
@@ -57,7 +39,7 @@ define([
         
         subscriptions: [],
         
-        changeCurrentPageModel: function(pageSpecification, modelName) {
+        changeCurrentPageModel: function(panelSpecificationCollection, pageSpecification, modelName) {
             console.log("changeCurrentPageModel", modelName);
             
             // Remove old subscriptions when move to a new page
@@ -70,7 +52,7 @@ define([
             
             var pageModelTemplate = null;
             if (modelName) {
-                pageModelTemplate = domain.panelSpecificationCollection.buildModel(modelName);
+                pageModelTemplate = panelSpecificationCollection.buildModel(modelName);
                 if (!pageModelTemplate) {
                     // TODO: What is the correct behavior here if the model definition is missing -- to prevent other errors?
                     console.log("ERROR: Missing model template for", modelName);
@@ -135,11 +117,7 @@ define([
                 }
             }
             
-            domain.currentPageSpecification = pageSpecification;
-            domain.currentPageModelName = modelName;
             domain.currentPageModel = pageModel;
-            domain.currentPageModelTemplate = pageModelTemplate;
-            domain.currentPageDocumentEnvelope = null;
         }
     };
     
