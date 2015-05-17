@@ -77,8 +77,9 @@ define([
             return;
         }
         
-        // Check for unsaved changes before changing page
-        if (currentPageID !== null && domain.hasUnsavedChangesForCurrentPage()) {
+        // TODO: Check for unsaved changes before changing page (like in Grid)
+        /*
+        if (currentPageID !== null && hasUnsavedChangesForCurrentPage()) {
             // TODO: Fix this so requests you either revert or save changes first?
             // TODO: Translate
             var confirmResult = confirm("You have unsaved changes. Proceed anyway?");
@@ -88,6 +89,7 @@ define([
                 return;
             }
         }
+        */
 
         // Get ready to put up a standby widget in case this all takes a long time, especially loading the data from the server
         startStandby();

@@ -55,21 +55,6 @@ define([
         
         /////////////// API calls below
         
-        hasUnsavedChangesForCurrentPage: function() {
-            // TODO: Fix
-            return false;
-            
-            if (!domain.currentPageModelName) return false;
-            if (domain.currentPageDocumentEnvelope) {
-                return modelUtility.isModelChanged(domain.currentPageModel, domain.currentPageDocumentEnvelope.content);
-            } else if (domain.currentPageModelTemplate) {
-                return modelUtility.isModelChanged(domain.currentPageModel, domain.currentPageModelTemplate);
-            } else {
-                console.log("ERROR: No way to be sure if model changed?");
-                return false;
-            }
-        },
-        
         subscriptions: [],
         
         changeCurrentPageModel: function(pageSpecification, modelName) {

@@ -478,13 +478,17 @@ define([
             // From: https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload
             window.addEventListener("beforeunload", function (e) {
                 // TODO: IMPORTANT Ensure the current text field if any does the equivalent of a blur to commit its data...
+                // TODO: But may not be reliable: http://stackoverflow.com/questions/18718494/will-onblur-event-trigger-when-window-closes
+                return null;
                 
-                if (!domain.hasUnsavedChangesForCurrentPage()) return null;
+                /* TODO: Need to check for unsaved changes in any grids
+                if (!hasUnsavedChangesForCurrentPage()) return null;
                     
                 var confirmationMessage = "You have unsaved changes";
 
                 (e || window.event).returnValue = confirmationMessage;     // Gecko and Trident
-                return confirmationMessage;                                // Gecko and WebKit
+                return confirmationMessage;  
+                */                              // Gecko and WebKit
             });
         });
     }
