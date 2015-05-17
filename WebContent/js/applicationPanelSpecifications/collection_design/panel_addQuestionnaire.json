@@ -70,7 +70,7 @@
             "displayPrompt": "Add one or more story questions from the ones you have previously designed."
         },
         {
-            "id": "questionForm_particpantQuestions",
+            "id": "questionForm_participantQuestions",
             "dataType": "array",
             "required": true,
             "displayType": "grid",
