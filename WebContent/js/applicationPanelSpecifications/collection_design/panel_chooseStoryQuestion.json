@@ -8,7 +8,7 @@
         {
             "id": "storyQuestion",
             "dataType": "string",
-            "dataOptions": "project_storyQuestionsList",
+            "dataOptions": "/projectModel/project_storyQuestionsList",
             "dataOptionValueKey": "storyQuestion_shortName",
             "required": true,
             "displayType": "select",

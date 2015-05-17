@@ -8,7 +8,7 @@
         {
             "id": "elicitingQuestion",
             "dataType": "string",
-            "dataOptions": "project_elicitingQuestionsList",
+            "dataOptions": "/projectModel/project_elicitingQuestionsList",
             "dataOptionValueKey": "elicitingQuestion_shortName",
             "required": true,
             "displayType": "select",
