@@ -35,7 +35,7 @@ define([
             var translation = lookupTranslation(tag);
             if (translation) return translation;
             if (debugTranslations) console.log("no translation available for:", tag);
-            if (defaultText) return defaultText;
+            if (defaultText !== null && typeof defaultText !== 'undefined') return defaultText;
             return tag;
         }
         // Special translation is done if tag starts with a hash mark, where can also supply optional translation string at end
@@ -50,7 +50,7 @@ define([
         if (result === undefined) {
             if (suppliedText) {
                 result = suppliedText;
-            } else if (typeof defaultText !== 'undefined') {
+            } else if (defaultText !== null && typeof defaultText !== 'undefined') {
                 result = defaultText;
             } else {
                 // Just return the tag, which starts with a # which should indicate an issue
