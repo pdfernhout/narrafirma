@@ -95,6 +95,7 @@ define([
         throw new Error("Unsupported model field dataType: " + dataType + " for field: " + fieldSpecification.id);
     };
 
+    // This builds a specific model based on the name of the model, using data from one or more pages or panels that define that model
     PanelSpecificationCollection.prototype.buildModel = function(modelName) {
         console.log("buildModel request", modelName);
         var model = {__type: modelName};
@@ -112,6 +113,21 @@ define([
             }
         }
         console.log("buildModel result", modelName, model);
+        return model;
+    };
+    
+    // This ignores the model type for the page or panel and just puts all the model fields into the supplied model
+    PanelSpecificationCollection.prototype.addFieldsToModel = function(model, fieldSpecifications) {
+        console.log("addFieldsToModel request", fieldSpecifications);
+ 
+        for (var i = 0; i < fieldSpecifications.length; i++) {
+            var fieldSpecification = fieldSpecifications[i];
+            if (!fieldSpecification.dataType) console.log("WARNING: Missing dataType for fieldSpecification", fieldSpecification);
+            if (fieldSpecification.dataType && fieldSpecification.dataType !== "none") {
+                model[fieldSpecification.id] = this.initialDataForField(fieldSpecification);
+            }
+        }
+        console.log("addFieldsToModel result", model);
         return model;
     };
     
