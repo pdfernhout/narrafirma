@@ -26,6 +26,7 @@ define([
     var startPage;
 
     var panelBuilder;
+    var currentPageWidgets;
     
     var project;
     
@@ -181,7 +182,7 @@ define([
 
         try {
             // Tell the panelBuilder to create all the widgets for this page
-            panelBuilder.buildPanel(pageID, pagePane, modelForPage);
+            currentPageWidgets = panelBuilder.buildPanel(pageID, pagePane, modelForPage);
         } catch (e) {
             console.log("Error when trying to build panel", pageID, modelForPage, e);
             // TODO: Translate
@@ -194,10 +195,15 @@ define([
     function getCurrentPageID() {
         return currentPageID;
     }
+    
+    function getCurrentPageWidgets() {
+        return currentPageWidgets;
+    }
 
     return {
         configurePageDisplayer: configurePageDisplayer,
         showPage: showPage,
-        getCurrentPageID: getCurrentPageID
+        getCurrentPageID: getCurrentPageID,
+        getCurrentPageWidgets: getCurrentPageWidgets
     };
 });
