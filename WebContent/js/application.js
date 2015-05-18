@@ -410,7 +410,6 @@ define([
             journalIdentifier = projectIdentifier; 
             
             project = new Project(journalIdentifier, projectIdentifier, userCredentials, updateServerStatus);
-            domain.project = project;
             
             console.log("Made project", project);
             
@@ -444,7 +443,7 @@ define([
             
             panelBuilder.setCalculateFunctionResultCallback(calculateFunctionResultForGUI);
 
-            pageDisplayer.configurePageDisplayer(panelBuilder);
+            pageDisplayer.configurePageDisplayer(panelBuilder, startPage, project);
 
             createLayout();
             
@@ -468,6 +467,9 @@ define([
             // TODO: This assumes we have picked a project, and are actually loading data and have not errored out
             // TODO: Need some kind of progress indicator of messages loaded...
             project.pointrelClient.idleCallback = function () {
+                // Now that data is presumably loaded, set up the project model to use that data and track ongoing changes to it
+                project.initializeProjectModel(panelSpecificationCollection);
+                
                 setupFirstPage();
                 
                 // turn off initial "please wait" display

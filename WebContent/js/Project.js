@@ -1,11 +1,13 @@
 define([
     "js/pointrel20150417/PointrelClient",
+    "dojo/Stateful",
     "js/pointrel20150417/TripleStore",
     "js/domain",
     "js/versions",
     "dijit/layout/ContentPane"
 ], function(
     PointrelClient,
+    Stateful,
     TripleStore,
     domain,
     versions,
@@ -15,10 +17,14 @@ define([
     
     var serverURL = "/api/pointrel20150417";
     
+    // TODO: Rethink this as a more general way to watch models within the project (so, with arbitrary object IDs, not just the project ID)
+    
     var Project = function(journalIdentifier, projectIdentifier, userIdentifier, updateServerStatus) {
         this.journalIdentifier = journalIdentifier;
         this.projectIdentifier = projectIdentifier;
         this.userIdentifier = userIdentifier;
+        this.subscriptions = [];
+        this.projectModel = null;
 
         this.pointrelClient = new PointrelClient(serverURL, this.journalIdentifier, this.userIdentifier, receivedMessage, updateServerStatus);
         
@@ -70,6 +76,84 @@ define([
         // console.log("receivedMessage", message);
     }
     
+    Project.prototype.disconnectProjectModel = function() {
+        this.subscriptions.forEach(function (subscription) {
+            subscription.remove();
+        });
+        this.subscription = [];
+    };
+    
+    // Use all the page specifications to set up the model with current values and start tracking changes in journal
+    Project.prototype.initializeProjectModel = function(panelSpecificationCollection) {
+        var model = {};
+        
+        // loop through all page specifications and get current value (if available) or default/initial for each field and set up dependencies
+
+        var allPages = panelSpecificationCollection.buildListOfPages();
+        for (var i = 0; i < allPages.length; i++) {
+            var page = allPages[i];
+            var fieldSpecifications = page.panelFields;
+            panelSpecificationCollection.addFieldsToModel(model, fieldSpecifications);
+        }
+        this.projectModel = new Stateful(model);
+        this.projectModel._saved = {};
+        
+        for (var fieldName in model) {
+            if (model.hasOwnProperty(fieldName)) {
+                console.log("model fieldName", fieldName);
+                if (fieldName.charAt(0) === "_") continue;
+                var value = this.getFieldValue(fieldName);
+                console.log("got value for query", fieldName, value);
+                if (value !== undefined && value !== null) {
+                    this.projectModel.set(fieldName, value);
+                }
+                this._subscribe(fieldName);
+                this._watch(fieldName);
+            }
+        }
+    };
+    
+    // Internal support functions
+    
+    Project.prototype._subscribe = function(fieldName) {
+        var model = this.projectModel;
+        // Saving JSON.stringify-ed versions of data in case it is an array or object that might be changed directly
+        model._saved[fieldName] = JSON.stringify(model.get(fieldName));
+        var subscription = this.watchFieldValue(fieldName, function(triple, message) {
+            // console.log(" ---------- updateWhenTripleStoreChanges", triple, message);
+            var newValue = triple.c;
+            // TODO: Should warn if saved an get differ because going to lose changes
+            var editedValue = model.get(fieldName);
+            // TODO: User might have cleared the field; need better way to detect initial changes...
+            if (editedValue && model._saved[fieldName] !== JSON.stringify(editedValue)) {
+                // TODO: Handle data loss better; like logging it to some user-displayable log
+                console.log("About to lose user entered data in field", fieldName, "user-edited:", editedValue, "new:", newValue);
+            }
+            model._saved[fieldName] = JSON.stringify(newValue);
+            if (JSON.stringify(editedValue) !== JSON.stringify(newValue)) {
+                console.log("notified of changed data in store, so updating field", fieldName, newValue);
+                // This will trigger a watch, which would lead to writing out the value except for a check if value has changed
+                model.set(fieldName, newValue);
+            }
+        });
+        this.subscriptions.push(subscription);
+    };
+    
+    Project.prototype._watch = function(fieldName) {
+        var model = this.projectModel;
+        var self = this;
+        var subscription = model.watch(fieldName, function(name, oldValue, newValue) {
+            console.log("Watch changed", fieldName, oldValue, newValue);
+            // Use JSON comparison to handle situation of arrays changing contents but remaining the same array (likewise for objects)
+            if (model._saved[fieldName] !== JSON.stringify(newValue)) {
+                model._saved[fieldName] = JSON.stringify(newValue);
+                console.log("storing new value for field", fieldName, newValue);
+                self.setFieldValue(fieldName, newValue, oldValue);
+            }
+        });
+        this.subscriptions.push(subscription);
+    };
+
     return Project;
     
 });

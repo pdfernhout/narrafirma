@@ -27,15 +27,18 @@ define([
 
     var panelBuilder;
     
+    var project;
+    
     var standby;
     var standbyStartTimer;
     
     var standbyStartWait_ms = 100;
 
     // Call this once at the beginning of the application
-    function configurePageDisplayer(thePanelBuilder, theStartPage) {
+    function configurePageDisplayer(thePanelBuilder, theStartPage, theProject) {
         panelBuilder = thePanelBuilder;
         startPage = theStartPage;
+        project = theProject;
         
         // TODO: Since pageDiv is hidden while it is being built, hide the navigationDiv to provide feedback
         standby = new Standby({target: "navigationDiv"});
@@ -115,19 +118,7 @@ define([
             return;
         }
 
-        // Tell the domain to create a new model for this page to use to store data for the page and signal changes to GUI
-        try {
-            // TODO: Remover reference to domain
-            domain.changeCurrentPageModel(panelBuilder.panelSpecificationCollection, pageSpecification, pageModelName);
-        } catch (e) {
-            console.log("ERROR: changeCurrentPageModel had exception", pageID, pageSpecification, pageModelName, e);
-            stopStandby();
-            // TODO: Translate
-            alert("Something when wrong trying to set the model for this page");
-            return;
-        }
-        
-        var modelForPage = domain.currentPageModel;
+        var modelForPage = project.projectModel;
 
         // Create the display widgets for this page
         try {
