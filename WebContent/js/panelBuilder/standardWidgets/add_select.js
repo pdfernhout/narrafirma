@@ -32,17 +32,36 @@ define([
         
         var specifiedChoices = fieldSpecification.dataOptions;
         var choices = specifiedChoices;
+        var choicesModel = model;
         
         if (_.isString(specifiedChoices)) {
+            
+            // Parse the dependency path
+            var parts = specifiedChoices.split("/");
+            if (parts[0] === "") {
+                choicesModel = panelBuilder[parts[1]];
+                if (!choicesModel) throw new Error("choicesModel is null");
+                parts.shift();
+                parts.shift();
+            }
+            if (parts.length < 1) throw new Error("Incorrect dependency path specified");
+            while (parts.length > 1) {
+                // TODO: Should establish dependencies all along the line
+                choicesModel = choicesModel[parts[0]];
+                if (!choicesModel) throw new Error("choicesModel is null while iterating");
+                parts.shift();
+            }
+            specifiedChoices = parts[0];
+            
             // console.log("Indirect choices");
-            choices = model.get(specifiedChoices);
+            choices = choicesModel.get(specifiedChoices);
             // Need to track when choices change; problematical if array?
-            var subscription = model.watch(specifiedChoices, function(name, oldChoices, newChoices) {
+            var subscription = choicesModel.watch(specifiedChoices, function(name, oldChoices, newChoices) {
                 // console.log("name, oldChoices, newChoices", name, oldChoices, JSON.stringify(newChoices, null, 4));
                 // Should validate that the current choice is still acceptable -- although that would entail then changing the data
-                var currentValue = model.get(fieldSpecification.id);
-                // console.log("currentValue", currentValue, fieldSpecification, model);
-                var isValueInChoices = updateChoices(newChoices, model.get(fieldSpecification.id));
+                var currentValue = choicesModel.get(fieldSpecification.id);
+                // console.log("currentValue", currentValue, fieldSpecification, choicesModel);
+                var isValueInChoices = updateChoices(newChoices, choicesModel.get(fieldSpecification.id));
                 // console.log("isValueInChoices", isValueInChoices);
                 if (!isValueInChoices) {
                     console.log("Selected value no longer in specified choices", currentValue, choices);
