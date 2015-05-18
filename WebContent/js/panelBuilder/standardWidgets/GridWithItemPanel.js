@@ -405,9 +405,7 @@ define([
         var idProperty = this.store.idProperty;
         newItem[idProperty] = uniqueItemID;
 
-        var statefulItem = new Stateful(newItem);
-        
-        this.openFormForItem("add", statefulItem);  
+        this.openFormForItem("add", newItem);  
     };
     
     GridWithItemPanel.prototype.getSelectedItemID = function() {
@@ -522,10 +520,15 @@ define([
             return;
         }
         
-        // Remove the ID so it will be treated as a new item
-        delete selectedItem.id;
+        // Make a copy of the selected item
+        var newItem = JSON.parse(JSON.stringify(selectedItem));
         
-        this.openFormForItem("add", selectedItem);
+        // Set new id for copy
+        var uniqueItemID = generateRandomUuid();
+        var idProperty = this.store.idProperty;
+        newItem[idProperty] = uniqueItemID;
+        
+        this.openFormForItem("add", newItem);
     };
     
     GridWithItemPanel.prototype.upButtonClicked = function(event) {
