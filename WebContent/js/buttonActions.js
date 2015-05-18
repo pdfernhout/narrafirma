@@ -23,10 +23,13 @@ define([
     translate
 ){
     "use strict";
-
-    // The mostly recently loaded project version
-    var currentProjectVersionReference;
     
+    var project;
+    
+    function initialize(theProject) {
+        project = theProject;
+    }
+ 
     function helpButtonClicked() {
         var pageSpecification = navigationPane.getCurrentPageSpecification();
         console.log("helpButtonClicked", pageSpecification);
@@ -109,8 +112,45 @@ define([
 
     function printStoryForm(contentPane, model, fieldSpecification, value) {
         console.log("printStoryForm unfinished");
-
-        alert("unfinished");
+        
+        var questionnaires = project.projectModel.get("project_questionnaires");
+        
+        if (questionnaires.length === 0) {
+            // TODO: Translate
+            alert("No questionnaires have been defined");
+            return;
+        }
+        
+        var columns = {questionForm_shortName: "Questionnaire name", questionForm_title: "Title"};
+        dialogSupport.openListChoiceDialog(null, questionnaires, columns, "Projects", "Select a questionnaire to print", function (questionnaire) {
+            console.log("chosen questionnaire", questionnaire);
+            
+            // var htmlToPrint = "<b>Test</b><br>This is a questionnaire for: <pre>" + JSON.stringify(questionnaire, null, 4) + "<pre>";
+            
+            var output = "";
+            
+            output += "<h2>" + questionnaire.questionForm_title + "</h2>";
+            output += "<br><br>";
+            output += questionnaire.questionForm_startText;
+            output += "<br><br>";
+            
+            output += "Questions go here...";
+            output += "<br><br>";
+            output += questionnaire.questionForm_endText;
+            
+            var outputLabel = pageDisplayer.getCurrentPageWidgets()["printQuestionsForm_output"];
+            console.log("outputLabel", outputLabel);
+            outputLabel.set("content", output);
+            // contentPane printQuestionsForm_output 
+            // printHTML(output);
+        });
+    }
+    
+    function printHTML(htmlToPrint) {
+        var w = window.open();
+        w.document.write(htmlToPrint);
+        w.print();
+        w.close();
     }
 
     function copyDraftPNIQuestionVersionsIntoAnswers_Basic() {
@@ -158,6 +198,9 @@ define([
     }
 
     return {
+        // Call this to set up the project or other needed data
+        initialize: initialize,
+        
         "printStoryForm": printStoryForm,
         "copyDraftPNIQuestionVersionsIntoAnswers": copyDraftPNIQuestionVersionsIntoAnswers,
         "loadLatestStoriesFromServer": surveyCollection.loadLatestStoriesFromServer,

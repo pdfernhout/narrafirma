@@ -470,6 +470,7 @@ define([
                 // Now that data is presumably loaded, set up the project model to use that data and track ongoing changes to it
                 project.initializeProjectModel(panelSpecificationCollection);
                 panelBuilder.projectModel = project.projectModel;
+                buttonActions.initialize(project);
                 
                 setupFirstPage();
                 

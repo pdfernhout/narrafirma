@@ -12,11 +12,24 @@
             "displayPrompt": "On this page you can print your story questions form for distribution to participants.\nYou can later enter the results from each form into the system."
         },
         {
+            "id": "printQuestionsForm_previewFormButton",
+            "dataType": "none",
+            "displayType": "button",
+            "displayConfiguration": "previewStoryForm",
+            "displayPrompt": "Preview story form below"
+        },
+        {
+            "id": "printQuestionsForm_output",
+            "dataType": "none",
+            "displayType": "label",
+            "displayPrompt": ""
+        },
+        {
             "id": "printQuestionsForm_printFormButton",
             "dataType": "none",
             "displayType": "button",
             "displayConfiguration": "printStoryForm",
-            "displayPrompt": "Print story form"
+            "displayPrompt": "Print story form ..."
         }
     ]
 }
