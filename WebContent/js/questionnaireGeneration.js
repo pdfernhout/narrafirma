@@ -119,97 +119,89 @@ define([
        return adjustedQuestions;
    }
    
-   function fetchValuePromise(entity, attribute) {
-       var deferred = new Deferred();
-       // TODO: Ignoring entity for now, change this if make more general
-       storage.loadLatestValueForProjectField(attribute, function(value) {
-           console.log("Got value", entity, attribute, value);
-           deferred.resolve(value);
+   function buildIdToItemMap(itemList, idField) {
+       var result = {};
+       itemList.forEach(function (item) {
+           result[item[idField]] = item;
        });
-       return deferred.promise;
+       return result;
    }
    
-   function requestValues(entity, attributes, callback) {
-       var promises = {};
-       
-       for (var index = 0; index < attributes.length; index++) {
-           var attribute = attributes[index];
-           promises[attribute] = fetchValuePromise(entity, attribute);
+   function buildItemListFromIdList(idToItemMap, idList) {
+       var result = [];
+       idList.forEach(function (id) {
+           var item = idToItemMap[id];
+           if (item) {
+               result.push(item);
+           } else {
+               console.log("Editing error: Missing question definition for", id);
+           }
+       });
+       return result;
+   }
+   
+   // Are names just hints as to purpose of code? Can never convey all aspects of interrelationships?
+   
+   function findQuestionnaireTemplate(project, shortName) {
+       var questionnaires = project.projectModel.get("project_questionnaires");
+       for (var i = 0; i < questionnaires.length; i++) {
+           if (questionnaires[i].questionForm_shortName === shortName) {
+               return questionnaires[i];
+           }
        }
-       
-       all(promises).then(function(values) {
-           callback(null, values);
-       });  
+       return null;
    }
-   
+
    // TODO: How to save the fact we have exported this in the project? Make a copy??? Or keep original in document somewhere? Versus what is returned from server for surveys?
-   // TODO: This needs to be improved for asking multiple questions, maybe spanning multiple pages
-   function generateQuestionnaire(callback) {
+   function buildQuestionnaire(project, shortName) {
        var usedIDs = {};
        usedIDs.__createdIDCount = 0;
-
-       // TODO: Title, logo
-       // TODO: Improve as should be asking multiple questions and storing the results for each one 
+       
+       // TODO: Redo for if questionnaire template is made of triples
+       
        var questionnaire = {
                __type: "org.workingwithstories.Questionnaire"
        };
        
-       requestValues(domain.project.projectIdentifier, [
-           "questionForm_image",
-           "questionForm_startText",
-           "questionForm_endText",
-           "project_elicitingQuestionsList",
-           "project_storyQuestionsList",
-           "project_participantQuestionsList"
-       ], function (error, dataFromServer) {
-           if (error) callback(null);
-           
-           questionnaire.title = dataFromServer["questionForm_title"];
-           questionnaire.image = dataFromServer["questionForm_image"];
-           questionnaire.startText = dataFromServer["questionForm_startText"];
-           questionnaire.endText = dataFromServer["questionForm_endText"]; 
-    
-           var elicitingQuestions = dataFromServer["project_elicitingQuestionsList"];
-           console.log("elicitingQuestions", elicitingQuestions);
-           
-           var storyQuestions = dataFromServer["project_storyQuestionsList"];
-           ensureUniqueQuestionIDs(usedIDs, storyQuestions);
-           
-           var participantQuestions = dataFromServer["project_participantQuestionsList"];
-           ensureUniqueQuestionIDs(usedIDs, participantQuestions);
-           
-           // console.log("survey", survey);
-               
-           questionnaire.elicitingQuestions = [];
-           for (var elicitingQuestionIndex in elicitingQuestions) {
-               var storySolicitationQuestionText = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_text;
-               // TODO: var storySolicitationQuestionShortName = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_shortName;
-               var storySolicitationQuestionType = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_type;
-               var elicitingQuestionInfo = {
-                   text: storySolicitationQuestionText,
-                   // TODO: id: storySolicitationQuestionShortName,
-                   type: storySolicitationQuestionType
-               };
-               questionnaire.elicitingQuestions.push(elicitingQuestionInfo);
-           }
-           
-           /*
-           if (startText) questions.push({storyQuestion_shortName: "startText", storyQuestion_text: startText, storyQuestion_type: "label"});
-           questions.push({storyQuestion_shortName: "story", storyQuestion_text: storySolicitationQuestion, storyQuestion_type: "textarea"});
-           questions.push({storyQuestion_shortName: "name", storyQuestion_text: "Please give your story a name", storyQuestion_type: "text"});
-           if (storyQuestionList) questions = questions.concat(storyQuestionList);
-           if (participantQuestionList) questions = questions.concat(participantQuestionList);
-           if (endText) questions.push({storyQuestion_shortName: "endText", storyQuestion_text: endText, storyQuestion_type: "label"});
-           */
-           
-           // console.log("all survey questions", questions);
-           
-           questionnaire.storyQuestions = convertEditorQuestions(storyQuestions);
-           questionnaire.participantQuestions = convertEditorQuestions(participantQuestions);
-              
-           console.log("generateQuestionnaire result", questionnaire);
-           callback(questionnaire);
-       });
+       var questionnaireTemplate = findQuestionnaireTemplate(project, shortName);
+       if (!questionnaireTemplate) return null;
+ 
+       questionnaire.title = questionnaireTemplate["questionForm_title"];
+       questionnaire.image = questionnaireTemplate["questionForm_image"];
+       questionnaire.startText = questionnaireTemplate["questionForm_startText"];
+       questionnaire.endText = questionnaireTemplate["questionForm_endText"]; 
+       
+       // TODO: Should maybe ensure unique IDs for eliciting questions?
+       var allElicitingQuestions = buildIdToItemMap(project.projectModel.get("project_elicitingQuestionsList"), "elicitingQuestion_shortName");
+       var elicitingQuestions = buildItemListFromIdList(allElicitingQuestions, questionnaireTemplate["questionForm_elicitingQuestions"]);       
+       console.log("elicitingQuestions", elicitingQuestions);
+       
+       questionnaire.elicitingQuestions = [];
+       for (var elicitingQuestionIndex in elicitingQuestions) {
+           var storySolicitationQuestionText = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_text;
+           // TODO: var storySolicitationQuestionShortName = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_shortName;
+           var storySolicitationQuestionType = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_type;
+           var elicitingQuestionInfo = {
+               text: storySolicitationQuestionText,
+               // TODO: id: storySolicitationQuestionShortName,
+               type: storySolicitationQuestionType
+           };
+           questionnaire.elicitingQuestions.push(elicitingQuestionInfo);
+       }
+       ensureAtLeastOneElicitingQuestion(questionnaire);
+       
+       var allStoryQuestions = buildIdToItemMap(project.projectModel.get("project_storyQuestionsList"), "storyQuestion_shortName");
+       var storyQuestions = buildItemListFromIdList(allStoryQuestions, questionnaireTemplate["questionForm_storyQuestions"]);       
+       ensureUniqueQuestionIDs(usedIDs, storyQuestions);
+       questionnaire.storyQuestions = convertEditorQuestions(storyQuestions);
+       
+       var allParticipantQuestions = buildIdToItemMap(project.projectModel.get("project_participantQuestionsList"), "participantQuestion_shortName");
+       var participantQuestions = buildItemListFromIdList(allParticipantQuestions, questionnaireTemplate["questionForm_participantQuestions"]);       
+       ensureUniqueQuestionIDs(usedIDs, participantQuestions);      
+       questionnaire.participantQuestions = convertEditorQuestions(participantQuestions);
+       
+       console.log("buildQuestionnaire result", questionnaire);
+       return questionnaire;
    }
    
    function ensureAtLeastOneElicitingQuestion(questionnaire) {
@@ -229,7 +221,7 @@ define([
    }
    
    return {
-       generateQuestionnaire: generateQuestionnaire,
+       buildQuestionnaire: buildQuestionnaire,
        ensureAtLeastOneElicitingQuestion: ensureAtLeastOneElicitingQuestion
    };
 });

@@ -5,6 +5,7 @@ define([
     "js/modelUtility",
     "js/navigationPane",
     "js/pageDisplayer",
+    "js/questionnaireGeneration",
     "js/surveyBuilder",
     "js/surveyCollection",
     "js/panelBuilder/toaster",
@@ -17,6 +18,7 @@ define([
     modelUtility,
     navigationPane,
     pageDisplayer,
+    questionnaireGeneration,
     surveyBuilder,
     surveyCollection,
     toaster,
@@ -122,21 +124,28 @@ define([
         }
         
         var columns = {questionForm_shortName: "Questionnaire name", questionForm_title: "Title"};
-        dialogSupport.openListChoiceDialog(null, questionnaires, columns, "Projects", "Select a questionnaire to print", function (questionnaire) {
-            console.log("chosen questionnaire", questionnaire);
+        dialogSupport.openListChoiceDialog(null, questionnaires, columns, "Projects", "Select a questionnaire to print", function (questionnaireTemplate) {
+            console.log("chosen questionnaire", questionnaireTemplate);
+            
+            var questionnaire = questionnaireGeneration.buildQuestionnaire(project, questionnaireTemplate.questionForm_shortName);
             
             // var htmlToPrint = "<b>Test</b><br>This is a questionnaire for: <pre>" + JSON.stringify(questionnaire, null, 4) + "<pre>";
             
             var output = "";
             
-            output += "<h2>" + questionnaire.questionForm_title + "</h2>";
+            output += "<h2>" + questionnaire.title + "</h2>";
+            
             output += "<br><br>";
-            output += questionnaire.questionForm_startText;
+            
+            output += questionnaire.startText;
+            
             output += "<br><br>";
             
             output += "Questions go here...";
+            
             output += "<br><br>";
-            output += questionnaire.questionForm_endText;
+            
+            output += questionnaire.endText;
             
             var outputLabel = pageDisplayer.getCurrentPageWidgets()["printQuestionsForm_output"];
             console.log("outputLabel", outputLabel);
