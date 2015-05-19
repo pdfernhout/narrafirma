@@ -4,7 +4,7 @@ define([
     "dojox/mvc/getPlainValue",
     "js/storage",
     "dojox/uuid/generateRandomUuid",
-    "js/PanelBuilder/PanelBuilder",
+    "js/panelBuilder/PanelBuilder",
     "dijit/layout/ContentPane",
     "dijit/Dialog",
     "dijit/layout/StackContainer",
