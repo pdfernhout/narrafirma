@@ -127,14 +127,14 @@ define([
        return result;
    }
    
-   function buildItemListFromIdList(idToItemMap, idList) {
+   function buildItemListFromIdList(idToItemMap, idItemList, idField) {
        var result = [];
-       idList.forEach(function (id) {
-           var item = idToItemMap[id];
+       idItemList.forEach(function (idItem) {
+           var item = idToItemMap[idItem[idField]];
            if (item) {
                result.push(item);
            } else {
-               console.log("Editing error: Missing question definition for", id);
+               console.log("Editing error: Missing question definition for", idItem);
            }
        });
        return result;
@@ -165,6 +165,8 @@ define([
        
        var questionnaireTemplate = findQuestionnaireTemplate(project, shortName);
        if (!questionnaireTemplate) return null;
+       
+       console.log("questionnaireTemplate", questionnaireTemplate);
  
        questionnaire.title = questionnaireTemplate["questionForm_title"];
        questionnaire.image = questionnaireTemplate["questionForm_image"];
@@ -173,7 +175,7 @@ define([
        
        // TODO: Should maybe ensure unique IDs for eliciting questions?
        var allElicitingQuestions = buildIdToItemMap(project.projectModel.get("project_elicitingQuestionsList"), "elicitingQuestion_shortName");
-       var elicitingQuestions = buildItemListFromIdList(allElicitingQuestions, questionnaireTemplate["questionForm_elicitingQuestions"]);       
+       var elicitingQuestions = buildItemListFromIdList(allElicitingQuestions, questionnaireTemplate["questionForm_elicitingQuestions"], "elicitingQuestion");       
        console.log("elicitingQuestions", elicitingQuestions);
        
        questionnaire.elicitingQuestions = [];
@@ -191,12 +193,12 @@ define([
        ensureAtLeastOneElicitingQuestion(questionnaire);
        
        var allStoryQuestions = buildIdToItemMap(project.projectModel.get("project_storyQuestionsList"), "storyQuestion_shortName");
-       var storyQuestions = buildItemListFromIdList(allStoryQuestions, questionnaireTemplate["questionForm_storyQuestions"]);       
+       var storyQuestions = buildItemListFromIdList(allStoryQuestions, questionnaireTemplate["questionForm_storyQuestions"], "storyQuestion");       
        ensureUniqueQuestionIDs(usedIDs, storyQuestions);
        questionnaire.storyQuestions = convertEditorQuestions(storyQuestions);
        
        var allParticipantQuestions = buildIdToItemMap(project.projectModel.get("project_participantQuestionsList"), "participantQuestion_shortName");
-       var participantQuestions = buildItemListFromIdList(allParticipantQuestions, questionnaireTemplate["questionForm_participantQuestions"]);       
+       var participantQuestions = buildItemListFromIdList(allParticipantQuestions, questionnaireTemplate["questionForm_participantQuestions"], "participantQuestion");       
        ensureUniqueQuestionIDs(usedIDs, participantQuestions);      
        questionnaire.participantQuestions = convertEditorQuestions(participantQuestions);
        
