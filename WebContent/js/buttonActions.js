@@ -129,9 +129,12 @@ define([
             
             var questionnaire = questionnaireGeneration.buildQuestionnaire(project, questionnaireTemplate.questionForm_shortName);
             
-            // var htmlToPrint = "<b>Test</b><br>This is a questionnaire for: <pre>" + JSON.stringify(questionnaire, null, 4) + "<pre>";
+            
+            var htmlToPrint = "<b>Test</b><br>This is a questionnaire for: <pre>" + JSON.stringify(questionnaire, null, 4) + "</pre>";
             
             var output = "";
+            
+            output += htmlToPrint;
             
             output += "<h2>" + questionnaire.title + "</h2>";
             
@@ -141,7 +144,29 @@ define([
             
             output += "<br><br>";
             
-            output += "Questions go here...";
+            // TODO: Translate
+            
+            output += "Please select one for the following questions to answer:<br><br>";
+            
+            questionnaire.elicitingQuestions.forEach(function (elicitingQuestion) {
+                output += elicitingQuestion.text + "<br><br>";
+            });
+            
+            output += "Please enter your response here:<br><br>";
+            
+            for (var i = 0; i < 7; i++) output += "<br><br>";
+           
+            questionnaire.storyQuestions.forEach(function (storyQuestion) {
+                output += storyQuestion.displayPrompt + "<br>";
+            });
+            
+            // TODO: Print choices...
+           
+            questionnaire.participantQuestions.forEach(function (participantQuestion) {
+                output += participantQuestion.displayPrompt + "<br>";
+            });
+            
+            // TODO: Print choices...
             
             output += "<br><br>";
             
