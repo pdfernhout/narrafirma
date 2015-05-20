@@ -15,11 +15,39 @@ define([
 ){
     "use strict";
     
+    function resolveModelAndFieldForPath(panelBuilder, model, path) {
+        // Parse the dependency path
+        var parts = path.split("/");
+        if (parts[0] === "") {
+            model = panelBuilder[parts[1]];
+            if (!model) throw new Error("model is null");
+            parts.shift();
+            parts.shift();
+        }
+        if (parts.length < 1) throw new Error("Incorrect dependency path specified: " + path);
+        while (parts.length > 1) {
+            // TODO: Should ideally establish dependencies all along the line in case something along path changes
+            model = model[parts[0]];
+            if (!model) throw new Error("model is null while iterating");
+            parts.shift();
+        }
+        var field = parts[0];
+        
+        return {
+            model: model,
+            field: field
+        };
+    }
+    
     function add_select(panelBuilder, contentPane, model, fieldSpecification, addNoSelectionOption) {
         // console.log("add_select", fieldSpecification.id, model, fieldSpecification);
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var dataStore = new Memory({"data": []});
+        
+        var dataPath = fieldSpecification.dataPath;
+        if (!dataPath) dataPath = fieldSpecification.id;
+        var dataModelAndField = resolveModelAndFieldForPath(panelBuilder, model, dataPath);
 
         var select = new FilteringSelect({
             store: dataStore,
@@ -27,34 +55,20 @@ define([
             // TODO: Work on validation...
             required: false,
             // style: "width: 100%"
-            value: at(model, fieldSpecification.id)
+            value: at(dataModelAndField.model, dataModelAndField.field)
         });
         
         var specifiedChoices = fieldSpecification.dataOptions;
         var choices = specifiedChoices;
-        var choicesModel = model;
         
         if (_.isString(specifiedChoices)) {
+            var choicesModelAndField = resolveModelAndFieldForPath(panelBuilder, model, specifiedChoices);
+            console.log("choicesModelAndField", choicesModelAndField);
             
-            // Parse the dependency path
-            var parts = specifiedChoices.split("/");
-            if (parts[0] === "") {
-                choicesModel = panelBuilder[parts[1]];
-                if (!choicesModel) throw new Error("choicesModel is null");
-                parts.shift();
-                parts.shift();
-            }
-            if (parts.length < 1) throw new Error("Incorrect dependency path specified");
-            while (parts.length > 1) {
-                // TODO: Should establish dependencies all along the line
-                choicesModel = choicesModel[parts[0]];
-                if (!choicesModel) throw new Error("choicesModel is null while iterating");
-                parts.shift();
-            }
-            specifiedChoices = parts[0];
+            var choicesModel = choicesModelAndField.model;
+            var choicesField = choicesModelAndField.field;
             
-            // console.log("Indirect choices");
-            choices = choicesModel.get(specifiedChoices);
+            choices = choicesModel.get(choicesField);
             // Need to track when choices change; problematical if array?
             var subscription = choicesModel.watch(specifiedChoices, function(name, oldChoices, newChoices) {
                 // console.log("name, oldChoices, newChoices", name, oldChoices, JSON.stringify(newChoices, null, 4));
