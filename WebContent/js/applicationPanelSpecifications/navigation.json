@@ -86,8 +86,8 @@
         ]
     },
     {
-        "section": "collection_design",
-        "sectionName": "Collection design",
+        "section": "collection",
+        "sectionName": "Collection",
         "pages": [
             {
                 "panelID": "page_collectionDesign",
@@ -100,6 +100,20 @@
                     {
                         "panelID": "panel_addVenue",
                         "panelName": "Plan story collection venue"
+                    }
+                ]
+            },
+            {
+                "panelID": "page_planStoryCollectionSessions",
+                "panelName": "Plan story collection sessions",
+                "extraPanels": [
+                    {
+                        "panelID": "panel_addStoryCollectionSession",
+                        "panelName": "Design story collection session"
+                    },
+                    {
+                        "panelID": "panel_addCollectionSessionActivity",
+                        "panelName": "Add story collection session activity"
                     }
                 ]
             },
@@ -154,34 +168,6 @@
                         "panelName": "Choose participant question"
                     } 
                 ]
-            },
-            {
-                "panelID": "page_planStoryCollectionSessions",
-                "panelName": "Plan story collection sessions",
-                "extraPanels": [
-                    {
-                        "panelID": "panel_addStoryCollectionSession",
-                        "panelName": "Design story collection session"
-                    },
-                    {
-                        "panelID": "panel_addCollectionSessionActivity",
-                        "panelName": "Add story collection session activity"
-                    }
-                ]
-            },
-            {
-                "panelID": "page_readCollectionDesignReport",
-                "panelName": "Read collection design report"
-            }
-        ]
-    },
-    {
-        "section": "collection_process",
-        "sectionName": "Collection process",
-        "pages": [
-            {
-                "panelID": "page_collectionProcess",
-                "panelName": "Collection process"
             },
             {
                 "panelID": "page_startStoryCollection",

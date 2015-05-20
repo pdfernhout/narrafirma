@@ -23,24 +23,14 @@
             "displayPrompt": "Planning"
         },
         {
-            "id": "project_launchSection_collectionDesign",
+            "id": "project_launchSection_collection",
             "dataType": "none",
             "displayType": "dashboardSectionStatusDisplay",
             "displayConfiguration": {
                 "action": "guiOpenSection",
                 "section": "page_collectionDesign"
             },
-            "displayPrompt": "Collection design"
-        },
-        {
-            "id": "project_launchSection_collectionProcess",
-            "dataType": "none",
-            "displayType": "dashboardSectionStatusDisplay",
-            "displayConfiguration": {
-                "action": "guiOpenSection",
-                "section": "page_collectionProcess"
-            },
-            "displayPrompt": "Collection process"
+            "displayPrompt": "Collection"
         },
         {
             "id": "project_launchSection_catalysis",
