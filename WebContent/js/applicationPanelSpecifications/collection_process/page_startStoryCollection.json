@@ -16,7 +16,16 @@
             "dataType": "array",
             "required": true,
             "displayType": "grid",
-            "displayConfiguration": "panel_addStoryCollection",
+            "displayConfiguration": {
+                "itemPanelID": "panel_addStoryCollection",
+                "gridConfiguration": {
+                    "viewButton": true,
+                    "editButton": true,
+                    "addButton": true,
+                    "removeButton": true,
+                    "includeAllFields": ["storyCollection_shortName", "storyCollection_questionnaireIdentifier", "storyCollection_activeOnWeb", "storyCollection_notes"]
+                }
+            },
             "displayName": "Story collections",
             "displayPrompt": "Add one or more story collections."
         }
