@@ -1,9 +1,9 @@
 {
-    "id": "page_finalizeQuestionForms",
+    "id": "page_printQuestionForms",
     "displayName": "Print question forms",
     "displayType": "page",
     "section": "collection_process",
-    "modelClass": "FinalizeQuestionFormsActivity",
+    "modelClass": "PrintQuestionFormsActivity",
     "panelFields": [
         {
             "id": "printQuestionsForm_introduction",
