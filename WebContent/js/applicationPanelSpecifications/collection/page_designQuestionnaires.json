@@ -2,7 +2,7 @@
     "id": "page_designQuestionnaires",
     "displayName": "Design questionnaires",
     "displayType": "page",
-    "section": "collection_design",
+    "section": "collection",
     "modelClass": "DesignQuestionnaires",
     "panelFields": [
         {

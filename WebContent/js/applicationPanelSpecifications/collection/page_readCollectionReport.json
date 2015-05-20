@@ -1,0 +1,22 @@
+{
+    "id": "page_readCollectionReport",
+    "displayName": "Read collection report",
+    "displayType": "page",
+    "section": "collection",
+    "modelClass": "ReadCollectionReportActivity",
+    "panelFields": [
+        {
+            "id": "project_collectionReportLabel",
+            "dataType": "none",
+            "displayType": "label",
+            "displayPrompt": "This report shows all of the information entered in the pages grouped under \"Collection.\""
+        },
+        {
+            "id": "project_collectionReport",
+            "dataType": "none",
+            "displayType": "report",
+            "displayConfiguration": "collection",
+            "displayPrompt": "Collection report"
+        }
+    ]
+}

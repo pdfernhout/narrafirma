@@ -2,7 +2,7 @@
     "id": "page_browseGraphs",
     "displayName": "Spot check graphs",
     "displayType": "page",
-    "section": "collection_process",
+    "section": "collection",
     "modelClass": "BrowseGraphsActivity",
     "panelFields": [
         {

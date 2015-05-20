@@ -2,7 +2,7 @@
     "id": "page_planStoryCollectionSessions",
     "displayName": "Plan story collection sessions",
     "displayType": "page",
-    "section": "collection_design",
+    "section": "collection",
     "modelClass": "PlanStoryCollectionSesssionsActivity",
     "panelFields": [
         {

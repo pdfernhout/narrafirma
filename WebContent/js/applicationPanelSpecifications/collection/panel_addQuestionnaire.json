@@ -2,7 +2,7 @@
     "id": "panel_addQuestionnaire",
     "displayName": "Add questionnaire",
     "displayType": "panel",
-    "section": "collection_design",
+    "section": "collection",
     "modelClass": "DesignQuestionnaire",
     "panelFields": [
         {

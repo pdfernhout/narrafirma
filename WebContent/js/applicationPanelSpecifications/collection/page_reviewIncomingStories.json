@@ -2,7 +2,7 @@
     "id": "page_reviewIncomingStories",
     "displayName": "Review incoming stories",
     "displayType": "page",
-    "section": "collection_process",
+    "section": "collection",
     "modelClass": "ReviewIncomingStoriesActivity",
     "panelFields": [
         {

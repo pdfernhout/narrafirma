@@ -2,7 +2,7 @@
     "id": "page_startStoryCollection",
     "displayName": "Start story collection",
     "displayType": "page",
-    "section": "collection_process",
+    "section": "collection",
     "modelClass": "StartStoryCollectionActivity",
     "panelFields": [
         {

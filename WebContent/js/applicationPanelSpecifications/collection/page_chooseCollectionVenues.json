@@ -2,7 +2,7 @@
     "id": "page_chooseCollectionVenues",
     "displayName": "Choose collection venues",
     "displayType": "page",
-    "section": "collection_design",
+    "section": "collection",
     "modelClass": "ChooseCollectionVenuesActivity",
     "panelFields": [
         {

@@ -2,7 +2,7 @@
     "id": "panel_newCollectionSessionConstruction",
     "displayName": "Story collection construction",
     "displayType": "panel",
-    "section": "collection_process",
+    "section": "collection",
     "modelClass": "CollectionSessionConstruction",
     "panelFields": [
         {

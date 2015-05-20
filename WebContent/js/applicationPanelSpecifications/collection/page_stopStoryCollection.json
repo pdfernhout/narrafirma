@@ -2,7 +2,7 @@
     "id": "page_stopStoryCollection",
     "displayName": "Stop story collection",
     "displayType": "page",
-    "section": "collection_process",
+    "section": "collection",
     "modelClass": "StopStoryCollectionActivity",
     "panelFields": [
         {

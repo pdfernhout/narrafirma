@@ -2,7 +2,7 @@
     "id": "panel_addStoryCollection",
     "displayName": "Add story collection",
     "displayType": "panel",
-    "section": "collection_process",
+    "section": "collection",
     "modelClass": "StoryCollection",
     "panelFields": [
         {
