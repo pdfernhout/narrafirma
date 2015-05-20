@@ -28,7 +28,7 @@
             "displayType": "dashboardSectionStatusDisplay",
             "displayConfiguration": {
                 "action": "guiOpenSection",
-                "section": "page_collectionDesign"
+                "section": "page_collection"
             },
             "displayPrompt": "Collection"
         },

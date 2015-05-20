@@ -90,8 +90,8 @@
         "sectionName": "Collection",
         "pages": [
             {
-                "panelID": "page_collectionDesign",
-                "panelName": "Collection design"
+                "panelID": "page_collection",
+                "panelName": "Collection"
             },
             {
                 "panelID": "page_chooseCollectionVenues",
@@ -213,8 +213,8 @@
                 ]
             },
             {
-                "panelID": "page_readCollectionProcessReport",
-                "panelName": "Read collection process report"
+                "panelID": "page_readCollectionReport",
+                "panelName": "Read collection report"
             }
         ]
     },
