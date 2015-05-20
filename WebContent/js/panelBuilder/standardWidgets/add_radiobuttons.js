@@ -1,9 +1,9 @@
 define([
-    "dojox/mvc/at",
-    "./RadioButtonsWidget"
+    "./RadioButtonsWidget",
+    "../valuePathResolver"
 ], function(
-    at,
-    RadioButtonsWidget
+    RadioButtonsWidget,
+    valuePathResolver
 ){
     "use strict";
     
@@ -14,7 +14,7 @@ define([
             questionID: fieldSpecification.id,
             choices: fieldSpecification.valueOptions,
             // optionsString: optionsString,
-            value: at(model, fieldSpecification.id)
+            value: valuePathResolver.atFieldSpecification(panelBuilder, model, fieldSpecification)
         });
          
         radioButtonsWidget.placeAt(questionContentPane);

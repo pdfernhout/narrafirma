@@ -1,16 +1,16 @@
 define([
-    "dojox/mvc/at",
-    "dijit/form/TextBox"
+    "dijit/form/TextBox",
+    "../valuePathResolver"
 ], function(
-    at,
-    TextBox
+    TextBox,
+    valuePathResolver
 ){
     "use strict";
     
     function add_text(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         var textBox = new TextBox({
-            value: at(model, fieldSpecification.id)
+            value: valuePathResolver.atFieldSpecification(panelBuilder, model, fieldSpecification)
         });
         textBox.set("style", "width: 40em");
         if (fieldSpecification.readOnly) {

@@ -1,53 +1,25 @@
 define([
     "dojo/_base/array",
-    "dojox/mvc/at",
     "dijit/form/FilteringSelect",
     "dojo/_base/lang",
     "dojo/store/Memory",
-    "../translate"
+    "../translate",
+    "../valuePathResolver"
 ], function(
     array,
-    at,
     FilteringSelect,
     lang,
     Memory,
-    translate
+    translate,
+    valuePathResolver
 ){
     "use strict";
-    
-    function resolveModelAndFieldForPath(panelBuilder, model, path) {
-        // Parse the dependency path
-        var parts = path.split("/");
-        if (parts[0] === "") {
-            model = panelBuilder[parts[1]];
-            if (!model) throw new Error("model is null");
-            parts.shift();
-            parts.shift();
-        }
-        if (parts.length < 1) throw new Error("Incorrect dependency path specified: " + path);
-        while (parts.length > 1) {
-            // TODO: Should ideally establish dependencies all along the line in case something along path changes
-            model = model[parts[0]];
-            if (!model) throw new Error("model is null while iterating");
-            parts.shift();
-        }
-        var field = parts[0];
-        
-        return {
-            model: model,
-            field: field
-        };
-    }
     
     function add_select(panelBuilder, contentPane, model, fieldSpecification, addNoSelectionOption) {
         // console.log("add_select", fieldSpecification.id, model, fieldSpecification);
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var dataStore = new Memory({"data": []});
-        
-        var valuePath = fieldSpecification.valuePath;
-        if (!valuePath) valuePath = fieldSpecification.id;
-        var dataModelAndField = resolveModelAndFieldForPath(panelBuilder, model, valuePath);
 
         var select = new FilteringSelect({
             store: dataStore,
@@ -55,14 +27,14 @@ define([
             // TODO: Work on validation...
             required: false,
             // style: "width: 100%"
-            value: at(dataModelAndField.model, dataModelAndField.field)
+            value: valuePathResolver.atFieldSpecification(panelBuilder, model, fieldSpecification)
         });
         
         var specifiedChoices = fieldSpecification.valueOptions;
         var choices = specifiedChoices;
         
         if (_.isString(specifiedChoices)) {
-            var choicesModelAndField = resolveModelAndFieldForPath(panelBuilder, model, specifiedChoices);
+            var choicesModelAndField = valuePathResolver.resolveModelAndFieldForValuePath(panelBuilder, model, specifiedChoices);
             console.log("choicesModelAndField", choicesModelAndField);
             
             var choicesModel = choicesModelAndField.model;

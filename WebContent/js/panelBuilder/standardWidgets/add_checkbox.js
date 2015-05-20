@@ -1,9 +1,9 @@
 define([
-    "dojox/mvc/at",
-    "dijit/form/CheckBox"
+    "dijit/form/CheckBox",
+    "../valuePathResolver"
 ], function(
-    at,
-    CheckBox
+    CheckBox,
+    valuePathResolver
 ){
     "use strict";
     
@@ -11,7 +11,7 @@ define([
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var checkbox = new CheckBox({
-            value: at(model, fieldSpecification.id)
+            value: valuePathResolver.atFieldSpecification(panelBuilder, model, fieldSpecification)
         });
         
         checkbox.placeAt(questionContentPane);

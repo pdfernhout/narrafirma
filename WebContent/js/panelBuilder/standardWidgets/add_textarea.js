@@ -1,9 +1,9 @@
 define([
-    "dojox/mvc/at",
-    "dijit/form/SimpleTextarea"
+    "dijit/form/SimpleTextarea",
+    "../valuePathResolver"
 ], function(
-    at,
-    SimpleTextarea
+    SimpleTextarea,
+    valuePathResolver
 ){
     "use strict";
     
@@ -13,7 +13,7 @@ define([
             rows: "4",
             cols: "80",
             style: "width:auto;",
-            value: at(model, fieldSpecification.id)
+            value: valuePathResolver.atFieldSpecification(panelBuilder, model, fieldSpecification)
         });
         textarea.placeAt(questionContentPane);
         return textarea;

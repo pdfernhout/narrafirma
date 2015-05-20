@@ -1,15 +1,15 @@
 define([
-    "dojox/mvc/at",
     "dojo/dom-construct",
     "dijit/form/HorizontalRule",
     "dijit/form/HorizontalRuleLabels",
-    "dijit/form/HorizontalSlider"
+    "dijit/form/HorizontalSlider",
+    "../valuePathResolver"
 ], function(
-    at,
     domConstruct,
     HorizontalRule,
     HorizontalRuleLabels,
-    HorizontalSlider
+    HorizontalSlider,
+    valuePathResolver
 ){
     "use strict";
 
@@ -47,7 +47,7 @@ define([
             showButtons: true,
             // Doesn't work: style: "align: center; width: 80%;"
             // style: "width: 98%; max-width: 98%",
-            value: at(model, fieldSpecification.id)
+            value: valuePathResolver.atFieldSpecification(panelBuilder, model, fieldSpecification)
         });
         
         slider.placeAt(panelDiv);

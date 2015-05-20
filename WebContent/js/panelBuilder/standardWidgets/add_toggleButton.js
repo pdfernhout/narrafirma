@@ -1,9 +1,9 @@
 define([
-    "dojox/mvc/at",
-    "dijit/form/ToggleButton"
+    "dijit/form/ToggleButton",
+    "../valuePathResolver"
 ], function(
-    at,
-    ToggleButton
+    ToggleButton,
+    valuePathResolver
 ){
     "use strict";
     
@@ -13,7 +13,7 @@ define([
         // Toggle button maintains a "checked" flag, so we need to set value ourselves
         var toggleButton = new ToggleButton({
             label: "" + model.get(fieldSpecification.id),
-            value: at(model, fieldSpecification.id),
+            value: valuePathResolver.atFieldSpecification(panelBuilder, model, fieldSpecification),
             onChange: function(value) {
                 this.set("label", value);
                 this.set("value", value);

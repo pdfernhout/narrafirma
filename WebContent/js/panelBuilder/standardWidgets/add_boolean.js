@@ -1,9 +1,9 @@
 define([
-    "dojox/mvc/at",
-    "./RadioButtonsWidget"
+    "./RadioButtonsWidget",
+    "../valuePathResolver"
 ], function(
-    at,
-    RadioButtonsWidget
+    RadioButtonsWidget,
+    valuePathResolver
 ){
     "use strict";
     
@@ -14,7 +14,7 @@ define([
             choices: null,
             // TODO: translate options
             optionsString: "yes\nno",
-            value: at(model, fieldSpecification.id)
+            value: valuePathResolver.atFieldSpecification(panelBuilder, model, fieldSpecification)
         });
         
         radioButtonsWidget.placeAt(questionContentPane);
