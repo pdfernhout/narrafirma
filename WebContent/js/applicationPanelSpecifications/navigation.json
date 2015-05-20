@@ -184,12 +184,18 @@
                 "panelName": "Collection process"
             },
             {
-                "panelID": "page_printQuestionForms",
-                "panelName": "Print question forms"
+                "panelID": "page_startStoryCollection",
+                "panelName": "Start story collection",
+                "extraPanels": [
+                    {
+                        "panelID": "panel_addStoryCollection",
+                        "panelName": "Add story collection"
+                    }
+                ]
             },
             {
-                "panelID": "page_startStoryCollection",
-                "panelName": "Start story collection"
+                "panelID": "page_printQuestionForms",
+                "panelName": "Print question forms"
             },
             {
                 "panelID": "page_enterStories",

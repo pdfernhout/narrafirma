@@ -1,0 +1,41 @@
+{
+    "id": "panel_addStoryCollection",
+    "displayName": "Add story collection",
+    "displayType": "panel",
+    "section": "collection_process",
+    "modelClass": "StoryCollection",
+    "panelFields": [
+        {
+            "id": "storyCollection_shortName",
+            "dataType": "string",
+            "required": true,
+            "displayType": "text",
+            "displayName": "Name",
+            "displayPrompt": "Please give this story collection a short name."
+        },
+        {
+            "id": "storyCollection_questionnaireIdentifier",
+            "dataType": "string",
+            "dataOptions": "/projectModel/project_questionnaires",
+            "required": true,
+            "displayType": "select",
+            "displayName": "Questionnaire",
+            "displayPrompt": "Please select a questionnaire to use for this story collection."
+        },
+        {
+            "id": "storyCollection_activeOnWeb",
+            "dataType": "boolean",
+            "displayType": "checkbox",
+            "displayName": "Active",
+            "displayPrompt": "Check here to make this story collection available on the web."
+        },
+        {
+            "id": "storyCollection_notes",
+            "dataType": "string",
+            "required": true,
+            "displayType": "textarea",
+            "displayName": "Notes",
+            "displayPrompt": "You can enter any extra notes on the story collection here."
+        }
+    ]
+}

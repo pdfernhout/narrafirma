@@ -6,44 +6,19 @@
     "modelClass": "StartStoryCollectionActivity",
     "panelFields": [
         {
-            "id": "webStoryCollection_startCollectionLabel",
+            "id": "storyCollection_createCollectionLabel",
             "dataType": "none",
             "displayType": "label",
-            "displayPrompt": "If you are doing story collection over the internet, click this button to make the web form \"live\" and able to be used by people other than yourself."
+            "displayPrompt": "On this page you will create one or more story collections, which are used to store collected stories for a specific questionnaire. For example, you might have a test collection for experimenting, a pilot project collection with a first version of a questionnaire, and a major collection with a revised final questionnaire."
         },
         {
-            "id": "webStoryCollection_enableStoryCollectionButton",
-            "dataType": "none",
-            "displayType": "button",
-            "displayConfiguration": "storyCollectionStart",
-            "displayPrompt": "Start web story collection"
-        },
-        {
-            "id": "webStoryCollection_enabledTracker",
-            "dataType": "none",
-            "displayType": "functionResult",
-            "displayConfiguration": "isStoryCollectingEnabled",
-            "displayPrompt": "Web story collection enabled: <b>{{result}}</b>"
-        },
-        {
-            "id": "webStoryCollection_copyStoryFormURLButton",
-            "dataType": "none",
-            "displayType": "button",
-            "displayConfiguration": "copyStoryFormURL",
-            "displayPrompt": "Copy story form web URL link"
-        },
-        {
-            "id": "webStoryCollection_stopCollectionLabel",
-            "dataType": "none",
-            "displayType": "label",
-            "displayPrompt": "You can also disable the data collection here."
-        },
-        {
-            "id": "webStoryCollection_disableStoryCollectionButton",
-            "dataType": "none",
-            "displayType": "button",
-            "displayConfiguration": "storyCollectionStop",
-            "displayPrompt": "Stop web story collection"
+            "id": "project_storyCollections",
+            "dataType": "array",
+            "required": true,
+            "displayType": "grid",
+            "displayConfiguration": "panel_addStoryCollection",
+            "displayName": "Story collections",
+            "displayPrompt": "Add one or more story collections."
         }
     ]
 }
