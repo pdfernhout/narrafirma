@@ -26,7 +26,7 @@
             "id": "storyCollection_activeOnWeb",
             "dataType": "boolean",
             "displayType": "checkbox",
-            "displayName": "Active",
+            "displayName": "Active on web",
             "displayPrompt": "Check here to make this story collection available on the web."
         },
         {
