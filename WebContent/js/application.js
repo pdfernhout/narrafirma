@@ -15,6 +15,7 @@ define([
     "js/pointrel20150417/PointrelClient",
     "js/Project",
     "dojo/request",
+    "dojo/Stateful",
     "js/surveyCollection",
     "js/panelBuilder/toaster",
     "dojo/topic",
@@ -38,6 +39,7 @@ define([
     PointrelClient,
     Project,
     request,
+    Stateful,
     surveyCollection,
     toaster,
     topic,
@@ -59,6 +61,12 @@ define([
     var userIdentifier;
 
     var project;
+    
+    // For this local instance only (not shared with other users or other browser tabs), what is the current selections for these items?
+    var localSettings = new Stateful({
+        currentStoryCollection: "",
+        currentCatalysisReport: ""
+    });
     
     // GUI
     var serverStatusPane;
@@ -470,6 +478,7 @@ define([
                 // Now that data is presumably loaded, set up the project model to use that data and track ongoing changes to it
                 project.initializeProjectModel(panelSpecificationCollection);
                 panelBuilder.projectModel = project.projectModel;
+                panelBuilder.localSettings = localSettings;
                 buttonActions.initialize(project);
                 
                 setupFirstPage();

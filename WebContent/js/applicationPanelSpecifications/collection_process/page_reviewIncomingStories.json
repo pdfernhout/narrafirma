@@ -12,18 +12,15 @@
             "displayPrompt": "On this page you can see your collected stories as they come in."
         },
         {
-            "id": "webStoryCollection_loadLatestStoriesFromServer",
-            "dataType": "none",
-            "displayType": "button",
-            "displayConfiguration": "loadLatestStoriesFromServer",
-            "displayPrompt": "Load latest stories from server"
-        },
-        {
-            "id": "webStoryCollection_totalResults",
-            "dataType": "none",
-            "displayType": "functionResult",
-            "displayConfiguration": "totalNumberOfSurveyResults",
-            "displayPrompt": "Total number of survey results loaded from server: <b>{{result}}</b>"
+            "id": "storyCollectionChoiceX",
+            "dataPath": "/localSettings/currentStoryCollection",
+            "dataType": "string",
+            "dataOptions": "project_storyCollections",
+            "dataOptionValueKey": "storyCollection_shortName",
+            "required": true,
+            "displayType": "select",
+            "displayName": "Story collection",
+            "displayPrompt": "Choose a story collection to view stories from."
         },
         {
             "id": "webStoryCollection_collectedStoriesDuringCollection",

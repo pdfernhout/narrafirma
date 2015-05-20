@@ -12,6 +12,17 @@
             "displayPrompt": "On this page you can take a preliminary look at patterns in the answers people gave about their incoming stories. This is intended mainly to spot check for issues related to the questionnaire design. These graphs will be reviewed more systematically in the catalysis section."
         },
         {
+            "id": "storyCollectionChoiceY",
+            "dataPath": "/localSettings/currentStoryCollection",
+            "dataType": "string",
+            "dataOptions": "project_storyCollections",
+            "dataOptionValueKey": "storyCollection_shortName",
+            "required": true,
+            "displayType": "select",
+            "displayName": "Story collection",
+            "displayPrompt": "Choose a story collection to view graphs from."
+        },
+        {
             "id": "graphBrowserDisplay",
             "dataType": "none",
             "displayType": "graphBrowser",
