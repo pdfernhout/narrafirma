@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "venue_name",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Name",
@@ -15,8 +15,8 @@
         },
         {
             "id": "venue_primary_type",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "individual interviews",
                 "group interviews",
                 "peer interviews",
@@ -34,7 +34,7 @@
         },
         {
             "id": "venue_participantGroups",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Participants",
@@ -42,7 +42,7 @@
         },
         {
             "id": "venue_timeline",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Timeline",
@@ -50,7 +50,7 @@
         },
         {
             "id": "venue_locations",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Locations",
@@ -58,7 +58,7 @@
         },
         {
             "id": "venue_help",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Help",
@@ -66,7 +66,7 @@
         },
         {
             "id": "venue_resources",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Technology",
@@ -74,7 +74,7 @@
         },
         {
             "id": "venue_description",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Other",

@@ -7,13 +7,13 @@
     "panelFields": [
         {
             "id": "project_interventionRecordsLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "On this page you will enter records of your interventions."
         },
         {
             "id": "project_interventionRecordsList",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_addInterventionRecord",

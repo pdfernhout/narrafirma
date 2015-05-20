@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "collectionSessionPlan_name",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Name",
@@ -15,7 +15,7 @@
         },
         {
             "id": "collectionSessionPlan_groups",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Participant groups",
@@ -23,7 +23,7 @@
         },
         {
             "id": "collectionSessionPlan_repetitions",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Repetitions",
@@ -31,7 +31,7 @@
         },
         {
             "id": "collectionSessionPlan_duration",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Length",
@@ -39,7 +39,7 @@
         },
         {
             "id": "collectionSessionPlan_times",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Time",
@@ -47,7 +47,7 @@
         },
         {
             "id": "collectionSessionPlan_location",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Location",
@@ -55,7 +55,7 @@
         },
         {
             "id": "collectionSessionPlan_numPeople",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Number of people",
@@ -63,7 +63,7 @@
         },
         {
             "id": "collectionSessionPlan_materials",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Materials",
@@ -71,7 +71,7 @@
         },
         {
             "id": "collectionSessionPlan_details",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Other",
@@ -79,7 +79,7 @@
         },
         {
             "id": "collectionSessionPlan_activitiesList",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_addCollectionSessionActivity",
@@ -88,7 +88,7 @@
         },
         {
             "id": "collectionSessionPlan_printCollectionSessionAgendaButton",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "button",
             "displayPrompt": "Print session agenda"
         }

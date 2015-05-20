@@ -7,13 +7,13 @@
     "panelFields": [
         {
             "id": "questionForm_Label",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "Design a specific question form (questionnaire)."
         },
         {
             "id": "questionForm_shortName",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Title",
@@ -21,7 +21,7 @@
         },
         {
             "id": "questionForm_title",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Title",
@@ -29,7 +29,7 @@
         },
         {
             "id": "questionForm_participantGroups",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Participant groups",
@@ -37,7 +37,7 @@
         },
         {
             "id": "questionForm_startText",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Introduction",
@@ -45,7 +45,7 @@
         },
         {
             "id": "questionForm_image",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Image",
@@ -53,7 +53,7 @@
         },
         {
             "id": "questionForm_elicitingQuestions",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_chooseElicitingQuestion",
@@ -62,7 +62,7 @@
         },
         {
             "id": "questionForm_storyQuestions",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_chooseStoryQuestion",
@@ -71,7 +71,7 @@
         },
         {
             "id": "questionForm_participantQuestions",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_chooseParticipantQuestion",
@@ -80,7 +80,7 @@
         },
         {
             "id": "questionForm_endText",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "End of form text",

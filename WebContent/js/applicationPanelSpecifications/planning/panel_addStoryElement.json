@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "storyElement_name",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Name",
@@ -15,8 +15,8 @@
         },
         {
             "id": "storyElement_type",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "character",
                 "situation",
                 "value",
@@ -33,7 +33,7 @@
         },
         {
             "id": "storyElement_description",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Description",

@@ -159,7 +159,7 @@ require([
         "panelFields": [
             {
                 "id": "id",
-                "dataType": "string",
+                "valueType": "string",
                 "displayType": "text",
                 "displayName": "System user identifier",
                 "displayPrompt": "System user identifier",
@@ -167,7 +167,7 @@ require([
             },
             {
                 "id": "email",
-                "dataType": "string",
+                "valueType": "string",
                 "displayType": "text",
                 "displayName": "Email",
                 "displayPrompt": "Email",
@@ -175,21 +175,21 @@ require([
             // TODO: Use password hash! Add button to set it.
             {
                 "id": "password",
-                "dataType": "string",
+                "valueType": "string",
                 "displayType": "text",
                 "displayName": "Password",
                 "displayPrompt": "Password"
             },
             {
                 "id": "groups",
-                "dataType": "string",
+                "valueType": "string",
                 "displayType": "text",
                 "displayName": "Groups",
                 "displayPrompt": "Groups (space separated; standard groups include admin, editor, author, contributor, and subscriber)"
             },
             {
                 "id": "fullName",
-                "dataType": "string",
+                "valueType": "string",
                 "displayType": "text",
                 "displayName": "User name",
                 "displayPrompt": "User name"
@@ -207,7 +207,7 @@ require([
         "panelFields": [
             {
                 "id": "id",
-                "dataType": "string",
+                "valueType": "string",
                 "displayType": "text",
                 "displayName": "Project identifier",
                 "displayPrompt": "Project identifier"
@@ -215,35 +215,35 @@ require([
             },
             {
                 "id": "name",
-                "dataType": "string",
+                "valueType": "string",
                 "displayType": "text",
                 "displayName": "Name",
                 "displayPrompt": "Project Name"
             },
             {
                 "id": "description",
-                "dataType": "string",
+                "valueType": "string",
                 "displayType": "textarea",
                 "displayName": "Description",
                 "displayPrompt": "Project Description"
             },
             {
                 "id": "editors",
-                "dataType": "string",
+                "valueType": "string",
                 "displayType": "text",
                 "displayName": "Editors",
                 "displayPrompt": "Editors (space separated; can be group like admin, editor, author, contributor, subscriber, or anonymous)"
             },
             {
                 "id": "viewers",
-                "dataType": "string",
+                "valueType": "string",
                 "displayType": "text",
                 "displayName": "Viewers",
                 "displayPrompt": "Viewers (space separated; can be group)"
             },
             {
                 "id": "surveyTakers",
-                "dataType": "string",
+                "valueType": "string",
                 "displayType": "text",
                 "displayName": "Survey takers",
                 "displayPrompt": "Survey takers (space separated; can be group)"
@@ -264,7 +264,7 @@ require([
         
         var userGridSpecification = {
             id: "users",
-            dataType: "array",
+            valueType: "array",
             displayType: "grid",
             displayConfiguration: {
                 itemPanelID: "panel_user",
@@ -287,7 +287,7 @@ require([
             
         var projectGridSpecification = {
             id: "projects",
-            dataType: "array",
+            valueType: "array",
             displayType: "grid",
             displayConfiguration: {
                 itemPanelID: "panel_projectDescription",

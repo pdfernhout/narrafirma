@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "observation_name",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Name",
@@ -15,7 +15,7 @@
         },
         {
             "id": "observation_text",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Observation",
@@ -23,7 +23,7 @@
         },
         {
             "id": "observation__observationResultsList",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "accumulatedItemsGrid",
             "displayConfiguration": "collectedStoriesAfterCollection",
             "displayName": "Results",
@@ -31,7 +31,7 @@
         },
         {
             "id": "observation_firstInterpretation_text",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "First interpretation",
@@ -39,7 +39,7 @@
         },
         {
             "id": "observation_firstInterpretation_name",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "First interpretation name",
@@ -47,7 +47,7 @@
         },
         {
             "id": "observation_firstInterpretation_idea",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "First interpretation idea",
@@ -55,7 +55,7 @@
         },
         {
             "id": "observation_firstInterpretation_excerptsList",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_selectExcerpt",
@@ -64,7 +64,7 @@
         },
         {
             "id": "observation_competingInterpretation_text",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Competing interpretation",
@@ -72,7 +72,7 @@
         },
         {
             "id": "observation_competingInterpretation_name",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Competing interpretation name",
@@ -80,7 +80,7 @@
         },
         {
             "id": "observation_competingInterpretation_idea",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Competing interpretation idea",
@@ -88,7 +88,7 @@
         },
         {
             "id": "observation_competingInterpretation_excerptsList",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_selectExcerpt",
@@ -97,7 +97,7 @@
         },
         {
             "id": "observation_thirdInterpretation_text",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Third interpretation",
@@ -105,7 +105,7 @@
         },
         {
             "id": "observation_thirdInterpretation_name",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Third interpretation name",
@@ -113,7 +113,7 @@
         },
         {
             "id": "observation_thirdInterpretation_idea",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Third interpretation idea",
@@ -121,7 +121,7 @@
         },
         {
             "id": "observation_thirdInterpretation_excerptsList",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_selectExcerpt",

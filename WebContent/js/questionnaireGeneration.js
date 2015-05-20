@@ -29,7 +29,7 @@ define([
        }
    }
    
-   var displayTypeToDataTypeMap = {
+   var displayTypeToValueTypeMap = {
        // Used in questionnaire and other parts of the application
        boolean: 'boolean',
        label: "none",
@@ -91,13 +91,13 @@ define([
                    }
                }
            }
-           // TODO: dataType might be a number or boolean sometimes
-           var dataType = displayTypeToDataTypeMap[type];
-           if (!dataType) console.log("ERROR: Could not resolve dataType for ", question);
-           var dataOptions;
+           // TODO: valueType might be a number or boolean sometimes
+           var valueType = displayTypeToValueTypeMap[type];
+           if (!valueType) console.log("ERROR: Could not resolve valueType for ", question);
+           var valueOptions;
            var displayConfiguration;
            if (type === "select" || type === "checkboxes" || type === "radiobuttons") {
-               dataOptions = options;
+               valueOptions = options;
            } else {
                if (options.length === 1) {
                    displayConfiguration = options[1];
@@ -106,10 +106,10 @@ define([
                }
            }
            adjustedQuestions.push({
-               dataType: dataType,
+               valueType: valueType,
                displayType: type,
                id: id, 
-               dataOptions: dataOptions, 
+               valueOptions: valueOptions, 
                displayName: shortName, 
                displayPrompt: prompt,
                displayConfiguration: displayConfiguration

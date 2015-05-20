@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "excerpt_name",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Name",
@@ -15,7 +15,7 @@
         },
         {
             "id": "excerpt_text",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Excerpt",
@@ -23,7 +23,7 @@
         },
         {
             "id": "excerpt_notes",
-            "dataType": "string",
+            "valueType": "string",
             "displayType": "textarea",
             "displayName": "Notes",
             "displayPrompt": "Enter some notes about the excerpt."

@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "collectionSessionRecord_name",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Name",
@@ -15,7 +15,7 @@
         },
         {
             "id": "collectionSessionRecord_whenWhere",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "When and where",
@@ -23,7 +23,7 @@
         },
         {
             "id": "collectionSessionRecord_groups",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Participant groups",
@@ -31,7 +31,7 @@
         },
         {
             "id": "collectionSessionRecord_participants",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Who attended",
@@ -39,7 +39,7 @@
         },
         {
             "id": "collectionSessionRecord_plan",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Plan",
@@ -47,14 +47,14 @@
         },
         {
             "id": "collectionSessionRecord_notes",
-            "dataType": "string",
+            "valueType": "string",
             "displayType": "textarea",
             "displayName": "Notes",
             "displayPrompt": "Enter additional notes on the session here.\nYour notes can include links to images or other documents."
         },
         {
             "id": "collectionSessionRecord_constructionsList",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_newCollectionSessionConstruction",
@@ -63,19 +63,19 @@
         },
         {
             "id": "collectionSessionRecord_reflectionsLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "Use the questions below to reflect on the session."
         },
         {
             "id": "collectionSessionRecord_reflectionsOnChangeHeader",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "header",
             "displayPrompt": "Change"
         },
         {
             "id": "collectionSessionRecord_reflections_change_participantPerceptions",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Change in participant perceptions",
@@ -83,7 +83,7 @@
         },
         {
             "id": "collectionSessionRecord_reflections_change_yourPerceptions",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Change in facilitator perceptions",
@@ -91,7 +91,7 @@
         },
         {
             "id": "collectionSessionRecord_reflections_change_project",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Changes to the project",
@@ -99,13 +99,13 @@
         },
         {
             "id": "collectionSessionRecord_interactionsHeader",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "header",
             "displayPrompt": "Interactions"
         },
         {
             "id": "collectionSessionRecord_reflections_interaction_participants",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Interactions among participants",
@@ -113,7 +113,7 @@
         },
         {
             "id": "collectionSessionRecord_reflections_interaction_participantsAndFacilitator",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Interactions between participants and facilitators",
@@ -121,7 +121,7 @@
         },
         {
             "id": "collectionSessionRecord_reflections_interaction_stories",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Stories",
@@ -129,13 +129,13 @@
         },
         {
             "id": "collectionSessionRecord_learningHeader",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "header",
             "displayPrompt": "Learning"
         },
         {
             "id": "collectionSessionRecord_reflections_learning_special",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Unique features",
@@ -143,7 +143,7 @@
         },
         {
             "id": "collectionSessionRecord_reflections_learning_surprise",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Surprise",
@@ -151,7 +151,7 @@
         },
         {
             "id": "collectionSessionRecord_reflections_learning_workedWell",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Worked and didn't work",
@@ -159,7 +159,7 @@
         },
         {
             "id": "collectionSessionRecord_reflections_learning_newIdeas",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "New ideas",
@@ -167,7 +167,7 @@
         },
         {
             "id": "collectionSessionRecord_reflections_learning_wantToRemember",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Other",

@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "collectionSessionActivity_name",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Name",
@@ -15,8 +15,8 @@
         },
         {
             "id": "collectionSessionActivity_type",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "ice-breaker",
                 "sharing stories (no task)",
                 "sharing stories (simple task)",
@@ -34,7 +34,7 @@
         },
         {
             "id": "collectionSessionActivity_plan",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Plan",
@@ -42,7 +42,7 @@
         },
         {
             "id": "collectionSessionActivity_optionalParts",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Optional elaborations",
@@ -50,7 +50,7 @@
         },
         {
             "id": "collectionSessionActivity_duration",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Length",
@@ -58,7 +58,7 @@
         },
         {
             "id": "collectionSessionActivity_recording",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Recording",
@@ -66,7 +66,7 @@
         },
         {
             "id": "collectionSessionActivity_materials",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Materials",
@@ -74,7 +74,7 @@
         },
         {
             "id": "collectionSessionActivity_spaces",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Spaces",
@@ -82,7 +82,7 @@
         },
         {
             "id": "collectionSessionActivity_facilitation",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Facilitation",
@@ -90,7 +90,7 @@
         },
         {
             "id": "SPECIAL_templates_storyCollectionActivities",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "templateList",
             "displayConfiguration": "storyCollectionActivities",
             "displayPrompt": "You can copy an activity from this list."

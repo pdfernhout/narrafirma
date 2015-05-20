@@ -8,7 +8,7 @@
     "panelFields": [
         {
             "id": "projectReportIntroLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "This section will create a report of the data enterend in this software for your records.<br><br>Below are links to each step of this phase, along with any reminders you may have entered on them."
         }

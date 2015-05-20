@@ -7,39 +7,39 @@
     "panelFields": [
         {
             "id": "themeStoriesLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "On this page you will derive emergent themes from the collected stories.\nThe themes will appear in your data as answers to a \"Theme\" question, creating patterns you can use."
         },
         {
             "id": "themeStories_loadLatestStoriesFromServer",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "button",
             "displayConfiguration": "loadLatestStoriesFromServer",
             "displayPrompt": "Load latest stories from server"
         },
         {
             "id": "themeStories_totalResults",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "functionResult",
             "displayConfiguration": "totalNumberOfSurveyResults",
             "displayPrompt": "Total number of survey results loaded from server: <b>{{result}}</b>"
         },
         {
             "id": "themeStories",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "storyThemer",
             "displayPrompt": "Theme stories"
         },
         {
             "id": "mockupThemingLabel_unfinished",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "(Unfinished: The user will use this area to theme stories."
         },
         {
             "id": "mockup_theming",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "image",
             "displayConfiguration": "images/mockups/mockupTheming.png",
             "displayPrompt": "It will look something like this.)"

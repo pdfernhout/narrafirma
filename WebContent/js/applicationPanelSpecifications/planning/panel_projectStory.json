@@ -7,8 +7,8 @@
     "panelFields": [
         {
             "id": "projectStory_scenario",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "ask me anything",
                 "magic ears",
                 "fly on the wall",
@@ -22,8 +22,8 @@
         },
         {
             "id": "projectStory_outcome",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "colossal success",
                 "miserable failure",
                 "acceptable outcome",
@@ -36,7 +36,7 @@
         },
         {
             "id": "projectStory_text",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Story",
@@ -44,7 +44,7 @@
         },
         {
             "id": "projectStory_name",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Name",
@@ -52,7 +52,7 @@
         },
         {
             "id": "projectStory_feelAbout",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Feel about",
@@ -60,7 +60,7 @@
         },
         {
             "id": "projectStory_surprise",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Surprised",
@@ -68,7 +68,7 @@
         },
         {
             "id": "projectStory_dangers",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Opportunities or dangers",

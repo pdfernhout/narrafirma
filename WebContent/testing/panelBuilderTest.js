@@ -21,14 +21,14 @@ require([
     var fieldSpecifications =  [
        {
             "id": "aboutYou_youHeader",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "header",
             "displayPrompt": "About you"
         },
         {
             "id": "aboutYou_experience",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "none",
                 "a little",
                 "some",
@@ -41,8 +41,8 @@ require([
         },
         {
             "id": "aboutYou_help",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "none",
                 "a little",
                 "some",
@@ -55,8 +55,8 @@ require([
         },
         {
             "id": "aboutYou_tech",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "none",
                 "a little",
                 "some",
@@ -82,15 +82,15 @@ require([
         panelFields: [
             {
                 id: "sensemakingSessionRecord_resonantStory_selection",
-                dataType: "none",
+                valueType: "none",
                 displayType: "storiesList",
                 displayName: "Resonant story",
                 displayPrompt: "Choose a story to mark as a resonant story for this sensemaking session."
             },
             {
                 id: "sensemakingSessionRecord_resonantStory_type",
-                dataType: "string",
-                dataOptions: ["pivot","voice","discovery","other"],
+                valueType: "string",
+                valueOptions: ["pivot","voice","discovery","other"],
                 required: true,
                 displayType: "select",
                 displayName: "Type",
@@ -98,7 +98,7 @@ require([
             },
             {
                 id: "sensemakingSessionRecord_resonantStory_reason",
-                dataType: "string",
+                valueType: "string",
                 required: true,
                 displayType: "textarea",
                 displayName: "Why",
@@ -106,7 +106,7 @@ require([
             },
             {
                 id: "sensemakingSessionRecord_resonantStory_groups",
-                dataType: "string",
+                valueType: "string",
                 required: true,
                 displayType: "text",
                 displayName: "Groups",
@@ -114,7 +114,7 @@ require([
             },
             {
                 id: "sensemakingSessionRecord_resonantStory_notes",
-                dataType: "string",
+                valueType: "string",
                 displayType: "textarea",
                 displayName: "Notes",
                 displayPrompt: "Would you like to make any other notes about this story?"

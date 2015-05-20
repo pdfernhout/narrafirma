@@ -7,15 +7,15 @@
     "panelFields": [
         {
             "id": "graphBrowserLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "On this page you can take a preliminary look at patterns in the answers people gave about their incoming stories. This is intended mainly to spot check for issues related to the questionnaire design. These graphs will be reviewed more systematically in the catalysis section."
         },
         {
             "id": "storyCollectionChoiceY",
-            "dataPath": "/localSettings/currentStoryCollection",
-            "dataType": "string",
-            "dataOptions": "project_storyCollections",
+            "valuePath": "/localSettings/currentStoryCollection",
+            "valueType": "string",
+            "valueOptions": "project_storyCollections",
             "dataOptionValueKey": "storyCollection_shortName",
             "required": true,
             "displayType": "select",
@@ -24,19 +24,19 @@
         },
         {
             "id": "graphBrowserDisplay",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "graphBrowser",
             "displayPrompt": "Graph browser"
         },
         {
             "id": "graphBrowserMockupLabel_unfinished",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "(Unfinished: This area will show graphs of patterns in the data."
         },
         {
             "id": "mockup_graphBrowser",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "image",
             "displayConfiguration": "images/mockups/mockupGraphs.png",
             "displayPrompt": "It will look something like this.)"

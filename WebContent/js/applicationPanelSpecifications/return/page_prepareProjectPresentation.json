@@ -7,13 +7,13 @@
     "panelFields": [
         {
             "id": "project_presentationLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "On this page you can build a presentation about your project to show to others."
         },
         {
             "id": "project_presentationElementsList",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_addPresentationElement",
@@ -22,13 +22,13 @@
         },
         {
             "id": "projectPresentation_presentationLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "After you finish adding elements for your presentation, you can export the elements, open them in your word processor, and add material\nfrom any of the stage reports (or the final project report)."
         },
         {
             "id": "projectPresentation_exportPresentationOutlineButton",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "button",
             "displayPrompt": "Export these elements"
         }

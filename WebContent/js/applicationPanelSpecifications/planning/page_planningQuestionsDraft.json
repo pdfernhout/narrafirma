@@ -7,13 +7,13 @@
     "panelFields": [
         {
             "id": "project_draftQuestionsLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "On this page you will answer some questions about your project's goals, relationships, focus, range, scope, and emphasis.\nIf you don't have good answers for these questions right now, don't worry; you will have a chance to work on these answers again later."
         },
         {
             "id": "project_pniQuestions_goal_draft",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Project goal",
@@ -21,7 +21,7 @@
         },
         {
             "id": "project_pniQuestions_relationships_draft",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Project relationships",
@@ -29,7 +29,7 @@
         },
         {
             "id": "project_pniQuestions_focus_draft",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Project focus",
@@ -37,7 +37,7 @@
         },
         {
             "id": "project_pniQuestions_range_draft",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Project range",
@@ -45,7 +45,7 @@
         },
         {
             "id": "project_pniQuestions_scope_draft",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Project scope",
@@ -53,7 +53,7 @@
         },
         {
             "id": "project_pniQuestions_emphasis_draft",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Project emphasis",

@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "participantGroup_name",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Name",
@@ -15,7 +15,7 @@
         },
         {
             "id": "participantGroup_description",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Description",
@@ -23,20 +23,20 @@
         },
         {
             "id": "participantGroup_detailsAboutParticipantGroup",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "Details for the participant group."
         },
         {
             "id": "participantGroup_statusHeader",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "header",
             "displayPrompt": "Status"
         },
         {
             "id": "participantGroup_status",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "very low",
                 "low",
@@ -52,8 +52,8 @@
         },
         {
             "id": "participantGroup_confidence",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "very low",
                 "low",
@@ -69,14 +69,14 @@
         },
         {
             "id": "participantGroup_abilityHeader",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "header",
             "displayPrompt": "Ability"
         },
         {
             "id": "participantGroup_time",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "very little",
                 "little",
@@ -91,8 +91,8 @@
         },
         {
             "id": "participantGroup_education",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "illiterate",
                 "minimal",
@@ -108,8 +108,8 @@
         },
         {
             "id": "participantGroup_physicalDisabilities",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "none",
                 "minimal",
@@ -124,8 +124,8 @@
         },
         {
             "id": "participantGroup_emotionalImpairments",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "none",
                 "minimal",
@@ -140,14 +140,14 @@
         },
         {
             "id": "participantGroup_expectationsHeader",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "header",
             "displayPrompt": "Expectations"
         },
         {
             "id": "participantGroup_performing",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "very unimportant",
                 "somewhat unimportant",
@@ -162,8 +162,8 @@
         },
         {
             "id": "participantGroup_conforming",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "very unimportant",
                 "somewhat unimportant",
@@ -178,8 +178,8 @@
         },
         {
             "id": "participantGroup_promoting",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "very unimportant",
                 "somewhat unimportant",
@@ -194,8 +194,8 @@
         },
         {
             "id": "participantGroup_venting",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "very unimportant",
                 "somewhat unimportant",
@@ -210,14 +210,14 @@
         },
         {
             "id": "participantGroup_feelingsHeader",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "header",
             "displayPrompt": "Feelings about the project"
         },
         {
             "id": "participantGroup_interest",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "very little",
                 "a little",
@@ -233,8 +233,8 @@
         },
         {
             "id": "participantGroup_feelings_project",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "negative",
                 "neutral",
@@ -248,8 +248,8 @@
         },
         {
             "id": "participantGroup_feelings_facilitator",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "negative",
                 "neutral",
@@ -263,8 +263,8 @@
         },
         {
             "id": "participantGroup_feelings_stories",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "negative",
                 "neutral",
@@ -278,14 +278,14 @@
         },
         {
             "id": "participantGroup_topicHeader",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "header",
             "displayPrompt": "Feelings about the topic"
         },
         {
             "id": "participantGroup_topic_feeling",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "strongly negative",
                 "negative",
@@ -301,8 +301,8 @@
         },
         {
             "id": "participantGroup_topic_private",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "very private",
                 "medium",
@@ -316,8 +316,8 @@
         },
         {
             "id": "participantGroup_topic_articulate",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "hard",
                 "medium",
@@ -331,8 +331,8 @@
         },
         {
             "id": "participantGroup_topic_timeframe",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "hours",
                 "days",

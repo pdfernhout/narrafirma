@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "perspective_excerptLinkageNotes",
-            "dataType": "string",
+            "valueType": "string",
             "displayType": "textarea",
             "displayName": "Notes",
             "displayPrompt": "Enter any notes you want to remember about this excerpt with respect to this perspective."

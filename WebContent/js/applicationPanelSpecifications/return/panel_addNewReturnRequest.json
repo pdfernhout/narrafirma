@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "returnRequest_text",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Request",
@@ -15,8 +15,8 @@
         },
         {
             "id": "returnRequest_type",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "help with their own projects",
                 "help with sustaining story exchange",
                 "help with examining this project's stories and results",
@@ -30,7 +30,7 @@
         },
         {
             "id": "returnRequest_isMet",
-            "dataType": "boolean",
+            "valueType": "boolean",
             "required": true,
             "displayType": "boolean",
             "displayName": "Satisfied",
@@ -38,7 +38,7 @@
         },
         {
             "id": "returnRequest_whatHappened",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "What happened",
@@ -46,7 +46,7 @@
         },
         {
             "id": "returnRequest_notes",
-            "dataType": "string",
+            "valueType": "string",
             "displayType": "textarea",
             "displayName": "Notes",
             "displayPrompt": "Enter any notes about the request here."

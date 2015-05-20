@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "printQuestionsForm_enterStories",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "button",
             "displayConfiguration": "enterSurveyResult",
             "displayPrompt": "Enter survey result"

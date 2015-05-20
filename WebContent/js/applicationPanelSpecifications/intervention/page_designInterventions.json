@@ -7,20 +7,20 @@
     "panelFields": [
         {
             "id": "project_interventionLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "On this page you can design interventions that change the stories people tell\nin your community or organization."
         },
         {
             "id": "interventionRecommendations",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "recommendationTable",
             "displayConfiguration": "interventions",
             "displayPrompt": "Recommendations for intervention plans"
         },
         {
             "id": "project_interventionPlansList",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_addIntervention",

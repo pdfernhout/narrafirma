@@ -7,13 +7,13 @@
     "panelFields": [
         {
             "id": "project_elicitingQuestionsLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "On this page you will design the eliciting questions you use to ask people to tell stories.\nYou need at least one question for people to answer. Giving people more than one question to choose from\nis recommended."
         },
         {
             "id": "project_elicitingQuestionsList",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_addElicitingQuestion",
@@ -22,7 +22,7 @@
         },
         {
             "id": "SPECIAL_elicitingQuestionRecommendations",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "recommendationTable",
             "displayConfiguration": "Eliciting questions",
             "displayPrompt": "Recommendations for eliciting questions"

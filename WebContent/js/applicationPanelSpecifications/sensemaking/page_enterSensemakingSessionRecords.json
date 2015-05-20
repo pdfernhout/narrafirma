@@ -7,13 +7,13 @@
     "panelFields": [
         {
             "id": "project_sensemakingSessionRecordsLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "On this page you will enter records of what happened at your sensemaking sessions."
         },
         {
             "id": "project_sensemakingSessionRecordsList",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_addSensemakingSessionRecord",

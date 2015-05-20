@@ -8,7 +8,7 @@
     "panelFields": [
         {
             "id": "project_projectPlanningLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "In the planning phase of your PNI project, you will make decisions about how your project will proceed.\nYou will think about your goals, your topic, your participants, and any opportunities and dangers you might encounter during the project.<br><br>Below are links to each step of this phase, along with any reminders you may have entered on them."
         }

@@ -428,11 +428,11 @@ define([
             "id": "storyThemeQuestions",
             panelFields: [
                 {id: "id", displayName: "Index"},
-                {id: "patternName", displayName: "Pattern name", dataOptions:[]},
-                {id: "graphType", displayName: "Graph type", dataOptions:[]},
-                {id: "significance", displayName: "Significance", dataOptions:[]},
-                {id: "reviewed", displayName: "Reviewed", dataOptions:[]},
-                {id: "observation", displayName: "Observation", dataOptions:[]}
+                {id: "patternName", displayName: "Pattern name", valueOptions:[]},
+                {id: "graphType", displayName: "Graph type", valueOptions:[]},
+                {id: "significance", displayName: "Significance", valueOptions:[]},
+                {id: "reviewed", displayName: "Reviewed", valueOptions:[]},
+                {id: "observation", displayName: "Observation", valueOptions:[]}
             ]
         };
         

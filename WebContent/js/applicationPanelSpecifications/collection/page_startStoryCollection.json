@@ -7,13 +7,13 @@
     "panelFields": [
         {
             "id": "storyCollection_createCollectionLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "On this page you will create one or more story collections, which are used to store collected stories for a specific questionnaire. For example, you might have a test collection for experimenting, a pilot project collection with a first version of a questionnaire, and a major collection with a revised final questionnaire."
         },
         {
             "id": "project_storyCollections",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": {

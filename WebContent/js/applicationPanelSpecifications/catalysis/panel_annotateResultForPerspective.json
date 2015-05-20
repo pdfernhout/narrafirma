@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "perspective_resultLinkageNotes",
-            "dataType": "string",
+            "valueType": "string",
             "displayType": "textarea",
             "displayName": "Notes",
             "displayPrompt": "Enter any notes you want to remember about this result with respect to this perspective."

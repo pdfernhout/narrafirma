@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "project_outcomesList",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_projectOutcome",

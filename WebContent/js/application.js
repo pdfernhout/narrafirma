@@ -105,7 +105,7 @@ define([
                 var statusEntryID = pageID + "_reminders";
                 var completionStatusEntryFieldSpecification = {
                     id: statusEntryID,
-                    dataType: "string",
+                    valueType: "string",
                     displayType: "textarea",
                     displayName: "Reminders",
                     displayPrompt: translate("#dashboard_status_entry::prompt", "You can enter reminders about this page here which will appear on this section's dashboard:")
@@ -134,7 +134,7 @@ define([
                         // console.log("about to call panelBuilder to add one questionAnswer for child page's status", childPageID);
                         var completionStatusDisplayFieldSpecification = {
                             id: statusViewID,
-                            dataType: "none",
+                            valueType: "none",
                             displayType: "questionAnswer",
                             displayName: prompt,
                             displayPrompt: prompt,
@@ -151,7 +151,7 @@ define([
                 if (!pageSpecification.previousPageID) buttonPrompt = "Next";
                 var nextPageButtonSpecification = {
                     "id": pageID + "_nextPageButton",
-                    "dataType": "none",
+                    "valueType": "none",
                     "displayPrompt": buttonPrompt,
                     "displayType": "button",
                     "displayConfiguration": {
@@ -165,7 +165,7 @@ define([
                 // TODO: Translate
                 var returnToDashboardButtonSpecification = {
                     "id": pageID + "_returnToDashboardButton",
-                    "dataType": "none",
+                    "valueType": "none",
                     "displayPrompt": "Go to project home page",
                     "displayType": "button",
                     "displayConfiguration": {

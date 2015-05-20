@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "elicitingQuestion_text",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Question",
@@ -15,7 +15,7 @@
         },
         {
             "id": "elicitingQuestion_shortName",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Short Name",
@@ -23,8 +23,8 @@
         },
         {
             "id": "elicitingQuestion_type",
-            "dataType": "dictionary",
-            "dataOptions": [
+            "valueType": "dictionary",
+            "valueOptions": [
                 "what happened",
                 "directed question",
                 "undirected questions",
@@ -42,7 +42,7 @@
         },
         {
             "id": "SPECIAL_templates_elicitingQuestions",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "templateList",
             "displayConfiguration": "elicitationQuestions",
             "displayPrompt": "You can copy a question from this list."

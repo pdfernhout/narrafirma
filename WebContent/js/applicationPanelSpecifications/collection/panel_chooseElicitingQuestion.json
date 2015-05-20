@@ -7,8 +7,8 @@
     "panelFields": [
         {
             "id": "elicitingQuestion",
-            "dataType": "string",
-            "dataOptions": "/projectModel/project_elicitingQuestionsList",
+            "valueType": "string",
+            "valueOptions": "/projectModel/project_elicitingQuestionsList",
             "dataOptionValueKey": "elicitingQuestion_shortName",
             "required": true,
             "displayType": "select",

@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "interventionPlan_name",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Name",
@@ -15,8 +15,8 @@
         },
         {
             "id": "interventionPlan_type",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "narrative ombudsman",
                 "narrative suggestion box",
                 "story sharing space",
@@ -39,7 +39,7 @@
         },
         {
             "id": "interventionPlan_description",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Description",
@@ -47,7 +47,7 @@
         },
         {
             "id": "interventionPlan_groups",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Participant groups",
@@ -55,7 +55,7 @@
         },
         {
             "id": "interventionPlan_times",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Time",
@@ -63,7 +63,7 @@
         },
         {
             "id": "interventionPlan_locations",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Location",
@@ -71,7 +71,7 @@
         },
         {
             "id": "interventionPlan_help",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Help",
@@ -79,7 +79,7 @@
         },
         {
             "id": "interventionPlan_permission",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Permission",
@@ -87,7 +87,7 @@
         },
         {
             "id": "interventionPlan_participation",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Participation",
@@ -95,7 +95,7 @@
         },
         {
             "id": "interventionPlan_materials",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Materials",
@@ -103,7 +103,7 @@
         },
         {
             "id": "interventionPlan_space",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Spaces",
@@ -111,7 +111,7 @@
         },
         {
             "id": "interventionPlan_techResources",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Technology",
@@ -119,7 +119,7 @@
         },
         {
             "id": "interventionPlan_recording",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Recording",

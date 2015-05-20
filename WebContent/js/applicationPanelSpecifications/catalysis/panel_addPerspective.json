@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "perspective_name",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Name",
@@ -15,7 +15,7 @@
         },
         {
             "id": "perspective_description",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Perspective",
@@ -23,21 +23,21 @@
         },
         {
             "id": "perspective_linkedResultsList",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "annotationsGrid",
             "displayConfiguration": "panel_annotateResultForPerspective",
             "displayPrompt": "Results linked to this perspective"
         },
         {
             "id": "perspective_linkedExcerptsList",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "annotationsGrid",
             "displayConfiguration": "panel_annotateExcerptForPerspective",
             "displayPrompt": "Excerpts linked to this perspective"
         },
         {
             "id": "perspective_linkedInterpretationsList",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "annotationsGrid",
             "displayConfiguration": "panel_annotateInterpretationForPerspective",
             "displayPrompt": "Interpretations linked to this perspective"

@@ -8,7 +8,7 @@
     "panelFields": [
         {
             "id": "interventionIntroLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "In the intervention phase of your PNI project, you will plan interventions and record information about them.<br><br>Below are links to each step of this phase, along with any reminders you may have entered on them."
         }

@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "outcomes_group",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Participant group",
@@ -15,14 +15,14 @@
         },
         {
             "id": "outcomes_hopesHeader",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "header",
             "displayPrompt": "Hopes"
         },
         {
             "id": "outcomes_peopleFeltHeard",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "never",
                 "occasionally",
                 "sometimes",
@@ -36,8 +36,8 @@
         },
         {
             "id": "outcomes_peopleFeltInvolved",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "never",
                 "occasionally",
                 "sometimes",
@@ -51,8 +51,8 @@
         },
         {
             "id": "outcomes_peopleLearnedAboutCommOrg",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "never",
                 "occasionally",
                 "sometimes",
@@ -66,14 +66,14 @@
         },
         {
             "id": "outcomes_voicesHeader",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "header",
             "displayPrompt": "Voices"
         },
         {
             "id": "outcomes_peopleWantedToTellMoreStories",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "never",
                 "occasionally",
                 "sometimes",
@@ -87,8 +87,8 @@
         },
         {
             "id": "outcomes_peopleWantedToShareMoreStoriesWithEachOther",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "never",
                 "occasionally",
                 "sometimes",
@@ -102,8 +102,8 @@
         },
         {
             "id": "outcomes_peopleFeltStoriesNeededToBeHeard",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "not at all",
                 "somewhat",
                 "definitely",
@@ -116,8 +116,8 @@
         },
         {
             "id": "outcomes_peopleFeltNobodyCares",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "not at all",
                 "somewhat",
                 "definitely",
@@ -130,14 +130,14 @@
         },
         {
             "id": "outcomes_needsHeader",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "header",
             "displayPrompt": "Needs"
         },
         {
             "id": "outcomes_peopleFeltNobodyCanMeetNeeds",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "not at all",
                 "somewhat",
                 "definitely",
@@ -150,8 +150,8 @@
         },
         {
             "id": "outcomes_peopleFeltTheyNeedNewStories",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "not at all",
                 "somewhat",
                 "definitely",
@@ -164,8 +164,8 @@
         },
         {
             "id": "outcomes_peopleWantedToKeepExploring",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "not at all",
                 "somewhat",
                 "definitely",
@@ -178,8 +178,8 @@
         },
         {
             "id": "outcomes_crisisPointsWereFound",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "not at all",
                 "somewhat",
                 "definitely",
@@ -192,8 +192,8 @@
         },
         {
             "id": "outcomes_issuesWereBeyondWords",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "not at all",
                 "somewhat",
                 "definitely",
@@ -206,14 +206,14 @@
         },
         {
             "id": "outcomes_learningHeader",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "header",
             "displayPrompt": "Learning"
         },
         {
             "id": "outcomes_peopleLearnedAboutTopic",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "never",
                 "occasionally",
                 "sometimes",
@@ -227,8 +227,8 @@
         },
         {
             "id": "outcomes_issuesNewMembersStruggleWith",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "not at all",
                 "somewhat",
                 "definitely",
@@ -241,8 +241,8 @@
         },
         {
             "id": "outcomes_foundInfoWithoutUnderstanding",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "not at all",
                 "somewhat",
                 "definitely",
@@ -255,8 +255,8 @@
         },
         {
             "id": "outcomes_foundOverConfidence",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "not at all",
                 "somewhat",
                 "definitely",
@@ -269,8 +269,8 @@
         },
         {
             "id": "outcomes_peopleCuriousAboutStoryWork",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "never",
                 "occasionally",
                 "sometimes",

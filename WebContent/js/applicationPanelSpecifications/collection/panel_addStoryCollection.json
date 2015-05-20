@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "storyCollection_shortName",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Name",
@@ -15,8 +15,8 @@
         },
         {
             "id": "storyCollection_questionnaireIdentifier",
-            "dataType": "string",
-            "dataOptions": "/projectModel/project_questionnaires",
+            "valueType": "string",
+            "valueOptions": "/projectModel/project_questionnaires",
             "required": true,
             "displayType": "select",
             "displayName": "Questionnaire",
@@ -24,14 +24,14 @@
         },
         {
             "id": "storyCollection_activeOnWeb",
-            "dataType": "boolean",
+            "valueType": "boolean",
             "displayType": "checkbox",
             "displayName": "Active on web",
             "displayPrompt": "Check here to make this story collection available on the web."
         },
         {
             "id": "storyCollection_notes",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Notes",

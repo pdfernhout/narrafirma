@@ -8,7 +8,7 @@
     "panelFields": [
         {
             "id": "sensemakingIntroLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "In the sensemaking phase of your PNI project, you will plan sensemaking sessions and record what happened in them.<br><br>Below are links to each step of this phase, along with any reminders you may have entered on them."
         }

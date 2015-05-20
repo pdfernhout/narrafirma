@@ -7,15 +7,15 @@
     "panelFields": [
         {
             "id": "sensemakingSessionRecord_resonantStory_selection",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "storiesList",
             "displayName": "Resonant story",
             "displayPrompt": "Choose a story to mark as a resonant story for this sensemaking session."
         },
         {
             "id": "sensemakingSessionRecord_resonantStory_type",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "pivot",
                 "voice",
                 "discovery",
@@ -28,7 +28,7 @@
         },
         {
             "id": "sensemakingSessionRecord_resonantStory_reason",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Why",
@@ -36,7 +36,7 @@
         },
         {
             "id": "sensemakingSessionRecord_resonantStory_groups",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Groups",
@@ -44,7 +44,7 @@
         },
         {
             "id": "sensemakingSessionRecord_resonantStory_notes",
-            "dataType": "string",
+            "valueType": "string",
             "displayType": "textarea",
             "displayName": "Notes",
             "displayPrompt": "Would you like to make any other notes about this story?"

@@ -7,20 +7,20 @@
     "panelFields": [
         {
             "id": "webStoryCollection_stopCollectionLabel2",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "If you are doing story collection over the internet, click this button to make the web form unavailable (to anyone but yourself). You can re-enable story collection later by going back to a previous page."
         },
         {
             "id": "webStoryCollection_disableWebStoryFormAfterStoryCollectionButton",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "button",
             "displayConfiguration": "storyCollectionStop",
             "displayPrompt": "Disable web story collection"
         },
         {
             "id": "webStoryCollection_enabledTracker2",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "functionResult",
             "displayConfiguration": "isStoryCollectingEnabled",
             "displayPrompt": "Web story collection enabled: <b>{{result}}</b>"

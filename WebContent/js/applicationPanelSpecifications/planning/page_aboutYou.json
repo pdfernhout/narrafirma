@@ -7,14 +7,14 @@
     "panelFields": [
         {
             "id": "aboutYou_youHeader",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "header",
             "displayPrompt": "About you"
         },
         {
             "id": "aboutYou_experience",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "none",
                 "a little",
                 "some",
@@ -27,8 +27,8 @@
         },
         {
             "id": "aboutYou_help",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "none",
                 "a little",
                 "some",
@@ -41,8 +41,8 @@
         },
         {
             "id": "aboutYou_tech",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "none",
                 "a little",
                 "some",

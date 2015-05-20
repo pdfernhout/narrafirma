@@ -7,20 +7,20 @@
     "panelFields": [
         {
             "id": "project_sensemakingSessionPlansLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "On this page you can create plans for your sensemaking sessions."
         },
         {
             "id": "sensemakingSessionRecommendations",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "recommendationTable",
             "displayConfiguration": "sensemakingSessions",
             "displayPrompt": "Recommendations for sensemaking sessions"
         },
         {
             "id": "project_sensemakingSessionPlansList",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_addSensemakingSessionPlan",

@@ -38,8 +38,8 @@ define(["js/domain", "dojox/html/entities"], function(domain, entities) {
     function displayHTMLForCheckboxes(fieldSpecification, fieldName, value) {
         var result = "";
         // TODO: What if value is not current available option?
-        for (var i = 0; i < fieldSpecification.dataOptions.length; i++) {
-            var option = fieldSpecification.dataOptions[i];
+        for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
+            var option = fieldSpecification.valueOptions[i];
             // console.log("checkboxes", option, fieldSpecification, value);
             if (result) result += ", ";
             if (value && value[option]) {
@@ -54,8 +54,8 @@ define(["js/domain", "dojox/html/entities"], function(domain, entities) {
     function displayHTMLForSelect(fieldSpecification, fieldName, value) {
         var result = "";
         // TODO: What if value is not current available option?
-        for (var i = 0; i < fieldSpecification.dataOptions.length; i++) {
-            var option = fieldSpecification.dataOptions[i];
+        for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
+            var option = fieldSpecification.valueOptions[i];
             if (result) result += ", ";
             if (value === option) {
                 result += wrap("span", "narrafirma-story-card-select-selected", option);

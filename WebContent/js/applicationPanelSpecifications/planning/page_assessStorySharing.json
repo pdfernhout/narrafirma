@@ -7,20 +7,20 @@
     "panelFields": [
         {
             "id": "assessment_intro",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "On this page you can answer questions about your community or organization to assess its story sharing culture.\nBefore you answer these questions, you should spend some time listening to people share stories together\nin the places where they normally gather."
         },
         {
             "id": "assessment_narrativeFreedom",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "header",
             "displayPrompt": "Narrative freedom"
         },
         {
             "id": "assessment_counterStories",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "never",
                 "seldom",
@@ -34,8 +34,8 @@
         },
         {
             "id": "assessment_authority",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "enthrallment",
                 "strong listening",
@@ -49,8 +49,8 @@
         },
         {
             "id": "assessment_mistakes",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "never",
                 "seldom",
@@ -64,8 +64,8 @@
         },
         {
             "id": "assessment_silencing",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "warning",
                 "caution",
@@ -79,8 +79,8 @@
         },
         {
             "id": "assessment_conflict",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "demand",
                 "criticism",
@@ -94,14 +94,14 @@
         },
         {
             "id": "assessment_narrativeFlow",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "header",
             "displayPrompt": "Narrative flow"
         },
         {
             "id": "assessment_remindings",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "never",
                 "seldom",
@@ -115,8 +115,8 @@
         },
         {
             "id": "assessment_retellings",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "never",
                 "seldom",
@@ -130,8 +130,8 @@
         },
         {
             "id": "assessment_folklore",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "none",
                 "little",
@@ -145,8 +145,8 @@
         },
         {
             "id": "assessment_storyTypes",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "no",
                 "maybe",
@@ -160,8 +160,8 @@
         },
         {
             "id": "assessment_sensemaking",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "never",
                 "seldom",
@@ -175,14 +175,14 @@
         },
         {
             "id": "assessment_narrativeKnowledge",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "header",
             "displayPrompt": "Narrative knowledge"
         },
         {
             "id": "assessment_realStories",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "never",
                 "seldom",
@@ -196,8 +196,8 @@
         },
         {
             "id": "assessment_negotiations",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "never",
                 "seldom",
@@ -211,8 +211,8 @@
         },
         {
             "id": "assessment_cotelling",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "never",
                 "seldom",
@@ -226,8 +226,8 @@
         },
         {
             "id": "assessment_blunders",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "often",
                 "sometimes",
@@ -241,8 +241,8 @@
         },
         {
             "id": "assessment_accounting",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "never",
                 "seldom",
@@ -256,14 +256,14 @@
         },
         {
             "id": "assessment_narrativeUnity",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "header",
             "displayPrompt": "Narrative unity"
         },
         {
             "id": "assessment_commonStories",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "impossible",
                 "difficult",
@@ -277,8 +277,8 @@
         },
         {
             "id": "assessment_sacredStories",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "impossible",
                 "difficult",
@@ -292,8 +292,8 @@
         },
         {
             "id": "assessment_condensedStories",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "impossible",
                 "difficult",
@@ -307,8 +307,8 @@
         },
         {
             "id": "assessment_intermingling",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "never",
                 "seldom",
@@ -322,8 +322,8 @@
         },
         {
             "id": "assessment_culture",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "unknown",
                 "impossible",
                 "difficult",
@@ -337,13 +337,13 @@
         },
         {
             "id": "assessment_result_header",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "header",
             "displayPrompt": "Narrative score results"
         },
         {
             "id": "assessment_result_freedomSubscore",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "quizScoreResult",
             "displayConfiguration": [
                 "assessment_counterStories",
@@ -356,7 +356,7 @@
         },
         {
             "id": "assessment_result_flowSubscore",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "quizScoreResult",
             "displayConfiguration": [
                 "assessment_remindings",
@@ -369,7 +369,7 @@
         },
         {
             "id": "assessment_result_knowledgeSubscore",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "quizScoreResult",
             "displayConfiguration": [
                 "assessment_realStories",
@@ -382,7 +382,7 @@
         },
         {
             "id": "assessment_result_unitySubscore",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "quizScoreResult",
             "displayConfiguration": [
                 "assessment_commonStories",
@@ -395,7 +395,7 @@
         },
         {
             "id": "assessment_result_grandTotal",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "quizScoreResult",
             "displayConfiguration": [
                 "assessment_counterStories",
@@ -423,7 +423,7 @@
         },
         {
             "id": "assessment_notes",
-            "dataType": "string",
+            "valueType": "string",
             "displayType": "textarea",
             "displayName": "Notes",
             "displayPrompt": "Here you can record some notes or comments about this assessment."

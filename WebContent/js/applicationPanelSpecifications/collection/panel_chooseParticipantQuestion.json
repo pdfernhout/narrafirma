@@ -7,8 +7,8 @@
     "panelFields": [
         {
             "id": "participantQuestion",
-            "dataType": "string",
-            "dataOptions": "/projectModel/project_participantQuestionsList",
+            "valueType": "string",
+            "valueOptions": "/projectModel/project_participantQuestionsList",
             "dataOptionValueKey": "participantQuestion_shortName",
             "required": true,
             "displayType": "select",

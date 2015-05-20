@@ -85,14 +85,14 @@ define([
     };
      
     PanelSpecificationCollection.prototype.initialDataForField = function(fieldSpecification) {
-        var dataType = fieldSpecification.dataType;
-        if (dataType === "string") return "";
-        if (dataType === "array") return [];
-        if (dataType === "dictionary") return {};
-        if (dataType === "object") return {};
-        if (dataType === "boolean") return false;
-        console.log("ERROR: Unsupported model field dataType", dataType, fieldSpecification);
-        throw new Error("Unsupported model field dataType: " + dataType + " for field: " + fieldSpecification.id);
+        var valueType = fieldSpecification.valueType;
+        if (valueType === "string") return "";
+        if (valueType === "array") return [];
+        if (valueType === "dictionary") return {};
+        if (valueType === "object") return {};
+        if (valueType === "boolean") return false;
+        console.log("ERROR: Unsupported model field valueType", valueType, fieldSpecification);
+        throw new Error("Unsupported model field valueType: " + valueType + " for field: " + fieldSpecification.id);
     };
 
     // This builds a specific model based on the name of the model, using data from one or more pages or panels that define that model
@@ -107,8 +107,8 @@ define([
         
         for (var i = 0; i < modelFieldSpecifications.length; i++) {
             var fieldSpecification = modelFieldSpecifications[i];
-            if (!fieldSpecification.dataType) console.log("WARNING: Missing dataType for fieldSpecification", fieldSpecification);
-            if (fieldSpecification.dataType && fieldSpecification.dataType !== "none") {
+            if (!fieldSpecification.valueType) console.log("WARNING: Missing valueType for fieldSpecification", fieldSpecification);
+            if (fieldSpecification.valueType && fieldSpecification.valueType !== "none") {
                 model[fieldSpecification.id] = this.initialDataForField(fieldSpecification);
             }
         }
@@ -122,8 +122,8 @@ define([
  
         for (var i = 0; i < fieldSpecifications.length; i++) {
             var fieldSpecification = fieldSpecifications[i];
-            if (!fieldSpecification.dataType) console.log("WARNING: Missing dataType for fieldSpecification", fieldSpecification);
-            if (fieldSpecification.dataType && fieldSpecification.dataType !== "none") {
+            if (!fieldSpecification.valueType) console.log("WARNING: Missing valueType for fieldSpecification", fieldSpecification);
+            if (fieldSpecification.valueType && fieldSpecification.valueType !== "none") {
                 model[fieldSpecification.id] = this.initialDataForField(fieldSpecification);
             }
         }

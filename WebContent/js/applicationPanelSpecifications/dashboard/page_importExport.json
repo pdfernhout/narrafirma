@@ -8,20 +8,20 @@
     "panelFields": [
         {
             "id": "project_importExport_header",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "This page can be used to import or export project data in various ways. NOT FINISHED!"
         },
         {
             "id": "project_importExport_loadLatest",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "button",
             "displayConfiguration": "loadLatest",
             "displayPrompt": "Load latest (also going away?)"
         },
         {
             "id": "project_importExport_importExportOld",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "button",
             "displayConfiguration": "importExportOld",
             "displayPrompt": "Import/Export (old approach)"

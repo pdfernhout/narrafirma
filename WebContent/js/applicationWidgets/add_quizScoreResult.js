@@ -17,7 +17,7 @@ define([
             var answerWeight = 0;
             if (questionAnswer) {
                 // console.log("questionAnswer", questionAnswer);
-                var choices = panelSpecificationCollection.getFieldSpecificationForFieldID(questionID).dataOptions;
+                var choices = panelSpecificationCollection.getFieldSpecificationForFieldID(questionID).valueOptions;
                 answerWeight = choices.indexOf(questionAnswer) - 1;
                 // console.log("answerWeight", answerWeight);
                 if (answerWeight < 0) answerWeight = 0;

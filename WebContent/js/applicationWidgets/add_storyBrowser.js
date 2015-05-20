@@ -103,24 +103,24 @@ define([
         }
         
         if (question.displayType === "select") {
-            // console.log("select", question, question.dataOptions);
-            array.forEach(question.dataOptions, function(each) {
+            // console.log("select", question, question.valueOptions);
+            array.forEach(question.valueOptions, function(each) {
                 // console.log("option", question.id, each);
                 count = totals[each];
                 if (!count) count = 0;
                 options.push({label: each + " (" +  count + ")", value: each});
             });
         } else if (question.displayType === "radiobuttons") {
-            // console.log("radiobuttons", question, question.dataOptions);
-            array.forEach(question.dataOptions, function(each) {
+            // console.log("radiobuttons", question, question.valueOptions);
+            array.forEach(question.valueOptions, function(each) {
                 // console.log("option", question.id, each);
                 count = totals[each];
                 if (!count) count = 0;
                 options.push({label: each + " (" +  count + ")", value: each});
             });
         } else if (question.displayType === "checkboxes") {
-            // console.log("checkboxes", question, question.dataOptions);
-            array.forEach(question.dataOptions, function(each) {
+            // console.log("checkboxes", question, question.valueOptions);
+            array.forEach(question.valueOptions, function(each) {
                 // console.log("option", question.id, each);
                 count = totals[each];
                 if (!count) count = 0;

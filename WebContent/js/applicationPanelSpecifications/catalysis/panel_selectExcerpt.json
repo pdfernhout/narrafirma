@@ -7,13 +7,13 @@
     "panelFields": [
         {
             "id": "selectExcerpt_excerptsListDisplay",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "excerptsList",
             "displayPrompt": "Collected excerpts"
         },
         {
             "id": "selectExcerpt_addExcerptToInterpretationButton",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "button",
             "displayPrompt": "Add selected excerpt to interpretation"
         }

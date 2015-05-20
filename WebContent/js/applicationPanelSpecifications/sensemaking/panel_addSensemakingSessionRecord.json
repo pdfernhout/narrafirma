@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "sensemakingSessionRecord_name",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Name",
@@ -15,7 +15,7 @@
         },
         {
             "id": "sensemakingSessionRecord_whenWhere",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "When and where",
@@ -23,7 +23,7 @@
         },
         {
             "id": "sensemakingSessionRecord_groups",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Participant groups",
@@ -31,7 +31,7 @@
         },
         {
             "id": "sensemakingSessionRecord_participants",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Who attended",
@@ -39,7 +39,7 @@
         },
         {
             "id": "sensemakingSessionRecord_plan",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Plan",
@@ -47,14 +47,14 @@
         },
         {
             "id": "sensemakingSessionRecord_notes",
-            "dataType": "string",
+            "valueType": "string",
             "displayType": "textarea",
             "displayName": "Notes",
             "displayPrompt": "Enter general notes on the session here.\nYour notes can include links to images or other documents."
         },
         {
             "id": "sensemakingSessionRecord_resonantStoriesList",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_addResonantStory",
@@ -63,7 +63,7 @@
         },
         {
             "id": "sensemakingSessionRecord_outcomesList",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_newSensemakingSessionOutcome",
@@ -72,7 +72,7 @@
         },
         {
             "id": "sensemakingSessionRecord_constructionsList",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_newSensemakingSessionConstruction",
@@ -81,19 +81,19 @@
         },
         {
             "id": "sensemakingSessionRecord_reflectionsLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "Use the questions below to reflect on the session."
         },
         {
             "id": "sensemakingSessionRecord_reflectionsOnChangeHeader",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "header",
             "displayPrompt": "Change"
         },
         {
             "id": "sensemakingSessionRecord_reflections_change_participantPerceptions",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Change in participant perceptions",
@@ -101,7 +101,7 @@
         },
         {
             "id": "sensemakingSessionRecord_reflections_change_yourPerceptions",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Change in facilitator perceptions",
@@ -109,7 +109,7 @@
         },
         {
             "id": "sensemakingSessionRecord_reflections_change_project",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Changes to the project",
@@ -117,13 +117,13 @@
         },
         {
             "id": "sensemakingSessionRecord_interactionsHeader",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "header",
             "displayPrompt": "Interactions"
         },
         {
             "id": "sensemakingSessionRecord_reflections_interaction_participants",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Interactions among participants",
@@ -131,7 +131,7 @@
         },
         {
             "id": "sensemakingSessionRecord_reflections_interaction_participantsAndFacilitator",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Interactions between participants and facilitators",
@@ -139,7 +139,7 @@
         },
         {
             "id": "sensemakingSessionRecord_reflections_interaction_stories",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Stories",
@@ -147,13 +147,13 @@
         },
         {
             "id": "sensemakingSessionRecord_learningHeader",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "header",
             "displayPrompt": "Learning"
         },
         {
             "id": "sensemakingSessionRecord_reflections_learning_special",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Unique features",
@@ -161,7 +161,7 @@
         },
         {
             "id": "sensemakingSessionRecord_reflections_learning_surprise",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Surprise",
@@ -169,7 +169,7 @@
         },
         {
             "id": "sensemakingSessionRecord_reflections_learning_workedWell",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Worked and didn't work",
@@ -177,7 +177,7 @@
         },
         {
             "id": "sensemakingSessionRecord_reflections_learning_newIdeas",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "New ideas",
@@ -185,7 +185,7 @@
         },
         {
             "id": "sensemakingSessionRecord_reflections_learning_wantToRemember",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Other",

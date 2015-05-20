@@ -12,7 +12,7 @@ define([
         
         var radioButtonsWidget = new RadioButtonsWidget({
             questionID: fieldSpecification.id,
-            choices: fieldSpecification.dataOptions,
+            choices: fieldSpecification.valueOptions,
             // optionsString: optionsString,
             value: at(model, fieldSpecification.id)
         });

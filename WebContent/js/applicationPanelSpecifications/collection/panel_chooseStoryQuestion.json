@@ -7,8 +7,8 @@
     "panelFields": [
         {
             "id": "storyQuestion",
-            "dataType": "string",
-            "dataOptions": "/projectModel/project_storyQuestionsList",
+            "valueType": "string",
+            "valueOptions": "/projectModel/project_storyQuestionsList",
             "dataOptionValueKey": "storyQuestion_shortName",
             "required": true,
             "displayType": "select",

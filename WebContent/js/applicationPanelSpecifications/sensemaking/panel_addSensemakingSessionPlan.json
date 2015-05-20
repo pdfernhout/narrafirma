@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "sensemakingSessionPlan_name",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Name",
@@ -15,7 +15,7 @@
         },
         {
             "id": "sensemakingSessionPlan_groups",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Participant groups",
@@ -23,7 +23,7 @@
         },
         {
             "id": "sensemakingSessionPlan_repetitions",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Repetitions",
@@ -31,7 +31,7 @@
         },
         {
             "id": "sensemakingSessionPlan_duration",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Length",
@@ -39,7 +39,7 @@
         },
         {
             "id": "sensemakingSessionPlan_times",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Time",
@@ -47,7 +47,7 @@
         },
         {
             "id": "sensemakingSessionPlan_location",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Location",
@@ -55,7 +55,7 @@
         },
         {
             "id": "sensemakingSessionPlan_numPeople",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Number of people",
@@ -63,7 +63,7 @@
         },
         {
             "id": "sensemakingSessionPlan_materials",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Materials",
@@ -71,7 +71,7 @@
         },
         {
             "id": "sensemakingSessionPlan_details",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Other",
@@ -79,7 +79,7 @@
         },
         {
             "id": "sensemakingSessionPlan_activitiesList",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_addSensemakingSessionActivity",
@@ -88,7 +88,7 @@
         },
         {
             "id": "sensemakingSessionPlan_printSensemakingSessionAgendaButton",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "button",
             "displayPrompt": "Print session agenda"
         }

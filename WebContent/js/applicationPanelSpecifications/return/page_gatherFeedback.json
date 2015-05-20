@@ -7,13 +7,13 @@
     "panelFields": [
         {
             "id": "project_feedbackLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "On this page you will enter any feedback you gather about your project."
         },
         {
             "id": "project_feedbackItemsList",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_enterFeedbackPiece",
@@ -22,7 +22,7 @@
         },
         {
             "id": "feedback_generalNotes",
-            "dataType": "string",
+            "valueType": "string",
             "displayType": "textarea",
             "displayName": "Notes",
             "displayPrompt": "If you would like to enter any general notes on the feedback you've seen to the project, write them here."

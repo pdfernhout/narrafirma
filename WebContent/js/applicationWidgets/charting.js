@@ -57,9 +57,9 @@ define([
         
         // Adjust for question types without options
         
-        // TODO: Should probably review this further related to change for options to dataOptions and displayConfiguration
+        // TODO: Should probably review this further related to change for options to valueOptions and displayConfiguration
         var options = [];
-        if (question.dataOptions) options = question.dataOptions;
+        if (question.valueOptions) options = question.valueOptions;
         var answerCount = options.length;
         
         // Adjust for unanswered items
@@ -109,9 +109,9 @@ define([
         if (type === "boolean" || type === "checkbox") {
             results["no"] = 0;
             results["yes"] = 0;
-        } else if (question.dataOptions) {
-            for (var i = 0; i < question.dataOptions.length; i++) {
-                results[question.dataOptions[i]] = 0;
+        } else if (question.valueOptions) {
+            for (var i = 0; i < question.valueOptions.length; i++) {
+                results[question.valueOptions[i]] = 0;
             }
         }
     }
@@ -657,9 +657,9 @@ define([
         if (choiceQuestion.displayType === "boolean" || choiceQuestion.displayType === "checkbox") {
             options.push("no");
             options.push("yes");
-        } else if (choiceQuestion.dataOptions) {
-            for (index in choiceQuestion.dataOptions) {
-                options.push(choiceQuestion.dataOptions[index]);
+        } else if (choiceQuestion.valueOptions) {
+            for (index in choiceQuestion.valueOptions) {
+                options.push(choiceQuestion.valueOptions[index]);
             }
         }
         // TODO: Could push extra options based on actual data choices (in case question changed at some point)

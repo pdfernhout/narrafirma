@@ -7,20 +7,20 @@
     "panelFields": [
         {
             "id": "project_improvePlanningDrafts",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "On this page you can review and improve your draft answers to the PNI planning questions\nbased on your consideration of project aspects and your project stories."
         },
         {
             "id": "project_pniQuestions_copyDraftsButton",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "button",
             "displayConfiguration": "copyDraftPNIQuestionVersionsIntoAnswers",
             "displayPrompt": "Copy the original draft versions into any corresponding empty answer fields below"
         },
         {
             "id": "project_pniQuestions_goal_final",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Project goal",
@@ -28,7 +28,7 @@
         },
         {
             "id": "project_pniQuestions_relationships_final",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Project relationships",
@@ -36,7 +36,7 @@
         },
         {
             "id": "project_pniQuestions_focus_final",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Project focus",
@@ -44,7 +44,7 @@
         },
         {
             "id": "project_pniQuestions_range_final",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Project range",
@@ -52,7 +52,7 @@
         },
         {
             "id": "project_pniQuestions_scope_final",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Project scope",
@@ -60,7 +60,7 @@
         },
         {
             "id": "project_pniQuestions_emphasis_final",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Project emphasis",

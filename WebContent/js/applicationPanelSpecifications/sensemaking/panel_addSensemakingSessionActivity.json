@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "sensemakingSessionPlan_activity_name",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Name",
@@ -15,8 +15,8 @@
         },
         {
             "id": "sensemakingSessionPlan_activity_type",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "ice-breaker",
                 "encountering stories (no task)",
                 "encountering stories (simple task)",
@@ -36,7 +36,7 @@
         },
         {
             "id": "sensemakingSessionPlan_activity_plan",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Plan",
@@ -44,7 +44,7 @@
         },
         {
             "id": "sensemakingSessionPlan_activity_optionalParts",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Optional elaborations",
@@ -52,7 +52,7 @@
         },
         {
             "id": "sensemakingSessionPlan_activity_duration",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Length",
@@ -60,7 +60,7 @@
         },
         {
             "id": "sensemakingSessionPlan_activity_recording",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "New stories",
@@ -68,7 +68,7 @@
         },
         {
             "id": "sensemakingSessionPlan_activity_materials",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Materials",
@@ -76,7 +76,7 @@
         },
         {
             "id": "sensemakingSessionPlan_activity_spaces",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Spaces",
@@ -84,7 +84,7 @@
         },
         {
             "id": "sensemakingSessionPlan_activity_facilitation",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Facilitation",
@@ -92,7 +92,7 @@
         },
         {
             "id": "templates_sensemakingActivities",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "templateList",
             "displayConfiguration": "sensemakingActivities",
             "displayPrompt": "You can copy an activity from this list."

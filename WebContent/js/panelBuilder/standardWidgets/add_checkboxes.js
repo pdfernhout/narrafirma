@@ -16,7 +16,7 @@ define([
 
         var checkboxesWidget = new CheckboxesWidget({
             questionID: fieldSpecification.id,
-            choices: fieldSpecification.dataOptions,
+            choices: fieldSpecification.valueOptions,
             // optionsString: optionsString,
             value: model.get(fieldSpecification.id)
         });

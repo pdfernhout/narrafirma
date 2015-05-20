@@ -7,13 +7,13 @@
     "panelFields": [
         {
             "id": "project_interpretationsClusteringLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "On this page you will cluster together the interpretations you have collected (based on observations)\nto create perspectives for your catalysis report.\nNote: Do not cluster your interpretations unless you are sure you have finished collecting them."
         },
         {
             "id": "project_interpretationsClusteringDiagram",
-            "dataType": "object",
+            "valueType": "object",
             "required": true,
             "displayType": "clusteringDiagram",
             "displayConfiguration": "project_interpretationsClusteringDiagram",

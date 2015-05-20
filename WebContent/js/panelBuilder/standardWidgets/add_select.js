@@ -45,9 +45,9 @@ define([
         
         var dataStore = new Memory({"data": []});
         
-        var dataPath = fieldSpecification.dataPath;
-        if (!dataPath) dataPath = fieldSpecification.id;
-        var dataModelAndField = resolveModelAndFieldForPath(panelBuilder, model, dataPath);
+        var valuePath = fieldSpecification.valuePath;
+        if (!valuePath) valuePath = fieldSpecification.id;
+        var dataModelAndField = resolveModelAndFieldForPath(panelBuilder, model, valuePath);
 
         var select = new FilteringSelect({
             store: dataStore,
@@ -58,7 +58,7 @@ define([
             value: at(dataModelAndField.model, dataModelAndField.field)
         });
         
-        var specifiedChoices = fieldSpecification.dataOptions;
+        var specifiedChoices = fieldSpecification.valueOptions;
         var choices = specifiedChoices;
         
         if (_.isString(specifiedChoices)) {

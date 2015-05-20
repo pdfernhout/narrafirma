@@ -7,14 +7,14 @@
     "panelFields": [
         {
             "id": "reviewTrendsLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "On this page you will look over the most significant statistical results\nand save some to observations for later use."
         },
         {
             "id": "reviewTrends_minSubsetSize",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "20",
                 "30",
                 "40",
@@ -27,8 +27,8 @@
         },
         {
             "id": "reviewTrends_significanceThreshold",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "0.05",
                 "0.01"
             ],
@@ -39,19 +39,19 @@
         },
         {
             "id": "reviewTrends_display",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "trendsReport",
             "displayPrompt": "Trends report"
         },
         {
             "id": "mockupTrendsLabel_unfinished",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "(Unfinished: This area will show the most significant statistical trends."
         },
         {
             "id": "mockup_trends",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "image",
             "displayConfiguration": "images/mockups/mockupTrends.png",
             "displayPrompt": "It will look something like this.)"

@@ -7,8 +7,8 @@
     "panelFields": [
         {
             "id": "sensemakingSessionRecord_outcome_type",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "discovery",
                 "opportunity",
                 "issue",
@@ -25,7 +25,7 @@
         },
         {
             "id": "sensemakingSessionRecord_outcome_name",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Name",
@@ -33,7 +33,7 @@
         },
         {
             "id": "sensemakingSessionRecord_outcome_description",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Description",

@@ -7,13 +7,13 @@
     "panelFields": [
         {
             "id": "questionnaires_Label",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "On this page you design one or more questionnaires, selecting from the questions you have previously entered and entering other questionnaire-specific text."
         },
         {
             "id": "project_questionnaires",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_addQuestionnaire",

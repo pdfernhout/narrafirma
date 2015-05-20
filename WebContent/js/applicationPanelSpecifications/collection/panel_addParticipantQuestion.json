@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "participantQuestion_text",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Question",
@@ -15,8 +15,8 @@
         },
         {
             "id": "participantQuestion_type",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "boolean",
                 "label",
                 "header",
@@ -35,7 +35,7 @@
         },
         {
             "id": "participantQuestion_shortName",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Short name",
@@ -43,7 +43,7 @@
         },
         {
             "id": "participantQuestion_options",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Options",
@@ -51,7 +51,7 @@
         },
         {
             "id": "participantQuestion_help",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Help",
@@ -59,7 +59,7 @@
         },
         {
             "id": "SPECIAL_templates_participantQuestions",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "templateList",
             "displayConfiguration": "participantQuestions",
             "displayPrompt": "You can copy a question from this list."

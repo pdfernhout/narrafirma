@@ -59,13 +59,13 @@ require([
         "panelFields": [
             {
                 "id": "project_aboutParticipantGroups",
-                "dataType": "none",
+                "valueType": "none",
                 "displayType": "label",
                 "displayPrompt": "On this page you will think about groups of participants you want to involve in your project.\nExamples might be: doctors and patients; staff and customers; natives, immigrants, and tourists."
             },
             {
                 "id": "project_participantGroupsList",
-                "dataType": "store",
+                "valueType": "store",
                 "required": true,
                 "displayType": "grid",
                 "displayConfiguration": "panel_addParticipantGroup",
@@ -84,7 +84,7 @@ require([
         "panelFields": [
             {
                 "id": "participantGroup_name",
-                "dataType": "string",
+                "valueType": "string",
                 "required": true,
                 "displayType": "text",
                 "displayName": "Name",
@@ -92,7 +92,7 @@ require([
             },
             {
                 "id": "participantGroup_description",
-                "dataType": "string",
+                "valueType": "string",
                 "required": true,
                 "displayType": "textarea",
                 "displayName": "Description",

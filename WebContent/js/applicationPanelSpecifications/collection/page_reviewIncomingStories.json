@@ -7,15 +7,15 @@
     "panelFields": [
         {
             "id": "collectedStoriesDuringCollectionLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "On this page you can see your collected stories as they come in."
         },
         {
             "id": "storyCollectionChoiceX",
-            "dataPath": "/localSettings/currentStoryCollection",
-            "dataType": "string",
-            "dataOptions": "project_storyCollections",
+            "valuePath": "/localSettings/currentStoryCollection",
+            "valueType": "string",
+            "valueOptions": "project_storyCollections",
             "dataOptionValueKey": "storyCollection_shortName",
             "required": true,
             "displayType": "select",
@@ -24,7 +24,7 @@
         },
         {
             "id": "webStoryCollection_collectedStoriesDuringCollection",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "storyBrowser",
             "displayPrompt": "Collected stories"
         }

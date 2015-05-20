@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "feedback_text",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Feedback",
@@ -15,7 +15,7 @@
         },
         {
             "id": "feedback_name",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Name",
@@ -23,8 +23,8 @@
         },
         {
             "id": "feedback_type",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "a story",
                 "a reference to something that came up in the project",
                 "a wish about the future",
@@ -40,7 +40,7 @@
         },
         {
             "id": "feedback_who",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Source",
@@ -48,7 +48,7 @@
         },
         {
             "id": "feedback_prompt",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Prompt",
@@ -56,7 +56,7 @@
         },
         {
             "id": "feedback_response",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Response",
@@ -64,7 +64,7 @@
         },
         {
             "id": "feedback_notes",
-            "dataType": "string",
+            "valueType": "string",
             "displayType": "textarea",
             "displayName": "Notes",
             "displayPrompt": "Please enter any other notes you have about this piece of feedback."

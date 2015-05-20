@@ -8,13 +8,13 @@
     "panelFields": [
         {
             "id": "project_mainDashboardLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "<b>NarraFirma Dashboard</b> (Click on the \"Home\" icon to return here. Click on buttons below to open the related section.)"
         },
         {
             "id": "project_launchSection_planning",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "dashboardSectionStatusDisplay",
             "displayConfiguration": {
                 "action": "guiOpenSection",
@@ -24,7 +24,7 @@
         },
         {
             "id": "project_launchSection_collection",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "dashboardSectionStatusDisplay",
             "displayConfiguration": {
                 "action": "guiOpenSection",
@@ -34,7 +34,7 @@
         },
         {
             "id": "project_launchSection_catalysis",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "dashboardSectionStatusDisplay",
             "displayConfiguration": {
                 "action": "guiOpenSection",
@@ -44,7 +44,7 @@
         },
         {
             "id": "project_launchSection_sensemaking",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "dashboardSectionStatusDisplay",
             "displayConfiguration": {
                 "action": "guiOpenSection",
@@ -54,7 +54,7 @@
         },
         {
             "id": "project_launchSection_intervention",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "dashboardSectionStatusDisplay",
             "displayConfiguration": {
                 "action": "guiOpenSection",
@@ -64,7 +64,7 @@
         },
         {
             "id": "project_launchSection_return",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "dashboardSectionStatusDisplay",
             "displayConfiguration": {
                 "action": "guiOpenSection",
@@ -74,7 +74,7 @@
         },
         {
             "id": "project_launchSection_projectReport",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "dashboardSectionStatusDisplay",
             "displayConfiguration": {
                 "action": "guiOpenSection",
@@ -84,13 +84,13 @@
         },
         {
             "id": "project_mainDashboardSeparator",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "<b>Quick links</b> (You can also use the left/right arrows above to get to these pages)"
         },
         {
             "id": "project_mainDashboard_launchIntroduction",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "button",
             "displayConfiguration": {
                 "action": "guiOpenSection",
@@ -101,7 +101,7 @@
         },
         {
             "id": "project_mainDashboard_launchImportExport",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "button",
             "displayConfiguration": {
                 "action": "guiOpenSection",

@@ -55,7 +55,7 @@ require([
         "panelFields": [
             {
                 "id": "participantGroup_name",
-                "dataType": "string",
+                "valueType": "string",
                 "required": true,
                 "displayType": "text",
                 "displayName": "Name",
@@ -63,7 +63,7 @@ require([
             },
             {
                 "id": "participantGroup_description",
-                "dataType": "string",
+                "valueType": "string",
                 "required": true,
                 "displayType": "textarea",
                 "displayName": "Description",
@@ -83,7 +83,7 @@ require([
     var fieldSpecifications =  [
         {
             "id": "project_participantGroupsList",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_addParticipantGroup",
@@ -92,9 +92,9 @@ require([
         },
         {
             "id": "project_primaryGroup",
-            "dataType": "string",
-            // "dataOptions": ["one", "two", "three"],
-            "dataOptions": "project_participantGroupsList",
+            "valueType": "string",
+            // "valueOptions": ["one", "two", "three"],
+            "valueOptions": "project_participantGroupsList",
             "dataOptionValueKey": "participantGroup_name",
             // "displayDataOptionField": "name",
             "required": true,
@@ -104,9 +104,9 @@ require([
         },
         {
             "id": "project_primaryGroup",
-            "dataType": "string",
-            // "dataOptions": ["one", "two", "three"],
-            "dataOptions": "project_participantGroupsList",
+            "valueType": "string",
+            // "valueOptions": ["one", "two", "three"],
+            "valueOptions": "project_participantGroupsList",
             "dataOptionValueKey": "participantGroup_name",
             // "displayDataOptionField": "name",
             "required": true,
@@ -116,9 +116,9 @@ require([
         },
         {
             "id": "project_contactedGroups",
-            "dataType": "string",
-            // "dataOptions": ["one", "two", "three"],
-            "dataOptions": "project_participantGroupsList",
+            "valueType": "string",
+            // "valueOptions": ["one", "two", "three"],
+            "valueOptions": "project_participantGroupsList",
             "dataOptionValueKey": "participantGroup_name",
             // "displayDataOptionField": "name",
             "required": true,
@@ -128,7 +128,7 @@ require([
         },
         {
             "id": "addToObservation_createNewObservationWithResultButton",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "button",
             "displayConfiguration": "panel_createNewObservation",
             "displayPrompt": "Create new observation with this result"

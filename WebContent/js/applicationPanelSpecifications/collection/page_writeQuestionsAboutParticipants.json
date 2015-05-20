@@ -7,13 +7,13 @@
     "panelFields": [
         {
             "id": "project_participantQuestionsLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "On this page you will write questions to ask people about themselves."
         },
         {
             "id": "project_participantQuestionsList",
-            "dataType": "array",
+            "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_addParticipantQuestion",
@@ -22,7 +22,7 @@
         },
         {
             "id": "SPECIAL_participantQuestionRecommendations",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "recommendationTable",
             "displayConfiguration": "participantQuestions",
             "displayPrompt": "Recommendations for participant questions"

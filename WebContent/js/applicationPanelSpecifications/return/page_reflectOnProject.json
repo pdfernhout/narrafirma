@@ -7,13 +7,13 @@
     "panelFields": [
         {
             "id": "project_reflectLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "On this page you will answer some questions to reflect in general on the entire project."
         },
         {
             "id": "project_reflect_stories",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "From stories",
@@ -21,7 +21,7 @@
         },
         {
             "id": "project_reflect_facilitation",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "About facilitation practice",
@@ -29,7 +29,7 @@
         },
         {
             "id": "project_reflect_planning",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "About project stories",
@@ -37,7 +37,7 @@
         },
         {
             "id": "project_reflect_ownPNI",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "About own PNI",
@@ -45,7 +45,7 @@
         },
         {
             "id": "project_reflect_community",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "About community",
@@ -53,7 +53,7 @@
         },
         {
             "id": "project_reflect_personalStrengths",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "About strengths",
@@ -61,7 +61,7 @@
         },
         {
             "id": "project_reflect_teamStrengths",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "About team",
@@ -69,7 +69,7 @@
         },
         {
             "id": "project_reflect_newIdeas",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Ideas",
@@ -77,7 +77,7 @@
         },
         {
             "id": "project_reflect_notes",
-            "dataType": "string",
+            "valueType": "string",
             "displayType": "textarea",
             "displayName": "Notes",
             "displayPrompt": "Enter any additional notes you'd like to remember about the project."

@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "project_synopsis",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Project synopsis",

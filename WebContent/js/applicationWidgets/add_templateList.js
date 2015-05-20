@@ -23,31 +23,31 @@ define([
     }
     
     var add_templateList_elicitationQuestions = [
-        {id: "category", dataType: "string", displayType:"text"},
-        {id: "id", dataType: "string", displayType: "text"},
-        {id: "text", dataType: "string", displayType: "textarea"}
+        {id: "category", valueType: "string", displayType:"text"},
+        {id: "id", valueType: "string", displayType: "text"},
+        {id: "text", valueType: "string", displayType: "textarea"}
     ];
    
    var add_templateList_storyOrParticipantQuestions = [
-        {id: "category", dataType: "string", displayType: "text"},
-        {id: "id", dataType: "string", displayType: "text"},
-        {id: "shortName", dataType: "string", displayType: "text"},
-        {id: "text", dataType: "string", displayType: "textarea"},
-        {id: "type", dataType: "string", displayType: "text"}, // , "options":["boolean", "label", "header", "checkbox", "checkboxes", "text", "textarea", "select", "radiobuttons", "slider"]},
-        {id: "options", dataType: "string", displayType: "textarea"}
-        // {id: "templateQuestion_help", dataType: "string", displayType: "textarea"},
+        {id: "category", valueType: "string", displayType: "text"},
+        {id: "id", valueType: "string", displayType: "text"},
+        {id: "shortName", valueType: "string", displayType: "text"},
+        {id: "text", valueType: "string", displayType: "textarea"},
+        {id: "type", valueType: "string", displayType: "text"}, // , "options":["boolean", "label", "header", "checkbox", "checkboxes", "text", "textarea", "select", "radiobuttons", "slider"]},
+        {id: "options", valueType: "string", displayType: "textarea"}
+        // {id: "templateQuestion_help", valueType: "string", displayType: "textarea"},
     ];
    
    var add_templateList_activityQuestions = [
-        {id: "name", dataType: "string", displayType: "text"},
-        {id: "type", dataType: "string", displayType: "text"}, // , "options":["ice-breaker", "encountering stories (no task)", "encountering stories (simple task)", "discussing stories", "twice-told stories exercise", "timeline exercise", "landscape exercise", "story elements exercise", "composite stories exercise", "my own exercise", "other"]},
-        {id: "plan", dataType: "string", displayType: "textarea"},
-        {id: "optionalParts", dataType: "string", displayType: "textarea"},
-        {id: "duration", dataType: "string", displayType: "text"},
-        {id: "recording", dataType: "string", displayType: "textarea"},
-        {id: "materials", dataType: "string", displayType: "textarea"},
-        {id: "spaces", dataType: "string", displayType: "textarea"},
-        {id: "facilitation", dataType: "string", displayType: "textarea"}
+        {id: "name", valueType: "string", displayType: "text"},
+        {id: "type", valueType: "string", displayType: "text"}, // , "options":["ice-breaker", "encountering stories (no task)", "encountering stories (simple task)", "discussing stories", "twice-told stories exercise", "timeline exercise", "landscape exercise", "story elements exercise", "composite stories exercise", "my own exercise", "other"]},
+        {id: "plan", valueType: "string", displayType: "textarea"},
+        {id: "optionalParts", valueType: "string", displayType: "textarea"},
+        {id: "duration", valueType: "string", displayType: "text"},
+        {id: "recording", valueType: "string", displayType: "textarea"},
+        {id: "materials", valueType: "string", displayType: "textarea"},
+        {id: "spaces", valueType: "string", displayType: "textarea"},
+        {id: "facilitation", valueType: "string", displayType: "textarea"}
     ];
    
    function useButtonClicked(templateListChoice, model, hideDialogCallback, gridWithDetail, event) {

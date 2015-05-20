@@ -131,35 +131,35 @@ require([
         "panelFields": [
             {
                 "id": "id",
-                "dataType": "string",
+                "valueType": "string",
                 "displayType": "text",
                 "displayName": "ID",
                 "displayPrompt": "ID"
             },
             {
                 "id": "section",
-                "dataType": "string",
+                "valueType": "string",
                 "displayType": "text",
                 "displayName": "Section",
                 "displayPrompt": "Section"
             },
             {
                 "id": "displayName",
-                "dataType": "string",
+                "valueType": "string",
                 "displayType": "text",
                 "displayName": "Name",
                 "displayPrompt": "Name"
             },
             {
                 "id": "displayType",
-                "dataType": "string",
+                "valueType": "string",
                 "displayType": "text",
                 "displayName": "Type",
                 "displayPrompt": "Type"
             },
             {
                 "id": "modelClass",
-                "dataType": "string",
+                "valueType": "string",
                 "displayType": "text",
                 "displayName": "Model Class",
                 "displayPrompt": "Model Class"
@@ -219,7 +219,7 @@ require([
             
             var gridFieldSpecification = {
                 "id": "panels",
-                "dataType": "array",
+                "valueType": "array",
                 "displayType": "grid",
                 "displayConfiguration": {
                     itemPanelID: "panel_modelItem",

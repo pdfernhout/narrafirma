@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "sensemakingSessionRecord_construction_name",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Name",
@@ -15,8 +15,8 @@
         },
         {
             "id": "sensemakingSessionRecord_construction_type",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "timeline",
                 "landscape",
                 "story elements",
@@ -30,7 +30,7 @@
         },
         {
             "id": "sensemakingSessionRecord_construction_description",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Description",

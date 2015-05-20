@@ -7,13 +7,13 @@
     "panelFields": [
         {
             "id": "sensemakingReportLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "This report shows all of the information entered in the pages grouped under \"Sensemaking.\""
         },
         {
             "id": "sensemakingReport",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "report",
             "displayConfiguration": "sensemaking",
             "displayPrompt": "Sensemaking report"

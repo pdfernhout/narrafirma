@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "collectionSessionRecord_construction_name",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Name",
@@ -15,8 +15,8 @@
         },
         {
             "id": "collectionSessionRecord_construction_type",
-            "dataType": "string",
-            "dataOptions": [
+            "valueType": "string",
+            "valueOptions": [
                 "timeline",
                 "landscape",
                 "other"
@@ -28,7 +28,7 @@
         },
         {
             "id": "collectionSessionRecord_construction_description",
-            "dataType": "string",
+            "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Description",

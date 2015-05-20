@@ -96,7 +96,7 @@ define([
         var itemPanelSpecification2 = {
             "id": "storyThemeQuestions",
             panelFields: [
-                {id: "name", displayName: "Theme", displayPrompt: "Theme", displayType: "text", dataOptions:[]}
+                {id: "name", displayName: "Theme", displayPrompt: "Theme", displayType: "text", valueOptions:[]}
             ]
         };
         var themeList = new GridWithItemPanel(panelBuilder, themesPane, "storyThemeList", storyThemesStore, itemPanelSpecification2, configuration2, model);

@@ -7,13 +7,13 @@
     "panelFields": [
         {
             "id": "interventionReportLabel",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "label",
             "displayPrompt": "This report shows all of the information entered in the pages grouped under \"Intervention.\""
         },
         {
             "id": "interventionReport",
-            "dataType": "none",
+            "valueType": "none",
             "displayType": "report",
             "displayConfiguration": "intervention",
             "displayPrompt": "Intervention report"

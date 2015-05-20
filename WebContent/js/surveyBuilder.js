@@ -168,18 +168,18 @@ define([
         
         var startQuestions = [];
         if (questionnaire.title) {
-            startQuestions.push({id: "__survey-local_" + "title", displayName: "title", displayPrompt: questionnaire.title, displayType: "header", dataOptions:[]});
+            startQuestions.push({id: "__survey-local_" + "title", displayName: "title", displayPrompt: questionnaire.title, displayType: "header", valueOptions:[]});
             document.title = questionnaire.title;
         }
         
-        startQuestions.push({id: "__survey-local_" + "startText", displayName: "startText", displayPrompt: startText, displayType: "label", dataOptions:[]});
+        startQuestions.push({id: "__survey-local_" + "startText", displayName: "startText", displayPrompt: startText, displayType: "label", valueOptions:[]});
 
         var endText = questionnaire.endText;
          // TODO: Translate
         if (!endText) endText = "Thank you for taking the survey.";
             
         var endQuestions = [];
-        endQuestions.push({id: "__survey-local_" + "endText", displayName: "endText", displayPrompt: endText, displayType: "label", dataOptions:[]});
+        endQuestions.push({id: "__survey-local_" + "endText", displayName: "endText", displayPrompt: endText, displayType: "label", valueOptions:[]});
 
         // TODO: What about idea of having IDs that go with eliciting questions so store reference to ID not text prompt?
         var elicitingQuestionPrompts = [];
@@ -191,19 +191,19 @@ define([
         // TODO: What if these IDs for storyText and storyName are not unique?
         var initialStoryQuestions = [];
         var singlePrompt = null;
-        initialStoryQuestions.push({id: "__survey_" + "questionHeader", displayName: "questionHeader", displayPrompt: "Story", displayType: "header", dataOptions: []});
+        initialStoryQuestions.push({id: "__survey_" + "questionHeader", displayName: "questionHeader", displayPrompt: "Story", displayType: "header", valueOptions: []});
         if (elicitingQuestionPrompts.length !== 1) {
-            initialStoryQuestions.push({id: "__survey_" + "elicitingQuestion", displayName: "elicitingQuestion", displayPrompt: "Please choose a question to which you would like to respond:", displayType: "radiobuttons", dataOptions: elicitingQuestionPrompts});
-            initialStoryQuestions.push({id: "__survey_" + "storyText", displayName: "storyText", displayPrompt: "Please enter your response in the box below:", displayType: "textarea", dataOptions:[]});
+            initialStoryQuestions.push({id: "__survey_" + "elicitingQuestion", displayName: "elicitingQuestion", displayPrompt: "Please choose a question to which you would like to respond:", displayType: "radiobuttons", valueOptions: elicitingQuestionPrompts});
+            initialStoryQuestions.push({id: "__survey_" + "storyText", displayName: "storyText", displayPrompt: "Please enter your response in the box below:", displayType: "textarea", valueOptions:[]});
         } else {
             singlePrompt = elicitingQuestionPrompts[0];
-            initialStoryQuestions.push({id: "__survey_" + "storyText", displayName: "storyText", displayPrompt: singlePrompt, displayType: "textarea", dataOptions:[]});
+            initialStoryQuestions.push({id: "__survey_" + "storyText", displayName: "storyText", displayPrompt: singlePrompt, displayType: "textarea", valueOptions:[]});
         }
-        initialStoryQuestions.push({id: "__survey_" + "storyName", displayName: "storyName", displayPrompt: "Please give your story a name", displayType: "text", dataOptions:[]});
+        initialStoryQuestions.push({id: "__survey_" + "storyName", displayName: "storyName", displayPrompt: "Please give your story a name", displayType: "text", valueOptions:[]});
         
         var allStoryQuestions = initialStoryQuestions.concat(questionnaire.storyQuestions);
         
-        questionnaire.participantQuestions.unshift({id: "__survey_" + "participantHeader", displayName: "participantHeader", displayPrompt: "About you", displayType: "header", dataOptions: []});
+        questionnaire.participantQuestions.unshift({id: "__survey_" + "participantHeader", displayName: "participantHeader", displayPrompt: "About you", displayType: "header", valueOptions: []});
         
         //var form = new Form();
         //form.set("style", "width: 800px; height 800px; overflow: auto;");
