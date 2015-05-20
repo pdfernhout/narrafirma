@@ -129,12 +129,11 @@ define([
             
             var questionnaire = questionnaireGeneration.buildQuestionnaire(project, questionnaireTemplate.questionForm_shortName);
             
-            
-            var htmlToPrint = "<b>Test</b><br>This is a questionnaire for: <pre>" + JSON.stringify(questionnaire, null, 4) + "</pre>";
+            // var htmlToPrint = "<b>Test</b><br>This is a questionnaire for: <pre>" + JSON.stringify(questionnaire, null, 4) + "</pre>";
             
             var output = "";
             
-            output += htmlToPrint;
+            // output += htmlToPrint;
             
             output += "<h2>" + questionnaire.title + "</h2>";
             
