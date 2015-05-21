@@ -11,7 +11,7 @@ define([
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var checkbox = new CheckBox({
-            value: valuePathResolver.atFieldSpecification(panelBuilder, model, fieldSpecification)
+            checked: valuePathResolver.atFieldSpecification(panelBuilder, model, fieldSpecification)
         });
         
         checkbox.placeAt(questionContentPane);
