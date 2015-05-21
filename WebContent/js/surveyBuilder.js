@@ -211,6 +211,7 @@ define([
         
         var surveyResultsWithModels = {
             __type: "org.workingwithstories.QuestionnaireResponse",
+            // TODO: Think about whether to include entire questionnaire or something else perhaps
             questionnaire: questionnaire,
             responseID: generateRandomUuid(),
             stories: [],
