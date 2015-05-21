@@ -33,6 +33,7 @@ define([
         // var topicIdentifier = "project001";
         // pointrelClient.topicIdentifier = topicIdentifier;
         
+        // TODO: Change the hardcoded topic here from "testing".
         this.tripleStore = new TripleStore(this.pointrelClient, "testing");
         console.log("tripleStore", this.tripleStore);
     };
