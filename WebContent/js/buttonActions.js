@@ -187,9 +187,7 @@ define([
     }
 
     function copyDraftPNIQuestionVersionsIntoAnswers_Basic() {
-        throw new Error("No longer working due to ongoing refactoring for current page model");
-        
-        var model = domain.projectAnswers;
+        var model = project.projectModel;
 
         var finalQuestionIDs = [
             "project_pniQuestions_goal_final",
