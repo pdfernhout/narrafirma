@@ -16,7 +16,7 @@
             "valuePath": "/localSettings/currentStoryCollection",
             "valueType": "string",
             "valueOptions": "project_storyCollections",
-            "dataOptionValueKey": "storyCollection_shortName",
+            "valueOptionsSubfield": "storyCollection_shortName",
             "required": true,
             "displayType": "select",
             "displayName": "Story collection",

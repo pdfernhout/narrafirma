@@ -9,7 +9,7 @@
             "id": "elicitingQuestion",
             "valueType": "string",
             "valueOptions": "/projectModel/project_elicitingQuestionsList",
-            "dataOptionValueKey": "elicitingQuestion_shortName",
+            "valueOptionsSubfield": "elicitingQuestion_shortName",
             "required": true,
             "displayType": "select",
             "displayName": "Question choice",

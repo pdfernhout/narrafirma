@@ -82,8 +82,8 @@ define([
                 } else {
                     // TODO: Maybe bug in dojo select that it does not handle values that are not strings
                     // http://stackoverflow.com/questions/16205699/programatically-change-selected-option-of-a-dojo-form-select-that-is-populated-b
-                    if (fieldSpecification.dataOptionValueKey) {
-                        value = each[fieldSpecification.dataOptionValueKey];
+                    if (fieldSpecification.valueOptionsSubfield) {
+                        value = each[fieldSpecification.valueOptionsSubfield];
                     } else {
                         value = each.value;
                     }

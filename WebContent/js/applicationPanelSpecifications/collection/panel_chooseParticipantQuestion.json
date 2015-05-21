@@ -9,7 +9,7 @@
             "id": "participantQuestion",
             "valueType": "string",
             "valueOptions": "/projectModel/project_participantQuestionsList",
-            "dataOptionValueKey": "participantQuestion_shortName",
+            "valueOptionsSubfield": "participantQuestion_shortName",
             "required": true,
             "displayType": "select",
             "displayName": "Question choice",

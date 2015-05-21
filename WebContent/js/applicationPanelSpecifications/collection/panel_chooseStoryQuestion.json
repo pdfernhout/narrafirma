@@ -9,7 +9,7 @@
             "id": "storyQuestion",
             "valueType": "string",
             "valueOptions": "/projectModel/project_storyQuestionsList",
-            "dataOptionValueKey": "storyQuestion_shortName",
+            "valueOptionsSubfield": "storyQuestion_shortName",
             "required": true,
             "displayType": "select",
             "displayName": "Question choice",
