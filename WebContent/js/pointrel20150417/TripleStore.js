@@ -29,7 +29,18 @@ define([
         this.subscriptions = [];
     };
     
+    // TODO: Rename as addTriple
     TripleStore.prototype.add = function (a, b, c) {
+        if (a === undefined) {
+            throw new Error("TripleSotre.addTriple: a can't be undefined");
+        }
+        if (b === undefined) {
+            throw new Error("TripleSotre.addTriple: b can't be undefined");
+        }
+        if (c === undefined) {
+            throw new Error("TripleSotre.addTriple: c can't be undefined");
+        }
+        
         var triple = {
             a: a,
             b: b,
