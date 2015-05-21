@@ -90,6 +90,9 @@ define([
         // TODO: What version of questionnaire should be used? Should it really be the latest one? Or the one active on server?
         console.log("openSurveyDialog domain", domain);
         
+        var storyCollectionName = getStoryCollectionNameForSelectedStoryCollection("storyCollectionChoice_enterStories");
+        if (!storyCollectionName) return;
+        
         var questionnaire = getQuestionnaireForSelectedStoryCollection("storyCollectionChoice_enterStories");
         if (!questionnaire) return;
 
@@ -98,7 +101,14 @@ define([
         function finished(status, surveyResult) {
             console.log("surveyResult", status, surveyResult);
             if (status === "submitted") {
-                alert("Unfinished save");
+                // TODO: Move this to a reuseable place
+                var surveyResultListReference  = {
+                    type: "surveyResultList",
+                    projectIdentifier: project.projectIdentifier,
+                    storyCollectionIdentifier: storyCollectionName
+                };
+                // TODO: Maybe B should be an object of some sort?
+                project.tripleStore.add(surveyResultListReference, surveyResult.responseID, surveyResult);
             }
         }
     }
@@ -160,8 +170,8 @@ define([
         
         return output;
     }
-    
-    function getQuestionnaireForSelectedStoryCollection(storyCollectionChoiceId) {
+
+    function getStoryCollectionNameForSelectedStoryCollection(storyCollectionChoiceId) {
         /*
          * TODO: Could check first if any story collections have been defined
         var questionnaires = project.projectModel.get("project_questionnaires");
@@ -189,6 +199,13 @@ define([
             alert("Please select a story collection first.");
             return null;
         }
+        
+        return storyCollectionName;
+    }
+
+    function getQuestionnaireForSelectedStoryCollection(storyCollectionChoiceId) {
+        var storyCollectionName = getStoryCollectionNameForSelectedStoryCollection(storyCollectionChoiceId);
+        if (!storyCollectionName) return;
         
         var storyCollection = questionnaireGeneration.findStoryCollection(project, storyCollectionName);
         
