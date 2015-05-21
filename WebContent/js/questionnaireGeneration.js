@@ -1,13 +1,11 @@
 define([
    "dojo/promise/all",
    "dojo/Deferred",
-   "js/domain",
-   "js/storage"
+   "js/domain"
 ], function(
    all,
    Deferred,
-   domain,
-   storage
+   domain
 ) {
    "use strict";
    
