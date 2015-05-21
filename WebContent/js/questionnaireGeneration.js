@@ -151,6 +151,16 @@ define([
        }
        return null;
    }
+   
+   function findStoryCollection(project, shortName) {
+       var storyCollections = project.projectModel.get("project_storyCollections");
+       for (var i = 0; i < storyCollections.length; i++) {
+           if (storyCollections[i].storyCollection_shortName === shortName) {
+               return storyCollections[i];
+           }
+       }
+       return null;
+   }
 
    // TODO: How to save the fact we have exported this in the project? Make a copy??? Or keep original in document somewhere? Versus what is returned from server for surveys?
    function buildQuestionnaire(project, shortName) {
@@ -223,6 +233,7 @@ define([
    }
    
    return {
+       findStoryCollection: findStoryCollection,
        buildQuestionnaire: buildQuestionnaire,
        ensureAtLeastOneElicitingQuestion: ensureAtLeastOneElicitingQuestion
    };

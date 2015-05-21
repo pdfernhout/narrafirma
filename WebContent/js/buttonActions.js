@@ -161,6 +161,8 @@ define([
     function printStoryForm(contentPane, model, fieldSpecification, value) {
         console.log("printStoryForm unfinished");
         
+        /*
+         * TODO: Could check first if any story collections have been defined
         var questionnaires = project.projectModel.get("project_questionnaires");
         
         if (questionnaires.length === 0) {
@@ -168,22 +170,51 @@ define([
             alert("No questionnaires have been defined");
             return;
         }
+        */
         
-        var columns = {questionForm_shortName: "Questionnaire name", questionForm_title: "Title"};
-        dialogSupport.openListChoiceDialog(null, questionnaires, columns, "Projects", "Select a questionnaire to print", function (questionnaireTemplate) {
-            console.log("chosen questionnaire", questionnaireTemplate);
-            
-            var questionnaire = questionnaireGeneration.buildQuestionnaire(project, questionnaireTemplate.questionForm_shortName);
-            
-            var output = generateHTMLForQuestionnaire(questionnaire);
-            
-            var outputLabel = pageDisplayer.getCurrentPageWidgets()["printQuestionsForm_output"];
-            console.log("outputLabel", outputLabel);
-            
-            outputLabel.set("content", output);
-            // contentPane printQuestionsForm_output 
-            // printHTML(output);
-        });
+        var choiceWidget = pageDisplayer.getCurrentPageWidgets()["storyCollectionChoice_printing"];
+        console.log("choiceWidget", choiceWidget);
+        var storyCollectionName = choiceWidget.get("value");
+        console.log("storyCollectionName", storyCollectionName);
+        
+        if (!storyCollectionName) {
+            // TODO: translate
+            alert("Please select a story collection first.");
+            return;
+        }
+        
+        var storyCollection = questionnaireGeneration.findStoryCollection(project, storyCollectionName);
+        
+        if (!storyCollection) {
+            // TODO: translate
+            alert("The selected story collection could not be found.");
+            return;
+        }
+        
+        var questionnaireName = storyCollection.storyCollection_questionnaireIdentifier;
+        
+        if (!questionnaireName) {
+            // TODO: translate
+            alert("The story collection has no selection for a questionnaire.");
+            return;
+        }
+        
+        var questionnaire = questionnaireGeneration.buildQuestionnaire(project, questionnaireName);
+        
+        if (!questionnaire) {
+            // TODO: translate
+            alert("The questionnaire selected in the story collection could not be found.");
+            return;
+        }
+        
+        var output = generateHTMLForQuestionnaire(questionnaire);
+        
+        var outputLabel = pageDisplayer.getCurrentPageWidgets()["printQuestionsForm_output"];
+        console.log("outputLabel", outputLabel);
+        
+        outputLabel.set("content", output);
+        // contentPane printQuestionsForm_output 
+        // printHTML(output);
     }
     
     function printHTML(htmlToPrint) {
