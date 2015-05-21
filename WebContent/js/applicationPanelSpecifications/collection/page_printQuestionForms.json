@@ -33,7 +33,7 @@
             "valueType": "none",
             "displayType": "button",
             "displayConfiguration": "printStoryForm",
-            "displayPrompt": "Print story form ..."
+            "displayPrompt": "Print question form for selected story collection"
         }
     ]
 }

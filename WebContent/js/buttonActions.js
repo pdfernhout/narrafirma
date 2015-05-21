@@ -212,9 +212,8 @@ define([
         var outputLabel = pageDisplayer.getCurrentPageWidgets()["printQuestionsForm_output"];
         console.log("outputLabel", outputLabel);
         
-        outputLabel.set("content", output);
-        // contentPane printQuestionsForm_output 
-        // printHTML(output);
+        // outputLabel.set("content", output);
+        printHTML(output);
     }
     
     function printHTML(htmlToPrint) {
