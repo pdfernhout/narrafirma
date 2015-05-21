@@ -111,6 +111,52 @@ define([
         console.log("guiOpenSection", section, fieldSpecification);
         pageDisplayer.showPage(section);
     }
+    
+    function generateHTMLForQuestionnaire(questionnaire) {
+        // var htmlToPrint = "<b>Test</b><br>This is a questionnaire for: <pre>" + JSON.stringify(questionnaire, null, 4) + "</pre>";
+        
+        var output = "";
+        
+        // output += htmlToPrint;
+        
+        output += "<h2>" + questionnaire.title + "</h2>";
+        
+        output += "<br><br>";
+        
+        output += questionnaire.startText;
+        
+        output += "<br><br>";
+        
+        // TODO: Translate
+        
+        output += "Please select one for the following questions to answer:<br><br>";
+        
+        questionnaire.elicitingQuestions.forEach(function (elicitingQuestion) {
+            output += elicitingQuestion.text + "<br><br>";
+        });
+        
+        output += "Please enter your response here:<br><br>";
+        
+        for (var i = 0; i < 7; i++) output += "<br><br>";
+       
+        questionnaire.storyQuestions.forEach(function (storyQuestion) {
+            output += storyQuestion.displayPrompt + "<br>";
+        });
+        
+        // TODO: Print choices...
+       
+        questionnaire.participantQuestions.forEach(function (participantQuestion) {
+            output += participantQuestion.displayPrompt + "<br>";
+        });
+        
+        // TODO: Print choices...
+        
+        output += "<br><br>";
+        
+        output += questionnaire.endText;
+        
+        return output;
+    }
 
     function printStoryForm(contentPane, model, fieldSpecification, value) {
         console.log("printStoryForm unfinished");
@@ -129,50 +175,11 @@ define([
             
             var questionnaire = questionnaireGeneration.buildQuestionnaire(project, questionnaireTemplate.questionForm_shortName);
             
-            // var htmlToPrint = "<b>Test</b><br>This is a questionnaire for: <pre>" + JSON.stringify(questionnaire, null, 4) + "</pre>";
-            
-            var output = "";
-            
-            // output += htmlToPrint;
-            
-            output += "<h2>" + questionnaire.title + "</h2>";
-            
-            output += "<br><br>";
-            
-            output += questionnaire.startText;
-            
-            output += "<br><br>";
-            
-            // TODO: Translate
-            
-            output += "Please select one for the following questions to answer:<br><br>";
-            
-            questionnaire.elicitingQuestions.forEach(function (elicitingQuestion) {
-                output += elicitingQuestion.text + "<br><br>";
-            });
-            
-            output += "Please enter your response here:<br><br>";
-            
-            for (var i = 0; i < 7; i++) output += "<br><br>";
-           
-            questionnaire.storyQuestions.forEach(function (storyQuestion) {
-                output += storyQuestion.displayPrompt + "<br>";
-            });
-            
-            // TODO: Print choices...
-           
-            questionnaire.participantQuestions.forEach(function (participantQuestion) {
-                output += participantQuestion.displayPrompt + "<br>";
-            });
-            
-            // TODO: Print choices...
-            
-            output += "<br><br>";
-            
-            output += questionnaire.endText;
+            var output = generateHTMLForQuestionnaire(questionnaire);
             
             var outputLabel = pageDisplayer.getCurrentPageWidgets()["printQuestionsForm_output"];
             console.log("outputLabel", outputLabel);
+            
             outputLabel.set("content", output);
             // contentPane printQuestionsForm_output 
             // printHTML(output);
