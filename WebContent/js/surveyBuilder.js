@@ -2,7 +2,6 @@ define([
     "dojo/_base/array",
     'dojo/dom-style',
     "dojox/mvc/getPlainValue",
-    "js/storage",
     "dojox/uuid/generateRandomUuid",
     "js/panelBuilder/PanelBuilder",
     "dijit/layout/ContentPane",
@@ -14,7 +13,6 @@ define([
     array,
     domStyle,
     getPlainValue,
-    storage,
     generateRandomUuid,
     PanelBuilder,
     ContentPane,
@@ -25,8 +23,6 @@ define([
 ){
     "use strict";
 
-    // TODO: Replace use of storage with direct calls to server to get questionnaire and submit survey
-    
     var timestampStart;
     
     // Panel builder needs to be configured further if buttons or grids are used
@@ -43,8 +39,13 @@ define([
         
         var surveyResult = getPlainValue(surveyResultsWithModels);
            
-        console.log("answers", surveyResult);
+        console.log("survey answers", surveyResult);
         
+        doneCallback("submitted", surveyResult);
+        
+        // TODO: Ensure dialog is closed!!!
+        
+        /*
         storage.storeSurveyResult(surveyResult, function(error) {
             // TODO: Translate
             // TODO: Cancel clearing of survey if it can't be sent
@@ -56,9 +57,7 @@ define([
                 if (doneCallback) doneCallback("submitted");
             }
         });
-        
-        // For editor app, can't push survey into all results at this point or will have duplicates when load them later
-        // TODO: For editor app, maybe should load latest results from server back at this point? Because will not have new survey...
+        */
     }
 
    function validateStoryQuestionsModel(storyQuestionsModel, allowEmptyBypass) {
@@ -274,14 +273,15 @@ define([
         return wizardPane;
     }
 
-    function openSurveyDialog(questionnaire) {  
+    function openSurveyDialog(questionnaire, callback) {  
         console.log("openSurveyDialog questionnaire", questionnaire);
         
         var surveyDialog;
         var form;
         
-        function hideSurveyDialog(status) {
+        function hideSurveyDialog(status, completedSurvey) {
             surveyDialog.hide();
+            callback(status, completedSurvey);
         }
         
         form = buildSurveyForm(questionnaire, hideSurveyDialog, true);
@@ -300,19 +300,9 @@ define([
                 
         surveyDialog.show();
     }
-    
-    function getStatusFromServer(questionnaireID, callback) {
-        storage.loadLatestQuestionnaireStatus(questionnaireID, callback);
-    }
-    
-    function getQuestionnaireFromServer(questionnaireID, callback) {
-        storage.loadLatestQuestionnaireVersion(questionnaireID, callback);
-    }
 
     return {
         openSurveyDialog: openSurveyDialog,
         buildSurveyForm: buildSurveyForm,
-        getQuestionnaireFromServer: getQuestionnaireFromServer,
-        getStatusFromServer: getStatusFromServer
     };
 });

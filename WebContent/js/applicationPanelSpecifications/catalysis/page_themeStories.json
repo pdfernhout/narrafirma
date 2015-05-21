@@ -12,20 +12,6 @@
             "displayPrompt": "On this page you will derive emergent themes from the collected stories.\nThe themes will appear in your data as answers to a \"Theme\" question, creating patterns you can use."
         },
         {
-            "id": "themeStories_loadLatestStoriesFromServer",
-            "valueType": "none",
-            "displayType": "button",
-            "displayConfiguration": "loadLatestStoriesFromServer",
-            "displayPrompt": "Load latest stories from server"
-        },
-        {
-            "id": "themeStories_totalResults",
-            "valueType": "none",
-            "displayType": "functionResult",
-            "displayConfiguration": "totalNumberOfSurveyResults",
-            "displayPrompt": "Total number of survey results loaded from server: <b>{{result}}</b>"
-        },
-        {
             "id": "themeStories",
             "valueType": "none",
             "displayType": "storyThemer",

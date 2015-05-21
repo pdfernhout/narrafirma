@@ -18,26 +18,41 @@ require([
     // TODO: Closing page when not submitted
     // TODO: Progress when sending to server 
     
-    function finishedSurvey() {
+    // TODO: Fix hardcoded values
+    var projectIdentifier = "test1";
+    var questionnaireIdentifier = 'questionnaire-test-003';
+    
+    function loadQuestionnaire(callback) {
+        // TODO!!!
+        var questionnaire = null;
+        callback("Unfinished error!!!", questionnaire);
+    }
+
+    function finishedSurvey(status, completedSurvey) {    
         // var surveyDiv = dom.byId("surveyDiv");
         // surveyDiv.innerHTML = "Thank you for taking the survey!";
+        console.log("finishedSurvey", status, finishedSurvey);
+        if (status === "submitted") {
+            storeQuestionnaireResult(completedSurvey);
+        }
+    } 
+    
+    function storeQuestionnaireResult(completedSurvey) {
+        throw new Error("storeQuestionnaireResult Unfinished");
     }
-    
-    // TODO: Fix hardcoded value
-    var questionnaireID = 'questionnaire-test-003';
-    
+
     function createLayout() {
         console.log("createLayout");
            
-        // TODO: Fix hardcoded ID!!
-        surveyBuilder.getQuestionnaireFromServer(questionnaireID, function(error, questionnaire, envelope) {
+        loadQuestionnaire(function(error, questionnaire, envelope) {
             if (error) {
                 // TODO: Translate
-                document.getElementById("pleaseWaitDiv").innerHTML = "Something went wrong loading the survey questionnaire from the server";
+                document.getElementById("pleaseWaitDiv").style.display = "none";
+                document.body.innerHTML += "Something went wrong loading the survey questionnaire from the server";
                 alert("Something went wrong loading the survey questionnaire from the server:\n" + error);
                 return;
             }
-            console.log("got questionnaire from server", questionnaireID, questionnaire);
+            console.log("got questionnaire from server", projectIdentifier, questionnaireIdentifier, questionnaire);
             
             var surveyDiv = dom.byId("surveyDiv");
             var form = surveyBuilder.buildSurveyForm(questionnaire, finishedSurvey, false);
@@ -54,16 +69,7 @@ require([
     function initialize() {
         translate.configure({}, applicationMessages);
         
-        // Determine status of current questionnaire
-        surveyBuilder.getStatusFromServer(questionnaireID, function(error, status, envelope) {
-            if (error || !status.active) {
-                // TODO: Translate
-                document.getElementById("pleaseWaitDiv").innerHTML = "The survey is not currently active: " + questionnaireID;
-                return;
-            }
-            console.log("got questionnaire status", status);
-            createLayout();
-        });
+        createLayout();
     }
     
     initialize();

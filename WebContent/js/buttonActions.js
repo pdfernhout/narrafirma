@@ -93,7 +93,14 @@ define([
         var questionnaire = getQuestionnaireForSelectedStoryCollection("storyCollectionChoice_enterStories");
         if (!questionnaire) return;
 
-        surveyBuilder.openSurveyDialog(questionnaire);
+        surveyBuilder.openSurveyDialog(questionnaire, finished);
+        
+        function finished(status, surveyResult) {
+            console.log("surveyResult", status, surveyResult);
+            if (status === "submitted") {
+                alert("Unfinished save");
+            }
+        }
     }
 
     ///////// Button functions

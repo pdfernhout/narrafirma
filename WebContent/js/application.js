@@ -307,9 +307,7 @@ define([
     // Panel builder "functionResult" components will get routed through here to calculate their text.
     // The application should publish a topic with the same name as these functions when their value changes.
     function calculateFunctionResultForGUI(panelBuilder, contentPane, model, fieldSpecification, functionName) {
-        if (functionName === "totalNumberOfSurveyResults") {
-            return domain.allCompletedSurveys.length;
-        } else if (functionName === "isStoryCollectingEnabled") {
+        if (functionName === "isStoryCollectingEnabled") {
             return surveyCollection.isStoryCollectingEnabled(fieldSpecification);
         } else {
             console.log("TODO: calculateFunctionResultForGUI ", functionName, fieldSpecification);
@@ -459,16 +457,6 @@ define([
             topic.subscribe("/dojo/hashchange", urlHashFragmentChanged); 
             
             topic.subscribe("loadLatestStoriesFromServer", loadedMoreSurveyResults);
-            
-            // TODO: What happens when questionnaire is loaded after story browser, themer, or graph page is built?
-            // Synchronizes the state of the domain questionnaire with what is on server
-            // TODO: Fix for new Pointrel approach: surveyCollection.loadCurrentQuestionnaire();
-            
-            // Synchronizes the state of the domain for one status flag with what is on server
-            // TODO: Fix for new Pointrel approach: surveyCollection.determineStatusOfCurrentQuestionnaire();
-            
-            // Load all the latest stories
-            // TODO: Fix for new Pointrel approach:  surveyCollection.loadLatestStoriesFromServer();
             
             // TODO: What to do while waiting for data for a project to load from server the first time? Assuming authenticated OK etc.???
             
