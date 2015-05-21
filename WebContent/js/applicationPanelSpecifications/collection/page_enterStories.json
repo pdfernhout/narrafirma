@@ -6,6 +6,17 @@
     "modelClass": "EnterStoriesActivity",
     "panelFields": [
         {
+            "id": "storyCollectionChoiceZ",
+            "valuePath": "/localSettings/currentStoryCollection",
+            "valueType": "string",
+            "valueOptions": "project_storyCollections",
+            "valueOptionsSubfield": "storyCollection_shortName",
+            "required": true,
+            "displayType": "select",
+            "displayName": "Story collection",
+            "displayPrompt": "Choose a story collection to enter a questionnaire for."
+        },
+        {
             "id": "printQuestionsForm_enterStories",
             "valueType": "none",
             "displayType": "button",
