@@ -6,7 +6,7 @@
     "modelClass": "EnterStoriesActivity",
     "panelFields": [
         {
-            "id": "storyCollectionChoiceZ",
+            "id": "storyCollectionChoice_enterStories",
             "valuePath": "/localSettings/currentStoryCollection",
             "valueType": "string",
             "valueOptions": "project_storyCollections",

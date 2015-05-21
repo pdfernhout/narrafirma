@@ -89,13 +89,9 @@ define([
     function openSurveyDialog() {
         // TODO: What version of questionnaire should be used? Should it really be the latest one? Or the one active on server?
         console.log("openSurveyDialog domain", domain);
-        var questionnaire = domain.currentQuestionnaire;
         
-        if (!questionnaire) {
-            // TODO: Translate
-            alert("No current questionnaire has been finalized");
-            return;
-        }
+        var questionnaire = getQuestionnaireForSelectedStoryCollection("storyCollectionChoice_enterStories");
+        if (!questionnaire) return;
 
         surveyBuilder.openSurveyDialog(questionnaire);
     }
@@ -157,10 +153,8 @@ define([
         
         return output;
     }
-
-    function printStoryForm(contentPane, model, fieldSpecification, value) {
-        console.log("printStoryForm unfinished");
-        
+    
+    function getQuestionnaireForSelectedStoryCollection(storyCollectionChoiceId) {
         /*
          * TODO: Could check first if any story collections have been defined
         var questionnaires = project.projectModel.get("project_questionnaires");
@@ -172,15 +166,21 @@ define([
         }
         */
         
-        var choiceWidget = pageDisplayer.getCurrentPageWidgets()["storyCollectionChoice_printing"];
+        var choiceWidget = pageDisplayer.getCurrentPageWidgets()[storyCollectionChoiceId];
         console.log("choiceWidget", choiceWidget);
+        
+        if (!choiceWidget) {
+            alert("Programming error: no widget for: " + storyCollectionChoiceId);
+            return null;
+        }
+        
         var storyCollectionName = choiceWidget.get("value");
         console.log("storyCollectionName", storyCollectionName);
         
         if (!storyCollectionName) {
             // TODO: translate
             alert("Please select a story collection first.");
-            return;
+            return null;
         }
         
         var storyCollection = questionnaireGeneration.findStoryCollection(project, storyCollectionName);
@@ -188,7 +188,7 @@ define([
         if (!storyCollection) {
             // TODO: translate
             alert("The selected story collection could not be found.");
-            return;
+            return null;
         }
         
         var questionnaireName = storyCollection.storyCollection_questionnaireIdentifier;
@@ -196,7 +196,7 @@ define([
         if (!questionnaireName) {
             // TODO: translate
             alert("The story collection has no selection for a questionnaire.");
-            return;
+            return null;
         }
         
         var questionnaire = questionnaireGeneration.buildQuestionnaire(project, questionnaireName);
@@ -204,8 +204,17 @@ define([
         if (!questionnaire) {
             // TODO: translate
             alert("The questionnaire selected in the story collection could not be found.");
-            return;
+            return null;
         }
+        
+        return questionnaire;
+    }
+
+    function printStoryForm(contentPane, model, fieldSpecification, value) {
+        console.log("printStoryForm unfinished");
+        
+        var questionnaire = getQuestionnaireForSelectedStoryCollection("storyCollectionChoice_printing");
+        if (!questionnaire) return;
         
         var output = generateHTMLForQuestionnaire(questionnaire);
         

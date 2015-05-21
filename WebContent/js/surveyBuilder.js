@@ -105,7 +105,7 @@ define([
         storyQuestionsModel.set("__type", "org.workingwithstories.Story");
         storyQuestionsModel.set("_storyID", generateRandomUuid());
         storyQuestionsModel.set("_participantID", participantID);
-        if (singlePrompt) storyQuestionsModel.set("elicitingQuestion", singlePrompt);
+        if (singlePrompt) storyQuestionsModel.set("__survey_elicitingQuestion", singlePrompt);
         surveyResultsWithModels.stories.push(storyQuestionsModel);
         
         panelBuilder.buildFields(allStoryQuestions, surveyPane, storyQuestionsModel);
