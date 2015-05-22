@@ -73,10 +73,14 @@ app.use(bodyParser.urlencoded({
 
 // Application routes
 
-// TODO: Fix this
-app.post("/survey/questions/:surveyID", function (request, response) {
-    applicationLog("ERROR TODO UNFINISHED");
-    return response.json({status: "FAILED", message: "Unfinished", questions: null});
+app.get("/survey/:projectID/:surveyID", function (request, response) {
+    applicationLog("GET survey UNFINISHED", request.params.projectID, request.params.surveyID);
+    return response.json({success: false, message: "Unfinished", questionnaire: null});
+});
+
+app.post("/survey/:projectID/:surveyID", function (request, response) {
+    applicationLog("POST survey UNFINISHED", request.params.projectID, request.params.surveyID);
+    return response.json({success: false, message: "Unfinished", questionnaire: null});
 });
 
 /*

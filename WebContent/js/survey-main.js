@@ -1,12 +1,14 @@
 require([
     "dojo/i18n!js/nls/applicationMessages",
     "dojo/dom",
+    "dojo/request",
     "js/surveyBuilder",
     "js/panelBuilder/translate",
     "dojo/domReady!"
 ], function(
     applicationMessages,
     dom,
+    request,
     surveyBuilder,
     translate
 ){
@@ -20,12 +22,38 @@ require([
     
     // TODO: Fix hardcoded values
     var projectIdentifier = "test1";
-    var questionnaireIdentifier = 'questionnaire-test-003';
+    var questionnaireIdentifier = 'one';
     
     function loadQuestionnaire(callback) {
-        // TODO!!!
-        var questionnaire = null;
-        callback("Unfinished error!!!", questionnaire);
+        var url = "/survey/" + projectIdentifier + "/" + questionnaireIdentifier;
+        
+        var options = {
+            // preventCache: true,
+            timeout: 10000,
+            handleAs: "json",
+            headers: {
+                "Content-Type": 'application/json; charset=utf-8',
+                "Accept": "application/json"
+            }
+        };
+        
+        request(url, options).then(function(data) {
+            // do something with handled data
+            console.log("request got data", data);
+            if (data.success) {
+                callback(null, data.questionnaire);
+            } else {
+                // TODO: Translate
+                // alert("Problem loading questionnaire");
+                callback("Problem loading questionnaire", null);
+            }
+        }, function(err){
+            // handle an error condition
+            console.log("error from request", err);
+            // TODO: Translate
+            // alert("Could not load survey");
+            callback(err, null);
+        });
     }
 
     function finishedSurvey(status, completedSurvey) {    
@@ -38,7 +66,27 @@ require([
     } 
     
     function storeQuestionnaireResult(completedSurvey) {
-        throw new Error("storeQuestionnaireResult Unfinished");
+        var url = "/survey/" + projectIdentifier + "/" + questionnaireIdentifier;
+        
+        var options = {
+            method: "POST",
+            timeout: 10000,
+            handleAs: "json",
+            data: JSON.stringify(completedSurvey),
+            headers: {
+                "Content-Type": 'application/json; charset=utf-8',
+                "Accept": "application/json"
+            }
+        };
+        
+        request(url, options).then(function(data) {
+            // do something with handled data
+            console.log("request PUT got data", data);
+        }, function(err){
+            // handle an error condition
+            console.log("error from PUT request", err);
+            alert("Could not save survey");
+        });
     }
 
     function createLayout() {
