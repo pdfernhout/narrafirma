@@ -40,7 +40,7 @@ var usersJournalIdentifier = "users";
 // TODO: Fix this to have better user ID and maybe other information
 var anonymousUser = {
    userIdentifier: "anonymous",
-   groups: ""
+   rolesForJournals: {}
 };
 
 // TODO: Perhaps rethink superuser idea to have least priviledges?
@@ -179,26 +179,49 @@ function makeUnionOfPermissionsForUser(rolesForJournal) {
     return unionOfPermissionsForUser;
 }
 
-function isAuthorized(journalIdentifier, userIdentifier, requestedAction) {
-    if (superuserInformation && userIdentifier === superuserInformation.userIdentifier) {
-        // Handle superuser specially
-        return true;
-    }
+function isAuthorized(journalIdentifier, userIdentifier, requestedAction, apiRequest, request) {
+    // console.log("==== isAuthorized for request?", apiRequest);
     
-    // Handle regular user
-    var userInformation = getUserInformation(userIdentifier);
-    
-    if (!userInformation) {
-        console.log("ERROR: isAuthorized: userInformation was missing for", userIdentifier);
+    // Ensure there is a userIdentifier that is a valid JavaScript object (includes null and "" and 0)
+    if (userIdentifier === undefined) {
+        console.log("ERROR: isAuthorized: userIdentifier was undefined");
         return false;
     }
     
+    // Handle superuser specially
+    if (superuserInformation && userIdentifier === superuserInformation.userIdentifier) {
+        return true;
+    }
+    
+    // Handle regular user or anonymous user
+    var userInformation = getUserInformation(userIdentifier);
+    
+    if (!userInformation) {
+        if (userIdentifier === "anonymous") {
+            // Handle anonymous user specially if it has not been otherwise defined
+            userInformation = anonymousUser;
+        } else {
+            console.log("ERROR: isAuthorized: userInformation was missing for", userIdentifier);
+            return false;
+        }
+    }
+    
     var rolesForJournal = userInformation.rolesForJournals[journalIdentifier];
-    if (!rolesForJournal) return false;
+    if (!rolesForJournal) rolesForJournal = [];
     
     var unionOfPermissionsForUser = makeUnionOfPermissionsForUser(rolesForJournal);
     
-    return unionOfPermissionsForUser[requestedAction] || false;
+    if (unionOfPermissionsForUser[requestedAction]) return true;
+    
+    if (userIdentifier !== "anonymous") {
+        // Grant a regular user all priviledges of an anonymous one
+        var isAnonymousAuthorized = isAuthorized(journalIdentifier, "anonymous", requestedAction, apiRequest, request);
+        if (isAnonymousAuthorized) return true;
+    }
+    
+    // TODO: The user is not generally authorized to do this action in the journal, but, there might be additional authorization for the topic
+    
+    return false;
 }
 
 function getUserInformation(userIdentifier) {

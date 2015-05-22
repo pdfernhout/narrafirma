@@ -71,8 +71,8 @@ var configuration = {
     maximumQueryResponseLimit: 100,
     maximumMessageBodyBytes: 1000000,
     
-    // Whether to allow requests to be attempeted even if unauthenticated; otherwise athentication is only checked for identifer users
-    // Note that even if this is set to flag, journal access may fail if the anonymous user is not allowed
+    // Whether to allow requests to be attempted even if unauthenticated; otherwise athentication is only checked for identifer users
+    // Note that even if this flag is set to true, journal access may fail if the anonymous user is not allowed to do some operation
     isAnonymousAccessAllowed: true,
     
     // An optional function that should return a boolean if a user is authenticated; userCredentials typically has userIdentifier and userPassword
@@ -81,8 +81,8 @@ var configuration = {
     
     isAuthenticatedCallback: null,
     // An optional function that should return a boolean if a request is authorized for the user
-    // Typically this should be set to pointrcelAccessControl.isAuthorized
-    // isAuthorized(journalIdentifier, userIdentifier, requestedAction)
+    // Typically this should be set to pointrelAccessControl.isAuthorized
+    // isAuthorized(journalIdentifier, userIdentifier, requestedAction, apiRequest, request)
     isAuthorizedCallback: null,
     
     // An optional callback to return an object listing the journals a user can access and the permissions authorized
@@ -767,7 +767,7 @@ function processRequest(apiRequest, callback, request) {
         var senderIPAddress;
         if (request) senderIPAddress = senderIPAddressForRequest(request);
         
-        var user;
+        var user = null;
         if (request && request.user) user = request.user;
          
         log("======== processRequest", senderIPAddress, JSON.stringify(user), JSON.stringify(apiRequest));
@@ -792,34 +792,35 @@ function processRequest(apiRequest, callback, request) {
         // TODO: May want to check that messages stamped with a userIdentifier match the userIdentifier in the credentials?
 
         var userIdentifierFromServerRequest;
-        if (user) {
+        if (user !== null) {
             userIdentifierFromServerRequest = user.userIdentifier;
         }
         
         // We don't need to authenticate the user's credentials if the claimed user was authenticated already by the server
         var isAlreadyAuthenticated = false;
         var userIdentifier = userCredentials.userIdentifier;
-        if (user) {
+        if (user !== null) {
             userIdentifierFromServerRequest = user.userIdentifier;
-            if (!userIdentifier) {
+            if (userIdentifier === undefined) {
                 userIdentifier = userIdentifierFromServerRequest;
                 isAlreadyAuthenticated = true;
             } else {
-                if (userIdentifier && userIdentifier === userIdentifierFromServerRequest) {
+                if (userIdentifier !== undefined && userIdentifier === userIdentifierFromServerRequest) {
                     isAlreadyAuthenticated = true;
                 }
             }
         }
+        if (userIdentifier === undefined) userIdentifier = "anonymous";
         
         // console.log("userIdentifierFromServerRequest:", userIdentifierFromServerRequest, "userIdentifier:", userIdentifier, "user:", user);
         
         // Returning 403 for unauthenticated instead of 401 because we are using custom authentication; see:
         // http://stackoverflow.com/questions/3297048/403-forbidden-vs-401-unauthorized-http-responses/14713094#14713094
-        if (!configuration.isAnonymousAccessAllowed && !userIdentifier) {
+        if (!configuration.isAnonymousAccessAllowed && userIdentifier === "anonymous") {
             return callback(makeFailureResponse(403, "Unauthenticated -- anonyomous access is not permitted", {userIdentifier: userIdentifier}));
         }
         
-        if (!isAlreadyAuthenticated && userIdentifier && configuration.isAuthenticatedCallback) {
+        if (!isAlreadyAuthenticated && userIdentifier !== "anonymous" && configuration.isAuthenticatedCallback) {
             var authenticated = configuration.isAuthenticatedCallback(userIdentifier, userCredentials);
             if (!authenticated) {
                 return callback(makeFailureResponse(403, "Unauthenticated", {userIdentifier: userIdentifier}));
@@ -853,11 +854,10 @@ function processRequest(apiRequest, callback, request) {
             var authorized = true;
             if (configuration.isAuthorizedCallback) {
                 // TODO: Could get more fine-grained authorization for messageType
-                authorized = configuration.isAuthorizedCallback(journalIdentifier, userIdentifier, requestedCapability);
+                authorized = configuration.isAuthorizedCallback(journalIdentifier, userIdentifier, requestedCapability, apiRequest, request);
             }
             
             if (!authorized) {
-                if (!userIdentifier) userIdentifier = "anonymous";
                 var message = 'Forbidden -- user "' + userIdentifier + '" is not authorized to "' + requestedCapability + '" in ' + JSON.stringify(journalIdentifier);
                 return callback(makeFailureResponse(403, message, {userIdentifier: userIdentifier, journalIdentifier: journalIdentifier, requestedCapability: requestedCapability}));
             }
