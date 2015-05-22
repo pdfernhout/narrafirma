@@ -1001,7 +1001,685 @@ define(function() {
                 "options": "rules keep life working;rules are for breaking"
             }
         ]
+    },
+    {
+	    "id": "storyCollectionActivities",
+	    "name": "Story Collection Activities",
+	    "description": "",
+	    "isHeader": false,
+	    "type": "page",
+	    "questions": [
+              {
+                  "name": "Two true stories and a tall tale",
+                  "type": "ice-breaker",
+                  "plan": "Ask people to break into small groups, and one by one, tell two true stories about themselves and one made-up fiction. Others in the group must guess which of the stories is fiction.",
+                  "optionalParts": "Afterwards, have groups tell their favorite stories (true or fictional) to the larger group.",
+                  "duration": "Ten to fifteen minutes",
+                  "recording": "Not necessary",
+                  "materials": "None needed",
+                  "spaces": "Places for people to sit in small groups",
+                  "facilitation": "None after the setup"
+              },
+	                  
+              {
+                  "name": "Quick interviews",
+                  "type": "ice-breaker",
+                  "plan": "Divide into groups of three. Interview each other using one simple question, like \"When have you felt proud?\"",
+                  "optionalParts": "Afterwards, have groups summarize the stories they heard to the larger group",
+                  "duration": "Ten to fifteen minutes",
+                  "recording": "Not necessary",
+                  "materials": "None needed",
+                  "spaces": "Places for people to sit in small groups",
+                  "facilitation": "None after the setup"
+              },
+              {
+                  "name": "Common experiences",
+                  "type": "ice-breaker",
+                  "plan": "In small groups, find one experience everyone has had in common. If people know each other, the experience has to be surprising.",
+                  "optionalParts": "Afterwards, have groups tell about their shared experience.",
+                  "duration": "Ten to fifteen minutes",
+                  "recording": "Not necessary",
+                  "materials": "None needed",
+                  "spaces": "Places for people to sit in small groups",
+                  "facilitation": "None after the setup"
+              },
+              {
+                  "name": "Have you ever...",
+                  "type": "ice-breaker",
+                  "plan": "People say whether they've had experiences on a printed list. Each group is challenged to come up with some surprises about the experiences people have had.",
+                  "optionalParts": "Afterwards, have groups explain what surprised them about their experiences.",
+                  "duration": "Ten to fifteen minutes",
+                  "recording": "Not necessary",
+                  "materials": "None needed",
+                  "spaces": "Places for people to sit in small groups",
+                  "facilitation": "None after the setup"
+              },
+              {
+                  "name": "That reminds me of...",
+                  "type": "ice-breaker",
+                  "plan": "Each group gets a copy of a newspaper or magazine. Each member must come up with some experience they are reminded of by the paper. The group compares their experiences.",
+                  "optionalParts": "Afterwards, have groups explain what surprised them about their experiences.",
+                  "duration": "Ten to fifteen minutes",
+                  "recording": "Not necessary",
+                  "materials": "None needed",
+                  "spaces": "Places for people to sit in small groups",
+                  "facilitation": "None after the setup"
+              },
+              {
+                  "name": "Twenty questions",
+                  "type": "ice-breaker",
+                  "plan": "In small groups, each person should think of an experience they've had. The others try to guess what happened by asking twenty questions.",
+                  "optionalParts": "Afterwards, have groups explain what surprised them about their experiences.",
+                  "duration": "Ten to fifteen minutes",
+                  "recording": "Not necessary",
+                  "materials": "None needed",
+                  "spaces": "Places for people to sit in small groups",
+                  "facilitation": "None after the setup"
+              },
+              {
+                  "name": "Sharing stories",
+                  "type": "sharing stories (no task)",
+                  "plan": "Ask people in small groups to simply and naturally share stories about a topic.",
+                  "optionalParts": "None",
+                  "duration": "Ten to thirty minutes",
+                  "recording": "Record all stories; ask people to give their stories names; give them question sheets to fill out.",
+                  "materials": "Tape recorders; question sheets.",
+                  "spaces": "Places for people to sit in small groups (with enough space between so tape recorders don't pick up too much background noise).",
+                  "facilitation": "Watch people to make sure they are giving their stories names and paying attention to the question sheets. Make sure people are speaking into the recorders."
+              },
+              {
+                  "name": "Respond to questions",
+                  "type": "sharing stories (simple task)",
+                  "plan": "Give people (in small groups) a set of 3-5 questions related to the topic." +
+                  	"Ask them to one by one choose a question they want to answer and tell a story about it" +
+                  	"to the group. Ask them to try to cover all of the questions between them.",
+                    "optionalParts": "None",
+                  "duration": "Ten to thirty minutes",
+                  "recording": "Record all stories; ask people to give their stories names; give them question sheets to fill out.",
+                  "materials": "Tape recorders; question sheets.",
+                  "spaces": "Places for people to sit in small groups (with enough space between so tape recorders don't pick up too much background noise).",
+                  "facilitation": "Watch people to make sure they are giving their stories names and paying attention to the question sheets. Make sure people are speaking into the recorders."
+              },
+              {
+                  "name": "Both sides",
+                  "type": "sharing stories (simple task)",
+                  "plan": "Give people (in small groups) a set of 3-4 statements related to the topic." +
+                  	"The statements should be summaries of \"what happens,\" like \"People in our community " +
+                  	"take care of each other.\" Ask people to tell stories that describe experiences on both sides of each " +
+                  	"statement. The challenge for the group is to provide balancing examples for each statement.",                 	
+                  "optionalParts": "None",
+                  "duration": "Ten to thirty minutes",
+                  "recording": "Record all stories; ask people to give their stories names; give them question sheets to fill out.",
+                  "materials": "Tape recorders; question sheets.",
+                  "spaces": "Places for people to sit in small groups (with enough space between so tape recorders don't pick up too much background noise).",
+                  "facilitation": "Watch people to make sure they are giving their stories names and paying attention to the question sheets. Make sure people are speaking into the recorders."
+              },
+              {
+                  "name": "Simple ranking",
+                  "type": "sharing stories (simple task)",
+                  "plan": "Ask people in small groups to share stories, either with just a named topic," +
+                  	"or with a list of 3-5 questions about the topic. As people tell stories, ask them to " +
+                  	"name each story and write the name on a sticky note. Have people arrange the sticky notes " +
+                  	"along some axis they have defined. It can be anything that has meaning to the group, such as " +
+                  	"how much impact the story would have if it were widely known, or how positive or negative " +
+                  	"the story is, or when it happened, or whether it turned out well. Stories should not be ranked by quality." +
+                  	"Ask people to fill in empty spaces along their axis, if they can.",
+                  "optionalParts": "None",
+                  "duration": "Ten to thirty minutes",
+                  "recording": "Record all stories; ask people to give their stories names; give them question sheets to fill out.",
+                  "materials": "Tape recorders; question sheets.",
+                  "spaces": "Places for people to sit in small groups (with enough space between so tape recorders don't pick up too much background noise).",
+                  "facilitation": "Watch people to make sure they are giving their stories names and paying attention to the question sheets. Make sure people are speaking into the recorders."
+              },
+              {
+                  "name": "Remindings",
+                  "type": "sharing stories (simple task)",
+                  "plan": "Ask people in small groups to share stories, either with just a named topic," +
+	                	"or with a list of 3-5 questions about the topic. After the first story is told, ask people " +
+	                	"to respond with another story the first story reminds them of. When people run out of " +
+	                	"remindings, they can return to the list. The challenge to the group is to create chains " +
+	                	"of reminding.",
+	               "optionalParts": "If people like the idea, you can have groups compete over how long their " +
+                        "reminding chains grow.",
+	               "duration": "Ten to thirty minutes",
+	               "recording": "Record all stories; ask people to give their stories names; give them question sheets to fill out.",
+	               "materials": "Tape recorders; question sheets.",
+	               "spaces": "Places for people to sit in small groups (with enough space between so tape recorders don't pick up too much background noise).",
+	               "facilitation": "Watch people to make sure they are giving their stories names and paying attention to the question sheets. Make sure people are speaking into the recorders."
+              },
+              {
+                  "name": "Words",
+                  "type": "sharing stories (simple task)",
+                  "plan": "Give small groups cards with words important to the project written on them." +
+                    "Mix together words that bring to mind things like behaviors (helpful, deceitful), situations " +
+                    "(conflict, cooperation), values (fairness, equality), and concrete places or objects " +
+                    "familiar to people (the town square, the factory floor)." +
+                  	"Ask people to shuffle the cards, then deal out cards so that each person gets a random " +
+                  	"selection. Ask people to remember and tell about things that have happened that their " +
+                  	"cards remind them of. Other group members can also tell stories those stories remind " +
+                  	"them of.",
+ 	               "optionalParts": "None",
+	               "duration": "Ten to thirty minutes",
+	               "recording": "Record all stories; ask people to give their stories names; give them question sheets to fill out.",
+	               "materials": "Tape recorders; question sheets.",
+	               "spaces": "Places for people to sit in small groups (with enough space between so tape recorders don't pick up too much background noise).",
+	               "facilitation": "Watch people to make sure they are giving their stories names and paying attention to the question sheets. Make sure people are speaking into the recorders."
+              },
+              {
+                  "name": "Twice-told stories",
+                  "type": "twice-told stories exercise",
+                  "plan": "1. (5 min) Introduction. Ask people to form groups of three to four people. Turn on audio recorders. " +
+                  		"2. (5 min) Criteria. Each small group should choose a criterion by which they will choose a story they " +
+                  		"will tell to the larger group afterward." +
+                  		"3. (25 min) Exchange. Small groups exchange stories. As they do this they name the stories, " +
+                  		"say the names on the recording, and note them down on their forms. " +
+                  		"4. (5 min) Question forms. Each person fills out a question form for each story they told. " +
+                  		"5. (15 min) Retelling. One person from each small group retells their chosen story " +
+                  		"to the whole session. " +
+                  		"6. (5 min) Discussion. Wrap-up and general discussion of all stories told and the topic.",
+                  "optionalParts": "Ask people to fill out question sheets about the stories they heard as well as those " +
+                  		"they told.",
+                  "duration": "One hour",
+	              "recording": "Record all stories; ask people to give their stories names; give them question sheets to fill out.",
+                  "materials": "None required",
+	              "spaces": "Places for people to sit in small groups (with enough space between so tape recorders don't pick up too much background noise).",
+	              "facilitation": "Watch to make sure people are paying attention to the exercise (choosing stories to retell), " +
+              			"but keep your distance so people can speak freely."
+              },
+              {
+                  "name": "Twice-told stories (short version)",
+                  "type": "twice-told stories exercise",
+                  "plan": "1. (5 min) Introduction and criteria. Ask people to form groups of three to four people. Turn on audio recorders. " +
+                  		"Also, each small group should choose a criterion by which they will choose a story they " +
+                  		"will tell to the larger group afterward." +
+                  		"2. (20 min) Exchange. Small groups exchange stories. As they do this they name the stories, " +
+                  		"say the names on the recording, and note them down on their forms. " +
+                  		"3. (5 min) Question forms. Each person fills out a question form for each story they told. " +
+                  		"4. (10 min) Retelling. One person from each small group retells their chosen story " +
+                  		"to the whole session. " +
+                  		"5. (5 min) Discussion. Wrap-up and general discussion of all stories told and the topic.",
+                  "optionalParts": "None",
+                  "duration": "45 minutes",
+	              "recording": "Record all stories; ask people to give their stories names; give them question sheets to fill out.",
+                  "materials": "None required",
+	              "spaces": "Places for people to sit in small groups (with enough space between so tape recorders don't pick up too much background noise).",
+	              "facilitation": "Watch to make sure people are paying attention to the exercise (choosing stories to retell), " +
+              			"but keep your distance so people can speak freely."
+              },
+              {
+                  "name": "Timeline",
+                  "type": "timeline exercise",
+                  "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Split into small " +
+                  		"groups of three or four people each. Turn on audio recorders. " +
+                  		"2. (5 min) Topic and dates. Ask each group to agree on a topic their timeline will explore. " +
+                  		"Ask each group to choose starting and ending dates for their timeline " +
+                  		"and mark these dates with sticky notes. " +
+                  		"3. (10 min) Start and end. Ask each group to tell at least three stories that describe the end of the timeline. They should " +
+                  		"write a brief title for each story and build a cluster of these notes at the end of the timeline. " +
+                  		"Have them do the same for the start of the timeline. " +
+                  		"They should also write the story titles on their question answering sheets. " +
+                  		"4. (40 min) Filling in. Have each group work backwards through time, telling stories along the way. " +
+                  		"Also ask people to mark turning points, or times when things changed in significant ways, on their timeline. " +
+                  		"5. (10 min) Question forms. Ask everyone to fill out question forms for every story they told. " +
+                  		"6. (10 min). Visiting. Ask everyone to walk around the room looking over all of the timelines created. " +
+                  		"7. (10 min). Discussion. Bring everyone together into a discussion of all the timelines.",
+                  "optionalParts": "People can create utopian and dystopian timelines, working backward from perfect or " +
+                  		"horrible ending states, linking to the factual timeline at some point. (See WWS for details.)",
+                  "duration": "90 minutes",
+	              "recording": "Record all stories; ask people to give their stories names; give them question sheets to fill out.",
+                  "materials": "Sticky notes; spaces to work on (tables, walls, floor)",
+	              "spaces": "Places for people to sit in small groups (with enough space between so tape recorders don't pick up too much background noise).",
+                  "facilitation": "Watch out for people going into too much detail; people leaving large blank spaces " +
+                  		"(perhaps in times they don't want to think about); and people listing facts without telling stories.",
+               },
+               {
+                   "name": "Timeline (short version)",
+                   "type": "timeline exercise",
+                   "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Split into small " +
+                   		"groups of three or four people each. Turn on audio recorders. " +
+                   		"2. (5 min) Topics and dates. Ask each group to agree on a topic their timeline will explore. " +
+                   		"Ask each group to choose starting and ending dates for their timeline " +
+                   		"and mark these dates with sticky notes. " +
+                   		"3. (5 min) Start and end. Ask each group to tell at least three stories that describe the end of the timeline. They should " +
+                   		"write a brief title for each story and build a cluster of these notes at the end of the timeline. " +
+                  		"Have them do the same for the start of the timeline. " +
+                   		"They should also write the story titles on their question answering sheets. " +
+                   		"4. (20 min) Filling in. Have each group work backwards through time, telling stories along the way. " +
+                   		"Also ask people to mark turning points, or times when things changed in significant ways, on their timeline. " +
+                   		"5. (5 min) Question forms. Ask everyone to fill out question forms for every story they told. " +
+                   		"6. (5 min). Visiting. Ask everyone to walk around the room looking over all of the timelines created.",
+                   "optionalParts": "None",
+                   "duration": "45 minutes",
+ 	              "recording": "Record all stories; ask people to give their stories names; give them question sheets to fill out.",
+                   "materials": "Sticky notes",
+ 	              "spaces": "Places for people to sit in small groups (with enough space between so tape recorders " +
+ 	              		"don't pick up too much background noise); spaces to work on (tables, walls, floor)",
+                   "facilitation": "Watch out for people going into too much detail; people leaving large blank spaces " +
+                   		"(perhaps in times they don't want to think about); and people listing facts without telling stories.",
+                },
+                {
+                    "name": "Landscape",
+                    "type": "landscape exercise",
+                    "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Split into small " +
+              		"groups of three or four people each. Turn on audio recorders. " +
+              		"2. (5-15 min) Dimensions and corners. Ask each group to mark each axis of the space using dimensions you have chosen. " +
+              		"Ask people to label each corner point with descriptions of how the two dimensions come together " +
+              		"at that corner." +
+              		"3. (40 min) Filling in. Having defined their space, each group will now fill it up with stories. " +
+              		"4. (10 min) Features. After groups have populated their spaces, ask them to mark out features of the landscape. " +
+              		"5. (10 min) Question forms. Now ask people to pause in their building and answer questions about each story they told. " +
+              		"6. (10 min) Visiting. Ask everyone to walk around the room looking over all of the landscapes created and " +
+              		"talking about the experiences described there. " +
+              		"7. (10 min). Discussion. Bring everyone together into a discussion of all the landscapes.",
+                    "optionalParts": "Consider a third dimension; consider multiple perspectives; " +
+                    		"ask people to create their own dimensions (see WWS for details).",
+                    "duration": "90 minutes",
+  	              "recording": "Record all stories; ask people to give their stories names; give them question sheets to fill out.",
+                  "materials": "Sticky notes",
+ 	              "spaces": "Places for people to sit in small groups (with enough space between so tape recorders " +
+ 	              		"don't pick up too much background noise); spaces to work on (tables, walls, floor)",
+                    "facilitation": "Watch out for confusion about the dimensions (and have some on hand in case the first " +
+                    		"set doesn't resonate); people leaving some spaces empty; people drawing category boxes " +
+                    		"in the space; people listing dry facts just to cover up the space.",
+                },
+              {
+                  "name": "Landscape (short version)",
+                  "type": "landscape exercise",
+                  "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Split into small " +
+            		"groups of three or four people each. Turn on audio recorders. " +
+            		"2. (5 min) Dimensions and corners. Ask each group to mark each axis of the space using dimensions you have chosen. " +
+            		"Ask people to label each corner point with descriptions of how the two dimensions come together " +
+            		"at that corner." +
+            		"3. (20 min) Filling in. Having defined their space, each group will now fill it up with stories. " +
+            		"4. (5 min) Features. After groups have populated their spaces, ask them to mark out features of the landscape. " +
+            		"5. (5 min) Question forms. Now ask people to pause in their building and answer questions about each story they told. " +
+            		"6. (5 min) Visiting. Ask everyone to walk around the room looking over all of the landscapes created and " +
+            		"talking about the experiences described there.",
+                  "optionalParts": "None",
+                  "duration": "45 minutes",
+	              "recording": "Record all stories; ask people to give their stories names; give them question sheets to fill out.",
+                  "materials": "Sticky notes",
+ 	              "spaces": "Places for people to sit in small groups (with enough space between so tape recorders " +
+ 	              		"don't pick up too much background noise); spaces to work on (tables, walls, floor)",
+                  "facilitation": "Watch out for confusion about the dimensions (and have some on hand in case the first " +
+                  		"set doesn't resonate); people leaving some spaces empty; people drawing category boxes " +
+                  		"in the space; people listing dry facts just to cover up the space.",
+              }
+	    ]
+    	
+    },
+
+    {
+	    "id": "sensemakingActivities",
+	    "name": "Sensemaking Activities",
+	    "description": "",
+	    "isHeader": false,
+	    "type": "page",
+	    "questions": [
+              {
+                  "name": "Encounter stories",
+                  "type": "encountering stories (no task)",
+                  "plan": "Give each small group some stories to consider. If the stories are printed, " +
+                    "ask them to read the stories, either quietly or aloud. If the stories are in audio or video form, " +
+                    "ask them to listen to or watch the stories together.",
+                  "optionalParts": "None",
+                  "duration": "Ten to thirty minutes",
+                  "recording": "None required",
+                  "materials": "Printed, audio, or video stories",
+                  "spaces": "Places for people to sit in small groups (with enough space between so conversations and/or " +
+                    "listening to recordings don't overlap).",
+                  "facilitation": "Watch to make sure people are paying attention to the stories, " +
+                    "but keep your distance so people can speak freely."
+              },
+              {
+                  "name": "Simple ranking",
+                  "type": "encountering stories (simple task)",
+                  "plan": "Ask each small group to draw a line across a large sheet of paper, or simply use " +
+                  		"sticky notes to mark the start and end of a line across the table. " +
+                  		"Give each small group some stories to consider. As they read or listen to each story, " +
+                  		"ask them to place it somewhere along the line. When they have gone through all the stories, " +
+                  		"ask them to talk about the pattern they have created with their placements. ",
+                  "optionalParts": "If particular groups finish early, ask them to create a second line, " +
+                  		"then move their stories from one line to the other. Then ask them to consider " +
+                  		"what they learned from the repositioning of the stories.",
+                  "duration": "Ten to thirty minutes",
+                  "recording": "None required",
+                  "materials": "Printed, audio, or video stories; a surface (wall, table, or floor) to place stories on; paper and/or sticky notes",
+                  "spaces": "Places for people to sit in small groups (with enough space between so conversations and/or " +
+                  		"listening to recordings don't overlap).",
+                  "facilitation": "Watch to make sure people are paying attention to the stories, " +
+                  		"but keep your distance so people can speak freely."
+              },
+              {
+                  "name": "Both sides",
+                  "type": "encountering stories (simple task)",
+                  "plan": "Give each group some stories to consider. Ask them to try to find groups of stories " +
+                  		"in which the same question is answered differently. " +
+                  		"Example questions might be \"How does a citizen behave?\" and \"What is education?\" " +
+                  		"Ask people to write these questions " +
+                  		"on sticky notes and surround them with the stories that answer them differently. " +
+                  		"If a story stands alone, people should still write a question it answers. " +
+                  		"If two stories answer the same question in the same way, they can be stacked together. " +
+                  		"When all of the stories have been considered, people can stand back and look over " +
+                  		"the patterns they have created.",
+                  "optionalParts": "None",
+                  "duration": "Ten to thirty minutes",
+                  "recording": "None required",
+                  "materials": "Printed, audio, or video stories; a surface (wall, table, or floor) to place stories on; sticky notes",
+                  "spaces": "Places for people to sit in small groups (with enough space between so conversations and/or " +
+                  		"listening to recordings don't overlap).",
+                  "facilitation": "Watch to make sure people are paying attention to the stories, " +
+                  		"but keep your distance so people can speak freely."
+              },
+              {
+                  "name": "Remindings",
+                  "type": "encountering stories (simple task)",
+                  "plan": "Give each small group some stories to consider. As they encounter each story, " +
+                  		"ask them to think of any other stories it reminds them of. When they find such a " +
+                  		"reminding pair, have them place the two stories next to each other, with a sticky note " +
+                  		"between them explaining what links the two stories. It might be something simple, like " +
+                  		"that they are both about fathers, or something complex, like that in both stories trust " +
+                  		"is lacking. When the group has worked their way through all of their stories, ask them " +
+                  		"to stand back and look at the pattern they have created.",
+                  "optionalParts": "After creating their remindings pattern, people can talk about why some stories " +
+                  		"are not connected to any others. What do the unrelated stories have in common?",
+	              "duration": "Ten to thirty minutes",
+	              "recording": "None required",
+	              "materials": "Printed, audio, or video stories; a surface (wall, table, or floor) to place stories on; sticky notes",
+	              "spaces": "Places for people to sit in small groups (with enough space between so conversations and/or " +
+	                     "listening to recordings don't overlap).",
+	              "facilitation": "Watch to make sure people are paying attention to the stories, " +
+	                	"but keep your distance so people can speak freely."
+              },
+              {
+                  "name": "Resonance",
+                  "type": "encountering stories (simple task)",
+                  "plan": "Give each small group some stories to consider. As they encounter eacy story, " +
+                  		"ask each person to choose some number of stories (perhaps three, five, or seven) they will take " +
+                  		"special care to represent in later exercises during the session. They should choose " +
+                  		"stories that resonate with their own experiences; stories they want to make sure are " +
+                  		"well represented in what is considered; stories whose voices they want to amplify. When the group " +
+                  		"has worked their way through all the stories, ask them to talk about the stories they " +
+                  		"(each) chose and why they chose them.",
+                  "optionalParts": "If there is time, people can also talk about the stories nobody chose, " +
+                  		"and why nobody felt those stories resonated with them, and what that might mean.",
+  	              "duration": "Ten to thirty minutes",
+	              "recording": "None required",
+	              "materials": "Printed, audio, or video stories; a surface (wall, table, or floor) to place stories on; sticky notes",
+	              "spaces": "Places for people to sit in small groups (with enough space between so conversations and/or " +
+	                     "listening to recordings don't overlap).",
+	              "facilitation": "Watch to make sure people are paying attention to the stories, " +
+	                	"but keep your distance so people can speak freely."
+              },
+              { 
+                  "name": "Twice-told stories",
+                  "type": "twice-told stories exercise",
+                  "plan": "1. (5 min) Introduction. Ask people to form groups of two to four people. " +
+                  		"2. (5 min) Criteria. Each small group should choose a criterion by which they will choose a story they " +
+                  		"will tell to the larger group afterward." +
+                  		"3. (5 min) Critique. Groups present their criteria to the room for critique. " +
+                  		"4. (20 min) Encounter. Small groups read or listen to stories. As they do this, they choose which story " +
+                  		"they will retell to the larger group. " +
+                  		"5. (20 min) Retelling. One person from each small group retells their chosen story " +
+                  		"to the whole session. " +
+                  		"6. (5 min) Discussion. Wrap-up and general discussion of all stories told and the topic.",
+                  "optionalParts": "None",
+                  "duration": "One hour",
+	              "recording": "None required",
+                  "materials": "None required",
+	              "spaces": "Places for people to sit in small groups (with enough space between so conversations and/or " +
+	                     "listening to recordings don't overlap).",
+	              "facilitation": "Watch to make sure people are paying attention to the exercise (choosing stories to retell), " +
+              			"but keep your distance so people can speak freely."
+              },
+              { 
+                  "name": "Twice-told stories (short version)",
+                  "type": "twice-told stories exercise",
+                  "plan": "1. (5 min) Introduction and criteria. Ask people to form groups of two to four people. " +
+                  		"Also, each small group should choose a criterion by which they will choose a story they " +
+                  		"will tell to the larger group afterward." +
+                  		"2. (20 min) Encounter. Small groups read or listen to stories. As they do this, they choose which story " +
+                  		"they will retell to the larger group. " +
+                  		"3. (15 min) Retelling. One person from each small group retells their chosen story " +
+                  		"to the whole session. " +
+                  		"4. (5 min) Discussion. Wrap-up and general discussion of all stories told and the topic.",
+                  "optionalParts": "None",
+                  "duration": "45 minutes", 
+	              "recording": "None required",
+                  "materials": "None required",
+	              "spaces": "Places for people to sit in small groups (with enough space between so conversations and/or " +
+	                     "listening to recordings don't overlap).",
+	              "facilitation": "Watch to make sure people are paying attention to the exercise (choosing stories to retell), " +
+              			"but keep your distance so people can speak freely."
+              },
+              {
+                  "name": "Timeline",
+                  "type": "timeline exercise",
+                  "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Split into small " +
+                  		"groups of three or four people each. " +
+                  		"2. (5 min) Topics and dates. Ask each group to agree on a topic their timeline will explore. " +
+                  		"Ask each group to choose starting and ending dates for their timeline " +
+                  		"and mark these dates with sticky notes. " +
+                  		"3. (10 min) Start and end. Ask each group to choose at least three stories that describe the end of the timeline. They should " +
+                  		"write the title of each story on a sticky note, and build a cluster of these notes at the end of the timeline. " +
+                  		"They should do the same for the timeline start." +
+                  		"4. (25 min) Filling in. Have each group work backwards through time, adding stories (from those they have been given) to the timeline along the way. " +
+                  		"5. (5 min) Turning points. Ask groups to mark turning points, or times when things changed in significant ways, on their timeline. " +
+                  		"6. (10 min). Review. Ask each group to review their timeline, looking for interesting or useful features. " +
+                  		"7. (10 min). Visiting. Ask everyone to walk around the room looking over all of the timelines created. " +
+                  		"8. (10 min). Finishing. Ask each group to finish their timeline, taking into consideration things visitors said about it. " +
+                  		"9. (10 min). Discussion. Bring everyone together into a discussion of all the timelines.",
+                  "optionalParts": "Use whole stories instead of story titles; use vertical space to annotate stories; " +
+                  		"distinuguish multiple perspectives; mark multiple types of turning point; etc. (See WWS for details.)",
+                  "duration": "90 minutes",
+	              "recording": "None required",
+                  "materials": "Sticky notes",
+	              "spaces": "Places for people to sit in small groups (with enough space between so conversations and/or " +
+                        "listening to recordings don't overlap); spaces to work on (tables, walls, floor)",
+                  "facilitation": "Watch out for people paying more attention to when things happened than to " +
+                  		"what that might mean. Especially when they are finding turning points and looking for larger " +
+                  		"patterns, eople should be negotiating meaning, " +
+                  		"not just mapping events.",
+               },
+               {
+                   "name": "Timeline (short version)",
+                   "type": "timeline exercise",
+                   "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Split into small " +
+                   		"groups of three or four people each. " +
+                   		"2. (5 min) Topics and dates. Ask each group to agree on a topic their timeline will explore. " +
+                   		"Ask each group to choose starting and ending dates for their timeline " +
+                   		"and mark these dates with sticky notes. " +
+                   		"3. (5 min) Start and end. Ask each group to choose at least three stories that describe the end of the timeline. They should " +
+                   		"write the title of each story on a sticky note, and build a cluster of these notes at the end of the timeline. " +
+                   		"They should do the same for the timeline start." +
+                   		"4. (20 min) Filling in. Have each group work backwards through time, adding stories (from those they have been given) to the timeline along the way. " +
+                   		"5. (5 min) Turning points. Ask groups to mark turning points, or times when things changed in significant ways, on their timeline. " +
+                    	"5. (10 min). Visiting. Ask everyone to walk around the room looking over all of the timelines created. ",
+                    "optionalParts": "None",
+                   "duration": "45 minutes",
+ 	              "recording": "None required",
+                  "materials": "Sticky notes",
+ 	              "spaces": "Places for people to sit in small groups (with enough space between so conversations and/or " +
+                         "listening to recordings don't overlap); spaces to work on (tables, walls, floor)",
+                   "facilitation": "Watch out for people paying more attention to when things happened than to " +
+                   		"what that might mean. Especially when they are finding turning points and looking for larger " +
+                   		"patterns, eople should be negotiating meaning, " +
+                   		"not just mapping events.",
+                },
+                {
+                    "name": "Landscape",
+                    "type": "landscape exercise",
+                    "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Split into small " +
+              		"groups of three or four people each. " +
+              		"2. (5 min) Dimensions and corners. Ask each group to mark each axis of the space using dimensions you have chosen. " +
+              		"Ask people to label each corner point with descriptions of how the two dimensions come together " +
+              		"at that corner." +
+              		"3. (40 min) Filling in. Having defined their space, each group will now fill it up with the stories they were given. " +
+              		"4. (25 min) Features. After groups have populated their spaces, ask them to mark out features of the landscape. " +
+              		"5. (15 min) Review. Ask each group to work together on the story their landscape tells and what discoveries they find in it. " +
+              		"6. (10 min) Visiting. Ask everyone to walk around the room looking over all of the landscapes created and " +
+              		"talking about the experiences described there. " +
+              		"7. (10 min) Finishing. Groups should add a legend explaining all annotations to their landscape as well as a summary of its major features. " +
+              		"8. (10 min). Discussion. Bring everyone together into a discussion of all the landscapes.",
+                    "optionalParts": "Consider a third dimension; consider multiple perspectives; " +
+                    		"ask people to create their own dimensions (see WWS for details).",
+                    "duration": "two hours",
+   	                "recording": "None required",
+                    "materials": "Sticky notes",
+   	                "spaces": "Places for people to sit in small groups (with enough space between so conversations and/or " +
+                           "listening to recordings don't overlap); spaces to work on (tables, walls, floor)",
+                    "facilitation": "Watch out for categorization; too-precise or too-sloppy placement; " +
+                    		"hesitation; dimensions that don't fit the stories (have extras on hand).",
+                },
+                {
+                    "name": "Landscape", 
+                    "type": "landscape exercise (short version)",
+                    "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Split into small " +
+              		"groups of three or four people each. " +
+              		"2. (5 min) Dimensions and corners. Ask each group to mark each axis of the space using dimensions you have chosen. " +
+              		"Ask people to label each corner point with descriptions of how the two dimensions come together " +
+              		"at that corner." +
+              		"3. (20 min) Filling in. Having defined their space, each group will now fill it up with the stories they were given. " +
+              		"4. (10 min) Features. After groups have populated their spaces, ask them to mark out features of the landscape. " +
+              		"5. (5 min) Visiting. Ask everyone to walk around the room looking over all of the landscapes created and " +
+              		"talking about the experiences described there. ",
+                    "optionalParts": "None",
+                    "duration": "45 minutes",
+   	                "recording": "None required",
+                    "materials": "Sticky notes",
+   	                "spaces": "Places for people to sit in small groups (with enough space between so conversations and/or " +
+                           "listening to recordings don't overlap); spaces to work on (tables, walls, floor)",
+                    "facilitation": "Watch out for categorization; too-precise or too-sloppy placement; " +
+                    		"hesitation; dimensions that don't fit the stories (have extras on hand).",
+                },
+              {
+                  "name": "Story elements",
+                  "type": "story elements exercise",
+                  "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Explain the question " +
+                  		"people will be asking about stories (like 'What is going on in this story?'). Split into small " +
+              		"groups of three or four people each. " +
+              		"2. (20 min) Filling in. Each group should consider the stories they were given and " +
+              		"answer the question (you told them about in the introduction) about it a few times. " +
+              		"They should write the answers on sticky notes." +
+              		"3. (15 min) Clustering. Ask each group to put away the stories and consider only the answers. " +
+              		"On a large blank space, groups should place similar items together, like with like, until " +
+              		"groups form. " +
+              		"4. (10 min) Describing clusters. Groups should list two to four good and bad attributes " +
+              		"about each cluster. " +
+              		"5. (10 min) Second clustering. Ask groups to cluster the attributes (all of them together, " +
+              		"regardless of which cluster they came from) in exactly the same way in which they clustered " +
+              		"the original answers. " +
+              		"6. (10 min) Review. Ask each group to talk together about what they have discovered. " +
+              		"7. (5 min) Visiting. Ask everyone to walk around the room looking over all of the story elements that have been created. " +
+              		"8. (5 min) Finishing. Groups should create a summary that describes, in their own words, what each story element means " +
+              		"to them and what they have learned from it. " +
+              		"9. (10 min) Discussion. Bring everyone together into a discussion of all the story elements.",
+                  "optionalParts": "xxx",
+                  "duration": "90 minutes",
+ 	              "recording": "None required",
+                  "materials": "Sticky notes",
+	               "spaces": "Places for people to sit in small groups (with enough space between so conversations and/or " +
+	                	"listening to recordings don't overlap); spaces to work on (tables, walls, floor)",
+                   "facilitation": "Watch out for categorization (remind people that clustering is open-ended); " +
+                   		"weak response; bad story element names (e.g., proper nouns).",
+              },
+              {
+                  "name": "Story elements (short version)",
+                  "type": "story elements exercise",
+                  "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Explain the question " +
+                  		"people will be asking about stories (like 'What is going on in this story?'). Split into small " +
+              		"groups of three or four people each. " +
+              		"2. (20 min) Filling in. Each group should consider the stories they were given and " +
+              		"answer the question (you told them about in the introduction) about it a few times. " +
+              		"They should write the answers on sticky notes." +
+              		"3. (15 min) Clustering. Ask each group to put away the stories and consider only the answers. " +
+              		"On a large blank space, groups should place similar items together, like with like, until " +
+              		"groups form. " +
+              		"4. (10 min) Describing clusters. Groups should list two to four good and bad attributes " +
+              		"about each cluster. " +
+              		"5. (5 min) Second clustering. Ask groups to cluster the attributes (all of them together, " +
+              		"regardless of which cluster they came from) in exactly the same way in which they clustered " +
+              		"the original answers. " +
+              		"to them and what they have learned from it. " +
+              		"6. (5 min) Discussion. Bring everyone together into a discussion of all the story elements.",
+                  "optionalParts": "Use more than one element type; create association trails; find exemplar stories; " +
+                  		"compare story elements to published models (see WWS for details).",
+                  "duration": "one hour",
+                  "recording": "None required",
+                  "materials": "Sticky notes",
+ 	               "spaces": "Places for people to sit in small groups (with enough space between so conversations and/or " +
+ 	                	"listening to recordings don't overlap); spaces to work on (tables, walls, floor)",
+                    "facilitation": "Watch out for categorization (remind people that clustering is open-ended); " +
+                    		"weak response; bad story element names (e.g., proper nouns).",
+              },
+              {
+                  "name": "Composite stories",
+                  "type": "composite stories exercise",
+                  "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Split into small " +
+              			"groups of three or four people each. Make sure you have at least three groups in total. " +
+              			"2. (5 min) Choosing a message. Each group should agree on a message they want their constructed story to deliver. " +
+              			"3. (20 min) Filling in the template. Introduce a story template. Groups should place stories into spaces on the " +
+              			"template where they seem to fit and support the overall message. " +
+              			"4. (20 min) Forming the story. In this step the focus of each group should move from assembling " +
+              			"stories to creating one new fictional story inspired by the assembled stories. " +
+              			"5. (10 min) First telling. Now each storyteller should visit another group, tell their group’s story, " +
+              			"and listen to feedback. " +
+              			"6. (15 min) Preparation for second telling. Storytellers should report on how the storytelling went, " +
+              			"then the group should go back and improve on their story in preparation for a second telling. " +
+              			"7. (10 min) Second telling. Now the same storytellers should proceed to another group " +
+              			"(not the one they told the story to the first time) and tell the story again. Again they " +
+              			"should gather feedback. " +
+              			"8. (15 min) Finishing. Again the groups should improve their stories. If desired, " +
+              			"they should record the story now. " +
+              			"9. (10 min) Group discussion. Now that each story has been told, retold, and possibly recorded, " +
+              			"it is time for groups to discuss what they have learned by building the story. " +
+              			"10. (10 min) Discussion. Now bring everyone in the room into one large discussion about all the stories and the entire process.",
+                  "optionalParts": "Add more up-front story choices (topic, genre, subtext, etc); " +
+                  		"tell the story three times; use repetition and recursion to make the story more complex; " +
+                  		"have two people play out the story; etc. (See WWS for details.)",
+                  "duration": "two hours",
+                  "recording": "None required",
+                  "materials": "Sticky notes",
+                  "spaces": "None required, though people might like to place their sticky notes onto a space to prepare their story",
+                  "facilitation": "Watch out for people not understanding the template (have others on hand); " +
+                  		"people not liking the idea of making things up; people going through the process " +
+                  		"mechanically; people paying too much attention to story quality."
+              },
+              {
+                  "name": "Composite stories (short version)",
+                  "type": "composite stories exercise",
+                  "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Split into small " +
+              			"groups of three or four people each. Make sure you have at least three groups in total. " +
+              			"Also, each group should agree on a message they want their constructed story to deliver. " +
+              			"2. (20 min) Filling in the template. Introduce a story template. Groups should place stories into spaces on the " +
+              			"template where they seem to fit and support the overall message. " +
+              			"3 (20 min) Forming the story. In this step the focus of each group should move from assembling " +
+              			"stories to creating one new fictional story inspired by the assembled stories. " +
+              			"4. (5 min) First telling. Now each storyteller should visit another group, tell their group’s story, " +
+              			"and listen to feedback. " +
+              			"5. (10 min) Preparation for second telling. Storytellers should report on how the storytelling went, " +
+              			"then the group should go back and improve on their story in preparation for a second telling. " +
+              			"6. (5 min) Second telling. Now the same storytellers should proceed to another group " +
+              			"(not the one they told the story to the first time) and tell the story again. Again they " +
+              			"should gather feedback. " +
+              			"7. (10 min) Finishing. Again the groups should improve their stories. If desired, " +
+              			"they should record the story now. " +
+              			"8. (5 min) Group discussion. Now that each story has been told, retold, and possibly recorded, " +
+              			"it is time for groups to discuss what they have learned by building the story. " +
+              			"9. (10 min) Discussion. Now bring everyone in the room into one large discussion about all the stories and the entire process.",
+                  "optionalParts": "None",
+                  "duration": "90 minutes",
+                  "recording": "None required",
+                  "materials": "Sticky notes",
+                  "spaces": "None required, though people might like to place their sticky notes onto a space to prepare their story",
+                  "facilitation": "Watch out for people not understanding the template (have others on hand); " +
+                  		"people not liking the idea of making things up; people going through the process " +
+                  		"mechanically; people paying too much attention to story quality."
+              },
+	    ]
+    	
     }
+    
 ];
   
   function convertSemicolonsToNewlinesForOptions(section) {
@@ -1019,6 +1697,8 @@ define(function() {
   return {
     "elicitationQuestions": convertSemicolonsToNewlinesForOptions(templates[0]),
     "storyQuestions": convertSemicolonsToNewlinesForOptions(templates[1]),
-    "participantQuestions": convertSemicolonsToNewlinesForOptions(templates[2])
+    "participantQuestions": convertSemicolonsToNewlinesForOptions(templates[2]),
+    "storyCollectionActivities": convertSemicolonsToNewlinesForOptions(templates[3]),
+    "sensemakingActivities": convertSemicolonsToNewlinesForOptions(templates[4])
   };
 });
