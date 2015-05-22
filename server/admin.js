@@ -7,16 +7,20 @@
 var pointrelServer = require("../server/pointrel20150417/pointrelServer");
 var pointrelAccessControl = require("../server/pointrel20150417/pointrelAccessControl");
 
-var narrafirmaProjectPrefix = "NarraFirmaProject-";
-
-// Command line admin tools for creating users and projects and such
+// Command line admin tools for creating users and journals and such
 // console.log(process.argv);
 
 function main() {
-    console.log("NarraFirma admin command line tool");
+    console.log("\nPointrel20150417 admin command line tool");
+    console.log("Any changes made by this tool require a server restart for the server to see them.\n");
 
     var myArgs = process.argv.slice(2);
     //console.log('myArgs: ', myArgs);
+    
+    if (myArgs.length < 2) {
+        printUsage();
+        return;
+    }
     
     var command = myArgs[0];
     
@@ -32,27 +36,26 @@ function main() {
     
     // TODO: More validation
     
-    if (command === "add-project") {
-        if (myArgs.length < 2) return printUsage();
-        addProject(myArgs[1]);
+    if (command === "add-journal") {
+        addJournal(myArgs[1]);
         return;
     }
     
     if (command === "add-user") {
-        if (myArgs.length < 3) return printUsage();
+        if (myArgs.length < 3 && myArgs[1] !== "anonymous") return console.log("Password is needed as third argument");
         addUser(myArgs[1], myArgs[2]);
         return;
     }
     
-    if (command === "list-users") {
-        if (myArgs.length !== 1) return printUsage();
-        listUsers();
+    if (command === "grant") {
+        if (myArgs.length < 4) return printUsage();
+        grantRole(myArgs[1], myArgs[2], myArgs[3], myArgs[4]);
         return;
     }
     
-    if (command === "grant-project-user-role") {
-        if (myArgs.length < 3) return printUsage();
-        grantRole(myArgs[1], myArgs[2], myArgs[3] || "readerWriter");
+    if (command === "revoke") {
+        if (myArgs.length < 4) return printUsage();
+        revokeRole(myArgs[1], myArgs[2], myArgs[3], myArgs[4]);
         return;
     }
     
@@ -61,20 +64,25 @@ function main() {
 }
 
 function printUsage() {
-    console.log("Usage:");
-    console.log("  add-project projectIdentifier\n");
-    console.log("  add-user userIdentifier password\n");
-    console.log("  grant-project-user-role projectIdentifier userIdentifier role");
-    console.log("    roles can be reader, writer, readerWriter, or administrator and defaults to readerWriter if not specified");
+    console.log("Usage:\n");
+    console.log("  add-journal journal\n");
+    console.log("  add-user user password\n");
+    console.log("  grant user role journal topic");
+    console.log("  revoke user role journal topic");
+    console.log("    roles can be reader, writer, readerWriter, or administrator");
 }
 
-function addProject(projectIdentifier) {
-    console.log("add-project", projectIdentifier);
-    pointrelServer.addJournalSync(narrafirmaProjectPrefix + projectIdentifier);
+function addJournal(journalIdentifier) {
+    console.log("add-journal", journalIdentifier);
+    pointrelServer.addJournalSync(journalIdentifier);
 }
 
 function addUser(userIdentifier, password) {
     console.log("add-user", userIdentifier, password);
+    
+    if (userIdentifier === "anonymous") {
+        console.log("anonymous user is special and the password will not be used");
+    }
     
     // Check if user exists first, as otherwise will remove all roles and override other settings
     var userInformation = pointrelAccessControl.getUserInformation(userIdentifier);
@@ -87,8 +95,19 @@ function addUser(userIdentifier, password) {
     setUserPassword(userIdentifier, password);
 }
 
-function grantRole(projectIdentifier, userIdentifier, role) {
-    console.log("grant-project-user-role", projectIdentifier, userIdentifier, role);
+function findIndexForRole(roles, role) {
+    var index = -1;
+    for (var i = 0; i < roles.length; i++) {
+        if (JSON.stringify(roles[i]) === JSON.stringify(role)) {
+            index = i;
+            break;
+        }
+    }
+    return index;
+}
+
+function grantRole(userIdentifier, role, journalIdentifier, topic) {
+    console.log("grant", userIdentifier, role, journalIdentifier, topic);
     
     // Make sure the user already exists
     var userInformation = pointrelAccessControl.getUserInformation(userIdentifier);
@@ -97,11 +116,62 @@ function grantRole(projectIdentifier, userIdentifier, role) {
         return;
     }
     
-    // TODO: Should confirm the project exists...
+    // TODO: Should confirm the journal exists...
     
-    // TODO: Should add to existing roles if not present rather than replace them all
-    userInformation.rolesForJournals[narrafirmaProjectPrefix + projectIdentifier] = [role];
-    updateUserInformation(userIdentifier, userInformation);
+    var roleToAdd;
+    if (topic) {
+        // Fields need to be in alphabetical order for JSON comparison with messages stored in canonical form
+        roleToAdd = {role: role, topic: topic};
+    } else {
+        roleToAdd = role;
+    }
+    var roles = userInformation.rolesForJournals[journalIdentifier];
+    if (!roles) {
+        roles = [];
+        userInformation.rolesForJournals[journalIdentifier] = roles;
+    }
+    
+    if (findIndexForRole(roles, roleToAdd) !== -1) {
+        console.log("User already has role", roleToAdd);
+    } else {
+        roles.push(roleToAdd);
+        updateUserInformation(userIdentifier, userInformation);
+    }
+}
+
+function revokeRole(userIdentifier, role, journalIdentifier, topic) {
+    console.log("revoke", userIdentifier, role, journalIdentifier, topic);
+    
+    // Make sure the user already exists
+    var userInformation = pointrelAccessControl.getUserInformation(userIdentifier);
+    if (!userInformation) {
+        console.log("Error: could not find user", userIdentifier);
+        return;
+    }
+    
+    // TODO: Should confirm the journal exists...
+    
+    var roleToRemove;
+    if (topic) {
+        // Fields need to be in alphabetical order for JSON comparison with messages stored in canonical form
+        roleToRemove = {role: role, topic: topic};
+    } else {
+        roleToRemove = role;
+    }
+    var roles = userInformation.rolesForJournals[journalIdentifier];
+    if (!roles) {
+        roles = [];
+        userInformation.rolesForJournals[journalIdentifier] = roles;
+    }
+    
+    var indexToRemove = findIndexForRole(roles, roleToRemove);
+    
+    if (indexToRemove === -1) {
+        console.log("Did not find existing role to revoke", roleToRemove);
+    } else {
+        roles.splice(indexToRemove, 1);
+        updateUserInformation(userIdentifier, userInformation);
+    }
 }
 
 /// Support functions to change server data via processRequest
@@ -171,9 +241,4 @@ function setUserPassword(userIdentifier, password) {
     }, serverRequestWithAuthenticatedSuperuser);
 }
 
-function listUsers() {
-    console.log("not yet implemented");
-}
-
-// main();
-console.log('This tool is out-of-date. Use the "admin" tool and put "NarraFirmaProject-" as a prefix on any journals created.');
+main();

@@ -411,7 +411,7 @@ function setOutgoingMessageTrace(userIdentifier, requesterIPAddress, journal, me
     return message;
 }
 
-function respondForLoadMessageRequest(userIdentifier, requesterIPAddress, journal, sha256AndLength, callback) {
+function respondForLoadMessageRequest(userIdentifier, requesterIPAddress, journal, topicIdentifier, sha256AndLength, callback) {
     if (!isSHA256AndLengthIndexed(journal, sha256AndLength)) {
         return callback(makeFailureResponse(404, "No message indexed for sha256AndLength", {sha256AndLength: sha256AndLength}));
     }
@@ -424,6 +424,11 @@ function respondForLoadMessageRequest(userIdentifier, requesterIPAddress, journa
     var message;
     
     if (receivedRecord.messageContents) {
+        // Safeguard to ensure the user knows what topic this message is for if only permissions to read in a specific topic
+        if (topicIdentifier !== undefined && receivedRecord.messageContents._topicIdentifier !== topicIdentifier) {
+            return callback(makeFailureResponse(404, "No message file found for sha256AndLength and topicIdentifier", {sha256AndLength: sha256AndLength, topicIdentifier: topicIdentifier}));        
+        }
+        
         message = setOutgoingMessageTrace(userIdentifier, requesterIPAddress, journal, receivedRecord.messageContents, true);
         return callback(makeSuccessResponse(200, "Success", {detail: 'Read content', sha256AndLength: sha256AndLength, message: message}));
     }
@@ -445,6 +450,11 @@ function respondForLoadMessageRequest(userIdentifier, requesterIPAddress, journa
         } catch (exception) {
             console.log("exception during JSON parsing", exception);
             return callback(makeFailureResponse(500, "Server error", {detail: 'Problem parsing JSON from file', sha256AndLength: sha256AndLength, error: exception}));
+        }
+        
+        // Safeguard to ensure the user knows what topic this message is for if only permissions to read in a specific topic
+        if (topicIdentifier !== undefined && parsedJSON._topicIdentifier !== topicIdentifier) {
+            return callback(makeFailureResponse(404, "No message file found for sha256AndLength and topicIdentifier", {sha256AndLength: sha256AndLength, topicIdentifier: topicIdentifier}));        
         }
         
         message = setOutgoingMessageTrace(userIdentifier, requesterIPAddress, journal, parsedJSON, false);
@@ -858,13 +868,14 @@ function processRequest(apiRequest, callback, request) {
             }
             
             if (!authorized) {
-                var message = 'Forbidden -- user "' + userIdentifier + '" is not authorized to "' + requestedCapability + '" in ' + JSON.stringify(journalIdentifier);
+                var message = 'Forbidden -- user "' + userIdentifier + '" is not authorized to "' + requestedCapability + '" in ' + JSON.stringify(journalIdentifier) + " (perhaps for the specific topic, message, and/or api request length)";
                 return callback(makeFailureResponse(403, message, {userIdentifier: userIdentifier, journalIdentifier: journalIdentifier, requestedCapability: requestedCapability}));
             }
         }
            
         if (requestType === "pointrel20150417_loadMessage") {
-            return respondForLoadMessageRequest(userIdentifier, senderIPAddress, journal, apiRequest.sha256AndLength, callback);
+            // Topic identifier is used as a safeguard to ensure the message is in a topic permitted to be read by the user
+            return respondForLoadMessageRequest(userIdentifier, senderIPAddress, journal, apiRequest.topicIdentifier, apiRequest.sha256AndLength, callback);
         }
         
         if (requestType === "pointrel20150417_queryForNextMessage") {

@@ -162,11 +162,19 @@ var exampleGroupInformation = {
 };
 */
 
-function makeUnionOfPermissionsForUser(rolesForJournal) {
+function makeUnionOfPermissionsForUser(rolesForJournal, topic, messageType, apiRequest) {
     // Make union of permissions
     var unionOfPermissionsForUser = {};
     for (var i = 0; i < rolesForJournal.length; i++) {
        var role = rolesForJournal[i];
+       if (role && typeof role === 'object') {
+           // Special case of permission only for a specific topic and/or messageType and/or size; the last two are mainly an issue when writing
+           if (role.topic && role.topic !== topic) continue;
+           if (role.messageType && role.messageType !== messageType) continue;
+           // This length limit check happens after any length limit check for the entire request using bodyParser, and so is inefficient
+           if (role.lengthLimit && role.lengthLimit < JSON.stringify(apiRequest).length) continue;
+           role = role.role;
+       }
        var permissionsForRole = allRoles[role];
        if (!permissionsForRole) {
            console.log("ERROR: Missing permissions for role", role);
@@ -209,9 +217,22 @@ function isAuthorized(journalIdentifier, userIdentifier, requestedAction, apiReq
     var rolesForJournal = userInformation.rolesForJournals[journalIdentifier];
     if (!rolesForJournal) rolesForJournal = [];
     
-    var unionOfPermissionsForUser = makeUnionOfPermissionsForUser(rolesForJournal);
+    var topic;
+    var messageType;
+    if (apiRequest) {
+        if (apiRequest.action === "pointrel20150417_loadMessage" || apiRequest.action === "pointrel20150417_queryForNextMessage" || apiRequest.action === "pointrel20150417_queryForLatestMessage") {
+            topic = apiRequest.topicIdentifier;
+        } else if (apiRequest.action === "pointrel20150417_storeMessage" && apiRequest.message) {
+            topic = apiRequest.message._topicIdentifier;
+            messageType = apiRequest.message.messageType;
+        }
+    }
+    
+    var unionOfPermissionsForUser = makeUnionOfPermissionsForUser(rolesForJournal, topic, messageType, apiRequest);
     
     if (unionOfPermissionsForUser[requestedAction]) return true;
+    
+    // TODO: Probably will eventually want an "authenticated" group in addition to an anonymous user, and perhaps arbitrary groups in general
     
     if (userIdentifier !== "anonymous") {
         // Grant a regular user all priviledges of an anonymous one

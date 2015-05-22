@@ -80,6 +80,7 @@ app.get("/survey/:projectID/:surveyID", function (request, response) {
 
 app.post("/survey/:projectID/:surveyID", function (request, response) {
     applicationLog("POST survey UNFINISHED", request.params.projectID, request.params.surveyID);
+    
     return response.json({success: false, message: "Unfinished", questionnaire: null});
 });
 

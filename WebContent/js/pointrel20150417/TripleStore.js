@@ -29,18 +29,7 @@ define([
         this.subscriptions = [];
     };
     
-    // TODO: Rename as addTriple
     TripleStore.prototype.add = function (a, b, c) {
-        if (a === undefined) {
-            throw new Error("TripleSotre.addTriple: a can't be undefined");
-        }
-        if (b === undefined) {
-            throw new Error("TripleSotre.addTriple: b can't be undefined");
-        }
-        if (c === undefined) {
-            throw new Error("TripleSotre.addTriple: c can't be undefined");
-        }
-        
         var triple = {
             a: a,
             b: b,
@@ -77,7 +66,8 @@ define([
     TripleStore.prototype.processMessage = function (message) {
         // console.log("TripleStore.processMessage", message);
         if (message.messageType !== "tripleStore") return;
-
+        if (message._topicIdentifier !== this.topicIdentifier) return;
+        
         if (message.change.action === "addTriple") {
             // TODO: Keep the list sorted by time
             this.tripleMessages.push(message);

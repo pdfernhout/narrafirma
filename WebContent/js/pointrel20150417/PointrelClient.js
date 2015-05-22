@@ -811,8 +811,12 @@ define([
         var apiRequest = {
             action: "pointrel20150417_loadMessage",
             journalIdentifier: this.journalIdentifier,
-            sha256AndLength: incomingMessageRecord.sha256AndLength
+            sha256AndLength: incomingMessageRecord.sha256AndLength,
         };
+        if (this.topicIdentifier !== undefined) {
+            // The topicIdentifier is needed in case we only have permission to read within a specific topic
+            apiRequest.topicIdentifier = this.topicIdentifier;
+        }
         if (debugMessaging) console.log("sending load request", apiRequest);
         this.prepareApiRequestForSending(apiRequest);
         
