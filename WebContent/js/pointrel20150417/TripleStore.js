@@ -29,7 +29,7 @@ define([
         this.subscriptions = [];
     };
     
-    TripleStore.prototype.add = function (a, b, c) {
+    TripleStore.prototype.add = function (a, b, c, callback) {
         var triple = {
             a: a,
             b: b,
@@ -51,7 +51,7 @@ define([
         };
         
         // TODO: Process locally first and track sent and bump and report conflicts
-        this.pointrelClient.sendMessage(message);
+        this.pointrelClient.sendMessage(message, callback);
     };
     
     function makeTopicKey(object) {

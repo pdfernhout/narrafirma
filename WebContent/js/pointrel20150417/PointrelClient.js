@@ -188,10 +188,6 @@ define([
     // TODO: No callback?
     PointrelClient.prototype.sendMessage = function(message, callback) {
         if (debugMessaging) console.log("sendMessage", this.areOutgoingMessagesSuspended, message);
-        if (callback && this.started) {
-            console.log("Programming ERROR: trying to use callback and polling at same time");
-            throw new Error("Programming ERROR: trying to use callback and polling at same time");
-        }
         
         // Calculate the sha256AndLength without the pointrel fields
         delete message.__pointrel_sha256AndLength;
@@ -221,8 +217,12 @@ define([
 
         // TODO: Extra copyObjectWithSortedKeys is not needed, but makes log messages look nicer so leaving for now
         message = copyObjectWithSortedKeys(message);
+        
+        // TODO: This field ideally should go in a wrapper object and will be deleted later
+        if (callback) message.__pointrel_callback = callback;
+        
         this.outgoingMessageQueue.push(message);
-        this.sendOutgoingMessage(callback);
+        this.sendOutgoingMessage();
     };
     
     PointrelClient.prototype.suspendOutgoingMessages = function(suspend) {
@@ -234,7 +234,8 @@ define([
         }
     };
     
-    PointrelClient.prototype.sendOutgoingMessage = function(callback) {
+    PointrelClient.prototype.sendOutgoingMessage = function() {
+        var callback;
         if (debugMessaging) console.log("sendOutgoingMessage");
         if (this.areOutgoingMessagesSuspended) return;
         if (this.outgoingMessageQueue.length === 0) return;
@@ -245,15 +246,20 @@ define([
             // Send all the outgoing messages we have
             while (this.outgoingMessageQueue.length) {
                 var loopbackMessage = this.outgoingMessageQueue.shift();
+                callback = loopbackMessage.__pointrel_callback;
+                if (callback !== undefined) delete loopbackMessage.__pointrel_callback;
                 this.messageSendCount++;
                 // Simulating eventual response from server, generally for testing
                 this.messageReceived(copyObjectWithSortedKeys(loopbackMessage));
+                if (callback) callback(null, {success: true});
             }
         } else {
             // Send to a real server
             
             // If this fails, will leave message on outgoing queue (unless it was rejected for some reason)
-            var message = this.outgoingMessageQueue[0]; 
+            var message = this.outgoingMessageQueue[0];
+            callback = message.__pointrel_callback;
+            if (callback !== undefined) delete message.__pointrel_callback;
            
             var apiRequest = {
                 action: "pointrel20150417_storeMessage",
