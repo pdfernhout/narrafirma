@@ -62,8 +62,8 @@ define([
     };
     
     Project.prototype.setFieldValue = function(fieldName, newValue, oldValue) {
-        // TODO: Need to add support in tripleStore for oldValue
-        this.tripleStore.add(this.projectIdentifier, fieldName, newValue, oldValue);
+        // TODO: Need to add support in tripleStore for oldValue; note callback is the fourth parameter
+        this.tripleStore.add(this.projectIdentifier, fieldName, newValue);
     };
     
     // callback(triple, message)
