@@ -27,8 +27,9 @@
             "id": "storyCollection_activeOnWeb",
             "valueType": "boolean",
             "displayType": "checkbox",
+            "displayReadOnly": true,
             "displayName": "Active on web",
-            "displayPrompt": "Check here to make this story collection available on the web."
+            "displayPrompt": "Whether this story collection available on the web (read only)."
         },
         {
             "id": "storyCollection_notes",
