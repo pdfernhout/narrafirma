@@ -109,9 +109,7 @@ define([
                     surveyResult: surveyResult
                 };
                 
-                project.pointrelClient.createAndSendChangeMessage("surveyResults", "surveyResult", surveyResultWrapper, null);
-                /* TODO: Can't use this callback since already polling and can't do both at the same time.
-                 function(error, result) {
+                project.pointrelClient.createAndSendChangeMessage("surveyResults", "surveyResult", surveyResultWrapper, null, function(error, result) {
                     if (error) {
                         console.log("Problem saving survey result", error);
                         // TODO: Translate
@@ -120,7 +118,6 @@ define([
                     }
                     alert("Survey result stored");
                 });
-                */
             }
         }
     }
