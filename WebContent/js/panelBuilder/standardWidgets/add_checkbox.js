@@ -10,8 +10,10 @@ define([
     function add_checkbox(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
+        var readOnly = fieldSpecification.displayReadOnly || false;
         var checkbox = new CheckBox({
-            checked: valuePathResolver.atFieldSpecification(panelBuilder, model, fieldSpecification)
+            checked: valuePathResolver.atFieldSpecification(panelBuilder, model, fieldSpecification),
+            readOnly: readOnly
         });
         
         checkbox.placeAt(questionContentPane);
