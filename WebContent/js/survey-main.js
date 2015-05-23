@@ -1,14 +1,14 @@
 require([
     "dojo/i18n!js/nls/applicationMessages",
     "dojo/dom",
-    "dojo/request",
+    "js/pointrel20150417/PointrelClient",
     "js/surveyBuilder",
     "js/panelBuilder/translate",
     "dojo/domReady!"
 ], function(
     applicationMessages,
     dom,
-    request,
+    PointrelClient,
     surveyBuilder,
     translate
 ){
@@ -20,39 +20,41 @@ require([
     // TODO: Closing page when not submitted
     // TODO: Progress when sending to server 
     
+    var serverURL = "/api/pointrel20150417";
+    var pointrelClient;
+    
     // TODO: Fix hardcoded values
-    var projectIdentifier = "test1";
-    var questionnaireIdentifier = 'one';
+    var projectIdentifier = "NarraFirmaProject-test1";
+    var storyCollectionIdentifier = 'one';
     
     function loadQuestionnaire(callback) {
-        var url = "/survey/" + projectIdentifier + "/" + questionnaireIdentifier;
+        // Decided on how to load data: Either can get latest with one or more questionnaires, or can query all messages and filter. Went with get latest.
         
-        var options = {
-            // preventCache: true,
-            timeout: 10000,
-            handleAs: "json",
-            headers: {
-                "Content-Type": 'application/json; charset=utf-8',
-                "Accept": "application/json"
+        pointrelClient.fetchLatestMessageForTopic("questionnaires", function (error, data) {
+            if (error) {
+                // handle an error condition
+                console.log("error from request", error);
+                // TODO: Translate
+                // alert("Could not load survey");
+                callback(error, null);
+                return;
             }
-        };
-        
-        request(url, options).then(function(data) {
             // do something with handled data
             console.log("request got data", data);
             if (data.success) {
-                callback(null, data.questionnaire);
+                var questionnaire = data.latestRecord.messageContents.change[storyCollectionIdentifier];
+                if (questionnaire) {
+                    callback(null, questionnaire);
+                } else {
+                    callback("Questionnaire not currently available", null);
+                }
             } else {
                 // TODO: Translate
                 // alert("Problem loading questionnaire");
                 callback("Problem loading questionnaire", null);
             }
         }, function(err){
-            // handle an error condition
-            console.log("error from request", err);
-            // TODO: Translate
-            // alert("Could not load survey");
-            callback(err, null);
+  
         });
     }
 
@@ -66,26 +68,21 @@ require([
     } 
     
     function storeQuestionnaireResult(completedSurvey) {
-        var url = "/survey/" + projectIdentifier + "/" + questionnaireIdentifier;
-        
-        var options = {
-            method: "POST",
-            timeout: 10000,
-            handleAs: "json",
-            data: JSON.stringify(completedSurvey),
-            headers: {
-                "Content-Type": 'application/json; charset=utf-8',
-                "Accept": "application/json"
-            }
+        // TODO: Move this to a reuseable place
+        var surveyResultWrapper  = {
+            projectIdentifier: projectIdentifier,
+            storyCollectionIdentifier: storyCollectionIdentifier,
+            surveyResult: completedSurvey
         };
         
-        request(url, options).then(function(data) {
-            // do something with handled data
-            console.log("request PUT got data", data);
-        }, function(err){
-            // handle an error condition
-            console.log("error from PUT request", err);
-            alert("Could not save survey");
+        pointrelClient.createAndSendChangeMessage("surveyResults", "surveyResult", surveyResultWrapper, null, function(error, result) {
+            if (error) {
+                console.log("Problem saving survey result", error);
+                // TODO: Translate
+                alert("Problem saving survey result");
+                return;
+            }
+            alert("Survey result stored");
         });
     }
 
@@ -100,7 +97,7 @@ require([
                 alert("Something went wrong loading the survey questionnaire from the server:\n" + error);
                 return;
             }
-            console.log("got questionnaire from server", projectIdentifier, questionnaireIdentifier, questionnaire);
+            console.log("got questionnaire from server", projectIdentifier, storyCollectionIdentifier, questionnaire);
             
             var surveyDiv = dom.byId("surveyDiv");
             var form = surveyBuilder.buildSurveyForm(questionnaire, finishedSurvey, false);
@@ -114,8 +111,21 @@ require([
         });
     }
     
+    function receivedMessage() {
+        // TODO
+    }
+    
+    function updateServerStatus() {
+        // TODO
+    }
+    
     function initialize() {
         translate.configure({}, applicationMessages);
+        
+        // TODO: Should ping server to get current user identifier in case logged in
+        // TODO: Should check with server if have read and write permissions for the specific topics
+        var userIdentifier = "anonymous";
+        pointrelClient = new PointrelClient(serverURL, projectIdentifier, userIdentifier, receivedMessage, updateServerStatus);
         
         createLayout();
     }
