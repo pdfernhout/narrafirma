@@ -166,7 +166,13 @@ define([
         
         if (configuration.customButton) {
             var options = configuration.customButton;
-            var customButtonClickedPartial = lang.partial(options.callback, this);
+            var customButtonClickedPartial;
+            if (_.isString(options.callback)) {
+                var fakeFieldSpecification = {id: id, displayConfiguration: options.callback, grid: this};
+                customButtonClickedPartial = lang.hitch(panelBuilder, panelBuilder.buttonClicked, pagePane, model, fakeFieldSpecification);
+            } else {
+                customButtonClickedPartial = lang.partial(options.callback, this);
+            }
             this.buttons.customButton = widgetSupport.newButton(buttonContentPane, options.customButtonLabel, customButtonClickedPartial);
             if (!configuration.viewButton) {
                 this.grid.on("dblclick", customButtonClickedPartial);
