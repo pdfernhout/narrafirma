@@ -101,14 +101,26 @@ define([
         function finished(status, surveyResult) {
             console.log("surveyResult", status, surveyResult);
             if (status === "submitted") {
+                
                 // TODO: Move this to a reuseable place
-                var surveyResultListReference  = {
-                    type: "surveyResultList",
+                var surveyResultWrapper  = {
                     projectIdentifier: project.projectIdentifier,
-                    storyCollectionIdentifier: storyCollectionName
+                    storyCollectionIdentifier: storyCollectionName,
+                    surveyResult: surveyResult
                 };
-                // TODO: Maybe B should be an object of some sort?
-                project.tripleStore.add(surveyResultListReference, surveyResult.responseID, surveyResult);
+                
+                project.pointrelClient.createAndSendChangeMessage("surveyResults", "surveyResult", surveyResultWrapper, null);
+                /* TODO: Can't use this callback since already polling and can't do both at the same time.
+                 function(error, result) {
+                    if (error) {
+                        console.log("Problem saving survey result", error);
+                        // TODO: Translate
+                        alert("Problem saving survey result");
+                        return;
+                    }
+                    alert("Survey result stored");
+                });
+                */
             }
         }
     }
