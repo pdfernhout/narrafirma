@@ -10,7 +10,8 @@ define([
     "js/panelBuilder/widgetSupport",
     "dijit/layout/ContentPane",
     "dojo/Stateful",
-    "dojox/layout/TableContainer"
+    "dojox/layout/TableContainer",
+    "js/panelBuilder/valuePathResolver"
 ], function(
     array,
     domain,
@@ -23,7 +24,8 @@ define([
     widgetSupport,
     ContentPane,
     Stateful,
-    TableContainer
+    TableContainer,
+    valuePathResolver
 ){
     "use strict";
     
@@ -278,7 +280,8 @@ define([
     }
     
     // TODO: Fix so the filters get updated as the story questions get changed
-    function insertStoryBrowser(panelBuilder, pagePane, model, id) {
+    function insertStoryBrowser(panelBuilder, pagePane, model, fieldSpecification) {
+        var id = fieldSpecification.id;
         console.log("insertStoryBrowser start", id);
         
         var questions = surveyCollection.collectQuestionsForCurrentQuestionnaire();
@@ -367,7 +370,7 @@ define([
     function add_storyBrowser(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
-        var storyBrowserInstance = insertStoryBrowser(panelBuilder, questionContentPane, model, fieldSpecification.id);
+        var storyBrowserInstance = insertStoryBrowser(panelBuilder, questionContentPane, model, fieldSpecification);
         questionContentPane.resize();
         return storyBrowserInstance;
     }
