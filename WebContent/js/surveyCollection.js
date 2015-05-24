@@ -3,7 +3,6 @@ define([
     "js/domain",
     "dojo/_base/lang",
     "js/questionnaireGeneration",
-    "js/storage",
     "dojo/topic",
     "js/panelBuilder/translate"
 ], function(
@@ -11,7 +10,6 @@ define([
     domain,
     lang,
     questionnaireGeneration,
-    storage,
     topic,
     translate
 ) {
@@ -82,20 +80,6 @@ define([
        });
    }
    
-   function getParticipantDataForParticipantID(participantID) {
-       // TODO: Maybe optimize as a lookup map maintained when read in survey results
-       for (var responseIndex in domain.allCompletedSurveys) {
-           var response = domain.allCompletedSurveys[responseIndex];
-           if (response.participantData._participantID === participantID) {
-               console.log("getParticipantDataForParticipantID", participantID, response.participantData);
-               return response.participantData;
-           }
-       }
-       
-       console.log("ERROR getParticipantDataForParticipantID: participantID not found", participantID);
-       return {};
-   }
-   
    function finalizeSurvey() {
        questionnaireGeneration.generateQuestionnaire(function (questionnaire) {
            var questionnaireID = domain.currentQuestionnaireID;
@@ -156,15 +140,6 @@ define([
                domain.currentQuestionnaire = questionnaire;
                topic.publish("currentQuestionnaire", domain.currentQuestionnaire);
            }
-       });
-   }
-   
-   function determineStatusOfCurrentQuestionnaire() {
-       storage.loadLatestQuestionnaireStatus(domain.currentQuestionnaireID, function(error, status, envelope) {
-           if (error) {return console.log("Could not determine questionnaire status; assuming inactive", domain.currentQuestionnaireID);}
-           console.log("got questionnaire status", status);
-           domain.questionnaireStatus = status;
-           topic.publish("isStoryCollectingEnabled", domain.questionnaireStatus);
        });
    }
    
@@ -231,11 +206,6 @@ define([
        isStoryCollectingEnabled: isStoryCollectingEnabled,
        
        loadCurrentQuestionnaire: loadCurrentQuestionnaire,
-       
-       // Application using storyCollection need to call this at start to have current status of questionnaire
-       determineStatusOfCurrentQuestionnaire: determineStatusOfCurrentQuestionnaire,
-       
-       getParticipantDataForParticipantID: getParticipantDataForParticipantID,
        
        collectQuestionsForCurrentQuestionnaire: collectQuestionsForCurrentQuestionnaire,
        
