@@ -494,6 +494,30 @@ define([
         });
     }
     
+    /* TODO: Check time? Or ensure topic timestamps are set by server?
+    // TODO: this is not needed by apps that only use application-specific server APIs directly
+    function setup() {
+        console.log("Using pointrel20141201");
+        var currentLocalTimestamp = new Date().toISOString();
+        var currentLocalTimestampMinusTenSeconds = new Date(new Date().getTime() - 10000).toISOString();
+        pointrel20141201Client.getServerStatus(function (error, serverResponse) {
+            if (error) {
+                // TODO: translate
+                var message = "Problem checking server status so application may not work correctly if server is unavailable: " + error;
+                console.log("ERROR", error);
+                console.log(message);
+                alert(message);
+                return;
+            }
+            console.log("Server response at: " + currentLocalTimestamp + " is: " + JSON.stringify(serverResponse), serverResponse);
+            if (serverResponse.currentTimestamp < currentLocalTimestampMinusTenSeconds) {
+                // TODO: Translate
+                alert("The server unexpectedly responded with a time more than ten seconds earlier than this PC's time when the server's status was requested at " + currentLocalTimestamp + ".\nPlease check your PC's clock for accuracy, or contact the server administrator if your PC's clock is accurate.\n" + JSON.stringify(serverResponse));
+            }
+        });
+    }
+    */
+    
     return {
         initialize: initialize
     };
