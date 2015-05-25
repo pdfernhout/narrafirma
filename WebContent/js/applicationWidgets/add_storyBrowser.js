@@ -183,7 +183,7 @@ define([
         // TODO: Translate
         contentPane.containerNode.appendChild(domConstruct.toDom('Filter by: '));
         
-        var questionSelect = widgetSupport.newSelect(contentPane, surveyCollection.optionsForAllQuestions(questions));
+        var questionSelect = widgetSupport.newSelect(contentPane, []);
         // questionSelect.set("style", "width: 98%; max-width: 98%");
         // questionSelect.set("style", "min-width: 50%");
         
@@ -213,7 +213,7 @@ define([
     
     function currentQuestionnaireChanged(storyBrowserInstance, currentQuestionnaire) {
         // Update filters
-        var questions = surveyCollection.collectQuestionsForCurrentQuestionnaire();
+        var questions = surveyCollection.collectQuestionsForQuestionnaire(currentQuestionnaire);
         storyBrowserInstance.questions = questions;
         
         var choices = surveyCollection.optionsForAllQuestions(questions);
@@ -284,10 +284,10 @@ define([
         var id = fieldSpecification.id;
         console.log("insertStoryBrowser start", id);
         
-        var questions = surveyCollection.collectQuestionsForCurrentQuestionnaire();
+        var questions = [];
         var itemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
         
-        var stories = domain.allStories;
+        var stories = [];
         
         // Store will modify underlying array
         var dataStore = GridWithItemPanel.newMemoryTrackableStore(stories, "_storyID");
@@ -342,6 +342,14 @@ define([
         
         // console.log("filterButton", filterButton);
         
+        // Setup current values
+        // TODO: Get questionnaire for selected story collection, and track selected story collection
+        var currentQuestionnaire = null;
+        currentQuestionnaireChanged(storyBrowserInstance, currentQuestionnaire);
+        // TODO: Calculate all stories
+        var allStories = [];
+        loadLatestStoriesFromServerChanged(storyBrowserInstance, allStories.length, allStories);
+
         console.log("insertStoryBrowser finished");
 
         return storyBrowserInstance;

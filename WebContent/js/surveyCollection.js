@@ -15,6 +15,11 @@ define([
 ) {
    "use strict";
    
+   function getStoriesForStoryCollection(storyCollectionIdentifier) {
+       var result = [];
+       return result;
+   }
+   
    // Can also just pass in callback as first arg, rest are unused and are for compatibility with GUI calling system
    function loadLatestStoriesFromServer(contentPane, model, fieldSpecification, value, callback) {
        console.log("loadLatestStoriesFromServer called");
@@ -80,6 +85,10 @@ define([
        });
    }
    
+   // TODO: Update references to these:
+   // topic.publish("loadLatestStoriesFromServer", newEnvelopeCount, domain.allStories);
+   // topic.publish("totalNumberOfSurveyResults", allEnvelopes.length);
+
    function finalizeSurvey() {
        questionnaireGeneration.generateQuestionnaire(function (questionnaire) {
            var questionnaireID = domain.currentQuestionnaireID;
@@ -143,10 +152,7 @@ define([
        });
    }
    
-   function collectQuestionsForCurrentQuestionnaire() {
-       // TODO: Handle the fact that currentQuestionnaire may be null if this is called from  the first page loaded, and also may update as topic
-       // TODO: Fix this show also handles participant questions somehow
-       var questionnaire = domain.currentQuestionnaire;
+   function collectQuestionsForQuestionnaire(questionnaire) {
        console.log("questionnaire", questionnaire);
        
        if (!questionnaire) return [];
@@ -207,7 +213,7 @@ define([
        
        loadCurrentQuestionnaire: loadCurrentQuestionnaire,
        
-       collectQuestionsForCurrentQuestionnaire: collectQuestionsForCurrentQuestionnaire,
+       collectQuestionsForQuestionnaire: collectQuestionsForQuestionnaire,
        
        optionsForAllQuestions: optionsForAllQuestions
    };
