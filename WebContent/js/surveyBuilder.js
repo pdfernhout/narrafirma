@@ -41,23 +41,7 @@ define([
            
         console.log("survey answers", surveyResult);
         
-        doneCallback("submitted", surveyResult);
-        
-        // TODO: Ensure dialog is closed!!!
-        
-        /*
-        storage.storeSurveyResult(surveyResult, function(error) {
-            // TODO: Translate
-            // TODO: Cancel clearing of survey if it can't be sent
-            if (error) {
-                alert("Please try to submit the survey result later;\nCould not write new survey result to server:\n" + error);
-            } else {
-                alert("Survey successfully sent to server!");
-                if (wizardPane) wizardPane.forward();
-                if (doneCallback) doneCallback("submitted");
-            }
-        });
-        */
+        doneCallback("submitted", surveyResult, wizardPane);
     }
 
    function validateStoryQuestionsModel(storyQuestionsModel, allowEmptyBypass) {
@@ -152,7 +136,7 @@ define([
         wizardPane.addChild(surveyPane, addIndex);
     }
     
-    function buildSurveyForm(questionnaire, doneCallback, includeCancelButton) {  
+    function buildSurveyForm(questionnaire, doneCallback) {  
         console.log("buildSurveyForm questions", questionnaire);
         
         var wizardPane = new StackContainer({
@@ -262,30 +246,20 @@ define([
         var endPane = new ContentPane();
         panelBuilder.buildFields(endQuestions, endPane, participantDataModel);
         
-        if (includeCancelButton) {
-            widgetSupport.newButton(wizardPane, "#surveyCancel|Cancel", function() {
-                console.log("Cancel");
-                if (doneCallback) doneCallback("cancelled");
-            });
-        }
-        
         wizardPane.addChild(endPane);
         
         return wizardPane;
     }
 
+    // Caller should call wizard.forward() on successful save to see the last page, and provide a retry message otherwise
+    // Caller may also want to call (the returned) surveyDialog.hide() to close the window, or let the user do it.
     function openSurveyDialog(questionnaire, callback) {  
         console.log("openSurveyDialog questionnaire", questionnaire);
         
         var surveyDialog;
         var form;
         
-        function hideSurveyDialog(status, completedSurvey) {
-            surveyDialog.hide();
-            callback(status, completedSurvey);
-        }
-        
-        form = buildSurveyForm(questionnaire, hideSurveyDialog, true);
+        form = buildSurveyForm(questionnaire, callback);
    
         surveyDialog = new Dialog({
             title: "Take Survey",
@@ -293,13 +267,15 @@ define([
             // style: "width: 800px; height: 700px;"
         });
         
-        // This will free the dialog when we are done with it whether from OK or Cancel to avoid a memory leak
+        // This will free the dialog when it is closed to avoid a memory leak
         surveyDialog.connect(surveyDialog, "onHide", function(e) {
             console.log("destroying surveyDialog");
             surveyDialog.destroyRecursive();
         });
                 
         surveyDialog.show();
+        
+        return surveyDialog;
     }
 
     return {

@@ -96,9 +96,9 @@ define([
         var questionnaire = getQuestionnaireForSelectedStoryCollection("storyCollectionChoice_enterStories");
         if (!questionnaire) return;
 
-        surveyBuilder.openSurveyDialog(questionnaire, finished);
+        var surveyDialog = surveyBuilder.openSurveyDialog(questionnaire, finished);
         
-        function finished(status, surveyResult) {
+        function finished(status, surveyResult, wizardPane) {
             console.log("surveyResult", status, surveyResult);
             if (status === "submitted") {
                 
@@ -113,10 +113,11 @@ define([
                     if (error) {
                         console.log("Problem saving survey result", error);
                         // TODO: Translate
-                        alert("Problem saving survey result");
+                        alert("Problem saving survey result; please try submitting again.");
                         return;
                     }
                     alert("Survey result stored");
+                    if (wizardPane) wizardPane.forward();
                 });
             }
         }
