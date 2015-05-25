@@ -34,7 +34,7 @@ define([
     // var loadingBase = "dojo/text!js/applicationPanelSpecifications/";
     
     function loadAllPanelSpecifications(panelSpecificationCollection, navigationSections, loadingBase, callback) {
-        console.log("loadAllPanelSpecifications", loadingBase, navigationSections);
+        // console.log("loadAllPanelSpecifications", loadingBase, navigationSections);
         var requireList = [];
         var panelMetadata = [];
         
@@ -56,7 +56,7 @@ define([
             }
         }
         
-        console.log("requireList", requireList);
+        // console.log("requireList", requireList);
         
         // Asynchronous call that may take a while to get all the files
         require(requireList, function() {

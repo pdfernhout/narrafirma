@@ -118,7 +118,7 @@ define([
     
     // This ignores the model type for the page or panel and just puts all the model fields into the supplied model
     PanelSpecificationCollection.prototype.addFieldsToModel = function(model, fieldSpecifications) {
-        console.log("addFieldsToModel request", fieldSpecifications);
+        // console.log("addFieldsToModel request", fieldSpecifications);
  
         for (var i = 0; i < fieldSpecifications.length; i++) {
             var fieldSpecification = fieldSpecifications[i];
@@ -127,7 +127,7 @@ define([
                 model[fieldSpecification.id] = this.initialDataForField(fieldSpecification);
             }
         }
-        console.log("addFieldsToModel result", model);
+        // console.log("addFieldsToModel result", model);
         return model;
     };
     

@@ -88,7 +88,7 @@ define([
         
         // This will free the dialog when we are done with it whether from OK or Cancel to avoid a memory leak
         dialog.connect(dialog, "onHide", function(e) {
-            console.log("destroying dialog");
+            // console.log("destroying dialog");
             dialog.destroyRecursive(); 
         });
                 

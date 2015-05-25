@@ -54,7 +54,7 @@ define([
     
     Project.prototype.getFieldValue = function(fieldName) {
         var triple = this.tripleStore.queryLatest(this.projectIdentifier, fieldName, undefined);
-        console.log("getFieldValue: got triple for query", fieldName, triple);
+        // console.log("getFieldValue: got triple for query", fieldName, triple);
         if (triple) {
             return triple.c;
         }
@@ -101,10 +101,10 @@ define([
         
         for (var fieldName in model) {
             if (model.hasOwnProperty(fieldName)) {
-                console.log("model fieldName", fieldName);
+                // console.log("model fieldName", fieldName);
                 if (fieldName.charAt(0) === "_") continue;
                 var value = this.getFieldValue(fieldName);
-                console.log("got value for query", fieldName, value);
+                // console.log("got value for query", fieldName, value);
                 if (value !== undefined && value !== null) {
                     this.projectModel.set(fieldName, value);
                 }
