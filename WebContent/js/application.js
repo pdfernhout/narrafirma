@@ -242,7 +242,7 @@ define([
                     if (childPageSpecification && childPageSpecification.displayType === "page") {
                         var prompt = translate(childPageID + "::title", childPageSpecification.displayName);
                         // Wrap the prompt as a link to the page
-                        prompt = '<a href="#' + childPageID + '">' + prompt + '</a>';
+                        prompt = '<a href="javascript:narrafirma_openPage(\'' + childPageID + '\')">' + prompt + '</a>';
                         // + " " + translate("#dashboard_status_label", "reminders:")
                         prompt = prompt  + " ";
                         // console.log("about to call panelBuilder to add one questionAnswer for child page's status", childPageID);
@@ -467,6 +467,11 @@ define([
             
         // Ensure defaults
         if (!initialHashParameters["page"]) clientState.set("currentPageIdentifier", startPage);
+        
+        // Set up global function used by section dashboard links
+        window.narrafirma_openPage = function (pageIdentifier) {
+            clientState.set("currentPageIdentifier", pageIdentifier);
+        };
         
         // Throwaway single-use pointrel client instance which does not access a specific journal and for which polling is not started
         var singleUsePointrelClient = new PointrelClient("/api/pointrel20150417", "unused", {});
