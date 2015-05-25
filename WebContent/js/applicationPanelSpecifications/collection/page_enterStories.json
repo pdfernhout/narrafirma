@@ -7,7 +7,7 @@
     "panelFields": [
         {
             "id": "storyCollectionChoice_enterStories",
-            "valuePath": "/localSettings/currentStoryCollection",
+            "valuePath": "/clientState/currentStoryCollection",
             "valueType": "string",
             "valueOptions": "project_storyCollections",
             "valueOptionsSubfield": "storyCollection_shortName",

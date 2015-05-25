@@ -61,11 +61,14 @@ define([
     var userIdentifier;
 
     var project;
-    
-    // For this local instance only (not shared with other users or other browser tabs), what is the current selections for these items?
-    var localSettings = new Stateful({
-        currentStoryCollection: "",
-        currentCatalysisReport: ""
+
+    // For this local instance only (not shared with other users or other browser tabs)
+    var clientState = new Stateful({
+        currentProjectIdentifier: null,
+        currentPageIdentifier: null,
+        currentStoryCollection: null,
+        currentCatalysisReport: null,
+        currentDebugMode: null
     });
     
     // GUI
@@ -90,10 +93,121 @@ define([
     // This will hold information about all the panels used
     var panelSpecificationCollection = new PanelSpecificationCollection();
 
+    // getHashParameters derived from: http://stackoverflow.com/questions/4197591/parsing-url-hash-fragment-identifier-with-javascript
+    function getHashParameters(hash) {
+        var result = {};
+        var match;
+        // Regex for replacing addition symbol with a space
+        var plusMatcher = /\+/g;
+        var parameterSplitter = /([^&;=]+)=?([^&;]*)/g;
+        var decode = function (s) {return decodeURIComponent(s.replace(plusMatcher, " "));};
+        while (true) {
+            match = parameterSplitter.exec(hash);
+            if (!match) break;
+            result[decode(match[1])] = decode(match[2]);
+        }
+        return result;
+    }
+    
+    function hashStringForClientState() {
+        var result = "";
+        
+        var fields = [
+            {id: "currentProjectIdentifier", key: "project"},
+            {id: "currentPageIdentifier", key: "page"},
+            {id: "currentStoryCollection", key: "storyCollection"},
+            {id: "currentCatalysisReport", key: "catalysisReport"},
+            {id: "currentDebugMode", key: "debugMode"}
+        ];
+        
+        for (var i = 0; i < fields.length; i++) {
+            var field = fields[i];
+
+            var value = clientState.get(field.id);
+            if (!value) continue;
+            
+            if (field.key === "page" && value) value = value.substring("page_".length);
+            
+            if (result) result += "&";
+            result += field.key + "=" + encodeURIComponent(value);
+        }
+        
+        console.log("hashStringForClientState", result, clientState);
+        
+        return result;
+    }
+    
     function urlHashFragmentChanged(newHash) {
         console.log("urlHashFragmentChanged", newHash);
-        // Page displayer will handle cases where the hash is not valid
-        pageDisplayer.showPage(newHash);
+        
+        var hashParameters = getHashParameters(newHash);
+        console.log("hashParameters", hashParameters, clientState);
+        
+        var currentProjectIdentifier = clientState.get("currentProjectIdentifier");
+        if (currentProjectIdentifier) {
+            if (hashParameters.project && hashParameters.project !== currentProjectIdentifier) {
+                // Force a complete page reload for now, as needs to create a new Pointrel client
+                // TODO: Should we shut down the current Pointrel client first?
+                alert("About to trigger page reload for changed project");
+                location.reload();
+                return;
+            }
+        } else {
+            console.log("changing client state for page", clientState.get("currentProjectIdentifier"), hashParameters.project);
+            clientState.set("currentProjectIdentifier", hashParameters.project);
+        }
+         
+        var selectedPage = hashParameters.page;
+        if (!selectedPage) {
+            selectedPage = startPage;
+        } else {
+            selectedPage = "page_" + selectedPage;
+        }
+        if (selectedPage !== clientState.get("currentPageIdentifier")) {
+            console.log("changing client state for page", clientState.get("currentPageIdentifier"), selectedPage);
+            clientState.set("currentPageIdentifier", selectedPage);
+        }
+        
+        if (hashParameters.storyCollection && hashParameters.storyCollection !== clientState.get("currentStoryCollection")) {
+            console.log("changing client state for storyCollection", clientState.get("currentStoryCollection"), hashParameters.storyCollection);
+            clientState.set("storyCollection", hashParameters.storyCollection);
+        }
+        
+        if (hashParameters.catalysisReport && hashParameters.catalysisReport !== clientState.get("currentCatalysisReport")) {
+            console.log("changing client state for catalysisReport", clientState.get("currentCatalysisReport"), hashParameters.catalysisReport);
+            clientState.set("catalysisReport", hashParameters.catalysisReport);
+        }
+        
+        if (hashParameters.debugMode && hashParameters.debugMode !== clientState.get("currentDebugMode")) {
+            console.log("changing client state for debugMode", clientState.get("currentDebugMode"), hashParameters.debugMode);
+            clientState.set("debugMode", hashParameters.debugMode);
+        }
+        
+        // Page displayer will handle cases where the hash is not valid and also optimizing out page redraws if staying on same page
+        pageDisplayer.showPage(clientState.get("currentPageIdentifier"));
+    }
+    
+    var updateHashTimer = null;
+    
+    function updateHashIfNeededForChangedState() {
+        var newHash = hashStringForClientState();
+        if (newHash !== hash()) hash(newHash);
+    }
+    
+    function startTrackingClientStateChanges() {
+        // TODO: Should this watch be owned by some component so they can be destroyed when the page closes?
+        clientState.watch(function () {
+            if (updateHashTimer) clearTimeout(updateHashTimer);
+            // Delay updating hash in case other clientState fields are also changing
+            updateHashTimer = setTimeout(function () {
+                updateHashTimer = null;
+                try {
+                    updateHashIfNeededForChangedState();
+                } catch (e) {
+                    console.log("Problem calling updateHashIfNeededForChangedState", e);
+                }
+            }, 0);
+        });
     }
     
     function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecification) {
@@ -181,7 +295,7 @@ define([
 
     function processAllPanels() {
         var panels = panelSpecificationCollection.buildListOfPanels();
-        console.log("processAllPanels", panels);
+        // console.log("processAllPanels", panels);
         
         var lastPageID = null;
         var panelIndex;
@@ -253,16 +367,6 @@ define([
         serverStatusPane.placeAt(pageControlsPane);
         
         console.log("createLayout end");
-    }
-    
-    function setupFirstPage() {
-        var fragment = hash();
-        console.log("fragment when page first loaded", fragment);
-        if (fragment) {
-            urlHashFragmentChanged(fragment);
-        } else {
-            urlHashFragmentChanged(startPage);
-        }
     }
     
     function updateServerStatus(text) {
@@ -352,7 +456,19 @@ define([
     function initialize() {
         console.log("=======", new Date().toISOString(), "application.initialize() called");
         
-        // Throwaway single-use pointrel client instance which does not access a specific journal
+        var fragment = hash();
+        console.log("fragment when page first loaded", fragment);
+        var initialHashParameters = getHashParameters(fragment);
+        if (initialHashParameters["project"]) clientState.set("currentProjectIdentifier", initialHashParameters["project"]);
+        if (initialHashParameters["page"]) clientState.set("currentPageIdentifier", "page_" + initialHashParameters["page"]);
+        if (initialHashParameters["storyCollection"]) clientState.set("currentStoryCollection", initialHashParameters["storyCollection"]);
+        if (initialHashParameters["catalysisReport"]) clientState.set("currentCatalysisReport", initialHashParameters["catalysisReport"]);
+        if (initialHashParameters["debugMode"]) clientState.set("currentDebugMode", initialHashParameters["debugMode"]);
+            
+        // Ensure defaults
+        if (!initialHashParameters["page"]) clientState.set("currentPageIdentifier", startPage);
+        
+        // Throwaway single-use pointrel client instance which does not access a specific journal and for which polling is not started
         var singleUsePointrelClient = new PointrelClient("/api/pointrel20150417", "unused", {});
         singleUsePointrelClient.getCurrentUserInformation(function(error, response) {
             if (error) {
@@ -384,9 +500,8 @@ define([
             chooseAProjectToOpen(response.userIdentifier, projects);
         });
     }
-        
+    
     function chooseAProjectToOpen(userIdentifierFromServer, projects) {
-        
         translate.configure({}, applicationMessages);
         
         // Initialize toaster
@@ -402,34 +517,47 @@ define([
             userIdentifier: userIdentifier,
         };
         
-        // TODO: Translate
-        var columns = {name: "Project name", id: "Project journal", write: "Editable"};
-        dialogSupport.openListChoiceDialog(null, projects, columns, "Projects", "Select a project to work on", function (projectChoice) {
-            if (!projectChoice) return;
-            
-            projectIdentifier = projectChoice.id;
-            if (!projectIdentifier) return;
-            
-            document.getElementById("pleaseWaitDiv").style.display = "block";
-            
-            // TODO: Should this be managed separately?
-            journalIdentifier = projectIdentifier; 
-            
-            project = new Project(journalIdentifier, projectIdentifier, userCredentials, updateServerStatus);
-            
-            console.log("Made project", project);
-            
-            project.startup(function (error) {
-                if (error) {
-                    document.getElementById("pleaseWaitDiv").style.display = "none";
-                    // TODO: Sanitize journalIdentifier
-                    document.body.innerHTML += '<br>Problem connecting to project journal on server for: "<b>' + journalIdentifier + '</b>"';
-                    alert("Problem connecting to project journal on server. Application will not run.");
-                    return;
-                } else {
-                    loadApplicationDesign();
-                }
+        var projectIdentifierSupplied = clientState.get("currentProjectIdentifier");
+        console.log("projectIdentifierSupplied", projectIdentifierSupplied);
+        if (projectIdentifierSupplied) {
+            // TODO: Could put up project chooser if the supplied project is invalid...
+            openProject(userCredentials, narrafirmaProjectPrefix + projectIdentifierSupplied);
+        } else {
+            // TODO: Translate
+            var columns = {name: "Project name", id: "Project journal", write: "Editable"};
+            dialogSupport.openListChoiceDialog(null, projects, columns, "Projects", "Select a project to work on", function (projectChoice) {
+                if (!projectChoice) return;
+                
+                projectIdentifier = projectChoice.id;
+                if (!projectIdentifier) return;
+                
+                clientState.set("currentProjectIdentifier", projectIdentifier.substring(narrafirmaProjectPrefix.length));
+
+                openProject(userCredentials, projectIdentifier);
             });
+        }
+    }
+    
+    function openProject(userCredentials, projectIdentifier) {
+        document.getElementById("pleaseWaitDiv").style.display = "block";
+        
+        // TODO: Should this be managed separately?
+        journalIdentifier = projectIdentifier; 
+        
+        project = new Project(journalIdentifier, projectIdentifier, userCredentials, updateServerStatus);
+        
+        console.log("Made project", project);
+        
+        project.startup(function (error) {
+            if (error) {
+                document.getElementById("pleaseWaitDiv").style.display = "none";
+                // TODO: Sanitize journalIdentifier
+                document.body.innerHTML += '<br>Problem connecting to project journal on server for: "<b>' + journalIdentifier + '</b>"';
+                alert("Problem connecting to project journal on server. Application will not run.");
+                return;
+            } else {
+                loadApplicationDesign();
+            }
         });
     }
         
@@ -451,10 +579,10 @@ define([
 
             pageDisplayer.configurePageDisplayer(panelBuilder, startPage, project);
 
-            createLayout();
+            // Fill out initial hash string if needed
+            updateHashIfNeededForChangedState();
             
-            // Update if the URL hash fragment changes
-            topic.subscribe("/dojo/hashchange", urlHashFragmentChanged); 
+            createLayout();
             
             topic.subscribe("loadLatestStoriesFromServer", loadedMoreSurveyResults);
             
@@ -466,10 +594,16 @@ define([
                 // Now that data is presumably loaded, set up the project model to use that data and track ongoing changes to it
                 project.initializeProjectModel(panelSpecificationCollection);
                 panelBuilder.projectModel = project.projectModel;
-                panelBuilder.localSettings = localSettings;
+                panelBuilder.clientState = clientState;
                 buttonActions.initialize(project);
                 
-                setupFirstPage();
+                startTrackingClientStateChanges();
+                 
+                // Ensure the pageDisplayer will display the first page
+                urlHashFragmentChanged(hashStringForClientState());
+                
+                // Update if the URL hash fragment is changed by hand
+                topic.subscribe("/dojo/hashchange", urlHashFragmentChanged); 
                 
                 // turn off initial "please wait" display
                 document.getElementById("pleaseWaitDiv").style.display = "none";

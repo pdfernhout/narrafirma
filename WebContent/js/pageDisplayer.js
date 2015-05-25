@@ -70,14 +70,23 @@ define([
         if (!pageID) pageID = startPage;
         if (currentPageID === pageID && !forceRefresh) return;
 
-        var pageSpecification = panelBuilder.getPageSpecificationForPageID(pageID);
+        var pageSpecification;
+        try {
+            pageSpecification = panelBuilder.getPageSpecificationForPageID(pageID);
+        } catch (e) {
+            console.log("Problem finding pageSpecification for", pageID);
+        }
         
         // Assume that if we have a panel specification for a page that it is OK to go to it
         if (!pageSpecification || pageSpecification.displayType !== "page") {
             console.log("no such page", pageID);
             alert("No such page: " + pageID);
             // Put back the hash if there was a valid one there already
-            if (currentPageID !== null && currentPageID !== pageID) hash(currentPageID);
+            if (currentPageID !== null && currentPageID !== pageID) {
+                panelBuilder.clientState.set("currentPageIdentifier", currentPageID);
+            } else {
+                panelBuilder.clientState.set("currentPageIdentifier", startPage);
+            }
             return;
         }
         
@@ -89,7 +98,7 @@ define([
             var confirmResult = confirm("You have unsaved changes. Proceed anyway?");
             if (!confirmResult) {
                 // Put back the old hash if it is valid and changed
-                if (currentPageID !== null && currentPageID !== pageID) hash(currentPageID);
+                if (currentPageID !== null && currentPageID !== pageID) panelBuilder.clientState.set("currentPageIdentifier", currentPageID);
                 return;
             }
         }
@@ -136,7 +145,7 @@ define([
         if (currentPageID !== pageID) {
             console.log("setting currentPageID to", pageID);
             currentPageID = pageID;
-            hash(currentPageID);
+            panelBuilder.clientState.set("currentPageIdentifier", currentPageID);
         }
         
         finishShowingPage(pageID, pageSpecification);
