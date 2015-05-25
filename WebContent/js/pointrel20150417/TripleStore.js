@@ -22,7 +22,7 @@ define([
     };
     
     TripleStore.prototype.remove = function () {
-        console.log("TripleStore remove called");
+        // console.log("TripleStore remove called");
         this.subscriptions.forEach(function (subscription) {
             subscription.remove();
         });
@@ -99,7 +99,7 @@ define([
         
         if (a !== undefined) {
             if (b !== undefined) {
-                console.log("subscribe", makeTopicKey({type: "TripleStore.addForAB", a: a, b: b}));
+                // console.log("subscribe", makeTopicKey({type: "TripleStore.addForAB", a: a, b: b}));
                 return topic.subscribe(makeTopicKey({type: "TripleStore.addForAB", a: a, b: b}), callback);
             }
             return topic.subscribe(makeTopicKey({type: "TripleStore.addForA", a: a}), callback);
@@ -120,14 +120,14 @@ define([
     // TODO: Ignoring actual timestamps, so only "latest" by receipt is considered, but that is not correct
     // TODO: need to use actual timestamp in sorted comparison to deal with collissions
     TripleStore.prototype.queryLatest = function (a, b, c) {
-        console.log("queryLatest", a, b, c);
+        // console.log("queryLatest", a, b, c);
         for (var i = this.tripleMessages.length - 1; i >= 0; i--) {
             var tripleMessage = this.tripleMessages[i];
             // console.log("queryLatest loop", i, tripleMessage);
             if ((a === undefined || tripleMessage.change.triple.a === a) &&
                 (b === undefined || tripleMessage.change.triple.b === b) &&
                 (c === undefined || tripleMessage.change.triple.c === c)) {
-                console.log("match", tripleMessage.change.triple);
+                // console.log("match", tripleMessage.change.triple);
                 return tripleMessage.change.triple;
             }         
         }
