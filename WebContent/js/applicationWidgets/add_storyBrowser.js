@@ -209,9 +209,14 @@ define([
         return filterPane;
     }
     
-    function currentQuestionnaireChanged(storyBrowserInstance, currentQuestionnaire) {
+    function currentStoryCollectionChanged(storyBrowserInstance, oldValue, storyCollectionIdentifier) {
+        console.log("currentStoryCollectionChanged", storyBrowserInstance, oldValue, storyCollectionIdentifier);
+        
+        storyBrowserInstance.currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+        console.log("storyBrowserInstance.currentQuestionnaire", storyBrowserInstance.currentQuestionnaire);
+        
         // Update filters
-        var questions = surveyCollection.collectQuestionsForQuestionnaire(currentQuestionnaire);
+        var questions = surveyCollection.collectQuestionsForQuestionnaire(storyBrowserInstance.currentQuestionnaire);
         storyBrowserInstance.questions = questions;
         
         var choices = surveyCollection.optionsForAllQuestions(questions);
@@ -223,6 +228,13 @@ define([
         // Update item panel in grid
         var itemPanelSpecification = makeItemPanelSpecificationForQuestions(storyBrowserInstance, questions);
         storyBrowserInstance.storyList.changeItemPanelSpecification(itemPanelSpecification);
+        
+        // update all stories for the specific collection
+        var allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+        console.log("allStories", allStories);
+        loadLatestStories(storyBrowserInstance, allStories);
+        
+        // TODO: Should close up open grid view
     }
     
     function isMatch(story, questionChoice, selectedAnswerChoices) {
@@ -244,9 +256,8 @@ define([
         return selectedAnswerChoices.indexOf(questionAnswer) !== -1;
     }
     
-    function loadLatestStoriesFromServerChanged(storyBrowserInstance, newEnvelopeCount, allStories) {
-        if (!newEnvelopeCount) return;
-        // console.log("loadLatestStoriesFromServerChanged", storyBrowserInstance, allStories);
+    function loadLatestStories(storyBrowserInstance, allStories) {
+        // console.log("loadLatestStories", storyBrowserInstance, allStories);
         storyBrowserInstance.dataStore.setData(allStories);
         
         // Need to update choices in filters or clear them out
@@ -311,15 +322,12 @@ define([
         };
         
         // Get questionnaire for selected story collection
-        // TODO: track selected story collection
         // TODO: What if the value is an array of stories to display directly?
         var choiceModelAndField = valuePathResolver.resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
         console.log("choiceModelAndField", choiceModelAndField);
         var choiceModel = choiceModelAndField.model;
         var choiceField = choiceModelAndField.field; 
         var storyCollectionIdentifier = choiceModel.get(choiceField);
-        storyBrowserInstance.currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
-        console.log("storyBrowserInstance.currentQuestionnaire", storyBrowserInstance.currentQuestionnaire);
         
         var itemPanelSpecification = makeItemPanelSpecificationForQuestions(storyBrowserInstance, questions);
         
@@ -341,12 +349,13 @@ define([
         var configuration = {viewButton: true, includeAllFields: ["__survey_storyName", "__survey_storyText"]};
         storyBrowserInstance.storyList = new GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration, model);
         
-        var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerChanged, storyBrowserInstance));
+        // TODO: var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStories, storyBrowserInstance));
         
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
-        table.own(loadLatestStoriesFromServerSubscription);
+        // TODO: table.own(loadLatestStoriesFromServerSubscription);
         
-        var currentQuestionnaireSubscription = topic.subscribe("currentQuestionnaire", lang.partial(currentQuestionnaireChanged, storyBrowserInstance));
+        // TODO: Should also have some subscription about when the questionnaire itself changes
+        var currentQuestionnaireSubscription = choiceModel.watch(choiceField, lang.partial(currentStoryCollectionChanged, storyBrowserInstance));
         
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
         table.own(currentQuestionnaireSubscription);
@@ -354,11 +363,7 @@ define([
         // console.log("filterButton", filterButton);
         
         // Setup current values
-        currentQuestionnaireChanged(storyBrowserInstance, storyBrowserInstance.currentQuestionnaire);
-        // TODO: Calculate all stories
-        // TODO: Remove hardcoded reference to source of choice
-        var allStories = surveyCollection.getStoriesForStoryCollection(panelBuilder.clientState.get("currentStoryCollection"));
-        loadLatestStoriesFromServerChanged(storyBrowserInstance, allStories.length, allStories);
+        currentStoryCollectionChanged(storyBrowserInstance, null, null, storyCollectionIdentifier);
 
         console.log("insertStoryBrowser finished");
 
