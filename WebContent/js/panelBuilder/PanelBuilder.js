@@ -6,6 +6,7 @@ define([
     "./standardWidgets/add_functionResult",
     "./standardWidgets/add_grid",
     "./standardWidgets/add_header",
+    "./standardWidgets/add_html",
     "./standardWidgets/add_image",
     "./standardWidgets/add_label",
     "./standardWidgets/add_radiobuttons",
@@ -30,6 +31,7 @@ define([
     add_functionResult,
     add_grid,
     add_header,
+    add_html,
     add_image,
     add_label,
     add_radiobuttons,
@@ -81,6 +83,7 @@ function addStandardPlugins() {
     addPlugin("functionResult", add_functionResult);
     addPlugin("grid", add_grid);
     addPlugin("header", add_header);
+    addPlugin("html", add_html);
     addPlugin("image", add_image);
     addPlugin("label", add_label);
     addPlugin("radiobuttons", add_radiobuttons);
