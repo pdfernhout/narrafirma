@@ -9,13 +9,15 @@ define([
     
     function add_text(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
+        
+        var readOnly = fieldSpecification.displayReadOnly || false;
         var textBox = new TextBox({
             value: valuePathResolver.atFieldSpecification(panelBuilder, model, fieldSpecification)
         });
         textBox.set("style", "width: 40em");
-        if (fieldSpecification.readOnly) {
+        if (readOnly) {
             textBox.attr("readOnly", true);
-            textBox.attr("disabled", true);
+            // textBox.attr("disabled", true);
         }
         textBox.placeAt(questionContentPane);
         return textBox;

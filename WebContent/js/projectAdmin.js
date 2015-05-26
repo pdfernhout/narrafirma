@@ -163,7 +163,7 @@ require([
                 "displayType": "text",
                 "displayName": "System user identifier",
                 "displayPrompt": "System user identifier",
-                readOnly: true
+                "displayReadOnly": true
             },
             {
                 "id": "email",
@@ -211,7 +211,7 @@ require([
                 "displayType": "text",
                 "displayName": "Project identifier",
                 "displayPrompt": "Project identifier"
-                // readOnly: true
+                // "displayReadOnly": true
             },
             {
                 "id": "name",
