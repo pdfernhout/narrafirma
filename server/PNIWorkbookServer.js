@@ -34,7 +34,7 @@ var authentication = require("./authentication");
 */
 
 var config = {
-    requireAuthentication: true
+    requireAuthentication: false
 };
 
 // Main code
