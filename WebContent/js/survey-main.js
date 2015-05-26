@@ -1,6 +1,7 @@
 require([
     "dojo/i18n!js/nls/applicationMessages",
     "dojo/dom",
+    "dojo/hash",
     "js/pointrel20150417/PointrelClient",
     "js/surveyBuilder",
     "js/panelBuilder/translate",
@@ -8,11 +9,14 @@ require([
 ], function(
     applicationMessages,
     dom,
+    hash,
     PointrelClient,
     surveyBuilder,
     translate
 ){
     "use strict";
+    
+    // http://localhost:8080/survey.html#project=test1&survey=one
 
     // TODO: Internationalize
     // TODO: Full survey
@@ -20,12 +24,14 @@ require([
     // TODO: Closing page when not submitted
     // TODO: Progress when sending to server 
     
+    // TODO: Should refactor code so this prefix is not also duplicated in application and buttonActions
+    var narrafirmaProjectPrefix = "NarraFirmaProject-";
+    
     var serverURL = "/api/pointrel20150417";
     var pointrelClient;
     
-    // TODO: Fix hardcoded values
-    var projectIdentifier = "NarraFirmaProject-test1";
-    var storyCollectionIdentifier = 'one';
+    var projectIdentifier;
+    var storyCollectionIdentifier;
     
     function loadQuestionnaire(callback) {
         // Decided on how to load data: Either can get latest with one or more questionnaires, or can query all messages and filter. Went with get latest.
@@ -42,6 +48,7 @@ require([
             // do something with handled data
             console.log("request got data", data);
             if (data.success) {
+                console.log("storyCollectionIdentifier", storyCollectionIdentifier, data.latestRecord.messageContents.change);
                 var questionnaire = data.latestRecord.messageContents.change[storyCollectionIdentifier];
                 if (questionnaire) {
                     callback(null, questionnaire);
@@ -93,6 +100,7 @@ require([
            
         loadQuestionnaire(function(error, questionnaire, envelope) {
             if (error) {
+                console.log("Error loading questionnaire", error);
                 // TODO: Translate
                 document.getElementById("pleaseWaitDiv").style.display = "none";
                 document.body.innerHTML += "Something went wrong loading the survey questionnaire from the server";
@@ -114,15 +122,47 @@ require([
     }
     
     function receivedMessage() {
-        // TODO
+        // Do nothing
     }
     
     function updateServerStatus() {
-        // TODO
+        // Do nothing
+    }
+    
+    // getHashParameters derived from: http://stackoverflow.com/questions/4197591/parsing-url-hash-fragment-identifier-with-javascript
+    function getHashParameters(hash) {
+        var result = {};
+        var match;
+        // Regex for replacing addition symbol with a space
+        var plusMatcher = /\+/g;
+        var parameterSplitter = /([^&;=]+)=?([^&;]*)/g;
+        var decode = function (s) {return decodeURIComponent(s.replace(plusMatcher, " "));};
+        while (true) {
+            match = parameterSplitter.exec(hash);
+            if (!match) break;
+            result[decode(match[1])] = decode(match[2]);
+        }
+        return result;
     }
     
     function initialize() {
         translate.configure({}, applicationMessages);
+        
+        var configuration = getHashParameters(hash());
+        console.log("configuration", configuration);    
+        
+        projectIdentifier = configuration["project"];
+        storyCollectionIdentifier = configuration["survey"];
+        console.log("configuration: projectIdentifier", projectIdentifier, "storyCollectionIdentifier", storyCollectionIdentifier);
+
+        if (!projectIdentifier || !storyCollectionIdentifier) {
+            alert("The URL does not have all the information needed to select a survey");
+            document.body.innerHTML += "The URL does not have all the information needed to select a survey. Please contact the project administrator.";
+            document.getElementById("pleaseWaitDiv").style.display = "none";
+            return;
+        }
+        
+        projectIdentifier = narrafirmaProjectPrefix + projectIdentifier;
         
         // TODO: Should ping server to get current user identifier in case logged in
         // TODO: Should check with server if have read and write permissions for the specific topics
