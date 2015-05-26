@@ -92,34 +92,7 @@
                 "action": "guiOpenSection",
                 "section": "page_projectReport"
             },
-            "displayPrompt": "Project report"
-        },
-        {
-            "id": "project_mainDashboardSeparator",
-            "valueType": "none",
-            "displayType": "label",
-            "displayPrompt": "<b>Quick links</b> (You can also use the left/right arrows above to get to these pages)"
-        },
-        {
-            "id": "project_mainDashboard_launchIntroduction",
-            "valueType": "none",
-            "displayType": "button",
-            "displayConfiguration": {
-                "action": "guiOpenSection",
-                "section": "page_introduction"
-            },
-            "displayPrompt": "Go to introduction page",
-            "displayPreventBreak": true
-        },
-        {
-            "id": "project_mainDashboard_launchImportExport",
-            "valueType": "none",
-            "displayType": "button",
-            "displayConfiguration": {
-                "action": "guiOpenSection",
-                "section": "page_importExport"
-            },
-            "displayPrompt": "Go to Import/Export page"
+            "displayPrompt": "Project administration"
         }
     ]
 }
