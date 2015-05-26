@@ -24,22 +24,10 @@
         },
         {
             "id": "graphBrowserDisplay",
+            "valuePath": "/clientState/currentStoryCollection",
             "valueType": "none",
             "displayType": "graphBrowser",
             "displayPrompt": "Graph browser"
-        },
-        {
-            "id": "graphBrowserMockupLabel_unfinished",
-            "valueType": "none",
-            "displayType": "label",
-            "displayPrompt": "(Unfinished: This area will show graphs of patterns in the data."
-        },
-        {
-            "id": "mockup_graphBrowser",
-            "valueType": "none",
-            "displayType": "image",
-            "displayConfiguration": "images/mockups/mockupGraphs.png",
-            "displayPrompt": "It will look something like this.)"
         }
     ]
 }

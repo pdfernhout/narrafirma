@@ -4,14 +4,16 @@ define([
     "js/surveyCollection",
     "dojo/topic",
     "js/panelBuilder/widgetSupport",
-    "dijit/layout/ContentPane"
+    "dijit/layout/ContentPane",
+    "js/panelBuilder/valuePathResolver"
 ], function(
     charting,
     lang,
     surveyCollection,
     topic,
     widgetSupport,
-    ContentPane
+    ContentPane,
+    valuePathResolver
 ){
     "use strict";
     
@@ -30,13 +32,11 @@ define([
     function updateGraph(graphBrowserInstance) {
         console.log("updateGraph", graphBrowserInstance);
         
-        graphBrowserInstance.allStories = domain.allStories;
-        
         var xAxisQuestionID = graphBrowserInstance.xAxisSelect.get("value");
         var yAxisQuestionID = graphBrowserInstance.yAxisSelect.get("value");
         
         // TODO: Translated or improve checking or provide alternate handling if only one selected
-        if (!xAxisQuestionID && !yAxisQuestionID) return alert("Please select a question for one or both graph axes");
+        if (!xAxisQuestionID && !yAxisQuestionID) return; // alert("Please select a question for one or both graph axes");
         
         // Remove old graph(s)
         while (graphBrowserInstance.chartPanes.length) {
@@ -96,26 +96,36 @@ define([
         }
     }
     
-    function currentQuestionnaireChanged(graphBrowserInstance, currentQuestionnaire) {
+    function currentStoryCollectionChanged(graphBrowserInstance, fieldName, oldValue, storyCollectionIdentifier) {
+        graphBrowserInstance.storyCollectionIdentifier = storyCollectionIdentifier;
+        
+        graphBrowserInstance.currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+        console.log("graphBrowserInstance.currentQuestionnaire", graphBrowserInstance.currentQuestionnaire);
+        
         // Update selects for new question choices
-        var questions = surveyCollection.collectQuestionsForCurrentQuestionnaire();
+        var questions = surveyCollection.collectQuestionsForQuestionnaire(graphBrowserInstance.currentQuestionnaire);
+        console.log("----------- questions", questions);
         graphBrowserInstance.questions = questions;
         
         var choices = surveyCollection.optionsForAllQuestions(questions, "excludeTextQuestions");
         widgetSupport.updateSelectChoices(graphBrowserInstance.xAxisSelect, choices);
         widgetSupport.updateSelectChoices(graphBrowserInstance.yAxisSelect, choices);
+        
+        // update all stories for the specific collection and update graph
+        loadLatestStories(graphBrowserInstance);
     }
     
-    function loadLatestStoriesFromServerChanged(graphBrowserInstance, newEnvelopeCount, allStories) {
-        console.log("loadLatestStoriesFromServerChanged", graphBrowserInstance, newEnvelopeCount, allStories);
-        if (!newEnvelopeCount) return;
+    function loadLatestStories(graphBrowserInstance) {
+        console.log("loadLatestStories", graphBrowserInstance);
         
-        // TODO: Update graphs if needed
+        graphBrowserInstance.allStories = surveyCollection.getStoriesForStoryCollection(graphBrowserInstance.storyCollectionIdentifier);
+        console.log("allStories", graphBrowserInstance.allStories);
+
+        updateGraph(graphBrowserInstance);
     }
         
-    function insertGraphBrowser(contentPane, model, fieldSpecification) {       
-        var questions = surveyCollection.collectQuestionsForCurrentQuestionnaire();
-        var choices = surveyCollection.optionsForAllQuestions(questions, "excludeTextQuestions");
+    function insertGraphBrowser(panelBuilder, contentPane, model, fieldSpecification) {       
+        var choices = [];
         
         var xAxisSelect = widgetSupport.newSelect(contentPane, choices);
         xAxisSelect.set("style", "width: 48%; max-width: 40%");
@@ -133,13 +143,26 @@ define([
             style: chartEnclosureStyle
         });
         
+        var choiceModelAndField = valuePathResolver.resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
+        console.log("choiceModelAndField", choiceModelAndField);
+        var choiceModel = choiceModelAndField.model;
+        var choiceField = choiceModelAndField.field; 
+        var storyCollectionIdentifier = choiceModel.get(choiceField);
+        
         var graphBrowserInstance = {
             graphResultsPane: graphResultsPane,
             chartPanes: [], 
             xAxisSelect: xAxisSelect,
             yAxisSelect: yAxisSelect,
-            questions: questions
+            questions: [],
+            storyCollectionIdentifier: storyCollectionIdentifier,
+            currentQuestionnaire: null,
+            allStories: []
         };
+        
+        var currentQuestionnaireSubscription = choiceModel.watch(choiceField, lang.partial(currentStoryCollectionChanged, graphBrowserInstance));        
+        // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
+        contentPane.own(currentQuestionnaireSubscription);
         
         xAxisSelect.on("change", lang.partial(updateGraph, graphBrowserInstance));  
         yAxisSelect.on("change", lang.partial(updateGraph, graphBrowserInstance));
@@ -151,15 +174,18 @@ define([
         
         contentPane.addChild(graphResultsPane);
         
-        var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerChanged, graphBrowserInstance));
+        // TODO: var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerChanged, graphBrowserInstance));
         
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
-        contentPane.own(loadLatestStoriesFromServerSubscription);
+        // TODO: contentPane.own(loadLatestStoriesFromServerSubscription);
         
-        var currentQuestionnaireSubscription = topic.subscribe("currentQuestionnaire", lang.partial(currentQuestionnaireChanged, graphBrowserInstance));
+        // TODO: var currentQuestionnaireSubscription = topic.subscribe("currentQuestionnaire", lang.partial(currentQuestionnaireChanged, graphBrowserInstance));
         
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
-        contentPane.own(currentQuestionnaireSubscription);
+        // TODO: contentPane.own(currentQuestionnaireSubscription);
+        
+        // Set up initial data
+        currentStoryCollectionChanged(graphBrowserInstance, null, null, storyCollectionIdentifier);
         
         return graphResultsPane;
     }
@@ -167,7 +193,7 @@ define([
     function add_graphBrowser(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
-        var graphBrowserInstance = insertGraphBrowser(questionContentPane, model, fieldSpecification);
+        var graphBrowserInstance = insertGraphBrowser(panelBuilder, questionContentPane, model, fieldSpecification);
         questionContentPane.resize();
         return graphBrowserInstance;
     }
