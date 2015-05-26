@@ -221,7 +221,7 @@ define([
         // TODO: What to do about current selection in these widgets?
         
         // Update item panel in grid
-        var itemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
+        var itemPanelSpecification = makeItemPanelSpecificationForQuestions(storyBrowserInstance, questions);
         storyBrowserInstance.storyList.changeItemPanelSpecification(itemPanelSpecification);
     }
     
@@ -256,8 +256,8 @@ define([
         setStoryListForCurrentFilters(storyBrowserInstance);
     }
     
-    function buildStoryDisplayPanel(panelBuilder, contentPane, model) {
-        var storyContent = storyCardDisplay.generateStoryCardContent(model, "includeElicitingQuestion");
+    function buildStoryDisplayPanel(storyBrowserInstance, panelBuilder, contentPane, model) {
+        var storyContent = storyCardDisplay.generateStoryCardContent(model, storyBrowserInstance.currentQuestionnaire, "includeElicitingQuestion");
         
         var storyPane = new ContentPane({
             content: storyContent           
@@ -265,13 +265,13 @@ define([
         storyPane.placeAt(contentPane);
     }
     
-    function makeItemPanelSpecificationForQuestions(questions) {
+    function makeItemPanelSpecificationForQuestions(storyBrowserInstance, questions) {
         // TODO: add more participant and survey info, like timestamps and participant ID
         
         var itemPanelSpecification = {
              id: "storyBrowserQuestions",
              panelFields: questions,
-             buildPanel: buildStoryDisplayPanel
+             buildPanel: lang.partial(buildStoryDisplayPanel, storyBrowserInstance)
         };
         
         return itemPanelSpecification;
@@ -283,8 +283,7 @@ define([
         console.log("insertStoryBrowser start", id);
         
         var questions = [];
-        var itemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
-        
+
         var stories = [];
         
         // Store will modify underlying array
@@ -307,8 +306,22 @@ define([
             filter1: null,
             filter2: null,
             storyList: null,
-            questions: questions
+            questions: questions,
+            currentQuestionnaire: null
         };
+        
+        // Get questionnaire for selected story collection
+        // TODO: track selected story collection
+        // TODO: What if the value is an array of stories to display directly?
+        var choiceModelAndField = valuePathResolver.resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
+        console.log("choiceModelAndField", choiceModelAndField);
+        var choiceModel = choiceModelAndField.model;
+        var choiceField = choiceModelAndField.field; 
+        var storyCollectionIdentifier = choiceModel.get(choiceField);
+        storyBrowserInstance.currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+        console.log("storyBrowserInstance.currentQuestionnaire", storyBrowserInstance.currentQuestionnaire);
+        
+        var itemPanelSpecification = makeItemPanelSpecificationForQuestions(storyBrowserInstance, questions);
         
         storyBrowserInstance.filter1 = createFilterPane(storyBrowserInstance, id + "_1", questions, stories, table);
         storyBrowserInstance.filter2 = createFilterPane(storyBrowserInstance, id + "_2", questions, stories, table);
@@ -341,17 +354,18 @@ define([
         // console.log("filterButton", filterButton);
         
         // Setup current values
-        // TODO: Get questionnaire for selected story collection, and track selected story collection
-        var currentQuestionnaire = null;
-        currentQuestionnaireChanged(storyBrowserInstance, currentQuestionnaire);
+        currentQuestionnaireChanged(storyBrowserInstance, storyBrowserInstance.currentQuestionnaire);
         // TODO: Calculate all stories
-        var allStories = [];
+        // TODO: Remove hardcoded reference to source of choice
+        var allStories = surveyCollection.getStoriesForStoryCollection(panelBuilder.clientState.get("currentStoryCollection"));
         loadLatestStoriesFromServerChanged(storyBrowserInstance, allStories.length, allStories);
 
         console.log("insertStoryBrowser finished");
 
         return storyBrowserInstance;
     }
+    
+    // TODO: The best argument for short variable names might be that "code is poetry", in that it is only suggestive of intent not precisely complete. Thinking about that as code seems just lots and lots and so on...
     
     function setStoryListForCurrentFilters(storyBrowserInstance) {
         // console.log("filter pressed", storyBrowserInstance);

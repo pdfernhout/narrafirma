@@ -168,7 +168,7 @@ define([
     // TODO: Next two functions from add_storyBrowser and so are duplicate code
     
     function buildStoryDisplayPanel(panelBuilder, contentPane, model) {
-        var storyContent = storyCardDisplay.generateStoryCardContent(model, "includeElicitingQuestion");
+        var storyContent = storyCardDisplay.generateStoryCardContent(model, currentQuestionnaire, "includeElicitingQuestion");
         
         var storyPane = new ContentPane({
             content: storyContent           

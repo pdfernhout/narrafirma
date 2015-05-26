@@ -13,9 +13,60 @@ define([
 ) {
    "use strict";
    
+   var project;
+   
+   function setProject(theProject) {
+       project = theProject;
+   }
+   
    function getStoriesForStoryCollection(storyCollectionIdentifier) {
        var result = [];
+       var surveyMessages = project.pointrelClient.filterMessages(function (message) {
+           var match = (message._topicIdentifier === "surveyResults" &&
+               message.messageType === "surveyResult" &&
+               message.change.projectIdentifier === project.projectIdentifier &&
+               message.change.storyCollectionIdentifier === storyCollectionIdentifier);
+           // console.log("message", match, message);
+           return match;
+       });
+       console.log("getStoriesForStoryCollection filter surveyMessages", surveyMessages);
+       
+       surveyMessages.forEach(function (message) {
+           // Now add stories in survey to results, with extra participant information
+           try {
+               var surveyResult = message.change.surveyResult;
+               var stories = surveyResult.stories;
+               for (var storyIndex in stories) {
+                   var story = stories[storyIndex];
+                   // console.log("=== story", story);
+                   
+                   // Add participant info for story
+                   var participantData = surveyResult.participantData;
+                   for (var key in participantData) {
+                       if (key !== "__type") {
+                           story[key] = participantData[key];
+                       }
+                   }
+                   result.push(story);
+               }
+           } catch (e) {
+               console.log("Problem processing survey result", message, e);
+           }
+       });
+       
        return result;
+   }
+   
+   // TODO: Similar to function in buttonActions except no alerts
+   function getQuestionnaireForStoryCollection(storyCollectionIdentifier) {
+       var storyCollection = questionnaireGeneration.findStoryCollection(project, storyCollectionIdentifier);
+       if (!storyCollection) return null;
+       
+       var questionnaireName = storyCollection.storyCollection_questionnaireIdentifier;
+       if (!questionnaireName) return null;
+
+       var questionnaire = questionnaireGeneration.buildQuestionnaire(project, questionnaireName);
+       return questionnaire;
    }
    
    // Can also just pass in callback as first arg, rest are unused and are for compatibility with GUI calling system
@@ -202,6 +253,11 @@ define([
    }
    
    return {
+       
+       setProject: setProject,
+       getStoriesForStoryCollection: getStoriesForStoryCollection,
+       getQuestionnaireForStoryCollection: getQuestionnaireForStoryCollection,
+       
        storyCollectionStart: storyCollectionStart,
        storyCollectionStop: storyCollectionStop,
        

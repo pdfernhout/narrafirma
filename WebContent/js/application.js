@@ -559,6 +559,8 @@ define([
         
         console.log("Made project", project);
         
+        surveyCollection.setProject(project);
+        
         project.startup(function (error) {
             if (error) {
                 document.getElementById("pleaseWaitDiv").style.display = "none";

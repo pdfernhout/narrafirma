@@ -86,14 +86,12 @@ define(["dojox/html/entities"], function(entities) {
         return result + "<br><br>\n";  
     }
     
-    function generateStoryCardContent(storyModel, includeElicitingQuestion) {
+    function generateStoryCardContent(storyModel, currentQuestionnaire, includeElicitingQuestion) {
         // Encode all user-supplied text to ensure it does not create HTML issues
         var elicitingQuestion = entities.encode(storyModel.get("__survey_elicitingQuestion"));
         var storyName = entities.encode(storyModel.get("__survey_storyName"));
         var storyText = entities.encode(storyModel.get("__survey_storyText"));
         var otherFields = "";
-        
-        var currentQuestionnaire = domain.currentQuestionnaire;
         
         var questions = [];
         if (currentQuestionnaire) questions = questions.concat(currentQuestionnaire.storyQuestions);
