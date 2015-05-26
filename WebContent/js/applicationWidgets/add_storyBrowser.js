@@ -209,8 +209,8 @@ define([
         return filterPane;
     }
     
-    function currentStoryCollectionChanged(storyBrowserInstance, oldValue, storyCollectionIdentifier) {
-        console.log("currentStoryCollectionChanged", storyBrowserInstance, oldValue, storyCollectionIdentifier);
+    function currentStoryCollectionChanged(storyBrowserInstance, fieldName, oldValue, storyCollectionIdentifier) {
+        console.log("currentStoryCollectionChanged", storyBrowserInstance, fieldName, oldValue, storyCollectionIdentifier);
         
         storyBrowserInstance.currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
         console.log("storyBrowserInstance.currentQuestionnaire", storyBrowserInstance.currentQuestionnaire);
@@ -218,6 +218,7 @@ define([
         // Update filters
         var questions = surveyCollection.collectQuestionsForQuestionnaire(storyBrowserInstance.currentQuestionnaire);
         storyBrowserInstance.questions = questions;
+        console.log("currentStoryCollectionChanged", questions);
         
         var choices = surveyCollection.optionsForAllQuestions(questions);
         widgetSupport.updateSelectChoices(storyBrowserInstance.filter1.questionSelect, choices);
