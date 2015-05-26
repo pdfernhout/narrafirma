@@ -482,6 +482,8 @@ define([
                 return;
             }
             console.log("initialize response", response);
+            userIdentifier = response.userIdentifier;
+            if (userIdentifier === undefined) userIdentifier = "anonymous";
             var projects = [];
             for (var key in response.journalPermissions) {
                 if (!_.startsWith(key, narrafirmaProjectPrefix)) continue;
@@ -497,8 +499,16 @@ define([
             
             if (!projects.length) {
                 document.getElementById("pleaseWaitDiv").style.display = "none";
-                document.body.innerHTML += '<br><b>No projects. The NarraFirma application can not run. Please contact your NarraFirma project administrator.</b>';
-                alert("There are no projects accessible by the current user; please contact your NarraFirma administrator");
+                var recoveryText = "Please contact your NarraFirma project administrator.";
+                var loginText = "";
+                if (userIdentifier === "anonymous") {
+                    recoveryText = "Please try logging in.";
+                    // TODO: Needs to be different for Wordpress
+                    loginText = ' <a href="/login">login</a>';
+                }
+                
+                document.body.innerHTML += '<br><b>No projects. The NarraFirma application can not run.</b> ' + recoveryText + loginText;
+                alert("There are no projects accessible by the current user (" + userIdentifier + "). " + recoveryText);
                 return;
             }
             
@@ -515,8 +525,6 @@ define([
         loadAllApplicationWidgets(PanelBuilder);
         
         document.getElementById("pleaseWaitDiv").style.display = "none";
-        
-        userIdentifier = userIdentifierFromServer;
         
         var userCredentials = {
             userIdentifier: userIdentifier,
