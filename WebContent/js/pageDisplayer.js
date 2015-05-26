@@ -1,6 +1,5 @@
 define([
     "dijit/layout/ContentPane",
-    "js/domain",
     "dojo/dom-construct",
     "dojo/dom-style",
     "dojo/hash",
@@ -9,7 +8,6 @@ define([
     "js/panelBuilder/translate"
 ], function(
     ContentPane,
-    domain,
     domConstruct,
     domStyle,
     hash,

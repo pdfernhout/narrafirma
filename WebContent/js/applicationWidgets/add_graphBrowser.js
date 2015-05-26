@@ -1,6 +1,5 @@
 define([
     "./charting",
-    "js/domain",
     "dojo/_base/lang",
     "js/surveyCollection",
     "dojo/topic",
@@ -8,7 +7,6 @@ define([
     "dijit/layout/ContentPane"
 ], function(
     charting,
-    domain,
     lang,
     surveyCollection,
     topic,

@@ -1,4 +1,4 @@
-define(["js/domain", "dojox/html/entities"], function(domain, entities) {
+define(["dojox/html/entities"], function(entities) {
     "use strict";
     
     function wrap(elementType, cssClass, text) {

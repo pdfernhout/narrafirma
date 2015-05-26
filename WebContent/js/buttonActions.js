@@ -1,7 +1,6 @@
 define([
     "js/panelBuilder/browser",
     "js/panelBuilder/dialogSupport",
-    "js/domain",
     "js/modelUtility",
     "js/navigationPane",
     "js/pageDisplayer",
@@ -14,7 +13,6 @@ define([
 ], function(
     browser,
     dialogSupport,
-    domain,
     modelUtility,
     navigationPane,
     pageDisplayer,
@@ -88,7 +86,7 @@ define([
 
     function openSurveyDialog() {
         // TODO: What version of questionnaire should be used? Should it really be the latest one? Or the one active on server?
-        console.log("openSurveyDialog domain", domain);
+        console.log("openSurveyDialog");
         
         var storyCollectionName = getStoryCollectionNameForSelectedStoryCollection("storyCollectionChoice_enterStories");
         if (!storyCollectionName) return;

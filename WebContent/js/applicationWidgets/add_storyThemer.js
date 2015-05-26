@@ -1,5 +1,4 @@
 define([
-    "js/domain",
     "dojox/html/entities",
     "dojox/uuid/generateRandomUuid",
     "dojo/_base/lang",
@@ -12,7 +11,6 @@ define([
     "dojo/Stateful",
     "js/panelBuilder/widgetSupport"
 ], function(
-    domain,
     entities,
     generateRandomUuid,
     lang,

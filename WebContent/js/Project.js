@@ -2,14 +2,12 @@ define([
     "js/pointrel20150417/PointrelClient",
     "dojo/Stateful",
     "js/pointrel20150417/TripleStore",
-    "js/domain",
     "js/versions",
     "dijit/layout/ContentPane"
 ], function(
     PointrelClient,
     Stateful,
     TripleStore,
-    domain,
     versions,
     ContentPane
 ) {  

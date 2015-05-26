@@ -1,6 +1,5 @@
 define([
     "dojo/_base/array",
-    "js/domain",
     "dojo/dom-construct",
     "dojo/_base/lang",
     "js/storyCardDisplay",
@@ -14,7 +13,6 @@ define([
     "js/panelBuilder/valuePathResolver"
 ], function(
     array,
-    domain,
     domConstruct,
     lang,
     storyCardDisplay,

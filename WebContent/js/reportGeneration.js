@@ -1,9 +1,7 @@
 define([
-    "js/domain",
     "js/applicationWidgets/add_quizScoreResult",
     "js/panelBuilder/translate"
 ], function(
-    domain,
     add_quizScoreResult,
     translate
 ) {
