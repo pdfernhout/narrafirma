@@ -236,8 +236,6 @@ X Support storyBrowserCount
 
 ======= CYNTHIA
 
-H Write up sample NarraFirma product offering descriptions for review (including for website)
-H Finish templates
 H Create help
 H On Story question page, move "what type of question is this" extra text to help
 H Clean up introduction page
@@ -245,6 +243,8 @@ H Fix wording on dashboard pages (and all wording related to reminders)
 L Fix CSS styling so reminder section of page is different
 L Improve general CSS styling on all pages (forms)
 X Forgot to put "memorable" in eliciting question types ("What type of question is this?")
+DONE H Write up sample NarraFirma product offering descriptions for review (including for website)
+DONE H Finish templates
 
 ==== Wish list:
 
