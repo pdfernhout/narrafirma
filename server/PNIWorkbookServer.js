@@ -20,9 +20,6 @@ var pointrelAccessControl = require("./pointrel20150417/pointrelAccessControl");
 // TODO IMPORTANT: Remove hardcoded superuser credentials -- just for dev testing
 pointrelAccessControl.initialize({"userIdentifier": "superuser", "userPassword": "secret"});
 
-// TODO: Need better loading and project management than this
-// pointrelServer.addJournalSync("testing");
-// pointrelServer.addJournalSync("NarraFirma-administration");
 pointrelServer.indexAllJournals();
 
 // For authentication
@@ -72,48 +69,6 @@ app.use(bodyParser.urlencoded({
 }));
 
 // Application routes
-
-app.get("/survey/:projectID/:surveyID", function (request, response) {
-    applicationLog("GET survey UNFINISHED", request.params.projectID, request.params.surveyID);
-    return response.json({success: false, message: "Unfinished", questionnaire: null});
-});
-
-app.post("/survey/:projectID/:surveyID", function (request, response) {
-    applicationLog("POST survey UNFINISHED", request.params.projectID, request.params.surveyID);
-    
-    return response.json({success: false, message: "Unfinished", questionnaire: null});
-});
-
-/*
-TODO: Delete this. Just kept temporarily for reference when finishing the above function
-app.post("/survey/questions/:surveyID", function (request, response) {
-    var surveyID = request.params.surveyID;
-    var indexEntries = pointrel20141201Server.referencesForTag(surveyID);
-    if (!indexEntries) {
-        return response.json({status: "FAILED", message: "Survey is not defined", questions: null});
-    }
-    var indexEntry = getLatestIndexEntry(indexEntries);
-    if (!indexEntry) {
-        var errorMessage = "Survey definitions are missing timestamps";
-        applicationLog("ERROR: Should never get here", errorMessage);
-        return response.json({status: "FAILED", message: errorMessage, questions: null});
-    }
-    pointrel20141201Server.fetchContentForReference(indexEntry.sha256AndLength, function(error, data) {
-        if (error) {
-            applicationLog("ERROR reading question file: ", error);
-            return response.json({status: "FAILED", message: error, questions: null});
-        }
-        var questionsEnvelope;
-        try {
-            questionsEnvelope = JSON.parse(data);
-        } catch (parseError) {
-            return response.json({status: "FAILED", message: "Parse error: " + parseError, questions: null});
-        }
-        // TODO: Should this really have to parse the question object? Maybe should let client do it?
-        return response.json({status: "OK", message: "Retrieved survey", questions: questionsEnvelope.content});
-    });
-});
-*/
 
 // Set up authentication routes and config
 authentication.initialize(app, config);
