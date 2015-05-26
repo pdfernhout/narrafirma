@@ -13,6 +13,18 @@
             "displayPrompt": "<b>NarraFirma Dashboard</b> (Click on the \"Home\" icon to return here. Click on buttons below to open the related section.)"
         },
         {
+            "id": "project_mainDashboardPNIPhasesDiagram",
+            "valueType": "none",
+            "displayType": "html",
+            "displayPrompt": "<img class=\"narrafirma-pni-phases-image\" src=\"images/PNIPhasesDiagram-trimmed.png\" alt=\"PNI Phase Diagram\" usemap=\"#pniphasesmap\"></img>"
+        },
+        {
+            "id": "project_mainDashboardPNIPhasesImageMap",
+            "valueType": "none",
+            "displayType": "html",
+            "displayPrompt": "<map name=\"pniphasesmap\"><area shape=\"rect\" coords=\"8,61,87,149\" href=\"javascript:narrafirma_openPage('page_planning')\" alt=\"Planning\"><area shape=\"rect\" coords=\"189,61,262,145\" href=\"javascript:narrafirma_openPage('page_collection')\" alt=\"Collection\"><area shape=\"rect\" coords=\"364,61,440,148\" href=\"javascript:narrafirma_openPage('page_catalysis')\" alt=\"Catalysis\"><area shape=\"rect\" coords=\"99,158,176,246\" href=\"javascript:narrafirma_openPage('page_return')\" alt=\"Return\"><area shape=\"rect\" coords=\"276,158,353,245\" href=\"javascript:narrafirma_openPage('page_sensemaking')\" alt=\"Sensemaking\"><area shape=\"rect\" coords=\"186,281,267,352\" href=\"javascript:narrafirma_openPage('page_intervention')\" alt=\"Intervention\"></map>"
+        },
+        {
             "id": "project_launchSection_planning",
             "valueType": "none",
             "displayType": "dashboardSectionStatusDisplay",
