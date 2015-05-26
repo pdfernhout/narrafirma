@@ -103,8 +103,8 @@ require([
                 console.log("Error loading questionnaire", error);
                 // TODO: Translate
                 document.getElementById("pleaseWaitDiv").style.display = "none";
-                document.body.innerHTML += "Something went wrong loading the survey questionnaire from the server";
-                alert("Something went wrong loading the survey questionnaire from the server:\n" + error);
+                document.body.innerHTML += "Something went wrong loading the survey questionnaire from the server:<br>" + JSON.stringify(error);
+                alert("Something went wrong loading the survey questionnaire from the server.");
                 return;
             }
             console.log("got questionnaire from server", projectIdentifier, storyCollectionIdentifier, questionnaire);
