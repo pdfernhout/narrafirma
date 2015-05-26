@@ -10,7 +10,7 @@
             "id": "project_mainDashboardLabel",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "<b>NarraFirma Dashboard</b> (Click on the \"Home\" icon to return here. Click on buttons below to open the related section.)"
+            "displayPrompt": "<b>NarraFirma Dashboard</b>"
         },
         {
             "id": "project_mainDashboardPNIPhasesDiagram",
