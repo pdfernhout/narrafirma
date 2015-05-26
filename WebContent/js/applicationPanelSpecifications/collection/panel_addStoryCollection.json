@@ -25,11 +25,11 @@
         },
         {
             "id": "storyCollection_activeOnWeb",
-            "valueType": "boolean",
-            "displayType": "checkbox",
+            "valueType": "test",
+            "displayType": "text",
             "displayReadOnly": true,
-            "displayName": "Active on web",
-            "displayPrompt": "Whether this story collection available on the web (read only)."
+            "displayName": "URL active on web",
+            "displayPrompt": "The URL of this story collection if it is available on the web (read only)."
         },
         {
             "id": "storyCollection_notes",

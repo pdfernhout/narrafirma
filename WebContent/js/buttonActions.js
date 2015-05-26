@@ -308,12 +308,24 @@ define([
         window.location.href = "/logout";
     }
     
+    function urlForSurvey(storyCollectionName) {
+        var href = window.location.href;
+        var baseURL = href.substring(0, href.lastIndexOf("/"));
+        // TODO: Duplicated project prefix; should refactor to have it in one place
+        var projectName = project.journalIdentifier.substring("NarraFirmaProject-".length);
+        return baseURL + "/survey.html#project=" + projectName + "&survey=" + storyCollectionName;
+    }
+    
     function toggleWebActivationOfSurvey(contentPane, model, fieldSpecification, value) {
         var grid = fieldSpecification.grid;
         var selectedItem = grid.getSelectedItem();
         console.log("toggleWebActivationOfSurvey selectedItem", selectedItem, model, fieldSpecification); 
         
-        selectedItem.storyCollection_activeOnWeb = ! selectedItem.storyCollection_activeOnWeb;
+        if (selectedItem.storyCollection_activeOnWeb) {
+            selectedItem.storyCollection_activeOnWeb = "";
+        } else {
+            selectedItem.storyCollection_activeOnWeb = urlForSurvey(selectedItem.storyCollection_shortName);
+        }
         // broadcast the change to other clients and force grid refresh by recreating entire object
         var storyCollections = model.get(fieldSpecification.id);
         var recreatedData = JSON.parse(JSON.stringify(storyCollections));
