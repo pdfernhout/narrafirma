@@ -270,7 +270,7 @@ define([
             this.prepareApiRequestForSending(apiRequest);
             
             this.outstandingServerRequestSentAtTimestamp = new Date();
-            this.serverStatus("storing " + this.outstandingServerRequestSentAtTimestamp);
+            this.serverStatus("waiting", "storing " + this.outstandingServerRequestSentAtTimestamp);
             
             var self = this;
             request.post(this.apiURL, {
@@ -287,7 +287,7 @@ define([
                 self.outstandingServerRequestSentAtTimestamp = null;
                 if (!response.success) {
                     console.log("ERROR: Message store failure", response, self.outgoingMessageQueue[0]);
-                    self.serverStatus("Message store failure: " + response.statusCode + " :: " + response.description);
+                    self.serverStatus("failure", "Message store failure: " + response.statusCode + " :: " + response.description);
                     // TODO: Need to decide whether to discard the message based on the nature of the problem
                     // Should leave it in the queue if it is not malformed and it is just a possibly temporary problem with server
                     // TODO: If the message we sent was rejected because it was malformed or a duplicate, we should discard it
@@ -311,7 +311,7 @@ define([
                 }
             }, function(error) {
                 // TODO: Need to check for rejected status and then remove the message from the outgoing queue
-                self.serverStatus("Problem storing message to server: " + error.message + "<br>You may need to reload the page to synchronize it with the current state of the server if a message was rejected for some reason.");
+                self.serverStatus("failure", "Problem storing message to server: " + error.message + "<br>You may need to reload the page to synchronize it with the current state of the server if a message was rejected for some reason.");
                 console.log("Got store error", error.message);
                 self.outstandingServerRequestSentAtTimestamp = null;
                 if (callback) callback(error);
@@ -350,7 +350,7 @@ define([
             this.prepareApiRequestForSending(apiRequest);
             
             // Do not set outstandingServerRequestSentAtTimestamp as this is an immediate request that does not block polling
-            this.serverStatus("requesting latest message " + new Date().toISOString());
+            this.serverStatus("waiting", "requesting latest message " + new Date().toISOString());
             
             request.post(this.apiURL, {
                 data: JSON.stringify(apiRequest),
@@ -365,14 +365,14 @@ define([
                 if (debugMessaging) console.log("Got latest message for topic response", response);
                 if (!response.success) {
                     console.log("ERROR: report queryForLatestMessage failure", response);
-                    self.serverStatus("Report queryForLatestMessage failure: " + response.statusCode + " :: " + response.description);
+                    self.serverStatus("failure", "Report queryForLatestMessage failure: " + response.statusCode + " :: " + response.description);
                     callback(response);
                 } else {
                     self.okStatus();
                     callback(null, response);
                 }
              }, function(error) {
-                self.serverStatus("Problem fetching latest message for topic from server: " + error.message);
+                self.serverStatus("failure", "Problem fetching latest message for topic from server: " + error.message);
                 console.log("Got server error when fetching latest message for topic from server", error.message);
                 callback(error);
             });
@@ -412,7 +412,7 @@ define([
             this.prepareApiRequestForSending(apiRequest);
             
             // Do not set outstandingServerRequestSentAtTimestamp as this is an immediate request that does not block polling
-            this.serverStatus("requesting journal status " + new Date().toISOString());
+            this.serverStatus("waiting", "requesting journal status " + new Date().toISOString());
             
             var self = this;
             request.post(this.apiURL, {
@@ -428,14 +428,14 @@ define([
                 if (debugMessaging) console.log("Got journal status response", response);
                 if (!response.success) {
                     console.log("ERROR: report journal status failure", response);
-                    self.serverStatus("Report journal status failure: " + response.statusCode + " :: " + response.description);
+                    self.serverStatus("failure", "Report journal status failure: " + response.statusCode + " :: " + response.description);
                     callback(response);
                 } else {
                     self.okStatus();
                     callback(null, response);
                 }
              }, function(error) {
-                self.serverStatus("Problem requesting status for journal from server: " + error.message);
+                self.serverStatus("failure", "Problem requesting status for journal from server: " + error.message);
                 console.log("Got server error for report journal status", error.message);
                 callback(error);
             });
@@ -462,7 +462,7 @@ define([
             // Do not send credentials: this.prepareApiRequestForSending(apiRequest);
             
             // Do not set outstandingServerRequestSentAtTimestamp as this is an immediate request that does not block polling
-            this.serverStatus("requesting current user information " + new Date().toISOString());
+            this.serverStatus("waiting", "requesting current user information " + new Date().toISOString());
             
             var self = this;
             request.post(this.apiURL, {
@@ -478,14 +478,14 @@ define([
                 if (debugMessaging) console.log("Got currentUserInformation response", response);
                 if (!response.success) {
                     console.log("ERROR: currentUserInformation request failure", response);
-                    self.serverStatus("Current user information request failure: " + response.statusCode + " :: " + response.description);
+                    self.serverStatus("failure", "Current user information request failure: " + response.statusCode + " :: " + response.description);
                     callback(response);
                 } else {
                     self.okStatus();
                     callback(null, response);
                 }
              }, function(error) {
-                self.serverStatus("Problem requesting current user information from server: " + error.message);
+                self.serverStatus("failure", "Problem requesting current user information from server: " + error.message);
                 console.log("Got server error for current user information", error.message);
                 callback(error);
             });
@@ -493,7 +493,7 @@ define([
     };
     
     PointrelClient.prototype.okStatus = function() {
-        this.serverStatus("OK (sent: " + this.messageSentCount + ", received:" + this.messageReceivedCount + ")");
+        this.serverStatus("ok", "OK (sent: " + this.messageSentCount + ", received:" + this.messageReceivedCount + ")");
     };
     
     PointrelClient.prototype.latestMessageForTopic = function(topicIdentifier) {
@@ -712,7 +712,7 @@ define([
                 // Should never get here if timeout is 2000ms and timers get the process restarted
                 if (!this.serverResponseWarningIssued) {
                     console.log("Server not responding");
-                    this.serverStatus("The server is not responding...");
+                    this.serverStatus("falure", "The server is not responding...");
                     this.serverResponseWarningIssued = true;
                 }
             }
@@ -736,7 +736,7 @@ define([
         
         // TODO: What do do if it fails? Leave message on outgoing queue?
         this.outstandingServerRequestSentAtTimestamp = new Date();
-        this.serverStatus("polling " + this.outstandingServerRequestSentAtTimestamp);
+        this.serverStatus("waiting", "polling " + this.outstandingServerRequestSentAtTimestamp);
         
         var self = this;
         request.post(this.apiURL, {
@@ -752,7 +752,7 @@ define([
             if (debugMessaging) console.log("Got query response", response);
             if (!response.success) {
                 console.log("Response was a failure", response);
-                self.serverStatus("Polling response failure: " + response.statusCode + " :: " + response.description);
+                self.serverStatus("failure", "Polling response failure: " + response.statusCode + " :: " + response.description);
             } else {
                 self.okStatus();
                 for (var i = 0; i < response.receivedRecords.length; i++) {
@@ -790,7 +790,7 @@ define([
             }
         }, function(error) {
             console.log("Got query error", error.message);
-            self.serverStatus("Something went wrong talking to the server when querying for new messages: " + error.message);
+            self.serverStatus("failure", "Something went wrong talking to the server when querying for new messages: " + error.message);
             // TODO: How to recover?
             self.outstandingServerRequestSentAtTimestamp = null;
         });
@@ -798,7 +798,7 @@ define([
     
     PointrelClient.prototype.fetchIncomingMessage = function() {
         if (this.incomingMessageRecords.length === 0) {
-            this.serverStatus("waiting");
+            this.serverStatus("waiting", "waiting");
             return;
         }
         if (this.outstandingServerRequestSentAtTimestamp) return;
@@ -827,7 +827,7 @@ define([
         this.prepareApiRequestForSending(apiRequest);
         
         this.outstandingServerRequestSentAtTimestamp = new Date();
-        this.serverStatus("loading " + this.outstandingServerRequestSentAtTimestamp);
+        this.serverStatus("waiting", "loading " + this.outstandingServerRequestSentAtTimestamp);
         
         var self = this;
         request.post(this.apiURL, {
@@ -847,7 +847,7 @@ define([
             if (!response.success) {
                 console.log("Problem retrieving message; response:", response, "for message record:", incomingMessageRecord);
                 // TODO; Is this really a "serverStatus" to display?
-                self.serverStatus("Message retrieval failure: " + response.statusCode + " :: " + response.description);
+                self.serverStatus("failure", "Message retrieval failure: " + response.statusCode + " :: " + response.description);
                 // TODO: Just assuming that this was an error that the item is not available, as opposed to authentication error or other
                 // TODO: so assuming it is OK to discard it from incomingMessageRecords
                 // TODO: maybe also want to move record to an unavalible records list?
@@ -862,14 +862,15 @@ define([
             }, 0);
         }, function(error) {
             console.log("Got load error", error.message);
-            self.serverStatus("Something went wrong talking to the server when loading a message: " + error.message);
+            self.serverStatus("failure", "Something went wrong talking to the server when loading a message: " + error.message);
             self.outstandingServerRequestSentAtTimestamp = null;
         });
-
     };
     
-    PointrelClient.prototype.serverStatus = function(message) {
-        if (this.serverStatusCallback) this.serverStatusCallback(message);
+    // Status should be ok, waiting, or failure
+    PointrelClient.prototype.serverStatus = function(status, message) {
+        // console.log("PointrelClient serverStatus", status, message);
+        if (this.serverStatusCallback) this.serverStatusCallback(status, message);
     };
 
     return PointrelClient;
