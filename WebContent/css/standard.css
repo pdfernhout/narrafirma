@@ -112,16 +112,16 @@ body {
 
 .narrafirma-pni-phases-image {
     float: left;
-    margin: 0px 40px 10px 10px;
+	margin: 4px 30px 10px 0px;
+	padding-right: 30px;
+    border-right: 2px solid #8db500;
 }
 
 /* make the dashboard buttons line up like they were in a table column */
 .narrafirma-dashboardStatusButton .dijitButtonNode {
-    min-width: 12em;
-    margin-top: 0.5em; 
-    margin-bottom: 0.5em; 
-    font-size: 1.2em;
     font-weight: 200;
+    font-size: 0.9em;
+    min-width: 10em;
 }
 
 .narrafirma-dashboardSectionStatusDisplayCompletion {
@@ -163,6 +163,26 @@ form {
 
 .narrafirma-reminder {
 	background: #d5dae6;
+}
+
+.narrafirma-griditem-form {
+	width: 800px; 
+	height: 800px; 
+	overflow: auto;
+}
+
+.narrafirma-griditem-editing {
+	background-color: blue; 
+	border: 0.25em solid green; 
+	margin: 1em; 
+	display: block;
+}
+
+.narrafirma-griditem-viewing {
+	background-color: red; 
+	border: 0.25em solid blue; 
+	margin: 1em; 
+	display: block;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Story card display ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

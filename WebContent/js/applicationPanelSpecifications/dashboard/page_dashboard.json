@@ -22,6 +22,7 @@
             "id": "project_launchSection_planning",
             "valueType": "none",
             "displayType": "dashboardSectionStatusDisplay",
+            "displayPreventBreak": false,
             "displayConfiguration": {
                 "action": "guiOpenSection",
                 "section": "page_planning"
@@ -32,6 +33,7 @@
             "id": "project_launchSection_collection",
             "valueType": "none",
             "displayType": "dashboardSectionStatusDisplay",
+            "displayPreventBreak": false,
             "displayConfiguration": {
                 "action": "guiOpenSection",
                 "section": "page_collection"
@@ -42,6 +44,7 @@
             "id": "project_launchSection_catalysis",
             "valueType": "none",
             "displayType": "dashboardSectionStatusDisplay",
+            "displayPreventBreak": false,
             "displayConfiguration": {
                 "action": "guiOpenSection",
                 "section": "page_catalysis"
@@ -52,6 +55,7 @@
             "id": "project_launchSection_sensemaking",
             "valueType": "none",
             "displayType": "dashboardSectionStatusDisplay",
+            "displayPreventBreak": false,
             "displayConfiguration": {
                 "action": "guiOpenSection",
                 "section": "page_sensemaking"
@@ -62,6 +66,7 @@
             "id": "project_launchSection_intervention",
             "valueType": "none",
             "displayType": "dashboardSectionStatusDisplay",
+            "displayPreventBreak": false,
             "displayConfiguration": {
                 "action": "guiOpenSection",
                 "section": "page_intervention"
@@ -72,6 +77,7 @@
             "id": "project_launchSection_return",
             "valueType": "none",
             "displayType": "dashboardSectionStatusDisplay",
+            "displayPreventBreak": false,
             "displayConfiguration": {
                 "action": "guiOpenSection",
                 "section": "page_return"
@@ -82,11 +88,12 @@
             "id": "project_launchSection_projectReport",
             "valueType": "none",
             "displayType": "dashboardSectionStatusDisplay",
+            "displayPreventBreak": false,
             "displayConfiguration": {
                 "action": "guiOpenSection",
                 "section": "page_projectReport"
             },
-            "displayPrompt": "Project administration"
+            "displayPrompt": "Administration"
         }
-    ]
+     ]
 }

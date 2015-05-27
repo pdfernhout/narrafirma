@@ -1,6 +1,8 @@
 define([
+    "dojo/dom-construct",
     "js/panelBuilder/translate"
 ], function(
+    domConstruct,
     translate
 ){
     "use strict";
@@ -83,10 +85,14 @@ define([
         var button = panelBuilder.buildField(contentPane, model, buttonFieldSpecification);
         
         // TODO: Need to rethinking what this does for changes elsewhere to page status storage to reminders
-        statusText = "";
+        //statusText = "";
         
-        var htmlText = '<span class="narrafirma-dashboardSectionStatusDisplayCompletion">' + statusText + '</span><br>';
-        panelBuilder.addHTML(contentPane, htmlText);
+        //var htmlText = '<span class="narrafirma-dashboardSectionStatusDisplayCompletion">' + statusText + '</span><br>';
+        //panelBuilder.addHTML(contentPane, htmlText);
+        
+        if (!fieldSpecification.displayPreventBreak) {
+            domConstruct.place("<br>", contentPane.domNode);
+        }
         
         // return label;
         return button;
