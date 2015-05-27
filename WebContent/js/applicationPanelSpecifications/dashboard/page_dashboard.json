@@ -1,17 +1,11 @@
 {
     "id": "page_dashboard",
-    "displayName": "Dashboard",
+    "displayName": "Home",
     "displayType": "page",
     "isHeader": true,
     "section": "dashboard",
     "modelClass": null,
     "panelFields": [
-        {
-            "id": "project_mainDashboardLabel",
-            "valueType": "none",
-            "displayType": "label",
-            "displayPrompt": "<b>NarraFirma Dashboard</b>"
-        },
         {
             "id": "project_mainDashboardPNIPhasesDiagram",
             "valueType": "none",
