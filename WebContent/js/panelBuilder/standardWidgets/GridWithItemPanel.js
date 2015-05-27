@@ -2,6 +2,7 @@ define([
     "dojo/_base/array",
     "dojo/_base/declare",
     "../dialogSupport",
+    'dojo/dom-class',
     "dojox/mvc/getPlainValue",
     "dojo/_base/lang",
     "../translate",
@@ -20,6 +21,7 @@ define([
     array,
     declare,
     dialogSupport,
+    domClass,
     getPlainValue,
     lang,
     translate,
@@ -188,8 +190,6 @@ define([
            
         pagePane.addChild(this.itemContentPane);
         
-        this.itemContentPane.set("style", "background-color: #C0C0C0; border: 0.5em solid red; margin-left: 2em; display: none");
-        
         /*
         if (configuration.showTooltip) {
             console.log("using tooltip for widget", id, grid);
@@ -353,7 +353,7 @@ define([
         this.formType = formType;
         this.formItem = statefulItem;
         
-        this.form.set("style", "width: 800px; height 800px; overflow: auto;");
+        domClass.add(this.form.domNode, "narrafirma-griditem-form");
         
         // TODO: Should confirm close if editing or adding
         // TODO: Should have a close icon with X instead of cancel
@@ -362,10 +362,7 @@ define([
 
         this.panelBuilder.buildPanel(this.itemPanelSpecification, this.form, statefulItem);
         
-        var borderColor = "green";
         if (formType === "view") {
-            borderColor = "blue";
-            
             widgetSupport.newButton(this.form, "#button_Done|Done", function() {
                 console.log("Done");
                 self.hideAndDestroyForm();
@@ -394,7 +391,13 @@ define([
         
         this.itemContentPane.addChild(this.form);
         
-        this.itemContentPane.set("style", "background-color: #C0C0C0; border: 0.25em solid " + borderColor + "; margin: 1em; display: block");
+        if (formType == "view") {
+        	domClass.add(this.itemContentPane.domNode, "narrafirma-griditem-viewing");
+        	domClass.remove(this.itemContentPane.domNode, "narrafirma-griditem-editing");
+        } else {
+        	domClass.add(this.itemContentPane.domNode, "narrafirma-griditem-editing");
+        	domClass.remove(this.itemContentPane.domNode, "narrafirma-griditem-viewing");
+        }
         
         // Need to force the new form to resize so that the embedded grid will size its header correctly and not be zero height and overwritten
         this.form.resize();
