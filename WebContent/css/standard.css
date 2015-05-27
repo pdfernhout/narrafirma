@@ -166,23 +166,25 @@ form {
 }
 
 .narrafirma-griditem-form {
-	width: 800px; 
-	height: 800px; 
+	width: 800px;
+	height: 800px;
 	overflow: auto;
 }
 
-.narrafirma-griditem-editing {
-	background-color: blue; 
-	border: 0.25em solid green; 
-	margin: 1em; 
-	display: block;
+.narrafirma-griditempanel-hidden {
+    display: none;
 }
 
-.narrafirma-griditem-viewing {
-	background-color: red; 
-	border: 0.25em solid blue; 
-	margin: 1em; 
-	display: block;
+.narrafirma-griditempanel-editing {
+	background-color: blue;
+	border: 0.25em solid green;
+	margin: 1em;
+}
+
+.narrafirma-griditempanel-viewing {
+	background-color: red;
+	border: 0.25em solid blue;
+	margin: 1em;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Story card display ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

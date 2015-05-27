@@ -69,8 +69,10 @@ define([
         this.form = null;
         this.formType = null;
         this.formItem = null;
-        this.itemContentPane = panelBuilder.newContentPane();
         
+        this.itemContentPane = panelBuilder.newContentPane();
+        domClass.add(this.itemContentPane.domNode, "narrafirma-griditempanel-hidden");
+
         // The button widgets created to interact with the current item
         this.buttons = {};
         
@@ -291,8 +293,11 @@ define([
     };
     
     GridWithItemPanel.prototype.hideAndDestroyForm = function() {
+        domClass.add(this.itemContentPane.domNode, "narrafirma-griditempanel-hidden");
+        domClass.remove(this.itemContentPane.domNode, "narrafirma-griditempanel-viewing");
+        domClass.remove(this.itemContentPane.domNode, "narrafirma-griditempanel-editing");
+
         // The next line is needed to get rid of duplicate IDs for next time the form is opened:
-        this.itemContentPane.set("style", "display: none");
         this.form.destroyRecursive();
         this.form = null;
         this.formType = null;
@@ -353,7 +358,7 @@ define([
         this.formType = formType;
         this.formItem = statefulItem;
         
-        domClass.add(this.form.domNode, "narrafirma-griditem-form");
+        domClass.add(this.form.domNode, "narrafirma-griditempanel-form");
         
         // TODO: Should confirm close if editing or adding
         // TODO: Should have a close icon with X instead of cancel
@@ -391,12 +396,14 @@ define([
         
         this.itemContentPane.addChild(this.form);
         
-        if (formType == "view") {
-        	domClass.add(this.itemContentPane.domNode, "narrafirma-griditem-viewing");
-        	domClass.remove(this.itemContentPane.domNode, "narrafirma-griditem-editing");
+        if (formType === "view") {
+            domClass.remove(this.itemContentPane.domNode, "narrafirma-griditempanel-hidden");
+        	domClass.remove(this.itemContentPane.domNode, "narrafirma-griditempanel-editing");
+            domClass.add(this.itemContentPane.domNode, "narrafirma-griditempanel-viewing");
         } else {
-        	domClass.add(this.itemContentPane.domNode, "narrafirma-griditem-editing");
-        	domClass.remove(this.itemContentPane.domNode, "narrafirma-griditem-viewing");
+        	domClass.remove(this.itemContentPane.domNode, "narrafirma-griditempanel-hidden");
+            domClass.remove(this.itemContentPane.domNode, "narrafirma-griditempanel-viewing");
+            domClass.add(this.itemContentPane.domNode, "narrafirma-griditempanel-editing");
         }
         
         // Need to force the new form to resize so that the embedded grid will size its header correctly and not be zero height and overwritten
