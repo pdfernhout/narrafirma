@@ -142,6 +142,28 @@ form {
     border-bottom: 2px solid #ccc;
 }
 
+.narrafirma-serverstatus-ok {
+	color: blue;
+}
+
+.narrafirma-serverstatus-waiting {
+	color: orange;
+}
+
+.narrafirma-serverstatus-waiting-last-error {
+	color: orange;
+	border: 1px solid red;
+}
+
+.narrafirma-serverstatus-failure {
+	color: red;
+	border: 1px solid red;
+}
+
+.narrafirma-serverstatus-unknown {
+	color: black;
+}
+
 .questionInternal {
     margin-left: 20px;
 }

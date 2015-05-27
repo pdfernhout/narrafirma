@@ -390,22 +390,28 @@ define([
         var statusText = "Project: " + project.journalIdentifier.substring(narrafirmaProjectPrefix.length) + "; Server status: (" + status + ") " + text;
 
         if (status === "ok") {
-            nameDiv.style.color = "green";
-            nameDiv.style.border = "initial";
+        	nameDiv.className = "narrafirma-serverstatus-ok"
+            //nameDiv.style.color = "green";
+            //nameDiv.style.border = "initial";
             lastServerError = "";
         } else if (status === "waiting") {
-            nameDiv.style.color = "yellow";
+            //nameDiv.style.color = "yellow";
             if (lastServerError) {
                 // TODO: Translate
+            	nameDiv.className = "narrafirma-serverstatus-waiting-last-error"
                 statusText += "<br>" + "Last error: " + lastServerError;
+            } else {
+            	nameDiv.className = "narrafirma-serverstatus-waiting"
             }
         } else if (status === "failure") {
-            nameDiv.style.color = "red";
+        	nameDiv.className = "narrafirma-serverstatus-failure"
+            //nameDiv.style.color = "red";
             lastServerError = text;
-            nameDiv.style.border = "thick solid #FF0000";
+            //nameDiv.style.border = "thick solid #FF0000";
         } else {
             console.log("Unexpected server status", status);
-            nameDiv.style.color = "black";
+            nameDiv.className = "narrafirma-serverstatus-unexpected"
+            //nameDiv.style.color = "black";
         }
         
         // nameDiv.title = statusText;
