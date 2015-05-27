@@ -86,7 +86,7 @@ require([
         });
     }
     
-    function updateServerStatus(text) {
+    function updateServerStatus(status, text) {
         console.log("++++++++++++++++++++++++++++++++++++++++ updateServerStatus", text);
         // The serverStatusPane may be created only after we start talking to the server
         if (!serverStatusPane) return;

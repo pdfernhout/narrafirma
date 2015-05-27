@@ -70,7 +70,7 @@ define([
     });
     
     // GUI
-    var serverStatusPane;
+    // var serverStatusPane;
 
     var navigationSections = [];
     try {
@@ -361,16 +361,37 @@ define([
         var logoutButton = widgetSupport.newButton(pageControlsPane, "#button_logout|Logout (" + userIdentifier + ")", buttonActions.logoutButtonClicked);
 
         // TODO: Improve status reporting
-        serverStatusPane = panelBuilder.newContentPane({content: "Server status: unknown"});
-        serverStatusPane.placeAt(pageControlsPane);
+        // serverStatusPane = panelBuilder.newContentPane({content: "Server status: unknown"});
+        // serverStatusPane.placeAt(pageControlsPane);
+        updateServerStatus("Server status: unknown");
         
         console.log("createLayout end");
     }
     
-    function updateServerStatus(text) {
+    function updateServerStatus(status, text) {
         // The serverStatusPane may be created only after we start talking to the server
-        if (!serverStatusPane) return;
-        serverStatusPane.set("content", "Project: " + project.journalIdentifier.substring(narrafirmaProjectPrefix.length) + "; Server status: " + text);
+        // if (!serverStatusPane) return;
+        
+        var nameDiv = document.getElementById("narrafirma-name");
+        if (!nameDiv) return;
+        
+        var statusText = "Project: " + project.journalIdentifier.substring(narrafirmaProjectPrefix.length) + "; Server status: (" + status + ") " + text;
+
+        nameDiv.title = statusText;
+        
+        if (status === "ok") {
+            nameDiv.style.color = "green";
+        } else if (status === "waiting") {
+            nameDiv.style.color = "yellow";
+        } else if (status === "failure") {
+            nameDiv.style.color = "red";
+        } else {
+            console.log("Unexpected server status", status);
+            nameDiv.style.color = "black";
+        }
+       
+        
+        // serverStatusPane.set("content", statusText);
     }
     
     function loadedMoreSurveyResults(newEnvelopeCount) {

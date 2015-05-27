@@ -125,8 +125,9 @@ require([
         // Do nothing
     }
     
-    function updateServerStatus() {
+    function updateServerStatus(status, message) {
         // Do nothing
+        // console.log("updateServerStatus", status, message);
     }
     
     // getHashParameters derived from: http://stackoverflow.com/questions/4197591/parsing-url-hash-fragment-identifier-with-javascript
