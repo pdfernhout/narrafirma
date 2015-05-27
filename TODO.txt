@@ -1,12 +1,11 @@
 ==== NarraFirma TODO list:
 
 PRIORITY
-- multiple projects
 - WordPress plugin data save and load
 - catalysis (at least one step like graph or themer)
 
 BIG OPTIONAL FUNCTIONALITY AREAS
-- multiple projects, surveys, catalysis reports
+- multiple catalysis reports
 - visual clustering in planning phase
 - theming and tagging
 
@@ -16,10 +15,10 @@ CRASH
 NAME
 H Add trademark disclaimer/limitation for NarraFirma, perhaps similar to:
     NarraFirma is a trademark of Cynthia F. Kurtz and is used by permission for the main distribution of this software.
-	Reference: https://www.mozilla.org/en-US/foundation/trademarks/policy/
-	And: http://wordpressfoundation.org/trademark-policy/
+    Reference: https://www.mozilla.org/en-US/foundation/trademarks/policy/
+    And: http://wordpressfoundation.org/trademark-policy/
 
-PLUGIN
+WORDPRESS PLUGIN
 H WordPress plugin support for Pointrel save/load/triples
 H Create entire WordPress plugin based on current stub version
 H Roles/Accounts & Security
@@ -27,10 +26,10 @@ H Roles/Accounts & Security
 CLUSTERING (PLANNING)
 H Finish "Create project story elements" page in planning phase
     Make three sections with instructions between
-    	1. choose element type (drop down)
-    	2. cluster space - instructions are to add answers and cluster the answers to produce "answer cluster names"
-    	3. cluster space - instructions are to copy "answer cluster names" (by hand), add attributes, then cluster the attributes into "story elements"
-    	4. list - copy end cluster "story elements" to list, and desribe each (with fields from "enter project story elements" page
+        1. choose element type (drop down)
+        2. cluster space - instructions are to add answers and cluster the answers to produce "answer cluster names"
+        3. cluster space - instructions are to copy "answer cluster names" (by hand), add attributes, then cluster the attributes into "story elements"
+        4. list - copy end cluster "story elements" to list, and desribe each (with fields from "enter project story elements" page
     Remove "Enter project story elements" page
     OR Move directions for clustering project story elements into help system for next page
 L Change button names from "new item" to "new" - etc
@@ -46,18 +45,12 @@ H Improve template list generation tool to support storyCollectionActivities and
 W Fix how templates list popup has too much scrolling and is not sized well; perhaps start with grid item view pane open?
 
 SURVEY GENERAL
-H Support multiple surveys per project
-    Have survey entry page support different surveys
-    Figure out what URLs will look like for administration/authoring vs. survey taking (multiple?) vs. (maybe) project
-H Add page about finalizing a survey
-    Figure out GUI for "finalizing" a survey as opposed to storing current version when enable survey
-H Have survey page use special server method so does not use Pointrel system directly or need authentication
 H Problem when opened up road block survey with Firefox and developer console and it was too tall and when closed console the top close button became inacessible as offscreen
-? Ensure the survey taking app does not need to load entire domain from project editor app or load grid or story browser or other modules it does not really need.
+L Display how many stories and/or survey results have been collected
+L Fix issue with story collection where when you turn one on or off the others have their survey definition updated
 L Ideally, all responses for selections (other than numerical sliders) should have unique IDs for each response and the stored response should have the ID as well as the chosen text at the time.
     Add support for short names (ids) for all options for survey questions
-X Record IP address of survey or use another means to see if someone taking it multiple times
-X Only store reference to questionnaire file resource, not the resource itself
+X Only store reference to questionnaire file resource, not the resource itself [maybe leaving as is?]
 X Support translations or other categories for multiple question texts or choice texts for a survey
 X Some easy way for two or more survey sliders to be close together under the same label
 W Switch to using Dojo Mobile for the surveys
@@ -83,6 +76,7 @@ X Improve how options are specified for questions in question designer rather th
 X Make sure that short name IDs entered by user when defining questions are unique among themselves and don't have a leading underscore (or at least aren't "_id")
 
 EXPORT/IMPORT
+H Import/Export for story collection from/to CSV format (ideally with questionnaire)
 H Add page to do import/export
 X Add export button for survey results
 X Maybe import button for survey results
@@ -90,12 +84,8 @@ X Add way to clear out or reset old survey results? Or maybe partition them by s
 X Backup
 
 LOAD/SAVE
-H Think through how project is loaded and saved, especially what happens if multiple windows or users edit the same project
-    Think about save/load architecture and Pointrel design in relation to handling lots of observations for pattern permutations
-H Improve feedback when there are no project versions or survey results; maybe distinguish between an error and nothing being saved yet
-H Resolve issue with hardcoded project ID
-H Resolve issue with hardcoded survey ID
-H Resolve issue with hardcoded questionnaire ID
+H Think about save/load architecture and Pointrel design in relation to handling lots of observations for pattern permutations
+L More fine-grained update support when updating an item in a grid, like a participant group, rather than update entire item and even list
 X Have revert button to go back to previous version for each page or clear out changes in progress on a page
 X Autosave, perhaps based on time or based on changing pages
 
@@ -173,6 +163,7 @@ X Sorting issue: Initial sort order in grid may be order of items in underlying 
 X Bug if viewing data when remove it; the viewing panel remains open with old data
 
 CONFIGURATION
+H Make a Project Administration section to go with home page button for use with import/export/backup/reporting or other settings and functions
 ? Add project configuration page?
 
 REPORTS
@@ -208,11 +199,6 @@ X Some way only load page and panel files as needed (with help URL being determi
 X Load panel widgets only as needed by always creating contentPane for a widget and loading the contents later as available returning a promise, with ready callback in builder when all promises kept
 X Only load panel information as needed for section (or request for specific panel)
 
-STORAGE
-H Modify Pointrel system to have better support for tracking all new additions to a collection
-L Modify Pointrel system to have better support for selecting a subset of stored resources relevant to a project section or page 
-L Modify Pointrel system to have better support for client-side searching if have a copy of all relevant resources from a remote collection
-
 BUILD
 X Learn how to use Dojo build process to minimize application
 
@@ -243,13 +229,16 @@ H Fix wording on dashboard pages (and all wording related to reminders)
 L Fix CSS styling so reminder section of page is different
 L Improve general CSS styling on all pages (forms)
 X Forgot to put "memorable" in eliciting question types ("What type of question is this?")
-DONE H Write up sample NarraFirma product offering descriptions for review (including for website)
-DONE H Finish templates
 
 ==== Wish list:
 
+Project chooser dialog should be centered in page instead of over to the right side of window due to issue with Grind scroller and CSS
+
+Display list of selected stories in spot-checking graph browser in Collection section
+
 Get projectAdmin to work again with newer user/role/project system to replace the command line tool
 Improve look of login and start pages generated by Node.js server
+Application should have better support when you need to re-authenticate due to server restart (rather than opening different browser tab by hand)
 
 User can duplicate a project
 User can delete a project
@@ -702,4 +691,42 @@ DONE Decide on approach for logging in and controlling access to changing projec
 DONE Have select support getting options from an array elsewhere in the model
 DONE Have GridWithItemPanel signal the array has changed when objects in it are added, removed, or changed
 DONE Create first cut at questionnaire design page with subpanels (still not working 100% though due to other needed refactoring)
- 
+DONE Think through how project is loaded and saved, especially what happens if multiple windows or users edit the same project [new Pointrel version]
+DONE Modify Pointrel system to have better support for tracking all new additions to a collection
+DONE Modify Pointrel system to have better support for selecting a subset of stored resources relevant to a project section or page 
+DONE Modify Pointrel system to have better support for client-side searching if have a copy of all relevant resources from a remote collection
+DONE Support anonymous access to read or write a specific topic in a journal for Pointrel system
+DONE Create Pointrel command line admin tool that can grant and revoke authorization for users, create users, and create journals
+DONE Improve feedback when there are no project versions or survey results; maybe distinguish between an error and nothing being saved yet
+DONE Implement "Story Collection" concept to support arbitarry datasets tied to a specific survey version
+DONE Use one project model for all pages instead of seperate page models for all pages
+DONE Support a "clientState" object that stores local information for a specific instance of the application
+DONE Add support in select (and other standard widgets) for a value path
+DONE Rename "data" to "value" for all panel definitions and related support machinery
+DONE Improve handling of hash in URL so can have multiple projects and other state stored in a URL
+DONE Improve translate support for empty strings
+DONE Support multiple surveys per project
+DONE Have survey entry page support different surveys
+DONE Figure out what URLs will look like for administration/authoring vs. survey taking (multiple?) vs. (maybe) project
+DONE Have survey page use special server method so does not use Pointrel system directly or need authentication [using PointrelClient but special anonymous authorization for a specific topic]
+DONE Add page about finalizing a survey [done as story collection]
+DONE Figure out GUI for "finalizing" a survey as opposed to storing current version when enable survey [done as story collection]
+DONE Ensure the survey taking app does not need to load entire domain from project editor app or load grid or story browser or other modules it does not really need.
+DONE Record IP address of survey or use another means to see if someone taking it multiple times [Done via standard Pointrel message trace]
+DONE Resolve issue with hardcoded project ID
+DONE Resolve issue with hardcoded survey ID
+DONE Resolve issue with hardcoded questionnaire ID
+DONE Merge Collection Design and Collection Process sections into single Collection section
+DONE Figure out how to print a page with a report on it from the browser (general support)
+DONE Make progress on printing questionnaire (still not 100% done)
+DONE Remove "domain" module (functionality mostly moved to Project but also elsewhere)
+DONE Remove "storage" module (functionality mostly moved to Project but also elsewhere using new Pointrel version)
+DONE Add support for read-only checkboxes, and improve support for read-only text fields
+DONE Write up sample NarraFirma product offering descriptions for review (including for website) (CFK)
+DONE Finish templates (CFK)
+DONE Make clickable image map on main dashboard page to go to sections from PNI Phase Diagram
+DONE Add support for plain HTML widget in panel definitions used by Panel Builder (used to make image map)
+DONE Improve server status reporting using color and border of NarraFirma text instead of entire status line
+DONE Rename main dashboard as "Home" page
+DONE Remove extra clutter from home page, like shortcut buttons and extra explanatory text that will be covered by help system
+DONE Rename project report button on home page to project administration
