@@ -188,8 +188,6 @@ X Translate report answers as needed for those types like selections
 X Final review of all strings in code looking for TODO translate items or similar
 
 REFACTORING
-H Move to single model for project
-H Remove global domain and replace with referencs to project or objects passed around
 ? Save data for observations and so on as separate documents so can do it incrementally
 ? Maybe separate documents for each participant group?
 ? Maybe separate documents for each survey question?
@@ -700,6 +698,7 @@ DONE Create Pointrel command line admin tool that can grant and revoke authoriza
 DONE Improve feedback when there are no project versions or survey results; maybe distinguish between an error and nothing being saved yet
 DONE Implement "Story Collection" concept to support arbitarry datasets tied to a specific survey version
 DONE Use one project model for all pages instead of seperate page models for all pages
+DONE Move to single model for project [same as above]
 DONE Support a "clientState" object that stores local information for a specific instance of the application
 DONE Add support in select (and other standard widgets) for a value path
 DONE Rename "data" to "value" for all panel definitions and related support machinery
@@ -720,6 +719,7 @@ DONE Merge Collection Design and Collection Process sections into single Collect
 DONE Figure out how to print a page with a report on it from the browser (general support)
 DONE Make progress on printing questionnaire (still not 100% done)
 DONE Remove "domain" module (functionality mostly moved to Project but also elsewhere)
+DONE Remove global domain and replace with referencs to project or objects passed around [same as above]
 DONE Remove "storage" module (functionality mostly moved to Project but also elsewhere using new Pointrel version)
 DONE Add support for read-only checkboxes, and improve support for read-only text fields
 DONE Write up sample NarraFirma product offering descriptions for review (including for website) (CFK)
