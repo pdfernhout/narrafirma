@@ -17,6 +17,7 @@ define([
     "dojo/Stateful",
     "js/surveyCollection",
     "js/panelBuilder/toaster",
+    "dijit/Tooltip",
     "dojo/topic",
     "js/panelBuilder/translate",
     "js/panelBuilder/widgetSupport",
@@ -40,6 +41,7 @@ define([
     Stateful,
     surveyCollection,
     toaster,
+    Tooltip,
     topic,
     translate,
     widgetSupport
@@ -71,6 +73,7 @@ define([
     
     // GUI
     // var serverStatusPane;
+    var statusTooltip;
 
     var navigationSections = [];
     try {
@@ -363,7 +366,13 @@ define([
         // TODO: Improve status reporting
         // serverStatusPane = panelBuilder.newContentPane({content: "Server status: unknown"});
         // serverStatusPane.placeAt(pageControlsPane);
-        updateServerStatus("Server status: unknown");
+        statusTooltip = new Tooltip({
+            connectId: ["narrafirma-name"],
+            label: "Server status: unknown",
+            position: ["below", "after", "above", "before"]
+        });
+        
+        // updateServerStatus("Server status: unknown");
         
         console.log("createLayout end");
     }
@@ -377,7 +386,9 @@ define([
         
         var statusText = "Project: " + project.journalIdentifier.substring(narrafirmaProjectPrefix.length) + "; Server status: (" + status + ") " + text;
 
-        nameDiv.title = statusText;
+        // nameDiv.title = statusText;
+        // TODO: Need to make tooltip text ARIA accessible; suggestion in tooltip docs on setting text in tab order
+        statusTooltip.set("label", statusText);
         
         if (status === "ok") {
             nameDiv.style.color = "green";
