@@ -74,6 +74,7 @@ define([
     // GUI
     // var serverStatusPane;
     var statusTooltip;
+    var lastServerError = "";
 
     var navigationSections = [];
     try {
@@ -384,23 +385,30 @@ define([
         var nameDiv = document.getElementById("narrafirma-name");
         if (!nameDiv) return;
         
+        // TODO: Translate
+        
         var statusText = "Project: " + project.journalIdentifier.substring(narrafirmaProjectPrefix.length) + "; Server status: (" + status + ") " + text;
 
-        // nameDiv.title = statusText;
-        // TODO: Need to make tooltip text ARIA accessible; suggestion in tooltip docs on setting text in tab order
-        statusTooltip.set("label", statusText);
-        
         if (status === "ok") {
             nameDiv.style.color = "green";
+            lastServerError = "";
         } else if (status === "waiting") {
             nameDiv.style.color = "yellow";
+            if (lastServerError) {
+                // TODO: Translate
+                statusText += "<br>" + "Last error: " + lastServerError;
+            }
         } else if (status === "failure") {
             nameDiv.style.color = "red";
+            lastServerError = text;
         } else {
             console.log("Unexpected server status", status);
             nameDiv.style.color = "black";
         }
-       
+        
+        // nameDiv.title = statusText;
+        // TODO: Need to make tooltip text ARIA accessible; suggestion in tooltip docs on setting text in tab order
+        statusTooltip.set("label", statusText); 
         
         // serverStatusPane.set("content", statusText);
     }
