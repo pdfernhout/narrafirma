@@ -1,3 +1,5 @@
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ All pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 html, body {
     height: 100%;
     width: 100%;
@@ -30,142 +32,40 @@ body {
     width: 100%;
 }
 
-/* make the dashboard buttons line up like they were in a table column */
-.narrafirma-dashboardStatusButton .dijitButtonNode {
-    min-width: 12em;
-    margin-top: 0.5em; 
-    margin-bottom: 0.5em; 
-}
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Navigation bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-.narrafirma-dashboardSectionStatusDisplayCompletion {
-    margin-left: 1.0em;
-}
-
-.narrafirma-questionAnswer {
-    /* Border looks bad, especially when no data:
-    border-style: solid;
-    border-width: thin;
-    */
-    font-style: italic;
-}
-
-form {
-   padding-left: 2em;
+#navigationDiv {
+	background-color: #d5dae6;
+	padding: 0.25em 0em 0.2em 0em;
+    border-bottom: 4px solid #8db500;
 }
 
 #narrafirma-name {
     margin-left: 0.5em; 
     margin-right: 0.5em; 
-}
-
-/* story card display */
-
-.narrafirma-story-card-story-title {
-    font-size: 2em;
-    font-weight: bold;
-}
-
-.narrafirma-story-card-story-text {
-}
-
-.narrafirma-story-card-eliciting-question {
-    font-size: 75%;
-}
-
-.narrafirma-story-card-select-selected, .narrafirma-story-card-checkboxes-selected {
-    font-size: 150%;
-    font-weight: bold; 
-}
-
-.narrafirma-story-card-select-unselected, .narrafirma-story-card-checkboxes-unselected {
-    font-size: 75%;
-}
-
-.narrafirma-story-card-slider-name {
-    /* text-align: right; */
-    font-weight: bold;
-}
-
-.narrafirma-story-card-slider-label-left {
-    font-size: 75%;
-    text-align: right;
-}
-
-.narrafirma-story-card-slider-label-right {
-    font-size: 75%;
-    text-align: left;
-}
-
-.narrafirma-story-card-slider-contents {
-    padding: 1em;
-}
-
-.narrafirma-pni-phases-image {
-    float: left;
-    margin: 10px 10px 10px 10px;
-}
-
-/* See http://www.sitepen.com/blog/2012/05/03/css-styling-of-dgrid/ */
-/* Make sure grid rows are just one line high and the text is limited with an ellipsis */
-
-.dgrid-row {
-    /*height: 22px;*/
-    height: 1.5em;
-}
-
-.dgrid-cell {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.dijitMultiSelect {
-	font-size: 100%;
-}
-
-.question {
-}
-
-.claro .dijitContentPane {
-	padding-left: 0em;
-}
-
-.dijitDownArrowButton {
-	width: 1em;
-}
-
-#navigationDiv {
-	background-color: #E0EEEE;
-	padding-top: 0.25em;
-	padding-bottom: 0.25em;
-	padding-left: 0em; 
-	padding-right: 0em; 
-    border-bottom: 2px solid #ccc;
+    padding: 8px;
 }
 
 .narrafirma-serverstatus-ok {
-	color: blue;
+	color: #658200;
 }
 
 .narrafirma-serverstatus-waiting {
-	color: orange;
+	color: #cc6400;
 }
 
 .narrafirma-serverstatus-waiting-last-error {
-	color: orange;
-	border: 1px solid red;
+	color: #cc6400;
+	border: 2px solid red;
 }
 
 .narrafirma-serverstatus-failure {
 	color: red;
-	border: 1px solid red;
+	border: 2px solid red;
 }
 
 .narrafirma-serverstatus-unknown {
 	color: black;
-}
-
-.questionInternal {
-    margin-left: 20px;
 }
 
 .wwsButtonImage {
@@ -208,6 +108,133 @@ form {
     float: right;
 }
  
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dashboard ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.narrafirma-pni-phases-image {
+    float: left;
+    margin: 0px 40px 10px 10px;
+}
+
+/* make the dashboard buttons line up like they were in a table column */
+.narrafirma-dashboardStatusButton .dijitButtonNode {
+    min-width: 12em;
+    margin-top: 0.5em; 
+    margin-bottom: 0.5em; 
+    font-size: 1.2em;
+    font-weight: 200;
+}
+
+.narrafirma-dashboardSectionStatusDisplayCompletion {
+    margin-left: 1.0em;
+}
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Pages with entry fields ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.questionExternal {
+	background: #e0e6cc;
+	margin-bottom: 4px;
+}
+
+.questionPrompt {
+	margin-left: 10px;
+}
+
+.questionInternal {
+    margin-left: 20px;
+}
+
+/* old? */
+.narrafirma-questionAnswer {
+    /* Border looks bad, especially when no data:
+    border-style: solid;
+    border-width: thin;
+    */
+    font-style: italic;
+}
+
+form {
+   padding-left: 2em;
+}
+
+.dijitButton {
+	margin-bottom: 10px;
+}
+
+.narrafirma-reminder {
+	background: #d5dae6;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Story card display ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.narrafirma-story-card-story-title {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.narrafirma-story-card-story-text {
+}
+
+.narrafirma-story-card-eliciting-question {
+    font-size: 75%;
+}
+
+.narrafirma-story-card-select-selected, .narrafirma-story-card-checkboxes-selected {
+    font-size: 150%;
+    font-weight: bold; 
+}
+
+.narrafirma-story-card-select-unselected, .narrafirma-story-card-checkboxes-unselected {
+    font-size: 75%;
+}
+
+.narrafirma-story-card-slider-name {
+    /* text-align: right; */
+    font-weight: bold;
+}
+
+.narrafirma-story-card-slider-label-left {
+    font-size: 75%;
+    text-align: right;
+}
+
+.narrafirma-story-card-slider-label-right {
+    font-size: 75%;
+    text-align: left;
+}
+
+.narrafirma-story-card-slider-contents {
+    padding: 1em;
+}
+
+/* See http://www.sitepen.com/blog/2012/05/03/css-styling-of-dgrid/ */
+/* Make sure grid rows are just one line high and the text is limited with an ellipsis */
+
+.dgrid-row {
+    /*height: 22px;*/
+    height: 1.5em;
+}
+
+.dgrid-cell {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dijitMultiSelect {
+	font-size: 100%;
+}
+
+.question {
+}
+
+.claro .dijitContentPane {
+	padding-left: 0em;
+}
+
+.dijitDownArrowButton {
+	width: 1em;
+}
+
 /* Suggestion from: https://bugs.dojotoolkit.org/ticket/17044 and: http://jsfiddle.net/ondrek/3FjLJ/9/ */
 .dijitTextBox .dijitInputInner { 
     white-space: nowrap; 

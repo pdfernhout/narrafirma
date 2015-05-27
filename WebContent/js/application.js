@@ -224,7 +224,8 @@ define([
                     valueType: "string",
                     displayType: "textarea",
                     displayName: "Reminders",
-                    displayPrompt: translate("#dashboard_status_entry::prompt", "You can enter reminders about this page here which will appear on this section's dashboard:")
+                    displayClass: "narrafirma-reminder",
+                    displayPrompt: translate("#dashboard_status_entry::prompt", "You can enter <strong>reminders</strong> about this page here. They will appear on this section's home page.")
                 };
                 panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, completionStatusEntryFieldSpecification);
             } else {

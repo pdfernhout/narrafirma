@@ -314,6 +314,11 @@ var PanelBuilder = declare(null, {
         var questionContentPane = new ContentPane();
         
         domClass.add(questionContentPane.domNode, "questionExternal");
+        
+        if (fieldSpecification.displayClass) {
+        	domClass.add(questionContentPane.domNode, fieldSpecification.displayClass);
+        }
+        
         questionContentPane.setAttribute("data-js-question-id", id);
         // questionContentPane.setAttribute("data-js-question-type", question.displayType);
         
@@ -328,6 +333,7 @@ var PanelBuilder = declare(null, {
                 content: content
             });
             label.placeAt(questionContentPane);
+            domClass.add(label.domNode, "questionPrompt");
         }
         
         questionContentPane.placeAt(contentPane);
