@@ -391,6 +391,7 @@ define([
 
         if (status === "ok") {
             nameDiv.style.color = "green";
+            nameDiv.style.border = "initial";
             lastServerError = "";
         } else if (status === "waiting") {
             nameDiv.style.color = "yellow";
@@ -401,6 +402,7 @@ define([
         } else if (status === "failure") {
             nameDiv.style.color = "red";
             lastServerError = text;
+            nameDiv.style.border = "thick solid #FF0000";
         } else {
             console.log("Unexpected server status", status);
             nameDiv.style.color = "black";
