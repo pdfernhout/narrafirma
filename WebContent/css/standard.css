@@ -153,6 +153,10 @@ body {
     margin-left: 20px;
 }
 
+.narrafirma-textbox {
+	width: 80em;
+}
+
 /* old? */
 .narrafirma-questionAnswer {
     /* Border looks bad, especially when no data:
@@ -247,6 +251,8 @@ form {
     padding: 1em;
 }
 
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dijit things ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 /* See http://www.sitepen.com/blog/2012/05/03/css-styling-of-dgrid/ */
 /* Make sure grid rows are just one line high and the text is limited with an ellipsis */
 
@@ -310,25 +316,20 @@ form {
     min-width: 50%;
 }
 
-/* for the recommendationsTable */
-.wwsRecommendationsTable-labelCell {
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Recommendations table ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+.wwsRecommendationsTable-labelCell {
   /* background-color: lightgrey; */
   /* padding-left: 5px; */
-  
   border-style: solid;
   border-width: thin;
-  
 }
 
 .wwsRecommendationsTable-valueCell {
-
   /* padding-left: 20px; */
   /* background-color: lightblue; */
-  
   border-style: solid;
   border-width: thin;
-  
 }
 
 .recommendationHigh {
@@ -344,7 +345,7 @@ form {
     background-color: DarkRed;
 }
 
-/* d3 charting */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ d3 charting ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /* A CSS stylesheet is like a GUI control system for twidling with widget options */
 
 .chartBackground {

@@ -12,7 +12,7 @@ define([
         var textarea = new SimpleTextarea({
             rows: "4",
             cols: "80",
-            style: "width:auto;",
+            style: "width: 100%;", // CFK changed from width: auto
             value: valuePathResolver.atFieldSpecification(panelBuilder, model, fieldSpecification)
         });
         textarea.placeAt(questionContentPane);
