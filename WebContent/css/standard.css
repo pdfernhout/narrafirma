@@ -16,7 +16,7 @@ body {
 }
 
 #pageDiv {
-   padding-left: 2em; 
+   padding-left: 10px; 
 }
 
 .pleaseWaitOverlay {
@@ -35,7 +35,7 @@ body {
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Navigation bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #navigationDiv {
-	background-color: #d5dae6;
+	background-color: #b2c07f;
 	padding: 0.25em 0em 0.2em 0em;
     border-bottom: 4px solid #8db500;
 }
@@ -47,21 +47,31 @@ body {
 }
 
 .narrafirma-serverstatus-ok {
-	color: #658200;
+	color: #231f20;
+	font-weight: 700;
+	text-shadow: 2px 2px #d3d2d2;
+	border: 2px solid #b2c07f; /* so the name doesn't shift when the red border appears */
 }
 
 .narrafirma-serverstatus-waiting {
-	color: #cc6400;
+	color: 231f20;
+	font-weight: 700;
+	text-shadow: 2px 2px yellow;
+	border: 2px solid #b2c07f; /* so the name doesn't shift when the red border appears */
 }
 
 .narrafirma-serverstatus-waiting-last-error {
-	color: #cc6400;
+	color: 231f20;
 	border: 2px solid red;
+	font-weight: 700;
+	text-shadow: 2px 2px yellow;
 }
 
 .narrafirma-serverstatus-failure {
-	color: red;
+	color: 231f20;
 	border: 2px solid red;
+	font-weight: 700;
+	text-shadow: 2px 2px red;
 }
 
 .narrafirma-serverstatus-unknown {
@@ -117,7 +127,6 @@ body {
     border-right: 2px solid #8db500;
 }
 
-/* make the dashboard buttons line up like they were in a table column */
 .narrafirma-dashboardStatusButton .dijitButtonNode {
     font-weight: 200;
     font-size: 0.9em;
@@ -132,7 +141,7 @@ body {
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Pages with entry fields ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .questionExternal {
-	background: #e0e6cc;
+	background: #d5dae6;
 	margin-bottom: 4px;
 }
 
@@ -154,7 +163,7 @@ body {
 }
 
 form {
-   padding-left: 2em;
+   padding-left: 0.7em;
 }
 
 .dijitButton {
@@ -162,7 +171,7 @@ form {
 }
 
 .narrafirma-reminder {
-	background: #d5dae6;
+	background: #b2c07f;
 }
 
 .narrafirma-griditem-form {
@@ -176,15 +185,24 @@ form {
 }
 
 .narrafirma-griditempanel-editing {
-	background-color: blue;
-	border: 0.25em solid green;
+	background: #FFF;
 	margin: 1em;
+	border: 1px solid #2e4a85;
+}
+
+.narrafirma-griditempanel-editing .questionExternal {
+	background: #abb6ce;
 }
 
 .narrafirma-griditempanel-viewing {
-	background-color: red;
-	border: 0.25em solid blue;
+	background: #e4e4e4;
 	margin: 1em;
+	border: 1px solid #231f20;
+}
+
+.narrafirma-griditempanel-viewing .questionExternal {
+	background: #e4e4e4;
+	margin: 0px;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Story card display ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
