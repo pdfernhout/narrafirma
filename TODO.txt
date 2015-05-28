@@ -21,7 +21,7 @@ H Add trademark disclaimer/limitation for NarraFirma, perhaps similar to:
 WORDPRESS PLUGIN
 H WordPress plugin support for Pointrel save/load/triples
 H Create entire WordPress plugin based on current stub version
-H Roles/Accounts & Security
+H WordPress Roles/Accounts & Security
 
 CLUSTERING (PLANNING)
 H Finish "Create project story elements" page in planning phase
@@ -47,7 +47,6 @@ W Fix how templates list popup has too much scrolling and is not sized well; per
 SURVEY GENERAL
 H Problem when opened up road block survey with Firefox and developer console and it was too tall and when closed console the top close button became inacessible as offscreen
 L Display how many stories and/or survey results have been collected
-L Fix issue with story collection where when you turn one on or off the others have their survey definition updated
 L Ideally, all responses for selections (other than numerical sliders) should have unique IDs for each response and the stored response should have the ID as well as the chosen text at the time.
     Add support for short names (ids) for all options for survey questions
 X Only store reference to questionnaire file resource, not the resource itself [maybe leaving as is?]
@@ -730,3 +729,5 @@ DONE Improve server status reporting using color and border of NarraFirma text i
 DONE Rename main dashboard as "Home" page
 DONE Remove extra clutter from home page, like shortcut buttons and extra explanatory text that will be covered by help system
 DONE Rename project report button on home page to project administration
+DONE Fix issue with story collection where when you turn one on or off the others have their survey definition updated
+DONE Get "Disable web story collection" to work again with multiple story collections
