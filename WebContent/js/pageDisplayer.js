@@ -174,7 +174,8 @@ define([
             title: pageSpecification.title,
             // Shorten width so grid scroll bar shows up not clipped
             // Also, looks like nested ContentPanes tend to walk off the right side of the page for some reason
-            style: "width: 94%",
+            // CFK changed 94% to 99% - still looks okay when scrolling and 94% left noticeable gap on right side
+            style: "width: 99%",
             display: "none" // "block" //
         });
 
