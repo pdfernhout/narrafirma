@@ -49,7 +49,7 @@ define({
     selection_has_not_been_made: " -- select -- ",
     
     // calculations
-    calculate_quizScoreResult_template: "{{total}} of a possible {{possibleTotal}} ({{percent}}%)",
+    calculate_quizScoreResult_template: "{{total}} of {{possibleTotal}} ({{percent}}%)",
     
     // other
     copyDraftPNIQuestion_template: "Copied {{copiedAnswersCount}} answers\nNote that blank draft answers are not copied; non-blank final answers are not replaced",

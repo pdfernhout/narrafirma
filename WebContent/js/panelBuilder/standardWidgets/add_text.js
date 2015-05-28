@@ -14,7 +14,7 @@ define([
         var textBox = new TextBox({
             value: valuePathResolver.atFieldSpecification(panelBuilder, model, fieldSpecification)
         });
-        textBox.set("style", "width: 40em");
+        textBox.set("style", "width: 100%"); // CFK was 40em
         if (readOnly) {
             textBox.attr("readOnly", true);
             // textBox.attr("disabled", true);

@@ -27,9 +27,10 @@ define([
         }
         var possibleTotal = dependsOn.length * 3;
         var percent = Math.round(100 * total / possibleTotal);
-        var template = translate("#calculate_quizScoreResult_template", "{{total}} of a possible {{possibleTotal}} ({{percent}}%)");
+        var template = translate("#calculate_quizScoreResult_template", "{{total}} of {{possibleTotal}} ({{percent}}%)");
         var response = template.replace("{{total}}", total).replace("{{possibleTotal}}", possibleTotal).replace("{{percent}}", "" + percent);
-        return "<b>" + response + "</b>";
+        //return "<b>" + response + "</b>";
+        return response;
     }
     
     function add_quizScoreResult(panelBuilder, contentPane, model, fieldSpecification) {
