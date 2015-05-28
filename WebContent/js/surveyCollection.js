@@ -162,7 +162,7 @@ define([
        var recreatedData = JSON.parse(JSON.stringify(storyCollections));
        project.projectModel.set("project_storyCollections", recreatedData);
        
-       updateActiveQuestionnaires({});
+       updateActiveQuestionnaires({}, "sendMessage");
        console.log("Deactivated all web questionnaires");
    }
    
