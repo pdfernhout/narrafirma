@@ -1,15 +1,21 @@
 define([
+    "dijit/layout/ContentPane",
+    "dojo/_base/lang",
     "js/pointrel20150417/PointrelClient",
     "dojo/Stateful",
+    "js/surveyCollection",
+    "dojo/topic",
     "js/pointrel20150417/TripleStore",
-    "js/versions",
-    "dijit/layout/ContentPane"
+    "js/versions"
 ], function(
+    ContentPane,
+    lang,
     PointrelClient,
     Stateful,
+    surveyCollection,
+    topic,
     TripleStore,
-    versions,
-    ContentPane
+    versions
 ) {  
     "use strict";
     
@@ -23,8 +29,9 @@ define([
         this.userIdentifier = userIdentifier;
         this.subscriptions = [];
         this.projectModel = null;
+        this.activeQuestionnaires = {};
 
-        this.pointrelClient = new PointrelClient(serverURL, this.journalIdentifier, this.userIdentifier, receivedMessage, updateServerStatus);
+        this.pointrelClient = new PointrelClient(serverURL, this.journalIdentifier, this.userIdentifier, lang.hitch(this, this.receivedMessage), updateServerStatus);
         
         // For now, listen on all topics in the journal
         // TODO: Think about how to move topicIdentifier into pointrelClient initialization
@@ -71,9 +78,13 @@ define([
     };
     
     // TODO: What do do about this function? Especially if want to track chat messages or log messages or undoable changes for project?
-    function receivedMessage(message) {
+    Project.prototype.receivedMessage = function(message) {
         // console.log("receivedMessage", message);
-    }
+        if (message.messageType === "questionnairesMessage") {
+            console.log("Project receivedMessage questionnairesMessage", message);
+            surveyCollection.updateActiveQuestionnaires(message.change, false);
+        }
+    };
     
     Project.prototype.disconnectProjectModel = function() {
         this.subscriptions.forEach(function (subscription) {

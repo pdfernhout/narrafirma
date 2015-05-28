@@ -9,7 +9,7 @@
             "id": "webStoryCollection_stopCollectionLabel2",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "If you are doing story collection over the internet, click this button to make the web form unavailable (to anyone but yourself). You can re-enable story collection later by going back to a previous page."
+            "displayPrompt": "If you are doing any story collection over the internet, click this button to make all the web surveys unavailable. You can re-enable story collection later by going back to the previous page that starts story collection."
         },
         {
             "id": "webStoryCollection_disableWebStoryFormAfterStoryCollectionButton",

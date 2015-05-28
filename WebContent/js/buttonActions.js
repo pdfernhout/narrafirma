@@ -305,56 +305,6 @@ define([
     function logoutButtonClicked() {
         window.location.href = "/logout";
     }
-    
-    function urlForSurvey(storyCollectionName) {
-        var href = window.location.href;
-        var baseURL = href.substring(0, href.lastIndexOf("/"));
-        // TODO: Duplicated project prefix; should refactor to have it in one place
-        var projectName = project.journalIdentifier.substring("NarraFirmaProject-".length);
-        return baseURL + "/survey.html#project=" + projectName + "&survey=" + storyCollectionName;
-    }
-    
-    function toggleWebActivationOfSurvey(contentPane, model, fieldSpecification, value) {
-        var grid = fieldSpecification.grid;
-        var selectedItem = grid.getSelectedItem();
-        console.log("toggleWebActivationOfSurvey selectedItem", selectedItem, model, fieldSpecification); 
-        
-        if (selectedItem.storyCollection_activeOnWeb) {
-            selectedItem.storyCollection_activeOnWeb = "";
-        } else {
-            selectedItem.storyCollection_activeOnWeb = urlForSurvey(selectedItem.storyCollection_shortName);
-        }
-        // broadcast the change to other clients and force grid refresh by recreating entire object
-        var storyCollections = model.get(fieldSpecification.id);
-        var recreatedData = JSON.parse(JSON.stringify(storyCollections));
-        model.set(fieldSpecification.id, recreatedData);
-        
-        // TODO: Potential window of vulnerability here because not making both changes as a single transaction
-        
-        // TODO: Updating *all* questionnaires to latest version, which means if others were changed, unexpected things could happen... Should retrieve other saved questionnaires first and reuse them
-        
-        // Now publish the questionnaires...
-        var change = {};
-        for (var i = 0; i < storyCollections.length; i++) {
-            var storyCollection = storyCollections[i];
-            if (!storyCollection.storyCollection_activeOnWeb) continue;
-            var questionnaireName = storyCollection.storyCollection_questionnaireIdentifier;
-            var questionnaire = questionnaireGeneration.buildQuestionnaire(project, questionnaireName);
-            if (!questionnaire) {
-                console.log("Could not find questionnnaire for", questionnaireName);
-                continue;
-            }
-            change[storyCollection.storyCollection_shortName] = questionnaire;
-        }
-        project.pointrelClient.createAndSendChangeMessage("questionnaires", "questionnairesMessage", change, null, function(error, result) {
-            if (error) {
-                // TODO: Translate
-                alert("Problem activating/deactivating web survey");
-                return;
-            }
-            alert("Web survey status changed");
-        });
-    }
 
     return {
         // Call this to set up the project or other needed data
@@ -364,8 +314,7 @@ define([
         "copyDraftPNIQuestionVersionsIntoAnswers": copyDraftPNIQuestionVersionsIntoAnswers,
         "loadLatestStoriesFromServer": surveyCollection.loadLatestStoriesFromServer,
         "enterSurveyResult": openSurveyDialog,
-        "toggleWebActivationOfSurvey": toggleWebActivationOfSurvey,
-        "storyCollectionStart": surveyCollection.storyCollectionStart,
+        "toggleWebActivationOfSurvey": surveyCollection.toggleWebActivationOfSurvey,
         "storyCollectionStop": surveyCollection.storyCollectionStop,
         "copyStoryFormURL": copyStoryFormURL,
         "guiOpenSection": guiOpenSection,

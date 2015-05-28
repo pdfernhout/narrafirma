@@ -73,20 +73,104 @@ define([
    // TODO: Fix users of: topic.publish("loadLatestStoriesFromServer", newEnvelopeCount, domain.allStories);
    // TODO: Fix users of: topic.publish("totalNumberOfSurveyResults", allEnvelopes.length);
    
-   function storyCollectionStop() {
-       var questionnaireID = domain.currentQuestionnaireID;
-       var status = {questionnaireID: questionnaireID, active: false};
-       storage.storeQuestionnaireStatus(questionnaireID, status, function(error) {
-           console.log("Deactivated questionnaire", questionnaireID);
-           domain.questionnaireStatus = {questionnaireID: questionnaireID, active: false};
-           topic.publish("isStoryCollectingEnabled", domain.questionnaireStatus);
+   function urlForSurvey(storyCollectionName) {
+       var href = window.location.href;
+       var baseURL = href.substring(0, href.lastIndexOf("/"));
+       // TODO: Duplicated project prefix; should refactor to have it in one place
+       var projectName = project.journalIdentifier.substring("NarraFirmaProject-".length);
+       return baseURL + "/survey.html#project=" + projectName + "&survey=" + storyCollectionName;
+   }
+   
+   function toggleWebActivationOfSurvey(contentPane, model, fieldSpecification, value) {
+       var grid = fieldSpecification.grid;
+       var selectedItem = grid.getSelectedItem();
+       console.log("toggleWebActivationOfSurvey selectedItem", selectedItem, model, fieldSpecification); 
+       
+       if (selectedItem.storyCollection_activeOnWeb) {
+           selectedItem.storyCollection_activeOnWeb = "";
+       } else {
+           selectedItem.storyCollection_activeOnWeb = urlForSurvey(selectedItem.storyCollection_shortName);
+       }
+       // TODO: Maybe only want to refresh grid, as there is a seperate update now for questionnaires?
+       // broadcast the change to other clients and force grid refresh by recreating entire object
+       var storyCollections = model.get(fieldSpecification.id);
+       var recreatedData = JSON.parse(JSON.stringify(storyCollections));
+       model.set(fieldSpecification.id, recreatedData);
+       
+       // TODO: Potential window of vulnerability here because not making both changes as a single transaction
+       
+       var questionnaires = {};
+       for (var key in project.activeQuestionnaires) {
+           questionnaires[key] = project.activeQuestionnaires[key];
+       }
+       
+       var questionnaireName = selectedItem.storyCollection_questionnaireIdentifier;
+       var questionnaire = questionnaireGeneration.buildQuestionnaire(project, questionnaireName);
+       if (!questionnaire) {
+           console.log("Could not find questionnnaire for", questionnaireName);
+           return;
+       }
+       if (selectedItem.storyCollection_activeOnWeb) {
+           questionnaires[selectedItem.storyCollection_shortName] = questionnaire;
+       } else {
+           delete questionnaires[selectedItem.storyCollection_shortName];
+       }
+       // TODO: Decide: Publish here to be sure to get updates even when offline or just wait for server to relay it back?
+       // topic.publish("questionnaires", change);
+
+       // Now publish the new or removed questionnaire...
+       updateActiveQuestionnaires(questionnaires, "sendMessage");
+   }
+   
+   function updateActiveQuestionnaires(questionnaires, sendMessage) {
+       project.activeQuestionnaires = questionnaires;
+       
+       // TODO: Should compare against current canonicalized value to see if anything changed and only update then -- assuming updates already issued by code that makes changes
+       // TODO: Does not publish which specific questionnaire changed, so inefficient
+       topic.publish("activeQuestionnaires", project.activeQuestionnaires);
+       topic.publish("isStoryCollectingEnabled", isStoryCollectingEnabled());
+       
+       if (!sendMessage) return;
+       
+       // TODO: Should not have GUI actions in here like alert; either do as Toast or publish on topic that can be hooked up to alert or Toast
+       project.pointrelClient.createAndSendChangeMessage("questionnaires", "questionnairesMessage", questionnaires, null, function(error, result) {
+           if (error) {
+               // TODO: Translate
+               alert("Problem activating/deactivating web survey");
+               return;
+           }
+           alert("Web survey status changed");
        });
    }
    
-   function isStoryCollectingEnabled(question) {
-       // return domain.questionnaireStatus.active;
-       // TODO: Fix!
-       return true;
+   function storyCollectionStop() {
+       // TODO: translate
+       // TODO: probably should not have GUI action in here; need to rethink?
+       if (!isStoryCollectingEnabled()) {
+           alert("Story collection via the web is already not currently enabled.");
+           return;
+       }
+       if (!confirm("Deactivate all story collection via the web?")) return;
+       var storyCollections = project.projectModel.get("project_storyCollections");
+       for (var i = 0; i < storyCollections.length; i++) {
+           var storyCollection = storyCollections[i];
+           if (!storyCollection.storyCollection_activeOnWeb) continue;
+           storyCollection.storyCollection_activeOnWeb = "";
+       }
+       
+       // broadcast the change to other clients and force grid refresh by recreating entire object
+       var recreatedData = JSON.parse(JSON.stringify(storyCollections));
+       project.projectModel.set("project_storyCollections", recreatedData);
+       
+       updateActiveQuestionnaires({});
+       console.log("Deactivated all web questionnaires");
+   }
+   
+   function isStoryCollectingEnabled() {
+       for (var key in project.activeQuestionnaires) {
+           return true;
+       }
+       return false;
    }
    
    function collectQuestionsForQuestionnaire(questionnaire) {
@@ -146,8 +230,9 @@ define([
        getStoriesForStoryCollection: getStoriesForStoryCollection,
        getQuestionnaireForStoryCollection: getQuestionnaireForStoryCollection,
        
+       updateActiveQuestionnaires: updateActiveQuestionnaires,
+       toggleWebActivationOfSurvey: toggleWebActivationOfSurvey,
        storyCollectionStop: storyCollectionStop,
-
        isStoryCollectingEnabled: isStoryCollectingEnabled,
        
        collectQuestionsForQuestionnaire: collectQuestionsForQuestionnaire,
