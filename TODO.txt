@@ -229,6 +229,8 @@ X Forgot to put "memorable" in eliciting question types ("What type of question 
 
 ==== Wish list:
 
+Make survey work as one scrolling page
+
 Project chooser dialog should be centered in page instead of over to the right side of window due to issue with Grind scroller and CSS
 
 Display list of selected stories in spot-checking graph browser in Collection section
