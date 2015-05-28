@@ -18,7 +18,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Scenario",
-            "displayPrompt": "Start by choosing a scenario for your project story."
+            "displayPrompt": "Start by choosing a <strong>scenario</strong> for your project story. (Click the Help button for explanations of these scenario types.)"
         },
         {
             "id": "projectStory_outcome",
@@ -32,7 +32,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Outcome",
-            "displayPrompt": "Now choose an outcome for your story."
+            "displayPrompt": "Now choose an <strong>outcome</strong> for your story. How will it end?"
         },
         {
             "id": "projectStory_text",
@@ -40,7 +40,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Story",
-            "displayPrompt": "Now tell your project story as a future history (as though it has already happened)."
+            "displayPrompt": "Now tell your project story. Tell it as a <strong>future history</strong>, as though it has already happened."
         },
         {
             "id": "projectStory_name",
@@ -48,15 +48,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Name",
-            "displayPrompt": "Please name your project story."
-        },
-        {
-            "id": "projectStory_feelAbout",
-            "valueType": "string",
-            "required": true,
-            "displayType": "textarea",
-            "displayName": "Feel about",
-            "displayPrompt": "How do you feel about this story?"
+            "displayPrompt": "Please <strong>name</strong> your project story."
         },
         {
             "id": "projectStory_surprise",
@@ -64,7 +56,15 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Surprised",
-            "displayPrompt": "What surprised you about this story?"
+            "displayPrompt": "What <strong>surprised</strong> you about this story?"
+        },
+        {
+            "id": "projectStory_happened",
+            "valueType": "string",
+            "required": true,
+            "displayType": "textarea",
+            "displayName": "If it happened",
+            "displayPrompt": "If this story actually happened, what would you <strong>learn</strong> from it?"
         },
         {
             "id": "projectStory_dangers",
@@ -72,7 +72,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Opportunities or dangers",
-            "displayPrompt": "Describe any opportunities or dangers you see in this story."
+            "displayPrompt": "Describe any <strong>opportunities</strong> or <strong>dangers</strong> you see in the story."
         }
     ]
 }

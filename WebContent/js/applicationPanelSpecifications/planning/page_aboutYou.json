@@ -5,11 +5,11 @@
     "section": "planning",
     "modelClass": "AboutYouActivity",
     "panelFields": [
-        {
-            "id": "aboutYou_youHeader",
+         {
+            "id": "project_aboutYou",
             "valueType": "none",
-            "displayType": "header",
-            "displayPrompt": "About you"
+            "displayType": "label",
+            "displayPrompt": "On this page are a few questions about <strong>your PNI practice</strong>. As with the previous questions about participant groups, these choices will impact the recommendations you see later on in your project."
         },
         {
             "id": "aboutYou_experience",
@@ -23,7 +23,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Experience",
-            "displayPrompt": "How much experience do you have facilitating PNI projects?"
+            "displayPrompt": "How much <strong>experience</strong> do you have facilitating PNI projects?"
         },
         {
             "id": "aboutYou_help",
@@ -37,7 +37,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Help",
-            "displayPrompt": "How much help will you have carrying out this project?"
+            "displayPrompt": "How much <strong>help</strong> will you have carrying out this project?"
         },
         {
             "id": "aboutYou_tech",
@@ -51,7 +51,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Technology",
-            "displayPrompt": "How many technological resources will you have for carrying out this project?"
+            "displayPrompt": "How many <strong>technological resources</strong> will you be able to use in carrying out this project?"
         }
     ]
 }

@@ -6,13 +6,19 @@
     "modelClass": "ProjectStoriesActivity",
     "panelFields": [
         {
+            "id": "project_projectStories",
+            "valueType": "none",
+            "displayType": "label",
+            "displayPrompt": "On this page you will tell yourself some <strong>project stories</strong> about how your project might play out. These stories will help you think about how best to plan the project."
+        },
+        {
             "id": "project_projectStoriesList",
             "valueType": "array",
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_projectStory",
             "displayName": "Project stories",
-            "displayPrompt": "On this page you will tell yourself some stories about how your project might play out.\nThese \"project stories\" will help you think about how best to plan the project."
+            "displayPrompt": "These are the project stories you have told so far."
         }
     ]
 }

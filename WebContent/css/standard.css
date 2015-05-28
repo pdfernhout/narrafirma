@@ -1,4 +1,6 @@
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ All pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* NOTE: the mnemonic for margin or padding order is TROUBLE: Top Right Bottom Left
 
 html, body {
     height: 100%;
@@ -17,6 +19,22 @@ body {
 
 #pageDiv {
    padding-left: 10px; 
+}
+
+a:link {
+	color: #658200;
+}
+
+a:visited {
+	color: #3e3739;
+}
+
+a:hover {
+	color: #2e4a85;
+}
+
+a:active {
+	color: #3b5fab;
 }
 
 .pleaseWaitOverlay {
@@ -157,13 +175,18 @@ body {
 	width: 80em;
 }
 
-/* old? */
-.narrafirma-questionAnswer {
-    /* Border looks bad, especially when no data:
-    border-style: solid;
-    border-width: thin;
-    */
-    font-style: italic;
+.narrafirma-questionAnswer { /* this is now used to display the reminder on the phase dashboard page */
+    margin: 0.3em 0em 0.3em 0em;
+    padding: 0.5em;
+    background: #e0e6cc;
+    border: 1px solid #b2c07f;
+}
+
+.narrafirma-questionAnswer:empty { /* if no reminder entered, do not show */
+	padding: 0px;
+	margin: 0px;
+	border: none;
+	background: #fff;
 }
 
 form {

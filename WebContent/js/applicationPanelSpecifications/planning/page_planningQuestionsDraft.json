@@ -9,7 +9,7 @@
             "id": "project_draftQuestionsLabel",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "On this page you will answer some questions about your project's goals, relationships, focus, range, scope, and emphasis.\nIf you don't have good answers for these questions right now, don't worry; you will have a chance to work on these answers again later."
+            "displayPrompt": "On this page you will answer some <strong>planning questions</strong> about your project: its goals, relationships, focus, range, scope, and emphasis. If you don't have good answers for these questions right now, don't worry; you will have a chance to work on them again later."
         },
         {
             "id": "project_pniQuestions_goal_draft",
@@ -17,7 +17,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Project goal",
-            "displayPrompt": "What is the goal of the project? Why are you doing it?"
+            "displayPrompt": "What is the <strong>goal</strong> of the project? Why are you doing it?"
         },
         {
             "id": "project_pniQuestions_relationships_draft",
@@ -25,7 +25,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Project relationships",
-            "displayPrompt": "What relationships are important to the project?"
+            "displayPrompt": "What <strong>relationships</strong> are important to the project? Who will connect with whom, how, and why?"
         },
         {
             "id": "project_pniQuestions_focus_draft",
@@ -33,7 +33,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Project focus",
-            "displayPrompt": "What is the focus of the project? What is it about?"
+            "displayPrompt": "What is the <strong>focus</strong> of the project? What is it about? What is its subject matter?"
         },
         {
             "id": "project_pniQuestions_range_draft",
@@ -41,7 +41,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Project range",
-            "displayPrompt": "What range(s) of experience will the project cover?"
+            "displayPrompt": "What <strong>range</strong> (or ranges) of experience will the project cover?"
         },
         {
             "id": "project_pniQuestions_scope_draft",
@@ -49,7 +49,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Project scope",
-            "displayPrompt": "What is the project's scope? (number of people, number of stories, number of questions about stories)"
+            "displayPrompt": "What is the project's <strong>scope</strong>? How many people will be involved? How many stories? How many questions?"
         },
         {
             "id": "project_pniQuestions_emphasis_draft",
@@ -57,7 +57,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Project emphasis",
-            "displayPrompt": "Which phases of PNI will be important to the project? (indicate most and least important phases)"
+            "displayPrompt": "What is the project's <strong>emphasis</strong>? Which phases of PNI will be important to the project?"
         }
     ]
 }
