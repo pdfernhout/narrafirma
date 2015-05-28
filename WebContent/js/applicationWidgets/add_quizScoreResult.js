@@ -15,10 +15,16 @@ define([
             var questionID = dependsOn[dependsOnIndex];
             var questionAnswer = model.get(questionID);
             var answerWeight = 0;
+            var index = 0;
             if (questionAnswer) {
                 // console.log("questionAnswer", questionAnswer);
                 var choices = panelSpecificationCollection.getFieldSpecificationForFieldID(questionID).valueOptions;
-                answerWeight = choices.indexOf(questionAnswer) - 1;
+                index = choices.indexOf(questionAnswer);
+                if (index == choices.length - 1) {
+                	answerWeight = 0;
+                } else {
+                	answerWeight = index;
+                }
                 // console.log("answerWeight", answerWeight);
                 if (answerWeight < 0) answerWeight = 0;
                 total += answerWeight;
