@@ -264,7 +264,7 @@ define([
                 field: fieldSpecification.id,
                 label: translate(fieldSpecification.id + "::shortName", fieldSpecification.displayName),
                 formatter: lang.hitch(self, self.formatObjectsIfNeeded),
-                sortable: !configuration.moveUpDownButtons
+                sortable: !configuration.moveUpDownButtons,
             };
             columns.push(newColumn);
             console.log("newColumn", newColumn);
