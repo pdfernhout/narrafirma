@@ -31,13 +31,13 @@
             "id": "participantGroup_status",
             "valueType": "string",
             "valueOptions": [
-                "unknown",
                 "very low",
                 "low",
                 "moderate",
                 "high",
                 "very high",
-                "mixed"
+                "mixed",
+                "unknown"
             ],
             "required": true,
             "displayType": "select",
@@ -48,13 +48,13 @@
             "id": "participantGroup_confidence",
             "valueType": "string",
             "valueOptions": [
-                "unknown",
                 "very low",
                 "low",
                 "medium",
                 "high",
                 "very high",
-                "mixed"
+                "mixed",
+                "unknown"
             ],
             "required": true,
             "displayType": "select",
@@ -71,12 +71,12 @@
             "id": "participantGroup_time",
             "valueType": "string",
             "valueOptions": [
-                "unknown",
                 "very little",
                 "little",
                 "some",
                 "a lot",
-                "mixed"
+                "mixed",
+                "unknown"
             ],
             "required": true,
             "displayType": "select",
@@ -87,13 +87,13 @@
             "id": "participantGroup_education",
             "valueType": "string",
             "valueOptions": [
-                "unknown",
                 "illiterate",
                 "minimal",
                 "moderate",
                 "high",
                 "very high",
-                "mixed"
+                "mixed",
+                "unknown"
             ],
             "required": true,
             "displayType": "select",
@@ -104,12 +104,12 @@
             "id": "participantGroup_physicalDisabilities",
             "valueType": "string",
             "valueOptions": [
-                "unknown",
                 "none",
                 "minimal",
                 "moderate",
                 "strong",
-                "mixed"
+                "mixed",
+                "unknown"
             ],
             "required": true,
             "displayType": "select",
@@ -120,13 +120,13 @@
             "id": "participantGroup_emotionalImpairments",
             "valueType": "string",
             "valueOptions": [
-                "unknown",
-                "none",
+                 "none",
                 "minimal",
                 "moderate",
                 "strong",
-                "mixed"
-            ],
+                "mixed",
+                 "unknown"
+           ],
             "required": true,
             "displayType": "select",
             "displayName": "Emotional limitations",
@@ -142,12 +142,12 @@
             "id": "participantGroup_performing",
             "valueType": "string",
             "valueOptions": [
-                "unknown",
                 "very unimportant",
                 "somewhat unimportant",
                 "somewhat important",
                 "very important",
-                "mixed"
+                "mixed",
+                "unknown"
             ],
             "required": true,
             "displayType": "select",
@@ -158,12 +158,12 @@
             "id": "participantGroup_conforming",
             "valueType": "string",
             "valueOptions": [
-                "unknown",
                 "very unimportant",
                 "somewhat unimportant",
                 "somewhat important",
                 "very important",
-                "mixed"
+                "mixed",
+                "unknown"
             ],
             "required": true,
             "displayType": "select",
@@ -174,12 +174,12 @@
             "id": "participantGroup_promoting",
             "valueType": "string",
             "valueOptions": [
-                "unknown",
                 "very unimportant",
                 "somewhat unimportant",
                 "somewhat important",
                 "very important",
-                "mixed"
+                "mixed",
+                "unknown"
             ],
             "required": true,
             "displayType": "select",
@@ -190,12 +190,12 @@
             "id": "participantGroup_venting",
             "valueType": "string",
             "valueOptions": [
-                "unknown",
                 "very unimportant",
                 "somewhat unimportant",
                 "somewhat important",
                 "very important",
-                "mixed"
+                "mixed",
+                "unknown"
             ],
             "required": true,
             "displayType": "select",
@@ -212,13 +212,13 @@
             "id": "participantGroup_interest",
             "valueType": "string",
             "valueOptions": [
-                "unknown",
                 "very little",
                 "a little",
                 "some",
                 "a lot",
                 "extremely",
-                "mixed"
+                "mixed",
+                "unknown"
             ],
             "required": true,
             "displayType": "select",
@@ -229,11 +229,11 @@
             "id": "participantGroup_feelings_project",
             "valueType": "string",
             "valueOptions": [
-                "unknown",
                 "negative",
                 "neutral",
                 "positive",
-                "mixed"
+                "mixed",
+                "unknown"
             ],
             "required": true,
             "displayType": "select",
@@ -244,12 +244,12 @@
             "id": "participantGroup_feelings_facilitator",
             "valueType": "string",
             "valueOptions": [
-                "unknown",
                 "negative",
                 "neutral",
                 "positive",
-                "mixed"
-            ],
+                "mixed",
+                 "unknown"
+           ],
             "required": true,
             "displayType": "select",
             "displayName": "Feelings about you",
@@ -259,12 +259,12 @@
             "id": "participantGroup_feelings_stories",
             "valueType": "string",
             "valueOptions": [
-                "unknown",
                 "negative",
                 "neutral",
                 "positive",
-                "mixed"
-            ],
+                "mixed",
+                 "unknown"
+           ],
             "required": true,
             "displayType": "select",
             "displayName": "Feel about stories",
@@ -280,13 +280,13 @@
             "id": "participantGroup_topic_feeling",
             "valueType": "string",
             "valueOptions": [
-                "unknown",
                 "strongly negative",
                 "negative",
                 "neutral",
                 "positive",
                 "strongly positive",
-                "mixed"
+                "mixed",
+                "unknown"
             ],
             "required": true,
             "displayType": "select",
@@ -297,12 +297,12 @@
             "id": "participantGroup_topic_private",
             "valueType": "string",
             "valueOptions": [
-                "unknown",
                 "very private",
                 "medium",
                 "not private",
-                "mixed"
-            ],
+                "mixed",
+                 "unknown"
+           ],
             "required": true,
             "displayType": "select",
             "displayName": "How private",
@@ -312,12 +312,12 @@
             "id": "participantGroup_topic_articulate",
             "valueType": "string",
             "valueOptions": [
-                "unknown",
                 "hard",
                 "medium",
                 "easy",
-                "mixed"
-            ],
+                "mixed",
+                 "unknown"
+           ],
             "required": true,
             "displayType": "select",
             "displayName": "Articulation",
@@ -327,14 +327,14 @@
             "id": "participantGroup_topic_timeframe",
             "valueType": "string",
             "valueOptions": [
-                "unknown",
                 "hours",
                 "days",
                 "months",
                 "years",
                 "decades",
-                "mixed"
-            ],
+                "mixed",
+                 "unknown"
+           ],
             "required": true,
             "displayType": "select",
             "displayName": "Time period",
