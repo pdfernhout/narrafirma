@@ -227,6 +227,20 @@
                 "panelName": "Catalysis"
             },
             {
+                "panelID": "page_startCatalysisReport",
+                "panelName": "Start catalysis report",
+                "extraPanels": [
+                    {
+                        "panelID": "panel_addCatalysisReport",
+                        "panelName": "Add catalysis report"
+                    },
+                    {
+                        "panelID": "panel_chooseStoryCollection",
+                        "panelName": "Choose story collection"
+                    }
+                ]
+            },
+            {
                 "panelID": "page_themeStories",
                 "panelName": "Theme stories"
             },
