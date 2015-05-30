@@ -171,7 +171,6 @@ define([
         console.log("createPage", pageID);
         
         var pagePane = new ContentPane({
-            title: pageSpecification.title,
             // Shorten width so grid scroll bar shows up not clipped
             // Also, looks like nested ContentPanes tend to walk off the right side of the page for some reason
             // CFK changed 94% to 99% - still looks okay when scrolling and 94% left noticeable gap on right side
@@ -185,6 +184,14 @@ define([
         // This is as opposed to what one might think would reduce resizing and redrawing by adding the page only after components are added
         pagePane.placeAt("pageDiv", "last");
         pagePane.startup();
+        
+        var title = '<div class="narrafirma-page-name">' + pageSpecification.displayName + '</div>';
+        
+        var titlePane = new ContentPane({
+            content: title
+        });
+        
+        titlePane.placeAt(pagePane);
 
         // console.log("Made content pane", pageID);
 

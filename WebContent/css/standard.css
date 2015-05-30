@@ -138,10 +138,24 @@ a:active {
 
 #narrafirma-help-link {
     padding: 16px;
+    font-size: 0.9em;
 }
 
 #narrafirma-logout-link {
     float: right;
+}
+
+#narafirma-breadcrumbs {
+    font-size: 0.9em;
+}
+
+#narrafirma-breadcrumb-current {
+
+}
+
+.narrafirma-page-name {
+    font-weight: bold;
+    font-size: 1.4em;
 }
  
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dashboard ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
