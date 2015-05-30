@@ -221,6 +221,10 @@ define([
         
         function addPageChangeButton(newPageID, idExtra, prompt, displayIconClass) {
             // TODO: Translate
+            if (displayIconClass !== "homeButtonImage") {
+                var sectionPageSpecification = panelSpecificationCollection.getPageSpecificationForPageID(newPageID);
+                prompt += ": " + sectionPageSpecification.displayName;
+            }
             var returnToDashboardButtonSpecification = {
                 "id": pageID + idExtra,
                 "valueType": "none",
