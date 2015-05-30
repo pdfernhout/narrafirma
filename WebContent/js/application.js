@@ -2,6 +2,7 @@ define([
     "dojo/i18n!js/nls/applicationMessages",
     "js/buttonActions",
     "js/panelBuilder/dialogSupport",
+    "dojo/dom-class",
     "dojo/hash",
     "js/applicationWidgets/loadAllApplicationWidgets",
     "js/panelBuilder/loadAllPanelSpecifications",
@@ -26,6 +27,7 @@ define([
     applicationMessages,
     buttonActions,
     dialogSupport,
+    domClass,
     hash,
     loadAllApplicationWidgets,
     loadAllPanelSpecifications,
@@ -261,15 +263,32 @@ define([
                     }
                 }
             }
+            // Add button at bottom of each page to move to previous
+            if (pageSpecification.previousPageID) {
+                // TODO: Translate
+                var previousPageButtonSpecification = {
+                    "id": pageID + "_previousPageButton",
+                    "valueType": "none",
+                    "displayPrompt": "Previous",
+                    "displayType": "button",
+                    "displayConfiguration": {
+                        "action": "guiOpenSection",
+                        "section": pageSpecification.previousPageID
+                    },
+                    displayPreventBreak: true,
+                    displayIconClass: "leftButtonImage"
+                };
+                panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, previousPageButtonSpecification); 
+            }
+
+                
             // Add button at bottom of each page to move forward
             if (pageSpecification.nextPageID) {
                 // TODO: Translate
-                var buttonPrompt = "Next";
-                if (!pageSpecification.previousPageID) buttonPrompt = "Next";
                 var nextPageButtonSpecification = {
                     "id": pageID + "_nextPageButton",
                     "valueType": "none",
-                    "displayPrompt": buttonPrompt,
+                    "displayPrompt": "Next",
                     "displayType": "button",
                     "displayConfiguration": {
                         "action": "guiOpenSection",
@@ -361,10 +380,13 @@ define([
         var pageControlsPane = navigationPane.createNavigationPane(pageDisplayer, panelSpecificationCollection, startPage);
 
         var helpButton = widgetSupport.newButton(pageControlsPane, "#button_help|Help", buttonActions.helpButtonClicked);
+        domClass.add(helpButton.domNode, "narrafirma-helpbutton");
+        
         // var debugButton = widgetSupport.newButton(pageControlsPane, "#button_debug|Debug", buttonActions.debugButtonClicked);
         
         var logoutButton = widgetSupport.newButton(pageControlsPane, "#button_logout|Logout (" + userIdentifier + ")", buttonActions.logoutButtonClicked);
-
+        domClass.add(logoutButton.domNode, "narrafirma-logoutbutton");
+        
         // TODO: Improve status reporting
         // serverStatusPane = panelBuilder.newContentPane({content: "Server status: unknown"});
         // serverStatusPane.placeAt(pageControlsPane);
@@ -391,7 +413,7 @@ define([
         var statusText = "Project: " + project.journalIdentifier.substring(narrafirmaProjectPrefix.length) + "; Server status: (" + status + ") " + text;
 
         if (status === "ok") {
-        	nameDiv.className = "narrafirma-serverstatus-ok"
+        	nameDiv.className = "narrafirma-serverstatus-ok";
             //nameDiv.style.color = "green";
             //nameDiv.style.border = "initial";
             lastServerError = "";
@@ -399,19 +421,19 @@ define([
             //nameDiv.style.color = "yellow";
             if (lastServerError) {
                 // TODO: Translate
-            	nameDiv.className = "narrafirma-serverstatus-waiting-last-error"
+            	nameDiv.className = "narrafirma-serverstatus-waiting-last-error";
                 statusText += "<br>" + "Last error: " + lastServerError;
             } else {
-            	nameDiv.className = "narrafirma-serverstatus-waiting"
+            	nameDiv.className = "narrafirma-serverstatus-waiting";
             }
         } else if (status === "failure") {
-        	nameDiv.className = "narrafirma-serverstatus-failure"
+        	nameDiv.className = "narrafirma-serverstatus-failure";
             //nameDiv.style.color = "red";
             lastServerError = text;
             //nameDiv.style.border = "thick solid #FF0000";
         } else {
             console.log("Unexpected server status", status);
-            nameDiv.className = "narrafirma-serverstatus-unexpected"
+            nameDiv.className = "narrafirma-serverstatus-unexpected";
             //nameDiv.style.color = "black";
         }
         

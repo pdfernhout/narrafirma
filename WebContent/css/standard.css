@@ -135,6 +135,14 @@ a:active {
     /* Next line may not work correctly in IE6 & IE7? Also does not work right in safari 5.1 with button a bit high. https://bugs.dojotoolkit.org/ticket/5170 */
     float: right;
 }
+
+.narrafirma-helpbutton {
+    float: right;
+}
+
+.narrafirma-logoutbutton {
+    float: right;
+}
  
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dashboard ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
