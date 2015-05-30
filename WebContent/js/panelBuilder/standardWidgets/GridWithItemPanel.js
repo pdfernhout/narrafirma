@@ -644,17 +644,19 @@ define([
         if (debugSelecting) console.log("hasSelection selectedCount", hasSelection, selectedCount);
             
         var isAdding = (this.formType === "add");
-        if (buttons.addButton) buttons.addButton.set("disabled", isAdding);
+        var isEditing = (this.formType === "edit");
+        
+        if (buttons.addButton) buttons.addButton.set("disabled", isAdding || isEditing);
         
         // disable other buttons if in the middle of adding a new item or if no selection; otherwise enable
         if (isAdding) hasSelection = false;
-        if (buttons.viewButton) buttons.viewButton.set("disabled", !hasSelection);
-        if (buttons.removeButton) buttons.removeButton.set("disabled", !hasSelection);
-        if (buttons.editButton) buttons.editButton.set("disabled", !hasSelection);
-        if (buttons.duplicateButton) buttons.duplicateButton.set("disabled", !hasSelection);
-        if (buttons.upButton) buttons.upButton.set("disabled", !hasSelection);
-        if (buttons.downButton) buttons.downButton.set("disabled", !hasSelection);
-        if (buttons.customButton) buttons.customButton.set("disabled", !hasSelection);
+        if (buttons.viewButton) buttons.viewButton.set("disabled", !hasSelection || isEditing);
+        if (buttons.removeButton) buttons.removeButton.set("disabled", !hasSelection || isEditing);
+        if (buttons.editButton) buttons.editButton.set("disabled", !hasSelection || isEditing);
+        if (buttons.duplicateButton) buttons.duplicateButton.set("disabled", !hasSelection || isEditing);
+        if (buttons.upButton) buttons.upButton.set("disabled", !hasSelection || isEditing);
+        if (buttons.downButton) buttons.downButton.set("disabled", !hasSelection || isEditing);
+        if (buttons.customButton) buttons.customButton.set("disabled", !hasSelection || isEditing);
         
         // enabling for navigate buttons based on whether can move up or down in list in current sort order
         var atStart = true;
@@ -671,10 +673,10 @@ define([
                 if (debugSelecting) console.log("atStart", atStart, "atEnd", atEnd);
             }
         }
-        if (buttons.navigateStartButton) buttons.navigateStartButton.set("disabled", atStart);
-        if (buttons.navigatePreviousButton) buttons.navigatePreviousButton.set("disabled", atStart || !selectedItemID || selectedCount !== 1);
-        if (buttons.navigateNextButton) buttons.navigateNextButton.set("disabled", atEnd || !selectedItemID || selectedCount !== 1);
-        if (buttons.navigateEndButton) buttons.navigateEndButton.set("disabled", atEnd);
+        if (buttons.navigateStartButton) buttons.navigateStartButton.set("disabled", atStart || isEditing || isAdding);
+        if (buttons.navigatePreviousButton) buttons.navigatePreviousButton.set("disabled", atStart || !selectedItemID || selectedCount !== 1 || isEditing || isAdding);
+        if (buttons.navigateNextButton) buttons.navigateNextButton.set("disabled", atEnd || !selectedItemID || selectedCount !== 1 || isEditing || isAdding);
+        if (buttons.navigateEndButton) buttons.navigateEndButton.set("disabled", atEnd || isEditing || isAdding);
     };
     
     // Class level function, so no "prototype"
