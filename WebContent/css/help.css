@@ -1,22 +1,78 @@
-body { text-align: left; background-color: white; }
-
-#page 
-{ 
-  margin: auto; 
-  width: 90%; 
-  border: 3px solid #6F7850;
-  font: 85% verdana,tahoma;
-  text-align: left;
-  display: block;
+body { 
+	text-align: left; 
+	background: white; 
+	margin: 0;
 }
 
-#header    { clear: both; margin: 20px; }
-#header h1 { font: 35px verdana,tahoma; padding: 0; margin: 0px; color: #6F7850; }
-#header h2 { font: 15px verdana,tahoma; padding: 0; margin: 0px; color: #6F7850; }
+.header { 
+	background: #d3d2d2;
+	margin: 0px;
+	padding: 20px; 
+	border-bottom: 4px solid #a7a5a5;
+}
+	
+a:link {
+	color: #658200;
+}
+
+a:visited {
+	color: #3b5fab;
+}
+
+a:hover {
+	color: #2e4a85;
+}
+
+a:active {
+	color: #3b5fab;
+}
+
+.narrafirma-name {
+	font-size: 1em;
+	color: #231f20;
+	font-weight: 700;
+	padding: 0 2em 0 0;
+}
+
+.breadcrumb {
+	font-size: 0.8em;
+}
 
 .page {
-	margin: 4px;
+	margin: 10px;
 }
+
+.heading {
+	font-size: 1.3em;
+	font-weight: 700;
+	padding: 16px 6px 16px 0px;
+}
+
+.text {
+	font-size: 1.1em;
+	background: #e4e4e4;
+	padding: 8px;
+}
+
+.question {
+	background: #d3d2d2;
+	font-size: 1.1em;
+	font-style: italic;
+	padding: 9px 8px 8px 8px;
+	border-bottom: 1px solid #a7a5a5;
+}
+
+.question-answer {
+	background: #e4e4e4;
+	font-size: 1.1em;
+	padding: 8px;
+}
+
+.narrafirma-pni-phases-image {
+	float: right;
+}
+
+/* ------- old ---------- */
 
 .section {
 	font-style: italic;
@@ -32,37 +88,15 @@ body { text-align: left; background-color: white; }
 	margin-top: 10px;
 }
 
-.helpHeader {
-	font: 120% verdana,tahoma;
-	margin-top: 30px;
-	margin-bottom: 10px;
-	padding-bottom: 3px;
-	border-bottom: 3px solid black;
+.book-quote {
+	margin: 20px;
+	padding: 20px;
+	background: #f4e0cc;
+	border: 1px solid #cc6400;
 }
 
-.helpSubHeader {
-	font: 100% verdana,tahoma;
-	font-style: italic;
-    margin-top: 10px;
-	margin-bottom: 6px;
-}
-
-.helpText {
-	font: 90% verdana,tahoma;
-}
-
-.helpQuestionText {
-	font: 90% verdana,tahoma;
-	//margin-left: 20px;
-}
-
-.bookQuote {
-	margin: 10px;
-}
-
-.bookQuoteHeader {
-	margin: 10px;
-	font-weight: bold;
+.book-quote-heading {
+	font-weight: 700;
 }
 
 .seeBookPages {

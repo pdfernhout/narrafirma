@@ -1,6 +1,6 @@
 {
     "id": "page_aboutYou",
-    "displayName": "About you",
+    "displayName": "Describe your resources",
     "displayType": "page",
     "section": "planning",
     "modelClass": "AboutYouActivity",
