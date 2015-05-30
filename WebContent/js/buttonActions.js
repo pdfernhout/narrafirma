@@ -45,10 +45,6 @@ define([
         browser.launchApplication(helpURL, 'help');
     }
 
-    function debugButtonClicked() {
-        console.log("debug domain surveyCollection", domain, surveyCollection);
-    }
-
     function importButtonClicked(projectDefinitionText, hideDialogMethod) {
         console.log("importButtonClicked", projectDefinitionText);
         
@@ -310,19 +306,18 @@ define([
         // Call this to set up the project or other needed data
         initialize: initialize,
         
-        "printStoryForm": printStoryForm,
-        "copyDraftPNIQuestionVersionsIntoAnswers": copyDraftPNIQuestionVersionsIntoAnswers,
-        "loadLatestStoriesFromServer": surveyCollection.loadLatestStoriesFromServer,
-        "enterSurveyResult": openSurveyDialog,
-        "toggleWebActivationOfSurvey": surveyCollection.toggleWebActivationOfSurvey,
-        "storyCollectionStop": surveyCollection.storyCollectionStop,
-        "copyStoryFormURL": copyStoryFormURL,
-        "guiOpenSection": guiOpenSection,
+        printStoryForm: printStoryForm,
+        copyDraftPNIQuestionVersionsIntoAnswers: copyDraftPNIQuestionVersionsIntoAnswers,
+        loadLatestStoriesFromServer: surveyCollection.loadLatestStoriesFromServer,
+        enterSurveyResult: openSurveyDialog,
+        toggleWebActivationOfSurvey: surveyCollection.toggleWebActivationOfSurvey,
+        storyCollectionStop: surveyCollection.storyCollectionStop,
+        copyStoryFormURL: copyStoryFormURL,
+        guiOpenSection: guiOpenSection,
 
         // Called directly from application
-        "importExportOld": importExportClicked,
-        "helpButtonClicked": helpButtonClicked,
-        "debugButtonClicked": debugButtonClicked,
+        importExportOld: importExportClicked,
+        helpButtonClicked: helpButtonClicked,
         logoutButtonClicked: logoutButtonClicked
     };
 });
