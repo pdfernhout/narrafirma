@@ -51,7 +51,7 @@ define([
             
         breadcrumbsSpan = domConstruct.place('<span id="narrafirma-breadcrumbs"><a href="javascript:narrafirma_openPage(\'page_dashboard\')">Home</a></span>', pageControlsPane.domNode);
 
-        domConstruct.place('<a id="narrafirma-help-link" href="javascript:narrafirma_helpClicked()">Help</a>', pageControlsPane.domNode);
+        domConstruct.place('<a id="narrafirma-help-link" href="javascript:narrafirma_helpClicked()">(Help)</a>', pageControlsPane.domNode);
         
         return pageControlsPane;
     }
@@ -68,9 +68,7 @@ define([
         // Update breadcrumbs
         console.log("breadcrumbsSpan", breadcrumbsSpan);
         var html = "";
-        if (pageID === startPage) {
-            html = "Home";
-        } else {
+        if (pageID !== startPage) {
             html = htmlForBreadcrumb(startPage, "Home");
             html += " > ";
             console.log("pageSpecification", pageSpecification);
@@ -80,10 +78,9 @@ define([
                 html += htmlForBreadcrumb(sectionPageSpecification.id, sectionPageSpecification.displayName);
                 html += " > ";
             }
-            html += pageSpecification.displayName;
         }
-        html += "&nbsp;";
-        breadcrumbsSpan.innerHTML = html;
+        html += '<span id="narrafirma-breadcrumb-current">' + pageSpecification.displayName + '</span>';
+        breadcrumbsSpan.innerHTML = '<span id="narafirma-breadcrumbs">' + html + '</span>';
     }
     
     function getCurrentPageSpecification() {
