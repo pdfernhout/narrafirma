@@ -136,11 +136,11 @@ a:active {
     float: right;
 }
 
-.narrafirma-helpbutton {
-    float: right;
+#narrafirma-help-link {
+    padding: 16px;
 }
 
-.narrafirma-logoutbutton {
+#narrafirma-logout-link {
     float: right;
 }
  

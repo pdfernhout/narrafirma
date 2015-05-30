@@ -3,6 +3,7 @@ define([
     "js/buttonActions",
     "js/panelBuilder/dialogSupport",
     "dojo/dom-class",
+    "dojo/dom-construct",
     "dojo/hash",
     "js/applicationWidgets/loadAllApplicationWidgets",
     "js/panelBuilder/loadAllPanelSpecifications",
@@ -28,6 +29,7 @@ define([
     buttonActions,
     dialogSupport,
     domClass,
+    domConstruct,
     hash,
     loadAllApplicationWidgets,
     loadAllPanelSpecifications,
@@ -216,6 +218,24 @@ define([
     
     function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecification) {
         // console.log("addExtraFieldSpecificationsForPageSpecification", pageSpecification.section, pageID, pageSpecification);
+        
+        function addPageChangeButton(newPageID, idExtra, prompt, displayIconClass) {
+            // TODO: Translate
+            var returnToDashboardButtonSpecification = {
+                "id": pageID + idExtra,
+                "valueType": "none",
+                "displayPrompt": prompt,
+                "displayType": "button",
+                "displayConfiguration": {
+                    "action": "guiOpenSection",
+                    "section": newPageID
+                },
+                displayIconClass: displayIconClass,
+                displayPreventBreak: true
+            };
+            panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, returnToDashboardButtonSpecification); 
+        }
+        
         if (pageSpecification.section !== "dashboard") {
             if (!pageSpecification.isHeader) {
                 // TODO: Change the id of this field to have notes or reminder
@@ -263,54 +283,20 @@ define([
                     }
                 }
             }
+            
             // Add button at bottom of each page to move to previous
             if (pageSpecification.previousPageID) {
                 // TODO: Translate
-                var previousPageButtonSpecification = {
-                    "id": pageID + "_previousPageButton",
-                    "valueType": "none",
-                    "displayPrompt": "Previous",
-                    "displayType": "button",
-                    "displayConfiguration": {
-                        "action": "guiOpenSection",
-                        "section": pageSpecification.previousPageID
-                    },
-                    displayPreventBreak: true,
-                    displayIconClass: "leftButtonImage"
-                };
-                panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, previousPageButtonSpecification); 
+                addPageChangeButton(pageSpecification.previousPageID, "_previousPageButton", "Previous", "leftButtonImage");
+            } else {
+                addPageChangeButton(startPage, "_returnToDashboardButton", "Go to home page", "homeButtonImage");
             }
-
-                
+   
             // Add button at bottom of each page to move forward
             if (pageSpecification.nextPageID) {
-                // TODO: Translate
-                var nextPageButtonSpecification = {
-                    "id": pageID + "_nextPageButton",
-                    "valueType": "none",
-                    "displayPrompt": "Next",
-                    "displayType": "button",
-                    "displayConfiguration": {
-                        "action": "guiOpenSection",
-                        "section": pageSpecification.nextPageID
-                    },
-                    displayIconClass: "rightButtonImage"
-                };
-                panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, nextPageButtonSpecification); 
+                addPageChangeButton(pageSpecification.nextPageID, "_nextPageButton", "Next", "rightButtonImage");
             } else {
-                // TODO: Translate
-                var returnToDashboardButtonSpecification = {
-                    "id": pageID + "_returnToDashboardButton",
-                    "valueType": "none",
-                    "displayPrompt": "Go to project home page",
-                    "displayType": "button",
-                    "displayConfiguration": {
-                        "action": "guiOpenSection",
-                        "section": startPage
-                    },
-                    displayIconClass: "homeButtonImage"
-                };
-                panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, returnToDashboardButtonSpecification); 
+                addPageChangeButton(startPage, "_returnToDashboardButton", "Go to home page", "homeButtonImage");
             }
         }
     }
@@ -379,13 +365,7 @@ define([
 
         var pageControlsPane = navigationPane.createNavigationPane(pageDisplayer, panelSpecificationCollection, startPage);
 
-        var helpButton = widgetSupport.newButton(pageControlsPane, "#button_help|Help", buttonActions.helpButtonClicked);
-        domClass.add(helpButton.domNode, "narrafirma-helpbutton");
-        
-        // var debugButton = widgetSupport.newButton(pageControlsPane, "#button_debug|Debug", buttonActions.debugButtonClicked);
-        
-        var logoutButton = widgetSupport.newButton(pageControlsPane, "#button_logout|Logout (" + userIdentifier + ")", buttonActions.logoutButtonClicked);
-        domClass.add(logoutButton.domNode, "narrafirma-logoutbutton");
+        domConstruct.place('<a id="narrafirma-logout-link" href="javascript:narrafirma_logoutClicked()">Logout (' + userIdentifier + ')</a>', pageControlsPane.domNode);
         
         // TODO: Improve status reporting
         // serverStatusPane = panelBuilder.newContentPane({content: "Server status: unknown"});
@@ -521,6 +501,22 @@ define([
         console.log(JSON.stringify(sections, null, 4));
     }
     
+    function setupGlobalFunctions() {
+        // Set up global function used by section dashboard links
+        
+        window.narrafirma_openPage = function (pageIdentifier) {
+            clientState.set("currentPageIdentifier", pageIdentifier);
+        };
+        
+        window.narrafirma_logoutClicked = function () {
+            buttonActions.logoutButtonClicked();
+        };
+        
+        window.narrafirma_helpClicked = function (pageIdentifier) {
+            buttonActions.helpButtonClicked();
+        };
+    }
+    
     // The main starting point of the application
     function initialize() {
         console.log("=======", new Date().toISOString(), "application.initialize() called");
@@ -537,10 +533,7 @@ define([
         // Ensure defaults
         if (!initialHashParameters["page"]) clientState.set("currentPageIdentifier", startPage);
         
-        // Set up global function used by section dashboard links
-        window.narrafirma_openPage = function (pageIdentifier) {
-            clientState.set("currentPageIdentifier", pageIdentifier);
-        };
+        setupGlobalFunctions();
         
         // Throwaway single-use pointrel client instance which does not access a specific journal and for which polling is not started
         var singleUsePointrelClient = new PointrelClient("/api/pointrel20150417", "unused", {});

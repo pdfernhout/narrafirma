@@ -48,9 +48,11 @@ define([
         pageControlsPane.placeAt(navigationPane, "last");
 
         domConstruct.place('<span id="narrafirma-name">NarraFirma&#0153;</span>', pageControlsPane.domNode);
-        
+            
         breadcrumbsSpan = domConstruct.place('<span id="narrafirma-breadcrumbs"><a href="javascript:narrafirma_openPage(\'page_dashboard\')">Home</a></span>', pageControlsPane.domNode);
 
+        domConstruct.place('<a id="narrafirma-help-link" href="javascript:narrafirma_helpClicked()">Help</a>', pageControlsPane.domNode);
+        
         return pageControlsPane;
     }
 
