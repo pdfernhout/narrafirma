@@ -30,11 +30,18 @@
             "displayPrompt": "<input type=\"file\" id=\"csvFileLoader\" name=\"files\" title=\"Load File\" style=\"display:none\"/>"
         },
         {
-            "id": "project_importCSVFile",
+            "id": "project_importCSVQuestionnaire",
             "valueType": "none",
             "displayType": "button",
-            "displayConfiguration": "importCSVFile",
-            "displayPrompt": "Import data from CSV file into new collection ..."
+            "displayConfiguration": "importCSVQuestionnaire",
+            "displayPrompt": "Import questionnaire from CSV file ..."
+        },
+        {
+            "id": "project_importCSVStories",
+            "valueType": "none",
+            "displayType": "button",
+            "displayConfiguration": "importCSVStories",
+            "displayPrompt": "Import story data from CSV file into collection ..."
         }
     ]
 }
