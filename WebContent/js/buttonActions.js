@@ -298,8 +298,29 @@ define([
         alert(message);
     }
     
+    function processCSVFileContents(contents) {
+        console.log("processCSVFileContents contents", contents);
+        
+        throw new Error("Unfinished");
+    }
+    
     function importCSVFile() {
-        console.log("importCSVFile");
+        // console.log("importCSVFile");
+        var cvsFileUploader = document.getElementById("csvFileLoader");
+        // console.log("cvsFileUploader", cvsFileUploader);
+        cvsFileUploader.onchange = function() {
+            var file = cvsFileUploader.files[0];
+            if (!file) {
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var contents = e.target.result;
+                processCSVFileContents(contents);
+            };
+            reader.readAsText(file);
+        };
+        cvsFileUploader.click();
     }
     
     function logoutButtonClicked() {

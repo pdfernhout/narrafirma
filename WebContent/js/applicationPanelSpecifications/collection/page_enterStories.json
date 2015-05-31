@@ -17,14 +17,20 @@
             "displayPrompt": "Choose a story collection to enter a questionnaire for."
         },
         {
-            "id": "printQuestionsForm_enterStories",
+            "id": "project_enterStories",
             "valueType": "none",
             "displayType": "button",
             "displayConfiguration": "enterSurveyResult",
             "displayPrompt": "Enter survey result ..."
         },
         {
-            "id": "printQuestionsForm_importCSVFile",
+            "id": "project_csvFileUploader",
+            "valueType": "none",
+            "displayType": "html",
+            "displayPrompt": "<input type=\"file\" id=\"csvFileLoader\" name=\"files\" title=\"Load File\" style=\"display:none\"/>"
+        },
+        {
+            "id": "project_importCSVFile",
             "valueType": "none",
             "displayType": "button",
             "displayConfiguration": "importCSVFile",
