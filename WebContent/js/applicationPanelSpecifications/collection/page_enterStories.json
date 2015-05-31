@@ -21,7 +21,14 @@
             "valueType": "none",
             "displayType": "button",
             "displayConfiguration": "enterSurveyResult",
-            "displayPrompt": "Enter survey result"
+            "displayPrompt": "Enter survey result ..."
+        },
+        {
+            "id": "printQuestionsForm_importCSVFile",
+            "valueType": "none",
+            "displayType": "button",
+            "displayConfiguration": "importCSVFile",
+            "displayPrompt": "Import data from CSV file into new collection ..."
         }
     ]
 }

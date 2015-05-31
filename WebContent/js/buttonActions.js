@@ -298,6 +298,10 @@ define([
         alert(message);
     }
     
+    function importCSVFile() {
+        console.log("importCSVFile");
+    }
+    
     function logoutButtonClicked() {
         window.location.href = "/logout";
     }
@@ -314,6 +318,7 @@ define([
         storyCollectionStop: surveyCollection.storyCollectionStop,
         copyStoryFormURL: copyStoryFormURL,
         guiOpenSection: guiOpenSection,
+        importCSVFile: importCSVFile,
 
         // Called directly from application
         importExportOld: importExportClicked,
