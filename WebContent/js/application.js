@@ -1,6 +1,7 @@
 define([
     "dojo/i18n!js/nls/applicationMessages",
     "js/buttonActions",
+    "js/csvImportExport",
     "js/panelBuilder/dialogSupport",
     "dojo/dom-class",
     "dojo/dom-construct",
@@ -27,6 +28,7 @@ define([
 ], function(
     applicationMessages,
     buttonActions,
+    csvImportExport,
     dialogSupport,
     domClass,
     domConstruct,
@@ -677,6 +679,7 @@ define([
                 panelBuilder.projectModel = project.projectModel;
                 panelBuilder.clientState = clientState;
                 buttonActions.initialize(project);
+                csvImportExport.initialize(project);
                 
                 startTrackingClientStateChanges();
                  
