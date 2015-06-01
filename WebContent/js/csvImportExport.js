@@ -120,12 +120,46 @@ define([
         });
         console.log("processCSVContentsForQuestionnaire headerAndItems", headerAndItems);
         
-        var name = prompt("Please enter a short name for this questionnaire");
-        if (!name) return;
-        if (questionnaireGeneration.buildQuestionnaire(project, name)) {
-            alert("A questionnaire already exists with that name");
+        var shortName = prompt("Please enter a short name for this questionnaire");
+        if (!shortName) return;
+        if (questionnaireGeneration.buildQuestionnaire(project, shortName)) {
+            alert('A questionnaire already exists with that name: "' + shortName + '"');
             return;
         }
+        
+        // For now, no eliciting questions, so the default one would be used
+        
+        // Add story questions
+        // TODO: What if questions with the same shortName but different options already exist?
+        
+        var questionnaire = {
+            questionForm_shortName: shortName,
+            questionForm_title: shortName,
+            questionForm_participantGroups: "",
+            questionForm_startText: "",
+            questionForm_image: "",
+            questionForm_elicitingQuestions: [],
+            questionForm_storyQuestions: [],
+            questionForm_participantQuestions: [],
+            questionForm_endText: "",
+        };
+        
+        var items = headerAndItems.items;
+        var i;
+        var storyQuestions = [];
+        var participantQuestions = [];
+        for (i = 0; i < items.length; i++) {
+            var item = items[i];
+            var about = item.About;
+            if (about === "story") {
+                storyQuestions.push(item);
+            } else if (about === "participant") {
+                participantQuestions.push(item);
+            } else {
+                console.log("Error: unexpected About type of", about);
+            }
+        }
+        
     }
     
     function chooseCSVFileToImport(callback) {
