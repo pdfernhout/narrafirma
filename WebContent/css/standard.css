@@ -3,6 +3,7 @@
 /* NOTE: the mnemonic for margin or padding order is TROUBLE: Top Right Bottom Left */
 
 html, body {
+	font-family: Arial, Helvetica, sans-serif;
     height: 100%;
     width: 100%;
     margin:0;
@@ -11,7 +12,7 @@ html, body {
 
 body {
     min-height: 100%;
-    font-size: 100%;
+    font-size: 1em;
     margin: 0em;
     padding: 0em;
     padding-left: 0em;
@@ -49,6 +50,7 @@ a:active {
     height: 100%;
     width: 100%;
 }
+
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Navigation bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
@@ -143,6 +145,7 @@ a:active {
 
 #narrafirma-logout-link {
     float: right;
+    font-size: 0.9em;
 }
 
 #narafirma-breadcrumbs {
@@ -198,6 +201,8 @@ a:active {
 }
 
 .narrafirma-questionAnswer { /* this is now used to display the reminder on the phase dashboard page */
+    float: right;
+    width: 90%;
     margin: 0.3em 0em 0.3em 0em;
     padding: 0.5em;
     background: #e0e6cc;
@@ -252,6 +257,10 @@ form {
 .narrafirma-griditempanel-viewing .questionExternal {
 	background: #e4e4e4;
 	margin: 0px;
+}
+
+.dijitTextArea {
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Story card display ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

@@ -1,32 +1,38 @@
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Base ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 body { 
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 1.05em;
 	text-align: left; 
 	background: white; 
 	margin: 0;
 }
 
-.header { 
-	background: #d3d2d2;
-	margin: 0px;
-	padding: 20px; 
-	border-bottom: 4px solid #a7a5a5;
-}
-	
 a:link {
-	color: #658200;
+	color: #895717;
 }
 
 a:visited {
-	color: #3b5fab;
+	color: #3e3739;
 }
 
 a:hover {
-	color: #2e4a85;
+	color: #b5731e;
 }
 
 a:active {
-	color: #3b5fab;
+	color: #b5731e;
 }
 
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Navigation ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.header { 
+	background: #f4e0cc;
+	margin: 0px;
+	padding: 20px; 
+	border-bottom: 4px solid #cc6400;
+}
+	
 .narrafirma-name {
 	font-size: 1em;
 	color: #231f20;
@@ -42,37 +48,54 @@ a:active {
 	margin: 10px;
 }
 
-.heading {
-	font-size: 1.3em;
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Page styles ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.page-title {
+	font-size: 1.6em;
 	font-weight: 700;
-	padding: 16px 6px 16px 0px;
+	padding: 12px 6px 12px 6px;
+}
+
+.heading {
+	font-size: 1.2em;
+	font-weight: 700;
+	padding: 8px 6px 6px 6px;
 }
 
 .text {
-	font-size: 1.1em;
-	background: #e4e4e4;
-	padding: 8px;
+	background: #f4e0cc;
+	padding: 4px 6px 4px 6px;
 }
 
 .question {
-	background: #d3d2d2;
-	font-size: 1.1em;
+	background: #eac199;
 	font-style: italic;
-	padding: 9px 8px 8px 8px;
-	border-bottom: 1px solid #a7a5a5;
+	padding: 9px 8px 8px 6px;
+	border-bottom: 2px solid #cc6400;
 }
 
 .question-answer {
-	background: #e4e4e4;
-	font-size: 1.1em;
-	padding: 8px;
+	background: #f4e0cc;
+	padding: 4px 6px 4px 6px;
 }
 
 .narrafirma-pni-phases-image {
 	float: right;
 }
 
-/* ------- old ---------- */
+.book-quote {
+	margin: 20px;
+	padding: 20px;
+	background: #e4e4e4;
+	border: 1px solid #3e3739;
+}
+
+.book-quote-heading {
+	font-weight: 700;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ old, maybe not used ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .section {
 	font-style: italic;
@@ -86,17 +109,6 @@ a:active {
 	font: 60% verdana,tahoma;
 	margin-left: 4px;
 	margin-top: 10px;
-}
-
-.book-quote {
-	margin: 20px;
-	padding: 20px;
-	background: #f4e0cc;
-	border: 1px solid #cc6400;
-}
-
-.book-quote-heading {
-	font-weight: 700;
 }
 
 .seeBookPages {
