@@ -1,0 +1,66 @@
+<!DOCTYPE HTML> 
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Test of select in a table</title>
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/resources/dojo.css">
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.4/dijit/themes/dijit.css">
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.4/dijit/themes/claro/claro.css">
+
+<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js"></script>
+
+</head>
+
+<body class="claro">
+
+<div id="testDiv"></div>
+
+<script>
+require(["dojox/mvc/at", "dojo/keys", "dojo/Stateful", "dijit/layout/ContentPane", "dijit/form/TextBox", "dojo/domReady!"], function(at, keys, Stateful, ContentPane, TextBox){
+    
+    // Issue: Notice how the widget sends changed messages even when value is changed programmatically (not by GUI user) via the at connector
+
+    var state = new Stateful({text: "Hello"});
+    
+    var topPane = new ContentPane();      
+    topPane.placeAt(document.body)
+    topPane.startup();
+    
+    var textBox1 = new TextBox({value: at(state, "text").direction(at.from)});
+    textBox1.on("change", function (value) {
+        console.log("textBox1 changed", value);
+        state.set("text", value);
+    });
+    textBox1.on("keydown", function(e) { 
+        console.log("key down", e);                
+        if (e.keyCode == keys.ENTER) {
+            console.log("was ENTER");
+            state.set("text", textBox1.get("value"));
+        }
+    });
+    textBox1.placeAt(topPane);
+    
+    new ContentPane({content: "<br>"}).placeAt(topPane);
+    
+    var textBox2 = new TextBox({value: at(state, "text").direction(at.from)});
+    textBox2.on("change", function (value) {
+        console.log("textBox2 changed", value);
+        state.set("text", value);
+    });
+    textBox2.placeAt(topPane);
+    
+    new ContentPane({content: "<br>"}).placeAt(topPane);
+    
+    var textBox3 = new TextBox({value: at(state, "text").direction(at.from)});
+    textBox3.on("change", function (value) {
+        console.log("textBox3 changed", value);
+        state.set("text", value);
+    });
+    textBox3.placeAt(topPane);
+
+});
+</script>
+
+</body>
+</html>
