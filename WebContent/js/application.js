@@ -650,6 +650,8 @@ define([
             // generateNavigationDataInJSON();
      
             processAllPanels();
+            
+            // console.log("panelSpecificationCollection", panelSpecificationCollection);
 
             // Tell the panel builder how to build panels
             panelBuilder.setPanelSpecifications(panelSpecificationCollection);
