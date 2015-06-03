@@ -2005,51 +2005,51 @@
             "helpPage": "page_readPlanningReport"
         }
     ],
-    "ChooseCollectionVenuesActivity": [
+    "ChooseCollectionMethodsActivity": [
         {
-            "id": "project_venuesIntro",
+            "id": "project_methodsIntro",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "On this page you will plan your story collection venues, or the ways you will collect stories.",
-            "modelClass": "ChooseCollectionVenuesActivity",
+            "displayPrompt": "On this page you will plan your story collection <strong>methods</strong>, or the ways you will collect stories.",
+            "modelClass": "ChooseCollectionMethodsActivity",
             "helpSection": "collection",
-            "helpPage": "page_chooseCollectionVenues"
+            "helpPage": "page_chooseCollectionMethods"
         },
         {
-            "id": "SPECIAL_venueRecommendations",
+            "id": "SPECIAL_methodRecommendations",
             "valueType": "none",
             "displayType": "recommendationTable",
             "displayConfiguration": "Venues",
-            "displayPrompt": "Venue recommendations",
-            "modelClass": "ChooseCollectionVenuesActivity",
+            "displayPrompt": "Method recommendations",
+            "modelClass": "ChooseCollectionMethodsActivity",
             "helpSection": "collection",
-            "helpPage": "page_chooseCollectionVenues"
+            "helpPage": "page_chooseCollectionMethods"
         },
         {
-            "id": "project_venuesList",
+            "id": "project_methodsList",
             "valueType": "array",
             "required": true,
             "displayType": "grid",
-            "displayConfiguration": "panel_addVenue",
-            "displayName": "Story collection venues",
+            "displayConfiguration": "panel_addStoryCollectionMethod",
+            "displayName": "Story collection methods",
             "displayPrompt": "These are the ways you will be collecting stories.",
-            "modelClass": "ChooseCollectionVenuesActivity",
+            "modelClass": "ChooseCollectionMethodsActivity",
             "helpSection": "collection",
-            "helpPage": "page_chooseCollectionVenues"
+            "helpPage": "page_chooseCollectionMethods"
         },
         {
-            "id": "page_chooseCollectionVenues_reminders",
+            "id": "page_chooseCollectionMethods_reminders",
             "valueType": "string",
             "displayType": "textarea",
             "displayName": "Reminders",
             "displayClass": "narrafirma-reminder",
             "displayPrompt": "You can enter <strong>reminders</strong> about this page here. They will appear on this section's home page.",
-            "modelClass": "ChooseCollectionVenuesActivity",
+            "modelClass": "ChooseCollectionMethodsActivity",
             "helpSection": "collection",
-            "helpPage": "page_chooseCollectionVenues"
+            "helpPage": "page_chooseCollectionMethods"
         },
         {
-            "id": "page_chooseCollectionVenues_previousPageButton",
+            "id": "page_chooseCollectionMethods_previousPageButton",
             "valueType": "none",
             "displayPrompt": "Previous: Collection",
             "displayType": "button",
@@ -2059,12 +2059,12 @@
             },
             "displayIconClass": "leftButtonImage",
             "displayPreventBreak": true,
-            "modelClass": "ChooseCollectionVenuesActivity",
+            "modelClass": "ChooseCollectionMethodsActivity",
             "helpSection": "collection",
-            "helpPage": "page_chooseCollectionVenues"
+            "helpPage": "page_chooseCollectionMethods"
         },
         {
-            "id": "page_chooseCollectionVenues_nextPageButton",
+            "id": "page_chooseCollectionMethods_nextPageButton",
             "valueType": "none",
             "displayPrompt": "Next: Plan story collection sessions",
             "displayType": "button",
@@ -2074,25 +2074,25 @@
             },
             "displayIconClass": "rightButtonImage",
             "displayPreventBreak": true,
-            "modelClass": "ChooseCollectionVenuesActivity",
+            "modelClass": "ChooseCollectionMethodsActivity",
             "helpSection": "collection",
-            "helpPage": "page_chooseCollectionVenues"
+            "helpPage": "page_chooseCollectionMethods"
         }
     ],
     "Venue": [
         {
-            "id": "venue_name",
+            "id": "storyCollectionMethod_name",
             "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Name",
-            "displayPrompt": "Please give this venue plan a name.",
+            "displayPrompt": "Please give this method plan a name.",
             "modelClass": "Venue",
             "helpSection": "collection",
-            "helpPage": "panel_addVenue"
+            "helpPage": "panel_addStoryCollectionMethod"
         },
         {
-            "id": "venue_primary_type",
+            "id": "storyCollectionMethod_primary_type",
             "valueType": "string",
             "valueOptions": [
                 "individual interviews",
@@ -2108,35 +2108,35 @@
             "required": true,
             "displayType": "select",
             "displayName": "Type",
-            "displayPrompt": "Choose a primary means of story collection for this venue.",
+            "displayPrompt": "Choose a primary means of story collection for this method.",
             "modelClass": "Venue",
             "helpSection": "collection",
-            "helpPage": "panel_addVenue"
+            "helpPage": "panel_addStoryCollectionMethod"
         },
         {
-            "id": "venue_participantGroups",
+            "id": "storyCollectionMethod_participantGroups",
             "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Participants",
-            "displayPrompt": "Which group(s) of participants will tell stories in this venue?",
+            "displayPrompt": "Which group(s) of participants will tell stories in this method?",
             "modelClass": "Venue",
             "helpSection": "collection",
-            "helpPage": "panel_addVenue"
+            "helpPage": "panel_addStoryCollectionMethod"
         },
         {
-            "id": "venue_timeline",
+            "id": "storyCollectionMethod_timeline",
             "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Timeline",
-            "displayPrompt": "What is your timeline for collecting stories using this venue?",
+            "displayPrompt": "What is your timeline for collecting stories using this method?",
             "modelClass": "Venue",
             "helpSection": "collection",
-            "helpPage": "panel_addVenue"
+            "helpPage": "panel_addStoryCollectionMethod"
         },
         {
-            "id": "venue_locations",
+            "id": "storyCollectionMethod_locations",
             "valueType": "string",
             "required": true,
             "displayType": "textarea",
@@ -2144,10 +2144,10 @@
             "displayPrompt": "In what locations will stories be collected?",
             "modelClass": "Venue",
             "helpSection": "collection",
-            "helpPage": "panel_addVenue"
+            "helpPage": "panel_addStoryCollectionMethod"
         },
         {
-            "id": "venue_help",
+            "id": "storyCollectionMethod_help",
             "valueType": "string",
             "required": true,
             "displayType": "textarea",
@@ -2155,10 +2155,10 @@
             "displayPrompt": "Will anyone be helping to collect stories? What are your plans for organizing your help?",
             "modelClass": "Venue",
             "helpSection": "collection",
-            "helpPage": "panel_addVenue"
+            "helpPage": "panel_addStoryCollectionMethod"
         },
         {
-            "id": "venue_resources",
+            "id": "storyCollectionMethod_resources",
             "valueType": "string",
             "required": true,
             "displayType": "textarea",
@@ -2166,18 +2166,18 @@
             "displayPrompt": "What technologies, if any, will you use to collect stories?",
             "modelClass": "Venue",
             "helpSection": "collection",
-            "helpPage": "panel_addVenue"
+            "helpPage": "panel_addStoryCollectionMethod"
         },
         {
-            "id": "venue_description",
+            "id": "storyCollectionMethod_description",
             "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Other",
-            "displayPrompt": "Describe any other details of your story collection plans for this venue.",
+            "displayPrompt": "Describe any other details of your story collection plans for this method.",
             "modelClass": "Venue",
             "helpSection": "collection",
-            "helpPage": "panel_addVenue"
+            "helpPage": "panel_addStoryCollectionMethod"
         }
     ],
     "PlanStoryCollectionSesssionsActivity": [
@@ -2226,11 +2226,11 @@
         {
             "id": "page_planStoryCollectionSessions_previousPageButton",
             "valueType": "none",
-            "displayPrompt": "Previous: Choose collection venues",
+            "displayPrompt": "Previous: Choose collection methods",
             "displayType": "button",
             "displayConfiguration": {
                 "action": "guiOpenSection",
-                "section": "page_chooseCollectionVenues"
+                "section": "page_chooseCollectionMethods"
             },
             "displayIconClass": "leftButtonImage",
             "displayPreventBreak": true,
