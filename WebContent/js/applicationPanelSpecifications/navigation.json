@@ -44,8 +44,8 @@
                 ]
             },
             {
-                "panelID": "page_aboutYou",
-                "panelName": "About you"
+                "panelID": "page_describeYourResources",
+                "panelName": "Describe your resources"
             },
             {
                 "panelID": "page_projectStories",
