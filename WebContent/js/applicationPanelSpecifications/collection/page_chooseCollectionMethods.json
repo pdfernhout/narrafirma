@@ -1,30 +1,30 @@
 {
-    "id": "page_chooseCollectionVenues",
-    "displayName": "Choose collection venues",
+    "id": "page_chooseCollectionMethods",
+    "displayName": "Choose collection methods",
     "displayType": "page",
     "section": "collection",
-    "modelClass": "ChooseCollectionVenuesActivity",
+    "modelClass": "ChooseCollectionMethodsActivity",
     "panelFields": [
         {
-            "id": "project_venuesIntro",
+            "id": "project_methodsIntro",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "On this page you will plan your story collection venues, or the ways you will collect stories."
+            "displayPrompt": "On this page you will plan your story collection <strong>methods</strong>, or the ways you will collect stories."
         },
         {
-            "id": "SPECIAL_venueRecommendations",
+            "id": "SPECIAL_methodRecommendations",
             "valueType": "none",
             "displayType": "recommendationTable",
             "displayConfiguration": "Venues",
             "displayPrompt": "Venue recommendations"
         },
         {
-            "id": "project_venuesList",
+            "id": "project_methodsList",
             "valueType": "array",
             "required": true,
             "displayType": "grid",
-            "displayConfiguration": "panel_addVenue",
-            "displayName": "Story collection venues",
+            "displayConfiguration": "panel_addStoryCollectionMethod",
+            "displayName": "Story collection methods",
             "displayPrompt": "These are the ways you will be collecting stories."
         }
     ]

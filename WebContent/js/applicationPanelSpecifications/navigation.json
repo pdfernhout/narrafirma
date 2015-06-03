@@ -94,12 +94,12 @@
                 "panelName": "Collection"
             },
             {
-                "panelID": "page_chooseCollectionVenues",
-                "panelName": "Choose collection venues",
+                "panelID": "page_chooseCollectionMethods",
+                "panelName": "Choose collection methods",
                 "extraPanels": [
                     {
-                        "panelID": "panel_addVenue",
-                        "panelName": "Plan story collection venue"
+                        "panelID": "panel_addStoryCollectionMethod",
+                        "panelName": "Plan story collection method"
                     }
                 ]
             },

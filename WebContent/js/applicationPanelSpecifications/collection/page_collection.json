@@ -10,7 +10,7 @@
             "id": "project_collectionPhaseDescriptionLabel",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "In the collection phase of your PNI project, you will decide on story collection venues,\ncreate some story eliciting and story interpretation questions, design your story collection form, and plan any story collection sessions you want to hold. Then you can start collecting stories over the web, review incoming stories, and enter records of story collection sessions.<br><br>Below are links to each step of this phase, along with any reminders you may have entered on them."
+            "displayPrompt": "In the collection phase of your PNI project, you will decide on story collection methods; write questions for story elicitation and interpretation; design your story collection form; and plan story collection sessions. You can also review incoming stories and enter records of story collection sessions.<br><br>Below are links to each step of the collection phase, along with any reminders you may have entered on them."
         }
     ]
 }

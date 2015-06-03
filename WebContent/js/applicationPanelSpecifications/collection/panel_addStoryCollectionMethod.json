@@ -1,20 +1,20 @@
 {
-    "id": "panel_addVenue",
-    "displayName": "Plan story collection venue",
+    "id": "panel_addStoryCollectionMethod",
+    "displayName": "Plan story collection method",
     "displayType": "panel",
     "section": "collection",
     "modelClass": "Venue",
     "panelFields": [
         {
-            "id": "venue_name",
+            "id": "storyCollectionMethod_name",
             "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Name",
-            "displayPrompt": "Please give this venue plan a name."
+            "displayPrompt": "Please give this method plan a name."
         },
         {
-            "id": "venue_primary_type",
+            "id": "storyCollectionMethod_primary_type",
             "valueType": "string",
             "valueOptions": [
                 "individual interviews",
@@ -30,26 +30,26 @@
             "required": true,
             "displayType": "select",
             "displayName": "Type",
-            "displayPrompt": "Choose a primary means of story collection for this venue."
+            "displayPrompt": "Choose a primary means of story collection for this method."
         },
         {
-            "id": "venue_participantGroups",
+            "id": "storyCollectionMethod_participantGroups",
             "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Participants",
-            "displayPrompt": "Which group(s) of participants will tell stories in this venue?"
+            "displayPrompt": "Which group(s) of participants will tell stories in this method?"
         },
         {
-            "id": "venue_timeline",
+            "id": "storyCollectionMethod_timeline",
             "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Timeline",
-            "displayPrompt": "What is your timeline for collecting stories using this venue?"
+            "displayPrompt": "What is your timeline for collecting stories using this method?"
         },
         {
-            "id": "venue_locations",
+            "id": "storyCollectionMethod_locations",
             "valueType": "string",
             "required": true,
             "displayType": "textarea",
@@ -57,7 +57,7 @@
             "displayPrompt": "In what locations will stories be collected?"
         },
         {
-            "id": "venue_help",
+            "id": "storyCollectionMethod_help",
             "valueType": "string",
             "required": true,
             "displayType": "textarea",
@@ -65,7 +65,7 @@
             "displayPrompt": "Will anyone be helping to collect stories? What are your plans for organizing your help?"
         },
         {
-            "id": "venue_resources",
+            "id": "storyCollectionMethod_resources",
             "valueType": "string",
             "required": true,
             "displayType": "textarea",
@@ -73,12 +73,12 @@
             "displayPrompt": "What technologies, if any, will you use to collect stories?"
         },
         {
-            "id": "venue_description",
+            "id": "storyCollectionMethod_description",
             "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Other",
-            "displayPrompt": "Describe any other details of your story collection plans for this venue."
+            "displayPrompt": "Describe any other details of your story collection plans for this method."
         }
     ]
 }
