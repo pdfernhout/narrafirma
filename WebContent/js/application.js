@@ -16,6 +16,7 @@ define([
     "js/panelBuilder/PanelSpecificationCollection",
     "js/pointrel20150417/PointrelClient",
     "js/Project",
+    "js/questionnaireGeneration",
     "dojo/request",
     "dojo/Stateful",
     "js/surveyCollection",
@@ -43,6 +44,7 @@ define([
     PanelSpecificationCollection,
     PointrelClient,
     Project,
+    questionnaireGeneration,
     request,
     Stateful,
     surveyCollection,
@@ -468,6 +470,13 @@ define([
     function calculateFunctionResultForGUI(panelBuilder, contentPane, model, fieldSpecification, functionName) {
         if (functionName === "isStoryCollectingEnabled") {
             return surveyCollection.isStoryCollectingEnabled(fieldSpecification);
+        } else if (functionName === "storeQuestionnaireInStoryCollection") {
+            var storyCollection = fieldSpecification.value;
+            var questionnaireName = storyCollection.storyCollection_questionnaireIdentifier;
+            var questionnaire = questionnaireGeneration.buildQuestionnaire(project, questionnaireName);
+            if (!questionnaire) return ["Questionnaire could not be created for: " + questionnaireName];
+            storyCollection.questionnaire = questionnaire;
+            return null;
         } else {
             console.log("TODO: calculateFunctionResultForGUI ", functionName, fieldSpecification);
             return "calculateFunctionResultForGUI UNFINISHED: " + functionName + " for: " + fieldSpecification.id;
@@ -654,7 +663,7 @@ define([
         
         console.log("models JSON", allModels);
         
-        window.open('data:text/plain;charset=utf-8,' + escape(allModels));
+        // window.open('data:text/plain;charset=utf-8,' + escape(allModels));
         
         console.log("stop");
     }

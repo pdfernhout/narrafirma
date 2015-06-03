@@ -19,6 +19,7 @@
             "displayConfiguration": {
                 "itemPanelID": "panel_addStoryCollection",
                 "gridConfiguration": {
+                    "validateAdd": "storeQuestionnaireInStoryCollection",
                     "viewButton": true,
                     "editButton": true,
                     "addButton": true,
