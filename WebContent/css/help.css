@@ -45,7 +45,6 @@ a:active {
 }
 
 .page {
-	margin: 10px;
 }
 
 
@@ -54,30 +53,32 @@ a:active {
 .page-title {
 	font-size: 1.6em;
 	font-weight: 700;
-	padding: 12px 6px 12px 6px;
+	padding: 12px 10px 12px 10px;
 }
 
 .heading {
 	font-size: 1.2em;
 	font-weight: 700;
-	padding: 8px 6px 6px 6px;
+	padding: 8px 10px 6px 10px;
 }
 
 .text {
 	background: #f4e0cc;
-	padding: 4px 6px 4px 6px;
+	padding: 4px 10px 4px 10px;
+	margin: 0px 10px 0px 10px;
 }
 
 .question {
 	background: #eac199;
 	font-style: italic;
-	padding: 9px 8px 8px 6px;
-	border-bottom: 2px solid #cc6400;
+	padding: 9px 10px 8px 10px;
+	margin: 0px 10px 0px 10px;
 }
 
 .question-answer {
 	background: #f4e0cc;
-	padding: 4px 6px 4px 6px;
+	padding: 4px 10px 4px 10px;
+	margin: 0px 10px 0px 10px;
 }
 
 .narrafirma-pni-phases-image {

@@ -1675,7 +1675,7 @@ define(function() {
                   "facilitation": "Watch out for people not understanding the template (have others on hand); " +
                   		"people not liking the idea of making things up; people going through the process " +
                   		"mechanically; people paying too much attention to story quality."
-              },
+              }
 	    ]
     	
     }

@@ -9,7 +9,7 @@
             "id": "project_elicitingQuestionsLabel",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "On this page you will design the eliciting questions you use to ask people to tell stories.\nYou need at least one question for people to answer. Giving people more than one question to choose from\nis recommended."
+            "displayPrompt": "On this page you will design the questions you use <strong>to ask people to tell stories</strong>. You need at least one question for people to answer; but giving people more than one question to choose from is recommended."
         },
         {
             "id": "project_elicitingQuestionsList",
@@ -18,7 +18,7 @@
             "displayType": "grid",
             "displayConfiguration": "panel_addElicitingQuestion",
             "displayName": "Story eliciting questions",
-            "displayPrompt": "These are the questions you will be asking."
+            "displayPrompt": "These are the <strong>eliciting questions</strong> you have created so far."
         },
         {
             "id": "SPECIAL_elicitingQuestionRecommendations",

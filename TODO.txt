@@ -9,6 +9,20 @@ BIG OPTIONAL FUNCTIONALITY AREAS
 - visual clustering in planning phase
 - theming and tagging
 
+THINGS CYNTHIA NOTICED WHILE DOING HELP (probably redundant but just in case)
+--- plan story collection session
+- when you use a template (at least for a story collection exercise) it says "Copy selected template 'undefined' into 
+  question definition?" should have a name
+- activities list needs move up and move down buttons (since you are supposed to be planning a schedule) OR an "order' field
+- print session agenda doesn't work yet - also i've changed it to "export session agenda" 
+  because they might want to open the HTML file in something to format it
+--- write story eliciting questions
+- in the grid, it says "Short Name' but it SHOWS the ID
+- when you choose a template, it asks whether you want to copy it, and it's not 'undefined', but it's the ID, not the short name
+
+--- design questionnaires
+- in the lists of questions (eliciting, story, participant) it needs move up, move down arrows, OR an "order" field
+
 CRASH
 ? Story browser (Catalysis section second page, but also review stories during collection) seems to sometimes cause and endless loop in Firexfox or Chrome causing memory use growth and beach ball. Maybe some resize bug in dojo or dgrid?
 
