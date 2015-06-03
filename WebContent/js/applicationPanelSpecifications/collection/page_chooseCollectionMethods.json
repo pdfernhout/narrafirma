@@ -16,7 +16,7 @@
             "valueType": "none",
             "displayType": "recommendationTable",
             "displayConfiguration": "Venues",
-            "displayPrompt": "Venue recommendations"
+            "displayPrompt": "Method recommendations"
         },
         {
             "id": "project_methodsList",
