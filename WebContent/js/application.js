@@ -643,6 +643,21 @@ define([
             }
         });
     }
+    
+    // TODO: For helping create all the models -- temporary
+    function printModels() {
+        console.log("panelSpecificationCollection", panelSpecificationCollection);
+        
+        console.log("models", panelSpecificationCollection.modelClassToModelFieldSpecificationsMap);
+        
+        var allModels = JSON.stringify(panelSpecificationCollection.modelClassToModelFieldSpecificationsMap, null, 4);
+        
+        console.log("models JSON", allModels);
+        
+        window.open('data:text/plain;charset=utf-8,' + escape(allModels));
+        
+        console.log("stop");
+    }
         
     function loadApplicationDesign() {
         // Load the application design
@@ -651,7 +666,9 @@ define([
      
             processAllPanels();
             
-            // console.log("panelSpecificationCollection", panelSpecificationCollection);
+            // TODO: Only for creating models once
+            //printModels();
+            //return;
 
             // Tell the panel builder how to build panels
             panelBuilder.setPanelSpecifications(panelSpecificationCollection);
