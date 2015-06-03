@@ -1,19 +1,24 @@
 define([
     "lib/d3/d3",
+    "dojox/uuid/generateRandomUuid",
     "js/questionnaireGeneration",
     "js/surveyBuilder",
     "js/surveyCollection",
     "dojo/domReady!"
 ], function(
     d3,
+    generateRandomUuid,
     questionnaireGeneration,
     surveyBuilder,
     surveyCollection
 ){
     "use strict";
     
-    var project;
+    // TODO: Fix big kludge of this module level variable across the app!
+    var lastQuestionnaireUploaded = null;
     
+    var project;
+
     function initialize(theProject) {
         project = theProject;
     }
@@ -59,7 +64,7 @@ define([
         // console.log("items", items);
         return {header: header, items: items};
     }
-    
+
     function processCSVContentsForStories(contents) {
         // Throws away line after header which starts with a blank
         var headerAndItems = processCSVContents(contents, function (header, row) {
@@ -87,9 +92,45 @@ define([
         });
         console.log("processCSVContentsForStories headerAndItems", headerAndItems);
         var items = headerAndItems.items;
-        for (var i = 0; i < items.length; i++) {
-            var item = items[i];
+        for (var itemIndex = 0; itemIndex < items.length; itemIndex++) {
+            var item = items[itemIndex];
             console.log("item", item);
+            // TODO: Copied code from surveyBuilder module! Need a common function with surveyBuilder to make this!!!
+            var surveyResult = {
+                __type: "org.workingwithstories.QuestionnaireResponse",
+                // TODO: Think about whether to include entire questionnaire or something else perhaps
+                // TODO: Big kludge to use (module) global here!!!
+                questionnaire: lastQuestionnaireUploaded,
+                responseID: generateRandomUuid(),
+                stories: [],
+                participantData: {
+                    __type: "org.workingwithstories.ParticipantData",
+                    _participantID: generateRandomUuid()
+                },
+                // TODO: Should have timestamp in CSV file!!!
+                timestampStart: "" + new Date().toISOString(),
+                timestampEnd: "" + new Date().toISOString(),
+                // TODO: this is a kludgy way to get a string and seems brittle
+                importedBy: project.userIdentifier.userIdentifier
+            };
+            
+            var story = {};
+            // Looks like eliciting question maybe not needed if only one question? Also, should have support for multiple ones if CSV adds them
+            story.__survey_elicitingQuestion = lastQuestionnaireUploaded.elicitingQuestions[0].id;
+            story.__survey_storyText = item["Story text"];
+            story.__survey_storyName = item["Story title"];
+            var i;
+            var question;
+            for (i = 0; i < lastQuestionnaireUploaded.storyQuestions.length; i++) {
+                question = lastQuestionnaireUploaded.storyQuestions[i];
+                story[question.id] = item[question.id.substring("__survey_".length)];
+            }
+            surveyResult.stories.push(story);
+            for (i = 0; i < lastQuestionnaireUploaded.participantQuestions.length; i++) {
+                question = lastQuestionnaireUploaded.participantQuestions[i];
+                surveyResult.participantData[question.id] = item[question.id.substring("__survey_".length)];
+            }
+            console.log("surveyResult", surveyResult);
         }
     }
     
@@ -148,9 +189,8 @@ define([
         };
         
         var items = headerAndItems.items;
-        var i;
-        for (i = 0; i < items.length; i++) {
-            var item = items[i];
+        for (var itemIndex = 0; itemIndex < items.length; itemIndex++) {
+            var item = items[itemIndex];
             var about = item.About;
             if (about === "story") {
                 questionnaire.storyQuestions.push(questionForItem(item));
@@ -166,9 +206,6 @@ define([
         lastQuestionnaireUploaded = questionnaire;
         return questionnaire;
     }
-    
-    // TODO: Fix big kludge!
-    var lastQuestionnaireUploaded = null;
     
     function questionForItem(item) {
         var valueType = "string";
@@ -194,7 +231,7 @@ define([
         return {
             valueType: valueType,
             displayType: type,
-            id: item["Short name"] + "_" + item["Order"], 
+            id: "__survey_" + item["Short name"], 
             valueOptions: valueOptions, 
             displayName: item["Short name"], 
             displayPrompt: item["Long name"],
