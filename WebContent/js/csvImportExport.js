@@ -86,6 +86,11 @@ define([
             return newItem;
         });
         console.log("processCSVContentsForStories headerAndItems", headerAndItems);
+        var items = headerAndItems.items;
+        for (var i = 0; i < items.length; i++) {
+            var item = items[i];
+            console.log("item", item);
+        }
     }
     
     function processCSVContentsForQuestionnaire(contents) {
@@ -133,33 +138,68 @@ define([
         // TODO: What if questions with the same shortName but different options already exist?
         
         var questionnaire = {
-            questionForm_shortName: shortName,
-            questionForm_title: shortName,
-            questionForm_participantGroups: "",
-            questionForm_startText: "",
-            questionForm_image: "",
-            questionForm_elicitingQuestions: [],
-            questionForm_storyQuestions: [],
-            questionForm_participantQuestions: [],
-            questionForm_endText: "",
+            title: shortName,
+            startText: "",
+            image: "",
+            elicitingQuestions: [],
+            storyQuestions: [],
+            participantQuestions: [],
+            endText: ""
         };
         
         var items = headerAndItems.items;
         var i;
-        var storyQuestions = [];
-        var participantQuestions = [];
         for (i = 0; i < items.length; i++) {
             var item = items[i];
             var about = item.About;
             if (about === "story") {
-                storyQuestions.push(item);
+                questionnaire.storyQuestions.push(questionForItem(item));
             } else if (about === "participant") {
-                participantQuestions.push(item);
+                questionnaire.participantQuestions.push(questionForItem(item));
             } else {
                 console.log("Error: unexpected About type of", about);
             }
         }
         
+        questionnaireGeneration.ensureAtLeastOneElicitingQuestion(questionnaire);
+        console.log("CSV questionnaire made", questionnaire);
+        lastQuestionnaireUploaded = questionnaire;
+        return questionnaire;
+    }
+    
+    // TODO: Fix big kludge!
+    var lastQuestionnaireUploaded = null;
+    
+    function questionForItem(item) {
+        var valueType = "string";
+        var type = "text";
+        var valueOptions;
+        var displayConfiguration;
+        var answers = item["Answers"];
+        
+        var itemType = item["Type"];
+        if (itemType === "Single choice") {
+            type = "select";
+            valueOptions = answers;
+        } else if (itemType === "Scale") {
+            valueType = "number";
+            type = "slider";
+            displayConfiguration = [answers[0], answers[1]];
+        } if (itemType === "Multiple choice") {
+            type = "checkboxes";
+            valueOptions = item["Answers"];
+        } else {
+            console.log("IMPORT ERROR: unsupported question type: ", itemType);
+        }
+        return {
+            valueType: valueType,
+            displayType: type,
+            id: item["Short name"] + "_" + item["Order"], 
+            valueOptions: valueOptions, 
+            displayName: item["Short name"], 
+            displayPrompt: item["Long name"],
+            displayConfiguration: displayConfiguration
+        };
     }
     
     function chooseCSVFileToImport(callback) {
@@ -182,6 +222,7 @@ define([
     }
     
     function importCSVStories() {
+        if (!lastQuestionnaireUploaded) return alert("You need to upload a questionnaire first");
         chooseCSVFileToImport(processCSVContentsForStories);
     }
     
