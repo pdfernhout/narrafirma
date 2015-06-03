@@ -30,6 +30,13 @@ define([
             value: valuePathResolver.atFieldSpecification(panelBuilder, model, fieldSpecification)
         });
         
+        console.log("Select", fieldSpecification);
+        var readOnly = fieldSpecification.displayReadOnly || false;
+        if (readOnly || (fieldSpecification.valueImmutable && valuePathResolver.resolveValueForFieldSpecification(panelBuilder, model, fieldSpecification))) {
+            select.attr("readOnly", true);
+            select.attr("disabled", true);
+        }
+        
         var specifiedChoices = fieldSpecification.valueOptions;
         var choices = specifiedChoices;
         

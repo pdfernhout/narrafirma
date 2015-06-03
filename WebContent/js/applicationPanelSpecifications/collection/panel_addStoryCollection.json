@@ -8,6 +8,7 @@
         {
             "id": "storyCollection_shortName",
             "valueType": "string",
+            "valueImmutable": true,
             "required": true,
             "displayType": "text",
             "displayName": "Name",
@@ -16,6 +17,7 @@
         {
             "id": "storyCollection_questionnaireIdentifier",
             "valueType": "string",
+            "valueImmutable": true,
             "valueOptions": "/projectModel/project_questionnaires",
             "valueOptionsSubfield": "questionForm_shortName",
             "required": true,

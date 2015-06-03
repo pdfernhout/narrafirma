@@ -36,6 +36,16 @@ define([
         };
     }
     
+    function resolveValueForFieldSpecification(panelBuilder, model, fieldSpecification) {
+        var modelAndField = resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
+        return modelAndField.model.get(modelAndField.field);
+    }
+    
+    function resolveValueForValuePath(panelBuilder, model, valuePath) {
+        var modelAndField = resolveModelAndFieldForValuePath(panelBuilder, model, valuePath);
+        return modelAndField.model.get(modelAndField.field);
+    }
+    
     function atPath(panelBuilder, model, valuePath) {
        var modelAndField = resolveModelAndFieldForValuePath(panelBuilder, model, valuePath);
        return at(modelAndField.model, modelAndField.field);
@@ -49,6 +59,8 @@ define([
     return {
         resolveModelAndFieldForFieldSpecification: resolveModelAndFieldForFieldSpecification,
         resolveModelAndFieldForValuePath: resolveModelAndFieldForValuePath,
+        resolveValueForFieldSpecification: resolveValueForFieldSpecification,
+        resolveValueForValuePath: resolveValueForValuePath,      
         atPath: atPath,
         atFieldSpecification: atFieldSpecification
     };
