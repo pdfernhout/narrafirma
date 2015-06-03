@@ -65,7 +65,7 @@ define([
        var questionnaireName = storyCollection.storyCollection_questionnaireIdentifier;
        if (!questionnaireName) return null;
 
-       var questionnaire = questionnaireGeneration.buildQuestionnaire(project, questionnaireName);
+       var questionnaire = storyCollection.questionnaire;
        return questionnaire;
    }
    
@@ -104,9 +104,9 @@ define([
            questionnaires[key] = project.activeQuestionnaires[key];
        }
        
-       var questionnaireName = selectedItem.storyCollection_questionnaireIdentifier;
-       var questionnaire = questionnaireGeneration.buildQuestionnaire(project, questionnaireName);
+       var questionnaire = selectedItem.questionnaire;
        if (!questionnaire) {
+           var questionnaireName = selectedItem.storyCollection_questionnaireIdentifier;
            console.log("Could not find questionnnaire for", questionnaireName);
            return;
        }

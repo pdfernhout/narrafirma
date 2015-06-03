@@ -229,7 +229,7 @@ define([
             return null;
         }
         
-        var questionnaire = questionnaireGeneration.buildQuestionnaire(project, questionnaireName);
+        var questionnaire = storyCollection.questionnaire;
         
         if (!questionnaire) {
             // TODO: translate
