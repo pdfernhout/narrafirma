@@ -46,7 +46,21 @@ define([
     // TODO: Probably need to prevent user surveys from having a question with a short name of "_id".
     
     // Possible configuration options
-    // var configuration = {viewButton: true, addButton: true, removeButton: true, editButton: true, duplicateButton: true, moveUpDownButtons: true, navigationButtons: true, includeAllFields: false};
+    /*
+     var configuration = {
+         viewButton: true,
+         addButton: true,
+         removeButton: true,
+         editButton: true,
+         duplicateButton: true,
+         moveUpDownButtons: true,
+         navigationButtons: true,
+         includeAllFields: false, // Or ["fieldName1", "fieldName2", ...]
+         customButton: {???},
+         validateAdd: "methodName",
+         validateEdit: "methodName"
+    };
+     */
     function GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration, model) {
         var self = this;
         
@@ -317,7 +331,24 @@ define([
  
         var plainValue = getPlainValue(statefulItem);
         console.log("grid plainValue", plainValue);
-
+        
+        if (this.configuration.validateEdit) {
+        }
+        var validationMethodIdentifier = this.configuration.validateEdit;
+        if (this.formType === "add") validationMethodIdentifier = this.configuration.validateAdd || validationMethodIdentifier;
+        if (validationMethodIdentifier) {
+            var fakeFieldSpecification = {
+                displayConfiguration: validationMethodIdentifier,
+                value: plainValue
+           };
+            var errors = this.panelBuilder.calculateFunctionResult(null, null, fakeFieldSpecification);
+            if (errors) {
+                // TODO: Translate
+                alert("There are validation errors:\n" + errors);
+                return;
+            }
+        }
+        
         if (this.formType === "add") {
             this.store.add(plainValue);
         } else {
