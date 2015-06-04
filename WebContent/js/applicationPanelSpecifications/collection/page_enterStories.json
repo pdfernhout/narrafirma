@@ -22,26 +22,6 @@
             "displayType": "button",
             "displayConfiguration": "enterSurveyResult",
             "displayPrompt": "Enter survey result ..."
-        },
-        {
-            "id": "project_csvFileUploader",
-            "valueType": "none",
-            "displayType": "html",
-            "displayPrompt": "<input type=\"file\" id=\"csvFileLoader\" name=\"files\" title=\"Load File\" style=\"display:none\"/>"
-        },
-        {
-            "id": "project_importCSVQuestionnaire",
-            "valueType": "none",
-            "displayType": "button",
-            "displayConfiguration": "importCSVQuestionnaire",
-            "displayPrompt": "Import questionnaire from CSV file ..."
-        },
-        {
-            "id": "project_importCSVStories",
-            "valueType": "none",
-            "displayType": "button",
-            "displayConfiguration": "importCSVStories",
-            "displayPrompt": "Import story data from CSV file into collection ..."
         }
     ]
 }
