@@ -229,13 +229,44 @@ define([
         
         var submitted = false;
         
+        function redraw() {
+            m.render(surveyDiv, view());
+        }
+        
+        function submitButtonPressed() {
+            submitted = "pending";
+            setTimeout(function() {
+                if (Math.random() > 0.5) {
+                    submitted = true;
+                } else {
+                    submitted = "failed";
+                }
+                redraw();
+            }, 2000);
+            redraw();
+        }
+        
         function submitButtonOrWaitOrFinal() {
-            if (!submitted) {
-                return m("button", {onclick: function() {submitted = true; m.render(surveyDiv, view());}}, "Submit survey");
+            if (submitted === false) {
+                return m("button", {onclick: submitButtonPressed}, "Submit survey");
+            } else if (submitted === "failed") {
+                return m("div", [
+                    "Sending to server failed. Please try again...",
+                    m("br"),
+                    m("button", {onclick: submitButtonPressed}, "Submit survey")
+                ]);
+            } else if (submitted === "pending") {
+                return m("div", ["Sending survey result to server... Please wait..."]);
             } else {
                 return endQuestions.map(function(question, index) {
                     console.log("question", question);
-                    return m("div", [displayQuestion(question), m("br"), m("br")]);
+                    return m("div", [
+                        "Server accepted survey OK",
+                        m("br"),
+                        displayQuestion(question),
+                        m("br"),
+                        m("br")
+                    ]);
                 });
             }
         }
@@ -250,7 +281,7 @@ define([
             ]);
         };
         
-        m.render(surveyDiv, view());
+        redraw();
         
         /*
         var startPane = new ContentPane();
