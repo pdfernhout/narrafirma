@@ -219,20 +219,24 @@ define([
         function displayQuestion(question) {
             var displayType = question.displayType;
             if (displayType === "label") {
-                return m("div", [question.displayPrompt]);
+                return m("div", [question.displayPrompt, m("br"), m("br")]);
             } else if (displayType === "header") {
-                return m("div", {style: {"font-weight": "bold"}}, [question.displayPrompt]);
+                return m("div", {style: {"font-weight": "bold"}}, [question.displayPrompt, m("br"), m("br")]);
             } else if (displayType === "text") {
                 return m("div", [
                     question.displayPrompt,
                     m("br"),
                     m("input"),
+                    m("br"),
+                    m("br")
                 ]);
             } else if (displayType === "textarea") {
                 return m("div", [
                     question.displayPrompt,
                     m("br"),
                     m("textarea"),
+                    m("br"),
+                    m("br")
                 ]);
             } else if (displayType === "checkboxes") {
                 return m("div", [
@@ -240,10 +244,23 @@ define([
                      m("br"),
                      question.valueOptions.map(function (option, index) {
                          return [m("input[type=checkbox]"), option, m("br")];
-                     })
+                     }),
+                     m("br"),
+                     m("br")
                  ]);
+            } else if (displayType === "slider") {
+                console.log("slider", question);
+                return m("div", [
+                    question.displayPrompt + " (0-100)",
+                    m("br"),
+                    question.displayConfiguration[0],
+                    m('input[type="range"]'),
+                    question.displayConfiguration[1],
+                    m("br"),
+                    m("br")
+                ]);
             } else {
-                return m("div", {style: {"font-weight": "bold"}}, ["UNFINISHED: " + question.displayType]);
+                return m("div", {style: {"font-weight": "bold"}}, ["UNFINISHED: " + question.displayType, m("br"), m("br")]);
             }
         }
         
@@ -299,10 +316,11 @@ define([
             return m("div", [
                 startQuestions.map(function(question, index) {
                     console.log("question", question);
-                    return m("div", [displayQuestion(question), m("br"), m("br")]);
+                    return m("div", [displayQuestion(question)]);
                 }),
                 displaySurveyForm(),
-                submitButtonOrWaitOrFinal()
+                submitButtonOrWaitOrFinal(),
+                m("button", {onclick: redraw}, "Redraw (for debugging)")
             ]);
         };
         
