@@ -186,9 +186,10 @@ define([
         initialStoryQuestions.push({id: "__survey_" + "storyName", displayName: "storyName", displayPrompt: "Please give your story a name", displayType: "text", valueOptions:[]});
         
         var allStoryQuestions = initialStoryQuestions.concat(questionnaire.storyQuestions);
-        
-        questionnaire.participantQuestions.unshift({id: "__survey_" + "participantHeader", displayName: "participantHeader", displayPrompt: "About you", displayType: "header", valueOptions: []});
-        
+                
+        var participantQuestions = [{id: "__survey_" + "participantHeader", displayName: "participantHeader", displayPrompt: "About you", displayType: "header", valueOptions: []}];
+        participantQuestions = participantQuestions.concat(questionnaire.participantQuestions);
+
         //var form = new Form();
         //form.set("style", "width: 800px; height 800px; overflow: auto;");
         
@@ -248,6 +249,22 @@ define([
                      m("br"),
                      m("br")
                  ]);
+            } else if (displayType === "select") {
+                return m("div", [
+                     question.displayPrompt,
+                     m("br"),
+                     m("select",
+                         // TODO: Would not select frst item if had value
+                         [m("option", {selected: "selected", disabled: "disabled", hidden: "hidden", value: ''}, '')].concat(
+                             question.valueOptions.map(function (value, index) {
+                             var optionOptions = {value: value};
+                             // if (??value.indexOf(option) !== -1) opts.selected = 'selected';
+                             return m("option", optionOptions, value);
+                         }))
+                     ),
+                     m("br"),
+                     m("br")
+                 ]);
             } else if (displayType === "slider") {
                 console.log("slider", question);
                 return m("div", [
@@ -264,7 +281,7 @@ define([
             }
         }
         
-        function displaySurveyForm() {
+        function displayStoryQuestions() {
             return allStoryQuestions.map(displayQuestion);
         }
         
@@ -318,7 +335,11 @@ define([
                     console.log("question", question);
                     return m("div", [displayQuestion(question)]);
                 }),
-                displaySurveyForm(),
+                displayStoryQuestions(),
+                participantQuestions.map(function(question, index) {
+                    console.log("question", question);
+                    return m("div", [displayQuestion(question)]);
+                }),
                 submitButtonOrWaitOrFinal(),
                 m("button", {onclick: redraw}, "Redraw (for debugging)")
             ]);
