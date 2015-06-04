@@ -227,13 +227,26 @@ define([
             }
         }
         
+        var submitted = false;
+        
+        function submitButtonOrWaitOrFinal() {
+            if (!submitted) {
+                return m("button", {onclick: function() {submitted = true; m.render(surveyDiv, view());}}, "Submit survey");
+            } else {
+                return endQuestions.map(function(question, index) {
+                    console.log("question", question);
+                    return m("div", [displayQuestion(question), m("br"), m("br")]);
+                });
+            }
+        }
+        
         var view = function() {
             return m("div", [
                 startQuestions.map(function(question, index) {
                     console.log("question", question);
                     return m("div", [displayQuestion(question), m("br"), m("br")]);
                 }),
-                m("button", "Submit survey"),
+                submitButtonOrWaitOrFinal()
             ]);
         };
         
