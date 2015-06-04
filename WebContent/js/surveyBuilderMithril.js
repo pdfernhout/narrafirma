@@ -219,12 +219,36 @@ define([
         function displayQuestion(question) {
             var displayType = question.displayType;
             if (displayType === "label") {
-                return question.displayPrompt;
+                return m("div", [question.displayPrompt]);
             } else if (displayType === "header") {
-                return m("span", {style: {"font-weight": "bold"}}, question.displayPrompt);
+                return m("div", {style: {"font-weight": "bold"}}, [question.displayPrompt]);
+            } else if (displayType === "text") {
+                return m("div", [
+                    question.displayPrompt,
+                    m("br"),
+                    m("input"),
+                ]);
+            } else if (displayType === "textarea") {
+                return m("div", [
+                    question.displayPrompt,
+                    m("br"),
+                    m("textarea"),
+                ]);
+            } else if (displayType === "checkboxes") {
+                return m("div", [
+                     question.displayPrompt,
+                     m("br"),
+                     question.valueOptions.map(function (option, index) {
+                         return [m("input[type=checkbox]"), option, m("br")];
+                     })
+                 ]);
             } else {
-                return "UNFINISHED: " + question.displayType;
+                return m("div", {style: {"font-weight": "bold"}}, ["UNFINISHED: " + question.displayType]);
             }
+        }
+        
+        function displaySurveyForm() {
+            return allStoryQuestions.map(displayQuestion);
         }
         
         var submitted = false;
@@ -277,6 +301,7 @@ define([
                     console.log("question", question);
                     return m("div", [displayQuestion(question), m("br"), m("br")]);
                 }),
+                displaySurveyForm(),
                 submitButtonOrWaitOrFinal()
             ]);
         };
