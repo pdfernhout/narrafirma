@@ -6,6 +6,8 @@ define([
     generateRandomUuid
 ){
     "use strict";
+    
+    /* global m */
 
     var timestampStart;
     
@@ -141,15 +143,9 @@ define([
         wizardPane.addChild(surveyPane, addIndex);
     }
     
-    function buildSurveyForm(questionnaire, doneCallback) {  
+    function buildSurveyForm(surveyDiv, questionnaire, doneCallback) {  
         console.log("buildSurveyForm questions", questionnaire);
         
-        var wizardPane = new StackContainer({
-            // style: "width: 800px; height: 700px;",
-            style: "width: 100%; height: 100%;",
-            doLayout: false
-        });
-
         var startText = questionnaire.startText;
         // TODO: Translate
         if (!startText) startText = 'Please help by taking a short survey. The data you enter will be sent to the server only at the end when you press the "submit survey" button.';
@@ -209,11 +205,41 @@ define([
         };
         
         var participantID = generateRandomUuid();
-        var participantDataModel = new Stateful();
-        participantDataModel.set("__type", "org.workingwithstories.ParticipantData");
-        participantDataModel.set("_participantID", participantID);
+        var participantDataModel = {
+            __type: "org.workingwithstories.ParticipantData",
+            _participantID: participantID
+        };
+        
         surveyResultsWithModels.participantData = participantDataModel;
 
+        // m.render(surveyDiv, m("div", ["Hello survey ============== b", "More!!"]));
+        
+        console.log("startQuestions", startQuestions);
+        
+        function displayQuestion(question) {
+            var displayType = question.displayType;
+            if (displayType === "label") {
+                return question.displayPrompt;
+            } else if (displayType === "header") {
+                return m("span", {style: {"font-weight": "bold"}}, question.displayPrompt);
+            } else {
+                return "UNFINISHED: " + question.displayType;
+            }
+        }
+        
+        var view = function() {
+            return m("div", [
+                startQuestions.map(function(question, index) {
+                    console.log("question", question);
+                    return m("div", [displayQuestion(question), m("br"), m("br")]);
+                }),
+                m("button", "Submit survey"),
+            ]);
+        };
+        
+        m.render(surveyDiv, view());
+        
+        /*
         var startPane = new ContentPane();
         
         panelBuilder.buildFields(startQuestions, startPane, participantDataModel);
@@ -254,6 +280,7 @@ define([
         wizardPane.addChild(endPane);
         
         return wizardPane;
+        */
     }
 
     // Caller should call wizard.forward() on successful save to see the last page, and provide a retry message otherwise

@@ -93,9 +93,9 @@ require([
             console.log("got questionnaire from server", projectIdentifier, storyCollectionIdentifier, questionnaire);
             
             var surveyDiv = dom.byId("surveyDiv");
-            m.render(surveyDiv, m("div", ["Hello survey ============== b"]));
+            // m.render(surveyDiv, m("div", ["Hello survey ============== b"]));
             
-            // var form = surveyBuilder.buildSurveyForm(questionnaire, finishedSurvey, false);
+            surveyBuilder.buildSurveyForm(surveyDiv, questionnaire, finishedSurvey);
 
             // turn off initial "please wait" display
             document.getElementById("pleaseWaitDiv").style.display = "none";
