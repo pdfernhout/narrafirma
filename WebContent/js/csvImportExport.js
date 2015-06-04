@@ -92,11 +92,14 @@ define([
         });
         console.log("processCSVContentsForStories headerAndItems", headerAndItems);
         var items = headerAndItems.items;
+        var surveyResults = [];
+        // TODO: this is a kludgy way to get a string and seems brittle
+        var importedByUserIdentifier = project.userIdentifier.userIdentifier;
         for (var itemIndex = 0; itemIndex < items.length; itemIndex++) {
             var item = items[itemIndex];
             console.log("item", item);
             // TODO: Copied code from surveyBuilder module! Need a common function with surveyBuilder to make this!!!
-            var surveyResult = {
+            var newSurveyResult = {
                 __type: "org.workingwithstories.QuestionnaireResponse",
                 // TODO: Think about whether to include entire questionnaire or something else perhaps
                 // TODO: Big kludge to use (module) global here!!!
@@ -110,13 +113,19 @@ define([
                 // TODO: Should have timestamp in CSV file!!!
                 timestampStart: "" + new Date().toISOString(),
                 timestampEnd: "" + new Date().toISOString(),
+                timeDuration_ms: 0,
                 // TODO: this is a kludgy way to get a string and seems brittle
-                importedBy: project.userIdentifier.userIdentifier
+                importedBy: importedByUserIdentifier
             };
             
-            var story = {};
-            // Looks like eliciting question maybe not needed if only one question? Also, should have support for multiple ones if CSV adds them
+            var story = {
+                id: generateRandomUuid(),
+            };
             story.__survey_elicitingQuestion = lastQuestionnaireUploaded.elicitingQuestions[0].id;
+            story.__type = "org.workingwithstories.Story";
+            story._storyID = generateRandomUuid();
+            story._participantID = newSurveyResult.participantData._participantID;
+             
             story.__survey_storyText = item["Story text"];
             story.__survey_storyName = item["Story title"];
             var i;
@@ -125,12 +134,42 @@ define([
                 question = lastQuestionnaireUploaded.storyQuestions[i];
                 story[question.id] = item[question.id.substring("__survey_".length)];
             }
-            surveyResult.stories.push(story);
+            newSurveyResult.stories.push(story);
             for (i = 0; i < lastQuestionnaireUploaded.participantQuestions.length; i++) {
                 question = lastQuestionnaireUploaded.participantQuestions[i];
-                surveyResult.participantData[question.id] = item[question.id.substring("__survey_".length)];
+                newSurveyResult.participantData[question.id] = item[question.id.substring("__survey_".length)];
             }
-            console.log("surveyResult", surveyResult);
+            console.log("newSurveyResult", newSurveyResult);
+            surveyResults.push(newSurveyResult);
+        }
+        
+        var storyCollectionIdentifier = prompt("New story collection name?");
+        if (!storyCollectionIdentifier) return;
+        
+        if (surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier)) {
+            alert("A story collection with that name already exists: " + storyCollectionIdentifier);
+            return;
+        }
+        
+        // TODO: The grid is not updating when these are deleted until page is left and re-entered...
+        var newStoryCollection = {
+            id: generateRandomUuid(),
+            storyCollection_shortName: storyCollectionIdentifier,
+            storyCollection_questionnaireIdentifier: lastQuestionnaireUploaded.title,
+            storyCollection_activeOnWeb: "",
+            storyCollection_notes: "imported by: " + importedByUserIdentifier + " at: " + new Date().toISOString(),
+            questionnaire: lastQuestionnaireUploaded
+        };
+        
+        var storyCollections = project.getFieldValue("project_storyCollections").slice();
+        storyCollections.push(newStoryCollection);
+        project.setFieldValue("project_storyCollections", storyCollections);
+        
+        // Send all surveyResults...
+        // TODO: Stop on error? Use Dojo Deferred probably
+        for (var surveyResultIndex = 0; surveyResultIndex < surveyResults.length; surveyResultIndex++) {
+            var surveyResult = surveyResults[surveyResultIndex];
+            surveyBuilder.storeSurveyResult(project.pointrelClient, project.projectIdentifier, storyCollectionIdentifier, surveyResult, null);
         }
     }
     
