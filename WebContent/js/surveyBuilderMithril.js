@@ -217,6 +217,8 @@ define([
         
         console.log("startQuestions", startQuestions);
         
+        var stories = [{title: "test1", text: "Once upon a time..."}, {"title": "test2", text: "It happened one night..."}];
+        
         function displayQuestion(question) {
             var displayType = question.displayType;
             if (displayType === "label") {
@@ -329,13 +331,29 @@ define([
             }
         }
         
+        function tellAnotherStory() {
+            stories.push({title: "something", text: "unfinished"});
+            redraw();
+        }
+        
         var view = function() {
             return m("div", [
                 startQuestions.map(function(question, index) {
                     console.log("question", question);
                     return m("div", [displayQuestion(question)]);
                 }),
+                m("table", [
+                    stories.map(function(story, index) {
+                        return m("tr", [
+                            m("td", story.title),
+                            m("td", story.text),
+                            m("button", "Edit"),
+                            m("button", "Delete"),
+                        ]);
+                    })
+                ]),
                 displayStoryQuestions(),
+                m("button", {onclick: tellAnotherStory}, "Add another story"),
                 participantQuestions.map(function(question, index) {
                     console.log("question", question);
                     return m("div", [displayQuestion(question)]);
