@@ -83,11 +83,10 @@ define([
     }
 
     function openSurveyDialog() {
-        // TODO: What version of questionnaire should be used? Should it really be the latest one? Or the one active on server?
         console.log("openSurveyDialog");
         
-        var storyCollectionName = getStoryCollectionNameForSelectedStoryCollection("storyCollectionChoice_enterStories");
-        if (!storyCollectionName) return;
+        var storyCollectionIdentifier = getStoryCollectionNameForSelectedStoryCollection("storyCollectionChoice_enterStories");
+        if (!storyCollectionIdentifier) return;
         
         var questionnaire = getQuestionnaireForSelectedStoryCollection("storyCollectionChoice_enterStories");
         if (!questionnaire) return;
@@ -97,24 +96,7 @@ define([
         function finished(status, surveyResult, wizardPane) {
             console.log("surveyResult", status, surveyResult);
             if (status === "submitted") {
-                
-                // TODO: Move this to a reuseable place
-                var surveyResultWrapper  = {
-                    projectIdentifier: project.projectIdentifier,
-                    storyCollectionIdentifier: storyCollectionName,
-                    surveyResult: surveyResult
-                };
-                
-                project.pointrelClient.createAndSendChangeMessage("surveyResults", "surveyResult", surveyResultWrapper, null, function(error, result) {
-                    if (error) {
-                        console.log("Problem saving survey result", error);
-                        // TODO: Translate
-                        alert("Problem saving survey result; please try submitting again.");
-                        return;
-                    }
-                    alert("Survey result stored");
-                    if (wizardPane) wizardPane.forward();
-                });
+                surveyBuilder.storeSurveyResult(project.pointrelClient, project.projectIdentifier, storyCollectionIdentifier, surveyResult, wizardPane);
             }
         }
     }
