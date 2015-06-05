@@ -96,3 +96,23 @@ body {
     font-size: 0.8em;
 }
 
+
+/* 
+   Next two rules are for the input range (slider) to be visible in Android.
+   Derived from: http://tiffanybbrown.com/2012/02/07/input-typerange-and-androids-stock-browser/
+*/
+
+input[type='range']{
+    /* background: #0c0; */
+    height:15px;
+}
+
+input[type='range']::-webkit-slider-thumb{
+    /* background:#f60; */
+    background: #9CF;
+    height:30px;
+    width:30px;
+    border-radius: 30px;
+}
+
+
