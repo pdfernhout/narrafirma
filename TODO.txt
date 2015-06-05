@@ -11,12 +11,10 @@ BIG OPTIONAL FUNCTIONALITY AREAS
 
 THINGS CYNTHIA NOTICED WHILE DOING HELP (probably redundant but just in case)
 --- plan story collection session
->>> - for activities, it copies the WRONG template (selectedTemplate is wrong line)
 - activities list needs move up and move down buttons (since you are supposed to be planning a schedule) OR an "order' field
 - print session agenda doesn't work yet - also i've changed it to "export session agenda" 
   because they might want to open the HTML file in something to format it
---- write story eliciting questions
---- design questionnaires
+--- design questionnaires > story forms
 - in the lists of questions (eliciting, story, participant) it needs move up, move down arrows, OR an "order" field
 
 CRASH
@@ -307,6 +305,7 @@ Remove any use of widgets in widgetSupport or other use of Dojo controls (e.g. B
 
 ==== DONE
 
+DONE - for activities, it copies the WRONG template (selectedTemplate is wrong line)
 DONE - in write story eliciting questions, in the grid, it says "Short Name' but it SHOWS the ID
 DONE - in write story eliciting questions, when you choose a template, it asks whether you want to copy it, and it's not 'undefined', but it's the ID, not the short name
 - when you are viewing a grid item with a template button, you can see the templates list and copy a template; 
