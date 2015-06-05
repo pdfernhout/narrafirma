@@ -1,9 +1,9 @@
 define([
-    "dojo/_base/array",
-    "dojox/uuid/generateRandomUuid"
+    "dojox/uuid/generateRandomUuid",
+    "dojo/_base/lang"
 ], function(
-    array,
-    generateRandomUuid
+    generateRandomUuid,
+    lang
 ){
     "use strict";
     
@@ -100,13 +100,28 @@ define([
         return true;
     }
    
-    function displayQuestion(question) {
-        var displayType = question.displayType;
+    function displayQuestion(model, fieldSpecification) {
+        var displayType = fieldSpecification.displayType;
         var questionLabel = [
-            m("span", {class: "narrafirma-prompt"}, question.displayPrompt),
+            m("span", {class: "narrafirma-prompt"}, fieldSpecification.displayPrompt),
             m("br")
         ];
 
+        var value = null;
+        if (model) value = model[fieldSpecification.id];
+        if (value === undefined) value = "";
+        
+        function change(event, value) {
+            if (event) value = event.target.value;
+            console.log("onchange", fieldSpecification.id, value);
+            model[fieldSpecification.id] = value;
+        }
+        
+        var standardValueOptions = {
+            value: value,
+            onchange: change
+        };
+        
         var parts = [];
         if (displayType === "label") {
             // Nothing to do
@@ -114,64 +129,78 @@ define([
             // Nothing to do -- bolding done using style
         } else if (displayType === "text") {
             parts = [
-                m("input"),
+                m("input", standardValueOptions),
                 m("br")
             ];
         } else if (displayType === "textarea") {
             parts = [
-                m("textarea"),
+                m("textarea", standardValueOptions),
                 m("br")
             ];
         } else if (displayType === "checkbox") {
             parts = [
-                 m("input[type=checkbox]"),
+                 m("input[type=checkbox]", {checked: value, onchange: function(event) {change(null, event.target.checked);}}),
                  m("br")
              ];
         } else if (displayType === "checkboxes") {
+            if (!value) {
+                value = {};
+                model[fieldSpecification.id] = value;
+            }
             parts = [
-                question.valueOptions.map(function (option, index) {
-                    return [m("input[type=checkbox]"), option, m("br")];
+                fieldSpecification.valueOptions.map(function (option, index) {
+                    return [
+                        m("input[type=checkbox]", {checked: !!value[option], onchange: function(event) {value[option] = event.target.checked; change(null, value); } }),
+                        option,
+                        m("br")
+                    ];
                 })
             ];
         } else if (displayType === "radiobuttons") {
             parts = [
-                question.valueOptions.map(function (option, index) {
-                    return [m("input[type=radio]", {value: option, name: question.id}), option, m("br")];
+                fieldSpecification.valueOptions.map(function (option, index) {
+                    return [
+                        m("input[type=radio]", {value: option, name: fieldSpecification.id, checked: value === option, onchange: lang.partial(change, null, option) }),
+                        option, 
+                        m("br")
+                    ];
                 })
             ];
         } else if (displayType === "boolean") {
             parts = [
-                m("input[type=radio]", {value: true, name: question.id}),
+                m("input[type=radio]", {value: true, name: fieldSpecification.id, checked: value === true, onchange: lang.partial(change, null, true) }),
                 "yes",
                 m("br"),
-                m("input[type=radio]", {value: false, name: question.id}),
+                m("input[type=radio]", {value: false, name: fieldSpecification.id, checked: value === true, onchange: lang.partial(change, null, false) }),
                 "no",
                 m("br")
             ];
         } else if (displayType === "select") {
+            var selectOptions = [];
+            if (!value) selectOptions.push(m("option", {selected: "selected", disabled: "disabled", hidden: "hidden", value: ''}, ''));
+            selectOptions = selectOptions.concat(
+                fieldSpecification.valueOptions.map(function (optionValue, index) {
+                    var optionOptions = {value: optionValue};
+                    if (optionValue === value) optionOptions.selected = 'selected';
+                    return m("option", optionOptions, optionValue);
+                })
+            );
+            
             parts = [
-                m("select",
-                    // TODO: Would not select frst item if had value
-                    [m("option", {selected: "selected", disabled: "disabled", hidden: "hidden", value: ''}, '')].concat(
-                        question.valueOptions.map(function (value, index) {
-                        var optionOptions = {value: value};
-                        // if (??value.indexOf(option) !== -1) opts.selected = 'selected';
-                        return m("option", optionOptions, value);
-                    }))
-                ),
+                m("select", standardValueOptions, selectOptions),
                 m("br")
             ];
         } else if (displayType === "slider") {
             // Could suggest 0-100 to support <IE10 that don't have range input -- or coudl do polyfill
-            // if (question.displayPrompt) questionLabel[0].children = question.displayPrompt + " (0-100)";
+            // if (fieldSpecification.displayPrompt) questionLabel[0].children = fieldSpecification.displayPrompt + " (0-100)";
             parts = [
-                m("span", {class: "narrafirma-low"}, question.displayConfiguration[0]),
-                m('span', {class: "narrafirma-slider"}, m('input[type="range"]')),
-                m('span', {class: "narrafirma-high"}, question.displayConfiguration[1])
+                m("span", {class: "narrafirma-low"}, fieldSpecification.displayConfiguration[0]),
+                m('span', {class: "narrafirma-slider"}, m('input[type="range"]', standardValueOptions)),
+                m('span', {class: "narrafirma-high"}, fieldSpecification.displayConfiguration[1])
             ];
         } else {
             parts = [
-                m("span", {style: {"font-weight": "bold"}}, "UNFINISHED: " + question.displayType),
+                m("span", {style: {"font-weight": "bold"}}, "UNFINISHED: " + fieldSpecification.displayType),
                 m("br")
             ];
         }
@@ -238,7 +267,7 @@ define([
         
         timestampStart = new Date();
         
-        var surveyResultsWithModels = {
+        var surveyResult = {
             __type: "org.workingwithstories.QuestionnaireResponse",
             // TODO: Think about whether to include entire questionnaire or something else perhaps
             questionnaire: questionnaire,
@@ -254,7 +283,7 @@ define([
             _participantID: participantID
         };
         
-        surveyResultsWithModels.participantData = participantDataModel;
+        surveyResult.participantData = participantDataModel;
 
         // m.render(surveyDiv, m("div", ["Hello survey ============== b", "More!!"]));
         
@@ -279,7 +308,7 @@ define([
                 m("span", {class: "narrafirma-story-label", style: {"font-weight": "bold"}}, "Story #" + (index + 1)),
                 m("br"),
 
-                allStoryQuestions.map(displayQuestion),
+                allStoryQuestions.map(lang.partial(displayQuestion, story)),
                 
                 m("button", {
                     class: "narrafirma-delete-story-button",
@@ -332,7 +361,7 @@ define([
                     return m("div", [
                         "Server accepted survey OK",
                         m("br"),
-                        displayQuestion(question),
+                        displayQuestion(null, question),
                         m("br"),
                         m("br")
                     ]);
@@ -349,7 +378,7 @@ define([
             return m("div", [
                 startQuestions.map(function(question, index) {
                     console.log("question", question);
-                    return m("div", [displayQuestion(question)]);
+                    return m("div", [displayQuestion(null, question)]);
                 }),
                 m("hr"),
                 stories.map(function(story, index) {
@@ -361,12 +390,12 @@ define([
                 m("hr"),
                 participantQuestions.map(function(question, index) {
                     console.log("question", question);
-                    return m("div", [displayQuestion(question)]);
+                    return m("div", [displayQuestion(surveyResult.participantData, question)]);
                 }),
                 m("hr"),
                 submitButtonOrWaitOrFinal(),
                 m("hr"),
-                m("button", {onclick: function() { redraw(); console.log("stories", stories);} }, "Redraw (for debugging)")
+                m("button", {onclick: function() { redraw(); console.log("stories", stories); console.log("participantData", surveyResult.participantData); } }, "Redraw (for debugging)")
             ]);
         };
         
