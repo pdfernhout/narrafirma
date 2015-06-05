@@ -24,30 +24,21 @@ define([
     
     var add_templateList_elicitationQuestions = [
         {id: "category", valueType: "string", displayType:"text"},
-        {id: "shortName", valueType: "string", displayType: "text"},
         {id: "text", valueType: "string", displayType: "textarea"}
     ];
    
    var add_templateList_storyOrParticipantQuestions = [
         {id: "category", valueType: "string", displayType: "text"},
-        {id: "id", valueType: "string", displayType: "text"},
-        {id: "shortName", valueType: "string", displayType: "text"},
         {id: "text", valueType: "string", displayType: "textarea"},
-        {id: "type", valueType: "string", displayType: "text"}, // , "options":["boolean", "label", "header", "checkbox", "checkboxes", "text", "textarea", "select", "radiobuttons", "slider"]},
+        {id: "type", valueType: "string", displayType: "text"}, 
         {id: "options", valueType: "string", displayType: "textarea"}
-        // {id: "templateQuestion_help", valueType: "string", displayType: "textarea"},
     ];
    
    var add_templateList_activityQuestions = [
-        {id: "name", valueType: "string", displayType: "text"},
-        {id: "type", valueType: "string", displayType: "text"}, // , "options":["ice-breaker", "encountering stories (no task)", "encountering stories (simple task)", "discussing stories", "twice-told stories exercise", "timeline exercise", "landscape exercise", "story elements exercise", "composite stories exercise", "my own exercise", "other"]},
-        {id: "plan", valueType: "string", displayType: "textarea"},
-        {id: "optionalParts", valueType: "string", displayType: "textarea"},
+        {id: "shortName", valueType: "string", displayType: "text"},
+        {id: "type", valueType: "string", displayType: "text"}, 
         {id: "duration", valueType: "string", displayType: "text"},
-        {id: "recording", valueType: "string", displayType: "textarea"},
-        {id: "materials", valueType: "string", displayType: "textarea"},
-        {id: "spaces", valueType: "string", displayType: "textarea"},
-        {id: "facilitation", valueType: "string", displayType: "textarea"}
+        {id: "plan", valueType: "string", displayType: "textarea"}
     ];
    
    function useButtonClicked(templateListChoice, model, hideDialogCallback, gridWithDetail, event) {
@@ -76,7 +67,7 @@ define([
                    model.set("participantQuestion_shortName", selectedTemplate.shortName || "");
                    model.set("participantQuestion_options", selectedTemplate.options || "");
                } else if (templateListChoice === "storyCollectionActivities") {
-                   model.set("collectionSessionActivity_name", selectedTemplate.name || "");
+                   model.set("collectionSessionActivity_name", selectedTemplate.shortName || "");
                    model.set("collectionSessionActivity_type", selectedTemplate.type || "");
                    model.set("collectionSessionActivity_plan", selectedTemplate.plan || "");
                    model.set("collectionSessionActivity_optionalParts", selectedTemplate.optionalParts || "");
@@ -86,7 +77,7 @@ define([
                    model.set("collectionSessionActivity_spaces", selectedTemplate.spaces || "");
                    model.set("collectionSessionActivity_facilitation", selectedTemplate.facilitation || "");
                } else if (templateListChoice === "sensemakingActivities") {
-                   model.set("sensemakingSessionPlan_activity_name", selectedTemplate.name || "");
+                   model.set("sensemakingSessionPlan_activity_name", selectedTemplate.shortName || "");
                    model.set("sensemakingSessionPlan_activity_type", selectedTemplate.type || "");
                    model.set("sensemakingSessionPlan_activity_plan", selectedTemplate.plan || "");
                    model.set("sensemakingSessionPlan_activity_optionalParts", selectedTemplate.optionalParts || "");

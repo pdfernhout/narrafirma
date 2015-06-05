@@ -1066,7 +1066,7 @@ define(function() {
 	    "type": "page",
 	    "questions": [
               {
-                  "name": "Two true stories and a tall tale",
+                  "shortName": "Two true stories and a tall tale",
                   "type": "ice-breaker",
                   "plan": "Ask people to break into small groups, and one by one, tell two true stories about themselves and one made-up fiction. Others in the group must guess which of the stories is fiction.",
                   "optionalParts": "Afterwards, have groups tell their favorite stories (true or fictional) to the larger group.",
@@ -1078,7 +1078,7 @@ define(function() {
               },
 	                  
               {
-                  "name": "Quick interviews",
+                  "shortName": "Quick interviews",
                   "type": "ice-breaker",
                   "plan": "Divide into groups of three. Interview each other using one simple question, like \"When have you felt proud?\"",
                   "optionalParts": "Afterwards, have groups summarize the stories they heard to the larger group",
@@ -1089,7 +1089,7 @@ define(function() {
                   "facilitation": "None after the setup"
               },
               {
-                  "name": "Common experiences",
+                  "shortName": "Common experiences",
                   "type": "ice-breaker",
                   "plan": "In small groups, find one experience everyone has had in common. If people know each other, the experience has to be surprising.",
                   "optionalParts": "Afterwards, have groups tell about their shared experience.",
@@ -1100,7 +1100,7 @@ define(function() {
                   "facilitation": "None after the setup"
               },
               {
-                  "name": "Have you ever...",
+                  "shortName": "Have you ever...",
                   "type": "ice-breaker",
                   "plan": "People say whether they've had experiences on a printed list. Each group is challenged to come up with some surprises about the experiences people have had.",
                   "optionalParts": "Afterwards, have groups explain what surprised them about their experiences.",
@@ -1111,7 +1111,7 @@ define(function() {
                   "facilitation": "None after the setup"
               },
               {
-                  "name": "That reminds me of...",
+                  "shortName": "That reminds me of...",
                   "type": "ice-breaker",
                   "plan": "Each group gets a copy of a newspaper or magazine. Each member must come up with some experience they are reminded of by the paper. The group compares their experiences.",
                   "optionalParts": "Afterwards, have groups explain what surprised them about their experiences.",
@@ -1122,7 +1122,7 @@ define(function() {
                   "facilitation": "None after the setup"
               },
               {
-                  "name": "Twenty questions",
+                  "shortName": "Twenty questions",
                   "type": "ice-breaker",
                   "plan": "In small groups, each person should think of an experience they've had. The others try to guess what happened by asking twenty questions.",
                   "optionalParts": "Afterwards, have groups explain what surprised them about their experiences.",
@@ -1133,7 +1133,7 @@ define(function() {
                   "facilitation": "None after the setup"
               },
               {
-                  "name": "Sharing stories",
+                  "shortName": "Sharing stories",
                   "type": "sharing stories (no task)",
                   "plan": "Ask people in small groups to simply and naturally share stories about a topic.",
                   "optionalParts": "None",
@@ -1144,7 +1144,7 @@ define(function() {
                   "facilitation": "Watch people to make sure they are giving their stories names and paying attention to the question sheets. Make sure people are speaking into the recorders."
               },
               {
-                  "name": "Respond to questions",
+                  "shortName": "Respond to questions",
                   "type": "sharing stories (simple task)",
                   "plan": "Give people (in small groups) a set of 3-5 questions related to the topic." +
                   	"Ask them to one by one choose a question they want to answer and tell a story about it" +
@@ -1157,7 +1157,7 @@ define(function() {
                   "facilitation": "Watch people to make sure they are giving their stories names and paying attention to the question sheets. Make sure people are speaking into the recorders."
               },
               {
-                  "name": "Both sides",
+                  "shortName": "Both sides",
                   "type": "sharing stories (simple task)",
                   "plan": "Give people (in small groups) a set of 3-4 statements related to the topic." +
                   	"The statements should be summaries of \"what happens,\" like \"People in our community " +
@@ -1171,7 +1171,7 @@ define(function() {
                   "facilitation": "Watch people to make sure they are giving their stories names and paying attention to the question sheets. Make sure people are speaking into the recorders."
               },
               {
-                  "name": "Simple ranking",
+                  "shortName": "Simple ranking",
                   "type": "sharing stories (simple task)",
                   "plan": "Ask people in small groups to share stories, either with just a named topic," +
                   	"or with a list of 3-5 questions about the topic. As people tell stories, ask them to " +
@@ -1188,7 +1188,7 @@ define(function() {
                   "facilitation": "Watch people to make sure they are giving their stories names and paying attention to the question sheets. Make sure people are speaking into the recorders."
               },
               {
-                  "name": "Remindings",
+                  "shortName": "Remindings",
                   "type": "sharing stories (simple task)",
                   "plan": "Ask people in small groups to share stories, either with just a named topic," +
 	                	"or with a list of 3-5 questions about the topic. After the first story is told, ask people " +
@@ -1204,7 +1204,7 @@ define(function() {
 	               "facilitation": "Watch people to make sure they are giving their stories names and paying attention to the question sheets. Make sure people are speaking into the recorders."
               },
               {
-                  "name": "Words",
+                  "shortName": "Words",
                   "type": "sharing stories (simple task)",
                   "plan": "Give small groups cards with words important to the project written on them." +
                     "Mix together words that bring to mind things like behaviors (helpful, deceitful), situations " +
@@ -1222,7 +1222,7 @@ define(function() {
 	               "facilitation": "Watch people to make sure they are giving their stories names and paying attention to the question sheets. Make sure people are speaking into the recorders."
               },
               {
-                  "name": "Twice-told stories",
+                  "shortName": "Twice-told stories",
                   "type": "twice-told stories exercise",
                   "plan": "1. (5 min) Introduction. Ask people to form groups of three to four people. Turn on audio recorders. " +
                   		"2. (5 min) Criteria. Each small group should choose a criterion by which they will choose a story they " +
@@ -1243,7 +1243,7 @@ define(function() {
               			"but keep your distance so people can speak freely."
               },
               {
-                  "name": "Twice-told stories (short version)",
+                  "shortName": "Twice-told stories (short version)",
                   "type": "twice-told stories exercise",
                   "plan": "1. (5 min) Introduction and criteria. Ask people to form groups of three to four people. Turn on audio recorders. " +
                   		"Also, each small group should choose a criterion by which they will choose a story they " +
@@ -1263,7 +1263,7 @@ define(function() {
               			"but keep your distance so people can speak freely."
               },
               {
-                  "name": "Timeline",
+                  "shortName": "Timeline",
                   "type": "timeline exercise",
                   "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Split into small " +
                   		"groups of three or four people each. Turn on audio recorders. " +
@@ -1289,7 +1289,7 @@ define(function() {
                   		"(perhaps in times they don't want to think about); and people listing facts without telling stories.",
                },
                {
-                   "name": "Timeline (short version)",
+                   "shortName": "Timeline (short version)",
                    "type": "timeline exercise",
                    "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Split into small " +
                    		"groups of three or four people each. Turn on audio recorders. " +
@@ -1314,7 +1314,7 @@ define(function() {
                    		"(perhaps in times they don't want to think about); and people listing facts without telling stories.",
                 },
                 {
-                    "name": "Landscape",
+                    "shortName": "Landscape",
                     "type": "landscape exercise",
                     "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Split into small " +
               		"groups of three or four people each. Turn on audio recorders. " +
@@ -1339,7 +1339,7 @@ define(function() {
                     		"in the space; people listing dry facts just to cover up the space.",
                 },
               {
-                  "name": "Landscape (short version)",
+                  "shortName": "Landscape (short version)",
                   "type": "landscape exercise",
                   "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Split into small " +
             		"groups of three or four people each. Turn on audio recorders. " +
@@ -1373,7 +1373,7 @@ define(function() {
 	    "type": "page",
 	    "questions": [
               {
-                  "name": "Encounter stories",
+                  "shortName": "Encounter stories",
                   "type": "encountering stories (no task)",
                   "plan": "Give each small group some stories to consider. If the stories are printed, " +
                     "ask them to read the stories, either quietly or aloud. If the stories are in audio or video form, " +
@@ -1388,7 +1388,7 @@ define(function() {
                     "but keep your distance so people can speak freely."
               },
               {
-                  "name": "Simple ranking",
+                  "shortName": "Simple ranking",
                   "type": "encountering stories (simple task)",
                   "plan": "Ask each small group to draw a line across a large sheet of paper, or simply use " +
                   		"sticky notes to mark the start and end of a line across the table. " +
@@ -1407,7 +1407,7 @@ define(function() {
                   		"but keep your distance so people can speak freely."
               },
               {
-                  "name": "Both sides",
+                  "shortName": "Both sides",
                   "type": "encountering stories (simple task)",
                   "plan": "Give each group some stories to consider. Ask them to try to find groups of stories " +
                   		"in which the same question is answered differently. " +
@@ -1428,7 +1428,7 @@ define(function() {
                   		"but keep your distance so people can speak freely."
               },
               {
-                  "name": "Remindings",
+                  "shortName": "Remindings",
                   "type": "encountering stories (simple task)",
                   "plan": "Give each small group some stories to consider. As they encounter each story, " +
                   		"ask them to think of any other stories it reminds them of. When they find such a " +
@@ -1448,7 +1448,7 @@ define(function() {
 	                	"but keep your distance so people can speak freely."
               },
               {
-                  "name": "Resonance",
+                  "shortName": "Resonance",
                   "type": "encountering stories (simple task)",
                   "plan": "Give each small group some stories to consider. As they encounter eacy story, " +
                   		"ask each person to choose some number of stories (perhaps three, five, or seven) they will take " +
@@ -1468,7 +1468,7 @@ define(function() {
 	                	"but keep your distance so people can speak freely."
               },
               { 
-                  "name": "Twice-told stories",
+                  "shortName": "Twice-told stories",
                   "type": "twice-told stories exercise",
                   "plan": "1. (5 min) Introduction. Ask people to form groups of two to four people. " +
                   		"2. (5 min) Criteria. Each small group should choose a criterion by which they will choose a story they " +
@@ -1489,7 +1489,7 @@ define(function() {
               			"but keep your distance so people can speak freely."
               },
               { 
-                  "name": "Twice-told stories (short version)",
+                  "shortName": "Twice-told stories (short version)",
                   "type": "twice-told stories exercise",
                   "plan": "1. (5 min) Introduction and criteria. Ask people to form groups of two to four people. " +
                   		"Also, each small group should choose a criterion by which they will choose a story they " +
@@ -1509,7 +1509,7 @@ define(function() {
               			"but keep your distance so people can speak freely."
               },
               {
-                  "name": "Timeline",
+                  "shortName": "Timeline",
                   "type": "timeline exercise",
                   "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Split into small " +
                   		"groups of three or four people each. " +
@@ -1538,7 +1538,7 @@ define(function() {
                   		"not just mapping events.",
                },
                {
-                   "name": "Timeline (short version)",
+                   "shortName": "Timeline (short version)",
                    "type": "timeline exercise",
                    "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Split into small " +
                    		"groups of three or four people each. " +
@@ -1563,7 +1563,7 @@ define(function() {
                    		"not just mapping events.",
                 },
                 {
-                    "name": "Landscape",
+                    "shortName": "Landscape",
                     "type": "landscape exercise",
                     "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Split into small " +
               		"groups of three or four people each. " +
@@ -1588,7 +1588,7 @@ define(function() {
                     		"hesitation; dimensions that don't fit the stories (have extras on hand).",
                 },
                 {
-                    "name": "Landscape", 
+                    "shortName": "Landscape", 
                     "type": "landscape exercise (short version)",
                     "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Split into small " +
               		"groups of three or four people each. " +
@@ -1609,7 +1609,7 @@ define(function() {
                     		"hesitation; dimensions that don't fit the stories (have extras on hand).",
                 },
               {
-                  "name": "Story elements",
+                  "shortName": "Story elements",
                   "type": "story elements exercise",
                   "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Explain the question " +
                   		"people will be asking about stories (like 'What is going on in this story?'). Split into small " +
@@ -1640,7 +1640,7 @@ define(function() {
                    		"weak response; bad story element names (e.g., proper nouns).",
               },
               {
-                  "name": "Story elements (short version)",
+                  "shortName": "Story elements (short version)",
                   "type": "story elements exercise",
                   "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Explain the question " +
                   		"people will be asking about stories (like 'What is going on in this story?'). Split into small " +
@@ -1669,7 +1669,7 @@ define(function() {
                     		"weak response; bad story element names (e.g., proper nouns).",
               },
               {
-                  "name": "Composite stories",
+                  "shortName": "Composite stories",
                   "type": "composite stories exercise",
                   "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Split into small " +
               			"groups of three or four people each. Make sure you have at least three groups in total. " +
@@ -1702,7 +1702,7 @@ define(function() {
                   		"mechanically; people paying too much attention to story quality."
               },
               {
-                  "name": "Composite stories (short version)",
+                  "shortName": "Composite stories (short version)",
                   "type": "composite stories exercise",
                   "plan": "1. (5 min) Introduction. Explain the exercise and its purpose. Split into small " +
               			"groups of three or four people each. Make sure you have at least three groups in total. " +
