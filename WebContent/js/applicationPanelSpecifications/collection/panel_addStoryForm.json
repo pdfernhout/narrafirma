@@ -1,15 +1,15 @@
 {
-    "id": "panel_addQuestionnaire",
-    "displayName": "Add questionnaire",
+    "id": "panel_addStoryForm",
+    "displayName": "Add story form",
     "displayType": "panel",
     "section": "collection",
-    "modelClass": "DesignQuestionnaire",
+    "modelClass": "DesignStoryForms",
     "panelFields": [
         {
             "id": "questionForm_Label",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "Design a specific question form (questionnaire)."
+            "displayPrompt": "Design a specific story form."
         },
         {
             "id": "questionForm_shortName",
@@ -17,7 +17,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Title",
-            "displayPrompt": "Please enter a unique short name for the question form to refer to it elswhere in the project."
+            "displayPrompt": "Please enter a unique short name for the story form to refer to it elsewhere in the project."
         },
         {
             "id": "questionForm_title",
@@ -25,7 +25,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Title",
-            "displayPrompt": "Please enter a title for the question form."
+            "displayPrompt": "Please enter a title for the story form."
         },
         {
             "id": "questionForm_participantGroups",
@@ -33,7 +33,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Participant groups",
-            "displayPrompt": "Which participant groups is this questionnaire intended for?"
+            "displayPrompt": "Which participant groups is this story form intended for?"
         },
         {
             "id": "questionForm_startText",
