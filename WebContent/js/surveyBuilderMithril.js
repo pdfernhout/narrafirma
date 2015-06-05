@@ -255,10 +255,11 @@ define([
         participantQuestions = participantQuestions.concat(questionnaire.participantQuestions);
 
         // TODO: For testing
+        /*
         participantQuestions.push({id: "test1", displayName: "test1", displayPrompt: "test checkbox", displayType: "checkbox", valueOptions:[]});
         participantQuestions.push({id: "test2", displayName: "test2", displayPrompt: "test boolean", displayType: "boolean", valueOptions:[]});
         participantQuestions.push({id: "test3", displayName: "test3", displayPrompt: "test radiobuttons", displayType: "radiobuttons", valueOptions:["one", "two", "three"]});
-
+        */
         
         timestampStart = new Date();
         
