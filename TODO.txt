@@ -10,12 +10,9 @@ BIG OPTIONAL FUNCTIONALITY AREAS
 - theming and tagging
 
 THINGS CYNTHIA NOTICED WHILE DOING HELP (probably redundant but just in case)
---- plan story collection session
-- activities list needs move up and move down buttons (since you are supposed to be planning a schedule) OR an "order' field
-- print session agenda doesn't work yet - also i've changed it to "export session agenda" 
-  because they might want to open the HTML file in something to format it
---- design questionnaires > story forms
-- in the lists of questions (eliciting, story, participant) it needs move up, move down arrows, OR an "order" field
+H the activities list for a story collection or sensemaking session needs move up and move down buttons (since you are supposed to be planning a schedule) OR an "order' field
+H when you are viewing a grid item with a template button, you can see the templates list and copy a template; button should be disabled or invisible
+H in the lists of questions while designing a story form (eliciting, story, participant) it needs move up, move down arrows, OR an "order" field
 
 CRASH
 ? Story browser (Catalysis section second page, but also review stories during collection) seems to sometimes cause and endless loop in Firexfox or Chrome causing memory use growth and beach ball. Maybe some resize bug in dojo or dgrid?
@@ -49,10 +46,11 @@ H Support recommendationTable
     For intervention, the recommendations have to come from a separate file (recommendations_intervention_filledin.csv)
 
 TEMPLATES
-H Improve template list generation tool to support storyCollectionActivities and sensemakingActivities
 W Fix how templates list popup has too much scrolling and is not sized well; perhaps start with grid item view pane open?
 
 SURVEY GENERAL
+H in survey, no story number
+H in survey, delete button should have story name, or untitled
 L Display how many stories and/or survey results have been collected
 L Ideally, all responses for selections (other than numerical sliders) should have unique IDs for each response and the stored response should have the ID as well as the chosen text at the time.
     Add support for short names (ids) for all options for survey questions
@@ -101,6 +99,9 @@ X Think through logging in the client, perhaps using a library
 
 PRINTING
 H Implement printStoryForm in domain buttonClicked (what do do about entering multiple stories?)
+H Implement "print session agenda" (to HTML) for story collection
+H Implement "print session agenda" (to HTML) for sensemaking
+H Add page about printing story cards for sensemaking
 
 STORY THEMER
 X Generalize storyThemer into tagging - or researcher added questions
@@ -143,8 +144,6 @@ X Need to be able to select text in existing story to AddToExcerpts
 X Support storiesList -- for choosing a resonant story
 
 SENSEMAKING
-H Add page about printing story cards
-H Implement "print session agenda" (to HTML)
 H Change "storiesList" functionality to - they have to paste in the name/text of the story. with a textarea
 
 RETURN
@@ -300,13 +299,6 @@ Remove any use of widgets in widgetSupport or other use of Dojo controls (e.g. B
 
 ==== DONE
 
-DONE - for activities, it copies the WRONG template (selectedTemplate is wrong line)
-DONE - in write story eliciting questions, in the grid, it says "Short Name' but it SHOWS the ID
-DONE - in write story eliciting questions, when you choose a template, it asks whether you want to copy it, and it's not 'undefined', but it's the ID, not the short name
-- when you are viewing a grid item with a template button, you can see the templates list and copy a template; 
-  button should be disabled or invisible
-DONE - in plan story collection session, when you use a template (at least for a story collection exercise) it says "Copy selected template 'undefined' into 
-  question definition?" should have a name
 DONE Checkboxes for multiple choices
 DONE Tab container sizing to full page
 DONE Slider with labels and no ticks
@@ -768,4 +760,9 @@ DONE Survey - Get survey to have a good width that reflects the screen size on A
 NOT DOING Switch to using Dojo Mobile for the surveys [Using Mithril and plain HTML instead]
 DONE Remove unneeded imports (again)
 DONE Create help for planning section and review wording of pages (CFK)
+DONE for activities, it copies the WRONG template (selectedTemplate is wrong line)
+DONE in write story eliciting questions, in the grid, it says "Short Name' but it SHOWS the ID
+DONE in write story eliciting questions, when you choose a template, it asks whether you want to copy it, and it's not 'undefined', but it's the ID, not the short name
+DONE in plan story collection session, when you use a template (at least for a story collection exercise) it says "Copy selected template 'undefined' into question definition?" should have a name
+OBSOLETE Improve template list generation tool to support storyCollectionActivities and sensemakingActivities
 
