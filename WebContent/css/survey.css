@@ -54,6 +54,7 @@ a:active {
 .narrafirma-question-external {
     background: #d5dae6;
     margin-bottom: 4px;
+    padding: 8px;
 }
 
 .narrafirma-prompt {
@@ -74,6 +75,7 @@ a:active {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
+    min-height: 10em;
 }
 
 .narrafirma-question-type-text input {
@@ -83,4 +85,25 @@ a:active {
     -webkit-box-sizing: border-box;
 }
 
+.narrafirma-question-type-slider table {
+    min-width: 100%;
+}
+
+.narrafirma-question-type-slider .narrafirma-question-internal {
+    text-align: center;
+}
+
+/*
+.narrafirma-question-type-slider .narrafirma-low {
+    text-align: right;
+}
+
+.narrafirma-question-type-slider .narrafirma-slider {
+    text-align: center;
+}
+
+.narrafirma-question-type-slider .narrafirma-high {
+    text-align: left;
+}
+*/
 

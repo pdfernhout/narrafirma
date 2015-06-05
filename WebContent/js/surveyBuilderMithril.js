@@ -162,12 +162,11 @@ define([
                 m("br")
             ];
         } else if (displayType === "slider") {
-            questionLabel[0].children = question.displayPrompt + " (0-100)";
+            if (question.displayPrompt) questionLabel[0].children = question.displayPrompt + " (0-100)";
             parts = [
-                question.displayConfiguration[0],
-                m('input[type="range"]'),
-                question.displayConfiguration[1],
-                m("br")
+                m("span", {class: "narrafirma-low"}, question.displayConfiguration[0]),
+                m('span', {class: "narrafirma-slider"}, m('input[type="range"]')),
+                m('span', {class: "narrafirma-high"}, question.displayConfiguration[1])
             ];
         } else {
             parts = [
