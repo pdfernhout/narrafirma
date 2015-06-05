@@ -2,7 +2,7 @@ define([
     "lib/d3/d3",
     "dojox/uuid/generateRandomUuid",
     "js/questionnaireGeneration",
-    "js/surveyBuilder",
+    "js/surveyBuilderMithril",
     "js/surveyCollection",
     "dojo/domReady!"
 ], function(

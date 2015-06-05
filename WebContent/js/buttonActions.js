@@ -6,7 +6,7 @@ define([
     "js/navigationPane",
     "js/pageDisplayer",
     "js/questionnaireGeneration",
-    "js/surveyBuilder",
+    "js/surveyBuilderMithril",
     "js/surveyCollection",
     "js/panelBuilder/toaster",
     "js/panelBuilder/translate",

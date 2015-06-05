@@ -3,7 +3,7 @@ require([
     "dojo/dom",
     "dojo/hash",
     "js/pointrel20150417/PointrelClient",
-    "js/surveyBuilder",
+    "js/surveyBuilderDojo",
     "js/panelBuilder/translate",
     "dojo/domReady!"
 ], function(
