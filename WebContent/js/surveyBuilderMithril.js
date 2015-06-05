@@ -1,9 +1,13 @@
 define([
+    "dijit/Dialog",
     "dojox/uuid/generateRandomUuid",
-    "dojo/_base/lang"
+    "dojo/_base/lang",
+    "lib/mithril/mithril"
 ], function(
+    Dialog,
     generateRandomUuid,
-    lang
+    lang,
+    m
 ){
     "use strict";
     
@@ -417,20 +421,18 @@ define([
         redraw();
     }
 
-    /*
     // Caller should call wizard.forward() on successful save to see the last page, and provide a retry message otherwise
     // Caller may also want to call (the returned) surveyDialog.hide() to close the window, or let the user do it.
     function openSurveyDialog(questionnaire, callback) {  
         console.log("openSurveyDialog questionnaire", questionnaire);
         
-        var surveyDialog;
-        var form;
+        var surveyDiv = document.createElement("div");
         
-        form = buildSurveyForm(questionnaire, callback);
+        buildSurveyForm(surveyDiv, questionnaire, callback);
    
-        surveyDialog = new Dialog({
+        var surveyDialog = new Dialog({
             title: "Take Survey",
-            content: form
+            content: surveyDiv
             // style: "width: 800px; height: 700px;"
         });
         
@@ -444,10 +446,9 @@ define([
         
         return surveyDialog;
     }
-    */
 
     return {
-        // openSurveyDialog: openSurveyDialog,
+        openSurveyDialog: openSurveyDialog,
         buildSurveyForm: buildSurveyForm,
         storeSurveyResult: storeSurveyResult
     };
