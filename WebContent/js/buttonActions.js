@@ -28,6 +28,8 @@ define([
 ){
     "use strict";
     
+    console.log("=========== surveyStorage", surveyStorage);
+    
     var project;
     
     function initialize(theProject) {
