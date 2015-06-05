@@ -16,7 +16,7 @@ define([
      *   (maybe) togglebutton
      * Multiple eliciting questions
      * Storing data in model
-     * Add styling classes
+     X Add styling classes
      * Dialog version
      * Call validation for each story
      * (Optional) Reporting validation errors inline
@@ -162,7 +162,8 @@ define([
                 m("br")
             ];
         } else if (displayType === "slider") {
-            if (question.displayPrompt) questionLabel[0].children = question.displayPrompt + " (0-100)";
+            // Could suggest 0-100 to support <IE10 that don't have range input -- or coudl do polyfill
+            // if (question.displayPrompt) questionLabel[0].children = question.displayPrompt + " (0-100)";
             parts = [
                 m("span", {class: "narrafirma-low"}, question.displayConfiguration[0]),
                 m('span', {class: "narrafirma-slider"}, m('input[type="range"]')),
@@ -275,12 +276,13 @@ define([
         
         function displayStoryQuestions(story, index) {
             var result = [
-                m("span", {style: {"font-weight": "bold"}}, "Story #" + (index + 1)),
+                m("span", {class: "narrafirma-story-label", style: {"font-weight": "bold"}}, "Story #" + (index + 1)),
                 m("br"),
 
                 allStoryQuestions.map(displayQuestion),
                 
                 m("button", {
+                    class: "narrafirma-delete-story-button",
                     onclick: function () {
                         // TODO: Only confirm if the story has a title or text
                         if (!confirm("Are you sure you want to delete this story?")) return;
@@ -315,12 +317,12 @@ define([
         
         function submitButtonOrWaitOrFinal() {
             if (submitted === false) {
-                return m("button", {onclick: submitButtonPressed}, "Submit survey");
+                return m("button", {class: "narrafirma-submit-survey-button", onclick: submitButtonPressed}, "Submit survey");
             } else if (submitted === "failed") {
                 return m("div", [
                     "Sending to server failed. Please try again...",
                     m("br"),
-                    m("button", {onclick: submitButtonPressed}, "Submit survey")
+                    m("button", {class: "narrafirma-submit-survey-button", onclick: submitButtonPressed}, "Submit survey")
                 ]);
             } else if (submitted === "pending") {
                 return m("div", ["Sending survey result to server... Please wait..."]);
@@ -355,13 +357,15 @@ define([
                     return displayStoryQuestions(story, index).concat(m("hr"));
                 }),
                 "If you would like to, you can tell another story.",
-                m("button", {onclick: tellAnotherStory}, "Add another story"),
+                m("button", {class: "narrafirma-tell-another-story-button", onclick: tellAnotherStory}, "Add another story"),
                 m("hr"),
                 participantQuestions.map(function(question, index) {
                     console.log("question", question);
                     return m("div", [displayQuestion(question)]);
                 }),
+                m("hr"),
                 submitButtonOrWaitOrFinal(),
+                m("hr"),
                 m("button", {onclick: function() { redraw(); console.log("stories", stories);} }, "Redraw (for debugging)")
             ]);
         };

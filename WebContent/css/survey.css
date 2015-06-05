@@ -93,17 +93,17 @@ a:active {
     text-align: center;
 }
 
-/*
 .narrafirma-question-type-slider .narrafirma-low {
     text-align: right;
+    font-size: 0.8em;
 }
 
 .narrafirma-question-type-slider .narrafirma-slider {
-    text-align: center;
+    /* text-align: center; */
 }
 
 .narrafirma-question-type-slider .narrafirma-high {
     text-align: left;
+    font-size: 0.8em;
 }
-*/
 
