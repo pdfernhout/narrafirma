@@ -1,4 +1,4 @@
-require([], function() {
+define([], function() {
     "use strict";
     
     function storeSurveyResult(pointrelClient, projectIdentifier, storyCollectionIdentifier, completedSurvey, wizardPane) {
