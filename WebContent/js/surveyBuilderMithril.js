@@ -18,7 +18,7 @@ define([
      X Storing data in model
      X Add styling classes
      * Dialog version
-     * Call validation for each story
+     X Call validation for each story
      * (Optional) Reporting validation errors inline
      * (Optional for now) Call translate
      */
@@ -65,33 +65,26 @@ define([
         doneCallback("submitted", surveyResult, wizardPane);
     }
 
-    function validateStoryQuestionsModel(storyQuestionsModel, allowEmptyBypass) {
+    function validateStoryQuestionsModel(storyQuestionsModel, index) {
+        var storyIndex = "story #" + (index + 1);
+        
         // TODO: Translate
-        var elicitingQuestion = storyQuestionsModel.get("__survey_elicitingQuestion");
-        var storyName = storyQuestionsModel.get("__survey_storyName");
-        var storyText = storyQuestionsModel.get("__survey_storyText");
-
-        // Until support deleting stories, allow progress with out entering anything...
-        if (allowEmptyBypass && !storyText && !storyName) {
-            // alert("It looks like you don't want to tell a story right now for this page; that's OK");
-            return true;
-        }
+        var elicitingQuestion = storyQuestionsModel.__survey_elicitingQuestion;
+        var storyName = storyQuestionsModel.__survey_storyName;
+        var storyText = storyQuestionsModel.__survey_storyText;
 
         if (!elicitingQuestion) {
-            alert("Please select a question before proceeding");
+            alert("Before proceeding, please select the question to which you are responding for " + storyIndex);
             return false;
         }
 
-        var bypassText = "\n(or clear both the story name field and the story response field if you don't want to enter a story on this page)";
-        if (!allowEmptyBypass) bypassText = "";
-
         if (!storyText) {
-            alert("Please enter some text in the story response field before proceeding" + bypassText);
+            alert("Please enter a story before proceeding for " + storyIndex);
             return false;
         }
 
         if (!storyName) {
-            alert("Please give your story a name before proceeding" + bypassText);
+            alert("Please give your story a name before proceeding for " + storyIndex);
             return false;
         }
 
@@ -335,7 +328,22 @@ define([
         
         redraw = redrawFunction;
         
+        function validate() {
+            // TODO: Improve validation
+            if (!stories.length) {
+                alert("Please add at least one story before proceeding.");
+                return false;
+            }
+            for (var i = 0; i < stories.length; i++) {
+                var story = stories[i];
+                if (!validateStoryQuestionsModel(story, i)) return false;
+            }
+            return true;
+        }
+        
         function submitButtonPressed() {
+            if (!validate()) return;
+            
             submitted = "pending";
             setTimeout(function() {
                 if (Math.random() > 0.5) {
@@ -373,7 +381,7 @@ define([
         }
         
         function tellAnotherStory() {
-            stories.push({});
+            addStory();
             redraw();
         }
         
