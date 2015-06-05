@@ -21,22 +21,6 @@ body {
    padding: 10px;
 }
 
-a:link {
-	color: #658200;
-}
-
-a:visited {
-	color: #3b5fab;
-}
-
-a:hover {
-	color: #2e4a85;
-}
-
-a:active {
-	color: #3b5fab;
-}
-
 .pleaseWaitOverlay {
     /* background-color: #E0EEEE; */
     background-image: url('../images/dojo-Standby-loading.gif');
