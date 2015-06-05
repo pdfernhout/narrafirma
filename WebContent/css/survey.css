@@ -51,6 +51,7 @@ a:active {
 }
 
 .narrafirma-question-external {
+    border-radius: 12px;
     background: #d5dae6;
     margin-bottom: 4px;
     padding: 8px;
@@ -67,6 +68,11 @@ a:active {
 
 .narrafirma-question-type-header {
     font-weight: bold;
+    background: white;
+}
+
+.narrafirma-question-type-label {
+    background: white;
 }
 
 .narrafirma-question-type-textarea textarea {
