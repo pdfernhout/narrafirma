@@ -83,65 +83,6 @@ define([
        
        return true;
    }
-   
-   function newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels, addIndex, singlePrompt) {
-        
-        var surveyPane = new ContentPane();
-        
-        // TODO: Translate
-        allStoryQuestions[0].displayPrompt = "Story #" + addIndex;
-        
-        var storyQuestionsModel = new Stateful();
-        storyQuestionsModel.set("__type", "org.workingwithstories.Story");
-        storyQuestionsModel.set("_storyID", generateRandomUuid());
-        storyQuestionsModel.set("_participantID", participantID);
-        if (singlePrompt) storyQuestionsModel.set("__survey_elicitingQuestion", singlePrompt);
-        surveyResultsWithModels.stories.push(storyQuestionsModel);
-        
-        panelBuilder.buildFields(allStoryQuestions, surveyPane, storyQuestionsModel);
-        
-        widgetSupport.newButton(surveyPane, "#button_previousPage|Previous page", function() {
-            console.log("button_previousPage");
-            wizardPane.back();
-        });
-        
-        var tellAnotherStoryButton = widgetSupport.newButton(surveyPane, "#button_tellAnotherStory|Tell another story", function() {
-            console.log("button_tellAnotherStory");
-            if (!validateStoryQuestionsModel(storyQuestionsModel)) return;
-            var children = wizardPane.getChildren();
-            var indexForNewStoryPage = array.indexOf(children, wizardPane.selectedChildWidget) + 1;
-            newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels, indexForNewStoryPage, singlePrompt);
-            domStyle.set(tellAnotherStoryButton.domNode, 'display', 'none');
-            domStyle.set(dontTellAnotherStoryButton.domNode, 'display', 'none');
-            domStyle.set(nextPageButton.domNode, 'display', 'inline');
-            wizardPane.forward();
-        });
-        
-        var dontTellAnotherStoryButton = widgetSupport.newButton(surveyPane, "#button_dontTellAnotherStory|Done with adding stories", function() {
-            console.log("button_dontTellAnotherStory");
-            var canProceedIfNoStory = addIndex !== 1;
-            if (!validateStoryQuestionsModel(storyQuestionsModel, canProceedIfNoStory)) return;
-            wizardPane.forward();
-        });
-        
-        /*
-        widgetSupport.newButton(surveyPane, "#button_deleteThisStory|Delete this story", function() {
-            console.log("button_nextPage");
-            wizardPane.forward();
-        });
-        */
-        
-        var nextPageButton = widgetSupport.newButton(surveyPane, "#button_nextPage|Next page", function() {
-            console.log("button_nextPage");
-            // TODO: Need to somehow require at least one story... But this allows previous stories to be deleted. Kludge for now that first story can't be blank.
-            var canProceedIfNoStory = addIndex !== 1;
-            if (!validateStoryQuestionsModel(storyQuestionsModel, canProceedIfNoStory)) return;
-            wizardPane.forward();
-        });
-        domStyle.set(nextPageButton.domNode, 'display', 'none');
-        
-        wizardPane.addChild(surveyPane, addIndex);
-    }
     
     function buildSurveyForm(surveyDiv, questionnaire, doneCallback) {  
         console.log("buildSurveyForm questions", questionnaire);
@@ -190,9 +131,6 @@ define([
         var participantQuestions = [{id: "__survey_" + "participantHeader", displayName: "participantHeader", displayPrompt: "About you", displayType: "header", valueOptions: []}];
         participantQuestions = participantQuestions.concat(questionnaire.participantQuestions);
 
-        //var form = new Form();
-        //form.set("style", "width: 800px; height 800px; overflow: auto;");
-        
         timestampStart = new Date();
         
         var surveyResultsWithModels = {
@@ -217,8 +155,19 @@ define([
         
         console.log("startQuestions", startQuestions);
         
-        // var stories = [{title: "test1", text: "Once upon a time..."}, {"title": "test2", text: "It happened one night..."}];
-        var stories = [{}];
+        var stories = [];
+        
+        function addStory() {
+            var storyQuestionsModel = {
+                __type: "org.workingwithstories.Story",
+                _storyID: generateRandomUuid(),
+                _participantID: participantID
+            };
+            if (singlePrompt) storyQuestionsModel.__survey_elicitingQuestion = singlePrompt;         
+            stories.push(storyQuestionsModel);
+        }
+            
+        addStory();
         
         function displayQuestion(question) {
             var displayType = question.displayType;
@@ -360,18 +309,6 @@ define([
                     return m("div", [displayQuestion(question)]);
                 }),
                 m("hr"),
-                /*
-                m("table", [
-                    stories.map(function(story, index) {
-                        return m("tr", [
-                            m("td", story.title),
-                            m("td", story.text),
-                            m("button", "Edit"),
-                            m("button", "Delete"),
-                        ]);
-                    })
-                ]),
-                */
                 stories.map(function(story, index) {
                     console.log("story map", story);
                     return displayStoryQuestions(story, index).concat(m("hr"));
@@ -389,49 +326,6 @@ define([
         };
         
         redraw();
-        
-        /*
-        var startPane = new ContentPane();
-        
-        panelBuilder.buildFields(startQuestions, startPane, participantDataModel);
-        
-        widgetSupport.newButton(startPane, "button_nextPage", function() {
-            console.log("button_nextPage");
-            wizardPane.forward();
-        });
-        
-        wizardPane.addChild(startPane);
-        
-        // TODO: Need to handle multiple stories somehow
-        
-        newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels, 1, singlePrompt) ;
-        //newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
-        //newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
-        //newStoryEntry(wizardPane, allStoryQuestions, participantID, surveyResultsWithModels) ;
-        
-        var participantPane = new ContentPane();
-        
-        panelBuilder.buildFields(questionnaire.participantQuestions, participantPane, participantDataModel);
-        
-        widgetSupport.newButton(participantPane, "#button_previousPage|Previous page", function() {
-            console.log("button_previousPage");
-            wizardPane.back();
-        });
-        
-        widgetSupport.newButton(participantPane, "#surveySubmit|Submit survey", function() {
-            console.log("Submit survey");
-            submitSurvey(surveyResultsWithModels, wizardPane, doneCallback);
-        });
-        
-        wizardPane.addChild(participantPane);
-        
-        var endPane = new ContentPane();
-        panelBuilder.buildFields(endQuestions, endPane, participantDataModel);
-        
-        wizardPane.addChild(endPane);
-        
-        return wizardPane;
-        */
     }
 
     // Caller should call wizard.forward() on successful save to see the last page, and provide a retry message otherwise
