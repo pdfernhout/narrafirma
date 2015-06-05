@@ -15,7 +15,7 @@ define([
      *   (maybe) image
      *   (maybe) togglebutton
      * Multiple eliciting questions
-     * Storing data in model
+     X Storing data in model
      X Add styling classes
      * Dialog version
      * Call validation for each story
@@ -51,16 +51,14 @@ define([
         });
     }
     
-    function submitSurvey(surveyResultsWithModels, wizardPane, doneCallback) {
+    function submitSurvey(surveyResult, wizardPane, doneCallback) {
         var answers = {};
         console.log("submitSurvey pressed");
         
         var timestampEnd = new Date();
         
-        surveyResultsWithModels.timestampEnd = timestampEnd.toISOString();
-        surveyResultsWithModels.timeDuration_ms = timestampEnd.getTime() - timestampStart.getTime(); 
-        
-        var surveyResult = getPlainValue(surveyResultsWithModels);
+        surveyResult.timestampEnd = timestampEnd.toISOString();
+        surveyResult.timeDuration_ms = timestampEnd.getTime() - timestampStart.getTime(); 
            
         console.log("survey answers", surveyResult);
         
@@ -115,6 +113,8 @@ define([
             if (event) value = event.target.value;
             console.log("onchange", fieldSpecification.id, value);
             model[fieldSpecification.id] = value;
+            // TODO: redraw on value change seems not needed in this survey case, since values do not affect anything about rest of application?
+            // redraw();
         }
         
         var standardValueOptions = {
@@ -211,6 +211,8 @@ define([
         
         return m("div", {class: "narrafirma-question-external narrafirma-question-type-" + displayType}, questionLabel.concat(parts));
     }
+    
+    var redraw;
     
     function buildSurveyForm(surveyDiv, questionnaire, doneCallback) {  
         console.log("buildSurveyForm questions", questionnaire);
@@ -326,10 +328,12 @@ define([
         
         var submitted = false;
         
-        function redraw() {
+        function redrawFunction() {
             console.log("About to redraw");
             m.render(surveyDiv, view());
         }
+        
+        redraw = redrawFunction;
         
         function submitButtonPressed() {
             submitted = "pending";
@@ -357,7 +361,6 @@ define([
                 return m("div", ["Sending survey result to server... Please wait..."]);
             } else {
                 return endQuestions.map(function(question, index) {
-                    console.log("question", question);
                     return m("div", [
                         "Server accepted survey OK",
                         m("br"),
@@ -377,31 +380,35 @@ define([
         var view = function() {
             return m("div", [
                 startQuestions.map(function(question, index) {
-                    console.log("question", question);
                     return m("div", [displayQuestion(null, question)]);
                 }),
                 m("hr"),
                 stories.map(function(story, index) {
-                    console.log("story map", story);
                     return displayStoryQuestions(story, index).concat(m("hr"));
                 }),
                 "If you would like to, you can tell another story.",
                 m("button", {class: "narrafirma-tell-another-story-button", onclick: tellAnotherStory}, "Add another story"),
                 m("hr"),
                 participantQuestions.map(function(question, index) {
-                    console.log("question", question);
                     return m("div", [displayQuestion(surveyResult.participantData, question)]);
                 }),
                 m("hr"),
                 submitButtonOrWaitOrFinal(),
                 m("hr"),
-                m("button", {onclick: function() { redraw(); console.log("stories", stories); console.log("participantData", surveyResult.participantData); } }, "Redraw (for debugging)")
+                m("button", {
+                    onclick: function() {
+                        redraw();
+                        console.log("stories", stories);
+                        console.log("participantData", surveyResult.participantData);
+                    }
+                }, "Redraw (for debugging)")
             ]);
         };
         
         redraw();
     }
 
+    /*
     // Caller should call wizard.forward() on successful save to see the last page, and provide a retry message otherwise
     // Caller may also want to call (the returned) surveyDialog.hide() to close the window, or let the user do it.
     function openSurveyDialog(questionnaire, callback) {  
@@ -428,9 +435,10 @@ define([
         
         return surveyDialog;
     }
+    */
 
     return {
-        openSurveyDialog: openSurveyDialog,
+        // openSurveyDialog: openSurveyDialog,
         buildSurveyForm: buildSurveyForm,
         storeSurveyResult: storeSurveyResult
     };
