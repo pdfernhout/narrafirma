@@ -175,7 +175,7 @@ define([
         // TODO: What if these IDs for storyText and storyName are not unique?
         var initialStoryQuestions = [];
         var singlePrompt = null;
-        initialStoryQuestions.push({id: "__survey_" + "questionHeader", displayName: "questionHeader", displayPrompt: "Story", displayType: "header", valueOptions: []});
+        // initialStoryQuestions.push({id: "__survey_" + "questionHeader", displayName: "questionHeader", displayPrompt: "Story", displayType: "header", valueOptions: []});
         if (elicitingQuestionPrompts.length !== 1) {
             initialStoryQuestions.push({id: "__survey_" + "elicitingQuestion", displayName: "elicitingQuestion", displayPrompt: "Please choose a question to which you would like to respond:", displayType: "radiobuttons", valueOptions: elicitingQuestionPrompts});
             initialStoryQuestions.push({id: "__survey_" + "storyText", displayName: "storyText", displayPrompt: "Please enter your response in the box below:", displayType: "textarea", valueOptions:[]});
@@ -217,7 +217,8 @@ define([
         
         console.log("startQuestions", startQuestions);
         
-        var stories = [{title: "test1", text: "Once upon a time..."}, {"title": "test2", text: "It happened one night..."}];
+        // var stories = [{title: "test1", text: "Once upon a time..."}, {"title": "test2", text: "It happened one night..."}];
+        var stories = [{}];
         
         function displayQuestion(question) {
             var displayType = question.displayType;
@@ -248,7 +249,6 @@ define([
                      question.valueOptions.map(function (option, index) {
                          return [m("input[type=checkbox]"), option, m("br")];
                      }),
-                     m("br"),
                      m("br")
                  ]);
             } else if (displayType === "select") {
@@ -283,13 +283,30 @@ define([
             }
         }
         
-        function displayStoryQuestions() {
-            return allStoryQuestions.map(displayQuestion);
+        function displayStoryQuestions(story, index) {
+            var result = [
+                m("span", {style: {"font-weight": "bold"}}, "Story #" + (index + 1)),
+                m("br"),
+
+                allStoryQuestions.map(displayQuestion),
+                
+                m("button", {
+                    onclick: function () {
+                        // TODO: Only confirm if the story has a title or text
+                        if (!confirm("Are you sure you want to delete this story?")) return;
+                        stories.splice(index, 1);
+                        redraw();
+                    }
+                }, "Delete this story (#" + (index + 1) + ")")
+            ];
+            
+            return result; 
         }
         
         var submitted = false;
         
         function redraw() {
+            console.log("About to redraw");
             m.render(surveyDiv, view());
         }
         
@@ -332,7 +349,7 @@ define([
         }
         
         function tellAnotherStory() {
-            stories.push({title: "something", text: "unfinished"});
+            stories.push({});
             redraw();
         }
         
@@ -342,6 +359,8 @@ define([
                     console.log("question", question);
                     return m("div", [displayQuestion(question)]);
                 }),
+                m("hr"),
+                /*
                 m("table", [
                     stories.map(function(story, index) {
                         return m("tr", [
@@ -352,8 +371,14 @@ define([
                         ]);
                     })
                 ]),
-                displayStoryQuestions(),
+                */
+                stories.map(function(story, index) {
+                    console.log("story map", story);
+                    return displayStoryQuestions(story, index).concat(m("hr"));
+                }),
+                "If you would like to, you can tell another story.",
                 m("button", {onclick: tellAnotherStory}, "Add another story"),
+                m("hr"),
                 participantQuestions.map(function(question, index) {
                     console.log("question", question);
                     return m("div", [displayQuestion(question)]);
