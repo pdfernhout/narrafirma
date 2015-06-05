@@ -7,6 +7,22 @@ define([
 ){
     "use strict";
     
+    /* TODO:
+     * All widget types:
+     X   boolean
+     X   radiobuttons
+     X   checkbox
+     *   (maybe) image
+     *   (maybe) togglebutton
+     * Multiple eliciting questions
+     * Storing data in model
+     * Add styling classes
+     * Dialog version
+     * Call validation for each story
+     * (Optional) Reporting validation errors inline
+     * (Optional for now) Call translate
+     */
+    
     /* global m */
 
     var timestampStart;
@@ -83,6 +99,98 @@ define([
        
        return true;
    }
+   
+   function displayQuestion(question) {
+       var displayType = question.displayType;
+       if (displayType === "label") {
+           return m("div", [question.displayPrompt, m("br"), m("br")]);
+       } else if (displayType === "header") {
+           return m("div", {style: {"font-weight": "bold"}}, [question.displayPrompt, m("br"), m("br")]);
+       } else if (displayType === "text") {
+           return m("div", [
+               question.displayPrompt,
+               m("br"),
+               m("input"),
+               m("br"),
+               m("br")
+           ]);
+       } else if (displayType === "textarea") {
+           return m("div", [
+               question.displayPrompt,
+               m("br"),
+               m("textarea"),
+               m("br"),
+               m("br")
+           ]);
+       } else if (displayType === "checkbox") {
+           return m("div", [
+                question.displayPrompt,
+                m("br"),
+                m("input[type=checkbox]"),
+                m("br"),
+                m("br")
+            ]);
+       } else if (displayType === "checkboxes") {
+           return m("div", [
+                question.displayPrompt,
+                m("br"),
+                question.valueOptions.map(function (option, index) {
+                    return [m("input[type=checkbox]"), option, m("br")];
+                }),
+                m("br")
+            ]);
+       } else if (displayType === "radiobuttons") {
+           return m("div", [
+                question.displayPrompt,
+                m("br"),
+                question.valueOptions.map(function (option, index) {
+                    return [m("input[type=radio]", {value: option, name: question.id}), option, m("br")];
+                }),
+                m("br")
+            ]);
+       } else if (displayType === "boolean") {
+           return m("div", [
+                question.displayPrompt,
+                m("br"),
+                m("input[type=radio]", {value: true, name: question.id}),
+                "yes",
+                m("br"),
+                m("input[type=radio]", {value: false, name: question.id}),
+                "no",
+                m("br"),
+                m("br")
+            ]);
+       } else if (displayType === "select") {
+           return m("div", [
+                question.displayPrompt,
+                m("br"),
+                m("select",
+                    // TODO: Would not select frst item if had value
+                    [m("option", {selected: "selected", disabled: "disabled", hidden: "hidden", value: ''}, '')].concat(
+                        question.valueOptions.map(function (value, index) {
+                        var optionOptions = {value: value};
+                        // if (??value.indexOf(option) !== -1) opts.selected = 'selected';
+                        return m("option", optionOptions, value);
+                    }))
+                ),
+                m("br"),
+                m("br")
+            ]);
+       } else if (displayType === "slider") {
+           console.log("slider", question);
+           return m("div", [
+               question.displayPrompt + " (0-100)",
+               m("br"),
+               question.displayConfiguration[0],
+               m('input[type="range"]'),
+               question.displayConfiguration[1],
+               m("br"),
+               m("br")
+           ]);
+       } else {
+           return m("div", {style: {"font-weight": "bold"}}, ["UNFINISHED: " + question.displayType, m("br"), m("br")]);
+       }
+   }
     
     function buildSurveyForm(surveyDiv, questionnaire, doneCallback) {  
         console.log("buildSurveyForm questions", questionnaire);
@@ -131,6 +239,12 @@ define([
         var participantQuestions = [{id: "__survey_" + "participantHeader", displayName: "participantHeader", displayPrompt: "About you", displayType: "header", valueOptions: []}];
         participantQuestions = participantQuestions.concat(questionnaire.participantQuestions);
 
+        // TODO: For testing
+        participantQuestions.push({id: "test1", displayName: "test1", displayPrompt: "test checkbox", displayType: "checkbox", valueOptions:[]});
+        participantQuestions.push({id: "test2", displayName: "test2", displayPrompt: "test boolean", displayType: "boolean", valueOptions:[]});
+        participantQuestions.push({id: "test3", displayName: "test3", displayPrompt: "test radiobuttons", displayType: "radiobuttons", valueOptions:["one", "two", "three"]});
+
+        
         timestampStart = new Date();
         
         var surveyResultsWithModels = {
@@ -168,69 +282,6 @@ define([
         }
             
         addStory();
-        
-        function displayQuestion(question) {
-            var displayType = question.displayType;
-            if (displayType === "label") {
-                return m("div", [question.displayPrompt, m("br"), m("br")]);
-            } else if (displayType === "header") {
-                return m("div", {style: {"font-weight": "bold"}}, [question.displayPrompt, m("br"), m("br")]);
-            } else if (displayType === "text") {
-                return m("div", [
-                    question.displayPrompt,
-                    m("br"),
-                    m("input"),
-                    m("br"),
-                    m("br")
-                ]);
-            } else if (displayType === "textarea") {
-                return m("div", [
-                    question.displayPrompt,
-                    m("br"),
-                    m("textarea"),
-                    m("br"),
-                    m("br")
-                ]);
-            } else if (displayType === "checkboxes") {
-                return m("div", [
-                     question.displayPrompt,
-                     m("br"),
-                     question.valueOptions.map(function (option, index) {
-                         return [m("input[type=checkbox]"), option, m("br")];
-                     }),
-                     m("br")
-                 ]);
-            } else if (displayType === "select") {
-                return m("div", [
-                     question.displayPrompt,
-                     m("br"),
-                     m("select",
-                         // TODO: Would not select frst item if had value
-                         [m("option", {selected: "selected", disabled: "disabled", hidden: "hidden", value: ''}, '')].concat(
-                             question.valueOptions.map(function (value, index) {
-                             var optionOptions = {value: value};
-                             // if (??value.indexOf(option) !== -1) opts.selected = 'selected';
-                             return m("option", optionOptions, value);
-                         }))
-                     ),
-                     m("br"),
-                     m("br")
-                 ]);
-            } else if (displayType === "slider") {
-                console.log("slider", question);
-                return m("div", [
-                    question.displayPrompt + " (0-100)",
-                    m("br"),
-                    question.displayConfiguration[0],
-                    m('input[type="range"]'),
-                    question.displayConfiguration[1],
-                    m("br"),
-                    m("br")
-                ]);
-            } else {
-                return m("div", {style: {"font-weight": "bold"}}, ["UNFINISHED: " + question.displayType, m("br"), m("br")]);
-            }
-        }
         
         function displayStoryQuestions(story, index) {
             var result = [
@@ -321,7 +372,7 @@ define([
                     return m("div", [displayQuestion(question)]);
                 }),
                 submitButtonOrWaitOrFinal(),
-                m("button", {onclick: redraw}, "Redraw (for debugging)")
+                m("button", {onclick: function() { redraw(); console.log("stories", stories);} }, "Redraw (for debugging)")
             ]);
         };
         
