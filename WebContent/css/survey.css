@@ -7,7 +7,7 @@ html, body {
     height: 100%;
     width: 100%;
     margin:0;
-    padding:0; 
+    padding:0;
 }
 
 body {
@@ -50,3 +50,37 @@ a:active {
     height: 100%;
     width: 100%;
 }
+
+.narrafirma-question-external {
+    background: #d5dae6;
+    margin-bottom: 4px;
+}
+
+.narrafirma-prompt {
+    margin-left: 10px;
+}
+
+.narrafirma-question-internal {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.narrafirma-question-type-header {
+    font-weight: bold;
+}
+
+.narrafirma-question-type-textarea textarea {
+    width: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.narrafirma-question-type-text input {
+    width: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+

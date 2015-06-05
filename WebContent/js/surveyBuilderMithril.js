@@ -67,103 +67,89 @@ define([
         doneCallback("submitted", surveyResult, wizardPane);
     }
 
-   function validateStoryQuestionsModel(storyQuestionsModel, allowEmptyBypass) {
-       // TODO: Translate
-       var elicitingQuestion = storyQuestionsModel.get("__survey_elicitingQuestion");
-       var storyName = storyQuestionsModel.get("__survey_storyName");
-       var storyText = storyQuestionsModel.get("__survey_storyText");
-       
-       // Until support deleting stories, allow progress with out entering anything...
-       if (allowEmptyBypass && !storyText && !storyName) {
-           // alert("It looks like you don't want to tell a story right now for this page; that's OK");
-           return true;
-       }
-       
-       if (!elicitingQuestion) {
-           alert("Please select a question before proceeding");
-           return false;
-       }
-       
-       var bypassText = "\n(or clear both the story name field and the story response field if you don't want to enter a story on this page)";
-       if (!allowEmptyBypass) bypassText = "";
-       
-       if (!storyText) {
-           alert("Please enter some text in the story response field before proceeding" + bypassText);
-           return false;
-       }
-       
-       if (!storyName) {
-           alert("Please give your story a name before proceeding" + bypassText);
-           return false;
-       }
-       
-       return true;
-   }
+    function validateStoryQuestionsModel(storyQuestionsModel, allowEmptyBypass) {
+        // TODO: Translate
+        var elicitingQuestion = storyQuestionsModel.get("__survey_elicitingQuestion");
+        var storyName = storyQuestionsModel.get("__survey_storyName");
+        var storyText = storyQuestionsModel.get("__survey_storyText");
+
+        // Until support deleting stories, allow progress with out entering anything...
+        if (allowEmptyBypass && !storyText && !storyName) {
+            // alert("It looks like you don't want to tell a story right now for this page; that's OK");
+            return true;
+        }
+
+        if (!elicitingQuestion) {
+            alert("Please select a question before proceeding");
+            return false;
+        }
+
+        var bypassText = "\n(or clear both the story name field and the story response field if you don't want to enter a story on this page)";
+        if (!allowEmptyBypass) bypassText = "";
+
+        if (!storyText) {
+            alert("Please enter some text in the story response field before proceeding" + bypassText);
+            return false;
+        }
+
+        if (!storyName) {
+            alert("Please give your story a name before proceeding" + bypassText);
+            return false;
+        }
+
+        return true;
+    }
    
-   function displayQuestion(question) {
-       var displayType = question.displayType;
-       if (displayType === "label") {
-           return m("div", [question.displayPrompt, m("br"), m("br")]);
-       } else if (displayType === "header") {
-           return m("div", {style: {"font-weight": "bold"}}, [question.displayPrompt, m("br"), m("br")]);
-       } else if (displayType === "text") {
-           return m("div", [
-               question.displayPrompt,
-               m("br"),
-               m("input"),
-               m("br"),
-               m("br")
-           ]);
-       } else if (displayType === "textarea") {
-           return m("div", [
-               question.displayPrompt,
-               m("br"),
-               m("textarea"),
-               m("br"),
-               m("br")
-           ]);
-       } else if (displayType === "checkbox") {
-           return m("div", [
-                question.displayPrompt,
-                m("br"),
-                m("input[type=checkbox]"),
-                m("br"),
+    function displayQuestion(question) {
+        var displayType = question.displayType;
+        var questionLabel = [
+            m("span", {class: "narrafirma-prompt"}, question.displayPrompt),
+            m("br")
+        ];
+
+        var parts = [];
+        if (displayType === "label") {
+            // Nothing to do
+        } else if (displayType === "header") {
+            // Nothing to do -- bolding done using style
+        } else if (displayType === "text") {
+            parts = [
+                m("input"),
                 m("br")
-            ]);
-       } else if (displayType === "checkboxes") {
-           return m("div", [
-                question.displayPrompt,
-                m("br"),
+            ];
+        } else if (displayType === "textarea") {
+            parts = [
+                m("textarea"),
+                m("br")
+            ];
+        } else if (displayType === "checkbox") {
+            parts = [
+                 m("input[type=checkbox]"),
+                 m("br")
+             ];
+        } else if (displayType === "checkboxes") {
+            parts = [
                 question.valueOptions.map(function (option, index) {
                     return [m("input[type=checkbox]"), option, m("br")];
-                }),
-                m("br")
-            ]);
-       } else if (displayType === "radiobuttons") {
-           return m("div", [
-                question.displayPrompt,
-                m("br"),
+                })
+            ];
+        } else if (displayType === "radiobuttons") {
+            parts = [
                 question.valueOptions.map(function (option, index) {
                     return [m("input[type=radio]", {value: option, name: question.id}), option, m("br")];
-                }),
-                m("br")
-            ]);
-       } else if (displayType === "boolean") {
-           return m("div", [
-                question.displayPrompt,
-                m("br"),
+                })
+            ];
+        } else if (displayType === "boolean") {
+            parts = [
                 m("input[type=radio]", {value: true, name: question.id}),
                 "yes",
                 m("br"),
                 m("input[type=radio]", {value: false, name: question.id}),
                 "no",
-                m("br"),
                 m("br")
-            ]);
-       } else if (displayType === "select") {
-           return m("div", [
-                question.displayPrompt,
-                m("br"),
+            ];
+        } else if (displayType === "select") {
+            parts = [
                 m("select",
                     // TODO: Would not select frst item if had value
                     [m("option", {selected: "selected", disabled: "disabled", hidden: "hidden", value: ''}, '')].concat(
@@ -173,24 +159,29 @@ define([
                         return m("option", optionOptions, value);
                     }))
                 ),
-                m("br"),
                 m("br")
-            ]);
-       } else if (displayType === "slider") {
-           console.log("slider", question);
-           return m("div", [
-               question.displayPrompt + " (0-100)",
-               m("br"),
-               question.displayConfiguration[0],
-               m('input[type="range"]'),
-               question.displayConfiguration[1],
-               m("br"),
-               m("br")
-           ]);
-       } else {
-           return m("div", {style: {"font-weight": "bold"}}, ["UNFINISHED: " + question.displayType, m("br"), m("br")]);
-       }
-   }
+            ];
+        } else if (displayType === "slider") {
+            questionLabel[0].children = question.displayPrompt + " (0-100)";
+            parts = [
+                question.displayConfiguration[0],
+                m('input[type="range"]'),
+                question.displayConfiguration[1],
+                m("br")
+            ];
+        } else {
+            parts = [
+                m("span", {style: {"font-weight": "bold"}}, "UNFINISHED: " + question.displayType),
+                m("br")
+            ];
+        }
+
+        if (parts.length) {
+            parts = m("div", {class: "narrafirma-question-internal"}, parts);
+        }
+        
+        return m("div", {class: "narrafirma-question-external narrafirma-question-type-" + displayType}, questionLabel.concat(parts));
+    }
     
     function buildSurveyForm(surveyDiv, questionnaire, doneCallback) {  
         console.log("buildSurveyForm questions", questionnaire);
