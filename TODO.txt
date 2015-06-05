@@ -53,25 +53,19 @@ H Improve template list generation tool to support storyCollectionActivities and
 W Fix how templates list popup has too much scrolling and is not sized well; perhaps start with grid item view pane open?
 
 SURVEY GENERAL
-H Problem when opened up road block survey with Firefox and developer console and it was too tall and when closed console the top close button became inacessible as offscreen
 L Display how many stories and/or survey results have been collected
 L Ideally, all responses for selections (other than numerical sliders) should have unique IDs for each response and the stored response should have the ID as well as the chosen text at the time.
     Add support for short names (ids) for all options for survey questions
 X Only store reference to questionnaire file resource, not the resource itself [maybe leaving as is?]
 X Support translations or other categories for multiple question texts or choice texts for a survey
 X Some easy way for two or more survey sliders to be close together under the same label
-W Switch to using Dojo Mobile for the surveys
 W Better mobile support for taking survey on cell phones
 
 SURVEY QUESTIONS
 L Remove "What type of question is this?" question from story-eliciting questions page
-X Survey - Better validation that at least one story entered instead of forcing first story entry pane to have a story even if second or later panes have stories
 X Survey - add checkbox for "is question answer required" (maybe later)
 X Survey - start page required (what do do if nothing entered)
 X Survey - improve styling on radio buttons for question or alternative approach (maybe later)
-X Survey - delete button w/confirm
-X Survey - reorder story numbers
-X Survey - can't delete last story
 X Survey - maximum number stories (maybe later)
 X Survey - back button in browser -- deal with so don't lose data
 X Remove redundant code when calculating survey questions for story and name in survey and story browser
@@ -83,10 +77,11 @@ X Improve how options are specified for questions in question designer rather th
 X Make sure that short name IDs entered by user when defining questions are unique among themselves and don't have a leading underscore (or at least aren't "_id")
 
 EXPORT/IMPORT
-H Import/Export for story collection from/to CSV format (ideally with questionnaire)
-H Add page to do import/export
+H Export for story collection to CSV format (ideally with questionnaire)
+H Add page to do export
+L Improve import process to remove two seperate buttons as two stages (questionnaire and data) or handle in some other way
+L Add progress bar for import
 X Add export button for survey results
-X Maybe import button for survey results
 X Add way to clear out or reset old survey results? Or maybe partition them by survey?
 X Backup
 
@@ -748,3 +743,29 @@ DONE Remove extra clutter from home page, like shortcut buttons and extra explan
 DONE Rename project report button on home page to project administration
 DONE Fix issue with story collection where when you turn one on or off the others have their survey definition updated
 DONE Get "Disable web story collection" to work again with multiple story collections
+DONE Improve application color styling to match NarraFirma website (CFK)
+DONE Switch from Navigation dropdown to navigation breadcrumbs
+DONE Put unknown choice at end of lists (CFK)
+DONE Disable grid buttons when editing
+DONE Support having edits and selects that are immutable after item is added
+DONE Support valdation methods for grid item add and edit
+DONE Store questionnaire directly in story collection when story collection is created (using item add validation method)
+DONE Check in sample story data (CFK)
+DONE Import for story collection from CSV format (ideally with questionnaire)
+DONE Add page to do import [actually a button]
+DONE Maybe import button for survey results [same as above]
+DONE Review alternate reactive GUI systems like React, Mithril, and Mercury and pick one for testing with survery (for loading speed, memory footprint, and simpler maintenance)
+DONE Convert survey to use Mithril and plain HTML input widgets instead of Dojo/Digit approach
+DONE Problem when opened up road block survey with Firefox and developer console and it was too tall and when closed console the top close button became inacessible as offscreen [fixed with move to Mithril]
+DONE Survey - Move to single page scrolling approach for survey
+DONE Survey - Better validation that at least one story entered instead of forcing first story entry pane to have a story even if second or later panes have stories
+DONE Survey - delete button w/confirm
+DONE Survey - reorder story numbers
+DONE Survey - can't delete last story
+DONE Survey - Better styling to match improved application styling
+DONE Survey - Get sliders to show up in Android 4 on test phones
+DONE Survey - Get survey to have a good width that reflects the screen size on Android 4
+NOT DOING Switch to using Dojo Mobile for the surveys [Using Mithril and plain HTML instead]
+DONE Remove unneeded imports (again)
+DONE Create help for planning section and review wording of pages (CFK)
+
