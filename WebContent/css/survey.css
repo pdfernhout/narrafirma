@@ -1,0 +1,52 @@
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ All pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* NOTE: the mnemonic for margin or padding order is TRIBBLE: Top Right Bottom Left */
+
+html, body {
+	font-family: Arial, Helvetica, sans-serif;
+    height: 100%;
+    width: 100%;
+    margin:0;
+    padding:0; 
+}
+
+body {
+    min-height: 100%;
+    font-size: 1em;
+    margin: 0em;
+    padding: 0em;
+    padding-left: 0em;
+}
+
+#surveyDiv {
+   padding-left: 10px; 
+}
+
+a:link {
+	color: #658200;
+}
+
+a:visited {
+	color: #3b5fab;
+}
+
+a:hover {
+	color: #2e4a85;
+}
+
+a:active {
+	color: #3b5fab;
+}
+
+.pleaseWaitOverlay {
+    /* background-color: #E0EEEE; */
+    background-image: url('../images/dojo-Standby-loading.gif');
+    background-repeat: no-repeat;
+    background-position: top center;
+    position: absolute;
+    z-index: 1001;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
