@@ -4,11 +4,9 @@ define([
     "dojo/_base/lang",
     "js/storyCardDisplay",
     "js/surveyCollection",
-    "dojo/topic",
     "js/panelBuilder/standardWidgets/GridWithItemPanel",
     "js/panelBuilder/widgetSupport",
     "dijit/layout/ContentPane",
-    "dojo/Stateful",
     "dojox/layout/TableContainer",
     "js/panelBuilder/valuePathResolver"
 ], function(
@@ -17,11 +15,9 @@ define([
     lang,
     storyCardDisplay,
     surveyCollection,
-    topic,
     GridWithItemPanel,
     widgetSupport,
     ContentPane,
-    Stateful,
     TableContainer,
     valuePathResolver
 ){

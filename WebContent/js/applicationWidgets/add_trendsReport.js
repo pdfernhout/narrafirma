@@ -1,6 +1,5 @@
 define([
     "dojo/_base/array",
-    "dijit/layout/BorderContainer",
     "./charting",
     "dijit/layout/ContentPane",
     // "dojox/encoding/digests/_base",
@@ -13,7 +12,6 @@ define([
     "dojo/topic"
 ], function(
     array,
-    BorderContainer,
     charting,
     ContentPane,
     // digests,

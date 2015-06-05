@@ -5,7 +5,6 @@ require([
     "js/panelBuilder/PanelBuilder",
     "js/panelBuilder/PanelSpecificationCollection",
     "js/pointrel20150417/PointrelClient",
-    "dojo/request",
     "dojo/Stateful",
     "dojo/domReady!"
 ], function(
@@ -15,7 +14,6 @@ require([
     PanelBuilder,
     PanelSpecificationCollection,
     PointrelClient,
-    request,
     Stateful
 ){
     "use strict";

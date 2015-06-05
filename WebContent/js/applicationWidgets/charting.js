@@ -2,14 +2,12 @@ define([
     "lib/d3/d3",
     "dojo/dom-construct",
     "dojo/_base/lang",
-    "dijit/layout/ContentPane",
-    "dojox/layout/TableContainer"
+    "dijit/layout/ContentPane"
 ], function(
     d3,
     domConstruct,
     lang,
-    ContentPane,
-    TableContainer
+    ContentPane
 ){
     "use strict";
 

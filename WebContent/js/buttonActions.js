@@ -2,28 +2,24 @@ define([
     "js/panelBuilder/browser",
     "js/csvImportExport",
     "js/panelBuilder/dialogSupport",
-    "js/modelUtility",
     "js/navigationPane",
     "js/pageDisplayer",
     "js/questionnaireGeneration",
     "js/surveyBuilderMithril",
     "js/surveyCollection",
     "js/surveyStorage",
-    "js/panelBuilder/toaster",
     "js/panelBuilder/translate",
     "dojo/domReady!"
 ], function(
     browser,
     csvImportExport,
     dialogSupport,
-    modelUtility,
     navigationPane,
     pageDisplayer,
     questionnaireGeneration,
     surveyBuilder,
     surveyCollection,
     surveyStorage,
-    toaster,
     translate
 ){
     "use strict";

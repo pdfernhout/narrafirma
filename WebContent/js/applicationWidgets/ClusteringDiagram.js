@@ -12,7 +12,6 @@ define([
     "js/panelBuilder/dialogSupport",
     "dijit/layout/ContentPane",
     "dijit/ColorPalette",
-    "dojo/_base/Color",
     "dojox/layout/ResizeHandle"
 ], function (
     d3,
@@ -27,7 +26,6 @@ define([
     dialogSupport,
     ContentPane,
     ColorPalette,
-    Color,
     ResizeHandle
 ) {
     "use strict";

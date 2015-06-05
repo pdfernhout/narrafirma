@@ -1,15 +1,9 @@
 define([
     "dijit/layout/ContentPane",
-    "dojo/dom-construct",
-    "dijit/form/Select",
-    "js/panelBuilder/translate",
-    "js/panelBuilder/widgetSupport"
+    "dojo/dom-construct"
 ], function(
     ContentPane,
-    domConstruct,
-    Select,
-    translate,
-    widgetSupport
+    domConstruct
 ) {
     "use strict";
 

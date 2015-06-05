@@ -2,18 +2,14 @@ define([
     "dijit/layout/ContentPane",
     "dojo/dom-construct",
     "dojo/dom-style",
-    "dojo/hash",
     "js/navigationPane",
-    "dojox/widget/Standby",
-    "js/panelBuilder/translate"
+    "dojox/widget/Standby"
 ], function(
     ContentPane,
     domConstruct,
     domStyle,
-    hash,
     navigationPane,
-    Standby,
-    translate
+    Standby
 ) {
     "use strict";
 

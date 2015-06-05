@@ -2,7 +2,6 @@ define([
     "./charting",
     "dojo/_base/lang",
     "js/surveyCollection",
-    "dojo/topic",
     "js/panelBuilder/widgetSupport",
     "dijit/layout/ContentPane",
     "js/panelBuilder/valuePathResolver"
@@ -10,7 +9,6 @@ define([
     charting,
     lang,
     surveyCollection,
-    topic,
     widgetSupport,
     ContentPane,
     valuePathResolver

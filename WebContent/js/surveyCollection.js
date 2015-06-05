@@ -1,12 +1,10 @@
 define([
     "dojo/_base/array",
-    "dojo/_base/lang",
     "js/questionnaireGeneration",
     "dojo/topic",
     "js/panelBuilder/translate"
 ], function(
     array,
-    lang,
     questionnaireGeneration,
     topic,
     translate

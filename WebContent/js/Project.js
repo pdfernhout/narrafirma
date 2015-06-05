@@ -1,21 +1,15 @@
 define([
-    "dijit/layout/ContentPane",
     "dojo/_base/lang",
     "js/pointrel20150417/PointrelClient",
     "dojo/Stateful",
     "js/surveyCollection",
-    "dojo/topic",
-    "js/pointrel20150417/TripleStore",
-    "js/versions"
+    "js/pointrel20150417/TripleStore"
 ], function(
-    ContentPane,
     lang,
     PointrelClient,
     Stateful,
     surveyCollection,
-    topic,
-    TripleStore,
-    versions
+    TripleStore
 ) {  
     "use strict";
     

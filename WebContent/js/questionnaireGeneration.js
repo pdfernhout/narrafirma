@@ -1,9 +1,5 @@
 define([
-   "dojo/promise/all",
-   "dojo/Deferred"
 ], function(
-   all,
-   Deferred
 ) {
    "use strict";
    

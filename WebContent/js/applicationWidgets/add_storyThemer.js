@@ -8,7 +8,6 @@ define([
     "dijit/form/ComboBox",
     "dijit/layout/ContentPane",
     "dojo/store/Memory",
-    "dojo/Stateful",
     "js/panelBuilder/widgetSupport"
 ], function(
     entities,
@@ -20,7 +19,6 @@ define([
     ComboBox,
     ContentPane,
     Memory,
-    Stateful,
     widgetSupport
  ){
     "use strict";

@@ -1,15 +1,7 @@
 define([
-    "dijit/form/Button",
-    "dojo/dom-class",
-    "dojo/dom-construct",
-    "dojo/_base/lang",
-    "../translate"
+    "dojo/dom-construct"
 ], function(
-    Button,
-    domClass,
-    domConstruct,
-    lang,
-    translate
+    domConstruct
 ){
     "use strict";
     

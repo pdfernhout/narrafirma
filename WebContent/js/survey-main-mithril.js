@@ -1,5 +1,4 @@
 require([
-    "dojo/i18n!js/nls/applicationMessages",
     "dojo/dom",
     "dojo/hash",
     "js/pointrel20150417/PointrelClient",
@@ -7,7 +6,6 @@ require([
     "js/surveyStorage",
     "dojo/domReady!"
 ], function(
-    applicationMessages,
     dom,
     hash,
     PointrelClient,
