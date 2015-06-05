@@ -31,30 +31,6 @@ define([
 
     var timestampStart;
     
-    // Panel builder needs to be configured further if buttons or grids are used
-    // var panelBuilder = new PanelBuilder();
-    
-    function storeSurveyResult(pointrelClient, projectIdentifier, storyCollectionIdentifier, completedSurvey, wizardPane) {
-        var surveyResultWrapper  = {
-            projectIdentifier: projectIdentifier,
-            storyCollectionIdentifier: storyCollectionIdentifier,
-            surveyResult: completedSurvey
-        };
-        
-        pointrelClient.createAndSendChangeMessage("surveyResults", "surveyResult", surveyResultWrapper, null, function(error, result) {
-            if (error) {
-                console.log("Problem saving survey result", error);
-                // TODO: Translate
-                // alert("Problem saving survey result");
-                alert("Problem saving survey result.\nPlease try to submit the survey result later;\nCould not write new survey result to server:\n" + error);
-                return;
-            }
-            console.log("Survey result stored");
-            if (wizardPane) alert("Survey result stored");
-            if (wizardPane) wizardPane.forward();
-        });
-    }
-    
     function submitSurvey(surveyResult, wizardPane, doneCallback) {
         var answers = {};
         console.log("submitSurvey pressed");
@@ -449,7 +425,6 @@ define([
 
     return {
         openSurveyDialog: openSurveyDialog,
-        buildSurveyForm: buildSurveyForm,
-        storeSurveyResult: storeSurveyResult
+        buildSurveyForm: buildSurveyForm
     };
 });

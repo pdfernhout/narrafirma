@@ -4,6 +4,7 @@ require([
     "dojo/hash",
     "js/pointrel20150417/PointrelClient",
     "js/surveyBuilderDojo",
+    "js/surveyStorage",
     "js/panelBuilder/translate",
     "dojo/domReady!"
 ], function(
@@ -12,6 +13,7 @@ require([
     hash,
     PointrelClient,
     surveyBuilder,
+    surveyStorage,
     translate
 ){
     "use strict";
@@ -75,7 +77,7 @@ require([
     } 
     
     function storeQuestionnaireResult(completedSurvey, wizardPane) {
-        surveyBuilder.storeSurveyResult(pointrelClient, projectIdentifier, storyCollectionIdentifier, completedSurvey, wizardPane);
+        surveyStorage.storeSurveyResult(pointrelClient, projectIdentifier, storyCollectionIdentifier, completedSurvey, wizardPane);
     }
 
     function createLayout() {

@@ -2,15 +2,15 @@ define([
     "lib/d3/d3",
     "dojox/uuid/generateRandomUuid",
     "js/questionnaireGeneration",
-    "js/surveyBuilderMithril",
     "js/surveyCollection",
+    "js/surveyStorage",
     "dojo/domReady!"
 ], function(
     d3,
     generateRandomUuid,
     questionnaireGeneration,
-    surveyBuilder,
-    surveyCollection
+    surveyCollection,
+    surveyStorage
 ){
     "use strict";
     
@@ -169,7 +169,7 @@ define([
         // TODO: Stop on error? Use Dojo Deferred probably
         for (var surveyResultIndex = 0; surveyResultIndex < surveyResults.length; surveyResultIndex++) {
             var surveyResult = surveyResults[surveyResultIndex];
-            surveyBuilder.storeSurveyResult(project.pointrelClient, project.projectIdentifier, storyCollectionIdentifier, surveyResult, null);
+            surveyStorage.storeSurveyResult(project.pointrelClient, project.projectIdentifier, storyCollectionIdentifier, surveyResult, null);
         }
     }
     

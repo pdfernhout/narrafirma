@@ -8,6 +8,7 @@ define([
     "js/questionnaireGeneration",
     "js/surveyBuilderMithril",
     "js/surveyCollection",
+    "js/surveyStorage",
     "js/panelBuilder/toaster",
     "js/panelBuilder/translate",
     "dojo/domReady!"
@@ -21,6 +22,7 @@ define([
     questionnaireGeneration,
     surveyBuilder,
     surveyCollection,
+    surveyStorage,
     toaster,
     translate
 ){
@@ -96,7 +98,7 @@ define([
         function finished(status, surveyResult, wizardPane) {
             console.log("surveyResult", status, surveyResult);
             if (status === "submitted") {
-                surveyBuilder.storeSurveyResult(project.pointrelClient, project.projectIdentifier, storyCollectionIdentifier, surveyResult, wizardPane);
+                surveyStorage.storeSurveyResult(project.pointrelClient, project.projectIdentifier, storyCollectionIdentifier, surveyResult, wizardPane);
             }
         }
     }
