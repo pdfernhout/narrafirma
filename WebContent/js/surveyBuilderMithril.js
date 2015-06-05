@@ -31,6 +31,12 @@ define([
 
     var timestampStart;
     
+    // false, "pending", "failed", true
+    var submitted = false;
+    
+    // Redraw function
+    var redraw;
+    
     function submitSurvey(surveyResult, wizardPane, doneCallback) {
         var answers = {};
         console.log("submitSurvey pressed");
@@ -185,8 +191,6 @@ define([
         return m("div", {class: "narrafirma-question-external narrafirma-question-type-" + displayType}, questionLabel.concat(parts));
     }
     
-    var redraw;
-    
     function buildSurveyForm(surveyDiv, questionnaire, doneCallback) {  
         console.log("buildSurveyForm questions", questionnaire);
         
@@ -300,8 +304,6 @@ define([
             return result; 
         }
         
-        var submitted = false;
-        
         function redrawFunction() {
             console.log("About to redraw");
             m.render(surveyDiv, view());
@@ -325,7 +327,24 @@ define([
         function submitButtonPressed() {
             if (!validate()) return;
             
+            console.log("Submit survey validated");
+            
+            // TODO: Fix no-longer-correct name from Dojo version
+            var wizardPane = {
+                forward: function () {
+                    submitted = true;
+                    redraw();
+                },
+                failed: function () {
+                    submitted = "failed";
+                    redraw();
+                }
+            };
+            
             submitted = "pending";
+            submitSurvey(surveyResult, wizardPane, doneCallback);
+            
+            /* For testing:
             setTimeout(function() {
                 if (Math.random() > 0.5) {
                     submitted = true;
@@ -334,6 +353,8 @@ define([
                 }
                 redraw();
             }, 2000);
+            */
+            
             redraw();
         }
         

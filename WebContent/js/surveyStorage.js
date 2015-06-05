@@ -14,6 +14,7 @@ require([], function() {
                 // TODO: Translate
                 // alert("Problem saving survey result");
                 alert("Problem saving survey result.\nPlease try to submit the survey result later;\nCould not write new survey result to server:\n" + error);
+                if (wizardPane && wizardPane.failed) wizardPane.failed();
                 return;
             }
             console.log("Survey result stored");
