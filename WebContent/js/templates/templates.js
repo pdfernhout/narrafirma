@@ -13,336 +13,392 @@ define(function() {
         "questions": [
             {
                 "id": "topic_timeWhenYouFelt",
+                "shortName": "When you felt",
                 "text": "Was there ever a time when you felt _____? What happened then?",
                 "category": "Topic",
                 "type": "label"
             },
             {
                 "id": "topic_everThought",
+                "shortName": "Ever thought",
                 "text": "Have you ever thought ____? What happened that made you think that?",
                 "category": "Topic",
                 "type": "label"
             },
             {
                 "id": "topic_causedAChange",
+                "shortName": "Caused a change",
                 "text": "Was there ever a change in your ___ about ___? What happened that caused the change?",
                 "category": "Topic",
                 "type": "label"
             },
             {
                 "id": "topic_doingSomethingBecauseYouFelt",
+                "shortName": "Doing something because you felt",
                 "text": "Can you remember ever ____ because you felt ___? What happened that made you feel that way?",
                 "category": "Topic",
                 "type": "label"
             },
             {
                 "id": "topic_aTimeWhenYouSomethingBecauseOf",
+                "shortName": "A time when you something because of",
                 "text": "Think of a time when you ____ because of ____.",
                 "category": "Topic",
                 "type": "label"
             },
             {
                 "id": "time_whatHappenedFirstTime",
+                "shortName": "What happened first time",
                 "text": "What happened the (first, last, most recent) time you ____?",
                 "category": "Point in time (specific)",
                 "type": "label"
             },
             {
-                "id": "time_yourSomething",
+                "id": "time_aboutYourSomething",
+                "shortName": "About your something",
                 "text": "Tell me about your ___. What happened during it?",
                 "category": "Point in time (specific)",
                 "type": "label"
             },
             {
                 "id": "time_whatJustHappened",
+                "shortName": "What just happened",
                 "text": "What just happened? Can you tell us about it?",
                 "category": "Point in time (specific)",
                 "type": "label"
             },
             {
                 "id": "time_mostMemorable",
+                "shortName": "Most memorable",
                 "text": "What was the most memorable ___ during ____?",
                 "category": "Point in time (memorable)",
                 "type": "label"
             },
             {
                 "id": "time_standsOutInMemory",
+                "shortName": "Stands out in memory",
                 "text": "Was there a time during ___ that stands out in your memory?",
                 "category": "Point in time (memorable)",
                 "type": "label"
             },
             {
                 "id": "time_momentWasMostSomething",
+                "shortName": "Moment was most something",
                 "text": "What moment during ___ was most ____ to you? What happened in that moment?",
                 "category": "Point in time (memorable)",
                 "type": "label"
             },
             {
                 "id": "time_happenedThatMadeYouFeel",
+                "shortName": "Happened that made you feel",
                 "text": "During ____, did anything happen that made you feel ___? What was it that happened?",
                 "category": "Point in time (emotion)",
                 "type": "label"
             },
             {
                 "id": "time_mostSomethingHour",
+                "shortName": "Most something hour",
                 "text": "What has been your (most, least) ___ hour as a ____?",
                 "category": "Point in time (emotion)",
                 "type": "label"
             },
             {
                 "id": "time_whenYouFelt",
+                "shortName": "When you felt",
                 "text": "Was there ever a time during ____ when you felt ___? What happened that made you feel that way?",
                 "category": "Point in time (emotion)",
                 "type": "label"
             },
             {
                 "id": "time_feltTopicWas",
+                "shortName": "Felt topic was",
                 "text": "Was there ever a moment when you felt that (a project topic) was ___?",
                 "category": "Point in time (topic)",
                 "type": "label"
             },
             {
                 "id": "time_foundYourselfMost",
+                "shortName": "Found yourself most",
                 "text": "At what point during ____ did you find yourself the most (project topic)?",
                 "category": "Point in time (topic)",
                 "type": "label"
             },
             {
                 "id": "time_emotionWasInState",
+                "shortName": "Emotion was in state",
                 "text": "Recall for us a moment when (an emotion) was (in a state) during ____.",
                 "category": "Point in time (topic)",
                 "type": "label"
             },
             {
                 "id": "event_standsOut",
+                "shortName": "Stands out",
                 "text": "What event most stands out in your mind during ____?",
                 "category": "Event (memorable)",
                 "type": "label"
             },
             {
                 "id": "event_willRemember",
+                "shortName": "Will remember",
                 "text": "Did anything happen (today, this week, etc) that you will remember for a long time?",
                 "category": "Event (memorable)",
                 "type": "label"
             },
             {
                 "id": "event_importantToYou",
+                "shortName": "Important to you",
                 "text": "Can you describe an incident in the past (day, week, etc) that is important to you?",
                 "category": "Event (memorable)",
                 "type": "label"
             },
             {
                 "id": "event_causedToFeel",
+                "shortName": "Caused to feel",
                 "text": "Did any particular event or incident cause you to feel ___ during ____?",
                 "category": "Event (emotion)",
                 "type": "label"
             },
             {
                 "id": "event_feltSomething",
+                "shortName": "Felt something",
                 "text": "Tell me about a time when you felt ____. What happened?",
                 "category": "Event (emotion)",
                 "type": "label"
             },
             {
                 "id": "event_feltSomethingWasSomething",
+                "shortName": "Felt something was something",
                 "text": "Can you recall a situation when you felt that ____ was _____?",
                 "category": "Event (emotion)",
                 "type": "label"
             },
             {
                 "id": "event_proverb",
+                "shortName": "Proverb",
                 "text": "When you consider the (motto, saying, proverb) ____, was there a moment during ____ when you felt that this (motto, saying, proverb) was especially ____?",
                 "category": "Event (topic)",
                 "type": "label"
             },
             {
                 "id": "event_situationInWhich",
+                "shortName": "Situation in which",
                 "text": "Could you tell us about a situation in which ___ was ____?",
                 "category": "Event (topic)",
                 "type": "label"
             },
             {
                 "id": "event_madeYouThink",
+                "shortName": "Made you think",
                 "text": "Did you ever experience anything that made you think ____? What happened?",
                 "category": "Event (topic)",
                 "type": "label"
             },
             {
                 "id": "extreme_highOrLowPoint",
+                "shortName": "High or low point",
                 "text": "Can you recall the (highlight, lowest point) of ___?",
                 "category": "Extreme (in general)",
                 "type": "label"
             },
             {
                 "id": "extreme_bestOrWorstThing",
+                "shortName": "Best or worst thing",
                 "text": "What was the (best, worst) thing that ever happened during ____?",
                 "category": "Extreme (in general)",
                 "type": "label"
             },
             {
                 "id": "extreme_bestOrWorstMoment",
+                "shortName": "Best or worst moment",
                 "text": "What was the (best, worst) moment of ____?",
                 "category": "Extreme (in general)",
                 "type": "label"
             },
             {
                 "id": "extreme_feltTheMost",
+                "shortName": "Felt the most",
                 "text": "During ____, when did you feel the most ___? What happened that made you feel that way?",
                 "category": "Extreme (emotion)",
                 "type": "label"
             },
             {
-                "id": "extreme_saidToThemselves",
+                "id": "extreme_saidToYourself",
+                "shortName": "Said to yourself",
                 "text": "During ____, did you ever say to yourself, \"This the ____ moment in this ____?\" What happened during that moment?",
                 "category": "Extreme (emotion)",
                 "type": "label"
             },
             {
                 "id": "extreme_highOrLowLevel",
+                "shortName": "High or low level",
                 "text": "What was the (highest, lowest) level of ____ you felt during ____? What happened when you felt that?",
                 "category": "Extreme (emotion)",
                 "type": "label"
             },
             {
                 "id": "extreme_thinkBackOver",
+                "shortName": "Think back over",
                 "text": "Think back over ___. When was ___ the most ____? What happened then?",
                 "category": "Extreme (topic)",
                 "type": "label"
             },
             {
                 "id": "extreme_neverSeenSuch",
+                "shortName": "Never seen such",
                 "text": "Did you ever think, \"I've never seen such ___\"? What happened that made you think that?",
                 "category": "Extreme (topic)",
                 "type": "label"
             },
             {
                 "id": "extreme_momentYouCanRecall",
+                "shortName": "Moment you can recall",
                 "text": "As you look back on ____, what is the ____ moment you can recall with respect to ____? What happened during that moment?",
                 "category": "Extreme (topic)",
                 "type": "label"
             },
             {
                 "id": "surprise_timeWhenSurprised",
+                "shortName": "Time when surprised",
                 "text": "Can you remember a time when you were surprised at how ____?",
                 "category": "Surprise",
                 "type": "label"
             },
             {
                 "id": "surprise_somethingSurprisedYou",
+                "shortName": "Something surprised you",
                 "text": "As you remember ____, can you think of a time when ___ surprised you?",
                 "category": "Surprise",
                 "type": "label"
             },
             {
                 "id": "surprise_aSurprisingSomething",
+                "shortName": "A surprising something",
                 "text": "Can you tell us about a surprising ____ during ____?",
                 "category": "Surprise",
                 "type": "label"
             },
             {
                 "id": "change_momentOfChange",
+                "shortName": "Moment of change",
                 "text": "Was there ever a moment during ___ when ___ changed? What happened?",
                 "category": "Change",
                 "type": "label"
             },
             {
                 "id": "change_feelAChange",
+                "shortName": "Feel a change",
                 "text": "Did you ever feel a change in ____? What caused you to feel that a change was taking place?",
                 "category": "Change",
                 "type": "label"
             },
             {
                 "id": "change_turningPoint",
+                "shortName": "Turning point",
                 "text": "Looking back over ____, can you pick out a turning point in ____? What happened during that turning point?",
                 "category": "Change",
                 "type": "label"
             },
             {
                 "id": "person_whenMetPerson",
+                "shortName": "When met person",
                 "text": "What was it like the ____ time you met ___? What happened?",
                 "category": "Person",
                 "type": "label"
             },
             {
                 "id": "person_timeYouDidSomethingWithPerson",
+                "shortName": "Time you did something with person",
                 "text": "Can you tell us about the ___ when you ___ with ___?",
                 "category": "Person",
                 "type": "label"
             },
             {
                 "id": "person_bestExplains",
+                "shortName": "Best explains",
                 "text": "What experience with ____ best explains ____?",
                 "category": "Person",
                 "type": "label"
             },
             {
-                "id": "group_joinedLeft",
+                "id": "group_joinedOrLeft",
+                "shortName": "Joined or left",
                 "text": "Do you remember the ___ when you (joined, left, did something with) ___? What happened during that ___?",
                 "category": "Group",
                 "type": "label"
             },
             {
                 "id": "group_decisionTo",
+                "shortName": "Decision to",
                 "text": "Can you remember making the decision to ___ with ____? What were you thinking about at the time?",
                 "category": "Group",
                 "type": "label"
             },
             {
                 "id": "group_standsOut",
+                "shortName": "Stands out",
                 "text": "Recall a ___ with ___ that stands out in your memory.",
                 "category": "Group",
                 "type": "label"
             },
             {
                 "id": "place_didSomethingAt",
+                "shortName": "Did something at",
                 "text": "Do you remember the ___ time you ___ at ___? What happened?",
                 "category": "Place",
                 "type": "label"
             },
             {
                 "id": "place_rememberHappening",
+                "shortName": "Remember happening",
                 "text": "When you (arrived at, left, did something at) ____, what do you remember happening?",
                 "category": "Place",
                 "type": "label"
             },
             {
                 "id": "place_madeYouThink",
+                "shortName": "Made you think",
                 "text": "Did anything ever happen at ___ that made you think: that's what this place is like? What was it?",
                 "category": "Place",
                 "type": "label"
             },
             {
                 "id": "object_momentSpringsToMind",
+                "shortName": "Moment springs to mind",
                 "text": "When you look at this ___, what moment springs to mind?",
                 "category": "Object",
                 "type": "label"
             },
             {
                 "id": "object_whatWereYouThinking",
+                "shortName": "What were you thinking",
                 "text": "When you first saw ____, what were you thinking? What happened during that encounter?",
                 "category": "Object",
                 "type": "label"
             },
             {
                 "id": "object_especiallySomethingMoments",
+                "shortName": "Especially something moments",
                 "text": "Can you recall any especially _____ moments (using, holding, etc) this ____?",
                 "category": "Object",
                 "type": "label"
             },
             {
                 "id": "scenario_aboutTo",
+                "shortName": "About to",
                 "text": "If someone told you that they were about to ___, what story about your experiences with ___ would you tell them?",
                 "category": "Fictional scenario",
                 "type": "label"
             },
             {
                 "id": "scenario_someoneTellsYou",
+                "shortName": "Someone tells you",
                 "text": "Say someone tells you that ___. Say you want to ___. What would you tell them about your experiences with ___ to ___ them?",
                 "category": "Fictional scenario",
                 "type": "label"
             },
             {
                 "id": "scenario_yearsInThe",
+                "shortName": "Years in the",
                 "text": "If you found yourself suddenly ____ years in the ___, what would you tell people about your experiences with ____ that would help them understand?",
                 "category": "Fictional scenario",
                 "type": "label"

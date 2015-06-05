@@ -24,7 +24,7 @@ define([
     
     var add_templateList_elicitationQuestions = [
         {id: "category", valueType: "string", displayType:"text"},
-        {id: "id", valueType: "string", displayType: "text"},
+        {id: "shortName", valueType: "string", displayType: "text"},
         {id: "text", valueType: "string", displayType: "textarea"}
     ];
    
@@ -58,11 +58,10 @@ define([
        if (selectedTemplate) {
            // TODO: not sure whether to confirm?
            // TODO: Translate
-           dialogSupport.confirm("Copy selected template '" + selectedTemplate.id + "' into question definition?", function () {
+           dialogSupport.confirm("Copy selected template '" + selectedTemplate.shortName + "' into question definition?", function () {
                if (templateListChoice === "elicitationQuestions") {
                    model.set("elicitingQuestion_text", selectedTemplate.text || "");
-                   // Use the ID here instead of non-existent shortName
-                   model.set("elicitingQuestion_shortName", selectedTemplate.id || "");
+                   model.set("elicitingQuestion_shortName", selectedTemplate.shortName || "");
                    // TODO: No data for type, and would need to copy over settings for checkboxes if such data existed
                    // model.set("storyQuestion_type", selectedTemplate.text);
                    model.set("elicitingQuestion_type", {});
