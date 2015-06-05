@@ -9,7 +9,7 @@
             "id": "project_elicitingQuestionsLabel",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "On this page you will design the questions you use <strong>to ask people to tell stories</strong>. You need at least one question for people to answer; but giving people more than one question to choose from is recommended."
+            "displayPrompt": "On this page you will design the questions you will use <strong>to ask people to tell stories</strong>. You need at least one question for people to answer. We recommend giving people three to five questions to choose from."
         },
         {
             "id": "project_elicitingQuestionsList",

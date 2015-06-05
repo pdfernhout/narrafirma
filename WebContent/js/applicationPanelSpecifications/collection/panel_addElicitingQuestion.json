@@ -11,7 +11,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Question",
-            "displayPrompt": "Enter a story-eliciting question."
+            "displayPrompt": "What <strong>question</strong> will you ask? (Remember to write a question whose answer is a story.)"
         },
         {
             "id": "elicitingQuestion_shortName",
@@ -19,7 +19,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Short Name",
-            "displayPrompt": "Enter a short name for this story-eliciting question to use as a reference to it."
+            "displayPrompt": "Enter a short <strong>name</strong> for this story-eliciting question, to use as a reference."
         },
         {
             "id": "elicitingQuestion_type",
@@ -27,25 +27,25 @@
             "valueOptions": [
                 "what happened",
                 "directed question",
-                "undirected questions",
+                "undirected question",
                 "point in time",
                 "event",
                 "extreme",
-                "surprise",
-                "people, places, things",
+                "surprise or change",
+                "people, places, things, decisions",
                 "fictional scenario",
                 "other"
             ],
             "displayType": "checkboxes",
             "displayName": "Type",
-            "displayPrompt": "What type of question is this?"
+            "displayPrompt": "What <strong>type</strong> of question is this?"
         },
         {
             "id": "SPECIAL_templates_elicitingQuestions",
             "valueType": "none",
             "displayType": "templateList",
             "displayConfiguration": "elicitationQuestions",
-            "displayPrompt": "You can copy a question from this list."
+            "displayPrompt": "Copy a question from a template"
         }
     ]
 }

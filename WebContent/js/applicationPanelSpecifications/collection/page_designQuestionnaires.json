@@ -1,6 +1,6 @@
 {
     "id": "page_designQuestionnaires",
-    "displayName": "Design questionnaires",
+    "displayName": "Design story forms",
     "displayType": "page",
     "section": "collection",
     "modelClass": "DesignQuestionnaires",
@@ -9,7 +9,7 @@
             "id": "questionnaires_Label",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "On this page you design one or more questionnaires, selecting from the questions you have previously entered and entering other questionnaire-specific text."
+            "displayPrompt": "On this page you will design one or more <strong>story forms</strong> on which people will tell stories and answer questions about them. You can select from the questions you have already entered, and you can enter other form-specific text."
         },
         {
             "id": "project_questionnaires",
@@ -18,7 +18,7 @@
             "displayType": "grid",
             "displayConfiguration": "panel_addQuestionnaire",
             "displayName": "Questionnaires",
-            "displayPrompt": "Add one or more questionnaires for collecting stories."
+            "displayPrompt": "These are the story forms you have created so far."
         }
     ]
 }
