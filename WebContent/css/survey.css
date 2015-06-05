@@ -6,8 +6,8 @@ html, body {
 	font-family: Arial, Helvetica, sans-serif;
     height: 100%;
     width: 100%;
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
 }
 
 body {
@@ -15,11 +15,10 @@ body {
     font-size: 1em;
     margin: 0em;
     padding: 0em;
-    padding-left: 0em;
 }
 
 #surveyDiv {
-   padding-left: 10px; 
+   padding: 10px;
 }
 
 a:link {
