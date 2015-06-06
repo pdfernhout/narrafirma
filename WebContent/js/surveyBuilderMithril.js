@@ -151,6 +151,8 @@ define([
                     ];
                 })
             ];
+            // parts.unshift(m("legend", fieldSpecification.displayPrompt)); 
+            parts = [m("fieldset", parts)];
         } else if (displayType === "radiobuttons") {
             parts = [
                 fieldSpecification.valueOptions.map(function (option, index) {
@@ -162,6 +164,8 @@ define([
                     ];
                 })
             ];
+            // parts.unshift(m("legend", fieldSpecification.displayPrompt));
+            parts = [m("fieldset", parts)];
         } else if (displayType === "boolean") {
             parts = [
                 m("input[type=radio]", {id: fieldID + "_yes", value: true, name: fieldSpecification.id, checked: value === true, onchange: lang.partial(change, null, true) }),
@@ -171,6 +175,8 @@ define([
                 m("label", {"for": fieldID + "_no"}, "no"),
                 m("br")
             ];
+            // parts.unshift(m("legend", fieldSpecification.displayPrompt));
+            parts = [m("fieldset", parts)];
         } else if (displayType === "select") {
             var selectOptions = [];
             var defaultOptions = {value: ''};
