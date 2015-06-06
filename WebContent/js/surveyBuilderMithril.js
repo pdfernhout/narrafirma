@@ -129,9 +129,12 @@ define([
         
         var parts = [];
         if (displayType === "label") {
-            // Nothing to do
+            // The for attribute of the label element must refer to a form control.
+            delete questionLabel[0].attrs["for"];
         } else if (displayType === "header") {
-            // Nothing to do -- bolding done using style
+            // The for attribute of the label element must refer to a form control.
+            delete questionLabel[0].attrs["for"];
+            //  bolding done using style
         } else if (displayType === "text") {
             parts = [
                 m("input", standardValueOptions),
@@ -148,6 +151,8 @@ define([
                  m("br")
              ];
         } else if (displayType === "checkboxes") {
+            // The for attribute of the label element must refer to a form control.
+            delete questionLabel[0].attrs["for"];
             if (!value) {
                 value = {};
                 model[fieldSpecification.id] = value;
@@ -165,6 +170,8 @@ define([
             // parts.unshift(m("legend", fieldSpecification.displayPrompt)); 
             parts = [m("fieldset", parts)];
         } else if (displayType === "radiobuttons") {
+            // The for attribute of the label element must refer to a form control.
+            delete questionLabel[0].attrs["for"];
             parts = [
                 fieldSpecification.valueOptions.map(function (option, index) {
                     var optionID = getIdForText(fieldID + "_" + option);
@@ -178,6 +185,8 @@ define([
             // parts.unshift(m("legend", fieldSpecification.displayPrompt));
             parts = [m("fieldset", parts)];
         } else if (displayType === "boolean") {
+            // The for attribute of the label element must refer to a form control.
+            delete questionLabel[0].attrs["for"];
             parts = [
                 m("input[type=radio]", {id: getIdForText(fieldID + "_yes"), value: true, name: fieldSpecification.id, checked: value === true, onchange: lang.partial(change, null, true) }),
                 m("label", {"for": getIdForText(fieldID + "_yes")}, "yes"),
