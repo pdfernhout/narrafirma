@@ -1,6 +1,7 @@
 define([
     "js/panelBuilder/browser",
     "js/csvImportExport",
+    "dijit/Dialog",
     "js/panelBuilder/dialogSupport",
     "js/navigationPane",
     "js/pageDisplayer",
@@ -13,6 +14,7 @@ define([
 ], function(
     browser,
     csvImportExport,
+    Dialog,
     dialogSupport,
     navigationPane,
     pageDisplayer,
@@ -79,6 +81,32 @@ define([
         var projectDefinitionText = JSON.stringify(domain.projectAnswers, null, 2);
         dialogSupport.openTextEditorDialog(projectDefinitionText, "#projectImportExportDialog_title|Project Import/Export", "#projectImportExportDialog_okButtonText|OK", importButtonClicked);
     }
+    
+    // Caller should call wizard.forward() on successful save to see the last page, and provide a retry message otherwise
+    // Caller may also want to call (the returned) surveyDialog.hide() to close the window, or let the user do it.
+    function openMithrilSurveyDialog(questionnaire, callback) {  
+        console.log("openSurveyDialog questionnaire", questionnaire);
+        
+        var surveyDiv = document.createElement("div");
+        
+        surveyBuilder.buildSurveyForm(surveyDiv, questionnaire, callback);
+   
+        var surveyDialog = new Dialog({
+            title: "Take Survey",
+            content: surveyDiv
+            // style: "width: 800px; height: 700px;"
+        });
+        
+        // This will free the dialog when it is closed to avoid a memory leak
+        surveyDialog.connect(surveyDialog, "onHide", function(e) {
+            console.log("destroying surveyDialog");
+            surveyDialog.destroyRecursive();
+        });
+                
+        surveyDialog.show();
+        
+        return surveyDialog;
+    }
 
     function openSurveyDialog() {
         console.log("openSurveyDialog");
@@ -89,7 +117,7 @@ define([
         var questionnaire = getQuestionnaireForSelectedStoryCollection("storyCollectionChoice_enterStories");
         if (!questionnaire) return;
 
-        var surveyDialog = surveyBuilder.openSurveyDialog(questionnaire, finished);
+        var surveyDialog = openMithrilSurveyDialog(questionnaire, finished);
         
         function finished(status, surveyResult, wizardPane) {
             console.log("surveyResult", status, surveyResult);
