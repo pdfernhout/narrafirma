@@ -57,6 +57,7 @@ X Only store reference to questionnaire file resource, not the resource itself [
 X Support translations or other categories for multiple question texts or choice texts for a survey
 X Some easy way for two or more survey sliders to be close together under the same label
 W Better mobile support for taking survey on cell phones
+W User can enter small number of HTML tags in questions (b, i, ul, ol, blockquote, etc)
 
 SURVEY QUESTIONS
 L Remove "What type of question is this?" question from story-eliciting questions page
@@ -150,11 +151,11 @@ H Implement exportPresentationOutline in domain buttonClicked
 
 GRID
 H Bug if move data item up or down; when you click on an item, it shows you what used to be in that position not what is currently there
+H When viewing grid data, it should not look (or be) editable
+    Read-only version of checkboxes and radiobutton widgets, used by grid (assuming that is how the read only data is presented)
 L Add close button to top of item panel
 L Better information about what is going on in item panel - whether view, edit, duplicate
 L When duplicate list item, add "copy" to name (different for each)
-L When viewing grid data, it should not look editable
-    Read-only version of checkboxes and radiobutton widgets, used by grid (assuming that is how the read only data is presented)
 X Popup for add item from grid -- should have better label in title as to what type of thing is added
 X CSS styling of nested box in grid
 X Uncomment and test tooltip code in grid table
