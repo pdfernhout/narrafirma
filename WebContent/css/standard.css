@@ -227,6 +227,7 @@ form {
 
 .narrafirma-reminder {
 	background: #b2c07f;
+	border-radius: 12px;
 }
 
 .narrafirma-griditem-form {
@@ -243,6 +244,7 @@ form {
 	background: #FFF;
 	margin: 1em;
 	border: 1px solid #2e4a85;
+	border-radius: 12px;
 }
 
 .narrafirma-griditempanel-editing .questionExternal {
@@ -253,11 +255,17 @@ form {
 	background: #e4e4e4;
 	margin: 1em;
 	border: 1px solid #231f20;
+	border-radius: 12px;
 }
 
 .narrafirma-griditempanel-viewing .questionExternal {
 	background: #e4e4e4;
 	margin: 0px;
+}
+
+/* hides "copy from template" button when viewing grid item */
+.narrafirma-griditempanel-viewing .narrafirma-template-button {
+	display: none;
 }
 
 .dijitTextArea {
