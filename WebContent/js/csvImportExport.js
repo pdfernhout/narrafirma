@@ -161,7 +161,7 @@ define([
             questionnaire: lastQuestionnaireUploaded
         };
         
-        var storyCollections = project.getFieldValue("project_storyCollections").slice();
+        var storyCollections = (project.getFieldValue("project_storyCollections") || []).slice();
         storyCollections.push(newStoryCollection);
         project.setFieldValue("project_storyCollections", storyCollections);
         
@@ -253,7 +253,7 @@ define([
         var displayConfiguration;
         var answers = item["Answers"];
         
-        var itemType = item["Type"];
+        var itemType = item["Type"].trim();
         if (itemType === "Single choice") {
             type = "select";
             valueOptions = answers;
@@ -261,7 +261,7 @@ define([
             valueType = "number";
             type = "slider";
             displayConfiguration = [answers[0], answers[1]];
-        } if (itemType === "Multiple choice") {
+        } else if (itemType === "Multiple choice") {
             type = "checkboxes";
             valueOptions = item["Answers"];
         } else {
