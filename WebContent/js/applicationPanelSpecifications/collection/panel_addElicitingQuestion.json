@@ -19,7 +19,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Short Name",
-            "displayPrompt": "Enter a short <strong>name</strong> for this story-eliciting question, to use as a reference."
+            "displayPrompt": "Enter a short <strong>name</strong> for this question, to use as a reference."
         },
         {
             "id": "elicitingQuestion_type",
