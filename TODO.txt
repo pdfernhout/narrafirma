@@ -772,3 +772,5 @@ DONE Improve Mithril survey accessibility by adding labels with ids
 DONE Remove all HTM5 validation errors from Mithril survey
 DONE Remove use of Dojo Dialog and lodash from Mithril survey to improve loading time
 DONE Fix bug in Pointrel client preventing resending survey if sending failed the first time
+DONE Have Mithril survey use local Dojo files instead of ones from CDN
+DONE Make Mithril survey read-only while being submitted
