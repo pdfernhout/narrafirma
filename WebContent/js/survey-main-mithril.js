@@ -66,9 +66,7 @@ require([
     }
 
     function finishedSurvey(status, completedSurvey, wizardPane) {    
-        // var surveyDiv = dom.byId("surveyDiv");
-        // surveyDiv.innerHTML = "Thank you for taking the survey!";
-        console.log("finishedSurvey", status, finishedSurvey);
+        console.log("finishedSurvey", status);
         if (status === "submitted") {
             storeQuestionnaireResult(completedSurvey, wizardPane);
         }

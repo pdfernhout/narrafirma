@@ -8,6 +8,8 @@ define([], function() {
             surveyResult: completedSurvey
         };
         
+        console.log("storeSurveyResult", surveyResultWrapper);
+        
         pointrelClient.createAndSendChangeMessage("surveyResults", "surveyResult", surveyResultWrapper, null, function(error, result) {
             if (error) {
                 console.log("Problem saving survey result", error);

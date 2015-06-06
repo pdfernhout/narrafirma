@@ -38,7 +38,7 @@ define([
     
     function submitSurvey(surveyResult, wizardPane, doneCallback) {
         var answers = {};
-        console.log("submitSurvey pressed");
+        console.log("submitting survey...");
         
         var timestampEnd = new Date();
         
@@ -348,10 +348,12 @@ define([
             // TODO: Fix no-longer-correct name from Dojo version
             var wizardPane = {
                 forward: function () {
+                    console.log("wizardPane success");
                     submitted = "success";
                     redraw();
                 },
                 failed: function () {
+                    console.log("wizardPane failed");
                     submitted = "failed";
                     redraw();
                 }
