@@ -9,6 +9,13 @@ define([
 ){
     "use strict";
     
+    // Accessibility References:
+    // http://usabilitygeek.com/10-free-web-based-web-site-accessibility-evaluation-tools/
+    // http://validator.w3.org/mobile/
+    // http://achecker.ca/checker/index.php#output_div [first used testing tool]
+    // http://webaim.org/techniques/forms/controls
+    
+    
     /* TODO:
      * All widget types:
      X   boolean
@@ -24,6 +31,7 @@ define([
      * (Optional) Reporting validation errors inline
      * (Optional for now) Call translate
      X After survey is sent, make the form read-only somehow
+     * Accessibility
      */
     
     /* global m */
@@ -77,9 +85,14 @@ define([
     }
    
     function displayQuestion(model, fieldSpecification) {
+        var fieldID = fieldSpecification.id;
+        if (model) {
+            fieldID = (model._storyID || model._participantID) + "__" + fieldID;
+        }
+
         var displayType = fieldSpecification.displayType;
         var questionLabel = [
-            m("span", {class: "narrafirma-prompt"}, fieldSpecification.displayPrompt),
+            m("label", {"class": "narrafirma-prompt", "for": fieldID}, fieldSpecification.displayPrompt),
             m("br")
         ];
 
@@ -99,6 +112,7 @@ define([
         
         var standardValueOptions = {
             value: value,
+            id: fieldID,
             onchange: change
         };
         
@@ -192,7 +206,11 @@ define([
             parts = m("div", {class: "narrafirma-question-internal"}, parts);
         }
         
-        return m("div", {class: "narrafirma-question-external narrafirma-question-type-" + displayType}, questionLabel.concat(parts));
+        if (questionLabel) {
+            parts = questionLabel.concat(parts);
+        }
+        
+        return m("div", {class: "narrafirma-question-external narrafirma-question-type-" + displayType}, parts);
     }
     
     function buildSurveyForm(surveyDiv, questionnaire, doneCallback) {  
