@@ -9,7 +9,7 @@
             "id": "project_storyQuestionsLabel",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "On this page you will write your questions to ask people about their stories."
+            "displayPrompt": "On this page you will write questions to ask people <strong>about their stories</strong>."
         },
         {
             "id": "project_storyQuestionsList",
@@ -18,7 +18,7 @@
             "displayType": "grid",
             "displayConfiguration": "panel_addStoryQuestion",
             "displayName": "Questions about stories",
-            "displayPrompt": "These are the questions you will be asking about stories."
+            "displayPrompt": "These are the questions you have written so far."
         },
         {
             "id": "SPECIAL_storyQuestionRecommendations",
