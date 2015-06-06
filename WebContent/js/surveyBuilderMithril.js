@@ -361,8 +361,6 @@ define([
                 // m("span", {class: "narrafirma-story-label", style: {"font-weight": "bold"}}, "Story #" + (index + 1)),
                 // m("br"),
 
-                allStoryQuestions.map(lang.partial(displayQuestion, story)),
-                
                 m("button", {
                     class: "narrafirma-delete-story-button",
                     onclick: function () {
@@ -371,10 +369,15 @@ define([
                         stories.splice(index, 1);
                         redraw();
                     }
-                }, "Delete this story (" + storylabel + ")")
+                //}, "Delete this story (" + storylabel + ")"),
+                }, "Delete this story"),
+                m("hr"),
+                
+                allStoryQuestions.map(lang.partial(displayQuestion, story))
             ];
             
-            return result; 
+            var evenOrOdd = (index % 2 === 1) ? "narrafirma-survey-story-odd" : "narrafirma-survey-story-even";
+            return m("div", {"class": "narrafirma-survey-story " + evenOrOdd}, result); 
         }
         
         function redrawFunction() {
@@ -488,24 +491,28 @@ define([
             
             return root;
         }
+        
+        function anotherStoryButton() {
+        	return m("div", {"class": "narrafirma-tell-another-story-button-panel"}, [
+				"Would you like to tell another story?",
+				 m("button", {class: "narrafirma-tell-another-story-button", onclick: tellAnotherStory}, "Yes, I'd like to tell another story")
+			]);
+        }
 
         var view = function() {
             var result = m("div", [
                 startQuestions.map(function(question, index) {
                     return m("div", [displayQuestion(null, question)]);
                 }),
-                m("hr"),
                 stories.map(function(story, index) {
-                    return displayStoryQuestions(story, index).concat(m("hr"));
+                    return displayStoryQuestions(story, index);
                 }),
-                "If you would like to, you can tell another story.",
-                m("button", {class: "narrafirma-tell-another-story-button", onclick: tellAnotherStory}, "Add another story"),
-                m("hr"),
+                anotherStoryButton(),
                 participantQuestions.map(function(question, index) {
                     return m("div", [displayQuestion(surveyResult.participantData, question)]);
                 }),
-                m("hr"),
-                submitButtonOrWaitOrFinal(),
+                submitButtonOrWaitOrFinal()
+                /* 
                 m("hr"),
                 m("button", {
                     onclick: function() {
@@ -513,7 +520,8 @@ define([
                         console.log("stories", stories);
                         console.log("participantData", surveyResult.participantData);
                     }
-                }, "Redraw (for debugging)")
+                }, "Redraw (for debugging)") 
+                */
             ]);
             
             if (submitted === "pending" || submitted === "success") {

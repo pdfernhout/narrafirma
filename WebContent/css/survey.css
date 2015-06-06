@@ -1,5 +1,5 @@
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ All pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ general tags ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /* NOTE: the mnemonic for margin or padding order is TRIBBLE: Top Right Bottom Left */
 
 html, body {
@@ -22,6 +22,13 @@ fieldset {
 	margin-bottom: -0.6em;
 }
 
+hr {
+	display: none;
+	height: 6px;
+	color: #8db500;
+	background-color: #8db500;
+}
+
 legend {
 	margin-left: -2em;
 }
@@ -34,43 +41,42 @@ textarea, input, select {
    padding: 10px;
 }
 
-.pleaseWaitOverlay {
-    /* background-color: #E0EEEE; */
-    background-image: url('../images/dojo-Standby-loading.gif');
-    background-repeat: no-repeat;
-    background-position: top center;
-    position: absolute;
-    z-index: 1001;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ story areas ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.narrafirma-survey-story {
+	margin: 0px 0px 30px 0px;
 }
 
-.narrafirma-question-external {
-    border-radius: 12px;
-    background: #d5dae6;
-    margin-bottom: 4px;
-    padding: 8px;
+.narrafirma-survey-story-odd .narrafirma-question-external {
+	background: #abb6ce;
 }
 
 .narrafirma-prompt {
     margin: 4px 10px 4px 10px;
 }
 
+.narrafirma-question-external {
+    border-radius: 12px;
+    background: #d5dae6;
+    margin-bottom: 6px;
+    padding: 8px;
+}
+
 .narrafirma-question-internal {
-    margin-left: 20px;
-    margin-right: 20px;
+	margin: 0 20px;
 }
 
 .narrafirma-question-type-header {
     font-weight: bold;
     background: white;
+    margin-top: 10px;
 }
 
 .narrafirma-question-type-label {
     background: white;
 }
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ input areas ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-question-type-textarea textarea {
     width: 100%;
@@ -109,6 +115,112 @@ textarea, input, select {
     text-align: left;
     font-size: 0.8em;
     white-space: nowrap;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ tell another story, delete story ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.narrafirma-tell-another-story-button-panel {
+    border-radius: 12px;
+	background: #b2c07f;
+	padding: 10px;
+	margin-bottom: 20px;
+}
+
+.narrafirma-tell-another-story-button {
+    appearance: none;
+    box-shadow: none;
+    border: none;
+	font-size: 0.8em;
+    border-radius: 12px;
+    background: #e0e6cc;
+    margin-left: 20px;
+    padding: 6px;
+}
+
+.narrafirma-tell-another-story-button:hover {
+	background: #8db500;
+}
+	
+.narrafirma-tell-another-story-button:active {
+	background: #658200;
+}
+
+.narrafirma-delete-story-button {
+    appearance: none;
+    box-shadow: none;
+    border: none;
+	font-size: 0.8em;
+    border-radius: 12px;
+    display: block;
+    background: #abb6ce;
+    margin: 10px 10px 0px auto;
+    float: right;
+    padding: 4px 10px;
+}
+
+.narrafirma-delete-story-button:hover {
+	background: #3b5fab;
+	color: white;
+}
+	
+.narrafirma-delete-story-button:active {
+	background: #2e4a85;
+	color: white;
+}
+
+.narrafirma-survey-story-odd .narrafirma-delete-story-button {
+    background: #d5dae6;
+}
+
+.narrafirma-survey-story-odd .narrafirma-delete-story-button:hover {
+	background: #3b5fab;
+	color: white;
+}
+	
+.narrafirma-survey-story-odd .narrafirma-delete-story-button:active {
+	background: #2e4a85;
+	color: white;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ submit survey ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.narrafirma-submit-survey-button {
+    display: block;
+    appearance: none;
+    box-shadow: none;
+    border: none;
+    text-shadow: -1px 1px #417cb8;
+    width: 300px;
+    font-size: 1.5em;
+    background: #3b5fab;
+    color: white;
+    border-radius: 12px;
+    margin: 10px auto 0px auto;
+	padding: 10px 20px;
+}
+
+.narrafirma-submit-survey-button:hover {
+	background: #2e4a85;
+	text-shadow: -1px 1px #27496d;
+}
+
+.narrafirma-submit-survey-button:active {
+	background: #243B6A; /* darker blue than in color scheme */
+	text-shadow: -1px 1px #193047;
+}
+
+
+.pleaseWaitOverlay {
+    /* background-color: #E0EEEE; */
+    background-image: url('../images/dojo-Standby-loading.gif');
+    background-repeat: no-repeat;
+    background-position: top center;
+    position: absolute;
+    z-index: 1001;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
 }
 
 
