@@ -348,12 +348,12 @@ define([
             // TODO: Fix no-longer-correct name from Dojo version
             var wizardPane = {
                 forward: function () {
-                    console.log("wizardPane success");
+                    console.log("survey sending success");
                     submitted = "success";
                     redraw();
                 },
                 failed: function () {
-                    console.log("wizardPane failed");
+                    console.log("survey sending failed");
                     submitted = "failed";
                     redraw();
                 }
@@ -420,7 +420,7 @@ define([
             } 
             
             if (typeof root === "object" && root.tag in tagsToMakeReadOnly) {
-                console.log("makeReadOnly", root);
+                // console.log("makeReadOnly", root);
                 if (root.tag === "textarea" || (root.tag === "input" && !root.attrs.type)) {
                     // Ensure text fields still have copy available
                     root.attrs.readOnly = true;
