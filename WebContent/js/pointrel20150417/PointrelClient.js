@@ -256,7 +256,8 @@ define([
         } else {
             // Send to a real server
             
-            // If this fails, will leave message on outgoing queue (unless it was rejected for some reason)
+            // If this fails, and there is no callback, this will leave message on outgoing queue (unless it was rejected for some reason)
+            // If there is a callback, the message will be discarded as presumably the caller will handle resending it
             var message = this.outgoingMessageQueue[0];
             callback = message.__pointrel_callback;
             if (callback !== undefined) delete message.__pointrel_callback;
@@ -288,7 +289,15 @@ define([
                 if (!response.success) {
                     console.log("ERROR: Message store failure", response, self.outgoingMessageQueue[0]);
                     self.serverStatus("failure", "Message store failure: " + response.statusCode + " :: " + response.description);
-                    // TODO: Need to decide whether to discard the message based on the nature of the problem
+                    
+                    if (callback) {
+                        // Discard the message from the queue as presumably the caller will resend it
+                        self.outgoingMessageQueue.shift();
+                        callback(response);
+                        return;
+                    }
+                    
+                    // TODO: Need to otherwise decide whether to discard the message based on the nature of the problem
                     // Should leave it in the queue if it is not malformed and it is just a possibly temporary problem with server
                     // TODO: If the message we sent was rejected because it was malformed or a duplicate, we should discard it
                     // Do not continue with requests until next poll...
@@ -314,7 +323,11 @@ define([
                 self.serverStatus("failure", "Problem storing message to server: " + error.message + "<br>You may need to reload the page to synchronize it with the current state of the server if a message was rejected for some reason.");
                 console.log("Got store error", error.message);
                 self.outstandingServerRequestSentAtTimestamp = null;
-                if (callback) callback(error);
+                if (callback) {
+                    // Discard the message from the queue as presumably the caller will resend it
+                    self.outgoingMessageQueue.shift();
+                    callback(error);
+                }
             });
         }
     };
