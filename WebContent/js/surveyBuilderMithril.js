@@ -103,10 +103,22 @@ define([
 
         var displayType = fieldSpecification.displayType;
         var questionLabel = [
-            m("label", {"class": "narrafirma-prompt", "for": getIdForText(fieldID)}, fieldSpecification.displayPrompt),
+            m("span", {"class": "narrafirma-prompt"}, fieldSpecification.displayPrompt),
             m("br")
         ];
-
+        
+        function makeLabel() {
+            // The for attribute of the label element must refer to a form control.
+            questionLabel[0].attrs["for"] = getIdForText(fieldID);
+            questionLabel[0].tag = "label";
+        }
+        
+        function makeLegend() {
+            // Do nothing for now
+            // parts.unshift(m("legend", questionLabel[0]));
+            // questionLabel = [];
+        }
+        
         var value = null;
         if (model) value = model[fieldSpecification.id];
         if (value === undefined) value = "";
@@ -129,23 +141,23 @@ define([
         
         var parts = [];
         if (displayType === "label") {
-            // The for attribute of the label element must refer to a form control.
-            delete questionLabel[0].attrs["for"];
+            // Nothing to do
         } else if (displayType === "header") {
-            // The for attribute of the label element must refer to a form control.
-            delete questionLabel[0].attrs["for"];
-            //  bolding done using style
+            // Nothing to do; bolding done using style
         } else if (displayType === "text") {
+            makeLabel();
             parts = [
                 m("input", standardValueOptions),
                 m("br")
             ];
         } else if (displayType === "textarea") {
+            makeLabel();
             parts = [
                 m("textarea", standardValueOptions),
                 m("br")
             ];
         } else if (displayType === "checkbox") {
+            makeLabel();
             parts = [
                  m("input[type=checkbox]", {id: getIdForText(fieldID), checked: value, onchange: function(event) {change(null, event.target.checked);}}),
                  m("br")
@@ -167,7 +179,7 @@ define([
                     ];
                 })
             ];
-            // parts.unshift(m("legend", fieldSpecification.displayPrompt)); 
+            makeLegend();
             parts = [m("fieldset", parts)];
         } else if (displayType === "radiobuttons") {
             // The for attribute of the label element must refer to a form control.
@@ -182,7 +194,7 @@ define([
                     ];
                 })
             ];
-            // parts.unshift(m("legend", fieldSpecification.displayPrompt));
+            makeLegend();
             parts = [m("fieldset", parts)];
         } else if (displayType === "boolean") {
             // The for attribute of the label element must refer to a form control.
@@ -195,9 +207,10 @@ define([
                 m("label", {"for": getIdForText(fieldID + "_no")}, "no"),
                 m("br")
             ];
-            // parts.unshift(m("legend", fieldSpecification.displayPrompt));
+            makeLegend();
             parts = [m("fieldset", parts)];
         } else if (displayType === "select") {
+            makeLabel();
             var selectOptions = [];
             var defaultOptions = {value: ''};
             if (!value) defaultOptions.selected = 'selected';
@@ -216,6 +229,7 @@ define([
                 m("br")
             ];
         } else if (displayType === "slider") {
+            makeLabel();
             // Could suggest 0-100 to support <IE10 that don't have range input -- or coudl do polyfill
             // if (fieldSpecification.displayPrompt) questionLabel[0].children = fieldSpecification.displayPrompt + " (0-100)";
             parts = [
