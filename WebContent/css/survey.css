@@ -17,6 +17,19 @@ body {
     padding: 0em;
 }
 
+fieldset {
+	border: none;
+	margin-bottom: -0.6em;
+}
+
+legend {
+	margin-left: -2em;
+}
+
+textarea, input, select {
+	margin-top: 0.5em;
+}
+
 #surveyDiv {
    padding: 10px;
 }
@@ -42,7 +55,7 @@ body {
 }
 
 .narrafirma-prompt {
-    margin-left: 10px;
+    margin: 4px 10px 4px 10px;
 }
 
 .narrafirma-question-internal {
@@ -85,6 +98,7 @@ body {
 .narrafirma-question-type-slider .narrafirma-low {
     text-align: right;
     font-size: 0.8em;
+    white-space: nowrap;
 }
 
 .narrafirma-question-type-slider .narrafirma-slider {
@@ -94,6 +108,7 @@ body {
 .narrafirma-question-type-slider .narrafirma-high {
     text-align: left;
     font-size: 0.8em;
+    white-space: nowrap;
 }
 
 

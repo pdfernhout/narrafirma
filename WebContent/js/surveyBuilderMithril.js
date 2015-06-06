@@ -114,8 +114,8 @@ define([
         
         function makeLegend() {
             // Do nothing for now
-            // parts.unshift(m("legend", questionLabel[0]));
-            // questionLabel = [];
+            parts.unshift(m("legend", questionLabel[0]));
+            questionLabel = [];
         }
         
         var value = null;
