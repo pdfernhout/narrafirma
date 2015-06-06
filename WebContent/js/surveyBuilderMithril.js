@@ -23,15 +23,15 @@ define([
      X Call validation for each story
      * (Optional) Reporting validation errors inline
      * (Optional for now) Call translate
-     * After survey is sent, make the form read-only somehow
+     X After survey is sent, make the form read-only somehow
      */
     
     /* global m */
 
     var timestampStart;
     
-    // false, "pending", "failed", true
-    var submitted = false;
+    // submitted can be one of: "never", "pending", "failed", "success"
+    var submitted = "never";
     
     // Redraw function
     var redraw;
@@ -348,7 +348,7 @@ define([
             // TODO: Fix no-longer-correct name from Dojo version
             var wizardPane = {
                 forward: function () {
-                    submitted = true;
+                    submitted = "success";
                     redraw();
                 },
                 failed: function () {
@@ -360,28 +360,17 @@ define([
             submitted = "pending";
             submitSurvey(surveyResult, wizardPane, doneCallback);
             
-            /* For testing:
-            setTimeout(function() {
-                if (Math.random() > 0.5) {
-                    submitted = true;
-                } else {
-                    submitted = "failed";
-                }
-                redraw();
-            }, 2000);
-            */
-            
             redraw();
         }
         
         function submitButtonOrWaitOrFinal() {
-            if (submitted === false) {
+            if (submitted === "never") {
                 return m("button", {class: "narrafirma-submit-survey-button", onclick: submitButtonPressed}, "Submit survey");
             } else if (submitted === "failed") {
                 return m("div", [
                     "Sending to server failed. Please try again...",
                     m("br"),
-                    m("button", {class: "narrafirma-submit-survey-button", onclick: submitButtonPressed}, "Submit survey")
+                    m("button", {class: "narrafirma-submit-survey-button", onclick: submitButtonPressed}, "Resubmit survey")
                 ]);
             } else if (submitted === "pending") {
                 return m("div", ["Sending survey result to server... Please wait..."]);
@@ -403,8 +392,46 @@ define([
             redraw();
         }
         
+        var tagsToMakeReadOnly = {
+            "input": true,
+            "select": true,
+            "textarea": true,
+            "button": true
+        };
+        
+        // Make survey read-only after sent to server
+        // Recursive function derived from: http://lhorie.github.io/mithril-blog/when-css-lets-you-down.html
+        function makeReadOnly(root, parent) {
+            if (!root) {
+                return root;
+            } 
+           
+            if (root instanceof Array) {
+                for (var i = 0; i < root.length; i++) {
+                    makeReadOnly(root[i], parent);
+                }
+                return;
+            } 
+            
+            if (root.children) {
+                makeReadOnly(root.children, root);
+            } 
+            
+            if (typeof root === "object" && root.tag in tagsToMakeReadOnly) {
+                console.log("makeReadOnly", root);
+                if (root.tag === "textarea" || (root.tag === "input" && !root.attrs.type)) {
+                    // Ensure text fields still have copy available
+                    root.attrs.readOnly = true;
+                } else {
+                    root.attrs.disabled = true;
+                }
+            }
+            
+            return root;
+        }
+
         var view = function() {
-            return m("div", [
+            var result = m("div", [
                 startQuestions.map(function(question, index) {
                     return m("div", [displayQuestion(null, question)]);
                 }),
@@ -429,6 +456,12 @@ define([
                     }
                 }, "Redraw (for debugging)")
             ]);
+            
+            if (submitted === "success") {
+                makeReadOnly(result);
+            }
+            
+            return result;
         };
         
         redraw();
