@@ -49,8 +49,7 @@ TEMPLATES
 W Fix how templates list popup has too much scrolling and is not sized well; perhaps start with grid item view pane open?
 
 SURVEY GENERAL
-H in survey, no story number
-H in survey, delete button should have story name, or untitled
+H Survey should become read-only after submitted
 L Display how many stories and/or survey results have been collected
 L Ideally, all responses for selections (other than numerical sliders) should have unique IDs for each response and the stored response should have the ID as well as the chosen text at the time.
     Add support for short names (ids) for all options for survey questions
@@ -765,4 +764,5 @@ DONE in write story eliciting questions, in the grid, it says "Short Name' but i
 DONE in write story eliciting questions, when you choose a template, it asks whether you want to copy it, and it's not 'undefined', but it's the ID, not the short name
 DONE in plan story collection session, when you use a template (at least for a story collection exercise) it says "Copy selected template 'undefined' into question definition?" should have a name
 OBSOLETE Improve template list generation tool to support storyCollectionActivities and sensemakingActivities
-
+DONE in survey, no story number
+DONE in survey, delete button should have story name, or untitled
