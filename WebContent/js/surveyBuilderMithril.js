@@ -95,7 +95,7 @@ define([
             model[fieldSpecification.id] = value;
             // TODO: redraw on value change seems not needed in this survey case, since values do not affect anything about rest of application?
             // redraw();
-            // Except for one case:
+            // Except for one case. Could there be more?
             if (fieldSpecification.id === "__survey_storyName") redraw();
         }
         
@@ -159,10 +159,13 @@ define([
             ];
         } else if (displayType === "select") {
             var selectOptions = [];
-            if (!value) selectOptions.push(m("option", {selected: "selected", disabled: "disabled", hidden: "hidden", value: ''}, ''));
+            var defaultOptions = {value: ''};
+            if (!value) defaultOptions.selected = 'selected';
+            selectOptions.push(m("option", defaultOptions, '-- select --'));
             selectOptions = selectOptions.concat(
                 fieldSpecification.valueOptions.map(function (optionValue, index) {
                     var optionOptions = {value: optionValue};
+                    // console.log("optionValue, value", optionValue, value, optionValue === value);
                     if (optionValue === value) optionOptions.selected = 'selected';
                     return m("option", optionOptions, optionValue);
                 })
