@@ -516,7 +516,7 @@ define([
                 }, "Redraw (for debugging)")
             ]);
             
-            if (submitted === "success") {
+            if (submitted === "pending" || submitted === "success") {
                 makeReadOnly(result);
             }
             
