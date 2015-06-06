@@ -1,10 +1,12 @@
 define([
     "js/panelBuilder/dialogSupport",
+    "dojo/dom-class",
     "dojo/_base/lang",
     "js/templates/templates",
     "js/panelBuilder/standardWidgets/GridWithItemPanel"
 ], function(
     dialogSupport,
+    domClass,
     lang,
     templates,
     GridWithItemPanel
@@ -19,6 +21,7 @@ define([
             fieldSpecification: fieldSpecification
         };
         var button = dialogSupport.addButtonThatLaunchesDialog(contentPane, model, fieldSpecification, dialogConfiguration);
+        domClass.add(button.domNode, "narrafirma-template-button");
         return button;
     }
     
