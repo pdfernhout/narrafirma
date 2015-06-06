@@ -21,10 +21,11 @@ define([
      * Multiple eliciting questions
      X Storing data in model
      X Add styling classes
-     * Dialog version
+     X Dialog version
      X Call validation for each story
      * (Optional) Reporting validation errors inline
      * (Optional for now) Call translate
+     * After survey is sent, make the form read-only somehow
      */
     
     /* global m */
@@ -94,6 +95,8 @@ define([
             model[fieldSpecification.id] = value;
             // TODO: redraw on value change seems not needed in this survey case, since values do not affect anything about rest of application?
             // redraw();
+            // Except for one case:
+            if (fieldSpecification.id === "__survey_storyName") redraw();
         }
         
         var standardValueOptions = {
@@ -269,7 +272,7 @@ define([
         
         console.log("startQuestions", startQuestions);
         
-        var stories = [];
+        var stories = surveyResult.stories;
         
         function addStory() {
             var storyQuestionsModel = {
@@ -283,10 +286,22 @@ define([
             
         addStory();
         
+        function makeLabelForStory(story, index) {
+            var storyLabel = story.__survey_storyName;
+            if (storyLabel) storyLabel = storyLabel.trim();
+            if (!storyLabel) {
+                storyLabel = 'untitled story #' + (index + 1);
+            } else {
+                storyLabel = '"' + storyLabel + '"';
+            }
+            return storyLabel;
+        }
+        
         function displayStoryQuestions(story, index) {
+            var storylabel = makeLabelForStory(story, index);
             var result = [
-                m("span", {class: "narrafirma-story-label", style: {"font-weight": "bold"}}, "Story #" + (index + 1)),
-                m("br"),
+                // m("span", {class: "narrafirma-story-label", style: {"font-weight": "bold"}}, "Story #" + (index + 1)),
+                // m("br"),
 
                 allStoryQuestions.map(lang.partial(displayQuestion, story)),
                 
@@ -294,11 +309,11 @@ define([
                     class: "narrafirma-delete-story-button",
                     onclick: function () {
                         // TODO: Only confirm if the story has a title or text
-                        if (!confirm("Are you sure you want to delete this story?")) return;
+                        if (!confirm("Are you sure you want to delete this story (" + storylabel + ")?")) return;
                         stories.splice(index, 1);
                         redraw();
                     }
-                }, "Delete this story (#" + (index + 1) + ")")
+                }, "Delete this story (" + storylabel + ")")
             ];
             
             return result; 
