@@ -15,7 +15,6 @@ define([
     // http://achecker.ca/checker/index.php#output_div [first used testing tool]
     // http://webaim.org/techniques/forms/controls
     
-    
     /* TODO:
      * All widget types:
      X   boolean
@@ -31,7 +30,7 @@ define([
      * (Optional) Reporting validation errors inline
      * (Optional for now) Call translate
      X After survey is sent, make the form read-only somehow
-     * Accessibility
+     X Accessibility [at least the basics]
      */
     
     /* global m */
@@ -303,9 +302,9 @@ define([
         participantQuestions = participantQuestions.concat(questionnaire.participantQuestions);
 
         // TODO: For testing
-        participantQuestions.push({id: "test1", displayName: "test1", displayPrompt: "test checkbox", displayType: "checkbox", valueOptions:[]});
-        participantQuestions.push({id: "test2", displayName: "test2", displayPrompt: "test boolean", displayType: "boolean", valueOptions:[]});
-        participantQuestions.push({id: "test3", displayName: "test3", displayPrompt: "test radiobuttons", displayType: "radiobuttons", valueOptions:["one", "two", "three"]});
+        // participantQuestions.push({id: "test1", displayName: "test1", displayPrompt: "test checkbox", displayType: "checkbox", valueOptions:[]});
+        // participantQuestions.push({id: "test2", displayName: "test2", displayPrompt: "test boolean", displayType: "boolean", valueOptions:[]});
+        // participantQuestions.push({id: "test3", displayName: "test3", displayPrompt: "test radiobuttons", displayType: "radiobuttons", valueOptions:["one", "two", "three"]});
         
         timestampStart = new Date();
         
