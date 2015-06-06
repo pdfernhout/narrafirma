@@ -766,3 +766,9 @@ DONE in plan story collection session, when you use a template (at least for a s
 OBSOLETE Improve template list generation tool to support storyCollectionActivities and sensemakingActivities
 DONE in survey, no story number
 DONE in survey, delete button should have story name, or untitled
+DONE Make Mithril survey form read-only after submitted
+DONE Imporve how Mithril survey handles selects (was setting wrong value sometimes on redraw)
+DONE Improve Mithril survey accessibility by adding labels with ids
+DONE Remove all HTM5 validation errors from Mithril survey
+DONE Remove use of Dojo Dialog and lodash from Mithril survey to improve loading time
+DONE Fix bug in Pointrel client preventing resending survey if sending failed the first time
