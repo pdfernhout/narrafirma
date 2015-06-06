@@ -186,6 +186,7 @@ a:active {
 .questionExternal {
 	background: #d5dae6;
 	margin-bottom: 4px;
+    border-radius: 12px;
 }
 
 .questionPrompt {
