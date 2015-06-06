@@ -135,7 +135,7 @@ define([
    // Are names just hints as to purpose of code? Can never convey all aspects of interrelationships?
    
    function findQuestionnaireTemplate(project, shortName) {
-       var questionnaires = project.projectModel.get("project_questionnaires");
+       var questionnaires = project.projectModel.get("project_storyForms");
        for (var i = 0; i < questionnaires.length; i++) {
            if (questionnaires[i].questionForm_shortName === shortName) {
                return questionnaires[i];
