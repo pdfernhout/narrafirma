@@ -84,6 +84,17 @@ define([
         return true;
     }
    
+    var idsMade = {};
+    var idCount = 0;
+    
+    function getIdForText(text) {
+        if (!idsMade["$" + text]) {
+            idsMade["$" + text] = idCount++;
+        }
+            
+        return "surveyField_" + idsMade["$" + text];
+    }
+    
     function displayQuestion(model, fieldSpecification) {
         var fieldID = fieldSpecification.id;
         if (model) {
@@ -92,7 +103,7 @@ define([
 
         var displayType = fieldSpecification.displayType;
         var questionLabel = [
-            m("label", {"class": "narrafirma-prompt", "for": fieldID}, fieldSpecification.displayPrompt),
+            m("label", {"class": "narrafirma-prompt", "for": getIdForText(fieldID)}, fieldSpecification.displayPrompt),
             m("br")
         ];
 
@@ -112,7 +123,7 @@ define([
         
         var standardValueOptions = {
             value: value,
-            id: fieldID,
+            id: getIdForText(fieldID),
             onchange: change
         };
         
@@ -133,7 +144,7 @@ define([
             ];
         } else if (displayType === "checkbox") {
             parts = [
-                 m("input[type=checkbox]", {id: fieldID, checked: value, onchange: function(event) {change(null, event.target.checked);}}),
+                 m("input[type=checkbox]", {id: getIdForText(fieldID), checked: value, onchange: function(event) {change(null, event.target.checked);}}),
                  m("br")
              ];
         } else if (displayType === "checkboxes") {
@@ -143,7 +154,7 @@ define([
             }
             parts = [
                 fieldSpecification.valueOptions.map(function (option, index) {
-                    var optionID = fieldID + "_" + option;
+                    var optionID = getIdForText(fieldID + "_" + option);
                     return [
                         m("input[type=checkbox]", {id: optionID, checked: !!value[option], onchange: function(event) {value[option] = event.target.checked; change(null, value); } }),
                         m("label", {"for": optionID}, option),
@@ -156,7 +167,7 @@ define([
         } else if (displayType === "radiobuttons") {
             parts = [
                 fieldSpecification.valueOptions.map(function (option, index) {
-                    var optionID = fieldID + "_" + option;
+                    var optionID = getIdForText(fieldID + "_" + option);
                     return [
                         m("input[type=radio]", {id: optionID, value: option, name: fieldSpecification.id, checked: value === option, onchange: lang.partial(change, null, option) }),
                         m("label", {"for": optionID}, option), 
@@ -168,11 +179,11 @@ define([
             parts = [m("fieldset", parts)];
         } else if (displayType === "boolean") {
             parts = [
-                m("input[type=radio]", {id: fieldID + "_yes", value: true, name: fieldSpecification.id, checked: value === true, onchange: lang.partial(change, null, true) }),
-                m("label", {"for": fieldID + "_yes"}, "yes"),
+                m("input[type=radio]", {id: getIdForText(fieldID + "_yes"), value: true, name: fieldSpecification.id, checked: value === true, onchange: lang.partial(change, null, true) }),
+                m("label", {"for": getIdForText(fieldID + "_yes")}, "yes"),
                 m("br"),
-                m("input[type=radio]", {id: fieldID + "_no", value: false, name: fieldSpecification.id, checked: value === true, onchange: lang.partial(change, null, false) }),
-                m("label", {"for": fieldID + "_no"}, "no"),
+                m("input[type=radio]", {id: getIdForText(fieldID + "_no"), value: false, name: fieldSpecification.id, checked: value === true, onchange: lang.partial(change, null, false) }),
+                m("label", {"for": getIdForText(fieldID + "_no")}, "no"),
                 m("br")
             ];
             // parts.unshift(m("legend", fieldSpecification.displayPrompt));
