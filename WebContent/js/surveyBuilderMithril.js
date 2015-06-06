@@ -133,7 +133,7 @@ define([
             ];
         } else if (displayType === "checkbox") {
             parts = [
-                 m("input[type=checkbox]", {checked: value, onchange: function(event) {change(null, event.target.checked);}}),
+                 m("input[type=checkbox]", {id: fieldID, checked: value, onchange: function(event) {change(null, event.target.checked);}}),
                  m("br")
              ];
         } else if (displayType === "checkboxes") {
@@ -143,9 +143,10 @@ define([
             }
             parts = [
                 fieldSpecification.valueOptions.map(function (option, index) {
+                    var optionID = fieldID + "_" + option;
                     return [
-                        m("input[type=checkbox]", {checked: !!value[option], onchange: function(event) {value[option] = event.target.checked; change(null, value); } }),
-                        option,
+                        m("input[type=checkbox]", {id: optionID, checked: !!value[option], onchange: function(event) {value[option] = event.target.checked; change(null, value); } }),
+                        m("label", {"for": optionID}, option),
                         m("br")
                     ];
                 })
@@ -153,20 +154,21 @@ define([
         } else if (displayType === "radiobuttons") {
             parts = [
                 fieldSpecification.valueOptions.map(function (option, index) {
+                    var optionID = fieldID + "_" + option;
                     return [
-                        m("input[type=radio]", {value: option, name: fieldSpecification.id, checked: value === option, onchange: lang.partial(change, null, option) }),
-                        option, 
+                        m("input[type=radio]", {id: optionID, value: option, name: fieldSpecification.id, checked: value === option, onchange: lang.partial(change, null, option) }),
+                        m("label", {"for": optionID}, option), 
                         m("br")
                     ];
                 })
             ];
         } else if (displayType === "boolean") {
             parts = [
-                m("input[type=radio]", {value: true, name: fieldSpecification.id, checked: value === true, onchange: lang.partial(change, null, true) }),
-                "yes",
+                m("input[type=radio]", {id: fieldID + "_yes", value: true, name: fieldSpecification.id, checked: value === true, onchange: lang.partial(change, null, true) }),
+                m("label", {"for": fieldID + "_yes"}, "yes"),
                 m("br"),
-                m("input[type=radio]", {value: false, name: fieldSpecification.id, checked: value === true, onchange: lang.partial(change, null, false) }),
-                "no",
+                m("input[type=radio]", {id: fieldID + "_no", value: false, name: fieldSpecification.id, checked: value === true, onchange: lang.partial(change, null, false) }),
+                m("label", {"for": fieldID + "_no"}, "no"),
                 m("br")
             ];
         } else if (displayType === "select") {
@@ -261,11 +263,9 @@ define([
         participantQuestions = participantQuestions.concat(questionnaire.participantQuestions);
 
         // TODO: For testing
-        /*
         participantQuestions.push({id: "test1", displayName: "test1", displayPrompt: "test checkbox", displayType: "checkbox", valueOptions:[]});
         participantQuestions.push({id: "test2", displayName: "test2", displayPrompt: "test boolean", displayType: "boolean", valueOptions:[]});
         participantQuestions.push({id: "test3", displayName: "test3", displayPrompt: "test radiobuttons", displayType: "radiobuttons", valueOptions:["one", "two", "three"]});
-        */
         
         timestampStart = new Date();
         
