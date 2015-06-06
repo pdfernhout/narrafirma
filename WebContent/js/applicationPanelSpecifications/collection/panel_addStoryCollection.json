@@ -18,12 +18,12 @@
             "id": "storyCollection_questionnaireIdentifier",
             "valueType": "string",
             "valueImmutable": true,
-            "valueOptions": "/projectModel/project_questionnaires",
+            "valueOptions": "/projectModel/project_storyForms",
             "valueOptionsSubfield": "questionForm_shortName",
             "required": true,
             "displayType": "select",
             "displayName": "Questionnaire",
-            "displayPrompt": "Please select a questionnaire to use for this story collection."
+            "displayPrompt": "Please select a story form to use for this story collection."
         },
         {
             "id": "storyCollection_activeOnWeb",
