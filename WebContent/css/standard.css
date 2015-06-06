@@ -51,6 +51,16 @@ a:active {
     width: 100%;
 }
 
+#pleaseWaitDiv {
+	display: block;
+	font-size: 1.2em;
+	font-weight: bold;
+	padding: 30px;
+	width: 30%;
+	margin: 30px auto 0px auto;
+	background: #b2c07f;
+	border: 4px solid #8db500;
+}
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Navigation bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
