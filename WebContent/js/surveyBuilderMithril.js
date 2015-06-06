@@ -124,7 +124,7 @@ define([
         
         function change(event, value) {
             if (event) value = event.target.value;
-            console.log("onchange", fieldSpecification.id, value);
+            // console.log("onchange", fieldSpecification.id, value);
             model[fieldSpecification.id] = value;
             // TODO: redraw on value change seems not needed in this survey case, since values do not affect anything about rest of application?
             // redraw();
