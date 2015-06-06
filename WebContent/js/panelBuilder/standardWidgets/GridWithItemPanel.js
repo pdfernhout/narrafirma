@@ -376,7 +376,8 @@ define([
             console.log("Panel already displayed", this.formType, this.form);
             if (this.formType !== "view") {
                 // TODO: Translate
-                alert("Item change already in progress; please cancel form first");
+                //alert("Item change already in progress; please cancel form first");
+            	alert("You are editing this item. Please choose OK or Cancel \nat the bottom of the form before you do anything else.");
                 return;
             }
             // TODO: This comment and commented code looks out of date, since seems to rebuild even when viewing
