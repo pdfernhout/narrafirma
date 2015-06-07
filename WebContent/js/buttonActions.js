@@ -156,7 +156,7 @@ define([
         
         // TODO: Translate
         
-        output += "Please select one for the following questions to answer:<br><br>";
+        output += "Please select one of the following questions to answer:<br><br>";
         
         questionnaire.elicitingQuestions.forEach(function (elicitingQuestion) {
             output += elicitingQuestion.text + "<br><br>";
