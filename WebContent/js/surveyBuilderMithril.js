@@ -102,7 +102,7 @@ define([
 
         var displayType = fieldSpecification.displayType;
         var questionLabel = [
-            m("span", {"class": "narrafirma-prompt"}, fieldSpecification.displayPrompt),
+            m("span", {"class": "narrafirma-survey-prompt"}, fieldSpecification.displayPrompt),
             m("br")
         ];
         
@@ -232,9 +232,9 @@ define([
             // Could suggest 0-100 to support <IE10 that don't have range input -- or coudl do polyfill
             // if (fieldSpecification.displayPrompt) questionLabel[0].children = fieldSpecification.displayPrompt + " (0-100)";
             parts = [
-                m("span", {class: "narrafirma-low"}, fieldSpecification.displayConfiguration[0]),
-                m('span', {class: "narrafirma-slider"}, m('input[type="range"]', standardValueOptions)),
-                m('span', {class: "narrafirma-high"}, fieldSpecification.displayConfiguration[1])
+                m("span", {class: "narrafirma-survey-low"}, fieldSpecification.displayConfiguration[0]),
+                m('span', {class: "narrafirma-survey-slider"}, m('input[type="range"]', standardValueOptions)),
+                m('span', {class: "narrafirma-survey-high"}, fieldSpecification.displayConfiguration[1])
             ];
         } else {
             parts = [
@@ -244,14 +244,14 @@ define([
         }
 
         if (parts.length) {
-            parts = m("div", {class: "narrafirma-question-internal"}, parts);
+            parts = m("div", {class: "narrafirma-survey-question-internal"}, parts);
         }
         
         if (questionLabel) {
             parts = questionLabel.concat(parts);
         }
         
-        return m("div", {class: "narrafirma-question-external narrafirma-question-type-" + displayType}, parts);
+        return m("div", {class: "narrafirma-survey-question-external narrafirma-survey-question-type-" + displayType}, parts);
     }
     
     function buildSurveyForm(surveyDiv, questionnaire, doneCallback) {  
@@ -358,11 +358,11 @@ define([
         function displayStoryQuestions(story, index) {
             var storylabel = makeLabelForStory(story, index);
             var result = [
-                // m("span", {class: "narrafirma-story-label", style: {"font-weight": "bold"}}, "Story #" + (index + 1)),
+                // m("span", {class: "narrafirma-survey-story-label", style: {"font-weight": "bold"}}, "Story #" + (index + 1)),
                 // m("br"),
 
                 m("button", {
-                    class: "narrafirma-delete-story-button",
+                    class: "narrafirma-survey-delete-story-button",
                     onclick: function () {
                         // TODO: Only confirm if the story has a title or text
                         if (!confirm("Are you sure you want to delete this story (" + storylabel + ")?")) return;
@@ -427,12 +427,12 @@ define([
         
         function submitButtonOrWaitOrFinal() {
             if (submitted === "never") {
-                return m("button", {class: "narrafirma-submit-survey-button", onclick: submitButtonPressed}, "Submit survey");
+                return m("button", {class: "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Submit survey");
             } else if (submitted === "failed") {
                 return m("div", [
                     "Sending to server failed. Please try again...",
                     m("br"),
-                    m("button", {class: "narrafirma-submit-survey-button", onclick: submitButtonPressed}, "Resubmit survey")
+                    m("button", {class: "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Resubmit survey")
                 ]);
             } else if (submitted === "pending") {
                 return m("div", ["Sending survey result to server... Please wait..."]);
@@ -493,9 +493,9 @@ define([
         }
         
         function anotherStoryButton() {
-        	return m("div", {"class": "narrafirma-tell-another-story-button-panel"}, [
+        	return m("div", {"class": "narrafirma-survey-tell-another-story-button-panel"}, [
 				"Would you like to tell another story?",
-				 m("button", {class: "narrafirma-tell-another-story-button", onclick: tellAnotherStory}, "Yes, I'd like to tell another story")
+				 m("button", {class: "narrafirma-survey-tell-another-story-button", onclick: tellAnotherStory}, "Yes, I'd like to tell another story")
 			]);
         }
 

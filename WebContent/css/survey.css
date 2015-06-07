@@ -47,38 +47,38 @@ textarea, input, select {
 	margin: 0px 0px 30px 0px;
 }
 
-.narrafirma-survey-story-odd .narrafirma-question-external {
+.narrafirma-survey-story-odd .narrafirma-survey-question-external {
 	background: #abb6ce;
 }
 
-.narrafirma-prompt {
+.narrafirma-survey-prompt {
     margin: 4px 10px 4px 10px;
 }
 
-.narrafirma-question-external {
+.narrafirma-survey-question-external {
     border-radius: 12px;
     background: #d5dae6;
     margin-bottom: 6px;
     padding: 8px;
 }
 
-.narrafirma-question-internal {
+.narrafirma-survey-question-internal {
 	margin: 0 20px;
 }
 
-.narrafirma-question-type-header {
+.narrafirma-survey-question-type-header {
     font-weight: bold;
     background: white;
     margin-top: 10px;
 }
 
-.narrafirma-question-type-label {
+.narrafirma-survey-question-type-label {
     background: white;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ input areas ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-.narrafirma-question-type-textarea textarea {
+.narrafirma-survey-question-type-textarea textarea {
     width: 100%;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -86,32 +86,32 @@ textarea, input, select {
     min-height: 10em;
 }
 
-.narrafirma-question-type-text input {
+.narrafirma-survey-question-type-text input {
     width: 100%;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
 
-.narrafirma-question-type-slider table {
+.narrafirma-survey-question-type-slider table {
     min-width: 100%;
 }
 
-.narrafirma-question-type-slider .narrafirma-question-internal {
+.narrafirma-survey-question-type-slider .narrafirma-survey-question-internal {
     text-align: center;
 }
 
-.narrafirma-question-type-slider .narrafirma-low {
+.narrafirma-survey-question-type-slider .narrafirma-survey-low {
     text-align: right;
     font-size: 0.8em;
     white-space: nowrap;
 }
 
-.narrafirma-question-type-slider .narrafirma-slider {
+.narrafirma-survey-question-type-slider .narrafirma-survey-slider {
     /* text-align: center; */
 }
 
-.narrafirma-question-type-slider .narrafirma-high {
+.narrafirma-survey-question-type-slider .narrafirma-survey-high {
     text-align: left;
     font-size: 0.8em;
     white-space: nowrap;
@@ -119,14 +119,14 @@ textarea, input, select {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ tell another story, delete story ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-.narrafirma-tell-another-story-button-panel {
+.narrafirma-survey-tell-another-story-button-panel {
     border-radius: 12px;
 	background: #b2c07f;
 	padding: 10px;
 	margin-bottom: 20px;
 }
 
-.narrafirma-tell-another-story-button {
+.narrafirma-survey-tell-another-story-button {
     appearance: none;
     box-shadow: none;
     border: none;
@@ -137,15 +137,15 @@ textarea, input, select {
     padding: 6px;
 }
 
-.narrafirma-tell-another-story-button:hover {
+.narrafirma-survey-tell-another-story-button:hover {
 	background: #8db500;
 }
 	
-.narrafirma-tell-another-story-button:active {
+.narrafirma-survey-tell-another-story-button:active {
 	background: #658200;
 }
 
-.narrafirma-delete-story-button {
+.narrafirma-survey-delete-story-button {
     appearance: none;
     box-shadow: none;
     border: none;
@@ -158,33 +158,33 @@ textarea, input, select {
     padding: 4px 10px;
 }
 
-.narrafirma-delete-story-button:hover {
+.narrafirma-survey-delete-story-button:hover {
 	background: #3b5fab;
 	color: white;
 }
 	
-.narrafirma-delete-story-button:active {
+.narrafirma-survey-delete-story-button:active {
 	background: #2e4a85;
 	color: white;
 }
 
-.narrafirma-survey-story-odd .narrafirma-delete-story-button {
+.narrafirma-survey-story-odd .narrafirma-survey-delete-story-button {
     background: #d5dae6;
 }
 
-.narrafirma-survey-story-odd .narrafirma-delete-story-button:hover {
+.narrafirma-survey-story-odd .narrafirma-survey-delete-story-button:hover {
 	background: #3b5fab;
 	color: white;
 }
 	
-.narrafirma-survey-story-odd .narrafirma-delete-story-button:active {
+.narrafirma-survey-story-odd .narrafirma-survey-delete-story-button:active {
 	background: #2e4a85;
 	color: white;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ submit survey ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-.narrafirma-submit-survey-button {
+.narrafirma-survey-submit-survey-button {
     display: block;
     appearance: none;
     box-shadow: none;
@@ -199,28 +199,28 @@ textarea, input, select {
 	padding: 10px 20px;
 }
 
-.narrafirma-submit-survey-button:hover {
+.narrafirma-survey-submit-survey-button:hover {
 	background: #2e4a85;
 	text-shadow: -1px 1px #27496d;
 }
 
-.narrafirma-submit-survey-button:active {
+.narrafirma-survey-submit-survey-button:active {
 	background: #243B6A; /* darker blue than in color scheme */
 	text-shadow: -1px 1px #193047;
 }
 
-
 .pleaseWaitOverlay {
-    /* background-color: #E0EEEE; */
+	font-size: 1em;
+	font-weight: bold;
+	width: 300px;
+	height: 70px;
+	margin: 30px auto 0px auto;
+	padding: 30px;
+    border: 4px solid #8db500;
     background-image: url('../images/dojo-Standby-loading.gif');
     background-repeat: no-repeat;
-    background-position: top center;
-    position: absolute;
+    background-position: 50% 80%;
     z-index: 1001;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
 }
 
 
