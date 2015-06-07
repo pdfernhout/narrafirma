@@ -9,7 +9,7 @@
             "id": "storyForms_Label",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "On this page you will design one or more <strong>story forms</strong> on which people will tell stories and answer questions about them. You can select from the questions you have already entered, and you can enter other form-specific text."
+            "displayPrompt": "On this page you will design one or more <strong>story forms</strong>. These are documents people will use to tell stories and answer questions about them. If you collected stories on paper or in person, you will use the story form to enter the information into NarraFirma."
         },
         {
             "id": "project_storyForms",
