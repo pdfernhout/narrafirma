@@ -217,6 +217,7 @@ textarea, input, select {
 	margin: 30px auto 0px auto;
 	padding: 30px;
     border: 4px solid #8db500;
+    border-radius: 12px;
     background-image: url('../images/dojo-Standby-loading.gif');
     background-repeat: no-repeat;
     background-position: 50% 80%;
