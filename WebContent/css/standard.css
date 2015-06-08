@@ -248,6 +248,18 @@ form {
 	font-family: Arial, Helvetica, sans-serif;
 }
 
+.claro .dijitTextBoxReadOnly {
+	background: #e4e4e4;
+}
+
+.narrafirma-special-warning {
+	display: block;
+	background: #eac199;
+	border: 2px solid #cc6400;
+	padding: 10px;
+	margin-left: 5em;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Story card display ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-story-card-story-title {

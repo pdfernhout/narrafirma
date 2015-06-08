@@ -1,59 +1,77 @@
 <!DOCTYPE html> 
 <html>
-
 <head>
-
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
-    <title>NarraFirma help on collection :: Start story collection</title>
-
+    <title>NarraFirma Help: Collection: Start story collection</title>
     <link rel="stylesheet" href="../../css/help.css">
-
 </head>
-
 <body>
-
-<a href="../helpIndex.html#page_startStoryCollection" class="narrafirma-helpindex-backlink">Go to main help index</a><br><br>
-<div id="page_startStoryCollection" class="page">
-
-<div class="pageHeader">
-    <span class="pageName">Start story collection</span>
-    <span class="section">collection</span>
+<div class="header">
+	<span class="narrafirma-name">NarraFirma&trade; Help</span>
+	<span clsss="breadcrumb">
+	<a href="../dashboard/help_page_dashboard.html">Home</a> &gt; 
+	<a href="help_page_collection.html">Collection</a> &gt; 
+	Start story collection
+	</span>
 </div>
 
-<div id="webStoryCollection_startCollectionLabel" class="field">
-    <span class="fieldType">label</span>
-    <span class="fieldPrompt">If you are doing story collection over the internet, click this button to make the web form "live" and able to be used by people other than yourself.</span>
+<div id="page-planning-enter-project-facts" class="page">
+
+<div class="page-title">Start story collection</div>
+<div class="text">
+<p>
+A story collection identifies a specific group of stories, collected using (a specific version of) a specific story form.
+</p>
+<p>
+You can have multiple story collections within one project. For example, you might create a test collection for experimenting, a pilot collection with a draft story form, and a final story collection with a revised story form.
+</p>
 </div>
 
-<div id="webStoryCollection_enableStoryCollectionButton" class="field">
-    <span class="fieldType">button</span>
-    <span class="displayConfiguration">"storyCollectionStart"</span>
-    <span class="fieldPrompt">Start web story collection</span>
+<div class="heading">What to do here</div>
+
+<div class="text">
+<p>
+When you have created, previewed, and tested your questions and story forms, and you are ready to start collecting stories, it is time to create a story collection.
+</p>
+<p>
+Give your new story collection a name. Choose well, because you won't be able to change it later. (However, the name won't be visible to the people who only tell stories in the project. It will only be visible to people who can see the pages of your NarraFirma project.)
+</p>
+<p>
+Choose a story form to use for the story collection. When you create a new story collection with a story form, NarraFirma will copy a <strong>snapshot</strong> of the story form as it stands at that point. Make sure you are done playing with your story form when you create your story collection.
+</p>
+<p>
+After you've chosen a name and story form for the collection, click OK. Then select the story collection in the list of story collections, and click the "Activate or Deactivate Web Form" button. When the story form is active, you (and your participants) can add stories to the story collection at the web address shown (copy it and paste it into your browser).
 </div>
 
-<div id="webStoryCollection_enabledTracker" class="field">
-    <span class="fieldType">functionResult</span>
-    <span class="displayConfiguration">"isStoryCollectingEnabled"</span>
-    <span class="fieldPrompt">Web story collection enabled: <b>{{result}}</b></span>
+<div class="heading">Frequently-asked questions</div>
+
+<div class="question">
+Can I make a minor change to the wording of a question in the story form associated with a story collection?
+</div>
+<div class="question-answer">
+<p>
+No, you can't. If you need to make a change to the form's wording, create a new story collection and link it to the changed story form.
+</p>
 </div>
 
-<div id="webStoryCollection_copyStoryFormURLButton" class="field">
-    <span class="fieldType">button</span>
-    <span class="displayConfiguration">"copyStoryFormURL"</span>
-    <span class="fieldPrompt">Copy story form web URL link</span>
+<div class="question">
+<strong>Why</strong> can't I make changes to my story form after I create a story collection that uses it?
+</div>
+<div class="question-answer">
+<p>
+NarraFirma has no way of knowing whether any change you make to your story form will change the meaning of the data collected using the form. For example, if you were to change an age question so that instead of three age groups you had four, NarraFirma would not be able to create graphs in which the two answer sets were merged. To avoid problems with nonsensical data, NarraFirma requires that you "fix" your story form when you start your story collection.
+</p>
 </div>
 
-<div id="webStoryCollection_stopCollectionLabel" class="field">
-    <span class="fieldType">label</span>
-    <span class="fieldPrompt">You can also disable the data collection here.</span>
+<div class="question">
+I have two story collections that are identical except for a slight change in wording. I'm <strong>sure</strong> it's safe to merge the data. Can I merge them?
+</div>
+<div class="question-answer">
+<p>
+Yes, but it's complicated, and you should <em>only</em> do this if there are only <em>cosmetic</em> changes to the story form between the two collections. Export both story collections, and their associated story forms, to the CSV file format. Then &mdash; carefully &mdash; merge the two CSV files with story data in them into one file, using a spreadsheet. Then import the merged CSV file into a new story collection (along with the revised story form).
+</p>
 </div>
 
-<div id="webStoryCollection_disableStoryCollectionButton" class="field">
-    <span class="fieldType">button</span>
-    <span class="displayConfiguration">"storyCollectionStop"</span>
-    <span class="fieldPrompt">Stop web story collection</span>
-</div>
 
 </div>
 

@@ -45,7 +45,7 @@ define([
         var startQuestions = [];
         
         if (previewMode) {
-            startQuestions.push({id: "__survey-local_" + "previewMode", displayName: "previewMode", displayPrompt: "[PREVIEW MODE: results will not be saved.]", displayType: "header", valueOptions:[]});
+            startQuestions.push({id: "__survey-local_" + "previewMode", displayName: "previewMode", displayClass: "narrafirma-preview", displayPrompt: "Previewing story form; results will not be saved.", displayType: "header", valueOptions:[]});
         }
         
         if (questionnaire.title) {
@@ -145,7 +145,6 @@ define([
         var submitted = "never";
         
         function submitSurvey(surveyResult, wizardPane, doneCallback) {
-            var answers = {};
             console.log("submitting survey...");
             
             var timestampEnd = new Date();
@@ -213,6 +212,7 @@ define([
                 questionLabel[0].tag = "label";
             }
             
+            var parts = [];
             function makeLegend() {
                 // Do nothing for now
                 parts.unshift(m("legend", questionLabel[0]));
@@ -239,7 +239,6 @@ define([
                 onchange: change
             };
             
-            var parts = [];
             if (displayType === "label") {
                 // Nothing to do
             } else if (displayType === "header") {
@@ -352,7 +351,11 @@ define([
                 parts = questionLabel.concat(parts);
             }
             
-            return m("div", {class: "narrafirma-survey-question-external narrafirma-survey-question-type-" + displayType}, parts);
+            var classString = "narrafirma-survey-question-external narrafirma-survey-question-type-" + displayType;
+            if (fieldSpecification.displayClass) {
+            	classString += " " + fieldSpecification.displayClass;
+            }
+            return m("div", {class: classString}, parts);
         }
         
         function displayStoryQuestions(story, index) {

@@ -143,7 +143,7 @@ define([
             surveyResults.push(newSurveyResult);
         }
         
-        var storyCollectionIdentifier = prompt("New story collection name?");
+        var storyCollectionIdentifier = prompt("Please give this new story collection a name.");
         if (!storyCollectionIdentifier) return;
         
         if (surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier)) {
@@ -205,10 +205,10 @@ define([
         });
         console.log("processCSVContentsForQuestionnaire headerAndItems", headerAndItems);
         
-        var shortName = prompt("Please enter a short name for this questionnaire");
+        var shortName = prompt("Please enter a short name for this story form.");
         if (!shortName) return;
         if (questionnaireGeneration.buildQuestionnaire(project, shortName)) {
-            alert('A questionnaire already exists with that name: "' + shortName + '"');
+            alert('A story form already exists with that name: "' + shortName + '"');
             return;
         }
         
@@ -298,7 +298,8 @@ define([
     }
     
     function importCSVStories() {
-        if (!lastQuestionnaireUploaded) return alert("You need to upload a questionnaire first");
+    	// TODO: Translate
+        if (!lastQuestionnaireUploaded) return alert("You need to import a story form before you can import story data into a collection.");
         chooseCSVFileToImport(processCSVContentsForStories);
     }
     

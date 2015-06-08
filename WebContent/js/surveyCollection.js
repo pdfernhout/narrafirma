@@ -134,10 +134,11 @@ define([
        project.pointrelClient.createAndSendChangeMessage("questionnaires", "questionnairesMessage", questionnaires, null, function(error, result) {
            if (error) {
                // TODO: Translate
-               alert("Problem activating/deactivating web survey");
+               alert("Problem activating or deactivating web form");
                return;
            }
-           alert("Web survey status changed");
+           // TODO: Translate
+           alert("The web form has been activated or deactivated.");
        });
    }
    

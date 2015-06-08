@@ -9,7 +9,7 @@
             "id": "storyCollection_createCollectionLabel",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "On this page you will create one or more story collections, which are used to store collected stories for a specific questionnaire. For example, you might have a test collection for experimenting, a pilot project collection with a first version of a questionnaire, and a major collection with a revised final questionnaire."
+            "displayPrompt": "On this page you can create one or more <strong>story collections</strong> for your project. A story collection is a body of stories collected using a specific story form." 
         },
         {
             "id": "project_storyCollections",
@@ -24,12 +24,12 @@
                     "editButton": true,
                     "addButton": true,
                     "removeButton": true,
-                    "customButton": {"customButtonLabel": "Activate/Deactivate web survey", "callback": "toggleWebActivationOfSurvey"},
+                    "customButton": {"customButtonLabel": "Activate or Deactivate Web Form", "callback": "toggleWebActivationOfSurvey"},
                     "includeAllFields": ["storyCollection_shortName", "storyCollection_questionnaireIdentifier", "storyCollection_activeOnWeb", "storyCollection_notes"]
                 }
             },
             "displayName": "Story collections",
-            "displayPrompt": "Add one or more story collections."
+            "displayPrompt": "These are the story collections you have created so far."
         },
         {
             "id": "project_csvFileUploader",
@@ -38,18 +38,18 @@
             "displayPrompt": "<input type=\"file\" id=\"csvFileLoader\" name=\"files\" title=\"Load File\" style=\"display:none\"/>"
         },
         {
-            "id": "project_importCSVQuestionnaire",
+            "id": "project_exportSToryFormAndDataToCSV",
             "valueType": "none",
             "displayType": "button",
-            "displayConfiguration": "importCSVQuestionnaire",
-            "displayPrompt": "Import questionnaire from CSV file ..."
+            "displayConfiguration": "exportSToryFormAndDataToCSV",
+            "displayPrompt": "Import Story Form from CSV File ..."
         },
         {
             "id": "project_importCSVStories",
             "valueType": "none",
             "displayType": "button",
             "displayConfiguration": "importCSVStories",
-            "displayPrompt": "Import story data from CSV file into collection ..."
+            "displayPrompt": "Import Story Data from CSV File into Story Collection ..."
         }
     ]
 }
