@@ -87,6 +87,14 @@
             "displayType": "textarea",
             "displayName": "Notes",
             "displayPrompt": "If you'd like to make any <strong>notes</strong> to yourself about this form, you can make them here. (They won't appear on the form.)"
-        }
+        },
+        {
+            "id": "questionForm_preview",
+            "valueType": "none",
+            "displayType": "button",
+            "displayConfiguration": "previewQuestionForm",
+            "displayName": "Question form preview",
+            "displayPrompt": "Preview question form"
+        }        
     ]
 }

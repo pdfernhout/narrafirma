@@ -156,20 +156,24 @@ define([
 
    // TODO: How to save the fact we have exported this in the project? Make a copy??? Or keep original in document somewhere? Versus what is returned from server for surveys?
    function buildQuestionnaire(project, shortName) {
-       var usedIDs = {};
-       usedIDs.__createdIDCount = 0;
-       
        // TODO: Redo for if questionnaire template is made of triples
-       
-       var questionnaire = {
-               __type: "org.workingwithstories.Questionnaire"
-       };
        
        var questionnaireTemplate = findQuestionnaireTemplate(project, shortName);
        if (!questionnaireTemplate) return null;
        
        console.log("questionnaireTemplate", questionnaireTemplate);
+       
+       return buildQuestionnaireFromTemplate(project, questionnaireTemplate);
+   }
  
+   function buildQuestionnaireFromTemplate(project, questionnaireTemplate) {
+       var usedIDs = {};
+       usedIDs.__createdIDCount = 0;
+       
+       var questionnaire = {
+           __type: "org.workingwithstories.Questionnaire"
+       };
+   
        questionnaire.title = questionnaireTemplate["questionForm_title"];
        questionnaire.image = questionnaireTemplate["questionForm_image"];
        questionnaire.startText = questionnaireTemplate["questionForm_startText"];
@@ -227,6 +231,7 @@ define([
    return {
        findStoryCollection: findStoryCollection,
        buildQuestionnaire: buildQuestionnaire,
+       buildQuestionnaireFromTemplate: buildQuestionnaireFromTemplate,
        ensureAtLeastOneElicitingQuestion: ensureAtLeastOneElicitingQuestion
    };
 });

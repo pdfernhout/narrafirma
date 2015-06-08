@@ -84,7 +84,7 @@ define([
     
     // Caller should call wizard.forward() on successful save to see the last page, and provide a retry message otherwise
     // Caller may also want to call (the returned) surveyDialog.hide() to close the window, or let the user do it.
-    function openMithrilSurveyDialog(questionnaire, callback) {  
+    function openMithrilSurveyDialog(questionnaire, callback, extraTitleText) {  
         console.log("openSurveyDialog questionnaire", questionnaire);
         
         var surveyDiv = document.createElement("div");
@@ -92,7 +92,7 @@ define([
         surveyBuilder.buildSurveyForm(surveyDiv, questionnaire, callback);
    
         var surveyDialog = new Dialog({
-            title: "Take Survey",
+            title: "Take Survey" + (extraTitleText || ""),
             content: surveyDiv
             // style: "width: 800px; height: 700px;"
         });
@@ -311,6 +311,18 @@ define([
     function logoutButtonClicked() {
         window.location.href = "/logout";
     }
+    
+    function previewQuestionForm(contentPane, model, fieldSpecification) {
+        console.log("previewQuestionForm", model);
+        var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(project, model);
+        
+        var surveyDialog = openMithrilSurveyDialog(questionnaire, finished, " [PREVIEW -- Results not stored]");
+        
+        function finished(status, surveyResult, wizardPane) {
+            console.log("surveyResult", status, surveyResult);
+            if (wizardPane) wizardPane.forward();
+        }
+    }
 
     return {
         // Call this to set up the project or other needed data
@@ -326,6 +338,7 @@ define([
         guiOpenSection: guiOpenSection,
         importCSVQuestionnaire: csvImportExport.importCSVQuestionnaire,
         importCSVStories: csvImportExport.importCSVStories,
+        previewQuestionForm: previewQuestionForm,
 
         // Called directly from application
         importExportOld: importExportClicked,

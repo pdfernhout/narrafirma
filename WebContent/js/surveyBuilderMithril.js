@@ -34,225 +34,6 @@ define([
      */
     
     /* global m */
-
-    var timestampStart;
-    
-    // submitted can be one of: "never", "pending", "failed", "success"
-    var submitted = "never";
-    
-    // Redraw function
-    var redraw;
-    
-    function submitSurvey(surveyResult, wizardPane, doneCallback) {
-        var answers = {};
-        console.log("submitting survey...");
-        
-        var timestampEnd = new Date();
-        
-        surveyResult.timestampEnd = timestampEnd.toISOString();
-        surveyResult.timeDuration_ms = timestampEnd.getTime() - timestampStart.getTime(); 
-           
-        console.log("survey answers", surveyResult);
-        
-        doneCallback("submitted", surveyResult, wizardPane);
-    }
-
-    function validateStoryQuestionsModel(storyQuestionsModel, index) {
-        var storyIndex = "story #" + (index + 1);
-        
-        // TODO: Translate
-        var elicitingQuestion = storyQuestionsModel.__survey_elicitingQuestion;
-        var storyName = storyQuestionsModel.__survey_storyName;
-        var storyText = storyQuestionsModel.__survey_storyText;
-
-        if (!elicitingQuestion) {
-            alert("Before proceeding, please select the question to which you are responding for " + storyIndex);
-            return false;
-        }
-
-        if (!storyText) {
-            alert("Please enter a story before proceeding for " + storyIndex);
-            return false;
-        }
-
-        if (!storyName) {
-            alert("Please give your story a name before proceeding for " + storyIndex);
-            return false;
-        }
-
-        return true;
-    }
-   
-    var idsMade = {};
-    var idCount = 0;
-    
-    function getIdForText(text) {
-        if (!idsMade["$" + text]) {
-            idsMade["$" + text] = idCount++;
-        }
-            
-        return "surveyField_" + idsMade["$" + text];
-    }
-    
-    function displayQuestion(model, fieldSpecification) {
-        var fieldID = fieldSpecification.id;
-        if (model) {
-            fieldID = (model._storyID || model._participantID) + "__" + fieldID;
-        }
-
-        var displayType = fieldSpecification.displayType;
-        var questionLabel = [
-            m("span", {"class": "narrafirma-survey-prompt"}, fieldSpecification.displayPrompt),
-            m("br")
-        ];
-        
-        function makeLabel() {
-            // The for attribute of the label element must refer to a form control.
-            questionLabel[0].attrs["for"] = getIdForText(fieldID);
-            questionLabel[0].tag = "label";
-        }
-        
-        function makeLegend() {
-            // Do nothing for now
-            parts.unshift(m("legend", questionLabel[0]));
-            questionLabel = [];
-        }
-        
-        var value = null;
-        if (model) value = model[fieldSpecification.id];
-        if (value === undefined) value = "";
-        
-        function change(event, value) {
-            if (event) value = event.target.value;
-            // console.log("onchange", fieldSpecification.id, value);
-            model[fieldSpecification.id] = value;
-            // TODO: redraw on value change seems not needed in this survey case, since values do not affect anything about rest of application?
-            // redraw();
-            // Except for one case. Could there be more?
-            if (fieldSpecification.id === "__survey_storyName") redraw();
-        }
-        
-        var standardValueOptions = {
-            value: value,
-            id: getIdForText(fieldID),
-            onchange: change
-        };
-        
-        var parts = [];
-        if (displayType === "label") {
-            // Nothing to do
-        } else if (displayType === "header") {
-            // Nothing to do; bolding done using style
-        } else if (displayType === "text") {
-            makeLabel();
-            parts = [
-                m("input", standardValueOptions),
-                m("br")
-            ];
-        } else if (displayType === "textarea") {
-            makeLabel();
-            parts = [
-                m("textarea", standardValueOptions),
-                m("br")
-            ];
-        } else if (displayType === "checkbox") {
-            makeLabel();
-            parts = [
-                 m("input[type=checkbox]", {id: getIdForText(fieldID), checked: value, onchange: function(event) {change(null, event.target.checked);}}),
-                 m("br")
-             ];
-        } else if (displayType === "checkboxes") {
-            // The for attribute of the label element must refer to a form control.
-            delete questionLabel[0].attrs["for"];
-            if (!value) {
-                value = {};
-                model[fieldSpecification.id] = value;
-            }
-            parts = [
-                fieldSpecification.valueOptions.map(function (option, index) {
-                    var optionID = getIdForText(fieldID + "_" + option);
-                    return [
-                        m("input[type=checkbox]", {id: optionID, checked: !!value[option], onchange: function(event) {value[option] = event.target.checked; change(null, value); } }),
-                        m("label", {"for": optionID}, option),
-                        m("br")
-                    ];
-                })
-            ];
-            makeLegend();
-            parts = [m("fieldset", parts)];
-        } else if (displayType === "radiobuttons") {
-            // The for attribute of the label element must refer to a form control.
-            delete questionLabel[0].attrs["for"];
-            parts = [
-                fieldSpecification.valueOptions.map(function (option, index) {
-                    var optionID = getIdForText(fieldID + "_" + option);
-                    return [
-                        m("input[type=radio]", {id: optionID, value: option, name: fieldSpecification.id, checked: value === option, onchange: lang.partial(change, null, option) }),
-                        m("label", {"for": optionID}, option), 
-                        m("br")
-                    ];
-                })
-            ];
-            makeLegend();
-            parts = [m("fieldset", parts)];
-        } else if (displayType === "boolean") {
-            // The for attribute of the label element must refer to a form control.
-            delete questionLabel[0].attrs["for"];
-            parts = [
-                m("input[type=radio]", {id: getIdForText(fieldID + "_yes"), value: true, name: fieldSpecification.id, checked: value === true, onchange: lang.partial(change, null, true) }),
-                m("label", {"for": getIdForText(fieldID + "_yes")}, "yes"),
-                m("br"),
-                m("input[type=radio]", {id: getIdForText(fieldID + "_no"), value: false, name: fieldSpecification.id, checked: value === true, onchange: lang.partial(change, null, false) }),
-                m("label", {"for": getIdForText(fieldID + "_no")}, "no"),
-                m("br")
-            ];
-            makeLegend();
-            parts = [m("fieldset", parts)];
-        } else if (displayType === "select") {
-            makeLabel();
-            var selectOptions = [];
-            var defaultOptions = {value: ''};
-            if (!value) defaultOptions.selected = 'selected';
-            selectOptions.push(m("option", defaultOptions, '-- select --'));
-            selectOptions = selectOptions.concat(
-                fieldSpecification.valueOptions.map(function (optionValue, index) {
-                    var optionOptions = {value: optionValue};
-                    // console.log("optionValue, value", optionValue, value, optionValue === value);
-                    if (optionValue === value) optionOptions.selected = 'selected';
-                    return m("option", optionOptions, optionValue);
-                })
-            );
-            
-            parts = [
-                m("select", standardValueOptions, selectOptions),
-                m("br")
-            ];
-        } else if (displayType === "slider") {
-            makeLabel();
-            // Could suggest 0-100 to support <IE10 that don't have range input -- or coudl do polyfill
-            // if (fieldSpecification.displayPrompt) questionLabel[0].children = fieldSpecification.displayPrompt + " (0-100)";
-            parts = [
-                m("span", {class: "narrafirma-survey-low"}, fieldSpecification.displayConfiguration[0]),
-                m('span', {class: "narrafirma-survey-slider"}, m('input[type="range"]', standardValueOptions)),
-                m('span', {class: "narrafirma-survey-high"}, fieldSpecification.displayConfiguration[1])
-            ];
-        } else {
-            parts = [
-                m("span", {style: {"font-weight": "bold"}}, "UNFINISHED: " + fieldSpecification.displayType),
-                m("br")
-            ];
-        }
-
-        if (parts.length) {
-            parts = m("div", {class: "narrafirma-survey-question-internal"}, parts);
-        }
-        
-        if (questionLabel) {
-            parts = questionLabel.concat(parts);
-        }
-        
-        return m("div", {class: "narrafirma-survey-question-external narrafirma-survey-question-type-" + displayType}, parts);
-    }
     
     function buildSurveyForm(surveyDiv, questionnaire, doneCallback) {  
         console.log("buildSurveyForm questions", questionnaire);
@@ -306,7 +87,7 @@ define([
         // participantQuestions.push({id: "test2", displayName: "test2", displayPrompt: "test boolean", displayType: "boolean", valueOptions:[]});
         // participantQuestions.push({id: "test3", displayName: "test3", displayPrompt: "test radiobuttons", displayType: "radiobuttons", valueOptions:["one", "two", "three"]});
         
-        timestampStart = new Date();
+        var timestampStart = new Date();
         
         var surveyResult = {
             __type: "org.workingwithstories.QuestionnaireResponse",
@@ -354,6 +135,220 @@ define([
             }
             return storyLabel;
         }
+             
+        // submitted can be one of: "never", "pending", "failed", "success"
+        var submitted = "never";
+        
+        function submitSurvey(surveyResult, wizardPane, doneCallback) {
+            var answers = {};
+            console.log("submitting survey...");
+            
+            var timestampEnd = new Date();
+            
+            surveyResult.timestampEnd = timestampEnd.toISOString();
+            surveyResult.timeDuration_ms = timestampEnd.getTime() - timestampStart.getTime(); 
+               
+            console.log("survey answers", surveyResult);
+            
+            doneCallback("submitted", surveyResult, wizardPane);
+        }
+
+        function validateStoryQuestionsModel(storyQuestionsModel, index) {
+            var storyIndex = "story #" + (index + 1);
+            
+            // TODO: Translate
+            var elicitingQuestion = storyQuestionsModel.__survey_elicitingQuestion;
+            var storyName = storyQuestionsModel.__survey_storyName;
+            var storyText = storyQuestionsModel.__survey_storyText;
+
+            if (!elicitingQuestion) {
+                alert("Before proceeding, please select the question to which you are responding for " + storyIndex);
+                return false;
+            }
+
+            if (!storyText) {
+                alert("Please enter a story before proceeding for " + storyIndex);
+                return false;
+            }
+
+            if (!storyName) {
+                alert("Please give your story a name before proceeding for " + storyIndex);
+                return false;
+            }
+
+            return true;
+        }
+       
+        var idsMade = {};
+        var idCount = 0;
+        
+        function getIdForText(text) {
+            if (!idsMade["$" + text]) {
+                idsMade["$" + text] = idCount++;
+            }
+                
+            return "surveyField_" + idsMade["$" + text];
+        }
+        
+        function displayQuestion(model, fieldSpecification) {
+            var fieldID = fieldSpecification.id;
+            if (model) {
+                fieldID = (model._storyID || model._participantID) + "__" + fieldID;
+            }
+
+            var displayType = fieldSpecification.displayType;
+            var questionLabel = [
+                m("span", {"class": "narrafirma-survey-prompt"}, fieldSpecification.displayPrompt),
+                m("br")
+            ];
+            
+            function makeLabel() {
+                // The for attribute of the label element must refer to a form control.
+                questionLabel[0].attrs["for"] = getIdForText(fieldID);
+                questionLabel[0].tag = "label";
+            }
+            
+            function makeLegend() {
+                // Do nothing for now
+                parts.unshift(m("legend", questionLabel[0]));
+                questionLabel = [];
+            }
+            
+            var value = null;
+            if (model) value = model[fieldSpecification.id];
+            if (value === undefined) value = "";
+            
+            function change(event, value) {
+                if (event) value = event.target.value;
+                // console.log("onchange", fieldSpecification.id, value);
+                model[fieldSpecification.id] = value;
+                // TODO: redraw on value change seems not needed in this survey case, since values do not affect anything about rest of application?
+                // redraw();
+                // Except for one case. Could there be more?
+                if (fieldSpecification.id === "__survey_storyName") redraw();
+            }
+            
+            var standardValueOptions = {
+                value: value,
+                id: getIdForText(fieldID),
+                onchange: change
+            };
+            
+            var parts = [];
+            if (displayType === "label") {
+                // Nothing to do
+            } else if (displayType === "header") {
+                // Nothing to do; bolding done using style
+            } else if (displayType === "text") {
+                makeLabel();
+                parts = [
+                    m("input", standardValueOptions),
+                    m("br")
+                ];
+            } else if (displayType === "textarea") {
+                makeLabel();
+                parts = [
+                    m("textarea", standardValueOptions),
+                    m("br")
+                ];
+            } else if (displayType === "checkbox") {
+                makeLabel();
+                parts = [
+                     m("input[type=checkbox]", {id: getIdForText(fieldID), checked: value, onchange: function(event) {change(null, event.target.checked);}}),
+                     m("br")
+                 ];
+            } else if (displayType === "checkboxes") {
+                // The for attribute of the label element must refer to a form control.
+                delete questionLabel[0].attrs["for"];
+                if (!value) {
+                    value = {};
+                    model[fieldSpecification.id] = value;
+                }
+                parts = [
+                    fieldSpecification.valueOptions.map(function (option, index) {
+                        var optionID = getIdForText(fieldID + "_" + option);
+                        return [
+                            m("input[type=checkbox]", {id: optionID, checked: !!value[option], onchange: function(event) {value[option] = event.target.checked; change(null, value); } }),
+                            m("label", {"for": optionID}, option),
+                            m("br")
+                        ];
+                    })
+                ];
+                makeLegend();
+                parts = [m("fieldset", parts)];
+            } else if (displayType === "radiobuttons") {
+                // The for attribute of the label element must refer to a form control.
+                delete questionLabel[0].attrs["for"];
+                parts = [
+                    fieldSpecification.valueOptions.map(function (option, index) {
+                        var optionID = getIdForText(fieldID + "_" + option);
+                        return [
+                            m("input[type=radio]", {id: optionID, value: option, name: fieldSpecification.id, checked: value === option, onchange: lang.partial(change, null, option) }),
+                            m("label", {"for": optionID}, option), 
+                            m("br")
+                        ];
+                    })
+                ];
+                makeLegend();
+                parts = [m("fieldset", parts)];
+            } else if (displayType === "boolean") {
+                // The for attribute of the label element must refer to a form control.
+                delete questionLabel[0].attrs["for"];
+                parts = [
+                    m("input[type=radio]", {id: getIdForText(fieldID + "_yes"), value: true, name: fieldSpecification.id, checked: value === true, onchange: lang.partial(change, null, true) }),
+                    m("label", {"for": getIdForText(fieldID + "_yes")}, "yes"),
+                    m("br"),
+                    m("input[type=radio]", {id: getIdForText(fieldID + "_no"), value: false, name: fieldSpecification.id, checked: value === true, onchange: lang.partial(change, null, false) }),
+                    m("label", {"for": getIdForText(fieldID + "_no")}, "no"),
+                    m("br")
+                ];
+                makeLegend();
+                parts = [m("fieldset", parts)];
+            } else if (displayType === "select") {
+                makeLabel();
+                var selectOptions = [];
+                var defaultOptions = {value: ''};
+                if (!value) defaultOptions.selected = 'selected';
+                selectOptions.push(m("option", defaultOptions, '-- select --'));
+                selectOptions = selectOptions.concat(
+                    fieldSpecification.valueOptions.map(function (optionValue, index) {
+                        var optionOptions = {value: optionValue};
+                        // console.log("optionValue, value", optionValue, value, optionValue === value);
+                        if (optionValue === value) optionOptions.selected = 'selected';
+                        return m("option", optionOptions, optionValue);
+                    })
+                );
+                
+                parts = [
+                    m("select", standardValueOptions, selectOptions),
+                    m("br")
+                ];
+            } else if (displayType === "slider") {
+                makeLabel();
+                // Could suggest 0-100 to support <IE10 that don't have range input -- or coudl do polyfill
+                // if (fieldSpecification.displayPrompt) questionLabel[0].children = fieldSpecification.displayPrompt + " (0-100)";
+                parts = [
+                    m("span", {class: "narrafirma-survey-low"}, fieldSpecification.displayConfiguration[0]),
+                    m('span', {class: "narrafirma-survey-slider"}, m('input[type="range"]', standardValueOptions)),
+                    m('span', {class: "narrafirma-survey-high"}, fieldSpecification.displayConfiguration[1])
+                ];
+            } else {
+                parts = [
+                    m("span", {style: {"font-weight": "bold"}}, "UNFINISHED: " + fieldSpecification.displayType),
+                    m("br")
+                ];
+            }
+
+            if (parts.length) {
+                parts = m("div", {class: "narrafirma-survey-question-internal"}, parts);
+            }
+            
+            if (questionLabel) {
+                parts = questionLabel.concat(parts);
+            }
+            
+            return m("div", {class: "narrafirma-survey-question-external narrafirma-survey-question-type-" + displayType}, parts);
+        }
         
         function displayStoryQuestions(story, index) {
             var storylabel = makeLabelForStory(story, index);
@@ -381,12 +376,10 @@ define([
             return m("div", {key: story._storyID, "class": "narrafirma-survey-story " + evenOrOdd}, result); 
         }
         
-        function redrawFunction() {
+        function redraw() {
             console.log("About to redraw");
             m.render(surveyDiv, view());
         }
-        
-        redraw = redrawFunction;
         
         function validate() {
             // TODO: Improve validation
