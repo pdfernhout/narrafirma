@@ -27,6 +27,9 @@ require([
     // TODO: Should refactor code so this prefix is not also duplicated in application and buttonActions
     var narrafirmaProjectPrefix = "NarraFirmaProject-";
     
+    // A delay to keep the please wait from flickering if loads page quickly
+    var pleaseWaitStartupDelay_ms = 500;
+    
     var serverURL = "/api/pointrel20150417";
     var pointrelClient;
     
@@ -83,7 +86,7 @@ require([
             if (error) {
                 console.log("Error loading questionnaire", error);
                 // TODO: Translate
-                document.getElementById("pleaseWaitDiv").style.display = "none";
+                hidePleaseWait();
                 document.body.innerHTML += "Something went wrong loading the survey questionnaire from the server:<br>" + JSON.stringify(error);
                 alert("Something went wrong loading the survey questionnaire from the server.");
                 return;
@@ -96,8 +99,7 @@ require([
             surveyBuilder.buildSurveyForm(surveyDiv, questionnaire, finishedSurvey);
 
             // turn off initial "please wait" display
-            document.getElementById("pleaseWaitDiv").style.display = "none";
-
+            hidePleaseWait();
         });
     }
     
@@ -126,9 +128,31 @@ require([
         return result;
     }
     
+    
+    var pleaseWaitTimeout;
+    
+    function showPleaseWaitAfterDelayMillisecond(delay_ms) {
+        pleaseWaitTimeout = setTimeout(function() {
+            console.log("showed please wait at", new Date());
+            pleaseWaitTimeout = null;
+            document.getElementById("pleaseWaitDiv").style.display = "block";
+        }, delay_ms);
+    }
+    
+    function hidePleaseWait() {
+        console.log("turned off please wait at", new Date(), "still waiting to display", !!pleaseWaitTimeout);
+        if (pleaseWaitTimeout) {
+            clearTimeout(pleaseWaitTimeout);
+            pleaseWaitTimeout = null;
+        }
+        document.getElementById("pleaseWaitDiv").style.display = "none";
+    }
+    
     function initialize() {
         var configuration = getHashParameters(hash());
-        console.log("configuration", configuration);    
+        console.log("configuration", configuration);
+        
+        showPleaseWaitAfterDelayMillisecond(pleaseWaitStartupDelay_ms);
         
         projectIdentifier = configuration["project"];
         storyCollectionIdentifier = configuration["survey"];
@@ -137,7 +161,7 @@ require([
         if (!projectIdentifier || !storyCollectionIdentifier) {
             alert("The URL does not have all the information needed to select a survey");
             document.body.innerHTML += "The URL does not have all the information needed to select a survey. Please contact the project administrator.";
-            document.getElementById("pleaseWaitDiv").style.display = "none";
+            hidePleaseWait();
             return;
         }
         
