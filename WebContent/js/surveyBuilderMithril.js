@@ -35,7 +35,7 @@ define([
     
     /* global m */
     
-    function buildSurveyForm(surveyDiv, questionnaire, doneCallback) {  
+    function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewMode) {  
         console.log("buildSurveyForm questions", questionnaire);
         
         var startText = questionnaire.startText;
@@ -43,6 +43,11 @@ define([
         if (!startText) startText = 'Please help by taking a short survey. The data you enter will be sent to the server only at the end when you press the "submit survey" button.';
         
         var startQuestions = [];
+        
+        if (previewMode) {
+            startQuestions.push({id: "__survey-local_" + "previewMode", displayName: "previewMode", displayPrompt: "[PREVIEW MODE: results will not be saved.]", displayType: "header", valueOptions:[]});
+        }
+        
         if (questionnaire.title) {
             startQuestions.push({id: "__survey-local_" + "title", displayName: "title", displayPrompt: questionnaire.title, displayType: "header", valueOptions:[]});
             document.title = questionnaire.title;
@@ -402,7 +407,7 @@ define([
             // TODO: Fix no-longer-correct name from Dojo version
             var wizardPane = {
                 forward: function () {
-                    console.log("survey sending success");
+                    console.log("survey sending success" + (previewMode ? " [preview mode only]" : ""));
                     submitted = "success";
                     redraw();
                 },
@@ -421,12 +426,12 @@ define([
         
         function submitButtonOrWaitOrFinal() {
             if (submitted === "never") {
-                return m("button", {class: "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Submit survey");
+                return m("button", {class: "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Submit survey"+ (previewMode ? " [preview mode only]" : ""));
             } else if (submitted === "failed") {
                 return m("div", [
                     "Sending to server failed. Please try again...",
                     m("br"),
-                    m("button", {class: "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Resubmit survey")
+                    m("button", {class: "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Resubmit survey"+ (previewMode ? " [preview mode only]" : ""))
                 ]);
             } else if (submitted === "pending") {
                 return m("div", ["Sending survey result to server... Please wait..."]);

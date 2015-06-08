@@ -84,15 +84,15 @@ define([
     
     // Caller should call wizard.forward() on successful save to see the last page, and provide a retry message otherwise
     // Caller may also want to call (the returned) surveyDialog.hide() to close the window, or let the user do it.
-    function openMithrilSurveyDialog(questionnaire, callback, extraTitleText) {  
+    function openMithrilSurveyDialog(questionnaire, callback, previewModeTitleText) {  
         console.log("openSurveyDialog questionnaire", questionnaire);
         
         var surveyDiv = document.createElement("div");
         
-        surveyBuilder.buildSurveyForm(surveyDiv, questionnaire, callback);
+        surveyBuilder.buildSurveyForm(surveyDiv, questionnaire, callback, previewModeTitleText);
    
         var surveyDialog = new Dialog({
-            title: "Take Survey" + (extraTitleText || ""),
+            title: "Take Survey" + (previewModeTitleText || ""),
             content: surveyDiv
             // style: "width: 800px; height: 700px;"
         });
@@ -266,8 +266,8 @@ define([
     function printHTML(htmlToPrint) {
         var w = window.open();
         w.document.write(htmlToPrint);
-        w.print();
-        w.close();
+        // w.print();
+        // w.close();
     }
 
     function copyDraftPNIQuestionVersionsIntoAnswers_Basic() {
@@ -312,6 +312,7 @@ define([
         window.location.href = "/logout";
     }
     
+    /*
     function previewQuestionForm(contentPane, model, fieldSpecification) {
         console.log("previewQuestionForm", model);
         var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(project, model);
@@ -322,6 +323,15 @@ define([
             console.log("surveyResult", status, surveyResult);
             if (wizardPane) wizardPane.forward();
         }
+    }
+    */
+    
+    function previewQuestionForm(contentPane, model, fieldSpecification) {
+        console.log("previewQuestionForm", model);
+        var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(project, model);
+        window.narraFirma_previewQuestionnaire = questionnaire;
+        
+        var w = window.open("survey.html#preview=" + (new Date().toISOString()), "_blank");
     }
 
     return {

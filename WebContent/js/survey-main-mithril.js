@@ -30,6 +30,7 @@ require([
     var serverURL = "/api/pointrel20150417";
     var pointrelClient;
     
+    var preview;
     var projectIdentifier;
     var storyCollectionIdentifier;
     
@@ -135,10 +136,36 @@ require([
         document.getElementById("pleaseWaitDiv").style.display = "none";
     }
     
+    function finishedPreview(status, surveyResult, wizardPane) {
+        console.log("surveyResult for preview", status, surveyResult);
+        if (wizardPane) wizardPane.forward();
+    }
+    
     function initialize() {
         var configuration = getHashParameters(hash());
         console.log("configuration", configuration);
 
+        preview = configuration["preview"];
+        
+        if (preview) {
+            console.log("Preview mode");
+            var surveyDiv = dom.byId("surveyDiv");
+            // m.render(surveyDiv, m("div", ["Hello survey ============== b"]));
+            
+            // turn off initial "please wait" display
+            hidePleaseWait();
+            
+            if (!window.opener || !window.opener.narraFirma_previewQuestionnaire) {
+                alert("Problem with preview");
+                return;
+            }
+            
+            var questionnaire = window.opener.narraFirma_previewQuestionnaire;     
+            surveyBuilder.buildSurveyForm(surveyDiv, questionnaire, finishedPreview, "previewMode");
+
+            return;
+        }
+        
         projectIdentifier = configuration["project"];
         storyCollectionIdentifier = configuration["survey"];
         console.log("configuration: projectIdentifier", projectIdentifier, "storyCollectionIdentifier", storyCollectionIdentifier);
