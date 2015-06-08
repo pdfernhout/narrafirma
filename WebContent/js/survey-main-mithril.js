@@ -27,9 +27,6 @@ require([
     // TODO: Should refactor code so this prefix is not also duplicated in application and buttonActions
     var narrafirmaProjectPrefix = "NarraFirmaProject-";
     
-    // A delay to keep the please wait from flickering if loads page quickly
-    var pleaseWaitStartupDelay_ms = 500;
-    
     var serverURL = "/api/pointrel20150417";
     var pointrelClient;
     
@@ -128,22 +125,12 @@ require([
         return result;
     }
     
-    
-    var pleaseWaitTimeout;
-    
-    function showPleaseWaitAfterDelayMillisecond(delay_ms) {
-        pleaseWaitTimeout = setTimeout(function() {
-            console.log("showed please wait at", new Date());
-            pleaseWaitTimeout = null;
-            document.getElementById("pleaseWaitDiv").style.display = "block";
-        }, delay_ms);
-    }
-    
     function hidePleaseWait() {
-        console.log("turned off please wait at", new Date(), "still waiting to display", !!pleaseWaitTimeout);
-        if (pleaseWaitTimeout) {
-            clearTimeout(pleaseWaitTimeout);
-            pleaseWaitTimeout = null;
+        // This uses a window.narraFirma_pleaseWaitTimeout global set in survey.html
+        console.log("turned off please wait at", new Date(), "still waiting to display", !!window.narraFirma_pleaseWaitTimeout);
+        if (window.narraFirma_pleaseWaitTimeout) {
+            clearTimeout(window.narraFirma_pleaseWaitTimeout);
+            window.narraFirma_pleaseWaitTimeout = null;
         }
         document.getElementById("pleaseWaitDiv").style.display = "none";
     }
@@ -151,9 +138,7 @@ require([
     function initialize() {
         var configuration = getHashParameters(hash());
         console.log("configuration", configuration);
-        
-        showPleaseWaitAfterDelayMillisecond(pleaseWaitStartupDelay_ms);
-        
+
         projectIdentifier = configuration["project"];
         storyCollectionIdentifier = configuration["survey"];
         console.log("configuration: projectIdentifier", projectIdentifier, "storyCollectionIdentifier", storyCollectionIdentifier);

@@ -44,7 +44,21 @@
 <body>
     <noscript>Please enable JavaScript to use the survey.</noscript>
     <div id="pleaseWaitDiv" class="pleaseWaitOverlay" style="display: none"><em>Starting up survey; please wait...</em></div>
-    <script>console.log("started loading...", new Date());</script>
+    <script>
+    console.log("started loading...", new Date());
+    // A delay to keep the please wait from flickering if loads page quickly
+    // This needs to be done here in case the delay is from loading other modules.
+    // Creates global window.narraFirma_pleaseWaitTimeout
+    var pleaseWaitStartupDelay_ms = 500;
+    function showPleaseWaitAfterDelayMillisecond(delay_ms) {
+        window.narraFirma_pleaseWaitTimeout = setTimeout(function() {
+            console.log("showed please wait at", new Date());
+            window.narraFirma_pleaseWaitTimeout = null;
+            document.getElementById("pleaseWaitDiv").style.display = "block";
+        }, delay_ms);
+    }
+    showPleaseWaitAfterDelayMillisecond(500);
+    </script>
     
     <div id="surveyDiv" style="overflow: auto"></div>
 </body>
