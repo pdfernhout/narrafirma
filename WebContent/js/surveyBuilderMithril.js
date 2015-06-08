@@ -377,7 +377,8 @@ define([
             ];
             
             var evenOrOdd = (index % 2 === 1) ? "narrafirma-survey-story-odd" : "narrafirma-survey-story-even";
-            return m("div", {"class": "narrafirma-survey-story " + evenOrOdd}, result); 
+            // A locally unique key needs to be defined so Mithril can track deletions and inserts without rebuilding DOM nodes
+            return m("div", {key: story._storyID, "class": "narrafirma-survey-story " + evenOrOdd}, result); 
         }
         
         function redrawFunction() {
