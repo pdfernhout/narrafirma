@@ -39,7 +39,7 @@ define([
     
     function newMultiSelect(options, value) {
         var widget = new MultiSelect({
-            "size": 12,
+            "size": 6,
             "style": "width: 100%;",
             value: value
         });
