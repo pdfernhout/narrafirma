@@ -11,7 +11,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Name",
-            "displayPrompt": "Please give this activity a name."
+            "displayPrompt": "Please give this activity a <strong>name</strong>."
         },
         {
             "id": "sensemakingSessionPlan_activity_type",
@@ -32,7 +32,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Type",
-            "displayPrompt": "What type of activity is this?"
+            "displayPrompt": "What <strong>type</strong> of activity is this?"
         },
         {
             "id": "sensemakingSessionPlan_activity_plan",
@@ -40,7 +40,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Plan",
-            "displayPrompt": "Describe the plan for this activity."
+            "displayPrompt": "Describe the <strong>plan</strong> for this activity."
         },
         {
             "id": "sensemakingSessionPlan_activity_optionalParts",
@@ -48,7 +48,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Optional elaborations",
-            "displayPrompt": "Describe any optional elaborations you might or might not use in this activity."
+            "displayPrompt": "Describe any optional <strong>elaborations</strong> you might or might not use in this activity."
         },
         {
             "id": "sensemakingSessionPlan_activity_duration",
@@ -56,7 +56,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Length",
-            "displayPrompt": "How long will this activity take?"
+            "displayPrompt": "<strong>How long</strong> will this activity take?"
         },
         {
             "id": "sensemakingSessionPlan_activity_recording",
@@ -64,7 +64,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "New stories",
-            "displayPrompt": "Will new stories be recorded during this activity, and if so, how?"
+            "displayPrompt": "Will new stories be <strong>recorded</strong> during this activity? If so, how?"
         },
         {
             "id": "sensemakingSessionPlan_activity_materials",
@@ -72,7 +72,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Materials",
-            "displayPrompt": "What materials will be provided for this activity?"
+            "displayPrompt": "What materials (including catalytic materials, e.g., graphs and story cards) will this session plan require?"
         },
         {
             "id": "sensemakingSessionPlan_activity_spaces",
@@ -80,7 +80,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Spaces",
-            "displayPrompt": "What spaces will be used for this activity?"
+            "displayPrompt": "What <strong>spaces</strong> will be used for this activity?"
         },
         {
             "id": "sensemakingSessionPlan_activity_facilitation",
@@ -88,14 +88,14 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Facilitation",
-            "displayPrompt": "What sort of facilitation will be necessary for this activity?"
+            "displayPrompt": "What sort of <strong>facilitation</strong> will be necessary for this activity?"
         },
         {
             "id": "templates_sensemakingActivities",
             "valueType": "none",
             "displayType": "templateList",
             "displayConfiguration": "sensemakingActivities",
-            "displayPrompt": "You can copy an activity from this list."
+            "displayPrompt": "Copy activity from template"
         }
     ]
 }

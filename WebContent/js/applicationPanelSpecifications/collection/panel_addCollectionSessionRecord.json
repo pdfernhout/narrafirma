@@ -79,7 +79,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Change in participant perceptions",
-            "displayPrompt": "How did the perceptions of the participants <strong>change</strong> from the start to the end of the session?"
+            "displayPrompt": "How did the perceptions of the <strong>participants</strong> change from the start to the end of the session?"
         },
         {
             "id": "collectionSessionRecord_reflections_change_yourPerceptions",
@@ -155,7 +155,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Worked and didn't work",
-            "displayPrompt": "Which parts of your plans for this session <strong>worked out</strong> well? Which parts didn't?"
+            "displayPrompt": "Which parts of your <strong>plans</strong> for this session worked out well? Which parts didn't?"
         },
         {
             "id": "collectionSessionRecord_reflections_learning_newIdeas",

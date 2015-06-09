@@ -11,7 +11,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Name",
-            "displayPrompt": "Please give this session plan a name."
+            "displayPrompt": "Please give this session plan a <strong>name</strong>."
         },
         {
             "id": "sensemakingSessionPlan_groups",
@@ -19,7 +19,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Participant groups",
-            "displayPrompt": "Which participant group(s) will be involved?"
+            "displayPrompt": "Which participant <strong>group</strong> (or groups) will be involved?"
         },
         {
             "id": "sensemakingSessionPlan_repetitions",
@@ -27,7 +27,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Repetitions",
-            "displayPrompt": "How many repetitions of the session will there be?"
+            "displayPrompt": "How many <strong>repetitions</strong> of the session will there be?"
         },
         {
             "id": "sensemakingSessionPlan_duration",
@@ -35,7 +35,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Length",
-            "displayPrompt": "How long will this session last?"
+            "displayPrompt": "<strong>How long</strong> will this session last?"
         },
         {
             "id": "sensemakingSessionPlan_times",
@@ -43,7 +43,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Time",
-            "displayPrompt": "At what dates and times will the session take place?"
+            "displayPrompt": "<strong>When</strong> will the sessions take place?"
         },
         {
             "id": "sensemakingSessionPlan_location",
@@ -51,7 +51,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Location",
-            "displayPrompt": "Where will these sessions take place?"
+            "displayPrompt": "<strong>Where</strong> will these sessions take place?"
         },
         {
             "id": "sensemakingSessionPlan_numPeople",
@@ -59,7 +59,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Number of people",
-            "displayPrompt": "How many people will be invited to each repetition of this session?"
+            "displayPrompt": "<strong>How many people</strong> will be invited to each repetition of this session?"
         },
         {
             "id": "sensemakingSessionPlan_materials",
@@ -67,7 +67,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Materials",
-            "displayPrompt": "What materials will this session require?"
+            "displayPrompt": "What <strong>materials</strong> will this session plan require?"
         },
         {
             "id": "sensemakingSessionPlan_details",
@@ -75,7 +75,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Other",
-            "displayPrompt": "Enter other details about this session."
+            "displayPrompt": "Enter other <strong>details</strong> about this session."
         },
         {
             "id": "sensemakingSessionPlan_activitiesList",
@@ -84,13 +84,13 @@
             "displayType": "grid",
             "displayConfiguration": "panel_addSensemakingSessionActivity",
             "displayName": "Sensemaking session activities",
-            "displayPrompt": "Here you can enter some activities you plan for the session.\nActivities within story collection sessions can be simple instructions or complicated exercises (like the creation of timelines)."
+            "displayPrompt": "Here you can enter some <strong>activities</strong> you plan to use in the session. Activities can be simple instructions or complicated exercises (like the creation of timelines)."
         },
         {
             "id": "sensemakingSessionPlan_printSensemakingSessionAgendaButton",
             "valueType": "none",
             "displayType": "button",
-            "displayPrompt": "Print session agenda"
+            "displayPrompt": "Export session agenda"
         }
     ]
 }

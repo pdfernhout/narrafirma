@@ -6,6 +6,14 @@
     "modelClass": "NewSensemakingSessionOutcome",
     "panelFields": [
         {
+            "id": "sensemakingSessionRecord_outcome_name",
+            "valueType": "string",
+            "required": true,
+            "displayType": "text",
+            "displayName": "Name",
+            "displayPrompt": "Please give this outcome a <strong>name</strong>."
+        },
+        {
             "id": "sensemakingSessionRecord_outcome_type",
             "valueType": "string",
             "valueOptions": [
@@ -21,15 +29,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Type",
-            "displayPrompt": "What type of session outcome is this?"
-        },
-        {
-            "id": "sensemakingSessionRecord_outcome_name",
-            "valueType": "string",
-            "required": true,
-            "displayType": "text",
-            "displayName": "Name",
-            "displayPrompt": "Please give this outcome a name."
+            "displayPrompt": "What <strong>type</strong> of session outcome is this?"
         },
         {
             "id": "sensemakingSessionRecord_outcome_description",
@@ -37,7 +37,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Description",
-            "displayPrompt": "Describe the outcome."
+            "displayPrompt": "<strong>Describe</strong> the outcome."
         }
     ]
 }

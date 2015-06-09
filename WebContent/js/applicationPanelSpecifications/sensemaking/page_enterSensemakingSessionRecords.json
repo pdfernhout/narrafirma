@@ -9,7 +9,7 @@
             "id": "project_sensemakingSessionRecordsLabel",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "On this page you will enter records of what happened at your sensemaking sessions."
+            "displayPrompt": "On this page you can enter <strong>records</strong> of what happened during your sensemaking sessions."
         },
         {
             "id": "project_sensemakingSessionRecordsList",
@@ -18,7 +18,7 @@
             "displayType": "grid",
             "displayConfiguration": "panel_addSensemakingSessionRecord",
             "displayName": "Sensemaking session records",
-            "displayPrompt": "Enter your sensemaking session records here."
+            "displayPrompt": "These are the session records you have created so far."
         }
     ]
 }
