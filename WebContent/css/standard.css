@@ -361,6 +361,9 @@ form {
     overflow: auto;
 }
 
+.storyFilterTable-table {
+}
+
 .storyFilterTable-valueCell {
     width: 50%;
     max-width: 50%;
