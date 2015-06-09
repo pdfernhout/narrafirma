@@ -40,7 +40,7 @@ define({
     button_Filter: "Filter -- show only stories where both questions have the selected values",
     
     // Used for test of survey in main.js
-    "surveySubmit": "Submit survey",
+    "surveySubmit": "Submit Survey",
     "surveyCancel": "Cancel",
     "button_tellAnotherStory": "Tell another story",
     "button_dontTellAnotherStory": "Done with adding stories",

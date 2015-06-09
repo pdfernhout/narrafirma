@@ -429,12 +429,12 @@ define([
         
         function submitButtonOrWaitOrFinal() {
             if (submitted === "never") {
-                return m("button", {class: "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Submit survey"+ (previewMode ? " [preview mode only]" : ""));
+                return m("button", {class: "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Submit Survey"+ (previewMode ? " [preview mode only]" : ""));
             } else if (submitted === "failed") {
                 return m("div", [
                     "Sending to server failed. Please try again...",
                     m("br"),
-                    m("button", {class: "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Resubmit survey"+ (previewMode ? " [preview mode only]" : ""))
+                    m("button", {class: "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Resubmit Survey"+ (previewMode ? " [preview mode only]" : ""))
                 ]);
             } else if (submitted === "pending") {
                 return m("div", ["Sending survey result to server... Please wait..."]);

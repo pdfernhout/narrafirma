@@ -20,7 +20,7 @@ define([], function() {
                 return;
             }
             console.log("Survey result stored");
-            if (wizardPane) alert("Survey result stored");
+            if (wizardPane) alert("Your story has been added to the story collection.");
             if (wizardPane) wizardPane.forward();
         });
     }
