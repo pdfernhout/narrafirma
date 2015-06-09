@@ -361,9 +361,6 @@ form {
     overflow: auto;
 }
 
-.storyFilterTable-table {
-}
-
 .storyFilterTable-valueCell {
     width: 50%;
     max-width: 50%;
@@ -413,20 +410,25 @@ form {
 }
 
 .brush .extent {
-  fill-opacity: .1;
+  fill-opacity: 0.1;
   stroke: #fff;
   shape-rendering: crispEdges;
 }
 
+.chart {
+	background: white;
+}
+
 .scatterPlot .story {
-  stroke: green;
-  stroke-width: 1.5px;
-  fill: green;
+  stroke: #3e3739;
+  stroke-width: 0.2px;
+  fill: #3e3739;
+  fill-opacity: 0.7;
 }
 
 .scatterPlot .story.selected {
-  stroke: blue;
-  fill: blue;
+  stroke: #3b5fab;
+  fill: #3b5fab;
 }
 
 .bar {
@@ -434,36 +436,36 @@ form {
 }
 
 .story.even {
-  fill: grey;
+  fill: #3e3739;
 }
 
 .story.odd {
-  fill: silver;
+  fill: #a7a5a5;
 }
 
 .story.even.selected {
-  fill: blue;
+  fill: #3b5fab;
 }
 
 .story.odd.selected {
-  fill: aqua;
+  fill: #abb6ce;
 }
 
 .contingencyChart .storyCluster.observed {
-  stroke: red;
-  stroke-width: 1.5px;
-  fill: white;
+  stroke-width: 2px;
+  stroke: #2e4a85;
+  fill: #d5dae6;
 }
 
 .contingencyChart .storyCluster.observed.selected {
-  stroke: red;
-  stroke-width: 1.5px;
-  fill: blue;
+  stroke-width: 2px;
+  stroke: #2e4a85;
+  fill: #3b5fab;
 }
 
 .contingencyChart .expected {
-  stroke: grey;
-  stroke-width: 1.5px;
+  stroke-width: 2px;
+  stroke: #3e3739;
   fill: none;
 }
 
