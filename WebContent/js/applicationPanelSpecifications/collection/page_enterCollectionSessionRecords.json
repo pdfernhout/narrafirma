@@ -9,7 +9,7 @@
             "id": "project_collectionRecordsIntroductionLabel",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "On this page you can enter records for the group story sessions you held.\nIf you did not hold any group story sessions, you can skip this page."
+            "displayPrompt": "On this page you can enter records for any group story <strong>sessions</strong> you held. (If you did not hold any group story sessions, you can skip this page.)"
         },
         {
             "id": "project_collectionSessionRecordsList",
@@ -18,7 +18,7 @@
             "displayType": "grid",
             "displayConfiguration": "panel_addCollectionSessionRecord",
             "displayName": "Story collection session records",
-            "displayPrompt": "Enter here what went on in your story collection sessions."
+            "displayPrompt": "These are the sessions records you have created so far."
         }
     ]
 }

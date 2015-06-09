@@ -11,7 +11,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Name",
-            "displayPrompt": "Please give this session record a name."
+            "displayPrompt": "Please give this session record a <strong>name</strong>."
         },
         {
             "id": "collectionSessionRecord_whenWhere",
@@ -19,7 +19,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "When and where",
-            "displayPrompt": "When and where did the session take place?"
+            "displayPrompt": "<strong>When and where</strong> did the session take place?"
         },
         {
             "id": "collectionSessionRecord_groups",
@@ -27,7 +27,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Participant groups",
-            "displayPrompt": "Which participant groups were involved in this session?"
+            "displayPrompt": "Which participant <strong>groups</strong> were involved in this session?"
         },
         {
             "id": "collectionSessionRecord_participants",
@@ -35,7 +35,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Who attended",
-            "displayPrompt": "Describe the participants at this session."
+            "displayPrompt": "Describe the <strong>participants</strong> at this session."
         },
         {
             "id": "collectionSessionRecord_plan",
@@ -43,14 +43,14 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Plan",
-            "displayPrompt": "Which of your collection session plans did you follow in this session? (And did you stick to the plan?)"
+            "displayPrompt": "Which of your collection session <strong>plans</strong> did you follow in this session? (And did you stick to the plan?)"
         },
         {
             "id": "collectionSessionRecord_notes",
             "valueType": "string",
             "displayType": "textarea",
             "displayName": "Notes",
-            "displayPrompt": "Enter additional notes on the session here.\nYour notes can include links to images or other documents."
+            "displayPrompt": "Enter additional <strong>notes</strong> on the session here. Your notes can include links to images or other documents."
         },
         {
             "id": "collectionSessionRecord_constructionsList",
@@ -59,13 +59,13 @@
             "displayType": "grid",
             "displayConfiguration": "panel_newCollectionSessionConstruction",
             "displayName": "Story collection session constructions",
-            "displayPrompt": "People in your story collection sessions might have created constructions\nsuch as timelines or landscapes. You can enter details about those here."
+            "displayPrompt": "People in your story collection sessions might have created <strong>constructions</strong> such as timelines or landscapes. You can enter details about those here."
         },
         {
             "id": "collectionSessionRecord_reflectionsLabel",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "Use the questions below to reflect on the session."
+            "displayPrompt": "You can use the questions below to <strong>reflect</strong> on the session."
         },
         {
             "id": "collectionSessionRecord_reflectionsOnChangeHeader",
@@ -79,7 +79,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Change in participant perceptions",
-            "displayPrompt": "How did the perceptions of the participants change from the start to the end of the session?"
+            "displayPrompt": "How did the perceptions of the participants <strong>change</strong> from the start to the end of the session?"
         },
         {
             "id": "collectionSessionRecord_reflections_change_yourPerceptions",
@@ -87,7 +87,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Change in facilitator perceptions",
-            "displayPrompt": "How did <i>your</i> perceptions change?"
+            "displayPrompt": "How did <strong>your</strong> perceptions change?"
         },
         {
             "id": "collectionSessionRecord_reflections_change_project",
@@ -95,7 +95,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Changes to the project",
-            "displayPrompt": "How has the overall project changed as a result of this session?"
+            "displayPrompt": "How has the overall <strong>project</strong> changed as a result of this session?"
         },
         {
             "id": "collectionSessionRecord_interactionsHeader",
@@ -109,7 +109,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Interactions among participants",
-            "displayPrompt": "Describe the interactions between participants in this session."
+            "displayPrompt": "Describe the interactions <strong>among participants</strong> in this session."
         },
         {
             "id": "collectionSessionRecord_reflections_interaction_participantsAndFacilitator",
@@ -117,7 +117,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Interactions between participants and facilitators",
-            "displayPrompt": "Describe interactions between participants and facilitators."
+            "displayPrompt": "Describe the interactions <strong>between participants and facilitators</strong>."
         },
         {
             "id": "collectionSessionRecord_reflections_interaction_stories",
@@ -125,7 +125,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Stories",
-            "displayPrompt": "What did you notice about the stories people told, retold, chose, and worked with during the session?"
+            "displayPrompt": "What did you notice about the <strong>stories</strong> people told, retold, chose, and worked with during the session?"
         },
         {
             "id": "collectionSessionRecord_learningHeader",
@@ -139,7 +139,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Unique features",
-            "displayPrompt": "What was special about these people in this place on this day?"
+            "displayPrompt": "What was <strong>special</strong> about these people, in this place, on this day?"
         },
         {
             "id": "collectionSessionRecord_reflections_learning_surprise",
@@ -147,7 +147,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Surprise",
-            "displayPrompt": "What surprised you about this session?"
+            "displayPrompt": "What <strong>surprised</strong> you about this session?"
         },
         {
             "id": "collectionSessionRecord_reflections_learning_workedWell",
@@ -155,7 +155,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Worked and didn't work",
-            "displayPrompt": "Which parts of your plans for this session worked out well? Which parts didn't?"
+            "displayPrompt": "Which parts of your plans for this session <strong>worked out</strong> well? Which parts didn't?"
         },
         {
             "id": "collectionSessionRecord_reflections_learning_newIdeas",
@@ -163,7 +163,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "New ideas",
-            "displayPrompt": "What new ideas did you gain from this session? What did you learn from it?"
+            "displayPrompt": "What <strong>new ideas</strong> did you gain from this session? What did you <strong>learn</strong> from it?"
         },
         {
             "id": "collectionSessionRecord_reflections_learning_wantToRemember",
@@ -171,7 +171,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Other",
-            "displayPrompt": "What else do you want to remember about this session?"
+            "displayPrompt": "<strong>What else</strong> do you want to remember about this session?"
         }
     ]
 }

@@ -1,6 +1,6 @@
 {
     "id": "page_browseGraphs",
-    "displayName": "Spot check graphs",
+    "displayName": "Spot-check graphs",
     "displayType": "page",
     "section": "collection",
     "modelClass": "BrowseGraphsActivity",
@@ -9,7 +9,7 @@
             "id": "graphBrowserLabel",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "On this page you can take a preliminary look at patterns in the answers people gave about their incoming stories. This is intended mainly to spot check for issues related to the questionnaire design. These graphs will be reviewed more systematically in the catalysis section."
+            "displayPrompt": "On this page you can take a preliminary look at <strong>patterns</strong> in the answers people gave about their incoming stories. (This page is intended mainly to spot check for issues related to the story form design. You can review your graphs more systematically in the catalysis section.)"
         },
         {
             "id": "storyCollectionChoiceY",
@@ -20,14 +20,14 @@
             "required": true,
             "displayType": "select",
             "displayName": "Story collection",
-            "displayPrompt": "Choose a story collection to view graphs from."
+            "displayPrompt": "Choose a <strong>story collection</strong> whose graphs you want to check."
         },
         {
             "id": "graphBrowserDisplay",
             "valuePath": "/clientState/currentStoryCollection",
             "valueType": "none",
             "displayType": "graphBrowser",
-            "displayPrompt": "Graph browser"
+            "displayPrompt": "Choose one or two <strong>questions</strong> to explore."
         }
     ]
 }
