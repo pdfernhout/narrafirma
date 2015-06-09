@@ -80,7 +80,7 @@ define([
             singlePrompt = elicitingQuestionPrompts[0];
             initialStoryQuestions.push({id: "__survey_" + "storyText", displayName: "storyText", displayPrompt: singlePrompt, displayType: "textarea", valueOptions:[]});
         }
-        initialStoryQuestions.push({id: "__survey_" + "storyName", displayName: "storyName", displayPrompt: "Please give your story a name", displayType: "text", valueOptions:[]});
+        initialStoryQuestions.push({id: "__survey_" + "storyName", displayName: "storyName", displayPrompt: "Please give your story a name.", displayType: "text", valueOptions:[]});
         
         var allStoryQuestions = initialStoryQuestions.concat(questionnaire.storyQuestions);
                 
