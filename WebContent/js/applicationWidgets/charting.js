@@ -763,7 +763,7 @@ define([
                     // "\nID: " + plotItem.story._storyID + 
                     "\nX (" + nameForQuestion(xAxisQuestion) + "): " + plotItem.x +
                     "\nY (" + nameForQuestion(yAxisQuestion) + "): " + plotItem.y +
-                    "\nText: " + limitStoryTextLength(story.__survey_storyText);
+                    "\nText: " + limitStoryTextLength(plotItem.story.__survey_storyText);
                 return tooltipText;
             });
         
@@ -935,7 +935,7 @@ define([
                 if (!plotItem.stories || plotItem.stories.length === 0) {
                     tooltipText += "\n------ No stories ------";
                 } else {
-                    tooltipText += "\n------ Stories ------";
+                    tooltipText += "\n------ Stories (" + plotItem.stories.length + ")------";
                     for (var i = 0; i < plotItem.stories.length; i++) {
                         var story = plotItem.stories[i];
                         tooltipText += "\n" + story.__survey_storyName;
