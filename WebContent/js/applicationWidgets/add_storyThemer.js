@@ -136,7 +136,7 @@ define([
     }
     */
     
-    function currentCatalysisReportChanged(graphBrowserInstance, currentCatalysisReport) {
+    function currentCatalysisReportChanged(graphBrowserInstance, fieldName, oldValue, currentCatalysisReport) {
         console.log("currentCatalysisReportChanged", graphBrowserInstance, currentCatalysisReport);
         
     }
@@ -151,7 +151,7 @@ define([
         var choiceField = choiceModelAndField.field; 
         var catalysisReportIdentifier = choiceModel.get(choiceField);
         
-        console.log(catalysisReportIdentifier, catalysisReportIdentifier);
+        console.log("catalysisReportIdentifier", catalysisReportIdentifier);
         
         //  TODO: Update these based on selection
         var questions = [];
@@ -177,7 +177,7 @@ define([
             storyList: storyList
         };
         
-        var currentCatalysisReportSubscription = choiceModel.watch(choiceField, lang.partial(currentCatalysisReportChanged, storyThemerInstance));        
+     var currentCatalysisReportSubscription = choiceModel.watch(choiceField, lang.partial(currentCatalysisReportChanged, storyThemerInstance));        
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
         pagePane.own(currentCatalysisReportSubscription);
         
