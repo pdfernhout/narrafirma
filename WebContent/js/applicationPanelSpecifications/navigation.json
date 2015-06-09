@@ -306,6 +306,10 @@
                 "panelID": "page_sensemaking",
                 "panelName": "Sensemaking"
             },
+        	{
+        		"panelID": "page_printStoryCards",
+        		"panelName": "Print story cards"
+        	},
             {
                 "panelID": "page_planSensemakingSessions",
                 "panelName": "Plan sensemaking sessions",
