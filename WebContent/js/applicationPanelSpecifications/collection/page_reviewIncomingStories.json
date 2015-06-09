@@ -9,7 +9,7 @@
             "id": "collectedStoriesDuringCollectionLabel",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "On this page you can see your collected stories as they come in."
+            "displayPrompt": "On this page you can see your <strong>collected stories</strong> as they come in."
         },
         {
             "id": "storyCollectionChoiceX",
@@ -20,7 +20,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Story collection",
-            "displayPrompt": "Choose a story collection to view stories from."
+            "displayPrompt": "Choose a <strong>story collection</strong> to review."
         },
         {
             "id": "webStoryCollection_collectedStoriesDuringCollection",

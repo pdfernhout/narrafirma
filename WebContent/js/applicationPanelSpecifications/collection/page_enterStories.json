@@ -6,6 +6,12 @@
     "modelClass": "EnterStoriesActivity",
     "panelFields": [
         {
+            "id": "enterStories_Label",
+            "valueType": "none",
+            "displayType": "label",
+            "displayPrompt": "On this page you can <strong>enter</strong> stories you collected from participants."
+        },
+        {
             "id": "storyCollectionChoice_enterStories",
             "valuePath": "/clientState/currentStoryCollection",
             "valueType": "string",
@@ -14,14 +20,14 @@
             "required": true,
             "displayType": "select",
             "displayName": "Story collection",
-            "displayPrompt": "Choose a story collection to enter a questionnaire for."
+            "displayPrompt": "Choose a <strong>story collection</strong> to add a story to."
         },
         {
             "id": "project_enterStories",
             "valueType": "none",
             "displayType": "button",
             "displayConfiguration": "enterSurveyResult",
-            "displayPrompt": "Enter survey result ..."
+            "displayPrompt": "Add Story..."
         }
     ]
 }
