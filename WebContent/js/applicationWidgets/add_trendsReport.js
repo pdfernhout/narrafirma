@@ -6,6 +6,7 @@ define([
     "js/panelBuilder/standardWidgets/GridWithItemPanel",
     "dojo/_base/lang",
     // "dojox/encoding/digests/SHA256",
+    "lib/simple_statistics",
     "dojo/Stateful",
     "js/storyCardDisplay",
     "js/surveyCollection",
@@ -19,6 +20,7 @@ define([
     GridWithItemPanel,
     lang,
     // SHA256,
+    simpleStatistics,
     Stateful,
     storyCardDisplay,
     surveyCollection,
@@ -104,9 +106,99 @@ define([
             });
         });
         */
+
+        result.forEach(function (pattern) {
+            calculateStatisticsForPattern(graphBrowserInstance, pattern);        
+        });
         
         console.log("buildPatternsList", result);
         return result;
+    }
+    
+    function collectDataForField(stories, fieldName) {
+        var result = [];
+        for (var i = 0; i < stories.length; i++) {
+            var value = stories[i][fieldName];
+            result.push(value);
+        }
+        return result;
+    }
+    
+    function countsForFieldChoices(stories, field1, field2) {
+        console.log("countsForFieldChoices", stories, field1, field2);
+        // TODO: Need to add in fields that were not selected with a zero count, using definition from questionnaire
+        var counts = {};
+        for (var i = 0; i < stories.length; i++) {
+            var value1 = stories[i][field1];
+            var value2 = stories[i][field2];
+            var value = JSON.stringify([value1, value2]);
+            // console.log("value", value, value1, value2);
+            var count = counts[value];
+            if (!count) count = 0;
+            count++;
+            counts[value] = count;
+        }
+        return counts;
+    }
+    
+    function collectValues(dict) {
+        var values = [];
+        for (var key in dict) {
+            values.push(dict[key]);
+        }
+        return values;
+    }
+    
+    function statTest(stories, field1, field2) {
+        var isContinuous1 = !isNaN(stories[0][field1]);
+        var isContinuous2 = !isNaN(stories[0][field2]);
+        console.log("====== statTest", field1, isContinuous1, field2, isContinuous2);
+        
+        if (isContinuous1 && isContinuous2) {
+            // TODO: Determine if normal distributions
+            console.log("both continuous -- look for correlation with Pearson's R (if normal distribution) or Spearman's R (if not normal distribution)");
+            var data1 = collectDataForField(stories, field1);
+            var data2 = collectDataForField(stories, field2);
+            
+        } else if (!isContinuous1 && !isContinuous2) {
+            console.log("both not continuous -- look for a 'correspondence' between counts using Chi-squared test");
+            var counts = countsForFieldChoices(stories, field1, field2);
+            console.log("counts", counts);
+            var values = collectValues(counts);
+            console.log("values", values);
+            // TODO: What kind of distribution to use?
+            var statResult = simpleStatistics.chi_squared_goodness_of_fit(values, simpleStatistics.poisson_distribution, 0.05);
+            console.log("stat result", statResult);
+        } else {
+            console.log("one of each -- for each option, look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney");
+        }
+    }
+    
+    function calculateStatisticsForPattern(graphBrowserInstance, pattern) {
+        var graphType = pattern.graphType;
+        var significance;
+        if (graphType === "bar") {
+            // TODO: Fix this
+            significance = -1.0;
+        } else if (graphType === "table") {
+            // TODO: Fix this
+            significance = -1.0;
+        } else if (graphType === "histogram") {
+            // TODO: Fix this
+            significance = -1.0;
+        } else if (graphType === "multiple histogram") {
+            // TODO: Fix this
+            significance = -1.0;
+        } else if (graphType === "scatter") {
+            // TODO: Fix this
+            significance = -1.0;
+        } else if (graphType ===  "multiple scatter") {
+            console.log("ERROR: Not suported graphType: " + graphType);
+        } else {
+            console.log("ERROR: Unexpected graphType: " + graphType);
+        }
+        
+        if (significance !== undefined) pattern.significance = significance;
     }
     
     function chooseGraph(graphBrowserInstance, pattern) {
