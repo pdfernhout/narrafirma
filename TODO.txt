@@ -18,6 +18,7 @@ H When import story collection, need to display name of form in select
 H Need previous and next button when reviewing incoming stores
 L After you enter a story, it shows an alert that the story has been saved, but it doesn't get rid of the window. the popup window should go away
 L When you enter a story, it replaces the title of the main web page (Enter stories) with the name of the story form (questionnaire).
+H CFK add < > buttons under story lists
 
 CRASH
 ? Story browser (Catalysis section second page, but also review stories during collection) seems to sometimes cause and endless loop in Firexfox or Chrome causing memory use growth and beach ball. Maybe some resize bug in dojo or dgrid?
