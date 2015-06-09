@@ -45,6 +45,9 @@ define([
                            story[key] = participantData[key];
                        }
                    }
+                   
+                   // Add questionnaire for display
+                   story.questionnaire = surveyResult.questionnaire;
                    result.push(story);
                }
            } catch (e) {
