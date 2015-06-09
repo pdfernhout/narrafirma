@@ -78,10 +78,6 @@
             {
                 "panelID": "page_writeProjectSynopsis",
                 "panelName": "Write project synopsis"
-            },
-            {
-                "panelID": "page_readPlanningReport",
-                "panelName": "Read planning report"
             }
         ]
     },
@@ -211,10 +207,6 @@
                         "panelName": "Story collection construction"
                     }
                 ]
-            },
-            {
-                "panelID": "page_readCollectionReport",
-                "panelName": "Read collection report"
             }
         ]
     },
@@ -303,10 +295,6 @@
                         "panelName": "Annotate interpretation for perspective"
                     }
                 ]
-            },
-            {
-                "panelID": "page_readCatalysisReport",
-                "panelName": "Read catalysis report"
             }
         ]
     },
@@ -353,10 +341,6 @@
                         "panelName": "Sensemaking construction"
                     }
                 ]
-            },
-            {
-                "panelID": "page_readSensemakingReport",
-                "panelName": "Read sensemaking report"
             }
         ]
     },
@@ -397,10 +381,6 @@
                         "panelName": "Add intervention record"
                     }
                 ]
-            },
-            {
-                "panelID": "page_interventionReport",
-                "panelName": "Read intervention report"
             }
         ]
     },
@@ -445,10 +425,6 @@
                         "panelName": "Enter project request"
                     }
                 ]
-            },
-            {
-                "panelID": "page_returnReport",
-                "panelName": "Read return report"
             }
         ]
     },
