@@ -188,42 +188,6 @@ define([
         return storyItemPanelSpecification;
     }
     
-    /*
-    function currentQuestionnaireChanged(graphBrowserInstance, currentQuestionnaire) {
-        // TODO: What to do about current selection in these widgets?
-        
-        // Deselect current pattern; could try to preserve selection
-        patternSelected(graphBrowserInstance, graphBrowserInstance.patternsGrid, null);
-        
-        // TODO: Need to preserve old state with observations from patternList first... Except when starting up...
-        if (graphBrowserInstance.patterns.length) {
-            console.log("ERROR: Unfinished: TODO: Should be preserving existing observations here if not already saved???");
-        }
-        
-        var questions = surveyCollection.collectQuestionsForCurrentQuestionnaire();
-        graphBrowserInstance.questions = questions;
-        
-        var patterns = buildPatternList(graphBrowserInstance);
-        graphBrowserInstance.patterns = patterns;
-        graphBrowserInstance.patternsListStore.setData(patterns);
-        graphBrowserInstance.patternsGrid.dataStoreChanged(graphBrowserInstance.patternsListStore);
-        
-        // Update item panel in story list so it has the correct header
-        var itemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
-        graphBrowserInstance.storyList.changeItemPanelSpecification(itemPanelSpecification);
-    }
-    
-    function loadLatestStoriesFromServerChanged(graphBrowserInstance, newEnvelopeCount, allStories) {
-        if (!newEnvelopeCount) return;
-        
-        graphBrowserInstance.allStories = allStories;
-        
-        if (graphBrowserInstance.currentPattern) {
-            chooseGraph(graphBrowserInstance, graphBrowserInstance.currentPattern);
-        }
-    }
-    */
-    
     function findCatalysisReport(project, shortName) {
         var catalysisReports = project.projectModel.get("project_catalysisReports");
         for (var i = 0; i < catalysisReports.length; i++) {
@@ -548,18 +512,6 @@ define([
         
         // TODO: selections should be stored in original domain units, not scaled display units
         // TODO: Consolidate duplicate code from these two functions
-        
-        /*
-        var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerChanged, graphBrowserInstance));
-        
-        // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
-        graphResultsPane.own(loadLatestStoriesFromServerSubscription);
-        
-        var currentQuestionnaireSubscription = topic.subscribe("currentQuestionnaire", lang.partial(currentQuestionnaireChanged, graphBrowserInstance));
-        
-        // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
-        graphResultsPane.own(currentQuestionnaireSubscription);
-        */
         
         currentCatalysisReportChanged(graphBrowserInstance, "currentCatalysisReport", null, catalysisReportIdentifier);
         
