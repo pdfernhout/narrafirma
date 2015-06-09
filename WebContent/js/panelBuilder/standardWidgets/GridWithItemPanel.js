@@ -273,7 +273,7 @@ define([
         }
         
         array.forEach(fieldsToInclude, function (fieldSpecification) {
-            console.log("includeField", fieldSpecification);
+            // console.log("includeField", fieldSpecification);
             var newColumn =  {
                 field: fieldSpecification.id,
                 label: translate(fieldSpecification.id + "::shortName", fieldSpecification.displayName),
@@ -281,7 +281,7 @@ define([
                 sortable: !configuration.moveUpDownButtons,
             };
             columns.push(newColumn);
-            console.log("newColumn", newColumn);
+            // console.log("newColumn", newColumn);
         });
         
         return columns;
