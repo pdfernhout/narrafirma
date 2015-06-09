@@ -125,7 +125,7 @@ define(["dojox/html/entities"], function(entities) {
             textForElicitingQuestion = wrap("div", "narrafirma-story-card-eliciting-question", elicitingQuestion) + "<br>";
         }
         
-        var storyCardContent = wrap("div", "narrafirma-story-card-story-title", storyName) + "<br>" + otherFields + "<hr>" + textForElicitingQuestion + wrap("div", "narrafirma-story-card-story-text", storyText);
+        var storyCardContent = wrap("div", "narrafirma-story-card-story-title", storyName) + "<br>" + wrap("div", "narrafirma-story-card-story-text", storyText + "<br>" + otherFields + "<hr>" + textForElicitingQuestion);
         
         return storyCardContent;
     }
