@@ -13,6 +13,8 @@ THINGS CYNTHIA NOTICED WHILE DOING HELP (probably redundant but just in case)
 H the activities list for a story collection or sensemaking session needs move up and move down buttons (since you are supposed to be planning a schedule) OR an "order' field
 H when you are viewing a grid item with a template button, you can see the templates list and copy a template; button should be disabled or invisible
 H in the lists of questions while designing a story form (eliciting, story, participant) it needs move up, move down arrows, OR an "order" field
+H Need a way to delete a story from a story collection
+H When import story collection, need to display name of form in select
 L After you enter a story, it shows an alert that the story has been saved, but it doesn't get rid of the window. the popup window should go away
 L When you enter a story, it replaces the title of the main web page (Enter stories) with the name of the story form (questionnaire).
 
