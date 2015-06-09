@@ -75,7 +75,7 @@ define([
     Project.prototype.receivedMessage = function(message) {
         // console.log("receivedMessage", message);
         if (message.messageType === "questionnairesMessage") {
-            console.log("Project receivedMessage questionnairesMessage", message);
+            // console.log("Project receivedMessage questionnairesMessage", message);
             surveyCollection.updateActiveQuestionnaires(message.change, false);
         }
     };
