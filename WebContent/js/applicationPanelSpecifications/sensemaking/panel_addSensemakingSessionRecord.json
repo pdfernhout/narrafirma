@@ -11,7 +11,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Name",
-            "displayPrompt": "Please give this session record a name."
+            "displayPrompt": "Please give this session record a <strong>name</strong>."
         },
         {
             "id": "sensemakingSessionRecord_whenWhere",
@@ -19,7 +19,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "When and where",
-            "displayPrompt": "When and where did this session take place?"
+            "displayPrompt": "<strong>When and where</strong> did this session take place?"
         },
         {
             "id": "sensemakingSessionRecord_groups",
@@ -27,7 +27,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Participant groups",
-            "displayPrompt": "Which participant group(s) were at the session?"
+            "displayPrompt": "Which participant <strong>group</strong> (or groups) attended the session?"
         },
         {
             "id": "sensemakingSessionRecord_participants",
@@ -35,7 +35,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Who attended",
-            "displayPrompt": "Describe the participants at this session."
+            "displayPrompt": "Describe the <strong>participants</strong> at this session."
         },
         {
             "id": "sensemakingSessionRecord_plan",
@@ -43,14 +43,14 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Plan",
-            "displayPrompt": "Which of your collection session plans did you follow in this session? (And did you stick to the plan?)"
+            "displayPrompt": "Which of your sensemaking <strong>plans</strong> did you follow in this session? (And did you stick to the plan?)"
         },
         {
             "id": "sensemakingSessionRecord_notes",
             "valueType": "string",
             "displayType": "textarea",
             "displayName": "Notes",
-            "displayPrompt": "Enter general notes on the session here.\nYour notes can include links to images or other documents."
+            "displayPrompt": "Here you can enter general <strong>notes</strong> on the session. Your notes can include links to images or other documents."
         },
         {
             "id": "sensemakingSessionRecord_resonantStoriesList",
@@ -59,7 +59,16 @@
             "displayType": "grid",
             "displayConfiguration": "panel_addResonantStory",
             "displayName": "Sensemaking session resonant stories",
-            "displayPrompt": "If you discovered any resonant stories (pivot, voice, discovery) in this session,\nenter them here."
+            "displayPrompt": "If you discovered any <strong>resonant stories</strong> (pivot, voice, discovery) in this session, you can enter them here."
+        },
+        {
+            "id": "sensemakingSessionRecord_resonantPatternsList",
+            "valueType": "array",
+            "required": true,
+            "displayType": "grid",
+            "displayConfiguration": "panel_addResonantPattern",
+            "displayName": "Sensemaking session resonant patterns",
+            "displayPrompt": "If you discovered any <strong>resonant patterns</strong> (pivot, voice, discovery) in this session, you can enter them here."
         },
         {
             "id": "sensemakingSessionRecord_outcomesList",
@@ -68,7 +77,7 @@
             "displayType": "grid",
             "displayConfiguration": "panel_newSensemakingSessionOutcome",
             "displayName": "Sensemaking session outcomes",
-            "displayPrompt": "If your session ended with creating lists of outcomes (like discoveries and ideas),\nyou can enter them here."
+            "displayPrompt": "If your session ended with creating lists of <strong>outcomes</strong> (like discoveries and ideas), you can enter them here."
         },
         {
             "id": "sensemakingSessionRecord_constructionsList",
@@ -77,13 +86,13 @@
             "displayType": "grid",
             "displayConfiguration": "panel_newSensemakingSessionConstruction",
             "displayName": "Sensemaking session constructions",
-            "displayPrompt": "If your session involve creating any group constructions (like landscapes or timelines),\nyou can describe them here."
+            "displayPrompt": "If your session involve creating any group <strong>constructions</strong> (like landscapes or timelines), you can describe them here."
         },
         {
             "id": "sensemakingSessionRecord_reflectionsLabel",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "Use the questions below to reflect on the session."
+            "displayPrompt": "You can use the questions below to <strong>reflect</strong> on the session."
         },
         {
             "id": "sensemakingSessionRecord_reflectionsOnChangeHeader",
@@ -97,7 +106,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Change in participant perceptions",
-            "displayPrompt": "How did the perceptions of the participants change from the start to the end of the session?"
+            "displayPrompt": "How did the perceptions of the <strong>participants</strong> change from the start to the end of the session?"
         },
         {
             "id": "sensemakingSessionRecord_reflections_change_yourPerceptions",
@@ -105,7 +114,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Change in facilitator perceptions",
-            "displayPrompt": "How did <i>your</i> perceptions change?"
+            "displayPrompt": "How did <strong>your</strong> perceptions change?"
         },
         {
             "id": "sensemakingSessionRecord_reflections_change_project",
@@ -113,7 +122,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Changes to the project",
-            "displayPrompt": "How has the overall project changed as a result of this session?"
+            "displayPrompt": "How has the overall <strong>project</strong> changed as a result of this session?"
         },
         {
             "id": "sensemakingSessionRecord_interactionsHeader",
@@ -127,7 +136,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Interactions among participants",
-            "displayPrompt": "Describe the interactions between participants in this session."
+            "displayPrompt": "Describe the interactions <strong>among participants</strong> in this session."
         },
         {
             "id": "sensemakingSessionRecord_reflections_interaction_participantsAndFacilitator",
@@ -135,7 +144,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Interactions between participants and facilitators",
-            "displayPrompt": "Describe interactions between participants and facilitators."
+            "displayPrompt": "Describe the interactions <strong>between participants and facilitators</strong>."
         },
         {
             "id": "sensemakingSessionRecord_reflections_interaction_stories",
@@ -143,7 +152,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Stories",
-            "displayPrompt": "What did you notice about the stories people told, retold, chose, and worked with during the session?"
+            "displayPrompt": "What did you notice about the <strong>stories</strong> people told, retold, chose, and worked with during the session?"
         },
         {
             "id": "sensemakingSessionRecord_learningHeader",
@@ -157,7 +166,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Unique features",
-            "displayPrompt": "What was special about these people in this place on this day?"
+            "displayPrompt": "What was <strong>special</strong> about these people in this place on this day?"
         },
         {
             "id": "sensemakingSessionRecord_reflections_learning_surprise",
@@ -165,7 +174,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Surprise",
-            "displayPrompt": "What surprised you about this session?"
+            "displayPrompt": "What <strong>surprised</strong> you about this session?"
         },
         {
             "id": "sensemakingSessionRecord_reflections_learning_workedWell",
@@ -173,7 +182,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Worked and didn't work",
-            "displayPrompt": "Which parts of your plans for this session worked out well? Which parts didn't?"
+            "displayPrompt": "Which parts of your <strong>plans</strong> for this session worked out well? Which parts didn't?"
         },
         {
             "id": "sensemakingSessionRecord_reflections_learning_newIdeas",
@@ -181,7 +190,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "New ideas",
-            "displayPrompt": "What new ideas did you gain from this session? What did you learn from it?"
+            "displayPrompt": "What <strong>new ideas</strong> did you gain from this session? What did you <strong>learn</strong> from it?"
         },
         {
             "id": "sensemakingSessionRecord_reflections_learning_wantToRemember",
@@ -189,7 +198,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Other",
-            "displayPrompt": "What else do you want to remember about this session?"
+            "displayPrompt": "<strong>What else</strong> do you want to remember about this session?"
         }
     ]
 }

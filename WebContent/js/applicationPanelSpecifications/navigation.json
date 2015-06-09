@@ -333,6 +333,10 @@
                         "panelName": "Add resonant story"
                     },
                     {
+                        "panelID": "panel_addResonantPattern",
+                        "panelName": "Add resonant pattern"
+                    },
+                    {
                         "panelID": "panel_newSensemakingSessionOutcome",
                         "panelName": "Sensemaking session outcome"
                     },
