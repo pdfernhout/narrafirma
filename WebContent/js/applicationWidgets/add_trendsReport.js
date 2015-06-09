@@ -224,9 +224,57 @@ define([
     }
     */
     
-    function currentCatalysisReportChanged(graphBrowserInstance, currentCatalysisReport) {
-        console.log("currentCatalysisReportChanged", graphBrowserInstance, currentCatalysisReport);
+    function findCatalysisReport(project, shortName) {
+        var catalysisReports = project.projectModel.get("project_catalysisReports");
+        for (var i = 0; i < catalysisReports.length; i++) {
+            if (catalysisReports[i].catalysisReport_shortName === shortName) {
+                return catalysisReports[i];
+            }
+        }
+        return null;
+    }
+    
+    function currentCatalysisReportChanged(graphBrowserInstance, fieldName, oldValue, currentCatalysisReportIdentifier) {
+        console.log("currentCatalysisReportChanged", graphBrowserInstance, currentCatalysisReportIdentifier);
         
+        var catalysisReport = findCatalysisReport(graphBrowserInstance.project, currentCatalysisReportIdentifier);
+        if (!catalysisReport) {
+            // TODO: should clear everything
+            return;
+        }
+        
+        // TODO: Handle multiple story collections
+        // TODO: Better handling when can't find something
+        
+        var storyCollectionPointer = catalysisReport.catalysisReport_storyCollections[catalysisReport.catalysisReport_storyCollections.length - 1];
+        if (!storyCollectionPointer) return;
+    
+        var storyCollectionIdentifier = storyCollectionPointer.storyCollection;
+        
+        var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+        if (!questionnaire) return;
+        
+        var questions = surveyCollection.collectQuestionsForQuestionnaire(questionnaire);
+        
+        console.log("questions", questions);
+        
+        graphBrowserInstance.questions = questions;
+        
+        var allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+        graphBrowserInstance.allStories = allStories;
+        
+        console.log("allStories", allStories);
+
+        var patterns = buildPatternList(graphBrowserInstance);
+        graphBrowserInstance.patterns = patterns;
+        graphBrowserInstance.patternsListStore.setData(patterns);
+        graphBrowserInstance.patternsGrid.dataStoreChanged(graphBrowserInstance.patternsListStore);
+        
+        // Update item panel in story list so it has the correct header
+        var itemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
+        graphBrowserInstance.storyList.changeItemPanelSpecification(itemPanelSpecification);
+
+        chooseGraph(graphBrowserInstance, null);
     }
     
     function patternSelected(graphBrowserInstance, grid, selectedPattern) {
@@ -405,7 +453,7 @@ define([
         var choiceField = choiceModelAndField.field; 
         var catalysisReportIdentifier = choiceModel.get(choiceField);
         
-        console.log(catalysisReportIdentifier, catalysisReportIdentifier);
+        console.log("catalysisReportIdentifier", catalysisReportIdentifier);
         
         //  TODO: Update these based on selection
         var questions = [];
@@ -415,6 +463,7 @@ define([
         // TODO: get all stories
         
         var graphBrowserInstance = {
+            project: panelBuilder.project,
             graphResultsPane: graphResultsPane,
             chartPanes: [], 
             questions: questions,
@@ -447,7 +496,7 @@ define([
         patternsGridConfiguration.selectCallback = lang.partial(patternSelected, graphBrowserInstance);
         
         var patternsPanelSpecification = {
-            "id": "storyThemeQuestions",
+            "id": "patternsPanel",
             panelFields: [
                 {id: "id", displayName: "Index"},
                 {id: "patternName", displayName: "Pattern name", valueOptions:[]},
@@ -511,6 +560,8 @@ define([
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
         graphResultsPane.own(currentQuestionnaireSubscription);
         */
+        
+        currentCatalysisReportChanged(graphBrowserInstance, "currentCatalysisReport", null, catalysisReportIdentifier);
         
         // Put up a "please pick pattern" message
         chooseGraph(graphBrowserInstance, null);
