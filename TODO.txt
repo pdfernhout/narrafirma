@@ -90,6 +90,7 @@ X Backup
 
 LOAD/SAVE
 H Think about save/load architecture and Pointrel design in relation to handling lots of observations for pattern permutations
+H Deal with Pointrel client receiving response that a resource already exists as a duplicate by discarding queued message
 L More fine-grained update support when updating an item in a grid, like a participant group, rather than update entire item and even list
 X Have revert button to go back to previous version for each page or clear out changes in progress on a page
 X Autosave, perhaps based on time or based on changing pages
