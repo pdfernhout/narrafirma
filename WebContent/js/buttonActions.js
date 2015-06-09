@@ -140,40 +140,38 @@ define([
     }
     
     function generateHTMLForQuestionnaire(questionnaire) {
-        // var htmlToPrint = "<b>Test</b><br>This is a questionnaire for: <pre>" + JSON.stringify(questionnaire, null, 4) + "</pre>";
-        
+    	
+    	// CFK started on this, but it should be finished with the mithril thing so not finishing
         var output = "";
-        
-        // output += htmlToPrint;
-        
-        output += "<h2>" + questionnaire.title + "</h2>";
-        
-        output += "<br><br>";
-        
-        output += questionnaire.startText;
-        
-        output += "<br><br>";
+        output += "<!DOCTYPE html>\n";
+        output += "<head>\n";
+        output += "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n";
+        output += "<title>" + questionnaire.title + "</title>\n";
+        output += "<link rel=\"stylesheet\" href=\"/css/survey.css\">\n";
+        output += "</head>\n\n";
+        output += "<body>\n";
+        output += "<div class=\"narrafirma-survey-print-title\">" + questionnaire.title + "</div>\n";
+        output += "<div class=\"narrafirma-survey-print-intro\">" + questionnaire.startText + "</div>\n";
         
         // TODO: Translate
-        
-        output += "Please select one of the following questions to answer:<br><br>";
+        output += "Please select one of the following questions to answer:<br><br>\n";
         
         questionnaire.elicitingQuestions.forEach(function (elicitingQuestion) {
-            output += elicitingQuestion.text + "<br><br>";
+            output += elicitingQuestion.text + "<br><br>\n";
         });
         
-        output += "Please enter your response here:<br><br>";
+        output += "Please enter your response here:<br><br>\n";
         
-        for (var i = 0; i < 7; i++) output += "<br><br>";
+        for (var i = 0; i < 7; i++) output += "<br><br>\n";
        
         questionnaire.storyQuestions.forEach(function (storyQuestion) {
-            output += storyQuestion.displayPrompt + "<br>";
+            output += storyQuestion.displayPrompt + "<br>\n";
         });
         
         // TODO: Print choices...
        
         questionnaire.participantQuestions.forEach(function (participantQuestion) {
-            output += participantQuestion.displayPrompt + "<br>";
+            output += participantQuestion.displayPrompt + "<br>\n";
         });
         
         // TODO: Print choices...
@@ -181,6 +179,8 @@ define([
         output += "<br><br>";
         
         output += questionnaire.endText;
+        
+        output += "\n</body>\n</html>"
         
         return output;
     }

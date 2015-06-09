@@ -127,7 +127,6 @@ textarea, input, select {
 }
 
 .narrafirma-survey-tell-another-story-button {
-    appearance: none;
     box-shadow: none;
     border: none;
 	font-size: 0.8em;
@@ -146,7 +145,6 @@ textarea, input, select {
 }
 
 .narrafirma-survey-delete-story-button {
-    appearance: none;
     box-shadow: none;
     border: none;
 	font-size: 0.8em;
@@ -186,11 +184,11 @@ textarea, input, select {
 	background: #eac199;
 	border: 2px solid #cc6400;
 }
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ submit survey ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-survey-submit-survey-button {
     display: block;
-    appearance: none;
     box-shadow: none;
     border: none;
     text-shadow: -1px 1px #417cb8;
@@ -248,4 +246,8 @@ input[type='range']::-webkit-slider-thumb{
     border-radius: 30px;
 }
 
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ for printing survey ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+.narrafirma-survey-print-title {
+	background: #e4e4e4;
+}
