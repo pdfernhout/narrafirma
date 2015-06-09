@@ -1,6 +1,6 @@
 {
     "id": "page_printQuestionForms",
-    "displayName": "Print question forms",
+    "displayName": "Print story forms",
     "displayType": "page",
     "section": "collection",
     "modelClass": "PrintQuestionFormsActivity",
@@ -9,7 +9,7 @@
             "id": "printQuestionsForm_introduction",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "On this page you can print your story questions form for distribution to participants.\nYou can later enter the results from each form into the system."
+            "displayPrompt": "On this page you can print story forms for off-line distribution to participants. You can later enter the results from each form into the system."
         },
         {
             "id": "storyCollectionChoice_printing",
@@ -20,7 +20,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Story collection",
-            "displayPrompt": "Choose a story collection to print the questionnaire from."
+            "displayPrompt": "Choose the <strong>story collection</strong> whose story form you want to print."
         },
         {
             "id": "printQuestionsForm_output",
@@ -33,7 +33,7 @@
             "valueType": "none",
             "displayType": "button",
             "displayConfiguration": "printStoryForm",
-            "displayPrompt": "Print question form for selected story collection"
+            "displayPrompt": "Print Story Form"
         }
     ]
 }
