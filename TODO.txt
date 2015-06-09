@@ -15,6 +15,7 @@ H when you are viewing a grid item with a template button, you can see the templ
 H in the lists of questions while designing a story form (eliciting, story, participant) it needs move up, move down arrows, OR an "order" field
 H Need a way to delete a story from a story collection
 H When import story collection, need to display name of form in select
+H Need previous and next button when reviewing incoming stores
 L After you enter a story, it shows an alert that the story has been saved, but it doesn't get rid of the window. the popup window should go away
 L When you enter a story, it replaces the title of the main web page (Enter stories) with the name of the story form (questionnaire).
 
@@ -53,7 +54,6 @@ TEMPLATES
 W Fix how templates list popup has too much scrolling and is not sized well; perhaps start with grid item view pane open?
 
 SURVEY GENERAL
-H Survey should become read-only after submitted
 L Display how many stories and/or survey results have been collected
 L Ideally, all responses for selections (other than numerical sliders) should have unique IDs for each response and the stored response should have the ID as well as the chosen text at the time.
     Add support for short names (ids) for all options for survey questions
@@ -780,3 +780,6 @@ DONE Remove use of Dojo Dialog and lodash from Mithril survey to improve loading
 DONE Fix bug in Pointrel client preventing resending survey if sending failed the first time
 DONE Have Mithril survey use local Dojo files instead of ones from CDN
 DONE Make Mithril survey read-only while being submitted
+DONE Survey should become read-only after submitted
+DONE Add preview button for survey on question form creation page that shows survey in a separate page
+DONE Improve survey please wait display so it does not flicker if page loads quickly
