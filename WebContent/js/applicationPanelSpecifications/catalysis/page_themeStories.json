@@ -12,7 +12,19 @@
             "displayPrompt": "On this page you will derive emergent themes from the collected stories.\nThe themes will appear in your data as answers to a \"Theme\" question, creating patterns you can use."
         },
         {
+            "id": "catalysisReportThemeStories",
+            "valuePath": "/clientState/currentCatalysisReport",
+            "valueType": "string",
+            "valueOptions": "project_catalysisReports",
+            "valueOptionsSubfield": "catalysisReport_shortName",
+            "required": true,
+            "displayType": "select",
+            "displayName": "Catalysis report",
+            "displayPrompt": "Choose a catalysis report to work on"
+        },
+        {
             "id": "themeStories",
+            "valuePath": "/clientState/currentCatalysisReport",
             "valueType": "none",
             "displayType": "storyThemer",
             "displayPrompt": "Theme stories"

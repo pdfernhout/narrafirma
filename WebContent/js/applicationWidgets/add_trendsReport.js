@@ -9,7 +9,8 @@ define([
     "dojo/Stateful",
     "js/storyCardDisplay",
     "js/surveyCollection",
-    "dojo/topic"
+    "dojo/topic",
+    "js/panelBuilder/valuePathResolver"
 ], function(
     array,
     charting,
@@ -21,7 +22,8 @@ define([
     Stateful,
     storyCardDisplay,
     surveyCollection,
-    topic
+    topic,
+    valuePathResolver
 ){
     "use strict";
     
@@ -186,6 +188,7 @@ define([
         return storyItemPanelSpecification;
     }
     
+    /*
     function currentQuestionnaireChanged(graphBrowserInstance, currentQuestionnaire) {
         // TODO: What to do about current selection in these widgets?
         
@@ -218,6 +221,12 @@ define([
         if (graphBrowserInstance.currentPattern) {
             chooseGraph(graphBrowserInstance, graphBrowserInstance.currentPattern);
         }
+    }
+    */
+    
+    function currentCatalysisReportChanged(graphBrowserInstance, currentCatalysisReport) {
+        console.log("currentCatalysisReportChanged", graphBrowserInstance, currentCatalysisReport);
+        
     }
     
     function patternSelected(graphBrowserInstance, grid, selectedPattern) {
@@ -382,9 +391,7 @@ define([
     
     function add_trendsReport(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-
-        var questions = surveyCollection.collectQuestionsForCurrentQuestionnaire();
-        
+ 
         var graphResultsPane = new ContentPane({
             // TODO: Translate
             title: "Graph results",
@@ -392,11 +399,26 @@ define([
             region: "bottom"
         });
         
+        var choiceModelAndField = valuePathResolver.resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
+        console.log("choiceModelAndField", choiceModelAndField);
+        var choiceModel = choiceModelAndField.model;
+        var choiceField = choiceModelAndField.field; 
+        var catalysisReportIdentifier = choiceModel.get(choiceField);
+        
+        console.log(catalysisReportIdentifier, catalysisReportIdentifier);
+        
+        //  TODO: Update these based on selection
+        var questions = [];
+        var allStories = [];
+        
+        // TODO: var questions = surveyCollection.collectQuestionsForCurrentQuestionnaire();
+        // TODO: get all stories
+        
         var graphBrowserInstance = {
             graphResultsPane: graphResultsPane,
             chartPanes: [], 
             questions: questions,
-            allStories: domain.allStories,
+            allStories: allStories,
             patterns: null,
             patternsListStore: null,
             patternsGrid: null,
@@ -410,6 +432,10 @@ define([
             currentSelectionExtentPercentages: null,
             currentSelectionSubgraph: null
         };
+        
+        var currentCatalysisReportSubscription = choiceModel.watch(choiceField, lang.partial(currentCatalysisReportChanged, graphBrowserInstance));        
+        // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
+        contentPane.own(currentCatalysisReportSubscription);
         
         var patterns = buildPatternList(graphBrowserInstance);
         graphBrowserInstance.patterns = patterns;
@@ -474,6 +500,7 @@ define([
         // TODO: selections should be stored in original domain units, not scaled display units
         // TODO: Consolidate duplicate code from these two functions
         
+        /*
         var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerChanged, graphBrowserInstance));
         
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
@@ -483,6 +510,7 @@ define([
         
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
         graphResultsPane.own(currentQuestionnaireSubscription);
+        */
         
         // Put up a "please pick pattern" message
         chooseGraph(graphBrowserInstance, null);

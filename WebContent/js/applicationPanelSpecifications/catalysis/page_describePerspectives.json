@@ -12,7 +12,19 @@
             "displayPrompt": "On this page you will describe the perspectives that resulted from clustering\nyour interpretations."
         },
         {
+            "id": "catalysisReportDescriptPerspectives",
+            "valuePath": "/clientState/currentCatalysisReport",
+            "valueType": "string",
+            "valueOptions": "project_catalysisReports",
+            "valueOptionsSubfield": "catalysisReport_shortName",
+            "required": true,
+            "displayType": "select",
+            "displayName": "Catalysis report",
+            "displayPrompt": "Choose a catalysis report to work on"
+        },
+        {
             "id": "project_perspectivesList",
+            "valuePath": "/clientState/currentCatalysisReport",
             "valueType": "array",
             "required": true,
             "displayType": "grid",

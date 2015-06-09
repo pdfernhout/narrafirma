@@ -5,8 +5,20 @@
     "section": "catalysis",
     "modelClass": "InterpretObservationsActivity",
     "panelFields": [
+         {
+            "id": "catalysisReportReviewExcerpts",
+            "valuePath": "/clientState/currentCatalysisReport",
+            "valueType": "string",
+            "valueOptions": "project_catalysisReports",
+            "valueOptionsSubfield": "catalysisReport_shortName",
+            "required": true,
+            "displayType": "select",
+            "displayName": "Catalysis report",
+            "displayPrompt": "Choose a catalysis report to work on"
+        },
         {
             "id": "project_observationsDisplayList",
+            "valuePath": "/clientState/currentCatalysisReport",
             "valueType": "array",
             "required": true,
             "displayType": "grid",

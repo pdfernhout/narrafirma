@@ -8,6 +8,7 @@ define([
     "dijit/form/ComboBox",
     "dijit/layout/ContentPane",
     "dojo/store/Memory",
+    "js/panelBuilder/valuePathResolver",
     "js/panelBuilder/widgetSupport"
 ], function(
     entities,
@@ -19,6 +20,7 @@ define([
     ComboBox,
     ContentPane,
     Memory,
+    valuePathResolver,
     widgetSupport
  ){
     "use strict";
@@ -114,6 +116,7 @@ define([
         addThemeButton.placeAt(themesPane);
     }
     
+    /*
     function currentQuestionnaireChanged(storyThemerInstance, currentQuestionnaire) {
         // Update filters
         var questions = surveyCollection.collectQuestionsForCurrentQuestionnaire();
@@ -131,13 +134,28 @@ define([
         // Apparently, trackable stored don't send a general update message when you change their data, so explicitely set grid store here to force update
         storyThemerInstance.storyList.dataStoreChanged(storyThemerInstance.dataStore);
     }
+    */
+    
+    function currentCatalysisReportChanged(graphBrowserInstance, currentCatalysisReport) {
+        console.log("currentCatalysisReportChanged", graphBrowserInstance, currentCatalysisReport);
+        
+    }
     
     // TODO: Fix so the filters get updated as the story questions get changed
-    function insertStoryThemer(panelBuilder, pagePane, model, id) {
-        console.log("insertStoryThemer start", id);
+    function insertStoryThemer(panelBuilder, pagePane, model, fieldSpecification) {
+        console.log("insertStoryThemer start", fieldSpecification.id);
         
-        // TODO: Handle the fact that currentQuestionnaire may be null if this is the first page loaded, and also may update as topic
-        var questions = surveyCollection.collectQuestionsForCurrentQuestionnaire();
+        var choiceModelAndField = valuePathResolver.resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
+        console.log("choiceModelAndField", choiceModelAndField);
+        var choiceModel = choiceModelAndField.model;
+        var choiceField = choiceModelAndField.field; 
+        var catalysisReportIdentifier = choiceModel.get(choiceField);
+        
+        console.log(catalysisReportIdentifier, catalysisReportIdentifier);
+        
+        //  TODO: Update these based on selection
+        var questions = [];
+        var allStories = [];
         
         var itemPanelSpecification = {
              id: "storyBrowserQuestions",
@@ -145,14 +163,12 @@ define([
              buildPanel: buildThemerPanel 
         };
 
-        var stories = domain.allStories;
-
         // Store will modify underlying array
-        var dataStore = GridWithItemPanel.newMemoryTrackableStore(stories, "_storyID");
+        var dataStore = GridWithItemPanel.newMemoryTrackableStore(allStories, "_storyID");
         
         // Only allow view button for stories
         var configuration = {viewButton: true, navigationButtons: true, includeAllFields: ["__survey_storyName", "__survey_storyText"]};
-        var storyList = new GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration, model);
+        var storyList = new GridWithItemPanel(panelBuilder, pagePane, fieldSpecification.id, dataStore, itemPanelSpecification, configuration, model);
         storyList.grid.set("selectionMode", "single");
         
         var storyThemerInstance = {
@@ -160,6 +176,12 @@ define([
             dataStore: dataStore, 
             storyList: storyList
         };
+        
+        var currentCatalysisReportSubscription = choiceModel.watch(choiceField, lang.partial(currentCatalysisReportChanged, storyThemerInstance));        
+        // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
+        pagePane.own(currentCatalysisReportSubscription);
+        
+        /*
         
         var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerChanged, storyThemerInstance));
         
@@ -170,6 +192,7 @@ define([
         
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
         pagePane.own(currentQuestionnaireSubscription);
+        */
         
         console.log("insertStoryThemer finished");
     }
@@ -177,7 +200,7 @@ define([
     function add_storyThemer(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
-        var storyThemerInstance = insertStoryThemer(panelBuilder, questionContentPane, model, fieldSpecification.id);
+        var storyThemerInstance = insertStoryThemer(panelBuilder, questionContentPane, model, fieldSpecification);
         questionContentPane.resize();
         return storyThemerInstance;
     }
