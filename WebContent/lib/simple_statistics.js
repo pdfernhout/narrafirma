@@ -1444,11 +1444,31 @@ define(function() {
                 expected_frequencies[k];
         }
 
+        console.log("observed_frequencies.length", observed_frequencies.length)
         // Calculate degrees of freedom for this test and look it up in the
         // `chi_squared_distribution_table` in order to
         // accept or reject the goodness-of-fit of the hypothesized distribution.
         degrees_of_freedom = observed_frequencies.length - c - 1;
-        return chi_squared_distribution_table[degrees_of_freedom][significance] < chi_squared;
+        //return chi_squared_distribution_table[degrees_of_freedom][significance] < chi_squared;
+        
+        console.log("degrees_of_freedom", degrees_of_freedom)
+        var row = chi_squared_distribution_table[degrees_of_freedom];
+        if (!row) {
+        	return {chi_squared: "None", testSignificance: "None"};
+        }
+        var keys = [0.995, 0.99, 0.975, 0.95, 0.9, 0.5, 0.1, 0.05, 0.025, 0.01, 0.005].reverse();
+        console.log("keys", keys);
+        console.log("row", row);
+        var testSignificance = 1.0;
+        for (var i = 0; i < keys.length; i++) {
+        	var value = row[keys[i]];
+        	if (value < chi_squared) {
+        		testSignificance = keys[i];
+        		break;
+        	}
+        }
+        
+        return {chi_squared: chi_squared, testSignificance: testSignificance}
     }
 
     // # Mixin

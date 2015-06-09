@@ -29,6 +29,9 @@ define([
 ){
     "use strict";
     
+    // TODO: retrieve from UI
+    var minStoriesForTest = 20;
+    
     // TODO: Duplicate style code of add_graphBrowser
     // var chartEnclosureStyle = "width: 850px; height: 650px; margin: 5px auto 0px auto;";
     var chartEnclosureStyle = "min-height: 200px;";
@@ -108,7 +111,7 @@ define([
         */
 
         result.forEach(function (pattern) {
-            calculateStatisticsForPattern(graphBrowserInstance, pattern);        
+            calculateStatisticsForPattern(graphBrowserInstance, pattern, minStoriesForTest);        
         });
         
         console.log("buildPatternsList", result);
@@ -174,23 +177,33 @@ define([
         }
     }
     
-    function calculateStatisticsForPattern(graphBrowserInstance, pattern) {
+    function calculateStatisticsForPattern(graphBrowserInstance, pattern, minStoriesForTest) {
         var graphType = pattern.graphType;
         var significance;
         if (graphType === "bar") {
-            // TODO: Fix this
-            significance = -1.0;
+        	// not calculating statistics for bar graph
         } else if (graphType === "table") {
             // TODO: Fix this
-            significance = -1.0;
+        	// TODO: test for missing patterns[1]
+            var counts = countsForFieldChoices(graphBrowserInstance.allStories, pattern.questions[0].id, pattern.questions[1].id);
+            console.log("counts", counts);
+            var values = collectValues(counts);
+            console.log("values", values);
+            if (values.length < minStoriesForTest) {
+            	significance = "";
+            } else {
+	            // return {chi_squared: chi_squared, testSignificance: testSignificance}
+	        	var statResult = simpleStatistics.chi_squared_goodness_of_fit(values, simpleStatistics.poisson_distribution, 0.05);
+	            significance = statResult.testSignificance;
+        	}
         } else if (graphType === "histogram") {
-            // TODO: Fix this
-            significance = -1.0;
+            // TODO: Fix this - could report on normality
+            significance = "";
         } else if (graphType === "multiple histogram") {
-            // TODO: Fix this
+            // TODO: Fix this - t-test - differences between means of histograms
             significance = -1.0;
         } else if (graphType === "scatter") {
-            // TODO: Fix this
+            // TODO: Fix this - correlation 
             significance = -1.0;
         } else if (graphType ===  "multiple scatter") {
             console.log("ERROR: Not suported graphType: " + graphType);
