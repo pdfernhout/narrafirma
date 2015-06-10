@@ -570,8 +570,8 @@ define([
                 {id: "id", displayName: "Index"},
                 {id: "patternName", displayName: "Pattern name", valueOptions:[]},
                 {id: "graphType", displayName: "Graph type", valueOptions:[]},
-                {id: "significance", displayName: "Significance", valueOptions:[]},
-                {id: "reviewed", displayName: "Reviewed", valueOptions:[]},
+                {id: "significance", displayName: "Significance value", valueOptions:[]},
+                // {id: "reviewed", displayName: "Reviewed", valueOptions:[]},
                 {id: "observation", displayName: "Observation", valueOptions:[]}
             ]
         };
@@ -606,7 +606,16 @@ define([
             panelFields: [        
                 {id: "insertGraphSelection", displayPrompt: "Save current graph selection into observation", displayType: "button", displayPreventBreak: true, displayConfiguration: lang.partial(insertGraphSelection, graphBrowserInstance)},
                 {id: "resetGraphSelection", displayPrompt: "Restore graph selection using saved selection chosen in observation", displayType: "button", displayConfiguration: lang.partial(resetGraphSelection, graphBrowserInstance)},
-                {id: "observation", displayName: "Observation", displayPrompt: "Add observation", displayType: "textarea"}
+                {id: "observation", displayName: "Observation", displayPrompt: "If this pattern is noteworthy, enter an <strong>observation</strong> about the pattern here.", displayType: "textarea"},
+                {
+                    "id": "project_interpretationsList",
+                    "valueType": "array",
+                    "required": true,
+                    "displayType": "grid",
+                    "displayConfiguration": "panel_addInterpretation",
+                    "displayName": "Interpretation",
+                    "displayPrompt": "Enter at least two <strong>competing interpretations</strong> for the observation here."
+                }
             ]
         };
         

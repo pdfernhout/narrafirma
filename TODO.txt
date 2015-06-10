@@ -11,14 +11,12 @@ BIG OPTIONAL FUNCTIONALITY AREAS
 
 THINGS CYNTHIA NOTICED WHILE DOING HELP (probably redundant but just in case)
 H the activities list for a story collection or sensemaking session needs move up and move down buttons (since you are supposed to be planning a schedule) OR an "order' field
-H when you are viewing a grid item with a template button, you can see the templates list and copy a template; button should be disabled or invisible
 H in the lists of questions while designing a story form (eliciting, story, participant) it needs move up, move down arrows, OR an "order" field
 H Need a way to delete a story from a story collection
 H When import story collection, need to display name of form in select
-H Need previous and next button when reviewing incoming stores
+H In the story browser, if you look at a story (view), then change the selection of stories, the old story still shows.
 L After you enter a story, it shows an alert that the story has been saved, but it doesn't get rid of the window. the popup window should go away
 L When you enter a story, it replaces the title of the main web page (Enter stories) with the name of the story form (questionnaire).
-H CFK add < > buttons under story lists
 
 CRASH
 ? Story browser (Catalysis section second page, but also review stories during collection) seems to sometimes cause and endless loop in Firexfox or Chrome causing memory use growth and beach ball. Maybe some resize bug in dojo or dgrid?
@@ -785,3 +783,5 @@ DONE Make Mithril survey read-only while being submitted
 DONE Survey should become read-only after submitted
 DONE Add preview button for survey on question form creation page that shows survey in a separate page
 DONE Improve survey please wait display so it does not flicker if page loads quickly
+DONE H CFK add < > buttons under story lists (was also: H Need previous and next button when reviewing incoming stories)
+DONE H when you are viewing a grid item with a template button, you can see the templates list and copy a template; button should be disabled or invisible

@@ -241,6 +241,10 @@
                 "panelName": "Review trends",
                 "extraPanels": [
                     {
+                        "panelID": "panel_addInterpretation",
+                        "panelName": "Add interpretation"
+                    },
+                    {
                         "panelID": "panel_addToObservation",
                         "panelName": "Add to observation"
                     },

@@ -37,18 +37,6 @@
             "displayPrompt": "How large should subsets of stories be to be considered for comparison?"
         },
         {
-            "id": "reviewTrends_significanceThreshold",
-            "valueType": "string",
-            "valueOptions": [
-                "0.05",
-                "0.01"
-            ],
-            "required": true,
-            "displayType": "select",
-            "displayName": "Significance threshold",
-            "displayPrompt": "What significance threshold do you want reported?"
-        },
-        {
             "id": "reviewTrends_display",
             "valuePath": "/clientState/currentCatalysisReport",
             "valueType": "none",
