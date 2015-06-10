@@ -54,16 +54,11 @@ define([
         var button = new Button({
             label: translate(fieldSpecification.id, fieldSpecification.displayPrompt),
             type: "button",
-            onClick: callback
+            onClick: callback,
+            class: "narrafirma-dialog-launching-button"
         });
 
         button.placeAt(contentPane);
-        
-        var wrap = new ContentPane({
-            content: "<br>"
-        });
-        wrap.placeAt(contentPane);
-        
         return button;
     }
     

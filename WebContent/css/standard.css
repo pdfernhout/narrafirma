@@ -395,6 +395,10 @@ form {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Recommendations table ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+.narrafirma-dialog-launching-button {
+	margin-bottom: 10px;
+}
+
 .wwsRecommendationsTable-labelCell {
   /* background-color: lightgrey; */
   /* padding-left: 5px; */
