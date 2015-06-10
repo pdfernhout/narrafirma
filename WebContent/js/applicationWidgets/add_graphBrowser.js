@@ -15,8 +15,6 @@ define([
 ){
     "use strict";
     
-    var chartEnclosureStyle = "width: 850px; height: 650px; margin: 5px auto 0px auto;";
-        
     function questionForID(questions, id) {
         if (!id) return null;
         for (var index in questions) {
@@ -138,7 +136,7 @@ define([
         var graphResultsPane = new ContentPane({
             // TODO: Translate
             title: "Graph results",
-            style: chartEnclosureStyle
+            class: "narrafirma-graph-results-pane"
         });
         
         var choiceModelAndField = valuePathResolver.resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);

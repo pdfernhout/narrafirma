@@ -354,11 +354,6 @@ form {
     overflow: auto;
 }
 
-/* make the grids shorter on the review trends page, because the page is so long */
-.narrafirma-page_reviewTrends .dgrid .dgrid-scroller {
-    max-height: 200px;
-}
-
 /* not yet used */
 #templateList .dgrid-scroller {
     position: relative;
@@ -370,6 +365,32 @@ form {
     width: 50%;
     max-width: 50%;
     min-width: 50%;
+}
+
+.dijitComboBox {
+	margin-right: 10px; /* so it's not smack up against a button to its right */
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Adjustments for particular pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+/* review incoming stories: too much space before the "filter by" lines */
+/* dijit_layout_ContentPane_9 is the line that says "Collected stories" before the "filter by" part
+.narrafirma-page_reviewIncomingStories #dijit_layout_ContentPane_9 {
+	padding-bottom: 0;
+}
+
+.narrafirma-page_reviewIncomingStories .questionInternal {
+	padding-top: 0;
+}
+
+/* review incoming stories: make the grid a little shorter because the page is so long */
+.narrafirma-page_reviewTrends .dgrid .dgrid-scroller {
+    max-height: 300px;
+}
+
+/* review trends: make the grids shorter because the page is so long */
+.narrafirma-page_reviewTrends .dgrid .dgrid-scroller {
+    max-height: 200px;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Recommendations table ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -404,7 +425,13 @@ form {
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ d3 charting ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /* A CSS stylesheet is like a GUI control system for twidling with widget options */
 
+.narrafirma-graph-results-pane {
+	width: 850px;
+	margin: 5px auto 0px auto;
+}
+
 .chartBackground {
+	width: 700px;
     stroke: black;
     fill: none;
 }
