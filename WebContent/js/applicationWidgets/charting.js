@@ -937,7 +937,7 @@ define([
                 if (!plotItem.stories || plotItem.stories.length === 0) {
                     tooltipText += "\n------ No stories ------";
                 } else {
-                    tooltipText += "\n------ Stories (" + plotItem.stories.length + ")------";
+                    tooltipText += "\n------ Stories (" + plotItem.stories.length + ") ------";
                     for (var i = 0; i < plotItem.stories.length; i++) {
                         var story = plotItem.stories[i];
                         tooltipText += "\n" + story.__survey_storyName;
