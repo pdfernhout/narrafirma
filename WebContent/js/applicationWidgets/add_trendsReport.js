@@ -596,7 +596,7 @@ define([
         graphBrowserInstance.selectedStoriesStore = selectedStoriesStore;
         
         // Only allow view button for stories
-        var configuration = {viewButton: true, navigationButtons: false, includeAllFields: ["__survey_storyName", "__survey_storyText"]};
+        var configuration = {viewButton: true, navigationButtons: false, includeAllFields: ["__survey_storyName", "__survey_storyText"], navigationButtons: true};
         var storyList = new GridWithItemPanel(panelBuilder, contentPane, "storyGrid", selectedStoriesStore, storyItemPanelSpecification, configuration, model);
         storyList.grid.set("selectionMode", "single");
         graphBrowserInstance.storyList = storyList;

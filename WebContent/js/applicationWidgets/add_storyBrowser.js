@@ -343,7 +343,7 @@ define([
         // console.log("insertStoryBrowser middle 3", id);
         
         // Only allow view button for stories
-        var configuration = {viewButton: true, includeAllFields: ["__survey_storyName", "__survey_storyText"]};
+        var configuration = {viewButton: true, includeAllFields: ["__survey_storyName", "__survey_storyText"], navigationButtons: true};
         storyBrowserInstance.storyList = new GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration, model);
         
         // TODO: var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStories, storyBrowserInstance));
