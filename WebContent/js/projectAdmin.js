@@ -168,7 +168,7 @@ require([
                 "valueType": "string",
                 "displayType": "text",
                 "displayName": "Email",
-                "displayPrompt": "Email",
+                "displayPrompt": "Email"
             },
             // TODO: Use password hash! Add button to set it.
             {

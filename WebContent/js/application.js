@@ -596,7 +596,7 @@ define([
         document.getElementById("pleaseWaitDiv").style.display = "none";
         
         var userCredentials = {
-            userIdentifier: userIdentifier,
+            userIdentifier: userIdentifier
         };
         
         var projectIdentifierSupplied = clientState.get("currentProjectIdentifier");

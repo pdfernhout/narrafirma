@@ -119,7 +119,7 @@ define([
             };
             
             var story = {
-                id: generateRandomUuid(),
+                id: generateRandomUuid()
             };
             story.__survey_elicitingQuestion = lastQuestionnaireUploaded.elicitingQuestions[0].id;
             story.__type = "org.workingwithstories.Story";
