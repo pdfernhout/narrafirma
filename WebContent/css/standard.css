@@ -354,6 +354,11 @@ form {
     overflow: auto;
 }
 
+/* make the grids shorter on the review trends page, because the page is so long */
+.narrafirma-page_reviewTrends .dgrid .dgrid-scroller {
+    max-height: 200px;
+}
+
 /* not yet used */
 #templateList .dgrid-scroller {
     position: relative;

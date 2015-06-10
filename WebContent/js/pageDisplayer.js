@@ -1,11 +1,13 @@
 define([
     "dijit/layout/ContentPane",
+    "dojo/dom-class",
     "dojo/dom-construct",
     "dojo/dom-style",
     "js/navigationPane",
     "dojox/widget/Standby"
 ], function(
     ContentPane,
+    domClass,
     domConstruct,
     domStyle,
     navigationPane,
@@ -150,7 +152,7 @@ define([
     function finishShowingPage(pageID, pageSpecification) { 
         // Show the current page again
         domStyle.set("pageDiv", "display", "block");
-
+        
         document.body.scrollTop = document.documentElement.scrollTop = 0;
 
         // Ensure navigation select is pointing to this page; this may trigger an update but it should be ignored as we're already on this page
@@ -158,6 +160,7 @@ define([
         
         // Because the page was hidden when created, all the grids need to be resized so grid knows how tall to make header so it is not overwritten
         currentPage.resize();
+        domClass.add(currentPage.domNode, "narrafirma-" + pageID);
         
         stopStandby();
     }
@@ -179,6 +182,7 @@ define([
         // Otherwise the grid header is not sized correctly and will be overwritten by data
         // This is as opposed to what one might think would reduce resizing and redrawing by adding the page only after components are added
         pagePane.placeAt("pageDiv", "last");
+        
         pagePane.startup();
         
         var title = '<div class="narrafirma-page-name">' + pageSpecification.displayName + '</div>';
