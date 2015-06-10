@@ -303,7 +303,7 @@ define([
             cols: 2,
             showLabels: false,
             customClass: "storyFilterTable",
-            spacing: 10
+            spacing: 2
         });
         
         // console.log("insertStoryBrowser middle 2", id);
