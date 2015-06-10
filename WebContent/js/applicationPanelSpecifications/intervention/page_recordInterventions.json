@@ -9,7 +9,7 @@
             "id": "project_interventionRecordsLabel",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "On this page you will enter records of your interventions."
+            "displayPrompt": "On this page you can enter <strong>records</strong> of the interventions you have carried out as part of your project."
         },
         {
             "id": "project_interventionRecordsList",
@@ -18,7 +18,7 @@
             "displayType": "grid",
             "displayConfiguration": "panel_addInterventionRecord",
             "displayName": "Intervention records",
-            "displayPrompt": "Use this list to keep records of the interventions you carried out."
+            "displayPrompt": "These are the intervention records you have created so far."
         }
     ]
 }

@@ -17,6 +17,7 @@ H When import story collection, need to display name of form in select
 H In the story browser, if you look at a story (view), then change the selection of stories, the old story still shows.
 L After you enter a story, it shows an alert that the story has been saved, but it doesn't get rid of the window. the popup window should go away
 L When you enter a story, it replaces the title of the main web page (Enter stories) with the name of the story form (questionnaire).
+L would like to make "focus rectangle" or "rubber band" over graphs when selecting - see http://bl.ocks.org/mbostock/1667367
 
 CRASH
 ? Story browser (Catalysis section second page, but also review stories during collection) seems to sometimes cause and endless loop in Firexfox or Chrome causing memory use growth and beach ball. Maybe some resize bug in dojo or dgrid?

@@ -11,7 +11,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Name",
-            "displayPrompt": "Please name this intervention plan."
+            "displayPrompt": "Please give this intervention plan a <strong>name</strong>."
         },
         {
             "id": "interventionPlan_type",
@@ -30,12 +30,13 @@
                 "narrative mentoring program",
                 "narrative therapy",
                 "participatory theatre",
+                "mixed",
                 "other"
             ],
             "required": true,
             "displayType": "select",
             "displayName": "Type",
-            "displayPrompt": "What type of intervention will this be?"
+            "displayPrompt": "What <strong>type</strong> of intervention will this be?"
         },
         {
             "id": "interventionPlan_description",
@@ -43,7 +44,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Description",
-            "displayPrompt": "Please describe your plan for this intervention."
+            "displayPrompt": "Please describe your <strong>plan</strong> for this intervention."
         },
         {
             "id": "interventionPlan_groups",
@@ -51,7 +52,15 @@
             "required": true,
             "displayType": "text",
             "displayName": "Participant groups",
-            "displayPrompt": "Which participant group(s) will be involved?"
+            "displayPrompt": "Which participant <strong>group</strong> (or groups) will be involved?"
+        },
+        {
+            "id": "interventionPlan_howmany",
+            "valueType": "string",
+            "required": true,
+            "displayType": "text",
+            "displayName": "How many",
+            "displayPrompt": "<strong>How many</strong> people will be involved in this intervention?"
         },
         {
             "id": "interventionPlan_times",
@@ -59,7 +68,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Time",
-            "displayPrompt": "When will the intervention start and end?"
+            "displayPrompt": "<strong>When</strong> will the intervention take place?"
         },
         {
             "id": "interventionPlan_locations",
@@ -67,7 +76,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Location",
-            "displayPrompt": "Where will the intervention take place?"
+            "displayPrompt": "<strong>Where</strong> will the intervention take place?"
         },
         {
             "id": "interventionPlan_help",
@@ -75,7 +84,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Help",
-            "displayPrompt": "What sort of help will you need to carry out this intervention?"
+            "displayPrompt": "What sort of <strong>help</strong> will you need to carry out this intervention?"
         },
         {
             "id": "interventionPlan_permission",
@@ -83,7 +92,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Permission",
-            "displayPrompt": "Describe any permissions you will need to carry out this intervention."
+            "displayPrompt": "Describe any <strong>permissions</strong> you will need to carry out this intervention."
         },
         {
             "id": "interventionPlan_participation",
@@ -91,7 +100,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Participation",
-            "displayPrompt": "How will you get people to participate in this intervention?"
+            "displayPrompt": "How will you <strong>recruit</strong> people to participate in this intervention?"
         },
         {
             "id": "interventionPlan_materials",
@@ -99,7 +108,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Materials",
-            "displayPrompt": "What physical materials will you need?"
+            "displayPrompt": "What physical <strong>materials</strong> will you need?"
         },
         {
             "id": "interventionPlan_space",
@@ -107,7 +116,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Spaces",
-            "displayPrompt": "What spaces will you use?"
+            "displayPrompt": "What <strong>spaces</strong> will you use?"
         },
         {
             "id": "interventionPlan_techResources",
@@ -115,7 +124,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Technology",
-            "displayPrompt": "What technological resources will you need?"
+            "displayPrompt": "What technological <strong>resources</strong> will you need?"
         },
         {
             "id": "interventionPlan_recording",
@@ -123,7 +132,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Recording",
-            "displayPrompt": "How will you record the results of this intervention?"
+            "displayPrompt": "How will you <strong>record</strong> the results of this intervention?"
         }
     ]
 }

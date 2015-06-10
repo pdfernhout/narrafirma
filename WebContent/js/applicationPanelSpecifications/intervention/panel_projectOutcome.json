@@ -11,7 +11,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Participant group",
-            "displayPrompt": "Which participant group is this outcome for?"
+            "displayPrompt": "Which participant <strong>group</strong> is this outcome for?"
         },
         {
             "id": "outcomes_hopesHeader",
@@ -32,7 +32,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Felt heard",
-            "displayPrompt": "During your project, did the people in this group say they felt heard for the first time?"
+            "displayPrompt": "During your project, did the people in this group say they <strong>felt heard</strong> for the first time?"
         },
         {
             "id": "outcomes_peopleFeltInvolved",
@@ -47,7 +47,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Felt involved",
-            "displayPrompt": "Did they say they felt involved for the first time?"
+            "displayPrompt": "Did they say they <strong>felt involved</strong> for the first time?"
         },
         {
             "id": "outcomes_peopleLearnedAboutCommOrg",
@@ -62,7 +62,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Learned about community",
-            "displayPrompt": "Did they say they learned a lot about their community or organization?"
+            "displayPrompt": "Did they say they <strong>learned about their community or organization</strong>?"
         },
         {
             "id": "outcomes_voicesHeader",
@@ -83,7 +83,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Wanted to tell more",
-            "displayPrompt": "During your story collection, did these people seem to want to tell more stories than you collected?"
+            "displayPrompt": "During your story collection, did these people seem to want to <strong>tell more stories</strong> than you collected?"
         },
         {
             "id": "outcomes_peopleWantedToShareMoreStoriesWithEachOther",
@@ -98,7 +98,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Wanted to share more",
-            "displayPrompt": "Did you ever feel that they wanted to share more experiences with each other than they did?"
+            "displayPrompt": "Did you ever feel that they wanted to <strong>share more experiences</strong> (with each other) than they did?"
         },
         {
             "id": "outcomes_peopleFeltStoriesNeededToBeHeard",
@@ -112,7 +112,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Felt that stories needed to be heard",
-            "displayPrompt": "Did these people feel that some of the stories you collected \"needed to be heard\" by anyone?"
+            "displayPrompt": "Did these people feel that some of the stories you collected <strong>needed to be heard</strong> by anyone?"
         },
         {
             "id": "outcomes_peopleFeltNobodyCares",
@@ -126,7 +126,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Felt that nobody cares",
-            "displayPrompt": "Were there any issues that these people thought \"nobody cares\" about?"
+            "displayPrompt": "Were there any issues that these people thought <strong>nobody cares</strong> about?"
         },
         {
             "id": "outcomes_needsHeader",
@@ -146,7 +146,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Needs could not be met",
-            "displayPrompt": "Do the people in this group have needs that <i>nobody</i> can meet?"
+            "displayPrompt": "Do the people in this group have <strong>needs that nobody can meet</strong>?"
         },
         {
             "id": "outcomes_peopleFeltTheyNeedNewStories",
@@ -160,7 +160,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Needed to tell themselves new stories",
-            "displayPrompt": "Do these people need to start telling themselves <i>new</i> stories?"
+            "displayPrompt": "Do these people need to start <strong>telling themselves new stories</strong>?"
         },
         {
             "id": "outcomes_peopleWantedToKeepExploring",
@@ -174,7 +174,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Wanted more exploration",
-            "displayPrompt": "Were there any issues about which the people in this group seemed to want to keep exploring?"
+            "displayPrompt": "Were there any issues about which the people in this group seemed to want to <strong>keep exploring</strong>?"
         },
         {
             "id": "outcomes_crisisPointsWereFound",
@@ -188,7 +188,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Crisis points",
-            "displayPrompt": "Did you discover any \"crisis points\" where people in this group needed help and didn't get it?"
+            "displayPrompt": "Did you discover any <strong>crisis points</strong> where people in this group needed help and didn't get it?"
         },
         {
             "id": "outcomes_issuesWereBeyondWords",
@@ -202,7 +202,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Beyond words",
-            "displayPrompt": "Did you find any issues for this group that were beyond words, that no amount of discussion could resolve?"
+            "displayPrompt": "Did you find any issues for this group that were <strong>beyond words</strong>, that no amount of discussion could resolve?"
         },
         {
             "id": "outcomes_learningHeader",
@@ -223,7 +223,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Learned about topic",
-            "displayPrompt": "Did these people say that they learned a lot about the topic by participating in the project?"
+            "displayPrompt": "Did these people say that they <strong>learned about the topic</strong> by participating in the project?"
         },
         {
             "id": "outcomes_issuesNewMembersStruggleWith",
@@ -237,7 +237,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "New members needed help",
-            "displayPrompt": "Did you notice that new members of the community or organization were having a harder time making sense of things?"
+            "displayPrompt": "Did you notice that <strong>new members</strong> of the community or organization were having a harder time making sense of things?"
         },
         {
             "id": "outcomes_foundInfoWithoutUnderstanding",
@@ -251,7 +251,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Had more information than understanding",
-            "displayPrompt": "Were there any issues that these people found difficult to understand, even though abundant information was available?"
+            "displayPrompt": "Were there any issues that these people found <strong>difficult to understand</strong>, even though abundant information was available?"
         },
         {
             "id": "outcomes_foundOverConfidence",
@@ -265,7 +265,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Had more confidence than skill",
-            "displayPrompt": "Did you discover any areas in which these people had more confidence than skill?"
+            "displayPrompt": "Did you discover any areas in which these people had <strong>more confidence than skill</strong>?"
         },
         {
             "id": "outcomes_peopleCuriousAboutStoryWork",
@@ -280,7 +280,7 @@
             "required": true,
             "displayType": "select",
             "displayName": "Wanted to learn about story work",
-            "displayPrompt": "Did any of these participants express an interest in learning more about story work?"
+            "displayPrompt": "Did any of these participants express an interest in <strong>learning more about story work</strong>?"
         }
     ]
 }

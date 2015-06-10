@@ -11,15 +11,7 @@
             "required": true,
             "displayType": "text",
             "displayName": "Name",
-            "displayPrompt": "Please give this intervention record a name."
-        },
-        {
-            "id": "interventionRecord_description",
-            "valueType": "string",
-            "required": true,
-            "displayType": "textarea",
-            "displayName": "Description",
-            "displayPrompt": "Please describe what happened during the intervention, in general."
+            "displayPrompt": "Please give this intervention record a <strong>name</strong>."
         },
         {
             "id": "interventionRecord_groups",
@@ -27,13 +19,45 @@
             "required": true,
             "displayType": "text",
             "displayName": "Participant groups",
-            "displayPrompt": "Which participant group(s) were involved?"
+            "displayPrompt": "Which participant <strong>group</strong> (or groups) were involved?"
+        },
+        {
+            "id": "interventionRecord_timeandplace",
+            "valueType": "string",
+            "required": true,
+            "displayType": "textarea",
+            "displayName": "When and where",
+            "displayPrompt": "<strong>When and where</strong> did the intervention take place?"
+        },
+        {
+            "id": "interventionRecord_description",
+            "valueType": "string",
+            "required": true,
+            "displayType": "textarea",
+            "displayName": "Description",
+            "displayPrompt": "Please <strong>describe</strong> what happened during the intervention, in general."
+        },
+        {
+            "id": "interventionRecord_plan",
+            "valueType": "string",
+            "required": true,
+            "displayType": "textarea",
+            "displayName": "Plan",
+            "displayPrompt": "Which of your intervention plans did you follow in this intervention? (And did you stick to the plan?)"
+        },
+        {
+            "id": "interventionRecord_notes",
+            "valueType": "string",
+            "required": true,
+            "displayType": "textarea",
+            "displayName": "Notes",
+            "displayPrompt": "Enter additional <strong>notes</strong> on the intervention here. Your notes can include links to images or other documents."
         },
         {
             "id": "interventionRecord_reflectLabel",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "Use the questions below to reflect on the intervention."
+            "displayPrompt": "You can use the questions below to <strong>reflect</strong> on the intervention."
         },
         {
             "id": "interventionRecord_reflectionsOnChangeHeader",
@@ -47,7 +71,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Change in participant perceptions",
-            "displayPrompt": "How did the perceptions of the participants change from the start to the end of the intervention?"
+            "displayPrompt": "How did the perceptions of the <strong>participants</strong> change from the start to the end of the intervention?"
         },
         {
             "id": "interventionRecord_reflections_change_yourPerceptions",
@@ -55,7 +79,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Change in facilitator perceptions",
-            "displayPrompt": "How did <i>your</i> perceptions change?"
+            "displayPrompt": "How did <strong>your</strong> perceptions change?"
         },
         {
             "id": "interventionRecord_reflections_change_project",
@@ -63,7 +87,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Changes to the project",
-            "displayPrompt": "How has the overall project changed as a result of this intervention?"
+            "displayPrompt": "How has the overall <strong>project</strong> changed as a result of this intervention?"
         },
         {
             "id": "interventionRecord_interactionsHeader",
@@ -77,7 +101,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Interactions among participants",
-            "displayPrompt": "Describe the interactions between participants in this intervention."
+            "displayPrompt": "Describe the interactions <strong>among participants</strong> in this intervention."
         },
         {
             "id": "interventionRecord_reflections_interaction_participantsAndFacilitator",
@@ -85,7 +109,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Interactions between participants and facilitators",
-            "displayPrompt": "Describe interactions between participants and facilitators."
+            "displayPrompt": "Describe the interactions <strong>between participants and facilitators</strong>."
         },
         {
             "id": "interventionRecord_reflections_interaction_stories",
@@ -93,7 +117,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Stories",
-            "displayPrompt": "What did you notice about the stories people told, retold, chose, and worked with during the intervention?"
+            "displayPrompt": "What did you notice about the <strong>stories</strong> people told, retold, chose, and worked with during the intervention?"
         },
         {
             "id": "interventionRecord_learningHeader",
@@ -107,7 +131,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Unique features",
-            "displayPrompt": "What was special about this intervention?"
+            "displayPrompt": "What was <strong>special</strong> about this intervention?"
         },
         {
             "id": "interventionRecord_reflections_learning_surprise",
@@ -115,7 +139,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Surprise",
-            "displayPrompt": "What surprised you about this intervention?"
+            "displayPrompt": "What <strong>surprised</strong> you about this intervention?"
         },
         {
             "id": "interventionRecord_reflections_learning_workedWell",
@@ -123,7 +147,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Worked and didn't work",
-            "displayPrompt": "Which parts of your plans for this intervention worked out well? Which parts didn't?"
+            "displayPrompt": "Which parts of your <strong>plans</strong> for this intervention worked out well? Which parts didn't?"
         },
         {
             "id": "interventionRecord_reflections_learning_newIdeas",
@@ -131,7 +155,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "New ideas",
-            "displayPrompt": "What new ideas did you gain from this intervention? What did you learn from it?"
+            "displayPrompt": "What <strong>new ideas</strong> did you gain from this intervention? What did you <strong>learn</strong> from it?"
         },
         {
             "id": "interventionRecord_reflections_learning_wantToRemember",
@@ -139,7 +163,7 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Other",
-            "displayPrompt": "What else do you want to remember about this intervention?"
+            "displayPrompt": "<strong>What else</strong> do you want to remember about this intervention?"
         }
     ]
 }

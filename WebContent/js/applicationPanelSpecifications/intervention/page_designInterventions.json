@@ -9,7 +9,7 @@
             "id": "project_interventionLabel",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "On this page you can design interventions that change the stories people tell\nin your community or organization."
+            "displayPrompt": "On this page you can <strong>design plans</strong> for interventions that change the stories people tell in your community or organization."
         },
         {
             "id": "interventionRecommendations",
@@ -25,7 +25,7 @@
             "displayType": "grid",
             "displayConfiguration": "panel_addIntervention",
             "displayName": "Intervention plans",
-            "displayPrompt": "Enter your plans for narrative interventions here."
+            "displayPrompt": "These are the intervention plans you have created so far."
         }
     ]
 }
