@@ -6,37 +6,38 @@
     "modelClass": "FeedbackPiece",
     "panelFields": [
         {
-            "id": "feedback_text",
-            "valueType": "string",
-            "required": true,
-            "displayType": "textarea",
-            "displayName": "Feedback",
-            "displayPrompt": "What did someone say or do?"
-        },
-        {
             "id": "feedback_name",
             "valueType": "string",
             "required": true,
             "displayType": "text",
             "displayName": "Name",
-            "displayPrompt": "Please give this piece of feedback a name."
+            "displayPrompt": "Please give this piece of feedback a <strong>name</strong>."
+        },
+        {
+            "id": "feedback_text",
+            "valueType": "string",
+            "required": true,
+            "displayType": "textarea",
+            "displayName": "Feedback",
+            "displayPrompt": "What did someone <strong>say or do</strong>?"
         },
         {
             "id": "feedback_type",
             "valueType": "string",
             "valueOptions": [
-                "a story",
-                "a reference to something that came up in the project",
-                "a wish about the future",
+                "a reference to something from the project",
+                "a concern or complaint",
+                "a hope or wish",
+                "a statement of fact",
                 "an opinion",
-                "a complaint",
+                "a story",
                 "an action",
                 "other"
             ],
             "required": true,
             "displayType": "select",
             "displayName": "Type",
-            "displayPrompt": "What type of feedback is this?"
+            "displayPrompt": "What <strong>type</strong> of feedback was it?"
         },
         {
             "id": "feedback_who",
@@ -44,30 +45,30 @@
             "required": true,
             "displayType": "text",
             "displayName": "Source",
-            "displayPrompt": "Who said or did this?"
+            "displayPrompt": "<strong>Who</strong> said or did this?"
         },
         {
             "id": "feedback_prompt",
             "valueType": "string",
             "required": true,
-            "displayType": "text",
+            "displayType": "textarea",
             "displayName": "Prompt",
-            "displayPrompt": "What did you say or do (if anything) that led to this feedback?"
+            "displayPrompt": "What did you say or do (if anything) that <strong>led to</strong> this feedback?"
         },
         {
             "id": "feedback_response",
             "valueType": "string",
             "required": true,
-            "displayType": "text",
+            "displayType": "textarea",
             "displayName": "Response",
-            "displayPrompt": "What did you say or do (if anything) in response?"
+            "displayPrompt": "What did you say or do (if anything) <strong>in response</strong>?"
         },
         {
             "id": "feedback_notes",
             "valueType": "string",
             "displayType": "textarea",
             "displayName": "Notes",
-            "displayPrompt": "Please enter any other notes you have about this piece of feedback."
+            "displayPrompt": "Please enter any other <strong>notes</strong> you would like to remember about this piece of feedback."
         }
     ]
 }

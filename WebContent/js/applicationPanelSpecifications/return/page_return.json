@@ -10,7 +10,7 @@
             "id": "returnIntroLabel",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "In the return phase of your PNI project, you will gather feedback, reflect on the project, possibly present\nthe project to someone, and help people with requests about the project.<br><br>Below are links to each step of this phase, along with any reminders you may have entered on them."
+            "displayPrompt": "In the return phase of your PNI project, you will gather <strong>feedback</strong>, <strong>reflect</strong> on the project, possibly <strong>present</strong> the project to someone, and help people with <strong>requests</strong> about the project.<br><br>Below are links to each step of this phase, along with any reminders you may have entered on them."
         }
     ]
 }
