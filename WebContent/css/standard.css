@@ -4,6 +4,16 @@
 
 /* html, body, pleaseWaitOverlay - are in survey.css */
 
+/* the NarraFirma color palette is (going darker from left to right)
+
+Gray - [extra: e4e4e4] - d3d2d2 - a7a5a5 - 3e3739 - 231f20
+Brown - e7ddd0 - cfbba2 - b5731e - 895717
+Green - e0e6cc - b2c07f - 8db500 - 658200
+Orange - f4e0cc - eac199 - ff7d00 - cc6400
+Blue - d5dae6 - abb6ce - 3b5fab - 2e4a85
+
+*/
+
 #pageDiv {
    padding-left: 10px; 
 }
@@ -159,6 +169,12 @@ textarea, input, select { /* override because expanded in survey */
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Pages with entry fields ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+.narrafirma-question-header {
+	font-size: 1.2em;
+	font-weight: bold;
+	margin-bottom: 6px;
+}
+
 .questionExternal {
 	background: #d5dae6;
 	margin-bottom: 4px;
@@ -228,7 +244,7 @@ form {
 }
 
 .narrafirma-griditempanel-viewing {
-	background: #e4e4e4;
+	background: #e4e4e4; /* this gray is an extra super light gray */
 	margin: 1em;
 	border: 1px solid #231f20;
 	border-radius: 12px;
@@ -326,6 +342,11 @@ form {
 
 .claro .dijitContentPane {
 	padding-left: 0em;
+}
+
+/* was 15em, not always long enough */
+.dijitTextBox {
+	width: 20em;
 }
 
 .dijitDownArrowButton {
