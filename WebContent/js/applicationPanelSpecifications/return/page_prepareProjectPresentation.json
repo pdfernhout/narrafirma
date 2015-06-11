@@ -9,7 +9,7 @@
             "id": "project_presentationLabel",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "On this page you can build a presentation about your project to show to others."
+            "displayPrompt": "You can use this page to build an outline for a <strong>presentation</strong> about your project to show to others. After you finish building your outline, you can export it, open it in your word processor, format your writing, and add material from NarraFirma's final project report."
         },
         {
             "id": "project_presentationElementsList",
@@ -17,20 +17,14 @@
             "required": true,
             "displayType": "grid",
             "displayConfiguration": "panel_addPresentationElement",
-            "displayName": "Presentation elements",
-            "displayPrompt": "There are elements (points of discussion) to present about your project."
-        },
-        {
-            "id": "projectPresentation_presentationLabel",
-            "valueType": "none",
-            "displayType": "label",
-            "displayPrompt": "After you finish adding elements for your presentation, you can export the elements, open them in your word processor, and add material\nfrom any of the stage reports (or the final project report)."
+            "displayName": "Statements",
+            "displayPrompt": "These are the presentation elements you have created so far."
         },
         {
             "id": "projectPresentation_exportPresentationOutlineButton",
             "valueType": "none",
             "displayType": "button",
-            "displayPrompt": "Export these elements"
+            "displayPrompt": "Export Outline"
         }
     ]
 }

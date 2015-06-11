@@ -11,23 +11,41 @@
             "required": true,
             "displayType": "text",
             "displayName": "Name",
-            "displayPrompt": "What name would you like to give this element in your presentation?"
+            "displayPrompt": "Please give this presentation element a <strong>name</strong>."
         },
         {
-            "id": "projectPresentationElement_statement",
+            "id": "projectPresentationElement_description",
             "valueType": "string",
             "required": true,
             "displayType": "textarea",
             "displayName": "Description",
-            "displayPrompt": "How would you like to describe this element in your presentation?"
+            "displayPrompt": "<strong>Describe</strong> this presentation element. What do you want to tell people about?"
         },
         {
-            "id": "projectPresentationElement_evidence",
+            "id": "projectPresentationElement_type",
+            "valueType": "string",
+            "valueOptions": [
+            	"a background explanation about the project",
+                "a report on what happened",
+                "a project outcome",
+                "something someone said about the project",
+                "something you learned during the project",
+                "how the project affected the community",
+                "a proposal for the future",
+                "other"
+            ],
+            "required": true,
+            "displayType": "select",
+            "displayName": "Type",
+            "displayPrompt": "What <strong>type</strong> of element is this?"
+        },
+        {
+            "id": "projectPresentationElement_examples",
             "valueType": "string",
             "required": true,
             "displayType": "textarea",
-            "displayName": "Evidence",
-            "displayPrompt": "What evidence does this element present that your project met its goals?"
+            "displayName": "Examples",
+            "displayPrompt": "Here you can list some <strong>stories and/or patterns</strong> that illustrate this presentation element."
         },
         {
             "id": "projectPresentationElement_QA",
@@ -35,14 +53,14 @@
             "required": true,
             "displayType": "textarea",
             "displayName": "Q&A",
-            "displayPrompt": "What questions do you anticipate about this element, and how would you like to answer them?"
+            "displayPrompt": "What <strong>questions</strong> do you anticipate about this element? How would you like to answer them?"
         },
         {
             "id": "projectPresentationElement_notes",
             "valueType": "string",
             "displayType": "textarea",
             "displayName": "Notes",
-            "displayPrompt": "Enter any other notes you want to remember about this element as you present it."
+            "displayPrompt": "Enter any other <strong>notes</strong> you want to include about this presentation element."
         }
     ]
 }

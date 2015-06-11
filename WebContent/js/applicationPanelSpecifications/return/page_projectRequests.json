@@ -9,7 +9,7 @@
             "id": "project_returnRequestsLabel",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "On this page you can keep track of requests for help as your project winds down."
+            "displayPrompt": "On this page you can keep track of <strong>requests for help</strong> you receive as your project winds down."
         },
         {
             "id": "project_returnRequestsList",
@@ -18,7 +18,7 @@
             "displayType": "grid",
             "displayConfiguration": "panel_addNewReturnRequest",
             "displayName": "Help requests",
-            "displayPrompt": "Enter requests for help here."
+            "displayPrompt": "These are the requests you have recorded so far."
         }
     ]
 }
