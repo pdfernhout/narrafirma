@@ -10,7 +10,7 @@ Gray - [extra: e4e4e4] - d3d2d2 - a7a5a5 - 3e3739 - 231f20
 Brown - e7ddd0 - cfbba2 - b5731e - 895717
 Green - e0e6cc - b2c07f - 8db500 - 658200
 Orange - f4e0cc - eac199 - ff7d00 - cc6400
-Blue - d5dae6 - abb6ce - 3b5fab - 2e4a85
+Blue - d5dae6 - abb6ce - [extra: 7b8cb2] - 3b5fab - 2e4a85
 
 */
 
@@ -44,6 +44,10 @@ textarea, input, select { /* override because expanded in survey */
 	background-color: #b2c07f;
 	padding: 0.25em 0em 0.2em 0em;
     border-bottom: 4px solid #8db500;
+}
+
+#navigationDiv .dijitContentPane {
+	overflow: hidden; /* it was making a weird white square at the right edge of the window */
 }
 
 #narrafirma-name {
@@ -170,11 +174,27 @@ textarea, input, select { /* override because expanded in survey */
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Pages with entry fields ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-question-header {
+	display: block;
 	font-size: 1.2em;
 	font-weight: bold;
-	margin-bottom: 6px;
+	background: #abb6ce;  
+    border-radius: 12px; 
+	margin-bottom: 12px;
+	margin-top: 10px;
 }
 
+.claro .dijitContentPane .narrafirma-question-header { /* contentpane overrides the padding */
+	padding-left: 10px;
+}
+
+.narrafirma-griditempanel-editing .narrafirma-question-header { 
+	background: #7b8cb2;
+}
+ 
+.narrafirma-griditempanel-viewing .narrafirma-question-header {
+	background: #a7a5a5;
+}
+ 
 .questionExternal {
 	background: #d5dae6;
 	margin-bottom: 4px;
