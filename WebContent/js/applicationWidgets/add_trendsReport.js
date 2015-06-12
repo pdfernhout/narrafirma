@@ -4,6 +4,7 @@ define([
     "dijit/layout/ContentPane",
     // "dojox/encoding/digests/_base",
     "js/panelBuilder/standardWidgets/GridWithItemPanel",
+    "js/statistics/kendallsTau",
     "dojo/_base/lang",
     // "dojox/encoding/digests/SHA256",
     "lib/simple_statistics",
@@ -18,6 +19,7 @@ define([
     ContentPane,
     // digests,
     GridWithItemPanel,
+    kendallsTau,
     lang,
     // SHA256,
     simpleStatistics,
@@ -180,12 +182,15 @@ define([
     function calculateStatisticsForPattern(graphBrowserInstance, pattern, minStoriesForTest) {
         var graphType = pattern.graphType;
         var significance;
+        var statResult;
+        var stories = graphBrowserInstance.allStories;
+        
         if (graphType === "bar") {
         	// not calculating statistics for bar graph
         } else if (graphType === "table") {
             // TODO: Fix this
         	// TODO: test for missing patterns[1]
-            var counts = countsForFieldChoices(graphBrowserInstance.allStories, pattern.questions[0].id, pattern.questions[1].id);
+            var counts = countsForFieldChoices(stories, pattern.questions[0].id, pattern.questions[1].id);
             console.log("counts", counts);
             var values = collectValues(counts);
             console.log("values", values);
@@ -193,7 +198,7 @@ define([
             	significance = "";
             } else {
 	            // return {chi_squared: chi_squared, testSignificance: testSignificance}
-	        	var statResult = simpleStatistics.chi_squared_goodness_of_fit(values, simpleStatistics.poisson_distribution, 0.05);
+	        	statResult = simpleStatistics.chi_squared_goodness_of_fit(values, simpleStatistics.poisson_distribution, 0.05);
 	            significance = statResult.testSignificance;
         	}
         } else if (graphType === "histogram") {
@@ -203,8 +208,10 @@ define([
             // TODO: Fix this - t-test - differences between means of histograms
             significance = -1.0;
         } else if (graphType === "scatter") {
-            // TODO: Fix this - correlation 
-            significance = -1.0;
+            var data1 = collectDataForField(stories, pattern.questions[0].id);
+            var data2 = collectDataForField(stories, pattern.questions[1].id);
+            statResult = kendallsTau(data1, data2);
+            significance = statResult.prob.toFixed(4);
         } else if (graphType ===  "multiple scatter") {
             console.log("ERROR: Not suported graphType: " + graphType);
         } else {
