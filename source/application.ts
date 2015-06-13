@@ -8,7 +8,7 @@ define([
     "js/applicationWidgets/loadAllApplicationWidgets",
     "js/panelBuilder/loadAllPanelSpecifications",
     "js/navigationPane",
-    "dojo/text!js/applicationPanelSpecifications/navigation.json",
+    "dojo/text!applicationPanelSpecifications/navigation.json",
     "js/pageDisplayer",
     "js/panelBuilder/PanelBuilder",
     "js/panelBuilder/PanelSpecificationCollection",
@@ -87,7 +87,7 @@ define([
         document.body.appendChild(document.createTextNode("Startup failed! Please contact your NarraFirma hosting provider."));
         throw new Error("Unable to start due to malformed navigation.json file");
     }
-    var loadingBase = "dojo/text!js/applicationPanelSpecifications/";
+    var loadingBase = "dojo/text!applicationPanelSpecifications/";
 
     // For building panels based on field specifications
     var panelBuilder = new PanelBuilder();
