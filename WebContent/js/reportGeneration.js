@@ -1,7 +1,4 @@
-define([
-    "js/applicationWidgets/add_quizScoreResult",
-    "js/panelBuilder/translate"
-], function (add_quizScoreResult, translate) {
+define(["require", "exports", "js/applicationWidgets/add_quizScoreResult", "js/panelBuilder/translate"], function (require, exports, add_quizScoreResult, translate) {
     "use strict";
     function calculate_report(panelSpecificationCollection, model, headerPageID) {
         // TODO: Fix this function or remove it
@@ -51,6 +48,7 @@ define([
         }
         return report;
     }
+    exports.calculate_report = calculate_report;
     function labelForQuestion(question) {
         var shortName = translate(question.id + "::shortName", "");
         if (!shortName)
@@ -138,7 +136,4 @@ define([
         }
         return valueToDisplay;
     }
-    return {
-        calculate_report: calculate_report
-    };
 });

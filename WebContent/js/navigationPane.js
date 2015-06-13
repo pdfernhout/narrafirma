@@ -1,7 +1,4 @@
-define([
-    "dijit/layout/ContentPane",
-    "dojo/dom-construct"
-], function (ContentPane, domConstruct) {
+define(["require", "exports", "dijit/layout/ContentPane", "dojo/dom-construct"], function (require, exports, ContentPane, domConstruct) {
     "use strict";
     // TODO: Add page validation
     // Navigation widgets
@@ -32,6 +29,7 @@ define([
         domConstruct.place('<a id="narrafirma-help-link" href="javascript:narrafirma_helpClicked()">(Help)</a>', pageControlsPane.domNode);
         return pageControlsPane;
     }
+    exports.createNavigationPane = createNavigationPane;
     function htmlForBreadcrumb(pageIdentifier, pageName) {
         return '<a href="javascript:narrafirma_openPage(\'' + pageIdentifier + '\')">' + pageName + '</a>';
     }
@@ -56,12 +54,9 @@ define([
         html += '<span id="narrafirma-breadcrumb-current">' + pageSpecification.displayName + '</span>';
         breadcrumbsSpan.innerHTML = '<span id="narafirma-breadcrumbs">' + html + '</span>';
     }
+    exports.setCurrentPageSpecification = setCurrentPageSpecification;
     function getCurrentPageSpecification() {
         return currentPageSpecification;
     }
-    return {
-        createNavigationPane: createNavigationPane,
-        setCurrentPageSpecification: setCurrentPageSpecification,
-        getCurrentPageSpecification: getCurrentPageSpecification
-    };
+    exports.getCurrentPageSpecification = getCurrentPageSpecification;
 });

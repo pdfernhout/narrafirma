@@ -1,11 +1,4 @@
-define([
-    "lib/d3/d3",
-    "dojox/uuid/generateRandomUuid",
-    "js/questionnaireGeneration",
-    "js/surveyCollection",
-    "js/surveyStorage",
-    "dojo/domReady!"
-], function (d3, generateRandomUuid, questionnaireGeneration, surveyCollection, surveyStorage) {
+define(["require", "exports", "lib/d3/d3", "dojox/uuid/generateRandomUuid", "js/questionnaireGeneration", "js/surveyCollection", "js/surveyStorage"], function (require, exports, d3, generateRandomUuid, questionnaireGeneration, surveyCollection, surveyStorage) {
     "use strict";
     // TODO: Fix big kludge of this module level variable across the app!
     var lastQuestionnaireUploaded = null;
@@ -13,6 +6,7 @@ define([
     function initialize(theProject) {
         project = theProject;
     }
+    exports.initialize = initialize;
     function processCSVContents(contents, callbackForItem) {
         console.log("processCSVContents contents", contents);
         var rows = d3.csv.parseRows(contents);
@@ -288,12 +282,9 @@ define([
             return alert("You need to import a story form before you can import story data into a collection.");
         chooseCSVFileToImport(processCSVContentsForStories);
     }
+    exports.importCSVStories = importCSVStories;
     function importCSVQuestionnaire() {
         chooseCSVFileToImport(processCSVContentsForQuestionnaire);
     }
-    return {
-        initialize: initialize,
-        importCSVStories: importCSVStories,
-        importCSVQuestionnaire: importCSVQuestionnaire
-    };
+    exports.importCSVQuestionnaire = importCSVQuestionnaire;
 });

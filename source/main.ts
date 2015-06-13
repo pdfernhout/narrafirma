@@ -1,5 +1,4 @@
-require(["js/application"], function(application) {
-    "use strict";
+import application = require("./application");
 
-    application.initialize();
-});
+"use strict";
+application.initialize();

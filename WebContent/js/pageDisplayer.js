@@ -1,11 +1,4 @@
-define([
-    "dijit/layout/ContentPane",
-    "dojo/dom-class",
-    "dojo/dom-construct",
-    "dojo/dom-style",
-    "js/navigationPane",
-    "dojox/widget/Standby"
-], function (ContentPane, domClass, domConstruct, domStyle, navigationPane, Standby) {
+define(["require", "exports", "dijit/layout/ContentPane", "dojo/dom-class", "dojo/dom-construct", "dojo/dom-style", "js/navigationPane", "dojox/widget/Standby"], function (require, exports, ContentPane, domClass, domConstruct, domStyle, navigationPane, Standby) {
     "use strict";
     // For tracking what page the application is on
     var currentPageID = null;
@@ -27,6 +20,7 @@ define([
         document.body.appendChild(standby.domNode);
         standby.startup();
     }
+    exports.configurePageDisplayer = configurePageDisplayer;
     function startStandby() {
         // Start standby if the data load is taking longer then standbyStartWait_ms time
         standbyStartTimer = window.setTimeout(function () {
@@ -122,6 +116,7 @@ define([
         finishShowingPage(pageID, pageSpecification);
         // TODO: What if standby reset fails for some reasonn?
     }
+    exports.showPage = showPage;
     function finishShowingPage(pageID, pageSpecification) {
         // Show the current page again
         domStyle.set("pageDiv", "display", "block");
@@ -168,13 +163,9 @@ define([
     function getCurrentPageID() {
         return currentPageID;
     }
+    exports.getCurrentPageID = getCurrentPageID;
     function getCurrentPageWidgets() {
         return currentPageWidgets;
     }
-    return {
-        configurePageDisplayer: configurePageDisplayer,
-        showPage: showPage,
-        getCurrentPageID: getCurrentPageID,
-        getCurrentPageWidgets: getCurrentPageWidgets
-    };
+    exports.getCurrentPageWidgets = getCurrentPageWidgets;
 });

@@ -1,22 +1,11 @@
-define([
-    "js/panelBuilder/browser",
-    "js/csvImportExport",
-    "dijit/Dialog",
-    "js/panelBuilder/dialogSupport",
-    "js/navigationPane",
-    "js/pageDisplayer",
-    "js/questionnaireGeneration",
-    "js/surveyBuilderMithril",
-    "js/surveyCollection",
-    "js/surveyStorage",
-    "js/panelBuilder/translate",
-    "dojo/domReady!"
-], function (browser, csvImportExport, Dialog, dialogSupport, navigationPane, pageDisplayer, questionnaireGeneration, surveyBuilder, surveyCollection, surveyStorage, translate) {
+define(["require", "exports", "js/panelBuilder/browser", "js/csvImportExport", "dijit/Dialog", "js/panelBuilder/dialogSupport", "js/navigationPane", "js/pageDisplayer", "js/questionnaireGeneration", "js/surveyBuilderMithril", "js/surveyCollection", "js/surveyStorage", "js/panelBuilder/translate"], function (require, exports, browser, csvImportExport, Dialog, dialogSupport, navigationPane, pageDisplayer, questionnaireGeneration, surveyBuilder, surveyCollection, surveyStorage, translate) {
     "use strict";
     var project;
+    // Call this to set up the project or other needed data
     function initialize(theProject) {
         project = theProject;
     }
+    exports.initialize = initialize;
     function helpButtonClicked() {
         var pageSpecification = navigationPane.getCurrentPageSpecification();
         console.log("helpButtonClicked", pageSpecification);
@@ -28,6 +17,7 @@ define([
         console.log("opening help url", helpURL);
         browser.launchApplication(helpURL, 'help');
     }
+    exports.helpButtonClicked = helpButtonClicked;
     function importButtonClicked(projectDefinitionText, hideDialogMethod) {
         console.log("importButtonClicked", projectDefinitionText);
         throw new Error("No longer working due to ongoing refactoring for current page model");
@@ -92,11 +82,13 @@ define([
     function copyStoryFormURL() {
         alert("Story form URL is: " + "http://localhost:8080/survey.html");
     }
+    exports.copyStoryFormURL = copyStoryFormURL;
     function guiOpenSection(contentPane, model, fieldSpecification, value) {
         var section = fieldSpecification.displayConfiguration.section;
         console.log("guiOpenSection", section, fieldSpecification);
         pageDisplayer.showPage(section);
     }
+    exports.guiOpenSection = guiOpenSection;
     function generateHTMLForQuestionnaire(questionnaire) {
         // CFK started on this, but it should be finished with the mithril thing so not finishing
         var output = "";
@@ -191,6 +183,7 @@ define([
         // outputLabel.set("content", output);
         printHTML(output);
     }
+    exports.printStoryForm = printStoryForm;
     function printHTML(htmlToPrint) {
         var w = window.open();
         w.document.write(htmlToPrint);
@@ -229,9 +222,11 @@ define([
         var message = template.replace("{{copiedAnswersCount}}", copiedAnswersCount);
         alert(message);
     }
+    exports.copyDraftPNIQuestionVersionsIntoAnswers = copyDraftPNIQuestionVersionsIntoAnswers;
     function logoutButtonClicked() {
         window.location.href = "/logout";
     }
+    exports.logoutButtonClicked = logoutButtonClicked;
     /*
     function previewQuestionForm(contentPane, model, fieldSpecification) {
         console.log("previewQuestionForm", model);
@@ -251,23 +246,13 @@ define([
         window.narraFirma_previewQuestionnaire = questionnaire;
         var w = window.open("survey.html#preview=" + (new Date().toISOString()), "_blank");
     }
-    return {
-        // Call this to set up the project or other needed data
-        initialize: initialize,
-        printStoryForm: printStoryForm,
-        copyDraftPNIQuestionVersionsIntoAnswers: copyDraftPNIQuestionVersionsIntoAnswers,
-        loadLatestStoriesFromServer: surveyCollection.loadLatestStoriesFromServer,
-        enterSurveyResult: openSurveyDialog,
-        toggleWebActivationOfSurvey: surveyCollection.toggleWebActivationOfSurvey,
-        storyCollectionStop: surveyCollection.storyCollectionStop,
-        copyStoryFormURL: copyStoryFormURL,
-        guiOpenSection: guiOpenSection,
-        importCSVQuestionnaire: csvImportExport.importCSVQuestionnaire,
-        importCSVStories: csvImportExport.importCSVStories,
-        previewQuestionForm: previewQuestionForm,
-        // Called directly from application
-        importExportOld: importExportClicked,
-        helpButtonClicked: helpButtonClicked,
-        logoutButtonClicked: logoutButtonClicked
-    };
+    exports.previewQuestionForm = previewQuestionForm;
+    exports.loadLatestStoriesFromServer = surveyCollection.loadLatestStoriesFromServer;
+    exports.enterSurveyResult = openSurveyDialog;
+    exports.toggleWebActivationOfSurvey = surveyCollection.toggleWebActivationOfSurvey;
+    exports.storyCollectionStop = surveyCollection.storyCollectionStop;
+    exports.importCSVQuestionnaire = csvImportExport.importCSVQuestionnaire;
+    exports.importCSVStories = csvImportExport.importCSVStories;
+    // Called directly from application
+    exports.importExportOld = importExportClicked;
 });

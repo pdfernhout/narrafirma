@@ -1,28 +1,4 @@
-define([
-    "dojo/i18n!js/nls/applicationMessages",
-    "js/buttonActions",
-    "js/csvImportExport",
-    "js/panelBuilder/dialogSupport",
-    "dojo/dom-construct",
-    "dojo/hash",
-    "js/applicationWidgets/loadAllApplicationWidgets",
-    "js/panelBuilder/loadAllPanelSpecifications",
-    "js/navigationPane",
-    "dojo/text!applicationPanelSpecifications/navigation.json",
-    "js/pageDisplayer",
-    "js/panelBuilder/PanelBuilder",
-    "js/panelBuilder/PanelSpecificationCollection",
-    "js/pointrel20150417/PointrelClient",
-    "js/Project",
-    "js/questionnaireGeneration",
-    "dojo/Stateful",
-    "js/surveyCollection",
-    "js/panelBuilder/toaster",
-    "dijit/Tooltip",
-    "dojo/topic",
-    "js/panelBuilder/translate",
-    "dojo/domReady!"
-], function (applicationMessages, buttonActions, csvImportExport, dialogSupport, domConstruct, hash, loadAllApplicationWidgets, loadAllPanelSpecifications, navigationPane, navigationJSONText, pageDisplayer, PanelBuilder, PanelSpecificationCollection, PointrelClient, Project, questionnaireGeneration, Stateful, surveyCollection, toaster, Tooltip, topic, translate) {
+define(["require", "exports", "dojo/i18n!js/nls/applicationMessages", "./buttonActions", "js/csvImportExport", "js/panelBuilder/dialogSupport", "dojo/dom-construct", "dojo/hash", "js/applicationWidgets/loadAllApplicationWidgets", "js/panelBuilder/loadAllPanelSpecifications", "js/navigationPane", "dojo/text!applicationPanelSpecifications/navigation.json", "js/pageDisplayer", "js/panelBuilder/PanelBuilder", "js/panelBuilder/PanelSpecificationCollection", "js/pointrel20150417/PointrelClient", "js/Project", "js/questionnaireGeneration", "dojo/Stateful", "js/surveyCollection", "js/panelBuilder/toaster", "dijit/Tooltip", "dojo/topic", "js/panelBuilder/translate"], function (require, exports, applicationMessages, buttonActions, csvImportExport, dialogSupport, domConstruct, hash, loadAllApplicationWidgets, loadAllPanelSpecifications, navigationPane, navigationJSONText, pageDisplayer, PanelBuilder, PanelSpecificationCollection, PointrelClient, Project, questionnaireGeneration, Stateful, surveyCollection, toaster, Tooltip, topic, translate) {
     "use strict";
     // TODO: Add page validation
     var narrafirmaProjectPrefix = "NarraFirmaProject-";
@@ -516,6 +492,7 @@ define([
             chooseAProjectToOpen(response.userIdentifier, projects);
         });
     }
+    exports.initialize = initialize;
     function chooseAProjectToOpen(userIdentifierFromServer, projects) {
         translate.configure({}, applicationMessages);
         // Initialize toaster
@@ -621,37 +598,34 @@ define([
                 if (!hasUnsavedChangesForCurrentPage()) return null;
                     
                 var confirmationMessage = "You have unsaved changes";
-
+    
                 (e || window.event).returnValue = confirmationMessage;     // Gecko and Trident
                 return confirmationMessage;
                 */ // Gecko and WebKit
             });
         });
     }
-    /* TODO: Check time? Or ensure topic timestamps are set by server?
-    // TODO: this is not needed by apps that only use application-specific server APIs directly
-    function setup() {
-        console.log("Using pointrel20141201");
-        var currentLocalTimestamp = new Date().toISOString();
-        var currentLocalTimestampMinusTenSeconds = new Date(new Date().getTime() - 10000).toISOString();
-        pointrel20141201Client.getServerStatus(function (error, serverResponse) {
-            if (error) {
-                // TODO: translate
-                var message = "Problem checking server status so application may not work correctly if server is unavailable: " + error;
-                console.log("ERROR", error);
-                console.log(message);
-                alert(message);
-                return;
-            }
-            console.log("Server response at: " + currentLocalTimestamp + " is: " + JSON.stringify(serverResponse), serverResponse);
-            if (serverResponse.currentTimestamp < currentLocalTimestampMinusTenSeconds) {
-                // TODO: Translate
-                alert("The server unexpectedly responded with a time more than ten seconds earlier than this PC's time when the server's status was requested at " + currentLocalTimestamp + ".\nPlease check your PC's clock for accuracy, or contact the server administrator if your PC's clock is accurate.\n" + JSON.stringify(serverResponse));
-            }
-        });
-    }
-    */
-    return {
-        initialize: initialize
-    };
 });
+/* TODO: Check time? Or ensure topic timestamps are set by server?
+// TODO: this is not needed by apps that only use application-specific server APIs directly
+function setup() {
+    console.log("Using pointrel20141201");
+    var currentLocalTimestamp = new Date().toISOString();
+    var currentLocalTimestampMinusTenSeconds = new Date(new Date().getTime() - 10000).toISOString();
+    pointrel20141201Client.getServerStatus(function (error, serverResponse) {
+        if (error) {
+            // TODO: translate
+            var message = "Problem checking server status so application may not work correctly if server is unavailable: " + error;
+            console.log("ERROR", error);
+            console.log(message);
+            alert(message);
+            return;
+        }
+        console.log("Server response at: " + currentLocalTimestamp + " is: " + JSON.stringify(serverResponse), serverResponse);
+        if (serverResponse.currentTimestamp < currentLocalTimestampMinusTenSeconds) {
+            // TODO: Translate
+            alert("The server unexpectedly responded with a time more than ten seconds earlier than this PC's time when the server's status was requested at " + currentLocalTimestamp + ".\nPlease check your PC's clock for accuracy, or contact the server administrator if your PC's clock is accurate.\n" + JSON.stringify(serverResponse));
+        }
+    });
+}
+*/ 

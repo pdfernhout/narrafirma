@@ -1,4 +1,4 @@
-define(["dojox/html/entities"], function (entities) {
+define(["require", "exports", "dojox/html/entities"], function (require, exports, entities) {
     "use strict";
     function wrap(elementType, cssClass, text) {
         return '<' + elementType + ' class="' + cssClass + '">' + text + '</' + elementType + '>';
@@ -121,7 +121,5 @@ define(["dojox/html/entities"], function (entities) {
         var storyCardContent = wrap("div", "narrafirma-story-card-story-title", storyName) + "<br>" + wrap("div", "narrafirma-story-card-story-text", storyText + "<br>" + otherFields + "<hr>" + textForElicitingQuestion);
         return storyCardContent;
     }
-    return {
-        generateStoryCardContent: generateStoryCardContent
-    };
+    exports.generateStoryCardContent = generateStoryCardContent;
 });

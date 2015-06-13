@@ -1,89 +1,78 @@
-define([
-    "dijit/layout/ContentPane",
-    "dojo/dom-construct"
-], function(
-    ContentPane,
-    domConstruct
-) {
-    "use strict";
+import ContentPane = require("dijit/layout/ContentPane");
+import domConstruct = require("dojo/dom-construct");
 
-    // TODO: Add page validation
+"use strict";
 
-    // Navigation widgets
-    var navigationPane;
-    var pageControlsPane;
-    var breadcrumbsSpan;
+// TODO: Add page validation
 
-    var pageDisplayer;
-    var panelSpecificationCollection;
-    var startPage;
-    
-    var currentSectionID;
-    var currentPageSpecification;
+// Navigation widgets
+var navigationPane;
+var pageControlsPane;
+var breadcrumbsSpan;
 
-    function createNavigationPane(thePageDisplayer, thePanelSpecificationCollection, theStartPage) {
-        console.log("thePageDisplayer", thePageDisplayer);
-        pageDisplayer = thePageDisplayer;
-        panelSpecificationCollection = thePanelSpecificationCollection;
-        startPage = theStartPage;
+var pageDisplayer;
+var panelSpecificationCollection;
+var startPage;
 
-        // Startup needs to be called here to ensure a top level content pane is started
-        navigationPane = new ContentPane({}, "navigationDiv");
-        navigationPane.startup();
+var currentSectionID;
+var currentPageSpecification;
 
-        // Any items like buttons added to the navigationPane will have startup() called automatically,
-        // since the navigationPane they are being added to has already been started
+export function createNavigationPane(thePageDisplayer, thePanelSpecificationCollection, theStartPage) {
+    console.log("thePageDisplayer", thePageDisplayer);
+    pageDisplayer = thePageDisplayer;
+    panelSpecificationCollection = thePanelSpecificationCollection;
+    startPage = theStartPage;
 
-        // Document controls
+    // Startup needs to be called here to ensure a top level content pane is started
+    navigationPane = new ContentPane({}, "navigationDiv");
+    navigationPane.startup();
 
-        // Page controls
+    // Any items like buttons added to the navigationPane will have startup() called automatically,
+    // since the navigationPane they are being added to has already been started
 
-        pageControlsPane = new ContentPane();
-        pageControlsPane.placeAt(navigationPane, "last");
+    // Document controls
 
-        domConstruct.place('<span id="narrafirma-name">NarraFirma&#0153;</span>', pageControlsPane.domNode);
-            
-        breadcrumbsSpan = domConstruct.place('<span id="narrafirma-breadcrumbs"><a href="javascript:narrafirma_openPage(\'page_dashboard\')">Home</a></span>', pageControlsPane.domNode);
+    // Page controls
 
-        domConstruct.place('<a id="narrafirma-help-link" href="javascript:narrafirma_helpClicked()">(Help)</a>', pageControlsPane.domNode);
+    pageControlsPane = new ContentPane();
+    pageControlsPane.placeAt(navigationPane, "last");
+
+    domConstruct.place('<span id="narrafirma-name">NarraFirma&#0153;</span>', pageControlsPane.domNode);
         
-        return pageControlsPane;
-    }
+    breadcrumbsSpan = domConstruct.place('<span id="narrafirma-breadcrumbs"><a href="javascript:narrafirma_openPage(\'page_dashboard\')">Home</a></span>', pageControlsPane.domNode);
 
-    function htmlForBreadcrumb(pageIdentifier, pageName) {
-        return '<a href="javascript:narrafirma_openPage(\'' + pageIdentifier + '\')">' + pageName + '</a>';
-    }
-
-    function setCurrentPageSpecification(pageID, pageSpecification) {
-        if (pageSpecification === currentPageSpecification) return;
-
-        currentPageSpecification = pageSpecification;
-
-        // Update breadcrumbs
-        console.log("breadcrumbsSpan", breadcrumbsSpan);
-        var html = "";
-        if (pageID !== startPage) {
-            html = htmlForBreadcrumb(startPage, "Home");
-            html += " > ";
-            console.log("pageSpecification", pageSpecification);
-            // TODO: Should lookup name of section
-            if (!pageSpecification.isHeader) {
-                var sectionPageSpecification = panelSpecificationCollection.getPageSpecificationForPageID("page_" + pageSpecification.section);
-                html += htmlForBreadcrumb(sectionPageSpecification.id, sectionPageSpecification.displayName);
-                html += " > ";
-            }
-        }
-        html += '<span id="narrafirma-breadcrumb-current">' + pageSpecification.displayName + '</span>';
-        breadcrumbsSpan.innerHTML = '<span id="narafirma-breadcrumbs">' + html + '</span>';
-    }
+    domConstruct.place('<a id="narrafirma-help-link" href="javascript:narrafirma_helpClicked()">(Help)</a>', pageControlsPane.domNode);
     
-    function getCurrentPageSpecification() {
-        return currentPageSpecification;
-    }
+    return pageControlsPane;
+}
 
-    return {
-        createNavigationPane: createNavigationPane,
-        setCurrentPageSpecification: setCurrentPageSpecification,
-        getCurrentPageSpecification: getCurrentPageSpecification
-    };
-});
+function htmlForBreadcrumb(pageIdentifier, pageName) {
+    return '<a href="javascript:narrafirma_openPage(\'' + pageIdentifier + '\')">' + pageName + '</a>';
+}
+
+export function setCurrentPageSpecification(pageID, pageSpecification) {
+    if (pageSpecification === currentPageSpecification) return;
+
+    currentPageSpecification = pageSpecification;
+
+    // Update breadcrumbs
+    console.log("breadcrumbsSpan", breadcrumbsSpan);
+    var html = "";
+    if (pageID !== startPage) {
+        html = htmlForBreadcrumb(startPage, "Home");
+        html += " > ";
+        console.log("pageSpecification", pageSpecification);
+        // TODO: Should lookup name of section
+        if (!pageSpecification.isHeader) {
+            var sectionPageSpecification = panelSpecificationCollection.getPageSpecificationForPageID("page_" + pageSpecification.section);
+            html += htmlForBreadcrumb(sectionPageSpecification.id, sectionPageSpecification.displayName);
+            html += " > ";
+        }
+    }
+    html += '<span id="narrafirma-breadcrumb-current">' + pageSpecification.displayName + '</span>';
+    breadcrumbsSpan.innerHTML = '<span id="narafirma-breadcrumbs">' + html + '</span>';
+}
+
+export function getCurrentPageSpecification() {
+    return currentPageSpecification;
+}

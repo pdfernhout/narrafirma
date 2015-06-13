@@ -1,13 +1,4 @@
-require([
-    "js/panelBuilder/toaster",
-    "dijit/layout/ContentPane",
-    "dojox/mvc/getPlainValue",
-    "js/panelBuilder/PanelBuilder",
-    "js/panelBuilder/PanelSpecificationCollection",
-    "js/pointrel20150417/PointrelClient",
-    "dojo/Stateful",
-    "dojo/domReady!"
-], function (toaster, ContentPane, getPlainValue, PanelBuilder, PanelSpecificationCollection, PointrelClient, Stateful) {
+define(["require", "exports", "js/panelBuilder/toaster", "dijit/layout/ContentPane", "dojox/mvc/getPlainValue", "js/panelBuilder/PanelBuilder", "js/panelBuilder/PanelSpecificationCollection", "js/pointrel20150417/PointrelClient", "dojo/Stateful"], function (require, exports, toaster, ContentPane, getPlainValue, PanelBuilder, PanelSpecificationCollection, PointrelClient, Stateful) {
     "use strict";
     var journalIdentifier = "NarraFirma-administration";
     var projectAdministrationTopic = "ProjectAdministration";

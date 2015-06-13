@@ -1,6 +1,6 @@
-define([
-], function () {
-    "use strict";
+// TODO: Ensure use strict wrapped in funciton
+"use strict";
+define(["require", "exports"], function (require, exports) {
     function ensureUniqueQuestionIDs(usedIDs, editorQuestions) {
         for (var index in editorQuestions) {
             var editorQuestion = editorQuestions[index];
@@ -142,6 +142,7 @@ define([
         }
         return null;
     }
+    exports.findStoryCollection = findStoryCollection;
     // TODO: How to save the fact we have exported this in the project? Make a copy??? Or keep original in document somewhere? Versus what is returned from server for surveys?
     function buildQuestionnaire(project, shortName) {
         // TODO: Redo for if questionnaire template is made of triples
@@ -151,6 +152,7 @@ define([
         console.log("questionnaireTemplate", questionnaireTemplate);
         return buildQuestionnaireFromTemplate(project, questionnaireTemplate);
     }
+    exports.buildQuestionnaire = buildQuestionnaire;
     function buildQuestionnaireFromTemplate(project, questionnaireTemplate) {
         var usedIDs = {};
         usedIDs.__createdIDCount = 0;
@@ -189,6 +191,7 @@ define([
         console.log("buildQuestionnaire result", questionnaire);
         return questionnaire;
     }
+    exports.buildQuestionnaireFromTemplate = buildQuestionnaireFromTemplate;
     function ensureAtLeastOneElicitingQuestion(questionnaire) {
         // TODO: How to prevent this potential problem of no eliciting questions during questionnaire design in GUI?
         if (questionnaire.elicitingQuestions.length === 0) {
@@ -204,10 +207,5 @@ define([
             questionnaire.elicitingQuestions.push(testElicitingQuestionInfo);
         }
     }
-    return {
-        findStoryCollection: findStoryCollection,
-        buildQuestionnaire: buildQuestionnaire,
-        buildQuestionnaireFromTemplate: buildQuestionnaireFromTemplate,
-        ensureAtLeastOneElicitingQuestion: ensureAtLeastOneElicitingQuestion
-    };
+    exports.ensureAtLeastOneElicitingQuestion = ensureAtLeastOneElicitingQuestion;
 });

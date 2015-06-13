@@ -1,8 +1,4 @@
-define([
-    "dojox/uuid/generateRandomUuid",
-    "dojo/_base/lang",
-    "lib/mithril/mithril"
-], function (generateRandomUuid, lang, m) {
+define(["require", "exports", "dojox/uuid/generateRandomUuid", "dojo/_base/lang", "lib/mithril/mithril"], function (require, exports, generateRandomUuid, lang, m) {
     "use strict";
     // Accessibility References:
     // http://usabilitygeek.com/10-free-web-based-web-site-accessibility-evaluation-tools/
@@ -26,7 +22,6 @@ define([
      X After survey is sent, make the form read-only somehow
      X Accessibility [at least the basics]
      */
-    /* global m */
     function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewMode) {
         console.log("buildSurveyForm questions", questionnaire);
         var startText = questionnaire.startText;
@@ -471,7 +466,5 @@ define([
         };
         redraw();
     }
-    return {
-        buildSurveyForm: buildSurveyForm
-    };
+    exports.buildSurveyForm = buildSurveyForm;
 });

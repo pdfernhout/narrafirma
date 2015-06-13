@@ -1,10 +1,4 @@
-define([
-    "dojo/_base/lang",
-    "js/pointrel20150417/PointrelClient",
-    "dojo/Stateful",
-    "js/surveyCollection",
-    "js/pointrel20150417/TripleStore"
-], function (lang, PointrelClient, Stateful, surveyCollection, TripleStore) {
+define(["require", "exports", "dojo/_base/lang", "js/pointrel20150417/PointrelClient", "dojo/Stateful", "js/surveyCollection", "js/pointrel20150417/TripleStore"], function (require, exports, lang, PointrelClient, Stateful, surveyCollection, TripleStore) {
     "use strict";
     var serverURL = "/api/pointrel20150417";
     // TODO: Rethink this as a more general way to watch models within the project (so, with arbitrary object IDs, not just the project ID)

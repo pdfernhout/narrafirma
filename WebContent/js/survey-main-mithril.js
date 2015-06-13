@@ -1,11 +1,4 @@
-require([
-    "dojo/dom",
-    "dojo/hash",
-    "js/pointrel20150417/PointrelClient",
-    "js/surveyBuilderMithril",
-    "js/surveyStorage",
-    "dojo/domReady!"
-], function (dom, hash, PointrelClient, surveyBuilder, surveyStorage) {
+define(["require", "exports", "dojo/dom", "dojo/hash", "js/pointrel20150417/PointrelClient", "js/surveyBuilderMithril", "js/surveyStorage"], function (require, exports, dom, hash, PointrelClient, surveyBuilder, surveyStorage) {
     "use strict";
     /* global m */
     // http://localhost:8080/survey.html#project=test1&survey=one
