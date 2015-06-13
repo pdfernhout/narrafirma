@@ -1,5 +1,5 @@
 build.path.exportedFolder=
-build.path.sourceFolder=source
+build.path.sourceFolder=WebContent/source
 compiler.codeGenTarget=ECMASCRIPT5
 compiler.compileOnSave=true
 compiler.generateDeclarationFiles=false
