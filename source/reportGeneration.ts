@@ -1,5 +1,5 @@
-import add_quizScoreResult = require("js/applicationWidgets/add_quizScoreResult");
-import translate = require("js/panelBuilder/translate");
+import add_quizScoreResult = require("./applicationWidgets/add_quizScoreResult");
+import translate = require("./panelBuilder/translate");
 
 "use strict";
 

@@ -1,8 +1,8 @@
 import lang = require("dojo/_base/lang");
-import PointrelClient = require("js/pointrel20150417/PointrelClient");
+import PointrelClient = require("./pointrel20150417/PointrelClient");
 import Stateful = require("dojo/Stateful");
-import surveyCollection = require("js/surveyCollection");
-import TripleStore = require("js/pointrel20150417/TripleStore");
+import surveyCollection = require("./surveyCollection");
+import TripleStore = require("./pointrel20150417/TripleStore");
 
 "use strict";
 

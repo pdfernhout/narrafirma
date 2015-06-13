@@ -1,14 +1,14 @@
-import browser = require("js/panelBuilder/browser");
-import csvImportExport = require("js/csvImportExport");
+import browser = require("./panelBuilder/browser");
+import csvImportExport = require("./csvImportExport");
 import Dialog = require("dijit/Dialog");
-import dialogSupport = require("js/panelBuilder/dialogSupport");
-import navigationPane = require("js/navigationPane");
-import pageDisplayer = require("js/pageDisplayer");
-import questionnaireGeneration = require("js/questionnaireGeneration");
-import surveyBuilder = require("js/surveyBuilderMithril");
-import surveyCollection = require("js/surveyCollection");
-import surveyStorage = require("js/surveyStorage");
-import translate = require("js/panelBuilder/translate");
+import dialogSupport = require("./panelBuilder/dialogSupport");
+import navigationPane = require("./navigationPane");
+import pageDisplayer = require("./pageDisplayer");
+import questionnaireGeneration = require("./questionnaireGeneration");
+import surveyBuilder = require("./surveyBuilderMithril");
+import surveyCollection = require("./surveyCollection");
+import surveyStorage = require("./surveyStorage");
+import translate = require("./panelBuilder/translate");
 
 "use strict";
 

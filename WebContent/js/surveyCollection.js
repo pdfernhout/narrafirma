@@ -1,4 +1,4 @@
-define(["require", "exports", "dojo/_base/array", "js/questionnaireGeneration", "dojo/topic", "js/panelBuilder/translate"], function (require, exports, array, questionnaireGeneration, topic, translate) {
+define(["require", "exports", "dojo/_base/array", "./questionnaireGeneration", "dojo/topic", "./panelBuilder/translate"], function (require, exports, array, questionnaireGeneration, topic, translate) {
     "use strict";
     var project;
     function setProject(theProject) {

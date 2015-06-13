@@ -1,4 +1,4 @@
-define(["require", "exports", "dijit/layout/ContentPane", "dojo/dom-class", "dojo/dom-construct", "dojo/dom-style", "js/navigationPane", "dojox/widget/Standby"], function (require, exports, ContentPane, domClass, domConstruct, domStyle, navigationPane, Standby) {
+define(["require", "exports", "dijit/layout/ContentPane", "dojo/dom-class", "dojo/dom-construct", "dojo/dom-style", "./navigationPane", "dojox/widget/Standby"], function (require, exports, ContentPane, domClass, domConstruct, domStyle, navigationPane, Standby) {
     "use strict";
     // For tracking what page the application is on
     var currentPageID = null;

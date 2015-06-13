@@ -1,4 +1,4 @@
-define(["require", "exports", "js/applicationWidgets/add_quizScoreResult", "js/panelBuilder/translate"], function (require, exports, add_quizScoreResult, translate) {
+define(["require", "exports", "./applicationWidgets/add_quizScoreResult", "./panelBuilder/translate"], function (require, exports, add_quizScoreResult, translate) {
     "use strict";
     function calculate_report(panelSpecificationCollection, model, headerPageID) {
         // TODO: Fix this function or remove it

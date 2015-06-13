@@ -1,8 +1,8 @@
 import dom = require("dojo/dom");
 import hash = require("dojo/hash");
-import PointrelClient = require("js/pointrel20150417/PointrelClient");
-import surveyBuilder = require("js/surveyBuilderMithril");
-import surveyStorage = require("js/surveyStorage");
+import PointrelClient = require("./pointrel20150417/PointrelClient");
+import surveyBuilder = require("./surveyBuilderMithril");
+import surveyStorage = require("./surveyStorage");
 
 "use strict";
 

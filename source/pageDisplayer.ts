@@ -2,7 +2,7 @@ import ContentPane = require("dijit/layout/ContentPane");
 import domClass = require("dojo/dom-class");
 import domConstruct = require("dojo/dom-construct");
 import domStyle = require("dojo/dom-style");
-import navigationPane = require("js/navigationPane");
+import navigationPane = require("./navigationPane");
 import Standby = require("dojox/widget/Standby");
 
 "use strict";

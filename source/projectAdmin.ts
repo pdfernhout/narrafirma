@@ -1,9 +1,9 @@
-import toaster = require("js/panelBuilder/toaster");
+import toaster = require("./panelBuilder/toaster");
 import ContentPane = require("dijit/layout/ContentPane");
 import getPlainValue = require("dojox/mvc/getPlainValue");
-import PanelBuilder = require("js/panelBuilder/PanelBuilder");
-import PanelSpecificationCollection = require("js/panelBuilder/PanelSpecificationCollection");
-import PointrelClient = require("js/pointrel20150417/PointrelClient");
+import PanelBuilder = require("./panelBuilder/PanelBuilder");
+import PanelSpecificationCollection = require("./panelBuilder/PanelSpecificationCollection");
+import PointrelClient = require("./pointrel20150417/PointrelClient");
 import Stateful = require("dojo/Stateful");
 
 "use strict";

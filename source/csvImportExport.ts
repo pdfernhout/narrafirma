@@ -1,8 +1,8 @@
 import d3 = require("lib/d3/d3");
 import generateRandomUuid = require("dojox/uuid/generateRandomUuid");
-import questionnaireGeneration = require("js/questionnaireGeneration");
-import surveyCollection = require("js/surveyCollection");
-import surveyStorage = require("js/surveyStorage");
+import questionnaireGeneration = require("./questionnaireGeneration");
+import surveyCollection = require("./surveyCollection");
+import surveyStorage = require("./surveyStorage");
 
 "use strict";
 

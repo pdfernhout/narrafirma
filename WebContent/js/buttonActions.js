@@ -1,4 +1,4 @@
-define(["require", "exports", "js/panelBuilder/browser", "js/csvImportExport", "dijit/Dialog", "js/panelBuilder/dialogSupport", "js/navigationPane", "js/pageDisplayer", "js/questionnaireGeneration", "js/surveyBuilderMithril", "js/surveyCollection", "js/surveyStorage", "js/panelBuilder/translate"], function (require, exports, browser, csvImportExport, Dialog, dialogSupport, navigationPane, pageDisplayer, questionnaireGeneration, surveyBuilder, surveyCollection, surveyStorage, translate) {
+define(["require", "exports", "./panelBuilder/browser", "./csvImportExport", "dijit/Dialog", "./panelBuilder/dialogSupport", "./navigationPane", "./pageDisplayer", "./questionnaireGeneration", "./surveyBuilderMithril", "./surveyCollection", "./surveyStorage", "./panelBuilder/translate"], function (require, exports, browser, csvImportExport, Dialog, dialogSupport, navigationPane, pageDisplayer, questionnaireGeneration, surveyBuilder, surveyCollection, surveyStorage, translate) {
     "use strict";
     var project;
     // Call this to set up the project or other needed data

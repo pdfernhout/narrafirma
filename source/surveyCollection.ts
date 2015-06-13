@@ -1,7 +1,7 @@
 import array = require("dojo/_base/array");
-import questionnaireGeneration = require("js/questionnaireGeneration");
+import questionnaireGeneration = require("./questionnaireGeneration");
 import topic = require("dojo/topic");
-import translate = require("js/panelBuilder/translate");
+import translate = require("./panelBuilder/translate");
 
 "use strict";
     
