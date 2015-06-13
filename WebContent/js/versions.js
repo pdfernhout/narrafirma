@@ -1,8 +1,7 @@
-define([
-], function () {
-    "use strict";
+"use strict";
+define(["require", "exports"], function (require, exports) {
     // Return current versions used by application  
-    return {
+    var versions = {
         projectAnswersContentType: "org.workingwithstories.PNIWorkbook",
         projectAnswersContentVersion: "0.1.0",
         questionnaireContentType: "org.workingwithstories.Questionnaire",
@@ -12,4 +11,5 @@ define([
         surveyResultContentType: "org.workingwithstories.PNIWorkbookSurveyResult",
         surveyResultContentVersion: "0.1.0"
     };
+    return versions;
 });

@@ -1,5 +1,5 @@
-define([], function () {
-    "use strict";
+"use strict";
+define(["require", "exports"], function (require, exports) {
     function storeSurveyResult(pointrelClient, projectIdentifier, storyCollectionIdentifier, completedSurvey, wizardPane) {
         var surveyResultWrapper = {
             projectIdentifier: projectIdentifier,
@@ -24,7 +24,5 @@ define([], function () {
                 wizardPane.forward();
         });
     }
-    return {
-        storeSurveyResult: storeSurveyResult
-    };
+    exports.storeSurveyResult = storeSurveyResult;
 });

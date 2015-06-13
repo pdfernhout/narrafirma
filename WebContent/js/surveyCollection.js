@@ -1,14 +1,10 @@
-define([
-    "dojo/_base/array",
-    "js/questionnaireGeneration",
-    "dojo/topic",
-    "js/panelBuilder/translate"
-], function (array, questionnaireGeneration, topic, translate) {
+define(["require", "exports", "dojo/_base/array", "js/questionnaireGeneration", "dojo/topic", "js/panelBuilder/translate"], function (require, exports, array, questionnaireGeneration, topic, translate) {
     "use strict";
     var project;
     function setProject(theProject) {
         project = theProject;
     }
+    exports.setProject = setProject;
     function getStoriesForStoryCollection(storyCollectionIdentifier) {
         var result = [];
         var surveyMessages = project.pointrelClient.filterMessages(function (message) {
@@ -42,6 +38,7 @@ define([
         });
         return result;
     }
+    exports.getStoriesForStoryCollection = getStoriesForStoryCollection;
     // TODO: Similar to function in buttonActions except no alerts
     function getQuestionnaireForStoryCollection(storyCollectionIdentifier) {
         var storyCollection = questionnaireGeneration.findStoryCollection(project, storyCollectionIdentifier);
@@ -53,6 +50,7 @@ define([
         var questionnaire = storyCollection.questionnaire;
         return questionnaire;
     }
+    exports.getQuestionnaireForStoryCollection = getQuestionnaireForStoryCollection;
     // TODO: Find all users of loadLatestStoriesFromServer and fix them
     // TODO: Fix users of: topic.publish("loadLatestStoriesFromServer", newEnvelopeCount, domain.allStories);
     // TODO: Fix users of: topic.publish("totalNumberOfSurveyResults", allEnvelopes.length);
@@ -100,6 +98,7 @@ define([
         // Now publish the new or removed questionnaire...
         updateActiveQuestionnaires(questionnaires, "sendMessage");
     }
+    exports.toggleWebActivationOfSurvey = toggleWebActivationOfSurvey;
     function updateActiveQuestionnaires(questionnaires, sendMessage) {
         project.activeQuestionnaires = questionnaires;
         // TODO: Should compare against current canonicalized value to see if anything changed and only update then -- assuming updates already issued by code that makes changes
@@ -119,6 +118,7 @@ define([
             alert("The web form has been activated or deactivated.");
         });
     }
+    exports.updateActiveQuestionnaires = updateActiveQuestionnaires;
     function storyCollectionStop() {
         // TODO: translate
         // TODO: probably should not have GUI action in here; need to rethink?
@@ -141,12 +141,14 @@ define([
         updateActiveQuestionnaires({}, "sendMessage");
         console.log("Deactivated all web questionnaires");
     }
+    exports.storyCollectionStop = storyCollectionStop;
     function isStoryCollectingEnabled() {
         for (var key in project.activeQuestionnaires) {
             return true;
         }
         return false;
     }
+    exports.isStoryCollectingEnabled = isStoryCollectingEnabled;
     function collectQuestionsForQuestionnaire(questionnaire) {
         console.log("questionnaire", questionnaire);
         if (!questionnaire)
@@ -171,6 +173,7 @@ define([
         questions = questions.concat(questionnaire.participantQuestions);
         return questions;
     }
+    exports.collectQuestionsForQuestionnaire = collectQuestionsForQuestionnaire;
     // Types of questions that have data associated with them for filters and graphs
     var filterableQuestionTypes = ["select", "slider", "boolean", "text", "checkbox", "checkboxes", "radiobuttons"];
     // function updateFilterPaneForCurrentQuestions(questions) {
@@ -188,15 +191,5 @@ define([
         });
         return questionOptions;
     }
-    return {
-        setProject: setProject,
-        getStoriesForStoryCollection: getStoriesForStoryCollection,
-        getQuestionnaireForStoryCollection: getQuestionnaireForStoryCollection,
-        updateActiveQuestionnaires: updateActiveQuestionnaires,
-        toggleWebActivationOfSurvey: toggleWebActivationOfSurvey,
-        storyCollectionStop: storyCollectionStop,
-        isStoryCollectingEnabled: isStoryCollectingEnabled,
-        collectQuestionsForQuestionnaire: collectQuestionsForQuestionnaire,
-        optionsForAllQuestions: optionsForAllQuestions
-    };
+    exports.optionsForAllQuestions = optionsForAllQuestions;
 });

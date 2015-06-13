@@ -1,12 +1,12 @@
 // This supports globals shared by modules
-define([], function () {
-    "use strict";
+"use strict";
+define(["require", "exports"], function (require, exports) {
     var testDataItemsToMake = 100;
     // Some test data
-    var testSurveyResponses = [];
+    exports.testSurveyResponses = [];
     var lorumText = ": Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, " + "totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. " + "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores " + "eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur," + " adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem." + " Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?" + " Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum " + "fugiat quo voluptas nulla pariatur?";
     // TODO: Using older survey format, including with options instead of valueOptions and displayConfiguration
-    var testSurvey = {
+    exports.testSurvey = {
         "__type": "org.pointrel.pointrel20141201.PointrelContentEnvelope",
         "tags": [
             "questionnaire-test-003"
@@ -150,21 +150,21 @@ define([], function () {
                             "ASPCA": (responseNumber + 2) % 4 === 0,
                             "public officials": (responseNumber + 3) % 4 === 0
                         },
-                        "__survey_elicitingQuestion": testSurvey.content.elicitingQuestions[0].text,
+                        "__survey_elicitingQuestion": exports.testSurvey.content.elicitingQuestions[0].text,
                         "__survey_storyText": lorumText,
                         "__survey_remember": responseNumber % 100,
                         "__survey_storyName": "StoryName-" + responseNumber,
-                        "__survey_Feel about": testSurvey.content.storyQuestions[0].options[responseNumber % 7],
+                        "__survey_Feel about": exports.testSurvey.content.storyQuestions[0].options[responseNumber % 7],
                         "__survey_Common or rare": responseNumber % 100
                     }
                 ],
                 "participantData": {
                     "__type": "org.workingwithstories.ParticipantData",
                     "_participantID": "participantID-" + responseNumber,
-                    "__survey_Age": testSurvey.content.participantQuestions[0].options[responseNumber % 6],
+                    "__survey_Age": exports.testSurvey.content.participantQuestions[0].options[responseNumber % 6],
                     // TODO: Problem with test design as missing the name here..!!!!
                     "__survey_": responseNumber % 100,
-                    "__survey_Location": testSurvey.content.participantQuestions[2].options[responseNumber % 5]
+                    "__survey_Location": exports.testSurvey.content.participantQuestions[2].options[responseNumber % 5]
                 },
                 "timestampStart": "2014-12-13T04:14:02.916Z",
                 "timestampEnd": "2014-12-13T04:18:27.286Z",
@@ -175,10 +175,6 @@ define([], function () {
     console.log("making test stories");
     for (var i = 0; i < testDataItemsToMake; i++) {
         var testResponse = makeResponse(i);
-        testSurveyResponses.push(testResponse);
+        exports.testSurveyResponses.push(testResponse);
     }
-    return {
-        testSurvey: testSurvey,
-        testSurveyResponses: testSurveyResponses
-    };
 });
