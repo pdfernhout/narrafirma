@@ -54,7 +54,7 @@ function stopStandby() {
     standby.hide();
 }
 
-export function showPage(pageID, forceRefresh) {
+export function showPage(pageID, forceRefresh = false) {
     if (!pageID) pageID = startPage;
     if (currentPageID === pageID && !forceRefresh) return;
 

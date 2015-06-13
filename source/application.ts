@@ -20,6 +20,7 @@ import toaster = require("./panelBuilder/toaster");
 import Tooltip = require("dijit/Tooltip");
 import topic = require("dojo/topic");
 import translate = require("./panelBuilder/translate");
+import _ = require("/lib/lodash");
 
 "use strict";
 
@@ -71,7 +72,7 @@ var panelBuilder = new PanelBuilder();
 var panelSpecificationCollection = new PanelSpecificationCollection();
 
 // getHashParameters derived from: http://stackoverflow.com/questions/4197591/parsing-url-hash-fragment-identifier-with-javascript
-function getHashParameters(hash) {
+function getHashParameters(hash): any {
     var result = {};
     var match;
     // Regex for replacing addition symbol with a space
@@ -434,9 +435,9 @@ function buttonClicked(panelBuilder, contentPane, model, fieldSpecification, val
 
 // Panel builder "functionResult" components will get routed through here to calculate their text.
 // The application should publish a topic with the same name as these functions when their value changes.
-function calculateFunctionResultForGUI(panelBuilder, contentPane, model, fieldSpecification, functionName) {
+function calculateFunctionResultForGUI(panelBuilder, contentPane, model, fieldSpecification, functionName): any {
     if (functionName === "isStoryCollectingEnabled") {
-        return surveyCollection.isStoryCollectingEnabled(fieldSpecification);
+        return surveyCollection.isStoryCollectingEnabled();
     } else if (functionName === "storeQuestionnaireInStoryCollection") {
         var storyCollection = fieldSpecification.value;
         var questionnaireName = storyCollection.storyCollection_questionnaireIdentifier;
@@ -486,15 +487,15 @@ function generateNavigationDataInJSON() {
 function setupGlobalFunctions() {
     // Set up global function used by section dashboard links
     
-    window.narrafirma_openPage = function (pageIdentifier) {
+    window["narrafirma_openPage"] = function (pageIdentifier) {
         clientState.set("currentPageIdentifier", pageIdentifier);
     };
     
-    window.narrafirma_logoutClicked = function () {
+    window["narrafirma_logoutClicked"] = function () {
         buttonActions.logoutButtonClicked();
     };
     
-    window.narrafirma_helpClicked = function (pageIdentifier) {
+    window["narrafirma_helpClicked"] = function (pageIdentifier) {
         buttonActions.helpButtonClicked();
     };
 }

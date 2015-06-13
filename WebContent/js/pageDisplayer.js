@@ -39,6 +39,7 @@ define(["require", "exports", "dijit/layout/ContentPane", "dojo/dom-class", "doj
         standby.hide();
     }
     function showPage(pageID, forceRefresh) {
+        if (forceRefresh === void 0) { forceRefresh = false; }
         if (!pageID)
             pageID = startPage;
         if (currentPageID === pageID && !forceRefresh)

@@ -1,4 +1,4 @@
-define(["require", "exports", "dojo/i18n!js/nls/applicationMessages", "./buttonActions", "./csvImportExport", "./panelBuilder/dialogSupport", "dojo/dom-construct", "dojo/hash", "./applicationWidgets/loadAllApplicationWidgets", "./panelBuilder/loadAllPanelSpecifications", "./navigationPane", "dojo/text!applicationPanelSpecifications/navigation.json", "./pageDisplayer", "./panelBuilder/PanelBuilder", "./panelBuilder/PanelSpecificationCollection", "./pointrel20150417/PointrelClient", "./Project", "./questionnaireGeneration", "dojo/Stateful", "./surveyCollection", "./panelBuilder/toaster", "dijit/Tooltip", "dojo/topic", "./panelBuilder/translate"], function (require, exports, applicationMessages, buttonActions, csvImportExport, dialogSupport, domConstruct, hash, loadAllApplicationWidgets, loadAllPanelSpecifications, navigationPane, navigationJSONText, pageDisplayer, PanelBuilder, PanelSpecificationCollection, PointrelClient, Project, questionnaireGeneration, Stateful, surveyCollection, toaster, Tooltip, topic, translate) {
+define(["require", "exports", "dojo/i18n!js/nls/applicationMessages", "./buttonActions", "./csvImportExport", "./panelBuilder/dialogSupport", "dojo/dom-construct", "dojo/hash", "./applicationWidgets/loadAllApplicationWidgets", "./panelBuilder/loadAllPanelSpecifications", "./navigationPane", "dojo/text!applicationPanelSpecifications/navigation.json", "./pageDisplayer", "./panelBuilder/PanelBuilder", "./panelBuilder/PanelSpecificationCollection", "./pointrel20150417/PointrelClient", "./Project", "./questionnaireGeneration", "dojo/Stateful", "./surveyCollection", "./panelBuilder/toaster", "dijit/Tooltip", "dojo/topic", "./panelBuilder/translate", "/lib/lodash"], function (require, exports, applicationMessages, buttonActions, csvImportExport, dialogSupport, domConstruct, hash, loadAllApplicationWidgets, loadAllPanelSpecifications, navigationPane, navigationJSONText, pageDisplayer, PanelBuilder, PanelSpecificationCollection, PointrelClient, Project, questionnaireGeneration, Stateful, surveyCollection, toaster, Tooltip, topic, translate, _) {
     "use strict";
     // TODO: Add page validation
     var narrafirmaProjectPrefix = "NarraFirmaProject-";
@@ -369,7 +369,7 @@ define(["require", "exports", "dojo/i18n!js/nls/applicationMessages", "./buttonA
     // The application should publish a topic with the same name as these functions when their value changes.
     function calculateFunctionResultForGUI(panelBuilder, contentPane, model, fieldSpecification, functionName) {
         if (functionName === "isStoryCollectingEnabled") {
-            return surveyCollection.isStoryCollectingEnabled(fieldSpecification);
+            return surveyCollection.isStoryCollectingEnabled();
         }
         else if (functionName === "storeQuestionnaireInStoryCollection") {
             var storyCollection = fieldSpecification.value;
@@ -421,13 +421,13 @@ define(["require", "exports", "dojo/i18n!js/nls/applicationMessages", "./buttonA
     }
     function setupGlobalFunctions() {
         // Set up global function used by section dashboard links
-        window.narrafirma_openPage = function (pageIdentifier) {
+        window["narrafirma_openPage"] = function (pageIdentifier) {
             clientState.set("currentPageIdentifier", pageIdentifier);
         };
-        window.narrafirma_logoutClicked = function () {
+        window["narrafirma_logoutClicked"] = function () {
             buttonActions.logoutButtonClicked();
         };
-        window.narrafirma_helpClicked = function (pageIdentifier) {
+        window["narrafirma_helpClicked"] = function (pageIdentifier) {
             buttonActions.helpButtonClicked();
         };
     }
