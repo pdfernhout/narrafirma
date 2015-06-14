@@ -20,7 +20,9 @@ import toaster = require("./panelBuilder/toaster");
 import Tooltip = require("dijit/Tooltip");
 import topic = require("dojo/topic");
 import translate = require("./panelBuilder/translate");
-import _ = require("/lib/lodash");
+
+/// <reference path="../lib/lodash.d.ts"/>
+import _ = require("../lib/lodash");
 
 "use strict";
 
