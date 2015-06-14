@@ -42,7 +42,7 @@ var debugMessaging = false;
 // userCredentials have the form {userIdentifier: "some name", userPassword: "some password"}
 // If a string is passed in, it is assumed just the userIdentifier is being supplied
 
-function PointrelClient(apiURL, journalIdentifier, userCredentials, messageReceivedCallback, serverStatusCallback) {
+function PointrelClient(apiURL, journalIdentifier, userCredentials, messageReceivedCallback = null, serverStatusCallback = null) {
     if (!apiURL) throw new Error("No apiURL supplied");
     if (!journalIdentifier) throw new Error("No journalIdentifier supplied");
     if (!userCredentials) throw new Error("No userCredentials supplied");

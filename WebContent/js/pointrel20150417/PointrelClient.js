@@ -15,6 +15,8 @@ define(["require", "exports", "dojox/encoding/digests/_base", "dojox/uuid/genera
     // userCredentials have the form {userIdentifier: "some name", userPassword: "some password"}
     // If a string is passed in, it is assumed just the userIdentifier is being supplied
     function PointrelClient(apiURL, journalIdentifier, userCredentials, messageReceivedCallback, serverStatusCallback) {
+        if (messageReceivedCallback === void 0) { messageReceivedCallback = null; }
+        if (serverStatusCallback === void 0) { serverStatusCallback = null; }
         if (!apiURL)
             throw new Error("No apiURL supplied");
         if (!journalIdentifier)
