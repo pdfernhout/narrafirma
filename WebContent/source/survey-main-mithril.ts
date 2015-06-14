@@ -1,4 +1,3 @@
-import dom = require("dojo/dom");
 import hash = require("dojo/hash");
 import PointrelClient = require("./pointrel20150417/PointrelClient");
 import surveyBuilder = require("./surveyBuilderMithril");
@@ -83,7 +82,7 @@ function createLayout() {
         }
         console.log("got questionnaire from server", projectIdentifier, storyCollectionIdentifier, questionnaire);
         
-        var surveyDiv = dom.byId("surveyDiv");
+        var surveyDiv = document.getElementById("surveyDiv");
         // m.render(surveyDiv, m("div", ["Hello survey ============== b"]));
         
         surveyBuilder.buildSurveyForm(surveyDiv, questionnaire, finishedSurvey);
@@ -141,7 +140,7 @@ function initialize() {
     
     if (preview) {
         console.log("Preview mode");
-        var surveyDiv = dom.byId("surveyDiv");
+        var surveyDiv = document.getElementById("surveyDiv");
         // m.render(surveyDiv, m("div", ["Hello survey ============== b"]));
         
         // turn off initial "please wait" display
