@@ -24,6 +24,7 @@
             // More complexity is required because these are not in the same directory as dojo modules when loaded locally or dojo base is loaded from CDN
             packages: [
                 { name: "js", location: baseDirectoryFromURL + "/js"},
+                { name: "mithril", location: baseDirectoryFromURL + "/lib/mithril", main: "mithril"},
                 { name: "lib", location: baseDirectoryFromURL + "/lib"},
                 { name: "dojo", location: baseDirectoryFromURL + "/lib/dojo"},
                 { name: "dojox", location: baseDirectoryFromURL + "/lib/dojox"},

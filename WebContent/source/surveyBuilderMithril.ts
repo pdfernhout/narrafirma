@@ -1,5 +1,4 @@
-/// <reference path="typings/mithril.d.ts" />
-import m = require("../lib/mithril/mithril");
+import m = require("mithril");
 
 import generateRandomUuid = require("dojox/uuid/generateRandomUuid");
 
