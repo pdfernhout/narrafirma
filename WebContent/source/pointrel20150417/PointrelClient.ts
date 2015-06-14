@@ -16,7 +16,7 @@
 // PCE in stored server files stands for "Pointrel Collected Event". :-)
 
 import digests = require("dojox/encoding/digests/_base");
-import generateRandomUuid = require("dojox/uuid/generateRandomUuid");
+import generateRandomUuid = require("./generateRandomUuid");
 import SHA256 = require("dojox/encoding/digests/SHA256");
 import request = require("dojo/request");
 import topic = require("dojo/topic");

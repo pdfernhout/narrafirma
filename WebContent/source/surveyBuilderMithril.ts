@@ -1,6 +1,6 @@
 import m = require("mithril");
 
-import generateRandomUuid = require("dojox/uuid/generateRandomUuid");
+import generateRandomUuid = require("./pointrel20150417/generateRandomUuid");
 
 "use strict";
 

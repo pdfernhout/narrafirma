@@ -1,6 +1,6 @@
-define(['./_base'], function(){
+// From Dojo 1.10.4
 
-dojox.uuid.generateRandomUuid = function(){
+function generateRandomUuid(){
 	// summary:
 	//		This function generates random UUIDs, meaning "version 4" UUIDs.
 	// description:
@@ -51,6 +51,4 @@ dojox.uuid.generateRandomUuid = function(){
 	return returnValue; // String
 };
 
-return dojox.uuid.generateRandomUuid;
-
-});
+export = generateRandomUuid;

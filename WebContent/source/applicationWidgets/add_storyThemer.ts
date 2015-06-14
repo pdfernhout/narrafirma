@@ -1,6 +1,6 @@
 define([
     "dojox/html/entities",
-    "dojox/uuid/generateRandomUuid",
+    "../pointrel20150417/generateRandomUuid",
     "js/surveyCollection",
     "dojo/topic",
     "js/panelBuilder/standardWidgets/GridWithItemPanel",

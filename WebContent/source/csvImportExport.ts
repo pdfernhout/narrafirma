@@ -1,5 +1,5 @@
 import d3 = require("lib/d3/d3");
-import generateRandomUuid = require("dojox/uuid/generateRandomUuid");
+import generateRandomUuid = require("./pointrel20150417/generateRandomUuid");
 import questionnaireGeneration = require("./questionnaireGeneration");
 import surveyCollection = require("./surveyCollection");
 import surveyStorage = require("./surveyStorage");

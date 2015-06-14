@@ -4,7 +4,7 @@ define([
     "dijit/form/TextBox",
     "dijit/form/Button",
     "dijit/Dialog",
-    "dojox/uuid/generateRandomUuid",
+    "../pointrel20150417/generateRandomUuid",
     "dojo/Stateful",
     "dojox/mvc/at",
     "dojox/layout/TableContainer",

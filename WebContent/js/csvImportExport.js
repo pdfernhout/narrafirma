@@ -1,4 +1,4 @@
-define(["require", "exports", "lib/d3/d3", "dojox/uuid/generateRandomUuid", "./questionnaireGeneration", "./surveyCollection", "./surveyStorage"], function (require, exports, d3, generateRandomUuid, questionnaireGeneration, surveyCollection, surveyStorage) {
+define(["require", "exports", "lib/d3/d3", "./pointrel20150417/generateRandomUuid", "./questionnaireGeneration", "./surveyCollection", "./surveyStorage"], function (require, exports, d3, generateRandomUuid, questionnaireGeneration, surveyCollection, surveyStorage) {
     "use strict";
     // TODO: Fix big kludge of this module level variable across the app!
     var lastQuestionnaireUploaded = null;

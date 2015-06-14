@@ -4,7 +4,7 @@ define([
     'dojo/dom-class',
     "dojox/mvc/getPlainValue",
     "../translate",
-    "dojox/uuid/generateRandomUuid",
+    "../../pointrel20150417/generateRandomUuid",
     "../widgetSupport",
     "dgrid/extensions/ColumnResizer",
     "dgrid/extensions/DijitRegistry",
