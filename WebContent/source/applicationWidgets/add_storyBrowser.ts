@@ -1,6 +1,5 @@
 define([
     "dojo/dom-construct",
-    "dojo/_base/lang",
     "js/storyCardDisplay",
     "js/surveyCollection",
     "js/panelBuilder/standardWidgets/GridWithItemPanel",
@@ -10,7 +9,6 @@ define([
     "js/panelBuilder/valuePathResolver"
 ], function(
     domConstruct,
-    lang,
     storyCardDisplay,
     surveyCollection,
     GridWithItemPanel,
@@ -180,7 +178,7 @@ define([
         // questionSelect.set("style", "min-width: 50%");
         
         // TODO: Translate
-        var clearButton = widgetSupport.newButton(contentPane, "Clear", lang.partial(clearFilterPane, storyBrowserInstance, filterPane));
+        var clearButton = widgetSupport.newButton(contentPane, "Clear", clearFilterPane.bind(null, storyBrowserInstance, filterPane));
         // domStyle.set(clearButton.domNode, "float", "right");
         
         contentPane.containerNode.appendChild(domConstruct.toDom('<br>'));
@@ -197,8 +195,8 @@ define([
 
         for (var key in filterPane2) filterPane[key] = filterPane2[key];
         
-        questionSelect.on("change", lang.partial(filterPaneQuestionChoiceChanged, filterPane));
-        answersMultiSelect.on("change", lang.partial(setStoryListForCurrentFilters, storyBrowserInstance)); 
+        questionSelect.on("change", filterPaneQuestionChoiceChanged.bind(null, filterPane));
+        answersMultiSelect.on("change", setStoryListForCurrentFilters.bind(null, storyBrowserInstance)); 
         
         return filterPane;
     }
@@ -238,7 +236,7 @@ define([
         var questionAnswer = story[questionChoice];
         if (questionAnswer === undefined || questionAnswer === null || questionAnswer === "") {
             questionAnswer = unansweredIndicator;
-        } else if (lang.isObject(questionAnswer)) {
+        } else if (typeof questionAnswer === "object") {
             // checkboxes
             // console.log("checkboxes", questionAnswer);
             for (var key in questionAnswer) {
@@ -277,7 +275,7 @@ define([
         var itemPanelSpecification = {
              id: "storyBrowserQuestions",
              panelFields: questions,
-             buildPanel: lang.partial(buildStoryDisplayPanel, storyBrowserInstance)
+             buildPanel: buildStoryDisplayPanel.bind(null, storyBrowserInstance)
         };
         
         return itemPanelSpecification;
@@ -336,7 +334,7 @@ define([
         
         // TODO: Probably should become a class
         
-        // var filterButton = widgetSupport.newButton(pagePane, "#button_Filter|Filter", lang.partial(setStoryListForCurrentFilters, storyBrowserInstance));
+        // var filterButton = widgetSupport.newButton(pagePane, "#button_Filter|Filter", setStoryListForCurrentFilters.bind(null, storyBrowserInstance));
         
         // console.log("insertStoryBrowser middle 3", id);
         
@@ -344,13 +342,13 @@ define([
         var configuration = {viewButton: true, includeAllFields: ["__survey_storyName", "__survey_storyText"], navigationButtons: true};
         storyBrowserInstance.storyList = new GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration, model);
         
-        // TODO: var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStories, storyBrowserInstance));
+        // TODO: var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", loadLatestStories.bind(null, storyBrowserInstance));
         
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
         // TODO: table.own(loadLatestStoriesFromServerSubscription);
         
         // TODO: Should also have some subscription about when the questionnaire itself changes
-        var currentQuestionnaireSubscription = choiceModel.watch(choiceField, lang.partial(currentStoryCollectionChanged, storyBrowserInstance));
+        var currentQuestionnaireSubscription = choiceModel.watch(choiceField, currentStoryCollectionChanged.bind(null, storyBrowserInstance));
         
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
         table.own(currentQuestionnaireSubscription);

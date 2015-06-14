@@ -1,9 +1,8 @@
 define([
     "lib/d3/d3",
     "dojo/dom-construct",
-    "dojo/_base/lang",
     "dijit/layout/ContentPane"
-], function (d3, domConstruct, lang, ContentPane) {
+], function (d3, domConstruct, ContentPane) {
     "use strict";
     // TODO: Need to be able to associate related stories with everything on screen so can browse them when clicked
     var unansweredKey = "{N/A}";
@@ -112,7 +111,7 @@ define([
         // console.log("displayTextForAnswer", answer);
         if (!answer && answer !== 0)
             return "";
-        var hasCheckboxes = lang.isObject(answer);
+        var hasCheckboxes = _.isObject(answer);
         if (!hasCheckboxes)
             return answer;
         var result = "";
@@ -258,7 +257,7 @@ define([
         for (var storyIndex in stories) {
             var story = stories[storyIndex];
             var xValue = correctForUnanswered(question, story[question.id]);
-            var xHasCheckboxes = lang.isObject(xValue);
+            var xHasCheckboxes = _.isObject(xValue);
             // fast path
             if (!xHasCheckboxes) {
                 pushToMapSlot(results, xValue, { story: story, value: xValue });
@@ -600,8 +599,8 @@ define([
             var story = stories[index];
             var xValue = correctForUnanswered(xAxisQuestion, story[xAxisQuestion.id]);
             var yValue = correctForUnanswered(yAxisQuestion, story[yAxisQuestion.id]);
-            var xHasCheckboxes = lang.isObject(xValue);
-            var yHasCheckboxes = lang.isObject(yValue);
+            var xHasCheckboxes = _.isObject(xValue);
+            var yHasCheckboxes = _.isObject(yValue);
             // fast path
             if (!xHasCheckboxes && !yHasCheckboxes) {
                 incrementMapSlot(results, JSON.stringify({ x: xValue, y: yValue }));

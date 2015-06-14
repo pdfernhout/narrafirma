@@ -1,11 +1,10 @@
 define([
     "dojo/_base/array",
     "dijit/form/FilteringSelect",
-    "dojo/_base/lang",
     "dojo/store/Memory",
     "../translate",
     "../valuePathResolver"
-], function (array, FilteringSelect, lang, Memory, translate, valuePathResolver) {
+], function (array, FilteringSelect, Memory, translate, valuePathResolver) {
     "use strict";
     function add_select(panelBuilder, contentPane, model, fieldSpecification, addNoSelectionOption) {
         // console.log("add_select", fieldSpecification.id, model, fieldSpecification);
@@ -62,7 +61,7 @@ define([
                 var label;
                 var value;
                 // console.log("choice", id, each);
-                if (lang.isString(each)) {
+                if (_.isString(each)) {
                     label = translate(fieldSpecification.id + "::selection:" + each, each);
                     options.push({ name: label, id: each });
                     if (currentValue === each)

@@ -3,7 +3,6 @@ define([
     "dijit/layout/ContentPane",
     "js/panelBuilder/standardWidgets/GridWithItemPanel",
     "js/statistics/kendallsTau",
-    "dojo/_base/lang",
     "lib/simple_statistics",
     "dojo/Stateful",
     "js/storyCardDisplay",
@@ -12,7 +11,7 @@ define([
     "js/panelBuilder/valuePathResolver"
 ], function (charting, ContentPane, 
     // digests,
-    GridWithItemPanel, kendallsTau, lang, 
+    GridWithItemPanel, kendallsTau, 
     // SHA256,
     simpleStatistics, Stateful, storyCardDisplay, surveyCollection, topic, valuePathResolver) {
     "use strict";
@@ -484,7 +483,7 @@ define([
             currentSelectionExtentPercentages: null,
             currentSelectionSubgraph: null
         };
-        var currentCatalysisReportSubscription = choiceModel.watch(choiceField, lang.partial(currentCatalysisReportChanged, graphBrowserInstance));
+        var currentCatalysisReportSubscription = choiceModel.watch(choiceField, currentCatalysisReportChanged.bind(null, graphBrowserInstance));
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
         contentPane.own(currentCatalysisReportSubscription);
         var patterns = buildPatternList(graphBrowserInstance);
@@ -492,7 +491,7 @@ define([
         var patternsListStore = GridWithItemPanel.newMemoryTrackableStore(patterns, "id");
         graphBrowserInstance.patternsListStore = patternsListStore;
         var patternsGridConfiguration = { navigationButtons: true, includeAllFields: true };
-        patternsGridConfiguration.selectCallback = lang.partial(patternSelected, graphBrowserInstance);
+        patternsGridConfiguration.selectCallback = patternSelected.bind(null, graphBrowserInstance);
         var patternsPanelSpecification = {
             "id": "patternsPanel",
             panelFields: [
@@ -526,8 +525,8 @@ define([
         var observationPanelSpecification = {
             "id": "observationPanel",
             panelFields: [
-                { id: "insertGraphSelection", displayPrompt: "Save current graph selection into observation", displayType: "button", displayPreventBreak: true, displayConfiguration: lang.partial(insertGraphSelection, graphBrowserInstance) },
-                { id: "resetGraphSelection", displayPrompt: "Restore graph selection using saved selection chosen in observation", displayType: "button", displayConfiguration: lang.partial(resetGraphSelection, graphBrowserInstance) },
+                { id: "insertGraphSelection", displayPrompt: "Save current graph selection into observation", displayType: "button", displayPreventBreak: true, displayConfiguration: insertGraphSelection.bind(null, graphBrowserInstance) },
+                { id: "resetGraphSelection", displayPrompt: "Restore graph selection using saved selection chosen in observation", displayType: "button", displayConfiguration: resetGraphSelection.bind(null, graphBrowserInstance) },
                 { id: "observation", displayName: "Observation", displayPrompt: "If this pattern is noteworthy, enter an <strong>observation</strong> about the pattern here.", displayType: "textarea" },
                 {
                     "id": "project_interpretationsList",

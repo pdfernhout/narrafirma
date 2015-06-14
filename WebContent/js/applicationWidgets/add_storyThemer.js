@@ -1,7 +1,6 @@
 define([
     "dojox/html/entities",
     "dojox/uuid/generateRandomUuid",
-    "dojo/_base/lang",
     "js/surveyCollection",
     "dojo/topic",
     "js/panelBuilder/standardWidgets/GridWithItemPanel",
@@ -10,7 +9,7 @@ define([
     "dojo/store/Memory",
     "js/panelBuilder/valuePathResolver",
     "js/panelBuilder/widgetSupport"
-], function (entities, generateRandomUuid, lang, surveyCollection, topic, GridWithItemPanel, ComboBox, ContentPane, Memory, valuePathResolver, widgetSupport) {
+], function (entities, generateRandomUuid, surveyCollection, topic, GridWithItemPanel, ComboBox, ContentPane, Memory, valuePathResolver, widgetSupport) {
     "use strict";
     // story themer support
     function addThemeButtonPressed(themeEntryComboBox, storyThemesStore, allThemes) {
@@ -85,7 +84,7 @@ define([
             style: { width: "50%" }
         });
         themeEntryComboBox.placeAt(themesPane);
-        var addThemeButton = widgetSupport.newButton(themesPane, "#button_addTheme|Add theme", lang.partial(addThemeButtonPressed, themeEntryComboBox, storyThemesStore, allThemes));
+        var addThemeButton = widgetSupport.newButton(themesPane, "#button_addTheme|Add theme", addThemeButtonPressed.bind(null, themeEntryComboBox, storyThemesStore, allThemes));
         addThemeButton.placeAt(themesPane);
     }
     /*
@@ -138,17 +137,17 @@ define([
             dataStore: dataStore,
             storyList: storyList
         };
-        var currentCatalysisReportSubscription = choiceModel.watch(choiceField, lang.partial(currentCatalysisReportChanged, storyThemerInstance));
+        var currentCatalysisReportSubscription = choiceModel.watch(choiceField, currentCatalysisReportChanged.bind(null, storyThemerInstance));
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
         pagePane.own(currentCatalysisReportSubscription);
         /*
         
-        var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerChanged, storyThemerInstance));
+        var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", loadLatestStoriesFromServerChanged.bind(null, storyThemerInstance));
         
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
         pagePane.own(loadLatestStoriesFromServerSubscription);
         
-        var currentQuestionnaireSubscription = topic.subscribe("currentQuestionnaire", lang.partial(currentQuestionnaireChanged, storyThemerInstance));
+        var currentQuestionnaireSubscription = topic.subscribe("currentQuestionnaire", currentQuestionnaireChanged.bind(null, storyThemerInstance));
         
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
         pagePane.own(currentQuestionnaireSubscription);

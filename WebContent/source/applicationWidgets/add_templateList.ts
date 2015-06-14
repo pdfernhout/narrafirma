@@ -1,13 +1,11 @@
 define([
     "js/panelBuilder/dialogSupport",
     "dojo/dom-class",
-    "dojo/_base/lang",
     "js/templates/templates",
     "js/panelBuilder/standardWidgets/GridWithItemPanel"
 ], function(
     dialogSupport,
     domClass,
-    lang,
     templates,
     GridWithItemPanel
 ){
@@ -17,7 +15,7 @@ define([
         var dialogConfiguration = {
             dialogTitle: "#title_chooseATemplate|Choose a template",
             dialogStyle: undefined, // "height: 1000px; width: 800px",
-            dialogConstructionFunction: lang.partial(makeTemplateListChooser, panelBuilder),
+            dialogConstructionFunction: makeTemplateListChooser.bind(null, panelBuilder),
             fieldSpecification: fieldSpecification
         };
         var button = dialogSupport.addButtonThatLaunchesDialog(contentPane, model, fieldSpecification, dialogConfiguration);
@@ -155,7 +153,7 @@ define([
         var customButtonDefinition = {
             id: "useTemplate",
             customButtonLabel: "#button_UseTemplate|Use template",
-            callback: lang.partial(useButtonClicked, templateListChoice, model, hideDialogCallback)
+            callback: useButtonClicked.bind(null, templateListChoice, model, hideDialogCallback)
         };
         
         var configuration = {viewButton: true, includeAllFields: false, showTooltip: true, customButton: customButtonDefinition};

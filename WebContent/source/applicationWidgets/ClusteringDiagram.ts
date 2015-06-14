@@ -8,7 +8,6 @@ define([
     "dojo/Stateful",
     "dojox/mvc/at",
     "dojox/layout/TableContainer",
-    "dojo/_base/lang",
     "js/panelBuilder/dialogSupport",
     "dijit/layout/ContentPane",
     "dijit/ColorPalette",
@@ -22,7 +21,6 @@ define([
     Stateful,
     at,
     TableContainer,
-    lang,
     dialogSupport,
     ContentPane,
     ColorPalette,
@@ -135,18 +133,18 @@ define([
             .attr('height', height)
             .attr('class', 'clustering');
         
-        // this._mainSurface.append("circle").attr("cx", 25).attr("cy", 25).attr("r", 25).style("fill", "purple").on("mousedown", lang.hitch(this, function () {console.log("purple circle clicked");}));
+        // this._mainSurface.append("circle").attr("cx", 25).attr("cy", 25).attr("r", 25).style("fill", "purple").on("mousedown", function () {console.log("purple circle clicked");});
 
         this.background = this._mainSurface.append("rect")
             .attr('width', width)
             .attr('height', height)
             .attr('class', 'clusteringDiagramBackground')
             .style('fill', 'white')
-            .on("mousedown", lang.hitch(this, function () {
+            .on("mousedown", function () {
                 console.log("mousedown in background");
                 this.selectItem(null);
                 // console.log("mousedown item", item);
-            }));
+            }.bind(this));
         
         this.mainSurface = this._mainSurface.append('g')
             //.attr('width', width)
@@ -165,7 +163,7 @@ define([
             // activeResize: true,
             animateSizing: false,
             // style: "bottom: 4px; right: 4px;",
-            onResize: lang.hitch(this, this.updateSizeOfCanvasFromResizeHandle)
+            onResize: this.updateSizeOfCanvasFromResizeHandle.bind(this)
         }).placeAt(divForResizing);
         // Need to call startup as made div and added it outside of existing connected ContentPane
         handle.startup();
@@ -206,7 +204,7 @@ define([
     ClusteringDiagram.prototype.newButton = function(name, label, callback) {
         var theButton = new Button({
             label: label,
-            onClick: lang.hitch(this, callback)
+            onClick: callback.bind(this)
         }, name);
         this.mainContentPane.addChild(theButton);
 
@@ -243,12 +241,12 @@ define([
                 alert("Please select an item to delete first");
                 return;
             }
-            dialogSupport.confirm("Confirm removal of: '" + this.lastSelectedItem.text + "'?", lang.hitch(this, function () {
+            dialogSupport.confirm("Confirm removal of: '" + this.lastSelectedItem.text + "'?", function () {
                 this.updateDisplayForChangedItem(this.lastSelectedItem, "delete");
                 removeItemFromArray(this.lastSelectedItem, this.diagram.items);
                 this.clearSelection();
                 this.incrementChangesCount();
-            }));
+            }.bind(this));
         });
         
         if (!this.autosave) {
@@ -364,7 +362,7 @@ define([
             label: buttonLabel,
             type: "button",
             title: '',
-            onClick: lang.hitch(this, this.clickedEntryOK, dialogHolder, model)
+            onClick: this.clickedEntryOK.bind(this, dialogHolder, model)
         });
         
         var cancelButton = new Button({
@@ -460,7 +458,7 @@ define([
     };
     
     ClusteringDiagram.prototype.openSourceDialog = function(text) {
-        dialogSupport.openTextEditorDialog(text, "#clusterDiagramSource_titleID|Clustering Diagram", "#clusterDiagramSource_okButtonID|OK", lang.hitch(this, this.updateSourceClicked));
+        dialogSupport.openTextEditorDialog(text, "#clusterDiagramSource_titleID|Clustering Diagram", "#clusterDiagramSource_okButtonID|OK", this.updateSourceClicked.bind(this));
      };
 
     ClusteringDiagram.prototype.recreateDisplayObjectsForAllItems = function() {
@@ -631,10 +629,10 @@ define([
         // console.log("group", group);
         // console.log("itemCircle", itemCircle);
 
-        group.on("mousedown", lang.hitch(this, function () {
+        group.on("mousedown", function () {
             // console.log("mousedown item", item);
             this.selectItem(item);
-        }));
+        }.bind(this));
         
         var self = this;
         var drag = d3.behavior.drag();
@@ -664,10 +662,10 @@ define([
         group.call(drag);
 
         /*
-        group.on("dblclick", lang.hitch(this, function (e) {
+        group.on("dblclick", function (e) {
             // alert("triggered ondblclick");
             this.go(group.item.url);
-        }));
+        }.bind(this));
         */
 
         this.itemToDisplayObjectMap[item.uuid] = group;

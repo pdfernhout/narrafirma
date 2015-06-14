@@ -1,4 +1,4 @@
-define(["require", "exports", "dojo/_base/lang", "./pointrel20150417/PointrelClient", "dojo/Stateful", "./surveyCollection", "./pointrel20150417/TripleStore"], function (require, exports, lang, PointrelClient, Stateful, surveyCollection, TripleStore) {
+define(["require", "exports", "./pointrel20150417/PointrelClient", "dojo/Stateful", "./surveyCollection", "./pointrel20150417/TripleStore"], function (require, exports, PointrelClient, Stateful, surveyCollection, TripleStore) {
     "use strict";
     var serverURL = "/api/pointrel20150417";
     // TODO: Rethink this as a more general way to watch models within the project (so, with arbitrary object IDs, not just the project ID)
@@ -9,7 +9,7 @@ define(["require", "exports", "dojo/_base/lang", "./pointrel20150417/PointrelCli
         this.subscriptions = [];
         this.projectModel = null;
         this.activeQuestionnaires = {};
-        this.pointrelClient = new PointrelClient(serverURL, this.journalIdentifier, this.userIdentifier, lang.hitch(this, this.receivedMessage), updateServerStatus);
+        this.pointrelClient = new PointrelClient(serverURL, this.journalIdentifier, this.userIdentifier, this.receivedMessage.bind(this), updateServerStatus);
         // For now, listen on all topics in the journal
         // TODO: Think about how to move topicIdentifier into pointrelClient initialization
         // var topicIdentifier = "project001";

@@ -1,14 +1,12 @@
 define([
     "dojo/_base/array",
     "dijit/form/FilteringSelect",
-    "dojo/_base/lang",
     "dojo/store/Memory",
     "../translate",
     "../valuePathResolver"
 ], function(
     array,
     FilteringSelect,
-    lang,
     Memory,
     translate,
     valuePathResolver
@@ -82,7 +80,7 @@ define([
                 var label;
                 var value;
                 // console.log("choice", id, each);
-                if (lang.isString(each)) {
+                if (_.isString(each)) {
                     label = translate(fieldSpecification.id + "::selection:" + each, each);
                     options.push({name: label, id: each});
                     if (currentValue === each) isValueInChoices = true;

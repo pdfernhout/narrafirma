@@ -1,4 +1,3 @@
-import lang = require("dojo/_base/lang");
 import PointrelClient = require("./pointrel20150417/PointrelClient");
 import Stateful = require("dojo/Stateful");
 import surveyCollection = require("./surveyCollection");
@@ -18,7 +17,7 @@ var Project = function(journalIdentifier, projectIdentifier, userIdentifier, upd
     this.projectModel = null;
     this.activeQuestionnaires = {};
 
-    this.pointrelClient = new PointrelClient(serverURL, this.journalIdentifier, this.userIdentifier, lang.hitch(this, this.receivedMessage), updateServerStatus);
+    this.pointrelClient = new PointrelClient(serverURL, this.journalIdentifier, this.userIdentifier, this.receivedMessage.bind(this), updateServerStatus);
     
     // For now, listen on all topics in the journal
     // TODO: Think about how to move topicIdentifier into pointrelClient initialization

@@ -20,7 +20,6 @@ define([
     "dojo/_base/declare",
     'dojo/dom-class',
     "dojo/dom-construct",
-    "dojo/_base/lang",
     "./translate",
     "dijit/layout/ContentPane"
 ], function(
@@ -45,7 +44,6 @@ define([
     declare,
     domClass,
     domConstruct,
-    lang,
     translate,
     ContentPane
 ){
@@ -109,7 +107,9 @@ var PanelBuilder = declare(null, {
         this.currentHelpSection = null;
         this.applicationDirectory = "/";
         
-        lang.mixin(this, kwArgs);
+        for (var key in kwArgs) {
+            this[key] = kwArgs[key];
+        }
     },
     
     // provide a way to find definitions needed to  build internal panels for some widgets like the GridWithItemPanel
@@ -139,7 +139,7 @@ var PanelBuilder = declare(null, {
                 console.log(error);
                 throw new Error(error);
             }
-            addFunction = lang.hitch(this, this.addMissingWidgetPlaceholder);
+            addFunction = this.addMissingWidgetPlaceholder.bind(this);
         }
         if (_.isString(addFunction)) { 
             var addFunctionName = addFunction;
@@ -174,7 +174,7 @@ var PanelBuilder = declare(null, {
     buildPanel: function(panelOrPanelID, contentPane, model) {
         console.log("buildPanel", panelOrPanelID);
         var fieldSpecifications;
-        if (lang.isString(panelOrPanelID)) {
+        if (_.isString(panelOrPanelID)) {
             var panel = this.getPanelDefinitionForPanelID(panelOrPanelID);
             fieldSpecifications = panel.panelFields;
         } else if (panelOrPanelID.buildPanel) {
@@ -290,14 +290,25 @@ var PanelBuilder = declare(null, {
     htmlForInformationIcon: function(url) {
         if (!url) return "";
         var template = '<img src="{iconFile}" height=16 width=16 title="{title}" onclick="document.__narraFirma_launchApplication(\'{url}\', \'help\')">';
-        return lang.replace(template, {
+        var replacements = {
             // TODO: Remove unused images from project
             // "/images/Info_blauw.png"
             // "/images/Blue_question_mark_icon.svg"
             iconFile: this.applicationDirectory + 'images/Information_icon4.svg',
             title: "Click to open help system window on this topic...",
             url: url
-        });
+        };
+        
+        function replace(template, values) {
+            var result = template;
+            for (var key in replacements) {
+                result = result.split('{' + key + '}').join(replacements[key]);
+                // result = result.replace(new RegExp('{' + key + '}', 'gi'), replacements[key]);
+            }
+            return result;
+        }
+
+        return replace(template, replacements);
     },
     
     createQuestionContentPaneWithPrompt: function(contentPane, fieldSpecification) {

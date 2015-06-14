@@ -1,12 +1,10 @@
 define([
     "js/panelBuilder/dialogSupport",
-    "dojo/_base/lang",
     "js/templates/recommendations",
     "js/panelBuilder/translate",
     "dojox/layout/TableContainer"
 ], function(
     dialogSupport,
-    lang,
     recommendations,
     translate,
     TableContainer
@@ -17,7 +15,7 @@ define([
         var dialogConfiguration = {
             dialogTitle: "#title_recommendationsTable|Recommendations table",
             dialogStyle: undefined,
-            dialogConstructionFunction: lang.partial(build_recommendationTable, panelBuilder),
+            dialogConstructionFunction: build_recommendationTable.bind(null, panelBuilder),
             fieldSpecification: fieldSpecification
         };
      // TODO: Fix when refactor

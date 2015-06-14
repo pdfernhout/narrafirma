@@ -3,13 +3,12 @@ define([
     "dijit/form/Button",
     "dojo/dom-construct",
     "dijit/form/FilteringSelect",
-    "dojo/_base/lang",
     "dojo/store/Memory",
     "dijit/form/MultiSelect",
     "dojo/query",
     "./translate",
     "dojo/_base/window"
-], function (array, Button, domConstruct, FilteringSelect, lang, Memory, MultiSelect, query, translate, win) {
+], function (array, Button, domConstruct, FilteringSelect, Memory, MultiSelect, query, translate, win) {
     "use strict";
     function setOptionsInMultiSelect(widget, options) {
         // console.log("setOptionsInMultiSelect", widget, options);
@@ -76,7 +75,7 @@ define([
         if (choices) {
             array.forEach(choices, function (each) {
                 // console.log("choice", id, each);
-                if (lang.isString(each)) {
+                if (_.isString(each)) {
                     // TODO: Add translation support here somehow
                     var label = each; // translate(id + "_choice_" + each, each);
                     options.push({ name: label, id: each });

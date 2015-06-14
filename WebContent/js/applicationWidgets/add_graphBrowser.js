@@ -1,11 +1,10 @@
 define([
     "./charting",
-    "dojo/_base/lang",
     "js/surveyCollection",
     "js/panelBuilder/widgetSupport",
     "dijit/layout/ContentPane",
     "js/panelBuilder/valuePathResolver"
-], function (charting, lang, surveyCollection, widgetSupport, ContentPane, valuePathResolver) {
+], function (charting, surveyCollection, widgetSupport, ContentPane, valuePathResolver) {
     "use strict";
     function questionForID(questions, id) {
         if (!id)
@@ -131,19 +130,19 @@ define([
             currentQuestionnaire: null,
             allStories: []
         };
-        var currentQuestionnaireSubscription = choiceModel.watch(choiceField, lang.partial(currentStoryCollectionChanged, graphBrowserInstance));
+        var currentQuestionnaireSubscription = choiceModel.watch(choiceField, currentStoryCollectionChanged.bind(null, graphBrowserInstance));
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
         contentPane.own(currentQuestionnaireSubscription);
-        xAxisSelect.on("change", lang.partial(updateGraph, graphBrowserInstance));
-        yAxisSelect.on("change", lang.partial(updateGraph, graphBrowserInstance));
-        // var updateGraphButton = widgetSupport.newButton(contentPane, "#updateGraph|Update graph", lang.partial(updateGraph, graphBrowserInstance));
+        xAxisSelect.on("change", updateGraph.bind(null, graphBrowserInstance));
+        yAxisSelect.on("change", updateGraph.bind(null, graphBrowserInstance));
+        // var updateGraphButton = widgetSupport.newButton(contentPane, "#updateGraph|Update graph", updateGraph.bind(null, graphBrowserInstance));
         contentPane.containerNode.appendChild(document.createElement("br"));
         contentPane.containerNode.appendChild(document.createElement("br"));
         contentPane.addChild(graphResultsPane);
-        // TODO: var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", lang.partial(loadLatestStoriesFromServerChanged, graphBrowserInstance));
+        // TODO: var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", loadLatestStoriesFromServerChanged.bind(null, graphBrowserInstance));
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
         // TODO: contentPane.own(loadLatestStoriesFromServerSubscription);
-        // TODO: var currentQuestionnaireSubscription = topic.subscribe("currentQuestionnaire", lang.partial(currentQuestionnaireChanged, graphBrowserInstance));
+        // TODO: var currentQuestionnaireSubscription = topic.subscribe("currentQuestionnaire", currentQuestionnaireChanged.bid(null, graphBrowserInstance));
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
         // TODO: contentPane.own(currentQuestionnaireSubscription);
         // Set up initial data

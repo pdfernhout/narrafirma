@@ -1,4 +1,4 @@
-define(["require", "exports", "dojox/uuid/generateRandomUuid", "dojo/_base/lang", "../lib/mithril/mithril"], function (require, exports, generateRandomUuid, lang, m) {
+define(["require", "exports", "dojox/uuid/generateRandomUuid", "../lib/mithril/mithril"], function (require, exports, generateRandomUuid, m) {
     "use strict";
     // Accessibility References:
     // http://usabilitygeek.com/10-free-web-based-web-site-accessibility-evaluation-tools/
@@ -250,7 +250,7 @@ define(["require", "exports", "dojox/uuid/generateRandomUuid", "dojo/_base/lang"
                     fieldSpecification.valueOptions.map(function (option, index) {
                         var optionID = getIdForText(fieldID + "_" + option);
                         return [
-                            m("input[type=radio]", { id: optionID, value: option, name: fieldSpecification.id, checked: value === option, onchange: lang.partial(change, null, option) }),
+                            m("input[type=radio]", { id: optionID, value: option, name: fieldSpecification.id, checked: value === option, onchange: change.bind(null, null, option) }),
                             m("label", { "for": optionID }, option),
                             m("br")
                         ];
@@ -263,10 +263,10 @@ define(["require", "exports", "dojox/uuid/generateRandomUuid", "dojo/_base/lang"
                 // The for attribute of the label element must refer to a form control.
                 delete questionLabel[0].attrs["for"];
                 parts = [
-                    m("input[type=radio]", { id: getIdForText(fieldID + "_yes"), value: true, name: fieldSpecification.id, checked: value === true, onchange: lang.partial(change, null, true) }),
+                    m("input[type=radio]", { id: getIdForText(fieldID + "_yes"), value: true, name: fieldSpecification.id, checked: value === true, onchange: change.bind(null, null, true) }),
                     m("label", { "for": getIdForText(fieldID + "_yes") }, "yes"),
                     m("br"),
-                    m("input[type=radio]", { id: getIdForText(fieldID + "_no"), value: false, name: fieldSpecification.id, checked: value === true, onchange: lang.partial(change, null, false) }),
+                    m("input[type=radio]", { id: getIdForText(fieldID + "_no"), value: false, name: fieldSpecification.id, checked: value === true, onchange: change.bind(null, null, false) }),
                     m("label", { "for": getIdForText(fieldID + "_no") }, "no"),
                     m("br")
                 ];
@@ -337,7 +337,7 @@ define(["require", "exports", "dojox/uuid/generateRandomUuid", "dojo/_base/lang"
                     }
                 }, "Delete this story"),
                 m("hr"),
-                allStoryQuestions.map(lang.partial(displayQuestion, story))
+                allStoryQuestions.map(displayQuestion.bind(null, story))
             ];
             var evenOrOdd = (index % 2 === 1) ? "narrafirma-survey-story-odd" : "narrafirma-survey-story-even";
             // A locally unique key needs to be defined so Mithril can track deletions and inserts without rebuilding DOM nodes

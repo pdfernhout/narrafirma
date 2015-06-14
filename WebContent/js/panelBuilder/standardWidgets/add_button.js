@@ -2,13 +2,12 @@ define([
     "dijit/form/Button",
     "dojo/dom-class",
     "dojo/dom-construct",
-    "dojo/_base/lang",
     "../translate"
-], function (Button, domClass, domConstruct, lang, translate) {
+], function (Button, domClass, domConstruct, translate) {
     "use strict";
     function add_button(panelBuilder, contentPane, model, fieldSpecification, callback) {
         if (!callback)
-            callback = lang.hitch(panelBuilder, panelBuilder.buttonClicked, contentPane, model, fieldSpecification);
+            callback = panelBuilder.buttonClicked.bind(panelBuilder, contentPane, model, fieldSpecification);
         var button = new Button({
             label: translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt),
             type: "button",

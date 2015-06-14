@@ -19,10 +19,9 @@ define([
     "dojo/_base/declare",
     'dojo/dom-class',
     "dojo/dom-construct",
-    "dojo/_base/lang",
     "./translate",
     "dijit/layout/ContentPane"
-], function (add_boolean, add_button, add_checkbox, add_checkboxes, add_functionResult, add_grid, add_header, add_html, add_image, add_label, add_radiobuttons, add_select, add_slider, add_text, add_textarea, add_toggleButton, browser, declare, domClass, domConstruct, lang, translate, ContentPane) {
+], function (add_boolean, add_button, add_checkbox, add_checkboxes, add_functionResult, add_grid, add_header, add_html, add_image, add_label, add_radiobuttons, add_select, add_slider, add_text, add_textarea, add_toggleButton, browser, declare, domClass, domConstruct, translate, ContentPane) {
     "use strict";
     // Developer local debug flag to cause an Exception if a widget type is missing instead of put in placeholder panel
     var debugFailIfMissingWidgets = false;
@@ -72,7 +71,9 @@ define([
             this.currentHelpPage = null;
             this.currentHelpSection = null;
             this.applicationDirectory = "/";
-            lang.mixin(this, kwArgs);
+            for (var key in kwArgs) {
+                this[key] = kwArgs[key];
+            }
         },
         // provide a way to find definitions needed to  build internal panels for some widgets like the GridWithItemPanel
         setPanelSpecifications: function (panelSpecificationCollection) {
@@ -97,7 +98,7 @@ define([
                     console.log(error);
                     throw new Error(error);
                 }
-                addFunction = lang.hitch(this, this.addMissingWidgetPlaceholder);
+                addFunction = this.addMissingWidgetPlaceholder.bind(this);
             }
             if (_.isString(addFunction)) {
                 var addFunctionName = addFunction;
@@ -128,7 +129,7 @@ define([
         buildPanel: function (panelOrPanelID, contentPane, model) {
             console.log("buildPanel", panelOrPanelID);
             var fieldSpecifications;
-            if (lang.isString(panelOrPanelID)) {
+            if (_.isString(panelOrPanelID)) {
                 var panel = this.getPanelDefinitionForPanelID(panelOrPanelID);
                 fieldSpecifications = panel.panelFields;
             }
@@ -234,14 +235,22 @@ define([
             if (!url)
                 return "";
             var template = '<img src="{iconFile}" height=16 width=16 title="{title}" onclick="document.__narraFirma_launchApplication(\'{url}\', \'help\')">';
-            return lang.replace(template, {
+            var replacements = {
                 // TODO: Remove unused images from project
                 // "/images/Info_blauw.png"
                 // "/images/Blue_question_mark_icon.svg"
                 iconFile: this.applicationDirectory + 'images/Information_icon4.svg',
                 title: "Click to open help system window on this topic...",
                 url: url
-            });
+            };
+            function replace(template, values) {
+                var result = template;
+                for (var key in replacements) {
+                    result = result.split('{' + key + '}').join(replacements[key]);
+                }
+                return result;
+            }
+            return replace(template, replacements);
         },
         createQuestionContentPaneWithPrompt: function (contentPane, fieldSpecification) {
             // triangle&#8227; 

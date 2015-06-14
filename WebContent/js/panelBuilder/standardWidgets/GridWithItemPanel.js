@@ -4,7 +4,6 @@ define([
     "../dialogSupport",
     'dojo/dom-class',
     "dojox/mvc/getPlainValue",
-    "dojo/_base/lang",
     "../translate",
     "dojox/uuid/generateRandomUuid",
     "../widgetSupport",
@@ -17,7 +16,7 @@ define([
     "dojo/Stateful",
     "dstore/Trackable",
     "dgrid/OnDemandGrid"
-], function (array, declare, dialogSupport, domClass, getPlainValue, lang, translate, generateRandomUuid, widgetSupport, ColumnResizer, DijitRegistry, Form, Keyboard, Memory, Selection, Stateful, Trackable, OnDemandGrid) {
+], function (array, declare, dialogSupport, domClass, getPlainValue, translate, generateRandomUuid, widgetSupport, ColumnResizer, DijitRegistry, Form, Keyboard, Memory, Selection, Stateful, Trackable, OnDemandGrid) {
     "use strict";
     var debugSelecting = false;
     // This defines a gui component which has a grid, some buttons, and a detail panel do display the currently selected item or enter a new item
@@ -95,7 +94,7 @@ define([
             self.updateGridButtonsForSelectionAndForm();
             // Defer updating until later to ensure grid settles down with selecting
             if (configuration.selectCallback)
-                setTimeout(lang.partial(configuration.selectCallback, self, null), 0);
+                setTimeout(configuration.selectCallback.bind(null, self, null), 0);
             // TODO: Track first selected item if view open -- this does not work as a deselect called before select always
             // if (grid.formType === "view") self.viewButtonClicked(event);
         });
@@ -106,42 +105,42 @@ define([
             self.updateGridButtonsForSelectionAndFormLater();
         });
         if (configuration.addButton) {
-            this.buttons.addButton = widgetSupport.newButton(buttonContentPane, "#button_Add|Add", lang.hitch(this, this.addButtonClicked));
+            this.buttons.addButton = widgetSupport.newButton(buttonContentPane, "#button_Add|Add", this.addButtonClicked.bind(this));
         }
         if (configuration.removeButton) {
-            this.buttons.removeButton = widgetSupport.newButton(buttonContentPane, "#button_Remove|Remove", lang.hitch(this, this.removeButtonClicked));
+            this.buttons.removeButton = widgetSupport.newButton(buttonContentPane, "#button_Remove|Remove", this.removeButtonClicked.bind(this));
         }
         this.navigateCallback = null;
         if (configuration.viewButton) {
             // Bind first two arguments to function that will be callback receiving one extra argument
             // See: http://dojotoolkit.org/reference-guide/1.7/dojo/partial.html
-            var viewButtonClickedPartial = lang.hitch(this, this.viewButtonClicked);
+            var viewButtonClickedPartial = this.viewButtonClicked.bind(this);
             var viewButtonID = id + "_view";
-            this.buttons.viewButton = widgetSupport.newButton(buttonContentPane, "#button_View|View", lang.hitch(this, this.viewButtonClicked, null));
+            this.buttons.viewButton = widgetSupport.newButton(buttonContentPane, "#button_View|View", this.viewButtonClicked.bind(this, null));
             // TODO: Should there be an option of double click as edit?
             // Support double click as view
-            this.grid.on("dblclick", lang.hitch(this, this.viewButtonClicked, "forceOpen"));
-            this.navigateCallback = lang.hitch(this, this.viewButtonClicked, "forceOpen");
+            this.grid.on("dblclick", this.viewButtonClicked.bind(this, "forceOpen"));
+            this.navigateCallback = this.viewButtonClicked.bind(this, "forceOpen");
         }
         if (configuration.editButton) {
-            this.buttons.editButton = widgetSupport.newButton(buttonContentPane, "#button_Edit|Edit", lang.hitch(this, this.editButtonClicked));
+            this.buttons.editButton = widgetSupport.newButton(buttonContentPane, "#button_Edit|Edit", this.editButtonClicked.bind(this));
         }
         if (configuration.duplicateButton) {
-            this.buttons.duplicateButton = widgetSupport.newButton(buttonContentPane, "#button_Duplicate|Duplicate", lang.hitch(this, this.duplicateButtonClicked));
+            this.buttons.duplicateButton = widgetSupport.newButton(buttonContentPane, "#button_Duplicate|Duplicate", this.duplicateButtonClicked.bind(this));
         }
         if (configuration.moveUpDownButtons) {
-            this.buttons.upButton = widgetSupport.newButton(buttonContentPane, "#button_Up|Up", lang.hitch(this, this.upButtonClicked));
-            this.buttons.downButton = widgetSupport.newButton(buttonContentPane, "#button_Down|Down", lang.hitch(this, this.downButtonClicked));
+            this.buttons.upButton = widgetSupport.newButton(buttonContentPane, "#button_Up|Up", this.upButtonClicked.bind(this));
+            this.buttons.downButton = widgetSupport.newButton(buttonContentPane, "#button_Down|Down", this.downButtonClicked.bind(this));
         }
         if (configuration.customButton) {
             var options = configuration.customButton;
             var customButtonClickedPartial;
             if (_.isString(options.callback)) {
                 var fakeFieldSpecification = { id: id, displayConfiguration: options.callback, grid: this };
-                customButtonClickedPartial = lang.hitch(panelBuilder, panelBuilder.buttonClicked, pagePane, model, fakeFieldSpecification);
+                customButtonClickedPartial = panelBuilder.buttonClicked.bind(panelBuilder, pagePane, model, fakeFieldSpecification);
             }
             else {
-                customButtonClickedPartial = lang.partial(options.callback, this);
+                customButtonClickedPartial = options.callback.bind(null, this);
             }
             this.buttons.customButton = widgetSupport.newButton(buttonContentPane, options.customButtonLabel, customButtonClickedPartial);
             if (!configuration.viewButton) {
@@ -149,10 +148,10 @@ define([
             }
         }
         if (configuration.navigationButtons) {
-            this.buttons.navigateStartButton = widgetSupport.newButton(buttonContentPane, "#button_navigateStart|<<", lang.hitch(this, this.navigateButtonClicked, "start"));
-            this.buttons.navigatePreviousButton = widgetSupport.newButton(buttonContentPane, "#button_navigatePrevious|<", lang.hitch(this, this.navigateButtonClicked, "previous"));
-            this.buttons.navigateNextButton = widgetSupport.newButton(buttonContentPane, "#button_navigateNext|>", lang.hitch(this, this.navigateButtonClicked, "next"));
-            this.buttons.navigateEndButton = widgetSupport.newButton(buttonContentPane, "#button_navigateEnd|>>", lang.hitch(this, this.navigateButtonClicked, "end"));
+            this.buttons.navigateStartButton = widgetSupport.newButton(buttonContentPane, "#button_navigateStart|<<", this.navigateButtonClicked.bind(this, "start"));
+            this.buttons.navigatePreviousButton = widgetSupport.newButton(buttonContentPane, "#button_navigatePrevious|<", this.navigateButtonClicked.bind(this, "previous"));
+            this.buttons.navigateNextButton = widgetSupport.newButton(buttonContentPane, "#button_navigateNext|>", this.navigateButtonClicked.bind(this, "next"));
+            this.buttons.navigateEndButton = widgetSupport.newButton(buttonContentPane, "#button_navigateEnd|>>", this.navigateButtonClicked.bind(this, "end"));
         }
         pagePane.addChild(this.itemContentPane);
         /*
@@ -221,7 +220,7 @@ define([
             var newColumn = {
                 field: fieldSpecification.id,
                 label: translate(fieldSpecification.id + "::shortName", fieldSpecification.displayName),
-                formatter: lang.hitch(self, self.formatObjectsIfNeeded),
+                formatter: self.formatObjectsIfNeeded.bind(this),
                 sortable: !configuration.moveUpDownButtons,
             };
             columns.push(newColumn);
@@ -321,7 +320,7 @@ define([
         domClass.add(this.form.domNode, "narrafirma-griditempanel-form");
         // TODO: Should confirm close if editing or adding
         // TODO: Should have a close icon with X instead of cancel
-        // var closeBox = widgetSupport.newButton(this.form, "#button_Close|Close", lang.hitch(this, this.hideAndDestroyForm));
+        // var closeBox = widgetSupport.newButton(this.form, "#button_Close|Close", this.hideAndDestroyForm.bind(this));
         // Doesn't work: closeBox.set("style", "text-align: right;");
         this.panelBuilder.buildPanel(this.itemPanelSpecification, this.form, statefulItem);
         if (formType === "view") {
@@ -331,7 +330,7 @@ define([
             });
         }
         else {
-            widgetSupport.newButton(this.form, "#button_OK|OK", lang.hitch(this, this.storeItem, statefulItem));
+            widgetSupport.newButton(this.form, "#button_OK|OK", this.storeItem.bind(this, statefulItem));
             widgetSupport.newButton(this.form, "#button_Cancel|Cancel", function () {
                 console.log("Cancel chosen");
                 // TODO: Confirm cancel if have entered data    
@@ -544,7 +543,7 @@ define([
         }
     };
     GridWithItemPanel.prototype.formatObjectsIfNeeded = function (item) {
-        if (lang.isString(item))
+        if (_.isString(item))
             return item;
         if (item === undefined)
             return "";
@@ -555,7 +554,7 @@ define([
     GridWithItemPanel.prototype.updateGridButtonsForSelectionAndFormLater = function () {
         // Defer updating until later to ensure grid settles down with sorting
         // otherwise could calculate button status incorrectly
-        setTimeout(lang.hitch(this, this.updateGridButtonsForSelectionAndForm), 0);
+        setTimeout(this.updateGridButtonsForSelectionAndForm.bind(this), 0);
     };
     GridWithItemPanel.prototype.updateGridButtonsForSelectionAndForm = function () {
         var buttons = this.buttons;
