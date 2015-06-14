@@ -487,6 +487,7 @@ define(["require", "exports", "dojox/encoding/digests/_base", "dojox/uuid/genera
         return sha256AndLengthObject.sha256 + "_" + sha256AndLengthObject.length;
     }
     function calculateCanonicalSHA256AndLengthForObject(someObject, doNotSortFlag) {
+        if (doNotSortFlag === void 0) { doNotSortFlag = false; }
         if (!doNotSortFlag)
             someObject = copyObjectWithSortedKeys(someObject);
         var minimalJSON = JSON.stringify(someObject);

@@ -539,7 +539,7 @@ function makeSHA256AndLength(sha256AndLengthObject) {
     return sha256AndLengthObject.sha256 + "_" + sha256AndLengthObject.length;
 }
 
-function calculateCanonicalSHA256AndLengthForObject(someObject, doNotSortFlag) {
+function calculateCanonicalSHA256AndLengthForObject(someObject, doNotSortFlag = false) {
     if (!doNotSortFlag) someObject = copyObjectWithSortedKeys(someObject);
     var minimalJSON = JSON.stringify(someObject);
     // var buffer = new Buffer(minimalJSON, "utf8");
