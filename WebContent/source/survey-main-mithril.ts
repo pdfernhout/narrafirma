@@ -120,10 +120,10 @@ function getHashParameters(hash) {
 
 function hidePleaseWait() {
     // This uses a window.narraFirma_pleaseWaitTimeout global set in survey.html
-    console.log("turned off please wait at", new Date(), "still waiting to display", !!window.narraFirma_pleaseWaitTimeout);
-    if (window.narraFirma_pleaseWaitTimeout) {
-        clearTimeout(window.narraFirma_pleaseWaitTimeout);
-        window.narraFirma_pleaseWaitTimeout = null;
+    console.log("turned off please wait at", new Date(), "still waiting to display", !!window["narraFirma_pleaseWaitTimeout"]);
+    if (window["narraFirma_pleaseWaitTimeout"]) {
+        clearTimeout(window["narraFirma_pleaseWaitTimeout"]);
+        window["narraFirma_pleaseWaitTimeout"] = null;
     }
     document.getElementById("pleaseWaitDiv").style.display = "none";
 }
@@ -147,12 +147,12 @@ function initialize() {
         // turn off initial "please wait" display
         hidePleaseWait();
         
-        if (!window.opener || !window.opener.narraFirma_previewQuestionnaire) {
+        if (!window.opener || !window.opener["narraFirma_previewQuestionnaire"]) {
             alert("Problem with preview");
             return;
         }
         
-        var questionnaire = window.opener.narraFirma_previewQuestionnaire;     
+        var questionnaire = window.opener["narraFirma_previewQuestionnaire"];     
         surveyBuilder.buildSurveyForm(surveyDiv, questionnaire, finishedPreview, "previewMode");
 
         return;

@@ -23,6 +23,7 @@ define(["require", "exports", "dojox/uuid/generateRandomUuid", "dojo/_base/lang"
      X Accessibility [at least the basics]
      */
     function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewMode) {
+        if (previewMode === void 0) { previewMode = null; }
         console.log("buildSurveyForm questions", questionnaire);
         var startText = questionnaire.startText;
         // TODO: Translate
@@ -92,7 +93,8 @@ define(["require", "exports", "dojox/uuid/generateRandomUuid", "dojo/_base/lang"
             var storyQuestionsModel = {
                 __type: "org.workingwithstories.Story",
                 _storyID: generateRandomUuid(),
-                _participantID: participantID
+                _participantID: participantID,
+                __survey_elicitingQuestion: undefined
             };
             if (singlePrompt)
                 storyQuestionsModel.__survey_elicitingQuestion = singlePrompt;
@@ -274,12 +276,15 @@ define(["require", "exports", "dojox/uuid/generateRandomUuid", "dojo/_base/lang"
             else if (displayType === "select") {
                 makeLabel();
                 var selectOptions = [];
-                var defaultOptions = { value: '' };
+                var defaultOptions = {
+                    value: '',
+                    selected: undefined
+                };
                 if (!value)
                     defaultOptions.selected = 'selected';
                 selectOptions.push(m("option", defaultOptions, '-- select --'));
                 selectOptions = selectOptions.concat(fieldSpecification.valueOptions.map(function (optionValue, index) {
-                    var optionOptions = { value: optionValue };
+                    var optionOptions = { value: optionValue, selected: undefined };
                     // console.log("optionValue, value", optionValue, value, optionValue === value);
                     if (optionValue === value)
                         optionOptions.selected = 'selected';
@@ -460,7 +465,7 @@ define(["require", "exports", "dojox/uuid/generateRandomUuid", "dojo/_base/lang"
                 submitButtonOrWaitOrFinal()
             ]);
             if (submitted === "pending" || submitted === "success") {
-                makeReadOnly(result);
+                makeReadOnly(result, null);
             }
             return result;
         };

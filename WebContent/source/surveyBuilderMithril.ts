@@ -1,5 +1,7 @@
 import generateRandomUuid = require("dojox/uuid/generateRandomUuid");
 import lang = require("dojo/_base/lang");
+
+/// <reference path="WebContent/lib/mithril/mithril.d.ts" />
 import m = require("../lib/mithril/mithril");
 
 "use strict";
@@ -28,7 +30,7 @@ import m = require("../lib/mithril/mithril");
  X Accessibility [at least the basics]
  */
 
-export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewMode) {  
+export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewMode = null) {  
     console.log("buildSurveyForm questions", questionnaire);
     
     var startText = questionnaire.startText;
@@ -115,8 +117,10 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewM
         var storyQuestionsModel = {
             __type: "org.workingwithstories.Story",
             _storyID: generateRandomUuid(),
-            _participantID: participantID
+            _participantID: participantID,
+            __survey_elicitingQuestion: undefined
         };
+
         if (singlePrompt) storyQuestionsModel.__survey_elicitingQuestion = singlePrompt;         
         stories.push(storyQuestionsModel);
     }
@@ -304,12 +308,15 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewM
         } else if (displayType === "select") {
             makeLabel();
             var selectOptions = [];
-            var defaultOptions = {value: ''};
+            var defaultOptions = {
+                value: '',
+                selected: undefined
+            };
             if (!value) defaultOptions.selected = 'selected';
             selectOptions.push(m("option", defaultOptions, '-- select --'));
             selectOptions = selectOptions.concat(
                 fieldSpecification.valueOptions.map(function (optionValue, index) {
-                    var optionOptions = {value: optionValue};
+                    var optionOptions = {value: optionValue, selected: undefined};
                     // console.log("optionValue, value", optionValue, value, optionValue === value);
                     if (optionValue === value) optionOptions.selected = 'selected';
                     return m("option", optionOptions, optionValue);
@@ -520,7 +527,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewM
         ]);
         
         if (submitted === "pending" || submitted === "success") {
-            makeReadOnly(result);
+            makeReadOnly(result, null);
         }
         
         return result;
