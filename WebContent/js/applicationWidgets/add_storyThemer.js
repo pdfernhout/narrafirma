@@ -2,7 +2,7 @@ define([
     "dojox/html/entities",
     "../pointrel20150417/generateRandomUuid",
     "js/surveyCollection",
-    "dojo/topic",
+    "../pointrel20150417/topic",
     "js/panelBuilder/standardWidgets/GridWithItemPanel",
     "dijit/form/ComboBox",
     "dijit/layout/ContentPane",

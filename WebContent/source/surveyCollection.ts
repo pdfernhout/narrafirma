@@ -1,5 +1,5 @@
 import questionnaireGeneration = require("./questionnaireGeneration");
-import topic = require("dojo/topic");
+import topic = require("./pointrel20150417/topic");
 import translate = require("./panelBuilder/translate");
 
 "use strict";

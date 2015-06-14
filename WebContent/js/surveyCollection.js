@@ -1,4 +1,4 @@
-define(["require", "exports", "./questionnaireGeneration", "dojo/topic", "./panelBuilder/translate"], function (require, exports, questionnaireGeneration, topic, translate) {
+define(["require", "exports", "./questionnaireGeneration", "./pointrel20150417/topic", "./panelBuilder/translate"], function (require, exports, questionnaireGeneration, topic, translate) {
     "use strict";
     var project;
     function setProject(theProject) {

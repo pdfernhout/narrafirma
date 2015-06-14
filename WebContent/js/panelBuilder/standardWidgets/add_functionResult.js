@@ -1,5 +1,5 @@
 define([
-    "dojo/topic"
+    "../../pointrel20150417/topic"
 ], function (topic) {
     "use strict";
     function calculate_function(panelBuilder, contentPane, model, fieldSpecification) {

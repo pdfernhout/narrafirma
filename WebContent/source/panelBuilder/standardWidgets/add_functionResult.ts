@@ -1,5 +1,5 @@
 define([
-    "dojo/topic"
+    "../../pointrel20150417/topic"
 ], function(
     topic
 ){

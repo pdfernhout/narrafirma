@@ -7,7 +7,7 @@ define([
     "dojo/Stateful",
     "js/storyCardDisplay",
     "js/surveyCollection",
-    "dojo/topic",
+    "../pointrel20150417/topic",
     "js/panelBuilder/valuePathResolver"
 ], function (charting, ContentPane, 
     // digests,

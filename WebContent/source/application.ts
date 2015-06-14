@@ -21,7 +21,7 @@ import Stateful = require("dojo/Stateful");
 import surveyCollection = require("./surveyCollection");
 import toaster = require("./panelBuilder/toaster");
 import Tooltip = require("dijit/Tooltip");
-import topic = require("dojo/topic");
+import topic = require("./pointrel20150417/topic");
 import translate = require("./panelBuilder/translate");
 
 "use strict";
