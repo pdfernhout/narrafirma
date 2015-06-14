@@ -1,3 +1,6 @@
+/// <reference path="typings/lodash.d.ts"/>
+// declare var _: _.LoDashStatic;
+
 import applicationMessages = require("dojo/i18n!js/nls/applicationMessages");
 import buttonActions = require("./buttonActions");
 import csvImportExport = require("./csvImportExport");
@@ -20,9 +23,6 @@ import toaster = require("./panelBuilder/toaster");
 import Tooltip = require("dijit/Tooltip");
 import topic = require("dojo/topic");
 import translate = require("./panelBuilder/translate");
-
-/// <reference path="../lib/lodash.d.ts"/>
-import _ = require("../lib/lodash");
 
 "use strict";
 
@@ -564,7 +564,8 @@ export function initialize() {
 }
 
 function chooseAProjectToOpen(userIdentifierFromServer, projects) {
-    translate.configure({}, applicationMessages);
+    // Cast to silence TypeScript warning about use of translate.configure
+    (<any>translate).configure({}, applicationMessages);
     
     // Initialize toaster
     toaster.createToasterWidget("navigationDiv");
