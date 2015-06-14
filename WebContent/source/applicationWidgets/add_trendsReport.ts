@@ -1,5 +1,4 @@
 define([
-    "dojo/_base/array",
     "./charting",
     "dijit/layout/ContentPane",
     // "dojox/encoding/digests/_base",
@@ -14,7 +13,6 @@ define([
     "dojo/topic",
     "js/panelBuilder/valuePathResolver"
 ], function(
-    array,
     charting,
     ContentPane,
     // digests,
@@ -54,10 +52,10 @@ define([
         var ratioQuestions = [];
         
         // TODO: create all supported graphable permutations of questions
-        array.forEach(graphBrowserInstance.questions, function (question) {
+        graphBrowserInstance.questions.forEach(function (question) {
             if (question.displayType === "slider") {
                 ratioQuestions.push(question);
-            } else if (array.indexOf(nominalQuestionTypes, question.displayType) !== -1)  {
+            } else if (nominalQuestionTypes.indexOf(question.displayType) !== -1)  {
                 nominalQuestions.push(question);
             }
         });

@@ -1,4 +1,3 @@
-import array = require("dojo/_base/array");
 import questionnaireGeneration = require("./questionnaireGeneration");
 import topic = require("dojo/topic");
 import translate = require("./panelBuilder/translate");
@@ -208,8 +207,8 @@ var filterableQuestionTypes = ["select", "slider", "boolean", "text", "checkbox"
 // function updateFilterPaneForCurrentQuestions(questions) {
 export function optionsForAllQuestions(questions, excludeTextQuestionsFlag) {
     var questionOptions = [];
-    array.forEach(questions, function (question) {
-        if (array.indexOf(filterableQuestionTypes, question.displayType) !== -1) {
+    questions.forEach(function (question) {
+        if (filterableQuestionTypes.indexOf(question.displayType) !== -1) {
             if (!excludeTextQuestionsFlag || question.displayType !== "text") {
                 var defaultText = question.displayName;
                 if (!defaultText) defaultText = question.displayPrompt;

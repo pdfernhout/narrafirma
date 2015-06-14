@@ -26,9 +26,9 @@ define([
         return generateRandomUuid();
     }
     // Caution: "this" may be undefined for functions called by this unless "bind" or "hitch" is used
-    function forEach(array, theFunction) {
-        for (var index = 0, length = array.length; index < length; ++index) {
-            theFunction(index, array[index], array);
+    function forEach(theArray, theFunction) {
+        for (var index = 0, length = theArray.length; index < length; ++index) {
+            theFunction(index, theArray[index], theArray);
         }
     }
     function removeItemFromArray(item, anArray) {

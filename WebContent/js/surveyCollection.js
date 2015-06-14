@@ -1,4 +1,4 @@
-define(["require", "exports", "dojo/_base/array", "./questionnaireGeneration", "dojo/topic", "./panelBuilder/translate"], function (require, exports, array, questionnaireGeneration, topic, translate) {
+define(["require", "exports", "./questionnaireGeneration", "dojo/topic", "./panelBuilder/translate"], function (require, exports, questionnaireGeneration, topic, translate) {
     "use strict";
     var project;
     function setProject(theProject) {
@@ -179,8 +179,8 @@ define(["require", "exports", "dojo/_base/array", "./questionnaireGeneration", "
     // function updateFilterPaneForCurrentQuestions(questions) {
     function optionsForAllQuestions(questions, excludeTextQuestionsFlag) {
         var questionOptions = [];
-        array.forEach(questions, function (question) {
-            if (array.indexOf(filterableQuestionTypes, question.displayType) !== -1) {
+        questions.forEach(function (question) {
+            if (filterableQuestionTypes.indexOf(question.displayType) !== -1) {
                 if (!excludeTextQuestionsFlag || question.displayType !== "text") {
                     var defaultText = question.displayName;
                     if (!defaultText)

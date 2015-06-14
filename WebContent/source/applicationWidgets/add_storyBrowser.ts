@@ -1,5 +1,4 @@
 define([
-    "dojo/_base/array",
     "dojo/dom-construct",
     "dojo/_base/lang",
     "js/storyCardDisplay",
@@ -10,7 +9,6 @@ define([
     "dojox/layout/TableContainer",
     "js/panelBuilder/valuePathResolver"
 ], function(
-    array,
     domConstruct,
     lang,
     storyCardDisplay,
@@ -66,7 +64,7 @@ define([
         
         // Compute how many of each answer -- assumes typically less than 200-1000 stories
         var totals = {};
-        array.forEach(stories, function(item) {
+        stories.forEach(function(item) {
             // console.log("optionsFromQuestion item", item, question.id, item[question.id]);
             var choice = item[question.id];
             if (choice === undefined || choice === null || choice === "") {
@@ -100,7 +98,7 @@ define([
         
         if (question.displayType === "select") {
             // console.log("select", question, question.valueOptions);
-            array.forEach(question.valueOptions, function(each) {
+            question.valueOptions.forEach(function(each) {
                 // console.log("option", question.id, each);
                 count = totals[each];
                 if (!count) count = 0;
@@ -108,7 +106,7 @@ define([
             });
         } else if (question.displayType === "radiobuttons") {
             // console.log("radiobuttons", question, question.valueOptions);
-            array.forEach(question.valueOptions, function(each) {
+            question.valueOptions.forEach(function(each) {
                 // console.log("option", question.id, each);
                 count = totals[each];
                 if (!count) count = 0;
@@ -116,7 +114,7 @@ define([
             });
         } else if (question.displayType === "checkboxes") {
             // console.log("checkboxes", question, question.valueOptions);
-            array.forEach(question.valueOptions, function(each) {
+            question.valueOptions.forEach(function(each) {
                 // console.log("option", question.id, each);
                 count = totals[each];
                 if (!count) count = 0;
@@ -132,7 +130,7 @@ define([
         } else if (question.displayType === "boolean") {
             // console.log("boolean", question);
             // TODO; Not sure this will really be right with true/false as booleans instead of strings
-            array.forEach(["yes", "no"], function(each) {
+            ["yes", "no"].forEach(function(each) {
                 // console.log("option", id, each);
                 count = totals[each];
                 if (!count) count = 0;
@@ -141,9 +139,9 @@ define([
         } else if (question.displayType === "checkbox") {
             // console.log("checkbox", question);
             // TODO; Not sure this will really be right with true/false as checkbox instead of strings
-            array.forEach([true, false], function(each) {
+            [true, false].forEach(function(each) {
                 // console.log("option", id, each);
-                count = totals[each];
+                count = totals["" + each];
                 if (!count) count = 0;
                 options.push({label: each + " (" +  count + ")", value: each});
             });

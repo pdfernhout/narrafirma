@@ -1,5 +1,4 @@
 define([
-    "dojo/_base/array",
     "./charting",
     "dijit/layout/ContentPane",
     "js/panelBuilder/standardWidgets/GridWithItemPanel",
@@ -11,7 +10,7 @@ define([
     "js/surveyCollection",
     "dojo/topic",
     "js/panelBuilder/valuePathResolver"
-], function (array, charting, ContentPane, 
+], function (charting, ContentPane, 
     // digests,
     GridWithItemPanel, kendallsTau, lang, 
     // SHA256,
@@ -37,11 +36,11 @@ define([
         var nominalQuestions = [];
         var ratioQuestions = [];
         // TODO: create all supported graphable permutations of questions
-        array.forEach(graphBrowserInstance.questions, function (question) {
+        graphBrowserInstance.questions.forEach(function (question) {
             if (question.displayType === "slider") {
                 ratioQuestions.push(question);
             }
-            else if (array.indexOf(nominalQuestionTypes, question.displayType) !== -1) {
+            else if (nominalQuestionTypes.indexOf(question.displayType) !== -1) {
                 nominalQuestions.push(question);
             }
         });
