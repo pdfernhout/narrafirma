@@ -1,6 +1,6 @@
-define([
-], function () {
-    "use strict";
+// TODO: Wrap use strict in functions
+"use strict";
+define(["require", "exports"], function (require, exports) {
     // To use, import this module and call in suspect code: debugTools.suspectToBeLoopingInfinitely();
     // From: http://stackoverflow.com/questions/12815892/how-to-debug-javascript-when-it-goes-into-infinite-loops-and-recursive-calls-in
     // IMPORTANT --- calls to this should be for development bug catching only
@@ -14,8 +14,5 @@ define([
             console.log("Did it halt?");
         }
     }
-    // Return current versions used by application  
-    return {
-        suspectToBeLoopingInfinitely: suspectToBeLoopingInfinitely
-    };
+    exports.suspectToBeLoopingInfinitely = suspectToBeLoopingInfinitely;
 });

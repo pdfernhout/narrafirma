@@ -8,6 +8,7 @@ import getPlainValue = require("dojox/mvc/getPlainValue");
 var isObject = function(a) {
     return Object.prototype.toString.call(a) === '[object Object]';
 };
+
 var copyObjectWithSortedKeys = function(object) {
     if (isObject(object)) {
         var newObj = {};
@@ -23,54 +24,53 @@ var copyObjectWithSortedKeys = function(object) {
     } else {
         return object;
     }
-};
+};   
+
+export function updateModelWithNewValues(model, newValuesOriginal, copyOnlyModelFieldsFlag, removeOtherFieldsFromModelFlag) {
+    var key;
     
-return {
-    updateModelWithNewValues: function(model, newValuesOriginal, copyOnlyModelFieldsFlag, removeOtherFieldsFromModelFlag) {
-        var key;
-        
-        // Make a deep copy of the original values to ensure any arrays or objects are full deep copies
-        var newValues = JSON.parse(JSON.stringify(newValuesOriginal));
-        
-        // Copy new data into model
-        for (key in newValues) {
-            // If copying only model fields, don't copy keys with underscores to ensure our model __type gets fixed if needed
-            if (copyOnlyModelFieldsFlag && key.charAt(0) === "_") continue;
-            if (newValues.hasOwnProperty(key) && (!copyOnlyModelFieldsFlag || model.get(key) !== undefined)) {
-                model.set(key, newValues[key]);
+    // Make a deep copy of the original values to ensure any arrays or objects are full deep copies
+    var newValues = JSON.parse(JSON.stringify(newValuesOriginal));
+    
+    // Copy new data into model
+    for (key in newValues) {
+        // If copying only model fields, don't copy keys with underscores to ensure our model __type gets fixed if needed
+        if (copyOnlyModelFieldsFlag && key.charAt(0) === "_") continue;
+        if (newValues.hasOwnProperty(key) && (!copyOnlyModelFieldsFlag || model.get(key) !== undefined)) {
+            model.set(key, newValues[key]);
+        }
+    }
+    
+    if (removeOtherFieldsFromModelFlag) {
+        // TODO: A little dangerous to remove stuff, should this extra data just be kept?
+        // Remove old data from model not in newValues
+        var fieldsToRemove = {};
+        for (key in model) {
+            if (model.hasOwnProperty(key) && !newValues.hasOwnProperty(key)) {
+                // Stateful model adds "_watchCallbacks" so don't remove it
+                if (!_.startsWith(key, "_")) fieldsToRemove[key] = true;
             }
         }
-        
-        if (removeOtherFieldsFromModelFlag) {
-            // TODO: A little dangerous to remove stuff, should this extra data just be kept?
-            // Remove old data from model not in newValues
-            var fieldsToRemove = {};
-            for (key in model) {
-                if (model.hasOwnProperty(key) && !newValues.hasOwnProperty(key)) {
-                    // Stateful model adds "_watchCallbacks" so don't remove it
-                    if (!_.startsWith(key, "_")) fieldsToRemove[key] = true;
-                }
-            }
-            for (key in fieldsToRemove) {
-                console.log("removing old field/data", key, model.get(key));
-                model.set(key, undefined);
-            }
+        for (key in fieldsToRemove) {
+            console.log("removing old field/data", key, model.get(key));
+            model.set(key, undefined);
         }
-    },
-    
-    isModelChanged: function(model, initialValues) {
-        var initialValuesJSON = JSON.stringify(copyObjectWithSortedKeys(initialValues), null, 4);
-        var currentValuesJSON = JSON.stringify(copyObjectWithSortedKeys(getPlainValue(model)), null, 4);
-        var isChanged = initialValuesJSON !== currentValuesJSON;
-        /*
-        if (isChanged) {
-            console.log("changed from to", initialValues, model);
-            console.log("initial", initialValuesJSON);
-            console.log("current", currentValuesJSON);
-        }
-        */
-        return isChanged;
-    },
-    
-    getPlainValue: getPlainValue
-};
+    }
+}
+
+export function isModelChanged(model, initialValues) {
+    var initialValuesJSON = JSON.stringify(copyObjectWithSortedKeys(initialValues), null, 4);
+    var currentValuesJSON = JSON.stringify(copyObjectWithSortedKeys(getPlainValue(model)), null, 4);
+    var isChanged = initialValuesJSON !== currentValuesJSON;
+    /*
+    if (isChanged) {
+        console.log("changed from to", initialValues, model);
+        console.log("initial", initialValuesJSON);
+        console.log("current", currentValuesJSON);
+    }
+    */
+    return isChanged;
+}
+
+export var getPlainValue = getPlainValue;
+
