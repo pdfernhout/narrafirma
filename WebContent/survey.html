@@ -37,8 +37,6 @@
 
 <link rel="stylesheet" href="/css/survey.css">
 
-<script type='text/javascript' src="js/survey-main-mithril.js"></script>
-
 </head>
 
 <body>
@@ -61,6 +59,10 @@
     </script>
     
     <div id="surveyDiv" style="overflow: auto"></div>
+    <script>
+    require(["js/survey-main-mithril.js"], function(main) {
+    });
+    </script>
 </body>
 
 </html>
