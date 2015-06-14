@@ -1,6 +1,5 @@
-define([
-], function () {
-    "use strict";
+"use strict";
+define(["require", "exports"], function (require, exports) {
     // Messages used by pages and created from design
     var pageMessages = {};
     // Messages specific to the editing application
@@ -79,7 +78,7 @@ define([
         extraTranslations[id] = text;
     }
     // Adding these to function just so can keep previous code the same as direct call to translate module
-    translate.configure = configure;
-    translate.addExtraTranslation = addExtraTranslation;
+    translate["configure"] = configure;
+    translate["addExtraTranslation"] = addExtraTranslation;
     return translate;
 });
