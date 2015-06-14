@@ -1,7 +1,7 @@
-import generateRandomUuid = require("dojox/uuid/generateRandomUuid");
-
-/// <reference path="WebContent/lib/mithril/mithril.d.ts" />
+/// <reference path="typings/mithril.d.ts" />
 import m = require("../lib/mithril/mithril");
+
+import generateRandomUuid = require("dojox/uuid/generateRandomUuid");
 
 "use strict";
 
