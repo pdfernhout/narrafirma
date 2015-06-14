@@ -1,12 +1,11 @@
 define([
-    "dojo/_base/array",
     "dojo/_base/declare",
     "dojo/dom-construct",
     "dojo/on",
     "../widgetSupport",
     "dijit/form/CheckBox",
     "dijit/_WidgetBase"
-], function (array, declare, domConstruct, on, widgetSupport, CheckBox, _WidgetBase) {
+], function (declare, domConstruct, on, widgetSupport, CheckBox, _WidgetBase) {
     "use strict";
     // TODO: Very similar to RadioButtonsWidget, except it maintains a dictionary of whether checkboxes are checked rather than use an "at" accessor
     // TODO: Set an optional minimum and maximum number that may be checked and validate for that
@@ -30,7 +29,7 @@ define([
             if (!this.value) {
                 console.log("ERROR - creating temporary value for checkboxes", this.id);
                 this.value = {};
-                array.forEach(this.options, function (option) {
+                this.options.forEach(function (option) {
                     self.value[option.value] = false;
                 });
             }
@@ -44,7 +43,7 @@ define([
             var self = this;
             var div = domConstruct.create("div");
             // var options = buildOptions(id, this.choices, this.optionsString);
-            array.forEach(this.options, function (option) {
+            this.options.forEach(function (option) {
                 // console.log("creating checkbox", id, option);
                 var checkBox = new CheckBox({
                     value: option.value
@@ -76,7 +75,7 @@ define([
             // console.log("setting value of checkboxes", value);
             this.value = value;
             var self = this;
-            array.forEach(this.options, function (option) {
+            this.options.forEach(function (option) {
                 // self.value[option.value] = false;
                 self.checkboxes[option.value].set("checked", self.value[option.value]);
             });

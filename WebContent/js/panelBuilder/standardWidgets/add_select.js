@@ -1,10 +1,9 @@
 define([
-    "dojo/_base/array",
     "dijit/form/FilteringSelect",
     "dojo/store/Memory",
     "../translate",
     "../valuePathResolver"
-], function (array, FilteringSelect, Memory, translate, valuePathResolver) {
+], function (FilteringSelect, Memory, translate, valuePathResolver) {
     "use strict";
     function add_select(panelBuilder, contentPane, model, fieldSpecification, addNoSelectionOption) {
         // console.log("add_select", fieldSpecification.id, model, fieldSpecification);
@@ -57,7 +56,7 @@ define([
             if (addNoSelectionOption)
                 options.push({ name: translate("#selection_has_not_been_made|(no selection)"), id: "", selected: true });
             var isValueInChoices = false;
-            array.forEach(choices, function (each) {
+            choices.forEach(function (each) {
                 var label;
                 var value;
                 // console.log("choice", id, each);

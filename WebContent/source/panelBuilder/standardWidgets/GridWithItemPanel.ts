@@ -1,5 +1,4 @@
 define([
-    "dojo/_base/array",
     "dojo/_base/declare",
     "../dialogSupport",
     'dojo/dom-class',
@@ -17,7 +16,6 @@ define([
     "dstore/Trackable",
     "dgrid/OnDemandGrid"
 ], function(
-    array,
     declare,
     dialogSupport,
     domClass,
@@ -248,13 +246,13 @@ define([
         
         // Put the columns in the order supplied if using includeAllFields, otherwise put them in order of panel specification
         if (configuration.includeAllFields && configuration.includeAllFields.constructor === Array) {
-            array.forEach(configuration.includeAllFields, function (fieldName) {
-                array.forEach(panelFields, function (fieldSpecification) {
+            configuration.includeAllFields.forEach(function (fieldName) {
+                panelFields.forEach(function (fieldSpecification) {
                     if (fieldSpecification.id === fieldName) fieldsToInclude.push(fieldSpecification);
                 });
             });
         } else {
-            array.forEach(panelFields, function (fieldSpecification) {
+            panelFields.forEach(function (fieldSpecification) {
                 var includeField = false;
                 if (configuration.includeAllFields) {
                     // TODO: improve this check if need to exclude other fields?
@@ -270,7 +268,7 @@ define([
             });
         }
         
-        array.forEach(fieldsToInclude, function (fieldSpecification) {
+        fieldsToInclude.forEach(function (fieldSpecification) {
             // console.log("includeField", fieldSpecification);
             var newColumn =  {
                 field: fieldSpecification.id,
@@ -404,7 +402,7 @@ define([
             });
             
             /* TODO: Some way to disable editing?
-            array.forEach(itemPanelSpecification.panelFields, function (question) {
+            itemPanelSpecification.panelFields.forEach(function (question) {
                 // TODO: This may not work for more complex question types or custom widgets?
                 var widget = registry.byId(question.id);
                 if (widget) {
@@ -494,7 +492,7 @@ define([
         console.log("matches", matches);
         // Should only be one match
         var selectedItem = null;
-        array.forEach(matches, function (item) {
+        matches.forEach(function (item) {
             console.log("item", item);
             selectedItem = item;
         });

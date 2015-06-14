@@ -1,12 +1,11 @@
 define([
-    "dojo/_base/array",
     "dojo/_base/declare",
     "dojo/dom-construct",
     "dojo/on",
     "../widgetSupport",
     "dijit/form/RadioButton",
     "dijit/_WidgetBase"
-], function (array, declare, domConstruct, on, widgetSupport, RadioButton, _WidgetBase) {
+], function (declare, domConstruct, on, widgetSupport, RadioButton, _WidgetBase) {
     "use strict";
     var RadioButtonsWidget = declare([_WidgetBase], {
         value: null,
@@ -28,7 +27,7 @@ define([
             var self = this;
             var div = domConstruct.create("div");
             var first = true;
-            array.forEach(this.options, function (option) {
+            this.options.forEach(function (option) {
                 if (!first)
                     div.appendChild(domConstruct.toDom('<br>'));
                 first = false;
@@ -57,7 +56,7 @@ define([
             this.value = value;
             var self = this;
             // console.log("set radio", value);
-            array.forEach(this.options, function (option) {
+            this.options.forEach(function (option) {
                 // self.value[option.value] = false;
                 // console.log("radio button value", self.value, option.value);
                 var radioButton = self.radioButtons[option.value];

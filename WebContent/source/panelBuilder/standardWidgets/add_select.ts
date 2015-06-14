@@ -1,11 +1,9 @@
 define([
-    "dojo/_base/array",
     "dijit/form/FilteringSelect",
     "dojo/store/Memory",
     "../translate",
     "../valuePathResolver"
 ], function(
-    array,
     FilteringSelect,
     Memory,
     translate,
@@ -76,7 +74,7 @@ define([
 
             var isValueInChoices = false;
             
-            array.forEach(choices, function(each) {
+            choices.forEach(function(each) {
                 var label;
                 var value;
                 // console.log("choice", id, each);

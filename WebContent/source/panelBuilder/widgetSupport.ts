@@ -1,5 +1,4 @@
 define([
-    "dojo/_base/array",
     "dijit/form/Button",
     "dojo/dom-construct",
     "dijit/form/FilteringSelect",
@@ -9,7 +8,6 @@ define([
     "./translate",
     "dojo/_base/window"
 ], function(
-    array,
     Button,
     domConstruct,
     FilteringSelect,
@@ -51,13 +49,13 @@ define([
         var options = [];
         
         if (choices) {
-            array.forEach(choices, function(each) {
+            choices.forEach(function(each) {
                 // console.log("each1", each);
                 var label = translate(id + "::selection:" + each, each);
                 options.push({label: label, value: each});
             });           
         } else if (optionsString) {
-            array.forEach(optionsString.split("\n"), function(each) {
+            optionsString.split("\n").forEach(function(each) {
                 // console.log("each2", each);
                 var translateID = id + "::selection:" + each;
                 if (optionsString === "yes\nno") translateID = "boolean_choice_" + each;
@@ -93,7 +91,7 @@ define([
         if (addNoSelectionOption) options.push({name: translate("#selection_has_not_been_made", "-- selection has not been made --"), id: "", selected: true});
         
         if (choices) {
-            array.forEach(choices, function(each) {
+            choices.forEach(function(each) {
                 // console.log("choice", id, each);
                 if (_.isString(each)) {
                     // TODO: Add translation support here somehow

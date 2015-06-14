@@ -1,5 +1,4 @@
 define([
-    "dojo/_base/array",
     "dojo/_base/declare",
     "../dialogSupport",
     'dojo/dom-class',
@@ -16,7 +15,7 @@ define([
     "dojo/Stateful",
     "dstore/Trackable",
     "dgrid/OnDemandGrid"
-], function (array, declare, dialogSupport, domClass, getPlainValue, translate, generateRandomUuid, widgetSupport, ColumnResizer, DijitRegistry, Form, Keyboard, Memory, Selection, Stateful, Trackable, OnDemandGrid) {
+], function (declare, dialogSupport, domClass, getPlainValue, translate, generateRandomUuid, widgetSupport, ColumnResizer, DijitRegistry, Form, Keyboard, Memory, Selection, Stateful, Trackable, OnDemandGrid) {
     "use strict";
     var debugSelecting = false;
     // This defines a gui component which has a grid, some buttons, and a detail panel do display the currently selected item or enter a new item
@@ -190,15 +189,15 @@ define([
         var panelFields = this.itemPanelSpecification.panelFields;
         // Put the columns in the order supplied if using includeAllFields, otherwise put them in order of panel specification
         if (configuration.includeAllFields && configuration.includeAllFields.constructor === Array) {
-            array.forEach(configuration.includeAllFields, function (fieldName) {
-                array.forEach(panelFields, function (fieldSpecification) {
+            configuration.includeAllFields.forEach(function (fieldName) {
+                panelFields.forEach(function (fieldSpecification) {
                     if (fieldSpecification.id === fieldName)
                         fieldsToInclude.push(fieldSpecification);
                 });
             });
         }
         else {
-            array.forEach(panelFields, function (fieldSpecification) {
+            panelFields.forEach(function (fieldSpecification) {
                 var includeField = false;
                 if (configuration.includeAllFields) {
                     // TODO: improve this check if need to exclude other fields?
@@ -215,7 +214,7 @@ define([
                 }
             });
         }
-        array.forEach(fieldsToInclude, function (fieldSpecification) {
+        fieldsToInclude.forEach(function (fieldSpecification) {
             // console.log("includeField", fieldSpecification);
             var newColumn = {
                 field: fieldSpecification.id,
@@ -397,7 +396,7 @@ define([
         console.log("matches", matches);
         // Should only be one match
         var selectedItem = null;
-        array.forEach(matches, function (item) {
+        matches.forEach(function (item) {
             console.log("item", item);
             selectedItem = item;
         });
