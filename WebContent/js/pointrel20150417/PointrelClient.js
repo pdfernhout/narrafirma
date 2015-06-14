@@ -1,36 +1,7 @@
 // Pointrel20150417 for NodeJS and WordPress
 // The focus is on client getting all messages of interest as they are received by the server and indexing them locally
 // Each message needs to have enough easily available metadata for the server and client to do that filtering
-// Messages could include a collection of semantic (RDF-like) triples representing a semantic transaction.
-// Messages are placed into message streams.
-// Message streams on a server typically store all the messages for playback by future clients to reconstruct a semantic structure defined by the messages.
-// Messages have a trace, which is the path they have travelled through the overall system from client to server (to server...) to client.
-// Messages have a timestamp in the oldest trace receivedTimestamp field (the effective time, which on creation should be "now" or possible in the past, but never in the future).
-// Messages also have an originator defined by the trace, which is usually a person.
-// Ideally (future work), messages should be signed in the trace by the originator and/or other certifying authorities as to the authenticity.
-// The signature process is intented in part to identify potentially unwanted messages from unknown or unauthenticated users).
-// PCE in stored server files stands for "Pointrel Collected Event". :-)
-/* // To support any of AMD, CommonJS, and global loading in future...
-(function(root, factory) {
-    if (typeof define === "function" && define.amd) {
-        define([], factory);
-    } else if (typeof module === "object" && module.exports) {
-        module.exports = factory();
-    } else {
-        root.PointrelClient = factory();
-    }
-}(this, */
-define([
-    "dojox/encoding/digests/_base",
-    "dojox/uuid/generateRandomUuid",
-    "dojo/_base/lang",
-    "dojox/encoding/digests/SHA256",
-    "dojo/request",
-    "dojo/topic"
-], function (
-    // all,
-    // Deferred,
-    digests, generateRandomUuid, lang, SHA256, request, topic) {
+define(["require", "exports", "dojox/encoding/digests/_base", "dojox/uuid/generateRandomUuid", "dojox/encoding/digests/SHA256", "dojo/request", "dojo/topic"], function (require, exports, digests, generateRandomUuid, SHA256, request, topic) {
     "use strict";
     // TODO: Have mode where batches requests to load messages from server to reduce round-trip latency
     // TODO: change this default to 15 seconds - shorter now for initial development
@@ -611,7 +582,7 @@ define([
         // Stop the timer in case it was running already
         // TODO: Is stopTimer/clearTimeout safe to call if the timer has already completed?
         this.stopTimer();
-        this.timer = window.setTimeout(lang.hitch(this, this.timerSentSignal), this.frequencyOfChecks_ms);
+        this.timer = window.setTimeout(this.timerSentSignal.bind(this), this.frequencyOfChecks_ms);
     };
     PointrelClient.prototype.stopTimer = function () {
         if (this.timer) {

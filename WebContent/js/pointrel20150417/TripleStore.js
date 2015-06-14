@@ -1,8 +1,5 @@
 // A semantic (sub)web implementation a triple store
-define([
-    "dojo/topic",
-    "dojo/_base/lang"
-], function (topic, lang) {
+define(["require", "exports", "dojo/topic"], function (require, exports, topic) {
     "use strict";
     var TripleStore = function (pointrelClient, topicIdentifier) {
         this.pointrelClient = pointrelClient;
@@ -10,7 +7,7 @@ define([
         this.tripleMessages = [];
         this.indexes = {};
         this.subscriptions = [];
-        this.subscriptions.push(topic.subscribe("messageReceived", lang.hitch(this, this.processMessage)));
+        this.subscriptions.push(topic.subscribe("messageReceived", this.processMessage.bind(this)));
     };
     TripleStore.prototype.remove = function () {
         // console.log("TripleStore remove called");
