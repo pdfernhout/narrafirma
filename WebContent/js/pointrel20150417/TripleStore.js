@@ -1,5 +1,5 @@
 // A semantic (sub)web implementation a triple store
-define(["require", "exports", "dojo/topic"], function (require, exports, topic) {
+define(["require", "exports", "./topic"], function (require, exports, topic) {
     "use strict";
     var TripleStore = function (pointrelClient, topicIdentifier) {
         this.pointrelClient = pointrelClient;

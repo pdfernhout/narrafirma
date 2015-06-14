@@ -1,6 +1,6 @@
 // A semantic (sub)web implementation a triple store
 
-import topic = require("dojo/topic");
+import topic = require("./topic");
 
 "use strict";
 

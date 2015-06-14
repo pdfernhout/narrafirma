@@ -19,7 +19,7 @@ import digests = require("dojox/encoding/digests/_base");
 import generateRandomUuid = require("./generateRandomUuid");
 import SHA256 = require("dojox/encoding/digests/SHA256");
 import request = require("dojo/request");
-import topic = require("dojo/topic");
+import topic = require("./topic");
 
 "use strict";
 

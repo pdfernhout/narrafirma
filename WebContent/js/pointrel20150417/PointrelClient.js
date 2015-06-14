@@ -1,7 +1,7 @@
 // Pointrel20150417 for NodeJS and WordPress
 // The focus is on client getting all messages of interest as they are received by the server and indexing them locally
 // Each message needs to have enough easily available metadata for the server and client to do that filtering
-define(["require", "exports", "dojox/encoding/digests/_base", "./generateRandomUuid", "dojox/encoding/digests/SHA256", "dojo/request", "dojo/topic"], function (require, exports, digests, generateRandomUuid, SHA256, request, topic) {
+define(["require", "exports", "dojox/encoding/digests/_base", "./generateRandomUuid", "dojox/encoding/digests/SHA256", "dojo/request", "./topic"], function (require, exports, digests, generateRandomUuid, SHA256, request, topic) {
     "use strict";
     // TODO: Have mode where batches requests to load messages from server to reduce round-trip latency
     // TODO: change this default to 15 seconds - shorter now for initial development
