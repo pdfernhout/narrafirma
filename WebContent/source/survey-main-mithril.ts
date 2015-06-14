@@ -1,4 +1,3 @@
-import hash = require("dojo/hash");
 import PointrelClient = require("./pointrel20150417/PointrelClient");
 import surveyBuilder = require("./surveyBuilderMithril");
 import surveyStorage = require("./surveyStorage");
@@ -102,7 +101,8 @@ function updateServerStatus(status, message) {
 }
 
 // getHashParameters derived from: http://stackoverflow.com/questions/4197591/parsing-url-hash-fragment-identifier-with-javascript
-function getHashParameters(hash) {
+function getHashParameters() {
+    var hash = window.location.hash.substr(1);
     var result = {};
     var match;
     // Regex for replacing addition symbol with a space
@@ -133,7 +133,7 @@ function finishedPreview(status, surveyResult, wizardPane) {
 }
 
 function initialize() {
-    var configuration = getHashParameters(hash());
+    var configuration = getHashParameters();
     console.log("configuration", configuration);
 
     preview = configuration["preview"];

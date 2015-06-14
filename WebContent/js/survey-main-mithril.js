@@ -1,4 +1,4 @@
-define(["require", "exports", "dojo/hash", "./pointrel20150417/PointrelClient", "./surveyBuilderMithril", "./surveyStorage"], function (require, exports, hash, PointrelClient, surveyBuilder, surveyStorage) {
+define(["require", "exports", "./pointrel20150417/PointrelClient", "./surveyBuilderMithril", "./surveyStorage"], function (require, exports, PointrelClient, surveyBuilder, surveyStorage) {
     "use strict";
     /* global m */
     // http://localhost:8080/survey.html#project=test1&survey=one
@@ -81,7 +81,8 @@ define(["require", "exports", "dojo/hash", "./pointrel20150417/PointrelClient", 
         // console.log("updateServerStatus", status, message);
     }
     // getHashParameters derived from: http://stackoverflow.com/questions/4197591/parsing-url-hash-fragment-identifier-with-javascript
-    function getHashParameters(hash) {
+    function getHashParameters() {
+        var hash = window.location.hash.substr(1);
         var result = {};
         var match;
         // Regex for replacing addition symbol with a space
@@ -113,7 +114,7 @@ define(["require", "exports", "dojo/hash", "./pointrel20150417/PointrelClient", 
             wizardPane.forward();
     }
     function initialize() {
-        var configuration = getHashParameters(hash());
+        var configuration = getHashParameters();
         console.log("configuration", configuration);
         preview = configuration["preview"];
         if (preview) {
