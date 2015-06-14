@@ -1,5 +1,5 @@
-import generateRandomUuid = require("../lib/dojox/uuid/generateRandomUuid");
-import lang = require("../lib/dojo/_base/lang");
+import generateRandomUuid = require("dojox/uuid/generateRandomUuid");
+import lang = require("dojo/_base/lang");
 import m = require("../lib/mithril/mithril");
 
 "use strict";

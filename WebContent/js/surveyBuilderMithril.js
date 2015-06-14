@@ -1,4 +1,4 @@
-define(["require", "exports", "../lib/dojox/uuid/generateRandomUuid", "../lib/dojo/_base/lang", "../lib/mithril/mithril"], function (require, exports, generateRandomUuid, lang, m) {
+define(["require", "exports", "dojox/uuid/generateRandomUuid", "dojo/_base/lang", "../lib/mithril/mithril"], function (require, exports, generateRandomUuid, lang, m) {
     "use strict";
     // Accessibility References:
     // http://usabilitygeek.com/10-free-web-based-web-site-accessibility-evaluation-tools/

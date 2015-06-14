@@ -1,5 +1,5 @@
-import dom = require("../lib/dojo/dom");
-import hash = require("../lib/dojo/hash");
+import dom = require("dojo/dom");
+import hash = require("dojo/hash");
 import PointrelClient = require("./pointrel20150417/PointrelClient");
 import surveyBuilder = require("./surveyBuilderMithril");
 import surveyStorage = require("./surveyStorage");
