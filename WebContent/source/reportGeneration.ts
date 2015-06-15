@@ -8,6 +8,7 @@ export function calculate_report(panelSpecificationCollection, model, headerPage
     // throw new Error("No longer working due to ongoing refactoring for current page model");
     return "calculate_report: Not working right now due to switchover to only having a model for the current page";
     
+    /*
     // console.log("calculate_report", panelSpecificationsCollection, model, headerPageID);
     if (!panelSpecificationCollection) return "ERROR: in calculate_report, panelSpecificationCollection is not set";
     var report = "<br><br>";
@@ -49,6 +50,7 @@ export function calculate_report(panelSpecificationCollection, model, headerPage
         report += "</div><br>";
     }
     return report;
+    */
 }
 
  function labelForQuestion(question) {

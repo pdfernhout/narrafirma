@@ -1,26 +1,24 @@
-define(["require", "exports", "./applicationWidgets/add_quizScoreResult", "./panelBuilder/translate"], function (require, exports, add_quizScoreResult, translate) {
+define(["require", "exports", "./panelBuilder/translate"], function (require, exports, translate) {
     "use strict";
     function calculate_report(panelSpecificationCollection, model, headerPageID) {
         // TODO: Fix this function or remove it
         // throw new Error("No longer working due to ongoing refactoring for current page model");
         return "calculate_report: Not working right now due to switchover to only having a model for the current page";
+        /*
         // console.log("calculate_report", panelSpecificationsCollection, model, headerPageID);
-        if (!panelSpecificationCollection)
-            return "ERROR: in calculate_report, panelSpecificationCollection is not set";
+        if (!panelSpecificationCollection) return "ERROR: in calculate_report, panelSpecificationCollection is not set";
         var report = "<br><br>";
         var pageList = panelSpecificationCollection.getChildPageIDListForHeaderID(headerPageID);
         for (var pageIndex in pageList) {
             // Skip last report page in a section
-            if (pageIndex === pageList.length - 1)
-                break;
+            if (pageIndex === pageList.length - 1) break;
             var pageID = pageList[pageIndex];
             var panelDefinition = panelSpecificationCollection.getPanelSpecificationForPanelID(pageID);
             if (!panelDefinition) {
                 console.log("ERROR: Missing panelDefinition for pageID:", pageID);
                 continue;
             }
-            if (panelDefinition.displayType !== "page")
-                continue;
+            if (panelDefinition.displayType !== "page") continue;
             report += "<div>";
             report += "<i> *** " + translate(pageID + "::title", panelDefinition.displayName) + "</i>  ***<br><br>";
             var questionsAnsweredCount = 0;
@@ -36,17 +34,19 @@ define(["require", "exports", "./applicationWidgets/add_quizScoreResult", "./pan
                 }
                 if (value && value.length !== 0) {
                     // console.log("value", value, value.length);
+                    
                     var valueToDisplay = displayStringForValue(question, value, 4);
                     var label = labelForQuestion(question);
                     report += label + " " + valueToDisplay + "</br><br>";
                     questionsAnsweredCount++;
                 }
             }
-            if (questionsAnsweredCount === 0)
-                report += translate("#no_questions_answered_on_page", "(No questions answered on this page)");
+            
+            if (questionsAnsweredCount === 0) report += translate("#no_questions_answered_on_page", "(No questions answered on this page)");
             report += "</div><br>";
         }
         return report;
+        */
     }
     exports.calculate_report = calculate_report;
     function labelForQuestion(question) {
