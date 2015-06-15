@@ -1,6 +1,5 @@
-// Generated from design
-define(function () {
-    "use strict";
+"use strict";
+define(["require", "exports"], function (require, exports) {
     var recommendations = {
         "categories": {
             "Eliciting questions": [
