@@ -302,7 +302,7 @@ define(["require", "exports", "./standardWidgets/add_boolean", "./standardWidget
             label.placeAt(contentPane);
             // TODO: How do these updates get removed????
             var updateInfo = { "id": fieldSpecification.id, "label": label, "baseText": baseText, "calculate": calculate };
-            label.updateInfo = updateInfo;
+            label["updateInfo"] = updateInfo;
             this.updateLabelUsingCalculation(updateInfo);
             return label;
         }

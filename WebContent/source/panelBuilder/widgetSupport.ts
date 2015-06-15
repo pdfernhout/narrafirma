@@ -11,12 +11,12 @@ import win = require("dojo/_base/window");
 
 export function setOptionsInMultiSelect(widget, options) {
     // console.log("setOptionsInMultiSelect", widget, options);
-    query('option', widget.domNode).forEach(function(node, index, arr) {
+    (<any>query('option', widget.domNode)).forEach(function(node, index, arr) {
         domConstruct.destroy(node);
     }); 
     
     for (var i = 0; i < options.length; i++) {
-        var c = win.doc.createElement('option');
+        var c = (<any>win.doc).createElement('option');
         c.innerHTML = options[i].label;
         c.value = options[i].value;
         widget.domNode.appendChild(c);

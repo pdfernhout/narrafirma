@@ -178,7 +178,7 @@ function updateHashIfNeededForChangedState() {
 
 function startTrackingClientStateChanges() {
     // TODO: Should this watch be owned by some component so they can be destroyed when the page closes?
-    clientState.watch(function () {
+    (<any>clientState).watch(function () {
         if (updateHashTimer) clearTimeout(updateHashTimer);
         // Delay updating hash in case other clientState fields are also changing
         updateHashTimer = setTimeout(function () {

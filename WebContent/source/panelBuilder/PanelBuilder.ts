@@ -371,7 +371,7 @@ var PanelBuilder = declare(null, {
         
         // TODO: How do these updates get removed????
         var updateInfo = {"id": fieldSpecification.id, "label": label, "baseText": baseText, "calculate": calculate};
-        label.updateInfo = updateInfo;
+        label["updateInfo"] = updateInfo;
         
         this.updateLabelUsingCalculation(updateInfo);
 
