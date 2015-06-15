@@ -50,6 +50,7 @@ define(["require", "exports", "../panelBuilder/translate"], function (require, e
         return label;
     }
     // Make this function available for report generation
-    add_quizScoreResult.calculate_quizScoreResult = calculate_quizScoreResult;
+    // TODO: Should be a better way to do this
+    add_quizScoreResult["calculate_quizScoreResult"] = calculate_quizScoreResult;
     return add_quizScoreResult;
 });

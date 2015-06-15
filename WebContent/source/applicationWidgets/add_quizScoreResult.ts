@@ -59,6 +59,7 @@ function add_quizScoreResult(panelBuilder, contentPane, model, fieldSpecificatio
 }
 
 // Make this function available for report generation
-add_quizScoreResult.calculate_quizScoreResult = calculate_quizScoreResult;
+// TODO: Should be a better way to do this
+add_quizScoreResult["calculate_quizScoreResult"] = calculate_quizScoreResult;
 
 export = add_quizScoreResult;
