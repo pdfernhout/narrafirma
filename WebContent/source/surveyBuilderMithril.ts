@@ -207,7 +207,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewM
             questionLabel[0].tag = "label";
         }
         
-        var parts = [];
+        var parts: any = [];
         function makeLegend() {
             // Do nothing for now
             parts.unshift(m("legend", questionLabel[0]));
@@ -425,7 +425,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewM
         redraw();
     }
     
-    function submitButtonOrWaitOrFinal() {
+    function submitButtonOrWaitOrFinal(): any {
         if (submitted === "never") {
             return m("button", {class: "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Submit Survey"+ (previewMode ? " [preview mode only]" : ""));
         } else if (submitted === "failed") {
