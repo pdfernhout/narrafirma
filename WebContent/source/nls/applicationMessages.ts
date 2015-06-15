@@ -1,7 +1,7 @@
 // Application level translations
 // Not indented correctly to make it easier to cut and paste to other language files
 // See: http://dojotoolkit.org/documentation/tutorials/1.9/i18n/
-define({
+var messages = {
     root: {
      // Do not translate text in double braces since they are identifiers looked up and replaced by the program at runtime
      // For example: {{total}} should stay the same in the translation
@@ -119,5 +119,7 @@ define({
     
     // For theming
     button_addTheme: "Add theme"
-}
-});
+    }
+};
+
+export = messages;
