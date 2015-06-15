@@ -183,6 +183,7 @@ define(["require", "exports", "d3", "dojo/dom-construct", "dijit/layout/ContentP
     }
     // addXAxis(chart, xScale, {labelLengthLimit: 64, isSmallFormat: false, drawLongAxisLines: false, rotateAxisLabels: false});
     function addXAxis(chart, xScale, configure) {
+        if (configure === void 0) { configure = null; }
         if (!configure)
             configure = {};
         var xAxis = d3.svg.axis().scale(xScale).orient('bottom');
@@ -208,6 +209,7 @@ define(["require", "exports", "d3", "dojo/dom-construct", "dijit/layout/ContentP
     // This function is very similar to the one for addXAxis, except for transform, tickFormat, CSS classes, and not needing rotate
     // yAxis = addYAxis(chart, yScale, {labelLengthLimit: 64, isSmallFormat: false, drawLongAxisLines: false});
     function addYAxis(chart, yScale, configure) {
+        if (configure === void 0) { configure = null; }
         if (!configure)
             configure = {};
         var yAxis = d3.svg.axis().scale(yScale).orient('left');

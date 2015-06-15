@@ -403,7 +403,7 @@ function insertGraphSelection(graphBrowserInstance) {
     textarea.focus();
 }
 
-function scanForSelectionJSON(graphBrowserInstance, doFocus) {
+function scanForSelectionJSON(graphBrowserInstance, doFocus = false) {
     var observationTextarea = graphBrowserInstance.widgets.observation;
     var textModel = graphBrowserInstance.observationModel;
     var textarea = observationTextarea.textbox;

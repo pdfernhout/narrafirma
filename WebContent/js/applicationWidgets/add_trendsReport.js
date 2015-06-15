@@ -349,6 +349,7 @@ define(["require", "exports", "./charting", "dijit/layout/ContentPane", "../pane
         textarea.focus();
     }
     function scanForSelectionJSON(graphBrowserInstance, doFocus) {
+        if (doFocus === void 0) { doFocus = false; }
         var observationTextarea = graphBrowserInstance.widgets.observation;
         var textModel = graphBrowserInstance.observationModel;
         var textarea = observationTextarea.textbox;

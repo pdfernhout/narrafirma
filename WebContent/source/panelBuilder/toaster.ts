@@ -13,10 +13,8 @@ export function createToasterWidget(container) {
     toasterWidget = new Toaster({id: "toasterWidget"}, toasterPane.domNode);
 }
 
-export function toast(message, messageType, duration_ms) {
+export function toast(message, messageType = "message", duration_ms = 2000) {
     // TODO: Translate message if needed
-    if (!messageType) messageType = "message";
-    if (!duration_ms) duration_ms = 2000;
     toasterWidget.positionDirection = "tl-down";
     toasterWidget.setContent(message, messageType, duration_ms);
     toasterWidget.show();

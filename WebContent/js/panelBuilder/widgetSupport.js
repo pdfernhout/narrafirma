@@ -14,6 +14,7 @@ define(["require", "exports", "dijit/form/Button", "dojo/dom-construct", "dijit/
     }
     exports.setOptionsInMultiSelect = setOptionsInMultiSelect;
     function newMultiSelect(options, value) {
+        if (value === void 0) { value = undefined; }
         var widget = new MultiSelect({
             "size": 6,
             "style": "width: 100%;",
@@ -97,12 +98,14 @@ define(["require", "exports", "dijit/form/Button", "dojo/dom-construct", "dijit/
         return options;
     }
     function updateSelectChoices(select, choices, addNoSelectionOption) {
+        if (addNoSelectionOption === void 0) { addNoSelectionOption = false; }
         var options = makeOptionsFromSelectFromChoices(choices, addNoSelectionOption);
         var dataStore = select.get("store");
         dataStore.setData(options);
     }
     exports.updateSelectChoices = updateSelectChoices;
     function newSelect(parentContentPane, choices, addNoSelectionOption) {
+        if (addNoSelectionOption === void 0) { addNoSelectionOption = false; }
         var options = makeOptionsFromSelectFromChoices(choices, addNoSelectionOption);
         var dataStore = new Memory({ "data": options });
         var select = new FilteringSelect({

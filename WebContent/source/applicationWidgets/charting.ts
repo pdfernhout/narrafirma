@@ -229,7 +229,7 @@ function makeChartFramework(chartPane, chartType, isSmallFormat, margin) {
 }
 
 // addXAxis(chart, xScale, {labelLengthLimit: 64, isSmallFormat: false, drawLongAxisLines: false, rotateAxisLabels: false});
-function addXAxis(chart, xScale, configure) {
+function addXAxis(chart, xScale, configure = null) {
     if (!configure) configure = {};
     
     var xAxis = d3.svg.axis()
@@ -269,7 +269,7 @@ function addXAxis(chart, xScale, configure) {
 
 // This function is very similar to the one for addXAxis, except for transform, tickFormat, CSS classes, and not needing rotate
 // yAxis = addYAxis(chart, yScale, {labelLengthLimit: 64, isSmallFormat: false, drawLongAxisLines: false});
-function addYAxis(chart, yScale, configure) {
+function addYAxis(chart, yScale, configure = null) {
     if (!configure) configure = {};
     
     var yAxis = d3.svg.axis()

@@ -10,11 +10,9 @@ define(["require", "exports", "dijit/layout/ContentPane", "dojox/widget/Toaster"
     }
     exports.createToasterWidget = createToasterWidget;
     function toast(message, messageType, duration_ms) {
+        if (messageType === void 0) { messageType = "message"; }
+        if (duration_ms === void 0) { duration_ms = 2000; }
         // TODO: Translate message if needed
-        if (!messageType)
-            messageType = "message";
-        if (!duration_ms)
-            duration_ms = 2000;
         toasterWidget.positionDirection = "tl-down";
         toasterWidget.setContent(message, messageType, duration_ms);
         toasterWidget.show();

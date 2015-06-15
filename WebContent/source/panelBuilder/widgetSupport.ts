@@ -23,7 +23,7 @@ export function setOptionsInMultiSelect(widget, options) {
     }
 }
 
-export function newMultiSelect(options, value) {
+export function newMultiSelect(options, value = undefined) {
     var widget = new MultiSelect({
         "size": 6,
         "style": "width: 100%;",
@@ -111,14 +111,14 @@ function makeOptionsFromSelectFromChoices(choices, addNoSelectionOption) {
     return options;
 }
 
-export function updateSelectChoices(select, choices, addNoSelectionOption) {
+export function updateSelectChoices(select, choices, addNoSelectionOption = false) {
     var options = makeOptionsFromSelectFromChoices(choices, addNoSelectionOption);
     
     var dataStore = select.get("store");
     dataStore.setData(options);
 }
 
-export function newSelect(parentContentPane, choices, addNoSelectionOption) {
+export function newSelect(parentContentPane, choices, addNoSelectionOption = false) {
     var options = makeOptionsFromSelectFromChoices(choices, addNoSelectionOption);
     
     var dataStore = new Memory({"data": options});
