@@ -14,7 +14,7 @@ export function subscribe(topic, callback) {
 
     return {
         remove: function() {
-            delete topics[topic][uniqueIndex];
+            delete topics[topicKey][uniqueIndex];
         }
     };
 }

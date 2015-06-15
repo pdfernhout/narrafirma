@@ -10,7 +10,7 @@ define(["require", "exports"], function (require, exports) {
         topics[topicKey][uniqueIndex] = callback;
         return {
             remove: function () {
-                delete topics[topic][uniqueIndex];
+                delete topics[topicKey][uniqueIndex];
             }
         };
     }
