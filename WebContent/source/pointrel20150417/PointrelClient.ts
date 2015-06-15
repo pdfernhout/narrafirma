@@ -15,10 +15,9 @@
 
 // PCE in stored server files stands for "Pointrel Collected Event". :-)
 
-import digests = require("dojox/encoding/digests/_base");
+import jsSHA = require("./jsSHA");
+import stringToUtf8 = require("./stringToUtf8");
 import generateRandomUuid = require("./generateRandomUuid");
-import SHA256 = require("dojox/encoding/digests/SHA256");
-import request = require("dojo/request");
 import topic = require("./topic");
 
 "use strict";
@@ -131,6 +130,36 @@ PointrelClient.prototype.createAndSendAddTriplesMessage = function(topicIdentifi
     return this.createAndSendChangeMessage(topicIdentifier, "TripleStore", change);
 }
 */
+
+PointrelClient.prototype.apiRequestSend = function(apiRequest, timeout_ms, successCallback, errorCallback) {
+    var httpRequest = new XMLHttpRequest();
+    
+    httpRequest.onreadystatechange = function() {
+        if (httpRequest.readyState == 4) {
+            if (httpRequest.status >= 200 && httpRequest.status < 300) {
+                if (successCallback) {
+                    var response = JSON.parse(httpRequest.responseText);
+                    successCallback(response);
+                }
+            } else {
+                // TODO: Might these sometimes be JSON?
+                if (errorCallback) errorCallback({status: httpRequest.status, message: httpRequest.responseText})
+            }
+        }
+    }
+    
+    httpRequest.ontimeout = function () {
+         errorCallback({status: 0, message: "Timeout"});
+    }
+    
+    httpRequest.open('POST', this.apiURL, true);
+    httpRequest.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+    httpRequest.setRequestHeader("Accept", "application/json");
+    httpRequest.timeout = timeout_ms;
+    
+    var data = JSON.stringify(apiRequest);
+    httpRequest.send(data);
+}
 
 // TODO: No callback?
 PointrelClient.prototype.createAndSendChangeMessage = function(topicIdentifier, messageType, change, other, callback) {
@@ -249,16 +278,7 @@ PointrelClient.prototype.sendOutgoingMessage = function() {
         this.serverStatus("waiting", "storing " + this.outstandingServerRequestSentAtTimestamp);
         
         var self = this;
-        request.post(this.apiURL, {
-            data: JSON.stringify(apiRequest),
-            // Two second timeout
-            timeout: 2000,
-            handleAs: "json",
-            headers: {
-                "Content-Type": 'application/json; charset=utf-8',
-                "Accept": "application/json"
-            }
-        }).then(function(response) {
+        this.apiRequestSend(apiRequest, 2000, function(response) {
             if (debugMessaging) console.log("Got store response", response);
             self.outstandingServerRequestSentAtTimestamp = null;
             if (!response.success) {
@@ -340,16 +360,7 @@ PointrelClient.prototype.fetchLatestMessageForTopic = function(topicIdentifier, 
         // Do not set outstandingServerRequestSentAtTimestamp as this is an immediate request that does not block polling
         this.serverStatus("waiting", "requesting latest message " + new Date().toISOString());
         
-        request.post(this.apiURL, {
-            data: JSON.stringify(apiRequest),
-            // Two second timeout
-            timeout: 2000,
-            handleAs: "json",
-            headers: {
-                "Content-Type": 'application/json; charset=utf-8',
-                "Accept": "application/json"
-            }
-        }).then(function(response) {
+        this.apiRequestSend(apiRequest, 2000, function(response) {
             if (debugMessaging) console.log("Got latest message for topic response", response);
             if (!response.success) {
                 console.log("ERROR: report queryForLatestMessage failure", response);
@@ -403,16 +414,7 @@ PointrelClient.prototype.reportJournalStatus = function(callback) {
         this.serverStatus("waiting", "requesting journal status " + new Date().toISOString());
         
         var self = this;
-        request.post(this.apiURL, {
-            data: JSON.stringify(apiRequest),
-            // Two second timeout
-            timeout: 2000,
-            handleAs: "json",
-            headers: {
-                "Content-Type": 'application/json; charset=utf-8',
-                "Accept": "application/json"
-            }
-        }).then(function(response) {
+        this.apiRequestSend(apiRequest, 2000, function(response) {
             if (debugMessaging) console.log("Got journal status response", response);
             if (!response.success) {
                 console.log("ERROR: report journal status failure", response);
@@ -453,16 +455,7 @@ PointrelClient.prototype.getCurrentUserInformation = function(callback) {
         this.serverStatus("waiting", "requesting current user information " + new Date().toISOString());
         
         var self = this;
-        request.post(this.apiURL, {
-            data: JSON.stringify(apiRequest),
-            // Two second timeout
-            timeout: 2000,
-            handleAs: "json",
-            headers: {
-                "Content-Type": 'application/json; charset=utf-8',
-                "Accept": "application/json"
-            }
-        }).then(function(response) {
+        this.apiRequestSend(apiRequest, 2000, function(response) {
             if (debugMessaging) console.log("Got currentUserInformation response", response);
             if (!response.success) {
                 console.log("ERROR: currentUserInformation request failure", response);
@@ -543,16 +536,18 @@ function calculateCanonicalSHA256AndLengthForObject(someObject, doNotSortFlag = 
     if (!doNotSortFlag) someObject = copyObjectWithSortedKeys(someObject);
     var minimalJSON = JSON.stringify(someObject);
     // var buffer = new Buffer(minimalJSON, "utf8");
-    var sha256 = calculateSHA256(digests.stringToUtf8(minimalJSON));
-    // TODO: Wasteful to have to calculate this string twice as the SHA25 digest also converts this string to utf8
-    var length = digests.stringToUtf8(minimalJSON).length;
+    var utf8String = stringToUtf8(minimalJSON);
+    var sha256 = calculateSHA256(utf8String);
+    var length = utf8String.length;
     var sha256AndLength = "" + sha256 + "_" + length;
     return {sha256: "" + sha256, length: length};
 }
 
-function calculateSHA256(text) {
+function calculateSHA256(utf8Bytes) {
     // console.log("calculateSHA256", text);
-    return SHA256(text, digests.outputTypes.Hex);
+    var shaObj = new jsSHA("SHA-256", "BYTES");
+    shaObj.update(utf8Bytes);
+    return shaObj.getHash("HEX");
 }
 
 var lastTimestamp = null;
@@ -591,15 +586,15 @@ function getCurrentUniqueTimestamp() {
 // End -- from server
 
 // Make utility functions available at class and instance levels
-PointrelClient.copyObjectWithSortedKeys = copyObjectWithSortedKeys;
+//PointrelClient.copyObjectWithSortedKeys = copyObjectWithSortedKeys;
 PointrelClient.prototype.copyObjectWithSortedKeys = copyObjectWithSortedKeys;
-PointrelClient.randomUUID = generateRandomUuid;
+//PointrelClient.randomUUID = generateRandomUuid;
 PointrelClient.prototype.randomUUID = generateRandomUuid;
-PointrelClient.calculateCanonicalSHA256AndLengthForObject = calculateCanonicalSHA256AndLengthForObject;
+//PointrelClient.calculateCanonicalSHA256AndLengthForObject = calculateCanonicalSHA256AndLengthForObject;
 PointrelClient.prototype.calculateCanonicalSHA256AndLengthForObject = calculateCanonicalSHA256AndLengthForObject;
-PointrelClient.calculateSHA256 = calculateSHA256;
+//PointrelClient.calculateSHA256 = calculateSHA256;
 PointrelClient.prototype.calculateSHA256 = calculateSHA256;
-PointrelClient.getCurrentUniqueTimestamp = getCurrentUniqueTimestamp;
+//PointrelClient.getCurrentUniqueTimestamp = getCurrentUniqueTimestamp;
 PointrelClient.prototype.getCurrentUniqueTimestamp = getCurrentUniqueTimestamp;
 
 PointrelClient.prototype.messageReceived = function(message) {
@@ -714,7 +709,8 @@ PointrelClient.prototype.pollServerForNewMessages = function() {
         fromTimestampExclusive: this.lastReceivedTimestampConsidered,
         // The server may return less than this number of message if including message contents and they exceed about 1MB in total
         limitCount: 100,
-        includeMessageContents: this.includeMessageContents
+        includeMessageContents: this.includeMessageContents,
+        topicIdentifier: undefined
     };
     if (this.topicIdentifier !== undefined) {
         apiRequest.topicIdentifier = this.topicIdentifier;
@@ -727,16 +723,8 @@ PointrelClient.prototype.pollServerForNewMessages = function() {
     this.serverStatus("waiting", "polling " + this.outstandingServerRequestSentAtTimestamp);
     
     var self = this;
-    request.post(this.apiURL, {
-        data: JSON.stringify(apiRequest),
-        // Ten second timeout, longer to account for reading multiple records on server
-        timeout: 10000,
-        handleAs: "json",
-        headers: {
-            "Content-Type": 'application/json; charset=utf-8',
-            "Accept": "application/json"
-        }
-    }).then(function(response) {
+     // Ten second timeout, longer to account for reading multiple records on server
+    this.apiRequestSend(apiRequest, 10000, function(response) {
         if (debugMessaging) console.log("Got query response", response);
         if (!response.success) {
             console.log("Response was a failure", response);
@@ -806,6 +794,7 @@ PointrelClient.prototype.fetchIncomingMessage = function() {
         action: "pointrel20150417_loadMessage",
         journalIdentifier: this.journalIdentifier,
         sha256AndLength: incomingMessageRecord.sha256AndLength,
+        topicIdentifier: undefined
     };
     if (this.topicIdentifier !== undefined) {
         // The topicIdentifier is needed in case we only have permission to read within a specific topic
@@ -818,16 +807,7 @@ PointrelClient.prototype.fetchIncomingMessage = function() {
     this.serverStatus("waiting", "loading " + this.outstandingServerRequestSentAtTimestamp);
     
     var self = this;
-    request.post(this.apiURL, {
-        data: JSON.stringify(apiRequest),
-        // Two second timeout
-        timeout: 2000,
-        handleAs: "json",
-        headers: {
-            "Content-Type": 'application/json; charset=utf-8',
-            "Accept": "application/json"
-        }
-    }).then(function(response) {
+    this.apiRequestSend(apiRequest, 2000, function(response) {
         self.okStatus();
         if (debugMessaging) console.log("Got load response", response);
         self.outstandingServerRequestSentAtTimestamp = null;
