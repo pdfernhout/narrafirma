@@ -12,3 +12,4 @@ define(["require", "exports", "dijit/form/CheckBox", "../valuePathResolver"], fu
     }
     return add_checkbox;
 });
+//# sourceMappingURL=add_checkbox.js.map

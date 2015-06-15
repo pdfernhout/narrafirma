@@ -78,3 +78,4 @@ define(["require", "exports", "dojo/dom-construct", "../panelBuilder/translate"]
     }
     return add_dashboardSectionStatusDisplay;
 });
+//# sourceMappingURL=add_dashboardSectionStatusDisplay.js.map

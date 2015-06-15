@@ -768,3 +768,4 @@ define(["require", "exports", "./jsSHA", "./stringToUtf8", "./generateRandomUuid
     };
     return PointrelClient;
 });
+//# sourceMappingURL=PointrelClient.js.map

@@ -473,3 +473,4 @@ define(["require", "exports", "mithril", "./pointrel20150417/generateRandomUuid"
     }
     exports.buildSurveyForm = buildSurveyForm;
 });
+//# sourceMappingURL=surveyBuilderMithril.js.map

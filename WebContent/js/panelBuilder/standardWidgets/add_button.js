@@ -21,3 +21,4 @@ define(["require", "exports", "dijit/form/Button", "dojo/dom-class", "dojo/dom-c
     }
     return add_button;
 });
+//# sourceMappingURL=add_button.js.map

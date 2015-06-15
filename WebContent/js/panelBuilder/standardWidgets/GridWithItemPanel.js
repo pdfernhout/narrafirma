@@ -602,3 +602,4 @@ define(["require", "exports", "dojo/_base/declare", "../dialogSupport", 'dojo/do
     };
     return GridWithItemPanel;
 });
+//# sourceMappingURL=GridWithItemPanel.js.map

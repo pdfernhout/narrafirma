@@ -4,3 +4,4 @@ define(["require", "exports", "./application"], function (require, exports, appl
     application.initialize();
     console.log("main: done with initialize");
 });
+//# sourceMappingURL=main.js.map

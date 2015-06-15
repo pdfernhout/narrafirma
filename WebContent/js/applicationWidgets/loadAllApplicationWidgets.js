@@ -21,3 +21,4 @@ define(["require", "exports", "./add_accumulatedItemsGrid", "./add_annotationsGr
     }
     return loadAllApplicationWidgets;
 });
+//# sourceMappingURL=loadAllApplicationWidgets.js.map

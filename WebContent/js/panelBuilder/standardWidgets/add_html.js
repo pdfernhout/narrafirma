@@ -7,3 +7,4 @@ define(["require", "exports", "dojo/dom-construct"], function (require, exports,
     }
     return add_html;
 });
+//# sourceMappingURL=add_html.js.map

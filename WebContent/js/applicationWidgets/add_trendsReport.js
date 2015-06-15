@@ -543,3 +543,4 @@ define(["require", "exports", "./charting", "dijit/layout/ContentPane", "../pane
     }
     return add_trendsReport;
 });
+//# sourceMappingURL=add_trendsReport.js.map

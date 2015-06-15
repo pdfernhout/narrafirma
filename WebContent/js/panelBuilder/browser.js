@@ -26,3 +26,4 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.launchApplication = launchApplication;
 });
+//# sourceMappingURL=browser.js.map

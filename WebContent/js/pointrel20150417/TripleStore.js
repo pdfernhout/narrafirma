@@ -108,3 +108,4 @@ define(["require", "exports", "./topic"], function (require, exports, topic) {
     };
     return TripleStore;
 });
+//# sourceMappingURL=TripleStore.js.map

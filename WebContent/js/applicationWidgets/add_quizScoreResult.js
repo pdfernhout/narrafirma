@@ -54,3 +54,4 @@ define(["require", "exports", "../panelBuilder/translate"], function (require, e
     add_quizScoreResult["calculate_quizScoreResult"] = calculate_quizScoreResult;
     return add_quizScoreResult;
 });
+//# sourceMappingURL=add_quizScoreResult.js.map

@@ -284,3 +284,4 @@ define(["require", "exports", "./panelBuilder/toaster", "dijit/layout/ContentPan
         initialize(response.userIdentifier);
     });
 });
+//# sourceMappingURL=projectAdmin.js.map

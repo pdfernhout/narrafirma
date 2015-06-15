@@ -17,3 +17,4 @@ define(["require", "exports", "dijit/form/ToggleButton", "../valuePathResolver"]
     }
     return add_toggleButton;
 });
+//# sourceMappingURL=add_toggleButton.js.map

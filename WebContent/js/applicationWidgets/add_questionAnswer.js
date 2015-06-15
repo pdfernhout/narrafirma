@@ -70,3 +70,4 @@ define(["require", "exports", "../panelBuilder/translate"], function (require, e
     }
     return add_questionAnswer;
 });
+//# sourceMappingURL=add_questionAnswer.js.map

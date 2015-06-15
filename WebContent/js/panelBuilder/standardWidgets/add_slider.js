@@ -72,3 +72,4 @@ define(["require", "exports", "dojo/dom-construct", "dijit/form/HorizontalRule",
     }
     return add_slider;
 });
+//# sourceMappingURL=add_slider.js.map

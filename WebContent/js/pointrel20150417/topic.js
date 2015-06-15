@@ -30,3 +30,4 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.publish = publish;
 });
+//# sourceMappingURL=topic.js.map

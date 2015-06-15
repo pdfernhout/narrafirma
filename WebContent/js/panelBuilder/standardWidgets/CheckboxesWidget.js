@@ -84,3 +84,4 @@ define(["require", "exports", "dojo/_base/declare", "dojo/dom-construct", "dojo/
     });
     return CheckboxesWidget;
 });
+//# sourceMappingURL=CheckboxesWidget.js.map

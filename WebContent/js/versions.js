@@ -11,3 +11,4 @@ define(["require", "exports"], function (require, exports) {
     };
     return versions;
 });
+//# sourceMappingURL=versions.js.map

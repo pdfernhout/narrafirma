@@ -18,3 +18,4 @@ define(["require", "exports", "../../pointrel20150417/topic"], function (require
     }
     return add_functionResult;
 });
+//# sourceMappingURL=add_functionResult.js.map

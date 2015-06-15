@@ -149,3 +149,4 @@ define(["require", "exports", "./pointrel20150417/PointrelClient", "./surveyBuil
     }
     initialize();
 });
+//# sourceMappingURL=survey-main-mithril.js.map

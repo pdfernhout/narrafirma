@@ -60,3 +60,4 @@ define(["require", "exports", "dijit/layout/ContentPane", "dojo/dom-construct"],
     }
     exports.getCurrentPageSpecification = getCurrentPageSpecification;
 });
+//# sourceMappingURL=navigationPane.js.map

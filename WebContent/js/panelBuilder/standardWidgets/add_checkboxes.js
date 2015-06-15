@@ -19,3 +19,4 @@ define(["require", "exports", "./CheckboxesWidget"], function (require, exports,
     }
     return add_checkboxes;
 });
+//# sourceMappingURL=add_checkboxes.js.map

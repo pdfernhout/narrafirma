@@ -136,3 +136,4 @@ define(["require", "exports"], function (require, exports) {
     };
     return PanelSpecificationCollection;
 });
+//# sourceMappingURL=PanelSpecificationCollection.js.map

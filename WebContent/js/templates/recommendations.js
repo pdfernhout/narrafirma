@@ -2387,3 +2387,4 @@ define(["require", "exports"], function (require, exports) {
     };
     return recommendations;
 });
+//# sourceMappingURL=recommendations.js.map

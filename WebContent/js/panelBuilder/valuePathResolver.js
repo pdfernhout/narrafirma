@@ -55,3 +55,4 @@ define(["require", "exports", "dojox/mvc/at"], function (require, exports, at) {
     }
     exports.atFieldSpecification = atFieldSpecification;
 });
+//# sourceMappingURL=valuePathResolver.js.map

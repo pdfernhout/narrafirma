@@ -1486,3 +1486,4 @@ define(["require", "exports"], function (require, exports) {
     exports.storyCollectionActivities = convertSemicolonsToNewlinesForOptions(templates[3]);
     exports.sensemakingActivities = convertSemicolonsToNewlinesForOptions(templates[4]);
 });
+//# sourceMappingURL=templates.js.map

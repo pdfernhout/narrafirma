@@ -83,3 +83,4 @@ define(["require", "exports"], function (require, exports) {
     translate["addExtraTranslation"] = addExtraTranslation;
     return translate;
 });
+//# sourceMappingURL=translate.js.map

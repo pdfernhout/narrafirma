@@ -76,3 +76,4 @@ define(["require", "exports"], function (require, exports) {
     }
     return loadAllPanelSpecifications;
 });
+//# sourceMappingURL=loadAllPanelSpecifications.js.map

@@ -130,3 +130,4 @@ define(["require", "exports", "./pointrel20150417/PointrelClient", "dojo/Statefu
     };
     return Project;
 });
+//# sourceMappingURL=Project.js.map

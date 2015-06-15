@@ -150,3 +150,4 @@ define(["require", "exports", "./charting", "../surveyCollection", "../panelBuil
     }
     return add_graphBrowser;
 });
+//# sourceMappingURL=add_graphBrowser.js.map

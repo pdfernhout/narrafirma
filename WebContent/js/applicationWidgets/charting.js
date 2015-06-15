@@ -869,3 +869,4 @@ define(["require", "exports", "d3", "dojo/dom-construct", "dijit/layout/ContentP
         return chartPane;
     }
 });
+//# sourceMappingURL=charting.js.map

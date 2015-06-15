@@ -104,3 +104,4 @@ define(["require", "exports", "../panelBuilder/dialogSupport", "../templates/rec
     }
     return add_recommendationTable;
 });
+//# sourceMappingURL=add_recommendationTable.js.map

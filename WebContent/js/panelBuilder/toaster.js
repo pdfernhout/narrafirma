@@ -19,3 +19,4 @@ define(["require", "exports", "dijit/layout/ContentPane", "dojox/widget/Toaster"
     }
     exports.toast = toast;
 });
+//# sourceMappingURL=toaster.js.map

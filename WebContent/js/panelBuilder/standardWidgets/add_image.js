@@ -11,3 +11,4 @@ define(["require", "exports", "../translate"], function (require, exports, trans
     }
     return add_image;
 });
+//# sourceMappingURL=add_image.js.map

@@ -311,3 +311,4 @@ define(["require", "exports", "./standardWidgets/add_boolean", "./standardWidget
     addStandardPlugins();
     return PanelBuilder;
 });
+//# sourceMappingURL=PanelBuilder.js.map

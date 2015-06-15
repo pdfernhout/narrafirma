@@ -91,3 +91,4 @@ define(["require", "exports", "dijit/form/FilteringSelect", "dojo/store/Memory",
     }
     return add_select;
 });
+//# sourceMappingURL=add_select.js.map

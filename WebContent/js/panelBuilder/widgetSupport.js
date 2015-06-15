@@ -119,3 +119,4 @@ define(["require", "exports", "dijit/form/Button", "dojo/dom-construct", "dijit/
     }
     exports.newSelect = newSelect;
 });
+//# sourceMappingURL=widgetSupport.js.map

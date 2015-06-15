@@ -13,3 +13,4 @@ define(["require", "exports", "../translate"], function (require, exports, trans
     }
     return add_label;
 });
+//# sourceMappingURL=add_label.js.map

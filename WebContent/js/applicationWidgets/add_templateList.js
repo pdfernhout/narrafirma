@@ -154,3 +154,4 @@ define(["require", "exports", "../panelBuilder/dialogSupport", "dojo/dom-class",
     }
     return add_templateList;
 });
+//# sourceMappingURL=add_templateList.js.map
