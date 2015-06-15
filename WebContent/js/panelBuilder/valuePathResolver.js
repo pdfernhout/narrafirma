@@ -1,6 +1,4 @@
-define([
-    "dojox/mvc/at"
-], function (at) {
+define(["require", "exports", "dojox/mvc/at"], function (require, exports, at) {
     "use strict";
     function resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification) {
         var valuePath = fieldSpecification.valuePath;
@@ -9,6 +7,7 @@ define([
         var dataModelAndField = resolveModelAndFieldForValuePath(panelBuilder, model, valuePath);
         return resolveModelAndFieldForValuePath(panelBuilder, model, valuePath);
     }
+    exports.resolveModelAndFieldForFieldSpecification = resolveModelAndFieldForFieldSpecification;
     function resolveModelAndFieldForValuePath(panelBuilder, model, valuePath) {
         // Parse the dependency path
         var pathParts = valuePath.split("/");
@@ -34,28 +33,25 @@ define([
             field: field
         };
     }
+    exports.resolveModelAndFieldForValuePath = resolveModelAndFieldForValuePath;
     function resolveValueForFieldSpecification(panelBuilder, model, fieldSpecification) {
         var modelAndField = resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
         return modelAndField.model.get(modelAndField.field);
     }
+    exports.resolveValueForFieldSpecification = resolveValueForFieldSpecification;
     function resolveValueForValuePath(panelBuilder, model, valuePath) {
         var modelAndField = resolveModelAndFieldForValuePath(panelBuilder, model, valuePath);
         return modelAndField.model.get(modelAndField.field);
     }
+    exports.resolveValueForValuePath = resolveValueForValuePath;
     function atPath(panelBuilder, model, valuePath) {
         var modelAndField = resolveModelAndFieldForValuePath(panelBuilder, model, valuePath);
         return at(modelAndField.model, modelAndField.field);
     }
+    exports.atPath = atPath;
     function atFieldSpecification(panelBuilder, model, fieldSpecification) {
         var modelAndField = resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
         return at(modelAndField.model, modelAndField.field);
     }
-    return {
-        resolveModelAndFieldForFieldSpecification: resolveModelAndFieldForFieldSpecification,
-        resolveModelAndFieldForValuePath: resolveModelAndFieldForValuePath,
-        resolveValueForFieldSpecification: resolveValueForFieldSpecification,
-        resolveValueForValuePath: resolveValueForValuePath,
-        atPath: atPath,
-        atFieldSpecification: atFieldSpecification
-    };
+    exports.atFieldSpecification = atFieldSpecification;
 });
