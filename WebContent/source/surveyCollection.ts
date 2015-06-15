@@ -201,7 +201,7 @@ export function collectQuestionsForQuestionnaire(questionnaire) {
 var filterableQuestionTypes = ["select", "slider", "boolean", "text", "checkbox", "checkboxes", "radiobuttons"];
 
 // function updateFilterPaneForCurrentQuestions(questions) {
-export function optionsForAllQuestions(questions, excludeTextQuestionsFlag = false) {
+export function optionsForAllQuestions(questions, excludeTextQuestionsFlag = null) {
     var questionOptions = [];
     questions.forEach(function (question) {
         if (filterableQuestionTypes.indexOf(question.displayType) !== -1) {

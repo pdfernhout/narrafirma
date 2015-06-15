@@ -124,6 +124,7 @@ define(["require", "exports", "d3", "dojo/dom-construct", "dijit/layout/ContentP
     function supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems) {
         storyDisplayItems.on('mousedown', function () {
             var brushElements = chartBody.select(".brush").node();
+            // TODO: Casting Event to any because TypeScript somehow thinks it does not take an argument
             var newClickEvent = new Event('mousedown');
             newClickEvent.pageX = d3.event.pageX;
             newClickEvent.clientX = d3.event.clientX;

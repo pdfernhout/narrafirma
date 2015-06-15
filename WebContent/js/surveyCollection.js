@@ -175,7 +175,7 @@ define(["require", "exports", "./questionnaireGeneration", "./pointrel20150417/t
     var filterableQuestionTypes = ["select", "slider", "boolean", "text", "checkbox", "checkboxes", "radiobuttons"];
     // function updateFilterPaneForCurrentQuestions(questions) {
     function optionsForAllQuestions(questions, excludeTextQuestionsFlag) {
-        if (excludeTextQuestionsFlag === void 0) { excludeTextQuestionsFlag = false; }
+        if (excludeTextQuestionsFlag === void 0) { excludeTextQuestionsFlag = null; }
         var questionOptions = [];
         questions.forEach(function (question) {
             if (filterableQuestionTypes.indexOf(question.displayType) !== -1) {

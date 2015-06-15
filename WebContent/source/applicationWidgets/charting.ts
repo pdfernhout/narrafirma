@@ -143,7 +143,8 @@ function displayTextForAnswer(answer) {
 function supportStartingDragOverStoryDisplayItemOrCluster(chartBody, storyDisplayItems) {
     storyDisplayItems.on('mousedown', function() {
         var brushElements = chartBody.select(".brush").node();
-        var newClickEvent = new Event('mousedown');
+        // TODO: Casting Event to any because TypeScript somehow thinks it does not take an argument
+        var newClickEvent = new (<any>Event)('mousedown');
         newClickEvent.pageX = d3.event.pageX;
         newClickEvent.clientX = d3.event.clientX;
         newClickEvent.pageY = d3.event.pageY;
