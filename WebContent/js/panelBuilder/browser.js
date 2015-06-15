@@ -1,6 +1,5 @@
-define([
-], function () {
-    "use strict";
+"use strict";
+define(["require", "exports"], function (require, exports) {
     // launchApplication function inspired by: http://stackoverflow.com/questions/528671/javascript-window-open-only-if-the-window-does-not-already-exist
     var openedWindows = {};
     function launchApplication(url, windowName) {
@@ -25,7 +24,5 @@ define([
             openedWindowInfo.window.focus();
         }
     }
-    return {
-        "launchApplication": launchApplication
-    };
+    exports.launchApplication = launchApplication;
 });
