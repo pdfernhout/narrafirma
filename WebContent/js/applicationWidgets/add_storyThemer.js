@@ -1,5 +1,4 @@
 define([
-    "dojox/html/entities",
     "../pointrel20150417/generateRandomUuid",
     "js/surveyCollection",
     "../pointrel20150417/topic",
@@ -9,7 +8,7 @@ define([
     "dojo/store/Memory",
     "js/panelBuilder/valuePathResolver",
     "js/panelBuilder/widgetSupport"
-], function (entities, generateRandomUuid, surveyCollection, topic, GridWithItemPanel, ComboBox, ContentPane, Memory, valuePathResolver, widgetSupport) {
+], function (generateRandomUuid, surveyCollection, topic, GridWithItemPanel, ComboBox, ContentPane, Memory, valuePathResolver, widgetSupport) {
     "use strict";
     // story themer support
     function addThemeButtonPressed(themeEntryComboBox, storyThemesStore, allThemes) {
@@ -52,8 +51,8 @@ define([
     }
     function buildThemerPanel(panelBuilder, contentPane, model) {
         // Encode all user-supplied text to ensure it does not create HTML issues
-        var storyName = entities.encode(model.get("__survey_storyName"));
-        var storyText = entities.encode(model.get("__survey_storyText"));
+        var storyName = _.escape(model.get("__survey_storyName"));
+        var storyText = _.escape(model.get("__survey_storyText"));
         var storyContent = "<b><h2>" + storyName + "</h2></b>" + storyText;
         var storyPane = new ContentPane({
             content: storyContent

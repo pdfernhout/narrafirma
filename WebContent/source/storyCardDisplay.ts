@@ -1,5 +1,3 @@
-import entities = require("dojox/html/entities");
-
 "use strict";
 
 function wrap(elementType, cssClass, text) {
@@ -67,7 +65,11 @@ function displayHTMLForSelect(fieldSpecification, fieldName, value) {
     return fieldName + ": " + result;
 }
 
-function displayHTMLForField(model, fieldSpecification, nobreak) {
+function htmlEncode(text) {
+    return _.escape(text);
+}
+
+function displayHTMLForField(model, fieldSpecification, nobreak = null) {
     // if (!model.get(fieldSpecification.id)) return "";
     var value = model.get(fieldSpecification.id);
     // TODO: extra checking here for problems with test data -- could probably be changed back to just displayName eventually
@@ -81,7 +83,7 @@ function displayHTMLForField(model, fieldSpecification, nobreak) {
         result = displayHTMLForSelect(fieldSpecification, fieldName, value);
     } else {
         // TODO: May need more handling here for other cases
-        result = fieldName + ": " + entities.encode(value);
+        result = fieldName + ": " + htmlEncode(value);
     }
     if (nobreak) return result;
     return result + "<br><br>\n";  
@@ -89,9 +91,9 @@ function displayHTMLForField(model, fieldSpecification, nobreak) {
 
 export function generateStoryCardContent(storyModel, currentQuestionnaire, includeElicitingQuestion) {
     // Encode all user-supplied text to ensure it does not create HTML issues
-    var elicitingQuestion = entities.encode(storyModel.get("__survey_elicitingQuestion"));
-    var storyName = entities.encode(storyModel.get("__survey_storyName"));
-    var storyText = entities.encode(storyModel.get("__survey_storyText"));
+    var elicitingQuestion = htmlEncode(storyModel.get("__survey_elicitingQuestion"));
+    var storyName = htmlEncode(storyModel.get("__survey_storyName"));
+    var storyText = htmlEncode(storyModel.get("__survey_storyText"));
     var otherFields = "";
     
     var questions = [];

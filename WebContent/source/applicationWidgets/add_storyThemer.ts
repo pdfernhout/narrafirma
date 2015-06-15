@@ -1,5 +1,4 @@
 define([
-    "dojox/html/entities",
     "../pointrel20150417/generateRandomUuid",
     "js/surveyCollection",
     "../pointrel20150417/topic",
@@ -10,7 +9,6 @@ define([
     "js/panelBuilder/valuePathResolver",
     "js/panelBuilder/widgetSupport"
 ], function(
-    entities,
     generateRandomUuid,
     surveyCollection,
     topic,
@@ -70,8 +68,8 @@ define([
     
     function buildThemerPanel(panelBuilder, contentPane, model) {    
         // Encode all user-supplied text to ensure it does not create HTML issues
-        var storyName = entities.encode(model.get("__survey_storyName"));
-        var storyText = entities.encode(model.get("__survey_storyText"));
+        var storyName = _.escape(model.get("__survey_storyName"));
+        var storyText = _.escape(model.get("__survey_storyText"));
         
         var storyContent = "<b><h2>" + storyName + "</h2></b>" + storyText;
         

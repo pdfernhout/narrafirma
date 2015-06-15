@@ -1,5 +1,5 @@
-define(["require", "exports", "dojox/html/entities"], function (require, exports, entities) {
-    "use strict";
+"use strict";
+define(["require", "exports"], function (require, exports) {
     function wrap(elementType, cssClass, text) {
         return '<' + elementType + ' class="' + cssClass + '">' + text + '</' + elementType + '>';
     }
@@ -59,7 +59,11 @@ define(["require", "exports", "dojox/html/entities"], function (require, exports
         }
         return fieldName + ": " + result;
     }
+    function htmlEncode(text) {
+        return _.escape(text);
+    }
     function displayHTMLForField(model, fieldSpecification, nobreak) {
+        if (nobreak === void 0) { nobreak = null; }
         // if (!model.get(fieldSpecification.id)) return "";
         var value = model.get(fieldSpecification.id);
         // TODO: extra checking here for problems with test data -- could probably be changed back to just displayName eventually
@@ -76,7 +80,7 @@ define(["require", "exports", "dojox/html/entities"], function (require, exports
         }
         else {
             // TODO: May need more handling here for other cases
-            result = fieldName + ": " + entities.encode(value);
+            result = fieldName + ": " + htmlEncode(value);
         }
         if (nobreak)
             return result;
@@ -84,9 +88,9 @@ define(["require", "exports", "dojox/html/entities"], function (require, exports
     }
     function generateStoryCardContent(storyModel, currentQuestionnaire, includeElicitingQuestion) {
         // Encode all user-supplied text to ensure it does not create HTML issues
-        var elicitingQuestion = entities.encode(storyModel.get("__survey_elicitingQuestion"));
-        var storyName = entities.encode(storyModel.get("__survey_storyName"));
-        var storyText = entities.encode(storyModel.get("__survey_storyText"));
+        var elicitingQuestion = htmlEncode(storyModel.get("__survey_elicitingQuestion"));
+        var storyName = htmlEncode(storyModel.get("__survey_storyName"));
+        var storyText = htmlEncode(storyModel.get("__survey_storyText"));
         var otherFields = "";
         var questions = [];
         if (currentQuestionnaire)
