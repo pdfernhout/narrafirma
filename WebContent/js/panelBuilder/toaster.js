@@ -1,7 +1,4 @@
-define([
-    "dijit/layout/ContentPane",
-    "dojox/widget/Toaster"
-], function (ContentPane, Toaster) {
+define(["require", "exports", "dijit/layout/ContentPane", "dojox/widget/Toaster"], function (require, exports, ContentPane, Toaster) {
     "use strict";
     // For a "toaster" that can give status or progress updates
     var toasterWidget = null;
@@ -11,6 +8,7 @@ define([
         toasterPane.placeAt(container);
         toasterWidget = new Toaster({ id: "toasterWidget" }, toasterPane.domNode);
     }
+    exports.createToasterWidget = createToasterWidget;
     function toast(message, messageType, duration_ms) {
         // TODO: Translate message if needed
         if (!messageType)
@@ -21,8 +19,5 @@ define([
         toasterWidget.setContent(message, messageType, duration_ms);
         toasterWidget.show();
     }
-    return {
-        "createToasterWidget": createToasterWidget,
-        "toast": toast
-    };
+    exports.toast = toast;
 });
