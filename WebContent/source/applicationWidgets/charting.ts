@@ -107,13 +107,13 @@ function preloadResultsForQuestionOptions(results, question) {
     }
 }
 
-function limitLabelLength(label, maximumCharacters) {
+function limitLabelLength(label, maximumCharacters): string {
     if (label.length <= maximumCharacters) return label;
     return label.substring(0, maximumCharacters - 3) + "..."; 
 }
 
 // TODO: Put elipsis starting between words so no words are cut off
-function limitStoryTextLength(text) {
+function limitStoryTextLength(text): string {
     return limitLabelLength(text, 500);
 }
 
@@ -211,7 +211,15 @@ function makeChartFramework(chartPane, chartType, isSmallFormat, margin) {
         chartType: chartType,
         chartBackground: chartBackground,
         chartBody: chartBody,
-        chartBodyBackground: chartBodyBackground
+        chartBodyBackground: chartBodyBackground,
+        xScale: undefined,
+        yScale: undefined,
+        xQuestion: undefined,
+        yQuestion: undefined,
+        brush: undefined,
+        brushend: undefined,
+        subgraphQuestion: undefined,
+        subgraphChoice: undefined
     };
 }
 
@@ -224,7 +232,7 @@ function addXAxis(chart, xScale, configure) {
         .orient('bottom');
     
     if (configure.labelLengthLimit) {
-        xAxis.tickFormat(function (label, i) {
+        xAxis.tickFormat(function (label) {
             return limitLabelLength(label, configure.labelLengthLimit); 
         });
     }
@@ -264,7 +272,7 @@ function addYAxis(chart, yScale, configure) {
         .orient('left');
     
     if (configure.labelLengthLimit) {
-        yAxis.tickFormat(function (label, i) {
+        yAxis.tickFormat(function (label) {
             return limitLabelLength(label, configure.labelLengthLimit); 
         });
     } else {
@@ -284,9 +292,7 @@ function addYAxis(chart, yScale, configure) {
     return yAxis;
 }
 
-function addXAxisLabel(chart, label, labelLengthLimit) {
-    if (labelLengthLimit === undefined) labelLengthLimit = 64;
-
+function addXAxisLabel(chart, label, labelLengthLimit = 64) {
     var shortenedLabel = limitLabelLength(label, labelLengthLimit); 
     var shortenedLabelSVG = chart.chart.append("text")
         .attr("class", "x label")
@@ -301,9 +307,7 @@ function addXAxisLabel(chart, label, labelLengthLimit) {
     }
 }
 
-function addYAxisLabel(chart, label, labelLengthLimit) {
-    if (labelLengthLimit === undefined) labelLengthLimit = 64;
-
+function addYAxisLabel(chart, label, labelLengthLimit = 64) {
     var shortenedLabel = limitLabelLength(label, labelLengthLimit); 
     var shortenedLabelSVG = chart.chart.append("text")
         .attr("class", "y label")

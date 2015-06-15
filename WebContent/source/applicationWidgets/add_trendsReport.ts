@@ -535,7 +535,8 @@ function add_trendsReport(panelBuilder, contentPane, model, fieldSpecification) 
         currentGraph: null,
         // TODO: These are not used yet
         currentSelectionExtentPercentages: null,
-        currentSelectionSubgraph: null
+        currentSelectionSubgraph: null,
+        widgets: undefined
     };
     
     var currentCatalysisReportSubscription = choiceModel.watch(choiceField, currentCatalysisReportChanged.bind(null, graphBrowserInstance));        
@@ -548,8 +549,11 @@ function add_trendsReport(panelBuilder, contentPane, model, fieldSpecification) 
     var patternsListStore = GridWithItemPanel.newMemoryTrackableStore(patterns, "id");
     graphBrowserInstance.patternsListStore = patternsListStore;
     
-    var patternsGridConfiguration = {navigationButtons: true, includeAllFields: true};
-    patternsGridConfiguration.selectCallback = patternSelected.bind(null, graphBrowserInstance);
+    var patternsGridConfiguration = {
+        navigationButtons: true,
+        includeAllFields: true,
+        selectCallback: patternSelected.bind(null, graphBrowserInstance)
+    };
     
     var patternsPanelSpecification = {
         "id": "patternsPanel",

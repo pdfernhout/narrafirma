@@ -171,7 +171,15 @@ define(["require", "exports", "d3", "dojo/dom-construct", "dijit/layout/ContentP
             chartType: chartType,
             chartBackground: chartBackground,
             chartBody: chartBody,
-            chartBodyBackground: chartBodyBackground
+            chartBodyBackground: chartBodyBackground,
+            xScale: undefined,
+            yScale: undefined,
+            xQuestion: undefined,
+            yQuestion: undefined,
+            brush: undefined,
+            brushend: undefined,
+            subgraphQuestion: undefined,
+            subgraphChoice: undefined
         };
     }
     // addXAxis(chart, xScale, {labelLengthLimit: 64, isSmallFormat: false, drawLongAxisLines: false, rotateAxisLabels: false});
@@ -180,7 +188,7 @@ define(["require", "exports", "d3", "dojo/dom-construct", "dijit/layout/ContentP
             configure = {};
         var xAxis = d3.svg.axis().scale(xScale).orient('bottom');
         if (configure.labelLengthLimit) {
-            xAxis.tickFormat(function (label, i) {
+            xAxis.tickFormat(function (label) {
                 return limitLabelLength(label, configure.labelLengthLimit);
             });
         }
@@ -205,7 +213,7 @@ define(["require", "exports", "d3", "dojo/dom-construct", "dijit/layout/ContentP
             configure = {};
         var yAxis = d3.svg.axis().scale(yScale).orient('left');
         if (configure.labelLengthLimit) {
-            yAxis.tickFormat(function (label, i) {
+            yAxis.tickFormat(function (label) {
                 return limitLabelLength(label, configure.labelLengthLimit);
             });
         }
@@ -221,8 +229,7 @@ define(["require", "exports", "d3", "dojo/dom-construct", "dijit/layout/ContentP
         return yAxis;
     }
     function addXAxisLabel(chart, label, labelLengthLimit) {
-        if (labelLengthLimit === undefined)
-            labelLengthLimit = 64;
+        if (labelLengthLimit === void 0) { labelLengthLimit = 64; }
         var shortenedLabel = limitLabelLength(label, labelLengthLimit);
         var shortenedLabelSVG = chart.chart.append("text").attr("class", "x label").attr("text-anchor", "middle").attr("x", chart.margin.left + chart.width / 2).attr("y", chart.fullHeight - 16).text(shortenedLabel);
         if (label.length > labelLengthLimit) {
@@ -230,8 +237,7 @@ define(["require", "exports", "d3", "dojo/dom-construct", "dijit/layout/ContentP
         }
     }
     function addYAxisLabel(chart, label, labelLengthLimit) {
-        if (labelLengthLimit === undefined)
-            labelLengthLimit = 64;
+        if (labelLengthLimit === void 0) { labelLengthLimit = 64; }
         var shortenedLabel = limitLabelLength(label, labelLengthLimit);
         var shortenedLabelSVG = chart.chart.append("text").attr("class", "y label").attr("text-anchor", "middle").attr("y", 16).attr("x", -(chart.margin.top + chart.height / 2)).attr("transform", "rotate(-90)").text(shortenedLabel);
         if (label.length > labelLengthLimit) {

@@ -334,7 +334,11 @@ ClusteringDiagram.prototype.openEntryDialog = function(item, isExistingItem) {
     
     // Indirect way to hold onto dialog so can pass a reference to the dialog to button clicked function so that function can hide the dialog
     // The problem this solves is that a hoisted dialog is undefined at this point, and also hitch uses the current value not a reference to the variable
-    var dialogHolder = {};
+    var dialogHolder = {
+        dialog: undefined,
+        item: undefined,
+        isExistingItem: undefined
+    };
     
     // TODO: Translate
     var type = "item";
@@ -488,13 +492,14 @@ var defaultTextStyle = {family: "Arial", size: "9pt", weight: "normal"};
 var defaultRadius = 44;
 
 ClusteringDiagram.prototype.newItem = function(text, url) {
-    var item = {};
-    item.text = text;
-    item.url = url;
-    item.x = 200;
-    item.y = 200;
-    item.uuid = uuidFast();
-    item.type = "item";
+    var item = {
+        text: text,
+        url: url,
+        x: 200,
+        y: 200,
+        uuid: uuidFast(),
+        type: "item"
+    }
     // item.bodyColor = defaultBodyColor;
     // item.borderWidth = defaultBorderWidth;
     // item.borderColor = defaultBorderColor;
@@ -662,9 +667,10 @@ ClusteringDiagram.prototype.addDisplayObjectForItem = function(surface, item) {
 // Only straightforward way (without Dojo gfx) to get the text width, given the page may be hidden while making this, which causes text width to return 0 for SVG
 // Could not get other approaches of adding measuring div to dom to work, perhaps because top level body CSS styling
 // From: http://stackoverflow.com/questions/118241/calculate-text-width-with-javascript
+var measuringCanvas;
 function getTextWidth(text, textStyle) {
     // re-use canvas object for better performance
-    var canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
+    var canvas = measuringCanvas || (measuringCanvas = document.createElement("canvas"));
     var context = canvas.getContext("2d");
     context.font = "normal normal " + textStyle.weight + " " + textStyle.size + " " + textStyle.family;
     var metrics = context.measureText(text);

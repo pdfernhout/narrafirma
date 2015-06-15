@@ -466,7 +466,8 @@ define(["require", "exports", "./charting", "dijit/layout/ContentPane", "../pane
             currentGraph: null,
             // TODO: These are not used yet
             currentSelectionExtentPercentages: null,
-            currentSelectionSubgraph: null
+            currentSelectionSubgraph: null,
+            widgets: undefined
         };
         var currentCatalysisReportSubscription = choiceModel.watch(choiceField, currentCatalysisReportChanged.bind(null, graphBrowserInstance));
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
@@ -475,8 +476,11 @@ define(["require", "exports", "./charting", "dijit/layout/ContentPane", "../pane
         graphBrowserInstance.patterns = patterns;
         var patternsListStore = GridWithItemPanel.newMemoryTrackableStore(patterns, "id");
         graphBrowserInstance.patternsListStore = patternsListStore;
-        var patternsGridConfiguration = { navigationButtons: true, includeAllFields: true };
-        patternsGridConfiguration.selectCallback = patternSelected.bind(null, graphBrowserInstance);
+        var patternsGridConfiguration = {
+            navigationButtons: true,
+            includeAllFields: true,
+            selectCallback: patternSelected.bind(null, graphBrowserInstance)
+        };
         var patternsPanelSpecification = {
             "id": "patternsPanel",
             panelFields: [
