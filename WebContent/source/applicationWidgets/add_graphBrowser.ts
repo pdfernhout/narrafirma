@@ -60,27 +60,32 @@ function updateGraph(graphBrowserInstance) {
     if (xType === "choice" && yType === null) {
         console.log("plot choice: Bar graph");
         console.log("barGraph", xAxisQuestion);
-        charting.d3BarChart(graphBrowserInstance, xAxisQuestion);
+        charting.d3BarChart(graphBrowserInstance, xAxisQuestion, storiesSelected);
     } else if (xType === "choice" && yType === "choice") {
         console.log("plot choice: Contingency table");
-        charting.d3ContingencyTable(graphBrowserInstance, xAxisQuestion, yAxisQuestion);
+        charting.d3ContingencyTable(graphBrowserInstance, xAxisQuestion, yAxisQuestion, storiesSelected);
     } else if (xType === "choice" && yType === "scale") {
         console.log("plot choice: Multiple histograms");
-        charting.multipleHistograms(graphBrowserInstance, xAxisQuestion, yAxisQuestion);
+        charting.multipleHistograms(graphBrowserInstance, xAxisQuestion, yAxisQuestion, storiesSelected);
     } else if (xType === "scale" && yType === null) {
         console.log("plot choice: Histogram");
-        charting.d3HistogramChart(graphBrowserInstance, xAxisQuestion);
+        charting.d3HistogramChart(graphBrowserInstance, null, null, xAxisQuestion, storiesSelected);
     } else if (xType === "scale" && yType === "choice") {
         console.log("plot choice: Multiple histograms");
-        charting.multipleHistograms(graphBrowserInstance, yAxisQuestion, xAxisQuestion);
+        charting.multipleHistograms(graphBrowserInstance, yAxisQuestion, xAxisQuestion, storiesSelected);
     } else if (xType === "scale" && yType === "scale") {
         console.log("plot choice: Scatter plot");
-        charting.d3ScatterPlot(graphBrowserInstance, xAxisQuestion, yAxisQuestion);
+        charting.d3ScatterPlot(graphBrowserInstance, xAxisQuestion, yAxisQuestion, storiesSelected);
     } else {
         console.log("ERROR: Unexpected graph type");
         alert("ERROR: Unexpected graph type");
         return;
     }
+}
+
+function storiesSelected(graphBrowserInstance, selectedStories) {
+    // TODO: Finish
+    console.log("Stories selected", selectedStories);
 }
 
 function currentStoryCollectionChanged(graphBrowserInstance, fieldName, oldValue, storyCollectionIdentifier) {
