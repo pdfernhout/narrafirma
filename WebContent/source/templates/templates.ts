@@ -1,9 +1,6 @@
-// Generated from design
+"use strict";
 
-define(function() {
-    "use strict";
-
-  var templates = [
+var templates = [
     {
         "id": "elicitationQuestions",
         "name": "Elicitation questions",
@@ -1766,28 +1763,24 @@ define(function() {
                   		"mechanically; people paying too much attention to story quality."
               }
 	    ]
-    	
     }
-    
 ];
   
-  function convertSemicolonsToNewlinesForOptions(section) {
-      var questions = section.questions;
-      for (var questionIndex in questions) {
-          var question = questions[questionIndex];
-          if (question.options) {
-              question.options = question.options.replace(/;/g, "\n");
-              // console.log("new options", question.options);
-          }
-      }
-      return section;
-  }
+function convertSemicolonsToNewlinesForOptions(section) {
+    var questions = section.questions;
+    for (var questionIndex in questions) {
+        var question = questions[questionIndex];
+        if (question.options) {
+            question.options = question.options.replace(/;/g, "\n");
+            // console.log("new options", question.options);
+        }
+    }
+    return section;
+}
 
-  return {
-    "elicitationQuestions": convertSemicolonsToNewlinesForOptions(templates[0]),
-    "storyQuestions": convertSemicolonsToNewlinesForOptions(templates[1]),
-    "participantQuestions": convertSemicolonsToNewlinesForOptions(templates[2]),
-    "storyCollectionActivities": convertSemicolonsToNewlinesForOptions(templates[3]),
-    "sensemakingActivities": convertSemicolonsToNewlinesForOptions(templates[4])
-  };
-});
+export var elicitationQuestions = convertSemicolonsToNewlinesForOptions(templates[0]);
+export var storyQuestions = convertSemicolonsToNewlinesForOptions(templates[1]);
+export var participantQuestions = convertSemicolonsToNewlinesForOptions(templates[2]);
+export var storyCollectionActivities = convertSemicolonsToNewlinesForOptions(templates[3]);
+export var sensemakingActivities = convertSemicolonsToNewlinesForOptions(templates[4]);
+

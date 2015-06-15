@@ -1,6 +1,5 @@
-// Generated from design
-define(function () {
-    "use strict";
+"use strict";
+define(["require", "exports"], function (require, exports) {
     var templates = [
         {
             "id": "elicitationQuestions",
@@ -1481,11 +1480,9 @@ define(function () {
         }
         return section;
     }
-    return {
-        "elicitationQuestions": convertSemicolonsToNewlinesForOptions(templates[0]),
-        "storyQuestions": convertSemicolonsToNewlinesForOptions(templates[1]),
-        "participantQuestions": convertSemicolonsToNewlinesForOptions(templates[2]),
-        "storyCollectionActivities": convertSemicolonsToNewlinesForOptions(templates[3]),
-        "sensemakingActivities": convertSemicolonsToNewlinesForOptions(templates[4])
-    };
+    exports.elicitationQuestions = convertSemicolonsToNewlinesForOptions(templates[0]);
+    exports.storyQuestions = convertSemicolonsToNewlinesForOptions(templates[1]);
+    exports.participantQuestions = convertSemicolonsToNewlinesForOptions(templates[2]);
+    exports.storyCollectionActivities = convertSemicolonsToNewlinesForOptions(templates[3]);
+    exports.sensemakingActivities = convertSemicolonsToNewlinesForOptions(templates[4]);
 });
