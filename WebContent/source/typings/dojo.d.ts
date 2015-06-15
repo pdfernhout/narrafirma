@@ -3097,7 +3097,7 @@ declare module dojo {
      * 
      */
     class Stateful {
-        constructor();
+        constructor(arg?: any);
         inherited: {(args: IArguments): any};
         /**
          * Get a property on a Stateful instance.
@@ -19103,7 +19103,7 @@ declare module dojo {
          * @param refNode               OptionalOptional reference node. Used by dojo.place to place the newly creatednode somewhere in the dom relative to refNode. Can be a DomNode referenceor String ID of a node.             
          * @param pos               OptionalOptional positional reference. Defaults to "last" by way of dojo.place,though can be set to "first","after","before","last", "replace" or "only"to further control the placement of the new node relative to the refNode.'refNode' is required if a 'pos' is specified.             
          */
-        create(tag: String, attrs: Object, refNode: String, pos: String): any;
+        create(tag: String, attrs?: Object, refNode?: String, pos?: String): any;
         /**
          * Removes a node from its parent, clobbering it and all of its
          * children.
@@ -19142,7 +19142,7 @@ declare module dojo {
          * @param refNode id or node reference to use as basis for placement             
          * @param position               Optionalstring noting the position of node relative to refNode or anumber indicating the location in the childNodes collection of refNode.Accepted string values are:beforeafterreplaceonlyfirstlast"first" and "last" indicate positions as children of refNode, "replace" replaces refNode,"only" replaces all children.  position defaults to "last" if not specified             
          */
-        place(node: HTMLElement, refNode: HTMLElement, position: String): HTMLElement;
+        place(node: HTMLElement, refNode: HTMLElement, position?: String): HTMLElement;
         /**
          * Attempt to insert node into the DOM, choosing from various positioning options.
          * Returns the first argument resolved to a DOM node.
@@ -19151,7 +19151,7 @@ declare module dojo {
          * @param refNode id or node reference to use as basis for placement             
          * @param position               Optionalstring noting the position of node relative to refNode or anumber indicating the location in the childNodes collection of refNode.Accepted string values are:beforeafterreplaceonlyfirstlast"first" and "last" indicate positions as children of refNode, "replace" replaces refNode,"only" replaces all children.  position defaults to "last" if not specified             
          */
-        place(node: String, refNode: HTMLElement, position: String): HTMLElement;
+        place(node: String, refNode: HTMLElement, position?: String): HTMLElement;
         /**
          * Attempt to insert node into the DOM, choosing from various positioning options.
          * Returns the first argument resolved to a DOM node.
@@ -19160,7 +19160,7 @@ declare module dojo {
          * @param refNode id or node reference to use as basis for placement             
          * @param position               Optionalstring noting the position of node relative to refNode or anumber indicating the location in the childNodes collection of refNode.Accepted string values are:beforeafterreplaceonlyfirstlast"first" and "last" indicate positions as children of refNode, "replace" replaces refNode,"only" replaces all children.  position defaults to "last" if not specified             
          */
-        place(node: HTMLElement, refNode: String, position: String): HTMLElement;
+        place(node: HTMLElement, refNode: String, position?: String): HTMLElement;
         /**
          * Attempt to insert node into the DOM, choosing from various positioning options.
          * Returns the first argument resolved to a DOM node.
@@ -19169,7 +19169,7 @@ declare module dojo {
          * @param refNode id or node reference to use as basis for placement             
          * @param position               Optionalstring noting the position of node relative to refNode or anumber indicating the location in the childNodes collection of refNode.Accepted string values are:beforeafterreplaceonlyfirstlast"first" and "last" indicate positions as children of refNode, "replace" replaces refNode,"only" replaces all children.  position defaults to "last" if not specified             
          */
-        place(node: String, refNode: String, position: String): HTMLElement;
+        place(node: String, refNode: String, position?: String): HTMLElement;
         /**
          * Attempt to insert node into the DOM, choosing from various positioning options.
          * Returns the first argument resolved to a DOM node.
@@ -19178,7 +19178,7 @@ declare module dojo {
          * @param refNode id or node reference to use as basis for placement             
          * @param position               Optionalstring noting the position of node relative to refNode or anumber indicating the location in the childNodes collection of refNode.Accepted string values are:beforeafterreplaceonlyfirstlast"first" and "last" indicate positions as children of refNode, "replace" replaces refNode,"only" replaces all children.  position defaults to "last" if not specified             
          */
-        place(node: HTMLElement, refNode: HTMLElement, position: number): HTMLElement;
+        place(node: HTMLElement, refNode: HTMLElement, position?: number): HTMLElement;
         /**
          * Attempt to insert node into the DOM, choosing from various positioning options.
          * Returns the first argument resolved to a DOM node.
@@ -19187,7 +19187,7 @@ declare module dojo {
          * @param refNode id or node reference to use as basis for placement             
          * @param position               Optionalstring noting the position of node relative to refNode or anumber indicating the location in the childNodes collection of refNode.Accepted string values are:beforeafterreplaceonlyfirstlast"first" and "last" indicate positions as children of refNode, "replace" replaces refNode,"only" replaces all children.  position defaults to "last" if not specified             
          */
-        place(node: String, refNode: HTMLElement, position: number): HTMLElement;
+        place(node: String, refNode: HTMLElement, position?: number): HTMLElement;
         /**
          * Attempt to insert node into the DOM, choosing from various positioning options.
          * Returns the first argument resolved to a DOM node.
@@ -19196,7 +19196,7 @@ declare module dojo {
          * @param refNode id or node reference to use as basis for placement             
          * @param position               Optionalstring noting the position of node relative to refNode or anumber indicating the location in the childNodes collection of refNode.Accepted string values are:beforeafterreplaceonlyfirstlast"first" and "last" indicate positions as children of refNode, "replace" replaces refNode,"only" replaces all children.  position defaults to "last" if not specified             
          */
-        place(node: HTMLElement, refNode: String, position: number): HTMLElement;
+        place(node: HTMLElement, refNode: String, position?: number): HTMLElement;
         /**
          * Attempt to insert node into the DOM, choosing from various positioning options.
          * Returns the first argument resolved to a DOM node.
@@ -19205,14 +19205,14 @@ declare module dojo {
          * @param refNode id or node reference to use as basis for placement             
          * @param position               Optionalstring noting the position of node relative to refNode or anumber indicating the location in the childNodes collection of refNode.Accepted string values are:beforeafterreplaceonlyfirstlast"first" and "last" indicate positions as children of refNode, "replace" replaces refNode,"only" replaces all children.  position defaults to "last" if not specified             
          */
-        place(node: String, refNode: String, position: number): HTMLElement;
+        place(node: String, refNode: String, position?: number): HTMLElement;
         /**
          * instantiates an HTML fragment returning the corresponding DOM.
          * 
          * @param frag the HTML fragment             
          * @param doc               Optionaloptional document to use when creating DOM nodes, defaults todojo/_base/window.doc if not specified.             
          */
-        toDom(frag: String, doc: HTMLDocument): any;
+        toDom(frag: String, doc?: HTMLDocument): any;
     }
     /**
      * Permalink: http://dojotoolkit.org/api/1.9/dojo/dom-prop.html

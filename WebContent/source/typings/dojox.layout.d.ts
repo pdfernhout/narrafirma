@@ -722,7 +722,7 @@ declare module dojox {
              * already removed/destroyed manually.
              * 
              */
-            own(): any;
+            own(removeCallback: Function): any;
             /**
              * Place this widget somewhere in the DOM based
              * on standard domConstruct.place() conventions.
@@ -1628,7 +1628,7 @@ declare module dojox {
              * already removed/destroyed manually.
              * 
              */
-            own(): any;
+            own(removeCallback: Function): any;
             /**
              * Place this widget somewhere in the DOM based
              * on standard domConstruct.place() conventions.
@@ -2307,7 +2307,7 @@ declare module dojox {
              * already removed/destroyed manually.
              * 
              */
-            own(): any;
+            own(removeCallback: Function): any;
             /**
              * Place this widget somewhere in the DOM based
              * on standard domConstruct.place() conventions.
@@ -3322,7 +3322,7 @@ declare module dojox {
              * already removed/destroyed manually.
              * 
              */
-            own(): any;
+            own(removeCallback: Function): any;
             /**
              * Place this widget somewhere in the DOM based
              * on standard domConstruct.place() conventions.
@@ -4513,7 +4513,7 @@ declare module dojox {
              * already removed/destroyed manually.
              * 
              */
-            own(): any;
+            own(removeCallback: Function): any;
             /**
              * Place this widget somewhere in the DOM based
              * on standard domConstruct.place() conventions.
@@ -5603,7 +5603,7 @@ declare module dojox {
              * already removed/destroyed manually.
              * 
              */
-            own(): any;
+            own(removeCallback: Function): any;
             /**
              * Place this widget somewhere in the DOM based
              * on standard domConstruct.place() conventions.
@@ -6559,7 +6559,7 @@ declare module dojox {
              * already removed/destroyed manually.
              * 
              */
-            own(): any;
+            own(removeCallback: Function): any;
             /**
              * Place this widget somewhere in the DOM based
              * on standard domConstruct.place() conventions.
@@ -7620,7 +7620,7 @@ declare module dojox {
              * already removed/destroyed manually.
              * 
              */
-            own(): any;
+            own(removeCallback: Function): any;
             /**
              * Place this widget somewhere in the DOM based
              * on standard domConstruct.place() conventions.
@@ -8598,7 +8598,7 @@ declare module dojox {
              * already removed/destroyed manually.
              * 
              */
-            own(): any;
+            own(removeCallback: Function): any;
             /**
              * Place this widget somewhere in the DOM based
              * on standard domConstruct.place() conventions.
@@ -8609,7 +8609,7 @@ declare module dojox {
              * @param reference Widget, DOMNode, or id of widget or DOMNode             
              * @param position               OptionalIf reference is a widget (or id of widget), and that widget has an ".addChild" method,it will be called passing this widget instance into that method, supplying the optionalposition index passed.  In this case position (if specified) should be an integer.If reference is a DOMNode (or id matching a DOMNode but not a widget),the position argument can be a numeric index or a string"first", "last", "before", or "after", same as dojo/dom-construct::place().             
              */
-            placeAt(reference: String, position: String): any;
+            placeAt(reference: String, position?: String): any;
             /**
              * Place this widget somewhere in the DOM based
              * on standard domConstruct.place() conventions.
@@ -8620,7 +8620,7 @@ declare module dojox {
              * @param reference Widget, DOMNode, or id of widget or DOMNode             
              * @param position               OptionalIf reference is a widget (or id of widget), and that widget has an ".addChild" method,it will be called passing this widget instance into that method, supplying the optionalposition index passed.  In this case position (if specified) should be an integer.If reference is a DOMNode (or id matching a DOMNode but not a widget),the position argument can be a numeric index or a string"first", "last", "before", or "after", same as dojo/dom-construct::place().             
              */
-            placeAt(reference: HTMLElement, position: String): any;
+            placeAt(reference: HTMLElement, position?: String): any;
             /**
              * Place this widget somewhere in the DOM based
              * on standard domConstruct.place() conventions.
@@ -8631,7 +8631,7 @@ declare module dojox {
              * @param reference Widget, DOMNode, or id of widget or DOMNode             
              * @param position               OptionalIf reference is a widget (or id of widget), and that widget has an ".addChild" method,it will be called passing this widget instance into that method, supplying the optionalposition index passed.  In this case position (if specified) should be an integer.If reference is a DOMNode (or id matching a DOMNode but not a widget),the position argument can be a numeric index or a string"first", "last", "before", or "after", same as dojo/dom-construct::place().             
              */
-            placeAt(reference: dijit._WidgetBase, position: String): any;
+            placeAt(reference: dijit._WidgetBase, position?: String): any;
             /**
              * Place this widget somewhere in the DOM based
              * on standard domConstruct.place() conventions.
@@ -8642,7 +8642,7 @@ declare module dojox {
              * @param reference Widget, DOMNode, or id of widget or DOMNode             
              * @param position               OptionalIf reference is a widget (or id of widget), and that widget has an ".addChild" method,it will be called passing this widget instance into that method, supplying the optionalposition index passed.  In this case position (if specified) should be an integer.If reference is a DOMNode (or id matching a DOMNode but not a widget),the position argument can be a numeric index or a string"first", "last", "before", or "after", same as dojo/dom-construct::place().             
              */
-            placeAt(reference: String, position: number): any;
+            placeAt(reference: String, position?: number): any;
             /**
              * Place this widget somewhere in the DOM based
              * on standard domConstruct.place() conventions.
@@ -8653,7 +8653,7 @@ declare module dojox {
              * @param reference Widget, DOMNode, or id of widget or DOMNode             
              * @param position               OptionalIf reference is a widget (or id of widget), and that widget has an ".addChild" method,it will be called passing this widget instance into that method, supplying the optionalposition index passed.  In this case position (if specified) should be an integer.If reference is a DOMNode (or id matching a DOMNode but not a widget),the position argument can be a numeric index or a string"first", "last", "before", or "after", same as dojo/dom-construct::place().             
              */
-            placeAt(reference: HTMLElement, position: number): any;
+            placeAt(reference: HTMLElement, position?: number): any;
             /**
              * Place this widget somewhere in the DOM based
              * on standard domConstruct.place() conventions.
@@ -8664,7 +8664,7 @@ declare module dojox {
              * @param reference Widget, DOMNode, or id of widget or DOMNode             
              * @param position               OptionalIf reference is a widget (or id of widget), and that widget has an ".addChild" method,it will be called passing this widget instance into that method, supplying the optionalposition index passed.  In this case position (if specified) should be an integer.If reference is a DOMNode (or id matching a DOMNode but not a widget),the position argument can be a numeric index or a string"first", "last", "before", or "after", same as dojo/dom-construct::place().             
              */
-            placeAt(reference: dijit._WidgetBase, position: number): any;
+            placeAt(reference: dijit._WidgetBase, position?: number): any;
             /**
              * setup our one major listener upon creation
              * 
@@ -9627,7 +9627,7 @@ declare module dojox {
              * already removed/destroyed manually.
              * 
              */
-            own(): any;
+            own(removeCallback: Function): any;
             /**
              * Place this widget somewhere in the DOM based
              * on standard domConstruct.place() conventions.
@@ -10292,7 +10292,7 @@ declare module dojox {
              * @param child             
              * @param insertIndex               Optional            
              */
-            addChild(child: dijit._WidgetBase, insertIndex: number): void;
+            addChild(child: dijit._WidgetBase, insertIndex?: number): void;
             /**
              * This method is deprecated, use get() or set() directly.
              * 
@@ -10611,7 +10611,7 @@ declare module dojox {
              * already removed/destroyed manually.
              * 
              */
-            own(): any;
+            own(callback: Function): any;
             /**
              * Place this widget somewhere in the DOM based
              * on standard domConstruct.place() conventions.
@@ -10622,7 +10622,7 @@ declare module dojox {
              * @param reference Widget, DOMNode, or id of widget or DOMNode             
              * @param position               OptionalIf reference is a widget (or id of widget), and that widget has an ".addChild" method,it will be called passing this widget instance into that method, supplying the optionalposition index passed.  In this case position (if specified) should be an integer.If reference is a DOMNode (or id matching a DOMNode but not a widget),the position argument can be a numeric index or a string"first", "last", "before", or "after", same as dojo/dom-construct::place().             
              */
-            placeAt(reference: String, position: String): any;
+            placeAt(reference: String, position?: String): any;
             /**
              * Place this widget somewhere in the DOM based
              * on standard domConstruct.place() conventions.
@@ -10633,7 +10633,7 @@ declare module dojox {
              * @param reference Widget, DOMNode, or id of widget or DOMNode             
              * @param position               OptionalIf reference is a widget (or id of widget), and that widget has an ".addChild" method,it will be called passing this widget instance into that method, supplying the optionalposition index passed.  In this case position (if specified) should be an integer.If reference is a DOMNode (or id matching a DOMNode but not a widget),the position argument can be a numeric index or a string"first", "last", "before", or "after", same as dojo/dom-construct::place().             
              */
-            placeAt(reference: HTMLElement, position: String): any;
+            placeAt(reference: HTMLElement, position?: String): any;
             /**
              * Place this widget somewhere in the DOM based
              * on standard domConstruct.place() conventions.
@@ -10644,7 +10644,7 @@ declare module dojox {
              * @param reference Widget, DOMNode, or id of widget or DOMNode             
              * @param position               OptionalIf reference is a widget (or id of widget), and that widget has an ".addChild" method,it will be called passing this widget instance into that method, supplying the optionalposition index passed.  In this case position (if specified) should be an integer.If reference is a DOMNode (or id matching a DOMNode but not a widget),the position argument can be a numeric index or a string"first", "last", "before", or "after", same as dojo/dom-construct::place().             
              */
-            placeAt(reference: dijit._WidgetBase, position: String): any;
+            placeAt(reference: dijit._WidgetBase, position?: String): any;
             /**
              * Place this widget somewhere in the DOM based
              * on standard domConstruct.place() conventions.
@@ -10655,7 +10655,7 @@ declare module dojox {
              * @param reference Widget, DOMNode, or id of widget or DOMNode             
              * @param position               OptionalIf reference is a widget (or id of widget), and that widget has an ".addChild" method,it will be called passing this widget instance into that method, supplying the optionalposition index passed.  In this case position (if specified) should be an integer.If reference is a DOMNode (or id matching a DOMNode but not a widget),the position argument can be a numeric index or a string"first", "last", "before", or "after", same as dojo/dom-construct::place().             
              */
-            placeAt(reference: String, position: number): any;
+            placeAt(reference: String, position?: number): any;
             /**
              * Place this widget somewhere in the DOM based
              * on standard domConstruct.place() conventions.
@@ -10666,7 +10666,7 @@ declare module dojox {
              * @param reference Widget, DOMNode, or id of widget or DOMNode             
              * @param position               OptionalIf reference is a widget (or id of widget), and that widget has an ".addChild" method,it will be called passing this widget instance into that method, supplying the optionalposition index passed.  In this case position (if specified) should be an integer.If reference is a DOMNode (or id matching a DOMNode but not a widget),the position argument can be a numeric index or a string"first", "last", "before", or "after", same as dojo/dom-construct::place().             
              */
-            placeAt(reference: HTMLElement, position: number): any;
+            placeAt(reference: HTMLElement, position?: number): any;
             /**
              * Place this widget somewhere in the DOM based
              * on standard domConstruct.place() conventions.
@@ -10677,7 +10677,7 @@ declare module dojox {
              * @param reference Widget, DOMNode, or id of widget or DOMNode             
              * @param position               OptionalIf reference is a widget (or id of widget), and that widget has an ".addChild" method,it will be called passing this widget instance into that method, supplying the optionalposition index passed.  In this case position (if specified) should be an integer.If reference is a DOMNode (or id matching a DOMNode but not a widget),the position argument can be a numeric index or a string"first", "last", "before", or "after", same as dojo/dom-construct::place().             
              */
-            placeAt(reference: dijit._WidgetBase, position: number): any;
+            placeAt(reference: dijit._WidgetBase, position?: number): any;
             /**
              * 
              */

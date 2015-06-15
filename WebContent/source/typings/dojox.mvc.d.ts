@@ -21323,7 +21323,7 @@ declare module dojox {
          * @param value The stateful value.     
          * @param options The object that defines how plain value should be created from stateful value.     
          */
-        interface getPlainValue{(value: any, options: Object): void}
+        interface getPlainValue{(value: any, options?: Object): void}
         module getPlainValue {
             /**
              * Returns the stateful version of the given array.
