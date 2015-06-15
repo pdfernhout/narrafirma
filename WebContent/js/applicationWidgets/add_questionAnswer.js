@@ -1,4 +1,4 @@
-define(["require", "exports", "js/panelBuilder/translate"], function (require, exports, translate) {
+define(["require", "exports", "../panelBuilder/translate"], function (require, exports, translate) {
     "use strict";
     function div_for_value(value) {
         if (value === undefined || value === null)

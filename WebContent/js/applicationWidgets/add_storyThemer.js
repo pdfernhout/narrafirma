@@ -1,4 +1,4 @@
-define(["require", "exports", "../pointrel20150417/generateRandomUuid", "js/panelBuilder/standardWidgets/GridWithItemPanel", "dijit/form/ComboBox", "dijit/layout/ContentPane", "dojo/store/Memory", "js/panelBuilder/valuePathResolver", "js/panelBuilder/widgetSupport"], function (require, exports, generateRandomUuid, GridWithItemPanel, ComboBox, ContentPane, Memory, valuePathResolver, widgetSupport) {
+define(["require", "exports", "../pointrel20150417/generateRandomUuid", "../panelBuilder/standardWidgets/GridWithItemPanel", "dijit/form/ComboBox", "dijit/layout/ContentPane", "dojo/store/Memory", "../panelBuilder/valuePathResolver", "../panelBuilder/widgetSupport"], function (require, exports, generateRandomUuid, GridWithItemPanel, ComboBox, ContentPane, Memory, valuePathResolver, widgetSupport) {
     "use strict";
     // story themer support
     function addThemeButtonPressed(themeEntryComboBox, storyThemesStore, allThemes) {

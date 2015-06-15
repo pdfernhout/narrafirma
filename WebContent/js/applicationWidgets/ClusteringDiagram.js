@@ -1,4 +1,4 @@
-define(["require", "exports", "d3", "dijit/form/TextBox", "dijit/form/Button", "dijit/Dialog", "../pointrel20150417/generateRandomUuid", "dojo/Stateful", "dojox/mvc/at", "dojox/layout/TableContainer", "js/panelBuilder/dialogSupport", "dijit/layout/ContentPane", "dijit/ColorPalette", "dojox/layout/ResizeHandle"], function (require, exports, d3, TextBox, Button, Dialog, generateRandomUuid, Stateful, at, TableContainer, dialogSupport, ContentPane, ColorPalette, ResizeHandle) {
+define(["require", "exports", "d3", "dijit/form/TextBox", "dijit/form/Button", "dijit/Dialog", "../pointrel20150417/generateRandomUuid", "dojo/Stateful", "dojox/mvc/at", "dojox/layout/TableContainer", "../panelBuilder/dialogSupport", "dijit/layout/ContentPane", "dijit/ColorPalette", "dojox/layout/ResizeHandle"], function (require, exports, d3, TextBox, Button, Dialog, generateRandomUuid, Stateful, at, TableContainer, dialogSupport, ContentPane, ColorPalette, ResizeHandle) {
     "use strict";
     // Resources:
     // # http://dojotdg.zaffra.com/2009/03/dojo-now-with-drawing-tools-linux-journal-reprint/

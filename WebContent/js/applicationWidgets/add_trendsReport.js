@@ -1,4 +1,4 @@
-define(["require", "exports", "./charting", "dijit/layout/ContentPane", "js/panelBuilder/standardWidgets/GridWithItemPanel", "js/statistics/kendallsTau", "lib/simple_statistics", "dojo/Stateful", "js/storyCardDisplay", "js/surveyCollection", "js/panelBuilder/valuePathResolver"], function (require, exports, charting, ContentPane, GridWithItemPanel, kendallsTau, simpleStatistics, Stateful, storyCardDisplay, surveyCollection, valuePathResolver) {
+define(["require", "exports", "./charting", "dijit/layout/ContentPane", "../panelBuilder/standardWidgets/GridWithItemPanel", "../statistics/kendallsTau", "lib/simple_statistics", "dojo/Stateful", "../storyCardDisplay", "../surveyCollection", "../panelBuilder/valuePathResolver"], function (require, exports, charting, ContentPane, GridWithItemPanel, kendallsTau, simpleStatistics, Stateful, storyCardDisplay, surveyCollection, valuePathResolver) {
     "use strict";
     // TODO: retrieve from UI
     var minStoriesForTest = 20;

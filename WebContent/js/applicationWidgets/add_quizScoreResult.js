@@ -1,4 +1,4 @@
-define(["require", "exports", "js/panelBuilder/translate"], function (require, exports, translate) {
+define(["require", "exports", "../panelBuilder/translate"], function (require, exports, translate) {
     "use strict";
     function calculate_quizScoreResult(panelSpecificationCollection, model, dependsOn) {
         // console.log("quiz score result", dependsOn);

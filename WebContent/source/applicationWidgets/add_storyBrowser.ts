@@ -1,11 +1,11 @@
 import domConstruct = require("dojo/dom-construct");
-import storyCardDisplay = require("js/storyCardDisplay");
-import surveyCollection = require("js/surveyCollection");
-import GridWithItemPanel = require("js/panelBuilder/standardWidgets/GridWithItemPanel");
-import widgetSupport = require("js/panelBuilder/widgetSupport");
+import storyCardDisplay = require("../storyCardDisplay");
+import surveyCollection = require("../surveyCollection");
+import GridWithItemPanel = require("../panelBuilder/standardWidgets/GridWithItemPanel");
+import widgetSupport = require("../panelBuilder/widgetSupport");
 import ContentPane = require("dijit/layout/ContentPane");
 import TableContainer = require("dojox/layout/TableContainer");
-import valuePathResolver = require("js/panelBuilder/valuePathResolver");
+import valuePathResolver = require("../panelBuilder/valuePathResolver");
 
 "use strict";
 

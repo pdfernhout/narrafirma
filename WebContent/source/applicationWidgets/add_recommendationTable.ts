@@ -1,6 +1,6 @@
-import dialogSupport = require("js/panelBuilder/dialogSupport");
-import recommendations = require("js/templates/recommendations");
-import translate = require("js/panelBuilder/translate");
+import dialogSupport = require("../panelBuilder/dialogSupport");
+import recommendations = require("../templates/recommendations");
+import translate = require("../panelBuilder/translate");
 import TableContainer = require("dojox/layout/TableContainer");
 
 "use strict";

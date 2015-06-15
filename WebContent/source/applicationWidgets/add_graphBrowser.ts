@@ -1,8 +1,8 @@
 import charting = require("./charting");
-import surveyCollection = require("js/surveyCollection");
-import widgetSupport = require("js/panelBuilder/widgetSupport");
+import surveyCollection = require("../surveyCollection");
+import widgetSupport = require("../panelBuilder/widgetSupport");
 import ContentPane = require("dijit/layout/ContentPane");
-import valuePathResolver = require("js/panelBuilder/valuePathResolver");
+import valuePathResolver = require("../panelBuilder/valuePathResolver");
 
 "use strict";
 

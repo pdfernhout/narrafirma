@@ -1,13 +1,13 @@
 import charting = require("./charting");
 import ContentPane = require("dijit/layout/ContentPane");
-import GridWithItemPanel = require("js/panelBuilder/standardWidgets/GridWithItemPanel");
-import kendallsTau = require("js/statistics/kendallsTau");
+import GridWithItemPanel = require("../panelBuilder/standardWidgets/GridWithItemPanel");
+import kendallsTau = require("../statistics/kendallsTau");
 import simpleStatistics = require("lib/simple_statistics");
 import Stateful = require("dojo/Stateful");
-import storyCardDisplay = require("js/storyCardDisplay");
-import surveyCollection = require("js/surveyCollection");
+import storyCardDisplay = require("../storyCardDisplay");
+import surveyCollection = require("../surveyCollection");
 import topic = require("../pointrel20150417/topic");
-import valuePathResolver = require("js/panelBuilder/valuePathResolver");
+import valuePathResolver = require("../panelBuilder/valuePathResolver");
 
 "use strict";
 

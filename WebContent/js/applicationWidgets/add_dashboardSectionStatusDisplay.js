@@ -1,4 +1,4 @@
-define(["require", "exports", "dojo/dom-construct", "js/panelBuilder/translate"], function (require, exports, domConstruct, translate) {
+define(["require", "exports", "dojo/dom-construct", "../panelBuilder/translate"], function (require, exports, domConstruct, translate) {
     "use strict";
     // TODO: translate
     function stepPlural(count) {

@@ -1,7 +1,7 @@
-import dialogSupport = require("js/panelBuilder/dialogSupport");
+import dialogSupport = require("../panelBuilder/dialogSupport");
 import domClass = require("dojo/dom-class");
-import templates = require("js/templates/templates");
-import GridWithItemPanel = require("js/panelBuilder/standardWidgets/GridWithItemPanel");
+import templates = require("../templates/templates");
+import GridWithItemPanel = require("../panelBuilder/standardWidgets/GridWithItemPanel");
 
 "use strict";
 

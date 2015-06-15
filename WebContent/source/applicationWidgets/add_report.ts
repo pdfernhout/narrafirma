@@ -1,4 +1,4 @@
-import reportGeneration = require("js/reportGeneration");
+import reportGeneration = require("../reportGeneration");
 
 "use strict";
 

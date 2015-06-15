@@ -1,4 +1,4 @@
-define(["require", "exports", "./charting", "js/surveyCollection", "js/panelBuilder/widgetSupport", "dijit/layout/ContentPane", "js/panelBuilder/valuePathResolver"], function (require, exports, charting, surveyCollection, widgetSupport, ContentPane, valuePathResolver) {
+define(["require", "exports", "./charting", "../surveyCollection", "../panelBuilder/widgetSupport", "dijit/layout/ContentPane", "../panelBuilder/valuePathResolver"], function (require, exports, charting, surveyCollection, widgetSupport, ContentPane, valuePathResolver) {
     "use strict";
     function questionForID(questions, id) {
         if (!id)

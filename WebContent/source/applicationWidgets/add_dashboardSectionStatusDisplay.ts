@@ -1,5 +1,5 @@
 import domConstruct = require("dojo/dom-construct");
-import translate = require("js/panelBuilder/translate");
+import translate = require("../panelBuilder/translate");
 
 "use strict";
 

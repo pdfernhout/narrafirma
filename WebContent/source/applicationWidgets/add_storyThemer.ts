@@ -1,12 +1,12 @@
 import generateRandomUuid = require("../pointrel20150417/generateRandomUuid");
-import surveyCollection = require("js/surveyCollection");
+import surveyCollection = require("../surveyCollection");
 import topic = require("../pointrel20150417/topic");
-import GridWithItemPanel = require("js/panelBuilder/standardWidgets/GridWithItemPanel");
+import GridWithItemPanel = require("../panelBuilder/standardWidgets/GridWithItemPanel");
 import ComboBox = require("dijit/form/ComboBox");
 import ContentPane = require("dijit/layout/ContentPane");
 import Memory = require("dojo/store/Memory");
-import valuePathResolver = require("js/panelBuilder/valuePathResolver");
-import widgetSupport = require("js/panelBuilder/widgetSupport");
+import valuePathResolver = require("../panelBuilder/valuePathResolver");
+import widgetSupport = require("../panelBuilder/widgetSupport");
 
 "use strict";
 
