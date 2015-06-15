@@ -1,6 +1,5 @@
-define([
-], function () {
-    "use strict";
+"use strict";
+define(["require", "exports"], function (require, exports) {
     function PanelSpecificationCollection() {
         // TODO: Think about whether can refactor to remove need for allFieldSpecifications array and/or map
         // Keep all questions together for use by things like calculating derived values from options for quiz score results
