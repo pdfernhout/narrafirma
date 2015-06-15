@@ -139,12 +139,7 @@ define([
         contentPane.containerNode.appendChild(document.createElement("br"));
         contentPane.containerNode.appendChild(document.createElement("br"));
         contentPane.addChild(graphResultsPane);
-        // TODO: var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", loadLatestStoriesFromServerChanged.bind(null, graphBrowserInstance));
-        // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
-        // TODO: contentPane.own(loadLatestStoriesFromServerSubscription);
-        // TODO: var currentQuestionnaireSubscription = topic.subscribe("currentQuestionnaire", currentQuestionnaireChanged.bid(null, graphBrowserInstance));
-        // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
-        // TODO: contentPane.own(currentQuestionnaireSubscription);
+        // TODO: Track new incoming stories
         // Set up initial data
         currentStoryCollectionChanged(graphBrowserInstance, null, null, storyCollectionIdentifier);
         return graphResultsPane;

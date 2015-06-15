@@ -51,9 +51,6 @@ define(["require", "exports", "./questionnaireGeneration", "./pointrel20150417/t
         return questionnaire;
     }
     exports.getQuestionnaireForStoryCollection = getQuestionnaireForStoryCollection;
-    // TODO: Find all users of loadLatestStoriesFromServer and fix them
-    // TODO: Fix users of: topic.publish("loadLatestStoriesFromServer", newEnvelopeCount, domain.allStories);
-    // TODO: Fix users of: topic.publish("totalNumberOfSurveyResults", allEnvelopes.length);
     function urlForSurvey(storyCollectionName) {
         var href = window.location.href;
         var baseURL = href.substring(0, href.lastIndexOf("/"));

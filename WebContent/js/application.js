@@ -335,16 +335,6 @@ define(["require", "exports", "dojo/i18n!js/nls/applicationMessages", "./buttonA
         statusTooltip.set("label", statusText);
         // serverStatusPane.set("content", statusText);
     }
-    function loadedMoreSurveyResults(newEnvelopeCount) {
-        if (newEnvelopeCount === 0) {
-            // TODO: Translate
-            toaster.toast("No new survey results were found.");
-        }
-        else {
-            // TODO: Translate
-            toaster.toast("" + newEnvelopeCount + " new survey result(s) were found.");
-        }
-    }
     // dispatch the button click
     function buttonClicked(panelBuilder, contentPane, model, fieldSpecification, value) {
         console.log("buttonClicked", fieldSpecification);
@@ -572,7 +562,6 @@ define(["require", "exports", "dojo/i18n!js/nls/applicationMessages", "./buttonA
             // Fill out initial hash string if needed
             updateHashIfNeededForChangedState();
             createLayout();
-            topic.subscribe("loadLatestStoriesFromServer", loadedMoreSurveyResults);
             // TODO: What to do while waiting for data for a project to load from server the first time? Assuming authenticated OK etc.???
             // TODO: This assumes we have picked a project, and are actually loading data and have not errored out
             // TODO: Need some kind of progress indicator of messages loaded...

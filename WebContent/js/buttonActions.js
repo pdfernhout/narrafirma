@@ -41,12 +41,13 @@ define(["require", "exports", "./panelBuilder/browser", "./csvImportExport", "di
     function importExportClicked() {
         console.log("importExportClicked");
         throw new Error("No longer working due to ongoing refactoring for current page model");
-        var projectDefinitionText = JSON.stringify(domain.projectAnswers, null, 2);
-        dialogSupport.openTextEditorDialog(projectDefinitionText, "#projectImportExportDialog_title|Project Import/Export", "#projectImportExportDialog_okButtonText|OK", importButtonClicked);
+        // var projectDefinitionText = JSON.stringify(domain.projectAnswers, null, 2);
+        // dialogSupport.openTextEditorDialog(projectDefinitionText, "#projectImportExportDialog_title|Project Import/Export", "#projectImportExportDialog_okButtonText|OK", importButtonClicked);
     }
     // Caller should call wizard.forward() on successful save to see the last page, and provide a retry message otherwise
     // Caller may also want to call (the returned) surveyDialog.hide() to close the window, or let the user do it.
     function openMithrilSurveyDialog(questionnaire, callback, previewModeTitleText) {
+        if (previewModeTitleText === void 0) { previewModeTitleText = null; }
         console.log("openSurveyDialog questionnaire", questionnaire);
         var surveyDiv = document.createElement("div");
         surveyBuilder.buildSurveyForm(surveyDiv, questionnaire, callback, previewModeTitleText);
@@ -243,11 +244,10 @@ define(["require", "exports", "./panelBuilder/browser", "./csvImportExport", "di
     function previewQuestionForm(contentPane, model, fieldSpecification) {
         console.log("previewQuestionForm", model);
         var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(project, model);
-        window.narraFirma_previewQuestionnaire = questionnaire;
+        window["narraFirma_previewQuestionnaire"] = questionnaire;
         var w = window.open("survey.html#preview=" + (new Date().toISOString()), "_blank");
     }
     exports.previewQuestionForm = previewQuestionForm;
-    exports.loadLatestStoriesFromServer = surveyCollection.loadLatestStoriesFromServer;
     exports.enterSurveyResult = openSurveyDialog;
     exports.toggleWebActivationOfSurvey = surveyCollection.toggleWebActivationOfSurvey;
     exports.storyCollectionStop = surveyCollection.storyCollectionStop;

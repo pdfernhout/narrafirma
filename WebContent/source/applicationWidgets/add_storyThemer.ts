@@ -112,26 +112,6 @@ define([
         addThemeButton.placeAt(themesPane);
     }
     
-    /*
-    function currentQuestionnaireChanged(storyThemerInstance, currentQuestionnaire) {
-        // Update filters
-        var questions = surveyCollection.collectQuestionsForCurrentQuestionnaire();
-        storyThemerInstance.itemPanelSpecification.panelFields = questions;
-        
-        // Update item panel in grid
-        storyThemerInstance.storyList.changeItemPanelSpecification(storyThemerInstance.itemPanelSpecification);
-    }
-    
-    function loadLatestStoriesFromServerChanged(storyThemerInstance, newEnvelopeCount, allStories) {
-        console.log("loadLatestStoriesFromServerChanged", storyThemerInstance, newEnvelopeCount, allStories);
-        if (!newEnvelopeCount) return;
-        // console.log("loadLatestStoriesFromServerChanged", storyBrowserInstance, allStories);
-        storyThemerInstance.dataStore.setData(allStories);
-        // Apparently, trackable stored don't send a general update message when you change their data, so explicitely set grid store here to force update
-        storyThemerInstance.storyList.dataStoreChanged(storyThemerInstance.dataStore);
-    }
-    */
-    
     function currentCatalysisReportChanged(graphBrowserInstance, fieldName, oldValue, currentCatalysisReport) {
         console.log("currentCatalysisReportChanged", graphBrowserInstance, currentCatalysisReport);
         
@@ -176,19 +156,6 @@ define([
      var currentCatalysisReportSubscription = choiceModel.watch(choiceField, currentCatalysisReportChanged.bind(null, storyThemerInstance));        
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
         pagePane.own(currentCatalysisReportSubscription);
-        
-        /*
-        
-        var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", loadLatestStoriesFromServerChanged.bind(null, storyThemerInstance));
-        
-        // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
-        pagePane.own(loadLatestStoriesFromServerSubscription);
-        
-        var currentQuestionnaireSubscription = topic.subscribe("currentQuestionnaire", currentQuestionnaireChanged.bind(null, storyThemerInstance));
-        
-        // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
-        pagePane.own(currentQuestionnaireSubscription);
-        */
         
         console.log("insertStoryThemer finished");
     }

@@ -293,9 +293,7 @@ define([
         // Only allow view button for stories
         var configuration = { viewButton: true, includeAllFields: ["__survey_storyName", "__survey_storyText"], navigationButtons: true };
         storyBrowserInstance.storyList = new GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration, model);
-        // TODO: var loadLatestStoriesFromServerSubscription = topic.subscribe("loadLatestStoriesFromServer", loadLatestStories.bind(null, storyBrowserInstance));
-        // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
-        // TODO: table.own(loadLatestStoriesFromServerSubscription);
+        // TODO: Track new incoming stories
         // TODO: Should also have some subscription about when the questionnaire itself changes
         var currentQuestionnaireSubscription = choiceModel.watch(choiceField, currentStoryCollectionChanged.bind(null, storyBrowserInstance));
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...

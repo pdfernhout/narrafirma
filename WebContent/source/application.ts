@@ -402,16 +402,6 @@ function updateServerStatus(status, text) {
     // serverStatusPane.set("content", statusText);
 }
 
-function loadedMoreSurveyResults(newEnvelopeCount) {
-    if (newEnvelopeCount === 0) {
-        // TODO: Translate
-        toaster.toast("No new survey results were found.");
-    } else {
-        // TODO: Translate
-        toaster.toast("" + newEnvelopeCount + " new survey result(s) were found.");
-    }
-}
-
 // dispatch the button click
 function buttonClicked(panelBuilder, contentPane, model, fieldSpecification, value) {
      console.log("buttonClicked", fieldSpecification);
@@ -665,8 +655,6 @@ function loadApplicationDesign() {
         updateHashIfNeededForChangedState();
         
         createLayout();
-        
-        topic.subscribe("loadLatestStoriesFromServer", loadedMoreSurveyResults);
         
         // TODO: What to do while waiting for data for a project to load from server the first time? Assuming authenticated OK etc.???
         

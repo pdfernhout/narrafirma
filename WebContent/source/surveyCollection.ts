@@ -62,10 +62,6 @@ export function getQuestionnaireForStoryCollection(storyCollectionIdentifier) {
     var questionnaire = storyCollection.questionnaire;
     return questionnaire;
 }
-    
-// TODO: Find all users of loadLatestStoriesFromServer and fix them
-// TODO: Fix users of: topic.publish("loadLatestStoriesFromServer", newEnvelopeCount, domain.allStories);
-// TODO: Fix users of: topic.publish("totalNumberOfSurveyResults", allEnvelopes.length);
 
 function urlForSurvey(storyCollectionName) {
     var href = window.location.href;

@@ -65,13 +65,13 @@ function importButtonClicked(projectDefinitionText, hideDialogMethod) {
 function importExportClicked() {
     console.log("importExportClicked");
     throw new Error("No longer working due to ongoing refactoring for current page model");
-    var projectDefinitionText = JSON.stringify(domain.projectAnswers, null, 2);
-    dialogSupport.openTextEditorDialog(projectDefinitionText, "#projectImportExportDialog_title|Project Import/Export", "#projectImportExportDialog_okButtonText|OK", importButtonClicked);
+    // var projectDefinitionText = JSON.stringify(domain.projectAnswers, null, 2);
+    // dialogSupport.openTextEditorDialog(projectDefinitionText, "#projectImportExportDialog_title|Project Import/Export", "#projectImportExportDialog_okButtonText|OK", importButtonClicked);
 }
 
 // Caller should call wizard.forward() on successful save to see the last page, and provide a retry message otherwise
 // Caller may also want to call (the returned) surveyDialog.hide() to close the window, or let the user do it.
-function openMithrilSurveyDialog(questionnaire, callback, previewModeTitleText) {  
+function openMithrilSurveyDialog(questionnaire, callback, previewModeTitleText = null) {  
     console.log("openSurveyDialog questionnaire", questionnaire);
     
     var surveyDiv = document.createElement("div");
@@ -316,12 +316,11 @@ function previewQuestionForm(contentPane, model, fieldSpecification) {
 export function previewQuestionForm(contentPane, model, fieldSpecification) {
     console.log("previewQuestionForm", model);
     var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(project, model);
-    window.narraFirma_previewQuestionnaire = questionnaire;
+    window["narraFirma_previewQuestionnaire"] = questionnaire;
     
     var w = window.open("survey.html#preview=" + (new Date().toISOString()), "_blank");
 }
 
-export var loadLatestStoriesFromServer = surveyCollection.loadLatestStoriesFromServer;
 export var enterSurveyResult = openSurveyDialog;
 export var toggleWebActivationOfSurvey = surveyCollection.toggleWebActivationOfSurvey;
 export var storyCollectionStop = surveyCollection.storyCollectionStop;
