@@ -505,6 +505,7 @@ define(["require", "exports", "d3", "dijit/form/TextBox", "dijit/form/Button", "
         });
         drag.on("drag", function () {
             // console.log("drag item", item);
+            // TODO: Casting to any as workaround to silence TypeScritp error for maybe incomplete d3 typing file
             item.x += d3.event.dx;
             item.y += d3.event.dy;
             group.attr('transform', 'translate(' + item.x + ',' + item.y + ')');

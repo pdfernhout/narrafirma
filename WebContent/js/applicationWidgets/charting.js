@@ -1,6 +1,5 @@
 define(["require", "exports", "d3", "dojo/dom-construct", "dijit/layout/ContentPane"], function (require, exports, d3, domConstruct, ContentPane) {
     "use strict";
-    // TODO: Need to be able to associate related stories with everything on screen so can browse them when clicked
     var unansweredKey = "{N/A}";
     var singleChartStyle = "width: 700px; height: 500px;";
     var multipleChartStyle = "width: 200px; height: 200; float: left;";
@@ -415,6 +414,7 @@ define(["require", "exports", "d3", "dojo/dom-construct", "dijit/layout/ContentP
         }
         // draw the y axis
         // Generate a histogram using twenty uniformly-spaced bins.
+        // TODO: Casting to any to get around D3 typing limitation where it expects number not an object
         var data = d3.layout.histogram().bins(xScale.ticks(20)).value(function (d) {
             return d.value;
         })(values);

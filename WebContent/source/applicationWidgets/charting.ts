@@ -6,6 +6,11 @@ import ContentPane = require("dijit/layout/ContentPane");
 
 // TODO: Need to be able to associate related stories with everything on screen so can browse them when clicked
 
+interface PlotItem {
+    story: any;
+    value: number;
+}
+
 var unansweredKey = "{N/A}";
 var singleChartStyle = "width: 700px; height: 500px;";
 var multipleChartStyle = "width: 200px; height: 200; float: left;";
@@ -442,7 +447,7 @@ export function d3BarChart(graphBrowserInstance, question, storiesSelectedCallba
     
     // Add tooltips
     storyDisplayItems.append("svg:title")
-        .text(function(storyItem) {
+        .text(function(storyItem: PlotItem) {
             var story = storyItem.story;
             var tooltipText =
                 "Title: " + story.__survey_storyName +
@@ -547,7 +552,8 @@ export function d3HistogramChart(graphBrowserInstance, scaleQuestion, choiceQues
     // draw the y axis
     
     // Generate a histogram using twenty uniformly-spaced bins.
-    var data = d3.layout.histogram().bins(xScale.ticks(20)).value(function (d) { return d.value; })(values);
+    // TODO: Casting to any to get around D3 typing limitation where it expects number not an object
+    var data = (<any>d3.layout.histogram().bins(xScale.ticks(20))).value(function (d) { return d.value; })(values);
 
     // Set the bin for each plotItem
     data.forEach(function (bin) {
@@ -557,7 +563,7 @@ export function d3HistogramChart(graphBrowserInstance, scaleQuestion, choiceQues
     });
 
     // TODO: May want to consider unanswered here if decide to plot it to the side
-    var maxValue = d3.max(data, function(d) { return d.y; });
+    var maxValue = d3.max(data, function(d: any) { return d.y; });
     
     var yScale = d3.scale.linear()
         .domain([0, maxValue])
@@ -589,7 +595,7 @@ export function d3HistogramChart(graphBrowserInstance, scaleQuestion, choiceQues
           .data(data)
       .enter().append("g")
           .attr("class", "bar")
-          .attr("transform", function(d) { return "translate(" + xScale(d.x) + "," + yScale(0) + ")"; });
+          .attr("transform", function(d: any) { return "translate(" + xScale(d.x) + "," + yScale(0) + ")"; });
     
     // Overlay stories on each bar...
     var storyDisplayItems = bars.selectAll(".story")
@@ -603,7 +609,7 @@ export function d3HistogramChart(graphBrowserInstance, scaleQuestion, choiceQues
     
     // Add tooltips
     storyDisplayItems.append("svg:title")
-        .text(function(plotItem) {
+        .text(function(plotItem: PlotItem) {
             var story = plotItem.story;
             var tooltipText =
                 "Title: " + story.__survey_storyName +

@@ -640,8 +640,9 @@ ClusteringDiagram.prototype.addDisplayObjectForItem = function(surface, item) {
     
     drag.on("drag", function () {
         // console.log("drag item", item);
-        item.x += d3.event.dx;
-        item.y += d3.event.dy;
+        // TODO: Casting to any as workaround to silence TypeScritp error for maybe incomplete d3 typing file
+        item.x += (<any>d3.event).dx;
+        item.y += (<any>d3.event).dy;
         group.attr('transform', 'translate(' + item.x + ',' + item.y + ')');
         moved = true;
     });

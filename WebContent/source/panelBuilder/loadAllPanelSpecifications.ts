@@ -1,5 +1,8 @@
 "use strict";
 
+// To suppress TypeScript error on require statement
+declare var require: (moduleId: string[], any) => any;
+
 // Load all the panels from JSON files specified in navigationSections array
 // see navigation.json for an example of the format
 // The "extraPanels" are child panels used by grids and similar widgets on the page (including recursively)
