@@ -475,7 +475,7 @@ define(["require", "exports", "./charting", "dijit/layout/ContentPane", "../pane
         contentPane.own(currentCatalysisReportSubscription);
         var patterns = buildPatternList(graphBrowserInstance);
         graphBrowserInstance.patterns = patterns;
-        var patternsListStore = GridWithItemPanel.newMemoryTrackableStore(patterns, "id");
+        var patternsListStore = GridWithItemPanel["newMemoryTrackableStore"](patterns, "id");
         graphBrowserInstance.patternsListStore = patternsListStore;
         var patternsGridConfiguration = {
             navigationButtons: true,
@@ -505,7 +505,7 @@ define(["require", "exports", "./charting", "dijit/layout/ContentPane", "../pane
         graphBrowserInstance.patternsGrid = patternsGrid;
         var storyItemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
         // Store will modify underlying array
-        var selectedStoriesStore = GridWithItemPanel.newMemoryTrackableStore(graphBrowserInstance.selectedStories, "_storyID");
+        var selectedStoriesStore = GridWithItemPanel["newMemoryTrackableStore"](graphBrowserInstance.selectedStories, "_storyID");
         graphBrowserInstance.selectedStoriesStore = selectedStoriesStore;
         // Only allow view button for stories
         var configuration = { viewButton: true, includeAllFields: ["__survey_storyName", "__survey_storyText"], navigationButtons: true };

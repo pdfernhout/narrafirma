@@ -115,7 +115,7 @@ function makeTemplateListChooser(panelBuilder, contentPane, model, hideDialogCal
         templateQuestions = [];
     }
     
-    var dataStore = GridWithItemPanel.newMemoryTrackableStore(templateQuestions, "id");
+    var dataStore = GridWithItemPanel["newMemoryTrackableStore"](templateQuestions, "id");
     
     var pageQuestions;
     

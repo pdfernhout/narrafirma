@@ -73,7 +73,7 @@ function buildThemerPanel(panelBuilder, contentPane, model) {
     // TODO: Need to hook up this with stories somehow, especially given they are loaded and saved outside the project
     // var testItem = {id: "test", name: "test"};
     var storyThemes = [];
-    var storyThemesStore = GridWithItemPanel.newMemoryTrackableStore(storyThemes, "id");
+    var storyThemesStore = GridWithItemPanel["newMemoryTrackableStore"](storyThemes, "id");
     
     var configuration2 = {removeButton: true, moveUpDownButtons: true, includeAllFields: true};
     var itemPanelSpecification2 = {
@@ -129,7 +129,7 @@ function insertStoryThemer(panelBuilder, pagePane, model, fieldSpecification) {
     };
 
     // Store will modify underlying array
-    var dataStore = GridWithItemPanel.newMemoryTrackableStore(allStories, "_storyID");
+    var dataStore = GridWithItemPanel["newMemoryTrackableStore"](allStories, "_storyID");
     
     // Only allow view button for stories
     var configuration = {viewButton: true, navigationButtons: true, includeAllFields: ["__survey_storyName", "__survey_storyText"]};

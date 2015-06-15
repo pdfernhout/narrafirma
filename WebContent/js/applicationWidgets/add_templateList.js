@@ -107,7 +107,7 @@ define(["require", "exports", "../panelBuilder/dialogSupport", "dojo/dom-class",
             // alert("Unsupported templateListChoice: " + templateListChoice);
             templateQuestions = [];
         }
-        var dataStore = GridWithItemPanel.newMemoryTrackableStore(templateQuestions, "id");
+        var dataStore = GridWithItemPanel["newMemoryTrackableStore"](templateQuestions, "id");
         var pageQuestions;
         if (templateListChoice === "elicitationQuestions") {
             pageQuestions = add_templateList_elicitationQuestions;

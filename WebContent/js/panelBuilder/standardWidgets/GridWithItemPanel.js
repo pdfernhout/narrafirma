@@ -592,7 +592,7 @@ define(["require", "exports", "dojo/_base/declare", "../dialogSupport", 'dojo/do
             buttons.navigateEndButton.set("disabled", atEnd || isEditing || isAdding);
     };
     // Class level function, so no "prototype"
-    GridWithItemPanel.newMemoryTrackableStore = function (data, idProperty) {
+    GridWithItemPanel["newMemoryTrackableStore"] = function (data, idProperty) {
         if (!idProperty)
             idProperty = "id";
         return new (declare([Memory, Trackable]))({

@@ -690,7 +690,7 @@ GridWithItemPanel.prototype.updateGridButtonsForSelectionAndForm = function() {
 };
 
 // Class level function, so no "prototype"
-GridWithItemPanel.newMemoryTrackableStore = function(data, idProperty) {
+GridWithItemPanel["newMemoryTrackableStore"] = function(data, idProperty) {
     if (!idProperty) idProperty = "id";
     return new (declare([Memory, Trackable]))({
         data: data,

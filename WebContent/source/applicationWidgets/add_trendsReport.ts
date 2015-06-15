@@ -546,7 +546,7 @@ function add_trendsReport(panelBuilder, contentPane, model, fieldSpecification) 
     var patterns = buildPatternList(graphBrowserInstance);
     graphBrowserInstance.patterns = patterns;
    
-    var patternsListStore = GridWithItemPanel.newMemoryTrackableStore(patterns, "id");
+    var patternsListStore = GridWithItemPanel["newMemoryTrackableStore"](patterns, "id");
     graphBrowserInstance.patternsListStore = patternsListStore;
     
     var patternsGridConfiguration = {
@@ -583,7 +583,7 @@ function add_trendsReport(panelBuilder, contentPane, model, fieldSpecification) 
     var storyItemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
 
     // Store will modify underlying array
-    var selectedStoriesStore = GridWithItemPanel.newMemoryTrackableStore(graphBrowserInstance.selectedStories, "_storyID");
+    var selectedStoriesStore = GridWithItemPanel["newMemoryTrackableStore"](graphBrowserInstance.selectedStories, "_storyID");
     graphBrowserInstance.selectedStoriesStore = selectedStoriesStore;
     
     // Only allow view button for stories

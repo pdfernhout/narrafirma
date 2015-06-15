@@ -247,7 +247,7 @@ define(["require", "exports", "dojo/dom-construct", "../storyCardDisplay", "../s
         var questions = [];
         var stories = [];
         // Store will modify underlying array
-        var dataStore = GridWithItemPanel.newMemoryTrackableStore(stories, "_storyID");
+        var dataStore = GridWithItemPanel["newMemoryTrackableStore"](stories, "_storyID");
         // console.log("insertStoryBrowser middle 1", id);
         var table = new TableContainer({
             cols: 2,
@@ -311,7 +311,7 @@ define(["require", "exports", "dojo/dom-construct", "../storyCardDisplay", "../s
         };
         var filteredResults = storyBrowserInstance.dataStore.filter(filterFunction);
         console.log("Filtered results", filteredResults);
-        // var newStore = GridWithItemPanel.newMemoryTrackableStore(filteredResults.data, "_storyID");
+        // var newStore = GridWithItemPanel["newMemoryTrackableStore"](filteredResults.data, "_storyID");
         storyBrowserInstance.storyList.dataStoreChanged(filteredResults);
         // console.log("finished setting list with newStore", newStore);
     }

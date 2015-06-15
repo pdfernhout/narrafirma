@@ -47,7 +47,7 @@ define(["require", "exports", "./GridWithItemPanel"], function (require, exports
         if (!idProperty)
             idProperty = "_id";
         // Store will modify underlying array
-        var dataStore = GridWithItemPanel.newMemoryTrackableStore(data, idProperty);
+        var dataStore = GridWithItemPanel["newMemoryTrackableStore"](data, idProperty);
         var instance = {
             grid: undefined
         };
