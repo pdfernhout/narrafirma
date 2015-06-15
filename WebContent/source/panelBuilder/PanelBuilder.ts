@@ -1,52 +1,25 @@
-define([
-    "./standardWidgets/add_boolean",
-    "./standardWidgets/add_button",
-    "./standardWidgets/add_checkbox",
-    "./standardWidgets/add_checkboxes",
-    "./standardWidgets/add_functionResult",
-    "./standardWidgets/add_grid",
-    "./standardWidgets/add_header",
-    "./standardWidgets/add_html",
-    "./standardWidgets/add_image",
-    "./standardWidgets/add_label",
-    "./standardWidgets/add_radiobuttons",
-    "./standardWidgets/add_select",
-    "./standardWidgets/add_slider",
-    "./standardWidgets/add_text",
-    "./standardWidgets/add_textarea",
-    "./standardWidgets/add_toggleButton",
-
-    "./browser",
-    "dojo/_base/declare",
-    'dojo/dom-class',
-    "dojo/dom-construct",
-    "./translate",
-    "dijit/layout/ContentPane"
-], function(
-    add_boolean,
-    add_button,
-    add_checkbox,
-    add_checkboxes,
-    add_functionResult,
-    add_grid,
-    add_header,
-    add_html,
-    add_image,
-    add_label,
-    add_radiobuttons,
-    add_select,
-    add_slider,
-    add_text,
-    add_textarea,
-    add_toggleButton,
-
-    browser,
-    declare,
-    domClass,
-    domConstruct,
-    translate,
-    ContentPane
-){
+import add_boolean = require("./standardWidgets/add_boolean");
+import add_button = require("./standardWidgets/add_button");
+import add_checkbox = require("./standardWidgets/add_checkbox");
+import add_checkboxes = require("./standardWidgets/add_checkboxes");
+import add_functionResult = require("./standardWidgets/add_functionResult");
+import add_grid = require("./standardWidgets/add_grid");
+import add_header = require("./standardWidgets/add_header");
+import add_html = require("./standardWidgets/add_html");
+import add_image = require("./standardWidgets/add_image");
+import add_label = require("./standardWidgets/add_label");
+import add_radiobuttons = require("./standardWidgets/add_radiobuttons");
+import add_select = require("./standardWidgets/add_select");
+import add_slider = require("./standardWidgets/add_slider");
+import add_text = require("./standardWidgets/add_text");
+import add_textarea = require("./standardWidgets/add_textarea");
+import add_toggleButton = require("./standardWidgets/add_toggleButton");
+import browser = require("./browser");
+import declare = require("dojo/_base/declare");
+import domClass = require('dojo/dom-class');
+import domConstruct = require("dojo/dom-construct");
+import translate = require("./translate");
+import ContentPane = require("dijit/layout/ContentPane");
 
 "use strict";
 
@@ -57,7 +30,7 @@ var debugFailIfMissingWidgets = false;
 var ResultTagToReplace = "{{result}}";
 
 // TODO: Need a better approach for calling JavaScript function than this
-document.__narraFirma_launchApplication = browser.launchApplication;
+window["narraFirma_launchApplication"] = browser.launchApplication;
 
 var buildingFunctions = {};
 
@@ -289,7 +262,7 @@ var PanelBuilder = declare(null, {
     // TODO: Fix all this so attaching actual JavaScript function not text to be interpreted
     htmlForInformationIcon: function(url) {
         if (!url) return "";
-        var template = '<img src="{iconFile}" height=16 width=16 title="{title}" onclick="document.__narraFirma_launchApplication(\'{url}\', \'help\')">';
+        var template = '<img src="{iconFile}" height=16 width=16 title="{title}" onclick="window.narraFirma_launchApplication(\'{url}\', \'help\')">';
         var replacements = {
             // TODO: Remove unused images from project
             // "/images/Info_blauw.png"
@@ -405,11 +378,10 @@ var PanelBuilder = declare(null, {
         return label;
     }
     
-    });
-
-    PanelBuilder.addPlugin = addPlugin;
-
-    addStandardPlugins();
-    
-    return PanelBuilder;
 });
+
+PanelBuilder.addPlugin = addPlugin;
+
+addStandardPlugins();
+
+export = PanelBuilder;

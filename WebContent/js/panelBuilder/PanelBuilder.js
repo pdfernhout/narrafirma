@@ -1,34 +1,11 @@
-define([
-    "./standardWidgets/add_boolean",
-    "./standardWidgets/add_button",
-    "./standardWidgets/add_checkbox",
-    "./standardWidgets/add_checkboxes",
-    "./standardWidgets/add_functionResult",
-    "./standardWidgets/add_grid",
-    "./standardWidgets/add_header",
-    "./standardWidgets/add_html",
-    "./standardWidgets/add_image",
-    "./standardWidgets/add_label",
-    "./standardWidgets/add_radiobuttons",
-    "./standardWidgets/add_select",
-    "./standardWidgets/add_slider",
-    "./standardWidgets/add_text",
-    "./standardWidgets/add_textarea",
-    "./standardWidgets/add_toggleButton",
-    "./browser",
-    "dojo/_base/declare",
-    'dojo/dom-class',
-    "dojo/dom-construct",
-    "./translate",
-    "dijit/layout/ContentPane"
-], function (add_boolean, add_button, add_checkbox, add_checkboxes, add_functionResult, add_grid, add_header, add_html, add_image, add_label, add_radiobuttons, add_select, add_slider, add_text, add_textarea, add_toggleButton, browser, declare, domClass, domConstruct, translate, ContentPane) {
+define(["require", "exports", "./standardWidgets/add_boolean", "./standardWidgets/add_button", "./standardWidgets/add_checkbox", "./standardWidgets/add_checkboxes", "./standardWidgets/add_functionResult", "./standardWidgets/add_grid", "./standardWidgets/add_header", "./standardWidgets/add_html", "./standardWidgets/add_image", "./standardWidgets/add_label", "./standardWidgets/add_radiobuttons", "./standardWidgets/add_select", "./standardWidgets/add_slider", "./standardWidgets/add_text", "./standardWidgets/add_textarea", "./standardWidgets/add_toggleButton", "./browser", "dojo/_base/declare", 'dojo/dom-class', "dojo/dom-construct", "./translate", "dijit/layout/ContentPane"], function (require, exports, add_boolean, add_button, add_checkbox, add_checkboxes, add_functionResult, add_grid, add_header, add_html, add_image, add_label, add_radiobuttons, add_select, add_slider, add_text, add_textarea, add_toggleButton, browser, declare, domClass, domConstruct, translate, ContentPane) {
     "use strict";
     // Developer local debug flag to cause an Exception if a widget type is missing instead of put in placeholder panel
     var debugFailIfMissingWidgets = false;
     // This is the tag to put into prompting text for functionResult items where you want the result to go
     var ResultTagToReplace = "{{result}}";
     // TODO: Need a better approach for calling JavaScript function than this
-    document.__narraFirma_launchApplication = browser.launchApplication;
+    window["narraFirma_launchApplication"] = browser.launchApplication;
     var buildingFunctions = {};
     function addPlugin(name, callback) {
         buildingFunctions[name] = callback;
@@ -234,7 +211,7 @@ define([
         htmlForInformationIcon: function (url) {
             if (!url)
                 return "";
-            var template = '<img src="{iconFile}" height=16 width=16 title="{title}" onclick="document.__narraFirma_launchApplication(\'{url}\', \'help\')">';
+            var template = '<img src="{iconFile}" height=16 width=16 title="{title}" onclick="window.narraFirma_launchApplication(\'{url}\', \'help\')">';
             var replacements = {
                 // TODO: Remove unused images from project
                 // "/images/Info_blauw.png"
