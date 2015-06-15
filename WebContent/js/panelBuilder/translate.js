@@ -17,6 +17,7 @@ define(["require", "exports"], function (require, exports) {
     }
     // if the tag field has a leading "#", it is parsed into an id and a default string by splitting at the first pipe
     function translate(tag, defaultText) {
+        if (defaultText === void 0) { defaultText = undefined; }
         if (debugTranslations)
             console.log("translating", tag);
         if (tag === undefined || tag === "#undefined::prompt")

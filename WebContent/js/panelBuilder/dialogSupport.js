@@ -1,20 +1,4 @@
-define([
-    "dojox/mvc/at",
-    "dijit/form/Button",
-    'dgrid/extensions/ColumnResizer',
-    "dijit/ConfirmDialog",
-    "dijit/layout/ContentPane",
-    'dojo/_base/declare',
-    "dijit/Dialog",
-    'dgrid/extensions/DijitRegistry',
-    'dgrid/Grid',
-    'dgrid/Keyboard',
-    "dijit/layout/LayoutContainer",
-    'dgrid/Selection',
-    "dojo/Stateful",
-    "dijit/form/Textarea",
-    "./translate"
-], function (at, Button, ColumnResizer, ConfirmDialog, ContentPane, declare, Dialog, DijitRegistry, Grid, Keyboard, LayoutContainer, Selection, Stateful, Textarea, translate) {
+define(["require", "exports", "dojox/mvc/at", "dijit/form/Button", 'dgrid/extensions/ColumnResizer', "dijit/ConfirmDialog", "dijit/layout/ContentPane", 'dojo/_base/declare', "dijit/Dialog", 'dgrid/extensions/DijitRegistry', 'dgrid/Grid', 'dgrid/Keyboard', "dijit/layout/LayoutContainer", 'dgrid/Selection', "dojo/Stateful", "dijit/form/Textarea", "./translate"], function (require, exports, at, Button, ColumnResizer, ConfirmDialog, ContentPane, declare, Dialog, DijitRegistry, Grid, Keyboard, LayoutContainer, Selection, Stateful, Textarea, translate) {
     "use strict";
     // TODO: Translate: Change to taking a translate ID
     // TODO: Buttons don't show up if window too narrow for dialog
@@ -27,6 +11,7 @@ define([
         });
         dialog.show();
     }
+    exports.confirm = confirm;
     function addButtonThatLaunchesDialog(contentPane, model, fieldSpecification, dialogConfiguration) {
         var callback = function () {
             openDialog(model, dialogConfiguration);
@@ -40,6 +25,7 @@ define([
         button.placeAt(contentPane);
         return button;
     }
+    exports.addButtonThatLaunchesDialog = addButtonThatLaunchesDialog;
     function openDialog(model, dialogConfiguration) {
         console.log("openDialog", model, dialogConfiguration.dialogTitle); // JSON.stringify(dialogConfiguration));
         var dialog;
@@ -62,6 +48,7 @@ define([
         // Calling this after dialog opened so dgrid resizes headers correctly for data
         dialogConfiguration.dialogConstructionFunction(dialogContentPane, model, hideDialogMethod, dialogConfiguration);
     }
+    exports.openDialog = openDialog;
     // Caller needs to call the hideDialogMethod returned as the second arg of dialogOKCallback to close the dialog
     function openTextEditorDialog(text, dialogTitle, dialogOKButtonLabel, dialogOKCallback) {
         if (!dialogTitle)
@@ -78,6 +65,7 @@ define([
         };
         openDialog(model, dialogConfiguration);
     }
+    exports.openTextEditorDialog = openTextEditorDialog;
     function build_textEditorDialogContent(dialogContentPane, model, hideDialogMethod, dialogConfiguration) {
         // Experiment; lots of tries!!! http://jsfiddle.net/u3qcbxy4/37/
         var layout = new LayoutContainer({});
@@ -120,6 +108,7 @@ define([
         };
         openDialog(model, dialogConfiguration);
     }
+    exports.openListChoiceDialog = openListChoiceDialog;
     function buildListChoiceDialogContent(dialogContentPane, model, hideDialogMethod, dialogConfiguration) {
         console.log("buildListChoiceDialogContent", dialogConfiguration.dialogTitle);
         var layout = new LayoutContainer({
@@ -158,11 +147,4 @@ define([
         }
         dialogConfiguration.grid = grid;
     }
-    return {
-        "addButtonThatLaunchesDialog": addButtonThatLaunchesDialog,
-        "confirm": confirm,
-        "openDialog": openDialog,
-        "openTextEditorDialog": openTextEditorDialog,
-        "openListChoiceDialog": openListChoiceDialog
-    };
 });
