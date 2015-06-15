@@ -1,13 +1,4 @@
-define([
-    "dojo/dom-construct",
-    "js/storyCardDisplay",
-    "js/surveyCollection",
-    "js/panelBuilder/standardWidgets/GridWithItemPanel",
-    "js/panelBuilder/widgetSupport",
-    "dijit/layout/ContentPane",
-    "dojox/layout/TableContainer",
-    "js/panelBuilder/valuePathResolver"
-], function (domConstruct, storyCardDisplay, surveyCollection, GridWithItemPanel, widgetSupport, ContentPane, TableContainer, valuePathResolver) {
+define(["require", "exports", "dojo/dom-construct", "js/storyCardDisplay", "js/surveyCollection", "js/panelBuilder/standardWidgets/GridWithItemPanel", "js/panelBuilder/widgetSupport", "dijit/layout/ContentPane", "dojox/layout/TableContainer", "js/panelBuilder/valuePathResolver"], function (require, exports, domConstruct, storyCardDisplay, surveyCollection, GridWithItemPanel, widgetSupport, ContentPane, TableContainer, valuePathResolver) {
     "use strict";
     // story browser support
     // TODO: Probably should make this a class

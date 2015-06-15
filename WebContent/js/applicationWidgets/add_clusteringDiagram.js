@@ -1,6 +1,4 @@
-define([
-    "./ClusteringDiagram"
-], function (ClusteringDiagram) {
+define(["require", "exports", "./ClusteringDiagram"], function (require, exports, ClusteringDiagram) {
     "use strict";
     function add_clusteringDiagram(panelBuilder, contentPane, model, fieldSpecification) {
         // clustering diagram using a list of 2D objects

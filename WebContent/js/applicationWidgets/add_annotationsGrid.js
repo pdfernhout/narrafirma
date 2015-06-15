@@ -1,6 +1,5 @@
-define([
-], function () {
-    "use strict";
+"use strict";
+define(["require", "exports"], function (require, exports) {
     function add_annotationsGrid(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         var label = panelBuilder.newContentPane({

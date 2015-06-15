@@ -1,19 +1,4 @@
-define([
-    "./charting",
-    "dijit/layout/ContentPane",
-    "js/panelBuilder/standardWidgets/GridWithItemPanel",
-    "js/statistics/kendallsTau",
-    "lib/simple_statistics",
-    "dojo/Stateful",
-    "js/storyCardDisplay",
-    "js/surveyCollection",
-    "../pointrel20150417/topic",
-    "js/panelBuilder/valuePathResolver"
-], function (charting, ContentPane, 
-    // digests,
-    GridWithItemPanel, kendallsTau, 
-    // SHA256,
-    simpleStatistics, Stateful, storyCardDisplay, surveyCollection, topic, valuePathResolver) {
+define(["require", "exports", "./charting", "dijit/layout/ContentPane", "js/panelBuilder/standardWidgets/GridWithItemPanel", "js/statistics/kendallsTau", "lib/simple_statistics", "dojo/Stateful", "js/storyCardDisplay", "js/surveyCollection", "js/panelBuilder/valuePathResolver"], function (require, exports, charting, ContentPane, GridWithItemPanel, kendallsTau, simpleStatistics, Stateful, storyCardDisplay, surveyCollection, valuePathResolver) {
     "use strict";
     // TODO: retrieve from UI
     var minStoriesForTest = 20;
@@ -219,7 +204,7 @@ define([
                 currentGraph = charting.d3BarChart(graphBrowserInstance, q1, updateStoriesPane);
                 break;
             case "table":
-                currentGraph = charting.contingencyTable(graphBrowserInstance, q1, q2, updateStoriesPane);
+                currentGraph = charting.d3ContingencyTable(graphBrowserInstance, q1, q2, updateStoriesPane);
                 break;
             case "histogram":
                 currentGraph = charting.d3HistogramChart(graphBrowserInstance, q1, null, null, updateStoriesPane);

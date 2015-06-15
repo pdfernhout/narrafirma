@@ -1,8 +1,4 @@
-define([
-    "d3",
-    "dojo/dom-construct",
-    "dijit/layout/ContentPane"
-], function (d3, domConstruct, ContentPane) {
+define(["require", "exports", "d3", "dojo/dom-construct", "dijit/layout/ContentPane"], function (require, exports, d3, domConstruct, ContentPane) {
     "use strict";
     // TODO: Need to be able to associate related stories with everything on screen so can browse them when clicked
     var unansweredKey = "{N/A}";
@@ -345,6 +341,7 @@ define([
         chart.brushend = brushend;
         return chart;
     }
+    exports.d3BarChart = d3BarChart;
     // Histogram reference for d3: http://bl.ocks.org/mbostock/3048450
     // choiceQuestion and choice may be undefined if this is just a simple histogram for all values
     function d3HistogramChart(graphBrowserInstance, scaleQuestion, choiceQuestion, choice, storiesSelectedCallback) {
@@ -488,6 +485,7 @@ define([
         // TODO: Put up title
         return chart;
     }
+    exports.d3HistogramChart = d3HistogramChart;
     // TODO: Need to update this to pass instance for self into histograms so they can clear the selections in other histograms
     // TODO: Also need to track the most recent histogram with an actual selection so can save and restore that from trends report
     function multipleHistograms(graphBrowserInstance, choiceQuestion, scaleQuestion, storiesSelectedCallback) {
@@ -525,6 +523,7 @@ define([
         chartPane.domNode.appendChild(clearFloat);
         return charts;
     }
+    exports.multipleHistograms = multipleHistograms;
     // Reference for initial scatter chart: http://bl.ocks.org/bunkat/2595950
     // Reference for brushing: http://bl.ocks.org/mbostock/4560481
     // Reference for brush and tooltip: http://wrobstory.github.io/2013/11/D3-brush-and-tooltip.html
@@ -582,6 +581,7 @@ define([
         chart.brushend = brushend;
         return chart;
     }
+    exports.d3ScatterPlot = d3ScatterPlot;
     function d3ContingencyTable(graphBrowserInstance, xAxisQuestion, yAxisQuestion, storiesSelectedCallback) {
         // Collect data
         var columnLabels = {};
@@ -730,6 +730,7 @@ define([
         chart.brushend = brushend;
         return chart;
     }
+    exports.d3ContingencyTable = d3ContingencyTable;
     // ---- Support updating stories in browser
     // The complementary decodeBraces function is in add_trendsReport.js
     function encodeBraces(optionText) {
@@ -851,19 +852,11 @@ define([
         chart.brushend();
         return true;
     }
+    exports.restoreSelection = restoreSelection;
     function newChartPane(graphBrowserInstance, style) {
         var chartPane = new ContentPane({ style: style });
         graphBrowserInstance.chartPanes.push(chartPane);
         graphBrowserInstance.graphResultsPane.addChild(chartPane);
         return chartPane;
     }
-    return {
-        d3BarChart: d3BarChart,
-        d3HistogramChart: d3HistogramChart,
-        multipleHistograms: multipleHistograms,
-        d3ScatterPlot: d3ScatterPlot,
-        contingencyTable: d3ContingencyTable,
-        // Selecting
-        restoreSelection: restoreSelection
-    };
 });

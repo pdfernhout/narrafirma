@@ -19,5 +19,5 @@ define(["require", "exports", "./add_accumulatedItemsGrid", "./add_annotationsGr
         PanelBuilder.addPlugin("templateList", add_templateList);
         PanelBuilder.addPlugin("trendsReport", add_trendsReport);
     }
-    exports.loadAllApplicationWidgets = loadAllApplicationWidgets;
+    return loadAllApplicationWidgets;
 });

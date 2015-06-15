@@ -17,7 +17,7 @@ import add_trendsReport = require("./add_trendsReport");
 
 "use strict";
     
-export function loadAllApplicationWidgets(PanelBuilder) {
+function loadAllApplicationWidgets(PanelBuilder) {
    
  // plugins
     PanelBuilder.addPlugin("accumulatedItemsGrid", add_accumulatedItemsGrid);
@@ -37,3 +37,5 @@ export function loadAllApplicationWidgets(PanelBuilder) {
     PanelBuilder.addPlugin("templateList", add_templateList);
     PanelBuilder.addPlugin("trendsReport", add_trendsReport);
 }
+
+export = loadAllApplicationWidgets;

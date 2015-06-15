@@ -1,9 +1,4 @@
-define([
-    "js/panelBuilder/dialogSupport",
-    "dojo/dom-class",
-    "js/templates/templates",
-    "js/panelBuilder/standardWidgets/GridWithItemPanel"
-], function (dialogSupport, domClass, templates, GridWithItemPanel) {
+define(["require", "exports", "js/panelBuilder/dialogSupport", "dojo/dom-class", "js/templates/templates", "js/panelBuilder/standardWidgets/GridWithItemPanel"], function (require, exports, dialogSupport, domClass, templates, GridWithItemPanel) {
     "use strict";
     function add_templateList(panelBuilder, contentPane, model, fieldSpecification) {
         var dialogConfiguration = {

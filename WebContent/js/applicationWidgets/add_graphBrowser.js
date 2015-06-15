@@ -1,10 +1,4 @@
-define([
-    "./charting",
-    "js/surveyCollection",
-    "js/panelBuilder/widgetSupport",
-    "dijit/layout/ContentPane",
-    "js/panelBuilder/valuePathResolver"
-], function (charting, surveyCollection, widgetSupport, ContentPane, valuePathResolver) {
+define(["require", "exports", "./charting", "js/surveyCollection", "js/panelBuilder/widgetSupport", "dijit/layout/ContentPane", "js/panelBuilder/valuePathResolver"], function (require, exports, charting, surveyCollection, widgetSupport, ContentPane, valuePathResolver) {
     "use strict";
     function questionForID(questions, id) {
         if (!id)
@@ -57,7 +51,7 @@ define([
         }
         else if (xType === "choice" && yType === "choice") {
             console.log("plot choice: Contingency table");
-            charting.contingencyTable(graphBrowserInstance, xAxisQuestion, yAxisQuestion);
+            charting.d3ContingencyTable(graphBrowserInstance, xAxisQuestion, yAxisQuestion);
         }
         else if (xType === "choice" && yType === "scale") {
             console.log("plot choice: Multiple histograms");

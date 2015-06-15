@@ -30,7 +30,7 @@
 // loadingBase should be something like:
 // var loadingBase = "dojo/text!js/applicationPanelSpecifications/";
 
-export function loadAllPanelSpecifications(panelSpecificationCollection, navigationSections, loadingBase, callback) {
+function loadAllPanelSpecifications(panelSpecificationCollection, navigationSections, loadingBase, callback) {
     // console.log("loadAllPanelSpecifications", loadingBase, navigationSections);
     var requireList = [];
     var panelMetadata = [];
@@ -79,3 +79,5 @@ export function loadAllPanelSpecifications(panelSpecificationCollection, navigat
         callback();
     });
 }
+
+export = loadAllPanelSpecifications;

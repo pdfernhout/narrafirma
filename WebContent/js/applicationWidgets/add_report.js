@@ -1,6 +1,4 @@
-define([
-    "js/reportGeneration"
-], function (reportGeneration) {
+define(["require", "exports", "js/reportGeneration"], function (require, exports, reportGeneration) {
     "use strict";
     function add_report(panelBuilder, contentPane, model, fieldSpecification) {
         var headerPageID = "page_" + fieldSpecification.displayConfiguration;

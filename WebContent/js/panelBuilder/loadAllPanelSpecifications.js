@@ -74,5 +74,5 @@ define(["require", "exports"], function (require, exports) {
             callback();
         });
     }
-    exports.loadAllPanelSpecifications = loadAllPanelSpecifications;
+    return loadAllPanelSpecifications;
 });

@@ -1,9 +1,4 @@
-define([
-    "js/panelBuilder/dialogSupport",
-    "js/templates/recommendations",
-    "js/panelBuilder/translate",
-    "dojox/layout/TableContainer"
-], function (dialogSupport, recommendations, translate, TableContainer) {
+define(["require", "exports", "js/panelBuilder/dialogSupport", "js/templates/recommendations", "js/panelBuilder/translate", "dojox/layout/TableContainer"], function (require, exports, dialogSupport, recommendations, translate, TableContainer) {
     "use strict";
     function add_recommendationTable(panelBuilder, contentPane, model, fieldSpecification) {
         var dialogConfiguration = {
