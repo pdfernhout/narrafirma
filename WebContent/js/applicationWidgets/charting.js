@@ -1,5 +1,5 @@
 define([
-    "lib/d3/d3",
+    "d3",
     "dojo/dom-construct",
     "dijit/layout/ContentPane"
 ], function (d3, domConstruct, ContentPane) {

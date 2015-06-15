@@ -1,6 +1,6 @@
 /*jslint browser: true */
 define([
-    "lib/d3/d3",
+    "d3",
     "dijit/form/TextBox",
     "dijit/form/Button",
     "dijit/Dialog",

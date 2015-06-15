@@ -1,4 +1,4 @@
-define(["require", "exports", "lib/d3/d3", "./pointrel20150417/generateRandomUuid", "./questionnaireGeneration", "./surveyCollection", "./surveyStorage"], function (require, exports, d3, generateRandomUuid, questionnaireGeneration, surveyCollection, surveyStorage) {
+define(["require", "exports", "d3", "./pointrel20150417/generateRandomUuid", "./questionnaireGeneration", "./surveyCollection", "./surveyStorage"], function (require, exports, d3, generateRandomUuid, questionnaireGeneration, surveyCollection, surveyStorage) {
     "use strict";
     // TODO: Fix big kludge of this module level variable across the app!
     var lastQuestionnaireUploaded = null;
@@ -107,14 +107,14 @@ define(["require", "exports", "lib/d3/d3", "./pointrel20150417/generateRandomUui
                 importedBy: importedByUserIdentifier
             };
             var story = {
-                id: generateRandomUuid()
+                __type: "org.workingwithstories.Story",
+                id: generateRandomUuid(),
+                _storyID: generateRandomUuid(),
+                _participantID: newSurveyResult.participantData._participantID,
+                __survey_elicitingQuestion: lastQuestionnaireUploaded.elicitingQuestions[0].id,
+                __survey_storyText: item["Story text"],
+                __survey_storyName: item["Story title"]
             };
-            story.__survey_elicitingQuestion = lastQuestionnaireUploaded.elicitingQuestions[0].id;
-            story.__type = "org.workingwithstories.Story";
-            story._storyID = generateRandomUuid();
-            story._participantID = newSurveyResult.participantData._participantID;
-            story.__survey_storyText = item["Story text"];
-            story.__survey_storyName = item["Story title"];
             var i;
             var question;
             for (i = 0; i < lastQuestionnaireUploaded.storyQuestions.length; i++) {

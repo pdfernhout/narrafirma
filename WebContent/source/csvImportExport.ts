@@ -1,4 +1,4 @@
-import d3 = require("lib/d3/d3");
+import d3 = require("d3");
 import generateRandomUuid = require("./pointrel20150417/generateRandomUuid");
 import questionnaireGeneration = require("./questionnaireGeneration");
 import surveyCollection = require("./surveyCollection");
@@ -111,15 +111,15 @@ function processCSVContentsForStories(contents) {
         };
         
         var story = {
-            id: generateRandomUuid()
+            __type: "org.workingwithstories.Story",
+            id: generateRandomUuid(),
+            _storyID: generateRandomUuid(),
+            _participantID: newSurveyResult.participantData._participantID,
+            __survey_elicitingQuestion: lastQuestionnaireUploaded.elicitingQuestions[0].id,
+            __survey_storyText: item["Story text"],
+            __survey_storyName: item["Story title"]
         };
-        story.__survey_elicitingQuestion = lastQuestionnaireUploaded.elicitingQuestions[0].id;
-        story.__type = "org.workingwithstories.Story";
-        story._storyID = generateRandomUuid();
-        story._participantID = newSurveyResult.participantData._participantID;
-         
-        story.__survey_storyText = item["Story text"];
-        story.__survey_storyName = item["Story title"];
+    
         var i;
         var question;
         for (i = 0; i < lastQuestionnaireUploaded.storyQuestions.length; i++) {
@@ -272,7 +272,7 @@ function questionForItem(item) {
 
 function chooseCSVFileToImport(callback) {
     // console.log("chooseFileToImport");
-    var cvsFileUploader = document.getElementById("csvFileLoader");
+    var cvsFileUploader = <HTMLInputElement>document.getElementById("csvFileLoader");
     // console.log("cvsFileUploader", cvsFileUploader);
     cvsFileUploader.onchange = function() {
         var file = cvsFileUploader.files[0];
@@ -280,8 +280,8 @@ function chooseCSVFileToImport(callback) {
             return;
         }
         var reader = new FileReader();
-        reader.onload = function(e) {
-            var contents = e.target.result;
+        reader.onload = function(e: Event) {
+            var contents = (<FileReader>e.target).result;
             callback(contents);
         };
         reader.readAsText(file);
