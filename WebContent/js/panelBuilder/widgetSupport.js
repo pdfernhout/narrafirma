@@ -1,13 +1,4 @@
-define([
-    "dijit/form/Button",
-    "dojo/dom-construct",
-    "dijit/form/FilteringSelect",
-    "dojo/store/Memory",
-    "dijit/form/MultiSelect",
-    "dojo/query",
-    "./translate",
-    "dojo/_base/window"
-], function (Button, domConstruct, FilteringSelect, Memory, MultiSelect, query, translate, win) {
+define(["require", "exports", "dijit/form/Button", "dojo/dom-construct", "dijit/form/FilteringSelect", "dojo/store/Memory", "dijit/form/MultiSelect", "dojo/query", "./translate", "dojo/_base/window"], function (require, exports, Button, domConstruct, FilteringSelect, Memory, MultiSelect, query, translate, win) {
     "use strict";
     function setOptionsInMultiSelect(widget, options) {
         // console.log("setOptionsInMultiSelect", widget, options);
@@ -21,6 +12,7 @@ define([
             widget.domNode.appendChild(c);
         }
     }
+    exports.setOptionsInMultiSelect = setOptionsInMultiSelect;
     function newMultiSelect(options, value) {
         var widget = new MultiSelect({
             "size": 6,
@@ -30,6 +22,7 @@ define([
         setOptionsInMultiSelect(widget, options);
         return widget;
     }
+    exports.newMultiSelect = newMultiSelect;
     function buildOptions(id, choices, optionsString) {
         var options = [];
         if (choices) {
@@ -51,6 +44,7 @@ define([
         }
         return options;
     }
+    exports.buildOptions = buildOptions;
     // TODO: Two GUI components without translation here temporarily
     function newButton(parentContentPane, label, callback) {
         var translatedLabel = translate(label);
@@ -65,6 +59,7 @@ define([
         }
         return button;
     }
+    exports.newButton = newButton;
     // TODO: Maybe overly general because it supports passing in array of strings? Otherwise could remove this except for adding extra field
     function makeOptionsFromSelectFromChoices(choices, addNoSelectionOption) {
         var options = [];
@@ -106,6 +101,7 @@ define([
         var dataStore = select.get("store");
         dataStore.setData(options);
     }
+    exports.updateSelectChoices = updateSelectChoices;
     function newSelect(parentContentPane, choices, addNoSelectionOption) {
         var options = makeOptionsFromSelectFromChoices(choices, addNoSelectionOption);
         var dataStore = new Memory({ "data": options });
@@ -118,12 +114,5 @@ define([
         select.placeAt(parentContentPane);
         return select;
     }
-    return {
-        buildOptions: buildOptions,
-        newButton: newButton,
-        newSelect: newSelect,
-        updateSelectChoices: updateSelectChoices,
-        setOptionsInMultiSelect: setOptionsInMultiSelect,
-        newMultiSelect: newMultiSelect
-    };
+    exports.newSelect = newSelect;
 });
