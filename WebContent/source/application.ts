@@ -1,7 +1,6 @@
 /// <reference path="typings/lodash.d.ts"/>
 // declare var _: _.LoDashStatic;
 
-import applicationMessages = require("dojo/i18n!js/nls/applicationMessages");
 import buttonActions = require("./buttonActions");
 import csvImportExport = require("./csvImportExport");
 import dialogSupport = require("./panelBuilder/dialogSupport");
@@ -10,7 +9,6 @@ import hash = require("dojo/hash");
 import loadAllApplicationWidgets = require("./applicationWidgets/loadAllApplicationWidgets");
 import loadAllPanelSpecifications = require("./panelBuilder/loadAllPanelSpecifications");
 import navigationPane = require("./navigationPane");
-import navigationJSONText = require("dojo/text!applicationPanelSpecifications/navigation.json");
 import pageDisplayer = require("./pageDisplayer");
 import PanelBuilder = require("./panelBuilder/PanelBuilder");
 import PanelSpecificationCollection = require("./panelBuilder/PanelSpecificationCollection");
@@ -27,6 +25,9 @@ import translate = require("./panelBuilder/translate");
 import topic = require("dojo/topic");
 
 "use strict";
+
+var applicationMessages: string;
+var navigationJSONText;
 
 // TODO: Add page validation
 
@@ -57,16 +58,7 @@ var statusTooltip;
 var lastServerError = "";
 
 var navigationSections = [];
-try {
-    navigationSections = JSON.parse(navigationJSONText);
-} catch (e) {
-    console.log("problem parsing navigationJSONText", navigationJSONText);
-    console.log("Error", e);
-    alert('There was a problem parsing the file "navigation.json"; the application can not run.');
-    document.getElementById("pleaseWaitDiv").style.display = "none";
-    document.body.appendChild(document.createTextNode("Startup failed! Please contact your NarraFirma hosting provider."));
-    throw new Error("Unable to start due to malformed navigation.json file");
-}
+
 var loadingBase = "dojo/text!applicationPanelSpecifications/";
 
 // For building panels based on field specifications
@@ -497,6 +489,23 @@ function setupGlobalFunctions() {
 // The main starting point of the application
 export function initialize() {
     console.log("=======", new Date().toISOString(), "application.initialize() called");
+    
+    // Load these earlier in index.html because TypeScript does not liek the Dojo plugins
+    applicationMessages = window["narraFirma_applicationMessages"];
+    navigationJSONText = window["narraFirma_navigationJSONText"];
+    // console.log("applicationMessages", applicationMessages);
+    // console.log("navigationJSONText", navigationJSONText);
+    
+    try {
+        navigationSections = JSON.parse(navigationJSONText);
+    } catch (e) {
+        console.log("problem parsing navigationJSONText", navigationJSONText);
+        console.log("Error", e);
+        alert('There was a problem parsing the file "navigation.json"; the application can not run.');
+        document.getElementById("pleaseWaitDiv").style.display = "none";
+        document.body.appendChild(document.createTextNode("Startup failed! Please contact your NarraFirma hosting provider."));
+        throw new Error("Unable to start due to malformed navigation.json file");
+    }
     
     var fragment = hash();
     console.log("fragment when page first loaded", fragment);

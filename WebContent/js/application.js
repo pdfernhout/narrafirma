@@ -1,7 +1,9 @@
 /// <reference path="typings/lodash.d.ts"/>
 // declare var _: _.LoDashStatic;
-define(["require", "exports", "dojo/i18n!js/nls/applicationMessages", "./buttonActions", "./csvImportExport", "./panelBuilder/dialogSupport", "dojo/dom-construct", "dojo/hash", "./applicationWidgets/loadAllApplicationWidgets", "./panelBuilder/loadAllPanelSpecifications", "./navigationPane", "dojo/text!applicationPanelSpecifications/navigation.json", "./pageDisplayer", "./panelBuilder/PanelBuilder", "./panelBuilder/PanelSpecificationCollection", "./pointrel20150417/PointrelClient", "./Project", "./questionnaireGeneration", "dojo/Stateful", "./surveyCollection", "./panelBuilder/toaster", "dijit/Tooltip", "./panelBuilder/translate", "dojo/topic"], function (require, exports, applicationMessages, buttonActions, csvImportExport, dialogSupport, domConstruct, hash, loadAllApplicationWidgets, loadAllPanelSpecifications, navigationPane, navigationJSONText, pageDisplayer, PanelBuilder, PanelSpecificationCollection, PointrelClient, Project, questionnaireGeneration, Stateful, surveyCollection, toaster, Tooltip, translate, topic) {
+define(["require", "exports", "./buttonActions", "./csvImportExport", "./panelBuilder/dialogSupport", "dojo/dom-construct", "dojo/hash", "./applicationWidgets/loadAllApplicationWidgets", "./panelBuilder/loadAllPanelSpecifications", "./navigationPane", "./pageDisplayer", "./panelBuilder/PanelBuilder", "./panelBuilder/PanelSpecificationCollection", "./pointrel20150417/PointrelClient", "./Project", "./questionnaireGeneration", "dojo/Stateful", "./surveyCollection", "./panelBuilder/toaster", "dijit/Tooltip", "./panelBuilder/translate", "dojo/topic"], function (require, exports, buttonActions, csvImportExport, dialogSupport, domConstruct, hash, loadAllApplicationWidgets, loadAllPanelSpecifications, navigationPane, pageDisplayer, PanelBuilder, PanelSpecificationCollection, PointrelClient, Project, questionnaireGeneration, Stateful, surveyCollection, toaster, Tooltip, translate, topic) {
     "use strict";
+    var applicationMessages;
+    var navigationJSONText;
     // TODO: Add page validation
     var narrafirmaProjectPrefix = "NarraFirmaProject-";
     // The home page -- should be a constant
@@ -24,17 +26,6 @@ define(["require", "exports", "dojo/i18n!js/nls/applicationMessages", "./buttonA
     var statusTooltip;
     var lastServerError = "";
     var navigationSections = [];
-    try {
-        navigationSections = JSON.parse(navigationJSONText);
-    }
-    catch (e) {
-        console.log("problem parsing navigationJSONText", navigationJSONText);
-        console.log("Error", e);
-        alert('There was a problem parsing the file "navigation.json"; the application can not run.');
-        document.getElementById("pleaseWaitDiv").style.display = "none";
-        document.body.appendChild(document.createTextNode("Startup failed! Please contact your NarraFirma hosting provider."));
-        throw new Error("Unable to start due to malformed navigation.json file");
-    }
     var loadingBase = "dojo/text!applicationPanelSpecifications/";
     // For building panels based on field specifications
     var panelBuilder = new PanelBuilder();
@@ -426,6 +417,20 @@ define(["require", "exports", "dojo/i18n!js/nls/applicationMessages", "./buttonA
     // The main starting point of the application
     function initialize() {
         console.log("=======", new Date().toISOString(), "application.initialize() called");
+        // Load these earlier in index.html because TypeScript does not liek the Dojo plugins
+        applicationMessages = window["narraFirma_applicationMessages"];
+        navigationJSONText = window["narraFirma_navigationJSONText"];
+        try {
+            navigationSections = JSON.parse(navigationJSONText);
+        }
+        catch (e) {
+            console.log("problem parsing navigationJSONText", navigationJSONText);
+            console.log("Error", e);
+            alert('There was a problem parsing the file "navigation.json"; the application can not run.');
+            document.getElementById("pleaseWaitDiv").style.display = "none";
+            document.body.appendChild(document.createTextNode("Startup failed! Please contact your NarraFirma hosting provider."));
+            throw new Error("Unable to start due to malformed navigation.json file");
+        }
         var fragment = hash();
         console.log("fragment when page first loaded", fragment);
         var initialHashParameters = getHashParameters(fragment);

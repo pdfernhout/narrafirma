@@ -60,7 +60,11 @@
     <div id="navigationDiv" style="display: none"></div>
     <div id="pageDiv" style="overflow: auto; display: none;"></div>
     <script>
-    require(["js/main"], function(main) {
+    require(["js/main", "dojo/i18n!js/nls/applicationMessages", "dojo/text!applicationPanelSpecifications/navigation.json"], function(main, applicationMessages, navigationJSONText) {
+        // Load these here because TypeScript does not like the plugin use
+        window["narraFirma_applicationMessages"] = applicationMessages;
+        window["narraFirma_navigationJSONText"] = navigationJSONText;
+        main.run();
     });
     </script>
 </body>

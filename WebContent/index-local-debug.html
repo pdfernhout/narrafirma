@@ -46,12 +46,10 @@
     }());
 </script>
 
-<script src="/dojo-debug/dojo/dojo.js"></script> d
+<script src="/dojo-debug/dojo/dojo.js"></script>
 
 <link rel="stylesheet" href="/css/survey.css">
 <link rel="stylesheet" href="/css/standard.css">
-
-<script src="js/main.js"></script>
 
 </head>
 
@@ -62,5 +60,13 @@
         
     <div id="navigationDiv" style="display: none"></div>
     <div id="pageDiv" style="overflow: auto; display: none;"></div>
+    <script>
+    require(["js/main", "dojo/i18n!js/nls/applicationMessages", "dojo/text!applicationPanelSpecifications/navigation.json"], function(main, applicationMessages, navigationJSONText) {
+        // Load these here because TypeScript does not like the plugin use
+        window["narraFirma_applicationMessages"] = applicationMessages;
+        window["narraFirma_navigationJSONText"] = navigationJSONText;
+        main.run();
+    });
+    </script>
 </body>
 </html>

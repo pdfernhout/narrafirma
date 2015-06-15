@@ -30,7 +30,7 @@ export function configurePageDisplayer(thePanelBuilder, theStartPage, theProject
     project = theProject;
     
     // TODO: Since pageDiv is hidden while it is being built, hide the navigationDiv to provide feedback
-    standby = new (<any>Standby.constructor)({target: "navigationDiv"});
+    standby = new Standby({target: "navigationDiv"});
     document.body.appendChild(standby.domNode);
     standby.startup();
 }

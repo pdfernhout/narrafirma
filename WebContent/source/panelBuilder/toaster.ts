@@ -10,7 +10,7 @@ var toasterWidget = null;
 export function createToasterWidget(container) {
     var toasterPane =  new ContentPane();
     toasterPane.placeAt(container);
-    toasterWidget = new (<any>Toaster.constructor)({id: "toasterWidget"}, toasterPane.domNode);
+    toasterWidget = new Toaster({id: "toasterWidget"}, toasterPane.domNode);
 }
 
 export function toast(message, messageType = "message", duration_ms = 2000) {
