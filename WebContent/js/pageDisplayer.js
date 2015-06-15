@@ -16,7 +16,9 @@ define(["require", "exports", "dijit/layout/ContentPane", "dojo/dom-class", "doj
         startPage = theStartPage;
         project = theProject;
         // TODO: Since pageDiv is hidden while it is being built, hide the navigationDiv to provide feedback
-        standby = new Standby({ target: "navigationDiv" });
+        // TODO: The next line is to avoid TypeScript error on calling constructor
+        var KludgeStandby = Standby;
+        standby = new KludgeStandby({ target: "navigationDiv" });
         document.body.appendChild(standby.domNode);
         standby.startup();
     }

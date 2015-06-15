@@ -6,7 +6,10 @@ define(["require", "exports", "dijit/layout/ContentPane", "dojox/widget/Toaster"
     function createToasterWidget(container) {
         var toasterPane = new ContentPane();
         toasterPane.placeAt(container);
-        toasterWidget = new Toaster({ id: "toasterWidget" }, toasterPane.domNode);
+        // console.log("************ Toaster.constructor", Toaster.constructor);
+        // TODO: The next line is to avoid TypeScript error on calling constructor
+        var KludgeToaster = Toaster;
+        toasterWidget = new KludgeToaster({ id: "toasterWidget" }, toasterPane.domNode);
     }
     exports.createToasterWidget = createToasterWidget;
     function toast(message, messageType, duration_ms) {

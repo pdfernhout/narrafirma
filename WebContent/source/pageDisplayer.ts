@@ -30,7 +30,9 @@ export function configurePageDisplayer(thePanelBuilder, theStartPage, theProject
     project = theProject;
     
     // TODO: Since pageDiv is hidden while it is being built, hide the navigationDiv to provide feedback
-    standby = new Standby({target: "navigationDiv"});
+    // TODO: The next line is to avoid TypeScript error on calling constructor
+    var KludgeStandby: any = Standby;
+    standby = new KludgeStandby({target: "navigationDiv"});
     document.body.appendChild(standby.domNode);
     standby.startup();
 }
