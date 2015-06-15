@@ -1,21 +1,4 @@
-define([
-    "./add_accumulatedItemsGrid",
-    "./add_annotationsGrid",
-    "./add_clusteringDiagram",
-    "./add_dashboardSectionStatusDisplay",
-    "./add_excerptsList",
-    "./add_graphBrowser",
-    "./add_questionAnswer",
-    "./add_questionsTable",
-    "./add_quizScoreResult",
-    "./add_recommendationTable",
-    "./add_report",
-    "./add_storiesList",
-    "./add_storyBrowser",
-    "./add_storyThemer",
-    "./add_templateList",
-    "./add_trendsReport"
-], function (add_accumulatedItemsGrid, add_annotationsGrid, add_clusteringDiagram, add_dashboardSectionStatusDisplay, add_excerptsList, add_graphBrowser, add_questionAnswer, add_questionsTable, add_quizScoreResult, add_recommendationTable, add_report, add_storiesList, add_storyBrowser, add_storyThemer, add_templateList, add_trendsReport) {
+define(["require", "exports", "./add_accumulatedItemsGrid", "./add_annotationsGrid", "./add_clusteringDiagram", "./add_dashboardSectionStatusDisplay", "./add_excerptsList", "./add_graphBrowser", "./add_questionAnswer", "./add_questionsTable", "./add_quizScoreResult", "./add_recommendationTable", "./add_report", "./add_storiesList", "./add_storyBrowser", "./add_storyThemer", "./add_templateList", "./add_trendsReport"], function (require, exports, add_accumulatedItemsGrid, add_annotationsGrid, add_clusteringDiagram, add_dashboardSectionStatusDisplay, add_excerptsList, add_graphBrowser, add_questionAnswer, add_questionsTable, add_quizScoreResult, add_recommendationTable, add_report, add_storiesList, add_storyBrowser, add_storyThemer, add_templateList, add_trendsReport) {
     "use strict";
     function loadAllApplicationWidgets(PanelBuilder) {
         // plugins
@@ -36,5 +19,5 @@ define([
         PanelBuilder.addPlugin("templateList", add_templateList);
         PanelBuilder.addPlugin("trendsReport", add_trendsReport);
     }
-    return loadAllApplicationWidgets;
+    exports.loadAllApplicationWidgets = loadAllApplicationWidgets;
 });
