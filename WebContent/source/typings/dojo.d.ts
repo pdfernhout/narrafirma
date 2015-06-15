@@ -1276,7 +1276,7 @@ declare module dojo {
      * @param hash       Optionalthe hash is set - #string.     
      * @param replace       OptionalIf true, updates the hash value in the current historystate instead of creating a new history state.     
      */
-    interface hash { (hash?: String, replace?: boolean): void }
+    interface hash { (hash?: String, replace?: boolean): any }
     /**
      * Permalink: http://dojotoolkit.org/api/1.9/dojo/has.html
      *
@@ -3205,7 +3205,7 @@ declare module dojo {
          * @param superclass May be null, a Function, or an Array of Functions. This argumentspecifies a list of bases (the left-most one is the most deepestbase).     
          * @param props An object whose properties are copied to the created prototype.Add an instance-initialization function by making it a propertynamed "constructor".     
          */
-        interface declare { (className?: String, superclass?: any, props?: Object): any}
+        interface declare { (className?: any, superclass?: any, props?: Object): any}
         /**
          * Permalink: http://dojotoolkit.org/api/1.9/dojo/_base/declare.html
          *
@@ -16894,7 +16894,7 @@ declare module dojo {
          * @param options This provides any configuration information that will be mixed into the store.This should generally include the data property to provide the starting set of data.     
          */
         class Memory extends dojo.store.api.Store {
-            constructor(options: dojo.store.Memory);
+            constructor(options: any);
             /**
              * The array of all the objects in the memory store
              * 
@@ -19104,6 +19104,7 @@ declare module dojo {
          * @param pos               OptionalOptional positional reference. Defaults to "last" by way of dojo.place,though can be set to "first","after","before","last", "replace" or "only"to further control the placement of the new node relative to the refNode.'refNode' is required if a 'pos' is specified.             
          */
         create(tag: String, attrs?: Object, refNode?: String, pos?: String): any;
+        create(tag: String, attrs?: Object, refNode?: HTMLElement, pos?: String): any;
         /**
          * Removes a node from its parent, clobbering it and all of its
          * children.
