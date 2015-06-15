@@ -154,10 +154,18 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.buildQuestionnaire = buildQuestionnaire;
     function buildQuestionnaireFromTemplate(project, questionnaireTemplate) {
-        var usedIDs = {};
-        usedIDs.__createdIDCount = 0;
+        var usedIDs = {
+            __createdIDCount: 0
+        };
         var questionnaire = {
-            __type: "org.workingwithstories.Questionnaire"
+            __type: "org.workingwithstories.Questionnaire",
+            title: "",
+            image: "",
+            startText: "",
+            endText: "",
+            elicitingQuestions: [],
+            storyQuestions: [],
+            participantQuestions: []
         };
         questionnaire.title = questionnaireTemplate["questionForm_title"];
         questionnaire.image = questionnaireTemplate["questionForm_image"];
@@ -167,7 +175,6 @@ define(["require", "exports"], function (require, exports) {
         var allElicitingQuestions = buildIdToItemMap(project.projectModel.get("project_elicitingQuestionsList"), "elicitingQuestion_shortName");
         var elicitingQuestions = buildItemListFromIdList(allElicitingQuestions, questionnaireTemplate["questionForm_elicitingQuestions"], "elicitingQuestion");
         console.log("elicitingQuestions", elicitingQuestions);
-        questionnaire.elicitingQuestions = [];
         for (var elicitingQuestionIndex in elicitingQuestions) {
             var storySolicitationQuestionText = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_text;
             // TODO: var storySolicitationQuestionShortName = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_shortName;

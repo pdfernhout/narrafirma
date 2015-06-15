@@ -166,11 +166,19 @@ export function buildQuestionnaire(project, shortName) {
 }
 
 export function buildQuestionnaireFromTemplate(project, questionnaireTemplate) {
-    var usedIDs = {};
-    usedIDs.__createdIDCount = 0;
+    var usedIDs = {
+        __createdIDCount: 0
+    };
     
     var questionnaire = {
-        __type: "org.workingwithstories.Questionnaire"
+        __type: "org.workingwithstories.Questionnaire",
+        title: "",
+        image: "",
+        startText: "",
+        endText: "",
+        elicitingQuestions: [],
+        storyQuestions: [],
+        participantQuestions: []
     };
  
     questionnaire.title = questionnaireTemplate["questionForm_title"];
@@ -183,7 +191,6 @@ export function buildQuestionnaireFromTemplate(project, questionnaireTemplate) {
     var elicitingQuestions = buildItemListFromIdList(allElicitingQuestions, questionnaireTemplate["questionForm_elicitingQuestions"], "elicitingQuestion");       
     console.log("elicitingQuestions", elicitingQuestions);
     
-    questionnaire.elicitingQuestions = [];
     for (var elicitingQuestionIndex in elicitingQuestions) {
         var storySolicitationQuestionText = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_text;
         // TODO: var storySolicitationQuestionShortName = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_shortName;
