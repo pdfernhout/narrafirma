@@ -6,7 +6,7 @@ define(["require", "exports", "dijit/layout/ContentPane", "dojox/widget/Toaster"
     function createToasterWidget(container) {
         var toasterPane = new ContentPane();
         toasterPane.placeAt(container);
-        toasterWidget = new Toaster({ id: "toasterWidget" }, toasterPane.domNode);
+        toasterWidget = new Toaster.constructor({ id: "toasterWidget" }, toasterPane.domNode);
     }
     exports.createToasterWidget = createToasterWidget;
     function toast(message, messageType, duration_ms) {
