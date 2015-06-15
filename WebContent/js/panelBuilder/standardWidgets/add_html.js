@@ -1,6 +1,4 @@
-define([
-    "dojo/dom-construct"
-], function (domConstruct) {
+define(["require", "exports", "dojo/dom-construct"], function (require, exports, domConstruct) {
     "use strict";
     function add_html(panelBuilder, contentPane, model, fieldSpecification) {
         var html = fieldSpecification.displayPrompt;

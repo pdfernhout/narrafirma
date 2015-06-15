@@ -1,7 +1,4 @@
-define([
-    "./RadioButtonsWidget",
-    "../valuePathResolver"
-], function (RadioButtonsWidget, valuePathResolver) {
+define(["require", "exports", "./RadioButtonsWidget", "../valuePathResolver"], function (require, exports, RadioButtonsWidget, valuePathResolver) {
     "use strict";
     function add_boolean(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);

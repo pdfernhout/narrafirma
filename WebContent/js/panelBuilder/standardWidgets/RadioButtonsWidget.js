@@ -1,11 +1,4 @@
-define([
-    "dojo/_base/declare",
-    "dojo/dom-construct",
-    "dojo/on",
-    "../widgetSupport",
-    "dijit/form/RadioButton",
-    "dijit/_WidgetBase"
-], function (declare, domConstruct, on, widgetSupport, RadioButton, _WidgetBase) {
+define(["require", "exports", "dojo/_base/declare", "dojo/dom-construct", "dojo/on", "../widgetSupport", "dijit/form/RadioButton", "dijit/_WidgetBase"], function (require, exports, declare, domConstruct, on, widgetSupport, RadioButton, _WidgetBase) {
     "use strict";
     var RadioButtonsWidget = declare([_WidgetBase], {
         value: null,

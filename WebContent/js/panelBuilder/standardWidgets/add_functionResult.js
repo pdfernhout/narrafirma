@@ -1,6 +1,4 @@
-define([
-    "../../pointrel20150417/topic"
-], function (topic) {
+define(["require", "exports", "../../pointrel20150417/topic"], function (require, exports, topic) {
     "use strict";
     function calculate_function(panelBuilder, contentPane, model, fieldSpecification) {
         console.log("calculate_function called", fieldSpecification);

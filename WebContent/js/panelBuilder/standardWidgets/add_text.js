@@ -1,7 +1,4 @@
-define([
-    "dijit/form/TextBox",
-    "../valuePathResolver"
-], function (TextBox, valuePathResolver) {
+define(["require", "exports", "dijit/form/TextBox", "../valuePathResolver"], function (require, exports, TextBox, valuePathResolver) {
     "use strict";
     function add_text(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);

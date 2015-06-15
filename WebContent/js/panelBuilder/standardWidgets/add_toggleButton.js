@@ -1,7 +1,4 @@
-define([
-    "dijit/form/ToggleButton",
-    "../valuePathResolver"
-], function (ToggleButton, valuePathResolver) {
+define(["require", "exports", "dijit/form/ToggleButton", "../valuePathResolver"], function (require, exports, ToggleButton, valuePathResolver) {
     "use strict";
     function add_toggleButton(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);

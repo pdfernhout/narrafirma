@@ -1,10 +1,4 @@
-define([
-    "dojo/dom-construct",
-    "dijit/form/HorizontalRule",
-    "dijit/form/HorizontalRuleLabels",
-    "dijit/form/HorizontalSlider",
-    "../valuePathResolver"
-], function (domConstruct, HorizontalRule, HorizontalRuleLabels, HorizontalSlider, valuePathResolver) {
+define(["require", "exports", "dojo/dom-construct", "dijit/form/HorizontalRule", "dijit/form/HorizontalRuleLabels", "dijit/form/HorizontalSlider", "../valuePathResolver"], function (require, exports, domConstruct, HorizontalRule, HorizontalRuleLabels, HorizontalSlider, valuePathResolver) {
     "use strict";
     function add_slider(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);

@@ -1,9 +1,4 @@
-define([
-    "dijit/form/FilteringSelect",
-    "dojo/store/Memory",
-    "../translate",
-    "../valuePathResolver"
-], function (FilteringSelect, Memory, translate, valuePathResolver) {
+define(["require", "exports", "dijit/form/FilteringSelect", "dojo/store/Memory", "../translate", "../valuePathResolver"], function (require, exports, FilteringSelect, Memory, translate, valuePathResolver) {
     "use strict";
     function add_select(panelBuilder, contentPane, model, fieldSpecification, addNoSelectionOption) {
         // console.log("add_select", fieldSpecification.id, model, fieldSpecification);

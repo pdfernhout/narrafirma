@@ -1,6 +1,4 @@
-define([
-    "./GridWithItemPanel"
-], function (GridWithItemPanel) {
+define(["require", "exports", "./GridWithItemPanel"], function (require, exports, GridWithItemPanel) {
     "use strict";
     /* Defaults for displayConfiguration:
      {
@@ -13,7 +11,12 @@ define([
         // Grid with list of objects
         // console.log("add_grid");
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        var configuration = {};
+        var configuration = {
+            itemPanelID: undefined,
+            itemPanelSpecification: undefined,
+            idProperty: undefined,
+            gridConfiguration: undefined
+        };
         var itemPanelID = fieldSpecification.displayConfiguration;
         if (!_.isString(itemPanelID)) {
             configuration = fieldSpecification.displayConfiguration;
@@ -45,7 +48,9 @@ define([
             idProperty = "_id";
         // Store will modify underlying array
         var dataStore = GridWithItemPanel.newMemoryTrackableStore(data, idProperty);
-        var instance = {};
+        var instance = {
+            grid: undefined
+        };
         var watcher = model.watch(fieldSpecification.id, function (name, oldValue, newValue) {
             // console.log("updating grid for model field change", model, fieldSpecification);
             if (oldValue === newValue) {

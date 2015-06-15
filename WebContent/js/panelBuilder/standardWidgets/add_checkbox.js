@@ -1,7 +1,4 @@
-define([
-    "dijit/form/CheckBox",
-    "../valuePathResolver"
-], function (CheckBox, valuePathResolver) {
+define(["require", "exports", "dijit/form/CheckBox", "../valuePathResolver"], function (require, exports, CheckBox, valuePathResolver) {
     "use strict";
     function add_checkbox(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);

@@ -1,6 +1,4 @@
-define([
-    "./CheckboxesWidget"
-], function (CheckboxesWidget) {
+define(["require", "exports", "./CheckboxesWidget"], function (require, exports, CheckboxesWidget) {
     "use strict";
     function add_checkboxes(panelBuilder, contentPane, model, fieldSpecification) {
         // console.log("add_checkboxes", contentPane, model, fieldSpecification);

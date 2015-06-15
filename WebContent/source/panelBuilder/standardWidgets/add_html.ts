@@ -1,17 +1,13 @@
-define([
-    "dojo/dom-construct"
-], function(
-    domConstruct
-){
-    "use strict";
-    
-    function add_html(panelBuilder, contentPane, model, fieldSpecification) {
-        
-        var html = fieldSpecification.displayPrompt;
-        var node = domConstruct.place(html, contentPane.domNode);
-        
-        return node;
-    }
+import domConstruct = require("dojo/dom-construct");
 
-    return add_html;
-});
+"use strict";
+
+function add_html(panelBuilder, contentPane, model, fieldSpecification) {
+    
+    var html = fieldSpecification.displayPrompt;
+    var node = domConstruct.place(html, contentPane.domNode);
+    
+    return node;
+}
+
+export = add_html;

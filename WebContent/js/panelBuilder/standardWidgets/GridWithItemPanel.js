@@ -1,21 +1,4 @@
-define([
-    "dojo/_base/declare",
-    "../dialogSupport",
-    'dojo/dom-class',
-    "dojox/mvc/getPlainValue",
-    "../translate",
-    "../../pointrel20150417/generateRandomUuid",
-    "../widgetSupport",
-    "dgrid/extensions/ColumnResizer",
-    "dgrid/extensions/DijitRegistry",
-    "dijit/form/Form",
-    "dgrid/Keyboard",
-    'dstore/Memory',
-    "dgrid/Selection",
-    "dojo/Stateful",
-    "dstore/Trackable",
-    "dgrid/OnDemandGrid"
-], function (declare, dialogSupport, domClass, getPlainValue, translate, generateRandomUuid, widgetSupport, ColumnResizer, DijitRegistry, Form, Keyboard, Memory, Selection, Stateful, Trackable, OnDemandGrid) {
+define(["require", "exports", "dojo/_base/declare", "../dialogSupport", 'dojo/dom-class', "dojox/mvc/getPlainValue", "../translate", "../../pointrel20150417/generateRandomUuid", "../widgetSupport", "dgrid/extensions/ColumnResizer", "dgrid/extensions/DijitRegistry", "dijit/form/Form", "dgrid/Keyboard", 'dstore/Memory', "dgrid/Selection", "dojo/Stateful", "dstore/Trackable", "dgrid/OnDemandGrid"], function (require, exports, declare, dialogSupport, domClass, getPlainValue, translate, generateRandomUuid, widgetSupport, ColumnResizer, DijitRegistry, Form, Keyboard, Memory, Selection, Stateful, Trackable, OnDemandGrid) {
     "use strict";
     var debugSelecting = false;
     // This defines a gui component which has a grid, some buttons, and a detail panel do display the currently selected item or enter a new item

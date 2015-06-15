@@ -1,11 +1,4 @@
-define([
-    "dojo/_base/declare",
-    "dojo/dom-construct",
-    "dojo/on",
-    "../widgetSupport",
-    "dijit/form/CheckBox",
-    "dijit/_WidgetBase"
-], function (declare, domConstruct, on, widgetSupport, CheckBox, _WidgetBase) {
+define(["require", "exports", "dojo/_base/declare", "dojo/dom-construct", "dojo/on", "../widgetSupport", "dijit/form/CheckBox", "dijit/_WidgetBase"], function (require, exports, declare, domConstruct, on, widgetSupport, CheckBox, _WidgetBase) {
     "use strict";
     // TODO: Very similar to RadioButtonsWidget, except it maintains a dictionary of whether checkboxes are checked rather than use an "at" accessor
     // TODO: Set an optional minimum and maximum number that may be checked and validate for that

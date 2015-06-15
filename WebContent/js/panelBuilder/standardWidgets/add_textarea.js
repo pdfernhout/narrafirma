@@ -1,7 +1,4 @@
-define([
-    "dijit/form/SimpleTextarea",
-    "../valuePathResolver"
-], function (SimpleTextarea, valuePathResolver) {
+define(["require", "exports", "dijit/form/SimpleTextarea", "../valuePathResolver"], function (require, exports, SimpleTextarea, valuePathResolver) {
     "use strict";
     function add_textarea(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);

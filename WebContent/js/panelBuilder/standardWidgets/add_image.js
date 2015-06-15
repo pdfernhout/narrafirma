@@ -1,6 +1,4 @@
-define([
-    "../translate"
-], function (translate) {
+define(["require", "exports", "../translate"], function (require, exports, translate) {
     "use strict";
     function add_image(panelBuilder, contentPane, model, fieldSpecification) {
         var imageSource = fieldSpecification.displayConfiguration;

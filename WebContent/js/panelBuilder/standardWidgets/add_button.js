@@ -1,9 +1,4 @@
-define([
-    "dijit/form/Button",
-    "dojo/dom-class",
-    "dojo/dom-construct",
-    "../translate"
-], function (Button, domClass, domConstruct, translate) {
+define(["require", "exports", "dijit/form/Button", "dojo/dom-class", "dojo/dom-construct", "../translate"], function (require, exports, Button, domClass, domConstruct, translate) {
     "use strict";
     function add_button(panelBuilder, contentPane, model, fieldSpecification, callback) {
         if (!callback)

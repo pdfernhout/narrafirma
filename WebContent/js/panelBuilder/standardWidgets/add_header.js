@@ -1,6 +1,4 @@
-define([
-    "../translate"
-], function (translate) {
+define(["require", "exports", "../translate"], function (require, exports, translate) {
     "use strict";
     function add_header(panelBuilder, contentPane, model, fieldSpecification) {
         var content = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
