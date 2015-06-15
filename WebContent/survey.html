@@ -11,31 +11,6 @@
 
 <title>NarraFirma Survey</title>
 
-<script type='text/javascript'>
-    var dojoConfig;
-    (function() {
-        // Determine the containing location of this page by removing the actual page name (e.g. "test.html") at the end
-        var baseDirectoryFromURL = location.pathname.replace(/\/[^/]+$/, '');
-        dojoConfig = {
-            async: true,
-            parseOnLoad: false,
-            // cacheBust: "1.10.4",
-            // Load dgrid and its dependencies from a local copy.
-            // More complexity is required because these are not in the same directory as dojo modules when loaded locally or dojo base is loaded from CDN
-            packages: [
-                { name: "js", location: baseDirectoryFromURL + "/js"},
-                { name: "mithril", location: baseDirectoryFromURL + "/lib/mithril", main: "mithril"},
-                { name: "lib", location: baseDirectoryFromURL + "/lib"},
-                { name: "dojo", location: baseDirectoryFromURL + "/lib/dojo"},
-                { name: "dojox", location: baseDirectoryFromURL + "/lib/dojox"},
-            ]
-        };
-    }());
-</script>
-
-<!--  <script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js"></script>  -->
-<script type='text/javascript' src="lib/dojo/dojo.js"></script>
-
 <link rel="stylesheet" href="/css/survey.css">
 
 </head>
@@ -60,10 +35,19 @@
     </script>
     
     <div id="surveyDiv" style="overflow: auto"></div>
+ 
     <script>
-    require(["js/survey-main-mithril.js"], function(main) {
-    });
+    var require = {
+        baseUrl: 'js',
+        paths: {
+            js: ".",
+            // { name: "mithril", location: baseDirectoryFromURL + "/lib/mithril", main: "mithril"},
+            mithril: "/lib/mithril/mithril",
+            lib: "../lib"
+        }
+    };
     </script>
+    <script data-main="js/survey-main-mithril" src="lib/require.js"></script>
 </body>
 
 </html>
