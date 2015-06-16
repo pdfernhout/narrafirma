@@ -15,6 +15,7 @@ H in the lists of questions while designing a story form (eliciting, story, part
 H Need a way to delete a story from a story collection
 H When import story collection, need to display name of form in select
 H In the story browser, if you look at a story (view), then change the selection of stories, the old story still shows.
+M Slider should have a "does not apply" option
 L After you enter a story, it shows an alert that the story has been saved, but it doesn't get rid of the window. the popup window should go away
 L When you enter a story, it replaces the title of the main web page (Enter stories) with the name of the story form (questionnaire).
 L would like to make "focus rectangle" or "rubber band" over graphs when selecting - see http://bl.ocks.org/mbostock/1667367
@@ -786,3 +787,8 @@ DONE Add preview button for survey on question form creation page that shows sur
 DONE Improve survey please wait display so it does not flicker if page loads quickly
 DONE H CFK add < > buttons under story lists (was also: H Need previous and next button when reviewing incoming stories)
 DONE H when you are viewing a grid item with a template button, you can see the templates list and copy a template; button should be disabled or invisible
+DONE Fix bug where scatterplot tooltip not showing correct story (CFK)
+DONE Calculate chi-square statistic in trends report
+DONE Calculate Kendall's Tau statistic in trends report (developed using TypeScript from Numerical Recipies / older SciPy version after partial port of code from Apache Commons)
+DONE Convert entire project to TypeScript to help manage complexity
+DONE Fix incorect brush behavior in bar chart and histogram
