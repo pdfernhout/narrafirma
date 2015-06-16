@@ -191,20 +191,18 @@ function makeChartFramework(chartPane, chartType, isSmallFormat, margin) {
         .attr('height', height + margin.top + margin.bottom)
         .attr('class', 'chart ' + chartType);
 
-    // CFK removed height setting because without it the page resizes correctly for each image
-    // was: .attr('height', fullHeight)
     var chartBackground = chart.append("rect")
         .attr('width', fullWidth)
+        .attr('height', fullHeight)
         .attr('class', 'chartBackground');
     
     var chartBody = chart.append('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
         .attr('class', 'chartBody');
 
-    // here also
-    // was: .attr('height', fullHeight)
     var chartBodyBackground = chartBody.append("rect")
         .attr('width', width)
+        .attr('height', fullHeight)
         .attr('class', 'chartBodyBackground');
     
     return {
