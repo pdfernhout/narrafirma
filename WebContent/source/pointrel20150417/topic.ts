@@ -1,5 +1,5 @@
 // Inspired by Dojo and also by: http://davidwalsh.name/pubsub-javascript
-
+import kludgeForUseStrict = require("../kludgeForUseStrict");
 "use strict";
 
 var subscriptions: { [id: string]: { [id2: string]: Function } } = {};

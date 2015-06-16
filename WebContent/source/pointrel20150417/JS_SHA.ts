@@ -11,7 +11,7 @@
  *
  * Several functions taken from Paul Johnston
  */
-
+import kludgeForUseStrict = require("../kludgeForUseStrict");
 "use strict";
 
  /**

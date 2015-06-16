@@ -1,6 +1,5 @@
-// Inspired by Dojo and also by: http://davidwalsh.name/pubsub-javascript
-"use strict";
 define(["require", "exports"], function (require, exports) {
+    "use strict";
     var subscriptions = {};
     var subscriptionsCount = 0;
     function subscribe(topic, callback) {

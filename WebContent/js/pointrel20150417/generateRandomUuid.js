@@ -1,6 +1,5 @@
-// From Dojo 1.10.4
-"use strict";
 define(["require", "exports"], function (require, exports) {
+    "use strict";
     function generateRandomUuid() {
         // summary:
         //		This function generates random UUIDs, meaning "version 4" UUIDs.

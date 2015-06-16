@@ -1,17 +1,6 @@
 // Converted to TypeScript by Paul D. Fernhout, using version from GitHub as of 2015-06-14
-/**
- * @preserve A JavaScript implementation of the SHA family of hashes, as
- * defined in FIPS PUB 180-2 as well as the corresponding HMAC implementation
- * as defined in FIPS PUB 198a
- *
- * Copyright Brian Turek 2008-2015
- * Distributed under the BSD License
- * See http://caligatio.github.com/jsSHA/ for more information
- *
- * Several functions taken from Paul Johnston
- */
-"use strict";
 define(["require", "exports"], function (require, exports) {
+    "use strict";
     /**
      * SUPPORTED_ALGS is the stub for a compile flag that will cause pruning of
      * functions that are not needed when a limited number of SHA families are

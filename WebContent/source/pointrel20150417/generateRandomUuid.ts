@@ -1,4 +1,5 @@
 // From Dojo 1.10.4
+import kludgeForUseStrict = require("../kludgeForUseStrict");
 
 "use strict";
 
