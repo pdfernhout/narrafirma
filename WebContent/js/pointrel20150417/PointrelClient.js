@@ -570,7 +570,7 @@ define(["require", "exports", "./jsSHA", "./stringToUtf8", "./generateRandomUuid
         topic.publish("messageReceived", message);
         if (message.messageType) {
             // console.log("publishing message", message);
-            topic.publish(JSON.stringify(message.messageType), message);
+            topic.publish(message.messageType, message);
         }
     };
     // Start boiler plate for timer management

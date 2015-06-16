@@ -55,7 +55,9 @@ function makeTopicKey(object) {
     // TODO: encodeURIComponent does more than encode commas,
     // TODO: Can't just pass in array as Dojo's on.parse seems to parse recursively, splitting on commas
     // TODO: pdfernhout post on that to the Dojo interest list is here: http://mail.dojotoolkit.org/pipermail/dojo-interest/2015-May/084318.html
-    return encodeURIComponent(JSON.stringify(object));
+    // return encodeURIComponent(JSON.stringify(object));
+    // TODO: Can remove most of the above because using own topic code which automatically converts object -- except not yet canonicalizing
+    return object;
 }
 
 TripleStore.prototype.processMessage = function (message) {

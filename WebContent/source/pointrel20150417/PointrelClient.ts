@@ -636,7 +636,7 @@ PointrelClient.prototype.messageReceived = function(message) {
     topic.publish("messageReceived", message);
     if (message.messageType) {
         // console.log("publishing message", message);
-        topic.publish(JSON.stringify(message.messageType), message);
+        topic.publish(message.messageType, message);
     }
 };
 
