@@ -40,6 +40,7 @@ function importButtonClicked(projectDefinitionText, hideDialogMethod) {
     // TODO: Fix this
     throw new Error("No longer working due to ongoing refactoring for current page model");
 
+    /*
     var updatedProjectAnswers;
 
     try {
@@ -60,6 +61,7 @@ function importButtonClicked(projectDefinitionText, hideDialogMethod) {
         console.log("Updated OK");
         hideDialogMethod();
     });
+    */
 }
 
 function importExportClicked() {

@@ -61,12 +61,10 @@ define(["require", "exports"], function (require, exports) {
         res = t * Math.exp(-x * x + 0.5 * (cof[0] + ty * d) - dd);
         return isneg ? res - 1 : 1 - res;
     }
-    ;
     // Returns the complmentary error function erfc(x)
     function erfc(x) {
         return 1 - erf(x);
     }
-    ;
     return kendallsTau;
 });
 //# sourceMappingURL=kendallsTau.js.map

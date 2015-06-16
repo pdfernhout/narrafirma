@@ -15,7 +15,7 @@ function calculate_quizScoreResult(panelSpecificationCollection, model, dependsO
             // console.log("questionAnswer", questionAnswer);
             var choices = panelSpecificationCollection.getFieldSpecificationForFieldID(questionID).valueOptions;
             index = choices.indexOf(questionAnswer);
-            if (index == choices.length - 1) {
+            if (index === choices.length - 1) {
             	answerWeight = 0;
             } else {
             	answerWeight = index;

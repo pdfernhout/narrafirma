@@ -14,7 +14,7 @@ define(["require", "exports", "../panelBuilder/translate"], function (require, e
                 // console.log("questionAnswer", questionAnswer);
                 var choices = panelSpecificationCollection.getFieldSpecificationForFieldID(questionID).valueOptions;
                 index = choices.indexOf(questionAnswer);
-                if (index == choices.length - 1) {
+                if (index === choices.length - 1) {
                     answerWeight = 0;
                 }
                 else {

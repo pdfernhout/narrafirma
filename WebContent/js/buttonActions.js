@@ -1,4 +1,4 @@
-define(["require", "exports", "./panelBuilder/browser", "./csvImportExport", "dijit/Dialog", "./panelBuilder/dialogSupport", "./navigationPane", "./pageDisplayer", "./questionnaireGeneration", "./surveyBuilderMithril", "./surveyCollection", "./surveyStorage", "./panelBuilder/translate"], function (require, exports, browser, csvImportExport, Dialog, dialogSupport, navigationPane, pageDisplayer, questionnaireGeneration, surveyBuilder, surveyCollection, surveyStorage, translate) {
+define(["require", "exports", "./panelBuilder/browser", "./csvImportExport", "dijit/Dialog", "./navigationPane", "./pageDisplayer", "./questionnaireGeneration", "./surveyBuilderMithril", "./surveyCollection", "./surveyStorage", "./panelBuilder/translate"], function (require, exports, browser, csvImportExport, Dialog, navigationPane, pageDisplayer, questionnaireGeneration, surveyBuilder, surveyCollection, surveyStorage, translate) {
     "use strict";
     var project;
     // Call this to set up the project or other needed data
@@ -21,22 +21,28 @@ define(["require", "exports", "./panelBuilder/browser", "./csvImportExport", "di
     function importButtonClicked(projectDefinitionText, hideDialogMethod) {
         console.log("importButtonClicked", projectDefinitionText);
         throw new Error("No longer working due to ongoing refactoring for current page model");
+        /*
         var updatedProjectAnswers;
+    
         try {
             updatedProjectAnswers = JSON.parse(projectDefinitionText);
-        }
-        catch (e) {
+        } catch(e) {
             alert("Problem parsing project definition text\n" + e);
             return;
         }
+    
         console.log("parsed projectDefinitionText", updatedProjectAnswers);
+    
         // TODO: Translate
-        dialogSupport.confirm("This will overwrite your current project design.\nAny active survey and any previously stored survey results will remain as-is,\nhowever any new project design might have a different survey design.\nAre you sure you want to replace the current project definition?", function () {
+        dialogSupport.confirm("This will overwrite your current project design.\nAny active survey and any previously stored survey results will remain as-is,\nhowever any new project design might have a different survey design.\nAre you sure you want to replace the current project definition?", function() {
+    
             // TODO: Not sure what to do for what is essentially a new currentProjectVersionReference defined here
             // TODO: Needs finishing!!!
+    
             console.log("Updated OK");
             hideDialogMethod();
         });
+        */
     }
     function importExportClicked() {
         console.log("importExportClicked");
