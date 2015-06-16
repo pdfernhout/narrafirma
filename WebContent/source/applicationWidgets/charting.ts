@@ -170,6 +170,7 @@ function createBrush(chartBody, xScale, yScale, brushendCallback) {
         brushGroup.selectAll("rect")
             .attr("y", 0)
             .attr("height", chartBody.attr("height"));
+        console.log("********** chart height", chartBody.attr("height"), chartBody);
     }
 
     return {brush: brush, brushGroup: brushGroup};
@@ -197,12 +198,14 @@ function makeChartFramework(chartPane, chartType, isSmallFormat, margin) {
         .attr('class', 'chartBackground');
     
     var chartBody = chart.append('g')
+        .attr('width', width)
+        .attr('height', height)
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
         .attr('class', 'chartBody');
 
     var chartBodyBackground = chartBody.append("rect")
         .attr('width', width)
-        .attr('height', fullHeight)
+        .attr('height', height)
         .attr('class', 'chartBodyBackground');
     
     return {
@@ -1042,6 +1045,8 @@ function setCurrentSelection(chart, graphBrowserInstance, extent) {
 
 function updateSelectedStories(chart, storyDisplayItemsOrClusters, graphBrowserInstance, storiesSelectedCallback, selectionTestFunction) {
     var extent = chart.brush.brush.extent();
+    
+    console.log("updateSelectedStories extent", extent);
     
     setCurrentSelection(chart, graphBrowserInstance, extent);
     
