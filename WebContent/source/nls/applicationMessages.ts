@@ -1,6 +1,7 @@
 // Application level translations
 // Not indented correctly to make it easier to cut and paste to other language files
 // See: http://dojotoolkit.org/documentation/tutorials/1.9/i18n/
+import kludgeForUseStrict = require("../kludgeForUseStrict");
 "use strict";
 var messages = {
     root: {

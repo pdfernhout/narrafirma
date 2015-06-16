@@ -1,5 +1,6 @@
 // TODO: Ensure use strict wrapped in funciton
 
+import kludgeForUseStrict = require("./kludgeForUseStrict");
 "use strict";
 
 function ensureUniqueQuestionIDs(usedIDs, editorQuestions) {

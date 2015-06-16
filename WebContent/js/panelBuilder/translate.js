@@ -1,5 +1,5 @@
-"use strict";
 define(["require", "exports"], function (require, exports) {
+    "use strict";
     // Messages used by pages and created from design
     var pageMessages = {};
     // Messages specific to the editing application

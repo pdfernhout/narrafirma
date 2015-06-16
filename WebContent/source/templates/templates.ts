@@ -1,3 +1,4 @@
+import kludgeForUseStrict = require("../kludgeForUseStrict");
 "use strict";
 
 var templates = [

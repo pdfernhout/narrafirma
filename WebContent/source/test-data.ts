@@ -1,6 +1,6 @@
 // This supports globals shared by modules
 
-
+import kludgeForUseStrict = require("./kludgeForUseStrict");
 "use strict";
 
 var testDataItemsToMake = 100;

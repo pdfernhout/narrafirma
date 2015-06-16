@@ -1,3 +1,4 @@
+import kludgeForUseStrict = require("../kludgeForUseStrict");
 "use strict";
 
 function add_excerptsList(panelBuilder, contentPane, model, fieldSpecification) {

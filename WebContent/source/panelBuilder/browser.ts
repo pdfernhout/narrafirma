@@ -1,3 +1,4 @@
+import kludgeForUseStrict = require("../kludgeForUseStrict");
 "use strict";
 
 // launchApplication function inspired by: http://stackoverflow.com/questions/528671/javascript-window-open-only-if-the-window-does-not-already-exist

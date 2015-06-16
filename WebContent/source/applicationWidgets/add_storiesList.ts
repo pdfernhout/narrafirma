@@ -1,3 +1,4 @@
+import kludgeForUseStrict = require("../kludgeForUseStrict");
 "use strict";
 
 function add_storiesList(panelBuilder, contentPane, model, fieldSpecification) {

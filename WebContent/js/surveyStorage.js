@@ -1,5 +1,5 @@
-"use strict";
 define(["require", "exports"], function (require, exports) {
+    "use strict";
     function storeSurveyResult(pointrelClient, projectIdentifier, storyCollectionIdentifier, completedSurvey, wizardPane) {
         var surveyResultWrapper = {
             projectIdentifier: projectIdentifier,

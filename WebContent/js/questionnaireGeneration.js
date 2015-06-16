@@ -1,6 +1,6 @@
 // TODO: Ensure use strict wrapped in funciton
-"use strict";
 define(["require", "exports"], function (require, exports) {
+    "use strict";
     function ensureUniqueQuestionIDs(usedIDs, editorQuestions) {
         for (var index in editorQuestions) {
             var editorQuestion = editorQuestions[index];

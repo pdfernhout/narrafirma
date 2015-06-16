@@ -1,5 +1,5 @@
-"use strict";
 define(["require", "exports"], function (require, exports) {
+    "use strict";
     // launchApplication function inspired by: http://stackoverflow.com/questions/528671/javascript-window-open-only-if-the-window-does-not-already-exist
     var openedWindows = {};
     function launchApplication(url, windowName) {

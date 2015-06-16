@@ -1,5 +1,5 @@
-"use strict";
 define(["require", "exports"], function (require, exports) {
+    "use strict";
     function add_questionsTable(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         var label = panelBuilder.newContentPane({

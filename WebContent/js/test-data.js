@@ -1,6 +1,6 @@
 // This supports globals shared by modules
-"use strict";
 define(["require", "exports"], function (require, exports) {
+    "use strict";
     var testDataItemsToMake = 100;
     // Some test data
     exports.testSurveyResponses = [];

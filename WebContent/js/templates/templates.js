@@ -1,5 +1,5 @@
-"use strict";
 define(["require", "exports"], function (require, exports) {
+    "use strict";
     var templates = [
         {
             "id": "elicitationQuestions",

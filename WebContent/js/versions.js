@@ -1,5 +1,5 @@
-"use strict";
 define(["require", "exports"], function (require, exports) {
+    "use strict";
     // Return current versions used by application  
     var versions = {
         projectAnswersContentType: "org.workingwithstories.PNIWorkbook",

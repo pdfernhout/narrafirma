@@ -1,3 +1,4 @@
+import kludgeForUseStrict = require("../kludgeForUseStrict");
 "use strict";
 
 // Calculates Kendall's tau, a correlation measure for ordinal data, and an associated p-value.

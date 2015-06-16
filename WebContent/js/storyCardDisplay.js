@@ -1,5 +1,5 @@
-"use strict";
 define(["require", "exports"], function (require, exports) {
+    "use strict";
     function wrap(elementType, cssClass, text) {
         return '<' + elementType + ' class="' + cssClass + '">' + text + '</' + elementType + '>';
     }
