@@ -468,7 +468,7 @@ export function sample_standard_deviation(x) {
 export function sample_covariance(x, y) {
 
     // The two datasets must have the same length which must be more than 1
-    if (x.length <= 1 || x.length != y.length){
+    if (x.length <= 1 || x.length !== y.length){
         return null;
     }
 
@@ -1401,7 +1401,8 @@ export function chi_squared_goodness_of_fit(data, distribution_type, significanc
 
     // Create an array holding a histogram from the sample data, of
     // the form `{ value: numberOfOcurrences }`
-    for (var i = 0; i < data.length; i++) {
+    var i: number;
+    for (i = 0; i < data.length; i++) {
         if (observed_frequencies[data[i]] === undefined) {
             observed_frequencies[data[i]] = 0;
         }
@@ -1462,7 +1463,7 @@ export function chi_squared_goodness_of_fit(data, distribution_type, significanc
     console.log("keys", keys);
     console.log("row", row);
     var testSignificance = 1.0;
-    for (var i = 0; i < keys.length; i++) {
+    for (i = 0; i < keys.length; i++) {
         var value = row[keys[i]];
         if (value < chi_squared) {
             testSignificance = keys[i];
