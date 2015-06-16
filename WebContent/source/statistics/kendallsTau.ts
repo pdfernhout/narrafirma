@@ -1,3 +1,5 @@
+"use strict";
+
 // Calculates Kendall's tau, a correlation measure for ordinal data, and an associated p-value.
 // Returns: Kendall's tau, two-tailed p-value
 // Derived from older SciPy: http://web.mit.edu/6.863/spring2011/packages/scipy_src/scipy/stats/stats.py

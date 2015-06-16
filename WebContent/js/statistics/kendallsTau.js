@@ -1,3 +1,4 @@
+"use strict";
 define(["require", "exports"], function (require, exports) {
     // Calculates Kendall's tau, a correlation measure for ordinal data, and an associated p-value.
     // Returns: Kendall's tau, two-tailed p-value

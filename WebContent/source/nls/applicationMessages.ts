@@ -1,6 +1,7 @@
 // Application level translations
 // Not indented correctly to make it easier to cut and paste to other language files
 // See: http://dojotoolkit.org/documentation/tutorials/1.9/i18n/
+"use strict";
 var messages = {
     root: {
      // Do not translate text in double braces since they are identifiers looked up and replaced by the program at runtime
