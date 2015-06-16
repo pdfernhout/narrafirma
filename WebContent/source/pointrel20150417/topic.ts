@@ -1,5 +1,7 @@
 // Inspired by Dojo and also by: http://davidwalsh.name/pubsub-javascript
 
+"use strict";
+
 var subscriptions: { [id: string]: { [id2: string]: Function } } = {};
 
 var subscriptionsCount = 0;

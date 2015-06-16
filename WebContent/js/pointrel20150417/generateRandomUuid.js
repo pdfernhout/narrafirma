@@ -1,4 +1,5 @@
 // From Dojo 1.10.4
+"use strict";
 define(["require", "exports"], function (require, exports) {
     function generateRandomUuid() {
         // summary:

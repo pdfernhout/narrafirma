@@ -1,4 +1,5 @@
 // stringToUtf8 function from Dojo dojox/encoding/digests/_base.js -- convert a JavaScript string to UTF-8
+"use strict";
 define(["require", "exports"], function (require, exports) {
     function stringToUtf8(input) {
         var output = "";
