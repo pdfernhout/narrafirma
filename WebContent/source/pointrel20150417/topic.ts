@@ -1,20 +1,20 @@
 // Inspired by Dojo and also by: http://davidwalsh.name/pubsub-javascript
 
-var topics = {};
+var subscriptions: { [id: string]: { [id2: string]: Function } } = {};
 
 var subscriptionsCount = 0;
 
 export function subscribe(topic, callback) {
     var topicKey = JSON.stringify(topic);
     
-    if (!topic[topicKey]) topics[topicKey] = {};
+    if (!subscriptions[topicKey]) subscriptions[topicKey] = {};
 
     var uniqueIndex = subscriptionsCount++;
-    topics[topicKey][uniqueIndex] = callback;
+    subscriptions[topicKey][uniqueIndex] = callback;
 
     return {
         remove: function() {
-            delete topics[topicKey][uniqueIndex];
+            delete subscriptions[topicKey][uniqueIndex];
         }
     };
 }
@@ -22,10 +22,11 @@ export function subscribe(topic, callback) {
 export function publish(topic, ...data: any[]) {
     var topicKey = JSON.stringify(topic);
     
-    if (!topic[topicKey]) return;
+    if (!subscriptions[topicKey]) return;
 
-    topics[topicKey].forEach(function(callbackKey) {
-        var callback = topics[topicKey][callbackKey];
+    var callbacksForTopic = subscriptions[topicKey];
+    for (var callbackKey in callbacksForTopic) {
+        var callback = callbacksForTopic[callbackKey];
         callback.apply(null, data);
-    });
+    }
 }

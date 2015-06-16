@@ -1,16 +1,16 @@
 // Inspired by Dojo and also by: http://davidwalsh.name/pubsub-javascript
 define(["require", "exports"], function (require, exports) {
-    var topics = {};
+    var subscriptions = {};
     var subscriptionsCount = 0;
     function subscribe(topic, callback) {
         var topicKey = JSON.stringify(topic);
-        if (!topic[topicKey])
-            topics[topicKey] = {};
+        if (!subscriptions[topicKey])
+            subscriptions[topicKey] = {};
         var uniqueIndex = subscriptionsCount++;
-        topics[topicKey][uniqueIndex] = callback;
+        subscriptions[topicKey][uniqueIndex] = callback;
         return {
             remove: function () {
-                delete topics[topicKey][uniqueIndex];
+                delete subscriptions[topicKey][uniqueIndex];
             }
         };
     }
@@ -21,12 +21,13 @@ define(["require", "exports"], function (require, exports) {
             data[_i - 1] = arguments[_i];
         }
         var topicKey = JSON.stringify(topic);
-        if (!topic[topicKey])
+        if (!subscriptions[topicKey])
             return;
-        topics[topicKey].forEach(function (callbackKey) {
-            var callback = topics[topicKey][callbackKey];
+        var callbacksForTopic = subscriptions[topicKey];
+        for (var callbackKey in callbacksForTopic) {
+            var callback = callbacksForTopic[callbackKey];
             callback.apply(null, data);
-        });
+        }
     }
     exports.publish = publish;
 });
