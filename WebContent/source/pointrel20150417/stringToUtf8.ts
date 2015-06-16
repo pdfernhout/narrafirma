@@ -23,6 +23,6 @@ function stringToUtf8(input){
             output += String.fromCharCode(0xF0 | ((x >>> 18) & 0x07), 0x80 | ((x >>> 12) & 0x3F), 0x80 | ((x >>> 6) & 0x3F), 0x80 | (x & 0x3F));
     }
     return output;
-};
+}
 
 export = stringToUtf8;

@@ -49,6 +49,6 @@ function generateRandomUuid(){
 	var returnValue = a + hyphen + b + hyphen + c + d;
 	returnValue = returnValue.toLowerCase();
 	return returnValue; // String
-};
+}
 
 export = generateRandomUuid;

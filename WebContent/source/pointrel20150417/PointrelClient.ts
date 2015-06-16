@@ -15,7 +15,7 @@
 
 // PCE in stored server files stands for "Pointrel Collected Event". :-)
 
-import jsSHA = require("./jsSHA");
+import JS_SHA = require("./JS_SHA");
 import stringToUtf8 = require("./stringToUtf8");
 import generateRandomUuid = require("./generateRandomUuid");
 import topic = require("./topic");
@@ -135,7 +135,7 @@ PointrelClient.prototype.apiRequestSend = function(apiRequest, timeout_ms, succe
     var httpRequest = new XMLHttpRequest();
     
     httpRequest.onreadystatechange = function() {
-        if (httpRequest.readyState == 4) {
+        if (httpRequest.readyState === 4) {
             if (httpRequest.status >= 200 && httpRequest.status < 300) {
                 if (successCallback) {
                     var response = JSON.parse(httpRequest.responseText);
@@ -545,7 +545,7 @@ function calculateCanonicalSHA256AndLengthForObject(someObject, doNotSortFlag = 
 
 function calculateSHA256(utf8Bytes) {
     // console.log("calculateSHA256", text);
-    var shaObj = new jsSHA("SHA-256", "BYTES");
+    var shaObj = new JS_SHA("SHA-256", "BYTES");
     shaObj.update(utf8Bytes);
     return shaObj.getHash("HEX");
 }

@@ -22,7 +22,6 @@ define(["require", "exports"], function (require, exports) {
         }
         return output;
     }
-    ;
     return stringToUtf8;
 });
 //# sourceMappingURL=stringToUtf8.js.map

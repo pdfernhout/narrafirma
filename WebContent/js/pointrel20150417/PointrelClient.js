@@ -1,7 +1,7 @@
 // Pointrel20150417 for NodeJS and WordPress
 // The focus is on client getting all messages of interest as they are received by the server and indexing them locally
 // Each message needs to have enough easily available metadata for the server and client to do that filtering
-define(["require", "exports", "./jsSHA", "./stringToUtf8", "./generateRandomUuid", "./topic"], function (require, exports, jsSHA, stringToUtf8, generateRandomUuid, topic) {
+define(["require", "exports", "./JS_SHA", "./stringToUtf8", "./generateRandomUuid", "./topic"], function (require, exports, JS_SHA, stringToUtf8, generateRandomUuid, topic) {
     "use strict";
     // TODO: Have mode where batches requests to load messages from server to reduce round-trip latency
     // TODO: change this default to 15 seconds - shorter now for initial development
@@ -94,7 +94,7 @@ define(["require", "exports", "./jsSHA", "./stringToUtf8", "./generateRandomUuid
     PointrelClient.prototype.apiRequestSend = function (apiRequest, timeout_ms, successCallback, errorCallback) {
         var httpRequest = new XMLHttpRequest();
         httpRequest.onreadystatechange = function () {
-            if (httpRequest.readyState == 4) {
+            if (httpRequest.readyState === 4) {
                 if (httpRequest.status >= 200 && httpRequest.status < 300) {
                     if (successCallback) {
                         var response = JSON.parse(httpRequest.responseText);
@@ -491,7 +491,7 @@ define(["require", "exports", "./jsSHA", "./stringToUtf8", "./generateRandomUuid
     }
     function calculateSHA256(utf8Bytes) {
         // console.log("calculateSHA256", text);
-        var shaObj = new jsSHA("SHA-256", "BYTES");
+        var shaObj = new JS_SHA("SHA-256", "BYTES");
         shaObj.update(utf8Bytes);
         return shaObj.getHash("HEX");
     }

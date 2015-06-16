@@ -48,7 +48,6 @@ define(["require", "exports"], function (require, exports) {
         returnValue = returnValue.toLowerCase();
         return returnValue; // String
     }
-    ;
     return generateRandomUuid;
 });
 //# sourceMappingURL=generateRandomUuid.js.map
