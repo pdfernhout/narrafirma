@@ -5,6 +5,7 @@ import domStyle = require("dojo/dom-style");
 import navigationPane = require("./navigationPane");
 import Standby = require("dojox/widget/Standby");
 import PanelBuilder = require("panelBuilder/PanelBuilder");
+import m = require("mithril");
 
 "use strict";
 
@@ -198,6 +199,9 @@ function createPage(pageID, pageSpecification, modelForPage) {
         // TODO: Translate
         alert("Something went wrong when trying to build this page.\nCheck the console for details");
     }
+    
+    // TODO: No removal done for old widgets?
+    m.render(pagePane.domNode, currentPageWidgets);
 
     return pagePane;
 }

@@ -366,6 +366,7 @@ function insertGraphSelection(graphBrowserInstance) {
     }
     
     // Find observation textarea and other needed data
+    // TODO: Fix this for Mithril conversion
     var observationTextarea = graphBrowserInstance.widgets.observation;
     var textModel = graphBrowserInstance.observationModel;
     var selection = graphBrowserInstance.currentSelectionExtentPercentages;
@@ -384,6 +385,7 @@ function insertGraphSelection(graphBrowserInstance) {
 }
 
 function scanForSelectionJSON(graphBrowserInstance, doFocus = false) {
+    // TODO: Fix this for Mithril conversion
     var observationTextarea = graphBrowserInstance.widgets.observation;
     var textModel = graphBrowserInstance.observationModel;
     var textarea = observationTextarea.textbox;

@@ -1,25 +1,10 @@
-import add_boolean = require("./standardWidgets/add_boolean");
-import add_button = require("./standardWidgets/add_button");
-import add_checkbox = require("./standardWidgets/add_checkbox");
-import add_checkboxes = require("./standardWidgets/add_checkboxes");
-import add_functionResult = require("./standardWidgets/add_functionResult");
-import add_grid = require("./standardWidgets/add_grid");
-import add_header = require("./standardWidgets/add_header");
-import add_html = require("./standardWidgets/add_html");
-import add_image = require("./standardWidgets/add_image");
-import add_label = require("./standardWidgets/add_label");
-import add_radiobuttons = require("./standardWidgets/add_radiobuttons");
-import add_select = require("./standardWidgets/add_select");
-import add_slider = require("./standardWidgets/add_slider");
-import add_text = require("./standardWidgets/add_text");
-import add_textarea = require("./standardWidgets/add_textarea");
-import add_toggleButton = require("./standardWidgets/add_toggleButton");
 import browser = require("./browser");
 import declare = require("dojo/_base/declare");
 import domClass = require('dojo/dom-class');
 import domConstruct = require("dojo/dom-construct");
 import translate = require("./translate");
 import ContentPane = require("dijit/layout/ContentPane");
+import surveyBuilder = require("../surveyBuilderMithril");
 
 "use strict";
 
@@ -41,22 +26,23 @@ window["narraFirma_launchApplication"] = browser.launchApplication;
 
 function addStandardPlugins() {
     // standard plugins
-    PanelBuilder.addPlugin("boolean", add_boolean);
-    PanelBuilder.addPlugin("button", add_button);
-    PanelBuilder.addPlugin("checkbox", add_checkbox);
-    PanelBuilder.addPlugin("checkboxes", add_checkboxes);
-    PanelBuilder.addPlugin("functionResult", add_functionResult);
-    PanelBuilder.addPlugin("grid", add_grid);
-    PanelBuilder.addPlugin("header", add_header);
-    PanelBuilder.addPlugin("html", add_html);
-    PanelBuilder.addPlugin("image", add_image);
-    PanelBuilder.addPlugin("label", add_label);
-    PanelBuilder.addPlugin("radiobuttons", add_radiobuttons);
-    PanelBuilder.addPlugin("select", add_select);
-    PanelBuilder.addPlugin("slider", add_slider);
-    PanelBuilder.addPlugin("text", add_text);
-    PanelBuilder.addPlugin("textarea", add_textarea);
-    PanelBuilder.addPlugin("toggleButton", add_toggleButton);
+    var displayQuestion = surveyBuilder.displayQuestion;
+    PanelBuilder.addPlugin("boolean", displayQuestion);
+    PanelBuilder.addPlugin("button", displayQuestion);
+    PanelBuilder.addPlugin("checkbox", displayQuestion);
+    PanelBuilder.addPlugin("checkboxes", displayQuestion);
+    PanelBuilder.addPlugin("functionResult", displayQuestion);
+    PanelBuilder.addPlugin("grid", displayQuestion);
+    PanelBuilder.addPlugin("header", displayQuestion);
+    PanelBuilder.addPlugin("html", displayQuestion);
+    PanelBuilder.addPlugin("image", displayQuestion);
+    PanelBuilder.addPlugin("label", displayQuestion);
+    PanelBuilder.addPlugin("radiobuttons", displayQuestion);
+    PanelBuilder.addPlugin("select", displayQuestion);
+    PanelBuilder.addPlugin("slider", displayQuestion);
+    PanelBuilder.addPlugin("text", displayQuestion);
+    PanelBuilder.addPlugin("textarea", displayQuestion);
+    PanelBuilder.addPlugin("toggleButton", displayQuestion);
 }
 
 var buildingFunctions = {};
@@ -129,23 +115,29 @@ class PanelBuilder {
             }
         }
         
-        return addFunction(this, contentPane, model, fieldSpecification);
+        // return addFunction(this, contentPane, model, fieldSpecification);
+        try {
+            return addFunction(model, fieldSpecification);
+        } catch (e) {
+            console.log("Exception creating widget", fieldSpecification.id, e);
+            return "Exception creating widget: " + fieldSpecification.id + " :: " + e;
+        }
     }
     
-    // Returns dictionary mapping from field IDs to widgets
+    // Returns array of widgets built from the fieldSpecifications
     buildFields(fieldSpecifications, contentPane, model) {
         // console.log("buildFields", fieldSpecifications);
         if (!fieldSpecifications) {
             throw new Error("fieldSpecifications are not defined");
         }
         
-        var widgets = {};
+        var fields = [];
         for (var fieldSpecificationIndex in fieldSpecifications) {
             var fieldSpecification = fieldSpecifications[fieldSpecificationIndex];
             var widget = this.buildField(contentPane, model, fieldSpecification);
-            widgets[fieldSpecification.id] = widget;
+            fields.push(widget);
         }
-        return widgets;
+        return fields;
     }
     
     // Build an entire panel; panel can be either a string ID referring to a panel or it can be a panel definition itself
