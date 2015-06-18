@@ -81,7 +81,6 @@ function addStandardPlugins() {
     PanelBuilder.addPlugin("grid", null);
     PanelBuilder.addPlugin("html", addHTML);
     PanelBuilder.addPlugin("image", addImage);
-    PanelBuilder.addPlugin("toggleButton", null);
 }
 
 var buildingFunctions = {};
