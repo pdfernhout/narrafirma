@@ -1,9 +1,10 @@
 import RadioButtonsWidget = require("./RadioButtonsWidget");
 import valuePathResolver = require("../valuePathResolver");
+import PanelBuilder = require("../PanelBuilder");
 
 "use strict";
 
-function add_boolean(panelBuilder, contentPane, model, fieldSpecification) {
+function add_boolean(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
     var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
     
     var radioButtonsWidget = new RadioButtonsWidget({

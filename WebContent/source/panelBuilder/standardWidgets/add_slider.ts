@@ -3,10 +3,11 @@ import HorizontalRule = require("dijit/form/HorizontalRule");
 import HorizontalRuleLabels = require("dijit/form/HorizontalRuleLabels");
 import HorizontalSlider = require("dijit/form/HorizontalSlider");
 import valuePathResolver = require("../valuePathResolver");
+import PanelBuilder = require("../PanelBuilder");
 
 "use strict";
 
-function add_slider(panelBuilder, contentPane, model, fieldSpecification) {
+function add_slider(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
     var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
     
     // A div that contains rules, labels, and slider

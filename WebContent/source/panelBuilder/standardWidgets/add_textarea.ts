@@ -1,9 +1,10 @@
 import SimpleTextarea = require("dijit/form/SimpleTextarea");
 import valuePathResolver = require("../valuePathResolver");
+import PanelBuilder = require("../PanelBuilder");
 
 "use strict";
 
-function add_textarea(panelBuilder, contentPane, model, fieldSpecification) {
+function add_textarea(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
     var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification); 
     var textarea = new SimpleTextarea({
         rows: "4",

@@ -1,8 +1,9 @@
 import CheckboxesWidget = require("./CheckboxesWidget");
+import PanelBuilder = require("../PanelBuilder");
 
 "use strict";
 
-function add_checkboxes(panelBuilder, contentPane, model, fieldSpecification) {
+function add_checkboxes(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
     // console.log("add_checkboxes", contentPane, model, fieldSpecification);
     var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
 

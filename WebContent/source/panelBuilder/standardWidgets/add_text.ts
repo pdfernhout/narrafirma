@@ -1,9 +1,10 @@
 import TextBox = require("dijit/form/TextBox");
 import valuePathResolver = require("../valuePathResolver");
+import PanelBuilder = require("../PanelBuilder");
 
 "use strict";
 
-function add_text(panelBuilder, contentPane, model, fieldSpecification) {
+function add_text(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
     var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
     
     var readOnly = fieldSpecification.displayReadOnly || false;

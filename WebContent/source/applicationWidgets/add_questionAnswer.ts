@@ -1,4 +1,5 @@
 import translate = require("../panelBuilder/translate");
+import PanelBuilder = require("../panelBuilder/PanelBuilder");
 
 "use strict";
 
@@ -8,7 +9,7 @@ function div_for_value(value) {
 }
 
 /* TODO: This is only really needed for translation which is not fully worked out, but maybe OK enough without it?
-function calculate_questionAnswer(panelBuilder, model, referencedQuestionID) {
+function calculate_questionAnswer(panelBuilder: PanelBuilder, model, referencedQuestionID) {
     // console.log("calculate_questionAnswer", panelBuilder, model, referencedQuestionID);
     var value = model.get(referencedQuestionID);
     if (value === undefined) {
@@ -46,7 +47,7 @@ function calculate_questionAnswer(panelBuilder, model, referencedQuestionID) {
 */
 
 // TODO: This will not work when questions are on other pages with newer system
-function add_questionAnswer(panelBuilder, contentPane, model, fieldSpecification) {
+function add_questionAnswer(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
     console.log("add_questionAnswer", fieldSpecification);
     var referencedQuestionID = fieldSpecification.displayConfiguration;
     if (!referencedQuestionID) throw new Error("missing referencedQuestionID for field: " + fieldSpecification.id + " all: " + JSON.stringify(fieldSpecification));

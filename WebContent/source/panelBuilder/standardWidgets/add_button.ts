@@ -2,10 +2,11 @@ import Button = require("dijit/form/Button");
 import domClass = require("dojo/dom-class");
 import domConstruct = require("dojo/dom-construct");
 import translate = require("../translate");
+import PanelBuilder = require("../PanelBuilder");
 
 "use strict";
 
-function add_button(panelBuilder, contentPane, model, fieldSpecification, callback) {
+function add_button(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification, callback) {
     if (!callback) callback = panelBuilder.buttonClicked.bind(panelBuilder, contentPane, model, fieldSpecification);
     
     var button = new Button({

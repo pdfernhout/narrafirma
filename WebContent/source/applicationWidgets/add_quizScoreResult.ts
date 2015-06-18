@@ -1,4 +1,5 @@
 import translate = require("../panelBuilder/translate");
+import PanelBuilder = require("../panelBuilder/PanelBuilder");
 
 "use strict";
 
@@ -34,7 +35,7 @@ function calculate_quizScoreResult(panelSpecificationCollection, model, dependsO
     return response;
 }
 
-function add_quizScoreResult(panelBuilder, contentPane, model, fieldSpecification) {
+function add_quizScoreResult(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
     var dependsOn = fieldSpecification.displayConfiguration;
     
     var calculate = calculate_quizScoreResult.bind(null, panelBuilder.panelSpecificationCollection, model, dependsOn);

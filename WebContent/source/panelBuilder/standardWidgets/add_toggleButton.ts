@@ -1,9 +1,10 @@
 import ToggleButton = require("dijit/form/ToggleButton");
 import valuePathResolver = require("../valuePathResolver");
+import PanelBuilder = require("../PanelBuilder");
 
 "use strict";
 
-function add_toggleButton(panelBuilder, contentPane, model, fieldSpecification) {
+function add_toggleButton(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
     var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
     
     // Toggle button maintains a "checked" flag, so we need to set value ourselves

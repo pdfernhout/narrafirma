@@ -8,7 +8,7 @@ import storyCardDisplay = require("../storyCardDisplay");
 import surveyCollection = require("../surveyCollection");
 import topic = require("../pointrel20150417/topic");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
-import PanelBuilder = require("panelBuilder/PanelBuilder");
+import PanelBuilder = require("../panelBuilder/PanelBuilder");
 
 "use strict";
 
@@ -239,7 +239,7 @@ function updateStoriesPane(graphBrowserInstance, stories) {
 
 // TODO: Next two functions from add_storyBrowser and so are duplicate code
 
-function buildStoryDisplayPanel(panelBuilder, contentPane, model) {
+function buildStoryDisplayPanel(panelBuilder: PanelBuilder, contentPane, model) {
     var storyContent = storyCardDisplay.generateStoryCardContent(model, model.questionnaire, "includeElicitingQuestion");
     
     var storyPane = new ContentPane({

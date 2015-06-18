@@ -7,6 +7,7 @@ import ContentPane = require("dijit/layout/ContentPane");
 import Memory = require("dojo/store/Memory");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
 import widgetSupport = require("../panelBuilder/widgetSupport");
+import PanelBuilder = require("../panelBuilder/PanelBuilder");
 
 "use strict";
 
@@ -55,7 +56,7 @@ function addThemeButtonPressed(themeEntryComboBox, storyThemesStore, allThemes) 
     storyThemesStore.add(existingTheme);
 }
 
-function buildThemerPanel(panelBuilder, contentPane, model) {    
+function buildThemerPanel(panelBuilder: PanelBuilder, contentPane, model) {    
     // Encode all user-supplied text to ensure it does not create HTML issues
     var storyName = _.escape(model.get("__survey_storyName"));
     var storyText = _.escape(model.get("__survey_storyText"));
@@ -107,7 +108,7 @@ function currentCatalysisReportChanged(graphBrowserInstance, fieldName, oldValue
 }
 
 // TODO: Fix so the filters get updated as the story questions get changed
-function insertStoryThemer(panelBuilder, pagePane, model, fieldSpecification) {
+function insertStoryThemer(panelBuilder: PanelBuilder, pagePane, model, fieldSpecification) {
     console.log("insertStoryThemer start", fieldSpecification.id);
     
     var choiceModelAndField = valuePathResolver.resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
@@ -149,7 +150,7 @@ function insertStoryThemer(panelBuilder, pagePane, model, fieldSpecification) {
     console.log("insertStoryThemer finished");
 }
 
-function add_storyThemer(panelBuilder, contentPane, model, fieldSpecification) {
+function add_storyThemer(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
     var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
     
     var storyThemerInstance = insertStoryThemer(panelBuilder, questionContentPane, model, fieldSpecification);

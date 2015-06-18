@@ -14,7 +14,7 @@ import Selection = require("dgrid/Selection");
 import Stateful = require("dojo/Stateful");
 import Trackable = require("dstore/Trackable");
 import OnDemandGrid = require("dgrid/OnDemandGrid");
-import PanelBuilder = require("panelBuilder/PanelBuilder");
+import PanelBuilder = require("../PanelBuilder");
 
 "use strict";
 

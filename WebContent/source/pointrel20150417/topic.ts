@@ -14,6 +14,7 @@ export function subscribe(topic, callback) {
     var uniqueIndex = subscriptionsCount++;
     subscriptions[topicKey][uniqueIndex] = callback;
 
+    // Return a handle with a remove function to remove this this subscription
     return {
         remove: function() {
             delete subscriptions[topicKey][uniqueIndex];

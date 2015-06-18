@@ -1,9 +1,10 @@
 import CheckBox = require("dijit/form/CheckBox");
 import valuePathResolver = require("../valuePathResolver");
+import PanelBuilder = require("../PanelBuilder");
 
 "use strict";
 
-function add_checkbox(panelBuilder, contentPane, model, fieldSpecification) {
+function add_checkbox(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
     var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
     
     var readOnly = fieldSpecification.displayReadOnly || false;

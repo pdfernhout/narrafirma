@@ -2,10 +2,11 @@ import dialogSupport = require("../panelBuilder/dialogSupport");
 import recommendations = require("../templates/recommendations");
 import translate = require("../panelBuilder/translate");
 import TableContainer = require("dojox/layout/TableContainer");
+import PanelBuilder = require("../panelBuilder/PanelBuilder");
 
 "use strict";
 
-function add_recommendationTable(panelBuilder, contentPane, model, fieldSpecification) {
+function add_recommendationTable(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
     var dialogConfiguration = {
         dialogTitle: "#title_recommendationsTable|Recommendations table",
         dialogStyle: undefined,
@@ -17,7 +18,7 @@ function add_recommendationTable(panelBuilder, contentPane, model, fieldSpecific
     return button;
 }
 
-function build_recommendationTable(panelBuilder, dialogContentPane, model, hideDialogCallback, dialogConfiguration) {
+function build_recommendationTable(panelBuilder: PanelBuilder, dialogContentPane, model, hideDialogCallback, dialogConfiguration) {
     var fieldSpecification = dialogConfiguration.fieldSpecification;
     var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(dialogContentPane, fieldSpecification);
 

@@ -397,7 +397,7 @@ function updateServerStatus(status, text) {
 }
 
 // dispatch the button click
-function buttonClicked(panelBuilder, contentPane, model, fieldSpecification, value) {
+function buttonClicked(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification, value) {
      console.log("buttonClicked", fieldSpecification);
      
      var functionName = fieldSpecification.id;
@@ -421,7 +421,7 @@ function buttonClicked(panelBuilder, contentPane, model, fieldSpecification, val
 
 // Panel builder "functionResult" components will get routed through here to calculate their text.
 // The application should publish a topic with the same name as these functions when their value changes.
-function calculateFunctionResultForGUI(panelBuilder, contentPane, model, fieldSpecification, functionName): any {
+function calculateFunctionResultForGUI(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification, functionName): any {
     if (functionName === "isStoryCollectingEnabled") {
         return surveyCollection.isStoryCollectingEnabled();
     } else if (functionName === "storeQuestionnaireInStoryCollection") {

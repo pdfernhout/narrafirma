@@ -2,11 +2,11 @@ import dialogSupport = require("../panelBuilder/dialogSupport");
 import domClass = require("dojo/dom-class");
 import templates = require("../templates/templates");
 import GridWithItemPanel = require("../panelBuilder/standardWidgets/GridWithItemPanel");
-import PanelBuilder = require("panelBuilder/PanelBuilder");
+import PanelBuilder = require("../panelBuilder/PanelBuilder");
 
 "use strict";
 
-function add_templateList(panelBuilder, contentPane, model, fieldSpecification) {
+function add_templateList(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
     var dialogConfiguration = {
         dialogTitle: "#title_chooseATemplate|Choose a template",
         dialogStyle: undefined, // "height: 1000px; width: 800px",

@@ -1,8 +1,9 @@
 import translate = require("../translate");
+import PanelBuilder = require("../PanelBuilder");
 
 "use strict";
 
-function add_header(panelBuilder, contentPane, model, fieldSpecification) {
+function add_header(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
     var content = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
     if (panelBuilder.addHelpIcons) {
         content = panelBuilder.htmlForInformationIcon(panelBuilder.helpPageURLForField(fieldSpecification)) + "&nbsp;&nbsp;" + content;

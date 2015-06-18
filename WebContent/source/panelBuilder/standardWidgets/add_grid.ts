@@ -1,4 +1,5 @@
 import GridWithItemPanel = require("./GridWithItemPanel");
+import PanelBuilder = require("../PanelBuilder");
 
 "use strict";
 
@@ -9,7 +10,7 @@ import GridWithItemPanel = require("./GridWithItemPanel");
    idProperty: "_id",
    gridConfiguration: {...}
  */
-function add_grid(panelBuilder, contentPane, model, fieldSpecification) {
+function add_grid(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
     // Grid with list of objects
     // console.log("add_grid");
     

@@ -1,8 +1,9 @@
 import ClusteringDiagram = require("./ClusteringDiagram");
+import PanelBuilder = require("../panelBuilder/PanelBuilder");
 
 "use strict";
 
-function add_clusteringDiagram(panelBuilder, contentPane, model, fieldSpecification) {
+function add_clusteringDiagram(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
     // clustering diagram using a list of 2D objects
     console.log("add_clusteringDiagram", model, fieldSpecification);
     // console.log("clusteringDiagram module", clusteringDiagram);

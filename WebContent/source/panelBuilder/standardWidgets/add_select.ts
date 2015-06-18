@@ -2,10 +2,11 @@ import FilteringSelect = require("dijit/form/FilteringSelect");
 import Memory = require("dojo/store/Memory");
 import translate = require("../translate");
 import valuePathResolver = require("../valuePathResolver");
+import PanelBuilder = require("../PanelBuilder");
 
 "use strict";
 
-function add_select(panelBuilder, contentPane, model, fieldSpecification, addNoSelectionOption) {
+function add_select(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification, addNoSelectionOption) {
     // console.log("add_select", fieldSpecification.id, model, fieldSpecification);
     var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
     

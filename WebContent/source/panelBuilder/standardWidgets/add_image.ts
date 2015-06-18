@@ -1,8 +1,9 @@
 import translate = require("../translate");
+import PanelBuilder = require("../PanelBuilder");
 
 "use strict";
 
-function add_image(panelBuilder, contentPane, model, fieldSpecification) {
+function add_image(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
     var imageSource = fieldSpecification.displayConfiguration;
     var questionText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt || "");
     var image = panelBuilder.newContentPane({

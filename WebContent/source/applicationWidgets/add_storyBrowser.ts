@@ -6,6 +6,7 @@ import widgetSupport = require("../panelBuilder/widgetSupport");
 import ContentPane = require("dijit/layout/ContentPane");
 import TableContainer = require("dojox/layout/TableContainer");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
+import PanelBuilder = require("../panelBuilder/PanelBuilder");
 
 "use strict";
 
@@ -272,7 +273,7 @@ function makeItemPanelSpecificationForQuestions(storyBrowserInstance, questions)
 }
 
 // TODO: Fix so the filters get updated as the story questions get changed
-function insertStoryBrowser(panelBuilder, pagePane, model, fieldSpecification) {
+function insertStoryBrowser(panelBuilder: PanelBuilder, pagePane, model, fieldSpecification) {
     var id = fieldSpecification.id;
     console.log("insertStoryBrowser start", id);
     
@@ -372,7 +373,7 @@ function setStoryListForCurrentFilters(storyBrowserInstance) {
     // console.log("finished setting list with newStore", newStore);
 }
 
-function add_storyBrowser(panelBuilder, contentPane, model, fieldSpecification) {
+function add_storyBrowser(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
     var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
     
     var storyBrowserInstance = insertStoryBrowser(panelBuilder, questionContentPane, model, fieldSpecification);

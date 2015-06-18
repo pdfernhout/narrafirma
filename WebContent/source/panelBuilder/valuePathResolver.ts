@@ -1,15 +1,16 @@
 import at = require("dojox/mvc/at");
+import PanelBuilder = require("PanelBuilder");
 
 "use strict";
    
-export function resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification) {
+export function resolveModelAndFieldForFieldSpecification(panelBuilder: PanelBuilder, model, fieldSpecification) {
     var valuePath = fieldSpecification.valuePath;
     if (!valuePath) valuePath = fieldSpecification.id;
     var dataModelAndField = resolveModelAndFieldForValuePath(panelBuilder, model, valuePath);
     return resolveModelAndFieldForValuePath(panelBuilder, model, valuePath);
 }
 
-export function resolveModelAndFieldForValuePath(panelBuilder, model, valuePath) {
+export function resolveModelAndFieldForValuePath(panelBuilder: PanelBuilder, model, valuePath) {
     // Parse the dependency path
     var pathParts = valuePath.split("/");
     if (pathParts[0] === "") {
@@ -33,22 +34,22 @@ export function resolveModelAndFieldForValuePath(panelBuilder, model, valuePath)
     };
 }
 
-export function resolveValueForFieldSpecification(panelBuilder, model, fieldSpecification) {
+export function resolveValueForFieldSpecification(panelBuilder: PanelBuilder, model, fieldSpecification) {
     var modelAndField = resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
     return modelAndField.model.get(modelAndField.field);
 }
 
-export function resolveValueForValuePath(panelBuilder, model, valuePath) {
+export function resolveValueForValuePath(panelBuilder: PanelBuilder, model, valuePath) {
     var modelAndField = resolveModelAndFieldForValuePath(panelBuilder, model, valuePath);
     return modelAndField.model.get(modelAndField.field);
 }
 
-export function atPath(panelBuilder, model, valuePath) {
+export function atPath(panelBuilder: PanelBuilder, model, valuePath) {
    var modelAndField = resolveModelAndFieldForValuePath(panelBuilder, model, valuePath);
    return at(modelAndField.model, modelAndField.field);
 }
 
-export function atFieldSpecification(panelBuilder, model, fieldSpecification) {
+export function atFieldSpecification(panelBuilder: PanelBuilder, model, fieldSpecification) {
     var modelAndField = resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
     return at(modelAndField.model, modelAndField.field);
 }

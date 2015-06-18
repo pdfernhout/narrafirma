@@ -3,6 +3,7 @@ import surveyCollection = require("../surveyCollection");
 import widgetSupport = require("../panelBuilder/widgetSupport");
 import ContentPane = require("dijit/layout/ContentPane");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
+import PanelBuilder = require("../panelBuilder/PanelBuilder");
 
 "use strict";
 
@@ -116,7 +117,7 @@ function loadLatestStories(graphBrowserInstance) {
     updateGraph(graphBrowserInstance);
 }
     
-function insertGraphBrowser(panelBuilder, contentPane, model, fieldSpecification) {       
+function insertGraphBrowser(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {       
     var choices = [];
     
     var xAxisSelect = widgetSupport.newSelect(contentPane, choices);
@@ -174,7 +175,7 @@ function insertGraphBrowser(panelBuilder, contentPane, model, fieldSpecification
     return graphResultsPane;
 }
 
-function add_graphBrowser(panelBuilder, contentPane, model, fieldSpecification) {
+function add_graphBrowser(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
     var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
     
     var graphBrowserInstance = insertGraphBrowser(panelBuilder, questionContentPane, model, fieldSpecification);
