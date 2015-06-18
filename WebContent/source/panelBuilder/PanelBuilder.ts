@@ -24,25 +24,45 @@ window["narraFirma_launchApplication"] = browser.launchApplication;
 // However, to use the AMD approach, that would mean everything that asked the builder
 // to do anything would have to wait on a callback for the builder to finish.
 
+function addButton(panelBuilder: PanelBuilder, model, fieldSpecification, callback): any {
+    if (!callback) callback = panelBuilder.buttonClicked.bind(panelBuilder, null, model, fieldSpecification);
+ 
+    var options: any = {
+        onclick: callback
+    };
+    
+    if (fieldSpecification.displayClass) options.class = fieldSpecification.displayClass;
+    if (fieldSpecification.displayIconClass) options.iconClass = fieldSpecification.displayIconClass;
+
+    var button = m("button", options, translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt));
+
+    // TODO: Improve the naming of displayPreventBreak, maybe by using displayConfiguration somehow, perhaps by changing the meaning of that field to something else
+
+    if (fieldSpecification.displayPreventBreak) return button;
+    return [button, m("br")];
+}
+
 function addStandardPlugins() {
-    // standard plugins
+    // shared with survey builder
     var displayQuestion = surveyBuilder.displayQuestion;
     PanelBuilder.addPlugin("boolean", displayQuestion);
-    PanelBuilder.addPlugin("button", displayQuestion);
     PanelBuilder.addPlugin("checkbox", displayQuestion);
     PanelBuilder.addPlugin("checkboxes", displayQuestion);
-    PanelBuilder.addPlugin("functionResult", displayQuestion);
-    PanelBuilder.addPlugin("grid", displayQuestion);
     PanelBuilder.addPlugin("header", displayQuestion);
-    PanelBuilder.addPlugin("html", displayQuestion);
-    PanelBuilder.addPlugin("image", displayQuestion);
     PanelBuilder.addPlugin("label", displayQuestion);
     PanelBuilder.addPlugin("radiobuttons", displayQuestion);
     PanelBuilder.addPlugin("select", displayQuestion);
     PanelBuilder.addPlugin("slider", displayQuestion);
     PanelBuilder.addPlugin("text", displayQuestion);
     PanelBuilder.addPlugin("textarea", displayQuestion);
-    PanelBuilder.addPlugin("toggleButton", displayQuestion);
+    
+    // other
+    PanelBuilder.addPlugin("button", addButton);
+    PanelBuilder.addPlugin("functionResult", null);
+    PanelBuilder.addPlugin("grid", null);
+    PanelBuilder.addPlugin("html", null);
+    PanelBuilder.addPlugin("image", null);
+    PanelBuilder.addPlugin("toggleButton", null);
 }
 
 var buildingFunctions = {};
@@ -115,9 +135,8 @@ class PanelBuilder {
             }
         }
         
-        // return addFunction(this, contentPane, model, fieldSpecification);
         try {
-            return addFunction(model, fieldSpecification);
+            return addFunction(this, model, fieldSpecification);
         } catch (e) {
             console.log("Exception creating widget", fieldSpecification.id, e);
             return "Exception creating widget: " + fieldSpecification.id + " :: " + e;

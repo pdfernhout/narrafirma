@@ -51,7 +51,8 @@ function globalRedraw() {
     globalRedrawCallback();
 }
 
-export function displayQuestion(model, fieldSpecification) {
+// Builder is used by main application, and is passed in for compatibility
+export function displayQuestion(builder, model, fieldSpecification) {
     var fieldID = fieldSpecification.id;
     if (model) {
         fieldID = (model._storyID || model._participantID) + "__" + fieldID;
@@ -386,7 +387,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewM
             }, "Delete this story"),
             m("hr"),
             
-            allStoryQuestions.map(displayQuestion.bind(null, story))
+            allStoryQuestions.map(displayQuestion.bind(null, null, story))
         ];
         
         var evenOrOdd = (index % 2 === 1) ? "narrafirma-survey-story-odd" : "narrafirma-survey-story-even";
@@ -455,7 +456,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewM
                 return m("div", [
                     "Server accepted survey OK",
                     m("br"),
-                    displayQuestion(null, question),
+                    displayQuestion(null, null, question),
                     m("br"),
                     m("br")
                 ]);
@@ -516,14 +517,14 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewM
     var view = function() {
         var result = m("div", [
             startQuestions.map(function(question, index) {
-                return m("div", [displayQuestion(null, question)]);
+                return m("div", [displayQuestion(null, null, question)]);
             }),
             stories.map(function(story, index) {
                 return displayStoryQuestions(story, index);
             }),
             anotherStoryButton(),
             participantQuestions.map(function(question, index) {
-                return m("div", [displayQuestion(surveyResult.participantData, question)]);
+                return m("div", [displayQuestion(null, surveyResult.participantData, question)]);
             }),
             submitButtonOrWaitOrFinal()
             /* 
