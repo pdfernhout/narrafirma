@@ -20,7 +20,8 @@ function add_functionResult(panelBuilder: PanelBuilder, contentPane, model, fiel
         var subscription = topic.subscribe(functionName, panelBuilder.updateLabelUsingCalculation.bind(panelBuilder, label["updateInfo"]));
     
         // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
-        label.own(subscription);
+        // TODO: Using cast to any as workaround for probably incorrect Dojo type definition
+        (<any>label).own(subscription);
     }
     
     return label;
