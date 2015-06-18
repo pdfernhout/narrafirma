@@ -4,6 +4,7 @@ import domConstruct = require("dojo/dom-construct");
 import domStyle = require("dojo/dom-style");
 import navigationPane = require("./navigationPane");
 import Standby = require("dojox/widget/Standby");
+import PanelBuilder = require("panelBuilder/PanelBuilder");
 
 "use strict";
 
@@ -13,7 +14,7 @@ var currentPage;
 
 var startPage;
 
-var panelBuilder;
+var panelBuilder: PanelBuilder;
 var currentPageWidgets;
 
 var project;
@@ -24,7 +25,7 @@ var standbyStartTimer;
 var standbyStartWait_ms = 100;
 
 // Call this once at the beginning of the application
-export function configurePageDisplayer(thePanelBuilder, theStartPage, theProject) {
+export function configurePageDisplayer(thePanelBuilder: PanelBuilder, theStartPage, theProject) {
     panelBuilder = thePanelBuilder;
     startPage = theStartPage;
     project = theProject;

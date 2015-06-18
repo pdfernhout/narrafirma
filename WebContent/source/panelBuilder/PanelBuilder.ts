@@ -73,17 +73,13 @@ class PanelBuilder {
     currentHelpPage = null;
     currentHelpSection = null;
     applicationDirectory = "/";
+    
+    // TODO: Maybe these should not be in builder?
+    clientState = null;
+    project = null;
+    projectModel = null;
 
-    constructor(kwArgs) {
-        this.currentQuestionContentPane = null;
-        this.currentInternalContentPane = null;
-        this.panelSpecificationCollection = null;
-        this.buttonClickedCallback = null;
-        this.calculateFunctionResultCallback = null;
-        this.addHelpIcons = false;
-        this.currentHelpPage = null;
-        this.currentHelpSection = null;
-        this.applicationDirectory = "/";
+    constructor(kwArgs = {}) {
         
         for (var key in kwArgs) {
             this[key] = kwArgs[key];
@@ -173,7 +169,7 @@ class PanelBuilder {
        domConstruct.place(node, contentPane.domNode);
     }
     
-    newContentPane(configuration) {
+    newContentPane(configuration = null) {
         if (!configuration) return new ContentPane();
         return new ContentPane(configuration);
     }
