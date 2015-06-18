@@ -96,6 +96,22 @@ a:active {
 	font-weight: 700;
 }
 
+.outcomes_table {
+	border-collapse: collapse;
+}
+
+.outcomes_table th {
+	padding: 0.4em;
+	border: 1px solid #3e3739;
+	background: #a7a5a5;
+}
+
+.outcomes_table td {
+	padding: 0.4em;
+	border: 1px solid #3e3739;
+	background: white;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ old, maybe not used ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .section {
