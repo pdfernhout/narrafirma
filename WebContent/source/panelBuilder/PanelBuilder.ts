@@ -32,12 +32,6 @@ var ResultTagToReplace = "{{result}}";
 // TODO: Need a better approach for calling JavaScript function than this
 window["narraFirma_launchApplication"] = browser.launchApplication;
 
-var buildingFunctions = {};
-
-function addPlugin(name, callback) {
-    buildingFunctions[name] = callback;
-}
-
 // TODO: Think about how to load plugins only as needed at runtime.
 // Asynchronous callbacks are nice, until you realize you would need
 // to refactor a lot to introduce one deep down in your application.
@@ -47,29 +41,40 @@ function addPlugin(name, callback) {
 
 function addStandardPlugins() {
     // standard plugins
-    addPlugin("boolean", add_boolean);
-    addPlugin("button", add_button);
-    addPlugin("checkbox", add_checkbox);
-    addPlugin("checkboxes", add_checkboxes);
-    addPlugin("functionResult", add_functionResult);
-    addPlugin("grid", add_grid);
-    addPlugin("header", add_header);
-    addPlugin("html", add_html);
-    addPlugin("image", add_image);
-    addPlugin("label", add_label);
-    addPlugin("radiobuttons", add_radiobuttons);
-    addPlugin("select", add_select);
-    addPlugin("slider", add_slider);
-    addPlugin("text", add_text);
-    addPlugin("textarea", add_textarea);
-    addPlugin("toggleButton", add_toggleButton);
+    PanelBuilder.addPlugin("boolean", add_boolean);
+    PanelBuilder.addPlugin("button", add_button);
+    PanelBuilder.addPlugin("checkbox", add_checkbox);
+    PanelBuilder.addPlugin("checkboxes", add_checkboxes);
+    PanelBuilder.addPlugin("functionResult", add_functionResult);
+    PanelBuilder.addPlugin("grid", add_grid);
+    PanelBuilder.addPlugin("header", add_header);
+    PanelBuilder.addPlugin("html", add_html);
+    PanelBuilder.addPlugin("image", add_image);
+    PanelBuilder.addPlugin("label", add_label);
+    PanelBuilder.addPlugin("radiobuttons", add_radiobuttons);
+    PanelBuilder.addPlugin("select", add_select);
+    PanelBuilder.addPlugin("slider", add_slider);
+    PanelBuilder.addPlugin("text", add_text);
+    PanelBuilder.addPlugin("textarea", add_textarea);
+    PanelBuilder.addPlugin("toggleButton", add_toggleButton);
 }
+
+var buildingFunctions = {};
 
 // This class builds panels from field specifications.
 // Field specifications define what widget to display and how to hook that widget to a model.
-var PanelBuilder = declare(null, {
+class PanelBuilder {
+    currentQuestionContentPane = null;
+    currentInternalContentPane = null;
+    panelSpecificationCollection = null;
+    buttonClickedCallback = null;
+    calculateFunctionResultCallback = null;
+    addHelpIcons = false;
+    currentHelpPage = null;
+    currentHelpSection = null;
+    applicationDirectory = "/";
 
-    constructor: function(kwArgs) {
+    constructor(kwArgs) {
         this.currentQuestionContentPane = null;
         this.currentInternalContentPane = null;
         this.panelSpecificationCollection = null;
@@ -83,14 +88,18 @@ var PanelBuilder = declare(null, {
         for (var key in kwArgs) {
             this[key] = kwArgs[key];
         }
-    },
+    }
+    
+    static addPlugin(name, callback) {
+        buildingFunctions[name] = callback;
+    }
     
     // provide a way to find definitions needed to  build internal panels for some widgets like the GridWithItemPanel
-    setPanelSpecifications: function(panelSpecificationCollection) {
+    setPanelSpecifications(panelSpecificationCollection) {
         this.panelSpecificationCollection = panelSpecificationCollection;
-    },
+    }
     
-    addMissingWidgetPlaceholder: function(panelBuilder, contentPane, model, fieldSpecification) {
+    addMissingWidgetPlaceholder(panelBuilder, contentPane, model, fieldSpecification) {
         var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
         
         var label = new ContentPane({
@@ -99,9 +108,9 @@ var PanelBuilder = declare(null, {
         });
         label.placeAt(questionContentPane);
         return label;
-    },
+    }
     
-    buildField: function(contentPane, model, fieldSpecification) {
+    buildField(contentPane, model, fieldSpecification) {
         // console.log("buildField", fieldSpecification);
         
         var addFunction = buildingFunctions[fieldSpecification.displayType];
@@ -125,10 +134,10 @@ var PanelBuilder = declare(null, {
         }
         
         return addFunction(this, contentPane, model, fieldSpecification);
-    },
+    }
     
     // Returns dictionary mapping from field IDs to widgets
-    buildFields: function(fieldSpecifications, contentPane, model) {
+    buildFields(fieldSpecifications, contentPane, model) {
         // console.log("buildFields", fieldSpecifications);
         if (!fieldSpecifications) {
             throw new Error("fieldSpecifications are not defined");
@@ -141,10 +150,10 @@ var PanelBuilder = declare(null, {
             widgets[fieldSpecification.id] = widget;
         }
         return widgets;
-    },
+    }
     
     // Build an entire panel; panel can be either a string ID referring to a panel or it can be a panel definition itself
-    buildPanel: function(panelOrPanelID, contentPane, model) {
+    buildPanel(panelOrPanelID, contentPane, model) {
         console.log("buildPanel", panelOrPanelID);
         var fieldSpecifications;
         if (_.isString(panelOrPanelID)) {
@@ -157,27 +166,27 @@ var PanelBuilder = declare(null, {
             fieldSpecifications = panelOrPanelID.panelFields;
         }
         return this.buildFields(fieldSpecifications, contentPane, model);
-    },
+    }
     
-    addHTML: function(contentPane, htmlText) {
+    addHTML(contentPane, htmlText) {
        var node = domConstruct.toDom(htmlText);
        domConstruct.place(node, contentPane.domNode);
-    },
+    }
     
-    newContentPane: function(configuration) {
+    newContentPane(configuration) {
         if (!configuration) return new ContentPane();
         return new ContentPane(configuration);
-    },
+    }
     
     // Set this correctly before building a page to provide default help when it is not in a field specification
-    setCurrentHelpPageAndSection: function(helpPage, helpSection) {
+    setCurrentHelpPageAndSection(helpPage, helpSection) {
         this.currentHelpPage = helpPage;
         this.currentHelpSection = helpSection;
-    },
+    }
 
     /// Suport functions
     
-    getPanelDefinitionForPanelID: function(panelID) {
+    getPanelDefinitionForPanelID(panelID) {
         if (!this.panelSpecificationCollection) {
             throw new Error("No panelSpecificationCollection set in PanelBuilder so can not resolve panelID: " + panelID);
         }
@@ -190,10 +199,10 @@ var PanelBuilder = declare(null, {
         
         console.log("getPanelDefinitionForPanelID", panelID, panelSpecification);
         return panelSpecification;
-    },
+    }
     
     // Convenience method for most common case of finding page specification
-    getPageSpecificationForPageID: function(pageID) {
+    getPageSpecificationForPageID(pageID) {
         if (!this.panelSpecificationCollection) {
             throw new Error("No panelSpecificationCollection set in PanelBuilder so can not resolve pageID: " + pageID);
         }
@@ -206,14 +215,14 @@ var PanelBuilder = declare(null, {
         
         console.log("getPageSpecificationForPageID", pageID, pageSpecification);
         return pageSpecification;
-    },
+    }
     
     // Provide a way to tell buttons what to do when clicked
-    setButtonClickedCallback: function(callback) {
+    setButtonClickedCallback(callback) {
         this.buttonClickedCallback = callback;
-    },
+    }
     
-    buttonClicked: function(contentPane, model, fieldSpecification, event) {
+    buttonClicked(contentPane, model, fieldSpecification, event) {
         if (_.isFunction(fieldSpecification.displayConfiguration)) {
             // Do callback; this can't be defined in JSON, but can be defined in an application
             fieldSpecification.displayConfiguration();
@@ -224,13 +233,13 @@ var PanelBuilder = declare(null, {
             throw new Error("No buttonClickedCallback set for PanelBuilder");
         }
         this.buttonClickedCallback(this, contentPane, model, fieldSpecification, event);
-    },
+    }
     
-    setCalculateFunctionResultCallback: function(callback) {
+    setCalculateFunctionResultCallback(callback) {
         this.calculateFunctionResultCallback = callback;
-    },
+    }
     
-    calculateFunctionResult: function(contentPane, model, fieldSpecification) {
+    calculateFunctionResult(contentPane, model, fieldSpecification) {
         if (_.isFunction(fieldSpecification.displayConfiguration)) {
             // Do callback; this can't be defined in JSON, but can be defined in an application
             return fieldSpecification.displayConfiguration();
@@ -240,10 +249,10 @@ var PanelBuilder = declare(null, {
             throw new Error("No calculateFunctionResultCallback set for PanelBuilder");
         }
         return this.calculateFunctionResultCallback(this, contentPane, model, fieldSpecification, fieldSpecification.displayConfiguration);
-    },
+    }
     
     // This will only be valid during the building process for a page
-    helpPageURLForField: function(fieldSpecification) {
+    helpPageURLForField(fieldSpecification) {
         var section = fieldSpecification.helpSection;
         if (!section) section = this.currentHelpSection;
         var pageID = fieldSpecification.helpPage;
@@ -257,10 +266,10 @@ var PanelBuilder = declare(null, {
             if (helpID) url += '#' + helpID;
         }
         return url;
-    },
+    }
                 
     // TODO: Fix all this so attaching actual JavaScript function not text to be interpreted
-    htmlForInformationIcon: function(url) {
+    htmlForInformationIcon(url) {
         if (!url) return "";
         var template = '<img src="{iconFile}" height=16 width=16 title="{title}" onclick="window.narraFirma_launchApplication(\'{url}\', \'help\')">';
         var replacements = {
@@ -282,9 +291,9 @@ var PanelBuilder = declare(null, {
         }
 
         return replace(template, replacements);
-    },
+    }
     
-    createQuestionContentPaneWithPrompt: function(contentPane, fieldSpecification) {
+    createQuestionContentPaneWithPrompt(contentPane, fieldSpecification) {
         // triangle&#8227; 
         // double arrow &#187;
         // Arrow with hook &#8618;
@@ -335,11 +344,11 @@ var PanelBuilder = declare(null, {
         this.currentInternalContentPane = internalContentPane;
         
         return internalContentPane;
-    },
+    }
           
     ////// Support for fields that recalculate based on other fields
     
-    updateLabelUsingCalculation: function(updateInfo) { 
+    updateLabelUsingCalculation(updateInfo) { 
         // console.log("recalculating label", data);
         if (!updateInfo) {
             throw new Error("updateLabelUsingCalculation: updateInfo should not be empty");
@@ -358,9 +367,9 @@ var PanelBuilder = declare(null, {
         }
         updateInfo.label.set("content", newLabelText);
         // console.log("recalculated label: ", updateInfo.id, calculatedText);
-    },
+    }
 
-    _add_calculatedText: function(panelBuilder, contentPane, fieldSpecification, calculate) {
+    _add_calculatedText(panelBuilder, contentPane, fieldSpecification, calculate) {
         if (!calculate) {
             throw new Error("_add_calculatedText: calculate parameter should not be empty");
         }
@@ -377,10 +386,7 @@ var PanelBuilder = declare(null, {
 
         return label;
     }
-    
-});
-
-PanelBuilder.addPlugin = addPlugin;
+}
 
 addStandardPlugins();
 
