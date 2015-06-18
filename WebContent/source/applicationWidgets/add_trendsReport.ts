@@ -8,6 +8,7 @@ import storyCardDisplay = require("../storyCardDisplay");
 import surveyCollection = require("../surveyCollection");
 import topic = require("../pointrel20150417/topic");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
+import PanelBuilder = require("panelBuilder/PanelBuilder");
 
 "use strict";
 
@@ -472,7 +473,7 @@ function resetGraphSelection(graphBrowserInstance) {
     charting.restoreSelection(graph, selection);
 }
 
-function add_trendsReport(panelBuilder, contentPane, model, fieldSpecification) {
+function add_trendsReport(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
     var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
 
     var graphResultsPane = new ContentPane({

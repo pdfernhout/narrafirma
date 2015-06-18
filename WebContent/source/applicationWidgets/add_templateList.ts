@@ -2,6 +2,7 @@ import dialogSupport = require("../panelBuilder/dialogSupport");
 import domClass = require("dojo/dom-class");
 import templates = require("../templates/templates");
 import GridWithItemPanel = require("../panelBuilder/standardWidgets/GridWithItemPanel");
+import PanelBuilder = require("panelBuilder/PanelBuilder");
 
 "use strict";
 
@@ -95,7 +96,7 @@ function useButtonClicked(templateListChoice, model, hideDialogCallback, gridWit
    }
 }
 
-function makeTemplateListChooser(panelBuilder, contentPane, model, hideDialogCallback, dialogConfiguration) {
+function makeTemplateListChooser(panelBuilder: PanelBuilder, contentPane, model, hideDialogCallback, dialogConfiguration) {
     var fieldSpecification = dialogConfiguration.fieldSpecification;
    
     var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);

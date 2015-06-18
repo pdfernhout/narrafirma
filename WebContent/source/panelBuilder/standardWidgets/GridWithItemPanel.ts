@@ -14,6 +14,7 @@ import Selection = require("dgrid/Selection");
 import Stateful = require("dojo/Stateful");
 import Trackable = require("dstore/Trackable");
 import OnDemandGrid = require("dgrid/OnDemandGrid");
+import PanelBuilder = require("panelBuilder/PanelBuilder");
 
 "use strict";
 
@@ -39,7 +40,7 @@ var debugSelecting = false;
      validateEdit: "methodName"
 };
  */
-function GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration, model) {
+function GridWithItemPanel(panelBuilder: PanelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration, model) {
     var self = this;
     
     console.log("=========== creating GridWithItemPanel with itemPanelSpecification", itemPanelSpecification);
