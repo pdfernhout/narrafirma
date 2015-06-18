@@ -42,6 +42,24 @@ function addButton(panelBuilder: PanelBuilder, model, fieldSpecification, callba
     return [button, m("br")];
 }
 
+function addHTML(panelBuilder: PanelBuilder, model, fieldSpecification, callback): any {
+    return m.trust(fieldSpecification.displayPrompt);
+}
+
+function addImage(panelBuilder: PanelBuilder, model, fieldSpecification, callback): any {
+    var imageSource = fieldSpecification.displayConfiguration;
+    var questionText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt || "");
+
+    return [
+        m.trust(questionText),
+        m("br"),
+        m("img", {
+            src: panelBuilder.applicationDirectory + imageSource,
+            alt: "Image for question: " + questionText
+        })
+    ];
+}
+
 function addStandardPlugins() {
     // shared with survey builder
     var displayQuestion = surveyBuilder.displayQuestion;
@@ -58,10 +76,11 @@ function addStandardPlugins() {
     
     // other
     PanelBuilder.addPlugin("button", addButton);
+    
     PanelBuilder.addPlugin("functionResult", null);
     PanelBuilder.addPlugin("grid", null);
-    PanelBuilder.addPlugin("html", null);
-    PanelBuilder.addPlugin("image", null);
+    PanelBuilder.addPlugin("html", addHTML);
+    PanelBuilder.addPlugin("image", addImage);
     PanelBuilder.addPlugin("toggleButton", null);
 }
 
