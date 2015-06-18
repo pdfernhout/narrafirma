@@ -11915,7 +11915,7 @@ declare module dojox {
              * @param changeSize             
              * @param resultSize             
              */
-            resize(changeSize: any, resultSize: any): void;
+            resize(changeSize?: any, resultSize?: any): void;
             /**
              * Set a property on a widget
              * Sets named properties on a widget which may potentially be handled by a
@@ -21352,7 +21352,7 @@ declare module dojox {
              * @param changeSize             
              * @param resultSize             
              */
-            resize(changeSize: any, resultSize: any): void;
+            resize(changeSize?: any, resultSize?: any): void;
             /**
              * Set a property on a widget
              * Sets named properties on a widget which may potentially be handled by a
@@ -22444,7 +22444,7 @@ declare module dojox {
              * @param changeSize             
              * @param resultSize             
              */
-            resize(changeSize: any, resultSize: any): void;
+            resize(changeSize?: any, resultSize?: any): void;
             /**
              * Set a property on a widget
              * Sets named properties on a widget which may potentially be handled by a
@@ -23839,7 +23839,7 @@ declare module dojox {
              * @param changeSize             
              * @param resultSize             
              */
-            resize(changeSize: any, resultSize: any): void;
+            resize(changeSize?: any, resultSize?: any): void;
             /**
              * Set a property on a widget
              * Sets named properties on a widget which may potentially be handled by a
@@ -30103,7 +30103,7 @@ declare module dojox {
              * @param changeSize             
              * @param resultSize             
              */
-            resize(changeSize: any, resultSize: any): void;
+            resize(changeSize?: any, resultSize?: any): void;
             /**
              * Set a property on a widget
              * Sets named properties on a widget which may potentially be handled by a
