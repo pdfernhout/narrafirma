@@ -1,15 +1,14 @@
-import domConstruct = require("dojo/dom-construct");
 import storyCardDisplay = require("../storyCardDisplay");
 import surveyCollection = require("../surveyCollection");
-import GridWithItemPanel = require("../panelBuilder/standardWidgets/GridWithItemPanel");
 import widgetSupport = require("../panelBuilder/widgetSupport");
-import ContentPane = require("dijit/layout/ContentPane");
-import TableContainer = require("dojox/layout/TableContainer");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
+import surveyBuilderMithril = require("../surveyBuilderMithril");
+import m = require("mithril");
 
 "use strict";
 
+/*
 // story browser support
 
 // TODO: Probably should make this a class
@@ -373,12 +372,32 @@ function setStoryListForCurrentFilters(storyBrowserInstance) {
     // console.log("finished setting list with newStore", newStore);
 }
 
-function add_storyBrowser(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
-    var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
+*/
+
+var StoryBrowser = {
+    controller: function(args) {
+    },
     
-    var storyBrowserInstance = insertStoryBrowser(panelBuilder, questionContentPane, model, fieldSpecification);
-    questionContentPane.resize();
-    return storyBrowserInstance;
+    view: function(ctrl, args) {
+        var panelBuilder = args.panelBuilder;
+        
+        var prompt = surveyBuilderMithril.buildQuestionLabel(args.fieldSpecification);
+        
+        var rest = m("div", "story browser unfinished");
+        
+        var parts = [prompt, rest];
+        
+        // TODO: set class etc.
+        return m("div", parts);
+    }
+}
+
+function add_storyBrowser(panelBuilder: PanelBuilder, model, fieldSpecification) {
+    return m.component(<any>StoryBrowser, {panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
+    
+    /*
+    var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
+    */
 }
 
 export = add_storyBrowser;
