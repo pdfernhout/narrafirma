@@ -1,6 +1,7 @@
 import m = require("mithril");
 import translate = require("./translate");
 import surveyBuilderMithril = require("../surveyBuilderMithril");
+import PanelBuilder = require("panelBuilder/PanelBuilder");
 
 "use strict";
 
@@ -148,6 +149,7 @@ var Grid = {
         this.data = data;
         this.columns = columns;
         this.itemBeingEdited = null;
+        this.itemPanelSpecification = itemPanelSpecification;
     },
     
     view: function(ctrl, args) {
@@ -161,11 +163,19 @@ var Grid = {
             ),
             ctrl.data.map(function(item, index) {
                 return Grid.rowForItem(ctrl, panelBuilder, item, index);
-            })
+            }).concat(m("tr", [m("button", {onclick: Grid.addItem.bind(ctrl, panelBuilder)}, "Add")]))
         ]);
         
         // TODO: set class etc.
         return m("div", [table]);
+    },
+    
+    addItem: function(panelBuilder) {
+        var newItem = {};
+        newItem[this.idProperty] = new Date().toISOString();
+        this.data.push(newItem);
+        this.itemBeingEdited = newItem;
+        panelBuilder.redraw();       
     },
     
     deleteItem: function (panelBuilder, item, index) {
@@ -186,9 +196,10 @@ var Grid = {
     
     rowForItem: function (ctrl, panelBuilder, item, index) {
         if (ctrl.itemBeingEdited === item) {
-            return m("tr", 
-                m("td", {colSpan: ctrl.columns.length}, [m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item})])
-            );
+            return m("tr", [
+                m("td", {colSpan: ctrl.columns.length}, [m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: ctrl})]),
+                m("td", "Closer goes here")
+            ]);
         }
         return m("tr", {key: item[ctrl.idProperty]}, ctrl.columns.map(function (column) {
             return m("td[style=outline: thin solid]", {"text-overflow": "ellipsis"}, item[column.field])
@@ -212,7 +223,12 @@ var ItemPanel = {
     
     view: function(ctrl, args) {
         console.log("%%%%%%%%%%%%%%%%%%% ItemPanel view called");
-        return m("div", "work in progress");
+        // return m("div", "work in progress");
+        // TODO: Should provide copy of item?
+        var panelBuilder: PanelBuilder = args.panelBuilder;
+        // Possible recursion if the panels contain a table
+        return m("div", panelBuilder.buildPanel(args.grid.itemPanelSpecification, null, args.item))
+
     }
 }
     
