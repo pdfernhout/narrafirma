@@ -150,6 +150,24 @@ var Grid = {
         this.itemBeingEdited = null;
     },
     
+    view: function(ctrl, args) {
+        var panelBuilder = args.panelBuilder;
+        
+        // return m("table", sorts(ctrl.list), [
+        var table = m("table", sorts(panelBuilder, ctrl.data), [
+            m("tr[style=outline: thin solid; background-color: #66CCFF]", ctrl.columns.map(function (column) {
+                    return m("th[data-sort-by=" + column.field  + "]", {"text-overflow": "ellipsis"}, column.label)
+                }).concat(m("th", ""))
+            ),
+            ctrl.data.map(function(item, index) {
+                return Grid.rowForItem(ctrl, panelBuilder, item, index);
+            })
+        ]);
+        
+        // TODO: set class etc.
+        return m("div", [table]);
+    },
+    
     deleteItem: function (panelBuilder, item, index) {
         // TODO: This needs to create an action that affects original list
         console.log("deleteItem", panelBuilder, item, index);
@@ -169,7 +187,7 @@ var Grid = {
     rowForItem: function (ctrl, panelBuilder, item, index) {
         if (ctrl.itemBeingEdited === item) {
             return m("tr", 
-                m("td", {colSpan: ctrl.columns.length}, "This item is being edited")
+                m("td", {colSpan: ctrl.columns.length}, [m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item})])
             );
         }
         return m("tr", {key: item[ctrl.idProperty]}, ctrl.columns.map(function (column) {
@@ -179,26 +197,24 @@ var Grid = {
             m("button", {onclick: Grid.editItem.bind(ctrl, panelBuilder, item, index)}, "edit"),
             m("button", "view")
         ])));
+    }
+};
+
+var ItemPanel = {
+    controller: function(args) {
+        console.log("%%%%%%%%%%%%%%%%%%% ItemPanel controller called");
+        // TODO: just seeing "placeholder" and view not called the first time; figure out why??
+        // https://lhorie.github.io/mithril/mithril.component.html
+        // TODO: Seem to need to queue a redraw to get the component rendered the first time (and not call directly to avoid endless recursion)
+        // TODO: However, this is not needed if the entire larger component assembly is "mounted". Maybe Mithril bug?
+        setTimeout(args.panelBuilder.redraw, 0);
     },
     
     view: function(ctrl, args) {
-        var panelBuilder = args.panelBuilder;
-        
-        // return m("table", sorts(ctrl.list), [
-        var table = m("table", sorts(panelBuilder, ctrl.data), [
-            m("tr[style=outline: thin solid; background-color: #66CCFF]", ctrl.columns.map(function (column) {
-                    return m("th[data-sort-by=" + column.field  + "]", {"text-overflow": "ellipsis"}, column.label)
-                }).concat(m("th", ""))
-            ),
-            ctrl.data.map(function(item, index) {
-                return Grid.rowForItem(ctrl, panelBuilder, item, index);
-            })
-        ]);
-        
-        // TODO: set class etc.
-        return m("div", [table]);
+        console.log("%%%%%%%%%%%%%%%%%%% ItemPanel view called");
+        return m("div", "work in progress");
     }
-};
+}
     
 
 export function add_grid(panelBuilder, model, fieldSpecification) {

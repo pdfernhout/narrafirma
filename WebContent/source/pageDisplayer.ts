@@ -207,7 +207,18 @@ function createPage(pageID, pageSpecification, modelForPage) {
     };
     
     panelBuilder.redraw();
-
+    
+    // TODO: Temporary testing
+    /*
+    var Page = {
+        controller: function(args) {},
+        view: function(ctrl, args) {
+            return panelBuilder.buildPanel(pageID, pagePane, modelForPage);
+        }
+    };
+    m.mount(pagePane.domNode, <any>Page);
+*/
+    
     return pagePane;
 }
 
