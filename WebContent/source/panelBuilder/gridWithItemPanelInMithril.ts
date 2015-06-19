@@ -66,8 +66,8 @@ function sorts(panelBuilder, list) {
     return {
         onclick: function(e) {
             var prop = e.target.getAttribute("data-sort-by")
-            console.log("Sorting by", prop);
             if (prop) {
+                console.log("Sorting by", prop);
                 var first = list[0];
                 list.sort(function(a, b) {
                     return a[prop] > b[prop] ? 1 : a[prop] < b[prop] ? -1 : 0;
@@ -76,9 +76,9 @@ function sorts(panelBuilder, list) {
                     console.log("reversing");
                     list.reverse();
                 }
+                console.log("sorted list", list);
+                panelBuilder.redraw();
             }
-            console.log("sorted list", list);
-            panelBuilder.redraw();
         }
     }
 }
