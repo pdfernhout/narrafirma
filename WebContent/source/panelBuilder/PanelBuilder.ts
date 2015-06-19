@@ -42,11 +42,11 @@ function addButton(panelBuilder: PanelBuilder, model, fieldSpecification, callba
     return [button, m("br")];
 }
 
-function addHTML(panelBuilder: PanelBuilder, model, fieldSpecification, callback): any {
+function add_html(panelBuilder: PanelBuilder, model, fieldSpecification, callback): any {
     return m.trust(fieldSpecification.displayPrompt);
 }
 
-function addImage(panelBuilder: PanelBuilder, model, fieldSpecification, callback): any {
+function add_image(panelBuilder: PanelBuilder, model, fieldSpecification, callback): any {
     var imageSource = fieldSpecification.displayConfiguration;
     var questionText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt || "");
 
@@ -58,6 +58,32 @@ function addImage(panelBuilder: PanelBuilder, model, fieldSpecification, callbac
             alt: "Image for question: " + questionText
         })
     ];
+}
+
+function calculate_function(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
+    console.log("calculate_function called", fieldSpecification);
+    return panelBuilder.calculateFunctionResult(contentPane, model, fieldSpecification);
+}
+
+function add_functionResult(panelBuilder: PanelBuilder, model, fieldSpecification, callback): any {
+    var calculate = calculate_function.bind(null, panelBuilder, null, model, fieldSpecification);
+    
+    var label = panelBuilder._add_calculatedText(panelBuilder, null, fieldSpecification, calculate);
+    
+    var functionName = fieldSpecification.displayConfiguration;
+    
+    /*
+    TODO: This should now be triggered via a Mithril redraw... Or maybe this should queue a redraw???
+    import topic = require("../../pointrel20150417/topic");
+    if (_.isString(functionName)) {
+        // Subscribe for updates on the same topic as the function name
+        var subscription = topic.subscribe(functionName, panelBuilder.updateLabelUsingCalculation.bind(panelBuilder, label["updateInfo"]));
+    
+        // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
+        // TODO: Using cast to any as workaround for probably incorrect Dojo type definition
+        (<any>label).own(subscription);
+    }
+    */
 }
 
 function addStandardPlugins() {
@@ -77,10 +103,10 @@ function addStandardPlugins() {
     // other
     PanelBuilder.addPlugin("button", addButton);
     
-    PanelBuilder.addPlugin("functionResult", null);
+    PanelBuilder.addPlugin("functionResult", add_functionResult);
     PanelBuilder.addPlugin("grid", null);
-    PanelBuilder.addPlugin("html", addHTML);
-    PanelBuilder.addPlugin("image", addImage);
+    PanelBuilder.addPlugin("html", add_html);
+    PanelBuilder.addPlugin("image", add_image);
 }
 
 var buildingFunctions = {};
