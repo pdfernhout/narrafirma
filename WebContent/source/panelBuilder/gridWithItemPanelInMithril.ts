@@ -1,5 +1,6 @@
 import m = require("mithril");
 import translate = require("./translate");
+import surveyBuilderMithril = require("../surveyBuilderMithril");
 
 "use strict";
 
@@ -60,24 +61,25 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, configu
     return columns;
 }
 
-function sorts(list) {
+// Sorts function derived from: http://lhorie.github.io/mithril-blog/vanilla-table-sorting.html
+function sorts(panelBuilder, list) {
     return {
         onclick: function(e) {
             var prop = e.target.getAttribute("data-sort-by")
+            console.log("Sorting by", prop);
             if (prop) {
-                var first = list[0]
+                var first = list[0];
                 list.sort(function(a, b) {
-                    return a[prop] > b[prop] ? 1 : a[prop] < b[prop] ? -1 : 0
+                    return a[prop] > b[prop] ? 1 : a[prop] < b[prop] ? -1 : 0;
                 })
-                if (first === list[0]) list.reverse()
+                if (first === list[0]) list.reverse();
             }
+            panelBuilder.redraw();
         }
     }
 }
 
 export function add_grid(panelBuilder, model, fieldSpecification) {
-    // return m("div", "Mithril grid unfinished");
-    
     var configuration = {
         itemPanelID: undefined,
         itemPanelSpecification: undefined,
@@ -116,11 +118,13 @@ export function add_grid(panelBuilder, model, fieldSpecification) {
         model.set(fieldSpecification.id, data);
     }
     
+    /*
     var bigData = [];
-    for (var i = 0; i < 100; i++) {
+    for (var i = 0; i < 5; i++) {
         bigData = bigData.concat(data);
     }
     data = bigData;
+    */
     
     var idProperty = configuration.idProperty;
     if (!idProperty) idProperty = "_id";
@@ -128,15 +132,18 @@ export function add_grid(panelBuilder, model, fieldSpecification) {
     var columns = computeColumnsForItemPanelSpecification(itemPanelSpecification, configuration);
     
     // return m("table", sorts(ctrl.list), [
-    return m("table", [
-        m("tr[style=outline: thin solid; background-color: red]", columns.map(function (column) {
-                return m("th", column.label)
-            }).concat(m("th", "Actions"))
+    var table = m("table", sorts(panelBuilder, data), [
+        m("tr[style=outline: thin solid; background-color: #66CCFF]", columns.map(function (column) {
+                return m("th[data-sort-by=" + column.field  + "]", {"text-overflow": "ellipsis"}, column.label)
+            }).concat(m("th", ""))
         ),
         data.map(function(item) {
             return m("tr", columns.map(function (column) {
-                return m("td[style=outline: thin solid;]", item[column.field])
-            }).concat(m("td[style=outline: thin solid;]", {nowrap: true}, [m("button", "delete"), m("button", "edit"), m("button", "view")])))
+                return m("td[style=outline: thin solid]", {"text-overflow": "ellipsis"}, item[column.field])
+            }).concat(m("td[style=outline: thin solid]", {nowrap: true}, [m("button", "delete"), m("button", "edit"), m("button", "view")])))
         })
-    ])
+    ]);
+    
+    // TODO: set class etc.
+    return m("div", [table]);
 }

@@ -124,6 +124,7 @@ class PanelBuilder {
     currentHelpPage = null;
     currentHelpSection = null;
     applicationDirectory = "/";
+    redraw = null;
     
     // TODO: Maybe these should not be in builder?
     clientState = null;

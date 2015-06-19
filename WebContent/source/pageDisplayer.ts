@@ -191,17 +191,22 @@ function createPage(pageID, pageSpecification, modelForPage) {
 
     // console.log("Made content pane", pageID);
 
-    try {
-        // Tell the panelBuilder to create all the widgets for this page
-        currentPageWidgets = panelBuilder.buildPanel(pageID, pagePane, modelForPage);
-    } catch (e) {
-        console.log("Error when trying to build panel", pageID, modelForPage, e);
-        // TODO: Translate
-        alert("Something went wrong when trying to build this page.\nCheck the console for details");
-    }
+    // TODO: sthould not be redefining this function each time...
+    // TODO: No removal done for old widgets when re-render?
+    panelBuilder.redraw = function() {
+        try {
+            // Tell the panelBuilder to create all the widgets for this page
+            currentPageWidgets = panelBuilder.buildPanel(pageID, pagePane, modelForPage);
+        } catch (e) {
+            console.log("Error when trying to build panel", pageID, modelForPage, e);
+            // TODO: Translate
+            alert("Something went wrong when trying to build this page.\nCheck the console for details");
+        }
     
-    // TODO: No removal done for old widgets?
-    m.render(pagePane.domNode, currentPageWidgets);
+        m.render(pagePane.domNode, currentPageWidgets);
+    };
+    
+    panelBuilder.redraw();
 
     return pagePane;
 }
