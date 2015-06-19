@@ -147,6 +147,7 @@ var Grid = {
      
         this.data = data;
         this.columns = columns;
+        this.itemBeingEdited = null;
     },
     
     deleteItem: function (panelBuilder, item, index) {
@@ -154,6 +155,30 @@ var Grid = {
         console.log("deleteItem", panelBuilder, item, index);
         this.data.splice(index, 1);
         panelBuilder.redraw();
+    },
+    
+    editItem: function (panelBuilder, item, index) {
+        // TODO: This needs to create an action that affects original list
+        console.log("editItem", panelBuilder, item, index);
+        
+        this.itemBeingEdited = item;
+        
+        panelBuilder.redraw();
+    },
+    
+    rowForItem: function (ctrl, panelBuilder, item, index) {
+        if (ctrl.itemBeingEdited === item) {
+            return m("tr", 
+                m("td", {colSpan: ctrl.columns.length}, "This item is being edited")
+            );
+        }
+        return m("tr", {key: item[ctrl.idProperty]}, ctrl.columns.map(function (column) {
+            return m("td[style=outline: thin solid]", {"text-overflow": "ellipsis"}, item[column.field])
+        }).concat(m("td[style=outline: thin solid]", {nowrap: true}, [
+            m("button", {onclick: Grid.deleteItem.bind(ctrl, panelBuilder, item, index)}, "delete"),
+            m("button", {onclick: Grid.editItem.bind(ctrl, panelBuilder, item, index)}, "edit"),
+            m("button", "view")
+        ])));
     },
     
     view: function(ctrl, args) {
@@ -166,9 +191,7 @@ var Grid = {
                 }).concat(m("th", ""))
             ),
             ctrl.data.map(function(item, index) {
-                return m("tr", {key: item[ctrl.idProperty]}, ctrl.columns.map(function (column) {
-                    return m("td[style=outline: thin solid]", {"text-overflow": "ellipsis"}, item[column.field])
-                }).concat(m("td[style=outline: thin solid]", {nowrap: true}, [m("button", {onclick: Grid.deleteItem.bind(ctrl, panelBuilder, item, index)}, "delete"), m("button", "edit"), m("button", "view")])))
+                return Grid.rowForItem(ctrl, panelBuilder, item, index);
             })
         ]);
         
