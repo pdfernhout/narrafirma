@@ -149,6 +149,13 @@ var Grid = {
         this.columns = columns;
     },
     
+    deleteItem: function (panelBuilder, item, index) {
+        // TODO: This needs to create an action that affects original list
+        console.log("deleteItem", panelBuilder, item, index);
+        this.data.splice(index, 1);
+        panelBuilder.redraw();
+    },
+    
     view: function(ctrl, args) {
         var panelBuilder = args.panelBuilder;
         
@@ -158,10 +165,10 @@ var Grid = {
                     return m("th[data-sort-by=" + column.field  + "]", {"text-overflow": "ellipsis"}, column.label)
                 }).concat(m("th", ""))
             ),
-            ctrl.data.map(function(item) {
+            ctrl.data.map(function(item, index) {
                 return m("tr", {key: item[ctrl.idProperty]}, ctrl.columns.map(function (column) {
                     return m("td[style=outline: thin solid]", {"text-overflow": "ellipsis"}, item[column.field])
-                }).concat(m("td[style=outline: thin solid]", {nowrap: true}, [m("button", "delete"), m("button", "edit"), m("button", "view")])))
+                }).concat(m("td[style=outline: thin solid]", {nowrap: true}, [m("button", {onclick: Grid.deleteItem.bind(ctrl, panelBuilder, item, index)}, "delete"), m("button", "edit"), m("button", "view")])))
             })
         ]);
         
