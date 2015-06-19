@@ -1,10 +1,10 @@
 import browser = require("./browser");
-import declare = require("dojo/_base/declare");
 import domClass = require('dojo/dom-class');
 import domConstruct = require("dojo/dom-construct");
 import translate = require("./translate");
 import ContentPane = require("dijit/layout/ContentPane");
 import surveyBuilder = require("../surveyBuilderMithril");
+import m = require("mithril");
 
 "use strict";
 
