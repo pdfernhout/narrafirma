@@ -63,7 +63,7 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, configu
 }
 
 // Sorts function derived from: http://lhorie.github.io/mithril-blog/vanilla-table-sorting.html
-function sorts(panelBuilder, list) {
+function sorts(ctrl, panelBuilder, list) {
     return {
         onclick: function(e) {
             var prop = e.target.getAttribute("data-sort-by")
@@ -79,9 +79,21 @@ function sorts(panelBuilder, list) {
                 }
                 console.log("sorted list", list);
                 panelBuilder.redraw();
+            } else {
+                var itemID = e.target.getAttribute("data-item-index");
+                console.log("item clicked", itemID);
+                var itemIndex = null;
+                for (var i = 0; i < list.length; i++) {
+                    if (list[i][ctrl.idProperty] === itemID) {
+                        itemIndex = i;
+                        break;
+                    }
+                }
+                console.log("found item at index", itemIndex, list[itemIndex]);
+                if (itemIndex !== null) ctrl.itemDisplayedAtBottom = list[itemIndex];
+                panelBuilder.redraw();
             }
-        },
-        width: "100%"
+        }
     }
 }
 
@@ -135,7 +147,7 @@ var Grid = {
         this.idProperty = idProperty;
         
         var bigData = [];
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < 50; i++) {
             for (var j = 0; j < data.length; j++) {
                 var newItem = JSON.parse(JSON.stringify(data[j]));
                 newItem[idProperty] = "item_" + (i * data.length + j);
@@ -150,6 +162,7 @@ var Grid = {
         this.data = data;
         this.columns = columns;
         this.itemBeingEdited = null;
+        this.itemDisplayedAtBottom = null;
         this.itemPanelSpecification = itemPanelSpecification;
     },
     
@@ -159,7 +172,7 @@ var Grid = {
         var prompt = surveyBuilderMithril.buildQuestionLabel(args.fieldSpecification);
         
         // return m("table", sorts(ctrl.list), [
-        var table = m("table", sorts(panelBuilder, ctrl.data), [
+        var table = m("table", sorts(ctrl, panelBuilder, ctrl.data), [
             m("tr[style=outline: thin solid; background-color: #66CCFF]", ctrl.columns.map(function (column) {
                     return m("th[data-sort-by=" + column.field  + "]", {"text-overflow": "ellipsis"}, column.label)
                 }).concat(m("th", ""))
@@ -169,8 +182,14 @@ var Grid = {
             }).concat(m("tr", [m("button", {onclick: Grid.addItem.bind(ctrl, panelBuilder)}, "Add")]))
         ]);
         
+        var parts = [prompt, table];
+        
+        if (ctrl.itemDisplayedAtBottom) {
+            parts.push(m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: ctrl.itemDisplayedAtBottom, grid: ctrl}));
+        }
+        
         // TODO: set class etc.
-        return m("div", [prompt, table]);
+        return m("div", parts);
     },
     
     addItem: function(panelBuilder) {
@@ -178,6 +197,7 @@ var Grid = {
         newItem[this.idProperty] = new Date().toISOString();
         this.data.push(newItem);
         this.itemBeingEdited = newItem;
+        this.itemDisplayedAtBottom = null;
         panelBuilder.redraw();       
     },
     
@@ -193,6 +213,15 @@ var Grid = {
         console.log("editItem", panelBuilder, item, index);
         
         this.itemBeingEdited = item;
+        this.itemDisplayedAtBottom = null;
+        
+        panelBuilder.redraw();
+    },
+    
+    viewItem: function (panelBuilder, item, index) {
+        console.log("viewItem", panelBuilder, item, index);
+        
+        this.itemDisplayedAtBottom = item;
         
         panelBuilder.redraw();
     },
@@ -210,13 +239,16 @@ var Grid = {
                 m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(ctrl, panelBuilder, item, index)}, "close")])
             ]);
         }
-        return m("tr", {key: item[ctrl.idProperty]}, ctrl.columns.map(function (column) {
-            return m("td[style=outline: thin solid]", {"text-overflow": "ellipsis"}, item[column.field])
+        
+        var selectionClass = "narrafirma-grid-row-unselected";
+        if (item === ctrl.itemDisplayedAtBottom) selectionClass = "narrafirma-grid-row-selected";
+        return m("tr", {key: item[ctrl.idProperty], "class": selectionClass}, ctrl.columns.map(function (column) {
+            return m("td[style=outline: thin solid]", {"text-overflow": "ellipsis", "data-item-index": item[ctrl.idProperty] }, item[column.field])
         }).concat(m("td[style=outline: thin solid]", {nowrap: true}, [
             m("button", {onclick: Grid.deleteItem.bind(ctrl, panelBuilder, item, index), "class": "fader"}, "delete"),
             m("button", {onclick: Grid.editItem.bind(ctrl, panelBuilder, item, index), "class": "fader"}, "edit"),
             // TODO: Fix so view and not edit
-            m("button", {onclick: Grid.editItem.bind(ctrl, panelBuilder, item, index), "class": "fader"}, "view")
+            m("button", {onclick: Grid.viewItem.bind(ctrl, panelBuilder, item, index), "class": "fader"}, "view")
         ])));
     }
 };

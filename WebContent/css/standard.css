@@ -557,10 +557,26 @@ form {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Mithril grid ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+table {
+  min-width: 100%;
+  display: block;
+  max-height: 300px;
+  overflow-y: scroll;
+}
+
 table button.fader {
     opacity: 1;
+    overflow: auto;
 }
 
 table tr:hover button.fader {
     opacity: 1;
+}
+
+table tr:hover {
+    outline: thick solid;
+}
+
+.narrafirma-grid-row-selected {
+    background: green;
 }
