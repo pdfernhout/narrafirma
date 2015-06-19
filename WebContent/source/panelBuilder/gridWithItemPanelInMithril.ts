@@ -72,8 +72,12 @@ function sorts(panelBuilder, list) {
                 list.sort(function(a, b) {
                     return a[prop] > b[prop] ? 1 : a[prop] < b[prop] ? -1 : 0;
                 })
-                if (first === list[0]) list.reverse();
+                if (first === list[0]) {
+                    console.log("reversing");
+                    list.reverse();
+                }
             }
+            console.log("sorted list", list);
             panelBuilder.redraw();
         }
     }
@@ -118,16 +122,20 @@ export function add_grid(panelBuilder, model, fieldSpecification) {
         model.set(fieldSpecification.id, data);
     }
     
-    /*
-    var bigData = [];
-    for (var i = 0; i < 5; i++) {
-        bigData = bigData.concat(data);
-    }
-    data = bigData;
-    */
-    
     var idProperty = configuration.idProperty;
     if (!idProperty) idProperty = "_id";
+
+    // TODO: Issue that this list is regenerated with every draw, and so the sorting is lost!!!
+    var bigData = [];
+    for (var i = 0; i < 5; i++) {
+        for (var j = 0; j < data.length; j++) {
+            var newItem = JSON.parse(JSON.stringify(data[j]));
+            newItem[idProperty] = "item_" + (i * data.length + j);
+            bigData.push(newItem);
+            console.log("newItem", newItem);
+        }
+    }
+    data = bigData;
     
     var columns = computeColumnsForItemPanelSpecification(itemPanelSpecification, configuration);
     
@@ -138,7 +146,7 @@ export function add_grid(panelBuilder, model, fieldSpecification) {
             }).concat(m("th", ""))
         ),
         data.map(function(item) {
-            return m("tr", columns.map(function (column) {
+            return m("tr", {key: item[idProperty]}, columns.map(function (column) {
                 return m("td[style=outline: thin solid]", {"text-overflow": "ellipsis"}, item[column.field])
             }).concat(m("td[style=outline: thin solid]", {nowrap: true}, [m("button", "delete"), m("button", "edit"), m("button", "view")])))
         })
