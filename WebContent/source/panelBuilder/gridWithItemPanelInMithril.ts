@@ -194,19 +194,26 @@ var Grid = {
         panelBuilder.redraw();
     },
     
+    doneClicked: function(panelBuilder, item, index) {
+        // TODO: Should ensure the data is saved
+        this.itemBeingEdited = null;
+        panelBuilder.redraw();
+    },
+    
     rowForItem: function (ctrl, panelBuilder, item, index) {
         if (ctrl.itemBeingEdited === item) {
             return m("tr", [
                 m("td", {colSpan: ctrl.columns.length}, [m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: ctrl})]),
-                m("td", "Closer goes here")
+                m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(ctrl, panelBuilder, item, index)}, "close")])
             ]);
         }
         return m("tr", {key: item[ctrl.idProperty]}, ctrl.columns.map(function (column) {
             return m("td[style=outline: thin solid]", {"text-overflow": "ellipsis"}, item[column.field])
         }).concat(m("td[style=outline: thin solid]", {nowrap: true}, [
-            m("button", {onclick: Grid.deleteItem.bind(ctrl, panelBuilder, item, index)}, "delete"),
-            m("button", {onclick: Grid.editItem.bind(ctrl, panelBuilder, item, index)}, "edit"),
-            m("button", "view")
+            m("button", {onclick: Grid.deleteItem.bind(ctrl, panelBuilder, item, index), "class": "fader"}, "delete"),
+            m("button", {onclick: Grid.editItem.bind(ctrl, panelBuilder, item, index), "class": "fader"}, "edit"),
+            // TODO: Fix so view and not edit
+            m("button", {onclick: Grid.editItem.bind(ctrl, panelBuilder, item, index), "class": "fader"}, "view")
         ])));
     }
 };

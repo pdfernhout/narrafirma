@@ -554,3 +554,13 @@ form {
   shape-rendering: crispEdges;
   stroke: gray;
 }
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Mithril grid ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+table button.fader {
+    opacity: 1;
+}
+
+table tr:hover button.fader {
+    opacity: 1;
+}
