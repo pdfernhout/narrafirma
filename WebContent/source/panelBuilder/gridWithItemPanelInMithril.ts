@@ -80,7 +80,8 @@ function sorts(panelBuilder, list) {
                 console.log("sorted list", list);
                 panelBuilder.redraw();
             }
-        }
+        },
+        width: "100%"
     }
 }
 
