@@ -164,9 +164,9 @@ declare module _mithril {
 	}
 }
 
-declare var Mithril: _mithril.MithrilStatic;
-declare var m: _mithril.MithrilStatic;
+// declare var Mithril: _mithril.MithrilStatic;
+declare var __m: _mithril.MithrilStatic;
 
 declare module "mithril" {
-    export = m;
+    export = __m;
 }
