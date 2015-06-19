@@ -5,6 +5,7 @@ import translate = require("./translate");
 import ContentPane = require("dijit/layout/ContentPane");
 import surveyBuilder = require("../surveyBuilderMithril");
 import m = require("mithril");
+import gridWithItemPanelInMithril = require("./gridWithItemPanelInMithril");
 
 "use strict";
 
@@ -104,7 +105,7 @@ function addStandardPlugins() {
     PanelBuilder.addPlugin("button", addButton);
     
     PanelBuilder.addPlugin("functionResult", add_functionResult);
-    PanelBuilder.addPlugin("grid", null);
+    PanelBuilder.addPlugin("grid", gridWithItemPanelInMithril.add_grid);
     PanelBuilder.addPlugin("html", add_html);
     PanelBuilder.addPlugin("image", add_image);
 }
@@ -182,8 +183,8 @@ class PanelBuilder {
         try {
             return addFunction(this, model, fieldSpecification);
         } catch (e) {
-            console.log("Exception creating widget", fieldSpecification.id, e);
-            return "Exception creating widget: " + fieldSpecification.id + " :: " + e;
+            console.log("Exception creating widget", fieldSpecification, e);
+            return "Exception creating widget: " + fieldSpecification.displayType + " :: " + fieldSpecification.id + " :: " + e;
         }
     }
     
