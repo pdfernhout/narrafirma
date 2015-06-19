@@ -1,6 +1,7 @@
 import domConstruct = require("dojo/dom-construct");
 import translate = require("../panelBuilder/translate");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
+import m = require("mithril");
 
 "use strict";
 
@@ -10,7 +11,7 @@ function stepPlural(count) {
     return "steps";
 }
 
-function add_dashboardSectionStatusDisplay(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
+function add_dashboardSectionStatusDisplay(panelBuilder: PanelBuilder, model, fieldSpecification): any {
     var sectionName = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
     
     // TODO: Kludge of using field id to determine what section this refers to
@@ -23,7 +24,7 @@ function add_dashboardSectionStatusDisplay(panelBuilder: PanelBuilder, contentPa
     if (!panelSpecificationCollection) {
         var errorMessage = "ERROR: panelBuilder.panelSpecificationCollection is null";
         console.log("ERROR", errorMessage);
-        return panelBuilder.addHTML(contentPane, '<div class="errorMessage">' + errorMessage + '</div>');
+        return m("div", {"class": "errorMessage"}, errorMessage);
     }
     
     childPageIDs = panelSpecificationCollection.getChildPageIDListForHeaderID(pageID);
@@ -70,29 +71,28 @@ function add_dashboardSectionStatusDisplay(panelBuilder: PanelBuilder, contentPa
     
     console.log("statusText for pageStatus", statusText, pageStatus);
     
-    var buttonFieldSpecification = {
-        id: fieldSpecification.id + "_button",
-        displayType: "button",
-        // TODO: Translate
-        displayPrompt: "<b>" + sectionName + "</b>",
-        displayConfiguration: fieldSpecification.displayConfiguration,
-        displayPreventBreak: true,
-        displayClass: "narrafirma-dashboardStatusButton"
-        };
-    var button = panelBuilder.buildField(contentPane, model, buttonFieldSpecification);
+    // if (fieldSpecification.displayClass) options.class = fieldSpecification.displayClass;
+    // if (fieldSpecification.displayIconClass) options.iconClass = fieldSpecification.displayIconClass;
+
+    var callback = panelBuilder.buttonClicked.bind(panelBuilder, null, model, fieldSpecification);
+ 
+    var options: any = {
+        onclick: callback,
+        "class": "narrafirma-dashboardStatusButton"
+    };
     
+    var button = m("button", options, m.trust("<b>" + sectionName + "</b>"));
+
+    // TODO: Improve the naming of displayPreventBreak, maybe by using displayConfiguration somehow, perhaps by changing the meaning of that field to something else
+
+    return [button, m("br")];
+    // return [button, statusText];
+
     // TODO: Need to rethinking what this does for changes elsewhere to page status storage to reminders
     //statusText = "";
     
     //var htmlText = '<span class="narrafirma-dashboardSectionStatusDisplayCompletion">' + statusText + '</span><br>';
     //panelBuilder.addHTML(contentPane, htmlText);
-    
-    if (!fieldSpecification.displayPreventBreak) {
-        domConstruct.place("<br>", contentPane.domNode);
-    }
-    
-    // return label;
-    return button;
 }
 
 export = add_dashboardSectionStatusDisplay;

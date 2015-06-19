@@ -1,5 +1,6 @@
 import translate = require("../panelBuilder/translate");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
+import m = require("mithril");
 
 "use strict";
 
@@ -47,7 +48,7 @@ function calculate_questionAnswer(panelBuilder: PanelBuilder, model, referencedQ
 */
 
 // TODO: This will not work when questions are on other pages with newer system
-function add_questionAnswer(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
+function add_questionAnswer(panelBuilder: PanelBuilder, model, fieldSpecification) {
     console.log("add_questionAnswer", fieldSpecification);
     var referencedQuestionID = fieldSpecification.displayConfiguration;
     if (!referencedQuestionID) throw new Error("missing referencedQuestionID for field: " + fieldSpecification.id + " all: " + JSON.stringify(fieldSpecification));
@@ -58,22 +59,24 @@ function add_questionAnswer(panelBuilder: PanelBuilder, contentPane, model, fiel
         return value;
     };
     
-    var label = panelBuilder._add_calculatedText(panelBuilder, contentPane, fieldSpecification, function() {return div_for_value(calculate());});
+    // var label = panelBuilder._add_calculatedText(panelBuilder, contentPane, fieldSpecification, function() {return div_for_value(calculate());});
     
     // TODO: Recalculating next two variables wheres they are also calculated in _add_calculatedText
     var baseText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
     
-    var updateInfo = {"id": fieldSpecification.id, "label": label, "baseText": baseText, "calculate": calculate};
+    // var updateInfo = {"id": fieldSpecification.id, "label": label, "baseText": baseText, "calculate": calculate};
     
-    var watcher = panelBuilder.project.watchFieldValue(referencedQuestionID, function(triple, message) {
-        panelBuilder.updateLabelUsingCalculation(updateInfo);
-    });
+    // TODO: Who should track this data with Mithril? This component? Or should redraw be called automatically (or manually) on data change?
+    //var watcher = panelBuilder.project.watchFieldValue(referencedQuestionID, function(triple, message) {
+    //    panelBuilder.updateLabelUsingCalculation(updateInfo);
+    //});
     
     // Klugde to get the contentPane to free the watcher by calling remove when it is destroyed
     // This would not work if the content pane continued to exist when replacing this component
-    contentPane.own(watcher);
+    // contentPane.own(watcher);
     
-    return label;
+    // TODO: Fix styling
+    return m("div", [m.trust(fieldSpecification.displayPrompt), calculate()]);
 }
 
 export = add_questionAnswer;
