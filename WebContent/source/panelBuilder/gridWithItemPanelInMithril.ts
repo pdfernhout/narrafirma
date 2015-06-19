@@ -156,6 +156,8 @@ var Grid = {
     view: function(ctrl, args) {
         var panelBuilder = args.panelBuilder;
         
+        var prompt = surveyBuilderMithril.buildQuestionLabel(args.fieldSpecification);
+        
         // return m("table", sorts(ctrl.list), [
         var table = m("table", sorts(panelBuilder, ctrl.data), [
             m("tr[style=outline: thin solid; background-color: #66CCFF]", ctrl.columns.map(function (column) {
@@ -168,7 +170,7 @@ var Grid = {
         ]);
         
         // TODO: set class etc.
-        return m("div", [table]);
+        return m("div", [prompt, table]);
     },
     
     addItem: function(panelBuilder) {
