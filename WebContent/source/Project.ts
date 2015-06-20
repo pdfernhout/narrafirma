@@ -1,5 +1,4 @@
 import PointrelClient = require("./pointrel20150417/PointrelClient");
-import Stateful = require("dojo/Stateful");
 import surveyCollection = require("./surveyCollection");
 import TripleStore = require("./pointrel20150417/TripleStore");
 
@@ -14,7 +13,7 @@ var Project = function(journalIdentifier, projectIdentifier, userIdentifier, upd
     this.projectIdentifier = projectIdentifier;
     this.userIdentifier = userIdentifier;
     this.subscriptions = [];
-    this.projectModel = null;
+    this.projectModel = {};
     this.activeQuestionnaires = {};
 
     this.pointrelClient = new PointrelClient(serverURL, this.journalIdentifier, this.userIdentifier, this.receivedMessage.bind(this), updateServerStatus);
@@ -81,30 +80,21 @@ Project.prototype.disconnectProjectModel = function() {
 
 // Use all the page specifications to set up the model with current values and start tracking changes in journal
 Project.prototype.initializeProjectModel = function(panelSpecificationCollection) {
-    var model = {};
-    
-    // loop through all page specifications and get current value (if available) or default/initial for each field and set up dependencies
+    // loop through all page specifications and get current value (if available) or default/initial for each field
 
     var allPages = panelSpecificationCollection.buildListOfPages();
     for (var i = 0; i < allPages.length; i++) {
         var page = allPages[i];
         var fieldSpecifications = page.panelFields;
-        panelSpecificationCollection.addFieldsToModel(model, fieldSpecifications);
+        panelSpecificationCollection.addFieldsToModel(this.projectModel, fieldSpecifications);
     }
-    this.projectModel = new Stateful(model);
-    this.projectModel._saved = {};
     
-    for (var fieldName in model) {
-        if (model.hasOwnProperty(fieldName)) {
-            // console.log("model fieldName", fieldName);
-            if (fieldName.charAt(0) === "_") continue;
-            var value = this.getFieldValue(fieldName);
-            // console.log("got value for query", fieldName, value);
-            if (value !== undefined && value !== null) {
-                this.projectModel.set(fieldName, value);
-            }
-            this._subscribe(fieldName);
-            this._watch(fieldName);
+    for (var fieldName in this.projectModel) {
+        // console.log("model fieldName", fieldName);
+        var value = this.getFieldValue(fieldName);
+        // console.log("got value for query", fieldName, value);
+        if (value !== undefined && value !== null) {
+            this.projectModel[fieldName] = value;
         }
     }
 };
