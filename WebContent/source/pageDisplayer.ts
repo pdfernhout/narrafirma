@@ -1,7 +1,3 @@
-import ContentPane = require("dijit/layout/ContentPane");
-import domClass = require("dojo/dom-class");
-import domConstruct = require("dojo/dom-construct");
-import domStyle = require("dojo/dom-style");
 import navigationPane = require("./navigationPane");
 import PanelBuilder = require("panelBuilder/PanelBuilder");
 import m = require("mithril");
@@ -106,10 +102,6 @@ export function showPage(pageID, forceRefresh = false) {
     // TODO: document.body.scrollTop = document.documentElement.scrollTop = 0;
 
     navigationPane.setCurrentPageSpecification(pageID, pageSpecification);
-    
-    // Because the page was hidden when created, all the grids need to be resized so grid knows how tall to make header so it is not overwritten
-    // currentPage.resize();
-    // domClass.add(currentPage.domNode, "narrafirma-" + pageID);
 
     m.redraw();
     
