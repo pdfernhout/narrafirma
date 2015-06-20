@@ -38,6 +38,7 @@ function optionsForSelect(panelBuilder, model, fieldSpecification, currentValue,
     choices.forEach(function(each) {
         var label;
         var value;
+        var selected;
         // console.log("choice", id, each);
         if (_.isString(each)) {
             label = translate(fieldSpecification.id + "::selection:" + each, each);
@@ -57,10 +58,11 @@ function optionsForSelect(panelBuilder, model, fieldSpecification, currentValue,
                 label = value;
             }
             label = translate(fieldSpecification.id + "::selection:" + label, label);
-            var selected = undefined;
             if (currentValue === value) {
                 selected = true;
                 isValueInChoices = true;
+            } else {
+                selected = undefined;
             }
             options.push({name: label, value: value, selected: selected});
         }
