@@ -96,9 +96,6 @@ export function showPage(pageID, forceRefresh = false) {
     }
     */
  
-    // Hide the current page temporarily
-    // domStyle.set("pageDiv", "display", "none");
-
     // Just going to assume we will be redrawing later via Mithril...
     
     // Make sure the hash is pointing to this page if this is not a forced refresh
@@ -108,12 +105,8 @@ export function showPage(pageID, forceRefresh = false) {
         panelBuilder.clientState.pageIdentifier = currentPageID;
     }
     
-    // Show the current page again
-    // domStyle.set("pageDiv", "display", "block");
-    
     // TODO: document.body.scrollTop = document.documentElement.scrollTop = 0;
 
-    // Ensure navigation select is pointing to this page; this may trigger an update but it should be ignored as we're already on this page
     navigationPane.setCurrentPageSpecification(pageID, pageSpecification);
     
     // Because the page was hidden when created, all the grids need to be resized so grid knows how tall to make header so it is not overwritten
