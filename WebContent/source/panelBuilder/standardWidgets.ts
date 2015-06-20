@@ -1,10 +1,77 @@
 import m = require("mithril");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
+import valuePathResolver = require("./valuePathResolver");
+import translate = require("./translate");
 
 "use strict";
 
 function getIdForText(text) {
     return text;
+}
+
+function optionsForSelect(panelBuilder, model, fieldSpecification, currentValue, addNoSelectionOption) {
+    var specifiedChoices = fieldSpecification.valueOptions;
+    var choices = specifiedChoices;
+    
+    if (_.isString(specifiedChoices)) {
+        var choicesModelAndField = valuePathResolver.resolveModelAndFieldForValuePath(panelBuilder, model, specifiedChoices);
+        console.log("choicesModelAndField", choicesModelAndField);
+        
+        var choicesModel = choicesModelAndField.model;
+        var choicesField = choicesModelAndField.field;
+        
+        choices = choicesModel[choicesField];
+    }
+    
+    if (!choices) {
+        console.log("No choices or options defined for select", fieldSpecification.id);
+        return [];
+    }
+
+    var isValueInChoices = false;
+    
+    var options = [];
+    
+    // '-- select --'
+    if (addNoSelectionOption) options.push({name: translate("#selection_has_not_been_made|(no selection)"), value: "", selected: !currentValue});
+    
+    choices.forEach(function(each) {
+        var label;
+        var value;
+        // console.log("choice", id, each);
+        if (_.isString(each)) {
+            label = translate(fieldSpecification.id + "::selection:" + each, each);
+            options.push({name: label, value: each});
+            if (currentValue === each) isValueInChoices = true;
+        } else {
+            // TODO: Maybe bug in dojo select that it does not handle values that are not strings
+            // http://stackoverflow.com/questions/16205699/programatically-change-selected-option-of-a-dojo-form-select-that-is-populated-b
+            if (fieldSpecification.valueOptionsSubfield) {
+                value = each[fieldSpecification.valueOptionsSubfield];
+            } else {
+                value = each.value;
+            }
+            if (fieldSpecification.displayDataOptionField) {
+                label = each[fieldSpecification.displayDataOptionField];
+            } else {
+                label = value;
+            }
+            label = translate(fieldSpecification.id + "::selection:" + label, label);
+            var selected = undefined;
+            if (currentValue === value) {
+                selected = true;
+                isValueInChoices = true;
+            }
+            options.push({name: label, value: value, selected: selected});
+        }
+    });
+    
+    // console.log("isValueInChoices", isValueInChoices);
+
+    // console.log("updateChoices", currentValue, isValueInChoices, (currentValue === null || currentValue === undefined || currentValue === ""));
+    // return isValueInChoices || (currentValue === null || currentValue === undefined || currentValue === "");
+    
+    return options;
 }
 
 export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecification) {
@@ -26,8 +93,8 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         questionLabel = [];
     }
     
-    var value = null;
-    if (model) value = model[fieldSpecification.id];
+    var modelAndField = valuePathResolver.resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
+    var value = modelAndField.model[modelAndField.field];
     if (value === undefined) value = "";
     
     function change(event, value) {
@@ -117,22 +184,14 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         parts = [m("fieldset", parts)];
     } else if (displayType === "select") {
         makeLabel();
-        var selectOptions = [];
-        var defaultOptions = {
-            value: '',
-            selected: undefined
-        };
-        if (!value) defaultOptions.selected = 'selected';
-        selectOptions.push(m("option", defaultOptions, '-- select --'));
-        selectOptions = selectOptions.concat(
-            fieldSpecification.valueOptions.map(function (optionValue, index) {
-                var optionOptions = {value: optionValue, selected: undefined};
-                // console.log("optionValue, value", optionValue, value, optionValue === value);
-                if (optionValue === value) optionOptions.selected = 'selected';
-                return m("option", optionOptions, optionValue);
-            })
-        );
-        
+        var selectOptionsRaw = optionsForSelect(panelBuilder, model, fieldSpecification, value, true);
+        var selectOptions = selectOptionsRaw.map(function (option, index) {
+            var optionOptions = {value: option.value, selected: undefined};
+            // console.log("optionValue, value", optionValue, value, optionValue === value);
+            if (option.selected) optionOptions.selected = 'selected';
+            return m("option", optionOptions, option.name);
+        });
+
         parts = [
             m("select", standardValueOptions, selectOptions),
             m("br")
