@@ -3,7 +3,6 @@ import domClass = require("dojo/dom-class");
 import domConstruct = require("dojo/dom-construct");
 import domStyle = require("dojo/dom-style");
 import navigationPane = require("./navigationPane");
-import Standby = require("dojox/widget/Standby");
 import PanelBuilder = require("panelBuilder/PanelBuilder");
 import m = require("mithril");
 
@@ -20,42 +19,11 @@ var currentPageWidgets;
 
 var project;
 
-var standby;
-var standbyStartTimer;
-
-var standbyStartWait_ms = 100;
-
 // Call this once at the beginning of the application
 export function configurePageDisplayer(thePanelBuilder: PanelBuilder, theStartPage, theProject) {
     panelBuilder = thePanelBuilder;
     startPage = theStartPage;
     project = theProject;
-    
-    // TODO: Since pageDiv is hidden while it is being built, hide the navigationDiv to provide feedback
-    // TODO: The next line is to avoid TypeScript error on calling constructor
-    var KludgeStandby: any = Standby;
-    standby = new KludgeStandby({target: "navigationDiv"});
-    document.body.appendChild(standby.domNode);
-    standby.startup();
-}
-
-function startStandby() {
-    // Start standby if the data load is taking longer then standbyStartWait_ms time
-    standbyStartTimer = window.setTimeout(function() {
-        console.log("Start standby timer");
-        standby.show();
-        standbyStartTimer = null;
-    }, standbyStartWait_ms);
-}
-
-function stopStandby() {
-    if (standbyStartTimer) {
-        console.log("Clear standby timer start");
-        window.clearTimeout(standbyStartTimer);
-        standbyStartTimer = null;
-    }
-    console.log("hiding standby if it is started");
-    standby.hide();
 }
 
 export function showPage(pageID, forceRefresh = false) {
@@ -95,10 +63,7 @@ export function showPage(pageID, forceRefresh = false) {
         }
     }
     */
-
-    // Get ready to put up a standby widget in case this all takes a long time, especially loading the data from the server
-    startStandby();
-    
+ 
     // Hide the current page temporarily
     domStyle.set("pageDiv", "display", "none");
 
@@ -114,7 +79,6 @@ export function showPage(pageID, forceRefresh = false) {
     var pageModelName = pageSpecification.modelClass;
     if (pageModelName === undefined) {
         console.log("ERROR: Page model name is not set in", pageID, pageSpecification);
-        stopStandby();
         // TODO: Translate
         alert("Something when wrong trying to create the model for this page");
         return;
@@ -127,7 +91,6 @@ export function showPage(pageID, forceRefresh = false) {
         currentPage = createPage(pageID, pageSpecification, modelForPage);
     } catch (e) {
         console.log("ERROR: When trying to create page", pageID, e);
-        stopStandby();
         // TODO: Translate
         alert("Something when wrong trying to create this page");
         return;
@@ -141,8 +104,6 @@ export function showPage(pageID, forceRefresh = false) {
     }
     
     finishShowingPage(pageID, pageSpecification);
-    
-    // TODO: What if standby reset fails for some reasonn?
 }
 
 function finishShowingPage(pageID, pageSpecification) { 
@@ -157,8 +118,6 @@ function finishShowingPage(pageID, pageSpecification) {
     // Because the page was hidden when created, all the grids need to be resized so grid knows how tall to make header so it is not overwritten
     currentPage.resize();
     domClass.add(currentPage.domNode, "narrafirma-" + pageID);
-    
-    stopStandby();
 }
 
 // Create all the widgets for the current page using the panelBuilder which builds the page from the pageSpecification
