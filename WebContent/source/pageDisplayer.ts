@@ -114,7 +114,7 @@ export function showPage(pageID, forceRefresh = false) {
     // TODO: document.body.scrollTop = document.documentElement.scrollTop = 0;
 
     // Ensure navigation select is pointing to this page; this may trigger an update but it should be ignored as we're already on this page
-    // TODO: navigationPane.setCurrentPageSpecification(pageID, pageSpecification);
+    navigationPane.setCurrentPageSpecification(pageID, pageSpecification);
     
     // Because the page was hidden when created, all the grids need to be resized so grid knows how tall to make header so it is not overwritten
     // currentPage.resize();

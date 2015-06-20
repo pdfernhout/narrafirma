@@ -1,62 +1,53 @@
-import ContentPane = require("dijit/layout/ContentPane");
-import domConstruct = require("dojo/dom-construct");
+import m = require("mithril");
 
 "use strict";
 
-// TODO: Add page validation
-
-// Navigation widgets
-var navigationPane;
-var pageControlsPane;
-var breadcrumbsSpan;
-
-var pageDisplayer;
 var panelSpecificationCollection;
 var startPage;
 
 var currentSectionID;
 var currentPageSpecification;
+var userIdentifier;
 
-export function createNavigationPane(thePageDisplayer, thePanelSpecificationCollection, theStartPage) {
-    console.log("thePageDisplayer", thePageDisplayer);
-    pageDisplayer = thePageDisplayer;
+var navigationController = null;
+
+var Navigation: any = {
+    controller: function(args) {
+        this.pageID = null;
+        this.pageSpecification = null;
+    },
+    
+    view: function(controller, args) {
+        return m("div[id=narrafirma-navigation]", [
+            m("span[id=narrafirma-name]", m.trust("NarraFirma&#0153")),
+            m("span[id=narrafirma-breadcrumbs]", m.trust(buildBreadcrumbs(controller))),
+            m("a[id=narrafirma-help-link]", {href: "javascript:narrafirma_helpClicked()"}, "(Help)"),
+            m("a[id=narrafirma-logout-link]", {href: "javascript:narrafirma_logoutClicked()"}, 'Logout (' + userIdentifier + ')')
+        ]);
+    }
+};
+
+export function initializeNavigationPane(thePanelSpecificationCollection, theStartPage, theUserIdentifier) {
     panelSpecificationCollection = thePanelSpecificationCollection;
     startPage = theStartPage;
-
-    // Startup needs to be called here to ensure a top level content pane is started
-    navigationPane = new ContentPane({}, "navigationDiv");
-    navigationPane.startup();
-
-    // Any items like buttons added to the navigationPane will have startup() called automatically,
-    // since the navigationPane they are being added to has already been started
-
-    // Document controls
-
-    // Page controls
-
-    pageControlsPane = new ContentPane();
-    pageControlsPane.placeAt(navigationPane, "last");
-
-    domConstruct.place('<span id="narrafirma-name">NarraFirma&#0153;</span>', pageControlsPane.domNode);
-        
-    breadcrumbsSpan = domConstruct.place('<span id="narrafirma-breadcrumbs"><a href="javascript:narrafirma_openPage(\'page_dashboard\')">Home</a></span>', pageControlsPane.domNode);
-
-    domConstruct.place('<a id="narrafirma-help-link" href="javascript:narrafirma_helpClicked()">(Help)</a>', pageControlsPane.domNode);
+    userIdentifier = theUserIdentifier;
     
-    return pageControlsPane;
+    navigationController = m.mount(document.getElementById("navigationDiv"), Navigation);
 }
-
-function htmlForBreadcrumb(pageIdentifier, pageName) {
-    return '<a href="javascript:narrafirma_openPage(\'' + pageIdentifier + '\')">' + pageName + '</a>';
-}
-
+    
 export function setCurrentPageSpecification(pageID, pageSpecification) {
-    if (pageSpecification === currentPageSpecification) return;
+    currentPageSpecification = pageSpecification;
+    
+    navigationController.pageID = pageID;
+    navigationController.pageSpecification = pageSpecification;
+}
 
+function buildBreadcrumbs(controller) {
+    var pageID = controller.pageID;
+    var pageSpecification = controller.pageSpecification;
+    
     currentPageSpecification = pageSpecification;
 
-    // Update breadcrumbs
-    console.log("breadcrumbsSpan", breadcrumbsSpan);
     var html = "";
     if (pageID !== startPage) {
         html = htmlForBreadcrumb(startPage, "Home");
@@ -70,7 +61,11 @@ export function setCurrentPageSpecification(pageID, pageSpecification) {
         }
     }
     html += '<span id="narrafirma-breadcrumb-current">' + pageSpecification.displayName + '</span>';
-    if (breadcrumbsSpan) breadcrumbsSpan.innerHTML = '<span id="narafirma-breadcrumbs">' + html + '</span>';
+    return '<span id="narafirma-breadcrumbs">' + html + '</span>';
+}
+
+function htmlForBreadcrumb(pageIdentifier, pageName) {
+    return '<a href="javascript:narrafirma_openPage(\'' + pageIdentifier + '\')">' + pageName + '</a>';
 }
 
 export function getCurrentPageSpecification() {

@@ -339,11 +339,10 @@ function processAllPanels() {
 function createLayout() {
     console.log("createLayout start");
 
-    /* TOD: Get this workign again
-    var pageControlsPane = navigationPane.createNavigationPane(pageDisplayer, panelSpecificationCollection, startPage);
+    navigationPane.initializeNavigationPane(panelSpecificationCollection, startPage, userIdentifier);
 
-    domConstruct.place('<a id="narrafirma-logout-link" href="javascript:narrafirma_logoutClicked()">Logout (' + userIdentifier + ')</a>', pageControlsPane.domNode);
-    
+    /* TOD: Get this working again
+
     // TODO: Improve status reporting
     // serverStatusPane = panelBuilder.newContentPane({content: "Server status: unknown"});
     // serverStatusPane.placeAt(pageControlsPane);
