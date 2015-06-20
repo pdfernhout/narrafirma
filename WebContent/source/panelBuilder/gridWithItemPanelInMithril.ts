@@ -62,7 +62,7 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, configu
 }
 
 // Sorts function derived from: http://lhorie.github.io/mithril-blog/vanilla-table-sorting.html
-function sorts(ctrl, panelBuilder, list) {
+function sorts(ctrl, list) {
     return {
         onclick: function(e) {
             var prop = e.target.getAttribute("data-sort-by")
@@ -162,25 +162,23 @@ var Grid = {
     
     view: function(ctrl, args) {
         var panelBuilder = args.panelBuilder;
-        console.log("panelBuilder", panelBuilder);
-        
-        var prompt = args.panelBuilder.buildQuestionLabel(args.fieldSpecification);
+        var prompt = panelBuilder.buildQuestionLabel(args.fieldSpecification);
         
         function adjustHeaderWidth() {
             console.log("adjustHeaderWidth");
         }
         
-        var tableHeader = m("table", sorts(ctrl, panelBuilder, ctrl.data), [
+        var tableHeader = m("table", sorts(ctrl, ctrl.data), [
             m("tr[style=outline: thin solid; background-color: #66CCFF]", {config: adjustHeaderWidth}, ctrl.columns.map(function (column) {
                     return m("th[data-sort-by=" + column.field  + "]", {"text-overflow": "ellipsis"}, column.label)
                 }).concat(m("th", ""))
             )
         ]);
         
-        var tableData = m("table", sorts(ctrl, panelBuilder, ctrl.data), [
+        var tableData = m("table", sorts(ctrl, ctrl.data), [
             ctrl.data.map(function(item, index) {
-                return Grid.rowForItem(ctrl, panelBuilder, item, index);
-            }).concat(m("tr", [m("button", {onclick: Grid.addItem.bind(ctrl, panelBuilder)}, "Add")]))
+                return Grid.rowForItem(ctrl, item, index);
+            }).concat(m("tr", [m("button", {onclick: Grid.addItem.bind(ctrl)}, "Add")]))
         ]);
         
         var parts = [prompt, tableHeader, tableData];
@@ -200,11 +198,11 @@ var Grid = {
     editorForItem: function(ctrl, panelBuilder, item) {
         return m("tr", [
             m("td", {colSpan: ctrl.columns.length}, [m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: ctrl})]),
-            m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(ctrl, panelBuilder, item)}, "close")])
+            m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(ctrl, item)}, "close")])
         ]);
     },
     
-    addItem: function(panelBuilder) {
+    addItem: function() {
         var newItem = {};
         newItem[this.idProperty] = new Date().toISOString();
         this.data.push(newItem);
@@ -212,40 +210,40 @@ var Grid = {
         this.itemDisplayedAtBottom = null;
     },
     
-    deleteItem: function (panelBuilder, item, index) {
+    deleteItem: function (item, index) {
         // TODO: This needs to create an action that affects original list
-        console.log("deleteItem", panelBuilder, item, index);
+        console.log("deleteItem", item, index);
         this.data.splice(index, 1);
     },
     
-    editItem: function (panelBuilder, item, index) {
+    editItem: function (item, index) {
         // TODO: This needs to create an action that affects original list
-        console.log("editItem", panelBuilder, item, index);
+        console.log("editItem", item, index);
         
         this.itemBeingEdited = item;
         this.itemDisplayedAtBottom = null;
     },
     
-    viewItem: function (panelBuilder, item, index) {
-        console.log("viewItem", panelBuilder, item, index);
+    viewItem: function (item, index) {
+        console.log("viewItem", item, index);
         
         // TODO: If an item is being edited, probably should not allow viewing others...
         this.itemDisplayedAtBottom = item;
         this.itemBeingEdited = null;
     },
     
-    doneClicked: function(panelBuilder, item) {
+    doneClicked: function(item) {
         // TODO: Should ensure the data is saved
         this.itemBeingEdited = null;
         this.itemDisplayedAtBottom = null;
     },
     
-    rowForItem: function (ctrl, panelBuilder, item, index) {
+    rowForItem: function (ctrl, item, index) {
         /*
         if (ctrl.itemBeingEdited === item) {
             return m("tr", [
                 m("td", {colSpan: ctrl.columns.length}, [m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: ctrl})]),
-                m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(ctrl, panelBuilder, item, index)}, "close")])
+                m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(ctrl, item, index)}, "close")])
             ]);
         }
         */
@@ -258,10 +256,10 @@ var Grid = {
         
         var disabled = (ctrl.itemDisplayedAtBottom || ctrl.itemBeingEdited) || undefined;
         fields = fields.concat(m("td[style=outline: thin solid]", {nowrap: true}, [
-            m("button", {onclick: Grid.deleteItem.bind(ctrl, panelBuilder, item, index), disabled: disabled, "class": "fader"}, "delete"),
-            m("button", {onclick: Grid.editItem.bind(ctrl, panelBuilder, item, index), disabled: disabled, "class": "fader"}, "edit"),
+            m("button", {onclick: Grid.deleteItem.bind(ctrl, item, index), disabled: disabled, "class": "fader"}, "delete"),
+            m("button", {onclick: Grid.editItem.bind(ctrl, item, index), disabled: disabled, "class": "fader"}, "edit"),
             // TODO: Fix so view and not edit
-            m("button", {onclick: Grid.viewItem.bind(ctrl, panelBuilder, item, index), disabled: disabled, "class": "fader"}, "view")
+            m("button", {onclick: Grid.viewItem.bind(ctrl, item, index), disabled: disabled, "class": "fader"}, "view")
         ]));
         return m("tr", {key: item[ctrl.idProperty], "class": selectionClass}, fields);
     }
@@ -283,8 +281,6 @@ var ItemPanel = {
     }
 }
     
-
 export function add_grid(panelBuilder, model, fieldSpecification) {
-
     return m.component(<any>Grid, {panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
 }
