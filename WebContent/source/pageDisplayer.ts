@@ -11,8 +11,8 @@ import m = require("mithril");
 // For tracking what page the application is on
 var currentPageID = null;
 var currentPage;
-
 var startPage;
+var updateHashIfNeededForChangedState;
 
 var panelBuilder: PanelBuilder;
 var currentPageWidgets;
@@ -41,16 +41,13 @@ var PageDisplayer: any = {
 }
 
 // Call this once at the beginning of the application
-export function configurePageDisplayer(thePanelBuilder: PanelBuilder, theStartPage, theProject) {
+export function configurePageDisplayer(thePanelBuilder: PanelBuilder, theStartPage, theProject, updateHashIfNeededForChangedStateCallback) {
     panelBuilder = thePanelBuilder;
     startPage = theStartPage;
     project = theProject;
+    updateHashIfNeededForChangedState = updateHashIfNeededForChangedStateCallback;
     
     m.mount(document.getElementById("pageDiv"), PageDisplayer);
-}
-
-export function redraw() {
-    m.redraw();
 }
 
 export function showPage(pageID, forceRefresh = false) {
@@ -79,6 +76,7 @@ export function showPage(pageID, forceRefresh = false) {
         } else {
             panelBuilder.clientState.pageIdentifier = startPage;
         }
+        updateHashIfNeededForChangedState();
         return;
     }
     
@@ -112,6 +110,11 @@ export function showPage(pageID, forceRefresh = false) {
     // Because the page was hidden when created, all the grids need to be resized so grid knows how tall to make header so it is not overwritten
     // currentPage.resize();
     // domClass.add(currentPage.domNode, "narrafirma-" + pageID);
+
+    m.redraw();
+    
+    // Setting the hash may trigger another call to this function eventually, but as the new page will already be set, it should not loop further
+    updateHashIfNeededForChangedState();
 }
 
 export function getCurrentPageID() {

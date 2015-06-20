@@ -109,7 +109,8 @@ function hashStringForClientState() {
     return result;
 }
 
-function urlHashFragmentChanged(newHash) {
+function urlHashFragmentChanged() {
+    var newHash = hashStringForClientState();
     console.log("urlHashFragmentChanged", newHash);
     
     var hashParameters = getHashParameters(newHash);
@@ -157,8 +158,6 @@ function urlHashFragmentChanged(newHash) {
     
     // Page displayer will handle cases where the hash is not valid and also optimizing out page redraws if staying on same page
     pageDisplayer.showPage(clientState.pageIdentifier);
-    // TODO: Does this really need a redraw?
-    pageDisplayer.redraw();
 
     console.log("done with urlHashFragmentChanged");
 }
@@ -482,7 +481,7 @@ function setupGlobalFunctions() {
     window["narrafirma_openPage"] = function (pageIdentifier) {
         clientState.pageIdentifier = pageIdentifier;
         // TODO: Need better approach for tracking hash changes?
-        urlHashFragmentChanged(hashStringForClientState());
+        urlHashFragmentChanged();
     };
     
     window["narrafirma_logoutClicked"] = function () {
@@ -668,7 +667,7 @@ function loadApplicationDesign() {
         
         panelBuilder.setCalculateFunctionResultCallback(calculateFunctionResultForGUI);
 
-        pageDisplayer.configurePageDisplayer(panelBuilder, startPage, project);
+        pageDisplayer.configurePageDisplayer(panelBuilder, startPage, project, updateHashIfNeededForChangedState);
 
         // Fill out initial hash string if needed
         updateHashIfNeededForChangedState();
@@ -690,7 +689,7 @@ function loadApplicationDesign() {
             startTrackingClientStateChanges();
              
             // Ensure the pageDisplayer will display the first page
-            urlHashFragmentChanged(hashStringForClientState());
+            urlHashFragmentChanged();
             
             // Update if the URL hash fragment is changed by hand
             topic.subscribe("/dojo/hashchange", urlHashFragmentChanged); 
