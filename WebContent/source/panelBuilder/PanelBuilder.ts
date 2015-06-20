@@ -170,7 +170,7 @@ class PanelBuilder {
         return label;
     }
     
-    buildField(contentPane, model, fieldSpecification) {
+    buildField(model, fieldSpecification) {
         // console.log("buildField", fieldSpecification);
         
         var addFunction = buildingFunctions[fieldSpecification.displayType];
@@ -202,7 +202,7 @@ class PanelBuilder {
     }
     
     // Returns array of widgets built from the fieldSpecifications
-    buildFields(fieldSpecifications, contentPane, model) {
+    buildFields(fieldSpecifications, model) {
         // console.log("buildFields", fieldSpecifications);
         if (!fieldSpecifications) {
             throw new Error("fieldSpecifications are not defined");
@@ -211,14 +211,14 @@ class PanelBuilder {
         var fields = [];
         for (var fieldSpecificationIndex in fieldSpecifications) {
             var fieldSpecification = fieldSpecifications[fieldSpecificationIndex];
-            var widget = this.buildField(contentPane, model, fieldSpecification);
+            var widget = this.buildField(model, fieldSpecification);
             fields.push(widget);
         }
         return fields;
     }
     
     // Build an entire panel; panel can be either a string ID referring to a panel or it can be a panel definition itself
-    buildPanel(panelOrPanelID, contentPane, model) {
+    buildPanel(panelOrPanelID, model) {
         console.log("buildPanel", panelOrPanelID);
         var fieldSpecifications;
         if (_.isString(panelOrPanelID)) {
@@ -226,11 +226,11 @@ class PanelBuilder {
             fieldSpecifications = panel.panelFields;
         } else if (panelOrPanelID.buildPanel) {
             // Call explicit constructor function
-            return panelOrPanelID.buildPanel(this, contentPane, model);
+            return panelOrPanelID.buildPanel(this, model);
         } else {
             fieldSpecifications = panelOrPanelID.panelFields;
         }
-        return this.buildFields(fieldSpecifications, contentPane, model);
+        return this.buildFields(fieldSpecifications, model);
     }
     
     addHTML(contentPane, htmlText) {

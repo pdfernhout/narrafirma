@@ -264,7 +264,7 @@ var ItemPanel = {
         // TODO: Should provide copy of item?
         var panelBuilder: PanelBuilder = args.panelBuilder;
         // Possible recursion if the panels contain a table
-        return m("div", panelBuilder.buildPanel(args.grid.itemPanelSpecification, null, args.item))
+        return m("div", panelBuilder.buildPanel(args.grid.itemPanelSpecification, args.item))
 
     }
 }

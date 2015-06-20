@@ -19,17 +19,49 @@ var currentPageWidgets;
 
 var project;
 
+var PageDisplayer: any = {
+    controller: function(args) {
+    },
+    
+    view: function(controller, args) {
+        console.log("&&&&&&&&&& view called in PageDisplayer", currentPageID);
+        if (!currentPageID) {
+            return m("div", "Starting up...");
+        }
+        // Create the display widgets for this page
+        try {
+            return panelBuilder.buildPanel(currentPageID, project.projectModel);
+        } catch (e) {
+            console.log("ERROR: When trying to create page", currentPageID, e);
+            // TODO: Translate
+            // alert("Something when wrong trying to create this page");
+        }
+        return m("div", "PROBLEM: Failed to build page: " + currentPageID);
+    }
+}
+
 // Call this once at the beginning of the application
 export function configurePageDisplayer(thePanelBuilder: PanelBuilder, theStartPage, theProject) {
     panelBuilder = thePanelBuilder;
     startPage = theStartPage;
     project = theProject;
+    
+    m.mount(document.getElementById("pageDiv"), PageDisplayer);
+}
+
+export function redraw() {
+    m.redraw();
 }
 
 export function showPage(pageID, forceRefresh = false) {
+    console.log("showPage", pageID, forceRefresh);
+    
     if (!pageID) pageID = startPage;
-    if (currentPageID === pageID && !forceRefresh) return;
-
+    if (currentPageID === pageID && !forceRefresh) {
+        console.log("Page is already current; returning");
+        return;
+    }
+    
     var pageSpecification;
     try {
         pageSpecification = panelBuilder.getPageSpecificationForPageID(pageID);
@@ -65,37 +97,10 @@ export function showPage(pageID, forceRefresh = false) {
     */
  
     // Hide the current page temporarily
-    domStyle.set("pageDiv", "display", "none");
+    // domStyle.set("pageDiv", "display", "none");
 
-    // Get rid of the old page using dojo destroy in order to prevent memory leaks
-    if (currentPageID && currentPage) {
-        // domStyle.set(currentPageID, "display", "none");
-        console.log("destroying", currentPageID, currentPage);
-        currentPage.destroyRecursive();
-        domConstruct.destroy(currentPage.domNode);
-    }
+    // Just going to assume we will be redrawing later via Mithril...
     
-    // Get ready to create a model for this page if we have a model for it
-    var pageModelName = pageSpecification.modelClass;
-    if (pageModelName === undefined) {
-        console.log("ERROR: Page model name is not set in", pageID, pageSpecification);
-        // TODO: Translate
-        alert("Something when wrong trying to create the model for this page");
-        return;
-    }
-
-    var modelForPage = project.projectModel;
-
-    // Create the display widgets for this page
-    try {
-        currentPage = createPage(pageID, pageSpecification, modelForPage);
-    } catch (e) {
-        console.log("ERROR: When trying to create page", pageID, e);
-        // TODO: Translate
-        alert("Something when wrong trying to create this page");
-        return;
-    }
-
     // Make sure the hash is pointing to this page if this is not a forced refresh
     if (currentPageID !== pageID) {
         console.log("setting currentPageID to", pageID);
@@ -103,82 +108,17 @@ export function showPage(pageID, forceRefresh = false) {
         panelBuilder.clientState.pageIdentifier = currentPageID;
     }
     
-    finishShowingPage(pageID, pageSpecification);
-}
-
-function finishShowingPage(pageID, pageSpecification) { 
     // Show the current page again
-    domStyle.set("pageDiv", "display", "block");
+    // domStyle.set("pageDiv", "display", "block");
     
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
+    // TODO: document.body.scrollTop = document.documentElement.scrollTop = 0;
 
     // Ensure navigation select is pointing to this page; this may trigger an update but it should be ignored as we're already on this page
-    navigationPane.setCurrentPageSpecification(pageID, pageSpecification);
+    // TODO: navigationPane.setCurrentPageSpecification(pageID, pageSpecification);
     
     // Because the page was hidden when created, all the grids need to be resized so grid knows how tall to make header so it is not overwritten
-    currentPage.resize();
-    domClass.add(currentPage.domNode, "narrafirma-" + pageID);
-}
-
-// Create all the widgets for the current page using the panelBuilder which builds the page from the pageSpecification
-function createPage(pageID, pageSpecification, modelForPage) {
-    console.log("createPage", pageID);
-    
-    var pagePane = new ContentPane({
-        // Shorten width so grid scroll bar shows up not clipped
-        // Also, looks like nested ContentPanes tend to walk off the right side of the page for some reason
-        // CFK changed 94% to 99% - still looks okay when scrolling and 94% left noticeable gap on right side
-        style: "width: 99%",
-        display: "none" // "block" //
-    });
-
-    // console.log("about to place pane", pageID);
-    // Dojo seems to require these pages be in the visual hierarchy before some components like grid that are added to them are have startUp called.
-    // Otherwise the grid header is not sized correctly and will be overwritten by data
-    // This is as opposed to what one might think would reduce resizing and redrawing by adding the page only after components are added
-    pagePane.placeAt("pageDiv", "last");
-    
-    pagePane.startup();
-    
-    var title = '<div class="narrafirma-page-name">' + pageSpecification.displayName + '</div>';
-    
-    var titlePane = new ContentPane({
-        content: title
-    });
-    
-    titlePane.placeAt(pagePane);
-
-    // console.log("Made content pane", pageID);
-
-    // TODO: sthould not be redefining this function each time...
-    // TODO: No removal done for old widgets when re-render?
-    panelBuilder.redraw = function() {
-        try {
-            // Tell the panelBuilder to create all the widgets for this page
-            currentPageWidgets = panelBuilder.buildPanel(pageID, pagePane, modelForPage);
-        } catch (e) {
-            console.log("Error when trying to build panel", pageID, modelForPage, e);
-            // TODO: Translate
-            alert("Something went wrong when trying to build this page.\nCheck the console for details");
-        }
-    
-        m.render(pagePane.domNode, currentPageWidgets);
-    };
-    
-    panelBuilder.redraw();
-    
-    // TODO: Temporary testing
-    /*
-    var Page = {
-        controller: function(args) {},
-        view: function(ctrl, args) {
-            return panelBuilder.buildPanel(pageID, pagePane, modelForPage);
-        }
-    };
-    m.mount(pagePane.domNode, <any>Page);
-*/
-    
-    return pagePane;
+    // currentPage.resize();
+    // domClass.add(currentPage.domNode, "narrafirma-" + pageID);
 }
 
 export function getCurrentPageID() {

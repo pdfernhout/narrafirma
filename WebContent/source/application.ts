@@ -157,6 +157,10 @@ function urlHashFragmentChanged(newHash) {
     
     // Page displayer will handle cases where the hash is not valid and also optimizing out page redraws if staying on same page
     pageDisplayer.showPage(clientState.pageIdentifier);
+    // TODO: Does this really need a redraw?
+    pageDisplayer.redraw();
+
+    console.log("done with urlHashFragmentChanged");
 }
 
 var updateHashTimer = null;
@@ -167,6 +171,7 @@ function updateHashIfNeededForChangedState() {
 }
 
 function startTrackingClientStateChanges() {
+    /* TODO: How to handle this? Just do it on every redraw?
     // TODO: Should this watch be owned by some component so they can be destroyed when the page closes?
     (<any>clientState).watch(function () {
         if (updateHashTimer) clearTimeout(updateHashTimer);
@@ -180,6 +185,7 @@ function startTrackingClientStateChanges() {
             }
         }, 0);
     });
+    */
 }
     
 function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecification) {
@@ -333,6 +339,7 @@ function processAllPanels() {
 function createLayout() {
     console.log("createLayout start");
 
+    /* TOD: Get this workign again
     var pageControlsPane = navigationPane.createNavigationPane(pageDisplayer, panelSpecificationCollection, startPage);
 
     domConstruct.place('<a id="narrafirma-logout-link" href="javascript:narrafirma_logoutClicked()">Logout (' + userIdentifier + ')</a>', pageControlsPane.domNode);
@@ -347,6 +354,8 @@ function createLayout() {
     });
     
     // updateServerStatus("Server status: unknown");
+    
+    */
     
     console.log("createLayout end");
 }
@@ -473,6 +482,8 @@ function setupGlobalFunctions() {
     
     window["narrafirma_openPage"] = function (pageIdentifier) {
         clientState.pageIdentifier = pageIdentifier;
+        // TODO: Need better approach for tracking hash changes?
+        urlHashFragmentChanged(hashStringForClientState());
     };
     
     window["narrafirma_logoutClicked"] = function () {
@@ -688,6 +699,7 @@ function loadApplicationDesign() {
             // turn off initial "please wait" display
             document.getElementById("pleaseWaitDiv").style.display = "none";
             document.getElementById("navigationDiv").style.display = "block";
+            document.getElementById("pageDiv").style.display = "block";
         };
         
         // From: https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload

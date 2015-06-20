@@ -70,7 +70,7 @@ export function setCurrentPageSpecification(pageID, pageSpecification) {
         }
     }
     html += '<span id="narrafirma-breadcrumb-current">' + pageSpecification.displayName + '</span>';
-    breadcrumbsSpan.innerHTML = '<span id="narafirma-breadcrumbs">' + html + '</span>';
+    if (breadcrumbsSpan) breadcrumbsSpan.innerHTML = '<span id="narafirma-breadcrumbs">' + html + '</span>';
 }
 
 export function getCurrentPageSpecification() {
