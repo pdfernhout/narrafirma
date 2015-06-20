@@ -1,6 +1,5 @@
 /// <reference path="typings/lodash.d.ts"/>
 // declare var _: _.LoDashStatic;
-
 import buttonActions = require("./buttonActions");
 import csvImportExport = require("./csvImportExport");
 import dialogSupport = require("./panelBuilder/dialogSupport");
@@ -15,7 +14,6 @@ import PanelSpecificationCollection = require("./panelBuilder/PanelSpecification
 import PointrelClient = require("./pointrel20150417/PointrelClient");
 import Project = require("./Project");
 import questionnaireGeneration = require("./questionnaireGeneration");
-import Stateful = require("dojo/Stateful");
 import surveyCollection = require("./surveyCollection");
 import toaster = require("./panelBuilder/toaster");
 import Tooltip = require("dijit/Tooltip");
@@ -44,13 +42,13 @@ var userIdentifier;
 var project;
 
 // For this local instance only (not shared with other users or other browser tabs)
-var clientState = new Stateful({
-    currentProjectIdentifier: null,
-    currentPageIdentifier: null,
-    currentStoryCollection: null,
-    currentCatalysisReport: null,
-    currentDebugMode: null
-});
+var clientState: ClientState = {
+    projectIdentifier: null,
+    pageIdentifier: null,
+    storyCollection: null,
+    catalysisReport: null,
+    debugMode: null
+};
 
 // GUI
 // var serverStatusPane;
@@ -87,17 +85,17 @@ function hashStringForClientState() {
     var result = "";
     
     var fields = [
-        {id: "currentProjectIdentifier", key: "project"},
-        {id: "currentPageIdentifier", key: "page"},
-        {id: "currentStoryCollection", key: "storyCollection"},
-        {id: "currentCatalysisReport", key: "catalysisReport"},
-        {id: "currentDebugMode", key: "debugMode"}
+        {id: "projectIdentifier", key: "project"},
+        {id: "pageIdentifier", key: "page"},
+        {id: "storyCollection", key: "storyCollection"},
+        {id: "catalysisReport", key: "catalysisReport"},
+        {id: "debugMode", key: "debugMode"}
     ];
     
     for (var i = 0; i < fields.length; i++) {
         var field = fields[i];
 
-        var value = clientState.get(field.id);
+        var value = clientState[field.id];
         if (!value) continue;
         
         if (field.key === "page" && value) value = value.substring("page_".length);
@@ -117,7 +115,7 @@ function urlHashFragmentChanged(newHash) {
     var hashParameters = getHashParameters(newHash);
     console.log("hashParameters", hashParameters, clientState);
     
-    var currentProjectIdentifier = clientState.get("currentProjectIdentifier");
+    var currentProjectIdentifier = clientState.projectIdentifier;
     if (currentProjectIdentifier) {
         if (hashParameters.project && hashParameters.project !== currentProjectIdentifier) {
             // Force a complete page reload for now, as needs to create a new Pointrel client
@@ -127,8 +125,8 @@ function urlHashFragmentChanged(newHash) {
             return;
         }
     } else {
-        console.log("changing client state for page", clientState.get("currentProjectIdentifier"), hashParameters.project);
-        clientState.set("currentProjectIdentifier", hashParameters.project);
+        console.log("changing client state for page", clientState.projectIdentifier, hashParameters.project);
+        clientState.projectIdentifier = hashParameters.project;
     }
      
     var selectedPage = hashParameters.page;
@@ -137,28 +135,28 @@ function urlHashFragmentChanged(newHash) {
     } else {
         selectedPage = "page_" + selectedPage;
     }
-    if (selectedPage !== clientState.get("currentPageIdentifier")) {
-        console.log("changing client state for page", clientState.get("currentPageIdentifier"), selectedPage);
-        clientState.set("currentPageIdentifier", selectedPage);
+    if (selectedPage !== clientState.pageIdentifier) {
+        console.log("changing client state for page", clientState.pageIdentifier, selectedPage);
+        clientState.pageIdentifier = selectedPage;
     }
     
-    if (hashParameters.storyCollection && hashParameters.storyCollection !== clientState.get("currentStoryCollection")) {
-        console.log("changing client state for storyCollection", clientState.get("currentStoryCollection"), hashParameters.storyCollection);
-        clientState.set("storyCollection", hashParameters.storyCollection);
+    if (hashParameters.storyCollection && hashParameters.storyCollection !== clientState.storyCollection) {
+        console.log("changing client state for storyCollection", clientState.storyCollection, hashParameters.storyCollection);
+        clientState.storyCollection = hashParameters.storyCollection;
     }
     
-    if (hashParameters.catalysisReport && hashParameters.catalysisReport !== clientState.get("currentCatalysisReport")) {
-        console.log("changing client state for catalysisReport", clientState.get("currentCatalysisReport"), hashParameters.catalysisReport);
-        clientState.set("catalysisReport", hashParameters.catalysisReport);
+    if (hashParameters.catalysisReport && hashParameters.catalysisReport !== clientState.catalysisReport) {
+        console.log("changing client state for catalysisReport", clientState.catalysisReport, hashParameters.catalysisReport);
+        clientState.catalysisReport = hashParameters.catalysisReport;
     }
     
-    if (hashParameters.debugMode && hashParameters.debugMode !== clientState.get("currentDebugMode")) {
-        console.log("changing client state for debugMode", clientState.get("currentDebugMode"), hashParameters.debugMode);
-        clientState.set("debugMode", hashParameters.debugMode);
+    if (hashParameters.debugMode && hashParameters.debugMode !== clientState.debugMode) {
+        console.log("changing client state for debugMode", clientState.debugMode, hashParameters.debugMode);
+        clientState.debugMode = hashParameters.debugMode;
     }
     
     // Page displayer will handle cases where the hash is not valid and also optimizing out page redraws if staying on same page
-    pageDisplayer.showPage(clientState.get("currentPageIdentifier"));
+    pageDisplayer.showPage(clientState.pageIdentifier);
 }
 
 var updateHashTimer = null;
@@ -474,7 +472,7 @@ function setupGlobalFunctions() {
     // Set up global function used by section dashboard links
     
     window["narrafirma_openPage"] = function (pageIdentifier) {
-        clientState.set("currentPageIdentifier", pageIdentifier);
+        clientState.pageIdentifier = pageIdentifier;
     };
     
     window["narrafirma_logoutClicked"] = function () {
@@ -510,14 +508,14 @@ export function initialize() {
     var fragment = hash();
     console.log("fragment when page first loaded", fragment);
     var initialHashParameters = getHashParameters(fragment);
-    if (initialHashParameters["project"]) clientState.set("currentProjectIdentifier", initialHashParameters["project"]);
-    if (initialHashParameters["page"]) clientState.set("currentPageIdentifier", "page_" + initialHashParameters["page"]);
-    if (initialHashParameters["storyCollection"]) clientState.set("currentStoryCollection", initialHashParameters["storyCollection"]);
-    if (initialHashParameters["catalysisReport"]) clientState.set("currentCatalysisReport", initialHashParameters["catalysisReport"]);
-    if (initialHashParameters["debugMode"]) clientState.set("currentDebugMode", initialHashParameters["debugMode"]);
+    if (initialHashParameters["project"]) clientState.projectIdentifier = initialHashParameters["project"];
+    if (initialHashParameters["page"]) clientState.pageIdentifier = "page_" + initialHashParameters["page"];
+    if (initialHashParameters["storyCollection"]) clientState.storyCollection = initialHashParameters["storyCollection"];
+    if (initialHashParameters["catalysisReport"]) clientState.catalysisReport = initialHashParameters["catalysisReport"];
+    if (initialHashParameters["debugMode"]) clientState.debugMode = initialHashParameters["debugMode"];
         
     // Ensure defaults
-    if (!initialHashParameters["page"]) clientState.set("currentPageIdentifier", startPage);
+    if (!initialHashParameters["page"]) clientState.pageIdentifier = startPage;
     
     setupGlobalFunctions();
     
@@ -579,7 +577,7 @@ function chooseAProjectToOpen(userIdentifierFromServer, projects) {
         userIdentifier: userIdentifier
     };
     
-    var projectIdentifierSupplied = clientState.get("currentProjectIdentifier");
+    var projectIdentifierSupplied = clientState.projectIdentifier;
     console.log("projectIdentifierSupplied", projectIdentifierSupplied);
     if (projectIdentifierSupplied) {
         // TODO: Could put up project chooser if the supplied project is invalid...
@@ -593,7 +591,7 @@ function chooseAProjectToOpen(userIdentifierFromServer, projects) {
             projectIdentifier = projectChoice.id;
             if (!projectIdentifier) return;
             
-            clientState.set("currentProjectIdentifier", projectIdentifier.substring(narrafirmaProjectPrefix.length));
+            clientState.projectIdentifier = projectIdentifier.substring(narrafirmaProjectPrefix.length);
 
             openProject(userCredentials, projectIdentifier);
         });

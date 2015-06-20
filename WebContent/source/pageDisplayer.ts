@@ -43,9 +43,9 @@ export function showPage(pageID, forceRefresh = false) {
         alert("No such page: " + pageID);
         // Put back the hash if there was a valid one there already
         if (currentPageID !== null && currentPageID !== pageID) {
-            panelBuilder.clientState.set("currentPageIdentifier", currentPageID);
+            panelBuilder.clientState.pageIdentifier = currentPageID;
         } else {
-            panelBuilder.clientState.set("currentPageIdentifier", startPage);
+            panelBuilder.clientState.pageIdentifier = startPage;
         }
         return;
     }
@@ -58,7 +58,7 @@ export function showPage(pageID, forceRefresh = false) {
         var confirmResult = confirm("You have unsaved changes. Proceed anyway?");
         if (!confirmResult) {
             // Put back the old hash if it is valid and changed
-            if (currentPageID !== null && currentPageID !== pageID) panelBuilder.clientState.set("currentPageIdentifier", currentPageID);
+            if (currentPageID !== null && currentPageID !== pageID) panelBuilder.clientState.pageIdentifier = currentPageID);
             return;
         }
     }
@@ -100,7 +100,7 @@ export function showPage(pageID, forceRefresh = false) {
     if (currentPageID !== pageID) {
         console.log("setting currentPageID to", pageID);
         currentPageID = pageID;
-        panelBuilder.clientState.set("currentPageIdentifier", currentPageID);
+        panelBuilder.clientState.pageIdentifier = currentPageID;
     }
     
     finishShowingPage(pageID, pageSpecification);

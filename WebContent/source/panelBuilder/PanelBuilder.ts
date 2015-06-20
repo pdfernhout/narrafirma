@@ -130,7 +130,7 @@ class PanelBuilder {
     idCount = 0;
     
     // TODO: Maybe these should not be in builder?
-    clientState = null;
+    clientState: ClientState = null;
     project = null;
     projectModel = null;
 
