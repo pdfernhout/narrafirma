@@ -15,7 +15,9 @@ Blue - d5dae6 - abb6ce - [extra: 7b8cb2] - 3b5fab - 2e4a85
 */
 
 #pageDiv {
-   padding-left: 10px; 
+   padding-left: 10px;
+   padding-top: 3em;
+   position: absolute;
 }
 
 a:link {
@@ -44,6 +46,12 @@ textarea, input, select { /* override because expanded in survey */
 	background-color: #b2c07f;
 	padding: 0.25em 0em 0.2em 0em;
     border-bottom: 4px solid #8db500;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    width: 100%;
+    height: 2em;
 }
 
 #navigationDiv .dijitContentPane {

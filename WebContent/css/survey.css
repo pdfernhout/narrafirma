@@ -8,14 +8,12 @@ html, body {
     width: 100%;
     margin: 0;
     padding: 0;
-    overflow-y: scroll;
 }
 
 body {
     min-height: 100%;
     font-size: 1em;
-    margin: 0em;
-    padding: 0em;
+    overflow-y: scroll;
 }
 
 fieldset {
