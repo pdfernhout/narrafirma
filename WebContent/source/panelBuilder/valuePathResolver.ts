@@ -1,4 +1,3 @@
-import at = require("dojox/mvc/at");
 import PanelBuilder = require("PanelBuilder");
 
 "use strict";
@@ -42,14 +41,4 @@ export function resolveValueForFieldSpecification(panelBuilder: PanelBuilder, mo
 export function resolveValueForValuePath(panelBuilder: PanelBuilder, model, valuePath) {
     var modelAndField = resolveModelAndFieldForValuePath(panelBuilder, model, valuePath);
     return modelAndField.model.get(modelAndField.field);
-}
-
-export function atPath(panelBuilder: PanelBuilder, model, valuePath) {
-   var modelAndField = resolveModelAndFieldForValuePath(panelBuilder, model, valuePath);
-   return at(modelAndField.model, modelAndField.field);
-}
-
-export function atFieldSpecification(panelBuilder: PanelBuilder, model, fieldSpecification) {
-    var modelAndField = resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
-    return at(modelAndField.model, modelAndField.field);
 }
