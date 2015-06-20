@@ -109,10 +109,15 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         if (fieldSpecification.id === "__survey_storyName") panelBuilder.redraw();
     }
     
+    var readOnly = fieldSpecification.displayReadOnly || (fieldSpecification.valueImmutable && value) || undefined;
+    var disabled = (readOnly && displayType === "select") || undefined;
+
     var standardValueOptions = {
         value: value,
         id: getIdForText(fieldID),
-        onchange: change
+        onchange: change,
+        readOnly: readOnly,
+        disabled: disabled
     };
     
     if (displayType === "label") {
