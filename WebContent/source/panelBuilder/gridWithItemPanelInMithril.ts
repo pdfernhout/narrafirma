@@ -175,7 +175,7 @@ var Grid = {
             )
         ]);
         
-        var tableData = m("table", sorts(ctrl, ctrl.data), [
+        var tableData = m("table.scrolling", sorts(ctrl, ctrl.data), [
             ctrl.data.map(function(item, index) {
                 return Grid.rowForItem(ctrl, item, index);
             }).concat(m("tr", [m("button", {onclick: Grid.addItem.bind(ctrl)}, "Add")]))
