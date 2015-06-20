@@ -65,7 +65,7 @@ function buildBreadcrumbs(controller) {
         }
     }
     html += '<span id="narrafirma-breadcrumb-current">' + pageSpecification.displayName + '</span>';
-    return '<span id="narafirma-breadcrumbs">' + html + '</span>';
+    return html;
 }
 
 function htmlForBreadcrumb(pageIdentifier, pageName) {
