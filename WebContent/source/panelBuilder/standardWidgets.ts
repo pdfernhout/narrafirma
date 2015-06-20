@@ -103,10 +103,6 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         if (event) value = event.target.value;
         // console.log("onchange", fieldSpecification.id, value);
         model[fieldSpecification.id] = value;
-        // TODO: redraw on value change seems not needed in this survey case, since values do not affect anything about rest of application?
-        // redraw();
-        // Except for one case. Could there be more?
-        if (fieldSpecification.id === "__survey_storyName") panelBuilder.redraw();
     }
     
     var readOnly = fieldSpecification.displayReadOnly || (fieldSpecification.valueImmutable && value) || undefined;

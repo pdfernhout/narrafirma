@@ -122,7 +122,6 @@ class PanelBuilder {
     currentHelpPage = null;
     currentHelpSection = null;
     applicationDirectory = "/";
-    redraw = null;
     
     idsMade = {};
     idCount = 0;

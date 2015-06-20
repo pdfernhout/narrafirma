@@ -77,7 +77,6 @@ function sorts(ctrl, panelBuilder, list) {
                     list.reverse();
                 }
                 console.log("sorted list", list);
-                panelBuilder.redraw();
             } else {
                 if (ctrl.itemBeingEdited) return;
                 var itemID = e.target.getAttribute("data-item-index");
@@ -91,7 +90,6 @@ function sorts(ctrl, panelBuilder, list) {
                 }
                 console.log("found item at index", itemIndex, list[itemIndex]);
                 if (itemIndex !== null) ctrl.itemDisplayedAtBottom = list[itemIndex];
-                panelBuilder.redraw();
             }
         }
     }
@@ -164,6 +162,7 @@ var Grid = {
     
     view: function(ctrl, args) {
         var panelBuilder = args.panelBuilder;
+        console.log("panelBuilder", panelBuilder);
         
         var prompt = args.panelBuilder.buildQuestionLabel(args.fieldSpecification);
         
@@ -171,7 +170,6 @@ var Grid = {
             console.log("adjustHeaderWidth");
         }
         
-        // return m("table", sorts(ctrl.list), [
         var tableHeader = m("table", sorts(ctrl, panelBuilder, ctrl.data), [
             m("tr[style=outline: thin solid; background-color: #66CCFF]", {config: adjustHeaderWidth}, ctrl.columns.map(function (column) {
                     return m("th[data-sort-by=" + column.field  + "]", {"text-overflow": "ellipsis"}, column.label)
@@ -212,14 +210,12 @@ var Grid = {
         this.data.push(newItem);
         this.itemBeingEdited = newItem;
         this.itemDisplayedAtBottom = null;
-        panelBuilder.redraw();       
     },
     
     deleteItem: function (panelBuilder, item, index) {
         // TODO: This needs to create an action that affects original list
         console.log("deleteItem", panelBuilder, item, index);
         this.data.splice(index, 1);
-        panelBuilder.redraw();
     },
     
     editItem: function (panelBuilder, item, index) {
@@ -228,8 +224,6 @@ var Grid = {
         
         this.itemBeingEdited = item;
         this.itemDisplayedAtBottom = null;
-        
-        panelBuilder.redraw();
     },
     
     viewItem: function (panelBuilder, item, index) {
@@ -238,15 +232,12 @@ var Grid = {
         // TODO: If an item is being edited, probably should not allow viewing others...
         this.itemDisplayedAtBottom = item;
         this.itemBeingEdited = null;
-        
-        panelBuilder.redraw();
     },
     
     doneClicked: function(panelBuilder, item) {
         // TODO: Should ensure the data is saved
         this.itemBeingEdited = null;
         this.itemDisplayedAtBottom = null;
-        panelBuilder.redraw();
     },
     
     rowForItem: function (ctrl, panelBuilder, item, index) {
@@ -279,11 +270,6 @@ var Grid = {
 var ItemPanel = {
     controller: function(args) {
         console.log("%%%%%%%%%%%%%%%%%%% ItemPanel controller called");
-        // TODO: just seeing "placeholder" and view not called the first time; figure out why??
-        // https://lhorie.github.io/mithril/mithril.component.html
-        // TODO: Seem to need to queue a redraw to get the component rendered the first time (and not call directly to avoid endless recursion)
-        // TODO: However, this is not needed if the entire larger component assembly is "mounted". Maybe Mithril bug?
-        setTimeout(args.panelBuilder.redraw, 0);
     },
     
     view: function(ctrl, args) {
