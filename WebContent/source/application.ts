@@ -575,7 +575,7 @@ function chooseAProjectToOpen(userIdentifierFromServer, projects) {
     (<any>translate).configure({}, applicationMessages);
     
     // Initialize toaster
-    toaster.createToasterWidget("navigationDiv");
+    toaster.createToasterWidget("toasterDiv");
     
     loadAllApplicationWidgets(PanelBuilder);
     
