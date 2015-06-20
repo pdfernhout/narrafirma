@@ -118,7 +118,7 @@ function build_recommendationTable(panelBuilder: PanelBuilder, dialogContentPane
             displayConfiguration: function() {hideDialogCallback();}
         };
     
-    var closeButton = panelBuilder.buildField(dialogContentPane, model, closeButtonSpecification);
+    var closeButton = panelBuilder.buildField(model, closeButtonSpecification);
     
     return table;
 }

@@ -162,7 +162,7 @@ function makeTemplateListChooser(panelBuilder: PanelBuilder, contentPane, model,
         displayPrompt: "Cancel",
         displayConfiguration: function() {hideDialogCallback();}
     };
-    var cancelButton = panelBuilder.buildField(contentPane, model, cancelButtonSpecification);
+    var cancelButton = panelBuilder.buildField(model, cancelButtonSpecification);
 }
 
 export = add_templateList;

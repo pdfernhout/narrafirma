@@ -270,7 +270,7 @@ function buildGUI(mainContentPane, model, writeAccess) {
         displayPrompt: "Users"
     };
     
-    var userGrid = panelBuilder.buildField(panelContentPane, model, userGridSpecification);
+    var userGrid = panelBuilder.buildField(model, userGridSpecification);
     userGrid.grid.set("selectionMode", "single");
         
     var projectGridSpecification = {
@@ -293,7 +293,7 @@ function buildGUI(mainContentPane, model, writeAccess) {
         displayPrompt: "Projects"
     };
     
-    var projectGrid = panelBuilder.buildField(panelContentPane, model, projectGridSpecification);
+    var projectGrid = panelBuilder.buildField(model, projectGridSpecification);
     projectGrid.grid.set("selectionMode", "single");
     
     var saveButtonSpecification = {
@@ -307,7 +307,7 @@ function buildGUI(mainContentPane, model, writeAccess) {
     };
     
     if (writeAccess) {
-        var saveButton = panelBuilder.buildField(panelContentPane, model, saveButtonSpecification);
+        var saveButton = panelBuilder.buildField(model, saveButtonSpecification);
     }
     
     panelContentPane.placeAt(mainContentPane);

@@ -594,7 +594,7 @@ function add_trendsReport(panelBuilder: PanelBuilder, contentPane, model, fieldS
     
     // var observationPane = new ContentPane();
     // contentPane.addChild(observationPane);
-    var widgets = panelBuilder.buildPanel(observationPanelSpecification, contentPane, graphBrowserInstance.observationModel);
+    var widgets = panelBuilder.buildPanel(observationPanelSpecification, graphBrowserInstance.observationModel);
     graphBrowserInstance.widgets = widgets;
     
     // TODO: selections should be stored in original domain units, not scaled display units
