@@ -61,13 +61,13 @@ function add_image(panelBuilder: PanelBuilder, model, fieldSpecification, callba
     ];
 }
 
-function calculate_function(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
+function calculate_function(panelBuilder: PanelBuilder, model, fieldSpecification) {
     console.log("calculate_function called", fieldSpecification);
-    return panelBuilder.calculateFunctionResult(contentPane, model, fieldSpecification);
+    return panelBuilder.calculateFunctionResult(model, fieldSpecification);
 }
 
 function add_functionResult(panelBuilder: PanelBuilder, model, fieldSpecification, callback): any {
-    var calculate = calculate_function.bind(null, panelBuilder, null, model, fieldSpecification);
+    var calculate = calculate_function.bind(panelBuilder, null, model, fieldSpecification);
     
     var label = panelBuilder._add_calculatedText(panelBuilder, null, fieldSpecification, calculate);
     
@@ -115,8 +115,6 @@ var buildingFunctions = {};
 // This class builds panels from field specifications.
 // Field specifications define what widget to display and how to hook that widget to a model.
 class PanelBuilder {
-    currentQuestionContentPane = null;
-    currentInternalContentPane = null;
     panelSpecificationCollection = null;
     buttonClickedCallback = null;
     calculateFunctionResultCallback = null;
@@ -304,7 +302,7 @@ class PanelBuilder {
         this.calculateFunctionResultCallback = callback;
     }
     
-    calculateFunctionResult(contentPane, model, fieldSpecification) {
+    calculateFunctionResult(model, fieldSpecification) {
         if (_.isFunction(fieldSpecification.displayConfiguration)) {
             // Do callback; this can't be defined in JSON, but can be defined in an application
             return fieldSpecification.displayConfiguration();
@@ -313,7 +311,7 @@ class PanelBuilder {
             console.log("No calculateFunctionResultCallback set in panelBuilder", this, fieldSpecification);
             throw new Error("No calculateFunctionResultCallback set for PanelBuilder");
         }
-        return this.calculateFunctionResultCallback(this, contentPane, model, fieldSpecification, fieldSpecification.displayConfiguration);
+        return this.calculateFunctionResultCallback(this, model, fieldSpecification, fieldSpecification.displayConfiguration);
     }
     
     // This will only be valid during the building process for a page
@@ -467,10 +465,7 @@ class PanelBuilder {
         var internalContentPane = new ContentPane();
         domClass.add(internalContentPane.domNode, "questionInternal");
         internalContentPane.placeAt(questionContentPane);
-        
-        this.currentQuestionContentPane = questionContentPane;
-        this.currentInternalContentPane = internalContentPane;
-        
+
         return internalContentPane;
     }
           

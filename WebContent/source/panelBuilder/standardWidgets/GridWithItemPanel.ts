@@ -320,7 +320,7 @@ GridWithItemPanel.prototype.storeItem = function(statefulItem) {
             displayConfiguration: validationMethodIdentifier,
             value: plainValue
        };
-        var errors = this.panelBuilder.calculateFunctionResult(null, null, fakeFieldSpecification);
+        var errors = this.panelBuilder.calculateFunctionResult(null, fakeFieldSpecification);
         if (errors) {
             // TODO: Translate
             alert("There are validation errors:\n" + errors);

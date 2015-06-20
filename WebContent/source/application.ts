@@ -423,7 +423,7 @@ function buttonClicked(panelBuilder: PanelBuilder, contentPane, model, fieldSpec
 
 // Panel builder "functionResult" components will get routed through here to calculate their text.
 // The application should publish a topic with the same name as these functions when their value changes.
-function calculateFunctionResultForGUI(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification, functionName): any {
+function calculateFunctionResultForGUI(panelBuilder: PanelBuilder, model, fieldSpecification, functionName): any {
     if (functionName === "isStoryCollectingEnabled") {
         return surveyCollection.isStoryCollectingEnabled();
     } else if (functionName === "storeQuestionnaireInStoryCollection") {

@@ -167,18 +167,25 @@ var Grid = {
         
         var prompt = args.panelBuilder.buildQuestionLabel(args.fieldSpecification);
         
+        function adjustHeaderWidth() {
+            console.log("adjustHeaderWidth");
+        }
+        
         // return m("table", sorts(ctrl.list), [
-        var table = m("table", sorts(ctrl, panelBuilder, ctrl.data), [
-            m("tr[style=outline: thin solid; background-color: #66CCFF]", ctrl.columns.map(function (column) {
+        var tableHeader = m("table", sorts(ctrl, panelBuilder, ctrl.data), [
+            m("tr[style=outline: thin solid; background-color: #66CCFF]", {config: adjustHeaderWidth}, ctrl.columns.map(function (column) {
                     return m("th[data-sort-by=" + column.field  + "]", {"text-overflow": "ellipsis"}, column.label)
                 }).concat(m("th", ""))
-            ),
+            )
+        ]);
+        
+        var tableData = m("table", sorts(ctrl, panelBuilder, ctrl.data), [
             ctrl.data.map(function(item, index) {
                 return Grid.rowForItem(ctrl, panelBuilder, item, index);
             }).concat(m("tr", [m("button", {onclick: Grid.addItem.bind(ctrl, panelBuilder)}, "Add")]))
         ]);
         
-        var parts = [prompt, table];
+        var parts = [prompt, tableHeader, tableData];
         
         if (ctrl.itemDisplayedAtBottom) {
             parts.push(Grid.editorForItem(ctrl, panelBuilder, ctrl.itemDisplayedAtBottom));
