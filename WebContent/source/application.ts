@@ -16,7 +16,6 @@ import Project = require("./Project");
 import questionnaireGeneration = require("./questionnaireGeneration");
 import surveyCollection = require("./surveyCollection");
 import toaster = require("./panelBuilder/toaster");
-import Tooltip = require("dijit/Tooltip");
 import translate = require("./panelBuilder/translate");
 
 // Use Dojo topic instead of Pointrel topic here because wnat Dojo hash changed events
@@ -41,19 +40,18 @@ var userIdentifier;
 
 var project;
 
+var lastServerError = "";
+
 // For this local instance only (not shared with other users or other browser tabs)
 var clientState: ClientState = {
     projectIdentifier: null,
     pageIdentifier: null,
     storyCollection: null,
     catalysisReport: null,
-    debugMode: null
+    debugMode: null,
+    serverStatus: "narrafirma-serverstatus-ok",
+    serverStatusText: ""
 };
-
-// GUI
-// var serverStatusPane;
-var statusTooltip;
-var lastServerError = "";
 
 var navigationSections = [];
 
@@ -338,26 +336,25 @@ function processAllPanels() {
 function createLayout() {
     console.log("createLayout start");
 
-    navigationPane.initializeNavigationPane(panelSpecificationCollection, startPage, userIdentifier);
-
-    /* TOD: Get this working again
+    navigationPane.initializeNavigationPane(panelSpecificationCollection, startPage, userIdentifier, panelBuilder);
 
     // TODO: Improve status reporting
     // serverStatusPane = panelBuilder.newContentPane({content: "Server status: unknown"});
     // serverStatusPane.placeAt(pageControlsPane);
+    /*
     statusTooltip = new Tooltip({
         connectId: ["narrafirma-name"],
         label: "Server status: unknown",
         position: ["below", "after", "above", "before"]
     });
+    */
     
     // updateServerStatus("Server status: unknown");
-    
-    */
     
     console.log("createLayout end");
 }
 
+// TODO: Think more about how to integrate updatedServerStatus this with Mithril
 function updateServerStatus(status, text) {
     // The serverStatusPane may be created only after we start talking to the server
     // if (!serverStatusPane) return;
@@ -379,7 +376,7 @@ function updateServerStatus(status, text) {
         if (lastServerError) {
             // TODO: Translate
         	nameDiv.className = "narrafirma-serverstatus-waiting-last-error";
-            statusText += "<br>" + "Last error: " + lastServerError;
+            statusText += "\n" + "Last error: " + lastServerError;
         } else {
         	nameDiv.className = "narrafirma-serverstatus-waiting";
         }
@@ -394,9 +391,11 @@ function updateServerStatus(status, text) {
         //nameDiv.style.color = "black";
     }
     
-    // nameDiv.title = statusText;
+    nameDiv.title = statusText;
+    clientState.serverStatus = nameDiv.className;
+    clientState.serverStatusText = statusText;
     // TODO: Need to make tooltip text ARIA accessible; suggestion in tooltip docs on setting text in tab order
-    statusTooltip.set("label", statusText); 
+    // statusTooltip.set("label", statusText); 
     
     // serverStatusPane.set("content", statusText);
 }

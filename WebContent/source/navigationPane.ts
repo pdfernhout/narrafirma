@@ -16,14 +16,17 @@ var launchHelpCommand = "javascript:narrafirma_helpClicked()";
 var logoutCommand = "javascript:narrafirma_logoutClicked()";
 
 var Navigation: any = {
+    panelBuilder: null,
+    
     controller: function(args) {
         this.pageID = null;
         this.pageSpecification = null;
+        this.panelBuilder = Navigation.panelBuilder;
     },
     
     view: function(controller, args) {
         return m("div[id=narrafirma-navigation]", [
-            m("span[id=narrafirma-name]", m.trust("NarraFirma&#0153")),
+            m("span[id=narrafirma-name]", {"class": controller.panelBuilder.clientState.serverStatus, "title": controller.panelBuilder.clientState.serverStatusText}, m.trust("NarraFirma&#0153")),
             m("span[id=narrafirma-breadcrumbs]", m.trust(buildBreadcrumbs(controller))),
             m("a[id=narrafirma-help-link]", {href: launchHelpCommand}, "(Help)"),
             m("a[id=narrafirma-logout-link]", {href: logoutCommand}, 'Logout (' + userIdentifier + ')')
@@ -31,11 +34,12 @@ var Navigation: any = {
     }
 };
 
-export function initializeNavigationPane(thePanelSpecificationCollection, theStartPage, theUserIdentifier) {
+export function initializeNavigationPane(thePanelSpecificationCollection, theStartPage, theUserIdentifier, panelBuilder) {
     panelSpecificationCollection = thePanelSpecificationCollection;
     startPage = theStartPage;
     userIdentifier = theUserIdentifier;
     
+    Navigation.panelBuilder = panelBuilder;
     navigationController = m.mount(document.getElementById("navigationDiv"), Navigation);
 }
     

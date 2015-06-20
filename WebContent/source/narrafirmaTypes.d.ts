@@ -4,4 +4,6 @@ interface ClientState {
     storyCollection: string;
     catalysisReport: string;
     debugMode: string;
+    serverStatus: string;
+    serverStatusText: string;
 }
