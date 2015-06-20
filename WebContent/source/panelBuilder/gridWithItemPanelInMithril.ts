@@ -79,6 +79,7 @@ function sorts(ctrl, panelBuilder, list) {
                 console.log("sorted list", list);
                 panelBuilder.redraw();
             } else {
+                if (ctrl.itemBeingEdited) return;
                 var itemID = e.target.getAttribute("data-item-index");
                 console.log("item clicked", itemID);
                 var itemIndex = null;
@@ -180,11 +181,22 @@ var Grid = {
         var parts = [prompt, table];
         
         if (ctrl.itemDisplayedAtBottom) {
-            parts.push(m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: ctrl.itemDisplayedAtBottom, grid: ctrl}));
+            parts.push(Grid.editorForItem(ctrl, panelBuilder, ctrl.itemDisplayedAtBottom));
+        }
+        
+        if (ctrl.itemBeingEdited) {
+            parts.push(Grid.editorForItem(ctrl, panelBuilder, ctrl.itemBeingEdited));
         }
         
         // TODO: set class etc.
         return m("div", parts);
+    },
+    
+    editorForItem: function(ctrl, panelBuilder, item) {
+        return m("tr", [
+            m("td", {colSpan: ctrl.columns.length}, [m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: ctrl})]),
+            m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(ctrl, panelBuilder, item)}, "close")])
+        ]);
     },
     
     addItem: function(panelBuilder) {
@@ -216,35 +228,44 @@ var Grid = {
     viewItem: function (panelBuilder, item, index) {
         console.log("viewItem", panelBuilder, item, index);
         
+        // TODO: If an item is being edited, probably should not allow viewing others...
         this.itemDisplayedAtBottom = item;
+        this.itemBeingEdited = null;
         
         panelBuilder.redraw();
     },
     
-    doneClicked: function(panelBuilder, item, index) {
+    doneClicked: function(panelBuilder, item) {
         // TODO: Should ensure the data is saved
         this.itemBeingEdited = null;
+        this.itemDisplayedAtBottom = null;
         panelBuilder.redraw();
     },
     
     rowForItem: function (ctrl, panelBuilder, item, index) {
+        /*
         if (ctrl.itemBeingEdited === item) {
             return m("tr", [
                 m("td", {colSpan: ctrl.columns.length}, [m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: ctrl})]),
                 m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(ctrl, panelBuilder, item, index)}, "close")])
             ]);
         }
-        
+        */
         var selectionClass = "narrafirma-grid-row-unselected";
-        if (item === ctrl.itemDisplayedAtBottom) selectionClass = "narrafirma-grid-row-selected";
-        return m("tr", {key: item[ctrl.idProperty], "class": selectionClass}, ctrl.columns.map(function (column) {
+        var selected = (item === ctrl.itemDisplayedAtBottom || item === ctrl.itemBeingEdited);
+        if (selected) selectionClass = "narrafirma-grid-row-selected";
+        var fields = ctrl.columns.map(function (column) {
             return m("td[style=outline: thin solid]", {"text-overflow": "ellipsis", "data-item-index": item[ctrl.idProperty] }, item[column.field])
-        }).concat(m("td[style=outline: thin solid]", {nowrap: true}, [
-            m("button", {onclick: Grid.deleteItem.bind(ctrl, panelBuilder, item, index), "class": "fader"}, "delete"),
-            m("button", {onclick: Grid.editItem.bind(ctrl, panelBuilder, item, index), "class": "fader"}, "edit"),
+        });
+        
+        var disabled = (ctrl.itemDisplayedAtBottom || ctrl.itemBeingEdited) || undefined;
+        fields = fields.concat(m("td[style=outline: thin solid]", {nowrap: true}, [
+            m("button", {onclick: Grid.deleteItem.bind(ctrl, panelBuilder, item, index), disabled: disabled, "class": "fader"}, "delete"),
+            m("button", {onclick: Grid.editItem.bind(ctrl, panelBuilder, item, index), disabled: disabled, "class": "fader"}, "edit"),
             // TODO: Fix so view and not edit
-            m("button", {onclick: Grid.viewItem.bind(ctrl, panelBuilder, item, index), "class": "fader"}, "view")
-        ])));
+            m("button", {onclick: Grid.viewItem.bind(ctrl, panelBuilder, item, index), disabled: disabled, "class": "fader"}, "view")
+        ]));
+        return m("tr", {key: item[ctrl.idProperty], "class": selectionClass}, fields);
     }
 };
 

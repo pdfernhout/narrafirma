@@ -566,9 +566,9 @@ form {
 
 table {
   min-width: 100%;
-  /*display: block;
-  max-height: 300px;
-  overflow-y: scroll;*/
+  display: block;
+  max-height: 400px;
+  overflow-y: scroll;
 }
 
 table button.fader {
