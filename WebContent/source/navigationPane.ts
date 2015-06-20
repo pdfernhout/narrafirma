@@ -11,6 +11,10 @@ var userIdentifier;
 
 var navigationController = null;
 
+/* jshint scripturl:true */
+var launchHelpCommand = "javascript:narrafirma_helpClicked()";
+var logoutCommand = "javascript:narrafirma_logoutClicked()";
+
 var Navigation: any = {
     controller: function(args) {
         this.pageID = null;
@@ -21,8 +25,8 @@ var Navigation: any = {
         return m("div[id=narrafirma-navigation]", [
             m("span[id=narrafirma-name]", m.trust("NarraFirma&#0153")),
             m("span[id=narrafirma-breadcrumbs]", m.trust(buildBreadcrumbs(controller))),
-            m("a[id=narrafirma-help-link]", {href: "javascript:narrafirma_helpClicked()"}, "(Help)"),
-            m("a[id=narrafirma-logout-link]", {href: "javascript:narrafirma_logoutClicked()"}, 'Logout (' + userIdentifier + ')')
+            m("a[id=narrafirma-help-link]", {href: launchHelpCommand}, "(Help)"),
+            m("a[id=narrafirma-logout-link]", {href: logoutCommand}, 'Logout (' + userIdentifier + ')')
         ]);
     }
 };
