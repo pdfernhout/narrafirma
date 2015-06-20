@@ -336,8 +336,6 @@ function processAllPanels() {
 function createLayout() {
     console.log("createLayout start");
 
-    navigationPane.initializeNavigationPane(panelSpecificationCollection, startPage, userIdentifier, panelBuilder);
-
     // TODO: Improve status reporting
     // serverStatusPane = panelBuilder.newContentPane({content: "Server status: unknown"});
     // serverStatusPane.placeAt(pageControlsPane);
@@ -666,6 +664,8 @@ function loadApplicationDesign() {
         
         panelBuilder.setCalculateFunctionResultCallback(calculateFunctionResultForGUI);
 
+        panelBuilder.clientState = clientState;
+        navigationPane.initializeNavigationPane(panelSpecificationCollection, startPage, userIdentifier, panelBuilder);
         pageDisplayer.configurePageDisplayer(panelBuilder, startPage, project, updateHashIfNeededForChangedState);
 
         // Fill out initial hash string if needed
@@ -681,10 +681,10 @@ function loadApplicationDesign() {
             // Now that data is presumably loaded, set up the project model to use that data and track ongoing changes to it
             project.initializeProjectModel(panelSpecificationCollection);
             panelBuilder.projectModel = project.projectModel;
-            panelBuilder.clientState = clientState;
+
             buttonActions.initialize(project);
             csvImportExport.initialize(project);
-            
+                        
             startTrackingClientStateChanges();
              
             // Ensure the pageDisplayer will display the first page
@@ -697,6 +697,8 @@ function loadApplicationDesign() {
             document.getElementById("pleaseWaitDiv").style.display = "none";
             document.getElementById("navigationDiv").style.display = "block";
             document.getElementById("pageDiv").style.display = "block";
+            
+            toaster.toast("Started up!!!");
         };
         
         // From: https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload

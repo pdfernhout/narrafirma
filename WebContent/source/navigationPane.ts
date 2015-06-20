@@ -55,6 +55,8 @@ function buildBreadcrumbs(controller) {
     var pageSpecification = controller.pageSpecification;
     
     currentPageSpecification = pageSpecification;
+    
+    if (!pageSpecification) return "Starting up...";
 
     var html = "";
     if (pageID !== startPage) {
