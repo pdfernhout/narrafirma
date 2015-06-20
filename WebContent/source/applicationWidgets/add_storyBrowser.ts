@@ -3,7 +3,6 @@ import surveyCollection = require("../surveyCollection");
 import widgetSupport = require("../panelBuilder/widgetSupport");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
-import surveyBuilderMithril = require("../surveyBuilderMithril");
 import m = require("mithril");
 
 "use strict";
@@ -381,7 +380,7 @@ var StoryBrowser = {
     view: function(ctrl, args) {
         var panelBuilder = args.panelBuilder;
         
-        var prompt = surveyBuilderMithril.buildQuestionLabel(args.fieldSpecification);
+        var prompt = args.panelBuilder.buildQuestionLabel(args.fieldSpecification);
         
         var rest = m("div", "story browser unfinished");
         

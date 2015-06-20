@@ -1,6 +1,5 @@
 import m = require("mithril");
 import translate = require("./translate");
-import surveyBuilderMithril = require("../surveyBuilderMithril");
 import PanelBuilder = require("panelBuilder/PanelBuilder");
 
 "use strict";
@@ -169,7 +168,7 @@ var Grid = {
     view: function(ctrl, args) {
         var panelBuilder = args.panelBuilder;
         
-        var prompt = surveyBuilderMithril.buildQuestionLabel(args.fieldSpecification);
+        var prompt = args.panelBuilder.buildQuestionLabel(args.fieldSpecification);
         
         // return m("table", sorts(ctrl.list), [
         var table = m("table", sorts(ctrl, panelBuilder, ctrl.data), [

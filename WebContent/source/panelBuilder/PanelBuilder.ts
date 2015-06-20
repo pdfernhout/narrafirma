@@ -3,9 +3,9 @@ import domClass = require('dojo/dom-class');
 import domConstruct = require("dojo/dom-construct");
 import translate = require("./translate");
 import ContentPane = require("dijit/layout/ContentPane");
-import surveyBuilder = require("../surveyBuilderMithril");
 import m = require("mithril");
 import gridWithItemPanelInMithril = require("./gridWithItemPanelInMithril");
+import standardWidgets = require("./standardWidgets");
 
 "use strict";
 
@@ -89,7 +89,7 @@ function add_functionResult(panelBuilder: PanelBuilder, model, fieldSpecificatio
 
 function addStandardPlugins() {
     // shared with survey builder
-    var displayQuestion = surveyBuilder.displayQuestion;
+    var displayQuestion = standardWidgets.displayQuestion;
     PanelBuilder.addPlugin("boolean", displayQuestion);
     PanelBuilder.addPlugin("checkbox", displayQuestion);
     PanelBuilder.addPlugin("checkboxes", displayQuestion);
@@ -126,6 +126,9 @@ class PanelBuilder {
     applicationDirectory = "/";
     redraw = null;
     
+    idsMade = {};
+    idCount = 0;
+    
     // TODO: Maybe these should not be in builder?
     clientState = null;
     project = null;
@@ -145,6 +148,15 @@ class PanelBuilder {
     // provide a way to find definitions needed to  build internal panels for some widgets like the GridWithItemPanel
     setPanelSpecifications(panelSpecificationCollection) {
         this.panelSpecificationCollection = panelSpecificationCollection;
+    }
+    
+    // Convert arbitrary text to ids
+    getIdForText(text) {
+        if (!this.idsMade["$" + text]) {
+            this.idsMade["$" + text] = this.idCount++;
+        }
+            
+        return "panelField_" + this.idsMade["$" + text];
     }
     
     addMissingWidgetPlaceholder(panelBuilder, contentPane, model, fieldSpecification) {
@@ -345,6 +357,69 @@ class PanelBuilder {
 
         return replace(template, replacements);
     }
+    
+    /* TODO: Work in progress....
+    function recursivelyReplace(tag, item) {
+        if (item instanceof Array) {
+            return item.map(function (item) {
+                recursivelyReplace(tag, item);
+            });
+        } else {
+            return item;
+       }
+    }
+    
+    function addAllowedHTMLToPrompt(text) {
+        var result = [];
+        
+        var tags = text.match(/<.+?>/g);
+        // tags.push(null);
+        var tagStack = [];
+        while (tags.length) {
+            var tag = tags.shift();
+            if (! _.startsWith(tag, "</")) {
+                tagStack.push(tag);
+                continue;
+            }
+            var endTag = tag;
+            var endPos = text.indexOf(endTag);
+            var startTag = tagStack.pop();
+            var startPos = text.indexOf(startTag);
+            
+            var beginString = text.substring(0, startPos);
+            var middleString = text.substring(startPos + startTag.length, endPos);
+            var endString = text.substring(endPos + endTag.length);
+            
+            if (startTag === "<strong>") {
+                result.children.push(m("strong", middleString));
+                text = beginString + endString;
+            }
+            
+        }
+    
+        
+        // var result = text; 
+        // result = recursivelyReplace("strong", result);
+    
+    // TODO: Should track earliest start of tag and have array of m virtual nodes, and if new item starts before earliest tag then wrap all the tags in the new one as children
+        
+        return JSON.stringify(tags);
+    }
+    */
+    
+    addAllowedHTMLToPrompt(text) {
+        // TODO: Sanitize this html, making something like the above work
+        return m.trust(text);  
+    }
+    
+    buildQuestionLabel(fieldSpecification) {
+        return [
+            // TODO: Generalize this css class name
+            m("span", {"class": "narrafirma-survey-prompt"}, this.addAllowedHTMLToPrompt(fieldSpecification.displayPrompt)),
+            m("br")
+        ];
+    }
+
     
     createQuestionContentPaneWithPrompt(contentPane, fieldSpecification) {
         // triangle&#8227; 

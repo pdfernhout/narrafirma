@@ -105,7 +105,7 @@ function addAllowedHTMLToPrompt(text) {
     return m.trust(text);  
 }
 
-export function buildQuestionLabel(fieldSpecification) {
+function buildQuestionLabel(fieldSpecification) {
     return [
         // TODO: Generalize this css class name
         m("span", {"class": "narrafirma-survey-prompt"}, addAllowedHTMLToPrompt(fieldSpecification.displayPrompt)),
@@ -114,7 +114,7 @@ export function buildQuestionLabel(fieldSpecification) {
 }
 
 // Builder is used by main application, and is passed in for compatibility
-export function displayQuestion(builder, model, fieldSpecification) {
+function displayQuestion(builder, model, fieldSpecification) {
     var fieldID = fieldSpecification.id;
     if (model) {
         fieldID = (model._storyID || model._participantID) + "__" + fieldID;
