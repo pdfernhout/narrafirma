@@ -129,16 +129,12 @@ var Grid = {
             console.log("Error: no model is defined for grid", fieldSpecification);
             throw new Error("Error: no model is defined for grid");
         }
-        if (!model.get) {
-            console.log("Error: model that supports get is needed for grid", fieldSpecification);
-            throw new Error("Error: model that supports get is needed for grid");
-        }
         
         // TODO: May want to use at or similar to get the value in case this is a plain object?
-        var data = model.get(fieldSpecification.id);
+        var data = model[fieldSpecification.id];
         if (!data) {
             data = [];
-            model.set(fieldSpecification.id, data);
+            model[fieldSpecification.id] = data;
         }
         
         var idProperty = configuration.idProperty;
