@@ -42,7 +42,7 @@ TripleStore.prototype.add = function (a, b, c, callback) {
         _topicTimestamp: timestamp,
         change: change,
         messageType: "tripleStore",
-        userIdentifier: this.pointrelClient.userIdentifier,
+        userIdentifier: this.pointrelClient.userIdentifier
     };
     
     // TODO: Process locally first and track sent and bump and report conflicts

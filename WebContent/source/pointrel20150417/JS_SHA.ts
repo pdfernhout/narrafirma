@@ -1,5 +1,7 @@
 // Converted to TypeScript by Paul D. Fernhout, using version from GitHub as of 2015-06-14
 
+/* tslint:disable no-bitwise */
+
 /**
  * @preserve A JavaScript implementation of the SHA family of hashes, as
  * defined in FIPS PUB 180-2 as well as the corresponding HMAC implementation

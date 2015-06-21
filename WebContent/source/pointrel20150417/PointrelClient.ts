@@ -7,10 +7,12 @@
 // Message streams on a server typically store all the messages for playback by future clients to reconstruct a semantic structure defined by the messages.
 // Messages have a trace, which is the path they have travelled through the overall system from client to server (to server...) to client.
 
-// Messages have a timestamp in the oldest trace receivedTimestamp field (the effective time, which on creation should be "now" or possible in the past, but never in the future).
+// Messages have a timestamp in the oldest trace receivedTimestamp field (the effective time,
+// which on creation should be "now" or possible in the past, but never in the future).
 // Messages also have an originator defined by the trace, which is usually a person.
 
-// Ideally (future work), messages should be signed in the trace by the originator and/or other certifying authorities as to the authenticity.
+// Ideally (future work), messages should be signed in the trace by the originator and/or
+// other certifying authorities as to the authenticity.
 // The signature process is intented in part to identify potentially unwanted messages from unknown or unauthenticated users).
 
 // PCE in stored server files stands for "Pointrel Collected Event". :-)
@@ -29,9 +31,14 @@ var defaultCheckFrequency_ms = 3000;
 
 var debugMessaging = false;
 
-// TODO: Think more deeply about what server status can be, like states it transitions through (perhaps startup, polling, loading, storing, waiting-to-poll, timed-out, recovering, etc.)
+// Declarign this variable here to make TSLint happy
+var copyObjectWithSortedKeys;
 
-// TODO: Handle the queue of outgoing messages better, and don't allow for possibility one could get dropped if timeout or server failure or such
+// TODO: Think more deeply about what server status can be, like states it transitions through
+// (perhaps startup, polling, loading, storing, waiting-to-poll, timed-out, recovering, etc.)
+
+// TODO: Handle the queue of outgoing messages better, and don't allow for possibility one could
+// get dropped if timeout or server failure or such
 
 // TODO: Add "credentials" somehow
 
@@ -143,14 +150,14 @@ PointrelClient.prototype.apiRequestSend = function(apiRequest, timeout_ms, succe
                 }
             } else {
                 // TODO: Might these sometimes be JSON?
-                if (errorCallback) errorCallback({status: httpRequest.status, message: httpRequest.responseText})
+                if (errorCallback) errorCallback({status: httpRequest.status, message: httpRequest.responseText});
             }
         }
-    }
+    };
     
     httpRequest.ontimeout = function () {
          errorCallback({status: 0, message: "Timeout"});
-    }
+    };
     
     httpRequest.open('POST', this.apiURL, true);
     httpRequest.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
@@ -159,7 +166,7 @@ PointrelClient.prototype.apiRequestSend = function(apiRequest, timeout_ms, succe
     
     var data = JSON.stringify(apiRequest);
     httpRequest.send(data);
-}
+};
 
 // TODO: No callback?
 PointrelClient.prototype.createAndSendChangeMessage = function(topicIdentifier, messageType, change, other, callback) {
@@ -315,7 +322,8 @@ PointrelClient.prototype.sendOutgoingMessage = function() {
             }
         }, function(error) {
             // TODO: Need to check for rejected status and then remove the message from the outgoing queue
-            self.serverStatus("failure", "Problem storing message to server: " + error.message + "<br>You may need to reload the page to synchronize it with the current state of the server if a message was rejected for some reason.");
+            self.serverStatus("failure", "Problem storing message to server: " + error.message + 
+                "<br>You may need to reload the page to synchronize it with the current state of the server if a message was rejected for some reason.");
             console.log("Got store error", error.message);
             self.outstandingServerRequestSentAtTimestamp = null;
             if (callback) {
@@ -446,7 +454,7 @@ PointrelClient.prototype.getCurrentUserInformation = function(callback) {
         // Send to a real server immediately
 
         var apiRequest = {
-            action: "pointrel20150417_currentUserInformation",
+            action: "pointrel20150417_currentUserInformation"
         };
         if (debugMessaging) console.log("sending currentUserInformation request", apiRequest);
         // Do not send credentials: this.prepareApiRequestForSending(apiRequest);
@@ -507,7 +515,8 @@ PointrelClient.prototype.getCurrentUniqueTimestamp = function(filterFunction) {
 var isObject = function(a) {
     return Object.prototype.toString.call(a) === '[object Object]';
 };
-var copyObjectWithSortedKeys = function(object) {
+
+copyObjectWithSortedKeys = function(object) {
     if (isObject(object)) {
         var newObj = {};
         var keysSorted = Object.keys(object).sort();
@@ -572,10 +581,14 @@ function getCurrentUniqueTimestamp() {
     // Need to increment timestamp;
     lastTimestampIncrement++;
     if (lastTimestampIncrement === 1000) {
-        // About to overrun timestamps -- this should probably never be possible in practice on a single thread doing any actual work other than a tight loop for a couple decades (circa 2015).
-        // Possible short-term fix is to pad "999999" then add more digits afterwards; long-term fix is to add more zeros to padding string or have better approach
-        // Note also that if this condition is reached, ISO timestamp comparisons could be incorrect as the final "Z" interferes with collation
-        // Another temporary option would be to introduce a delay in this situation to get to the next millisecond before the timestamp's final text value is determined
+        // About to overrun timestamps -- this should probably never be possible in practice
+        // on a single thread doing any actual work other than a tight loop for a couple decades (circa 2015).
+        // Possible short-term fix is to pad "999999" then add more digits afterwards;
+        // long-term fix is to add more zeros to padding string or have better approach
+        // Note also that if this condition is reached, ISO timestamp comparisons could be incorrect
+        // as the final "Z" interferes with collation
+        // Another temporary option would be to introduce a delay in this situation to get
+        // to the next millisecond before the timestamp's final text value is determined
         console.log("getCurrentUniqueTimestamp: failure with timestamp padding from fast CPU -- add more timestamp padding");
     }
     var extraDigits = (timestampIncrementPadding + lastTimestampIncrement).slice(-(timestampIncrementPadding.length));
