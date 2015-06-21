@@ -169,7 +169,7 @@ var Grid = {
         }
         
         var table = m("table.scrolling", sorts(ctrl, ctrl.data), [
-            m("tr[style=outline: thin solid; background-color: #66CCFF]", {config: adjustHeaderWidth}, ctrl.columns.map(function (column) {
+            m("tr", {config: adjustHeaderWidth, "class": "selected-grid-row"}, ctrl.columns.map(function (column) {
                     return m("th[data-sort-by=" + column.field  + "]", {"text-overflow": "ellipsis"}, column.label)
                 }).concat(m("th", ""))
             ),
