@@ -567,10 +567,10 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewM
     }
     
     function anotherStoryButton() {
-    	return m("div", {"class": "narrafirma-survey-tell-another-story-button-panel"}, [
-			"Would you like to tell another story?",
-			 m("button", {class: "narrafirma-survey-tell-another-story-button", onclick: tellAnotherStory}, "Yes, I'd like to tell another story")
-		]);
+        return m("div", {"class": "narrafirma-survey-tell-another-story-button-panel"}, [
+            "Would you like to tell another story?",
+             m("button", {class: "narrafirma-survey-tell-another-story-button", onclick: tellAnotherStory}, "Yes, I'd like to tell another story")
+        ]);
     }
 
     var view = function() {

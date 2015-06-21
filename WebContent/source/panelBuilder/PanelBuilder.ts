@@ -27,7 +27,7 @@ window["narraFirma_launchApplication"] = browser.launchApplication;
 
 function addButton(panelBuilder: PanelBuilder, model, fieldSpecification, callback): any {
     if (!callback) callback = panelBuilder.buttonClicked.bind(panelBuilder, null, model, fieldSpecification);
- 
+
     var options: any = {
         onclick: callback
     };
@@ -161,7 +161,7 @@ class PanelBuilder {
         
         var label = new ContentPane({
             // content: translate(id + "::prompt", fieldSpecification.displayPrompt)
-            content: "<b>Unsupported widget type: " + fieldSpecification.displayType + " for: " + fieldSpecification.id + "</b>"             
+            content: "<b>Unsupported widget type: " + fieldSpecification.displayType + " for: " + fieldSpecification.id + "</b>"
         });
         label.placeAt(questionContentPane);
         return label;
@@ -180,7 +180,7 @@ class PanelBuilder {
             }
             addFunction = this.addMissingWidgetPlaceholder.bind(this);
         }
-        if (_.isString(addFunction)) { 
+        if (_.isString(addFunction)) {
             var addFunctionName = addFunction;
             addFunction = this[addFunctionName];
             if (!addFunction) {
@@ -406,7 +406,7 @@ class PanelBuilder {
     
     addAllowedHTMLToPrompt(text) {
         // TODO: Sanitize this html, making something like the above work
-        return m.trust(text);  
+        return m.trust(text);
     }
     
     buildQuestionLabel(fieldSpecification) {
@@ -433,7 +433,7 @@ class PanelBuilder {
         domClass.add(questionContentPane.domNode, "questionExternal");
         
         if (fieldSpecification.displayClass) {
-        	domClass.add(questionContentPane.domNode, fieldSpecification.displayClass);
+            domClass.add(questionContentPane.domNode, fieldSpecification.displayClass);
         }
         
         questionContentPane.setAttribute("data-js-question-id", id);

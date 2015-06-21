@@ -361,7 +361,7 @@ ClusteringDiagram.prototype.openEntryDialog = function(item, isExistingItem) {
         label: "Cancel",
         type: "button",
         title: '',
-        onClick: function () {dialogHolder.dialog.hide();}
+        onClick: function () { dialogHolder.dialog.hide(); }
     });
     
      // TODO: Translate
@@ -407,7 +407,7 @@ ClusteringDiagram.prototype.updateSourceClicked = function(sourceText, hideDialo
     var newDiagram;
     try {
         newDiagram = JSON.parse(sourceText);
-    } catch(e) {
+    } catch (e) {
         alert("Problem parsing source\n" + e);
         return;
     }
@@ -499,7 +499,7 @@ ClusteringDiagram.prototype.newItem = function(text, url) {
         y: 200,
         uuid: uuidFast(),
         type: "item"
-    }
+    };
     // item.bodyColor = defaultBodyColor;
     // item.borderWidth = defaultBorderWidth;
     // item.borderColor = defaultBorderColor;

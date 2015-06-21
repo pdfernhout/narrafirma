@@ -1057,14 +1057,14 @@ var templates = [
         ]
     },
     {
-	    "id": "storyCollectionActivities",
-	    "name": "Story Collection Activities",
-	    "description": "",
-	    "isHeader": false,
-	    "type": "page",
-	    "questions": [
+        "id": "storyCollectionActivities",
+        "name": "Story Collection Activities",
+        "description": "",
+        "isHeader": false,
+        "type": "page",
+        "questions": [
               {
-            	  "id": "twoTrueStoriesAndATallTale",
+                  "id": "twoTrueStoriesAndATallTale",
                   "shortName": "Two true stories and a tall tale",
                   "type": "ice-breaker",
                   "plan": "Ask people to break into small groups, and one by one, tell two true stories about themselves and one made-up fiction. Others in the group must guess which of the stories is fiction.",
@@ -1075,9 +1075,9 @@ var templates = [
                   "spaces": "Places for people to sit in small groups",
                   "facilitation": "None after the setup"
               },
-	                  
+
               {
-            	  "id": "quickInterviews",
+                  "id": "quickInterviews",
                   "shortName": "Quick interviews",
                   "type": "ice-breaker",
                   "plan": "Divide into groups of three. Interview each other using one simple question, like \"When have you felt proud?\"",
@@ -1299,7 +1299,7 @@ var templates = [
                   "materials": "Sticky notes; spaces to work on (tables, walls, floor)",
 	              "spaces": "Places for people to sit in small groups (with enough space between so tape recorders don't pick up too much background noise).",
                   "facilitation": "Watch out for people going into too much detail; people leaving large blank spaces " +
-                  		"(perhaps in times they don't want to think about); and people listing facts without telling stories.",
+                  		"(perhaps in times they don't want to think about); and people listing facts without telling stories."
                },
                {
             	   "id": "timelineShort",
@@ -1325,7 +1325,7 @@ var templates = [
  	              "spaces": "Places for people to sit in small groups (with enough space between so tape recorders " +
  	              		"don't pick up too much background noise); spaces to work on (tables, walls, floor)",
                    "facilitation": "Watch out for people going into too much detail; people leaving large blank spaces " +
-                   		"(perhaps in times they don't want to think about); and people listing facts without telling stories.",
+                   		"(perhaps in times they don't want to think about); and people listing facts without telling stories."
                 },
                 {
                 	"id": "landscape",
@@ -1351,7 +1351,7 @@ var templates = [
  	              		"don't pick up too much background noise); spaces to work on (tables, walls, floor)",
                     "facilitation": "Watch out for confusion about the dimensions (and have some on hand in case the first " +
                     		"set doesn't resonate); people leaving some spaces empty; people drawing category boxes " +
-                    		"in the space; people listing dry facts just to cover up the space.",
+                    		"in the space; people listing dry facts just to cover up the space."
                 },
               {
                   "id": "landscapeShort",
@@ -1375,7 +1375,7 @@ var templates = [
  	              		"don't pick up too much background noise); spaces to work on (tables, walls, floor)",
                   "facilitation": "Watch out for confusion about the dimensions (and have some on hand in case the first " +
                   		"set doesn't resonate); people leaving some spaces empty; people drawing category boxes " +
-                  		"in the space; people listing dry facts just to cover up the space.",
+                  		"in the space; people listing dry facts just to cover up the space."
               }
 	    ]
     	
@@ -1559,7 +1559,7 @@ var templates = [
                   "facilitation": "Watch out for people paying more attention to when things happened than to " +
                   		"what that might mean. Especially when they are finding turning points and looking for larger " +
                   		"patterns, eople should be negotiating meaning, " +
-                  		"not just mapping events.",
+                  		"not just mapping events."
                },
                {
             	   "id": "timelineShort",
@@ -1585,7 +1585,7 @@ var templates = [
                    "facilitation": "Watch out for people paying more attention to when things happened than to " +
                    		"what that might mean. Especially when they are finding turning points and looking for larger " +
                    		"patterns, eople should be negotiating meaning, " +
-                   		"not just mapping events.",
+                   		"not just mapping events."
                 },
                 {
                 	"id": "landscape",
@@ -1611,7 +1611,7 @@ var templates = [
    	                "spaces": "Places for people to sit in small groups (with enough space between so conversations and/or " +
                            "listening to recordings don't overlap); spaces to work on (tables, walls, floor)",
                     "facilitation": "Watch out for categorization; too-precise or too-sloppy placement; " +
-                    		"hesitation; dimensions that don't fit the stories (have extras on hand).",
+                    		"hesitation; dimensions that don't fit the stories (have extras on hand)."
                 },
                 {
                 	"id": "landscapeShort",
@@ -1633,7 +1633,7 @@ var templates = [
    	                "spaces": "Places for people to sit in small groups (with enough space between so conversations and/or " +
                            "listening to recordings don't overlap); spaces to work on (tables, walls, floor)",
                     "facilitation": "Watch out for categorization; too-precise or too-sloppy placement; " +
-                    		"hesitation; dimensions that don't fit the stories (have extras on hand).",
+                    		"hesitation; dimensions that don't fit the stories (have extras on hand)."
                 },
               {
                   "id": "storyElements",
@@ -1665,7 +1665,7 @@ var templates = [
 	               "spaces": "Places for people to sit in small groups (with enough space between so conversations and/or " +
 	                	"listening to recordings don't overlap); spaces to work on (tables, walls, floor)",
                    "facilitation": "Watch out for categorization (remind people that clustering is open-ended); " +
-                   		"weak response; bad story element names (e.g., proper nouns).",
+                   		"weak response; bad story element names (e.g., proper nouns)."
               },
               {
             	  "id": "storyElementsShort",
@@ -1695,7 +1695,7 @@ var templates = [
  	               "spaces": "Places for people to sit in small groups (with enough space between so conversations and/or " +
  	                	"listening to recordings don't overlap); spaces to work on (tables, walls, floor)",
                     "facilitation": "Watch out for categorization (remind people that clustering is open-ended); " +
-                    		"weak response; bad story element names (e.g., proper nouns).",
+                    		"weak response; bad story element names (e.g., proper nouns)."
               },
               {
             	  "id": "compositeStories",

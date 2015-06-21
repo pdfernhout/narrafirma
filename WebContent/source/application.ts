@@ -365,7 +365,7 @@ function updateServerStatus(status, text) {
     var statusText = "Project: " + project.journalIdentifier.substring(narrafirmaProjectPrefix.length) + "; Server status: (" + status + ") " + text;
 
     if (status === "ok") {
-    	nameDiv.className = "narrafirma-serverstatus-ok";
+        nameDiv.className = "narrafirma-serverstatus-ok";
         //nameDiv.style.color = "green";
         //nameDiv.style.border = "initial";
         lastServerError = "";
@@ -373,13 +373,13 @@ function updateServerStatus(status, text) {
         //nameDiv.style.color = "yellow";
         if (lastServerError) {
             // TODO: Translate
-        	nameDiv.className = "narrafirma-serverstatus-waiting-last-error";
+            nameDiv.className = "narrafirma-serverstatus-waiting-last-error";
             statusText += "\n" + "Last error: " + lastServerError;
         } else {
-        	nameDiv.className = "narrafirma-serverstatus-waiting";
+            nameDiv.className = "narrafirma-serverstatus-waiting";
         }
     } else if (status === "failure") {
-    	nameDiv.className = "narrafirma-serverstatus-failure";
+        nameDiv.className = "narrafirma-serverstatus-failure";
         //nameDiv.style.color = "red";
         lastServerError = text;
         //nameDiv.style.border = "thick solid #FF0000";

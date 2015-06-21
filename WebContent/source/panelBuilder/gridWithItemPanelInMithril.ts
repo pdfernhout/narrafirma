@@ -52,7 +52,7 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, configu
             field: fieldSpecification.id,
             label: translate(fieldSpecification.id + "::shortName", fieldSpecification.displayName),
             // formatter: self.formatObjectsIfNeeded.bind(this),
-            sortable: !configuration.moveUpDownButtons,
+            sortable: !configuration.moveUpDownButtons
         };
         columns.push(newColumn);
         // console.log("newColumn", newColumn);
@@ -65,13 +65,13 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, configu
 function sorts(ctrl, list) {
     return {
         onclick: function(e) {
-            var prop = e.target.getAttribute("data-sort-by")
+            var prop = e.target.getAttribute("data-sort-by");
             if (prop) {
                 console.log("Sorting by", prop);
                 var first = list[0];
                 list.sort(function(a, b) {
                     return a[prop] > b[prop] ? 1 : a[prop] < b[prop] ? -1 : 0;
-                })
+                });
                 if (first === list[0]) {
                     console.log("reversing");
                     list.reverse();
@@ -92,8 +92,29 @@ function sorts(ctrl, list) {
                 if (itemIndex !== null) ctrl.itemDisplayedAtBottom = list[itemIndex];
             }
         }
-    }
+    };
 }
+
+var ItemPanel = {
+    controller: function(args) {
+        console.log("%%%%%%%%%%%%%%%%%%% ItemPanel controller called");
+    },
+    
+    view: function(ctrl, args) {
+        console.log("%%%%%%%%%%%%%%%%%%% ItemPanel view called");
+        // return m("div", "work in progress");
+        // TODO: Should provide copy of item?
+        var panelBuilder: PanelBuilder = args.panelBuilder;
+        // Possible recursion if the panels contain a table
+        
+        var theClass = "narrafirma-griditempanel-viewing";
+        if (args.mode === "edit") {
+            theClass = "narrafirma-griditempanel-editing";  
+        }
+        return m("div", {"class": theClass}, panelBuilder.buildPanel(args.grid.itemPanelSpecification, args.item));
+
+    }
+};
 
 // Grid needs to be a component so it can maintain a local sorted list
 var Grid = {
@@ -140,6 +161,7 @@ var Grid = {
         if (!idProperty) idProperty = "_id";
         this.idProperty = idProperty;
         
+        /*
         var bigData = [];
         for (var i = 0; i < 50; i++) {
             for (var j = 0; j < data.length; j++) {
@@ -150,6 +172,7 @@ var Grid = {
             }
         }
         data = bigData;
+        */
         
         var columns = computeColumnsForItemPanelSpecification(itemPanelSpecification, configuration);
      
@@ -170,7 +193,7 @@ var Grid = {
         
         var table = m("table.scrolling", sorts(ctrl, ctrl.data), [
             m("tr", {config: adjustHeaderWidth, "class": "selected-grid-row"}, ctrl.columns.map(function (column) {
-                    return m("th[data-sort-by=" + column.field  + "]", {"text-overflow": "ellipsis"}, column.label)
+                    return m("th[data-sort-by=" + column.field  + "]", {"text-overflow": "ellipsis"}, column.label);
                 }).concat(m("th", ""))
             ),
             ctrl.data.map(function(item, index) {
@@ -198,14 +221,18 @@ var Grid = {
     
     inlineEditorForItem: function(ctrl, panelBuilder, item, mode) {
         return m("tr", [
-            m("td", {colSpan: ctrl.columns.length}, [m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: ctrl, mode: mode})]),
+            m("td", {colSpan: ctrl.columns.length}, [
+                m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: ctrl, mode: mode})
+            ]),
             m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(ctrl, item)}, "close")])
         ]);
     },
     
     bottomEditorForItem: function(ctrl, panelBuilder, item, mode) {
         return m("div", [
-            m("td", {colSpan: ctrl.columns.length}, [m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: ctrl, mode: mode})]),
+            m("td", {colSpan: ctrl.columns.length}, [
+                m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: ctrl, mode: mode})
+            ]),
             m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(ctrl, item)}, "close")])
         ]);
     },
@@ -250,7 +277,9 @@ var Grid = {
         /*
         if (ctrl.itemBeingEdited === item) {
             return m("tr", [
-                m("td", {colSpan: ctrl.columns.length}, [m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: ctrl})]),
+                m("td", {colSpan: ctrl.columns.length}, [
+                    m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: ctrl})
+                ]),
                 m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(ctrl, item, index)}, "close")])
             ]);
         }
@@ -259,7 +288,7 @@ var Grid = {
         var selected = (item === ctrl.itemDisplayedAtBottom || item === ctrl.itemBeingEdited);
         if (selected) selectionClass = "narrafirma-grid-row-selected";
         var fields = ctrl.columns.map(function (column) {
-            return m("td", {"text-overflow": "ellipsis", "data-item-index": item[ctrl.idProperty] }, item[column.field])
+            return m("td", {"text-overflow": "ellipsis", "data-item-index": item[ctrl.idProperty] }, item[column.field]);
         });
         
         var disabled = (ctrl.itemDisplayedAtBottom || ctrl.itemBeingEdited) || undefined;
@@ -272,27 +301,6 @@ var Grid = {
         return m("tr", {key: item[ctrl.idProperty], "class": selectionClass}, fields);
     }
 };
-
-var ItemPanel = {
-    controller: function(args) {
-        console.log("%%%%%%%%%%%%%%%%%%% ItemPanel controller called");
-    },
-    
-    view: function(ctrl, args) {
-        console.log("%%%%%%%%%%%%%%%%%%% ItemPanel view called");
-        // return m("div", "work in progress");
-        // TODO: Should provide copy of item?
-        var panelBuilder: PanelBuilder = args.panelBuilder;
-        // Possible recursion if the panels contain a table
-        
-        var theClass = "narrafirma-griditempanel-viewing";
-        if (args.mode === "edit") {
-            theClass = "narrafirma-griditempanel-editing";  
-        }
-        return m("div", {"class": theClass}, panelBuilder.buildPanel(args.grid.itemPanelSpecification, args.item))
-
-    }
-}
     
 export function add_grid(panelBuilder, model, fieldSpecification) {
     return m.component(<any>Grid, {panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});

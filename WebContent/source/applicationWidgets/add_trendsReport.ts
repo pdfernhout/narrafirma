@@ -152,12 +152,12 @@ function calculateStatisticsForPattern(graphBrowserInstance, pattern, minStories
         var values = collectValues(counts);
         console.log("values", values);
         if (values.length < minStoriesForTest) {
-        	significance = "";
+            significance = "";
         } else {
             // return {chi_squared: chi_squared, testSignificance: testSignificance}
-        	statResult = simpleStatistics.chi_squared_goodness_of_fit(values, simpleStatistics.poisson_distribution, 0.05);
+            statResult = simpleStatistics.chi_squared_goodness_of_fit(values, simpleStatistics.poisson_distribution, 0.05);
             significance = statResult.testSignificance;
-    	}
+        }
     } else if (graphType === "histogram") {
         // TODO: ? look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
         // TODO: Fix this - could report on normality

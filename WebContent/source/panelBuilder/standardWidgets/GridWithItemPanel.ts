@@ -257,7 +257,7 @@ GridWithItemPanel.prototype.computeColumnsForItemPanelSpecification = function()
             field: fieldSpecification.id,
             label: translate(fieldSpecification.id + "::shortName", fieldSpecification.displayName),
             formatter: self.formatObjectsIfNeeded.bind(this),
-            sortable: !configuration.moveUpDownButtons,
+            sortable: !configuration.moveUpDownButtons
         };
         columns.push(newColumn);
         // console.log("newColumn", newColumn);
@@ -356,7 +356,7 @@ GridWithItemPanel.prototype.openFormForItem = function(formType, item) {
         if (this.formType !== "view") {
             // TODO: Translate
             //alert("Item change already in progress; please cancel form first");
-        	alert("You are editing this item. Please choose OK or Cancel \nat the bottom of the form before you do anything else.");
+            alert("You are editing this item. Please choose OK or Cancel \nat the bottom of the form before you do anything else.");
             return;
         }
         // TODO: This comment and commented code looks out of date, since seems to rebuild even when viewing
@@ -409,10 +409,10 @@ GridWithItemPanel.prototype.openFormForItem = function(formType, item) {
     
     if (formType === "view") {
         domClass.remove(this.itemContentPane.domNode, "narrafirma-griditempanel-hidden");
-    	domClass.remove(this.itemContentPane.domNode, "narrafirma-griditempanel-editing");
+        domClass.remove(this.itemContentPane.domNode, "narrafirma-griditempanel-editing");
         domClass.add(this.itemContentPane.domNode, "narrafirma-griditempanel-viewing");
     } else {
-    	domClass.remove(this.itemContentPane.domNode, "narrafirma-griditempanel-hidden");
+        domClass.remove(this.itemContentPane.domNode, "narrafirma-griditempanel-hidden");
         domClass.remove(this.itemContentPane.domNode, "narrafirma-griditempanel-viewing");
         domClass.add(this.itemContentPane.domNode, "narrafirma-griditempanel-editing");
     }

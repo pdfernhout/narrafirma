@@ -72,7 +72,7 @@ function htmlEncode(text) {
 
 function displayHTMLForField(model, fieldSpecification, nobreak = null) {
     // if (!model.get(fieldSpecification.id)) return "";
-    var value = model.get(fieldSpecification.id);
+    var value = model[fieldSpecification.id];
     // TODO: extra checking here for problems with test data -- could probably be changed back to just displayName eventually
     var fieldName = fieldSpecification.displayName || fieldSpecification.displayPrompt;
     var result;
@@ -92,9 +92,9 @@ function displayHTMLForField(model, fieldSpecification, nobreak = null) {
 
 export function generateStoryCardContent(storyModel, currentQuestionnaire, includeElicitingQuestion) {
     // Encode all user-supplied text to ensure it does not create HTML issues
-    var elicitingQuestion = htmlEncode(storyModel.get("__survey_elicitingQuestion"));
-    var storyName = htmlEncode(storyModel.get("__survey_storyName"));
-    var storyText = htmlEncode(storyModel.get("__survey_storyText"));
+    var elicitingQuestion = htmlEncode(storyModel.__survey_elicitingQuestion);
+    var storyName = htmlEncode(storyModel.__survey_storyName);
+    var storyText = htmlEncode(storyModel.__survey_storyText);
     var otherFields = "";
     
     var questions = [];
@@ -129,7 +129,9 @@ export function generateStoryCardContent(storyModel, currentQuestionnaire, inclu
         textForElicitingQuestion = wrap("div", "narrafirma-story-card-eliciting-question", elicitingQuestion) + "<br>";
     }
     
-    var storyCardContent = wrap("div", "narrafirma-story-card-story-title", storyName) + "<br>" + wrap("div", "narrafirma-story-card-story-text", storyText + "<br>" + otherFields + "<hr>" + textForElicitingQuestion);
+    var storyCardContent = wrap("div", "narrafirma-story-card-story-title", storyName) + 
+        "<br>" + 
+        wrap("div", "narrafirma-story-card-story-text", storyText + "<br>" + otherFields + "<hr>" + textForElicitingQuestion);
     
     return storyCardContent;
 }

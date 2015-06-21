@@ -4,6 +4,7 @@ import widgetSupport = require("../panelBuilder/widgetSupport");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import m = require("mithril");
+import gridWithItemPanelInMithril = require("../panelBuilder/gridWithItemPanelInMithril");
 
 "use strict";
 
@@ -249,27 +250,6 @@ function loadLatestStories(storyBrowserInstance, allStories) {
     setStoryListForCurrentFilters(storyBrowserInstance);
 }
 
-function buildStoryDisplayPanel(storyBrowserInstance, panelBuilder, contentPane, model) {
-    var storyContent = storyCardDisplay.generateStoryCardContent(model, storyBrowserInstance.currentQuestionnaire, "includeElicitingQuestion");
-    
-    var storyPane = new ContentPane({
-        content: storyContent           
-    });
-    storyPane.placeAt(contentPane);
-}
-
-function makeItemPanelSpecificationForQuestions(storyBrowserInstance, questions) {
-    // TODO: add more participant and survey info, like timestamps and participant ID
-    
-    var itemPanelSpecification = {
-         id: "storyBrowserQuestions",
-         panelFields: questions,
-         buildPanel: buildStoryDisplayPanel.bind(null, storyBrowserInstance)
-    };
-    
-    return itemPanelSpecification;
-}
-
 // TODO: Fix so the filters get updated as the story questions get changed
 function insertStoryBrowser(panelBuilder: PanelBuilder, pagePane, model, fieldSpecification) {
     var id = fieldSpecification.id;
@@ -311,14 +291,15 @@ function insertStoryBrowser(panelBuilder: PanelBuilder, pagePane, model, fieldSp
     var choiceField = choiceModelAndField.field; 
     var storyCollectionIdentifier = choiceModel.get(choiceField);
     
-    var itemPanelSpecification = makeItemPanelSpecificationForQuestions(storyBrowserInstance, questions);
+&&    var itemPanelSpecification = makeItemPanelSpecificationForQuestions(storyBrowserInstance, questions);
     
     storyBrowserInstance.filter1 = createFilterPane(storyBrowserInstance, id + "_1", questions, stories, table);
     storyBrowserInstance.filter2 = createFilterPane(storyBrowserInstance, id + "_2", questions, stories, table);
 
     // pagePane.containerNode.appendChild(domConstruct.toDom('<br>'));
     
-    // table needs to be added to container after its children are added to it so that the layout will happen correctly, otherwise startup called too soon internally
+    // table needs to be added to container after its children are added to it
+    // so that the layout will happen correctly, otherwise startup called too soon internally
     pagePane.addChild(table);
     
     // TODO: Probably should become a class
@@ -373,23 +354,66 @@ function setStoryListForCurrentFilters(storyBrowserInstance) {
 
 */
 
+function buildStoryDisplayPanel(storyBrowserInstance, panelBuilder, contentPane, model) {
+    var storyContent = storyCardDisplay.generateStoryCardContent(model, storyBrowserInstance.currentQuestionnaire, "includeElicitingQuestion");
+    
+    return m("div[class=storyCard]", m.trust(storyContent));
+}
+
+function makeItemPanelSpecificationForQuestions(storyBrowserInstance, questions) {
+    // TODO: add more participant and survey info, like timestamps and participant ID
+    
+    var itemPanelSpecification = {
+         id: "storyBrowserQuestions",
+         panelFields: questions,
+         buildPanel: buildStoryDisplayPanel.bind(null, storyBrowserInstance)
+    };
+    
+    return itemPanelSpecification;
+}
+
 var StoryBrowser = {
     controller: function(args) {
+        // TODO: Fix this
+        this.stories = [
+            {"__survey_storyName": "One", "__survey_storyText": "One text"},
+            {"__survey_storyName": "Two", "__survey_storyText": "Two text"},
+            {"__survey_storyName": "Three", "__survey_storyText": "Three text"},
+        ];
+        
+        // TODO: Fix this
+        this.questions = [];
     },
     
-    view: function(ctrl, args) {
+    view: function(controller, args) {
         var panelBuilder = args.panelBuilder;
         
         var prompt = args.panelBuilder.buildQuestionLabel(args.fieldSpecification);
         
         var rest = m("div", "story browser unfinished");
+
+        var itemPanelSpecification = makeItemPanelSpecificationForQuestions(controller, controller.questions);
+
+        var configuration = {
+            itemPanelSpecification: itemPanelSpecification,
+            viewButton: true,
+            includeAllFields: ["__survey_storyName", "__survey_storyText"],
+            navigationButtons: true
+        }; 
+
+        var gridFieldSpecification = {
+            id: controller.stories,
+            displayConfiguration: configuration
+        };
         
-        var parts = [prompt, rest];
+        var grid = gridWithItemPanelInMithril.add_grid(panelBuilder, {stories: controller.stories}, gridFieldSpecification);
+        
+        var parts = [prompt, rest, grid];
         
         // TODO: set class etc.
         return m("div", {"class": "questionExternal narrafirma-question-type-questionAnswer"}, parts);
     }
-}
+};
 
 function add_storyBrowser(panelBuilder: PanelBuilder, model, fieldSpecification) {
     return m.component(<any>StoryBrowser, {panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
