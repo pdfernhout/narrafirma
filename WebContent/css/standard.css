@@ -574,6 +574,11 @@ form {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Mithril grid ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+.narrafirma-grid {
+    padding: 8px;
+    margin: 8px;
+}
+
 table.scrolling {
   display: block;
   max-height: 400px;
