@@ -206,6 +206,7 @@ textarea, input, select { /* override because expanded in survey */
 	background: #d5dae6;
 	margin-bottom: 4px;
     border-radius: 12px;
+    padding: 8px;
 }
 
 .questionExternal.narrafirma-question-type-label {
@@ -220,6 +221,7 @@ textarea, input, select { /* override because expanded in survey */
 
 .questionInternal {
     margin-left: 20px;
+    padding: 8px;
 }
 
 .narrafirma-textbox {
