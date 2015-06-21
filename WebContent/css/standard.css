@@ -230,6 +230,10 @@ textarea, input, select { /* override because expanded in survey */
 	width: 100%;
 }
 
+.questionExternal.narrafirma-question-type-questionAnswer {
+    background: white;
+}
+
 .narrafirma-questionAnswer { /* this is now used to display the reminder on the phase dashboard page */
     float: right;
     width: 90%;

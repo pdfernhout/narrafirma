@@ -6,7 +6,7 @@ import m = require("mithril");
 
 function div_for_value(value) {
     if (value === undefined || value === null) value = "";
-    return '<div class="narrafirma-questionAnswer">' + value + '</div>';
+    return '<div class="narrafirma-question-type-questionAnswer">' + value + '</div>';
 }
 
 /* TODO: This is only really needed for translation which is not fully worked out, but maybe OK enough without it?
@@ -76,7 +76,10 @@ function add_questionAnswer(panelBuilder: PanelBuilder, model, fieldSpecificatio
     // contentPane.own(watcher);
     
     // TODO: Fix styling
-    return m("div", [m.trust(fieldSpecification.displayPrompt), calculate()]);
+    return m("div", {"class": "questionExternal narrafirma-question-type-questionAnswer"}, [
+        m.trust(fieldSpecification.displayPrompt),
+        m("span[class=narrafirma-questionAnswer]", calculate())
+    ]);
 }
 
 export = add_questionAnswer;
