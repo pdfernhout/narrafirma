@@ -180,7 +180,7 @@ textarea, input, select { /* override because expanded in survey */
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Pages with entry fields ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-.narrafirma-question-header {
+.questionExternal.narrafirma-question-type-header {
 	display: block;
 	font-size: 1.2em;
 	font-weight: bold;
@@ -190,21 +190,27 @@ textarea, input, select { /* override because expanded in survey */
 	margin-top: 10px;
 }
 
-.claro .dijitContentPane .narrafirma-question-header { /* contentpane overrides the padding */
+.claro .dijitContentPane .narrafirma-question-type-header { /* contentpane overrides the padding */
 	padding-left: 10px;
 }
 
-.narrafirma-griditempanel-editing .narrafirma-question-header { 
+.narrafirma-griditempanel-editing .narrafirma-question-type-header { 
 	background: #7b8cb2;
 }
  
-.narrafirma-griditempanel-viewing .narrafirma-question-header {
+.narrafirma-griditempanel-viewing .narrafirma-question-type-header {
 	background: #a7a5a5;
 }
  
 .questionExternal {
 	background: #d5dae6;
 	margin-bottom: 4px;
+    border-radius: 12px;
+}
+
+.questionExternal.narrafirma-question-type-label {
+    background: white;
+    margin-bottom: 4px;
     border-radius: 12px;
 }
 
