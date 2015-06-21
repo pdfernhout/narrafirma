@@ -565,7 +565,6 @@ form {
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Mithril grid ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 table.scrolling {
-  min-width: 100%;
   display: block;
   max-height: 400px;
   overflow-y: scroll;

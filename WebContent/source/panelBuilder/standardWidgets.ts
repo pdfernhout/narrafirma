@@ -216,14 +216,14 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
     }
 
     if (parts.length) {
-        parts = m("div", {class: "narrafirma-survey-question-internal"}, parts);
+        parts = m("div", {class: "questionInternal"}, parts);
     }
     
     if (questionLabel) {
         parts = questionLabel.concat(parts);
     }
     
-    var classString = "narrafirma-survey-question-external narrafirma-survey-question-type-" + displayType;
+    var classString = "questionExternal narrafirma-question-type-" + displayType;
     if (fieldSpecification.displayClass) {
         classString += " " + fieldSpecification.displayClass;
     }

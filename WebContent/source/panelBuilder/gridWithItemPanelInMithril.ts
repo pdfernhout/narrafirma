@@ -168,35 +168,43 @@ var Grid = {
             console.log("adjustHeaderWidth");
         }
         
-        var tableHeader = m("table", sorts(ctrl, ctrl.data), [
+        var table = m("table.scrolling", sorts(ctrl, ctrl.data), [
             m("tr[style=outline: thin solid; background-color: #66CCFF]", {config: adjustHeaderWidth}, ctrl.columns.map(function (column) {
                     return m("th[data-sort-by=" + column.field  + "]", {"text-overflow": "ellipsis"}, column.label)
                 }).concat(m("th", ""))
-            )
-        ]);
-        
-        var tableData = m("table.scrolling", sorts(ctrl, ctrl.data), [
+            ),
             ctrl.data.map(function(item, index) {
                 return Grid.rowForItem(ctrl, item, index);
             }).concat(m("tr", [m("button", {onclick: Grid.addItem.bind(ctrl)}, "Add")]))
         ]);
         
-        var parts = [prompt, tableHeader, tableData];
+        var parts = [prompt, table];
         
         if (ctrl.itemDisplayedAtBottom) {
-            parts.push(Grid.editorForItem(ctrl, panelBuilder, ctrl.itemDisplayedAtBottom));
+            parts.push(Grid.bottomEditorForItem(ctrl, panelBuilder, ctrl.itemDisplayedAtBottom, "view"));
         }
         
         if (ctrl.itemBeingEdited) {
-            parts.push(Grid.editorForItem(ctrl, panelBuilder, ctrl.itemBeingEdited));
+            parts.push(Grid.bottomEditorForItem(ctrl, panelBuilder, ctrl.itemBeingEdited, "edit"));
         }
         
         // TODO: set class etc.
-        return m("div", parts);
+        return m("div", {"class": "questionExternal narrafirma-question-type-grid"}, parts);
     },
     
-    editorForItem: function(ctrl, panelBuilder, item) {
+    inlineEditorForItem: function(ctrl, panelBuilder, item, mode) {
         return m("tr", [
+            m("td", {colSpan: ctrl.columns.length}, [m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: ctrl})]),
+            m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(ctrl, item)}, "close")])
+        ]);
+    },
+    
+    bottomEditorForItem: function(ctrl, panelBuilder, item, mode) {
+        var theClass = ".narrafirma-griditempanel-viewing";
+        if (mode === "edit") {
+            theClass = ".narrafirma-griditempanel-editing";  
+        }
+        return m("div", {"class": theClass}, [
             m("td", {colSpan: ctrl.columns.length}, [m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: ctrl})]),
             m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(ctrl, item)}, "close")])
         ]);
@@ -276,7 +284,7 @@ var ItemPanel = {
         // TODO: Should provide copy of item?
         var panelBuilder: PanelBuilder = args.panelBuilder;
         // Possible recursion if the panels contain a table
-        return m("div", panelBuilder.buildPanel(args.grid.itemPanelSpecification, args.item))
+        return m("div.narrafirma-griditempanel-editing", panelBuilder.buildPanel(args.grid.itemPanelSpecification, args.item))
 
     }
 }
