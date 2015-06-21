@@ -99,45 +99,4 @@ Project.prototype.initializeProjectModel = function(panelSpecificationCollection
     }
 };
 
-// Internal support functions
-
-Project.prototype._subscribe = function(fieldName) {
-    var model = this.projectModel;
-    // Saving JSON.stringify-ed versions of data in case it is an array or object that might be changed directly
-    model._saved[fieldName] = JSON.stringify(model.get(fieldName));
-    var subscription = this.watchFieldValue(fieldName, function(triple, message) {
-        // console.log(" ---------- updateWhenTripleStoreChanges", triple, message);
-        var newValue = triple.c;
-        // TODO: Should warn if saved an get differ because going to lose changes
-        var editedValue = model.get(fieldName);
-        // TODO: User might have cleared the field; need better way to detect initial changes...
-        if (editedValue && model._saved[fieldName] !== JSON.stringify(editedValue)) {
-            // TODO: Handle data loss better; like logging it to some user-displayable log
-            console.log("About to lose user entered data in field", fieldName, "user-edited:", editedValue, "new:", newValue);
-        }
-        model._saved[fieldName] = JSON.stringify(newValue);
-        if (JSON.stringify(editedValue) !== JSON.stringify(newValue)) {
-            console.log("notified of changed data in store, so updating field", fieldName, newValue);
-            // This will trigger a watch, which would lead to writing out the value except for a check if value has changed
-            model.set(fieldName, newValue);
-        }
-    });
-    this.subscriptions.push(subscription);
-};
-
-Project.prototype._watch = function(fieldName) {
-    var model = this.projectModel;
-    var self = this;
-    var subscription = model.watch(fieldName, function(name, oldValue, newValue) {
-        console.log("Watch changed", fieldName, oldValue, newValue);
-        // Use JSON comparison to handle situation of arrays changing contents but remaining the same array (likewise for objects)
-        if (model._saved[fieldName] !== JSON.stringify(newValue)) {
-            model._saved[fieldName] = JSON.stringify(newValue);
-            console.log("storing new value for field", fieldName, newValue);
-            self.setFieldValue(fieldName, newValue, oldValue);
-        }
-    });
-    this.subscriptions.push(subscription);
-};
-
 export = Project;

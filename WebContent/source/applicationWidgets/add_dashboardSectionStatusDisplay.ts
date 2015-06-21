@@ -44,7 +44,7 @@ function add_dashboardSectionStatusDisplay(panelBuilder: PanelBuilder, model, fi
         var statusViewID = childPageID + "_pageStatus";
         console.log("statusViewID", fieldSpecification.id, statusViewID);
         // TODO: Fix if different sections get split up
-        var status = model.get(statusViewID);
+        var status = model[statusViewID];
         var count = pageStatus["" + status] || 0;
         count++;
         pageStatus["" + status] = count;

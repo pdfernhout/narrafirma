@@ -83,9 +83,9 @@ export function toggleWebActivationOfSurvey(contentPane, model, fieldSpecificati
     }
     // TODO: Maybe only want to refresh grid, as there is a seperate update now for questionnaires?
     // broadcast the change to other clients and force grid refresh by recreating entire object
-    var storyCollections = model.get(fieldSpecification.id);
+    var storyCollections = model[fieldSpecification.id];
     var recreatedData = JSON.parse(JSON.stringify(storyCollections));
-    model.set(fieldSpecification.id, recreatedData);
+    model[fieldSpecification.id] = recreatedData;
     
     // TODO: Potential window of vulnerability here because not making both changes as a single transaction
     

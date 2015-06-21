@@ -68,7 +68,7 @@ function convertEditorQuestions(editorQuestions) {
         var type = question.storyQuestion_type || question.participantQuestion_type;
         // TODO: What to set for initial values?
         // TODO: Improve how making model...
-        // if (!(type in {label: 1, header: 1})) model.set(id, null);
+        // if (!(type in {label: 1, header: 1})) model[id] = null;
         var prompt = question.storyQuestion_text || question.participantQuestion_text;
         
         var options = [];

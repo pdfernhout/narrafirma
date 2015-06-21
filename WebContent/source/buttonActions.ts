@@ -277,11 +277,11 @@ function copyDraftPNIQuestionVersionsIntoAnswers_Basic() {
         var finalQuestionID = finalQuestionIDs[index];
         var draftQuestionID = finalQuestionID.replace("_final", "_draft");
         // console.log("finalQuestionID/draftQuestionID", finalQuestionID, draftQuestionID);
-        var finalValue = model.get(finalQuestionID);
+        var finalValue = model[finalQuestionID];
         if (!finalValue) {
-            var draftValue = model.get(draftQuestionID);
+            var draftValue = model[draftQuestionID];
             if (draftValue) {
-                model.set(finalQuestionID, draftValue);
+                model[finalQuestionID] = draftValue;
                 copiedAnswersCount++;
             }
         }

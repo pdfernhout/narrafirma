@@ -70,7 +70,7 @@ function build_recommendationTable(panelBuilder: PanelBuilder, dialogContentPane
     for (var questionName in recommendations.questions) {
         // TODO: Possible should improve this translation default, maybe by retrieving fieldSpecification for question and getting displayPrompt?
         var questionText = translate(questionName + "::prompt", "Missing translation for: " + questionName);
-        var yourAnswer = model.get(questionName);
+        var yourAnswer = model[questionName];
         
         var questionTextContentPane = panelBuilder.newContentPane({"content": questionText, "colspan": 4, "align": "right"});
         table.addChild(questionTextContentPane);

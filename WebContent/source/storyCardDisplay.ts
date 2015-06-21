@@ -71,7 +71,7 @@ function htmlEncode(text) {
 }
 
 function displayHTMLForField(model, fieldSpecification, nobreak = null) {
-    // if (!model.get(fieldSpecification.id)) return "";
+    // if (!model[fieldSpecification.id]) return "";
     var value = model[fieldSpecification.id];
     // TODO: extra checking here for problems with test data -- could probably be changed back to just displayName eventually
     var fieldName = fieldSpecification.displayName || fieldSpecification.displayPrompt;

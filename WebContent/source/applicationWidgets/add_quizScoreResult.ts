@@ -9,7 +9,7 @@ function calculate_quizScoreResult(panelSpecificationCollection, model, dependsO
     var total = 0;
     for (var dependsOnIndex = 0; dependsOnIndex < dependsOn.length; dependsOnIndex++) {
         var questionID = dependsOn[dependsOnIndex];
-        var questionAnswer = model.get(questionID);
+        var questionAnswer = model[questionID];
         var answerWeight = 0;
         var index = 0;
         if (questionAnswer) {

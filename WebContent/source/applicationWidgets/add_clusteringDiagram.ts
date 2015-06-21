@@ -18,7 +18,7 @@ function add_clusteringDiagram(panelBuilder: PanelBuilder, model, fieldSpecifica
     /* TODO: Who should be responsible for updating this data? Is redraw called or is that bypassed as an html component?
     var watcher = model.watch(diagramName, function() {
         // console.log("updating clusteringDiagram for model field change", model, fieldSpecification);
-        var newData = model.get(diagramName);
+        var newData = model[diagramName];
         clusteringDiagram.updateDiagram(newData);
     });
     

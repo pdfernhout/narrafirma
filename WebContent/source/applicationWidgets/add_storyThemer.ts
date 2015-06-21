@@ -58,8 +58,8 @@ function addThemeButtonPressed(themeEntryComboBox, storyThemesStore, allThemes) 
 
 function buildThemerPanel(panelBuilder: PanelBuilder, contentPane, model) {    
     // Encode all user-supplied text to ensure it does not create HTML issues
-    var storyName = _.escape(model.get("__survey_storyName"));
-    var storyText = _.escape(model.get("__survey_storyText"));
+    var storyName = _.escape(model.__survey_storyName);
+    var storyText = _.escape(model.__survey_storyText);
     
     var storyContent = "<b><h2>" + storyName + "</h2></b>" + storyText;
     

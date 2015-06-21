@@ -35,10 +35,10 @@ export function resolveModelAndFieldForValuePath(panelBuilder: PanelBuilder, mod
 
 export function resolveValueForFieldSpecification(panelBuilder: PanelBuilder, model, fieldSpecification) {
     var modelAndField = resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
-    return modelAndField.model.get(modelAndField.field);
+    return modelAndField.model[modelAndField.field];
 }
 
 export function resolveValueForValuePath(panelBuilder: PanelBuilder, model, valuePath) {
     var modelAndField = resolveModelAndFieldForValuePath(panelBuilder, model, valuePath);
-    return modelAndField.model.get(modelAndField.field);
+    return modelAndField.model[modelAndField.field];
 }

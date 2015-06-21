@@ -55,7 +55,7 @@ function ClusteringDiagram(contentPane, model, id, diagramName, autosave) {
     this.diagramName = diagramName;
     this.idOfWidget = id;
     this.modelForStorage = model;
-    this.diagram = model.get(this.diagramName);
+    this.diagram = model[this.diagramName];
     
     // TODO: remove test on Array after demo data gets upgraded
     if (!this.diagram || this.diagram instanceof Array) {
