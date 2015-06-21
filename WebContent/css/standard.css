@@ -207,6 +207,7 @@ textarea, input, select { /* override because expanded in survey */
 	margin-bottom: 4px;
     border-radius: 12px;
     padding: 8px;
+    margin: 8px;
 }
 
 .questionExternal.narrafirma-question-type-label {
@@ -226,7 +227,7 @@ textarea, input, select { /* override because expanded in survey */
 }
 
 .narrafirma-textbox {
-	width: 80em;
+	width: 100%;
 }
 
 .narrafirma-questionAnswer { /* this is now used to display the reminder on the phase dashboard page */
@@ -581,8 +582,9 @@ table.scrolling {
   overflow-y: scroll;
 }
 
-table.scrolling td {
+table.scrolling td,th {
     outline: thin solid;
+    padding: 4px;
 }
 
 .narrafirm-grid {

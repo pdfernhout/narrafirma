@@ -123,13 +123,13 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
     } else if (displayType === "text") {
         makeLabel();
         parts = [
-            m("input", standardValueOptions),
+            m("input[class=narrafirma-textbox]", standardValueOptions),
             m("br")
         ];
     } else if (displayType === "textarea") {
         makeLabel();
         parts = [
-            m("textarea", standardValueOptions),
+            m("textarea[class=narrafirma-textbox]", standardValueOptions),
             m("br")
         ];
     } else if (displayType === "checkbox") {
