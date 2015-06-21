@@ -217,7 +217,9 @@ textarea, input, select { /* override because expanded in survey */
 }
 
 .questionPrompt {
-
+    padding-top: 8px;
+    padding-bottom: 8px;
+    display: block;
 }
 
 .questionInternal {

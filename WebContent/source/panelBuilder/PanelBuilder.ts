@@ -412,7 +412,7 @@ class PanelBuilder {
     buildQuestionLabel(fieldSpecification) {
         return [
             // TODO: Generalize this css class name
-            m("div", {"class": "questionPrompt"}, this.addAllowedHTMLToPrompt(fieldSpecification.displayPrompt))
+            m("span", {"class": "questionPrompt"}, this.addAllowedHTMLToPrompt(fieldSpecification.displayPrompt))
         ];
     }
 
