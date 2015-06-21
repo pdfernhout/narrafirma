@@ -217,12 +217,10 @@ textarea, input, select { /* override because expanded in survey */
 }
 
 .questionPrompt {
-	margin-left: 10px;
-	padding: 8px;
+
 }
 
 .questionInternal {
-    margin-left: 20px;
     padding: 8px;
 }
 
