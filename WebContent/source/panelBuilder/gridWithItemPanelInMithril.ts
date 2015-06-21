@@ -180,8 +180,9 @@ var Grid = {
         
         var disabled = (ctrl.itemDisplayedAtBottom || ctrl.itemBeingEdited) || undefined;
         var addButton = m("button", {onclick: Grid.addItem.bind(ctrl), disabled: disabled}, "Add");
+        var buttonPanel = m("div.narrafirma-button-panel", [addButton]);
         
-        var parts = [prompt, table, addButton];
+        var parts = [prompt, m("div.narrafirm-grid", [table]), buttonPanel];
         
         if (ctrl.itemDisplayedAtBottom) {
             parts.push(Grid.bottomEditorForItem(ctrl, panelBuilder, ctrl.itemDisplayedAtBottom, "view"));
@@ -197,18 +198,14 @@ var Grid = {
     
     inlineEditorForItem: function(ctrl, panelBuilder, item, mode) {
         return m("tr", [
-            m("td", {colSpan: ctrl.columns.length}, [m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: ctrl})]),
+            m("td", {colSpan: ctrl.columns.length}, [m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: ctrl, mode: mode})]),
             m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(ctrl, item)}, "close")])
         ]);
     },
     
     bottomEditorForItem: function(ctrl, panelBuilder, item, mode) {
-        var theClass = ".narrafirma-griditempanel-viewing";
-        if (mode === "edit") {
-            theClass = ".narrafirma-griditempanel-editing";  
-        }
-        return m("div", {"class": theClass}, [
-            m("td", {colSpan: ctrl.columns.length}, [m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: ctrl})]),
+        return m("div", [
+            m("td", {colSpan: ctrl.columns.length}, [m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: ctrl, mode: mode})]),
             m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(ctrl, item)}, "close")])
         ]);
     },
@@ -262,11 +259,11 @@ var Grid = {
         var selected = (item === ctrl.itemDisplayedAtBottom || item === ctrl.itemBeingEdited);
         if (selected) selectionClass = "narrafirma-grid-row-selected";
         var fields = ctrl.columns.map(function (column) {
-            return m("td[style=outline: thin solid]", {"text-overflow": "ellipsis", "data-item-index": item[ctrl.idProperty] }, item[column.field])
+            return m("td", {"text-overflow": "ellipsis", "data-item-index": item[ctrl.idProperty] }, item[column.field])
         });
         
         var disabled = (ctrl.itemDisplayedAtBottom || ctrl.itemBeingEdited) || undefined;
-        fields = fields.concat(m("td[style=outline: thin solid]", {nowrap: true}, [
+        fields = fields.concat(m("td", {nowrap: true}, [
             m("button", {onclick: Grid.deleteItem.bind(ctrl, item, index), disabled: disabled, "class": "fader"}, "delete"),
             m("button", {onclick: Grid.editItem.bind(ctrl, item, index), disabled: disabled, "class": "fader"}, "edit"),
             // TODO: Fix so view and not edit
@@ -287,7 +284,12 @@ var ItemPanel = {
         // TODO: Should provide copy of item?
         var panelBuilder: PanelBuilder = args.panelBuilder;
         // Possible recursion if the panels contain a table
-        return m("div.narrafirma-griditempanel-editing", panelBuilder.buildPanel(args.grid.itemPanelSpecification, args.item))
+        
+        var theClass = "narrafirma-griditempanel-viewing";
+        if (args.mode === "edit") {
+            theClass = "narrafirma-griditempanel-editing";  
+        }
+        return m("div", {"class": theClass}, panelBuilder.buildPanel(args.grid.itemPanelSpecification, args.item))
 
     }
 }
