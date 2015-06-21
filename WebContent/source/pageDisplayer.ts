@@ -6,6 +6,7 @@ import m = require("mithril");
 
 // For tracking what page the application is on
 var currentPageID = null;
+var currentPageSpecification = null;
 var currentPage;
 var startPage;
 var updateHashIfNeededForChangedState;
@@ -26,7 +27,10 @@ var PageDisplayer: any = {
         }
         // Create the display widgets for this page
         try {
-            return panelBuilder.buildPanel(currentPageID, project.projectModel);
+            return m("div", {"class": "narrafirma-" + currentPageID}, [
+                m("div.narrafirma-page-name", currentPageSpecification.displayName),
+                panelBuilder.buildPanel(currentPageID, project.projectModel)
+            ]);
         } catch (e) {
             console.log("ERROR: When trying to create page", currentPageID, e);
             // TODO: Translate
@@ -96,6 +100,7 @@ export function showPage(pageID, forceRefresh = false) {
     if (currentPageID !== pageID) {
         console.log("setting currentPageID to", pageID);
         currentPageID = pageID;
+        currentPageSpecification = pageSpecification;
         panelBuilder.clientState.pageIdentifier = currentPageID;
     }
     
