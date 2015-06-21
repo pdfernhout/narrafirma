@@ -1,5 +1,5 @@
 import kludgeForUseStrict = require("./kludgeForUseStrict");
-"use strict"
+"use strict";
 
 export function storeSurveyResult(pointrelClient, projectIdentifier, storyCollectionIdentifier, completedSurvey, wizardPane) {
     var surveyResultWrapper  = {

@@ -1,6 +1,8 @@
 import kludgeForUseStrict = require("../kludgeForUseStrict");
 "use strict";
 
+/* tslint:disable:max-line-length */
+
 /* global module */
 // # simple-statistics
 //
@@ -176,7 +178,7 @@ export function bayesian() {
     // The `bayes_model` object is what will be exposed
     // by this closure, with all of its extended methods, and will
     // have access to all scope variables, like `total_count`.
-    var bayes_model:any = {},
+    var bayes_model: any = {},
         // The number of items that are currently
         // classified in the model
         total_count = 0,
@@ -468,7 +470,7 @@ export function sample_standard_deviation(x) {
 export function sample_covariance(x, y) {
 
     // The two datasets must have the same length which must be more than 1
-    if (x.length <= 1 || x.length !== y.length){
+    if (x.length <= 1 || x.length !== y.length) {
         return null;
     }
 
@@ -484,7 +486,7 @@ export function sample_covariance(x, y) {
     // difference from the mean is associated - if both are well above
     // or if both are well below
     // the mean, the covariance increases significantly.
-    for (var i = 0; i < x.length; i++){
+    for (var i = 0; i < x.length; i++) {
         sum += (x[i] - xmean) * (y[i] - ymean);
     }
 
@@ -546,8 +548,11 @@ export function mode(x) {
 
     // Handle edge cases:
     // The median of an empty list is null
-    if (x.length === 0) return null;
-    else if (x.length === 1) return x[0];
+    if (x.length === 0) {
+        return null;
+    } else if (x.length === 1) {
+        return x[0];
+    }
 
     // Sorting the array lets us iterate through it below and be sure
     // that every time we see a new number it's new and we'll never
@@ -1447,14 +1452,14 @@ export function chi_squared_goodness_of_fit(data, distribution_type, significanc
             expected_frequencies[k];
     }
 
-    console.log("observed_frequencies.length", observed_frequencies.length)
+    console.log("observed_frequencies.length", observed_frequencies.length);
     // Calculate degrees of freedom for this test and look it up in the
     // `chi_squared_distribution_table` in order to
     // accept or reject the goodness-of-fit of the hypothesized distribution.
     degrees_of_freedom = observed_frequencies.length - c - 1;
     //return chi_squared_distribution_table[degrees_of_freedom][significance] < chi_squared;
     
-    console.log("degrees_of_freedom", degrees_of_freedom)
+    console.log("degrees_of_freedom", degrees_of_freedom);
     var row = chi_squared_distribution_table[degrees_of_freedom];
     if (!row) {
         return {chi_squared: "None", testSignificance: "None"};
@@ -1471,7 +1476,7 @@ export function chi_squared_goodness_of_fit(data, distribution_type, significanc
         }
     }
     
-    return {chi_squared: chi_squared, testSignificance: testSignificance}
+    return {chi_squared: chi_squared, testSignificance: testSignificance};
 }
 
 /*

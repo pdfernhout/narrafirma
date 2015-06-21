@@ -8,7 +8,7 @@ function kendallsTau(x: number[], y: number[]) {
     var n1 = 0;
     var n2 = 0;
     var iss = 0;
-    for (var j = 0; j < x.length -1; j++) {
+    for (var j = 0; j < x.length - 1; j++) {
         for (var k = j + 1; k < y.length; k++) {
             var a1 = x[j] - x[k];
             var a2 = y[j] - y[k];
@@ -33,7 +33,7 @@ function kendallsTau(x: number[], y: number[]) {
        }
     }
     var tau = iss / Math.sqrt(n1 * n2);
-    var svar = (4.0 * x.length + 10.0) / (9.0* x.length * (x.length -1));
+    var svar = (4.0 * x.length + 10.0) / (9.0 * x.length * (x.length - 1));
     var z = tau / Math.sqrt(svar);
     var prob = erfc(Math.abs(z) / 1.4142136);
     return {test: tau, z: z, prob: prob};
@@ -66,7 +66,7 @@ function erf(x) {
   t = 2 / (2 + x);
   ty = 4 * t - 2;
 
-  for(; j > 0; j--) {
+  for ( ; j > 0; j--) {
     tmp = d;
     d = ty * d - dd + cof[j];
     dd = tmp;

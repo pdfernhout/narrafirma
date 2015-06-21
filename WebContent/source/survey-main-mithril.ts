@@ -108,7 +108,7 @@ function getHashParameters() {
     // Regex for replacing addition symbol with a space
     var plusMatcher = /\+/g;
     var parameterSplitter = /([^&;=]+)=?([^&;]*)/g;
-    var decode = function (s) {return decodeURIComponent(s.replace(plusMatcher, " "));};
+    var decode = function (s) {return decodeURIComponent(s.replace(plusMatcher, " ")); };
     while (true) {
         match = parameterSplitter.exec(hash);
         if (!match) break;

@@ -169,7 +169,7 @@ function generateHTMLForQuestionnaire(questionnaire) {
     
     output += questionnaire.endText;
     
-    output += "\n</body>\n</html>"
+    output += "\n</body>\n</html>";
     
     return output;
 }

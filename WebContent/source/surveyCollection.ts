@@ -115,7 +115,8 @@ export function toggleWebActivationOfSurvey(contentPane, model, fieldSpecificati
 export function updateActiveQuestionnaires(questionnaires, sendMessage) {
     project.activeQuestionnaires = questionnaires;
    
-    // TODO: Should compare against current canonicalized value to see if anything changed and only update then -- assuming updates already issued by code that makes changes
+    // TODO: Should compare against current canonicalized value to see if anything changed
+    // TODO: and only update then -- assuming updates already issued by code that makes changes
     // TODO: Does not publish which specific questionnaire changed, so inefficient
     topic.publish("activeQuestionnaires", project.activeQuestionnaires);
     topic.publish("isStoryCollectingEnabled", isStoryCollectingEnabled());
@@ -180,14 +181,38 @@ export function collectQuestionsForQuestionnaire(questionnaire) {
    
     // TODO: Remove redundancy
     var leadingStoryQuestions = [];
-    leadingStoryQuestions.unshift({id: "__survey_" + "storyName", displayName: "Story Name", displayPrompt: "Please give your story a name", displayType: "text", valueOptions:[]});
-    leadingStoryQuestions.unshift({id: "__survey_" + "storyText", displayName: "Story Text", displayPrompt: "Please enter your response to the question above in the space below", displayType: "textarea", valueOptions:[]});
-    leadingStoryQuestions.unshift({id: "__survey_" + "elicitingQuestion", displayName: "Eliciting Question", displayPrompt: "Please choose a question you would like to respond to", displayType: "select", valueOptions: elicitingQuestionPrompts});
+    leadingStoryQuestions.unshift({
+        id: "__survey_" + "storyName",
+        displayName: "Story Name",
+        displayPrompt: "Please give your story a name",
+        displayType: "text",
+        valueOptions: []
+    });
+    leadingStoryQuestions.unshift({
+        id: "__survey_" + "storyText",
+        displayName: "Story Text",
+        displayPrompt: "Please enter your response to the question above in the space below",
+        displayType: "textarea",
+        valueOptions: []
+    });
+    leadingStoryQuestions.unshift({
+        id: "__survey_" + "elicitingQuestion",
+        displayName: "Eliciting Question",
+        displayPrompt: "Please choose a question you would like to respond to",
+        displayType: "select",
+        valueOptions: elicitingQuestionPrompts
+    });
 
     // console.log("DEBUG questions used by story browser", questions);
           
     var questions = [].concat(leadingStoryQuestions, storyQuestions);
-    questions.push({id: "__survey_" + "participantData", displayName: "Participant Data", displayPrompt: "---- participant data below ----", displayType: "header", valueOptions:[]});
+    questions.push({
+        id: "__survey_" + "participantData",
+        displayName: "Participant Data",
+        displayPrompt: "---- participant data below ----",
+        displayType: "header",
+        valueOptions: []
+    });
 
     // TODO: add more participant and survey info, like timestamps and participant ID
    

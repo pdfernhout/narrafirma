@@ -25,9 +25,15 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+		<buildCommand>
+			<name>com.palantir.tslint.tslintBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
 		<nature>com.palantir.typescript.typeScriptNature</nature>
+		<nature>com.palantir.tslint.tslintNature</nature>
 	</natures>
 </projectDescription>

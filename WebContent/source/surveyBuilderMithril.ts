@@ -4,6 +4,9 @@ import generateRandomUuid = require("./pointrel20150417/generateRandomUuid");
 
 "use strict";
 
+// TODO: Fix overly long lines and remove next line disabling check
+/* tslint:disable:max-line-length */
+
 // Accessibility References:
 // http://usabilitygeek.com/10-free-web-based-web-site-accessibility-evaluation-tools/
 // http://validator.w3.org/mobile/
@@ -175,7 +178,7 @@ function displayQuestion(builder, model, fieldSpecification) {
     } else if (displayType === "checkbox") {
         makeLabel();
         parts = [
-             m("input[type=checkbox]", {id: getIdForText(fieldID), checked: value, onchange: function(event) {change(null, event.target.checked);}}),
+             m("input[type=checkbox]", {id: getIdForText(fieldID), checked: value, onchange: function(event) { change(null, event.target.checked); }}),
              m("br")
          ];
     } else if (displayType === "checkboxes") {
@@ -288,22 +291,22 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewM
     var startQuestions = [];
     
     if (previewMode) {
-        startQuestions.push({id: "__survey-local_" + "previewMode", displayName: "previewMode", displayClass: "narrafirma-preview", displayPrompt: "Previewing story form; results will not be saved.", displayType: "header", valueOptions:[]});
+        startQuestions.push({id: "__survey-local_" + "previewMode", displayName: "previewMode", displayClass: "narrafirma-preview", displayPrompt: "Previewing story form; results will not be saved.", displayType: "header", valueOptions: []});
     }
     
     if (questionnaire.title) {
-        startQuestions.push({id: "__survey-local_" + "title", displayName: "title", displayPrompt: questionnaire.title, displayType: "header", valueOptions:[]});
+        startQuestions.push({id: "__survey-local_" + "title", displayName: "title", displayPrompt: questionnaire.title, displayType: "header", valueOptions: []});
         document.title = questionnaire.title;
     }
     
-    startQuestions.push({id: "__survey-local_" + "startText", displayName: "startText", displayPrompt: startText, displayType: "label", valueOptions:[]});
+    startQuestions.push({id: "__survey-local_" + "startText", displayName: "startText", displayPrompt: startText, displayType: "label", valueOptions: []});
 
     var endText = questionnaire.endText;
      // TODO: Translate
     if (!endText) endText = "Thank you for taking the survey.";
         
     var endQuestions = [];
-    endQuestions.push({id: "__survey-local_" + "endText", displayName: "endText", displayPrompt: endText, displayType: "label", valueOptions:[]});
+    endQuestions.push({id: "__survey-local_" + "endText", displayName: "endText", displayPrompt: endText, displayType: "label", valueOptions: []});
 
     // TODO: What about idea of having IDs that go with eliciting questions so store reference to ID not text prompt?
     var elicitingQuestionPrompts = [];
@@ -318,12 +321,12 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewM
     // initialStoryQuestions.push({id: "__survey_" + "questionHeader", displayName: "questionHeader", displayPrompt: "Story", displayType: "header", valueOptions: []});
     if (elicitingQuestionPrompts.length !== 1) {
         initialStoryQuestions.push({id: "__survey_" + "elicitingQuestion", displayName: "elicitingQuestion", displayPrompt: "Please choose a question to which you would like to respond:", displayType: "radiobuttons", valueOptions: elicitingQuestionPrompts});
-        initialStoryQuestions.push({id: "__survey_" + "storyText", displayName: "storyText", displayPrompt: "Please enter your response in the box below:", displayType: "textarea", valueOptions:[]});
+        initialStoryQuestions.push({id: "__survey_" + "storyText", displayName: "storyText", displayPrompt: "Please enter your response in the box below:", displayType: "textarea", valueOptions: []});
     } else {
         singlePrompt = elicitingQuestionPrompts[0];
-        initialStoryQuestions.push({id: "__survey_" + "storyText", displayName: "storyText", displayPrompt: singlePrompt, displayType: "textarea", valueOptions:[]});
+        initialStoryQuestions.push({id: "__survey_" + "storyText", displayName: "storyText", displayPrompt: singlePrompt, displayType: "textarea", valueOptions: []});
     }
-    initialStoryQuestions.push({id: "__survey_" + "storyName", displayName: "storyName", displayPrompt: "Please give your story a name.", displayType: "text", valueOptions:[]});
+    initialStoryQuestions.push({id: "__survey_" + "storyName", displayName: "storyName", displayPrompt: "Please give your story a name.", displayType: "text", valueOptions: []});
     
     var allStoryQuestions = initialStoryQuestions.concat(questionnaire.storyQuestions);
             
@@ -501,12 +504,12 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewM
     
     function submitButtonOrWaitOrFinal(): any {
         if (submitted === "never") {
-            return m("button", {class: "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Submit Survey"+ (previewMode ? " [preview mode only]" : ""));
+            return m("button", {class: "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Submit Survey" + (previewMode ? " [preview mode only]" : ""));
         } else if (submitted === "failed") {
             return m("div", [
                 "Sending to server failed. Please try again...",
                 m("br"),
-                m("button", {class: "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Resubmit Survey"+ (previewMode ? " [preview mode only]" : ""))
+                m("button", {class: "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Resubmit Survey" + (previewMode ? " [preview mode only]" : ""))
             ]);
         } else if (submitted === "pending") {
             return m("div", ["Sending survey result to server... Please wait..."]);

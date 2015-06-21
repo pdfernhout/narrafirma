@@ -38,7 +38,7 @@ var PageDisplayer: any = {
         }
         return m("div", "PROBLEM: Failed to build page: " + currentPageID);
     }
-}
+};
 
 // Call this once at the beginning of the application
 export function configurePageDisplayer(thePanelBuilder: PanelBuilder, theStartPage, theProject, updateHashIfNeededForChangedStateCallback) {

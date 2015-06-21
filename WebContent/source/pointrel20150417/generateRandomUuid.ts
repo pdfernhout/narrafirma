@@ -3,7 +3,7 @@ import kludgeForUseStrict = require("../kludgeForUseStrict");
 
 "use strict";
 
-function generateRandomUuid(){
+function generateRandomUuid() {
     // summary:
     //        This function generates random UUIDs, meaning "version 4" UUIDs.
     // description:
@@ -29,12 +29,12 @@ function generateRandomUuid(){
     //        var string = dojox.uuid.generateRandomUuid();
     var HEX_RADIX = 16;
 
-    function _generateRandomEightCharacterHexString(){
+    function _generateRandomEightCharacterHexString() {
         // Make random32bitNumber be a randomly generated floating point number
         // between 0 and (4,294,967,296 - 1), inclusive.
         var random32bitNumber = Math.floor( (Math.random() % 1) * Math.pow(2, 32) );
         var eightCharacterHexString = random32bitNumber.toString(HEX_RADIX);
-        while(eightCharacterHexString.length < 8){
+        while (eightCharacterHexString.length < 8) {
             eightCharacterHexString = "0" + eightCharacterHexString;
         }
         return eightCharacterHexString; // for example: "3B12F1DF"

@@ -1,6 +1,8 @@
 import kludgeForUseStrict = require("../kludgeForUseStrict");
 "use strict";
 
+/* tslint:disable:max-line-length */
+
 var templates = [
     {
         "id": "elicitationQuestions",
@@ -1101,7 +1103,7 @@ var templates = [
                   "facilitation": "None after the setup"
               },
               {
-            	  "id": "haveYouEver",
+                  "id": "haveYouEver",
                   "shortName": "Have you ever...",
                   "type": "ice-breaker",
                   "plan": "People say whether they've had experiences on a printed list. Each group is challenged to come up with some surprises about the experiences people have had.",

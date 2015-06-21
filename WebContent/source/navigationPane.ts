@@ -26,7 +26,10 @@ var Navigation: any = {
     
     view: function(controller, args) {
         return m("div[id=narrafirma-navigation]", [
-            m("span[id=narrafirma-name]", {"class": controller.panelBuilder.clientState.serverStatus, "title": controller.panelBuilder.clientState.serverStatusText}, m.trust("NarraFirma&#0153")),
+            m("span[id=narrafirma-name]", {
+                "class": controller.panelBuilder.clientState.serverStatus,
+                "title": controller.panelBuilder.clientState.serverStatusText
+            }, m.trust("NarraFirma&#0153")),
             m("span[id=narrafirma-breadcrumbs]", m.trust(buildBreadcrumbs(controller))),
             m("a[id=narrafirma-help-link]", {href: launchHelpCommand}, "(Help)"),
             m("a[id=narrafirma-logout-link]", {href: logoutCommand}, 'Logout (' + userIdentifier + ')')

@@ -42,7 +42,7 @@ function mannWhitneyU(x: number[], y: number[]) {
 }
 
 function sum(values: number[]): number {
-    return values.reduce(function(a, b) {return a + b;});
+    return values.reduce(function(a, b) { return a + b; });
 }
 
 //    Ranks the data in a, dealing with ties appropriately.
@@ -76,7 +76,7 @@ function rankdata(a: number[]): number[] {
     for (var i = 0; i < n; i++) {
         sumranks += i;
         dupcount += 1;
-        if (i === n-1 || svec[i] !== svec[i + 1]) {
+        if (i === n - 1 || svec[i] !== svec[i + 1]) {
             var averank = sumranks / dupcount + 1;
             for (var j = i - dupcount + 1; j < i + 1; j++) {
                 newarray[ivec[j]] = averank;

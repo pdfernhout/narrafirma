@@ -135,7 +135,7 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
     } else if (displayType === "checkbox") {
         makeLabel();
         parts = [
-             m("input[type=checkbox]", {id: getIdForText(fieldID), checked: value, onchange: function(event) {change(null, event.target.checked);}}),
+             m("input[type=checkbox]", {id: getIdForText(fieldID), checked: value, onchange: function(event) {change(null, event.target.checked); }}),
              m("br")
          ];
     } else if (displayType === "checkboxes") {

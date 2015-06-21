@@ -35,7 +35,7 @@ export function newMultiSelect(options, value = undefined) {
     return widget;
 }
 
-export function buildOptions(id, choices, optionsString){
+export function buildOptions(id, choices, optionsString) {
     var options = [];
     
     if (choices) {

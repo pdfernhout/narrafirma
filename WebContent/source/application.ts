@@ -70,7 +70,7 @@ function getHashParameters(hash): any {
     // Regex for replacing addition symbol with a space
     var plusMatcher = /\+/g;
     var parameterSplitter = /([^&;=]+)=?([^&;]*)/g;
-    var decode = function (s) {return decodeURIComponent(s.replace(plusMatcher, " "));};
+    var decode = function (s) { return decodeURIComponent(s.replace(plusMatcher, " ")); };
     while (true) {
         match = parameterSplitter.exec(hash);
         if (!match) break;
@@ -220,7 +220,10 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
                 displayType: "textarea",
                 displayName: "Reminders",
                 displayClass: "narrafirma-reminder",
-                displayPrompt: translate("#dashboard_status_entry::prompt", "You can enter <strong>reminders</strong> about this page here. They will appear on this section's home page.")
+                displayPrompt: translate(
+                    "#dashboard_status_entry::prompt",
+                    "You can enter <strong>reminders</strong> about this page here. They will appear on this section's home page."
+                )
         };
             panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, completionStatusEntryFieldSpecification);
         } else {
@@ -737,7 +740,9 @@ function setup() {
         console.log("Server response at: " + currentLocalTimestamp + " is: " + JSON.stringify(serverResponse), serverResponse);
         if (serverResponse.currentTimestamp < currentLocalTimestampMinusTenSeconds) {
             // TODO: Translate
-            alert("The server unexpectedly responded with a time more than ten seconds earlier than this PC's time when the server's status was requested at " + currentLocalTimestamp + ".\nPlease check your PC's clock for accuracy, or contact the server administrator if your PC's clock is accurate.\n" + JSON.stringify(serverResponse));
+            alert("The server unexpectedly responded with a time more than ten seconds earlier than this PC's time when the server's status was requested at " +
+                currentLocalTimestamp + ".\nPlease check your PC's clock for accuracy, or contact the server administrator if your PC's clock is accurate.\n" +
+                JSON.stringify(serverResponse));
         }
     });
 }
