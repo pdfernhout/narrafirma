@@ -1,7 +1,8 @@
 import kludgeForUseStrict = require("../kludgeForUseStrict");
 "use strict";
 
-/* tslint:disable:max-line-length */
+// TODO: Fix mixed tabls and spaces and remove part of next line which disables indent check
+/* tslint:disable:max-line-length indent */
 
 var templates = [
     {

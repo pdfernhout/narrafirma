@@ -457,13 +457,6 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewM
         return m("div", {key: story._storyID, "class": "narrafirma-survey-story " + evenOrOdd}, result); 
     }
     
-    function redraw() {
-        console.log("About to redraw");
-        m.render(surveyDiv, view());
-    }
-    
-    setGlobalRedrawFunction(redraw);
-    
     function validate() {
         // TODO: Improve validation
         if (!stories.length) {
@@ -607,6 +600,13 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewM
         
         return result;
     };
+    
+    function redraw() {
+        console.log("About to redraw");
+        m.render(surveyDiv, view());
+    }
+    
+    setGlobalRedrawFunction(redraw);
     
     redraw();
 }

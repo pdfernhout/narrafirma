@@ -541,11 +541,11 @@ function add_trendsReport(panelBuilder: PanelBuilder, contentPane, model, fieldS
         "id": "patternsPanel",
         panelFields: [
             {id: "id", displayName: "Index"},
-            {id: "patternName", displayName: "Pattern name", valueOptions:[]},
-            {id: "graphType", displayName: "Graph type", valueOptions:[]},
-            {id: "significance", displayName: "Significance value", valueOptions:[]},
-            // {id: "reviewed", displayName: "Reviewed", valueOptions:[]},
-            {id: "observation", displayName: "Observation", valueOptions:[]}
+            {id: "patternName", displayName: "Pattern name", valueOptions: []},
+            {id: "graphType", displayName: "Graph type", valueOptions: []},
+            {id: "significance", displayName: "Significance value", valueOptions: []},
+            // {id: "reviewed", displayName: "Reviewed", valueOptions: []},
+            {id: "observation", displayName: "Observation", valueOptions: []}
         ]
     };
     

@@ -311,8 +311,7 @@ GridWithItemPanel.prototype.storeItem = function(statefulItem) {
     var plainValue = getPlainValue(statefulItem);
     console.log("grid plainValue", plainValue);
     
-    if (this.configuration.validateEdit) {
-    }
+    // TODO: if (this.configuration.validateEdit) { }
     var validationMethodIdentifier = this.configuration.validateEdit;
     if (this.formType === "add") validationMethodIdentifier = this.configuration.validateAdd || validationMethodIdentifier;
     if (validationMethodIdentifier) {

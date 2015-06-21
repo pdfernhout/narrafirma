@@ -115,7 +115,7 @@ function build_recommendationTable(panelBuilder: PanelBuilder, dialogContentPane
             displayType: "button",
             displayName: "Close",
             displayPrompt: "Close",
-            displayConfiguration: function() {hideDialogCallback();}
+            displayConfiguration: function() { hideDialogCallback(); }
         };
     
     var closeButton = panelBuilder.buildField(model, closeButtonSpecification);

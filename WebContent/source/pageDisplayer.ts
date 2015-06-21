@@ -18,6 +18,7 @@ var project;
 
 var PageDisplayer: any = {
     controller: function(args) {
+        console.log("PageDisplayer created");
     },
     
     view: function(controller, args) {

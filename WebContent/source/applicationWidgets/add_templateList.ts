@@ -19,7 +19,7 @@ function add_templateList(panelBuilder: PanelBuilder, contentPane, model, fieldS
 }
 
 var add_templateList_elicitationQuestions = [
-    {id: "category", valueType: "string", displayType:"text"},
+    {id: "category", valueType: "string", displayType: "text"},
     {id: "text", valueType: "string", displayType: "textarea"}
 ];
 
@@ -160,7 +160,7 @@ function makeTemplateListChooser(panelBuilder: PanelBuilder, contentPane, model,
         displayType: "button",
         displayName: "Cancel",
         displayPrompt: "Cancel",
-        displayConfiguration: function() {hideDialogCallback();}
+        displayConfiguration: function() { hideDialogCallback(); }
     };
     var cancelButton = panelBuilder.buildField(model, cancelButtonSpecification);
 }
