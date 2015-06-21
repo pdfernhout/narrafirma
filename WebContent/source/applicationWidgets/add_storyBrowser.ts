@@ -387,7 +387,7 @@ var StoryBrowser = {
         var parts = [prompt, rest];
         
         // TODO: set class etc.
-        return m("div", parts);
+        return m("div", {"class": "questionExternal narrafirma-question-type-questionAnswer"}, parts);
     }
 }
 
