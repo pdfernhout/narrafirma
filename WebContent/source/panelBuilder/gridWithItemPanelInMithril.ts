@@ -175,10 +175,13 @@ var Grid = {
             ),
             ctrl.data.map(function(item, index) {
                 return Grid.rowForItem(ctrl, item, index);
-            }).concat(m("tr", [m("button", {onclick: Grid.addItem.bind(ctrl)}, "Add")]))
+            })
         ]);
         
-        var parts = [prompt, table];
+        var disabled = (ctrl.itemDisplayedAtBottom || ctrl.itemBeingEdited) || undefined;
+        var addButton = m("button", {onclick: Grid.addItem.bind(ctrl), disabled: disabled}, "Add");
+        
+        var parts = [prompt, table, addButton];
         
         if (ctrl.itemDisplayedAtBottom) {
             parts.push(Grid.bottomEditorForItem(ctrl, panelBuilder, ctrl.itemDisplayedAtBottom, "view"));
