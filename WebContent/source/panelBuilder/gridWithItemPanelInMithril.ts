@@ -123,22 +123,36 @@ var Grid = {
         var model = args.model;
         var fieldSpecification = args.fieldSpecification;
         
-        var configuration = {
+        var displayConfiguration = {
             itemPanelID: undefined,
             itemPanelSpecification: undefined,
             idProperty: undefined,
-            gridConfiguration: undefined   
+            gridConfiguration: undefined
+        };
+        
+        var gridConfiguration = {
+            viewButton: true,
+            addButton: true,
+            removeButton: true,
+            editButton: true,
+            duplicateButton: true,
+            moveUpDownButtons: false,
+            includeAllFields: false   
         };
         
         var itemPanelID = fieldSpecification.displayConfiguration;
         if (!_.isString(itemPanelID)) {
-            configuration = fieldSpecification.displayConfiguration;
-            itemPanelID = configuration.itemPanelID;
+            displayConfiguration = fieldSpecification.displayConfiguration;
+            itemPanelID = displayConfiguration.itemPanelID;
+            if (displayConfiguration.gridConfiguration) {
+                gridConfiguration = displayConfiguration.gridConfiguration;
+            }
         }
         
-        this.configuration = configuration;
+        // this.displayConfiguration = displayConfiguration;
+        this.gridConfiguration = gridConfiguration;
         
-        var itemPanelSpecification = configuration.itemPanelSpecification;
+        var itemPanelSpecification = displayConfiguration.itemPanelSpecification;
         if (!itemPanelSpecification) {
             itemPanelSpecification = panelBuilder.getPanelDefinitionForPanelID(itemPanelID);
         }
@@ -159,7 +173,7 @@ var Grid = {
             model[fieldSpecification.id] = data;
         }
         
-        var idProperty = configuration.idProperty;
+        var idProperty = displayConfiguration.idProperty;
         if (!idProperty) idProperty = "_id";
         this.idProperty = idProperty;
         
@@ -176,7 +190,7 @@ var Grid = {
         data = bigData;
         */
         
-        var columns = computeColumnsForItemPanelSpecification(itemPanelSpecification, configuration);
+        var columns = computeColumnsForItemPanelSpecification(itemPanelSpecification, displayConfiguration);
      
         this.data = data;
         this.columns = columns;
@@ -206,7 +220,7 @@ var Grid = {
         var disabled = (controller.itemDisplayedAtBottom || controller.itemBeingEdited) || undefined;
         
         var buttons = [];
-        if (controller.configuration.editButton) {
+        if (controller.gridConfiguration.editButton) {
             var addButton = m("button", {onclick: Grid.addItem.bind(controller), disabled: disabled}, "Add");
             buttons.push(addButton);
         }
@@ -302,17 +316,17 @@ var Grid = {
         var disabled = !!controller.itemBeingEdited || undefined;
         var buttons = [];
         
-        if (controller.configuration.deleteButton) {
-            var deleteButton = m("button", {onclick: Grid.deleteItem.bind(controller, item, index), disabled: disabled, "class": "fader"}, "delete");
-            buttons.push(deleteButton);
+        if (controller.gridConfiguration.removeButton) {
+            var removeButton = m("button", {onclick: Grid.deleteItem.bind(controller, item, index), disabled: disabled, "class": "fader"}, "delete");
+            buttons.push(removeButton);
         }
 
-        if (controller.configuration.editButton) {
+        if (controller.gridConfiguration.editButton) {
             var editButton = m("button", {onclick: Grid.editItem.bind(controller, item, index), disabled: disabled, "class": "fader"}, "edit");
             buttons.push(editButton);
         }
         
-        if (controller.configuration.viewButton) {
+        if (controller.gridConfiguration.viewButton) {
             var viewButton = m("button", {onclick: Grid.viewItem.bind(controller, item, index), disabled: disabled, "class": "fader"}, "view");
             buttons.push(viewButton); 
         }
