@@ -362,7 +362,7 @@ function currentStoryCollectionChanged(storyBrowserInstance, storyCollectionIden
     */
 }
 
-function buildStoryDisplayPanel(storyBrowserInstance, panelBuilder, contentPane, model) {
+function buildStoryDisplayPanel(storyBrowserInstance, panelBuilder, model) {
     var storyContent = storyCardDisplay.generateStoryCardContent(model, storyBrowserInstance.currentQuestionnaire, "includeElicitingQuestion");
     
     return m("div[class=storyCard]", m.trust(storyContent));
