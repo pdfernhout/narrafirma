@@ -329,19 +329,19 @@ function currentStoryCollectionChanged(storyBrowserInstance, storyCollectionIden
     console.log("currentStoryCollectionChanged", storyBrowserInstance, storyCollectionIdentifier);
     
     storyBrowserInstance.currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
-    console.log("storyBrowserInstance.currentQuestionnaire", storyBrowserInstance.currentQuestionnaire);
+    // console.log("storyBrowserInstance.currentQuestionnaire", storyBrowserInstance.currentQuestionnaire);
     
     // Update filters
     var questions = surveyCollection.collectQuestionsForQuestionnaire(storyBrowserInstance.currentQuestionnaire);
     storyBrowserInstance.questions = questions;
-    console.log("currentStoryCollectionChanged", questions);
+    // console.log("currentStoryCollectionChanged", questions);
     
     var choices = surveyCollection.optionsForAllQuestions(questions);
     storyBrowserInstance.choices = choices;
     
     // update all stories for the specific collection
     var allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
-    console.log("allStories", allStories);
+    // console.log("allStories", allStories);
     storyBrowserInstance.stories = allStories;
     
     var itemPanelSpecification = makeItemPanelSpecificationForQuestions(storyBrowserInstance, questions);
