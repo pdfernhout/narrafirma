@@ -632,7 +632,7 @@ table tr:hover button.fader {
     opacity: 1;
 }
 
-table tr:hover {
+table.scrolling tr:hover {
     outline: thick solid;
 }
 
