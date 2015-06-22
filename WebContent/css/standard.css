@@ -647,3 +647,9 @@ table tr:hover {
 .selected-grid-row {
     background-color: #66CCFF
 }
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Story browser ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+table.filterTable {
+    width: 100%;
+}

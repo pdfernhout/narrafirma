@@ -40,114 +40,6 @@ function filterPaneQuestionChoiceChanged(filterPane, newValue) {
     setStoryListForCurrentFilters(filterPane.storyBrowserInstance);
 }
 
-// TODO: Translate
-var unansweredIndicator = "{Unanswered}";
-    
-function optionsFromQuestion(question, stories) {
-    // console.log("*** optionsFromQuestion", question, stories);
-    // TODO: Translate text for options, at least booleans?
-    var options = [];
-    
-    if (!question) return options;
-    
-    // Compute how many of each answer -- assumes typically less than 200-1000 stories
-    var totals = {};
-    stories.forEach(function(item) {
-        // console.log("optionsFromQuestion item", item, question.id, item[question.id]);
-        var choice = item[question.id];
-        if (choice === undefined || choice === null || choice === "") {
-            // Do not include "0" as unanswered
-            // console.log("&&&& Undefined or empty choice", choice);
-            choice = unansweredIndicator;
-        }
-        var oldValue;
-        if (question.displayType === "checkboxes") {
-            for (var key in choice) {
-                oldValue = totals[key];
-                if (!oldValue) oldValue = 0;
-                if (choice[key]) totals[key] = oldValue + 1; 
-            }
-        } else {
-            oldValue = totals[choice];
-            if (!oldValue) oldValue = 0;
-            totals[choice] = oldValue + 1;
-        }
-    });
-    
-    var count;
-    
-    // TODO: Maybe should not add the unanswered indicator if zero?
-    // Always add the unanswered indicator if not checkboxes or checkbox
-    if (question.displayType !== "checkbox" && question.displayType !== "checkboxes") {
-        count = totals[unansweredIndicator];
-        if (!count) count = 0;
-        options.push({label: unansweredIndicator + " (" +  count + ")", value: unansweredIndicator});
-    }
-    
-    if (question.displayType === "select") {
-        // console.log("select", question, question.valueOptions);
-        question.valueOptions.forEach(function(each) {
-            // console.log("option", question.id, each);
-            count = totals[each];
-            if (!count) count = 0;
-            options.push({label: each + " (" +  count + ")", value: each});
-        });
-    } else if (question.displayType === "radiobuttons") {
-        // console.log("radiobuttons", question, question.valueOptions);
-        question.valueOptions.forEach(function(each) {
-            // console.log("option", question.id, each);
-            count = totals[each];
-            if (!count) count = 0;
-            options.push({label: each + " (" +  count + ")", value: each});
-        });
-    } else if (question.displayType === "checkboxes") {
-        // console.log("checkboxes", question, question.valueOptions);
-        question.valueOptions.forEach(function(each) {
-            // console.log("option", question.id, each);
-            count = totals[each];
-            if (!count) count = 0;
-            options.push({label: each + " (" +  count + ")", value: each});
-        });
-    } else if (question.displayType === "slider") {
-        // console.log("slider", question, question.displayConfiguration);
-        for (var sliderTick = 0; sliderTick <= 100; sliderTick++) {
-            count = totals[sliderTick];
-            if (!count) count = 0;
-            options.push({label: sliderTick + " (" +  count + ")", value: sliderTick});
-        }
-    } else if (question.displayType === "boolean") {
-        // console.log("boolean", question);
-        // TODO; Not sure this will really be right with true/false as booleans instead of strings
-        ["yes", "no"].forEach(function(each) {
-            // console.log("option", id, each);
-            count = totals[each];
-            if (!count) count = 0;
-            options.push({label: each + " (" +  count + ")", value: each});
-        });
-    } else if (question.displayType === "checkbox") {
-        // console.log("checkbox", question);
-        // TODO; Not sure this will really be right with true/false as checkbox instead of strings
-        [true, false].forEach(function(each) {
-            // console.log("option", id, each);
-            count = totals["" + each];
-            if (!count) count = 0;
-            options.push({label: each + " (" +  count + ")", value: each});
-        });
-    } else if (question.displayType === "text") {
-        for (var eachTotal in totals){
-            if (totals.hasOwnProperty(eachTotal)) {
-                count = totals[eachTotal];
-                if (!count) count = 0;
-                options.push({label: eachTotal + " (" +  count + ")", value: eachTotal});                    
-            }
-        }
-    } else {
-        console.log("ERROR: question type not supported: ", question.displayType, question);
-        options.push({label: "*ALL*" + " (" +  stories.length + ")", value: "*ALL*"});
-    }
-    return options;
-}
-
 function clearFilterPane(storyBrowserInstance, filterPane) {
     filterPane.questionSelect.set("value", null);
     setStoryListForCurrentFilters(storyBrowserInstance);
@@ -325,6 +217,130 @@ function setStoryListForCurrentFilters(storyBrowserInstance) {
 
 */
 
+// TODO: Translate
+var unansweredIndicator = "{Unanswered}";
+    
+function optionsFromQuestion(question, stories) {
+    // console.log("*** optionsFromQuestion", question, stories);
+    // TODO: Translate text for options, at least booleans?
+    var options = [];
+    
+    if (!question) return options;
+    
+    // Compute how many of each answer -- assumes typically less than 200-1000 stories
+    var totals = {};
+    stories.forEach(function(item) {
+        // console.log("optionsFromQuestion item", item, question.id, item[question.id]);
+        var choice = item[question.id];
+        if (choice === undefined || choice === null || choice === "") {
+            // Do not include "0" as unanswered
+            // console.log("&&&& Undefined or empty choice", choice);
+            choice = unansweredIndicator;
+        }
+        var oldValue;
+        if (question.displayType === "checkboxes") {
+            for (var key in choice) {
+                oldValue = totals[key];
+                if (!oldValue) oldValue = 0;
+                if (choice[key]) totals[key] = oldValue + 1; 
+            }
+        } else {
+            oldValue = totals[choice];
+            if (!oldValue) oldValue = 0;
+            totals[choice] = oldValue + 1;
+        }
+    });
+    
+    var count;
+    
+    // TODO: Maybe should not add the unanswered indicator if zero?
+    // Always add the unanswered indicator if not checkboxes or checkbox
+    if (question.displayType !== "checkbox" && question.displayType !== "checkboxes") {
+        count = totals[unansweredIndicator];
+        if (!count) count = 0;
+        options.push({label: unansweredIndicator + " (" +  count + ")", value: unansweredIndicator});
+    }
+    
+    if (question.displayType === "select") {
+        // console.log("select", question, question.valueOptions);
+        question.valueOptions.forEach(function(each) {
+            // console.log("option", question.id, each);
+            count = totals[each];
+            if (!count) count = 0;
+            options.push({label: each + " (" +  count + ")", value: each});
+        });
+    } else if (question.displayType === "radiobuttons") {
+        // console.log("radiobuttons", question, question.valueOptions);
+        question.valueOptions.forEach(function(each) {
+            // console.log("option", question.id, each);
+            count = totals[each];
+            if (!count) count = 0;
+            options.push({label: each + " (" +  count + ")", value: each});
+        });
+    } else if (question.displayType === "checkboxes") {
+        // console.log("checkboxes", question, question.valueOptions);
+        question.valueOptions.forEach(function(each) {
+            // console.log("option", question.id, each);
+            count = totals[each];
+            if (!count) count = 0;
+            options.push({label: each + " (" +  count + ")", value: each});
+        });
+    } else if (question.displayType === "slider") {
+        // console.log("slider", question, question.displayConfiguration);
+        for (var sliderTick = 0; sliderTick <= 100; sliderTick++) {
+            count = totals[sliderTick];
+            if (!count) count = 0;
+            options.push({label: sliderTick + " (" +  count + ")", value: sliderTick});
+        }
+    } else if (question.displayType === "boolean") {
+        // console.log("boolean", question);
+        // TODO; Not sure this will really be right with true/false as booleans instead of strings
+        ["yes", "no"].forEach(function(each) {
+            // console.log("option", id, each);
+            count = totals[each];
+            if (!count) count = 0;
+            options.push({label: each + " (" +  count + ")", value: each});
+        });
+    } else if (question.displayType === "checkbox") {
+        // console.log("checkbox", question);
+        // TODO; Not sure this will really be right with true/false as checkbox instead of strings
+        [true, false].forEach(function(each) {
+            // console.log("option", id, each);
+            count = totals["" + each];
+            if (!count) count = 0;
+            options.push({label: each + " (" +  count + ")", value: each});
+        });
+    } else if (question.displayType === "text") {
+        for (var eachTotal in totals) {
+            if (totals.hasOwnProperty(eachTotal)) {
+                count = totals[eachTotal];
+                if (!count) count = 0;
+                options.push({label: eachTotal + " (" +  count + ")", value: eachTotal});                    
+            }
+        }
+    } else {
+        console.log("ERROR: question type not supported: ", question.displayType, question);
+        options.push({label: "*ALL*" + " (" +  stories.length + ")", value: "*ALL*"});
+    }
+    return options;
+}
+
+var Filter: any = {
+    controller: function (args) {
+        console.log("Making filter: ", args.name);
+    },
+    
+    view: function (controller, args) {
+        return m("div.filter", [
+            args.name,
+            m("br"),
+            m("select"),
+            m("br"),
+            "Some list..."
+        ]);
+    }
+};
+
 function currentStoryCollectionChanged(storyBrowserInstance, storyCollectionIdentifier) {
     console.log("currentStoryCollectionChanged", storyBrowserInstance, storyCollectionIdentifier);
     
@@ -422,15 +438,18 @@ var StoryBrowser = {
         
         var prompt = args.panelBuilder.buildQuestionLabel(args.fieldSpecification);
         
-        var rest = m("div", "story browser unfinished");
+        var filter = m("table.filterTable", m("tr", [
+            m("td", m.component(Filter, {name: "Filter 1"})),
+            m("td", m.component(Filter, {name: "Filter 2"}))
+        ]));
 
         var configuration = {
             idProperty: "_storyID",
             itemPanelSpecification: controller.itemPanelSpecification,
-            viewButton: true,
             includeAllFields: ["__survey_storyName", "__survey_storyText"],
+            viewButton: true,
             navigationButtons: true
-        }; 
+       }; 
 
         var gridFieldSpecification = {
             id: "stories",
@@ -439,7 +458,7 @@ var StoryBrowser = {
         
         var grid = gridWithItemPanelInMithril.add_grid(panelBuilder, {stories: controller.stories}, gridFieldSpecification);
         
-        var parts = [prompt, rest, grid];
+        var parts = [prompt, filter, grid];
         
         // TODO: set class etc.
         return m("div", {"class": "questionExternal narrafirma-question-type-questionAnswer"}, parts);
