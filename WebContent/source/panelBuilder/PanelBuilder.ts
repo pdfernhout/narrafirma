@@ -33,9 +33,21 @@ function addButton(panelBuilder: PanelBuilder, model, fieldSpecification, callba
     };
     
     if (fieldSpecification.displayClass) options.class = fieldSpecification.displayClass;
-    if (fieldSpecification.displayIconClass) options.iconClass = fieldSpecification.displayIconClass;
 
-    var button = m("button", options, translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt));
+    var text = m("span", {"class": "button-text"}, translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt));
+ 
+    var parts = [text];
+   
+    if (fieldSpecification.displayIconClass) {
+        var icon = m("span", {"class": fieldSpecification.displayIconClass});
+        if (fieldSpecification.displayIconPosition === "right") {
+            parts.push(icon);
+        } else {
+            parts.unshift(icon);
+        }
+    }
+
+    var button = m("button", options, parts);
 
     // TODO: Improve the naming of displayPreventBreak, maybe by using displayConfiguration somehow, perhaps by changing the meaning of that field to something else
 

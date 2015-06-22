@@ -95,12 +95,30 @@ textarea, input, select { /* override because expanded in survey */
 	color: black;
 }
 
+button {
+    background-color: #BCD8F4;
+    background-image: linear-gradient(#FFF 0px, rgba(255, 255, 255, 0) 3px, rgba(255, 255, 255, 0.75) 100%);
+    margin: 2px 4px 2px 4px;
+    padding: 2px 4px 2px 4px;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 1.1em;
+}
+
+.button-text {
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    padding: 2px 4px 2px 4px;
+}
+
 .wwsButtonImage {
 	background-image: url(../images/WWS_BookCover_front_tiny.png);
     background-repeat: no-repeat;
 	width: 43px;
 	height: 60px;
 	text-align: center;
+	vertical-align: middle;
 }
 
 .homeButtonImage {
@@ -111,6 +129,8 @@ textarea, input, select { /* override because expanded in survey */
     width: 20px;
     height: 20px;
     text-align: center;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .leftButtonImage {
@@ -120,7 +140,9 @@ textarea, input, select { /* override because expanded in survey */
     background-size: auto 100%;
     width: 20px;
     height: 20px;
-    /* text-align: left; */
+    text-align: center;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .rightButtonImage {
@@ -130,9 +152,10 @@ textarea, input, select { /* override because expanded in survey */
     background-size: auto 100%;
     width: 20px;
     height: 20px;
-    /* text-align: right; */
+    text-align: center;
     /* Next line may not work correctly in IE6 & IE7? Also does not work right in safari 5.1 with button a bit high. https://bugs.dojotoolkit.org/ticket/5170 */
-    float: right;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 #narrafirma-help-link {

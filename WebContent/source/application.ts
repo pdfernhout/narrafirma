@@ -194,6 +194,8 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
             var sectionPageSpecification = panelSpecificationCollection.getPageSpecificationForPageID(newPageID);
             prompt += ": " + sectionPageSpecification.displayName;
         }
+        var iconPosition = "left";
+        if (displayIconClass === "rightButtonImage") iconPosition = "right";
         var returnToDashboardButtonSpecification = {
             "id": pageID + idExtra,
             "valueType": "none",
@@ -204,7 +206,8 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
                 "section": newPageID
             },
             displayIconClass: displayIconClass,
-            displayPreventBreak: true
+            displayPreventBreak: true,
+            displayIconPosition: iconPosition
         };
         panelSpecificationCollection.addFieldSpecificationToPanelSpecification(pageSpecification, returnToDashboardButtonSpecification); 
     }
