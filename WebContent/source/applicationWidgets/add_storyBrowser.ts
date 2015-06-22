@@ -425,6 +425,7 @@ var StoryBrowser = {
         var rest = m("div", "story browser unfinished");
 
         var configuration = {
+            idProperty: "_storyID",
             itemPanelSpecification: controller.itemPanelSpecification,
             viewButton: true,
             includeAllFields: ["__survey_storyName", "__survey_storyText"],
