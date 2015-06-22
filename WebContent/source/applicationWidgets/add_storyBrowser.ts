@@ -331,10 +331,18 @@ var Filter: any = {
     },
     
     view: function (controller, args) {
+        var choices = args.choices || [];
+        // console.log("^^^^^^^^^^^^ filter choices", choices);
+        var selectOptions = choices.map(function(option) {
+            var optionOptions = {value: option.value, selected: undefined};
+            // if (option.selected) optionOptions.selected = 'selected';
+            return m("option", optionOptions, option.label);
+        });
+        
         return m("div.filter", [
             args.name,
             m("br"),
-            m("select"),
+            m("select", selectOptions),
             m("br"),
             "Some list..."
         ]);
@@ -354,6 +362,7 @@ function currentStoryCollectionChanged(storyBrowserInstance, storyCollectionIden
     
     var choices = surveyCollection.optionsForAllQuestions(questions);
     storyBrowserInstance.choices = choices;
+    // console.log("^^^^^^^^^^^^ choices", storyBrowserInstance.choices);
     
     // update all stories for the specific collection
     var allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
@@ -439,8 +448,8 @@ var StoryBrowser = {
         var prompt = args.panelBuilder.buildQuestionLabel(args.fieldSpecification);
         
         var filter = m("table.filterTable", m("tr", [
-            m("td", m.component(Filter, {name: "Filter 1"})),
-            m("td", m.component(Filter, {name: "Filter 2"}))
+            m("td", m.component(Filter, {name: "Filter 1", choices: controller.choices})),
+            m("td", m.component(Filter, {name: "Filter 2", choices: controller.choices}))
         ]));
 
         var configuration = {
