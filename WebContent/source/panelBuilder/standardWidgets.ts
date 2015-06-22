@@ -102,7 +102,7 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
     function change(event, value) {
         if (event) value = event.target.value;
         // console.log("onchange", fieldSpecification.id, value);
-        model[fieldSpecification.id] = value;
+        modelAndField.model[modelAndField.field] = value;
     }
     
     var readOnly = fieldSpecification.displayReadOnly || (fieldSpecification.valueImmutable && value) || undefined;
