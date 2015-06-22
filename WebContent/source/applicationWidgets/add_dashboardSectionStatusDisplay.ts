@@ -1,4 +1,3 @@
-import domConstruct = require("dojo/dom-construct");
 import translate = require("../panelBuilder/translate");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import m = require("mithril");
