@@ -47,41 +47,41 @@ function useButtonClicked(templateListChoice, model, hideDialogCallback, gridWit
        // TODO: Translate
        dialogSupport.confirm("Copy selected template '" + selectedTemplate.shortName + "' into question definition?", function () {
            if (templateListChoice === "elicitationQuestions") {
-               model.set("elicitingQuestion_text", selectedTemplate.text || "");
-               model.set("elicitingQuestion_shortName", selectedTemplate.shortName || "");
+               model.elicitingQuestion_text = selectedTemplate.text || "";
+               model.elicitingQuestion_shortName = selectedTemplate.shortName || "";
                // TODO: No data for type, and would need to copy over settings for checkboxes if such data existed
-               // model.set("storyQuestion_type", selectedTemplate.text);
-               model.set("elicitingQuestion_type", {});
+               // model.storyQuestion_type = selectedTemplate.text;
+               model.elicitingQuestion_type = {};
            } else if (templateListChoice === "storyQuestions") {
-               model.set("storyQuestion_text", selectedTemplate.text || "");
-               model.set("storyQuestion_type", selectedTemplate.type || "");
-               model.set("storyQuestion_shortName", selectedTemplate.shortName || "");
-               model.set("storyQuestion_options", selectedTemplate.options || "");
+               model.storyQuestion_text = selectedTemplate.text || "";
+               model.storyQuestion_type = selectedTemplate.type || "";
+               model.storyQuestion_shortName = selectedTemplate.shortName || "";
+               model.storyQuestion_options = selectedTemplate.options || "";
            } else if (templateListChoice === "participantQuestions") {
-               model.set("participantQuestion_text", selectedTemplate.text || "");
-               model.set("participantQuestion_type", selectedTemplate.type || "");
-               model.set("participantQuestion_shortName", selectedTemplate.shortName || "");
-               model.set("participantQuestion_options", selectedTemplate.options || "");
+               model.participantQuestion_text = selectedTemplate.text || "";
+               model.participantQuestion_type = selectedTemplate.type || "";
+               model.participantQuestion_shortName = selectedTemplate.shortName || "";
+               model.participantQuestion_options = selectedTemplate.options || "";
            } else if (templateListChoice === "storyCollectionActivities") {
-               model.set("collectionSessionActivity_name", selectedTemplate.shortName || "");
-               model.set("collectionSessionActivity_type", selectedTemplate.type || "");
-               model.set("collectionSessionActivity_plan", selectedTemplate.plan || "");
-               model.set("collectionSessionActivity_optionalParts", selectedTemplate.optionalParts || "");
-               model.set("collectionSessionActivity_duration", selectedTemplate.duration || "");
-               model.set("collectionSessionActivity_recording", selectedTemplate.recording || "");
-               model.set("collectionSessionActivity_materials", selectedTemplate.materials || "");
-               model.set("collectionSessionActivity_spaces", selectedTemplate.spaces || "");
-               model.set("collectionSessionActivity_facilitation", selectedTemplate.facilitation || "");
+               model.collectionSessionActivity_name = selectedTemplate.shortName || "";
+               model.collectionSessionActivity_type = selectedTemplate.type || "";
+               model.collectionSessionActivity_plan = selectedTemplate.plan || "";
+               model.collectionSessionActivity_optionalParts = selectedTemplate.optionalParts || "";
+               model.collectionSessionActivity_duration = selectedTemplate.duration || "";
+               model.collectionSessionActivity_recording = selectedTemplate.recording || "";
+               model.collectionSessionActivity_materials = selectedTemplate.materials || "";
+               model.collectionSessionActivity_spaces = selectedTemplate.spaces || "";
+               model.collectionSessionActivity_facilitation = selectedTemplate.facilitation || "";
            } else if (templateListChoice === "sensemakingActivities") {
-               model.set("sensemakingSessionPlan_activity_name", selectedTemplate.shortName || "");
-               model.set("sensemakingSessionPlan_activity_type", selectedTemplate.type || "");
-               model.set("sensemakingSessionPlan_activity_plan", selectedTemplate.plan || "");
-               model.set("sensemakingSessionPlan_activity_optionalParts", selectedTemplate.optionalParts || "");
-               model.set("sensemakingSessionPlan_activity_duration", selectedTemplate.duration || "");
-               model.set("sensemakingSessionPlan_activity_recording", selectedTemplate.recording || "");
-               model.set("sensemakingSessionPlan_activity_materials", selectedTemplate.materials || "");
-               model.set("sensemakingSessionPlan_activity_spaces", selectedTemplate.spaces || "");
-               model.set("sensemakingSessionPlan_activity_facilitation", selectedTemplate.facilitation || "");
+               model.sensemakingSessionPlan_activity_name = selectedTemplate.shortName || "";
+               model.sensemakingSessionPlan_activity_type = selectedTemplate.type || "";
+               model.sensemakingSessionPlan_activity_plan = selectedTemplate.plan || "";
+               model.sensemakingSessionPlan_activity_optionalParts = selectedTemplate.optionalParts || "";
+               model.sensemakingSessionPlan_activity_duration = selectedTemplate.duration || "";
+               model.sensemakingSessionPlan_activity_recording = selectedTemplate.recording || "";
+               model.sensemakingSessionPlan_activity_materials = selectedTemplate.materials || "";
+               model.sensemakingSessionPlan_activity_spaces = selectedTemplate.spaces || "";
+               model.sensemakingSessionPlan_activity_facilitation = selectedTemplate.facilitation || "";
            } else {
                var message = "ERROR: unsupported template type:" +  templateListChoice;
                console.log(message);
