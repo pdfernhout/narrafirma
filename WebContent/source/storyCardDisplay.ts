@@ -109,7 +109,7 @@ export function generateStoryCardContent(storyModel, currentQuestionnaire, inclu
     for (i = 0; i < questions.length; i++) {
         question = questions[i];
         if (question.displayType !== "slider") continue;
-        console.log("making slider", question);
+        // console.log("making slider", question);
         if (!otherFields) otherFields += "<table>\n";
         otherFields += displayHTMLForField(storyModel, question, "nobreak");
     }
@@ -118,11 +118,11 @@ export function generateStoryCardContent(storyModel, currentQuestionnaire, inclu
     for (i = 0; i < questions.length; i++) {
         question = questions[i];
         if (question.displayType === "slider") continue;
-        console.log("making other than slider", question);
+        // console.log("making other than slider", question);
         otherFields += displayHTMLForField(storyModel, question);
     }
     
-    console.log("otherFields", otherFields);
+    // console.log("otherFields", otherFields);
     
     var textForElicitingQuestion = "";
     if (includeElicitingQuestion) {
