@@ -62,7 +62,7 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, configu
 }
 
 // Sorts function derived from: http://lhorie.github.io/mithril-blog/vanilla-table-sorting.html
-function sorts(ctrl, list) {
+function sorts(controller, list) {
     return {
         onclick: function(e) {
             var prop = e.target.getAttribute("data-sort-by");
@@ -78,18 +78,18 @@ function sorts(ctrl, list) {
                 }
                 console.log("sorted list", list);
             } else {
-                if (ctrl.itemBeingEdited) return;
+                if (controller.itemBeingEdited) return;
                 var itemID = e.target.getAttribute("data-item-index");
                 console.log("item clicked", itemID);
                 var itemIndex = null;
                 for (var i = 0; i < list.length; i++) {
-                    if (list[i][ctrl.idProperty] === itemID) {
+                    if (list[i][controller.idProperty] === itemID) {
                         itemIndex = i;
                         break;
                     }
                 }
                 console.log("found item at index", itemIndex, list[itemIndex]);
-                if (itemIndex !== null) ctrl.itemDisplayedAtBottom = list[itemIndex];
+                if (itemIndex !== null) controller.itemDisplayedAtBottom = list[itemIndex];
             }
         }
     };
@@ -100,7 +100,7 @@ var ItemPanel = {
         console.log("%%%%%%%%%%%%%%%%%%% ItemPanel controller called");
     },
     
-    view: function(ctrl, args) {
+    view: function(controller, args) {
         console.log("%%%%%%%%%%%%%%%%%%% ItemPanel view called");
         // return m("div", "work in progress");
         // TODO: Should provide copy of item?
@@ -185,7 +185,7 @@ var Grid = {
         this.itemPanelSpecification = itemPanelSpecification;
     },
     
-    view: function(ctrl, args) {
+    view: function(controller, args) {
         var panelBuilder = args.panelBuilder;
         var prompt = panelBuilder.buildQuestionLabel(args.fieldSpecification);
         
@@ -193,21 +193,21 @@ var Grid = {
             console.log("adjustHeaderWidth");
         }
         
-        var table = m("table.scrolling", sorts(ctrl, ctrl.data), [
-            m("tr", {config: adjustHeaderWidth, "class": "selected-grid-row"}, ctrl.columns.map(function (column) {
+        var table = m("table.scrolling", sorts(controller, controller.data), [
+            m("tr", {config: adjustHeaderWidth, "class": "selected-grid-row"}, controller.columns.map(function (column) {
                     return m("th[data-sort-by=" + column.field  + "]", {"text-overflow": "ellipsis"}, column.label);
                 }).concat(m("th", ""))
             ),
-            ctrl.data.map(function(item, index) {
-                return Grid.rowForItem(ctrl, item, index);
+            controller.data.map(function(item, index) {
+                return Grid.rowForItem(controller, item, index);
             })
         ]);
         
-        var disabled = (ctrl.itemDisplayedAtBottom || ctrl.itemBeingEdited) || undefined;
+        var disabled = (controller.itemDisplayedAtBottom || controller.itemBeingEdited) || undefined;
         
         var buttons = [];
-        if (ctrl.configuration.editButton) {
-            var addButton = m("button", {onclick: Grid.addItem.bind(ctrl), disabled: disabled}, "Add");
+        if (controller.configuration.editButton) {
+            var addButton = m("button", {onclick: Grid.addItem.bind(controller), disabled: disabled}, "Add");
             buttons.push(addButton);
         }
         
@@ -215,33 +215,33 @@ var Grid = {
         
         var parts = [prompt, m("div.narrafirm-grid", [table]), buttonPanel];
         
-        if (ctrl.itemDisplayedAtBottom) {
-            parts.push(Grid.bottomEditorForItem(ctrl, panelBuilder, ctrl.itemDisplayedAtBottom, "view"));
+        if (controller.itemDisplayedAtBottom) {
+            parts.push(Grid.bottomEditorForItem(controller, panelBuilder, controller.itemDisplayedAtBottom, "view"));
         }
         
-        if (ctrl.itemBeingEdited) {
-            parts.push(Grid.bottomEditorForItem(ctrl, panelBuilder, ctrl.itemBeingEdited, "edit"));
+        if (controller.itemBeingEdited) {
+            parts.push(Grid.bottomEditorForItem(controller, panelBuilder, controller.itemBeingEdited, "edit"));
         }
         
         // TODO: set class etc.
         return m("div", {"class": "questionExternal narrafirma-question-type-grid"}, parts);
     },
     
-    inlineEditorForItem: function(ctrl, panelBuilder, item, mode) {
+    inlineEditorForItem: function(controller, panelBuilder, item, mode) {
         return m("tr", [
-            m("td", {colSpan: ctrl.columns.length}, [
-                m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: ctrl, mode: mode})
+            m("td", {colSpan: controller.columns.length}, [
+                m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: controller, mode: mode})
             ]),
-            m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(ctrl, item)}, "close")])
+            m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(controller, item)}, "close")])
         ]);
     },
     
-    bottomEditorForItem: function(ctrl, panelBuilder, item, mode) {
+    bottomEditorForItem: function(controller, panelBuilder, item, mode) {
         return m("div", [
-            m("td", {colSpan: ctrl.columns.length}, [
-                m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: ctrl, mode: mode})
+            m("td", {colSpan: controller.columns.length}, [
+                m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: controller, mode: mode})
             ]),
-            m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(ctrl, item)}, "close")])
+            m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(controller, item)}, "close")])
         ]);
     },
     
@@ -281,44 +281,44 @@ var Grid = {
         this.itemDisplayedAtBottom = null;
     },
     
-    rowForItem: function (ctrl, item, index) {
+    rowForItem: function (controller, item, index) {
         /*
-        if (ctrl.itemBeingEdited === item) {
+        if (controller.itemBeingEdited === item) {
             return m("tr", [
-                m("td", {colSpan: ctrl.columns.length}, [
-                    m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: ctrl})
+                m("td", {colSpan: controller.columns.length}, [
+                    m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: controller})
                 ]),
-                m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(ctrl, item, index)}, "close")])
+                m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(controller, item, index)}, "close")])
             ]);
         }
         */
         var selectionClass = "narrafirma-grid-row-unselected";
-        var selected = (item === ctrl.itemDisplayedAtBottom || item === ctrl.itemBeingEdited);
+        var selected = (item === controller.itemDisplayedAtBottom || item === controller.itemBeingEdited);
         if (selected) selectionClass = "narrafirma-grid-row-selected";
-        var fields = ctrl.columns.map(function (column) {
-            return m("td", {"text-overflow": "ellipsis", "data-item-index": item[ctrl.idProperty] }, item[column.field]);
+        var fields = controller.columns.map(function (column) {
+            return m("td", {"text-overflow": "ellipsis", "data-item-index": item[controller.idProperty] }, item[column.field]);
         });
         
-        var disabled = !!ctrl.itemBeingEdited || undefined;
+        var disabled = !!controller.itemBeingEdited || undefined;
         var buttons = [];
         
-        if (ctrl.configuration.deleteButton) {
-            var deleteButton = m("button", {onclick: Grid.deleteItem.bind(ctrl, item, index), disabled: disabled, "class": "fader"}, "delete");
+        if (controller.configuration.deleteButton) {
+            var deleteButton = m("button", {onclick: Grid.deleteItem.bind(controller, item, index), disabled: disabled, "class": "fader"}, "delete");
             buttons.push(deleteButton);
         }
 
-        if (ctrl.configuration.editButton) {
-            var editButton = m("button", {onclick: Grid.editItem.bind(ctrl, item, index), disabled: disabled, "class": "fader"}, "edit");
+        if (controller.configuration.editButton) {
+            var editButton = m("button", {onclick: Grid.editItem.bind(controller, item, index), disabled: disabled, "class": "fader"}, "edit");
             buttons.push(editButton);
         }
         
-        if (ctrl.configuration.viewButton) {
-            var viewButton = m("button", {onclick: Grid.viewItem.bind(ctrl, item, index), disabled: disabled, "class": "fader"}, "view");
+        if (controller.configuration.viewButton) {
+            var viewButton = m("button", {onclick: Grid.viewItem.bind(controller, item, index), disabled: disabled, "class": "fader"}, "view");
             buttons.push(viewButton); 
         }
         
         fields = fields.concat(m("td", {nowrap: true}, buttons));
-        return m("tr", {key: item[ctrl.idProperty], "class": selectionClass}, fields);
+        return m("tr", {key: item[controller.idProperty], "class": selectionClass}, fields);
     }
 };
     
