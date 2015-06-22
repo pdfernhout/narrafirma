@@ -261,7 +261,7 @@ function makeItemPanelSpecificationForQuestions(questions) {
 }
 
 function findCatalysisReport(project, shortName) {
-    var catalysisReports = project.projectModel.get("project_catalysisReports");
+    var catalysisReports = project.projectModel.project_catalysisReports;
     for (var i = 0; i < catalysisReports.length; i++) {
         if (catalysisReports[i].catalysisReport_shortName === shortName) {
             return catalysisReports[i];
@@ -489,7 +489,7 @@ function add_trendsReport(panelBuilder: PanelBuilder, contentPane, model, fieldS
     console.log("choiceModelAndField", choiceModelAndField);
     var choiceModel = choiceModelAndField.model;
     var choiceField = choiceModelAndField.field; 
-    var catalysisReportIdentifier = choiceModel.get(choiceField);
+    var catalysisReportIdentifier = choiceModel[choiceField];
     
     console.log("catalysisReportIdentifier", catalysisReportIdentifier);
     

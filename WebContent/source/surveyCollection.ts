@@ -143,16 +143,17 @@ export function storyCollectionStop() {
         return;
     }
     if (!confirm("Deactivate all story collection via the web?")) return;
-    var storyCollections = project.projectModel.get("project_storyCollections");
+    var storyCollections = project.projectModel.project_storyCollections;
     for (var i = 0; i < storyCollections.length; i++) {
         var storyCollection = storyCollections[i];
         if (!storyCollection.storyCollection_activeOnWeb) continue;
         storyCollection.storyCollection_activeOnWeb = "";
     }
    
+    // TODO: Need to importve how this is done? Force rMihril redraw?
     // broadcast the change to other clients and force grid refresh by recreating entire object
     var recreatedData = JSON.parse(JSON.stringify(storyCollections));
-    project.projectModel.set("project_storyCollections", recreatedData);
+    project.projectModel.project_storyCollections = recreatedData;
    
     updateActiveQuestionnaires({}, "sendMessage");
     console.log("Deactivated all web questionnaires");

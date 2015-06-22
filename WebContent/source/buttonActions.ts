@@ -177,7 +177,7 @@ function generateHTMLForQuestionnaire(questionnaire) {
 function getStoryCollectionNameForSelectedStoryCollection(storyCollectionChoiceId) {
     /*
      * TODO: Could check first if any story collections have been defined
-    var questionnaires = project.projectModel.get("project_questionnaires");
+    var questionnaires = project.projectModel.project_questionnaires;
     
     if (questionnaires.length === 0) {
         // TODO: Translate

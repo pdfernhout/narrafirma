@@ -140,7 +140,7 @@ function insertGraphBrowser(panelBuilder: PanelBuilder, contentPane, model, fiel
     console.log("choiceModelAndField", choiceModelAndField);
     var choiceModel = choiceModelAndField.model;
     var choiceField = choiceModelAndField.field; 
-    var storyCollectionIdentifier = choiceModel.get(choiceField);
+    var storyCollectionIdentifier = choiceModel[choiceField];
     
     var graphBrowserInstance = {
         graphResultsPane: graphResultsPane,

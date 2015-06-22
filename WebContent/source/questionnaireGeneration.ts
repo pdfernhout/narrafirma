@@ -135,7 +135,7 @@ function buildItemListFromIdList(idToItemMap, idItemList, idField) {
 // Are names just hints as to purpose of code? Can never convey all aspects of interrelationships?
 
 function findQuestionnaireTemplate(project, shortName) {
-    var questionnaires = project.projectModel.get("project_storyForms");
+    var questionnaires = project.projectModel.project_storyForms;
     for (var i = 0; i < questionnaires.length; i++) {
         if (questionnaires[i].questionForm_shortName === shortName) {
             return questionnaires[i];
@@ -145,7 +145,7 @@ function findQuestionnaireTemplate(project, shortName) {
 }
 
 export function findStoryCollection(project, shortName) {
-    var storyCollections = project.projectModel.get("project_storyCollections");
+    var storyCollections = project.projectModel.project_storyCollections;
     for (var i = 0; i < storyCollections.length; i++) {
         if (storyCollections[i].storyCollection_shortName === shortName) {
             return storyCollections[i];
@@ -188,7 +188,7 @@ export function buildQuestionnaireFromTemplate(project, questionnaireTemplate) {
     questionnaire.endText = questionnaireTemplate["questionForm_endText"]; 
     
     // TODO: Should maybe ensure unique IDs for eliciting questions?
-    var allElicitingQuestions = buildIdToItemMap(project.projectModel.get("project_elicitingQuestionsList"), "elicitingQuestion_shortName");
+    var allElicitingQuestions = buildIdToItemMap(project.projectModel.project_elicitingQuestionsList, "elicitingQuestion_shortName");
     var elicitingQuestions = buildItemListFromIdList(allElicitingQuestions, questionnaireTemplate["questionForm_elicitingQuestions"], "elicitingQuestion");       
     console.log("elicitingQuestions", elicitingQuestions);
     
@@ -205,12 +205,12 @@ export function buildQuestionnaireFromTemplate(project, questionnaireTemplate) {
     }
     ensureAtLeastOneElicitingQuestion(questionnaire);
     
-    var allStoryQuestions = buildIdToItemMap(project.projectModel.get("project_storyQuestionsList"), "storyQuestion_shortName");
+    var allStoryQuestions = buildIdToItemMap(project.projectModel.project_storyQuestionsList, "storyQuestion_shortName");
     var storyQuestions = buildItemListFromIdList(allStoryQuestions, questionnaireTemplate["questionForm_storyQuestions"], "storyQuestion");       
     ensureUniqueQuestionIDs(usedIDs, storyQuestions);
     questionnaire.storyQuestions = convertEditorQuestions(storyQuestions);
     
-    var allParticipantQuestions = buildIdToItemMap(project.projectModel.get("project_participantQuestionsList"), "participantQuestion_shortName");
+    var allParticipantQuestions = buildIdToItemMap(project.projectModel.project_participantQuestionsList, "participantQuestion_shortName");
     var participantQuestions = buildItemListFromIdList(allParticipantQuestions, questionnaireTemplate["questionForm_participantQuestions"], "participantQuestion");       
     ensureUniqueQuestionIDs(usedIDs, participantQuestions);      
     questionnaire.participantQuestions = convertEditorQuestions(participantQuestions);
