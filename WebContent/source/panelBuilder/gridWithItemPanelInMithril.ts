@@ -291,7 +291,7 @@ var Grid = {
             return m("td", {"text-overflow": "ellipsis", "data-item-index": item[ctrl.idProperty] }, item[column.field]);
         });
         
-        var disabled = (ctrl.itemDisplayedAtBottom || ctrl.itemBeingEdited) || undefined;
+        var disabled = !!ctrl.itemBeingEdited || undefined;
         fields = fields.concat(m("td", {nowrap: true}, [
             m("button", {onclick: Grid.deleteItem.bind(ctrl, item, index), disabled: disabled, "class": "fader"}, "delete"),
             m("button", {onclick: Grid.editItem.bind(ctrl, item, index), disabled: disabled, "class": "fader"}, "edit"),
