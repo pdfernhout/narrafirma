@@ -136,6 +136,8 @@ var Grid = {
             itemPanelID = configuration.itemPanelID;
         }
         
+        this.configuration = configuration;
+        
         var itemPanelSpecification = configuration.itemPanelSpecification;
         if (!itemPanelSpecification) {
             itemPanelSpecification = panelBuilder.getPanelDefinitionForPanelID(itemPanelID);
@@ -202,8 +204,14 @@ var Grid = {
         ]);
         
         var disabled = (ctrl.itemDisplayedAtBottom || ctrl.itemBeingEdited) || undefined;
-        var addButton = m("button", {onclick: Grid.addItem.bind(ctrl), disabled: disabled}, "Add");
-        var buttonPanel = m("div.narrafirma-button-panel", [addButton]);
+        
+        var buttons = [];
+        if (ctrl.configuration.editButton) {
+            var addButton = m("button", {onclick: Grid.addItem.bind(ctrl), disabled: disabled}, "Add");
+            buttons.push(addButton);
+        }
+        
+        var buttonPanel = m("div.narrafirma-button-panel", buttons);
         
         var parts = [prompt, m("div.narrafirm-grid", [table]), buttonPanel];
         
@@ -292,12 +300,24 @@ var Grid = {
         });
         
         var disabled = !!ctrl.itemBeingEdited || undefined;
-        fields = fields.concat(m("td", {nowrap: true}, [
-            m("button", {onclick: Grid.deleteItem.bind(ctrl, item, index), disabled: disabled, "class": "fader"}, "delete"),
-            m("button", {onclick: Grid.editItem.bind(ctrl, item, index), disabled: disabled, "class": "fader"}, "edit"),
-            // TODO: Fix so view and not edit
-            m("button", {onclick: Grid.viewItem.bind(ctrl, item, index), disabled: disabled, "class": "fader"}, "view")
-        ]));
+        var buttons = [];
+        
+        if (ctrl.configuration.deleteButton) {
+            var deleteButton = m("button", {onclick: Grid.deleteItem.bind(ctrl, item, index), disabled: disabled, "class": "fader"}, "delete");
+            buttons.push(deleteButton);
+        }
+
+        if (ctrl.configuration.editButton) {
+            var editButton = m("button", {onclick: Grid.editItem.bind(ctrl, item, index), disabled: disabled, "class": "fader"}, "edit");
+            buttons.push(editButton);
+        }
+        
+        if (ctrl.configuration.viewButton) {
+            var viewButton = m("button", {onclick: Grid.viewItem.bind(ctrl, item, index), disabled: disabled, "class": "fader"}, "view");
+            buttons.push(viewButton); 
+        }
+        
+        fields = fields.concat(m("td", {nowrap: true}, buttons));
         return m("tr", {key: item[ctrl.idProperty], "class": selectionClass}, fields);
     }
 };
