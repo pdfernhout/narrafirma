@@ -191,35 +191,6 @@ function createFilterPane(storyBrowserInstance, id, questions, stories, containe
     return filterPane;
 }
 
-function currentStoryCollectionChanged(storyBrowserInstance, fieldName, oldValue, storyCollectionIdentifier) {
-    console.log("currentStoryCollectionChanged", storyBrowserInstance, fieldName, oldValue, storyCollectionIdentifier);
-    
-    storyBrowserInstance.currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
-    console.log("storyBrowserInstance.currentQuestionnaire", storyBrowserInstance.currentQuestionnaire);
-    
-    // Update filters
-    var questions = surveyCollection.collectQuestionsForQuestionnaire(storyBrowserInstance.currentQuestionnaire);
-    storyBrowserInstance.questions = questions;
-    console.log("currentStoryCollectionChanged", questions);
-    
-    var choices = surveyCollection.optionsForAllQuestions(questions);
-    widgetSupport.updateSelectChoices(storyBrowserInstance.filter1.questionSelect, choices);
-    widgetSupport.updateSelectChoices(storyBrowserInstance.filter2.questionSelect, choices);
-    
-    // TODO: What to do about current selection in these widgets?
-    
-    // Update item panel in grid
-    var itemPanelSpecification = makeItemPanelSpecificationForQuestions(storyBrowserInstance, questions);
-    storyBrowserInstance.storyList.changeItemPanelSpecification(itemPanelSpecification);
-    
-    // update all stories for the specific collection
-    var allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
-    console.log("allStories", allStories);
-    loadLatestStories(storyBrowserInstance, allStories);
-    
-    // TODO: Should close up open grid view
-}
-
 function isMatch(story, questionChoice, selectedAnswerChoices) {
     // console.log("isMatch", questionChoice, selectedAnswerChoices);
     if (!questionChoice) return true;
@@ -283,13 +254,13 @@ function insertStoryBrowser(panelBuilder: PanelBuilder, pagePane, model, fieldSp
         currentQuestionnaire: null
     };
     
-    // Get questionnaire for selected story collection
-    // TODO: What if the value is an array of stories to display directly?
-    var choiceModelAndField = valuePathResolver.resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
-    console.log("choiceModelAndField", choiceModelAndField);
-    var choiceModel = choiceModelAndField.model;
-    var choiceField = choiceModelAndField.field; 
-    var storyCollectionIdentifier = choiceModel.get(choiceField);
+&&    // Get questionnaire for selected story collection
+&&    // TODO: What if the value is an array of stories to display directly?
+&&    var choiceModelAndField = valuePathResolver.resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
+&&    console.log("choiceModelAndField", choiceModelAndField);
+&&    var choiceModel = choiceModelAndField.model;
+&&    var choiceField = choiceModelAndField.field; 
+&&    var storyCollectionIdentifier = choiceModel.get(choiceField);
     
 &&    var itemPanelSpecification = makeItemPanelSpecificationForQuestions(storyBrowserInstance, questions);
     
@@ -354,6 +325,43 @@ function setStoryListForCurrentFilters(storyBrowserInstance) {
 
 */
 
+function currentStoryCollectionChanged(storyBrowserInstance, storyCollectionIdentifier) {
+    console.log("currentStoryCollectionChanged", storyBrowserInstance, storyCollectionIdentifier);
+    
+    storyBrowserInstance.currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+    console.log("storyBrowserInstance.currentQuestionnaire", storyBrowserInstance.currentQuestionnaire);
+    
+    // Update filters
+    var questions = surveyCollection.collectQuestionsForQuestionnaire(storyBrowserInstance.currentQuestionnaire);
+    storyBrowserInstance.questions = questions;
+    console.log("currentStoryCollectionChanged", questions);
+    
+    var choices = surveyCollection.optionsForAllQuestions(questions);
+    storyBrowserInstance.choices = choices;
+    
+    // update all stories for the specific collection
+    var allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+    console.log("allStories", allStories);
+    storyBrowserInstance.stories = allStories;
+    
+    var itemPanelSpecification = makeItemPanelSpecificationForQuestions(storyBrowserInstance, questions);
+    storyBrowserInstance.itemPanelSpecification = itemPanelSpecification;
+    
+    /*
+    widgetSupport.updateSelectChoices(storyBrowserInstance.filter1.questionSelect, choices);
+    widgetSupport.updateSelectChoices(storyBrowserInstance.filter2.questionSelect, choices);
+    
+    // TODO: What to do about current selection in these widgets?
+    
+    // Update item panel in grid
+    storyBrowserInstance.storyList.changeItemPanelSpecification(itemPanelSpecification);
+    
+    loadLatestStories(storyBrowserInstance, allStories);
+    
+    // TODO: Should close up open grid view
+    */
+}
+
 function buildStoryDisplayPanel(storyBrowserInstance, panelBuilder, contentPane, model) {
     var storyContent = storyCardDisplay.generateStoryCardContent(model, storyBrowserInstance.currentQuestionnaire, "includeElicitingQuestion");
     
@@ -372,17 +380,33 @@ function makeItemPanelSpecificationForQuestions(storyBrowserInstance, questions)
     return itemPanelSpecification;
 }
 
+function getCurrentStoryCollectionIdentifier(args) {
+    var panelBuilder = args.panelBuilder;
+    var model = args.model;
+    var fieldSpecification = args.fieldSpecification;
+    
+    // Get questionnaire for selected story collection
+    // TODO: What if the value is an array of stories to display directly?
+    var choiceModelAndField = valuePathResolver.resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
+    console.log("choiceModelAndField", choiceModelAndField);
+    var choiceModel = choiceModelAndField.model;
+    var choiceField = choiceModelAndField.field; 
+    var storyCollectionIdentifier = choiceModel[choiceField];
+    
+    return storyCollectionIdentifier;
+}
+
 var StoryBrowser = {
     controller: function(args) {
-        // TODO: Fix this
-        this.stories = [
-            {"__survey_storyName": "One", "__survey_storyText": "One text"},
-            {"__survey_storyName": "Two", "__survey_storyText": "Two text"},
-            {"__survey_storyName": "Three", "__survey_storyText": "Three text"},
-        ];
+        this.storyCollectionIdentifier = getCurrentStoryCollectionIdentifier(args);
         
-        // TODO: Fix this
-        this.questions = [];
+        this.currentQuestionnaire = null;
+        this.questions = null;
+        this.choices = null;
+        this.stories = null;
+        this.itemPanelSpecification = null;
+        
+        currentStoryCollectionChanged(this, this.storyCollectionIdentifier);
     },
     
     view: function(controller, args) {
@@ -392,17 +416,15 @@ var StoryBrowser = {
         
         var rest = m("div", "story browser unfinished");
 
-        var itemPanelSpecification = makeItemPanelSpecificationForQuestions(controller, controller.questions);
-
         var configuration = {
-            itemPanelSpecification: itemPanelSpecification,
+            itemPanelSpecification: controller.itemPanelSpecification,
             viewButton: true,
             includeAllFields: ["__survey_storyName", "__survey_storyText"],
             navigationButtons: true
         }; 
 
         var gridFieldSpecification = {
-            id: controller.stories,
+            id: "stories",
             displayConfiguration: configuration
         };
         
