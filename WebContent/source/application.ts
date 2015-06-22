@@ -46,8 +46,8 @@ var lastServerError = "";
 var clientState: ClientState = {
     projectIdentifier: null,
     pageIdentifier: null,
-    storyCollection: null,
-    catalysisReport: null,
+    storyCollectionIdentifier: null,
+    catalysisReportIdentifier: null,
     debugMode: null,
     serverStatus: "narrafirma-serverstatus-ok",
     serverStatusText: ""
@@ -85,8 +85,8 @@ function hashStringForClientState() {
     var fields = [
         {id: "projectIdentifier", key: "project"},
         {id: "pageIdentifier", key: "page"},
-        {id: "storyCollection", key: "storyCollection"},
-        {id: "catalysisReport", key: "catalysisReport"},
+        {id: "storyCollectionIdentifier", key: "storyCollection"},
+        {id: "catalysisReportIdentifier", key: "catalysisReport"},
         {id: "debugMode", key: "debugMode"}
     ];
     
@@ -139,14 +139,14 @@ function urlHashFragmentChanged() {
         clientState.pageIdentifier = selectedPage;
     }
     
-    if (hashParameters.storyCollection && hashParameters.storyCollection !== clientState.storyCollection) {
-        console.log("changing client state for storyCollection", clientState.storyCollection, hashParameters.storyCollection);
-        clientState.storyCollection = hashParameters.storyCollection;
+    if (hashParameters.storyCollection && hashParameters.storyCollection !== clientState.storyCollectionIdentifier) {
+        console.log("changing client state for storyCollection", clientState.storyCollectionIdentifier, hashParameters.storyCollection);
+        clientState.storyCollectionIdentifier = hashParameters.storyCollection;
     }
     
-    if (hashParameters.catalysisReport && hashParameters.catalysisReport !== clientState.catalysisReport) {
-        console.log("changing client state for catalysisReport", clientState.catalysisReport, hashParameters.catalysisReport);
-        clientState.catalysisReport = hashParameters.catalysisReport;
+    if (hashParameters.catalysisReport && hashParameters.catalysisReport !== clientState.catalysisReportIdentifier) {
+        console.log("changing client state for catalysisReport", clientState.catalysisReportIdentifier, hashParameters.catalysisReport);
+        clientState.catalysisReportIdentifier = hashParameters.catalysisReport;
     }
     
     if (hashParameters.debugMode && hashParameters.debugMode !== clientState.debugMode) {
@@ -522,8 +522,8 @@ export function initialize() {
     var initialHashParameters = getHashParameters(fragment);
     if (initialHashParameters["project"]) clientState.projectIdentifier = initialHashParameters["project"];
     if (initialHashParameters["page"]) clientState.pageIdentifier = "page_" + initialHashParameters["page"];
-    if (initialHashParameters["storyCollection"]) clientState.storyCollection = initialHashParameters["storyCollection"];
-    if (initialHashParameters["catalysisReport"]) clientState.catalysisReport = initialHashParameters["catalysisReport"];
+    if (initialHashParameters["storyCollection"]) clientState.storyCollectionIdentifier = initialHashParameters["storyCollection"];
+    if (initialHashParameters["catalysisReport"]) clientState.catalysisReportIdentifier = initialHashParameters["catalysisReport"];
     if (initialHashParameters["debugMode"]) clientState.debugMode = initialHashParameters["debugMode"];
         
     // Ensure defaults

@@ -1,8 +1,8 @@
 interface ClientState {
     projectIdentifier: string;
     pageIdentifier: string;
-    storyCollection: string;
-    catalysisReport: string;
+    storyCollectionIdentifier: string;
+    catalysisReportIdentifier: string;
     debugMode: string;
     serverStatus: string;
     serverStatusText: string;
