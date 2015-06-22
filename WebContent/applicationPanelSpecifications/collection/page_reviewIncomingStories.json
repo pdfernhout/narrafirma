@@ -13,7 +13,7 @@
         },
         {
             "id": "storyCollectionChoiceX",
-            "valuePath": "/clientState/currentStoryCollection",
+            "valuePath": "/clientState/storyCollectionIdentifier",
             "valueType": "string",
             "valueOptions": "project_storyCollections",
             "valueOptionsSubfield": "storyCollection_shortName",
@@ -24,7 +24,7 @@
         },
         {
             "id": "webStoryCollection_collectedStoriesDuringCollection",
-            "valuePath": "/clientState/currentStoryCollection",
+            "valuePath": "/clientState/storyCollectionIdentifier",
             "valueType": "none",
             "displayType": "storyBrowser",
             "displayPrompt": "Collected stories"
