@@ -69,8 +69,12 @@ function buildBreadcrumbs(controller) {
         // TODO: Should lookup name of section
         if (!pageSpecification.isHeader) {
             var sectionPageSpecification = panelSpecificationCollection.getPageSpecificationForPageID("page_" + pageSpecification.section);
-            html += htmlForBreadcrumb(sectionPageSpecification.id, sectionPageSpecification.displayName);
-            html += " > ";
+            if (sectionPageSpecification) {
+                html += htmlForBreadcrumb(sectionPageSpecification.id, sectionPageSpecification.displayName);
+                html += " > ";
+            } else {
+                console.log("ERROR: could not find sectionPageSpecification for: ", pageSpecification.section, pageSpecification);
+            }
         }
     }
     html += '<span id="narrafirma-breadcrumb-current">' + pageSpecification.displayName + '</span>';
