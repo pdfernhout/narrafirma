@@ -80,7 +80,7 @@ function add_dashboardSectionStatusDisplay(panelBuilder: PanelBuilder, model, fi
         "class": "narrafirma-dashboardStatusButton"
     };
     
-    var button = m("button", options, m.trust("<b>" + sectionName + "</b>"));
+    var button = m("button", options, sectionName);
 
     // TODO: Improve the naming of displayPreventBreak, maybe by using displayConfiguration somehow, perhaps by changing the meaning of that field to something else
 
