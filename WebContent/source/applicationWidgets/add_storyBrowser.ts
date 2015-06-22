@@ -398,19 +398,27 @@ function getCurrentStoryCollectionIdentifier(args) {
 
 var StoryBrowser = {
     controller: function(args) {
-        this.storyCollectionIdentifier = getCurrentStoryCollectionIdentifier(args);
-        
+        this.storyCollectionIdentifier = null;
         this.currentQuestionnaire = null;
         this.questions = null;
         this.choices = null;
         this.stories = null;
         this.itemPanelSpecification = null;
-        
-        currentStoryCollectionChanged(this, this.storyCollectionIdentifier);
     },
     
     view: function(controller, args) {
+        console.log("StoryBrowser view");
         var panelBuilder = args.panelBuilder;
+        
+        // TODO: Probably need to handle tracking if list changed so can keep sorted list...
+        controller.storyCollectionIdentifier = getCurrentStoryCollectionIdentifier(args);
+        console.log("storyCollectionIdentifier", controller.storyCollectionIdentifier);
+        
+        if (!controller.storyCollectionIdentifier) {
+            return m("div", "Please select a story collection to view");
+        }
+        
+        currentStoryCollectionChanged(controller, controller.storyCollectionIdentifier);
         
         var prompt = args.panelBuilder.buildQuestionLabel(args.fieldSpecification);
         
