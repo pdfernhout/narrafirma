@@ -56,25 +56,6 @@ function createFilterPane(storyBrowserInstance, id, questions, stories, containe
     return filterPane;
 }
 
-function isMatch(story, questionChoice, selectedAnswerChoices) {
-    // console.log("isMatch", questionChoice, selectedAnswerChoices);
-    if (!questionChoice) return true;
-    var questionAnswer = story[questionChoice];
-    if (questionAnswer === undefined || questionAnswer === null || questionAnswer === "") {
-        questionAnswer = unansweredIndicator;
-    } else if (typeof questionAnswer === "object") {
-        // checkboxes
-        // console.log("checkboxes", questionAnswer);
-        for (var key in questionAnswer) {
-            if ((selectedAnswerChoices.indexOf(key) !== -1) && questionAnswer[key]) return true;
-        }
-        return false;
-    }
-    questionAnswer = "" + questionAnswer;
-    // console.log("questionAnswer", questionAnswer);
-    return selectedAnswerChoices.indexOf(questionAnswer) !== -1;
-}
-
 function loadLatestStories(storyBrowserInstance, allStories) {
     // console.log("loadLatestStories", storyBrowserInstance, allStories);
     storyBrowserInstance.dataStore.setData(allStories);
@@ -168,6 +149,8 @@ function insertStoryBrowser(panelBuilder: PanelBuilder, pagePane, model, fieldSp
 
 // TODO: The best argument for short variable names might be that "code is poetry", in that it is only suggestive of intent not precisely complete. Thinking about that as code seems just lots and lots and so on...
 
+*/
+
 function setStoryListForCurrentFilters(storyBrowserInstance) {
     // console.log("filter pressed", storyBrowserInstance);
     var question1Choice = storyBrowserInstance.filter1.questionSelect.get("value");
@@ -188,10 +171,27 @@ function setStoryListForCurrentFilters(storyBrowserInstance) {
     // console.log("finished setting list with newStore", newStore);
 }
 
-*/
-
 // TODO: Translate
 var unansweredIndicator = "{Unanswered}";
+
+function isMatch(story, questionChoice, selectedAnswerChoices) {
+    // console.log("isMatch", questionChoice, selectedAnswerChoices);
+    if (!questionChoice) return true;
+    var questionAnswer = story[questionChoice];
+    if (questionAnswer === undefined || questionAnswer === null || questionAnswer === "") {
+        questionAnswer = unansweredIndicator;
+    } else if (typeof questionAnswer === "object") {
+        // checkboxes
+        // console.log("checkboxes", questionAnswer);
+        for (var key in questionAnswer) {
+            if ((selectedAnswerChoices.indexOf(key) !== -1) && questionAnswer[key]) return true;
+        }
+        return false;
+    }
+    questionAnswer = "" + questionAnswer;
+    // console.log("questionAnswer", questionAnswer);
+    return selectedAnswerChoices.indexOf(questionAnswer) !== -1;
+}
     
 function optionsFromQuestion(question, stories) {
     // console.log("*** optionsFromQuestion", question, stories);
@@ -330,6 +330,30 @@ function filterPaneQuestionChoiceChanged(filterPane, event) {
     */
 }
 
+// arguments: reference to select list, callback function (optional)
+function getSelectedOptions(select) {
+    var options = [];
+    
+    for (var i = 0; i < options.length; i++) {
+        var option = select.options[i];
+        
+        if (option.selected) {
+            options.push(option);
+        }
+    }
+    
+    return options;
+}
+
+function filterPaneAnswerChoiceChanged(filterPane, event) {
+    var newValue = event.target.value;
+
+    console.log("filterPaneAnswerChoiceChanged", newValue);
+    
+    var options = getSelectedOptions(event.target);
+    console.log("selected options", options, event.selectedOptions);
+}
+
 var Filter: any = {
     controller: function (args) {
         console.log("Making filter: ", args.name);
@@ -337,6 +361,7 @@ var Filter: any = {
         this.storyBrowser = args.storyBrowser;
         this.questions = args.questions;
         this.selectedQuestion = null;
+        this.selectedAnswers = null;
     },
     
     view: function (controller, args) { 
@@ -363,7 +388,7 @@ var Filter: any = {
             m("br"),
             m("select", {onchange: filterPaneQuestionChoiceChanged.bind(null, controller)}, selectOptions),
             m("br"),
-            m("select", {multiple: "multiple"}, multiselectOptions)
+            m("select", {onchange: filterPaneAnswerChoiceChanged.bind(null, controller), multiple: "multiple"}, multiselectOptions)
         ]);
     }
 };
@@ -448,6 +473,9 @@ var StoryBrowser = {
         this.choices = null;
         this.stories = null;
         this.itemPanelSpecification = null;
+        
+        this.filter1 = m.component(Filter, {name: "Filter 1", storyBrowser: this});
+        this.filter2 = m.component(Filter, {name: "Filter 2", storyBrowser: this});
     },
     
     view: function(controller, args) {
@@ -467,21 +495,21 @@ var StoryBrowser = {
         var prompt = args.panelBuilder.buildQuestionLabel(args.fieldSpecification);
         
         var filter = m("table.filterTable", m("tr", [
-            m("td", m.component(Filter, {name: "Filter 1", storyBrowser: controller})),
-            m("td", m.component(Filter, {name: "Filter 2", storyBrowser: controller}))
+            m("td", controller.filter1),
+            m("td", controller.filter2)
         ]));
-
-        var configuration = {
-            idProperty: "_storyID",
-            itemPanelSpecification: controller.itemPanelSpecification,
-            includeAllFields: ["__survey_storyName", "__survey_storyText"],
-            viewButton: true,
-            navigationButtons: true
-       }; 
 
         var gridFieldSpecification = {
             id: "stories",
-            displayConfiguration: configuration
+            displayConfiguration: {
+                itemPanelSpecification: controller.itemPanelSpecification,
+                gridConfiguration: {
+                    idProperty: "_storyID",
+                    includeAllFields: ["__survey_storyName", "__survey_storyText"],
+                    viewButton: true,
+                    navigationButtons: true
+               }
+            }
         };
         
         var grid = gridWithItemPanelInMithril.add_grid(panelBuilder, {stories: controller.stories}, gridFieldSpecification);

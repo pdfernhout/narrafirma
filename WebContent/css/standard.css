@@ -653,3 +653,7 @@ table.scrolling tr:hover {
 table.filterTable {
     width: 100%;
 }
+
+table.filterTable td {
+    width: 50%;
+}
