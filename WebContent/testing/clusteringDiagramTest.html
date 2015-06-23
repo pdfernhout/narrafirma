@@ -1,0 +1,46 @@
+<!DOCTYPE html> 
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<title>NarraFirma companion software for Working With Stories</title>
+
+<link rel="stylesheet" href="/lib/humane/original.css">
+
+<script>
+var require = {
+    baseUrl: '../js',
+    paths: {
+        js: ".",
+        applicationPanelSpecifications: "/applicationPanelSpecifications",
+        mithril: "/lib/mithril/mithril",
+        d3: "../lib/d3/d3",
+        humane: "../lib/humane/humane",
+        lib: "../lib"
+    }
+};
+</script>
+
+<script type='text/javascript' src="lib/lodash.js"></script>
+<script src="../lib/require.min.js"></script>
+
+<link rel="stylesheet" href="/css/survey.css">
+<link rel="stylesheet" href="/css/standard.css">
+
+</head>
+
+<body>
+    <noscript>Please enable JavaScript to use this test</noscript>
+    <div id="toasterDiv"></div>
+    <div id="pageDiv" style="overflow: auto; display: none;"></div>
+    <script>
+    require(["js/applicationWidgets/ClusteringDiagram"], function(ClusteringDiagram) {
+        console.log("ClusteringDiagram", ClusteringDiagram);
+        var diagram = new ClusteringDiagram();
+        console.log("diagram", diagram);
+    });
+    </script>
+</body>
+
+</html>
