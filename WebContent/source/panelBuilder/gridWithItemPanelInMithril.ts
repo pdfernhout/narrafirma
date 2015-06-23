@@ -219,15 +219,13 @@ var Grid = {
         
         // TODO: Multiple select
         this.selectedItem = null;
+        
+        this.isNavigationalScrollingNeeded = false;
     },
     
     view: function(controller, args) {
         var panelBuilder = args.panelBuilder;
         var prompt = panelBuilder.buildQuestionLabel(args.fieldSpecification);
-        
-        function adjustHeaderWidth() {
-            console.log("adjustHeaderWidth");
-        }
         
         var columnHeaders = controller.columns.map(function (column) {
             return m("th[data-sort-by=" + column.field  + "]", {"text-overflow": "ellipsis"}, column.label);
@@ -238,7 +236,7 @@ var Grid = {
         }
         
         var table = m("table.scrolling", sorts(controller, controller.data), [
-            m("tr", {config: adjustHeaderWidth, "class": "selected-grid-row"}, columnHeaders),
+            m("tr", {"class": "selected-grid-row"}, columnHeaders),
             controller.data.map(function(item, index) {
                 return Grid.rowForItem(controller, item, index);
             })
@@ -363,6 +361,7 @@ var Grid = {
                throw new Error("Unexpected direction: " + direction);
         }
         this.selectedItem = this.data[newPosition];
+        this.isNavigationalScrollingNeeded = true;
     },
     
     createButtons: function (controller, item = null) {
@@ -414,7 +413,30 @@ var Grid = {
             fields = fields.concat(m("td", {nowrap: true}, buttons));
         }
         
-        return m("tr", {key: item[controller.idProperty], "class": selectionClass}, fields);
+        function isElementInViewport(parent, element) {
+            var elementRect = element.getBoundingClientRect();
+            var parentRect = parent.getBoundingClientRect();
+            return (
+                elementRect.top >= parentRect.top &&
+                elementRect.left >= parentRect.left &&
+                elementRect.bottom <= parentRect.bottom &&
+                elementRect.right <= parentRect.right
+            );
+        }
+
+        function trEnsureVisibleConfig(controller, item, element: HTMLElement, isInitialized: boolean, context: any, vdom: _mithril.MithrilVirtualElement) {
+            // Ensure the selected item is visible in the table
+            // TODO: Could improve this so when navigating down the item is still near the bottom
+            if (controller.isNavigationalScrollingNeeded && controller.selectedItem === item) {
+                if (!isElementInViewport(element.parentNode, element)) {
+                    var rowPosition = element.offsetTop;
+                    element.parentElement.scrollTop = rowPosition;
+                }
+                controller.isNavigationalScrollingNeeded = false;
+            }
+        }
+        
+        return m("tr", {key: item[controller.idProperty], "class": selectionClass, config: trEnsureVisibleConfig.bind(null, controller, item)}, fields);
     }
 };
     
