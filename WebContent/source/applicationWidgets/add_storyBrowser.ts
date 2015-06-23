@@ -10,43 +10,6 @@ import gridWithItemPanelInMithril = require("../panelBuilder/gridWithItemPanelIn
 
 // story browser support
 
-// TODO: Probably should make this a class
-
-/*
-function loadLatestStories(storyBrowserInstance, allStories) {
-    // console.log("loadLatestStories", storyBrowserInstance, allStories);
-    storyBrowserInstance.dataStore.setData(allStories);
-    
-    // Need to update choices in filters or clear them out
-    filterPaneQuestionChoiceChanged(storyBrowserInstance.filter1, storyBrowserInstance.filter1.questionSelect.get("value"));
-    filterPaneQuestionChoiceChanged(storyBrowserInstance.filter2, storyBrowserInstance.filter2.questionSelect.get("value"));
-    
-    setStoryListForCurrentFilters(storyBrowserInstance);
-}
-*/
-
-function setStoryListForCurrentFilters(storyBrowserInstance) {
-    // console.log("filter pressed", storyBrowserInstance);
-    var question1Choice = storyBrowserInstance.filter1.selectedQuestion;
-    var answers1Choices = storyBrowserInstance.filter1.selectedAnswers;
-    console.log("question1", question1Choice, "answers1", answers1Choices);
-    var question2Choice = storyBrowserInstance.filter2.selectedQuestion;
-    var answers2Choices = storyBrowserInstance.filter2.selectedAnswers;
-    console.log("question2", question2Choice, "answers2", answers2Choices);  
-    var filterFunction = function (item) {
-        var match1 = isMatch(item, question1Choice, answers1Choices);
-        var match2 = isMatch(item, question2Choice, answers2Choices);
-        return match1 && match2;
-    };
-    
-    var filteredResults = storyBrowserInstance.stories.filter(filterFunction);
-    
-    console.log("Filtered results", filteredResults);
-    // var newStore = GridWithItemPanel["newMemoryTrackableStore"](filteredResults.data, "_storyID");
-    // TODO: storyBrowserInstance.storyList.dataStoreChanged(filteredResults);
-    // console.log("finished setting list with newStore", newStore);
-}
-
 // TODO: Translate
 var unansweredIndicator = "{Unanswered}";
 
@@ -174,10 +137,10 @@ function optionsFromQuestion(question, stories) {
     return options;
 }
 
-// select.selectedOptions is probably not implemented widely enough, so use this code instead
 function getSelectedOptions(select) {
     var selectedOptions = {};
     
+    // select.selectedOptions is probably not implemented widely enough, so use this looping code instead over all options
     for (var i = 0; i < select.options.length; i++) {
         var option = select.options[i];
         
@@ -265,77 +228,21 @@ class Filter {
         this.answerOptionsForSelectedQuestion = optionsFromQuestion(this.selectedQuestion, this.storyBrowser.stories);
         this.selectedAnswers = {};
         
-        setStoryListForCurrentFilters(this.storyBrowser);  
+        this.storyBrowser.setStoryListForCurrentFilters();  
     }
     
     filterPaneAnswerChoiceChanged(event) {
         this.selectedAnswers = getSelectedOptions(event.target);        
-        setStoryListForCurrentFilters(this.storyBrowser);
+        this.storyBrowser.setStoryListForCurrentFilters();
     }
     
     clearFilterPane() {
         this.selectedQuestion = null;
         this.answerOptionsForSelectedQuestion = [];
         this.selectedAnswers = {};
-        setStoryListForCurrentFilters(this.storyBrowser);
+        this.storyBrowser.setStoryListForCurrentFilters();
     }
 };
-
-function currentStoryCollectionChanged(storyBrowserInstance, storyCollectionIdentifier) {
-    console.log("currentStoryCollectionChanged", storyBrowserInstance, storyCollectionIdentifier);
-    
-    storyBrowserInstance.currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
-    // console.log("storyBrowserInstance.currentQuestionnaire", storyBrowserInstance.currentQuestionnaire);
-    
-    // Update filters
-    var questions = surveyCollection.collectQuestionsForQuestionnaire(storyBrowserInstance.currentQuestionnaire);
-    storyBrowserInstance.questions = questions;
-    // console.log("currentStoryCollectionChanged", questions);
-    
-    var choices = surveyCollection.optionsForAllQuestions(questions);
-    storyBrowserInstance.choices = choices;
-    // console.log("^^^^^^^^^^^^ choices", storyBrowserInstance.choices);
-    
-    // update all stories for the specific collection
-    var allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
-    // console.log("allStories", allStories);
-    storyBrowserInstance.stories = allStories;
-    
-    var itemPanelSpecification = makeItemPanelSpecificationForQuestions(storyBrowserInstance, questions);
-    storyBrowserInstance.itemPanelSpecification = itemPanelSpecification;
-    
-    /*
-    widgetSupport.updateSelectChoices(storyBrowserInstance.filter1.questionSelect, choices);
-    widgetSupport.updateSelectChoices(storyBrowserInstance.filter2.questionSelect, choices);
-    
-    // TODO: What to do about current selection in these widgets?
-    
-    // Update item panel in grid
-    storyBrowserInstance.storyList.changeItemPanelSpecification(itemPanelSpecification);
-    
-    loadLatestStories(storyBrowserInstance, allStories);
-    
-    // TODO: Should close up open grid view
-    */
-}
-
-function buildStoryDisplayPanel(storyBrowserInstance, panelBuilder, model) {
-    var storyContent = storyCardDisplay.generateStoryCardContent(model, storyBrowserInstance.currentQuestionnaire, "includeElicitingQuestion");
-    
-    return m("div[class=storyCard]", m.trust(storyContent));
-}
-
-function makeItemPanelSpecificationForQuestions(storyBrowserInstance, questions) {
-    // TODO: add more participant and survey info, like timestamps and participant ID
-    
-    var itemPanelSpecification = {
-         id: "storyBrowserQuestions",
-         panelFields: questions,
-         buildPanel: buildStoryDisplayPanel.bind(null, storyBrowserInstance)
-    };
-    
-    return itemPanelSpecification;
-}
 
 function getCurrentStoryCollectionIdentifier(args) {
     var panelBuilder = args.panelBuilder;
@@ -391,7 +298,7 @@ class StoryBrowser {
             return m("div", "Please select a story collection to view");
         }
         
-        currentStoryCollectionChanged(this, this.storyCollectionIdentifier);
+        this.currentStoryCollectionChanged(this.storyCollectionIdentifier);
         
         var prompt = args.panelBuilder.buildQuestionLabel(args.fieldSpecification);
         
@@ -420,14 +327,91 @@ class StoryBrowser {
         // TODO: set class etc.
         return m("div", {"class": "questionExternal narrafirma-question-type-questionAnswer"}, parts);
     }
+    
+    currentStoryCollectionChanged(storyCollectionIdentifier) {
+        console.log("currentStoryCollectionChanged", this, storyCollectionIdentifier);
+        
+        this.currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+        // console.log("this.currentQuestionnaire", this.currentQuestionnaire);
+        
+        // Update filters
+        this.questions = surveyCollection.collectQuestionsForQuestionnaire(this.currentQuestionnaire);
+        
+        this.choices = surveyCollection.optionsForAllQuestions(this.questions);
+        
+        // update all stories for the specific collection
+        this.stories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+        
+        this.itemPanelSpecification = this.makeItemPanelSpecificationForQuestions(this.questions);
+        
+        /*
+        // TODO: What to do about current selection in filter widgets?
+        
+        // Update item panel in grid
+        this.storyList.changeItemPanelSpecification(itemPanelSpecification);
+        
+        this.loadLatestStories(allStories);
+        
+        // TODO: Should close up open grid view
+        */
+    }
+    
+    buildStoryDisplayPanel(panelBuilder, model) {
+        var storyContent = storyCardDisplay.generateStoryCardContent(model, this.currentQuestionnaire, "includeElicitingQuestion");
+        
+        return m("div[class=storyCard]", m.trust(storyContent));
+    }
+    
+    makeItemPanelSpecificationForQuestions(questions) {
+        // TODO: add more participant and survey info, like timestamps and participant ID
+        
+        var itemPanelSpecification = {
+             id: "storyBrowserQuestions",
+             panelFields: questions,
+             buildPanel: this.buildStoryDisplayPanel.bind(this)
+        };
+        
+        return itemPanelSpecification;
+    }
+    
+    setStoryListForCurrentFilters() {
+        // console.log("filter pressed", storyBrowserInstance);
+        var question1Choice = this.filter1.selectedQuestion;
+        var answers1Choices = this.filter1.selectedAnswers;
+        console.log("question1", question1Choice, "answers1", answers1Choices);
+        var question2Choice = this.filter2.selectedQuestion;
+        var answers2Choices = this.filter2.selectedAnswers;
+        console.log("question2", question2Choice, "answers2", answers2Choices);  
+        var filterFunction = function (item) {
+            var match1 = isMatch(item, question1Choice, answers1Choices);
+            var match2 = isMatch(item, question2Choice, answers2Choices);
+            return match1 && match2;
+        };
+        
+        var filteredResults = this.stories.filter(filterFunction);
+        
+        console.log("Filtered results", filteredResults);
+        // var newStore = GridWithItemPanel["newMemoryTrackableStore"](filteredResults.data, "_storyID");
+        // TODO: this.storyList.dataStoreChanged(filteredResults);
+        // console.log("finished setting list with newStore", newStore);
+    }
+    
+    /* TODO: Probably need to implement somethign like this
+    function loadLatestStories(storyBrowserInstance, allStories) {
+        // console.log("loadLatestStories", storyBrowserInstance, allStories);
+        storyBrowserInstance.dataStore.setData(allStories);
+        
+        // Need to update choices in filters or clear them out; reettign value forces update
+        filterPaneQuestionChoiceChanged(storyBrowserInstance.filter1, storyBrowserInstance.filter1.questionSelect.get("value"));
+        filterPaneQuestionChoiceChanged(storyBrowserInstance.filter2, storyBrowserInstance.filter2.questionSelect.get("value"));
+        
+        setStoryListForCurrentFilters(storyBrowserInstance);
+    }
+    */
 };
 
 function add_storyBrowser(panelBuilder: PanelBuilder, model, fieldSpecification) {
     return m.component(<any>StoryBrowser, {panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
-    
-    /*
-    var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-    */
 }
 
 export = add_storyBrowser;
