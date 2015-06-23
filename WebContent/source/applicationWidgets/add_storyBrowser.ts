@@ -1,6 +1,5 @@
 import storyCardDisplay = require("../storyCardDisplay");
 import surveyCollection = require("../surveyCollection");
-import widgetSupport = require("../panelBuilder/widgetSupport");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import m = require("mithril");
