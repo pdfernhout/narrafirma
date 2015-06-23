@@ -228,46 +228,57 @@ function filterPaneAnswerChoiceChanged(filterPane, event) {
     setStoryListForCurrentFilters(filterPane.storyBrowser);
 }
 
-var Filter: any = {
-    controller: function (args) {
-        console.log("Making filter: ", args.name);
-        
-        this.storyBrowser = args.storyBrowser;
-        this.questions = args.questions;
-        this.selectedQuestion = null;
-        this.answerOptionsForSelectedQuestion = [];
-        this.selectedAnswers = {};
-    },
+class Filter {
+    storyBrowser = null;
+    questions = [];
+    selectedQuestion = null;
+    answerOptionsForSelectedQuestion = [];
+    selectedAnswers = {};
     
-    view: function (controller, args) {
+    constructor(storyBrowser, questions) {
+        this.storyBrowser = storyBrowser;
+        this.questions = questions;
+    }
+    
+    static controller(args) {
+        console.log("Making Filter: ", args.name);
+        return new Filter(args.storyBrowser, args.questions);
+    }
+    
+    static view(controller, args) {
         console.log("Filter view called");
         
-        var choices = controller.storyBrowser.choices || [];
+        return controller.calculateView(args);
+    }
+        
+    calculateView(args) {
+        console.log("calculateView this", this);
+        var choices = this.storyBrowser.choices || [];
         // console.log("^^^^^^^^^^^^ filter choices", choices);
-        var selectOptions = choices.map(function(option) {
+        var selectOptions = choices.map((option) => {
             var optionOptions = {value: option.value, selected: undefined};
-            if (controller.selectedQuestion === option.value) optionOptions.selected = 'selected';
+            if (this.selectedQuestion === option.value) optionOptions.selected = 'selected';
             return m("option", optionOptions, option.label);
         });
         
-        var isNoSelection = (controller.selectedQuestion === null) || undefined;
+        var isNoSelection = (this.selectedQuestion === null) || undefined;
         selectOptions.unshift(m("option", {value: "", selected: isNoSelection}, "--- no filter ---"));
         
-        var multiselectOptions = controller.answerOptionsForSelectedQuestion.map(function(option) {
+        var multiselectOptions = this.answerOptionsForSelectedQuestion.map((option) => {
             var optionOptions = {value: option.value, selected: undefined};
-            if (controller.selectedAnswers[option.value]) optionOptions.selected = 'selected';
+            if (this.selectedAnswers[option.value]) optionOptions.selected = 'selected';
             return m("option", optionOptions, option.label);
         });
         
-        var isClearButtonDisabled = (controller.selectedQuestion === null) || undefined;
+        var isClearButtonDisabled = (this.selectedQuestion === null) || undefined;
          
         return m("div.filter", [
             args.name,
             m("br"),
-            m("select", {onchange: filterPaneQuestionChoiceChanged.bind(null, controller)}, selectOptions),
-            m("button", {disabled: isClearButtonDisabled, onclick: clearFilterPane.bind(null, controller)}, "Clear"),
+            m("select", {onchange: filterPaneQuestionChoiceChanged.bind(null, this)}, selectOptions),
+            m("button", {disabled: isClearButtonDisabled, onclick: clearFilterPane.bind(null, this)}, "Clear"),
             m("br"),
-            m("select", {onchange: filterPaneAnswerChoiceChanged.bind(null, controller), multiple: "multiple"}, multiselectOptions)
+            m("select", {onchange: filterPaneAnswerChoiceChanged.bind(null, this), multiple: "multiple"}, multiselectOptions)
         ]);
     }
 };
@@ -353,8 +364,8 @@ var StoryBrowser = {
         this.stories = null;
         this.itemPanelSpecification = null;
         
-        this.filter1 = m.component(Filter, {name: "Filter 1", storyBrowser: this});
-        this.filter2 = m.component(Filter, {name: "Filter 2", storyBrowser: this});
+        this.filter1 = m.component(<any>Filter, {name: "Filter 1", storyBrowser: this});
+        this.filter2 = m.component(<any>Filter, {name: "Filter 2", storyBrowser: this});
     },
     
     view: function(controller, args) {
