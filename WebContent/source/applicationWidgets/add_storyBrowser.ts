@@ -66,89 +66,6 @@ function loadLatestStories(storyBrowserInstance, allStories) {
     
     setStoryListForCurrentFilters(storyBrowserInstance);
 }
-
-// TODO: Fix so the filters get updated as the story questions get changed
-function insertStoryBrowser(panelBuilder: PanelBuilder, pagePane, model, fieldSpecification) {
-    var id = fieldSpecification.id;
-    console.log("insertStoryBrowser start", id);
-    
-    var questions = [];
-
-    var stories = [];
-    
-    // Store will modify underlying array
-    var dataStore = GridWithItemPanel["newMemoryTrackableStore"](stories, "_storyID");
-    
-    // console.log("insertStoryBrowser middle 1", id);
-    
-    var table = new TableContainer({
-        cols: 2,
-        showLabels: false,
-        customClass: "storyFilterTable",
-        spacing: 2
-    });
-    
-    // console.log("insertStoryBrowser middle 2", id);
-    
- // TODO: Probably should become a class
-    var storyBrowserInstance = {
-        dataStore: dataStore,
-        filter1: null,
-        filter2: null,
-        storyList: null,
-        questions: questions,
-        currentQuestionnaire: null
-    };
-    
-&&    // Get questionnaire for selected story collection
-&&    // TODO: What if the value is an array of stories to display directly?
-&&    var choiceModelAndField = valuePathResolver.resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
-&&    console.log("choiceModelAndField", choiceModelAndField);
-&&    var choiceModel = choiceModelAndField.model;
-&&    var choiceField = choiceModelAndField.field; 
-&&    var storyCollectionIdentifier = choiceModel.get(choiceField);
-    
-&&    var itemPanelSpecification = makeItemPanelSpecificationForQuestions(storyBrowserInstance, questions);
-    
-    storyBrowserInstance.filter1 = createFilterPane(storyBrowserInstance, id + "_1", questions, stories, table);
-    storyBrowserInstance.filter2 = createFilterPane(storyBrowserInstance, id + "_2", questions, stories, table);
-
-    // pagePane.containerNode.appendChild(domConstruct.toDom('<br>'));
-    
-    // table needs to be added to container after its children are added to it
-    // so that the layout will happen correctly, otherwise startup called too soon internally
-    pagePane.addChild(table);
-    
-    // TODO: Probably should become a class
-    
-    // var filterButton = widgetSupport.newButton(pagePane, "#button_Filter|Filter", setStoryListForCurrentFilters.bind(null, storyBrowserInstance));
-    
-    // console.log("insertStoryBrowser middle 3", id);
-    
-    // Only allow view button for stories
-    var configuration = {viewButton: true, includeAllFields: ["__survey_storyName", "__survey_storyText"], navigationButtons: true};
-    storyBrowserInstance.storyList = new GridWithItemPanel(panelBuilder, pagePane, id, dataStore, itemPanelSpecification, configuration, model);
-    
-    // TODO: Track new incoming stories
-    
-    // TODO: Should also have some subscription about when the questionnaire itself changes
-    var currentQuestionnaireSubscription = choiceModel.watch(choiceField, currentStoryCollectionChanged.bind(null, storyBrowserInstance));
-    
-    // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
-    table.own(currentQuestionnaireSubscription);
-    
-    // console.log("filterButton", filterButton);
-    
-    // Setup current values
-    currentStoryCollectionChanged(storyBrowserInstance, null, null, storyCollectionIdentifier);
-
-    console.log("insertStoryBrowser finished");
-
-    return storyBrowserInstance;
-}
-
-// TODO: The best argument for short variable names might be that "code is poetry", in that it is only suggestive of intent not precisely complete. Thinking about that as code seems just lots and lots and so on...
-
 */
 
 function setStoryListForCurrentFilters(storyBrowserInstance) {
@@ -383,10 +300,13 @@ var Filter: any = {
             return m("option", optionOptions, option.label);
         });
         
+        var isClearButtonDisabled = (controller.selectedQuestion === null) || undefined;
+         
         return m("div.filter", [
             args.name,
             m("br"),
             m("select", {onchange: filterPaneQuestionChoiceChanged.bind(null, controller)}, selectOptions),
+            m("button", {disabled: isClearButtonDisabled, onclick: function() { controller.selectedQuestion = null; } }, "Clear"),
             m("br"),
             m("select", {onchange: filterPaneAnswerChoiceChanged.bind(null, controller), multiple: "multiple"}, multiselectOptions)
         ]);
