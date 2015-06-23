@@ -217,7 +217,7 @@ var Grid = {
             })
         ]);
         
-        var disabled = (controller.itemDisplayedAtBottom || controller.itemBeingEdited) || undefined;
+        var disabled = !!controller.itemBeingEdited || undefined;
         
         var buttons = [];
         if (controller.gridConfiguration.editButton) {
