@@ -78,7 +78,7 @@ function sorts(controller, list) {
                 }
                 console.log("sorted list", list);
             } else {
-                if (controller.itemBeingEdited) return;
+                if (controller.isEditing()) return;
                 var itemID = e.target.getAttribute("data-item-index");
                 console.log("item clicked", itemID);
                 var itemIndex = null;
@@ -89,7 +89,10 @@ function sorts(controller, list) {
                     }
                 }
                 console.log("found item at index", itemIndex, list[itemIndex]);
-                if (itemIndex !== null) controller.itemDisplayedAtBottom = list[itemIndex];
+                if (itemIndex !== null) {
+                    controller.selectedItem = list[itemIndex];
+                    controller.displayMode = "viewing";
+                }
             }
         }
     };
@@ -137,7 +140,8 @@ var Grid = {
             editButton: true,
             duplicateButton: true,
             moveUpDownButtons: false,
-            includeAllFields: false   
+            includeAllFields: false,
+            inlineButtons: false
         };
         
         var itemPanelID = fieldSpecification.displayConfiguration;
@@ -194,9 +198,21 @@ var Grid = {
      
         this.data = data;
         this.columns = columns;
-        this.itemBeingEdited = null;
-        this.itemDisplayedAtBottom = null;
         this.itemPanelSpecification = itemPanelSpecification;
+        
+        this.isEditing = function() {
+            return (this.displayMode === "editing") && this.selectedItem;
+        };
+        
+        this.isViewing = function() {
+            return (this.displayMode === "viewing") && this.selectedItem;
+        };
+        
+        // viewing, editing
+        this.displayMode = null;
+        
+        // TODO: Multiple select
+        this.selectedItem = null;
     },
     
     view: function(controller, args) {
@@ -207,17 +223,22 @@ var Grid = {
             console.log("adjustHeaderWidth");
         }
         
+        var columnHeaders = controller.columns.map(function (column) {
+            return m("th[data-sort-by=" + column.field  + "]", {"text-overflow": "ellipsis"}, column.label);
+        });
+        
+        if (controller.gridConfiguration.inlineButtons) {
+            columnHeaders.push(m("th", ""));
+        }
+        
         var table = m("table.scrolling", sorts(controller, controller.data), [
-            m("tr", {config: adjustHeaderWidth, "class": "selected-grid-row"}, controller.columns.map(function (column) {
-                    return m("th[data-sort-by=" + column.field  + "]", {"text-overflow": "ellipsis"}, column.label);
-                }).concat(m("th", ""))
-            ),
+            m("tr", {config: adjustHeaderWidth, "class": "selected-grid-row"}, columnHeaders),
             controller.data.map(function(item, index) {
                 return Grid.rowForItem(controller, item, index);
             })
         ]);
         
-        var disabled = !!controller.itemBeingEdited || undefined;
+        var disabled = controller.isEditing() || undefined;
         
         var buttons = [];
         if (controller.gridConfiguration.editButton) {
@@ -225,16 +246,20 @@ var Grid = {
             buttons.push(addButton);
         }
         
+        if (!controller.gridConfiguration.inlineButtons) {
+            buttons = buttons.concat(Grid.createButtons(controller));
+        }
+        
         var buttonPanel = m("div.narrafirma-button-panel", buttons);
         
         var parts = [prompt, m("div.narrafirm-grid", [table]), buttonPanel];
         
-        if (controller.itemDisplayedAtBottom) {
-            parts.push(Grid.bottomEditorForItem(controller, panelBuilder, controller.itemDisplayedAtBottom, "view"));
+        if (controller.isViewing()) {
+            parts.push(Grid.bottomEditorForItem(controller, panelBuilder, controller.selectedItem, "view"));
         }
         
-        if (controller.itemBeingEdited) {
-            parts.push(Grid.bottomEditorForItem(controller, panelBuilder, controller.itemBeingEdited, "edit"));
+        if (controller.isEditing()) {
+            parts.push(Grid.bottomEditorForItem(controller, panelBuilder, controller.selectedItem, "edit"));
         }
         
         // TODO: set class etc.
@@ -263,41 +288,71 @@ var Grid = {
         var newItem = {};
         newItem[this.idProperty] = new Date().toISOString();
         this.data.push(newItem);
-        this.itemBeingEdited = newItem;
-        this.itemDisplayedAtBottom = null;
+        this.selectedItem = newItem;
+        this.displayMode = "editing";
     },
     
-    deleteItem: function (item, index) {
-        // TODO: This needs to create an action that affects original list
-        console.log("deleteItem", item, index);
-        this.data.splice(index, 1);
-    },
-    
-    editItem: function (item, index) {
-        // TODO: This needs to create an action that affects original list
-        console.log("editItem", item, index);
+    deleteItem: function (item) {
+        if (!item) item = this.selectedItem; 
+        console.log("deleteItem", item);
         
-        this.itemBeingEdited = item;
-        this.itemDisplayedAtBottom = null;
+        // TODO: This needs to create an action that affects original list
+        var index = this.data.indexOf(item);
+        this.data.splice(index, 1);
+        
+        if (item === this.selectedItem) this.selectedItem = null;
+    },
+    
+    editItem: function (item) {
+        if (!item) item = this.selectedItem;
+        console.log("editItem", item);
+        
+       // TODO: This needs to create an action that affects original list  
+        this.selectedItem = item;
+        this.displayMode = "editing";
     },
     
     viewItem: function (item, index) {
-        console.log("viewItem", item, index);
+        if (!item) item = this.selectedItem;
+        console.log("viewItem", item);
         
-        // TODO: If an item is being edited, probably should not allow viewing others...
-        this.itemDisplayedAtBottom = item;
-        this.itemBeingEdited = null;
+        this.selectedItem = item;
+        this.displayMode = "viewing";
     },
     
     doneClicked: function(item) {
         // TODO: Should ensure the data is saved
-        this.itemBeingEdited = null;
-        this.itemDisplayedAtBottom = null;
+        // Leave itme selected: this.selectedItem = null;
+        this.displayMode = null;
+    },
+    
+    createButtons: function (controller, item = null) {
+        var buttons = [];
+       
+        var disabled = controller.isEditing() || (!item && !controller.selectedItem) || undefined;
+         
+        if (controller.gridConfiguration.removeButton) {
+            var removeButton = m("button", {onclick: Grid.deleteItem.bind(controller, item), disabled: disabled, "class": "fader"}, "delete");
+            buttons.push(removeButton);
+        }
+
+        if (controller.gridConfiguration.editButton) {
+            var editButton = m("button", {onclick: Grid.editItem.bind(controller, item), disabled: disabled, "class": "fader"}, "edit");
+            buttons.push(editButton);
+        }
+        
+        if (controller.gridConfiguration.viewButton) {
+            var viewButton = m("button", {onclick: Grid.viewItem.bind(controller, item), disabled: disabled, "class": "fader"}, "view");
+            buttons.push(viewButton); 
+        }
+        
+        console.log("made buttons", buttons, item);
+        return buttons;
     },
     
     rowForItem: function (controller, item, index) {
         /*
-        if (controller.itemBeingEdited === item) {
+        if (controller.selectedItem === item) {
             return m("tr", [
                 m("td", {colSpan: controller.columns.length}, [
                     m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: controller})
@@ -307,31 +362,19 @@ var Grid = {
         }
         */
         var selectionClass = "narrafirma-grid-row-unselected";
-        var selected = (item === controller.itemDisplayedAtBottom || item === controller.itemBeingEdited);
+        var selected = (item === controller.selectedItem);
         if (selected) selectionClass = "narrafirma-grid-row-selected";
+        
         var fields = controller.columns.map(function (column) {
             return m("td", {"text-overflow": "ellipsis", "data-item-index": item[controller.idProperty] }, item[column.field]);
         });
         
-        var disabled = !!controller.itemBeingEdited || undefined;
-        var buttons = [];
-        
-        if (controller.gridConfiguration.removeButton) {
-            var removeButton = m("button", {onclick: Grid.deleteItem.bind(controller, item, index), disabled: disabled, "class": "fader"}, "delete");
-            buttons.push(removeButton);
-        }
-
-        if (controller.gridConfiguration.editButton) {
-            var editButton = m("button", {onclick: Grid.editItem.bind(controller, item, index), disabled: disabled, "class": "fader"}, "edit");
-            buttons.push(editButton);
+        if (controller.gridConfiguration.inlineButtons) {
+            var buttons = Grid.createButtons(controller, item);
+            
+            fields = fields.concat(m("td", {nowrap: true}, buttons));
         }
         
-        if (controller.gridConfiguration.viewButton) {
-            var viewButton = m("button", {onclick: Grid.viewItem.bind(controller, item, index), disabled: disabled, "class": "fader"}, "view");
-            buttons.push(viewButton); 
-        }
-        
-        fields = fields.concat(m("td", {nowrap: true}, buttons));
         return m("tr", {key: item[controller.idProperty], "class": selectionClass}, fields);
     }
 };
