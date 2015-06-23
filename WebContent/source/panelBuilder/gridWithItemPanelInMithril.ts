@@ -98,12 +98,20 @@ function sorts(controller, list) {
     };
 }
 
-var ItemPanel = {
-    controller: function(args) {
-        console.log("%%%%%%%%%%%%%%%%%%% ItemPanel controller called");
-    },
+class ItemPanel {
     
-    view: function(controller, args) {
+    static controller(args) {
+        console.log("Making ItemPanel: ", args);
+        return new ItemPanel();
+    }
+    
+    static view(controller, args) {
+        console.log("ItemPanel view called");
+        
+        return controller.calculateView(args);
+    }
+    
+    calculateView(args) {
         console.log("%%%%%%%%%%%%%%%%%%% ItemPanel view called");
         // return m("div", "work in progress");
         // TODO: Should provide copy of item?
@@ -117,11 +125,26 @@ var ItemPanel = {
         return m("div", {"class": theClass}, panelBuilder.buildPanel(args.grid.itemPanelSpecification, args.item));
 
     }
-};
+}
 
 // Grid needs to be a component so it can maintain a local sorted list
-var Grid = {
-    controller: function(args) {
+class Grid {
+    
+    gridConfiguration = null;
+    data = [];
+    columns = [];
+    itemPanelSpecification = null;
+    idProperty = "_id";
+    
+    // viewing, editing
+    displayMode = null;
+    
+    // TODO: Multiple select
+    selectedItem = null;
+    
+    isNavigationalScrollingNeeded = false;
+    
+    constructor(args) {
         var panelBuilder = args.panelBuilder;
         var model = args.model;
         var fieldSpecification = args.fieldSpecification;
@@ -188,9 +211,7 @@ var Grid = {
             model[fieldSpecification.id] = data;
         }
         
-        var idProperty = gridConfiguration.idProperty;
-        if (!idProperty) idProperty = "_id";
-        this.idProperty = idProperty;
+        if (gridConfiguration.idProperty) this.idProperty = gridConfiguration.idProperty;
         
         /*
         var bigData = [];
@@ -226,91 +247,110 @@ var Grid = {
         this.selectedItem = null;
         
         this.isNavigationalScrollingNeeded = false;
-    },
+    }
     
-    view: function(controller, args) {
+    static controller(args) {
+        console.log("Making ItemPanel: ", args);
+        return new Grid(args);
+    }
+    
+    static view(controller, args) {
+        console.log("Grid view called");
+        
+        return controller.calculateView(args);
+    }
+    
+    calculateView(args) {
         var panelBuilder = args.panelBuilder;
         var prompt = panelBuilder.buildQuestionLabel(args.fieldSpecification);
         
-        var columnHeaders = controller.columns.map(function (column) {
+        var columnHeaders = this.columns.map((column) => {
             return m("th[data-sort-by=" + column.field  + "]", {"text-overflow": "ellipsis"}, column.label);
         });
         
-        if (controller.gridConfiguration.inlineButtons) {
+        if (this.gridConfiguration.inlineButtons) {
             columnHeaders.push(m("th", ""));
         }
         
-        var table = m("table.scrolling", sorts(controller, controller.data), [
+        var table = m("table.scrolling", sorts(this, this.data), [
             m("tr", {"class": "selected-grid-row"}, columnHeaders),
-            controller.data.map(function(item, index) {
-                return Grid.rowForItem(controller, item, index);
+            this.data.map((item, index) => {
+                return this.rowForItem(item, index);
             })
         ]);
         
-        var disabled = controller.isEditing() || undefined;
+        var disabled = this.isEditing() || undefined;
         
         var buttons = [];
-        if (controller.gridConfiguration.editButton) {
-            var addButton = m("button", {onclick: Grid.addItem.bind(controller), disabled: disabled}, "Add");
+        if (this.gridConfiguration.editButton) {
+            var addButton = m("button", {onclick: this.addItem.bind(this), disabled: disabled}, "Add");
             buttons.push(addButton);
         }
         
-        if (!controller.gridConfiguration.inlineButtons) {
-            buttons = buttons.concat(Grid.createButtons(controller));
+        if (!this.gridConfiguration.inlineButtons) {
+            buttons = buttons.concat(this.createButtons(this));
         }
         
-        if (controller.gridConfiguration.navigationButtons) {
+        if (this.gridConfiguration.navigationButtons) {
             // TODO: Improve navigation enabling
-            var navigationDisabled = controller.isEditing() || controller.data.length === 0 || undefined;
-            buttons.push(m("button", {onclick: Grid.navigateClicked.bind(controller, "start"), disabled: navigationDisabled}, "[<<"));
-            buttons.push(m("button", {onclick: Grid.navigateClicked.bind(controller, "previous"), disabled: navigationDisabled}, "<"));
-            buttons.push(m("button", {onclick: Grid.navigateClicked.bind(controller, "next"), disabled: navigationDisabled}, ">"));
-            buttons.push(m("button", {onclick: Grid.navigateClicked.bind(controller, "end"), disabled: navigationDisabled}, ">>]"));
+            var navigationDisabled = this.isEditing() || this.data.length === 0 || undefined;
+            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "start"), disabled: navigationDisabled}, "[<<"));
+            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "previous"), disabled: navigationDisabled}, "<"));
+            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "next"), disabled: navigationDisabled}, ">"));
+            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "end"), disabled: navigationDisabled}, ">>]"));
         }
         
         var buttonPanel = m("div.narrafirma-button-panel", buttons);
         
         var parts = [prompt, m("div.narrafirm-grid", [table]), buttonPanel];
         
-        if (controller.isViewing()) {
-            parts.push(Grid.bottomEditorForItem(controller, panelBuilder, controller.selectedItem, "view"));
+        if (this.isViewing()) {
+            parts.push(this.bottomEditorForItem(panelBuilder, this.selectedItem, "view"));
         }
         
-        if (controller.isEditing()) {
-            parts.push(Grid.bottomEditorForItem(controller, panelBuilder, controller.selectedItem, "edit"));
+        if (this.isEditing()) {
+            parts.push(this.bottomEditorForItem(panelBuilder, this.selectedItem, "edit"));
         }
         
         // TODO: set class etc.
         return m("div", {"class": "questionExternal narrafirma-question-type-grid"}, parts);
-    },
+    }
+
+    isEditing() {
+        return (this.displayMode === "editing") && this.selectedItem;
+    }
     
-    inlineEditorForItem: function(controller, panelBuilder, item, mode) {
+    isViewing() {
+        return (this.displayMode === "viewing") && this.selectedItem;
+    }
+    
+    inlineEditorForItem(panelBuilder, item, mode) {
         return m("tr", [
-            m("td", {colSpan: controller.columns.length}, [
-                m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: controller, mode: mode})
+            m("td", {colSpan: this.columns.length}, [
+                m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: this, mode: mode})
             ]),
-            m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(controller, item)}, "close")])
+            m("td", {"vertical-align": "top"}, [m("button", {onclick: this.doneClicked.bind(this, item)}, "close")])
         ]);
-    },
+    }
     
-    bottomEditorForItem: function(controller, panelBuilder, item, mode) {
+    bottomEditorForItem(panelBuilder, item, mode) {
         return m("div", [
-            m("td", {colSpan: controller.columns.length}, [
-                m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: controller, mode: mode})
+            m("td", {colSpan: this.columns.length}, [
+                m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: this, mode: mode})
             ]),
-            m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(controller, item)}, "close")])
+            m("td", {"vertical-align": "top"}, [m("button", {onclick: this.doneClicked.bind(this, item)}, "close")])
         ]);
-    },
+    }
     
-    addItem: function() {
+    addItem() {
         var newItem = {};
         newItem[this.idProperty] = new Date().toISOString();
         this.data.push(newItem);
         this.selectedItem = newItem;
         this.displayMode = "editing";
-    },
+    }
     
-    deleteItem: function (item) {
+    deleteItem(item) {
         if (!item) item = this.selectedItem; 
         console.log("deleteItem", item);
         
@@ -333,32 +373,32 @@ var Grid = {
                 this.isNavigationalScrollingNeeded = true;
             }
         }
-    },
+    }
     
-    editItem: function (item) {
+    editItem(item) {
         if (!item) item = this.selectedItem;
         console.log("editItem", item);
         
        // TODO: This needs to create an action that affects original list  
         this.selectedItem = item;
         this.displayMode = "editing";
-    },
+    }
     
-    viewItem: function (item, index) {
+    viewItem(item, index) {
         if (!item) item = this.selectedItem;
         console.log("viewItem", item);
         
         this.selectedItem = item;
         this.displayMode = "viewing";
-    },
+    }
     
-    doneClicked: function(item) {
+    doneClicked(item) {
         // TODO: Should ensure the data is saved
         // Leave itme selected: this.selectedItem = null;
         this.displayMode = null;
-    },
+    }
     
-    navigateClicked: function(direction: string) {
+    navigateClicked(direction: string) {
         if (this.data.length === 0) return;
         var newPosition;
         switch (direction) {
@@ -382,83 +422,83 @@ var Grid = {
         }
         this.selectedItem = this.data[newPosition];
         this.isNavigationalScrollingNeeded = true;
-    },
+    }
     
-    createButtons: function (controller, item = null) {
+    createButtons(item = null) {
         var buttons = [];
        
-        var disabled = controller.isEditing() || (!item && !controller.selectedItem) || undefined;
+        var disabled = this.isEditing() || (!item && !this.selectedItem) || undefined;
          
-        if (controller.gridConfiguration.removeButton) {
-            var removeButton = m("button", {onclick: Grid.deleteItem.bind(controller, item), disabled: disabled, "class": "fader"}, "delete");
+        if (this.gridConfiguration.removeButton) {
+            var removeButton = m("button", {onclick: this.deleteItem.bind(this, item), disabled: disabled, "class": "fader"}, "delete");
             buttons.push(removeButton);
         }
 
-        if (controller.gridConfiguration.editButton) {
-            var editButton = m("button", {onclick: Grid.editItem.bind(controller, item), disabled: disabled, "class": "fader"}, "edit");
+        if (this.gridConfiguration.editButton) {
+            var editButton = m("button", {onclick: this.editItem.bind(this, item), disabled: disabled, "class": "fader"}, "edit");
             buttons.push(editButton);
         }
         
-        if (controller.gridConfiguration.viewButton) {
-            var viewButton = m("button", {onclick: Grid.viewItem.bind(controller, item), disabled: disabled, "class": "fader"}, "view");
+        if (this.gridConfiguration.viewButton) {
+            var viewButton = m("button", {onclick: this.viewItem.bind(this, item), disabled: disabled, "class": "fader"}, "view");
             buttons.push(viewButton); 
         }
         
         // console.log("made buttons", buttons, item);
         return buttons;
-    },
+    }
     
-    rowForItem: function (controller, item, index) {
+    rowForItem(item, index) {
         /*
-        if (controller.selectedItem === item) {
+        if (this.selectedItem === item) {
             return m("tr", [
-                m("td", {colSpan: controller.columns.length}, [
-                    m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: controller})
+                m("td", {colSpan: this.columns.length}, [
+                    m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: this})
                 ]),
-                m("td", {"vertical-align": "top"}, [m("button", {onclick: Grid.doneClicked.bind(controller, item, index)}, "close")])
+                m("td", {"vertical-align": "top"}, [m("button", {onclick: this.doneClicked.bind(this, item, index)}, "close")])
             ]);
         }
         */
         var selectionClass = "narrafirma-grid-row-unselected";
-        var selected = (item === controller.selectedItem);
+        var selected = (item === this.selectedItem);
         if (selected) selectionClass = "narrafirma-grid-row-selected";
         
-        var fields = controller.columns.map(function (column) {
-            return m("td", {"text-overflow": "ellipsis", "data-item-index": item[controller.idProperty] }, item[column.field]);
+        var fields = this.columns.map((column) => {
+            return m("td", {"text-overflow": "ellipsis", "data-item-index": item[this.idProperty] }, item[column.field]);
         });
         
-        if (controller.gridConfiguration.inlineButtons) {
-            var buttons = Grid.createButtons(controller, item);
+        if (this.gridConfiguration.inlineButtons) {
+            var buttons = this.createButtons(item);
             
             fields = fields.concat(m("td", {nowrap: true}, buttons));
         }
-        
-        function isElementInViewport(parent, element) {
-            var elementRect = element.getBoundingClientRect();
-            var parentRect = parent.getBoundingClientRect();
-            return (
-                elementRect.top >= parentRect.top &&
-                elementRect.left >= parentRect.left &&
-                elementRect.bottom <= parentRect.bottom &&
-                elementRect.right <= parentRect.right
-            );
-        }
-
-        function trEnsureVisibleConfig(controller, item, element: HTMLElement, isInitialized: boolean, context: any, vdom: _mithril.MithrilVirtualElement) {
-            // Ensure the selected item is visible in the table
-            // TODO: Could improve this so when navigating down the item is still near the bottom
-            if (controller.isNavigationalScrollingNeeded && controller.selectedItem === item) {
-                if (!isElementInViewport(element.parentNode, element)) {
-                    var rowPosition = element.offsetTop;
-                    element.parentElement.scrollTop = rowPosition;
-                }
-                controller.isNavigationalScrollingNeeded = false;
-            }
-        }
-        
-        return m("tr", {key: item[controller.idProperty], "class": selectionClass, config: trEnsureVisibleConfig.bind(null, controller, item)}, fields);
+        // TODO: Probably more efficient way to ensure table row is visible like by doing config just for entire table
+        return m("tr", {key: item[this.idProperty], "class": selectionClass, config: this.ensureTableRowIsVisibleConfig.bind(this, item)}, fields);
     }
-};
+    
+    ensureTableRowIsVisibleConfig(item, element: HTMLElement, isInitialized: boolean, context: any, vdom: _mithril.MithrilVirtualElement) {
+        // Ensure the selected item is visible in the table
+        // TODO: Could improve this so when navigating down the item is still near the bottom
+        if (this.isNavigationalScrollingNeeded && this.selectedItem === item) {
+            if (!isElementInViewport(element.parentNode, element)) {
+                var rowPosition = element.offsetTop;
+                element.parentElement.scrollTop = rowPosition;
+            }
+            this.isNavigationalScrollingNeeded = false;
+        }
+    }    
+}
+
+function isElementInViewport(parent, element) {
+    var elementRect = element.getBoundingClientRect();
+    var parentRect = parent.getBoundingClientRect();
+    return (
+        elementRect.top >= parentRect.top &&
+        elementRect.left >= parentRect.left &&
+        elementRect.bottom <= parentRect.bottom &&
+        elementRect.right <= parentRect.right
+    );
+}
     
 export function add_grid(panelBuilder, model, fieldSpecification) {
     return m.component(<any>Grid, {panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
