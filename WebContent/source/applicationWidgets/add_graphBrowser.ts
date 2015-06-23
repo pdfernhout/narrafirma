@@ -1,12 +1,12 @@
 import charting = require("./charting");
 import surveyCollection = require("../surveyCollection");
-import widgetSupport = require("../panelBuilder/widgetSupport");
-import ContentPane = require("dijit/layout/ContentPane");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
+import m = require("mithril");
 
 "use strict";
 
+/* // TODO: Fix this!!! 
 function questionForID(questions, id) {
     if (!id) return null;
     for (var index in questions) {
@@ -174,13 +174,17 @@ function insertGraphBrowser(panelBuilder: PanelBuilder, contentPane, model, fiel
     
     return graphResultsPane;
 }
+*/
 
-function add_graphBrowser(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
+function add_graphBrowser(panelBuilder: PanelBuilder, model, fieldSpecification) {
+    /* // TODO: Fix this!!! 
     var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
     
     var graphBrowserInstance = insertGraphBrowser(panelBuilder, questionContentPane, model, fieldSpecification);
     questionContentPane.resize();
     return graphBrowserInstance;
+    */
+    return m("div", "Need to convert graphBrowser to Mithril!!!");
 }
 
 export = add_graphBrowser;

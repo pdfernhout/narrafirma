@@ -1,18 +1,15 @@
 import generateRandomUuid = require("../pointrel20150417/generateRandomUuid");
 import surveyCollection = require("../surveyCollection");
 import topic = require("../pointrel20150417/topic");
-import GridWithItemPanel = require("../panelBuilder/standardWidgets/GridWithItemPanel");
-import ComboBox = require("dijit/form/ComboBox");
-import ContentPane = require("dijit/layout/ContentPane");
-import Memory = require("dojo/store/Memory");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
-import widgetSupport = require("../panelBuilder/widgetSupport");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
+import m = require("mithril");
 
 "use strict";
 
 // story themer support
 
+/* TODO: Fix this!!!
 function addThemeButtonPressed(themeEntryComboBox, storyThemesStore, allThemes) {
     console.log("Button pressed", storyThemesStore);
     
@@ -149,13 +146,18 @@ function insertStoryThemer(panelBuilder: PanelBuilder, pagePane, model, fieldSpe
     
     console.log("insertStoryThemer finished");
 }
+*/
 
-function add_storyThemer(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
+function add_storyThemer(panelBuilder: PanelBuilder, model, fieldSpecification) {
+    /*
     var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
     
     var storyThemerInstance = insertStoryThemer(panelBuilder, questionContentPane, model, fieldSpecification);
     questionContentPane.resize();
     return storyThemerInstance;
+    */
+    
+    return m("Need to convert story themer to Mithril");
 }
 
 export = add_storyThemer;
