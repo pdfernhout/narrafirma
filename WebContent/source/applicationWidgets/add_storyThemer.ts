@@ -157,7 +157,7 @@ function add_storyThemer(panelBuilder: PanelBuilder, model, fieldSpecification) 
     return storyThemerInstance;
     */
     
-    return m("Need to convert story themer to Mithril");
+    return m("div", "Need to convert story themer to Mithril");
 }
 
 export = add_storyThemer;
