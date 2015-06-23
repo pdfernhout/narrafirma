@@ -3,7 +3,6 @@
 import buttonActions = require("./buttonActions");
 import csvImportExport = require("./csvImportExport");
 import dialogSupport = require("./panelBuilder/dialogSupport");
-import domConstruct = require("dojo/dom-construct");
 import hash = require("dojo/hash");
 import loadAllApplicationWidgets = require("./applicationWidgets/loadAllApplicationWidgets");
 import loadAllPanelSpecifications = require("./panelBuilder/loadAllPanelSpecifications");

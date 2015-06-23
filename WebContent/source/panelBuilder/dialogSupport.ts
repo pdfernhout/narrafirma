@@ -1,17 +1,3 @@
-import at = require("dojox/mvc/at");
-import Button = require("dijit/form/Button");
-import ColumnResizer = require('dgrid/extensions/ColumnResizer');
-import ConfirmDialog = require("dijit/ConfirmDialog");
-import ContentPane = require("dijit/layout/ContentPane");
-import declare = require('dojo/_base/declare');
-import Dialog = require("dijit/Dialog");
-import DijitRegistry = require('dgrid/extensions/DijitRegistry');
-import Grid = require('dgrid/Grid');
-import Keyboard = require('dgrid/Keyboard');
-import LayoutContainer = require("dijit/layout/LayoutContainer");
-import Selection = require('dgrid/Selection');
-import Stateful = require("dojo/Stateful");
-import Textarea = require("dijit/form/Textarea");
 import translate = require("./translate");
 
 "use strict";

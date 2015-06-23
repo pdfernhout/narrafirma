@@ -1,6 +1,5 @@
 import d3 = require("d3");
-import domConstruct = require("dojo/dom-construct");
-import ContentPane = require("dijit/layout/ContentPane");
+import m = require("mithril");
 
 "use strict";
 
@@ -674,7 +673,6 @@ export function multipleHistograms(graphBrowserInstance, choiceQuestion, scaleQu
     var chartPane = newChartPane(graphBrowserInstance, noStyle);
     
     var title = "" + nameForQuestion(scaleQuestion) + " vs. " + nameForQuestion(choiceQuestion) + " ...";
-    // var content = new ContentPane({content: title, style: "text-align: center;"});
     var content = domConstruct.toDom('<span style="text-align: center;"><b>' + title + '</b></span><br>');
     
     chartPane.domNode.appendChild(content);

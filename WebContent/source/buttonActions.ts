@@ -1,6 +1,5 @@
 import browser = require("./panelBuilder/browser");
 import csvImportExport = require("./csvImportExport");
-import Dialog = require("dijit/Dialog");
 import dialogSupport = require("./panelBuilder/dialogSupport");
 import navigationPane = require("./navigationPane");
 import pageDisplayer = require("./pageDisplayer");

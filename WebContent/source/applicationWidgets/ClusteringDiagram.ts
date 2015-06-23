@@ -1,16 +1,6 @@
 /*jslint browser: true */
 import d3 = require("d3");
-import TextBox = require("dijit/form/TextBox");
-import Button = require("dijit/form/Button");
-import Dialog = require("dijit/Dialog");
 import generateRandomUuid = require("../pointrel20150417/generateRandomUuid");
-import Stateful = require("dojo/Stateful");
-import at = require("dojox/mvc/at");
-import TableContainer = require("dojox/layout/TableContainer");
-import dialogSupport = require("../panelBuilder/dialogSupport");
-import ContentPane = require("dijit/layout/ContentPane");
-import ColorPalette = require("dijit/ColorPalette");
-import ResizeHandle = require("dojox/layout/ResizeHandle");
 
 "use strict";
 
