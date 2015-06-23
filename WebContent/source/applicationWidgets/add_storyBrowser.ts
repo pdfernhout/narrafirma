@@ -181,31 +181,6 @@ function optionsFromQuestion(question, stories) {
     return options;
 }
 
-function filterPaneQuestionChoiceChanged(filterPane, event) {
-    var newValue = event.target.value;
- 
-    var question = null;
-    
-    var questions = filterPane.storyBrowser.questions;
-    for (var index = 0; index < questions.length; index++) {
-        var questionToCheck = questions[index];
-        if (questionToCheck.id === newValue) {
-            question = questionToCheck;
-            break;
-        }
-    }
-    
-    //console.log("filterPaneQuestionChoiceChanged", question);
-    
-    if (!question && newValue) console.log("could not find question for id", newValue);
-    
-    filterPane.selectedQuestion = question;
-    filterPane.answerOptionsForSelectedQuestion = optionsFromQuestion(filterPane.selectedQuestion, filterPane.storyBrowser.stories);
-    filterPane.selectedAnswers = {};
-    
-    setStoryListForCurrentFilters(filterPane.storyBrowser);  
-}
-
 // select.selectedOptions is probably not implemented widely enough, so use this code instead
 function getSelectedOptions(select) {
     var selectedOptions = {};
@@ -219,13 +194,6 @@ function getSelectedOptions(select) {
     }
     
     return selectedOptions;
-}
-
-function filterPaneAnswerChoiceChanged(filterPane, event) {
-    filterPane.selectedAnswers = getSelectedOptions(event.target);
-    // console.log("selected options", filterPane.selectedAnswers, event.target.selectedOptions);
-    
-    setStoryListForCurrentFilters(filterPane.storyBrowser);
 }
 
 class Filter {
@@ -275,11 +243,43 @@ class Filter {
         return m("div.filter", [
             args.name,
             m("br"),
-            m("select", {onchange: filterPaneQuestionChoiceChanged.bind(null, this)}, selectOptions),
+            m("select", {onchange: this.filterPaneQuestionChoiceChanged.bind(this)}, selectOptions),
             m("button", {disabled: isClearButtonDisabled, onclick: clearFilterPane.bind(null, this)}, "Clear"),
             m("br"),
-            m("select", {onchange: filterPaneAnswerChoiceChanged.bind(null, this), multiple: "multiple"}, multiselectOptions)
+            m("select", {onchange: this.filterPaneAnswerChoiceChanged.bind(this), multiple: "multiple"}, multiselectOptions)
         ]);
+    }
+    
+    filterPaneQuestionChoiceChanged(event) {
+        var newValue = event.target.value;
+     
+        var question = null;
+        
+        var questions = this.storyBrowser.questions;
+        for (var index = 0; index < questions.length; index++) {
+            var questionToCheck = questions[index];
+            if (questionToCheck.id === newValue) {
+                question = questionToCheck;
+                break;
+            }
+        }
+        
+        //console.log("filterPaneQuestionChoiceChanged", question);
+        
+        if (!question && newValue) console.log("could not find question for id", newValue);
+        
+        this.selectedQuestion = question;
+        this.answerOptionsForSelectedQuestion = optionsFromQuestion(this.selectedQuestion, this.storyBrowser.stories);
+        this.selectedAnswers = {};
+        
+        setStoryListForCurrentFilters(this.storyBrowser);  
+    }
+    
+    filterPaneAnswerChoiceChanged(event) {
+        this.selectedAnswers = getSelectedOptions(event.target);
+        // console.log("selected options", filterPane.selectedAnswers, event.target.selectedOptions);
+        
+        setStoryListForCurrentFilters(this.storyBrowser);
     }
 };
 
