@@ -353,44 +353,57 @@ function getCurrentStoryCollectionIdentifier(args) {
     return storyCollectionIdentifier;
 }
 
-var StoryBrowser = {
-    controller: function(args) {
-        this.storyCollectionIdentifier = null;
-        this.currentQuestionnaire = null;
-        this.questions = null;
-        this.choices = null;
-        this.stories = null;
-        this.itemPanelSpecification = null;
-        
-        this.filter1 = m.component(<any>Filter, {name: "Filter 1", storyBrowser: this});
-        this.filter2 = m.component(<any>Filter, {name: "Filter 2", storyBrowser: this});
-    },
+class StoryBrowser {
+    storyCollectionIdentifier: string = null;
+    currentQuestionnaire = null;
+    questions = [];
+    choices = [];
+    stories = [];
+    itemPanelSpecification = null;
+    filter1: Filter;
+    filter2: Filter;
     
-    view: function(controller, args) {
+    constructor() {
+        this.filter1 = <any>m.component(<any>Filter, {name: "Filter 1", storyBrowser: this});
+        this.filter2 = <any>(m.component(<any>Filter, {name: "Filter 2", storyBrowser: this}));
+    }
+
+    static controller(args) {
+        console.log("Making StoryBrowser: ", args.name);
+        return new StoryBrowser();
+    }
+    
+    static view(controller, args) {
+        console.log("StoryBrowser view called");
+        
+        return controller.calculateView(args);
+    }
+    
+    calculateView(args) {
         console.log("StoryBrowser view");
         var panelBuilder = args.panelBuilder;
         
         // TODO: Probably need to handle tracking if list changed so can keep sorted list...
-        controller.storyCollectionIdentifier = getCurrentStoryCollectionIdentifier(args);
-        console.log("storyCollectionIdentifier", controller.storyCollectionIdentifier);
+        this.storyCollectionIdentifier = getCurrentStoryCollectionIdentifier(args);
+        console.log("storyCollectionIdentifier", this.storyCollectionIdentifier);
         
-        if (!controller.storyCollectionIdentifier) {
+        if (!this.storyCollectionIdentifier) {
             return m("div", "Please select a story collection to view");
         }
         
-        currentStoryCollectionChanged(controller, controller.storyCollectionIdentifier);
+        currentStoryCollectionChanged(this, this.storyCollectionIdentifier);
         
         var prompt = args.panelBuilder.buildQuestionLabel(args.fieldSpecification);
         
         var filter = m("table.filterTable", m("tr", [
-            m("td", controller.filter1),
-            m("td", controller.filter2)
+            m("td", this.filter1),
+            m("td", this.filter2)
         ]));
 
         var gridFieldSpecification = {
             id: "stories",
             displayConfiguration: {
-                itemPanelSpecification: controller.itemPanelSpecification,
+                itemPanelSpecification: this.itemPanelSpecification,
                 gridConfiguration: {
                     idProperty: "_storyID",
                     includeAllFields: ["__survey_storyName", "__survey_storyText"],
@@ -400,7 +413,7 @@ var StoryBrowser = {
             }
         };
         
-        var grid = gridWithItemPanelInMithril.add_grid(panelBuilder, {stories: controller.stories}, gridFieldSpecification);
+        var grid = gridWithItemPanelInMithril.add_grid(panelBuilder, {stories: this.stories}, gridFieldSpecification);
         
         var parts = [prompt, filter, grid];
         
