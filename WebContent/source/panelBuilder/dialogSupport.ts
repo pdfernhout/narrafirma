@@ -1,4 +1,5 @@
 import translate = require("./translate");
+import m = require("mithril");
 
 "use strict";
 
@@ -111,11 +112,52 @@ function build_textEditorDialogContent(dialogContentPane, model, hideDialogMetho
     layout.placeAt(dialogContentPane);
 }
 
+class ListChooser {
+  static controller(args) {
+        console.log("Making ListChooser: ", args);
+        return new ListChooser();
+    }
+    
+    static view(controller, args) {
+        console.log("ListChooser view called");
+        
+        return controller.calculateView(args);
+    }
+    
+    calculateView(args) {
+        return m("div", [
+            m("b", args.dialogTitle),
+            m("br"),
+            args.dialogOKButtonLabel,
+            m("br"),
+            args.choices.map((choice) => {
+                return m("button", {onclick: this.selectionMade.bind(this, args, choice)}, choice.name);
+            })
+        ]);
+    }
+    
+    selectionMade(args, choice) {
+        m.mount(document.getElementById("listChooserDiv"), null);
+        args.dialogOKCallback(choice);
+    }
+    
+}
+
 // columns are in dgrid format
 export function openListChoiceDialog(initialChoice, choices, columns, dialogTitle, dialogOKButtonLabel, dialogOKCallback) {
     if (!dialogTitle) dialogTitle = "Choices";
     if (!dialogOKButtonLabel) dialogOKButtonLabel = "Choose";
     
+    m.mount(document.getElementById("listChooserDiv"), m.component(<any>ListChooser, {
+        initialChoice: initialChoice,
+        choices: choices,
+        columns: columns,
+        dialogTitle: dialogTitle,
+        dialogOKButtonLabel: dialogOKButtonLabel, 
+        dialogOKCallback: dialogOKCallback
+    }));
+    
+    /*
     var model = new Stateful({choice: initialChoice});
     
     var dialogConfiguration = {
@@ -129,6 +171,7 @@ export function openListChoiceDialog(initialChoice, choices, columns, dialogTitl
     };
     
     openDialog(model, dialogConfiguration);
+    */
 }
 
 function buildListChoiceDialogContent(dialogContentPane, model, hideDialogMethod, dialogConfiguration) {
