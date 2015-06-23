@@ -8,54 +8,18 @@ import gridWithItemPanelInMithril = require("../panelBuilder/gridWithItemPanelIn
 
 "use strict";
 
-/*
 // story browser support
 
 // TODO: Probably should make this a class
 
-function clearFilterPane(storyBrowserInstance, filterPane) {
-    filterPane.questionSelect.set("value", null);
-    setStoryListForCurrentFilters(storyBrowserInstance);
+function clearFilterPane(filterPane) {
+    filterPane.selectedQuestion = null;
+    filterPane.answerOptionsForSelectedQuestion = [];
+    filterPane.selectedAnswers = {};
+    setStoryListForCurrentFilters(filterPane.storyBrowser);
 }
 
-function createFilterPane(storyBrowserInstance, id, questions, stories, containerPane) {
-    var contentPane = new ContentPane();
-    
-    containerPane.addChild(contentPane);
-
-    var filterPane = {};
-        
-    // TODO: Translate
-    contentPane.containerNode.appendChild(domConstruct.toDom('Filter by: '));
-    
-    var questionSelect = widgetSupport.newSelect(contentPane, []);
-    // questionSelect.set("style", "width: 98%; max-width: 98%");
-    // questionSelect.set("style", "min-width: 50%");
-    
-    // TODO: Translate
-    var clearButton = widgetSupport.newButton(contentPane, "Clear", clearFilterPane.bind(null, storyBrowserInstance, filterPane));
-    // domStyle.set(clearButton.domNode, "float", "right");
-    
-    contentPane.containerNode.appendChild(domConstruct.toDom('<br>'));
-    
-    var answersMultiSelect = widgetSupport.newMultiSelect([]);
-    contentPane.addChild(answersMultiSelect);
-    
-    var filterPane2 = {
-        contentPane: contentPane,
-        questionSelect: questionSelect,
-        answersMultiSelect: answersMultiSelect,
-        storyBrowserInstance: storyBrowserInstance
-    };
-
-    for (var key in filterPane2) filterPane[key] = filterPane2[key];
-    
-    questionSelect.on("change", filterPaneQuestionChoiceChanged.bind(null, filterPane));
-    answersMultiSelect.on("change", setStoryListForCurrentFilters.bind(null, storyBrowserInstance)); 
-    
-    return filterPane;
-}
-
+/*
 function loadLatestStories(storyBrowserInstance, allStories) {
     // console.log("loadLatestStories", storyBrowserInstance, allStories);
     storyBrowserInstance.dataStore.setData(allStories);
@@ -70,21 +34,23 @@ function loadLatestStories(storyBrowserInstance, allStories) {
 
 function setStoryListForCurrentFilters(storyBrowserInstance) {
     // console.log("filter pressed", storyBrowserInstance);
-    var question1Choice = storyBrowserInstance.filter1.questionSelect.get("value");
-    var answers1Choices = storyBrowserInstance.filter1.answersMultiSelect.get("value");
-    // console.log("question1", question1Choice, "answers1", answers1Choices);
-    var question2Choice = storyBrowserInstance.filter2.questionSelect.get("value");
-    var answers2Choices = storyBrowserInstance.filter2.answersMultiSelect.get("value");
-    // console.log("question2", question2Choice, "answers2", answers2Choices);  
+    var question1Choice = storyBrowserInstance.filter1.selectedQuestion;
+    var answers1Choices = storyBrowserInstance.filter1.selectedAnswers;
+    console.log("question1", question1Choice, "answers1", answers1Choices);
+    var question2Choice = storyBrowserInstance.filter2.selectedQuestion;
+    var answers2Choices = storyBrowserInstance.filter2.selectedAnswers;
+    console.log("question2", question2Choice, "answers2", answers2Choices);  
     var filterFunction = function (item) {
         var match1 = isMatch(item, question1Choice, answers1Choices);
         var match2 = isMatch(item, question2Choice, answers2Choices);
         return match1 && match2;
     };
-    var filteredResults = storyBrowserInstance.dataStore.filter(filterFunction);
+    
+    var filteredResults = storyBrowserInstance.stories.filter(filterFunction);
+    
     console.log("Filtered results", filteredResults);
     // var newStore = GridWithItemPanel["newMemoryTrackableStore"](filteredResults.data, "_storyID");
-    storyBrowserInstance.storyList.dataStoreChanged(filteredResults);
+    // TODO: storyBrowserInstance.storyList.dataStoreChanged(filteredResults);
     // console.log("finished setting list with newStore", newStore);
 }
 
@@ -229,46 +195,37 @@ function filterPaneQuestionChoiceChanged(filterPane, event) {
         }
     }
     
-    if (!question) {
-        if (newValue) console.log("could not find question for id", newValue);
-        filterPane.selectedQuestion = null;
-        return;
-    }
+    //console.log("filterPaneQuestionChoiceChanged", question);
+    
+    if (!question && newValue) console.log("could not find question for id", newValue);
     
     filterPane.selectedQuestion = question;
+    filterPane.answerOptionsForSelectedQuestion = optionsFromQuestion(filterPane.selectedQuestion, filterPane.storyBrowser.stories);
+    filterPane.selectedAnswers = {};
     
-    //console.log("question", question);
-    
-    /*
-    var stories = filterPane.storyBrowserInstance.dataStore.data;
-    var options = optionsFromQuestion(question, stories);
-    widgetSupport.setOptionsInMultiSelect(filterPane.answersMultiSelect, options);
-    setStoryListForCurrentFilters(filterPane.storyBrowserInstance);
-    */
+    setStoryListForCurrentFilters(filterPane.storyBrowser);  
 }
 
-// arguments: reference to select list, callback function (optional)
+// select.selectedOptions is probably not implemented widely enough, so use this code instead
 function getSelectedOptions(select) {
-    var options = [];
+    var selectedOptions = {};
     
-    for (var i = 0; i < options.length; i++) {
+    for (var i = 0; i < select.options.length; i++) {
         var option = select.options[i];
         
         if (option.selected) {
-            options.push(option);
+            selectedOptions[option.value] = option;
         }
     }
     
-    return options;
+    return selectedOptions;
 }
 
 function filterPaneAnswerChoiceChanged(filterPane, event) {
-    var newValue = event.target.value;
-
-    console.log("filterPaneAnswerChoiceChanged", newValue);
+    filterPane.selectedAnswers = getSelectedOptions(event.target);
+    // console.log("selected options", filterPane.selectedAnswers, event.target.selectedOptions);
     
-    var options = getSelectedOptions(event.target);
-    console.log("selected options", options, event.selectedOptions);
+    setStoryListForCurrentFilters(filterPane.storyBrowser);
 }
 
 var Filter: any = {
@@ -278,10 +235,13 @@ var Filter: any = {
         this.storyBrowser = args.storyBrowser;
         this.questions = args.questions;
         this.selectedQuestion = null;
-        this.selectedAnswers = null;
+        this.answerOptionsForSelectedQuestion = [];
+        this.selectedAnswers = {};
     },
     
-    view: function (controller, args) { 
+    view: function (controller, args) {
+        console.log("Filter view called");
+        
         var choices = controller.storyBrowser.choices || [];
         // console.log("^^^^^^^^^^^^ filter choices", choices);
         var selectOptions = choices.map(function(option) {
@@ -293,10 +253,9 @@ var Filter: any = {
         var isNoSelection = (controller.selectedQuestion === null) || undefined;
         selectOptions.unshift(m("option", {value: "", selected: isNoSelection}, "--- no filter ---"));
         
-        var optionsForQuestion = optionsFromQuestion(controller.selectedQuestion, controller.storyBrowser.stories);
-        var multiselectOptions = optionsForQuestion.map(function(option) {
+        var multiselectOptions = controller.answerOptionsForSelectedQuestion.map(function(option) {
             var optionOptions = {value: option.value, selected: undefined};
-            // if (controller.selectedQuestion = option.value) optionOptions.selected = 'selected';
+            if (controller.selectedAnswers[option.value]) optionOptions.selected = 'selected';
             return m("option", optionOptions, option.label);
         });
         
@@ -306,7 +265,7 @@ var Filter: any = {
             args.name,
             m("br"),
             m("select", {onchange: filterPaneQuestionChoiceChanged.bind(null, controller)}, selectOptions),
-            m("button", {disabled: isClearButtonDisabled, onclick: function() { controller.selectedQuestion = null; } }, "Clear"),
+            m("button", {disabled: isClearButtonDisabled, onclick: clearFilterPane.bind(null, controller)}, "Clear"),
             m("br"),
             m("select", {onchange: filterPaneAnswerChoiceChanged.bind(null, controller), multiple: "multiple"}, multiselectOptions)
         ]);
