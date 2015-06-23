@@ -1,6 +1,7 @@
 /*jslint browser: true */
 import d3 = require("d3");
 import generateRandomUuid = require("../pointrel20150417/generateRandomUuid");
+import m = require("mithril");
 
 "use strict";
 
@@ -91,6 +92,8 @@ function myWrap(text, itemText, textStyle, maxWidth) {
 /** ClusteringDiagram-specific functions here */
 
 class ClusteringDiagram {
+    mainButtons = [];
+    
     autosave: boolean = false;
     lastSelectedItem = null;
     mainContentPane = null;
@@ -118,11 +121,11 @@ class ClusteringDiagram {
     static defaultTextStyle = {family: "Arial", size: "9pt", weight: "normal"};
     static defaultRadius = 44;
 
-    constructor(contentPane, model, id, diagramName, autosave) {
-        console.log("Creating ClusteringDiagram", contentPane, model, id, diagramName);
+    constructor(model, id, diagramName, autosave) {
+        console.log("Creating ClusteringDiagram", model, id, diagramName);
     
         this.autosave = autosave;
-        this.mainContentPane = contentPane;
+        // this.mainContentPane = contentPane;
         this.diagramName = diagramName;
         this.idOfWidget = id;
         this.modelForStorage = model;
@@ -150,9 +153,33 @@ class ClusteringDiagram {
         
         this.setupMainButtons();
     
+        /* TODO: Make this work!!!
         this.setupMainSurface();
         
+        */
         this.addItemDisplay();
+    }
+    
+    static controller(args) {
+        console.log("Making ClusteringDiagram: ", args);
+        return new ClusteringDiagram(args.model, args.id, args.diagramName, args.autosave);
+    }
+    
+    static view(controller, args) {
+        console.log("ClusteringDiagram view called");
+        
+        return controller.calculateView(args);
+    }
+    
+    calculateView(args) {
+        return m("div", [
+            "ClusteringDiagram unfinished conversion to Mithril", 
+            m("br"),
+            this.mainButtons,
+            m("div", "A diagram wil go here..."),
+            this.textBox,
+            this.urlBox   
+        ]);
     }
     
     incrementChangesCount() {
@@ -253,30 +280,28 @@ class ClusteringDiagram {
     }
     
     newButton(name, label, callback) {
-        var theButton = new Button({
-            label: label,
-            onClick: callback.bind(this)
-        }, name);
-        this.mainContentPane.addChild(theButton);
-    
-        return theButton;
+        var button = m("button", {onclick: callback.bind(this), "class": name}, label);
+        this.mainButtons.push(button);
+        return button;
     }
     
     setupMainButtons() {
+        var mainButtons = [];
+        
         // TODO: Translate
-        var addItemButton = this.newButton("newItemButton", "New item", function () {
+        this.newButton("newItemButton", "New item", function () {
             var newItem = this.newItem();
             this.openEntryDialog(newItem, false);
         });
         
-        var addClusterButton = this.newButton("newClusterButton", "New cluster", function () {
+        this.newButton("newClusterButton", "New cluster", function () {
             var newItem = this.newItem();
             newItem.type = "cluster";
             this.openEntryDialog(newItem, false);
         });
         
         // TODO: Translate
-        var updateItemButton = this.newButton("editItemButton", "Edit", function () {
+        this.newButton("editItemButton", "Edit", function () {
             if (this.lastSelectedItem) {
                 this.openEntryDialog(this.lastSelectedItem, true);
             } else {
@@ -286,7 +311,7 @@ class ClusteringDiagram {
         });
     
         // TODO: Translate
-        var deleteButton = this.newButton("deleteButton", "Delete", function () {
+        this.newButton("deleteButton", "Delete", function () {
             if (!this.lastSelectedItem) {
                 // TODO: Translate
                 alert("Please select an item to delete first");
@@ -302,23 +327,21 @@ class ClusteringDiagram {
         
         if (!this.autosave) {
             // TODO: Translate
-            var saveChangesButton = this.newButton("saveChangesButton", "Save Changes", function () {
+            this.newButton("saveChangesButton", "Save Changes", function () {
                 console.log("About to save");
                 this.saveChanges();
             });
         }
         
         // TODO: Translate
-        var sourceButton = this.newButton("sourceButton", "Diagram Source", function () {
+        this.newButton("sourceButton", "Diagram Source", function () {
             this.openSourceDialog(JSON.stringify(this.diagram, null, 2));
         });
     }
     
     addItemDisplay() {    
-        this.textBox = new ContentPane({content: "", style: "text-overflow: ellipsis;"});
-        this.mainContentPane.addChild(this.textBox);
-        this.urlBox = new ContentPane({content: "", style: "text-overflow: ellipsis;"});
-        this.mainContentPane.addChild(this.urlBox);
+        this.textBox = m("div", {style: "text-overflow: ellipsis;"}, "");
+        this.urlBox = m("div", {style: "text-overflow: ellipsis;"}, "");
     }
     
     // typeOfChange should be either "delete" or "update"
@@ -367,7 +390,10 @@ class ClusteringDiagram {
     
     openEntryDialog(item, isExistingItem) {
         console.log("openEntryDialog", item, isExistingItem);
-        var model = new Stateful(item);
+        var model = JSON.parse(JSON.stringify(item));
+        
+        alert("This should open a dialog");
+        /*
     
         var layout = new TableContainer({
             cols: 4,
@@ -464,6 +490,7 @@ class ClusteringDiagram {
         });
         
         dialog.show();
+        */
     }
     
     updateSourceClicked(sourceText, hideDialogMethod) {     
