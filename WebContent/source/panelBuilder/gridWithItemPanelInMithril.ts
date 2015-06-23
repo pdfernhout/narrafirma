@@ -138,10 +138,16 @@ var Grid = {
             addButton: true,
             removeButton: true,
             editButton: true,
-            duplicateButton: true,
-            moveUpDownButtons: false,
             includeAllFields: false,
-            inlineButtons: false
+            inlineButtons: false,
+            navigationButtons: true,
+           
+            // TODO: Need to make work:
+            duplicateButton: false,
+            moveUpDownButtons: false,
+            customButton: null,
+            validateAdd: null,
+            validateEdit: null
         };
         
         var itemPanelID = fieldSpecification.displayConfiguration;
@@ -250,6 +256,15 @@ var Grid = {
             buttons = buttons.concat(Grid.createButtons(controller));
         }
         
+        if (controller.gridConfiguration.navigationButtons) {
+            // TODO: Improve navigation enabling
+            var navigationDisabled = controller.isEditing() || controller.data.length === 0 || undefined;
+            buttons.push(m("button", {onclick: Grid.navigateClicked.bind(controller, "start"), disabled: navigationDisabled}, "[<<"));
+            buttons.push(m("button", {onclick: Grid.navigateClicked.bind(controller, "previous"), disabled: navigationDisabled}, "<"));
+            buttons.push(m("button", {onclick: Grid.navigateClicked.bind(controller, "next"), disabled: navigationDisabled}, ">"));
+            buttons.push(m("button", {onclick: Grid.navigateClicked.bind(controller, "end"), disabled: navigationDisabled}, ">>]"));
+        }
+        
         var buttonPanel = m("div.narrafirma-button-panel", buttons);
         
         var parts = [prompt, m("div.narrafirm-grid", [table]), buttonPanel];
@@ -324,6 +339,30 @@ var Grid = {
         // TODO: Should ensure the data is saved
         // Leave itme selected: this.selectedItem = null;
         this.displayMode = null;
+    },
+    
+    navigateClicked: function(direction: string) {
+        if (this.data.length === 0) return;
+        var newPosition;
+        switch (direction) {
+            case "start":
+                newPosition = 0;
+                break;
+            case "previous":
+                newPosition = this.data.indexOf(this.selectedItem);
+                if (newPosition > 0) newPosition--;
+                break;
+            case "next":
+                newPosition = this.data.indexOf(this.selectedItem);
+                if (newPosition < this.data.length - 1) newPosition++;
+                break;
+            case "end":
+                newPosition = this.data.length - 1;
+                break;
+            default:
+               throw new Error("Unexpected direction: " + direction);
+        }
+        this.selectedItem = this.data[newPosition];
     },
     
     createButtons: function (controller, item = null) {
