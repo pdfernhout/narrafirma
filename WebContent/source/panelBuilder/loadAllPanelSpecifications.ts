@@ -32,7 +32,7 @@ declare var require: (moduleId: string[], any) => any;
  */
 
 // loadingBase should be something like:
-// var loadingBase = "dojo/text!js/applicationPanelSpecifications/";
+// var loadingBase = "lib/text!js/applicationPanelSpecifications/";
 
 function loadAllPanelSpecifications(panelSpecificationCollection, navigationSections, loadingBase, callback) {
     // console.log("loadAllPanelSpecifications", loadingBase, navigationSections);
