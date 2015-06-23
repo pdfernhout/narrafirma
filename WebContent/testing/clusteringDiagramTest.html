@@ -14,7 +14,7 @@ var require = {
     paths: {
         js: ".",
         applicationPanelSpecifications: "/applicationPanelSpecifications",
-        mithril: "/lib/mithril/mithril",
+        mithril: "../lib/mithril/mithril",
         d3: "../lib/d3/d3",
         humane: "../lib/humane/humane",
         lib: "../lib"
@@ -33,12 +33,15 @@ var require = {
 <body>
     <noscript>Please enable JavaScript to use this test</noscript>
     <div id="toasterDiv"></div>
-    <div id="pageDiv" style="overflow: auto; display: none;"></div>
+    <div id="pageDiv"></div>
     <script>
-    require(["js/applicationWidgets/ClusteringDiagram"], function(ClusteringDiagram) {
+    require(["js/applicationWidgets/ClusteringDiagram", "mithril"], function(ClusteringDiagram, m) {
         console.log("ClusteringDiagram", ClusteringDiagram);
-        var diagram = new ClusteringDiagram();
+        console.log("m", m);
+        var diagram = m.component(ClusteringDiagram, {model: {test: {}}, id: "test", diagramName: "test diagram", autosave: false});
         console.log("diagram", diagram);
+        
+        m.mount(document.getElementById("pageDiv"), diagram);
     });
     </script>
 </body>
