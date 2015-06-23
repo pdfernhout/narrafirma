@@ -3,7 +3,6 @@
 import buttonActions = require("./buttonActions");
 import csvImportExport = require("./csvImportExport");
 import dialogSupport = require("./panelBuilder/dialogSupport");
-import hash = require("dojo/hash");
 import loadAllApplicationWidgets = require("./applicationWidgets/loadAllApplicationWidgets");
 import loadAllPanelSpecifications = require("./panelBuilder/loadAllPanelSpecifications");
 import navigationPane = require("./navigationPane");
@@ -16,9 +15,6 @@ import questionnaireGeneration = require("./questionnaireGeneration");
 import surveyCollection = require("./surveyCollection");
 import toaster = require("./panelBuilder/toaster");
 import translate = require("./panelBuilder/translate");
-
-// Use Dojo topic instead of Pointrel topic here because wnat Dojo hash changed events
-import topic = require("dojo/topic");
 
 "use strict";
 
@@ -41,6 +37,18 @@ var project;
 
 var lastServerError = "";
 
+// m.route.mode = "hash";
+
+function hash(newValue = null) {
+    if (newValue === null) return window.location.hash.substr(1);
+    
+    if (history.pushState) {
+        history.pushState(null, null, "#" + newValue);
+    } else {
+        location.hash = '#myhash';
+    }
+}
+
 // For this local instance only (not shared with other users or other browser tabs)
 var clientState: ClientState = {
     projectIdentifier: null,
@@ -54,7 +62,7 @@ var clientState: ClientState = {
 
 var navigationSections = [];
 
-var loadingBase = "dojo/text!applicationPanelSpecifications/";
+var loadingBase = "lib/text!applicationPanelSpecifications/";
 
 // For building panels based on field specifications
 var panelBuilder = new PanelBuilder();
@@ -696,7 +704,7 @@ function loadApplicationDesign() {
             urlHashFragmentChanged();
             
             // Update if the URL hash fragment is changed by hand
-            topic.subscribe("/dojo/hashchange", urlHashFragmentChanged); 
+            window.onhashchange = urlHashFragmentChanged;
             
             // turn off initial "please wait" display
             document.getElementById("pleaseWaitDiv").style.display = "none";
