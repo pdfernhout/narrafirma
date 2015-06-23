@@ -129,11 +129,12 @@ var Grid = {
         var displayConfiguration = {
             itemPanelID: undefined,
             itemPanelSpecification: undefined,
-            idProperty: undefined,
             gridConfiguration: undefined
         };
         
         var gridConfiguration = {
+            idProperty: undefined,
+            
             viewButton: true,
             addButton: true,
             removeButton: true,
@@ -187,7 +188,7 @@ var Grid = {
             model[fieldSpecification.id] = data;
         }
         
-        var idProperty = displayConfiguration.idProperty;
+        var idProperty = gridConfiguration.idProperty;
         if (!idProperty) idProperty = "_id";
         this.idProperty = idProperty;
         
@@ -403,7 +404,7 @@ var Grid = {
             buttons.push(viewButton); 
         }
         
-        console.log("made buttons", buttons, item);
+        // console.log("made buttons", buttons, item);
         return buttons;
     },
     
