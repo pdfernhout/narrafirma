@@ -141,6 +141,10 @@ var Grid = {
             includeAllFields: false,
             inlineButtons: false,
             navigationButtons: true,
+            
+            // Flag for whether removing an item then selects the next item after it
+            // This flag makes it easy to quickly delete a lot of items, which is maybe not good in some cases
+            shouldNextItemBeSelectedAfterItemRemoved: false,
            
             // TODO: Need to make work:
             duplicateButton: false,
@@ -313,7 +317,21 @@ var Grid = {
         var index = this.data.indexOf(item);
         this.data.splice(index, 1);
         
-        if (item === this.selectedItem) this.selectedItem = null;
+        if (item === this.selectedItem) {
+            this.selectedItem = null;
+            
+            if (this.gridConfiguration.shouldNextItemBeSelectedAfterItemRemoved) {
+                if (index === this.data.length) {
+                    index = index - 1;
+                }  
+                if (this.data.length) {
+                    this.selectedItem = this.data[index];
+                } else {
+                   this.selectedItem = null;
+                }
+                this.isNavigationalScrollingNeeded = true;
+            }
+        }
     },
     
     editItem: function (item) {
@@ -348,6 +366,7 @@ var Grid = {
                 break;
             case "previous":
                 newPosition = this.data.indexOf(this.selectedItem);
+                if (newPosition === -1) newPosition = 0;
                 if (newPosition > 0) newPosition--;
                 break;
             case "next":
