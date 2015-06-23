@@ -12,13 +12,6 @@ import gridWithItemPanelInMithril = require("../panelBuilder/gridWithItemPanelIn
 
 // TODO: Probably should make this a class
 
-function clearFilterPane(filterPane) {
-    filterPane.selectedQuestion = null;
-    filterPane.answerOptionsForSelectedQuestion = [];
-    filterPane.selectedAnswers = {};
-    setStoryListForCurrentFilters(filterPane.storyBrowser);
-}
-
 /*
 function loadLatestStories(storyBrowserInstance, allStories) {
     // console.log("loadLatestStories", storyBrowserInstance, allStories);
@@ -244,7 +237,7 @@ class Filter {
             args.name,
             m("br"),
             m("select", {onchange: this.filterPaneQuestionChoiceChanged.bind(this)}, selectOptions),
-            m("button", {disabled: isClearButtonDisabled, onclick: clearFilterPane.bind(null, this)}, "Clear"),
+            m("button", {disabled: isClearButtonDisabled, onclick: this.clearFilterPane.bind(this)}, "Clear"),
             m("br"),
             m("select", {onchange: this.filterPaneAnswerChoiceChanged.bind(this), multiple: "multiple"}, multiselectOptions)
         ]);
@@ -276,9 +269,14 @@ class Filter {
     }
     
     filterPaneAnswerChoiceChanged(event) {
-        this.selectedAnswers = getSelectedOptions(event.target);
-        // console.log("selected options", filterPane.selectedAnswers, event.target.selectedOptions);
-        
+        this.selectedAnswers = getSelectedOptions(event.target);        
+        setStoryListForCurrentFilters(this.storyBrowser);
+    }
+    
+    clearFilterPane() {
+        this.selectedQuestion = null;
+        this.answerOptionsForSelectedQuestion = [];
+        this.selectedAnswers = {};
         setStoryListForCurrentFilters(this.storyBrowser);
     }
 };
