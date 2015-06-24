@@ -3,6 +3,9 @@ import d3 = require("d3");
 import generateRandomUuid = require("../pointrel20150417/generateRandomUuid");
 import m = require("mithril");
 
+// TODO: Fix this!
+var dialogSupport = null;
+
 "use strict";
 
 // Resources:
@@ -112,6 +115,12 @@ class ClusteringDiagram {
     background = null;
     
     showEntryDialog = false;
+    
+    itemsMade = 0;
+    
+    itemBeingEdited = null;
+    itemBeingEditedCopy = null;
+    isEditedItemNew = false;
 
     static defaultBodyColor = "#00009B"; // light blue
     // var defaultBodyColor = [0, 0, 155, 0.5]; // light blue, transparent
@@ -176,7 +185,7 @@ class ClusteringDiagram {
     calculateView(args) {
         var entryDialog = [];
         if (this.showEntryDialog) {
-            entryDialog = this.buildEntryDialog();
+            entryDialog .push(this.buildEntryDialog());
         }
         
         return m("div", [
@@ -225,11 +234,11 @@ class ClusteringDiagram {
             .attr('height', height)
             .attr('class', 'clusteringDiagramBackground')
             .style('fill', 'white')
-            .on("mousedown", function () {
+            .on("mousedown", () => {
                 console.log("mousedown in background");
                 this.selectItem(null);
                 // console.log("mousedown item", item);
-            }.bind(this));
+            });
         
         this.mainSurface = this._mainSurface.append('g')
             //.attr('width', width)
@@ -288,7 +297,7 @@ class ClusteringDiagram {
     }
     
     newButton(name, label, callback) {
-        var button = m("button", {onclick: callback.bind(this), "class": name}, label);
+        var button = m("button", {onclick: callback, "class": name}, label);
         this.mainButtons.push(button);
         return button;
     }
@@ -297,19 +306,19 @@ class ClusteringDiagram {
         var mainButtons = [];
         
         // TODO: Translate
-        this.newButton("newItemButton", "New item", function () {
+        this.newButton("newItemButton", "New item", () => {
             var newItem = this.newItem();
             this.openEntryDialog(newItem, false);
         });
         
-        this.newButton("newClusterButton", "New cluster", function () {
+        this.newButton("newClusterButton", "New cluster", () => {
             var newItem = this.newItem();
             newItem.type = "cluster";
             this.openEntryDialog(newItem, false);
         });
         
         // TODO: Translate
-        this.newButton("editItemButton", "Edit", function () {
+        this.newButton("editItemButton", "Edit", () => {
             if (this.lastSelectedItem) {
                 this.openEntryDialog(this.lastSelectedItem, true);
             } else {
@@ -319,30 +328,30 @@ class ClusteringDiagram {
         });
     
         // TODO: Translate
-        this.newButton("deleteButton", "Delete", function () {
+        this.newButton("deleteButton", "Delete", () => {
             if (!this.lastSelectedItem) {
                 // TODO: Translate
                 alert("Please select an item to delete first");
                 return;
             }
-            dialogSupport.confirm("Confirm removal of: '" + this.lastSelectedItem.text + "'?", function () {
+            dialogSupport.confirm("Confirm removal of: '" + this.lastSelectedItem.text + "'?", () => {
                 this.updateDisplayForChangedItem(this.lastSelectedItem, "delete");
                 removeItemFromArray(this.lastSelectedItem, this.diagram.items);
                 this.clearSelection();
                 this.incrementChangesCount();
-            }.bind(this));
+            });
         });
         
         if (!this.autosave) {
             // TODO: Translate
-            this.newButton("saveChangesButton", "Save Changes", function () {
+            this.newButton("saveChangesButton", "Save Changes", () => {
                 console.log("About to save");
                 this.saveChanges();
             });
         }
         
         // TODO: Translate
-        this.newButton("sourceButton", "Diagram Source", function () {
+        this.newButton("sourceButton", "Diagram Source", () => {
             this.openSourceDialog(JSON.stringify(this.diagram, null, 2));
         });
     }
@@ -398,14 +407,16 @@ class ClusteringDiagram {
     
     openEntryDialog(item, isExistingItem) {
         console.log("openEntryDialog", item, isExistingItem);
-        var model = JSON.parse(JSON.stringify(item));
+        this.itemBeingEdited = item;
+        this.itemBeingEditedCopy = JSON.parse(JSON.stringify(item));
+        this.isEditedItemNew = !isExistingItem;
         
         // alert("This should open a dialog");
         
         this.showEntryDialog = true;
     }
     
-    buildEntryDialog(item) {
+    buildEntryDialog() {
         /*
         return m("div", [
             "Entry dialog 2",
@@ -415,9 +426,38 @@ class ClusteringDiagram {
         */
 
        return m("div.overlay", m("div.modal-content", [
-            "Entry dialog 2",
+            "Edit item",
             m("br"),
-            m("button", {onclick: () => { this.showEntryDialog = false; }}, "Close")
+            m('label', {"for": "itemDialog_name"}, "Name:"),
+            m('input[type=text]', {
+                id: "itemDialog_name",
+                value: this.itemBeingEditedCopy.text,
+                onchange: (event) => { this.itemBeingEditedCopy.text = event.target.value; }
+            }),
+            m("br"),
+            m("button", {
+                onclick: () => {
+                    this.showEntryDialog = false;
+                    console.log("copy", this.itemBeingEditedCopy);
+                }
+            }, "Cancel"),
+            m("button", {
+                onclick: () => {
+                    this.showEntryDialog = false;
+                    console.log("copy", this.itemBeingEditedCopy);
+                    this.itemBeingEdited.text = this.itemBeingEditedCopy.text;
+                    if (this.isEditedItemNew) {
+                        console.log("not existing item");
+                        this.diagram.items.push(this.itemBeingEdited);
+                        this.addDisplayObjectForItem(this.mainSurface, this.itemBeingEdited);
+                    } else {
+                        this.updateDisplayForChangedItem(this.itemBeingEdited, "update");
+                    }
+                    console.log("items", this.diagram.items);
+                    this.incrementChangesCount();
+                    this.selectItem(this.itemBeingEdited);
+                }
+            }, "OK")
         ]));
         
         /*
@@ -600,7 +640,8 @@ class ClusteringDiagram {
         this.urlBox.set("content", "Notes: " + (item.url || ""));
     }
     
-    newItem(text, url) {
+    newItem(text = null, url = "") {
+        if (text === null) text = "Untitled#" + (++this.itemsMade);
         var item = {
             text: text,
             url: url,
@@ -729,10 +770,10 @@ class ClusteringDiagram {
         // console.log("group", group);
         // console.log("itemCircle", itemCircle);
     
-        group.on("mousedown", function () {
+        group.on("mousedown", () => {
             // console.log("mousedown item", item);
             this.selectItem(item);
-        }.bind(this));
+        });
         
         var self = this;
         var drag = d3.behavior.drag();
@@ -763,10 +804,10 @@ class ClusteringDiagram {
         group.call(drag);
     
         /*
-        group.on("dblclick", function (e) {
+        group.on("dblclick", (e) => {
             // alert("triggered ondblclick");
             this.go(group.item.url);
-        }.bind(this));
+        });
         */
     
         this.itemToDisplayObjectMap[item.uuid] = group;
