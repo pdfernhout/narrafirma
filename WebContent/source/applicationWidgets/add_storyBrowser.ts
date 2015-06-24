@@ -206,22 +206,7 @@ class Filter {
     }
     
     filterPaneQuestionChoiceChanged(event) {
-        var newValue = event.target.value;
-     
-        var question = null;
-        
-        var questions = this.storyBrowser.questions;
-        for (var index = 0; index < questions.length; index++) {
-            var questionToCheck = questions[index];
-            if (questionToCheck.id === newValue) {
-                question = questionToCheck;
-                break;
-            }
-        }
-        
-        //console.log("filterPaneQuestionChoiceChanged", question);
-        
-        if (!question && newValue) console.log("could not find question for id", newValue);
+        var question = getQuestionDataForSelection(this.storyBrowser.questions, event);
         
         this.selectedQuestion = question;
         this.answerOptionsForSelectedQuestion = optionsFromQuestion(this.selectedQuestion, this.storyBrowser.stories);
@@ -242,6 +227,26 @@ class Filter {
         this.storyBrowser.setStoryListForCurrentFilters();
     }
 };
+
+function getQuestionDataForSelection(questions, event) {
+    var newValue = event.target.value;
+     
+    var question = null;
+    
+    for (var index = 0; index < questions.length; index++) {
+        var questionToCheck = questions[index];
+        if (questionToCheck.id === newValue) {
+            question = questionToCheck;
+            break;
+        }
+    }
+    
+    //console.log("filterPaneQuestionChoiceChanged", question);
+    
+    if (!question && newValue) console.log("could not find question for id", newValue);
+    
+    return question; 
+}
 
 function getCurrentStoryCollectionIdentifier(args) {
     var panelBuilder = args.panelBuilder;
