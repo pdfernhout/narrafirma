@@ -177,7 +177,12 @@ class GraphBrowser {
             this.graphHolder.graphResultsPane.removeChild(chartPane);
             // TODO: Do these need to be destroyed or freed somehow?
         }
- 
+        
+        // Need to remove the float end node, if any        
+        while (this.graphHolder.graphResultsPane.firstChild) {
+            this.graphHolder.graphResultsPane.removeChild(this.graphHolder.graphResultsPane.firstChild);
+        }
+         
         var xAxisQuestion = questionForID(this.questions, xAxisQuestionID);
         var yAxisQuestion = questionForID(this.questions, yAxisQuestionID);
         

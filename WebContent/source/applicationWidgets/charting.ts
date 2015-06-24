@@ -690,7 +690,7 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
     // End the float
     var clearFloat = document.createElement("br");
     clearFloat.style.clear = "left";
-    chartPane.appendChild(clearFloat);
+    graphBrowserInstance.graphResultsPane.appendChild(clearFloat);
     
     return charts;
 }
