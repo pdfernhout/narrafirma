@@ -657,3 +657,27 @@ table.filterTable {
 table.filterTable td {
     width: 50%;
 }
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dialogs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+/* derived from http://www.cssscript.com/minimal-modal-window-with-plain-javascript/ */
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+  padding: 20px 30px;
+  width: 600px;
+  position: relative;
+  min-height: 300px;
+  max-height: 500px;
+  margin: 5% auto 0;
+  background: #fff;
+  overflow: auto;
+}

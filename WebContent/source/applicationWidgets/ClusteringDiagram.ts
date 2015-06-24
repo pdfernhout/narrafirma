@@ -414,11 +414,11 @@ class ClusteringDiagram {
         ]);
         */
 
-       return m("div", [
+       return m("div.overlay", m("div.modal-content", [
             "Entry dialog 2",
             m("br"),
             m("button", {onclick: () => { this.showEntryDialog = false; }}, "Close")
-        ]);
+        ]));
         
         /*
     
