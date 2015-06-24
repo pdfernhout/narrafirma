@@ -494,21 +494,7 @@ class PatternBrowser {
     }
 }
 
-
-function add_trendsReport(panelBuilder: PanelBuilder, model, fieldSpecification) {
-    var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
-    
-    var patternBrowser = m.component(<any>PatternBrowser, {panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
- 
-    return m("div", [
-        prompt,
-       patternBrowser
-     ]);
-}
-    
 function other() {
-    var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-
     var graphResultsPane = new ContentPane({
         // TODO: Translate
         title: "Graph results",
@@ -638,6 +624,17 @@ function other() {
     
     // TODO: Not sure what to return or if it matters
     return questionContentPane;
+}
+
+function add_trendsReport(panelBuilder: PanelBuilder, model, fieldSpecification) {
+    var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
+    
+    var patternBrowser = m.component(<any>PatternBrowser, {panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
+ 
+    return m("div", [
+        prompt,
+       patternBrowser
+     ]);
 }
 
 export = add_trendsReport;
