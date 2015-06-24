@@ -6,14 +6,8 @@ import m = require("mithril");
 // TODO: Translate: Change to taking a translate ID
 // TODO: Buttons don't show up if window too narrow for dialog
 export function confirm(message, okCallback) {
-    var dialog = new ConfirmDialog({
-        title: "Confirm",
-        content: message,
-        style: "width: 300px",
-        onExecute: okCallback
-        // TODO: onCancel: cancelCallback
-    });
-    dialog.show();
+    var confirmed = window.confirm(message);
+    if (confirmed) okCallback();
 }
 
 export function addButtonThatLaunchesDialog(contentPane, model, fieldSpecification, dialogConfiguration) {
