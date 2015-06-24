@@ -91,25 +91,29 @@ class GraphBrowser {
 
         // TODO: Need to track currentQuestionnaire?
         
+        var parts;
+        
         if (!this.storyCollectionIdentifier) {
-            return m("div", "Please select a story collection to view");
+            parts = [m("div", "Please select a story collection to view")];
+        } else {
+            parts = [
+                m("select.graphBrowserSelect", {onchange: (event) => { this.xAxisSelectValue = event.target.value; this.updateGraph(); }}, this.calculateOptionsForChoices(this.xAxisSelectValue)),
+                " versus ",
+                m("select.graphBrowserSelect", {onchange: (event) => { this.yAxisSelectValue = event.target.value; this.updateGraph(); }}, this.calculateOptionsForChoices(this.yAxisSelectValue)),
+                m("br"),
+                m("div", {config: this.insertGraphResultsPaneConfig.bind(this)}),
+                this.selectedStories.map((story) => {
+                    console.log("story", story);
+                    return m("div", [
+                        m("b", story.__survey_storyName),
+                        m("br"),
+                        m("blockquote", story.__survey_storyText)
+                    ]);
+                })
+            ];
         }
-              
-        return m("div", [
-            m("select.graphBrowserSelect", {onchange: (event) => { this.xAxisSelectValue = event.target.value; this.updateGraph(); }}, this.calculateOptionsForChoices(this.xAxisSelectValue)),
-            " versus ",
-            m("select.graphBrowserSelect", {onchange: (event) => { this.yAxisSelectValue = event.target.value; this.updateGraph(); }}, this.calculateOptionsForChoices(this.yAxisSelectValue)),
-            m("br"),
-            m("div", {config: this.insertGraphResultsPaneConfig.bind(this)}),
-            this.selectedStories.map((story) => {
-                console.log("story", story);
-                return m("div", [
-                    m("b", story.__survey_storyName),
-                    m("br"),
-                    m("blockquote", story.__survey_storyText)
-                ]);
-            })
-        ]);
+        
+        return m("div", parts);
         
         /*
         // TODO: Should provide copy of item?
