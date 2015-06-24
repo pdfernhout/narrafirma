@@ -110,6 +110,8 @@ class ClusteringDiagram {
     
     d3DivForResizing = null;
     background = null;
+    
+    showEntryDialog = false;
 
     static defaultBodyColor = "#00009B"; // light blue
     // var defaultBodyColor = [0, 0, 155, 0.5]; // light blue, transparent
@@ -172,13 +174,23 @@ class ClusteringDiagram {
     }
     
     calculateView(args) {
+        var entryDialog = [];
+        if (this.showEntryDialog) {
+            entryDialog.push(m("div", [
+                "Entry dialog",
+                m("br"),
+                m("button", {onclick: () => { this.showEntryDialog = false; }}, "Close")
+            ]));
+        }
+        
         return m("div", [
             "ClusteringDiagram unfinished conversion to Mithril", 
             m("br"),
             this.mainButtons,
             m("div", "A diagram wil go here..."),
             this.textBox,
-            this.urlBox   
+            this.urlBox,
+            entryDialog 
         ]);
     }
     
@@ -392,7 +404,10 @@ class ClusteringDiagram {
         console.log("openEntryDialog", item, isExistingItem);
         var model = JSON.parse(JSON.stringify(item));
         
-        alert("This should open a dialog");
+        // alert("This should open a dialog");
+        
+        this.showEntryDialog = true;
+        
         /*
     
         var layout = new TableContainer({
