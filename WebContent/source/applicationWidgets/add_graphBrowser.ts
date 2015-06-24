@@ -38,6 +38,12 @@ function getCurrentStoryCollectionIdentifier(args) {
     return storyCollectionIdentifier;
 }
 
+function createGraphResultsPane(): HTMLElement {
+    var pane = document.createElement("div");
+    pane.className = "narrafirma-graph-results-pane";
+    return pane;
+}
+
 class GraphBrowser {
     xAxisSelectValue = null;
     yAxisSelectValue = null;
@@ -50,7 +56,7 @@ class GraphBrowser {
     
     constructor() {
         this.graphHolder = {
-            graphResultsPane: m("div.narrafirma-graph-results-pane"),
+            graphResultsPane: createGraphResultsPane(),
             chartPanes: [],
             allStories: [],
             currentGraph: null,
@@ -98,7 +104,7 @@ class GraphBrowser {
             " versus ",
             m("select.graphBrowserSelect", {onchange: (event) => { this.yAxisSelectValue = event.target.value; this.updateGraph(); }}, this.calculateOptionsForChoices(this.yAxisSelectValue)),
             m("br"),
-            this.graphHolder.graphResultsPane
+            m("div", {config: this.insertGraphResultsPaneConfig.bind(this)})
         ]);
         
         /*
@@ -112,6 +118,12 @@ class GraphBrowser {
         }
         return m("div", {"class": theClass}, panelBuilder.buildPanel(args.grid.itemPanelSpecification, args.item));
         */
+    }
+    
+    insertGraphResultsPaneConfig(element: HTMLElement, isInitialized: boolean, context: any, vdom: _mithril.MithrilVirtualElement) {
+        if (!isInitialized) {
+            element.appendChild(this.graphHolder.graphResultsPane);
+        }       
     }
     
     calculateOptionsForChoices(currentValue) {
@@ -152,7 +164,7 @@ class GraphBrowser {
     
     updateGraph() {
         console.log("updateGraph", this);
-        
+
         var xAxisQuestionID = this.xAxisSelectValue;
         var yAxisQuestionID = this.yAxisSelectValue;
         
@@ -161,11 +173,11 @@ class GraphBrowser {
         
         // Remove old graph(s)
         while (this.graphHolder.chartPanes.length) {
-            this.graphHolder.chartPanes.pop();
+            var chartPane = this.graphHolder.chartPanes.pop();
+            this.graphHolder.graphResultsPane.removeChild(chartPane);
             // TODO: Do these need to be destroyed or freed somehow?
         }
-        this.graphHolder.graphResultsPane = m("div.narrafirma-graph-results-pane");
-        
+ 
         var xAxisQuestion = questionForID(this.questions, xAxisQuestionID);
         var yAxisQuestion = questionForID(this.questions, yAxisQuestionID);
         
@@ -191,7 +203,7 @@ class GraphBrowser {
         }
         
         console.log("types x y", xType, yType);
-        
+         
         if (xType === "choice" && yType === null) {
             console.log("plot choice: Bar graph");
             console.log("barGraph", xAxisQuestion);

@@ -11,8 +11,6 @@ interface PlotItem {
 }
 
 var unansweredKey = "{N/A}";
-var singleChartStyle = "width: 700px; height: 500px;";
-var multipleChartStyle = "width: 200px; height: 200; float: left;";
 
 function correctForUnanswered(question, value) {
     if (question.displayType === "checkbox" && !value) return "no";
@@ -175,7 +173,7 @@ function createBrush(chartBody, xScale, yScale, brushendCallback) {
     return {brush: brush, brushGroup: brushGroup};
 }
 
-function makeChartFramework(chartPane, chartType, isSmallFormat, margin) {
+function makeChartFramework(chartPane: HTMLElement, chartType, isSmallFormat, margin) {
     var fullWidth = 700;
     var fullHeight = 500;
     
@@ -186,7 +184,7 @@ function makeChartFramework(chartPane, chartType, isSmallFormat, margin) {
     var width = fullWidth - margin.left - margin.right;
     var height = fullHeight - margin.top - margin.bottom;
    
-    var chart = d3.select(chartPane.domNode).append('svg')
+    var chart = d3.select(chartPane).append('svg')
         .attr('width', width + margin.right + margin.left)
         .attr('height', height + margin.top + margin.bottom)
         .attr('class', 'chart ' + chartType);
@@ -380,7 +378,7 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
     // Build chart
     // TODO: Improve the way labels are drawn or ellipsed based on chart size and font size and number of bars
 
-    var chartPane = newChartPane(graphBrowserInstance, singleChartStyle);
+    var chartPane = newChartPane(graphBrowserInstance, "singleChartStyle");
     
     var chartTitle = "" + nameForQuestion(question);
 
@@ -521,9 +519,9 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
     
     var isSmallFormat = !!choiceQuestion;
     
-    var style = singleChartStyle;
+    var style = "singleChartStyle";
     if (isSmallFormat) {
-        style = multipleChartStyle;
+        style = "multipleChartStyle";
     }
 
     var chartPane = newChartPane(graphBrowserInstance, style);
@@ -668,14 +666,18 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
     }
     // TODO: Could push extra options based on actual data choices (in case question changed at some point)
     
-    // TODO: This may be wrong
-    var noStyle = {};
-    var chartPane = newChartPane(graphBrowserInstance, noStyle);
+    // TODO: This styling may be wrong
+    var chartPane = newChartPane(graphBrowserInstance, "noStyle");
     
     var title = "" + nameForQuestion(scaleQuestion) + " vs. " + nameForQuestion(choiceQuestion) + " ...";
+    
     var content = m("span", {style: "text-align: center;"}, [m("b", title), m("br")]);
     
-    chartPane.children.push(content);
+    // TODO: Trying out rendering into node
+    m.render(chartPane, content);
+
+    // var content = domConstruct.toDom('<span style="text-align: center;"><b>' + title + '</b></span><br>');
+    // chartPane.domNode.appendChild(content);
     
     var charts = [];
     for (index in options) {
@@ -686,8 +688,9 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
     }
     
     // End the float
-    var clearFloat = m("br", {style: "clear: left;"});
-    chartPane.children.push(clearFloat);
+    var clearFloat = document.createElement("br");
+    clearFloat.style.clear = "left";
+    chartPane.appendChild(clearFloat);
     
     return charts;
 }
@@ -714,7 +717,7 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
 
     // Build chart
     
-    var chartPane = newChartPane(graphBrowserInstance, singleChartStyle);
+    var chartPane = newChartPane(graphBrowserInstance, "singleChartStyle");
     
     var chartTitle = "" + nameForQuestion(xAxisQuestion) + " vs. " + nameForQuestion(yAxisQuestion);
 
@@ -879,7 +882,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     // Build chart
     // TODO: Improve the way labels are drawn or ellipsed based on chart size and font size and number of rows and columns
 
-    var chartPane = newChartPane(graphBrowserInstance, singleChartStyle);
+    var chartPane = newChartPane(graphBrowserInstance, "singleChartStyle");
     
     var chartTitle = "" + nameForQuestion(xAxisQuestion) + " vs. " + nameForQuestion(yAxisQuestion);
 
@@ -1091,10 +1094,11 @@ export function restoreSelection(chart, selection) {
     return true;
 }
 
-function newChartPane(graphBrowserInstance: GraphHolder, style): _mithril.MithrilVirtualElement {
-    var chartPane = m("div", {style: style});
+function newChartPane(graphBrowserInstance: GraphHolder, styleClass: string): HTMLElement {
+    var chartPane = document.createElement("div");
+    chartPane.className = styleClass;
     graphBrowserInstance.chartPanes.push(chartPane);
-    graphBrowserInstance.graphResultsPane.children.push(chartPane);
+    graphBrowserInstance.graphResultsPane.appendChild(chartPane);
 
     return chartPane;
 }

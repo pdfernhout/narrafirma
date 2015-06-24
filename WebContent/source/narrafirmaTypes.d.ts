@@ -20,8 +20,8 @@ interface GraphSelection {
 }
 
 interface GraphHolder {
-    graphResultsPane: _mithril.MithrilVirtualElement;
-    chartPanes: Array<_mithril.MithrilVirtualElement>;
+    graphResultsPane: HTMLElement;
+    chartPanes: Array<HTMLElement>;
     allStories: Array<any>;
     currentGraph: any;
     currentSelectionExtentPercentages: GraphSelection;

@@ -688,3 +688,17 @@ table.filterTable td {
     width: 40%;
     max-width: 40%
 }
+
+.singleChartStyle {
+    width: 700px;
+    height: 500px;
+}
+
+.multipleChartStyle {
+    width: 200px;
+    height: 200;
+    float: left;
+}
+
+.noStyle {
+}
