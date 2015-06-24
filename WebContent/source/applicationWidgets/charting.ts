@@ -332,7 +332,7 @@ function addYAxisLabel(chart, label, labelLengthLimit = 64) {
 
 // ---- Charts
 
-export function d3BarChart(graphBrowserInstance, question, storiesSelectedCallback) {
+export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesSelectedCallback) {
     // Collect data
     
     var allPlotItems = [];
@@ -476,7 +476,7 @@ export function d3BarChart(graphBrowserInstance, question, storiesSelectedCallba
 // Histogram reference for d3: http://bl.ocks.org/mbostock/3048450
 
 // choiceQuestion and choice may be undefined if this is just a simple histogram for all values
-export function d3HistogramChart(graphBrowserInstance, scaleQuestion, choiceQuestion, choice, storiesSelectedCallback) {
+export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestion, choiceQuestion, choice, storiesSelectedCallback) {
     // console.log("graphBrowserInstance, scaleQuestion", graphBrowserInstance, scaleQuestion);
     
     // TODO: Statistics
@@ -652,7 +652,7 @@ export function d3HistogramChart(graphBrowserInstance, scaleQuestion, choiceQues
 
 // TODO: Need to update this to pass instance for self into histograms so they can clear the selections in other histograms
 // TODO: Also need to track the most recent histogram with an actual selection so can save and restore that from trends report
-export function multipleHistograms(graphBrowserInstance, choiceQuestion, scaleQuestion, storiesSelectedCallback) {
+export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQuestion, scaleQuestion, storiesSelectedCallback) {
     var options = [];
     var index;
     if (choiceQuestion.displayType !== "checkbox" && choiceQuestion.displayType !== "checkboxes") {
@@ -673,9 +673,9 @@ export function multipleHistograms(graphBrowserInstance, choiceQuestion, scaleQu
     var chartPane = newChartPane(graphBrowserInstance, noStyle);
     
     var title = "" + nameForQuestion(scaleQuestion) + " vs. " + nameForQuestion(choiceQuestion) + " ...";
-    var content = domConstruct.toDom('<span style="text-align: center;"><b>' + title + '</b></span><br>');
+    var content = m("span", {style: "text-align: center;"}, [m("b", title), m("br")]);
     
-    chartPane.domNode.appendChild(content);
+    chartPane.children.push(content);
     
     var charts = [];
     for (index in options) {
@@ -686,8 +686,8 @@ export function multipleHistograms(graphBrowserInstance, choiceQuestion, scaleQu
     }
     
     // End the float
-    var clearFloat = domConstruct.create("br", {style: "clear: left;"});
-    chartPane.domNode.appendChild(clearFloat);
+    var clearFloat = m("br", {style: "clear: left;"});
+    chartPane.children.push(clearFloat);
     
     return charts;
 }
@@ -695,7 +695,7 @@ export function multipleHistograms(graphBrowserInstance, choiceQuestion, scaleQu
 // Reference for initial scatter chart: http://bl.ocks.org/bunkat/2595950
 // Reference for brushing: http://bl.ocks.org/mbostock/4560481
 // Reference for brush and tooltip: http://wrobstory.github.io/2013/11/D3-brush-and-tooltip.html
-export function d3ScatterPlot(graphBrowserInstance, xAxisQuestion, yAxisQuestion, storiesSelectedCallback) {
+export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, yAxisQuestion, storiesSelectedCallback) {
     // Collect data
     
     var allPlotItems = [];
@@ -786,7 +786,7 @@ export function d3ScatterPlot(graphBrowserInstance, xAxisQuestion, yAxisQuestion
     return chart;
 }
 
-export function d3ContingencyTable(graphBrowserInstance, xAxisQuestion, yAxisQuestion, storiesSelectedCallback) {
+export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuestion, yAxisQuestion, storiesSelectedCallback) {
     // Collect data
     
     var columnLabels = {};
@@ -973,7 +973,7 @@ function encodeBraces(optionText) {
     return optionText.replace("{", "&#123;").replace("}", "&#125;"); 
 }
 
-function setCurrentSelection(chart, graphBrowserInstance, extent) {
+function setCurrentSelection(chart, graphBrowserInstance: GraphHolder, extent) {
     // console.log("setCurrentSelection", extent, chart.width, chart.height, chart.chartType);
     
     /* Chart types and scaling
@@ -1001,7 +1001,7 @@ function setCurrentSelection(chart, graphBrowserInstance, extent) {
     var x2;
     var y1;
     var y2;
-    var selection;
+    var selection: GraphSelection;
     var width = chart.width;
     var height = chart.height;
     if (chart.chartType === "histogram" || chart.chartType === "scatterPlot") {
@@ -1041,7 +1041,7 @@ function setCurrentSelection(chart, graphBrowserInstance, extent) {
     }
 }
 
-function updateSelectedStories(chart, storyDisplayItemsOrClusters, graphBrowserInstance, storiesSelectedCallback, selectionTestFunction) {
+function updateSelectedStories(chart, storyDisplayItemsOrClusters, graphBrowserInstance: GraphHolder, storiesSelectedCallback, selectionTestFunction) {
     var extent = chart.brush.brush.extent();
     
     console.log("updateSelectedStories extent", extent);
@@ -1091,10 +1091,10 @@ export function restoreSelection(chart, selection) {
     return true;
 }
 
-function newChartPane(graphBrowserInstance, style) {
-    var chartPane = new ContentPane({style: style});
+function newChartPane(graphBrowserInstance: GraphHolder, style): _mithril.MithrilVirtualElement {
+    var chartPane = m("div", {style: style});
     graphBrowserInstance.chartPanes.push(chartPane);
-    graphBrowserInstance.graphResultsPane.addChild(chartPane);
-    
+    graphBrowserInstance.graphResultsPane.children.push(chartPane);
+
     return chartPane;
 }
