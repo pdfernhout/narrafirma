@@ -176,11 +176,7 @@ class ClusteringDiagram {
     calculateView(args) {
         var entryDialog = [];
         if (this.showEntryDialog) {
-            entryDialog.push(m("div", [
-                "Entry dialog",
-                m("br"),
-                m("button", {onclick: () => { this.showEntryDialog = false; }}, "Close")
-            ]));
+            entryDialog = this.buildEntryDialog();
         }
         
         return m("div", [
@@ -407,6 +403,22 @@ class ClusteringDiagram {
         // alert("This should open a dialog");
         
         this.showEntryDialog = true;
+    }
+    
+    buildEntryDialog(item) {
+        /*
+        return m("div", [
+            "Entry dialog 2",
+            m("br"),
+            m("button", {onclick: () => { this.showEntryDialog = false; }}, "Close")
+        ]);
+        */
+
+       return m("div", [
+            "Entry dialog 2",
+            m("br"),
+            m("button", {onclick: () => { this.showEntryDialog = false; }}, "Close")
+        ]);
         
         /*
     
