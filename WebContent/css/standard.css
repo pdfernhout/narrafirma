@@ -71,21 +71,21 @@ textarea, input, select { /* override because expanded in survey */
 }
 
 .narrafirma-serverstatus-waiting {
-	color: 231f20;
+	color: #231f20;
 	font-weight: 700;
 	text-shadow: 2px 2px yellow;
 	border: 2px solid #b2c07f; /* so the name doesn't shift when the red border appears */
 }
 
 .narrafirma-serverstatus-waiting-last-error {
-	color: 231f20;
+	color: #231f20;
 	border: 2px solid red;
 	font-weight: 700;
 	text-shadow: 2px 2px yellow;
 }
 
 .narrafirma-serverstatus-failure {
-	color: 231f20;
+	color: #231f20;
 	border: 2px solid red;
 	font-weight: 700;
 	text-shadow: 2px 2px red;
