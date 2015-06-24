@@ -681,3 +681,10 @@ table.filterTable td {
   background: #fff;
   overflow: auto;
 }
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ graph browser ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.graphBrowserSelect {
+    width: 40%;
+    max-width: 40%
+}
