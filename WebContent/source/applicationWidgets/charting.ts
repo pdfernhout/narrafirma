@@ -1071,7 +1071,7 @@ function updateSelectedStories(chart, storyDisplayItemsOrClusters, graphBrowserI
     });
     if (storiesSelectedCallback) {
         console.log("updateSelectedStories doing callback", selectedStories);
-        storiesSelectedCallback(graphBrowserInstance, selectedStories);
+        storiesSelectedCallback(selectedStories);
     }
 }
 
