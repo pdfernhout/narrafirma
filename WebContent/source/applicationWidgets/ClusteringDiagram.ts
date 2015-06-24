@@ -172,7 +172,7 @@ class ClusteringDiagram {
     calculateView(args) {
         var entryDialog = [];
         if (this.showEntryDialog) {
-            entryDialog .push(this.buildEntryDialog());
+            entryDialog.push(this.buildEntryDialog());
         }
         
         var textForItemName = "";
