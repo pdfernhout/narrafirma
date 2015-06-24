@@ -38,10 +38,10 @@
             "displayPrompt": "<input type=\"file\" id=\"csvFileLoader\" name=\"files\" title=\"Load File\" style=\"display:none\"/>"
         },
         {
-            "id": "project_exportSToryFormAndDataToCSV",
+            "id": "project_importStoryFormAndDataFromCSV",
             "valueType": "none",
             "displayType": "button",
-            "displayConfiguration": "exportSToryFormAndDataToCSV",
+            "displayConfiguration": "importCSVQuestionnaire",
             "displayPrompt": "Import Story Form from CSV File ..."
         },
         {
