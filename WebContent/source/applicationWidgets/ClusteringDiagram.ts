@@ -1,15 +1,10 @@
 /*jslint browser: true */
 import d3 = require("d3");
 import generateRandomUuid = require("../pointrel20150417/generateRandomUuid");
+import dialogSupport = require("../panelBuilder/dialogSupport");
 import m = require("mithril");
 
-// TODO: Fix this!
-var dialogSupport = null;
-
 "use strict";
-
-// Resources:
-// # http://dojotdg.zaffra.com/2009/03/dojo-now-with-drawing-tools-linux-journal-reprint/
 
 // TODO: Maybe add tooltip with notes for item? And then don't display item info at bottom?
 // TODO: Select and move groups of items
@@ -103,12 +98,12 @@ class ClusteringDiagram {
     idOfWidget: string = null;
     modelForStorage = null;
     diagram = null;
-    divForResizing = null;
-    _mainSurface = null;
-    mainSurface = null;
-    itemToDisplayObjectMap = {};
+    divForResizing: HTMLElement = null;
+    _mainSurface: d3.Selection<any> = null;
+    mainSurface: d3.Selection<any> = null;
+    itemToDisplayObjectMap: {key: string; element: d3.Selection<any>} = <any>{};
     
-    d3DivForResizing = null;
+    d3DivForResizing: d3.Selection<any> = null;
     background = null;
     
     showEntryDialog = false;
@@ -363,11 +358,10 @@ class ClusteringDiagram {
         var displayObject = this.itemToDisplayObjectMap[item.uuid];
         if (typeOfChange === "delete") {
             delete this.itemToDisplayObjectMap[item.uuid];
-            this.mainSurface.remove(displayObject);
-            displayObject.destroy();
+            displayObject.remove();
             return;
         }
-        this.mainSurface.remove(displayObject);
+        displayObject.remove();
         var newDisplayObject = this.addDisplayObjectForItem(this.mainSurface, item);
         this.itemToDisplayObjectMap[item.uuid] = newDisplayObject;
     }
@@ -605,7 +599,7 @@ class ClusteringDiagram {
     
     recreateDisplayObjectsForAllItems() {
         // console.log("recreateDisplayObjectsForAllItems");
-        this.itemToDisplayObjectMap = {};
+        this.itemToDisplayObjectMap = <any>{};
         this.mainSurface.selectAll("*").remove();
         // console.log("before forEach this:", this);
         var thisObject = this;
@@ -648,9 +642,11 @@ class ClusteringDiagram {
         if (this.lastSelectedItem) {
             // console.log("lastSelected", this.lastSelectedItem);
             var lastSelectedDisplayObject = this.itemToDisplayObjectMap[this.lastSelectedItem.uuid];
-            lastSelectedDisplayObject.circle
-                // .style("stroke", lastSelectedDisplayObject.borderColor)
-                .style("stroke-width", lastSelectedDisplayObject.borderWidth);
+            if (lastSelectedDisplayObject) {
+                lastSelectedDisplayObject.circle
+                    // .style("stroke", lastSelectedDisplayObject.borderColor)
+                    .style("stroke-width", lastSelectedDisplayObject.borderWidth);
+            }
         }
         if (item) {
             var displayObject = this.itemToDisplayObjectMap[item.uuid];
