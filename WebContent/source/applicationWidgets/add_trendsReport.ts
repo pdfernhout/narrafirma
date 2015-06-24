@@ -6,6 +6,7 @@ import surveyCollection = require("../surveyCollection");
 import topic = require("../pointrel20150417/topic");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
+import m = require("mithril");
 
 "use strict";
 
@@ -472,7 +473,40 @@ function resetGraphSelection(graphBrowserInstance) {
     charting.restoreSelection(graph, selection);
 }
 
-function add_trendsReport(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
+class PatternBrowser {
+    
+    static controller(args) {
+        console.log("Making PatternBrowser: ", args);
+        return new PatternBrowser();
+    }
+    
+    static view(controller, args) {
+        console.log("PatternBrowser view called");
+        
+        return controller.calculateView(args);
+    }
+    
+    calculateView(args) {
+        console.log("%%%%%%%%%%%%%%%%%%% PatternBrowser view called");
+        var panelBuilder: PanelBuilder = args.panelBuilder;
+    
+        return m("div", "PatternBrowser work in progress...");
+    }
+}
+
+
+function add_trendsReport(panelBuilder: PanelBuilder, model, fieldSpecification) {
+    var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
+    
+    var patternBrowser = m.component(<any>PatternBrowser, {panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
+ 
+    return m("div", [
+        prompt,
+       patternBrowser
+     ]);
+}
+    
+function other() {
     var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
 
     var graphResultsPane = new ContentPane({
