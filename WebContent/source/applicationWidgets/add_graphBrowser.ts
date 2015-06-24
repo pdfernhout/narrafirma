@@ -21,15 +21,6 @@ function storiesSelected(graphBrowserInstance, selectedStories) {
     console.log("Stories selected", selectedStories);
 }
 
-function insertGraphBrowser(panelBuilder: PanelBuilder, model, fieldSpecification) {       
-    var currentQuestionnaireSubscription = choiceModel.watch(choiceField, currentStoryCollectionChanged.bind(null, graphBrowserInstance));        
-    // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
-    contentPane.own(currentQuestionnaireSubscription);
-    
-    xAxisSelect.on("change", updateGraph.bind(null, graphBrowserInstance));  
-    yAxisSelect.on("change", updateGraph.bind(null, graphBrowserInstance));
-}
-
 // TODO: duplicate code copied from add_storyBrowser.ts
 function getCurrentStoryCollectionIdentifier(args) {
     var panelBuilder = args.panelBuilder;
@@ -47,38 +38,25 @@ function getCurrentStoryCollectionIdentifier(args) {
     return storyCollectionIdentifier;
 }
 
-/*
-// TODO: duplicate code copied from add_storyBrowser.ts
-function getQuestionDataForSelection(questions, event) {
-    var newValue = event.target.value;
-     
-    var question = null;
-    
-    for (var index = 0; index < questions.length; index++) {
-        var questionToCheck = questions[index];
-        if (questionToCheck.id === newValue) {
-            question = questionToCheck;
-            break;
-        }
-    }
-    
-    //console.log("filterPaneQuestionChoiceChanged", question);
-    
-    if (!question && newValue) console.log("could not find question for id", newValue);
-    
-    return question; 
-}
-*/
-
 class GraphBrowser {
     xAxisSelectValue = null;
     yAxisSelectValue = null;
     questions = [];
     choices = [];
-    allStories = [];
     currentQuestionnaire = null;
     storyCollectionIdentifier: string = null;
-    chartPanes = [];
+    
+    graphHolder: GraphHolder;
+    
+    constructor() {
+        this.graphHolder = {
+            graphResultsPane: m("div.narrafirma-graph-results-pane"),
+            chartPanes: [],
+            allStories: [],
+            currentGraph: null,
+            currentSelectionExtentPercentages: null
+        };
+    }
     
     static controller(args) {
         console.log("Making GraphBrowser: ", args);
@@ -98,6 +76,8 @@ class GraphBrowser {
     calculateView(args) {
         console.log("%%%%%%%%%%%%%%%%%%% GraphBrowser view called", this);
 
+        // TODO: Need to track currentQuestionnaire?
+        
         // TODO: Probably need to handle tracking if list changed so can keep sorted list...
         this.storyCollectionIdentifier = getCurrentStoryCollectionIdentifier(args);
         console.log("storyCollectionIdentifier", this.storyCollectionIdentifier);
@@ -118,7 +98,7 @@ class GraphBrowser {
             " versus ",
             m("select.graphBrowserSelect", {onchange: (event) => { this.yAxisSelectValue = event.target.value; this.updateGraph(); }}, this.calculateOptionsForChoices(this.yAxisSelectValue)),
             m("br"),
-            m("div.narrafirma-graph-results-pane", this.chartPanes)
+            this.graphHolder.graphResultsPane
         ]);
         
         /*
@@ -164,8 +144,8 @@ class GraphBrowser {
     loadLatestStories() {
         console.log("loadLatestStories", this);
         
-        this.allStories = surveyCollection.getStoriesForStoryCollection(this.storyCollectionIdentifier);
-        console.log("allStories", this.allStories);
+        this.graphHolder.allStories = surveyCollection.getStoriesForStoryCollection(this.storyCollectionIdentifier);
+        console.log("allStories", this.graphHolder.allStories);
     
         this.updateGraph();
     }
@@ -180,10 +160,11 @@ class GraphBrowser {
         if (!xAxisQuestionID && !yAxisQuestionID) return; // alert("Please select a question for one or both graph axes");
         
         // Remove old graph(s)
-        while (this.chartPanes.length) {
-            var chartPane = this.chartPanes.pop();
-            chartPane.destroyRecursive(false);
+        while (this.graphHolder.chartPanes.length) {
+            this.graphHolder.chartPanes.pop();
+            // TODO: Do these need to be destroyed or freed somehow?
         }
+        this.graphHolder.graphResultsPane = m("div.narrafirma-graph-results-pane");
         
         var xAxisQuestion = questionForID(this.questions, xAxisQuestionID);
         var yAxisQuestion = questionForID(this.questions, yAxisQuestionID);
@@ -214,22 +195,22 @@ class GraphBrowser {
         if (xType === "choice" && yType === null) {
             console.log("plot choice: Bar graph");
             console.log("barGraph", xAxisQuestion);
-            charting.d3BarChart(this, xAxisQuestion, storiesSelected);
+            charting.d3BarChart(this.graphHolder, xAxisQuestion, storiesSelected);
         } else if (xType === "choice" && yType === "choice") {
             console.log("plot choice: Contingency table");
-            charting.d3ContingencyTable(this, xAxisQuestion, yAxisQuestion, storiesSelected);
+            charting.d3ContingencyTable(this.graphHolder, xAxisQuestion, yAxisQuestion, storiesSelected);
         } else if (xType === "choice" && yType === "scale") {
             console.log("plot choice: Multiple histograms");
-            charting.multipleHistograms(this, xAxisQuestion, yAxisQuestion, storiesSelected);
+            charting.multipleHistograms(this.graphHolder, xAxisQuestion, yAxisQuestion, storiesSelected);
         } else if (xType === "scale" && yType === null) {
             console.log("plot choice: Histogram");
-            charting.d3HistogramChart(this, null, null, xAxisQuestion, storiesSelected);
+            charting.d3HistogramChart(this.graphHolder, null, null, xAxisQuestion, storiesSelected);
         } else if (xType === "scale" && yType === "choice") {
             console.log("plot choice: Multiple histograms");
-            charting.multipleHistograms(this, yAxisQuestion, xAxisQuestion, storiesSelected);
+            charting.multipleHistograms(this.graphHolder, yAxisQuestion, xAxisQuestion, storiesSelected);
         } else if (xType === "scale" && yType === "scale") {
             console.log("plot choice: Scatter plot");
-            charting.d3ScatterPlot(this, xAxisQuestion, yAxisQuestion, storiesSelected);
+            charting.d3ScatterPlot(this.graphHolder, xAxisQuestion, yAxisQuestion, storiesSelected);
         } else {
             console.log("ERROR: Unexpected graph type");
             alert("ERROR: Unexpected graph type");
