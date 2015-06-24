@@ -150,7 +150,7 @@ class GraphBrowser {
         this.choices = surveyCollection.optionsForAllQuestions(this.questions, "excludeTextQuestions");
 
         // update all stories for the specific collection and update graph
-        // TODO: this.loadLatestStories();
+        this.loadLatestStories();
     }
     
     loadLatestStories() {
