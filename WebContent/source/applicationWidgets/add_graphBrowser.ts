@@ -182,9 +182,6 @@ class GraphBrowser {
         var xAxisQuestionID = this.xAxisSelectValue;
         var yAxisQuestionID = this.yAxisSelectValue;
         
-        // TODO: Translated or improve checking or provide alternate handling if only one selected
-        if (!xAxisQuestionID && !yAxisQuestionID) return; // alert("Please select a question for one or both graph axes");
-        
         // Remove old graph(s)
         while (this.graphHolder.chartPanes.length) {
             var chartPane = this.graphHolder.chartPanes.pop();
@@ -198,7 +195,10 @@ class GraphBrowser {
         }
         
         this.selectedStories = [];
-         
+        
+        // TODO: Translated or improve checking or provide alternate handling if only one selected
+        if (!xAxisQuestionID && !yAxisQuestionID) return; // alert("Please select a question for one or both graph axes");
+          
         var xAxisQuestion = questionForID(this.questions, xAxisQuestionID);
         var yAxisQuestion = questionForID(this.questions, yAxisQuestionID);
         
@@ -237,7 +237,7 @@ class GraphBrowser {
             charting.multipleHistograms(this.graphHolder, xAxisQuestion, yAxisQuestion, this.storiesSelected.bind(this));
         } else if (xType === "scale" && yType === null) {
             console.log("plot choice: Histogram");
-            charting.d3HistogramChart(this.graphHolder, null, null, xAxisQuestion, this.storiesSelected.bind(this));
+            charting.d3HistogramChart(this.graphHolder, xAxisQuestion, null, null, this.storiesSelected.bind(this));
         } else if (xType === "scale" && yType === "choice") {
             console.log("plot choice: Multiple histograms");
             charting.multipleHistograms(this.graphHolder, yAxisQuestion, xAxisQuestion, this.storiesSelected.bind(this));
