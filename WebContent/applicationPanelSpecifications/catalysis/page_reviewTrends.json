@@ -42,19 +42,6 @@
             "valueType": "none",
             "displayType": "trendsReport",
             "displayPrompt": "Trends report"
-        },
-        {
-            "id": "mockupTrendsLabel_unfinished",
-            "valueType": "none",
-            "displayType": "label",
-            "displayPrompt": "(Unfinished: This area will show the most significant statistical trends."
-        },
-        {
-            "id": "mockup_trends",
-            "valueType": "none",
-            "displayType": "image",
-            "displayConfiguration": "images/mockups/mockupTrends.png",
-            "displayPrompt": "It will look something like this.)"
         }
     ]
 }
