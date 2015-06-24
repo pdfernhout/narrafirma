@@ -99,13 +99,10 @@ class ClusteringDiagram {
     
     autosave: boolean = false;
     lastSelectedItem = null;
-    mainContentPane = null;
     diagramName: string = null;
     idOfWidget: string = null;
     modelForStorage = null;
     diagram = null;
-    textBox = null;
-    urlBox = null; 
     divForResizing = null;
     _mainSurface = null;
     mainSurface = null;
@@ -136,7 +133,6 @@ class ClusteringDiagram {
         console.log("Creating ClusteringDiagram", model, id, diagramName);
     
         this.autosave = autosave;
-        // this.mainContentPane = contentPane;
         this.diagramName = diagramName;
         this.idOfWidget = id;
         this.modelForStorage = model;
@@ -164,11 +160,7 @@ class ClusteringDiagram {
         
         this.setupMainButtons();
     
-        /* TODO: Make this work!!!
         this.setupMainSurface();
-        
-        */
-        this.addItemDisplay();
     }
     
     static controller(args) {
@@ -188,15 +180,30 @@ class ClusteringDiagram {
             entryDialog .push(this.buildEntryDialog());
         }
         
+        var textForItemName = "";
+        var textForItemUrl = "";
+        if (this.lastSelectedItem) {
+            // TODO: Translate labels
+            textForItemName = "Name: " + (this.lastSelectedItem.text || "");
+            textForItemUrl = "Notes: " + (this.lastSelectedItem.url || "");
+        }
+        
         return m("div", [
             "ClusteringDiagram unfinished conversion to Mithril", 
             m("br"),
             this.mainButtons,
-            m("div", "A diagram wil go here..."),
-            this.textBox,
-            this.urlBox,
+            m("div", {config: this.configSurface.bind(this)}),
+            m("div", {style: "text-overflow: ellipsis;"}, textForItemName),
+            m("div", {style: "text-overflow: ellipsis;"}, textForItemUrl),
             entryDialog 
         ]);
+    }
+    
+    configSurface(element: HTMLElement, isInitialized: boolean, context: any, vdom: _mithril.MithrilVirtualElement) {
+        console.log("configSurface called");
+        if (!isInitialized) {
+            element.appendChild(this.divForResizing);
+        }
     }
     
     incrementChangesCount() {
@@ -215,8 +222,6 @@ class ClusteringDiagram {
         divForResizing.setAttribute("id", divUUID);
         divForResizing.setAttribute("style", "width: " + this.diagram.surfaceWidthInPixels + "px; height: " + this.diagram.surfaceHeightInPixels + "px; border: solid 1px; position: relative");
        
-        this.mainContentPane.domNode.appendChild(divForResizing);
-        
         var width = this.diagram.surfaceWidthInPixels;
         var height = this.diagram.surfaceHeightInPixels;
         
@@ -289,13 +294,6 @@ class ClusteringDiagram {
         this.background.attr('width', newWidth).attr('height', newHeight);
     }
     
-    newBreak() {
-        var newBr = document.createElement("br");
-        this.mainContentPane.domNode.appendChild(newBr);
-    
-        return newBr;
-    }
-    
     newButton(name, label, callback) {
         var button = m("button", {onclick: callback, "class": name}, label);
         this.mainButtons.push(button);
@@ -354,11 +352,6 @@ class ClusteringDiagram {
         this.newButton("sourceButton", "Diagram Source", () => {
             this.openSourceDialog(JSON.stringify(this.diagram, null, 2));
         });
-    }
-    
-    addItemDisplay() {    
-        this.textBox = m("div", {style: "text-overflow: ellipsis;"}, "");
-        this.urlBox = m("div", {style: "text-overflow: ellipsis;"}, "");
     }
     
     // typeOfChange should be either "delete" or "update"
@@ -627,19 +620,6 @@ class ClusteringDiagram {
         this.modelForStorage.set(this.diagramName, this.diagram);
     }
     
-    updateItemDisplay(item) {
-        if (!item) {
-            this.textBox.set("content", "");
-            this.urlBox.set("content", "");
-            return;
-        }
-        // this.textBox.set("value", item.text);
-        // this.urlBox.set("value", item.url);
-        // TODO: Translate labels
-        this.textBox.set("content", "Name: " + (item.text || ""));
-        this.urlBox.set("content", "Notes: " + (item.url || ""));
-    }
-    
     newItem(text = null, url = "") {
         if (text === null) text = "Untitled#" + (++this.itemsMade);
         var item = {
@@ -679,7 +659,9 @@ class ClusteringDiagram {
                 .style("stroke-width", displayObject.borderWidth * 2);
         }
         this.lastSelectedItem = item;
-        this.updateItemDisplay(item);
+        
+        // Queue redrawing as this was selected via D3 not Mithril
+        m.redraw();
     }
     
     addDisplayObjectForItem(surface, item) {
