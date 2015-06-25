@@ -184,8 +184,6 @@ class ClusteringDiagram {
         }
         
         return m("div", [
-            "ClusteringDiagram unfinished conversion to Mithril", 
-            m("br"),
             this.mainButtons,
             m("div", {config: this.configSurface.bind(this)}),
             m("div", {style: "text-overflow: ellipsis;"}, textForItemName),
