@@ -259,18 +259,18 @@ class GridWithItemPanel {
     
     static controller(args) {
         console.log("Making ItemPanel: ", args);
-        return new Grid(args);
+        return new GridWithItemPanel(args);
     }
     
-    static view(controller, args) {
+    static view(controller: GridWithItemPanel, args) {
         console.log("Grid view called");
         
-        return controller.calculateView(args);
+        return controller.calculateView();
     }
     
-    calculateView(args) {
-        var panelBuilder = args.panelBuilder;
-        var prompt = panelBuilder.buildQuestionLabel(args.fieldSpecification);
+    calculateView() {
+        var panelBuilder = this.panelBuilder;
+        var prompt = panelBuilder.buildQuestionLabel(this.fieldSpecification);
         
         var columnHeaders = this.columns.map((column) => {
             return m("th[data-sort-by=" + column.field  + "]", {"text-overflow": "ellipsis"}, column.label);
