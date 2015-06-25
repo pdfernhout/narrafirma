@@ -1,7 +1,7 @@
 import browser = require("./browser");
 import translate = require("./translate");
 import m = require("mithril");
-import gridWithItemPanelInMithril = require("./gridWithItemPanelInMithril");
+import GridWithItemPanel = require("./GridWithItemPanel");
 import standardWidgets = require("./standardWidgets");
 
 "use strict";
@@ -95,6 +95,10 @@ function add_functionResult(panelBuilder: PanelBuilder, model, fieldSpecificatio
     }
     */
 }
+  
+function add_grid(panelBuilder, model, fieldSpecification) {
+    return m.component(<any>GridWithItemPanel, {panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
+}
 
 function addStandardPlugins() {
     // shared with survey builder
@@ -114,7 +118,7 @@ function addStandardPlugins() {
     PanelBuilder.addPlugin("button", addButton);
     
     PanelBuilder.addPlugin("functionResult", add_functionResult);
-    PanelBuilder.addPlugin("grid", gridWithItemPanelInMithril.add_grid);
+    PanelBuilder.addPlugin("grid", add_grid);
     PanelBuilder.addPlugin("html", add_html);
     PanelBuilder.addPlugin("image", add_image);
 }

@@ -129,8 +129,8 @@ class ItemPanel {
     }
 }
 
-// Grid needs to be a component so it can maintain a local sorted list
-class Grid {
+// GridWithItemPanel needs to be a component so it can maintain a local sorted list
+class GridWithItemPanel {
     
     gridConfiguration = null;
     data = [];
@@ -507,7 +507,5 @@ function isElementInViewport(parent, element) {
         elementRect.right <= parentRect.right
     );
 }
-    
-export function add_grid(panelBuilder, model, fieldSpecification) {
-    return m.component(<any>Grid, {panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
-}
+
+export = GridWithItemPanel;
