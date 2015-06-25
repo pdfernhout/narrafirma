@@ -232,6 +232,7 @@ function printHTML(htmlToPrint) {
     console.log(printHTML, htmlToPrint);
     var w = window.open();
     w.document.write(htmlToPrint);
+    w.document.close();
     // w.print();
     // w.close();
 }
