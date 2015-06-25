@@ -31,7 +31,7 @@ class TripleStore {
         this.subscriptions = [];
     }
     
-    add(a, b, c, callback) {
+    add(a, b, c, callback = undefined) {
         var triple = {
             a: a,
             b: b,
