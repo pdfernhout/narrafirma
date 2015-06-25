@@ -3,7 +3,7 @@ import surveyCollection = require("../surveyCollection");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import m = require("mithril");
-import gridWithItemPanelInMithril = require("../panelBuilder/gridWithItemPanelInMithril");
+import GridWithItemPanel = require("../panelBuilder/GridWithItemPanel");
 
 "use strict";
 
@@ -152,29 +152,29 @@ function getSelectedOptions(select) {
 }
 
 class Filter {
+    name: string = null;
     storyBrowser = null;
-    questions = [];
     selectedQuestion = null;
     answerOptionsForSelectedQuestion = [];
     selectedAnswers = {};
     
-    constructor(storyBrowser, questions) {
-        this.storyBrowser = storyBrowser;
-        this.questions = questions;
+    constructor(args) {
+        this.storyBrowser = args.storyBrowser;
+        this.name = args.name;
     }
     
     static controller(args) {
         console.log("Making Filter: ", args.name);
-        return new Filter(args.storyBrowser, args.questions);
+        return new Filter(args);
     }
     
     static view(controller, args) {
         console.log("Filter view called");
         
-        return controller.calculateView(args);
+        return controller.calculateView();
     }
         
-    calculateView(args) {
+    calculateView() {
         console.log("calculateView this", this);
         var choices = this.storyBrowser.choices || [];
         // console.log("^^^^^^^^^^^^ filter choices", choices);
@@ -196,7 +196,7 @@ class Filter {
         var isClearButtonDisabled = (this.selectedQuestion === null) || undefined;
          
         return m("div.filter", [
-            args.name,
+            this.name,
             m("br"),
             m("select", {onchange: this.filterPaneQuestionChoiceChanged.bind(this)}, selectOptions),
             m("button", {disabled: isClearButtonDisabled, onclick: this.clearFilterPane.bind(this)}, "Clear"),
@@ -220,10 +220,14 @@ class Filter {
         this.storyBrowser.setStoryListForCurrentFilters();
     }
     
-    clearFilterPane() {
+    resetChoices() {
         this.selectedQuestion = null;
         this.answerOptionsForSelectedQuestion = [];
         this.selectedAnswers = {};
+    }     
+        
+    clearFilterPane() {
+        this.resetChoices();
         this.storyBrowser.setStoryListForCurrentFilters();
     }
 };
@@ -269,49 +273,19 @@ class StoryBrowser {
     currentQuestionnaire = null;
     questions = [];
     choices = [];
-    stories = [];
+    allStories = [];
+    modelForGrid = {stories: []};
     itemPanelSpecification = null;
+    gridFieldSpecification = null;
+    
+    // Embedded components
     filter1: Filter;
     filter2: Filter;
     
-    constructor() {
-        this.filter1 = <any>m.component(<any>Filter, {name: "Filter 1", storyBrowser: this});
-        this.filter2 = <any>(m.component(<any>Filter, {name: "Filter 2", storyBrowser: this}));
-    }
-
-    static controller(args) {
-        console.log("Making StoryBrowser: ", args.name);
-        return new StoryBrowser();
-    }
+    grid: GridWithItemPanel = null;
     
-    static view(controller, args) {
-        console.log("StoryBrowser view called");
-        
-        return controller.calculateView(args);
-    }
-    
-    calculateView(args) {
-        console.log("StoryBrowser view");
-        var panelBuilder = args.panelBuilder;
-        
-        // TODO: Probably need to handle tracking if list changed so can keep sorted list...
-        this.storyCollectionIdentifier = getCurrentStoryCollectionIdentifier(args);
-        console.log("storyCollectionIdentifier", this.storyCollectionIdentifier);
-        
-        if (!this.storyCollectionIdentifier) {
-            return m("div", "Please select a story collection to view");
-        }
-        
-        this.currentStoryCollectionChanged(this.storyCollectionIdentifier);
-        
-        var prompt = args.panelBuilder.buildQuestionLabel(args.fieldSpecification);
-        
-        var filter = m("table.filterTable", m("tr", [
-            m("td", this.filter1),
-            m("td", this.filter2)
-        ]));
-
-        var gridFieldSpecification = {
+    constructor(args) {   
+        this.gridFieldSpecification = {
             id: "stories",
             displayConfiguration: {
                 itemPanelSpecification: this.itemPanelSpecification,
@@ -324,11 +298,59 @@ class StoryBrowser {
             }
         };
         
-        var grid = gridWithItemPanelInMithril.add_grid(panelBuilder, {stories: this.stories}, gridFieldSpecification);
+        this.filter1 = new Filter({name: "Filter 1", storyBrowser: this});
+        this.filter2 = new Filter({name: "Filter 2", storyBrowser: this});
+        this.grid = new GridWithItemPanel({panelBuilder: args.panelBuilder, model: this.modelForGrid, fieldSpecification: this.gridFieldSpecification});
+    }
+
+    static controller(args) {
+        console.log("Making StoryBrowser: ", args.name);
+        return new StoryBrowser(args);
+    }
+    
+    static view(controller, args) {
+        console.log("StoryBrowser view called");
         
-        var parts = [prompt, filter, grid];
+        return controller.calculateView(args);
+    }
+    
+    calculateView(args) {
+        console.log("StoryBrowser view");
+        var panelBuilder = args.panelBuilder;
         
-        // TODO: set class etc.
+        // Handling of caching of questions and stories
+        var storyCollectionIdentifier = getCurrentStoryCollectionIdentifier(args);
+        if (storyCollectionIdentifier !== this.storyCollectionIdentifier) {
+            // TODO: Maybe need to handle tracking if list changed so can keep sorted list?
+            this.storyCollectionIdentifier = storyCollectionIdentifier;
+            console.log("storyCollectionIdentifier changed", this.storyCollectionIdentifier);
+            this.currentStoryCollectionChanged(this.storyCollectionIdentifier);
+            
+            // What to do about resetting the filters?
+            this.filter1.resetChoices();
+            this.filter2.resetChoices();
+            
+            // Need to update grid for change
+            this.gridFieldSpecification.displayConfiguration.itemPanelSpecification = this.itemPanelSpecification;
+            this.modelForGrid.stories = this.allStories;
+            this.grid.updateDisplayConfigurationAndData(this.gridFieldSpecification);
+        }
+        
+        var prompt = args.panelBuilder.buildQuestionLabel(args.fieldSpecification);
+        
+        var parts;
+        
+        if (!this.storyCollectionIdentifier) {
+            parts = [m("div", "Please select a story collection to view")];
+        } else {
+            var filter = m("table.filterTable", m("tr", [
+                m("td", this.filter1.calculateView()),
+                m("td", this.filter2.calculateView())
+            ]));
+            
+            parts = [prompt, filter, this.grid.calculateView()];
+        }
+        
         return m("div", {"class": "questionExternal narrafirma-question-type-questionAnswer"}, parts);
     }
     
@@ -344,7 +366,7 @@ class StoryBrowser {
         this.choices = surveyCollection.optionsForAllQuestions(this.questions);
         
         // update all stories for the specific collection
-        this.stories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+        this.allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
         
         this.itemPanelSpecification = this.makeItemPanelSpecificationForQuestions(this.questions);
         
@@ -378,7 +400,7 @@ class StoryBrowser {
         return itemPanelSpecification;
     }
     
-    setStoryListForCurrentFilters() {
+    getFilteredStoryList() {
         // console.log("filter pressed", storyBrowserInstance);
         var question1Choice = this.filter1.selectedQuestion;
         var answers1Choices = this.filter1.selectedAnswers;
@@ -392,15 +414,18 @@ class StoryBrowser {
             return match1 && match2;
         };
         
-        var filteredResults = this.stories.filter(filterFunction);
-        
-        console.log("Filtered results", filteredResults);
-        // var newStore = GridWithItemPanel["newMemoryTrackableStore"](filteredResults.data, "_storyID");
-        // TODO: this.storyList.dataStoreChanged(filteredResults);
-        // console.log("finished setting list with newStore", newStore);
+        var filteredResults = this.allStories.filter(filterFunction);
+        return filteredResults;
     }
     
-    /* TODO: Probably need to implement somethign like this
+    setStoryListForCurrentFilters() {
+        var filteredResults = this.getFilteredStoryList();
+        console.log("Filtered results", filteredResults);
+        this.modelForGrid.stories = filteredResults;
+        // console.log("finished setting list with filtered results", filteredResults);
+    }
+    
+    /* TODO: Probably need to implement something like this
     function loadLatestStories(storyBrowserInstance, allStories) {
         // console.log("loadLatestStories", storyBrowserInstance, allStories);
         storyBrowserInstance.dataStore.setData(allStories);
