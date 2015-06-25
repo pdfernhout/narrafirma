@@ -70,30 +70,23 @@ function add_image(panelBuilder: PanelBuilder, model, fieldSpecification, callba
     ];
 }
 
-function calculate_function(panelBuilder: PanelBuilder, model, fieldSpecification) {
-    console.log("calculate_function called", fieldSpecification);
-    return panelBuilder.calculateFunctionResult(model, fieldSpecification);
-}
-
 function add_functionResult(panelBuilder: PanelBuilder, model, fieldSpecification, callback): any {
-    var calculate = calculate_function.bind(panelBuilder, null, model, fieldSpecification);
+    // This should now be triggered via a Mithril redraw...
     
-    var label = panelBuilder._add_calculatedText(panelBuilder, null, fieldSpecification, calculate);
+    var value = panelBuilder.calculateFunctionResult(model, fieldSpecification);
     
-    var functionName = fieldSpecification.displayConfiguration;
+    var baseText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
+ 
+    var calculatedText = panelBuilder.calculateFunctionResult(model, fieldSpecification);
     
-    /*
-    TODO: This should now be triggered via a Mithril redraw... Or maybe this should queue a redraw???
-    import topic = require("../../pointrel20150417/topic");
-    if (_.isString(functionName)) {
-        // Subscribe for updates on the same topic as the function name
-        var subscription = topic.subscribe(functionName, panelBuilder.updateLabelUsingCalculation.bind(panelBuilder, label["updateInfo"]));
-    
-        // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
-        // TODO: Using cast to any as workaround for probably incorrect Dojo type definition
-        (<any>label).own(subscription);
+    var newLabelText;
+    if (baseText.indexOf(ResultTagToReplace) !== -1) {
+        newLabelText = baseText.replace(ResultTagToReplace, calculatedText);
+    } else {
+        newLabelText = baseText + " " + calculatedText;
     }
-    */
+    
+    return m("div.functionResult", newLabelText);
 }
   
 function add_grid(panelBuilder, model, fieldSpecification) {
@@ -170,14 +163,11 @@ class PanelBuilder {
     }
     
     addMissingWidgetPlaceholder(panelBuilder, contentPane, model, fieldSpecification) {
-        var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
-        
-        var label = new ContentPane({
-            // content: translate(id + "::prompt", fieldSpecification.displayPrompt)
-            content: "<b>Unsupported widget type: " + fieldSpecification.displayType + " for: " + fieldSpecification.id + "</b>"
-        });
-        label.placeAt(questionContentPane);
-        return label;
+        var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
+        return m("div", [
+            prompt,
+            m("b", "Unsupported widget type: " + fieldSpecification.displayType + " for: " + fieldSpecification.id)
+         ]);
     }
     
     buildField(model, fieldSpecification) {
@@ -241,16 +231,6 @@ class PanelBuilder {
             fieldSpecifications = panelOrPanelID.panelFields;
         }
         return this.buildFields(fieldSpecifications, model);
-    }
-    
-    addHTML(contentPane, htmlText) {
-       var node = domConstruct.toDom(htmlText);
-       domConstruct.place(node, contentPane.domNode);
-    }
-    
-    newContentPane(configuration = null) {
-        if (!configuration) return new ContentPane();
-        return new ContentPane(configuration);
     }
     
     // Set this correctly before building a page to provide default help when it is not in a field specification
@@ -417,7 +397,7 @@ class PanelBuilder {
     }
     */
     
-    addAllowedHTMLToPrompt(text) {
+    private addAllowedHTMLToPrompt(text) {
         // TODO: Sanitize this html, making something like the above work
         return m.trust(text);
     }
@@ -427,98 +407,6 @@ class PanelBuilder {
             // TODO: Generalize this css class name
             m("span", {"class": "questionPrompt"}, this.addAllowedHTMLToPrompt(fieldSpecification.displayPrompt))
         ];
-    }
-
-    
-    createQuestionContentPaneWithPrompt(contentPane, fieldSpecification) {
-        // triangle&#8227; 
-        // double arrow &#187;
-        // Arrow with hook &#8618;
-        // Three rightwards arrows &#21F6; (doesn't work)
-        // "*** " + 
-        if (!fieldSpecification) throw new Error("null, undefined, or empty string for fieldSpecification");
-        if (!fieldSpecification.id) throw new Error("null, undefined, or empty string for fieldSpecification id: " + JSON.stringify(fieldSpecification));
-        
-        var id = fieldSpecification.id;
-   
-        var questionContentPane = new ContentPane();
-        
-        domClass.add(questionContentPane.domNode, "questionExternal");
-        
-        if (fieldSpecification.displayClass) {
-            domClass.add(questionContentPane.domNode, fieldSpecification.displayClass);
-        }
-        
-        questionContentPane.setAttribute("data-js-question-id", id);
-        // questionContentPane.setAttribute("data-js-question-type", question.displayType);
-        
-        var questionText = translate(id + "::prompt", fieldSpecification.displayPrompt);
-
-        var content = questionText;
-        if (this.addHelpIcons) {
-            content = this.htmlForInformationIcon(this.helpPageURLForField(fieldSpecification)) + "&nbsp;&nbsp;" + content;
-        }
-        if (questionText) {
-            var label = new ContentPane({
-                content: content
-            });
-            label.placeAt(questionContentPane);
-            domClass.add(label.domNode, "questionPrompt");
-        }
-        
-        questionContentPane.placeAt(contentPane);
-        
-        /* var helpWidget = add_button(questionContentPane, null, "button_help", [], function() {
-            alert("Help!");
-        });
-        */
-        
-        var internalContentPane = new ContentPane();
-        domClass.add(internalContentPane.domNode, "questionInternal");
-        internalContentPane.placeAt(questionContentPane);
-
-        return internalContentPane;
-    }
-          
-    ////// Support for fields that recalculate based on other fields
-    
-    updateLabelUsingCalculation(updateInfo) { 
-        // console.log("recalculating label", data);
-        if (!updateInfo) {
-            throw new Error("updateLabelUsingCalculation: updateInfo should not be empty");
-        }
-        if (!_.isFunction(updateInfo.calculate)) {
-            throw new Error("updateLabelUsingCalculation: updateInfo.calculate should be a function: " + JSON.stringify(updateInfo));
-        }
-        var calculatedText = updateInfo.calculate();
-        // console.log("calculatedText ", calculatedText);
-        var baseText = updateInfo.baseText;
-        var newLabelText;
-        if (baseText.indexOf(ResultTagToReplace) !== -1) {
-            newLabelText = baseText.replace(ResultTagToReplace, calculatedText);
-        } else {
-            newLabelText = baseText + " " + calculatedText;
-        }
-        updateInfo.label.set("content", newLabelText);
-        // console.log("recalculated label: ", updateInfo.id, calculatedText);
-    }
-
-    _add_calculatedText(panelBuilder, contentPane, fieldSpecification, calculate) {
-        if (!calculate) {
-            throw new Error("_add_calculatedText: calculate parameter should not be empty");
-        }
-
-        var baseText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
-        var label = new ContentPane();
-        label.placeAt(contentPane);
-        
-        // TODO: How do these updates get removed????
-        var updateInfo = {"id": fieldSpecification.id, "label": label, "baseText": baseText, "calculate": calculate};
-        label["updateInfo"] = updateInfo;
-        
-        this.updateLabelUsingCalculation(updateInfo);
-
-        return label;
     }
 }
 
