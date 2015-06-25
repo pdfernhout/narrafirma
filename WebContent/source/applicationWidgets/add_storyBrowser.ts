@@ -230,7 +230,7 @@ class Filter {
         this.resetChoices();
         this.storyBrowser.setStoryListForCurrentFilters();
     }
-};
+}
 
 function getQuestionDataForSelection(questions, event) {
     var newValue = event.target.value;
@@ -438,7 +438,7 @@ class StoryBrowser {
         setStoryListForCurrentFilters(storyBrowserInstance);
     }
     */
-};
+}
 
 function add_storyBrowser(panelBuilder: PanelBuilder, model, fieldSpecification) {
     return m.component(<any>StoryBrowser, {panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
