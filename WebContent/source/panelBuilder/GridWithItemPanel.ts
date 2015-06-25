@@ -1,8 +1,30 @@
 import m = require("mithril");
 import translate = require("./translate");
 import PanelBuilder = require("panelBuilder/PanelBuilder");
+import generateRandomUuid = require("../pointrel20150417/generateRandomUuid");
 
 "use strict";
+
+// This defines a gui component which has a grid, some buttons, and a detail panel do display the currently selected item or enter a new item
+
+// TODO: Probably need to prevent user surveys from having a question with a short name of "_id".
+
+// Possible configuration options
+/*
+var configuration = {
+    viewButton: true,
+    addButton: true,
+    removeButton: true,
+    editButton: true,
+    duplicateButton: true,
+    moveUpDownButtons: true,
+    navigationButtons: true,
+    includeAllFields: false, // Or ["fieldName1", "fieldName2", ...]
+    customButton: {???},
+    validateAdd: "methodName",
+    validateEdit: "methodName"
+};
+*/
 
 function computeColumnsForItemPanelSpecification(itemPanelSpecification, configuration) {
     // var self = this;
@@ -52,9 +74,9 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, configu
         // console.log("includeField", fieldSpecification);
         var newColumn =  {
             field: fieldSpecification.id,
-            label: translate(fieldSpecification.id + "::shortName", fieldSpecification.displayName),
+            label: translate(fieldSpecification.id + "::shortName", fieldSpecification.displayName)
             // formatter: self.formatObjectsIfNeeded.bind(this),
-            sortable: !configuration.moveUpDownButtons
+            // sortable: !configuration.moveUpDownButtons
         };
         columns.push(newColumn);
         // console.log("newColumn", newColumn);
@@ -63,12 +85,22 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, configu
     return columns;
 }
 
+// TODO: This code is not currently used and probably can be removed
+function formatObjectsIfNeeded(item) {
+    if (_.isString(item)) return item;
+    if (item === undefined) return "";
+    if (item === null) return "";
+    return JSON.stringify(item);
+}
+
 // Sorts function derived from: http://lhorie.github.io/mithril-blog/vanilla-table-sorting.html
-function sorts(controller, list) {
+function sorts(controller: GridWithItemPanel, list) {
     return {
         onclick: function(e) {
             var prop = e.target.getAttribute("data-sort-by");
             if (prop) {
+                // Don't sort if have move up/down buttons
+                if (controller.gridConfiguration.moveUpDownButtons) return;
                 console.log("Sorting by", prop);
                 var first = list[0];
                 list.sort(function(a, b) {
@@ -137,11 +169,11 @@ class GridWithItemPanel {
     columns = [];
     fieldSpecification = null;
     itemPanelSpecification = null;
-    idProperty = "_id";
+    idProperty: string = "_id";
     model = null;
-    panelBuilder = null;
+    panelBuilder: PanelBuilder = null;
     
-    // viewing, editing
+    // viewing, editing, adding
     displayMode = null;
     
     // TODO: Multiple select
@@ -217,14 +249,6 @@ class GridWithItemPanel {
         
         this.itemPanelSpecification = itemPanelSpecification;
         this.columns = computeColumnsForItemPanelSpecification(itemPanelSpecification, displayConfiguration);
-     
-        this.isEditing = function() {
-            return (this.displayMode === "editing") && this.selectedItem;
-        };
-        
-        this.isViewing = function() {
-            return (this.displayMode === "viewing") && this.selectedItem;
-        };
         
         // viewing, editing
         this.displayMode = null;
@@ -299,7 +323,7 @@ class GridWithItemPanel {
         
         var buttons = [];
         if (this.gridConfiguration.editButton) {
-            var addButton = m("button", {onclick: this.addItem.bind(this), disabled: disabled}, "Add");
+            var addButton = m("button", {onclick: this.addItem.bind(this), disabled: disabled}, translate("#button_Add|Add"));
             buttons.push(addButton);
         }
         
@@ -307,13 +331,39 @@ class GridWithItemPanel {
             buttons = buttons.concat(this.createButtons(this));
         }
         
+        if (this.gridConfiguration.duplicateButton) {
+            var duplicateButton = m("button", {onclick: this.duplicateItem.bind(this), disabled: disabled}, translate("#button_Duplicate|Duplicate"));
+            buttons.push(duplicateButton);
+        }
+             
+        if (this.gridConfiguration.moveUpDownButtons) {
+            var upButton = m("button", {onclick: this.moveItemUp.bind(this), disabled: disabled}, translate("#button_Up|Up"));
+            var downButton = m("button", {onclick: this.moveItemDown.bind(this), disabled: disabled}, translate("#button_Down|Down"));
+        }
+        
+        if (this.gridConfiguration.customButton) {
+            var options = this.gridConfiguration.customButton;
+            var customButtonClickedPartial;
+            if (_.isString(options.callback)) {
+                var fakeFieldSpecification = {id: this.fieldSpecification.id, displayConfiguration: options.callback, grid: this};
+                customButtonClickedPartial = panelBuilder.buttonClicked.bind(panelBuilder, this.model, fakeFieldSpecification);
+            } else {
+                customButtonClickedPartial = options.callback.bind(null, this);
+            }
+            var doubleClickFunction = undefined;
+            if (!this.gridConfiguration.viewButton) {
+                doubleClickFunction = customButtonClickedPartial;
+            }
+            var customButton = m("button", {onclick: customButtonClickedPartial, ondblclick: doubleClickFunction, disabled: disabled}, translate(options.customButtonLabel));
+        }
+        
         if (this.gridConfiguration.navigationButtons) {
             // TODO: Improve navigation enabling
             var navigationDisabled = this.isEditing() || this.data.length === 0 || undefined;
-            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "start"), disabled: navigationDisabled}, "[<<"));
-            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "previous"), disabled: navigationDisabled}, "<"));
-            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "next"), disabled: navigationDisabled}, ">"));
-            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "end"), disabled: navigationDisabled}, ">>]"));
+            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "start"), disabled: navigationDisabled}, translate("#button_navigateStart|[<<")));
+            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "previous"), disabled: navigationDisabled}, translate("#button_navigatePrevious|<")));
+            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "next"), disabled: navigationDisabled}, translate("#button_navigateNext|>")));
+            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "end"), disabled: navigationDisabled}, translate("#button_navigateEnd|>>")));
         }
         
         var buttonPanel = m("div.narrafirma-button-panel", buttons);
@@ -333,11 +383,26 @@ class GridWithItemPanel {
     }
 
     isEditing() {
-        return (this.displayMode === "editing") && this.selectedItem;
+        return (this.displayMode === "editing" || this.displayMode === "adding") && this.selectedItem;
     }
     
     isViewing() {
         return (this.displayMode === "viewing") && this.selectedItem;
+    }
+    
+    validateItem(item) {
+        var validationMethodIdentifier = this.gridConfiguration.validateEdit;
+        if (this.displayMode === "adding") validationMethodIdentifier = this.gridConfiguration.validateAdd || validationMethodIdentifier;
+        if (validationMethodIdentifier) {
+            var fakeFieldSpecification = {
+                displayConfiguration: validationMethodIdentifier,
+                value: item
+           };
+            var errors = this.panelBuilder.calculateFunctionResult(null, fakeFieldSpecification);
+            if (!errors) return [];
+            return errors;
+        }
+        return [];
     }
     
     inlineEditorForItem(panelBuilder, item, mode) {
@@ -358,12 +423,17 @@ class GridWithItemPanel {
         ]);
     }
     
+    newIdForItem() {
+        // return new Date().toISOString();
+        return generateRandomUuid();
+    }
+    
     addItem() {
         var newItem = {};
-        newItem[this.idProperty] = new Date().toISOString();
+        newItem[this.idProperty] = this.newIdForItem();
         this.data.push(newItem);
         this.selectedItem = newItem;
-        this.displayMode = "editing";
+        this.displayMode = "adding";
     }
     
     deleteItem(item) {
@@ -408,9 +478,100 @@ class GridWithItemPanel {
         this.displayMode = "viewing";
     }
     
+    duplicateItem() {        
+        console.log("duplicate button pressed");
+        
+        // TODO: May not need this
+        if (this.isEditing) {
+            alert("The eidt must be finsihed before duplicating an item");
+            return;
+        }
+
+        if (!this.selectedItem) {
+            alert("Please select an item to duplicate first");
+            return;
+        }
+        
+        // Make a copy of the selected item
+        var newItem = JSON.parse(JSON.stringify(this.selectedItem));
+        
+        // Set new id for copy
+        newItem[this.idProperty] = this.newIdForItem();
+        
+        this.data.push(newItem);
+        this.selectedItem = newItem;
+        this.displayMode = "adding";
+    }
+    
+    moveItemUp() {
+        console.log("up button pressed");
+        
+        // TODO: How to move this change back to project data???
+        var index = this.data.indexOf(this.selectedItem);
+        if (index <= 0) return;
+        this.data[index] = this.data[index - 1];
+        this.data[index - 1] = this.selectedItem;
+        
+        /* Code for moving multiple selections up:
+        var items = this.store.data;
+        var lastSelectedObjectLocation = -1;
+        var idProperty = this.store.idProperty;
+        for (var i = 0; i < items.length; i++) {
+            var item = items[i];
+            if (item[idProperty] in this.grid.selection) {
+                if (lastSelectedObjectLocation < i - 1) {
+                    var otherItem = items[i - 1];
+                    items[i - 1] = item;
+                    items[i] = otherItem;
+                    lastSelectedObjectLocation = i - 1;
+                } else {
+                    lastSelectedObjectLocation = i;
+                }
+            }
+        }
+        */
+    }
+    
+    moveItemDown() {
+        console.log("down button pressed");
+        
+        // TODO: How to move this change back to project data???
+        var index = this.data.indexOf(this.selectedItem);
+        if (index === -1 || index === this.data.length - 1) return;
+        this.data[index] = this.data[index + 1];
+        this.data[index + 1] = this.selectedItem;
+        
+        /* code for moving multiple selected items:
+        var items = this.store.data;
+        var lastSelectedObjectLocation = items.length;
+        var idProperty = this.store.idProperty;
+        for (var i = items.length - 1; i >= 0; i--) {
+            var item = items[i];
+            if (item[idProperty] in this.grid.selection) {
+                if (lastSelectedObjectLocation > i + 1) {
+                    var otherItem = items[i + 1];
+                    items[i + 1] = item;
+                    items[i] = otherItem;
+                    lastSelectedObjectLocation = i + 1;
+                } else {
+                    lastSelectedObjectLocation = i;
+                }
+            }
+        }
+        */
+    }
+    
     doneClicked(item) {
         // TODO: Should ensure the data is saved
-        // Leave itme selected: this.selectedItem = null;
+        if (this.isEditing) {
+            var errors = this.validateItem(item);
+            if (errors.length) {
+                // TODO: Translate
+                alert("The are validation errors:\n" + errors);
+                return;
+            }
+        }
+        // Leave item selected: this.selectedItem = null;
         this.displayMode = null;
     }
     
@@ -446,17 +607,17 @@ class GridWithItemPanel {
         var disabled = this.isEditing() || (!item && !this.selectedItem) || undefined;
          
         if (this.gridConfiguration.removeButton) {
-            var removeButton = m("button", {onclick: this.deleteItem.bind(this, item), disabled: disabled, "class": "fader"}, "delete");
+            var removeButton = m("button", {onclick: this.deleteItem.bind(this, item), disabled: disabled, "class": "fader"}, translate("#button_Remove|Remove"));
             buttons.push(removeButton);
         }
 
         if (this.gridConfiguration.editButton) {
-            var editButton = m("button", {onclick: this.editItem.bind(this, item), disabled: disabled, "class": "fader"}, "edit");
+            var editButton = m("button", {onclick: this.editItem.bind(this, item), disabled: disabled, "class": "fader"}, translate("#button_Edit|Edit"));
             buttons.push(editButton);
         }
         
         if (this.gridConfiguration.viewButton) {
-            var viewButton = m("button", {onclick: this.viewItem.bind(this, item), disabled: disabled, "class": "fader"}, "view");
+            var viewButton = m("button", {onclick: this.viewItem.bind(this, item), disabled: disabled, "class": "fader"}, translate("#button_View|View"));
             buttons.push(viewButton); 
         }
         
