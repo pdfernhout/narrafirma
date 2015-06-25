@@ -7,14 +7,14 @@ import PanelBuilder = require("../panelBuilder/PanelBuilder");
 
 function add_recommendationTable(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
     var dialogConfiguration = {
+        dialogModel: model,
         dialogTitle: "#title_recommendationsTable|Recommendations table",
         dialogStyle: undefined,
         dialogConstructionFunction: build_recommendationTable.bind(null, panelBuilder),
         fieldSpecification: fieldSpecification
     };
- // TODO: Fix when refactor
-    var button = dialogSupport.addButtonThatLaunchesDialog(contentPane, model, fieldSpecification, dialogConfiguration);
-    return button;
+
+    return dialogSupport.addButtonThatLaunchesDialog(fieldSpecification, dialogConfiguration);
 }
 
 function build_recommendationTable(panelBuilder: PanelBuilder, dialogContentPane, model, hideDialogCallback, dialogConfiguration) {

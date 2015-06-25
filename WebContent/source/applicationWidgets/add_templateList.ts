@@ -6,14 +6,14 @@ import PanelBuilder = require("../panelBuilder/PanelBuilder");
 
 function add_templateList(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
     var dialogConfiguration = {
+        dialogModel: model,
         dialogTitle: "#title_chooseATemplate|Choose a template",
         dialogStyle: undefined, // "height: 1000px; width: 800px",
         dialogConstructionFunction: makeTemplateListChooser.bind(null, panelBuilder),
         fieldSpecification: fieldSpecification
     };
-    var button = dialogSupport.addButtonThatLaunchesDialog(contentPane, model, fieldSpecification, dialogConfiguration);
-    domClass.add(button.domNode, "narrafirma-template-button");
-    return button;
+    
+    return dialogSupport.addButtonThatLaunchesDialog(fieldSpecification, dialogConfiguration);
 }
 
 var add_templateList_elicitationQuestions = [

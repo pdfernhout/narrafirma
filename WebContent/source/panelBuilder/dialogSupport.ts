@@ -10,20 +10,13 @@ export function confirm(message, okCallback) {
     if (confirmed) okCallback();
 }
 
-export function addButtonThatLaunchesDialog(contentPane, model, fieldSpecification, dialogConfiguration) {
-    var callback = function() {
-        openDialog(model, dialogConfiguration);
-    };
-    
-    var button = new Button({
-        label: translate(fieldSpecification.id, fieldSpecification.displayPrompt),
-        type: "button",
-        onClick: callback,
-        class: "narrafirma-dialog-launching-button"
-    });
-
-    button.placeAt(contentPane);
-    return button;
+export function addButtonThatLaunchesDialog(fieldSpecification, dialogConfiguration) {
+    return m("button", {
+        "class": "narrafirma-dialog-launching-button", 
+        onclick: function() {
+            openDialog(dialogConfiguration);
+        }
+    }, translate(fieldSpecification.id, fieldSpecification.displayPrompt));
 }
 
 function hideDialogMethod() {
