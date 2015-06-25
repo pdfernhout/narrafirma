@@ -258,7 +258,9 @@ class GridWithItemPanel {
             data = [];
             this.model[this.fieldSpecification.id] = data;
         }
-        this.data = data;
+        
+        // Make a copy of the data because we will be sorting it
+        this.data = data.slice();
     }
     
     static controller(args) {
