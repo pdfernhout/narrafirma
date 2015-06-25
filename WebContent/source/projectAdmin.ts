@@ -8,7 +8,7 @@ import PointrelClient = require("./pointrel20150417/PointrelClient");
 var journalIdentifier = "NarraFirma-administration";
 var projectAdministrationTopic = "ProjectAdministration";
 
-var pointrelClient;
+var pointrelClient: PointrelClient;
 
 var allProjectsModel;
 

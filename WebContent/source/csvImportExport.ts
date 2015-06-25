@@ -1,3 +1,4 @@
+import Project = require("./Project");
 import d3 = require("d3");
 import generateRandomUuid = require("./pointrel20150417/generateRandomUuid");
 import questionnaireGeneration = require("./questionnaireGeneration");
@@ -9,7 +10,7 @@ import surveyStorage = require("./surveyStorage");
 // TODO: Fix big kludge of this module level variable across the app!
 var lastQuestionnaireUploaded = null;
 
-var project;
+var project: Project;
 
 export function initialize(theProject) {
     project = theProject;

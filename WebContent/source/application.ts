@@ -19,7 +19,7 @@ import translate = require("./panelBuilder/translate");
 "use strict";
 
 var applicationMessages: string;
-var navigationJSONText;
+var navigationJSONText: string;
 
 // TODO: Add page validation
 
@@ -33,7 +33,7 @@ var journalIdentifier;
 var projectIdentifier;
 var userIdentifier;
 
-var project;
+var project: Project;
 
 var lastServerError = "";
 

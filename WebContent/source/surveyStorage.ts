@@ -1,7 +1,9 @@
 import kludgeForUseStrict = require("./kludgeForUseStrict");
+import PointrelClient = require("./pointrel20150417/PointrelClient");
+
 "use strict";
 
-export function storeSurveyResult(pointrelClient, projectIdentifier, storyCollectionIdentifier, completedSurvey, wizardPane) {
+export function storeSurveyResult(pointrelClient: PointrelClient, projectIdentifier, storyCollectionIdentifier, completedSurvey, wizardPane) {
     var surveyResultWrapper  = {
         projectIdentifier: projectIdentifier,
         storyCollectionIdentifier: storyCollectionIdentifier,

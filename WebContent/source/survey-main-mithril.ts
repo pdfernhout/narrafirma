@@ -18,7 +18,7 @@ import surveyStorage = require("./surveyStorage");
 var narrafirmaProjectPrefix = "NarraFirmaProject-";
 
 var serverURL = "/api/pointrel20150417";
-var pointrelClient;
+var pointrelClient: PointrelClient;
 
 var preview;
 var projectIdentifier;

@@ -15,8 +15,8 @@ class Project {
     subscriptions = [];
     projectModel = {};
     activeQuestionnaires = {};
-    pointrelClient: any;
-    tripleStore: any;
+    pointrelClient: PointrelClient;
+    tripleStore: TripleStore;
     
     constructor(journalIdentifier, projectIdentifier, userIdentifier, updateServerStatus) {
         this.journalIdentifier = journalIdentifier;

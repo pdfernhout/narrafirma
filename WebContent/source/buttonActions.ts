@@ -1,3 +1,4 @@
+import Project = require("./Project");
 import browser = require("./panelBuilder/browser");
 import csvImportExport = require("./csvImportExport");
 import dialogSupport = require("./panelBuilder/dialogSupport");
@@ -11,10 +12,10 @@ import translate = require("./panelBuilder/translate");
 
 "use strict";
 
-var project;
+var project: Project;
 
 // Call this to set up the project or other needed data
-export function initialize(theProject) {
+export function initialize(theProject: Project) {
     project = theProject;
 }
 
