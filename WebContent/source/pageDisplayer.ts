@@ -12,7 +12,6 @@ var startPage;
 var updateHashIfNeededForChangedState;
 
 var panelBuilder: PanelBuilder;
-var currentPageWidgets;
 
 var project;
 
@@ -117,8 +116,4 @@ export function showPage(pageID, forceRefresh = false) {
 
 export function getCurrentPageID() {
     return currentPageID;
-}
-
-export function getCurrentPageWidgets() {
-    return currentPageWidgets;
 }

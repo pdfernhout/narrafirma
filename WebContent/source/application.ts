@@ -695,7 +695,7 @@ function loadApplicationDesign() {
             project.initializeProjectModel(panelSpecificationCollection);
             panelBuilder.projectModel = project.projectModel;
 
-            buttonActions.initialize(project);
+            buttonActions.initialize(project, clientState);
             csvImportExport.initialize(project);
                         
             startTrackingClientStateChanges();

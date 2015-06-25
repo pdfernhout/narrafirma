@@ -13,10 +13,12 @@ import translate = require("./panelBuilder/translate");
 "use strict";
 
 var project: Project;
+var clientState: ClientState;
 
 // Call this to set up the project or other needed data
-export function initialize(theProject: Project) {
+export function initialize(theProject: Project, theClientState: ClientState) {
     project = theProject;
+    clientState = theClientState;
 }
 
 export function helpButtonClicked() {
@@ -100,10 +102,15 @@ function openMithrilSurveyDialog(questionnaire, callback, previewModeTitleText =
 function openSurveyDialog() {
     console.log("openSurveyDialog");
     
-    var storyCollectionIdentifier = getStoryCollectionNameForSelectedStoryCollection("storyCollectionChoice_enterStories");
-    if (!storyCollectionIdentifier) return;
+    var storyCollectionIdentifier = clientState.storyCollectionIdentifier;
     
-    var questionnaire = getQuestionnaireForSelectedStoryCollection("storyCollectionChoice_enterStories");
+    if (!storyCollectionIdentifier) {
+        // TODO: translate
+        alert("Please select a story collection first.");
+        return null;
+    }
+
+    var questionnaire = getQuestionnaireForStoryCollection(storyCollectionIdentifier);
     if (!questionnaire) return;
 
     var surveyDialog = openMithrilSurveyDialog(questionnaire, finished);
@@ -174,42 +181,7 @@ function generateHTMLForQuestionnaire(questionnaire) {
     return output;
 }
 
-function getStoryCollectionNameForSelectedStoryCollection(storyCollectionChoiceId) {
-    /*
-     * TODO: Could check first if any story collections have been defined
-    var questionnaires = project.projectModel.project_questionnaires;
-    
-    if (questionnaires.length === 0) {
-        // TODO: Translate
-        alert("No questionnaires have been defined");
-        return;
-    }
-    */
-    
-    var choiceWidget = pageDisplayer.getCurrentPageWidgets()[storyCollectionChoiceId];
-    console.log("choiceWidget", choiceWidget);
-    
-    if (!choiceWidget) {
-        alert("Programming error: no widget for: " + storyCollectionChoiceId);
-        return null;
-    }
-    
-    var storyCollectionName = choiceWidget.get("value");
-    console.log("storyCollectionName", storyCollectionName);
-    
-    if (!storyCollectionName) {
-        // TODO: translate
-        alert("Please select a story collection first.");
-        return null;
-    }
-    
-    return storyCollectionName;
-}
-
-function getQuestionnaireForSelectedStoryCollection(storyCollectionChoiceId) {
-    var storyCollectionName = getStoryCollectionNameForSelectedStoryCollection(storyCollectionChoiceId);
-    if (!storyCollectionName) return;
-    
+function getQuestionnaireForStoryCollection(storyCollectionName: string) {
     var storyCollection = questionnaireGeneration.findStoryCollection(project, storyCollectionName);
     
     if (!storyCollection) {
@@ -240,19 +212,24 @@ function getQuestionnaireForSelectedStoryCollection(storyCollectionChoiceId) {
 export function printStoryForm(model, fieldSpecification, value) {
     console.log("printStoryForm unfinished");
     
-    var questionnaire = getQuestionnaireForSelectedStoryCollection("storyCollectionChoice_printing");
+    var storyCollectionIdentifier = clientState.storyCollectionIdentifier;
+    
+    if (!storyCollectionIdentifier) {
+        // TODO: translate
+        alert("Please select a story collection first.");
+        return null;
+    }
+
+    var questionnaire = getQuestionnaireForStoryCollection(storyCollectionIdentifier);
     if (!questionnaire) return;
     
     var output = generateHTMLForQuestionnaire(questionnaire);
     
-    var outputLabel = pageDisplayer.getCurrentPageWidgets()["printQuestionsForm_output"];
-    console.log("outputLabel", outputLabel);
-    
-    // outputLabel.set("content", output);
     printHTML(output);
 }
 
 function printHTML(htmlToPrint) {
+    console.log(printHTML, htmlToPrint);
     var w = window.open();
     w.document.write(htmlToPrint);
     // w.print();
