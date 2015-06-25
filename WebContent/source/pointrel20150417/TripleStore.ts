@@ -1,5 +1,5 @@
 // A semantic (sub)web implementation a triple store
-
+import PointrelClient = require("./PointrelClient");
 import topic = require("./topic");
 
 "use strict";
@@ -10,13 +10,13 @@ function makeTopicKey(object) {
 }
 
 class TripleStore {
-    pointrelClient = null;
+    pointrelClient: PointrelClient = null;
     topicIdentifier = null;
     tripleMessages = [];
     indexes = {};
     subscriptions = [];
 
-    constructor(pointrelClient, topicIdentifier) {
+    constructor(pointrelClient: PointrelClient, topicIdentifier) {
         this.pointrelClient = pointrelClient;
         this.topicIdentifier = topicIdentifier;
         
