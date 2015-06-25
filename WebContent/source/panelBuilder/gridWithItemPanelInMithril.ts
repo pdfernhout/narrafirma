@@ -9,6 +9,8 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, configu
     
     var columns = [];
     
+    if (!itemPanelSpecification) return columns;
+    
     var maxColumnCount = 5;
     var columnCount = 0;
     
@@ -133,8 +135,11 @@ class Grid {
     gridConfiguration = null;
     data = [];
     columns = [];
+    fieldSpecification = null;
     itemPanelSpecification = null;
     idProperty = "_id";
+    model = null;
+    panelBuilder = null;
     
     // viewing, editing
     displayMode = null;
@@ -145,10 +150,14 @@ class Grid {
     isNavigationalScrollingNeeded = false;
     
     constructor(args) {
-        var panelBuilder = args.panelBuilder;
-        var model = args.model;
-        var fieldSpecification = args.fieldSpecification;
+        this.panelBuilder = args.panelBuilder;
+        this.model = args.model;
+        this.fieldSpecification = args.fieldSpecification;
         
+        this.updateDisplayConfigurationAndData(this.fieldSpecification.displayConfiguration);
+    }
+    
+    updateDisplayConfigurationAndData(theDisplayConfiguration) {
         var displayConfiguration = {
             itemPanelID: undefined,
             itemPanelSpecification: undefined,
@@ -178,9 +187,9 @@ class Grid {
             validateEdit: null
         };
         
-        var itemPanelID = fieldSpecification.displayConfiguration;
+        var itemPanelID = theDisplayConfiguration;
         if (!_.isString(itemPanelID)) {
-            displayConfiguration = fieldSpecification.displayConfiguration;
+            displayConfiguration = theDisplayConfiguration;
             itemPanelID = displayConfiguration.itemPanelID;
             if (displayConfiguration.gridConfiguration) {
                 gridConfiguration = displayConfiguration.gridConfiguration;
@@ -191,24 +200,24 @@ class Grid {
         this.gridConfiguration = gridConfiguration;
         
         var itemPanelSpecification = displayConfiguration.itemPanelSpecification;
-        if (!itemPanelSpecification) {
-            itemPanelSpecification = panelBuilder.getPanelDefinitionForPanelID(itemPanelID);
+        if (!itemPanelSpecification && itemPanelID) {
+            itemPanelSpecification = this.panelBuilder.getPanelDefinitionForPanelID(itemPanelID);
         }
         
         if (!itemPanelSpecification) {
-            console.log("Trouble: no itemPanelSpecification for options: ", fieldSpecification);
+            console.log("Trouble: no itemPanelSpecification for options: ", this.fieldSpecification);
         }
         
-        if (!model) {
-            console.log("Error: no model is defined for grid", fieldSpecification);
+        if (!this.model) {
+            console.log("Error: no model is defined for grid", this.fieldSpecification);
             throw new Error("Error: no model is defined for grid");
         }
         
         // TODO: May want to use at or similar to get the value in case this is a plain object?
-        var data = model[fieldSpecification.id];
+        var data = this.model[this.fieldSpecification.id];
         if (!data) {
             data = [];
-            model[fieldSpecification.id] = data;
+            this.model[this.fieldSpecification.id] = data;
         }
         
         if (gridConfiguration.idProperty) this.idProperty = gridConfiguration.idProperty;
@@ -226,11 +235,10 @@ class Grid {
         data = bigData;
         */
         
-        var columns = computeColumnsForItemPanelSpecification(itemPanelSpecification, displayConfiguration);
+        this.itemPanelSpecification = itemPanelSpecification;
+        this.columns = computeColumnsForItemPanelSpecification(itemPanelSpecification, displayConfiguration);
      
         this.data = data;
-        this.columns = columns;
-        this.itemPanelSpecification = itemPanelSpecification;
         
         this.isEditing = function() {
             return (this.displayMode === "editing") && this.selectedItem;
