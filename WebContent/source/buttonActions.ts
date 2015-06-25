@@ -77,26 +77,20 @@ function importExportClicked() {
 // Caller may also want to call (the returned) surveyDialog.hide() to close the window, or let the user do it.
 function openMithrilSurveyDialog(questionnaire, callback, previewModeTitleText = null) {  
     console.log("openSurveyDialog questionnaire", questionnaire);
-    
+   
     var surveyDiv = document.createElement("div");
+    var surveyViewFunction = surveyBuilder.buildSurveyForm(null, questionnaire, callback, previewModeTitleText);
     
-    surveyBuilder.buildSurveyForm(surveyDiv, questionnaire, callback, previewModeTitleText);
+    var dialogConfiguration = {
+        dialogModel: null,
+        dialogTitle: "Take Survey" + (previewModeTitleText || ""),
+        dialogStyle: undefined,
+        dialogConstructionFunction: surveyViewFunction,
+        dialogOKButtonLabel: "Close",
+        dialogOKCallback: function(dialogConfiguration, hideDialogMethod) { hideDialogMethod(); }
+    };
     
-    var surveyDialog = new Dialog({
-        title: "Take Survey" + (previewModeTitleText || ""),
-        content: surveyDiv
-        // style: "width: 800px; height: 700px;"
-    });
-    
-    // This will free the dialog when it is closed to avoid a memory leak
-    surveyDialog.connect(surveyDialog, "onHide", function(e) {
-        console.log("destroying surveyDialog");
-        surveyDialog.destroyRecursive();
-    });
-            
-    surveyDialog.show();
-    
-    return surveyDialog;
+    return dialogSupport.openDialog(dialogConfiguration);
 }
 
 function openSurveyDialog() {
