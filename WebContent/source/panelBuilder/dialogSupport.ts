@@ -39,7 +39,7 @@ class MithrilDialog {
         var dialogConfiguration = args;
         return m("div.overlay", m("div.modal-content", [
             m("b", translate(dialogConfiguration.dialogTitle)),
-            m("div", dialogConfiguration.dialogConstructionFunction(dialogConfiguration, hideDialogMethod)),
+            m("div.modal-internal", dialogConfiguration.dialogConstructionFunction(dialogConfiguration, hideDialogMethod)),
             m("button", {onclick: function() {dialogConfiguration.dialogOKCallback(dialogConfiguration, hideDialogMethod); }}, translate(args.dialogOKButtonLabel))
         ]));
     }

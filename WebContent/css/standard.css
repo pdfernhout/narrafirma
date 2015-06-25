@@ -677,11 +677,19 @@ table.filterTable td {
   width: 600px;
   position: relative;
   min-height: 400px;
-  /* max-height: 500px; */
+  max-height: 600px;
   margin: 5% auto 0;
   background: #fff;
   overflow: auto;
   z-index: 10001;
+}
+
+.modal-internal {
+    overflow: auto;
+    max-height: 500px;
+    margin: 10px;
+    padding: 10px;
+    border: 1px dashed;
 }
 
 textarea.textEditorInDialog {
