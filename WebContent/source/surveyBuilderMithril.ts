@@ -50,8 +50,8 @@ export function setGlobalRedrawFunction(callback) {
     globalRedrawCallback = callback;
 }
 
-function globalRedraw() {
-    globalRedrawCallback();
+function globalRedraw(source = undefined) {
+    globalRedrawCallback(source);
 }
 
 /* TODO: Work in progress....
@@ -480,12 +480,12 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewM
             forward: function () {
                 console.log("survey sending success" + (previewMode ? " [preview mode only]" : ""));
                 submitted = "success";
-                redraw();
+                redraw("network");
             },
             failed: function () {
                 console.log("survey sending failed");
                 submitted = "failed";
-                redraw();
+                redraw("network");
             }
         };
         
@@ -601,12 +601,21 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewM
         return result;
     };
     
-    function redraw() {
+    function redraw(source = "gui") {
         console.log("About to redraw");
-        m.render(surveyDiv, view());
+        if (surveyDiv) {
+            m.render(surveyDiv, view());
+        } else {
+            // When the survery form is used in a Dialog, the code will be calling redraw automatically as a mounted component,
+            // so only need to call redraw for an asynchronous server response
+            if (source === "network") m.redraw();
+        }
     }
     
     setGlobalRedrawFunction(redraw);
     
     redraw();
+    
+    // Return a function that could be called to produce a survey template, like for a dialog
+    return view;
 }
