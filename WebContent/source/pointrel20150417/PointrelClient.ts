@@ -31,9 +31,6 @@ var defaultCheckFrequency_ms = 3000;
 
 var debugMessaging = false;
 
-// Declarign this variable here to make TSLint happy
-var copyObjectWithSortedKeys;
-
 // TODO: Think more deeply about what server status can be, like states it transitions through
 // (perhaps startup, polling, loading, storing, waiting-to-poll, timed-out, recovering, etc.)
 
@@ -247,7 +244,7 @@ class PointrelClient {
         }
     
         // TODO: Extra copyObjectWithSortedKeys is not needed, but makes log messages look nicer so leaving for now
-        message = copyObjectWithSortedKeys(message);
+        message = PointrelClient.copyObjectWithSortedKeys(message);
         
         // TODO: This field ideally should go in a wrapper object and will be deleted later
         if (callback) message.__pointrel_callback = callback;
@@ -454,11 +451,11 @@ class PointrelClient {
             var key;
             for (var i = 0, len = keysSorted.length; i < len; i++) {
                 key = keysSorted[i];
-                newObj[key] = copyObjectWithSortedKeys(object[key]);
+                newObj[key] = PointrelClient.copyObjectWithSortedKeys(object[key]);
             }
             return newObj;
         } else if (Array.isArray(object)) {
-            return object.map(copyObjectWithSortedKeys);
+            return object.map(PointrelClient.copyObjectWithSortedKeys);
         } else {
             return object;
         }
@@ -473,7 +470,7 @@ class PointrelClient {
     }
     
     static calculateCanonicalSHA256AndLengthForObject(someObject, doNotSortFlag = false) {
-        if (!doNotSortFlag) someObject = copyObjectWithSortedKeys(someObject);
+        if (!doNotSortFlag) someObject = PointrelClient.copyObjectWithSortedKeys(someObject);
         var minimalJSON = JSON.stringify(someObject);
         // var buffer = new Buffer(minimalJSON, "utf8");
         var utf8String = stringToUtf8(minimalJSON);
@@ -542,7 +539,7 @@ class PointrelClient {
                 if (callback !== undefined) delete loopbackMessage.__pointrel_callback;
                 this.messageSentCount++;
                 // Simulating eventual response from server, generally for testing
-                this.messageReceived(copyObjectWithSortedKeys(loopbackMessage));
+                this.messageReceived(PointrelClient.copyObjectWithSortedKeys(loopbackMessage));
                 if (callback) callback(null, {success: true});
             }
         } else {
@@ -863,7 +860,6 @@ class PointrelClient {
     private okStatus() {
         this.serverStatus("ok", "OK (sent: " + this.messageSentCount + ", received:" + this.messageReceivedCount + ")");
     }
-    
 }
 
 export = PointrelClient;
