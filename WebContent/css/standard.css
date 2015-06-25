@@ -702,3 +702,8 @@ table.filterTable td {
 
 .noStyle {
 }
+
+/* chartEnclosureStyle = "width: 850px; height: 650px; margin: 5px auto 0px auto;"; */
+.chartEnclosure {
+    min-height: 200px;
+}

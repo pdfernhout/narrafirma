@@ -7,15 +7,12 @@ import topic = require("../pointrel20150417/topic");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import m = require("mithril");
+import Project = require("../Project");
 
 "use strict";
 
 // TODO: retrieve from UI
 var minStoriesForTest = 20;
-
-// TODO: Duplicate style code of add_graphBrowser
-// var chartEnclosureStyle = "width: 850px; height: 650px; margin: 5px auto 0px auto;";
-var chartEnclosureStyle = "min-height: 200px;";
 
 // Types of questions that have data associated with them for filters and graphs
 var nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons"];
@@ -473,7 +470,86 @@ function resetGraphSelection(graphBrowserInstance) {
     charting.restoreSelection(graph, selection);
 }
 
+// TODO: Duplicate of what is in add_graphBrowser
+// title: "Graph results",
+function createGraphResultsPane(): HTMLElement {
+    var pane = document.createElement("div");
+    pane.className = "narrafirma-graph-results-pane chartEnclosure";
+    return pane;
+}
+
+// TODO: Similar to what is in add_graphBrowser
+function getCurrentCatalysisReportIdentifier(args) {
+    var panelBuilder = args.panelBuilder;
+    var model = args.model;
+    var fieldSpecification = args.fieldSpecification;
+    
+    // Get questionnaire for selected story collection
+    // TODO: What if the value is an array of stories to display directly?
+    var choiceModelAndField = valuePathResolver.resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
+    console.log("choiceModelAndField", choiceModelAndField);
+    var choiceModel = choiceModelAndField.model;
+    var choiceField = choiceModelAndField.field; 
+    var catalysisReportIdentifier = choiceModel[choiceField];
+    
+    console.log("catalysisReportIdentifier", catalysisReportIdentifier);
+    
+    return catalysisReportIdentifier;
+}
+
 class PatternBrowser {
+    graphHolder: GraphHolder;
+    
+    project: Project = null;
+    catalysisReportIdentifier: string = null;
+    
+    questions = [];
+    patterns = null;
+    // patternsListStore = null; "id"
+    patternsGrid = null;
+    selectedStories = [];
+    selectedStoriesStore = null; 
+    storyList = null;
+    observationModel = {observation: ""};
+    currentPattern = null;
+    
+    // TODO: Track currentCatalysisReportChanged
+    // TODO: Update questions and allStories based on selection
+    
+    construction(args) {
+        this.project = args.panelBuilder.project;
+        this.catalysisReportIdentifier = getCurrentCatalysisReportIdentifier(args);
+        
+        this.graphHolder = {
+            graphResultsPane: createGraphResultsPane(),
+            chartPanes: [],
+            allStories: [],
+            currentGraph: null,
+            currentSelectionExtentPercentages: null
+        };
+        
+        this.patterns = buildPatternList(this);
+        
+        var patternsGridConfiguration = {
+            navigationButtons: true,
+            includeAllFields: true,
+            selectCallback: patternSelected.bind(null, this)
+        };
+        
+        var patternsPanelSpecification = {
+            "id": "patternsPanel",
+            panelFields: [
+                {id: "id", displayName: "Index"},
+                {id: "patternName", displayName: "Pattern name", valueOptions: []},
+                {id: "graphType", displayName: "Graph type", valueOptions: []},
+                {id: "significance", displayName: "Significance value", valueOptions: []},
+                // {id: "reviewed", displayName: "Reviewed", valueOptions: []},
+                {id: "observation", displayName: "Observation", valueOptions: []}
+            ]
+        };
+        
+        
+    }
     
     static controller(args) {
         console.log("Making PatternBrowser: ", args);
@@ -495,107 +571,29 @@ class PatternBrowser {
 }
 
 function other() {
-    var graphResultsPane = new ContentPane({
-        // TODO: Translate
-        title: "Graph results",
-        style: chartEnclosureStyle,
-        region: "bottom"
-    });
-    
-    var choiceModelAndField = valuePathResolver.resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
-    console.log("choiceModelAndField", choiceModelAndField);
-    var choiceModel = choiceModelAndField.model;
-    var choiceField = choiceModelAndField.field; 
-    var catalysisReportIdentifier = choiceModel[choiceField];
-    
-    console.log("catalysisReportIdentifier", catalysisReportIdentifier);
-    
-    //  TODO: Update these based on selection
-    var questions = [];
-    var allStories = [];
-    
-    // TODO: var questions = surveyCollection.collectQuestionsForCurrentQuestionnaire();
-    // TODO: get all stories
-    
-    var graphBrowserInstance = {
-        project: panelBuilder.project,
-        graphResultsPane: graphResultsPane,
-        chartPanes: [], 
-        questions: questions,
-        allStories: allStories,
-        patterns: null,
-        patternsListStore: null,
-        patternsGrid: null,
-        selectedStories: [],
-        selectedStoriesStore: null, 
-        storyList: null,
-        observationModel: new Stateful({observation: ""}),
-        currentPattern: null,
-        currentGraph: null,
-        // TODO: These are not used yet
-        currentSelectionExtentPercentages: null,
-        currentSelectionSubgraph: null,
-        widgets: undefined
-    };
-    
-    var currentCatalysisReportSubscription = choiceModel.watch(choiceField, currentCatalysisReportChanged.bind(null, graphBrowserInstance));        
-    // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
-    contentPane.own(currentCatalysisReportSubscription);
-    
-    var patterns = buildPatternList(graphBrowserInstance);
-    graphBrowserInstance.patterns = patterns;
    
-    var patternsListStore = GridWithItemPanel["newMemoryTrackableStore"](patterns, "id");
-    graphBrowserInstance.patternsListStore = patternsListStore;
-    
-    var patternsGridConfiguration = {
-        navigationButtons: true,
-        includeAllFields: true,
-        selectCallback: patternSelected.bind(null, graphBrowserInstance)
-    };
-    
-    var patternsPanelSpecification = {
-        "id": "patternsPanel",
-        panelFields: [
-            {id: "id", displayName: "Index"},
-            {id: "patternName", displayName: "Pattern name", valueOptions: []},
-            {id: "graphType", displayName: "Graph type", valueOptions: []},
-            {id: "significance", displayName: "Significance value", valueOptions: []},
-            // {id: "reviewed", displayName: "Reviewed", valueOptions: []},
-            {id: "observation", displayName: "Observation", valueOptions: []}
-        ]
-    };
-    
-    // TODO: Splitter does not seem to work as expected; it has no height. This does not help: https://www.sitepen.com/blog/2013/05/02/dojo-faq-bordercontainer-not-visible/
-    var splitterPane = new ContentPane(); // BorderContainer({style:'border:1px solid black'});
-    contentPane.addChild(splitterPane);
-    var gridContainerPane = new ContentPane({region: "center", splitter: true});
-    splitterPane.addChild(gridContainerPane);
-    splitterPane.addChild(graphResultsPane);
-    //splitterPane.startup();
-    //splitterPane.resize();
     
     var patternsGrid = new GridWithItemPanel(panelBuilder, gridContainerPane, "patternsList", patternsListStore, patternsPanelSpecification, patternsGridConfiguration, model);
     patternsGrid.grid.set("selectionMode", "single");
-    graphBrowserInstance.patternsGrid = patternsGrid;
+    this.patternsGrid = patternsGrid;
     
     var storyItemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
 
     // Store will modify underlying array
-    var selectedStoriesStore = GridWithItemPanel["newMemoryTrackableStore"](graphBrowserInstance.selectedStories, "_storyID");
-    graphBrowserInstance.selectedStoriesStore = selectedStoriesStore;
+    var selectedStoriesStore = GridWithItemPanel["newMemoryTrackableStore"](this.selectedStories, "_storyID");
+    this.selectedStoriesStore = selectedStoriesStore;
     
     // Only allow view button for stories
     var configuration = {viewButton: true, includeAllFields: ["__survey_storyName", "__survey_storyText"], navigationButtons: true};
     var storyList = new GridWithItemPanel(panelBuilder, contentPane, "storyGrid", selectedStoriesStore, storyItemPanelSpecification, configuration, model);
     storyList.grid.set("selectionMode", "single");
-    graphBrowserInstance.storyList = storyList;
+    this.storyList = storyList;
     
     var observationPanelSpecification = {
         "id": "observationPanel",
         panelFields: [        
-            {id: "insertGraphSelection", displayPrompt: "Save current graph selection into observation", displayType: "button", displayPreventBreak: true, displayConfiguration: insertGraphSelection.bind(null, graphBrowserInstance)},
-            {id: "resetGraphSelection", displayPrompt: "Restore graph selection using saved selection chosen in observation", displayType: "button", displayConfiguration: resetGraphSelection.bind(null, graphBrowserInstance)},
+            {id: "insertGraphSelection", displayPrompt: "Save current graph selection into observation", displayType: "button", displayPreventBreak: true, displayConfiguration: insertGraphSelection.bind(null, this)},
+            {id: "resetGraphSelection", displayPrompt: "Restore graph selection using saved selection chosen in observation", displayType: "button", displayConfiguration: resetGraphSelection.bind(null, this)},
             {id: "observation", displayName: "Observation", displayPrompt: "If this pattern is noteworthy, enter an <strong>observation</strong> about the pattern here.", displayType: "textarea"},
             {
                 "id": "project_interpretationsList",
@@ -611,16 +609,16 @@ function other() {
     
     // var observationPane = new ContentPane();
     // contentPane.addChild(observationPane);
-    var widgets = panelBuilder.buildPanel(observationPanelSpecification, graphBrowserInstance.observationModel);
-    graphBrowserInstance.widgets = widgets;
+    var widgets = panelBuilder.buildPanel(observationPanelSpecification, this.observationModel);
+    this.widgets = widgets;
     
     // TODO: selections should be stored in original domain units, not scaled display units
     // TODO: Consolidate duplicate code from these two functions
     
-    currentCatalysisReportChanged(graphBrowserInstance, "currentCatalysisReport", null, catalysisReportIdentifier);
+    currentCatalysisReportChanged(this, "currentCatalysisReport", null, catalysisReportIdentifier);
     
     // Put up a "please pick pattern" message
-    chooseGraph(graphBrowserInstance, null);
+    chooseGraph(this, null);
     
     // TODO: Not sure what to return or if it matters
     return questionContentPane;
@@ -633,7 +631,7 @@ function add_trendsReport(panelBuilder: PanelBuilder, model, fieldSpecification)
  
     return m("div", [
         prompt,
-       patternBrowser
+        patternBrowser
      ]);
 }
 
