@@ -88,7 +88,15 @@ function add_functionResult(panelBuilder: PanelBuilder, model, fieldSpecificatio
     
     return m("div.functionResult", newLabelText);
 }
-  
+
+/* Defaults for displayConfiguration:
+{
+   itemPanelID: undefined,
+   itemPanelSpecification: undefined,
+   idProperty: "_id",
+   gridConfiguration: {...}
+}
+ */
 function add_grid(panelBuilder, model, fieldSpecification) {
     return m.component(<any>GridWithItemPanel, {panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
 }
