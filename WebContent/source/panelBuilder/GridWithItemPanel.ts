@@ -213,33 +213,11 @@ class GridWithItemPanel {
             throw new Error("Error: no model is defined for grid");
         }
         
-        // TODO: May want to use at or similar to get the value in case this is a plain object?
-        var data = this.model[this.fieldSpecification.id];
-        if (!data) {
-            data = [];
-            this.model[this.fieldSpecification.id] = data;
-        }
-        
         if (gridConfiguration.idProperty) this.idProperty = gridConfiguration.idProperty;
-        
-        /*
-        var bigData = [];
-        for (var i = 0; i < 50; i++) {
-            for (var j = 0; j < data.length; j++) {
-                var newItem = JSON.parse(JSON.stringify(data[j]));
-                newItem[idProperty] = "item_" + (i * data.length + j);
-                bigData.push(newItem);
-                console.log("newItem", newItem);
-            }
-        }
-        data = bigData;
-        */
         
         this.itemPanelSpecification = itemPanelSpecification;
         this.columns = computeColumnsForItemPanelSpecification(itemPanelSpecification, displayConfiguration);
      
-        this.data = data;
-        
         this.isEditing = function() {
             return (this.displayMode === "editing") && this.selectedItem;
         };
@@ -255,6 +233,32 @@ class GridWithItemPanel {
         this.selectedItem = null;
         
         this.isNavigationalScrollingNeeded = false;
+        
+        this.updateData();
+    }
+    
+    updateData() {
+        // TODO: May want to use at or similar to get the value in case this is a plain object?
+        var data = this.model[this.fieldSpecification.id];
+        
+        /*
+        var bigData = [];
+        for (var i = 0; i < 50; i++) {
+            for (var j = 0; j < data.length; j++) {
+                var newItem = JSON.parse(JSON.stringify(data[j]));
+                newItem[idProperty] = "item_" + (i * data.length + j);
+                bigData.push(newItem);
+                console.log("newItem", newItem);
+            }
+        }
+        data = bigData;
+        */
+        
+        if (!data) {
+            data = [];
+            this.model[this.fieldSpecification.id] = data;
+        }
+        this.data = data;
     }
     
     static controller(args) {
@@ -269,6 +273,8 @@ class GridWithItemPanel {
     }
     
     calculateView() {
+        console.log("GridWithItemPanel calculateView", this.data);
+        
         var panelBuilder = this.panelBuilder;
         var prompt = panelBuilder.buildQuestionLabel(this.fieldSpecification);
         

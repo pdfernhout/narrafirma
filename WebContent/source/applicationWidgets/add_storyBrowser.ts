@@ -15,20 +15,20 @@ var unansweredIndicator = "{Unanswered}";
 function isMatch(story, questionChoice, selectedAnswerChoices) {
     // console.log("isMatch", questionChoice, selectedAnswerChoices);
     if (!questionChoice) return true;
-    var questionAnswer = story[questionChoice];
+    var questionAnswer = story[questionChoice.id];
     if (questionAnswer === undefined || questionAnswer === null || questionAnswer === "") {
         questionAnswer = unansweredIndicator;
     } else if (typeof questionAnswer === "object") {
         // checkboxes
         // console.log("checkboxes", questionAnswer);
         for (var key in questionAnswer) {
-            if ((selectedAnswerChoices.indexOf(key) !== -1) && questionAnswer[key]) return true;
+            if (selectedAnswerChoices[key] && questionAnswer[key]) return true;
         }
         return false;
     }
     questionAnswer = "" + questionAnswer;
     // console.log("questionAnswer", questionAnswer);
-    return selectedAnswerChoices.indexOf(questionAnswer) !== -1;
+    return !!selectedAnswerChoices[questionAnswer];
 }
     
 function optionsFromQuestion(question, stories) {
@@ -153,7 +153,7 @@ function getSelectedOptions(select) {
 
 class Filter {
     name: string = null;
-    storyBrowser = null;
+    storyBrowser: StoryBrowser = null;
     selectedQuestion = null;
     answerOptionsForSelectedQuestion = [];
     selectedAnswers = {};
@@ -209,7 +209,7 @@ class Filter {
         var question = getQuestionDataForSelection(this.storyBrowser.questions, event);
         
         this.selectedQuestion = question;
-        this.answerOptionsForSelectedQuestion = optionsFromQuestion(this.selectedQuestion, this.storyBrowser.stories);
+        this.answerOptionsForSelectedQuestion = optionsFromQuestion(this.selectedQuestion, this.storyBrowser.allStories);
         this.selectedAnswers = {};
         
         this.storyBrowser.setStoryListForCurrentFilters();  
@@ -333,7 +333,7 @@ class StoryBrowser {
             // Need to update grid for change
             this.gridFieldSpecification.displayConfiguration.itemPanelSpecification = this.itemPanelSpecification;
             this.modelForGrid.stories = this.allStories;
-            this.grid.updateDisplayConfigurationAndData(this.gridFieldSpecification);
+            this.grid.updateDisplayConfigurationAndData(this.gridFieldSpecification.displayConfiguration);
         }
         
         var prompt = args.panelBuilder.buildQuestionLabel(args.fieldSpecification);
@@ -422,6 +422,7 @@ class StoryBrowser {
         var filteredResults = this.getFilteredStoryList();
         console.log("Filtered results", filteredResults);
         this.modelForGrid.stories = filteredResults;
+        this.grid.updateData();
         // console.log("finished setting list with filtered results", filteredResults);
     }
     
