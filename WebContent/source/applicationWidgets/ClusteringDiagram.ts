@@ -545,12 +545,12 @@ class ClusteringDiagram {
         */
     }
     
-    updateSourceClicked(sourceText, hideDialogMethod) {     
-        console.log("updateSourceClicked", sourceText);
+    updateSourceClicked(text, hideDialogMethod) {     
+        console.log("updateSourceClicked", text);
     
         var newDiagram;
         try {
-            newDiagram = JSON.parse(sourceText);
+            newDiagram = JSON.parse(text);
         } catch (e) {
             alert("Problem parsing source\n" + e);
             return;
@@ -609,7 +609,7 @@ class ClusteringDiagram {
     }
     
     saveChanges() {
-        this.modelForStorage.set(this.diagramName, this.diagram);
+        this.modelForStorage[this.diagramName] = this.diagram;
     }
     
     newItem(text = null, url = "") {

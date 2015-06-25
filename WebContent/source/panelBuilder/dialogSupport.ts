@@ -26,88 +26,67 @@ export function addButtonThatLaunchesDialog(contentPane, model, fieldSpecificati
     return button;
 }
 
-export function openDialog(model, dialogConfiguration) {  
-    console.log("openDialog", model, dialogConfiguration.dialogTitle); // JSON.stringify(dialogConfiguration));
-    
-    var dialog;
-    var dialogContentPane = new ContentPane({
-        // min-height: 100%; min-width: 100%"
-    });
-    
-    function hideDialogMethod(status) {
-        dialog.hide();
+function hideDialogMethod() {
+    m.mount(document.getElementById("dialogDiv"), null);
+}
+
+class MithrilDialog {
+    static controller(args) {
+        console.log("Making MithrilDialog: ", args);
+        return new MithrilDialog();
     }
     
-    dialog = new Dialog({
-        // TODO: Translate
-        title: translate(dialogConfiguration.dialogTitle),
-        style: dialogConfiguration.dialogStyle,
-        content: dialogContentPane
-    });
+    static view(controller, args) {
+        console.log("MithrilDialog view called");
+        
+        return controller.calculateView(args);
+    }
     
-    // This will free the dialog when we are done with it whether from OK or Cancel to avoid a memory leak
-    dialog.connect(dialog, "onHide", function(e) {
-        // console.log("destroying dialog");
-        dialog.destroyRecursive(); 
-    });
-            
-    dialog.show();
+    calculateView(args) {
+        var dialogConfiguration = args;
+        return m("div.overlay", m("div.modal-content", [
+            m("b", translate(dialogConfiguration.dialogTitle)),
+            m("div", dialogConfiguration.dialogConstructionFunction(dialogConfiguration, hideDialogMethod)),
+            m("button", {onclick: function() {dialogConfiguration.dialogOKCallback(dialogConfiguration, hideDialogMethod); }}, translate(args.dialogOKButtonLabel))
+        ]));
+    }
+}
+
+export function openDialog(dialogConfiguration) {  
+    console.log("openDialog", dialogConfiguration.dialogTitle); // JSON.stringify(dialogConfiguration));
     
-    // Calling this after dialog opened so dgrid resizes headers correctly for data
-    dialogConfiguration.dialogConstructionFunction(dialogContentPane, model, hideDialogMethod, dialogConfiguration); 
+    m.mount(document.getElementById("dialogDiv"), m.component(<any>MithrilDialog, dialogConfiguration));
 }
 
 // Caller needs to call the hideDialogMethod returned as the second arg of dialogOKCallback to close the dialog
 export function openTextEditorDialog(text, dialogTitle, dialogOKButtonLabel, dialogOKCallback) {
+    console.log("openTextEditorDialog called");
     if (!dialogTitle) dialogTitle = "Editor";
     if (!dialogOKButtonLabel) dialogOKButtonLabel = "OK";
     
-    var model = new Stateful({text: text});
+    var model = {text: text};
     
     var dialogConfiguration = {
+        dialogModel: model,
         dialogTitle: dialogTitle,
         dialogStyle: undefined,
         dialogConstructionFunction: build_textEditorDialogContent,
         dialogOKButtonLabel: dialogOKButtonLabel,
-        dialogOKCallback: dialogOKCallback
+        dialogOKCallback: function(dialogConfiguration, hideDialogMethod) { dialogOKCallback(model.text, hideDialogMethod); }
     };
     
-    openDialog(model, dialogConfiguration);
+    openDialog(dialogConfiguration);
 }
 
-function build_textEditorDialogContent(dialogContentPane, model, hideDialogMethod, dialogConfiguration) {
-    // Experiment; lots of tries!!! http://jsfiddle.net/u3qcbxy4/37/
-    
-    var layout = new LayoutContainer({
-    });
-    
-    // Maybe SimpleTextarea?
-    var sourceTextarea = new Textarea({
-        name: 'text',
-        value: at(model, "text"),
-        placeHolder: dialogConfiguration.placeHolder,
-        region: 'center',  
-        style: "min-height: 400px; min-width: 600px; max-height: 800px; max-width: 800px; overflow: auto"
-    });
-    
-    var okButton = new Button({
-        label: translate(dialogConfiguration.dialogOKButtonLabel),
-        type: "button",
-        onClick: function() {
-            var text = model.get("text");
-            dialogConfiguration.dialogOKCallback(text, hideDialogMethod, dialogConfiguration);
-        },
-        region: 'bottom'
-    });
-    
-    layout.addChild(sourceTextarea);
-    layout.addChild(okButton);
-
-    layout.placeAt(dialogContentPane);
+function build_textEditorDialogContent(dialogConfiguration, hideDialogMethod) {
+    // style: "min-height: 400px; min-width: 600px; max-height: 800px; max-width: 800px; overflow: auto"
+    return m("div", [
+        m("textarea", {"class": "textEditorInDialog", onchange: function(event) { dialogConfiguration.dialogModel.text = event.target.value; }, value: dialogConfiguration.dialogModel.text }) 
+    ]);
 }
 
 class ListChooser {
-  static controller(args) {
+    static controller(args) {
         console.log("Making ListChooser: ", args);
         return new ListChooser();
     }
@@ -119,7 +98,7 @@ class ListChooser {
     }
     
     calculateView(args) {
-        return m("div", [
+        return m("div.overlay", m("div.modal-content", [
             m("b", args.dialogTitle),
             m("br"),
             args.dialogOKButtonLabel,
@@ -127,22 +106,23 @@ class ListChooser {
             args.choices.map((choice) => {
                 return m("button", {onclick: this.selectionMade.bind(this, args, choice)}, choice.name);
             })
-        ]);
+        ]));
     }
     
     selectionMade(args, choice) {
-        m.mount(document.getElementById("listChooserDiv"), null);
+        m.mount(document.getElementById("dialogDiv"), null);
         args.dialogOKCallback(choice);
     }
     
 }
 
-// columns are in dgrid format
+// columns are currently ignored
+// choices should be a list of objects with a name field, like: {name: "test", other: "???}
 export function openListChoiceDialog(initialChoice, choices, columns, dialogTitle, dialogOKButtonLabel, dialogOKCallback) {
     if (!dialogTitle) dialogTitle = "Choices";
     if (!dialogOKButtonLabel) dialogOKButtonLabel = "Choose";
     
-    m.mount(document.getElementById("listChooserDiv"), m.component(<any>ListChooser, {
+    m.mount(document.getElementById("dialogDiv"), m.component(<any>ListChooser, {
         initialChoice: initialChoice,
         choices: choices,
         columns: columns,
@@ -150,68 +130,5 @@ export function openListChoiceDialog(initialChoice, choices, columns, dialogTitl
         dialogOKButtonLabel: dialogOKButtonLabel, 
         dialogOKCallback: dialogOKCallback
     }));
-    
-    /*
-    var model = new Stateful({choice: initialChoice});
-    
-    var dialogConfiguration = {
-        dialogTitle: dialogTitle,
-        dialogStyle: undefined,
-        dialogConstructionFunction: buildListChoiceDialogContent,
-        dialogOKButtonLabel: dialogOKButtonLabel,
-        dialogOKCallback: dialogOKCallback,
-        choices: choices,
-        columns: columns
-    };
-    
-    openDialog(model, dialogConfiguration);
-    */
-}
-
-function buildListChoiceDialogContent(dialogContentPane, model, hideDialogMethod, dialogConfiguration) {
-    console.log("buildListChoiceDialogContent", dialogConfiguration.dialogTitle);
-    var layout = new LayoutContainer({
-        style: "min-height: 400px; min-width: 600px; max-height: 800px; max-width: 800px"
-    });
-    
-    // Including DijitRegistry because nesting the grid inside of dijit layout container
-    var grid = new (declare([Grid, Selection, Keyboard, DijitRegistry, ColumnResizer]))({
-        columns: dialogConfiguration.columns,
-        region: 'center',
-        selectionMode: 'single'
-        // style: "min-height: 400px; min-width: 600px;"
-    });
-
-    var okButton = new Button({
-        label: translate(dialogConfiguration.dialogOKButtonLabel),
-        type: "button",
-        onClick: function() {
-            console.log("grid selection", grid.selection);
-            var value = null;
-            // Find first selection (and there should only be one)
-            for (var key in grid.selection) {
-                if (grid.selection[key]) value = dialogConfiguration.choices[key];
-                break;
-            }
-            console.log("Selected value", value);
-            hideDialogMethod();
-            dialogConfiguration.dialogOKCallback(value, dialogConfiguration);
-        },
-        region: 'top'
-    });
-    
-    layout.addChild(grid);
-    layout.addChild(okButton);
-    
-    layout.placeAt(dialogContentPane);
-    
-    grid.renderArray(dialogConfiguration.choices);
-    
-    var selectedIndex = dialogConfiguration.choices.indexOf(model.get("choice"));
-    if (selectedIndex !== -1) {
-        grid.select(selectedIndex);
-    }
-    
-    dialogConfiguration.grid = grid;
 }
 
