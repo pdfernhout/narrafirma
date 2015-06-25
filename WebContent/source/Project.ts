@@ -11,9 +11,9 @@ var serverURL = "/api/pointrel20150417";
 class Project {
     journalIdentifier: string;
     projectIdentifier: string;
-    userIdentifier: string;
+    userIdentifier: any;
     subscriptions = [];
-    projectModel = {};
+    projectModel: any = {};
     activeQuestionnaires = {};
     pointrelClient: PointrelClient;
     tripleStore: TripleStore;
@@ -57,7 +57,7 @@ class Project {
         return undefined;
     }
     
-    setFieldValue(fieldName, newValue, oldValue) {
+    setFieldValue(fieldName, newValue, oldValue = undefined) {
         // TODO: Need to add support in tripleStore for oldValue; note callback is the fourth parameter
         this.tripleStore.add(this.projectIdentifier, fieldName, newValue);
     }

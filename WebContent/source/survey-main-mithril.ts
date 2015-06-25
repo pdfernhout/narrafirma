@@ -51,9 +51,6 @@ function loadQuestionnaire(callback) {
             // alert("Problem loading questionnaire");
             callback("Problem loading questionnaire", null);
         }
-    }, function(err) {
-        console.log("error (2) from request", err);
-        callback(err, null);
     });
 }
 
