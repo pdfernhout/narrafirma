@@ -23,7 +23,7 @@ window["narraFirma_launchApplication"] = browser.launchApplication;
 // to do anything would have to wait on a callback for the builder to finish.
 
 function addButton(panelBuilder: PanelBuilder, model, fieldSpecification, callback): any {
-    if (!callback) callback = panelBuilder.buttonClicked.bind(panelBuilder, null, model, fieldSpecification);
+    if (!callback) callback = panelBuilder.buttonClicked.bind(panelBuilder, model, fieldSpecification);
 
     var options: any = {
         onclick: callback

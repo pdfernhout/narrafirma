@@ -41,7 +41,7 @@ function add_dashboardSectionStatusDisplay(panelBuilder: PanelBuilder, model, fi
     for (var childPageIndex = 0; childPageIndex < childPageIDs.length; childPageIndex++) {
         var childPageID = childPageIDs[childPageIndex];
         var statusViewID = childPageID + "_pageStatus";
-        console.log("statusViewID", fieldSpecification.id, statusViewID);
+        // console.log("statusViewID", fieldSpecification.id, statusViewID);
         // TODO: Fix if different sections get split up
         var status = model[statusViewID];
         var count = pageStatus["" + status] || 0;
@@ -73,7 +73,7 @@ function add_dashboardSectionStatusDisplay(panelBuilder: PanelBuilder, model, fi
     // if (fieldSpecification.displayClass) options.class = fieldSpecification.displayClass;
     // if (fieldSpecification.displayIconClass) options.iconClass = fieldSpecification.displayIconClass;
 
-    var callback = panelBuilder.buttonClicked.bind(panelBuilder, null, model, fieldSpecification);
+    var callback = panelBuilder.buttonClicked.bind(panelBuilder, model, fieldSpecification);
  
     var options: any = {
         onclick: callback,
