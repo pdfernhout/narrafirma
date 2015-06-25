@@ -412,7 +412,7 @@ function updateServerStatus(status, text) {
 }
 
 // dispatch the button click
-function buttonClicked(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification, value) {
+function buttonClicked(panelBuilder: PanelBuilder, model, fieldSpecification, value) {
      console.log("buttonClicked", fieldSpecification);
      
      var functionName = fieldSpecification.id;
@@ -427,10 +427,10 @@ function buttonClicked(panelBuilder: PanelBuilder, contentPane, model, fieldSpec
      var actualFunction = buttonActions[functionName];
      if (!actualFunction) {
          var message = "Unfinished handling for: " + fieldSpecification.id + " with functionName: " + functionName;
-         console.log(message, contentPane, model, fieldSpecification, value);
+         console.log(message, model, fieldSpecification, value);
          alert(message);
      } else {
-         actualFunction(contentPane, model, fieldSpecification, value);
+         actualFunction(model, fieldSpecification, value);
      }
 }
 

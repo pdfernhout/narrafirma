@@ -72,7 +72,7 @@ function urlForSurvey(storyCollectionName) {
     return baseURL + "/survey.html#project=" + projectName + "&survey=" + storyCollectionName;
 }
 
-export function toggleWebActivationOfSurvey(contentPane, model, fieldSpecification, value) {
+export function toggleWebActivationOfSurvey(model, fieldSpecification, value) {
     var grid = fieldSpecification.grid;
     var selectedItem = grid.getSelectedItem();
     console.log("toggleWebActivationOfSurvey selectedItem", selectedItem, model, fieldSpecification); 

@@ -170,7 +170,7 @@ class PanelBuilder {
         return "panelField_" + this.idsMade["$" + text];
     }
     
-    addMissingWidgetPlaceholder(panelBuilder, contentPane, model, fieldSpecification) {
+    addMissingWidgetPlaceholder(panelBuilder, model, fieldSpecification) {
         var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
         return m("div", [
             prompt,
@@ -285,7 +285,7 @@ class PanelBuilder {
         this.buttonClickedCallback = callback;
     }
     
-    buttonClicked(contentPane, model, fieldSpecification, event) {
+    buttonClicked(model, fieldSpecification, event) {
         if (_.isFunction(fieldSpecification.displayConfiguration)) {
             // Do callback; this can't be defined in JSON, but can be defined in an application
             fieldSpecification.displayConfiguration();
@@ -295,7 +295,7 @@ class PanelBuilder {
             console.log("No buttonClickedCallback set in panelBuilder", this, fieldSpecification);
             throw new Error("No buttonClickedCallback set for PanelBuilder");
         }
-        this.buttonClickedCallback(this, contentPane, model, fieldSpecification, event);
+        this.buttonClickedCallback(this, model, fieldSpecification, event);
     }
     
     setCalculateFunctionResultCallback(callback) {

@@ -122,7 +122,7 @@ export function copyStoryFormURL() {
     alert("Story form URL is: " + "http://localhost:8080/survey.html");
 }
 
-export function guiOpenSection(contentPane, model, fieldSpecification, value) {
+export function guiOpenSection(model, fieldSpecification, value) {
     var section = fieldSpecification.displayConfiguration.section;
     console.log("guiOpenSection", section, fieldSpecification);
     pageDisplayer.showPage(section);
@@ -237,7 +237,7 @@ function getQuestionnaireForSelectedStoryCollection(storyCollectionChoiceId) {
     return questionnaire;
 }
 
-export function printStoryForm(contentPane, model, fieldSpecification, value) {
+export function printStoryForm(model, fieldSpecification, value) {
     console.log("printStoryForm unfinished");
     
     var questionnaire = getQuestionnaireForSelectedStoryCollection("storyCollectionChoice_printing");
@@ -302,7 +302,7 @@ export function logoutButtonClicked() {
 }
 
 /*
-function previewQuestionForm(contentPane, model, fieldSpecification) {
+function previewQuestionForm(model, fieldSpecification) {
     console.log("previewQuestionForm", model);
     var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(project, model);
     
@@ -315,7 +315,7 @@ function previewQuestionForm(contentPane, model, fieldSpecification) {
 }
 */
 
-export function previewQuestionForm(contentPane, model, fieldSpecification) {
+export function previewQuestionForm(model, fieldSpecification) {
     console.log("previewQuestionForm", model);
     var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(project, model);
     window["narraFirma_previewQuestionnaire"] = questionnaire;
