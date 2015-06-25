@@ -86,6 +86,13 @@ class PointrelClient {
     
     idleCallback = null;
     
+    // Variables related to generating unique timestamps
+    // Note: timestamp padding needs to get longer as computers get faster
+    private static lastTimestamp = null;
+    private static lastTimestampIncrement = 0;
+    private static timestampIncrementPadding = "000";
+    private static timestampRandomPadding = "000";   
+    
     constructor(apiURL, journalIdentifier, userCredentials, messageReceivedCallback = null, serverStatusCallback = null) {
         if (!apiURL) throw new Error("No apiURL supplied");
         if (!journalIdentifier) throw new Error("No journalIdentifier supplied");
@@ -183,7 +190,7 @@ class PointrelClient {
     
     // TODO: No callback?
     createAndSendChangeMessage(topicIdentifier, messageType, change, other, callback) {
-        var timestamp = PointrelClient.getCurrentUniqueTimestamp();
+        var timestamp = this.getCurrentUniqueTimestamp();
         
         var message = {
             // TODO: Simplify redundancy in timestamps
@@ -255,96 +262,6 @@ class PointrelClient {
         this.areOutgoingMessagesSuspended = suspend;
         if (!this.areOutgoingMessagesSuspended) {
             this.sendOutgoingMessage();
-        }
-    }
-    
-    sendOutgoingMessage() {
-        var callback;
-        if (debugMessaging) console.log("sendOutgoingMessage");
-        if (this.areOutgoingMessagesSuspended) return;
-        if (this.outgoingMessageQueue.length === 0) return;
-        if (this.outstandingServerRequestSentAtTimestamp) return;
-        if (debugMessaging) console.log("sendOutgoingMessage proceeding");
-        
-        if (this.apiURL === "loopback") {
-            // Send all the outgoing messages we have
-            while (this.outgoingMessageQueue.length) {
-                var loopbackMessage = this.outgoingMessageQueue.shift();
-                callback = loopbackMessage.__pointrel_callback;
-                if (callback !== undefined) delete loopbackMessage.__pointrel_callback;
-                this.messageSentCount++;
-                // Simulating eventual response from server, generally for testing
-                this.messageReceived(copyObjectWithSortedKeys(loopbackMessage));
-                if (callback) callback(null, {success: true});
-            }
-        } else {
-            // Send to a real server
-            
-            // If this fails, and there is no callback, this will leave message on outgoing queue (unless it was rejected for some reason)
-            // If there is a callback, the message will be discarded as presumably the caller will handle resending it
-            var message = this.outgoingMessageQueue[0];
-            callback = message.__pointrel_callback;
-            if (callback !== undefined) delete message.__pointrel_callback;
-           
-            var apiRequest = {
-                action: "pointrel20150417_storeMessage",
-                journalIdentifier: this.journalIdentifier,
-                message: message
-            };
-            if (debugMessaging) console.log("sending store message request", apiRequest);
-            this.prepareApiRequestForSending(apiRequest);
-            
-            this.outstandingServerRequestSentAtTimestamp = new Date();
-            this.serverStatus("waiting", "storing " + this.outstandingServerRequestSentAtTimestamp);
-            
-            var self = this;
-            this.apiRequestSend(apiRequest, 2000, function(response) {
-                if (debugMessaging) console.log("Got store response", response);
-                self.outstandingServerRequestSentAtTimestamp = null;
-                if (!response.success) {
-                    console.log("ERROR: Message store failure", response, self.outgoingMessageQueue[0]);
-                    self.serverStatus("failure", "Message store failure: " + response.statusCode + " :: " + response.description);
-                    
-                    if (callback) {
-                        // Discard the message from the queue as presumably the caller will resend it
-                        self.outgoingMessageQueue.shift();
-                        callback(response);
-                        return;
-                    }
-                    
-                    // TODO: Need to otherwise decide whether to discard the message based on the nature of the problem
-                    // Should leave it in the queue if it is not malformed and it is just a possibly temporary problem with server
-                    // TODO: If the message we sent was rejected because it was malformed or a duplicate, we should discard it
-                    // Do not continue with requests until next poll...
-                    return;
-                } else {
-                    self.okStatus();
-                    self.messageSentCount++;
-                    self.outgoingMessageQueue.shift();
-                }
-    
-                // Keep sending outgoing messages if there are any more, or do other task as needed
-                // Do this as a timeout so the event loop can finish its cycle first
-                // Only do this if polling has been started; otherwis just assume user is sending individual messages
-                if (callback) callback(null, response);
-                if (self.started) {
-                    setTimeout(function () {
-                        // Could instead just send outgoing messages and let the timer restart the others, this will cause some extra polls
-                        self.sendFetchOrPollIfNeeded();
-                    }, 0);
-                }
-            }, function(error) {
-                // TODO: Need to check for rejected status and then remove the message from the outgoing queue
-                self.serverStatus("failure", "Problem storing message to server: " + error.message + 
-                    "<br>You may need to reload the page to synchronize it with the current state of the server if a message was rejected for some reason.");
-                console.log("Got store error", error.message);
-                self.outstandingServerRequestSentAtTimestamp = null;
-                if (callback) {
-                    // Discard the message from the queue as presumably the caller will resend it
-                    self.outgoingMessageQueue.shift();
-                    callback(error);
-                }
-            });
         }
     }
     
@@ -494,10 +411,6 @@ class PointrelClient {
         }
     }
     
-    okStatus() {
-        this.serverStatus("ok", "OK (sent: " + this.messageSentCount + ", received:" + this.messageReceivedCount + ")");
-    }
-    
     latestMessageForTopic(topicIdentifier) {
         // TODO: Inefficient to search all messages; keep sorted message list per topic or just track latest for each topic?
         var messages = this.messagesSortedByReceivedTimeArray;
@@ -518,9 +431,14 @@ class PointrelClient {
         return PointrelClient.getCurrentUniqueTimestamp();
     }
     
-    // ------------- Internal methods below not meant to be called by users
+    /* TODO: Maybe make these other static utility functions available at instance levels?
+    PointrelClient.prototype.copyObjectWithSortedKeys = copyObjectWithSortedKeys;
+    PointrelClient.prototype.randomUUID = generateRandomUuid;
+    PointrelClient.prototype.calculateCanonicalSHA256AndLengthForObject = calculateCanonicalSHA256AndLengthForObject;
+    PointrelClient.prototype.calculateSHA256 = calculateSHA256;
+    */
     
-    // TODO: From server -- should have common routines
+    // TODO: Next few from server code -- should have common routines to avoid duplicate code
     
     // TODO: Note that this approach depends on object keys maintaining their order, which is not guaranteed by the JS standards but most browsers support it
     // isObject and copyObjectWithSortedKeys are from Mirko Kiefer (with added semicolons):
@@ -572,11 +490,6 @@ class PointrelClient {
         return shaObj.getHash("HEX");
     }
     
-    static lastTimestamp = null;
-    static lastTimestampIncrement = 0;
-    // TODO: this padding needs to get longer as computers get faster
-    static timestampIncrementPadding = "000";
-    static timestampRandomPadding = "000";
     // Ensure unique timestamps are always incremented from the next by adding values at end...
     // In theory, if the server were to be stopped and be restarted in the same millisecond, these values could overlap for a millisecond in the new session
     static getCurrentUniqueTimestamp() {
@@ -611,21 +524,99 @@ class PointrelClient {
     
     // End -- from server
     
-    /*
-    // Make utility functions available at class and instance levels
-    //PointrelClient.copyObjectWithSortedKeys = copyObjectWithSortedKeys;
-    PointrelClient.prototype.copyObjectWithSortedKeys = copyObjectWithSortedKeys;
-    //PointrelClient.randomUUID = generateRandomUuid;
-    PointrelClient.prototype.randomUUID = generateRandomUuid;
-    //PointrelClient.calculateCanonicalSHA256AndLengthForObject = calculateCanonicalSHA256AndLengthForObject;
-    PointrelClient.prototype.calculateCanonicalSHA256AndLengthForObject = calculateCanonicalSHA256AndLengthForObject;
-    //PointrelClient.calculateSHA256 = calculateSHA256;
-    PointrelClient.prototype.calculateSHA256 = calculateSHA256;
-    //PointrelClient.getCurrentUniqueTimestamp = getCurrentUniqueTimestamp;
-    PointrelClient.prototype.getCurrentUniqueTimestamp = getCurrentUniqueTimestamp;
-    */
+    // ------------- Internal methods below not meant to be called by users
     
-    messageReceived(message) {
+    private sendOutgoingMessage() {
+        var callback;
+        if (debugMessaging) console.log("sendOutgoingMessage");
+        if (this.areOutgoingMessagesSuspended) return;
+        if (this.outgoingMessageQueue.length === 0) return;
+        if (this.outstandingServerRequestSentAtTimestamp) return;
+        if (debugMessaging) console.log("sendOutgoingMessage proceeding");
+        
+        if (this.apiURL === "loopback") {
+            // Send all the outgoing messages we have
+            while (this.outgoingMessageQueue.length) {
+                var loopbackMessage = this.outgoingMessageQueue.shift();
+                callback = loopbackMessage.__pointrel_callback;
+                if (callback !== undefined) delete loopbackMessage.__pointrel_callback;
+                this.messageSentCount++;
+                // Simulating eventual response from server, generally for testing
+                this.messageReceived(copyObjectWithSortedKeys(loopbackMessage));
+                if (callback) callback(null, {success: true});
+            }
+        } else {
+            // Send to a real server
+            
+            // If this fails, and there is no callback, this will leave message on outgoing queue (unless it was rejected for some reason)
+            // If there is a callback, the message will be discarded as presumably the caller will handle resending it
+            var message = this.outgoingMessageQueue[0];
+            callback = message.__pointrel_callback;
+            if (callback !== undefined) delete message.__pointrel_callback;
+           
+            var apiRequest = {
+                action: "pointrel20150417_storeMessage",
+                journalIdentifier: this.journalIdentifier,
+                message: message
+            };
+            if (debugMessaging) console.log("sending store message request", apiRequest);
+            this.prepareApiRequestForSending(apiRequest);
+            
+            this.outstandingServerRequestSentAtTimestamp = new Date();
+            this.serverStatus("waiting", "storing " + this.outstandingServerRequestSentAtTimestamp);
+            
+            var self = this;
+            this.apiRequestSend(apiRequest, 2000, function(response) {
+                if (debugMessaging) console.log("Got store response", response);
+                self.outstandingServerRequestSentAtTimestamp = null;
+                if (!response.success) {
+                    console.log("ERROR: Message store failure", response, self.outgoingMessageQueue[0]);
+                    self.serverStatus("failure", "Message store failure: " + response.statusCode + " :: " + response.description);
+                    
+                    if (callback) {
+                        // Discard the message from the queue as presumably the caller will resend it
+                        self.outgoingMessageQueue.shift();
+                        callback(response);
+                        return;
+                    }
+                    
+                    // TODO: Need to otherwise decide whether to discard the message based on the nature of the problem
+                    // Should leave it in the queue if it is not malformed and it is just a possibly temporary problem with server
+                    // TODO: If the message we sent was rejected because it was malformed or a duplicate, we should discard it
+                    // Do not continue with requests until next poll...
+                    return;
+                } else {
+                    self.okStatus();
+                    self.messageSentCount++;
+                    self.outgoingMessageQueue.shift();
+                }
+    
+                // Keep sending outgoing messages if there are any more, or do other task as needed
+                // Do this as a timeout so the event loop can finish its cycle first
+                // Only do this if polling has been started; otherwis just assume user is sending individual messages
+                if (callback) callback(null, response);
+                if (self.started) {
+                    setTimeout(function () {
+                        // Could instead just send outgoing messages and let the timer restart the others, this will cause some extra polls
+                        self.sendFetchOrPollIfNeeded();
+                    }, 0);
+                }
+            }, function(error) {
+                // TODO: Need to check for rejected status and then remove the message from the outgoing queue
+                self.serverStatus("failure", "Problem storing message to server: " + error.message + 
+                    "<br>You may need to reload the page to synchronize it with the current state of the server if a message was rejected for some reason.");
+                console.log("Got store error", error.message);
+                self.outstandingServerRequestSentAtTimestamp = null;
+                if (callback) {
+                    // Discard the message from the queue as presumably the caller will resend it
+                    self.outgoingMessageQueue.shift();
+                    callback(error);
+                }
+            });
+        }
+    }
+    
+    private messageReceived(message) {
         // if (debugMessaging) console.log("messageReceived", JSON.stringify(message, null, 2));
         
         if (!message) {
@@ -670,14 +661,14 @@ class PointrelClient {
     
     // Start boiler plate for timer management
         
-    startTimer() {
+    private startTimer() {
         // Stop the timer in case it was running already
         // TODO: Is stopTimer/clearTimeout safe to call if the timer has already completed?
         this.stopTimer();
         this.timer = window.setTimeout(this.timerSentSignal.bind(this), this.frequencyOfChecks_ms);
     }
     
-    stopTimer() {
+    private stopTimer() {
         if (this.timer) {
             window.clearTimeout(this.timer);
             this.timer = null;
@@ -686,7 +677,7 @@ class PointrelClient {
     
     // In addition to doing polling if there are no other messages to send or recieve,
     // the timer will give everything a kick to get going again shortly after something errors out
-    timerSentSignal() {
+    private timerSentSignal() {
         // if (debugMessaging) console.log(new Date().toISOString(), "should do check now for new messages", this);
         this.timer = null;
         
@@ -700,7 +691,7 @@ class PointrelClient {
         this.startTimer();
     }
     
-    sendFetchOrPollIfNeeded() {
+    private sendFetchOrPollIfNeeded() {
         // TODO: Prioritizing outgoing messages -- might want to revisit this for some applications?
         if (!this.areOutgoingMessagesSuspended && this.outgoingMessageQueue.length) {
             this.sendOutgoingMessage();
@@ -713,7 +704,7 @@ class PointrelClient {
     
     // End boilerplate for timer management
     
-    pollServerForNewMessages() {
+    private pollServerForNewMessages() {
         if (this.outstandingServerRequestSentAtTimestamp) {
             // TODO: Warn if connection seems to have failed
             console.log("Still waiting on previous server request");
@@ -800,7 +791,7 @@ class PointrelClient {
         });
     }
     
-    fetchIncomingMessage() {
+    private fetchIncomingMessage() {
         if (this.incomingMessageRecords.length === 0) {
             this.serverStatus("waiting", "waiting");
             return;
@@ -864,10 +855,15 @@ class PointrelClient {
     }
     
     // Status should be ok, waiting, or failure
-    serverStatus(status, message) {
+    private serverStatus(status, message) {
         // console.log("PointrelClient serverStatus", status, message);
         if (this.serverStatusCallback) this.serverStatusCallback(status, message);
     }
+    
+    private okStatus() {
+        this.serverStatus("ok", "OK (sent: " + this.messageSentCount + ", received:" + this.messageReceivedCount + ")");
+    }
+    
 }
 
 export = PointrelClient;
