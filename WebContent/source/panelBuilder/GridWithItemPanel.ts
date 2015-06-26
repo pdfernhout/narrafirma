@@ -319,42 +319,16 @@ class GridWithItemPanel {
             })
         ]);
         
-        var disabled = this.isEditing() || undefined;
+        var addButtonDisabled = this.isEditing() || undefined;
         
         var buttons = [];
-        if (this.gridConfiguration.editButton) {
-            var addButton = m("button", {onclick: this.addItem.bind(this), disabled: disabled}, translate("#button_Add|Add"));
+        if (this.gridConfiguration.addButton) {
+            var addButton = m("button", {onclick: this.addItem.bind(this), disabled: addButtonDisabled}, translate("#button_Add|Add"));
             buttons.push(addButton);
         }
         
         if (!this.gridConfiguration.inlineButtons) {
-            buttons = buttons.concat(this.createButtons(this));
-        }
-        
-        if (this.gridConfiguration.duplicateButton) {
-            var duplicateButton = m("button", {onclick: this.duplicateItem.bind(this), disabled: disabled}, translate("#button_Duplicate|Duplicate"));
-            buttons.push(duplicateButton);
-        }
-             
-        if (this.gridConfiguration.moveUpDownButtons) {
-            var upButton = m("button", {onclick: this.moveItemUp.bind(this), disabled: disabled}, translate("#button_Up|Up"));
-            var downButton = m("button", {onclick: this.moveItemDown.bind(this), disabled: disabled}, translate("#button_Down|Down"));
-        }
-        
-        if (this.gridConfiguration.customButton) {
-            var options = this.gridConfiguration.customButton;
-            var customButtonClickedPartial;
-            if (_.isString(options.callback)) {
-                var fakeFieldSpecification = {id: this.fieldSpecification.id, displayConfiguration: options.callback, grid: this};
-                customButtonClickedPartial = panelBuilder.buttonClicked.bind(panelBuilder, this.model, fakeFieldSpecification);
-            } else {
-                customButtonClickedPartial = options.callback.bind(null, this);
-            }
-            var doubleClickFunction;
-            if (!this.gridConfiguration.viewButton) {
-                doubleClickFunction = customButtonClickedPartial;
-            }
-            var customButton = m("button", {onclick: customButtonClickedPartial, ondblclick: doubleClickFunction, disabled: disabled}, translate(options.customButtonLabel));
+            buttons = buttons.concat(this.createButtons());
         }
         
         if (this.gridConfiguration.navigationButtons) {
@@ -478,22 +452,23 @@ class GridWithItemPanel {
         this.displayMode = "viewing";
     }
     
-    duplicateItem() {        
-        console.log("duplicate button pressed");
+    duplicateItem(item) {        
+        if (!item) item = this.selectedItem;
+        console.log("duplicate button pressed", item);
         
         // TODO: May not need this
         if (this.isEditing) {
-            alert("The eidt must be finsihed before duplicating an item");
+            alert("The edit must be finished before duplicating an item");
             return;
         }
 
-        if (!this.selectedItem) {
+        if (!item) {
             alert("Please select an item to duplicate first");
             return;
         }
         
         // Make a copy of the selected item
-        var newItem = JSON.parse(JSON.stringify(this.selectedItem));
+        var newItem = JSON.parse(JSON.stringify(item));
         
         // Set new id for copy
         newItem[this.idProperty] = this.newIdForItem();
@@ -503,14 +478,15 @@ class GridWithItemPanel {
         this.displayMode = "adding";
     }
     
-    moveItemUp() {
-        console.log("up button pressed");
+    moveItemUp(item) {
+        if (!item) item = this.selectedItem;
+        console.log("up button pressed", item);
         
         // TODO: How to move this change back to project data???
-        var index = this.data.indexOf(this.selectedItem);
+        var index = this.data.indexOf(item);
         if (index <= 0) return;
         this.data[index] = this.data[index - 1];
-        this.data[index - 1] = this.selectedItem;
+        this.data[index - 1] = item;
         
         /* Code for moving multiple selections up:
         var items = this.store.data;
@@ -532,14 +508,15 @@ class GridWithItemPanel {
         */
     }
     
-    moveItemDown() {
-        console.log("down button pressed");
+    moveItemDown(item) {
+        if (!item) item = this.selectedItem;
+        console.log("down button pressed", item);
         
         // TODO: How to move this change back to project data???
-        var index = this.data.indexOf(this.selectedItem);
+        var index = this.data.indexOf(item);
         if (index === -1 || index === this.data.length - 1) return;
         this.data[index] = this.data[index + 1];
-        this.data[index + 1] = this.selectedItem;
+        this.data[index + 1] = item;
         
         /* code for moving multiple selected items:
         var items = this.store.data;
@@ -601,10 +578,11 @@ class GridWithItemPanel {
         this.isNavigationalScrollingNeeded = true;
     }
     
-    createButtons(item = null) {
+    createButtons(item = undefined) {
         var buttons = [];
        
         var disabled = this.isEditing() || (!item && !this.selectedItem) || undefined;
+        // console.log("createButtons disabled", disabled, item, this.selectedItem, (!item && !this.selectedItem) );
          
         if (this.gridConfiguration.removeButton) {
             var removeButton = m("button", {onclick: this.deleteItem.bind(this, item), disabled: disabled, "class": "fader"}, translate("#button_Remove|Remove"));
@@ -619,6 +597,35 @@ class GridWithItemPanel {
         if (this.gridConfiguration.viewButton) {
             var viewButton = m("button", {onclick: this.viewItem.bind(this, item), disabled: disabled, "class": "fader"}, translate("#button_View|View"));
             buttons.push(viewButton); 
+        }
+        
+        if (this.gridConfiguration.duplicateButton) {
+            var duplicateButton = m("button", {onclick: this.duplicateItem.bind(this, item), disabled: disabled}, translate("#button_Duplicate|Duplicate"));
+            buttons.push(duplicateButton);
+        }
+             
+        if (this.gridConfiguration.moveUpDownButtons) {
+            var upButton = m("button", {onclick: this.moveItemUp.bind(this, item), disabled: disabled}, translate("#button_Up|Up"));
+            buttons.push(upButton);
+            var downButton = m("button", {onclick: this.moveItemDown.bind(this, item), disabled: disabled}, translate("#button_Down|Down"));
+            buttons.push(downButton);
+        }
+        
+        if (this.gridConfiguration.customButton) {
+            var options = this.gridConfiguration.customButton;
+            var customButtonClickedPartial;
+            if (_.isString(options.callback)) {
+                var fakeFieldSpecification = {id: this.fieldSpecification.id, displayConfiguration: options.callback, grid: this, item: item};
+                customButtonClickedPartial = this.panelBuilder.buttonClicked.bind(this.panelBuilder, this.model, fakeFieldSpecification);
+            } else {
+                customButtonClickedPartial = options.callback.bind(null, this, item);
+            }
+            var doubleClickFunction;
+            if (!this.gridConfiguration.viewButton) {
+                doubleClickFunction = customButtonClickedPartial;
+            }
+            var customButton = m("button", {onclick: customButtonClickedPartial, ondblclick: doubleClickFunction, disabled: disabled}, translate(options.customButtonLabel));
+            buttons.push(customButton);
         }
         
         // console.log("made buttons", buttons, item);
