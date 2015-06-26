@@ -12,6 +12,7 @@ function add_templateList(panelBuilder: PanelBuilder, model, fieldSpecification)
         dialogTitle: "#title_chooseATemplate|Choose a template",
         dialogStyle: undefined, // "height: 1000px; width: 800px",
         dialogConstructionFunction: makeTemplateListChooser.bind(null, panelBuilder),
+        dialogOKButtonLabel: "Cancel",
         fieldSpecification: fieldSpecification
     };
     
@@ -169,6 +170,7 @@ function makeTemplateListChooser(panelBuilder: PanelBuilder, dialogConfiguration
  
     // TODO: Set class on div
     return m("div", [
+        prompt,
         m.component(<any>GridWithItemPanel, {panelBuilder: panelBuilder, fieldSpecification: gridFieldSpecification, model: model})
         // m("button", {onclick: hideDialogCallback}, "Cancel")
     ]);
