@@ -190,10 +190,14 @@ button {
     border-right: 2px solid #8db500;
 }
 
-.narrafirma-dashboardStatusButton .dijitButtonNode {
-    font-weight: 200;
+.narrafirma-dashboardStatusButton {
     font-size: 1em;
-    min-width: 8em;
+    min-width: 10em;
+    height: 2em;
+    border-radius: 12px; 
+    border: none;
+    box-shadow: 2px 2px 2px #3e3739;
+    margin-bottom: 0.5em;
 }
 
 .narrafirma-dashboardSectionStatusDisplayCompletion {
