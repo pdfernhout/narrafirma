@@ -37,9 +37,9 @@ var add_templateList_activityQuestions = [
     {id: "plan", valueType: "string", displayType: "textarea"}
 ];
 
-function useButtonClicked(templateListChoice, model, hideDialogCallback, gridWithDetail) {
-   console.log("useButtonClicked", gridWithDetail);
-   var selectedTemplate = gridWithDetail.getSelectedItem();
+function useButtonClicked(templateListChoice, model, hideDialogCallback, gridWithItemPanel: GridWithItemPanel) {
+   console.log("useButtonClicked", gridWithItemPanel);
+   var selectedTemplate = gridWithItemPanel.getSelectedItem();
    console.log("grid selectedTemplate", selectedTemplate);
    
    if (selectedTemplate) {
@@ -151,16 +151,7 @@ function makeTemplateListChooser(panelBuilder: PanelBuilder, dialogConfiguration
         callback: useButtonClicked.bind(null, templateListChoice, dialogConfiguration.dialogModel, hideDialogCallback)
     };
     
-    var gridConfiguration = {
-        idProperty: "id",
-        includeAllFields: false,
-        viewButton: true,
-        // showTooltip: true,
-        customButton: customButtonDefinition,
-        navigationButtons: true
-   };
-    
-    var model = {templateQuestions: templateQuestions};
+    var model = {templates: templateQuestions};
     
     var gridFieldSpecification = {
         id: "templates",
@@ -169,8 +160,7 @@ function makeTemplateListChooser(panelBuilder: PanelBuilder, dialogConfiguration
             gridConfiguration: {
                 idProperty: "id",
                 includeAllFields: false,
-                viewButton: true,
-                // showTooltip: true,
+                // viewButton: true,
                 customButton: customButtonDefinition,
                 navigationButtons: true
            }
@@ -179,8 +169,8 @@ function makeTemplateListChooser(panelBuilder: PanelBuilder, dialogConfiguration
  
     // TODO: Set class on div
     return m("div", [
-        m.component(<any>GridWithItemPanel, {panelBuilder: panelBuilder, fieldSpecification: gridFieldSpecification, model: model}),
-        m("button", {onclick: hideDialogCallback}, "Cancel")
+        m.component(<any>GridWithItemPanel, {panelBuilder: panelBuilder, fieldSpecification: gridFieldSpecification, model: model})
+        // m("button", {onclick: hideDialogCallback}, "Cancel")
     ]);
 }
 
