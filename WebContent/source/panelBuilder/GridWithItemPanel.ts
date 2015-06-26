@@ -9,23 +9,6 @@ import generateRandomUuid = require("../pointrel20150417/generateRandomUuid");
 
 // TODO: Probably need to prevent user surveys from having a question with a short name of "_id".
 
-// Possible configuration options
-/*
-var configuration = {
-    viewButton: true,
-    addButton: true,
-    removeButton: true,
-    editButton: true,
-    duplicateButton: true,
-    moveUpDownButtons: true,
-    navigationButtons: true,
-    includeAllFields: false, // Or ["fieldName1", "fieldName2", ...]
-    customButton: {???},
-    validateAdd: "methodName",
-    validateEdit: "methodName"
-};
-*/
-
 function computeColumnsForItemPanelSpecification(itemPanelSpecification, configuration) {
     // var self = this;
     
@@ -93,45 +76,6 @@ function formatObjectsIfNeeded(item) {
     return JSON.stringify(item);
 }
 
-// Sorts function derived from: http://lhorie.github.io/mithril-blog/vanilla-table-sorting.html
-function sorts(controller: GridWithItemPanel, list) {
-    return {
-        onclick: function(e) {
-            var prop = e.target.getAttribute("data-sort-by");
-            if (prop) {
-                // Don't sort if have move up/down buttons
-                if (controller.gridConfiguration.moveUpDownButtons) return;
-                console.log("Sorting by", prop);
-                var first = list[0];
-                list.sort(function(a, b) {
-                    return a[prop] > b[prop] ? 1 : a[prop] < b[prop] ? -1 : 0;
-                });
-                if (first === list[0]) {
-                    console.log("reversing");
-                    list.reverse();
-                }
-                console.log("sorted list", list);
-            } else {
-                if (controller.isEditing()) return;
-                var itemID = e.target.getAttribute("data-item-index");
-                console.log("item clicked", itemID);
-                var itemIndex = null;
-                for (var i = 0; i < list.length; i++) {
-                    if (list[i][controller.idProperty] === itemID) {
-                        itemIndex = i;
-                        break;
-                    }
-                }
-                console.log("found item at index", itemIndex, list[itemIndex]);
-                if (itemIndex !== null) {
-                    controller.selectedItem = list[itemIndex];
-                    controller.displayMode = "viewing";
-                }
-            }
-        }
-    };
-}
-
 class ItemPanel {
     
     static controller(args) {
@@ -164,7 +108,7 @@ class ItemPanel {
 // GridWithItemPanel needs to be a component so it can maintain a local sorted list
 class GridWithItemPanel {
     
-    gridConfiguration = null;
+    gridConfiguration: GridConfiguration = null;
     data = [];
     columns = [];
     fieldSpecification = null;
@@ -177,9 +121,11 @@ class GridWithItemPanel {
     displayMode = null;
     
     // TODO: Multiple select
-    selectedItem = null;
+    private selectedItem = null;
     
     isNavigationalScrollingNeeded = false;
+    
+    doubleClickAction = null;
     
     constructor(args) {
         this.panelBuilder = args.panelBuilder;
@@ -189,14 +135,14 @@ class GridWithItemPanel {
         this.updateDisplayConfigurationAndData(this.fieldSpecification.displayConfiguration);
     }
     
-    updateDisplayConfigurationAndData(theDisplayConfiguration) {
+    updateDisplayConfigurationAndData(theDisplayConfiguration: GridDisplayConfiguration) {
         var displayConfiguration = {
             itemPanelID: undefined,
             itemPanelSpecification: undefined,
             gridConfiguration: undefined
         };
         
-        var gridConfiguration = {
+        var gridConfiguration: GridConfiguration = {
             idProperty: undefined,
             
             viewButton: true,
@@ -312,7 +258,7 @@ class GridWithItemPanel {
             columnHeaders.push(m("th", ""));
         }
         
-        var table = m("table.scrolling", sorts(this, this.data), [
+        var table = m("table.scrolling", this.tableConfigurationWithSortingOnHeaderClick(), [
             m("tr", {"class": "selected-grid-row"}, columnHeaders),
             this.data.map((item, index) => {
                 return this.rowForItem(item, index);
@@ -355,6 +301,60 @@ class GridWithItemPanel {
         // TODO: set class etc.
         return m("div", {"class": "questionExternal narrafirma-question-type-grid"}, parts);
     }
+    
+    tableConfigurationWithSortingOnHeaderClick() {
+        var list = this.data;
+        return {
+            onclick: (e) => {
+                var prop = e.target.getAttribute("data-sort-by");
+                if (prop) {
+                    // Sorting derived from: http://lhorie.github.io/mithril-blog/vanilla-table-sorting.htm
+                    // Don't sort if have move up/down buttons
+                    if (this.gridConfiguration.moveUpDownButtons) return;
+                    console.log("Sorting by", prop);
+                    var first = list[0];
+                    list.sort(function(a, b) {
+                        return a[prop] > b[prop] ? 1 : a[prop] < b[prop] ? -1 : 0;
+                    });
+                    if (first === list[0]) {
+                        console.log("reversing");
+                        list.reverse();
+                    }
+                    console.log("sorted list", list);
+                } else {
+                    this.selectItemInList(e, list);
+                }
+            },
+            ondblclick: (e) => {
+                var prop = e.target.getAttribute("data-sort-by");
+                if (!prop) {
+                    if (this.selectedItem && this.doubleClickAction) {
+                        this.doubleClickAction(this.selectedItem);
+                    }
+                }
+            }
+        };
+    }
+    
+    selectItemInList(e, list) {
+        if (this.isEditing()) return;
+        var itemID = e.target.getAttribute("data-item-index");
+        console.log("item clicked", itemID);
+        var itemIndex = null;
+        for (var i = 0; i < list.length; i++) {
+            if (list[i][this.idProperty] === itemID) {
+                itemIndex = i;
+                break;
+            }
+        }
+        console.log("found item at index", itemIndex, list[itemIndex]);
+        if (itemIndex !== null) {
+            this.selectedItem = list[itemIndex];
+            if (this.gridConfiguration.viewButton) {
+                this.displayMode = "viewing";
+            }
+        }
+    }
 
     isEditing() {
         return (this.displayMode === "editing" || this.displayMode === "adding") && this.selectedItem;
@@ -362,6 +362,10 @@ class GridWithItemPanel {
     
     isViewing() {
         return (this.displayMode === "viewing") && this.selectedItem;
+    }
+    
+    getSelectedItem() {
+        return this.selectedItem;
     }
     
     validateItem(item) {
@@ -618,13 +622,13 @@ class GridWithItemPanel {
                 var fakeFieldSpecification = {id: this.fieldSpecification.id, displayConfiguration: options.callback, grid: this, item: item};
                 customButtonClickedPartial = this.panelBuilder.buttonClicked.bind(this.panelBuilder, this.model, fakeFieldSpecification);
             } else {
-                customButtonClickedPartial = options.callback.bind(null, this, item);
+                customButtonClickedPartial = (event) => { options.callback(this, item); };
             }
             var doubleClickFunction;
             if (!this.gridConfiguration.viewButton) {
-                doubleClickFunction = customButtonClickedPartial;
+                this.doubleClickAction = customButtonClickedPartial;
             }
-            var customButton = m("button", {onclick: customButtonClickedPartial, ondblclick: doubleClickFunction, disabled: disabled}, translate(options.customButtonLabel));
+            var customButton = m("button", {onclick: customButtonClickedPartial, disabled: disabled}, translate(options.customButtonLabel));
             buttons.push(customButton);
         }
         
