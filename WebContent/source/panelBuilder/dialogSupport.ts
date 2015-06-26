@@ -20,7 +20,10 @@ export function addButtonThatLaunchesDialog(fieldSpecification, dialogConfigurat
 }
 
 function hideDialogMethod() {
-    m.mount(document.getElementById("dialogDiv"), null);
+    // Remove the dialog when current event is finished being handled
+    setTimeout(function() {
+        m.mount(document.getElementById("dialogDiv"), null);
+    }, 0);
 }
 
 class MithrilDialog {
@@ -35,6 +38,8 @@ class MithrilDialog {
             return controller.calculateView(args);
         } catch (e) {
             console.log("Problem creating dialog", e);
+            alert("Problem creating dialog");
+            hideDialogMethod();
             return m("div", "Problem creating dialog");
         }
     }
