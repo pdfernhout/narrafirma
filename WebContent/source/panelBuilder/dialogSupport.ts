@@ -31,15 +31,27 @@ class MithrilDialog {
     
     static view(controller, args) {
         console.log("MithrilDialog view called");
-        
-        return controller.calculateView(args);
+        try {
+            return controller.calculateView(args);
+        } catch (e) {
+            console.log("Problem creating dialog", e);
+            return m("div", "Problem creating dialog");
+        }
     }
     
     calculateView(args) {
         var dialogConfiguration = args;
+        
+        var internalView;
+        try {
+            internalView = dialogConfiguration.dialogConstructionFunction(dialogConfiguration, hideDialogMethod);
+        } catch (e) {
+            console.log("Problem creating view", args, e);
+            internalView = m("div", "Problem creating view");
+        }
         return m("div.overlay", m("div.modal-content", [
             m("b", translate(dialogConfiguration.dialogTitle)),
-            m("div.modal-internal", dialogConfiguration.dialogConstructionFunction(dialogConfiguration, hideDialogMethod)),
+            m("div.modal-internal", internalView),
             m("button", {onclick: function() {dialogConfiguration.dialogOKCallback(dialogConfiguration, hideDialogMethod); }}, translate(args.dialogOKButtonLabel))
         ]));
     }
