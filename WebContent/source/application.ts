@@ -678,6 +678,9 @@ function loadApplicationDesign() {
         panelBuilder.setCalculateFunctionResultCallback(calculateFunctionResultForGUI);
 
         panelBuilder.clientState = clientState;
+        
+        // Initialize different Mithril components which will be mounted using m.mount
+        dialogSupport.initialize();
         navigationPane.initializeNavigationPane(panelSpecificationCollection, startPage, userIdentifier, panelBuilder);
         pageDisplayer.configurePageDisplayer(panelBuilder, startPage, project, updateHashIfNeededForChangedState);
 

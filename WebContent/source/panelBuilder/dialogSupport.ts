@@ -3,9 +3,18 @@ import m = require("mithril");
 
 "use strict";
 
+// Only supports one dialog at a time -- no nesting!
+// Use an standard alert or confirm for one more level of nesting if needed.
+
 // TODO: Using a global here to avoid parameterizing mounted components until the following Mithril issue is resolved or clarified:
 // https://github.com/lhorie/mithril.js/issues/638
-var globalDialogConfiguration;
+// If this is null, no dialog is drawn. If this is a valid configuration, dialog will be displayed.
+var globalDialogConfiguration = null;
+
+// Leaving one dialog mounted all the time to try to get around with re-creation of grids when dialog opens; maybe Mithril bug?
+export function initialize() {
+    m.mount(document.getElementById("dialogDiv"), <any>MithrilDialog);
+}
 
 // TODO: Translate: Change to taking a translate ID
 // TODO: Buttons don't show up if window too narrow for dialog
@@ -24,10 +33,7 @@ export function addButtonThatLaunchesDialog(fieldSpecification, dialogConfigurat
 }
 
 function hideDialogMethod() {
-    // Remove the dialog when current event is finished being handled
-    setTimeout(function() {
-        m.mount(document.getElementById("dialogDiv"), null);
-    }, 0);
+    globalDialogConfiguration = null;
 }
 
 class MithrilDialog {
@@ -38,14 +44,20 @@ class MithrilDialog {
     
     static view(controller) {
         console.log("MithrilDialog view called");
-        try {
-            return controller.calculateView(globalDialogConfiguration);
-        } catch (e) {
-            console.log("Problem creating dialog", e);
-            alert("Problem creating dialog");
-            hideDialogMethod();
-            return m("div", "Problem creating dialog");
+        var dialogContent = [];
+        
+        if (globalDialogConfiguration) {
+            try {
+                dialogContent = controller.calculateView(globalDialogConfiguration);
+            } catch (e) {
+                console.log("Problem creating dialog", e);
+                alert("Problem creating dialog");
+                hideDialogMethod();
+                // dialogContent = m("div", "Problem creating dialog");
+            }
         }
+        
+        return m("div.dialogContentWrapper", dialogContent); 
     }
     
     calculateView(args) {
@@ -83,9 +95,6 @@ export function openDialog(dialogConfiguration) {
     if (!dialogConfiguration.key) dialogConfiguration.key = "standardDialog";
     
     globalDialogConfiguration = dialogConfiguration; 
-    setTimeout(function() {
-        m.mount(document.getElementById("dialogDiv"), <any>MithrilDialog);
-    }, 0);
 }
 
 // Caller needs to call the hideDialogMethod returned as the second arg of dialogOKCallback to close the dialog
