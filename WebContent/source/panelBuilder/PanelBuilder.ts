@@ -93,7 +93,11 @@ function add_functionResult(panelBuilder: PanelBuilder, model, fieldSpecificatio
 }
  */
 function add_grid(panelBuilder, model, fieldSpecification) {
-    return m.component(<any>GridWithItemPanel, {panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
+    var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
+    return [
+        prompt,
+        m.component(<any>GridWithItemPanel, {panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification})
+    ];
 }
 
 function addStandardPlugins() {

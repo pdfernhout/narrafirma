@@ -248,8 +248,7 @@ class GridWithItemPanel {
         console.log("GridWithItemPanel calculateView", this.data);
         
         var panelBuilder = this.panelBuilder;
-        var prompt = panelBuilder.buildQuestionLabel(this.fieldSpecification);
-        
+
         var columnHeaders = this.columns.map((column) => {
             return m("th[data-sort-by=" + column.field  + "]", {"text-overflow": "ellipsis"}, column.label);
         });
@@ -288,7 +287,7 @@ class GridWithItemPanel {
         
         var buttonPanel = m("div.narrafirma-button-panel", buttons);
         
-        var parts = [prompt, m("div.narrafirm-grid", [table]), buttonPanel];
+        var parts = [m("div.narrafirm-grid", [table]), buttonPanel];
         
         if (this.isViewing()) {
             parts.push(this.bottomEditorForItem(panelBuilder, this.selectedItem, "view"));
