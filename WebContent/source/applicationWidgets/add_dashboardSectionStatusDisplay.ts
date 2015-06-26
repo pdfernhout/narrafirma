@@ -60,6 +60,7 @@ function add_dashboardSectionStatusDisplay(panelBuilder: PanelBuilder, model, fi
     var percentDone = 0;
     if (pageCount) percentDone = Math.round(100 * finishedPageCount / pageCount);
     
+    // TODO: No longer need to calculate statusText? Probably should rmeove this...
     // TODO: Translate
     var statusText = " -- All " + pageCount + " steps complete (100%)";
     if (unfinishedPageCount) {

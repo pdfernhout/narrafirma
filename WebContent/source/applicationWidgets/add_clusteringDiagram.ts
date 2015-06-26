@@ -21,7 +21,7 @@ function add_clusteringDiagram(panelBuilder: PanelBuilder, model, fieldSpecifica
         clusteringDiagram.updateDiagram(newData);
     });
     
-    // Klugde to get the contentPane to free the watcher by calling remove when it is destroyed
+    // Kludge to get the contentPane to free the watcher by calling remove when it is destroyed
     // This would not work if the content pane continued to exist when replacing this component
     contentPane.own(watcher);
     */

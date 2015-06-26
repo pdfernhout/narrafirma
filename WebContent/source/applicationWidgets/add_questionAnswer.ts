@@ -59,7 +59,7 @@ function add_questionAnswer(panelBuilder: PanelBuilder, model, fieldSpecificatio
         return value;
     };
     
-    // var label = panelBuilder._add_calculatedText(panelBuilder, contentPane, fieldSpecification, function() {return div_for_value(calculate());});
+    // var label = panelBuilder._add_calculatedText(panelBuilder, fieldSpecification, function() {return div_for_value(calculate());});
     
     // TODO: Recalculating next two variables wheres they are also calculated in _add_calculatedText
     var baseText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);

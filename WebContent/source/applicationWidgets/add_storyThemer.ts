@@ -53,7 +53,7 @@ function addThemeButtonPressed(themeEntryComboBox, storyThemesStore, allThemes) 
     storyThemesStore.add(existingTheme);
 }
 
-function buildThemerPanel(panelBuilder: PanelBuilder, contentPane, model) {    
+function buildThemerPanel(panelBuilder: PanelBuilder, model) {    
     // Encode all user-supplied text to ensure it does not create HTML issues
     var storyName = _.escape(model.__survey_storyName);
     var storyText = _.escape(model.__survey_storyText);
@@ -150,7 +150,7 @@ function insertStoryThemer(panelBuilder: PanelBuilder, pagePane, model, fieldSpe
 
 function add_storyThemer(panelBuilder: PanelBuilder, model, fieldSpecification) {
     /*
-    var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
+    var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(fieldSpecification);
     
     var storyThemerInstance = insertStoryThemer(panelBuilder, questionContentPane, model, fieldSpecification);
     questionContentPane.resize();

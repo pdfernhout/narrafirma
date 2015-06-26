@@ -8,7 +8,7 @@ import m = require("mithril");
 
 // TODO: Maybe add tooltip with notes for item? And then don't display item info at bottom?
 // TODO: Select and move groups of items
-// TODO: Does surface need to be "destroy"-ed when closing page or replacing contentPane to prevent memory leak?
+// TODO: Does surface need to be "destroy"-ed when changing page to prevent memory leak?
 
 var defaultSurfaceWidthInPixels = 800;
 var defaultSurfaceHeightInPixels = 400;

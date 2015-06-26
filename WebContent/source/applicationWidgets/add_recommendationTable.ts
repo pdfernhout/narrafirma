@@ -5,7 +5,7 @@ import PanelBuilder = require("../panelBuilder/PanelBuilder");
 
 "use strict";
 
-function add_recommendationTable(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
+function add_recommendationTable(panelBuilder: PanelBuilder, model, fieldSpecification) {
     var dialogConfiguration = {
         dialogModel: model,
         dialogTitle: "#title_recommendationsTable|Recommendations table",

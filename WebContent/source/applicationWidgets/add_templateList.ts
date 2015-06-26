@@ -4,7 +4,7 @@ import PanelBuilder = require("../panelBuilder/PanelBuilder");
 
 "use strict";
 
-function add_templateList(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
+function add_templateList(panelBuilder: PanelBuilder, model, fieldSpecification) {
     var dialogConfiguration = {
         dialogModel: model,
         dialogTitle: "#title_chooseATemplate|Choose a template",
@@ -94,10 +94,10 @@ function useButtonClicked(templateListChoice, model, hideDialogCallback, gridWit
    }
 }
 
-function makeTemplateListChooser(panelBuilder: PanelBuilder, contentPane, model, hideDialogCallback, dialogConfiguration) {
+function makeTemplateListChooser(panelBuilder: PanelBuilder, model, hideDialogCallback, dialogConfiguration) {
     var fieldSpecification = dialogConfiguration.fieldSpecification;
    
-    var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(contentPane, fieldSpecification);
+    var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(fieldSpecification);
     questionContentPane.set("style", "min-height: 400px; min-width: 600px; max-width: 900px");
     
     var templateListChoice = fieldSpecification.displayConfiguration;
@@ -131,8 +131,8 @@ function makeTemplateListChooser(panelBuilder: PanelBuilder, contentPane, model,
         pageQuestions = [];
     }
 
-     function buildPanel(builder, contentPane, model) {
-         builder.buildFields(pageQuestions, contentPane, model);
+     function buildPanel(builder, model) {
+         builder.buildFields(pageQuestions, model);
      }
      
      var itemPanelSpecification = {
