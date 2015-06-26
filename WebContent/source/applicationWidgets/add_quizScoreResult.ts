@@ -1,5 +1,6 @@
 import translate = require("../panelBuilder/translate");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
+import m = require("mithril");
 
 "use strict";
 
@@ -35,28 +36,16 @@ function calculate_quizScoreResult(panelSpecificationCollection, model, dependsO
     return response;
 }
 
-function add_quizScoreResult(panelBuilder: PanelBuilder, contentPane, model, fieldSpecification) {
+function add_quizScoreResult(panelBuilder: PanelBuilder, model, fieldSpecification) {
     var dependsOn = fieldSpecification.displayConfiguration;
     
-    var calculate = calculate_quizScoreResult.bind(null, panelBuilder.panelSpecificationCollection, model, dependsOn);
+    var calculateResult = calculate_quizScoreResult(panelBuilder.panelSpecificationCollection, model, dependsOn);
     
-    var label = panelBuilder._add_calculatedText(panelBuilder, contentPane, fieldSpecification, calculate);
-    
-    // TODO: Recalculating next two variables wheres they are also calculated in _add_calculatedText
     var baseText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
     
-    var updateInfo = {"id": fieldSpecification.id, "label": label, "baseText": baseText, "calculate": calculate};
+    var labelText = panelBuilder.substituteCalculatedResultInBaseText(baseText, calculateResult);
     
-    // Ensure this value is recalculated when dependent questions change by using watch
-    for (var dependsOnIndex in dependsOn) {
-        var questionID = dependsOn[dependsOnIndex];
-        // console.log("setting up watch on", questionID, "for", id, model);
-        var watcher = model.watch(questionID, panelBuilder.updateLabelUsingCalculation.bind(panelBuilder, updateInfo));
-        
-        // Kludge to get the label to free the watcher by calling remove when it is destroyed
-        label.own(watcher);
-    }
-    return label;
+    return m("div", {"class": "questionExternal narrafirma-question-type-quizScoreResult"}, m.trust(labelText));
 }
 
 // Make this function available for report generation

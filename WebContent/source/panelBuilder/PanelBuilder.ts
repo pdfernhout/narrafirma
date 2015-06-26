@@ -79,12 +79,7 @@ function add_functionResult(panelBuilder: PanelBuilder, model, fieldSpecificatio
  
     var calculatedText = panelBuilder.calculateFunctionResult(model, fieldSpecification);
     
-    var newLabelText;
-    if (baseText.indexOf(ResultTagToReplace) !== -1) {
-        newLabelText = baseText.replace(ResultTagToReplace, calculatedText);
-    } else {
-        newLabelText = baseText + " " + calculatedText;
-    }
+    var newLabelText = panelBuilder.substituteCalculatedResultInBaseText(baseText, calculatedText);
     
     return m("div.functionResult", newLabelText);
 }
@@ -408,6 +403,17 @@ class PanelBuilder {
     private addAllowedHTMLToPrompt(text) {
         // TODO: Sanitize this html, making something like the above work
         return m.trust(text);
+    }
+    
+    substituteCalculatedResultInBaseText(baseText: string, calculatedText: string): string {
+        var newLabelText;
+        if (baseText.indexOf(ResultTagToReplace) !== -1) {
+            newLabelText = baseText.replace(ResultTagToReplace, calculatedText);
+        } else {
+            newLabelText = baseText + " " + calculatedText;
+        }
+        
+        return newLabelText;
     }
     
     buildQuestionLabel(fieldSpecification) {
