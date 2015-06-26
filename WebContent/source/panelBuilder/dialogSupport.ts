@@ -46,6 +46,7 @@ class MithrilDialog {
     
     calculateView(args) {
         var dialogConfiguration = args;
+        console.log("MithrilDalog calculateView", dialogConfiguration);
         
         var internalView;
         try {
@@ -57,7 +58,7 @@ class MithrilDialog {
         return m("div.overlay", m("div.modal-content", [
             m("b", translate(dialogConfiguration.dialogTitle)),
             m("div.modal-internal", internalView),
-            m("button", {onclick: function() {dialogConfiguration.dialogOKCallback(dialogConfiguration, hideDialogMethod); }}, translate(args.dialogOKButtonLabel))
+            m("button", {onclick: function() {dialogConfiguration.dialogOKCallback(dialogConfiguration, hideDialogMethod); }}, translate(args.dialogOKButtonLabel || "OK"))
         ]));
     }
 }
