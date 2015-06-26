@@ -1,8 +1,14 @@
 import kludgeForUseStrict = require("../kludgeForUseStrict");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
+import m = require("mithril");
+
 "use strict";
 
 function add_annotationsGrid(panelBuilder: PanelBuilder, model, fieldSpecification) {
+    return m("div", "add_annotationsGrid UNFINISHED");
+    
+    // TODO: Fix for Mithril
+    /*
     var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(fieldSpecification);
     
     var label = panelBuilder.newContentPane({
@@ -11,6 +17,7 @@ function add_annotationsGrid(panelBuilder: PanelBuilder, model, fieldSpecificati
     });
     label.placeAt(questionContentPane);
     return label;
+    */
 }
 
 export = add_annotationsGrid;
