@@ -43,7 +43,7 @@ export function initializeNavigationPane(thePanelSpecificationCollection, theSta
     userIdentifier = theUserIdentifier;
     
     Navigation.panelBuilder = panelBuilder;
-    navigationController = m.mount(document.getElementById("navigationDiv"), Navigation);
+    navigationController = m.mount(document.getElementById("navigationDiv"), m.component(Navigation, {key: "navigation"}));
 }
     
 export function setCurrentPageSpecification(pageID, pageSpecification) {

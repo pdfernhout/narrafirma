@@ -127,6 +127,10 @@ class GridWithItemPanel {
     
     doubleClickAction = null;
     
+    onunload() {
+        console.log("+++++++++++++++++++++++++++++++++++++ unloading GridWithItemPanel");
+    }
+    
     constructor(args) {
         console.log("************************************** GridWithItemPanel constructor called");
         this.panelBuilder = args.panelBuilder;

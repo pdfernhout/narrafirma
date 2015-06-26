@@ -21,22 +21,26 @@ var PageDisplayer: any = {
     },
     
     view: function(controller, args) {
+        var contentsDiv;
+        
         console.log("&&&&&&&&&& view called in PageDisplayer", currentPageID);
         if (!currentPageID) {
-            return m("div", "Starting up...");
-        }
-        // Create the display widgets for this page
-        try {
-            return m("div", {"class": "narrafirma-" + currentPageID}, [
-                m("div.narrafirma-page-name", currentPageSpecification.displayName),
-                panelBuilder.buildPanel(currentPageID, project.projectModel)
-            ]);
-        } catch (e) {
-            console.log("ERROR: When trying to create page", currentPageID, e);
-            // TODO: Translate
-            // alert("Something when wrong trying to create this page");
-        }
-        return m("div", "PROBLEM: Failed to build page: " + currentPageID);
+            contentsDiv = m("div", "Starting up...");
+        } else {
+            // Create the display widgets for this page
+            try {
+                contentsDiv = m("div", {"class": "narrafirma-" + currentPageID}, [
+                    m("div.narrafirma-page-name", currentPageSpecification.displayName),
+                    panelBuilder.buildPanel(currentPageID, project.projectModel)
+                ]);
+            } catch (e) {
+                console.log("ERROR: When trying to create page", currentPageID, e);
+                // TODO: Translate
+                // alert("Something when wrong trying to create this page");
+                contentsDiv = m("div", "PROBLEM: Failed to build page: " + currentPageID);
+            }
+         }
+        return m("div.pageContents", {key: "pageContents"}, contentsDiv);
     }
 };
 
@@ -47,7 +51,7 @@ export function configurePageDisplayer(thePanelBuilder: PanelBuilder, theStartPa
     project = theProject;
     updateHashIfNeededForChangedState = updateHashIfNeededForChangedStateCallback;
     
-    m.mount(document.getElementById("pageDiv"), PageDisplayer);
+    m.mount(document.getElementById("pageDiv"), m.component(PageDisplayer, {key: "currentPage"}));
 }
 
 export function showPage(pageID, forceRefresh = false) {
