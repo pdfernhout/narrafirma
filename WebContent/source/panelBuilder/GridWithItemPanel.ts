@@ -128,6 +128,7 @@ class GridWithItemPanel {
     doubleClickAction = null;
     
     constructor(args) {
+        console.log("************************************** GridWithItemPanel constructor called");
         this.panelBuilder = args.panelBuilder;
         this.model = args.model;
         this.fieldSpecification = args.fieldSpecification;
@@ -382,10 +383,11 @@ class GridWithItemPanel {
         return [];
     }
     
+    // inlineEditorForItem is not currently used...
     inlineEditorForItem(panelBuilder, item, mode) {
         return m("tr", [
             m("td", {colSpan: this.columns.length}, [
-                m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: this, mode: mode})
+                m.component(<any>ItemPanel, {key: this.fieldSpecification.id + "_" + "inlineEditor", panelBuilder: panelBuilder, item: item, grid: this, mode: mode})
             ]),
             m("td", {"vertical-align": "top"}, [m("button", {onclick: this.doneClicked.bind(this, item)}, "close")])
         ]);
@@ -394,7 +396,7 @@ class GridWithItemPanel {
     bottomEditorForItem(panelBuilder, item, mode) {
         return m("div", [
             m("td", {colSpan: this.columns.length}, [
-                m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: this, mode: mode})
+                m.component(<any>ItemPanel, {key: this.fieldSpecification.id + "_" + "bottomEditor", panelBuilder: panelBuilder, item: item, grid: this, mode: mode})
             ]),
             m("td", {"vertical-align": "top"}, [m("button", {onclick: this.doneClicked.bind(this, item)}, "close")])
         ]);
@@ -636,15 +638,8 @@ class GridWithItemPanel {
     }
     
     rowForItem(item, index) {
-        /*
-        if (this.selectedItem === item) {
-            return m("tr", [
-                m("td", {colSpan: this.columns.length}, [
-                    m.component(<any>ItemPanel, {panelBuilder: panelBuilder, item: item, grid: this})
-                ]),
-                m("td", {"vertical-align": "top"}, [m("button", {onclick: this.doneClicked.bind(this, item, index)}, "close")])
-            ]);
-        }
+        /* TODO: Use inline editor, if some config option is set:
+        return inlineEditorForItem(panelBuilder, item, mode);
         */
         var selectionClass = "narrafirma-grid-row-unselected";
         var selected = (item === this.selectedItem);

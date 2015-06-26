@@ -204,9 +204,9 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         // Could suggest 0-100 to support <IE10 that don't have range input -- or coudl do polyfill
         // if (fieldSpecification.displayPrompt) questionLabel[0].children = fieldSpecification.displayPrompt + " (0-100)";
         parts = [
-            m("span", {class: "narrafirma-survey-low"}, fieldSpecification.displayConfiguration[0]),
-            m('span', {class: "narrafirma-survey-slider"}, m('input[type="range"]', standardValueOptions)),
-            m('span', {class: "narrafirma-survey-high"}, fieldSpecification.displayConfiguration[1])
+            m("span", {"class": "narrafirma-survey-low"}, fieldSpecification.displayConfiguration[0]),
+            m('span', {"class": "narrafirma-survey-slider"}, m('input[type="range"]', standardValueOptions)),
+            m('span', {"class": "narrafirma-survey-high"}, fieldSpecification.displayConfiguration[1])
         ];
     } else {
         parts = [
@@ -216,7 +216,7 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
     }
 
     if (parts.length) {
-        parts = m("div", {class: "questionInternal"}, parts);
+        parts = m("div", {"class": "questionInternal"}, parts);
     }
     
     if (questionLabel) {
@@ -227,5 +227,5 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
     if (fieldSpecification.displayClass) {
         classString += " " + fieldSpecification.displayClass;
     }
-    return m("div", {class: classString}, parts);
+    return m("div", {key: fieldID, "class": classString}, parts);
 }

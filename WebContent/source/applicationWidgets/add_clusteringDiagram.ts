@@ -12,7 +12,7 @@ function add_clusteringDiagram(panelBuilder: PanelBuilder, model, fieldSpecifica
     
     var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
         
-    var clusteringDiagram = m.component(<any>ClusteringDiagram, {model: model, id: fieldSpecification.id, diagramName: diagramName, autosave: true});
+    var clusteringDiagram = m.component(<any>ClusteringDiagram, {key: fieldSpecification.id, model: model, id: fieldSpecification.id, diagramName: diagramName, autosave: true});
 
     /* TODO: Who should be responsible for updating this data? Is redraw called or is that bypassed as an html component?
     var watcher = model.watch(diagramName, function() {

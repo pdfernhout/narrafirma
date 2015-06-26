@@ -298,8 +298,8 @@ class StoryBrowser {
             }
         };
         
-        this.filter1 = new Filter({name: "Filter 1", storyBrowser: this});
-        this.filter2 = new Filter({name: "Filter 2", storyBrowser: this});
+        this.filter1 = new Filter({key: "Filter 1", name: "Filter 1", storyBrowser: this});
+        this.filter2 = new Filter({key: "Filter 2", name: "Filter 2", storyBrowser: this});
         this.grid = new GridWithItemPanel({panelBuilder: args.panelBuilder, model: this.modelForGrid, fieldSpecification: this.gridFieldSpecification});
     }
 
@@ -441,7 +441,7 @@ class StoryBrowser {
 }
 
 function add_storyBrowser(panelBuilder: PanelBuilder, model, fieldSpecification) {
-    return m.component(<any>StoryBrowser, {panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
+    return m.component(<any>StoryBrowser, {key: fieldSpecification.id, panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
 }
 
 export = add_storyBrowser;

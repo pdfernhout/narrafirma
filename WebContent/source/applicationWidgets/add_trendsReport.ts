@@ -627,7 +627,7 @@ function other() {
 function add_trendsReport(panelBuilder: PanelBuilder, model, fieldSpecification) {
     var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
     
-    var patternBrowser = m.component(<any>PatternBrowser, {panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
+    var patternBrowser = m.component(<any>PatternBrowser, {key: fieldSpecification.id, panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
  
     return m("div", [
         prompt,

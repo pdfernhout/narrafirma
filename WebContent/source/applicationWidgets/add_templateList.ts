@@ -171,7 +171,7 @@ function makeTemplateListChooser(panelBuilder: PanelBuilder, dialogConfiguration
     // TODO: Set class on div
     return m("div", [
         prompt,
-        m.component(<any>GridWithItemPanel, {panelBuilder: panelBuilder, fieldSpecification: gridFieldSpecification, model: model})
+        m.component(<any>GridWithItemPanel, {key: fieldSpecification.id + "_templatesListChooser", panelBuilder: panelBuilder, fieldSpecification: gridFieldSpecification, model: model})
         // m("button", {onclick: hideDialogCallback}, "Cancel")
     ]);
 }

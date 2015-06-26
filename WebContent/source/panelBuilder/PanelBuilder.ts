@@ -96,7 +96,7 @@ function add_grid(panelBuilder, model, fieldSpecification) {
     var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
     return [
         prompt,
-        m.component(<any>GridWithItemPanel, {panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification})
+        m.component(<any>GridWithItemPanel, {key: fieldSpecification.id, panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification})
     ];
 }
 
