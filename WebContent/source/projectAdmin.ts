@@ -15,6 +15,12 @@ var allProjectsModel;
 // GUI
 var serverStatusPane;
 
+// TODO: Change this to use Mithril and update it to use new approach to projects, users, and roles
+console.log("UNFINISHED!!!");
+alert("Unfinished");
+
+/*
+
 function initialize(userIdentifier) {
     console.log("initialize called in site.js");
     toaster.createToasterWidget(document.getElementById("pleaseWaitDiv"));
@@ -320,3 +326,5 @@ singleUsePointrelClient.getCurrentUserInformation(function(error, response) {
     }
     initialize(response.userIdentifier);
 });
+
+*/
