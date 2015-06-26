@@ -1,6 +1,8 @@
 import dialogSupport = require("../panelBuilder/dialogSupport");
 import templates = require("../templates/templates");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
+import GridWithItemPanel = require("../panelBuilder/GridWithItemPanel");
+import m = require("mithril");
 
 "use strict";
 
@@ -35,8 +37,8 @@ var add_templateList_activityQuestions = [
     {id: "plan", valueType: "string", displayType: "textarea"}
 ];
 
-function useButtonClicked(templateListChoice, model, hideDialogCallback, gridWithDetail, event) {
-   console.log("useButtonClicked", gridWithDetail, event);
+function useButtonClicked(templateListChoice, model, hideDialogCallback, gridWithDetail) {
+   console.log("useButtonClicked", gridWithDetail);
    var selectedTemplate = gridWithDetail.getSelectedItem();
    console.log("grid selectedTemplate", selectedTemplate);
    
@@ -94,14 +96,16 @@ function useButtonClicked(templateListChoice, model, hideDialogCallback, gridWit
    }
 }
 
-function makeTemplateListChooser(panelBuilder: PanelBuilder, model, hideDialogCallback, dialogConfiguration) {
+function makeTemplateListChooser(panelBuilder: PanelBuilder, dialogConfiguration, hideDialogCallback) {
     var fieldSpecification = dialogConfiguration.fieldSpecification;
    
-    var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(fieldSpecification);
-    questionContentPane.set("style", "min-height: 400px; min-width: 600px; max-width: 900px");
+    var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
+    
+    // TODO: questionContentPane.set("style", "min-height: 400px; min-width: 600px; max-width: 900px");
     
     var templateListChoice = fieldSpecification.displayConfiguration;
     console.log("templateListChoice", templateListChoice);
+    
     var templateCollection = templates[templateListChoice];
     console.log("templateCollection", templateCollection);
     
@@ -113,8 +117,6 @@ function makeTemplateListChooser(panelBuilder: PanelBuilder, model, hideDialogCa
         // alert("Unsupported templateListChoice: " + templateListChoice);
         templateQuestions = [];
     }
-    
-    var dataStore = GridWithItemPanel["newMemoryTrackableStore"](templateQuestions, "id");
     
     var pageQuestions;
     
@@ -131,8 +133,8 @@ function makeTemplateListChooser(panelBuilder: PanelBuilder, model, hideDialogCa
         pageQuestions = [];
     }
 
-     function buildPanel(builder, model) {
-         builder.buildFields(pageQuestions, model);
+     function buildPanel(builder: PanelBuilder, model) {
+         return builder.buildFields(pageQuestions, model);
      }
      
      var itemPanelSpecification = {
@@ -146,21 +148,40 @@ function makeTemplateListChooser(panelBuilder: PanelBuilder, model, hideDialogCa
     var customButtonDefinition = {
         id: "useTemplate",
         customButtonLabel: "#button_UseTemplate|Use template",
-        callback: useButtonClicked.bind(null, templateListChoice, model, hideDialogCallback)
+        callback: useButtonClicked.bind(null, templateListChoice, dialogConfiguration.dialogModel, hideDialogCallback)
     };
     
-    var configuration = {viewButton: true, includeAllFields: false, showTooltip: true, customButton: customButtonDefinition};
+    var gridConfiguration = {
+        idProperty: "id",
+        includeAllFields: false,
+        viewButton: true,
+        // showTooltip: true,
+        customButton: customButtonDefinition,
+        navigationButtons: true
+   };
     
-    var grid = new GridWithItemPanel(panelBuilder, questionContentPane, fieldSpecification.id, dataStore, itemPanelSpecification, configuration, model);
-
-    var cancelButtonSpecification = {
-        id: "templateChooserCancelButton",
-        displayType: "button",
-        displayName: "Cancel",
-        displayPrompt: "Cancel",
-        displayConfiguration: function() { hideDialogCallback(); }
+    var model = {templateQuestions: templateQuestions};
+    
+    var gridFieldSpecification = {
+        id: "templates",
+        displayConfiguration: {
+            itemPanelSpecification: itemPanelSpecification,
+            gridConfiguration: {
+                idProperty: "id",
+                includeAllFields: false,
+                viewButton: true,
+                // showTooltip: true,
+                customButton: customButtonDefinition,
+                navigationButtons: true
+           }
+        }
     };
-    var cancelButton = panelBuilder.buildField(model, cancelButtonSpecification);
+ 
+    // TODO: Set class on div
+    return m("div", [
+        m.component(<any>GridWithItemPanel, {panelBuilder: panelBuilder, fieldSpecification: gridFieldSpecification, model: model}),
+        m("button", {onclick: hideDialogCallback}, "Cancel")
+    ]);
 }
 
 export = add_templateList;
