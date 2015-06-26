@@ -711,7 +711,7 @@ function loadApplicationDesign() {
             document.getElementById("navigationDiv").style.display = "block";
             document.getElementById("pageDiv").style.display = "block";
             
-            toaster.toast("Started up!!!");
+            // toaster.toast("Started up!!!");
         };
         
         // From: https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload
