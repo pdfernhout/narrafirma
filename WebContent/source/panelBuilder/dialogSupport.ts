@@ -3,6 +3,10 @@ import m = require("mithril");
 
 "use strict";
 
+// TODO: Using a global here to avoid parameterizing mounted components until the following Mithril issue is resolved or clarified:
+// https://github.com/lhorie/mithril.js/issues/638
+var globalDialogConfiguration;
+
 // TODO: Translate: Change to taking a translate ID
 // TODO: Buttons don't show up if window too narrow for dialog
 export function confirm(message, okCallback) {
@@ -27,15 +31,15 @@ function hideDialogMethod() {
 }
 
 class MithrilDialog {
-    static controller(args) {
-        console.log("Making MithrilDialog: ", args);
+    static controller() {
+        console.log("Making MithrilDialog");
         return new MithrilDialog();
     }
     
-    static view(controller, args) {
+    static view(controller) {
         console.log("MithrilDialog view called");
         try {
-            return controller.calculateView(args);
+            return controller.calculateView(globalDialogConfiguration);
         } catch (e) {
             console.log("Problem creating dialog", e);
             alert("Problem creating dialog");
@@ -74,8 +78,9 @@ export function openDialog(dialogConfiguration) {
     console.log("openDialog", dialogConfiguration.dialogTitle); // JSON.stringify(dialogConfiguration));
     if (!dialogConfiguration.key) dialogConfiguration.key = "standardDialog";
     
+    globalDialogConfiguration = dialogConfiguration; 
     setTimeout(function() {
-        m.mount(document.getElementById("dialogDiv"), m.component(<any>MithrilDialog, dialogConfiguration));
+        m.mount(document.getElementById("dialogDiv"), <any>MithrilDialog);
     }, 0);
 }
 
@@ -106,16 +111,18 @@ function build_textEditorDialogContent(dialogConfiguration, hideDialogMethod) {
     ]);
 }
 
+// TODO: Have ListChooser use regular dialog to open it
+
 class ListChooser {
-    static controller(args) {
-        console.log("Making ListChooser: ", args);
+    static controller() {
+        console.log("Making ListChooser");
         return new ListChooser();
     }
     
-    static view(controller, args) {
+    static view(controller) {
         console.log("ListChooser view called");
         
-        return controller.calculateView(args);
+        return controller.calculateView(globalDialogConfiguration);
     }
     
     calculateView(args) {
@@ -143,16 +150,18 @@ export function openListChoiceDialog(initialChoice, choices, columns, dialogTitl
     if (!dialogTitle) dialogTitle = "Choices";
     if (!dialogOKButtonLabel) dialogOKButtonLabel = "Choose";
     
+    globalDialogConfiguration = {
+        key: "standardListChooser",
+        initialChoice: initialChoice,
+        choices: choices,
+        columns: columns,
+        dialogTitle: dialogTitle,
+        dialogOKButtonLabel: dialogOKButtonLabel, 
+        dialogOKCallback: dialogOKCallback
+    };
+    
     setTimeout(function() {
-        m.mount(document.getElementById("dialogDiv"), m.component(<any>ListChooser, {
-            key: "standardListChooser",
-            initialChoice: initialChoice,
-            choices: choices,
-            columns: columns,
-            dialogTitle: dialogTitle,
-            dialogOKButtonLabel: dialogOKButtonLabel, 
-            dialogOKCallback: dialogOKCallback
-        }));
+        m.mount(document.getElementById("dialogDiv"), <any>ListChooser);
     }, 0);
 }
 

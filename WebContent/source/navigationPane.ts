@@ -19,12 +19,14 @@ var Navigation: any = {
     panelBuilder: null,
     
     controller: function(args) {
+        console.log("********************** Making new navigation pane");
         this.pageID = null;
         this.pageSpecification = null;
         this.panelBuilder = Navigation.panelBuilder;
     },
     
     view: function(controller, args) {
+        console.log("&&&&&&&&&&&&&&&&&&&&&&&&&& View called for navigation pane");
         return m("div[id=narrafirma-navigation]", [
             m("span[id=narrafirma-name]", {
                 "class": controller.panelBuilder.clientState.serverStatus,
@@ -43,7 +45,7 @@ export function initializeNavigationPane(thePanelSpecificationCollection, theSta
     userIdentifier = theUserIdentifier;
     
     Navigation.panelBuilder = panelBuilder;
-    navigationController = m.mount(document.getElementById("navigationDiv"), m.component(Navigation, {key: "navigation"}));
+    navigationController = m.mount(document.getElementById("navigationDiv"), Navigation);
 }
     
 export function setCurrentPageSpecification(pageID, pageSpecification) {

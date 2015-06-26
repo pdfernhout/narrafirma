@@ -51,7 +51,7 @@ export function configurePageDisplayer(thePanelBuilder: PanelBuilder, theStartPa
     project = theProject;
     updateHashIfNeededForChangedState = updateHashIfNeededForChangedStateCallback;
     
-    m.mount(document.getElementById("pageDiv"), m.component(PageDisplayer, {key: "currentPage"}));
+    m.mount(document.getElementById("pageDiv"), PageDisplayer);
 }
 
 export function showPage(pageID, forceRefresh = false) {
