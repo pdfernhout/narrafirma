@@ -350,7 +350,7 @@ class GridWithItemPanel {
             } else {
                 customButtonClickedPartial = options.callback.bind(null, this);
             }
-            var doubleClickFunction = undefined;
+            var doubleClickFunction;
             if (!this.gridConfiguration.viewButton) {
                 doubleClickFunction = customButtonClickedPartial;
             }
