@@ -2,6 +2,7 @@ import dialogSupport = require("../panelBuilder/dialogSupport");
 import recommendations = require("../templates/recommendations");
 import translate = require("../panelBuilder/translate");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
+import m = require("mithril");
 
 "use strict";
 
@@ -17,9 +18,12 @@ function add_recommendationTable(panelBuilder: PanelBuilder, model, fieldSpecifi
     return dialogSupport.addButtonThatLaunchesDialog(fieldSpecification, dialogConfiguration);
 }
 
-function build_recommendationTable(panelBuilder: PanelBuilder, dialogContentPane, model, hideDialogCallback, dialogConfiguration) {
+function build_recommendationTable(panelBuilder: PanelBuilder, dialogConfiguration, hideDialogCallback) {
     var fieldSpecification = dialogConfiguration.fieldSpecification;
-    var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(dialogContentPane, fieldSpecification);
+   
+    var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
+    
+    /*
 
     var categoryName = fieldSpecification.displayConfiguration;
     console.log("add_recommendationTable category", categoryName);
@@ -109,6 +113,7 @@ function build_recommendationTable(panelBuilder: PanelBuilder, dialogContentPane
     }
     */
     
+    /*
     var closeButtonSpecification = {
             id: "recommendationTableCloseButton",
             displayType: "button",
@@ -119,7 +124,13 @@ function build_recommendationTable(panelBuilder: PanelBuilder, dialogContentPane
     
     var closeButton = panelBuilder.buildField(model, closeButtonSpecification);
     
-    return table;
+    */
+    
+    // TODO: Set class on div
+    return m("div", [
+        prompt,
+        "Unfinished recommendations table"
+    ]);
 }
 
 export = add_recommendationTable;
