@@ -55,6 +55,7 @@ class MithrilDialog {
             console.log("Problem creating view", args, e);
             internalView = m("div", "Problem creating view");
         }
+        
         return m("div.overlay", m("div.modal-content", [
             m("b", translate(dialogConfiguration.dialogTitle)),
             m("div.modal-internal", internalView),
@@ -71,8 +72,11 @@ class MithrilDialog {
 
 export function openDialog(dialogConfiguration) {  
     console.log("openDialog", dialogConfiguration.dialogTitle); // JSON.stringify(dialogConfiguration));
+    if (!dialogConfiguration.key) dialogConfiguration.key = "standardDialog";
     
-    m.mount(document.getElementById("dialogDiv"), m.component(<any>MithrilDialog, dialogConfiguration));
+    setTimeout(function() {
+        m.mount(document.getElementById("dialogDiv"), m.component(<any>MithrilDialog, dialogConfiguration));
+    }, 0);
 }
 
 // Caller needs to call the hideDialogMethod returned as the second arg of dialogOKCallback to close the dialog
@@ -98,7 +102,7 @@ export function openTextEditorDialog(text, dialogTitle, dialogOKButtonLabel, dia
 function build_textEditorDialogContent(dialogConfiguration, hideDialogMethod) {
     // style: "min-height: 400px; min-width: 600px; max-height: 800px; max-width: 800px; overflow: auto"
     return m("div", [
-        m("textarea", {"class": "textEditorInDialog", onchange: function(event) { dialogConfiguration.dialogModel.text = event.target.value; }, value: dialogConfiguration.dialogModel.text }) 
+        m("textarea", {key: "standardTextEditorTextarea", "class": "textEditorInDialog", onchange: function(event) { dialogConfiguration.dialogModel.text = event.target.value; }, value: dialogConfiguration.dialogModel.text }) 
     ]);
 }
 
@@ -127,7 +131,7 @@ class ListChooser {
     }
     
     selectionMade(args, choice) {
-        m.mount(document.getElementById("dialogDiv"), null);
+        hideDialogMethod();
         args.dialogOKCallback(choice);
     }
     
@@ -139,13 +143,16 @@ export function openListChoiceDialog(initialChoice, choices, columns, dialogTitl
     if (!dialogTitle) dialogTitle = "Choices";
     if (!dialogOKButtonLabel) dialogOKButtonLabel = "Choose";
     
-    m.mount(document.getElementById("dialogDiv"), m.component(<any>ListChooser, {
-        initialChoice: initialChoice,
-        choices: choices,
-        columns: columns,
-        dialogTitle: dialogTitle,
-        dialogOKButtonLabel: dialogOKButtonLabel, 
-        dialogOKCallback: dialogOKCallback
-    }));
+    setTimeout(function() {
+        m.mount(document.getElementById("dialogDiv"), m.component(<any>ListChooser, {
+            key: "standardListChooser",
+            initialChoice: initialChoice,
+            choices: choices,
+            columns: columns,
+            dialogTitle: dialogTitle,
+            dialogOKButtonLabel: dialogOKButtonLabel, 
+            dialogOKCallback: dialogOKCallback
+        }));
+    }, 0);
 }
 
