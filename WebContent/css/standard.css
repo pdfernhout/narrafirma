@@ -674,10 +674,10 @@ table.filterTable td {
 
 .modal-content {
   padding: 20px 30px;
-  width: 600px;
+  width: 700px;
   position: relative;
   min-height: 400px;
-  max-height: 600px;
+  max-height: 650px;
   margin: 5% auto 0;
   background: #fff;
   overflow: auto;
@@ -686,7 +686,7 @@ table.filterTable td {
 
 .modal-internal {
     overflow: auto;
-    max-height: 500px;
+    max-height: 550px;
     margin: 10px;
     padding: 10px;
     border: 1px dashed;
