@@ -1,0 +1,51 @@
+<!DOCTYPE HTML> 
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Mithril Mount Issue test</title>
+<!-- Ref: https://github.com/lhorie/mithril.js/issues/674 And my: https://jsfiddle.net/7yjks1ys/1/ -->
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/mithril/0.2.0/mithril.js"></script>
+
+</head>
+
+<body>
+
+<div id="first"></div>
+<div id="second"></div>
+
+<script>
+var comp1 = {
+    controller: function(args) {
+        console.log(args.name + " made");
+        return {
+            onunload: function() {
+                console.log("unload " + args.name);
+            }
+        };
+    },
+    
+    view: function(controller, args) {
+        console.log(args.name + " view");
+        return m("div", [
+            args.name === "one" ?
+                m('button', {onclick: function() {
+                    console.log("mount 2");
+                    m.mount(document.getElementById('second'), m.component(comp1, {key: "comp2", name: "two"}));
+                }}, "Open two")
+            :
+                m('button', {onclick: function() {
+                    console.log("unmount 2");
+                    m.mount(document.getElementById('second'), null);
+                }}, "Close two")
+        ]);
+    }
+}
+
+m.mount(document.getElementById('first'), m.component(comp1, {key: "comp1", name: "one"}))
+</script>
+
+</body>
+</html>
+

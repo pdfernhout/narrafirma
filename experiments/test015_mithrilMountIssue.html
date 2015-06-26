@@ -1,0 +1,61 @@
+<!DOCTYPE HTML> 
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Mithril Mount Issue test</title>
+<!-- Ref: https://github.com/lhorie/mithril.js/issues/674 And my: https://jsfiddle.net/7yjks1ys/1/ -->
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/mithril/0.2.0/mithril.js"></script>
+
+</head>
+
+<body>
+
+<div id="first"></div>
+<div id="second"></div>
+
+<script>
+var comp1 = {
+    controller: function() {
+        console.log("1 made");
+        return {
+            onunload: function() {
+                console.log("unload 1");
+            }
+        };
+    },
+    
+    view: function() {
+        console.log("1 view");
+        return m('button', {onclick: function() {
+            console.log("mount 2");
+            m.mount(document.getElementById('second'), m.component(comp2, {key: "comp2"}));
+        }}, "Test");
+    }
+}
+
+var comp2 = {
+    controller: function() {
+        console.log("2 made");
+        return {
+            onunload: function() {
+                console.log("unload 2");
+            }
+        };
+    },
+    
+    view: function() {
+        console.log("2 view");
+        return m('button', {onclick: function() {
+            console.log("unmount 2");
+            m.mount(document.getElementById('second'), null);
+        }}, "Close");
+    }
+}
+
+m.mount(document.getElementById('first'), m.component(comp1, {key: "comp1"}))
+</script>
+
+</body>
+</html>
