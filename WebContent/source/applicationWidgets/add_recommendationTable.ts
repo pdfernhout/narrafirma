@@ -8,23 +8,23 @@ import m = require("mithril");
 
 function add_recommendationTable(panelBuilder: PanelBuilder, model, fieldSpecification) {
     var dialogConfiguration = {
+        fieldSpecification: fieldSpecification,
         dialogModel: model,
         dialogTitle: "#title_recommendationsTable|Recommendations table",
         dialogStyle: undefined,
         dialogConstructionFunction: build_recommendationTable.bind(null, panelBuilder),
-        fieldSpecification: fieldSpecification
+        dialogOKButtonLabel: "Close"
     };
 
     return dialogSupport.addButtonThatLaunchesDialog(fieldSpecification, dialogConfiguration);
 }
 
 function build_recommendationTable(panelBuilder: PanelBuilder, dialogConfiguration, hideDialogCallback) {
+    var model = dialogConfiguration.dialogModel;
     var fieldSpecification = dialogConfiguration.fieldSpecification;
    
     var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
     
-    /*
-
     var categoryName = fieldSpecification.displayConfiguration;
     console.log("add_recommendationTable category", categoryName);
     
@@ -32,30 +32,6 @@ function build_recommendationTable(panelBuilder: PanelBuilder, dialogConfigurati
     if (!fieldsForCategory) {
         console.log("ERROR: No data for recommendationTable category: ", categoryName);
         fieldsForCategory = [];
-    }
-    
-    var table = new TableContainer({
-        customClass: "wwsRecommendationsTable",
-        cols: fieldsForCategory.length + 4 + 2,
-        showLabels: false,
-        spacing: 0
-    });
-    
-    var recommendationsValues = [];
-    
-    var columnHeader1ContentPane = panelBuilder.newContentPane({"content": "<i>Question</i>", "colspan": 4, "align": "right"});
-    table.addChild(columnHeader1ContentPane);
-    recommendationsValues.push(null);
-    
-    var columnHeader2ContentPane = panelBuilder.newContentPane({"content": "<i>Your answer</i>", "colspan": 2, "align": "right"});
-    table.addChild(columnHeader2ContentPane);
-    recommendationsValues.push(null);
-
-    for (var headerFieldIndex in fieldsForCategory) {
-        var headerFieldName = fieldsForCategory[headerFieldIndex];
-        var columnHeaderFieldContentPane = panelBuilder.newContentPane({"content": "<i>" + headerFieldName + "</i>", "colspan": 1, "align": "right"});
-        table.addChild(columnHeaderFieldContentPane);
-        recommendationsValues.push(null);
     }
     
     function tagForRecommendationValue(recommendation) {
@@ -70,37 +46,41 @@ function build_recommendationTable(panelBuilder: PanelBuilder, dialogConfigurati
         return "";
     }
     
-    for (var questionName in recommendations.questions) {
-        // TODO: Possible should improve this translation default, maybe by retrieving fieldSpecification for question and getting displayPrompt?
-        var questionText = translate(questionName + "::prompt", "Missing translation for: " + questionName);
-        var yourAnswer = model[questionName];
-        
-        var questionTextContentPane = panelBuilder.newContentPane({"content": questionText, "colspan": 4, "align": "right"});
-        table.addChild(questionTextContentPane);
-        recommendationsValues.push(null);
-        
-        var yourAnswerContentPane = panelBuilder.newContentPane({"content": yourAnswer, "colspan": 2, "align": "right"});
-        table.addChild(yourAnswerContentPane);
-        recommendationsValues.push(null);
-
-        var recommendationsForAnswer = recommendations.recommendations[questionName][yourAnswer];
-        
-        for (var fieldIndex in fieldsForCategory) {
-            var fieldName = fieldsForCategory[fieldIndex];
-            var recommendationNumber = Math.floor((Math.random() * 3) + 1);
-            recommendationsValues.push(recommendationNumber);
-            var recommendationValue = {1: "risky", 2: "maybe", 3: "good"}[recommendationNumber];
-            if (recommendationsForAnswer) {
-                var recommendationsForCategory = recommendationsForAnswer[categoryName];
-                if (recommendationsForCategory) recommendationValue = recommendationsForCategory[fieldName];
-            }
-            var fieldContentPane = panelBuilder.newContentPane({"content": "<i>" + recommendationValue + "</i>", "colspan": 1, "align": "right", "class": tagForRecommendationValue(recommendationNumber)});
-            // TODO: Does not work as faster alternative: var fieldContentPane = domConstruct.create("span", {innerHTML: "<i>" + recommendationValue + "</i>", "colspan": 1, "align": "right", "class": tagForRecommendationValue(recommendationNumber)});
-            table.addChild(fieldContentPane);
-        }
-    }
+    console.log("recommendations.questions", recommendations.questions);
     
-    table.placeAt(questionContentPane);
+    var table = m("table.recommendationsTable", 
+      // Do the header
+      m("tr", [[
+          m("th", {colspan: 4, align: "right"}, m("i", "Question")),
+          m("th", {colspan: 2, align: "right"}, m("i", "Your answer"))
+      ], fieldsForCategory.map(function(headerFieldName) {
+          return m("th", m("i", {colspan: 1, align: "right"}, headerFieldName));
+      })]),
+    
+      // Now do one data row for each question considered in the recommendation
+      // TODO: Maybe keys should be sorted somehow?
+      Object.keys(recommendations.questions).map(function(questionName) {
+          // TODO: Possible should improve this translation default, maybe by retrieving fieldSpecification for question and getting displayPrompt?
+          var questionText = translate(questionName + "::prompt", questionName); // "Missing translation for: " + 
+          var yourAnswer = model[questionName];
+          var recommendationsForAnswer = recommendations.recommendations[questionName][yourAnswer];
+
+          return m("tr", [[
+              m("th", {colspan: 4, align: "right"}, questionText),
+              m("th", {colspan: 2, align: "right"}, yourAnswer)
+          ], fieldsForCategory.map(function(fieldName, index) {
+              var recommendationNumber = Math.floor((Math.random() * 3) + 1);
+              var recommendationValue = {1: "risky", 2: "maybe", 3: "good"}[recommendationNumber];
+              // TODO: Need to understand this next section
+              if (recommendationsForAnswer) {
+                  var recommendationsForCategory = recommendationsForAnswer[categoryName];
+                  if (recommendationsForCategory) recommendationValue = recommendationsForCategory[fieldName];
+              }
+              var theClass = tagForRecommendationValue(recommendationNumber);
+              return m("td", {colspan: 1, align: "right", "class": theClass}, recommendationValue);
+          })]);
+      })
+    );
     
     /*
     // TO DO WORKING HERE!!!! Experiment -- Trying to get full background color set for a cell
@@ -113,23 +93,10 @@ function build_recommendationTable(panelBuilder: PanelBuilder, dialogConfigurati
     }
     */
     
-    /*
-    var closeButtonSpecification = {
-            id: "recommendationTableCloseButton",
-            displayType: "button",
-            displayName: "Close",
-            displayPrompt: "Close",
-            displayConfiguration: function() { hideDialogCallback(); }
-        };
-    
-    var closeButton = panelBuilder.buildField(model, closeButtonSpecification);
-    
-    */
-    
     // TODO: Set class on div
     return m("div", [
         prompt,
-        "Unfinished recommendations table"
+        table
     ]);
 }
 
