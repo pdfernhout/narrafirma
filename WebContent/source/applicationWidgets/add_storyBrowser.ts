@@ -275,7 +275,7 @@ class StoryBrowser {
     choices = [];
     allStories = [];
     modelForGrid = {stories: []};
-    itemPanelSpecification = null;
+    itemPanelSpecification = {panelFields: []};
     gridFieldSpecification = null;
     
     // Embedded components
