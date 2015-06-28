@@ -8,6 +8,7 @@ import valuePathResolver = require("../panelBuilder/valuePathResolver");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import m = require("mithril");
 import Project = require("../Project");
+import GridWithItemPanel = require("../panelBuilder/GridWithItemPanel");
 
 "use strict";
 
@@ -22,78 +23,6 @@ function nameForQuestion(question) {
     if (question.displayName) return question.displayName;
     if (question.displayPrompt) return question.displayPrompt;
     return question.id;
-}
-
-function buildPatternList(graphBrowserInstance) {
-    var result = [];
-    var nominalQuestions = [];
-    var ratioQuestions = [];
-    
-    // TODO: create all supported graphable permutations of questions
-    graphBrowserInstance.questions.forEach(function (question) {
-        if (question.displayType === "slider") {
-            ratioQuestions.push(question);
-        } else if (nominalQuestionTypes.indexOf(question.displayType) !== -1)  {
-            nominalQuestions.push(question);
-        }
-    });
-    
-    var questionCount = 0;
-    function nextID() {
-        return ("00000" + questionCount++).slice(-5);
-    }
- 
-    nominalQuestions.forEach(function (question1) {
-        result.push({id: nextID(), observation: "", graphType: "bar", patternName: nameForQuestion(question1) + " (C)", questions: [question1]});
-    });
-    
-    // Prevent mirror duplicates and self-matching questions
-    var usedQuestions;
-    
-    usedQuestions = [];
-    nominalQuestions.forEach(function (question1) {
-        usedQuestions.push(question1);
-        nominalQuestions.forEach(function (question2) {
-            if (usedQuestions.indexOf(question2) !== -1) return;
-            result.push({id: nextID(), observation: "", graphType: "table", patternName: nameForQuestion(question1) + " (C) vs. " + nameForQuestion(question2) + " (C)", questions: [question1, question2]});
-        });
-    });
-    
-    ratioQuestions.forEach(function (question1) {
-        result.push({id: nextID(), observation: "", graphType: "histogram", patternName: nameForQuestion(question1) + " (S)", questions: [question1]});
-    });
-    
-    ratioQuestions.forEach(function (question1) {
-        nominalQuestions.forEach(function (question2) {
-            result.push({id: nextID(), observation: "", graphType: "multiple histogram", patternName: nameForQuestion(question1) + " (S) vs. " + nameForQuestion(question2) + " (C)", questions: [question1, question2]});
-        });
-    });
-    
-    usedQuestions = [];
-    ratioQuestions.forEach(function (question1) {
-        usedQuestions.push(question1);
-        ratioQuestions.forEach(function (question2) {
-            if (usedQuestions.indexOf(question2) !== -1) return;
-            result.push({id: nextID(), observation: "", graphType: "scatter", patternName: nameForQuestion(question1) + " (S) vs. " + nameForQuestion(question2) + " (S)", questions: [question1, question2]});
-        });
-    });
-    
-    /* TODO: For later
-    ratioQuestions.forEach(function (question1) {
-        ratioQuestions.forEach(function (question2) {
-            nominalQuestions.forEach(function (question3) {
-                result.push({id: nextID(), observation: "", graphType: "multiple scatter", patternName: nameForQuestion(question1) + " (S)" + " vs. " + nameForQuestion(question2) + " (S) vs. " + nameForQuestion(question3) + " (C)", questions: [question1, question2, question3]});
-            });
-        });
-    });
-    */
-
-    result.forEach(function (pattern) {
-        calculateStatisticsForPattern(graphBrowserInstance, pattern, minStoriesForTest);        
-    });
-    
-    console.log("buildPatternsList", result);
-    return result;
 }
 
 function collectDataForField(stories, fieldName) {
@@ -128,52 +57,6 @@ function collectValues(dict) {
         values.push(dict[key]);
     }
     return values;
-}
-
-function calculateStatisticsForPattern(graphBrowserInstance, pattern, minStoriesForTest) {
-    var graphType = pattern.graphType;
-    var significance;
-    var statResult;
-    var stories = graphBrowserInstance.allStories;
-    
-    if (graphType === "bar") {
-    	// not calculating statistics for bar graph
-    } else if (graphType === "table") {
-        // both not continuous -- look for a 'correspondence' between counts using Chi-squared test
-        // TODO: Fix this
-    	// TODO: test for missing patterns[1]
-        var counts = countsForFieldChoices(stories, pattern.questions[0].id, pattern.questions[1].id);
-        console.log("counts", counts);
-        var values = collectValues(counts);
-        console.log("values", values);
-        if (values.length < minStoriesForTest) {
-            significance = "";
-        } else {
-            // return {chi_squared: chi_squared, testSignificance: testSignificance}
-            statResult = simpleStatistics.chi_squared_goodness_of_fit(values, simpleStatistics.poisson_distribution, 0.05);
-            significance = statResult.testSignificance;
-        }
-    } else if (graphType === "histogram") {
-        // TODO: ? look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
-        // TODO: Fix this - could report on normality
-        significance = "";
-    } else if (graphType === "multiple histogram") {
-        // TODO: ? one of each continuos and not -- for each option, look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
-        // TODO: Fix this - t-test - differences between means of histograms
-        significance = -1.0;
-    } else if (graphType === "scatter") {
-        // TODO: both continuous -- look for correlation with Pearson's R (if normal distribution) or Spearman's R / Kendall's Tau (if not normal distribution)"
-        var data1 = collectDataForField(stories, pattern.questions[0].id);
-        var data2 = collectDataForField(stories, pattern.questions[1].id);
-        statResult = kendallsTau(data1, data2);
-        significance = statResult.prob.toFixed(4);
-    } else if (graphType ===  "multiple scatter") {
-        console.log("ERROR: Not suported graphType: " + graphType);
-    } else {
-        console.log("ERROR: Unexpected graphType: " + graphType);
-    }
-    
-    if (significance !== undefined) pattern.significance = significance;
 }
 
 function chooseGraph(graphBrowserInstance, pattern) {
@@ -253,59 +136,6 @@ function makeItemPanelSpecificationForQuestions(questions) {
     };
     
     return storyItemPanelSpecification;
-}
-
-function findCatalysisReport(project, shortName) {
-    var catalysisReports = project.projectModel.project_catalysisReports;
-    for (var i = 0; i < catalysisReports.length; i++) {
-        if (catalysisReports[i].catalysisReport_shortName === shortName) {
-            return catalysisReports[i];
-        }
-    }
-    return null;
-}
-
-function currentCatalysisReportChanged(graphBrowserInstance, fieldName, oldValue, currentCatalysisReportIdentifier) {
-    console.log("currentCatalysisReportChanged", graphBrowserInstance, currentCatalysisReportIdentifier);
-    
-    var catalysisReport = findCatalysisReport(graphBrowserInstance.project, currentCatalysisReportIdentifier);
-    if (!catalysisReport) {
-        // TODO: should clear everything
-        return;
-    }
-    
-    // TODO: Handle multiple story collections
-    // TODO: Better handling when can't find something
-    
-    var storyCollectionPointer = catalysisReport.catalysisReport_storyCollections[catalysisReport.catalysisReport_storyCollections.length - 1];
-    if (!storyCollectionPointer) return;
-
-    var storyCollectionIdentifier = storyCollectionPointer.storyCollection;
-    
-    var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
-    if (!questionnaire) return;
-    
-    var questions = surveyCollection.collectQuestionsForQuestionnaire(questionnaire);
-    
-    console.log("questions", questions);
-    
-    graphBrowserInstance.questions = questions;
-    
-    var allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
-    graphBrowserInstance.allStories = allStories;
-    
-    console.log("allStories", allStories);
-
-    var patterns = buildPatternList(graphBrowserInstance);
-    graphBrowserInstance.patterns = patterns;
-    graphBrowserInstance.patternsListStore.setData(patterns);
-    graphBrowserInstance.patternsGrid.dataStoreChanged(graphBrowserInstance.patternsListStore);
-    
-    // Update item panel in story list so it has the correct header
-    var itemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
-    graphBrowserInstance.storyList.changeItemPanelSpecification(itemPanelSpecification);
-
-    chooseGraph(graphBrowserInstance, null);
 }
 
 function patternSelected(graphBrowserInstance, grid, selectedPattern) {
@@ -498,25 +328,26 @@ function getCurrentCatalysisReportIdentifier(args) {
 }
 
 class PatternBrowser {
-    graphHolder: GraphHolder;
-    
     project: Project = null;
     catalysisReportIdentifier: string = null;
     
+    modelForGrid = {patterns: []};
+    patternsGrid: GridWithItemPanel;
+    
+    graphHolder: GraphHolder;
+    
     questions = [];
-    patterns = null;
-    // patternsListStore = null; "id"
-    patternsGrid = null;
+    allStories = [];
     selectedStories = [];
     selectedStoriesStore = null; 
-    storyList = null;
+    storyList: GridWithItemPanel = null;
     observationModel = {observation: ""};
     currentPattern = null;
     
     // TODO: Track currentCatalysisReportChanged
     // TODO: Update questions and allStories based on selection
     
-    construction(args) {
+    constructor(args) {
         this.project = args.panelBuilder.project;
         this.catalysisReportIdentifier = getCurrentCatalysisReportIdentifier(args);
         
@@ -528,14 +359,8 @@ class PatternBrowser {
             currentSelectionExtentPercentages: null
         };
         
-        this.patterns = buildPatternList(this);
-        
-        var patternsGridConfiguration = {
-            navigationButtons: true,
-            includeAllFields: true,
-            selectCallback: patternSelected.bind(null, this)
-        };
-        
+        this.modelForGrid.patterns = this.buildPatternList();
+          
         var patternsPanelSpecification = {
             "id": "patternsPanel",
             panelFields: [
@@ -548,12 +373,27 @@ class PatternBrowser {
             ]
         };
         
+        var patternsGridConfiguration = {
+            idProperty: "id",
+            navigationButtons: true,
+            includeAllFields: true,
+            selectCallback: patternSelected.bind(null, this)
+        };
         
+        var patternsGridFieldSpecification = {
+            id: "patterns",
+            displayConfiguration: {
+                itemPanelSpecification: patternsPanelSpecification,
+                gridConfiguration: patternsGridConfiguration
+            }
+        };
+ 
+        this.patternsGrid = new GridWithItemPanel({panelBuilder: args.panelBuilder, model: this.modelForGrid, fieldSpecification: patternsGridFieldSpecification});
     }
     
     static controller(args) {
         console.log("Making PatternBrowser: ", args);
-        return new PatternBrowser();
+        return new PatternBrowser(args);
     }
     
     static view(controller, args) {
@@ -565,18 +405,200 @@ class PatternBrowser {
     calculateView(args) {
         console.log("%%%%%%%%%%%%%%%%%%% PatternBrowser view called");
         var panelBuilder: PanelBuilder = args.panelBuilder;
+        
+        // Handling of caching of questions and stories
+        var catalysisReportIdentifier = getCurrentCatalysisReportIdentifier(args);
+        if (catalysisReportIdentifier !== this.catalysisReportIdentifier) {
+            this.catalysisReportIdentifier = catalysisReportIdentifier;
+            console.log("storyCollectionIdentifier changed", this.catalysisReportIdentifier);
+            this.currentCatalysisReportChanged(this.catalysisReportIdentifier);
+        }
+              
+        return m("div", [
+            "PatternBrowser work in progress...",
+            "count of items: " + this.modelForGrid.patterns.length,
+            this.patternsGrid.calculateView()
+         ]);
+    }
     
-        return m("div", "PatternBrowser work in progress...");
+    currentCatalysisReportChanged(currentCatalysisReportIdentifier) {
+        console.log("currentCatalysisReportChanged", currentCatalysisReportIdentifier);
+        
+        var catalysisReport = this.findCatalysisReport(this.project, currentCatalysisReportIdentifier);
+        if (!catalysisReport) {
+            // TODO: should clear everything
+            return;
+        }
+        
+        // TODO: Handle multiple story collections
+        // TODO: Better handling when can't find something
+        
+        var storyCollectionPointer = catalysisReport.catalysisReport_storyCollections[catalysisReport.catalysisReport_storyCollections.length - 1];
+        if (!storyCollectionPointer) return;
+    
+        var storyCollectionIdentifier = storyCollectionPointer.storyCollection;
+        
+        var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+        if (!questionnaire) {
+            // TODO: Should clear more stuff?
+            return;
+        }
+        
+        this.allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+        console.log("allStories", this.allStories);
+        
+        this.questions = surveyCollection.collectQuestionsForQuestionnaire(questionnaire);
+        console.log("questions", this.questions);
+        
+        this.modelForGrid.patterns = this.buildPatternList();
+        console.log("patterns", this.modelForGrid.patterns);
+        this.patternsGrid.updateData();
+      
+        /*
+
+        // Update item panel in story list so it has the correct header
+        var itemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
+        graphBrowserInstance.storyList.changeItemPanelSpecification(itemPanelSpecification);
+    
+        chooseGraph(graphBrowserInstance, null);
+        
+        */
+    }
+    
+    
+    findCatalysisReport(project, shortName) {
+        var catalysisReports = project.projectModel.project_catalysisReports;
+        for (var i = 0; i < catalysisReports.length; i++) {
+            if (catalysisReports[i].catalysisReport_shortName === shortName) {
+                return catalysisReports[i];
+            }
+        }
+        return null;
+    }
+
+    buildPatternList() {
+        var result = [];
+        var nominalQuestions = [];
+        var ratioQuestions = [];
+        
+        // TODO: create all supported graphable permutations of questions
+        this.questions.forEach(function (question) {
+            if (question.displayType === "slider") {
+                ratioQuestions.push(question);
+            } else if (nominalQuestionTypes.indexOf(question.displayType) !== -1)  {
+                nominalQuestions.push(question);
+            }
+        });
+        
+        var questionCount = 0;
+        function nextID() {
+            return ("00000" + questionCount++).slice(-5);
+        }
+     
+        nominalQuestions.forEach(function (question1) {
+            result.push({id: nextID(), observation: "", graphType: "bar", patternName: nameForQuestion(question1) + " (C)", questions: [question1]});
+        });
+        
+        // Prevent mirror duplicates and self-matching questions
+        var usedQuestions;
+        
+        usedQuestions = [];
+        nominalQuestions.forEach(function (question1) {
+            usedQuestions.push(question1);
+            nominalQuestions.forEach(function (question2) {
+                if (usedQuestions.indexOf(question2) !== -1) return;
+                result.push({id: nextID(), observation: "", graphType: "table", patternName: nameForQuestion(question1) + " (C) vs. " + nameForQuestion(question2) + " (C)", questions: [question1, question2]});
+            });
+        });
+        
+        ratioQuestions.forEach(function (question1) {
+            result.push({id: nextID(), observation: "", graphType: "histogram", patternName: nameForQuestion(question1) + " (S)", questions: [question1]});
+        });
+        
+        ratioQuestions.forEach(function (question1) {
+            nominalQuestions.forEach(function (question2) {
+                result.push({id: nextID(), observation: "", graphType: "multiple histogram", patternName: nameForQuestion(question1) + " (S) vs. " + nameForQuestion(question2) + " (C)", questions: [question1, question2]});
+            });
+        });
+        
+        usedQuestions = [];
+        ratioQuestions.forEach(function (question1) {
+            usedQuestions.push(question1);
+            ratioQuestions.forEach(function (question2) {
+                if (usedQuestions.indexOf(question2) !== -1) return;
+                result.push({id: nextID(), observation: "", graphType: "scatter", patternName: nameForQuestion(question1) + " (S) vs. " + nameForQuestion(question2) + " (S)", questions: [question1, question2]});
+            });
+        });
+        
+        /* TODO: For later
+        ratioQuestions.forEach(function (question1) {
+            ratioQuestions.forEach(function (question2) {
+                nominalQuestions.forEach(function (question3) {
+                    result.push({id: nextID(), observation: "", graphType: "multiple scatter", patternName: nameForQuestion(question1) + " (S)" + " vs. " + nameForQuestion(question2) + " (S) vs. " + nameForQuestion(question3) + " (C)", questions: [question1, question2, question3]});
+                });
+            });
+        });
+        */
+    
+        result.forEach((pattern) => {
+            this.calculateStatisticsForPattern(pattern, minStoriesForTest);        
+        });
+        
+        console.log("buildPatternsList", result);
+        return result;
+    }
+    
+    calculateStatisticsForPattern(pattern, minStoriesForTest) {
+        var graphType = pattern.graphType;
+        var significance;
+        var statResult;
+        var stories = this.allStories;
+        
+        if (graphType === "bar") {
+            // not calculating statistics for bar graph
+        } else if (graphType === "table") {
+            // both not continuous -- look for a 'correspondence' between counts using Chi-squared test
+            // TODO: Fix this
+            // TODO: test for missing patterns[1]
+            var counts = countsForFieldChoices(stories, pattern.questions[0].id, pattern.questions[1].id);
+            console.log("counts", counts);
+            var values = collectValues(counts);
+            console.log("values", values);
+            if (values.length < minStoriesForTest) {
+                significance = "";
+            } else {
+                // return {chi_squared: chi_squared, testSignificance: testSignificance}
+                statResult = simpleStatistics.chi_squared_goodness_of_fit(values, simpleStatistics.poisson_distribution, 0.05);
+                significance = statResult.testSignificance;
+            }
+        } else if (graphType === "histogram") {
+            // TODO: ? look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
+            // TODO: Fix this - could report on normality
+            significance = "";
+        } else if (graphType === "multiple histogram") {
+            // TODO: ? one of each continuos and not -- for each option, look for differences of means on a distribution using Student's T test if normal, otherwise Kruskal-Wallis or maybe Mann-Whitney
+            // TODO: Fix this - t-test - differences between means of histograms
+            significance = -1.0;
+        } else if (graphType === "scatter") {
+            // TODO: both continuous -- look for correlation with Pearson's R (if normal distribution) or Spearman's R / Kendall's Tau (if not normal distribution)"
+            var data1 = collectDataForField(stories, pattern.questions[0].id);
+            var data2 = collectDataForField(stories, pattern.questions[1].id);
+            statResult = kendallsTau(data1, data2);
+            significance = statResult.prob.toFixed(4);
+        } else if (graphType ===  "multiple scatter") {
+            console.log("ERROR: Not suported graphType: " + graphType);
+        } else {
+            console.log("ERROR: Unexpected graphType: " + graphType);
+        }
+        
+        if (significance !== undefined) pattern.significance = significance;
     }
 }
 
 function other() {
    
     
-    var patternsGrid = new GridWithItemPanel(panelBuilder, gridContainerPane, "patternsList", patternsListStore, patternsPanelSpecification, patternsGridConfiguration, model);
-    patternsGrid.grid.set("selectionMode", "single");
-    this.patternsGrid = patternsGrid;
-    
+  
     var storyItemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
 
     // Store will modify underlying array
