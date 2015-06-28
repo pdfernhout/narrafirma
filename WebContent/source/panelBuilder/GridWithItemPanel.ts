@@ -9,7 +9,15 @@ import generateRandomUuid = require("../pointrel20150417/generateRandomUuid");
 
 // TODO: Probably need to prevent user surveys from having a question with a short name of "_id".
 
-function computeColumnsForItemPanelSpecification(itemPanelSpecification, configuration) {
+    
+var displayTypesToDisplayAsColumns = {
+   text: true,
+   textarea: true,
+   select: true,
+   radiobuttons: true
+};
+
+function computeColumnsForItemPanelSpecification(itemPanelSpecification, configuration: GridDisplayConfiguration) {
     // var self = this;
     
     var columns = [];
@@ -19,19 +27,14 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, configu
     var maxColumnCount = 5;
     var columnCount = 0;
     
-    var displayTypesToDisplay = {
-       text: true,
-       textarea: true,
-       select: true,
-       radiobuttons: true
-    };
-    
     var fieldsToInclude = [];
     var panelFields = itemPanelSpecification.panelFields;
     
+    var includeAllFields = configuration.gridConfiguration.includeAllFields;
+    
     // Put the columns in the order supplied if using includeAllFields, otherwise put them in order of panel specification
-    if (configuration.includeAllFields && configuration.includeAllFields.constructor === Array) {
-        configuration.includeAllFields.forEach(function (fieldName) {
+    if (includeAllFields && includeAllFields.constructor === Array) {
+        (<Array<string>>includeAllFields).forEach(function (fieldName) {
             panelFields.forEach(function (fieldSpecification) {
                 if (fieldSpecification.id === fieldName) fieldsToInclude.push(fieldSpecification);
             });
@@ -39,14 +42,14 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, configu
     } else {
         panelFields.forEach(function (fieldSpecification) {
             var includeField = false;
-            if (configuration.includeAllFields) {
+            if (includeAllFields) {
                 // TODO: improve this check if need to exclude other fields?
                 if (fieldSpecification.displayType !== "label" && fieldSpecification.displayType !== "header") {
                     fieldsToInclude.push(fieldSpecification);
                 }
             } else {
                 if (columnCount < maxColumnCount) {
-                    if (displayTypesToDisplay[fieldSpecification.displayType]) fieldsToInclude.push(fieldSpecification);
+                    if (displayTypesToDisplayAsColumns[fieldSpecification.displayType]) fieldsToInclude.push(fieldSpecification);
                     columnCount++;
                 }
             }
@@ -141,7 +144,7 @@ class GridWithItemPanel {
     }
     
     updateDisplayConfigurationAndData(theDisplayConfiguration: GridDisplayConfiguration) {
-        var displayConfiguration = {
+        var displayConfiguration: GridDisplayConfiguration = {
             itemPanelID: undefined,
             itemPanelSpecification: undefined,
             gridConfiguration: undefined
@@ -170,7 +173,7 @@ class GridWithItemPanel {
             validateEdit: null
         };
         
-        var itemPanelID = theDisplayConfiguration;
+        var itemPanelID: any = theDisplayConfiguration;
         if (!_.isString(itemPanelID)) {
             displayConfiguration = theDisplayConfiguration;
             itemPanelID = displayConfiguration.itemPanelID;
