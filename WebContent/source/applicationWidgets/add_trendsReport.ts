@@ -216,26 +216,27 @@ class PatternBrowser {
             "id": "observationPanel",
             panelFields: [        
                 {
-                    id: "insertGraphSelection",
+                    id: "observationPanel_insertGraphSelection",
                     displayPrompt: "Save current graph selection into observation",
                     displayType: "button",
                     displayPreventBreak: true,
                     displayConfiguration: this.insertGraphSelection.bind(this)
                 },
                 {
-                    id: "resetGraphSelection",
+                    id: "observationPanel_resetGraphSelection",
                     displayPrompt: "Restore graph selection using saved selection chosen in observation",
                     displayType: "button",
                     displayConfiguration: this.resetGraphSelection.bind(this)
                 },
                 {
-                    id: "observation", 
+                    id: "observationPanel_observation",
+                    valuePath: "observation",
                     displayName: "Observation",
                     displayPrompt: "If this pattern is noteworthy, enter an <strong>observation</strong> about the pattern here.",
                     displayType: "textarea"
                 },
                 {
-                    id: "project_interpretationsList",
+                    id: "observationPanel_interpretationsList",
                     valueType: "array",
                     required: true,
                     displayType: "grid",
@@ -556,6 +557,7 @@ class PatternBrowser {
     }
     
     insertGraphSelection() {
+        console.log("insertGraphSelection");
         if (!this.graphHolder.currentGraph) {
             // TODO: Translated
             alert("Please select a pattern first");
@@ -577,28 +579,29 @@ class PatternBrowser {
         
         // Find observation textarea and other needed data
         // TODO: Fix this for Mithril conversion
-        var observationTextarea = this.widgets.observation;
+        var textarea = <HTMLTextAreaElement>document.getElementById("observationPanel_observation");
         var textModel = this.modelForObservation;
         var selection = this.graphHolder.currentSelectionExtentPercentages;
         var textToInsert = JSON.stringify(selection);
         
         // Replace the currently selected text in the textarea (or insert at caret if nothing selected)
-        var textarea = observationTextarea.textbox;
         var selectionStart = textarea.selectionStart;
         var selectionEnd = textarea.selectionEnd;
         var oldText = textModel.observation;
         var newText = oldText.substring(0, selectionStart) + textToInsert + oldText.substring(selectionEnd);
         textModel.observation = newText;
+        // Set the new explicitly here rather than waiting for a redraw so that we can then select it
+        textarea.value = newText;
         textarea.selectionStart = selectionStart;
         textarea.selectionEnd = selectionStart + textToInsert.length;
         textarea.focus();
     }
     
     scanForSelectionJSON(doFocus = false) {
+        console.log("scanForSelectionJSON");
         // TODO: Fix this for Mithril conversion
-        var observationTextarea = this.widgets.observation;
+        var textarea = <HTMLTextAreaElement>document.getElementById("observationPanel_observation");
         var textModel = this.modelForObservation;
-        var textarea = observationTextarea.textbox;
         var text = textModel.observation;
     
         if (doFocus) textarea.focus();
