@@ -112,7 +112,7 @@ function chooseGraph(graphBrowserInstance, pattern) {
 function updateStoriesPane(graphBrowserInstance, stories) {
     graphBrowserInstance.selectedStories = stories;
     graphBrowserInstance.selectedStoriesStore.setData(stories);
-    graphBrowserInstance.storyList.dataStoreChanged(graphBrowserInstance.selectedStoriesStore);
+    graphBrowserInstance.storyGrid.dataStoreChanged(graphBrowserInstance.selectedStoriesStore);
 }
 
 // TODO: Next two functions from add_storyBrowser and so are duplicate code
@@ -158,7 +158,7 @@ function patternSelected(graphBrowserInstance, grid, selectedPattern) {
     
     graphBrowserInstance.selectedStories = [];
     graphBrowserInstance.selectedStoriesStore.setData(graphBrowserInstance.selectedStories);
-    graphBrowserInstance.storyList.dataStoreChanged(graphBrowserInstance.selectedStoriesStore);
+    graphBrowserInstance.storyGrid.dataStoreChanged(graphBrowserInstance.selectedStoriesStore);
 }
 
 // Do not store the option texts directly in selection as they might have braces
@@ -331,35 +331,32 @@ class PatternBrowser {
     project: Project = null;
     catalysisReportIdentifier: string = null;
     
-    modelForGrid = {patterns: []};
+    modelForPatternsGrid = {patterns: []};
     patternsGrid: GridWithItemPanel;
     
     graphHolder: GraphHolder;
     
     questions = [];
     allStories = [];
+    
     selectedStories = [];
-    selectedStoriesStore = null; 
-    storyList: GridWithItemPanel = null;
+    modelForStoryGrid = {stories: []};
+    storyGrid: GridWithItemPanel = null;
     observationModel = {observation: ""};
     currentPattern = null;
+    
+    observationPanelSpecification = null;
     
     // TODO: Track currentCatalysisReportChanged
     // TODO: Update questions and allStories based on selection
     
     constructor(args) {
         this.project = args.panelBuilder.project;
-        this.catalysisReportIdentifier = getCurrentCatalysisReportIdentifier(args);
+        // this.catalysisReportIdentifier = getCurrentCatalysisReportIdentifier(args);
         
-        this.graphHolder = {
-            graphResultsPane: createGraphResultsPane(),
-            chartPanes: [],
-            allStories: [],
-            currentGraph: null,
-            currentSelectionExtentPercentages: null
-        };
+        // Pattern grid initialization
         
-        this.modelForGrid.patterns = this.buildPatternList();
+        this.modelForPatternsGrid.patterns = this.buildPatternList();
           
         var patternsPanelSpecification = {
             "id": "patternsPanel",
@@ -375,8 +372,8 @@ class PatternBrowser {
         
         var patternsGridConfiguration = {
             idProperty: "id",
-            navigationButtons: true,
             includeAllFields: true,
+            navigationButtons: true,
             selectCallback: patternSelected.bind(null, this)
         };
         
@@ -388,7 +385,79 @@ class PatternBrowser {
             }
         };
  
-        this.patternsGrid = new GridWithItemPanel({panelBuilder: args.panelBuilder, model: this.modelForGrid, fieldSpecification: patternsGridFieldSpecification});
+        this.patternsGrid = new GridWithItemPanel({panelBuilder: args.panelBuilder, model: this.modelForPatternsGrid, fieldSpecification: patternsGridFieldSpecification});
+    
+        // Graph display initializaiton
+        
+       this.graphHolder = {
+            graphResultsPane: createGraphResultsPane(),
+            chartPanes: [],
+            allStories: [],
+            currentGraph: null,
+            currentSelectionExtentPercentages: null
+        };
+        
+        // Story grid initialization
+        
+        var storyItemPanelSpecification = makeItemPanelSpecificationForQuestions(this.questions);
+
+        var storyGridConfiguration = {
+            idProperty: "_storyID",
+            includeAllFields: ["__survey_storyName", "__survey_storyText"],
+            viewButton: true,
+            navigationButtons: true
+        };
+        
+        var storyGridFieldSpecification = {
+            id: "stories",
+            displayConfiguration: {
+                itemPanelSpecification: storyItemPanelSpecification,
+                gridConfiguration: storyGridConfiguration
+            }
+        };
+
+        this.storyGrid = new GridWithItemPanel({panelBuilder: args.panelBuilder, model: this.modelForStoryGrid, fieldSpecification: storyGridFieldSpecification});
+
+        // Observation panel initialization
+        
+        this.observationPanelSpecification = {
+            "id": "observationPanel",
+            panelFields: [        
+                {
+                    id: "insertGraphSelection",
+                    displayPrompt: "Save current graph selection into observation",
+                    displayType: "button",
+                    displayPreventBreak: true,
+                    displayConfiguration: insertGraphSelection.bind(null, this)
+                },
+                {
+                    id: "resetGraphSelection",
+                    displayPrompt: "Restore graph selection using saved selection chosen in observation",
+                    displayType: "button",
+                    displayConfiguration: resetGraphSelection.bind(null, this)
+                },
+                {
+                    id: "observation", 
+                    displayName: "Observation",
+                    displayPrompt: "If this pattern is noteworthy, enter an <strong>observation</strong> about the pattern here.",
+                    displayType: "textarea"
+                },
+                {
+                    id: "project_interpretationsList",
+                    valueType: "array",
+                    required: true,
+                    displayType: "grid",
+                    displayConfiguration: "panel_addInterpretation",
+                    displayName: "Interpretation",
+                    displayPrompt: "Enter at least two <strong>competing interpretations</strong> for the observation here."
+                }
+            ]
+        };
+        
+        // TODO: selections in observation should be stored in original domain units, not scaled display units
+ 
+        // Put up a "please pick pattern" message
+        // TODO: !!!! chooseGraph(this, null);
     }
     
     static controller(args) {
@@ -416,8 +485,11 @@ class PatternBrowser {
               
         return m("div", [
             "PatternBrowser work in progress...",
-            "count of items: " + this.modelForGrid.patterns.length,
-            this.patternsGrid.calculateView()
+            "count of items: " + this.modelForPatternsGrid.patterns.length,
+            this.patternsGrid.calculateView(),
+            "TODO: graph goes here!!!!",
+            this.storyGrid.calculateView(),
+            panelBuilder.buildPanel(this.observationPanelSpecification, this.observationModel)
          ]);
     }
     
@@ -450,15 +522,15 @@ class PatternBrowser {
         this.questions = surveyCollection.collectQuestionsForQuestionnaire(questionnaire);
         console.log("questions", this.questions);
         
-        this.modelForGrid.patterns = this.buildPatternList();
-        console.log("patterns", this.modelForGrid.patterns);
+        this.modelForPatternsGrid.patterns = this.buildPatternList();
+        console.log("patterns", this.modelForPatternsGrid.patterns);
         this.patternsGrid.updateData();
       
         /*
 
         // Update item panel in story list so it has the correct header
         var itemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
-        graphBrowserInstance.storyList.changeItemPanelSpecification(itemPanelSpecification);
+        graphBrowserInstance.storyGrid.changeItemPanelSpecification(itemPanelSpecification);
     
         chooseGraph(graphBrowserInstance, null);
         
@@ -593,57 +665,6 @@ class PatternBrowser {
         
         if (significance !== undefined) pattern.significance = significance;
     }
-}
-
-function other() {
-   
-    
-  
-    var storyItemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
-
-    // Store will modify underlying array
-    var selectedStoriesStore = GridWithItemPanel["newMemoryTrackableStore"](this.selectedStories, "_storyID");
-    this.selectedStoriesStore = selectedStoriesStore;
-    
-    // Only allow view button for stories
-    var configuration = {viewButton: true, includeAllFields: ["__survey_storyName", "__survey_storyText"], navigationButtons: true};
-    var storyList = new GridWithItemPanel(panelBuilder, contentPane, "storyGrid", selectedStoriesStore, storyItemPanelSpecification, configuration, model);
-    storyList.grid.set("selectionMode", "single");
-    this.storyList = storyList;
-    
-    var observationPanelSpecification = {
-        "id": "observationPanel",
-        panelFields: [        
-            {id: "insertGraphSelection", displayPrompt: "Save current graph selection into observation", displayType: "button", displayPreventBreak: true, displayConfiguration: insertGraphSelection.bind(null, this)},
-            {id: "resetGraphSelection", displayPrompt: "Restore graph selection using saved selection chosen in observation", displayType: "button", displayConfiguration: resetGraphSelection.bind(null, this)},
-            {id: "observation", displayName: "Observation", displayPrompt: "If this pattern is noteworthy, enter an <strong>observation</strong> about the pattern here.", displayType: "textarea"},
-            {
-                "id": "project_interpretationsList",
-                "valueType": "array",
-                "required": true,
-                "displayType": "grid",
-                "displayConfiguration": "panel_addInterpretation",
-                "displayName": "Interpretation",
-                "displayPrompt": "Enter at least two <strong>competing interpretations</strong> for the observation here."
-            }
-        ]
-    };
-    
-    // var observationPane = new ContentPane();
-    // contentPane.addChild(observationPane);
-    var widgets = panelBuilder.buildPanel(observationPanelSpecification, this.observationModel);
-    this.widgets = widgets;
-    
-    // TODO: selections should be stored in original domain units, not scaled display units
-    // TODO: Consolidate duplicate code from these two functions
-    
-    currentCatalysisReportChanged(this, "currentCatalysisReport", null, catalysisReportIdentifier);
-    
-    // Put up a "please pick pattern" message
-    chooseGraph(this, null);
-    
-    // TODO: Not sure what to return or if it matters
-    return questionContentPane;
 }
 
 function add_trendsReport(panelBuilder: PanelBuilder, model, fieldSpecification) {
