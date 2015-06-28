@@ -113,6 +113,7 @@ class GraphBrowser {
             ];
         }
         
+        // TODO: Need to set class
         return m("div", parts);
         
         /*
@@ -139,7 +140,7 @@ class GraphBrowser {
         console.log("Stories selected", selectedStories);
         this.selectedStories = selectedStories;
         
-        // Since the change is coming from d3, we need to queue a Mithril redraw to refred=sh the display
+        // Since the change is coming from d3, we need to queue a Mithril redraw to refresh the display
         console.log("about to call m.redraw");
         m.redraw();
     }
