@@ -17,20 +17,21 @@ var displayTypesToDisplayAsColumns = {
    radiobuttons: true
 };
 
-function computeColumnsForItemPanelSpecification(itemPanelSpecification, configuration: GridDisplayConfiguration) {
+function computeColumnsForItemPanelSpecification(itemPanelSpecification, gridConfiguration: GridConfiguration) {
     // var self = this;
     
     var columns = [];
     
-    if (!itemPanelSpecification) return columns;
+    var panelFields = itemPanelSpecification.panelFields;
+    
+    if (!panelFields || !gridConfiguration) return columns;
     
     var maxColumnCount = 5;
     var columnCount = 0;
     
     var fieldsToInclude = [];
-    var panelFields = itemPanelSpecification.panelFields;
     
-    var includeAllFields = configuration.gridConfiguration.includeAllFields;
+    var includeAllFields = gridConfiguration.includeAllFields;
     
     // Put the columns in the order supplied if using includeAllFields, otherwise put them in order of panel specification
     if (includeAllFields && includeAllFields.constructor === Array) {
@@ -108,6 +109,29 @@ class ItemPanel {
     }
 }
 
+var defaultGridConfiguration: GridConfiguration = {
+    idProperty: undefined,
+    
+    viewButton: true,
+    addButton: true,
+    removeButton: true,
+    editButton: true,
+    includeAllFields: false,
+    inlineButtons: false,
+    navigationButtons: true,
+    
+    // Flag for whether removing an item then selects the next item after it
+    // This flag makes it easy to quickly delete a lot of items, which is maybe not good in some cases
+    shouldNextItemBeSelectedAfterItemRemoved: false,
+   
+    // TODO: Need to make work:
+    duplicateButton: false,
+    moveUpDownButtons: false,
+    customButton: null,
+    validateAdd: null,
+    validateEdit: null
+};
+
 // GridWithItemPanel needs to be a component so it can maintain a local sorted list
 class GridWithItemPanel {
     
@@ -144,53 +168,29 @@ class GridWithItemPanel {
     }
     
     updateDisplayConfigurationAndData(theDisplayConfiguration: GridDisplayConfiguration) {
-        var displayConfiguration: GridDisplayConfiguration = {
-            itemPanelID: undefined,
-            itemPanelSpecification: undefined,
-            gridConfiguration: undefined
-        };
+        // console.log("theDisplayConfiguration", theDisplayConfiguration);
+        var itemPanelID: string;
+        var itemPanelSpecification = null;
         
-        var gridConfiguration: GridConfiguration = {
-            idProperty: undefined,
-            
-            viewButton: true,
-            addButton: true,
-            removeButton: true,
-            editButton: true,
-            includeAllFields: false,
-            inlineButtons: false,
-            navigationButtons: true,
-            
-            // Flag for whether removing an item then selects the next item after it
-            // This flag makes it easy to quickly delete a lot of items, which is maybe not good in some cases
-            shouldNextItemBeSelectedAfterItemRemoved: false,
-           
-            // TODO: Need to make work:
-            duplicateButton: false,
-            moveUpDownButtons: false,
-            customButton: null,
-            validateAdd: null,
-            validateEdit: null
-        };
-        
-        var itemPanelID: any = theDisplayConfiguration;
-        if (!_.isString(itemPanelID)) {
-            displayConfiguration = theDisplayConfiguration;
-            itemPanelID = displayConfiguration.itemPanelID;
-            if (displayConfiguration.gridConfiguration) {
-                gridConfiguration = displayConfiguration.gridConfiguration;
+        if (_.isString(theDisplayConfiguration)) {
+            itemPanelID = <any>theDisplayConfiguration;
+            this.gridConfiguration = defaultGridConfiguration;
+        } else {
+            itemPanelID = theDisplayConfiguration.itemPanelID;
+            if (theDisplayConfiguration.gridConfiguration) {
+                this.gridConfiguration = theDisplayConfiguration.gridConfiguration;
+            } else {
+                this.gridConfiguration = defaultGridConfiguration;
             }
+            itemPanelSpecification = theDisplayConfiguration.itemPanelSpecification;
         }
-        
-        // this.displayConfiguration = displayConfiguration;
-        this.gridConfiguration = gridConfiguration;
-        
-        var itemPanelSpecification = displayConfiguration.itemPanelSpecification;
+   
         if (!itemPanelSpecification && itemPanelID) {
             itemPanelSpecification = this.panelBuilder.getPanelDefinitionForPanelID(itemPanelID);
         }
+        this.itemPanelSpecification = itemPanelSpecification;
         
-        if (!itemPanelSpecification) {
+        if (!this.itemPanelSpecification) {
             console.log("Trouble: no itemPanelSpecification for options: ", this.fieldSpecification);
         }
         
@@ -199,10 +199,9 @@ class GridWithItemPanel {
             throw new Error("Error: no model is defined for grid");
         }
         
-        if (gridConfiguration.idProperty) this.idProperty = gridConfiguration.idProperty;
+        if (this.gridConfiguration.idProperty) this.idProperty = this.gridConfiguration.idProperty;
         
-        this.itemPanelSpecification = itemPanelSpecification;
-        this.columns = computeColumnsForItemPanelSpecification(itemPanelSpecification, displayConfiguration);
+        this.columns = computeColumnsForItemPanelSpecification(this.itemPanelSpecification, this.gridConfiguration);
         
         // viewing, editing
         this.displayMode = null;
