@@ -207,7 +207,7 @@ class GridWithItemPanel {
         this.displayMode = null;
         
         // TODO: Multiple select
-        this.selectedItem = null;
+        this.setSelectedItem(null);
         
         this.isNavigationalScrollingNeeded = false;
         
@@ -355,11 +355,22 @@ class GridWithItemPanel {
         }
         console.log("found item at index", itemIndex, list[itemIndex]);
         if (itemIndex !== null) {
-            this.selectedItem = list[itemIndex];
+            this.setSelectedItem(list[itemIndex]);
             if (this.gridConfiguration.viewButton) {
                 this.displayMode = "viewing";
             }
         }
+    }
+    
+    setSelectedItem(item) {
+        this.selectedItem = item;
+        
+        // Defer updating until later to ensure grid settles down with selecting
+        if (this.gridConfiguration.selectCallback) {
+            setTimeout(() => {
+                this.gridConfiguration.selectCallback(this.selectedItem);
+            }, 0);
+        } 
     }
 
     isEditing() {
@@ -417,7 +428,7 @@ class GridWithItemPanel {
         var newItem = {};
         newItem[this.idProperty] = this.newIdForItem();
         this.data.push(newItem);
-        this.selectedItem = newItem;
+        this.setSelectedItem(newItem);
         this.displayMode = "adding";
     }
     
@@ -430,16 +441,16 @@ class GridWithItemPanel {
         this.data.splice(index, 1);
         
         if (item === this.selectedItem) {
-            this.selectedItem = null;
+            this.setSelectedItem(null);
             
             if (this.gridConfiguration.shouldNextItemBeSelectedAfterItemRemoved) {
                 if (index === this.data.length) {
                     index = index - 1;
                 }  
                 if (this.data.length) {
-                    this.selectedItem = this.data[index];
+                    this.setSelectedItem(this.data[index]);
                 } else {
-                   this.selectedItem = null;
+                   this.setSelectedItem(null);
                 }
                 this.isNavigationalScrollingNeeded = true;
             }
@@ -451,7 +462,7 @@ class GridWithItemPanel {
         console.log("editItem", item);
         
        // TODO: This needs to create an action that affects original list  
-        this.selectedItem = item;
+        this.setSelectedItem(item);
         this.displayMode = "editing";
     }
     
@@ -459,7 +470,7 @@ class GridWithItemPanel {
         if (!item) item = this.selectedItem;
         console.log("viewItem", item);
         
-        this.selectedItem = item;
+        this.setSelectedItem(item);
         this.displayMode = "viewing";
     }
     
@@ -485,7 +496,7 @@ class GridWithItemPanel {
         newItem[this.idProperty] = this.newIdForItem();
         
         this.data.push(newItem);
-        this.selectedItem = newItem;
+        this.setSelectedItem(newItem);
         this.displayMode = "adding";
     }
     
@@ -559,7 +570,7 @@ class GridWithItemPanel {
                 return;
             }
         }
-        // Leave item selected: this.selectedItem = null;
+        // Leave item selected: this.setSelection(null);
         this.displayMode = null;
     }
     
@@ -585,7 +596,7 @@ class GridWithItemPanel {
             default:
                throw new Error("Unexpected direction: " + direction);
         }
-        this.selectedItem = this.data[newPosition];
+        this.setSelectedItem(this.data[newPosition]);
         this.isNavigationalScrollingNeeded = true;
     }
     

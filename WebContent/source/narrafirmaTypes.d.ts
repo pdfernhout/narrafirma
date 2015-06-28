@@ -44,6 +44,7 @@ interface GridConfiguration {
     validateAdd?: string;
     validateEdit?: string;
     shouldNextItemBeSelectedAfterItemRemoved?: boolean;
+    selectCallback?: Function;
 }
 
 interface GridDisplayConfiguration {
