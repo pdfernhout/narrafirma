@@ -9,7 +9,8 @@ import generateRandomUuid = require("../pointrel20150417/generateRandomUuid");
 
 // TODO: Probably need to prevent user surveys from having a question with a short name of "_id".
 
-    
+var gridsMade = 0;
+
 var displayTypesToDisplayAsColumns = {
    text: true,
    textarea: true,
@@ -135,6 +136,8 @@ var defaultGridConfiguration: GridConfiguration = {
 // GridWithItemPanel needs to be a component so it can maintain a local sorted list
 class GridWithItemPanel {
     
+    gridID = "grid_" + (++gridsMade);
+    
     gridConfiguration: GridConfiguration = null;
     data = [];
     columns = [];
@@ -150,7 +153,7 @@ class GridWithItemPanel {
     // TODO: Multiple select
     private selectedItem = null;
     
-    isNavigationalScrollingNeeded = false;
+    isNavigationalScrollingNeeded: string = null;
     
     doubleClickAction = null;
     
@@ -209,7 +212,7 @@ class GridWithItemPanel {
         // TODO: Multiple select
         this.setSelectedItem(null);
         
-        this.isNavigationalScrollingNeeded = false;
+        this.isNavigationalScrollingNeeded = null;
         
         this.updateData();
     }
@@ -338,7 +341,8 @@ class GridWithItemPanel {
                         this.doubleClickAction(this.selectedItem);
                     }
                 }
-            }
+            },
+            config: this.ensureTableRowIsVisibleConfig.bind(this)
         };
     }
     
@@ -452,7 +456,7 @@ class GridWithItemPanel {
                 } else {
                    this.setSelectedItem(null);
                 }
-                this.isNavigationalScrollingNeeded = true;
+                this.isNavigationalScrollingNeeded = "delete";
             }
         }
     }
@@ -597,7 +601,7 @@ class GridWithItemPanel {
                throw new Error("Unexpected direction: " + direction);
         }
         this.setSelectedItem(this.data[newPosition]);
-        this.isNavigationalScrollingNeeded = true;
+        this.isNavigationalScrollingNeeded = direction;
     }
     
     createButtons(item = undefined) {
@@ -654,6 +658,10 @@ class GridWithItemPanel {
         return buttons;
     }
     
+    idForItem(item): string {
+        return this.gridID + item[this.idProperty];
+    }
+    
     rowForItem(item, index) {
         /* TODO: Use inline editor, if some config option is set:
         return inlineEditorForItem(panelBuilder, item, mode);
@@ -663,7 +671,7 @@ class GridWithItemPanel {
         if (selected) selectionClass = "narrafirma-grid-row-selected";
         
         var fields = this.columns.map((column) => {
-            return m("td", {"text-overflow": "ellipsis", "data-item-index": item[this.idProperty] }, item[column.field]);
+            return m("td", {"text-overflow": "ellipsis", "data-item-index": item[this.idProperty], id: this.idForItem(item)}, item[column.field]);
         });
         
         if (this.gridConfiguration.inlineButtons) {
@@ -672,18 +680,22 @@ class GridWithItemPanel {
             fields = fields.concat(m("td", {nowrap: true}, buttons));
         }
         // TODO: Probably more efficient way to ensure table row is visible like by doing config just for entire table
-        return m("tr", {key: item[this.idProperty], "class": selectionClass, config: this.ensureTableRowIsVisibleConfig.bind(this, item)}, fields);
+        return m("tr", {key: item[this.idProperty], "class": selectionClass}, fields);
     }
     
-    ensureTableRowIsVisibleConfig(item, element: HTMLElement, isInitialized: boolean, context: any, vdom: _mithril.MithrilVirtualElement) {
+    ensureTableRowIsVisibleConfig(tableElement: HTMLElement, isInitialized: boolean, context: any, vdom: _mithril.MithrilVirtualElement) {
         // Ensure the selected item is visible in the table
         // TODO: Could improve this so when navigating down the item is still near the bottom
-        if (this.isNavigationalScrollingNeeded && this.selectedItem === item) {
-            if (!isElementInViewport(element.parentNode, element)) {
-                var rowPosition = element.offsetTop;
-                element.parentElement.scrollTop = rowPosition;
+        if (this.selectedItem && this.isNavigationalScrollingNeeded) {
+            var rowElement = document.getElementById(this.idForItem(this.selectedItem));
+            if (rowElement && !isElementInViewport(tableElement, rowElement)) {
+                if (this.isNavigationalScrollingNeeded === "next" || this.isNavigationalScrollingNeeded === "end") {
+                    tableElement.scrollTop = rowElement.offsetTop - tableElement.clientHeight + rowElement.offsetHeight;
+                } else {
+                    tableElement.scrollTop = rowElement.offsetTop;
+                }
             }
-            this.isNavigationalScrollingNeeded = false;
+            this.isNavigationalScrollingNeeded = null;
         }
     }    
 }
