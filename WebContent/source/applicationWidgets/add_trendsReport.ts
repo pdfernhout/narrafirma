@@ -59,106 +59,24 @@ function collectValues(dict) {
     return values;
 }
 
-function chooseGraph(graphBrowserInstance, pattern) {
-    console.log("chooseGraph", pattern);
-    
-    // Remove old graph(s)
-    while (graphBrowserInstance.chartPanes.length) {
-        var chartPane = graphBrowserInstance.chartPanes.pop();
-        chartPane.destroyRecursive(false);
-    }
-    
-    if (pattern === null) {
-        // TODO: Translate
-        var suggestionPane = new ContentPane({content: "<b>Please select a pattern to see a graph...<b>"});
-        graphBrowserInstance.chartPanes.push(suggestionPane);
-        graphBrowserInstance.graphResultsPane.addChild(suggestionPane);
-        return;
-    }
-    
-    var name = pattern.patternName;
-    var type = pattern.graphType;
-    console.log("pattern", name, type);
-    var q1 = pattern.questions[0];
-    var q2 = pattern.questions[1];
-    var currentGraph = null;
-    switch (type) {
-        case "bar":
-            currentGraph = charting.d3BarChart(graphBrowserInstance, q1, updateStoriesPane);
-            break;
-        case "table":
-            currentGraph = charting.d3ContingencyTable(graphBrowserInstance, q1, q2, updateStoriesPane);
-            break;
-        case "histogram":
-            currentGraph = charting.d3HistogramChart(graphBrowserInstance, q1, null, null, updateStoriesPane);
-            break;
-        case "multiple histogram":
-            // Choice question needs to come before scale question in args
-            currentGraph = charting.multipleHistograms(graphBrowserInstance, q2, q1, updateStoriesPane);
-            break;
-        case "scatter":
-            currentGraph = charting.d3ScatterPlot(graphBrowserInstance, q1, q2, updateStoriesPane);
-            break;        
-       default:
-            console.log("ERROR: Unexpected graph type");
-            alert("ERROR: Unexpected graph type");
-            break;
-    }
-    graphBrowserInstance.currentGraph = currentGraph;
-    graphBrowserInstance.currentSelectionExtentPercentages = null;
-    graphBrowserInstance.currentSelectionSubgraph = null;
-}
-
-function updateStoriesPane(graphBrowserInstance, stories) {
-    graphBrowserInstance.selectedStories = stories;
-    graphBrowserInstance.selectedStoriesStore.setData(stories);
-    graphBrowserInstance.storyGrid.dataStoreChanged(graphBrowserInstance.selectedStoriesStore);
-}
-
 // TODO: Next two functions from add_storyBrowser and so are duplicate code
 
-function buildStoryDisplayPanel(panelBuilder: PanelBuilder, contentPane, model) {
+function buildStoryDisplayPanel(panelBuilder: PanelBuilder, model) {
     var storyContent = storyCardDisplay.generateStoryCardContent(model, model.questionnaire, "includeElicitingQuestion");
     
-    var storyPane = new ContentPane({
-        content: storyContent           
-    });
-    storyPane.placeAt(contentPane);
+     return m("div[class=storyCard]", m.trust(storyContent));
 }
 
 function makeItemPanelSpecificationForQuestions(questions) {
     // TODO: add more participant and survey info, like timestamps and participant ID
     
     var storyItemPanelSpecification = {
-         id: "storyBrowserQuestions",
+         id: "patternBrowserQuestions",
          panelFields: questions,
          buildPanel: buildStoryDisplayPanel
     };
     
     return storyItemPanelSpecification;
-}
-
-function patternSelected(graphBrowserInstance, grid, selectedPattern) {
-    console.log("Select in grid", grid, selectedPattern);
-    var observation;
-    if (graphBrowserInstance.currentPattern) {
-        // save observation
-        observation = graphBrowserInstance.observationModel.get("observation");
-        var oldObservation = graphBrowserInstance.currentPattern.observation || "";
-        if (oldObservation !== observation) {
-            graphBrowserInstance.currentPattern.observation = observation;
-            graphBrowserInstance.patternsListStore.put(graphBrowserInstance.currentPattern);
-        }
-    }
-    chooseGraph(graphBrowserInstance, selectedPattern);
-    observation = "";
-    if (selectedPattern) observation = selectedPattern.observation;
-    graphBrowserInstance.observationModel.set("observation", observation);
-    graphBrowserInstance.currentPattern = selectedPattern;
-    
-    graphBrowserInstance.selectedStories = [];
-    graphBrowserInstance.selectedStoriesStore.setData(graphBrowserInstance.selectedStories);
-    graphBrowserInstance.storyGrid.dataStoreChanged(graphBrowserInstance.selectedStoriesStore);
 }
 
 // Do not store the option texts directly in selection as they might have braces
@@ -168,136 +86,6 @@ function patternSelected(graphBrowserInstance, grid, selectedPattern) {
 
 function decodeBraces(optionText) {
     return optionText.replace("&#123;", "{").replace("&#125;", "}"); 
-}
-
-function insertGraphSelection(graphBrowserInstance) {
-    if (!graphBrowserInstance.currentGraph) {
-        // TODO: Translated
-        alert("Please select a pattern first");
-        return;
-    }
-    
-    if (!graphBrowserInstance.currentSelectionExtentPercentages) {
-        alert("Please select something in a graph first");
-        return;
-    }
-    
-    console.log("graphBrowserInstance.currentGraph", graphBrowserInstance.currentGraph);
-    
-    if (scanForSelectionJSON(graphBrowserInstance)) {
-        // TODO: Translate
-        alert("The insertion would change a previously saved selection within a {...} section;\nplease pick a different insertion point.");
-        return;
-    }
-    
-    // Find observation textarea and other needed data
-    // TODO: Fix this for Mithril conversion
-    var observationTextarea = graphBrowserInstance.widgets.observation;
-    var textModel = graphBrowserInstance.observationModel;
-    var selection = graphBrowserInstance.currentSelectionExtentPercentages;
-    var textToInsert = JSON.stringify(selection);
-    
-    // Replace the currently selected text in the textarea (or insert at caret if nothing selected)
-    var textarea = observationTextarea.textbox;
-    var selectionStart = textarea.selectionStart;
-    var selectionEnd = textarea.selectionEnd;
-    var oldText = textModel.get("observation");
-    var newText = oldText.substring(0, selectionStart) + textToInsert + oldText.substring(selectionEnd);
-    textModel.set("observation", newText);
-    textarea.selectionStart = selectionStart;
-    textarea.selectionEnd = selectionStart + textToInsert.length;
-    textarea.focus();
-}
-
-function scanForSelectionJSON(graphBrowserInstance, doFocus = false) {
-    // TODO: Fix this for Mithril conversion
-    var observationTextarea = graphBrowserInstance.widgets.observation;
-    var textModel = graphBrowserInstance.observationModel;
-    var textarea = observationTextarea.textbox;
-    var text = textModel.get("observation");
-
-    if (doFocus) textarea.focus();
-
-    var selectionStart = textarea.selectionStart;
-    var selectionEnd = textarea.selectionEnd;
-    
-    // Find the text for a selection surrounding the current insertion point
-    // This assumes there are not nested objects with nested braces
-    var start;
-    var end;
-    
-    // Special case of entire selection -- but could return more complex nested object...
-    if (selectionStart !== selectionEnd) {
-        if (text.charAt(selectionStart) === "{" && text.charAt(selectionEnd - 1) === "}") {
-            return text.substring(selectionStart, selectionEnd);
-        }
-    }
-    
-    for (start = selectionStart - 1; start >= 0; start--) {
-        if (text.charAt(start) === "}") return null;
-        if (text.charAt(start) === "{") break;
-    }
-    if (start < 0) return null;
-    // Now find the end
-    for (end = start; end < text.length; end++) {
-        if (text.charAt(end) === "}") break;
-    }
-    if (end >= text.length) return null;
-    return text.substring(start, end + 1);
-}
-
-function resetGraphSelection(graphBrowserInstance) {
-    console.log("resetGraphSelection");
-    if (!graphBrowserInstance.currentGraph) {
-        // TODO: Translate
-        alert("Please select a pattern first");
-        return;
-    }
-    
-    // TODO: Need better approach to finding brush extent text and safely parsing it
-
-    // Find observation textarea and other needed data
-    // var selectedText = oldText.substring(selectionStart, selectionEnd);
-    var selectedText = scanForSelectionJSON(graphBrowserInstance, true);
-    if (!selectedText) {
-        // TODO: Translate
-        alert("The text insertion point was not inside a graph selection description.\nTry clicking inside the {...} items first.");
-        return;
-    }
-    
-    var selection = null;
-    try {
-        selection = JSON.parse(selectedText);
-    } catch (e) {
-        console.log("JSON parse error", e);
-    }
-    
-    if (!selection) {
-        // TODO: Translate
-        alert('The selected text was not a complete valid stored selection.\nTry clicking inside the {...} items first.');
-        return;
-    }
-    
-    console.log("selection from user", selection);
-    
-    var graph = graphBrowserInstance.currentGraph;
-    if (_.isArray(graph)) {
-        var optionText = selection.subgraphChoice;
-        if (!optionText) {
-            // TODO: Translate
-            alert("No subgraphChoice specified in stored selection");
-            return;
-        }
-        optionText = decodeBraces(optionText);
-        var graphs = graphBrowserInstance.currentGraph;
-        graphs.forEach(function (subgraph) {
-            if (subgraph.subgraphChoice === optionText) {
-                graph = subgraph;
-            }
-        });
-    }
-    
-    charting.restoreSelection(graph, selection);
 }
 
 // TODO: Duplicate of what is in add_graphBrowser
@@ -337,12 +125,13 @@ class PatternBrowser {
     graphHolder: GraphHolder;
     
     questions = [];
-    allStories = [];
+    // allStories = [];
     
-    selectedStories = [];
-    modelForStoryGrid = {stories: []};
+    modelForStoryGrid = {storiesSelectedInGraph: []};
+    storyGridFieldSpecification: GridDisplayConfiguration = null;
     storyGrid: GridWithItemPanel = null;
-    observationModel = {observation: ""};
+     
+    modelForObservation = {observation: ""};
     currentPattern = null;
     
     observationPanelSpecification = null;
@@ -374,7 +163,7 @@ class PatternBrowser {
             idProperty: "id",
             includeAllFields: true,
             navigationButtons: true,
-            selectCallback: patternSelected.bind(null, this)
+            selectCallback: this.patternSelected.bind(this)
         };
         
         var patternsGridFieldSpecification = {
@@ -408,15 +197,18 @@ class PatternBrowser {
             navigationButtons: true
         };
         
-        var storyGridFieldSpecification = {
-            id: "stories",
+        this.storyGridFieldSpecification = {
+            id: "storiesSelectedInGraph",
+            itemPanelID: undefined,
+            itemPanelSpecification: storyItemPanelSpecification,
             displayConfiguration: {
                 itemPanelSpecification: storyItemPanelSpecification,
                 gridConfiguration: storyGridConfiguration
-            }
+            },
+            gridConfiguration: storyGridConfiguration
         };
 
-        this.storyGrid = new GridWithItemPanel({panelBuilder: args.panelBuilder, model: this.modelForStoryGrid, fieldSpecification: storyGridFieldSpecification});
+        this.storyGrid = new GridWithItemPanel({panelBuilder: args.panelBuilder, model: this.modelForStoryGrid, fieldSpecification: this.storyGridFieldSpecification});
 
         // Observation panel initialization
         
@@ -428,13 +220,13 @@ class PatternBrowser {
                     displayPrompt: "Save current graph selection into observation",
                     displayType: "button",
                     displayPreventBreak: true,
-                    displayConfiguration: insertGraphSelection.bind(null, this)
+                    displayConfiguration: this.insertGraphSelection.bind(this)
                 },
                 {
                     id: "resetGraphSelection",
                     displayPrompt: "Restore graph selection using saved selection chosen in observation",
                     displayType: "button",
-                    displayConfiguration: resetGraphSelection.bind(null, this)
+                    displayConfiguration: this.resetGraphSelection.bind(this)
                 },
                 {
                     id: "observation", 
@@ -457,7 +249,7 @@ class PatternBrowser {
         // TODO: selections in observation should be stored in original domain units, not scaled display units
  
         // Put up a "please pick pattern" message
-        // TODO: !!!! chooseGraph(this, null);
+        this.chooseGraph(null);
     }
     
     static controller(args) {
@@ -482,15 +274,32 @@ class PatternBrowser {
             console.log("storyCollectionIdentifier changed", this.catalysisReportIdentifier);
             this.currentCatalysisReportChanged(this.catalysisReportIdentifier);
         }
-              
-        return m("div", [
-            "PatternBrowser work in progress...",
-            "count of items: " + this.modelForPatternsGrid.patterns.length,
-            this.patternsGrid.calculateView(),
-            "TODO: graph goes here!!!!",
-            this.storyGrid.calculateView(),
-            panelBuilder.buildPanel(this.observationPanelSpecification, this.observationModel)
-         ]);
+        
+        var parts;
+        
+        if (!this.catalysisReportIdentifier) {
+            parts = [m("div", "Please select a catalysis report to work with")];
+        } else {
+            parts = [
+                this.patternsGrid.calculateView(),
+                this.currentPattern ?
+                    m("div", {config: this.insertGraphResultsPaneConfig.bind(this)}) :
+                   // TODO: Translate
+                    m("div", "Please select a pattern to view as a graph"),
+                this.storyGrid.calculateView(),
+                panelBuilder.buildPanel(this.observationPanelSpecification, this.modelForObservation)
+            ];
+        }
+        
+        // TODO: Need to set class
+        return m("div", parts);
+    }
+    
+    insertGraphResultsPaneConfig(element: HTMLElement, isInitialized: boolean, context: any, vdom: _mithril.MithrilVirtualElement) {
+        if (!isInitialized) {
+            console.log("appending graph element");
+            element.appendChild(this.graphHolder.graphResultsPane);
+        }       
     }
     
     currentCatalysisReportChanged(currentCatalysisReportIdentifier) {
@@ -516,8 +325,8 @@ class PatternBrowser {
             return;
         }
         
-        this.allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
-        console.log("allStories", this.allStories);
+        this.graphHolder.allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+        console.log("allStories", this.graphHolder.allStories);
         
         this.questions = surveyCollection.collectQuestionsForQuestionnaire(questionnaire);
         console.log("questions", this.questions);
@@ -525,16 +334,12 @@ class PatternBrowser {
         this.modelForPatternsGrid.patterns = this.buildPatternList();
         console.log("patterns", this.modelForPatternsGrid.patterns);
         this.patternsGrid.updateData();
-      
-        /*
 
         // Update item panel in story list so it has the correct header
-        var itemPanelSpecification = makeItemPanelSpecificationForQuestions(questions);
-        graphBrowserInstance.storyGrid.changeItemPanelSpecification(itemPanelSpecification);
+        this.storyGridFieldSpecification.itemPanelSpecification = makeItemPanelSpecificationForQuestions(this.questions);
+        this.storyGrid.updateDisplayConfigurationAndData(this.storyGridFieldSpecification);
     
-        chooseGraph(graphBrowserInstance, null);
-        
-        */
+        this.chooseGraph(null);     
     }
     
     
@@ -624,7 +429,7 @@ class PatternBrowser {
         var graphType = pattern.graphType;
         var significance;
         var statResult;
-        var stories = this.allStories;
+        var stories = this.graphHolder.allStories;
         
         if (graphType === "bar") {
             // not calculating statistics for bar graph
@@ -664,6 +469,220 @@ class PatternBrowser {
         }
         
         if (significance !== undefined) pattern.significance = significance;
+    }
+    
+    chooseGraph(pattern) {
+        console.log("chooseGraph", pattern);
+        
+        // Remove old graph(s)
+        while (this.graphHolder.chartPanes.length) {
+            var chartPane = this.graphHolder.chartPanes.pop();
+            this.graphHolder.graphResultsPane.removeChild(chartPane);
+            // TODO: Do these need to be destroyed or freed somehow?
+        }
+        
+        // Need to remove the float end node, if any        
+        while (this.graphHolder.graphResultsPane.firstChild) {
+            this.graphHolder.graphResultsPane.removeChild(this.graphHolder.graphResultsPane.firstChild);
+        }
+        
+        this.modelForStoryGrid.storiesSelectedInGraph = [];
+        
+        if (pattern === null) {
+            return;
+        }
+        
+        var name = pattern.patternName;
+        var type = pattern.graphType;
+        console.log("pattern", name, type);
+        var q1 = pattern.questions[0];
+        var q2 = pattern.questions[1];
+        var currentGraph = null;
+        switch (type) {
+            case "bar":
+                currentGraph = charting.d3BarChart(this.graphHolder, q1, this.updateStoriesPane.bind(this));
+                break;
+            case "table":
+                currentGraph = charting.d3ContingencyTable(this.graphHolder, q1, q2, this.updateStoriesPane.bind(this));
+                break;
+            case "histogram":
+                currentGraph = charting.d3HistogramChart(this.graphHolder, q1, null, null, this.updateStoriesPane.bind(this));
+                break;
+            case "multiple histogram":
+                // Choice question needs to come before scale question in args
+                currentGraph = charting.multipleHistograms(this.graphHolder, q2, q1, this.updateStoriesPane.bind(this));
+                break;
+            case "scatter":
+                currentGraph = charting.d3ScatterPlot(this.graphHolder, q1, q2, this.updateStoriesPane.bind(this));
+                break;        
+           default:
+                console.log("ERROR: Unexpected graph type");
+                alert("ERROR: Unexpected graph type");
+                break;
+        }
+        this.graphHolder.currentGraph = currentGraph;
+        this.graphHolder.currentSelectionExtentPercentages = null;
+        // TODO: Is this obsolete? this.graphHolder.currentSelectionSubgraph = null;
+    }
+    
+    updateStoriesPane(stories) {
+        this.modelForStoryGrid.storiesSelectedInGraph = stories;
+        this.storyGrid.updateData();
+        
+        // Since the change is coming from d3, we need to queue a Mithril redraw to refresh the display
+        console.log("about to call m.redraw");
+        m.redraw();
+    }
+    
+    patternSelected(selectedPattern) {
+        console.log("Select in pattern grid", selectedPattern);
+        var observation;
+        if (this.currentPattern) {
+            // save observation
+            observation = this.modelForObservation.observation;
+            var oldObservation = this.currentPattern.observation || "";
+            if (oldObservation !== observation) {
+                this.currentPattern.observation = observation;
+            }
+        }
+        this.chooseGraph(selectedPattern);
+        observation = "";
+        if (selectedPattern) observation = selectedPattern.observation;
+        this.modelForObservation.observation = observation;
+        this.currentPattern = selectedPattern;
+        
+        this.modelForStoryGrid.storiesSelectedInGraph = [];
+        this.storyGrid.updateData();
+    }
+    
+    insertGraphSelection() {
+        if (!this.graphHolder.currentGraph) {
+            // TODO: Translated
+            alert("Please select a pattern first");
+            return;
+        }
+        
+        if (!this.graphHolder.currentSelectionExtentPercentages) {
+            alert("Please select something in a graph first");
+            return;
+        }
+        
+        console.log("PatternsBrowser currentGraph", this.graphHolder.currentGraph);
+        
+        if (this.scanForSelectionJSON()) {
+            // TODO: Translate
+            alert("The insertion would change a previously saved selection within a {...} section;\nplease pick a different insertion point.");
+            return;
+        }
+        
+        // Find observation textarea and other needed data
+        // TODO: Fix this for Mithril conversion
+        var observationTextarea = this.widgets.observation;
+        var textModel = this.modelForObservation;
+        var selection = this.graphHolder.currentSelectionExtentPercentages;
+        var textToInsert = JSON.stringify(selection);
+        
+        // Replace the currently selected text in the textarea (or insert at caret if nothing selected)
+        var textarea = observationTextarea.textbox;
+        var selectionStart = textarea.selectionStart;
+        var selectionEnd = textarea.selectionEnd;
+        var oldText = textModel.observation;
+        var newText = oldText.substring(0, selectionStart) + textToInsert + oldText.substring(selectionEnd);
+        textModel.observation = newText;
+        textarea.selectionStart = selectionStart;
+        textarea.selectionEnd = selectionStart + textToInsert.length;
+        textarea.focus();
+    }
+    
+    scanForSelectionJSON(doFocus = false) {
+        // TODO: Fix this for Mithril conversion
+        var observationTextarea = this.widgets.observation;
+        var textModel = this.modelForObservation;
+        var textarea = observationTextarea.textbox;
+        var text = textModel.observation;
+    
+        if (doFocus) textarea.focus();
+    
+        var selectionStart = textarea.selectionStart;
+        var selectionEnd = textarea.selectionEnd;
+        
+        // Find the text for a selection surrounding the current insertion point
+        // This assumes there are not nested objects with nested braces
+        var start;
+        var end;
+        
+        // Special case of entire selection -- but could return more complex nested object...
+        if (selectionStart !== selectionEnd) {
+            if (text.charAt(selectionStart) === "{" && text.charAt(selectionEnd - 1) === "}") {
+                return text.substring(selectionStart, selectionEnd);
+            }
+        }
+        
+        for (start = selectionStart - 1; start >= 0; start--) {
+            if (text.charAt(start) === "}") return null;
+            if (text.charAt(start) === "{") break;
+        }
+        if (start < 0) return null;
+        // Now find the end
+        for (end = start; end < text.length; end++) {
+            if (text.charAt(end) === "}") break;
+        }
+        if (end >= text.length) return null;
+        return text.substring(start, end + 1);
+    }
+    
+    resetGraphSelection() {
+        console.log("resetGraphSelection");
+        if (!this.graphHolder.currentGraph) {
+            // TODO: Translate
+            alert("Please select a pattern first");
+            return;
+        }
+        
+        // TODO: Need better approach to finding brush extent text and safely parsing it
+    
+        // Find observation textarea and other needed data
+        // var selectedText = oldText.substring(selectionStart, selectionEnd);
+        var selectedText = this.scanForSelectionJSON(true);
+        if (!selectedText) {
+            // TODO: Translate
+            alert("The text insertion point was not inside a graph selection description.\nTry clicking inside the {...} items first.");
+            return;
+        }
+        
+        var selection = null;
+        try {
+            selection = JSON.parse(selectedText);
+        } catch (e) {
+            console.log("JSON parse error", e);
+        }
+        
+        if (!selection) {
+            // TODO: Translate
+            alert('The selected text was not a complete valid stored selection.\nTry clicking inside the {...} items first.');
+            return;
+        }
+        
+        console.log("selection from user", selection);
+        
+        var graph = this.graphHolder.currentGraph;
+        if (_.isArray(graph)) {
+            var optionText = selection.subgraphChoice;
+            if (!optionText) {
+                // TODO: Translate
+                alert("No subgraphChoice specified in stored selection");
+                return;
+            }
+            optionText = decodeBraces(optionText);
+            var graphs = this.graphHolder.currentGraph;
+            graphs.forEach(function (subgraph) {
+                if (subgraph.subgraphChoice === optionText) {
+                    graph = subgraph;
+                }
+            });
+        }
+        
+        charting.restoreSelection(graph, selection);
     }
 }
 
