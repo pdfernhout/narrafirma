@@ -370,8 +370,10 @@ class GridWithItemPanel {
         this.selectedItem = item;
         
         // Defer updating until later to ensure grid settles down with selecting
+        // TODO: May just want to remove the timout wrapper, or alternatively, should call m.redraw afterwards.
         // Important: callback will need to call m.redraw to update the GUI since a timeout bypasses normal autoredrawing
         if (this.gridConfiguration.selectCallback) {
+            // TODO: Optimization if needed: m.redraw.strategy("none");
             setTimeout(() => {
                 this.gridConfiguration.selectCallback(this.selectedItem);
             }, 0);
