@@ -209,6 +209,7 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
             "valueType": "none",
             "displayPrompt": prompt,
             "displayType": "button",
+            "displayClass": "narrafirma-page-change-button",
             "displayConfiguration": {
                 "action": "guiOpenSection",
                 "section": newPageID
