@@ -216,7 +216,7 @@ class PanelBuilder {
         }
         
         var fields = [];
-        for (var fieldSpecificationIndex in fieldSpecifications) {
+        for (var fieldSpecificationIndex = 0; fieldSpecificationIndex < fieldSpecifications.length; fieldSpecificationIndex++) {
             var fieldSpecification = fieldSpecifications[fieldSpecificationIndex];
             var widget = this.buildField(model, fieldSpecification);
             fields.push(widget);
