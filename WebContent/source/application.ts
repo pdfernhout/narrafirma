@@ -15,6 +15,7 @@ import questionnaireGeneration = require("./questionnaireGeneration");
 import surveyCollection = require("./surveyCollection");
 import toaster = require("./panelBuilder/toaster");
 import translate = require("./panelBuilder/translate");
+import m = require("mithril");
 
 "use strict";
 
@@ -538,6 +539,9 @@ export function initialize() {
     
     setupGlobalFunctions();
     
+    // mount Mithril dialog support now, as it may be needed in choosing a project
+    dialogSupport.initialize();
+    
     // Throwaway single-use pointrel client instance which does not access a specific journal and for which polling is not started
     var singleUsePointrelClient = new PointrelClient("/api/pointrel20150417", "unused", {});
     singleUsePointrelClient.getCurrentUserInformation(function(error, response) {
@@ -614,6 +618,9 @@ function chooseAProjectToOpen(userIdentifierFromServer, projects) {
 
             openProject(userCredentials, projectIdentifier);
         });
+        
+        // Because we are opening a dialog at startup, not caused by a user event, we need to tell Mithril to redraw.
+        m.redraw();
     }
 }
 
@@ -680,7 +687,7 @@ function loadApplicationDesign() {
         panelBuilder.clientState = clientState;
         
         // Initialize different Mithril components which will be mounted using m.mount
-        dialogSupport.initialize();
+        // Note that dialogSupport has already been initialized and that component mounted
         navigationPane.initializeNavigationPane(panelSpecificationCollection, startPage, userIdentifier, panelBuilder);
         pageDisplayer.configurePageDisplayer(panelBuilder, startPage, project, updateHashIfNeededForChangedState);
 
