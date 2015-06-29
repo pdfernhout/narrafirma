@@ -131,7 +131,7 @@ class PatternBrowser {
     storyGridFieldSpecification: GridDisplayConfiguration = null;
     storyGrid: GridWithItemPanel = null;
      
-    modelForObservation = {observation: ""};
+    // modelForObservation = {observation: ""};
     currentPattern = null;
     
     observationPanelSpecification = null;
@@ -230,7 +230,7 @@ class PatternBrowser {
                 },
                 {
                     id: "observationPanel_observation",
-                    valuePath: "observation",
+                    valuePath: "currentPanel/observation",
                     displayName: "Observation",
                     displayPrompt: "If this pattern is noteworthy, enter an <strong>observation</strong> about the pattern here.",
                     displayType: "textarea"
@@ -288,7 +288,7 @@ class PatternBrowser {
                    // TODO: Translate
                     m("div", "Please select a pattern to view as a graph"),
                 this.storyGrid.calculateView(),
-                panelBuilder.buildPanel(this.observationPanelSpecification, this.modelForObservation)
+                panelBuilder.buildPanel(this.observationPanelSpecification, this)
             ];
         }
         
@@ -541,19 +541,7 @@ class PatternBrowser {
     
     patternSelected(selectedPattern) {
         console.log("Select in pattern grid", selectedPattern);
-        var observation;
-        if (this.currentPattern) {
-            // save observation
-            observation = this.modelForObservation.observation;
-            var oldObservation = this.currentPattern.observation || "";
-            if (oldObservation !== observation) {
-                this.currentPattern.observation = observation;
-            }
-        }
         this.chooseGraph(selectedPattern);
-        observation = "";
-        if (selectedPattern) observation = selectedPattern.observation;
-        this.modelForObservation.observation = observation;
         this.currentPattern = selectedPattern;
         
         this.modelForStoryGrid.storiesSelectedInGraph = [];
@@ -581,20 +569,21 @@ class PatternBrowser {
             return;
         }
         
+        if (!this.currentPattern) return;
+        
         // Find observation textarea and other needed data
         // TODO: Fix this for Mithril conversion
         var textarea = <HTMLTextAreaElement>document.getElementById("observationPanel_observation");
-        var textModel = this.modelForObservation;
         var selection = this.graphHolder.currentSelectionExtentPercentages;
         var textToInsert = JSON.stringify(selection);
         
         // Replace the currently selected text in the textarea (or insert at caret if nothing selected)
         var selectionStart = textarea.selectionStart;
         var selectionEnd = textarea.selectionEnd;
-        var oldText = textModel.observation;
+        var oldText = this.currentPattern.observation;
         var newText = oldText.substring(0, selectionStart) + textToInsert + oldText.substring(selectionEnd);
-        textModel.observation = newText;
-        // Set the new explicitly here rather than waiting for a redraw so that we can then select it
+        this.currentPattern.observation = newText;
+        // Set the new explicitly here rather than waiting for a Mithril redraw so that we can then select it
         textarea.value = newText;
         textarea.selectionStart = selectionStart;
         textarea.selectionEnd = selectionStart + textToInsert.length;
@@ -605,8 +594,8 @@ class PatternBrowser {
         console.log("scanForSelectionJSON");
         // TODO: Fix this for Mithril conversion
         var textarea = <HTMLTextAreaElement>document.getElementById("observationPanel_observation");
-        var textModel = this.modelForObservation;
-        var text = textModel.observation;
+        if (!this.currentPattern) return;
+        var text = this.currentPattern.observation;
     
         if (doFocus) textarea.focus();
     

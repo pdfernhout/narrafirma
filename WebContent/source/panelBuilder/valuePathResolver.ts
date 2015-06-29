@@ -14,7 +14,12 @@ export function resolveModelAndFieldForValuePath(panelBuilder: PanelBuilder, mod
     var pathParts = valuePath.split("/");
     if (pathParts[0] === "") {
         model = panelBuilder[pathParts[1]];
-        if (!model) throw new Error("model is null");
+        if (!model) {
+            // TODO: Needs work!!!
+            // throw new Error("model is null");
+            console.log("model is null");
+            return {model: {missing: null}, field: "missing"};
+        }
         pathParts.shift();
         pathParts.shift();
     }
@@ -22,7 +27,11 @@ export function resolveModelAndFieldForValuePath(panelBuilder: PanelBuilder, mod
     while (pathParts.length > 1) {
         // TODO: Should ideally establish dependencies all along the line in case something along path changes
         model = model[pathParts[0]];
-        if (!model) throw new Error("model is null while iterating");
+        if (!model) {
+            // TODO: Needs work!!!
+            // throw new Error("model is null while iterating");
+            return {model: {missing: null}, field: "missing"};
+        }
         pathParts.shift();
     }
     var field = pathParts[0];
