@@ -102,14 +102,9 @@ function getCurrentCatalysisReportIdentifier(args) {
     var model = args.model;
     var fieldSpecification = args.fieldSpecification;
     
-    // Get questionnaire for selected story collection
-    // TODO: What if the value is an array of stories to display directly?
-    var choiceModelAndField = valuePathResolver.resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
-    console.log("choiceModelAndField", choiceModelAndField);
-    var choiceModel = choiceModelAndField.model;
-    var choiceField = choiceModelAndField.field; 
-    var catalysisReportIdentifier = choiceModel[choiceField];
-    
+    // Get selected catalysis report
+    var catalysisReportIdentifier = valuePathResolver.newValuePathForFieldSpecification(panelBuilder, model, fieldSpecification)();
+
     console.log("catalysisReportIdentifier", catalysisReportIdentifier);
     
     return catalysisReportIdentifier;
@@ -230,7 +225,7 @@ class PatternBrowser {
                 },
                 {
                     id: "observationPanel_observation",
-                    valuePath: "currentPanel/observation",
+                    valuePath: "currentPattern/observation",
                     displayName: "Observation",
                     displayPrompt: "If this pattern is noteworthy, enter an <strong>observation</strong> about the pattern here.",
                     displayType: "textarea"

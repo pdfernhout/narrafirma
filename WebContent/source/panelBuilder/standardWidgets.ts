@@ -14,13 +14,7 @@ function optionsForSelect(panelBuilder, model, fieldSpecification, currentValue,
     var choices = specifiedChoices;
     
     if (_.isString(specifiedChoices)) {
-        var choicesModelAndField = valuePathResolver.resolveModelAndFieldForValuePath(panelBuilder, model, specifiedChoices);
-        console.log("choicesModelAndField", choicesModelAndField);
-        
-        var choicesModel = choicesModelAndField.model;
-        var choicesField = choicesModelAndField.field;
-        
-        choices = choicesModel[choicesField];
+        choices = valuePathResolver.newValuePath(panelBuilder, model, specifiedChoices)();
     }
     
     if (!choices) {
@@ -95,14 +89,15 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         questionLabel = [];
     }
     
-    var modelAndField = valuePathResolver.resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
-    var value = modelAndField.model[modelAndField.field];
+    var valueProperty = valuePathResolver.newValuePathForFieldSpecification(panelBuilder, model, fieldSpecification);
+
+    var value = valueProperty();
     if (value === undefined) value = "";
     
     function change(event, value) {
         if (event) value = event.target.value;
         // console.log("onchange", fieldSpecification.id, value);
-        modelAndField.model[modelAndField.field] = value;
+        valueProperty(value);
     }
     
     var readOnly = fieldSpecification.displayReadOnly || (fieldSpecification.valueImmutable && value) || undefined;
