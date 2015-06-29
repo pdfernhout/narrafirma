@@ -268,7 +268,7 @@ class GridWithItemPanel {
         }
         
         var table = m("table.scrolling", this.tableConfigurationWithSortingOnHeaderClick(), [
-            m("tr", {"class": "selected-grid-row"}, columnHeaders),
+            m("tr", {"class": "grid-header-row"}, columnHeaders),
             this.data.map((item, index) => {
                 return this.rowForItem(item, index);
             })
@@ -292,7 +292,7 @@ class GridWithItemPanel {
             buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "start"), disabled: navigationDisabled}, translate("#button_navigateStart|[<<")));
             buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "previous"), disabled: navigationDisabled}, translate("#button_navigatePrevious|<")));
             buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "next"), disabled: navigationDisabled}, translate("#button_navigateNext|>")));
-            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "end"), disabled: navigationDisabled}, translate("#button_navigateEnd|>>")));
+            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "end"), disabled: navigationDisabled}, translate("#button_navigateEnd|>>]")));
         }
         
         var buttonPanel = m("div.narrafirma-button-panel", buttons);
@@ -669,9 +669,23 @@ class GridWithItemPanel {
         /* TODO: Use inline editor, if some config option is set:
         return inlineEditorForItem(panelBuilder, item, mode);
         */
-        var selectionClass = "narrafirma-grid-row-unselected";
+        
         var selected = (item === this.selectedItem);
-        if (selected) selectionClass = "narrafirma-grid-row-selected";
+
+        var selectionClass = "";
+        if (selected) {
+            if (index % 2 == 0) {
+                selectionClass = "narrafirma-grid-row-selected-even";
+            } else {
+                selectionClass = "narrafirma-grid-row-selected-odd";
+            }
+        } else {
+            if (index % 2 == 0) {
+                selectionClass = "narrafirma-grid-row-unselected-even";
+            } else {
+                selectionClass = "narrafirma-grid-row-unselected-odd";
+            }
+        }
         
         var fields = this.columns.map((column) => {
             return m("td", {"text-overflow": "ellipsis", "data-item-index": item[this.idProperty], id: this.idForItem(item)}, item[column.field]);

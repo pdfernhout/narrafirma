@@ -181,6 +181,17 @@ button {
     font-size: 1.4em;
 }
  
+ 
+.narrafirma-page-change-button {
+    font-size: 1em;
+    min-width: 10em;
+    height: 2em;
+    border-radius: 12px; 
+    border: none;
+    box-shadow: 2px 2px 2px #3e3739;
+    margin-bottom: 0.5em;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dashboard ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-pni-phases-image {
@@ -211,7 +222,7 @@ button {
 	display: block;
 	font-size: 1.2em;
 	font-weight: bold;
-	background: #abb6ce;  
+	background-color: #abb6ce;  
     border-radius: 12px; 
 	margin-bottom: 12px;
 	margin-top: 10px;
@@ -222,15 +233,15 @@ button {
 }
 
 .narrafirma-griditempanel-editing .narrafirma-question-type-header.questionExternal { 
-	background: #7b8cb2;
+	background-color: #7b8cb2;
 }
  
 .narrafirma-griditempanel-viewing .narrafirma-question-type-header.questionExternal {
-	background: #a7a5a5;
+	background-color: #a7a5a5;
 }
  
 .questionExternal {
-	background: #d5dae6;
+	background-color: #d5dae6;
 	margin-bottom: 4px;
     border-radius: 12px;
     padding: 8px;
@@ -238,7 +249,7 @@ button {
 }
 
 .questionExternal.narrafirma-question-type-label {
-    background: white;
+    background-color: white;
     margin-bottom: 4px;
     border-radius: 12px;
 }
@@ -258,7 +269,7 @@ button {
 }
 
 .questionExternal.narrafirma-question-type-questionAnswer {
-    background: white;
+    background-color: white;
 }
 
 .narrafirma-questionAnswer { /* this is now used to display the reminder on the phase dashboard page */
@@ -266,7 +277,7 @@ button {
     width: 90%;
     margin: 0.3em 0em 0.3em 0em;
     padding: 0.5em;
-    background: #e0e6cc;
+    background-color: #e0e6cc;
     border: 1px solid #b2c07f;
 }
 
@@ -274,7 +285,7 @@ button {
 	padding: 0px;
 	margin: 0px;
 	border: none;
-	background: #fff;
+	background-color: #fff;
 }
 
 form {
@@ -286,7 +297,7 @@ form {
 }
 
 .narrafirma-reminder {
-	background: #b2c07f;
+	background-color: #b2c07f;
 	border-radius: 12px;
 }
 
@@ -301,7 +312,7 @@ form {
 }
 
 .narrafirma-griditempanel-editing {
-	background: #FFF;
+	background-color: #FFF;
 	margin: 1em;
 	border: 1px solid #2e4a85;
 	border-radius: 12px;
@@ -309,11 +320,11 @@ form {
 }
 
 .narrafirma-griditempanel-editing .questionExternal {
-	background: #abb6ce;
+	background-color: #abb6ce;
 }
 
 .narrafirma-griditempanel-viewing {
-	background: #e4e4e4; /* this gray is an extra super light gray */
+	background-color: #e4e4e4; /* this gray is an extra super light gray */
 	margin: 1em;
 	border: 1px solid #231f20;
 	border-radius: 12px;
@@ -321,7 +332,7 @@ form {
 }
 
 .narrafirma-griditempanel-viewing .questionExternal {
-	background: #e4e4e4;
+	background-color: #e4e4e4;
 	margin: 0px;
 }
 
@@ -335,12 +346,12 @@ form {
 }
 
 .claro .dijitTextBoxReadOnly {
-	background: #e4e4e4;
+	background-color: #e4e4e4;
 }
 
 .narrafirma-special-warning {
 	display: block;
-	background: #eac199;
+	background-color: #eac199;
 	border: 2px solid #cc6400;
 	padding: 10px;
 	margin-left: 5em;
@@ -543,7 +554,7 @@ form {
 }
 
 .chart {
-	background: white;
+	background-color: white;
 }
 
 .scatterPlot .story {
@@ -608,23 +619,26 @@ form {
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Mithril grid ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-grid {
-    padding: 8px;
-    margin: 8px;
+    margin: 10px;
 }
 
 table.scrolling {
+  margin: 10px;
   display: block;
   max-height: 400px;
   overflow-y: scroll;
+  border-collapse: collapse;
 }
 
-table.scrolling td,th {
-    outline: thin solid;
-    padding: 4px;
+table.scrolling th {
+	background-color: #7b8cb2;
+	padding: 10px;
+	border: 1px solid #3e3739;
 }
 
-.narrafirm-grid {
-   margin: 8px; 
+table.scrolling td {
+    padding: 6px;
+    border: 1px solid #3e3739;
 }
 
 table button.fader {
@@ -632,24 +646,45 @@ table button.fader {
     overflow: auto;
 }
 
+table.scrolling tr {
+	border: 1px solid #3e3739;
+}
+
 table tr:hover button.fader {
     opacity: 1;
 }
 
 table.scrolling tr:hover {
-    outline: thick solid;
+    outline: 4px solid;
 }
 
-.narrafirma-grid-row-selected {
-    background: green;
+.narrafirma-grid-row-unselected-odd {
+	background-color: #d5dae6;
+}
+
+.narrafirma-grid-row-unselected-even {
+	background-color: #abb6ce;
+}
+
+.narrafirma-grid-row-selected-odd {
+	background-color: #f4e0cc;
+}
+
+.narrafirma-grid-row-selected-even {
+	background-color: #eac199;
 }
 
 .narrafirma-button-panel {
-    padding: 8px;
+    padding: 10px;
 }
 
-.selected-grid-row {
-    background-color: #66CCFF
+.narrafirma-button-panel button {
+    font-size: 1em;
+    height: 2em;
+    border-radius: 12px; 
+    border: none;
+    box-shadow: 2px 2px 2px #3e3739;
+    margin-bottom: 0.5em;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Story browser ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -672,7 +707,7 @@ table.filterTable td {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.6);
+  background-color: rgba(0,0,0,0.6);
   z-index: 10000;
 }
 
@@ -683,7 +718,7 @@ table.filterTable td {
   min-height: 400px;
   max-height: 650px;
   margin: 5% auto 0;
-  background: #fff;
+  background-color: #fff;
   overflow: auto;
   z-index: 10001;
 }
