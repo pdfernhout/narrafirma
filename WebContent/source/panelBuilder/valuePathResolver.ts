@@ -1,6 +1,9 @@
 import PanelBuilder = require("PanelBuilder");
 "use strict";
 
+// TODO: Store a reference to the Project in an intiatilziation step
+// TODO: Use the tripel store to store all this data
+
 class ValuePathResolver {
     constructor(public context: any, public baseModel: any, public valuePath: string) {
     }
