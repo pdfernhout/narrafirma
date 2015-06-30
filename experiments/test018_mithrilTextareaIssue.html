@@ -1,0 +1,50 @@
+<!DOCTYPE HTML> 
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Mithril textarea update issue test</title>
+<!-- Ref: https://github.com/lhorie/mithril.js/issues/674 And my: https://jsfiddle.net/pdfernhout/7yjks1ys/4/ -->
+
+<script src="../WebContent/lib/mithril/mithril.js"></script>
+
+</head>
+
+<body>
+
+<div id="first"></div>
+<div id="second"></div>
+
+<script>
+// See this closed issue: https://github.com/lhorie/mithril.js/issues/95
+// Perhaps also related: // Reference: https://github.com/lhorie/mithril.js/issues/136
+var component = {};
+
+component.controller = function () {
+    this.textValue = "X";
+};
+
+component.view = function (controller) {
+    return m("div", [
+        "This test has a controller that only returns an empty string for a text value, which is used as a fixed value for a textarea and an input. Type text into both the textarea and the input and then click the redraw button. Both widgets should clear, but only the input does. Both widgets should also clear when they are tabbed out of as well, but only the input does.",
+        m("br"),
+        m("textarea", {onchange: function (event) {
+            // controller.textValue = event.target.value;
+            console.log("new value of textarea is:", event.target.value);
+        }, value: controller.textValue}),
+        m("br"),
+        m("input", {value: controller.textValue, onchange: function (event) {
+            // controller.textValue = event.target.value;
+            // console.log("updating to:", controller.textValue);
+        } }),
+        m("br"),
+        m("button", {onclick: function() { m.redraw(); } }, "Redraw")
+    ]);
+};
+
+m.module(document.body, component);
+</script>
+
+</body>
+</html>
+
