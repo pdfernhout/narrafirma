@@ -420,7 +420,9 @@ var m = (function app(window, undefined) {
 				}
 			}
 			//#348 dataAttr may not be a string, so use loose comparison (double equal) instead of strict (triple equal)
-			else if (attrName === "value" && tag === "input" && node.value != dataAttr) {
+			// PDF fix for issue #701 https://github.com/lhorie/mithril.js/issues/701
+			// else if (attrName === "value" && tag === "input" && node.value != dataAttr) {
+	        else if (attrName === "value" && (tag === "input" || tag === "textarea") && node.value != dataAttr) {
 				node.value = dataAttr
 			}
 		}
