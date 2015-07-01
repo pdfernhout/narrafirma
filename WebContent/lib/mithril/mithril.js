@@ -421,10 +421,34 @@ var m = (function app(window, undefined) {
 			}
 			//#348 dataAttr may not be a string, so use loose comparison (double equal) instead of strict (triple equal)
 			// PDF fix for issue #701 https://github.com/lhorie/mithril.js/issues/701
-			// else if (attrName === "value" && tag === "input" && node.value != dataAttr) {
-	        else if (attrName === "value" && (tag === "input" || tag === "textarea") && node.value != dataAttr) {
-				node.value = dataAttr
-			}
+            //#348 dataAttr may not be a string, so use loose comparison (double equal) instead of strict (triple equal)
+            // PDF updates per Mithril issue #691 and Issue #701
+            else if (attrName === "value" && (tag === "input" || tag === "textarea" || tag === "select") && node.value != dataAttr) {
+                node.value = dataAttr;
+            }
+            else if (attrName === "checked" && (tag === "input") && node.checked != dataAttr) {
+                // TODO: Maybe this case should be more selective to checkbox and radio?
+                node.checked = !!dataAttr;
+            }
+            else if (attrName === "selected" && (tag === "option") && node.selected != dataAttr) {
+                node.selected = !!dataAttr;
+            }
+            else if (attrName === "selectionStart" && (tag === "input" || tag === "textarea") && node.selectionStart != dataAttr) {
+                node.selectionStart = dataAttr;
+            }
+            else if (attrName === "selectionEnd" && (tag === "input" || tag === "textarea") && node.selectionEnd != dataAttr) {
+                node.selectionEnd = dataAttr;
+            }
+            else if (attrName === "selectionDirection" && (tag === "input" || tag === "textarea") && node.selectionDirection != dataAttr) {
+                node.selectionDirection = dataAttr;
+            }
+            else if (attrName === "scrollTop" && node.scrollTop != dataAttr) {
+                // TODO: Maybe this case should be more selective?
+                node.scrollTop = dataAttr;
+            }
+            else if (tag === "keygen") {
+                throw new Error("keygen support unfininshed");
+            }
 		}
 		return cachedAttrs
 	}
