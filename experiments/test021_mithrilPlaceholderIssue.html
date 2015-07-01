@@ -1,0 +1,94 @@
+<!DOCTYPE HTML> 
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Mithril placeholder issue test</title>
+<!-- Ref: https://github.com/lhorie/mithril.js/issues/674 And my: https://jsfiddle.net/pdfernhout/7yjks1ys/4/ -->
+
+<script src="../WebContent/lib/mithril/mithril.js"></script>
+
+</head>
+
+<body>
+
+<div id="placeholder"></div>
+
+<script>
+//From: https://github.com/lhorie/mithril.js/issues/682
+
+var counter = 1;
+
+var RowComponent = {
+    controller: function () {
+        console.log("RowComponent.controller() called");
+        return {};
+    },
+    view: function (controller, args) {
+        console.log("RowComponent.view() called");
+        return m("div", [
+            "I'm a row element. My name is " + args.fullName + " ",
+            m("button", {
+                onclick: function () {
+                    counter++;
+                    rerender();
+                    // setTimeout(rerender, 0);
+                }
+            }, "Increase and toggle and rerender")]);
+    }
+};
+
+var GridComponent = {
+    controller: function (args) {
+        console.log("GridComponent.controller() called");
+        return {};
+    },
+    view: function (ctrl, args) {
+        console.log("GridComponent.view() called");
+        var rows = [];
+        
+        rows.push(m("div", "First row"));
+        
+        // Add first row.
+        rows.push(m.component(RowComponent, {
+            key: 100,
+            fullName: "1st"
+        }));
+        
+        // Show/hide second row based on counter.
+        if (counter % 2 == 1) {
+            rows.push(m("div", ">>>>>"));
+            // ******** this is problematic *********
+            rows.push(m.component(RowComponent, {
+                key: 200 + counter,
+                fullName: "2nd"
+            }));
+            rows.push(m("div", "<<<<<"));
+        }
+        
+        rows.push(m("div", "Last row"));
+        
+        var items = [];
+        items.push(m("div", "This is grid named " + args.gridTitle + ". Rendered " + counter.toString(10) + " times."));
+        var allelements = items.concat(rows);
+        console.log(allelements);
+        
+        return m("div", allelements);
+    }
+};
+
+var mainGridComponent = m.component(GridComponent, {
+    gridTitle: "Toggler Test"
+});
+
+function rerender() {
+    m.render(document.getElementById("placeholder"), mainGridComponent);
+}
+
+// Do the initial render.
+rerender();
+</script>
+
+</body>
+</html>
+
