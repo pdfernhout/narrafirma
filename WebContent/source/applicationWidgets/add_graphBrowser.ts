@@ -135,10 +135,6 @@ class GraphBrowser {
         // TODO: Finish
         console.log("Stories selected", selectedStories);
         this.selectedStories = selectedStories;
-        
-        // Since the change is coming from d3, we need to queue a Mithril redraw to refresh the display
-        console.log("about to call m.redraw");
-        m.redraw();
     }
     
     calculateOptionsForChoices(currentValue) {

@@ -138,40 +138,7 @@ class PatternBrowser {
         this.project = args.panelBuilder.project;
         // this.catalysisReportIdentifier = getCurrentCatalysisReportIdentifier(args);
         
-        // Pattern grid initialization
-        
-        this.modelForPatternsGrid.patterns = this.buildPatternList();
-          
-        var patternsPanelSpecification = {
-            "id": "patternsPanel",
-            panelFields: [
-                {id: "id", displayName: "Index"},
-                {id: "patternName", displayName: "Pattern name", valueOptions: []},
-                {id: "graphType", displayName: "Graph type", valueOptions: []},
-                {id: "significance", displayName: "Significance value", valueOptions: []},
-                // {id: "reviewed", displayName: "Reviewed", valueOptions: []},
-                {id: "observation", displayName: "Observation", valueOptions: []}
-            ]
-        };
-        
-        var patternsGridConfiguration = {
-            idProperty: "id",
-            includeAllFields: true,
-            navigationButtons: true,
-            selectCallback: this.patternSelected.bind(this)
-        };
-        
-        var patternsGridFieldSpecification = {
-            id: "patterns",
-            displayConfiguration: {
-                itemPanelSpecification: patternsPanelSpecification,
-                gridConfiguration: patternsGridConfiguration
-            }
-        };
- 
-        this.patternsGrid = new GridWithItemPanel({panelBuilder: args.panelBuilder, model: this.modelForPatternsGrid, fieldSpecification: patternsGridFieldSpecification});
-    
-        // Graph display initializaiton
+       // Graph display initializaiton
         
        this.graphHolder = {
             graphResultsPane: createGraphResultsPane(),
@@ -241,6 +208,40 @@ class PatternBrowser {
                 }
             ]
         };
+        
+        // Pattern grid initialization
+        
+        this.modelForPatternsGrid.patterns = this.buildPatternList();
+          
+        var patternsPanelSpecification = {
+            "id": "patternsPanel",
+            panelFields: [
+                {id: "id", displayName: "Index"},
+                {id: "patternName", displayName: "Pattern name", valueOptions: []},
+                {id: "graphType", displayName: "Graph type", valueOptions: []},
+                {id: "significance", displayName: "Significance value", valueOptions: []},
+                // {id: "reviewed", displayName: "Reviewed", valueOptions: []},
+                {id: "observation", displayName: "Observation", valueOptions: []}
+            ]
+        };
+        
+        var patternsGridConfiguration = {
+            idProperty: "id",
+            includeAllFields: true,
+            navigationButtons: true,
+            selectCallback: this.patternSelected.bind(this)
+        };
+        
+        var patternsGridFieldSpecification = {
+            id: "patterns",
+            displayConfiguration: {
+                itemPanelSpecification: patternsPanelSpecification,
+                gridConfiguration: patternsGridConfiguration
+            }
+        };
+ 
+        this.patternsGrid = new GridWithItemPanel({panelBuilder: args.panelBuilder, model: this.modelForPatternsGrid, fieldSpecification: patternsGridFieldSpecification});
+        
         
         // TODO: selections in observation should be stored in original domain units, not scaled display units
  
@@ -524,10 +525,6 @@ class PatternBrowser {
     updateStoriesPane(stories) {
         this.modelForStoryGrid.storiesSelectedInGraph = stories;
         this.storyGrid.updateData();
-        
-        // Since the change is coming from d3, we need to queue a Mithril redraw to refresh the display
-        console.log("about to call m.redraw");
-        m.redraw();
     }
     
     patternSelected(selectedPattern) {
