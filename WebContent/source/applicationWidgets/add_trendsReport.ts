@@ -519,10 +519,6 @@ class PatternBrowser {
         this.graphHolder.currentGraph = currentGraph;
         this.graphHolder.currentSelectionExtentPercentages = null;
         // TODO: Is this obsolete? this.graphHolder.currentSelectionSubgraph = null;
-        
-        // Since the change is coming from a timeout for the selection, we need to queue a Mithril redraw to refresh the display
-        console.log("about to call m.redraw");
-        m.redraw();
     }
     
     updateStoriesPane(stories) {
