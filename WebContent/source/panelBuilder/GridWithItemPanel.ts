@@ -133,6 +133,17 @@ var defaultGridConfiguration: GridConfiguration = {
     validateEdit: null
 };
 
+// Thin arrows
+// var sortCharacterUp = "\u2191";
+// var sortCharacterDown = "\u2193";
+// var sortCharacterBoth = "\u2195";
+
+// Thick arrows
+var sortCharacterUp = "\u25B2";
+var sortCharacterDown = "\u25BC";
+// Blank space equal to 1em
+var sortCharacterBoth = "\u2003";
+
 // GridWithItemPanel needs to be a component so it can maintain a local sorted list
 class GridWithItemPanel {
     
@@ -156,6 +167,9 @@ class GridWithItemPanel {
     isNavigationalScrollingNeeded: string = null;
     
     doubleClickAction = null;
+    
+    sortBy: string = null;
+    sortDirection: string = "ascending";
     
     onunload() {
         console.log("+++++++++++++++++++++++++++++++++++++ unloading GridWithItemPanel");
@@ -205,6 +219,9 @@ class GridWithItemPanel {
         if (this.gridConfiguration.idProperty) this.idProperty = this.gridConfiguration.idProperty;
         
         this.columns = computeColumnsForItemPanelSpecification(this.itemPanelSpecification, this.gridConfiguration);
+        if (this.columns.length) {
+            this.sortBy = this.columns[0].field;
+        }
         
         // viewing, editing
         this.displayMode = null;
@@ -241,6 +258,7 @@ class GridWithItemPanel {
         
         // Make a copy of the data because we will be sorting it
         this.data = data.slice();
+        this.sortData();
     }
     
     static controller(args) {
@@ -258,9 +276,17 @@ class GridWithItemPanel {
         console.log("GridWithItemPanel calculateView", this.data);
         
         var panelBuilder = this.panelBuilder;
-
+        
         var columnHeaders = this.columns.map((column) => {
-            return m("th[data-sort-by=" + column.field  + "]", {"text-overflow": "ellipsis"}, column.label);
+            var sortCharacter = sortCharacterBoth;
+            if (column.field === this.sortBy) {
+                if (this.sortDirection === "ascending") {
+                    sortCharacter = sortCharacterDown;
+                } else if (this.sortDirection === "descending") {
+                    sortCharacter = sortCharacterUp;
+                }
+            }
+            return m("th[data-sort-by=" + column.field  + "]", {"text-overflow": "ellipsis"}, column.label + sortCharacter);
         });
         
         if (this.gridConfiguration.inlineButtons) {
@@ -311,27 +337,38 @@ class GridWithItemPanel {
         return m("div", {"class": "questionExternal narrafirma-question-type-grid"}, parts);
     }
     
-    tableConfigurationWithSortingOnHeaderClick() {
+    sortData() {
         var list = this.data;
+        var prop = this.sortBy;
+        
+        var first = list[0];
+        list.sort(function(a, b) {
+            return a[prop] > b[prop] ? 1 : a[prop] < b[prop] ? -1 : 0;
+        });
+        if (first === list[0]) {
+            console.log("reversing");
+            list.reverse();
+            this.sortDirection = "ascending";
+        } else {
+            this.sortDirection = "descending";
+        }
+        console.log("sorted list", list);
+    }
+    
+    tableConfigurationWithSortingOnHeaderClick() {
         return {
             onclick: (e) => {
-                var prop = e.target.getAttribute("data-sort-by");
-                if (prop) {
+                var sortBy = e.target.getAttribute("data-sort-by");
+                if (sortBy) {
                     // Sorting derived from: http://lhorie.github.io/mithril-blog/vanilla-table-sorting.htm
                     // Don't sort if have move up/down buttons
                     if (this.gridConfiguration.moveUpDownButtons) return;
-                    console.log("Sorting by", prop);
-                    var first = list[0];
-                    list.sort(function(a, b) {
-                        return a[prop] > b[prop] ? 1 : a[prop] < b[prop] ? -1 : 0;
-                    });
-                    if (first === list[0]) {
-                        console.log("reversing");
-                        list.reverse();
-                    }
-                    console.log("sorted list", list);
+
+                    console.log("Sorting by", sortBy);
+                    this.sortBy = sortBy;
+                    this.sortData();
                 } else {
-                    this.selectItemInList(e, list);
+                    this.selectItemInList(e);
                 }
             },
             ondblclick: (e) => {
@@ -346,8 +383,9 @@ class GridWithItemPanel {
         };
     }
     
-    selectItemInList(e, list) {
+    selectItemInList(e) {
         if (this.isEditing()) return;
+        var list = this.data;
         var itemID = e.target.getAttribute("data-item-index");
         console.log("item clicked", itemID);
         var itemIndex = null;
