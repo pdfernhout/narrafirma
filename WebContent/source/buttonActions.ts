@@ -232,8 +232,6 @@ function printHTML(htmlToPrint) {
 }
 
 function copyDraftPNIQuestionVersionsIntoAnswers_Basic() {
-    var model = project.projectModel;
-
     var finalQuestionIDs = [
         "project_pniQuestions_goal_final",
         "project_pniQuestions_relationships_final",
@@ -249,11 +247,11 @@ function copyDraftPNIQuestionVersionsIntoAnswers_Basic() {
         var finalQuestionID = finalQuestionIDs[index];
         var draftQuestionID = finalQuestionID.replace("_final", "_draft");
         // console.log("finalQuestionID/draftQuestionID", finalQuestionID, draftQuestionID);
-        var finalValue = model[finalQuestionID];
+        var finalValue = project.tripleStore.queryLatestC(project.projectIdentifier, finalQuestionID);
         if (!finalValue) {
-            var draftValue = model[draftQuestionID];
+            var draftValue = project.tripleStore.queryLatestC(project.projectIdentifier, draftQuestionID);
             if (draftValue) {
-                model[finalQuestionID] = draftValue;
+                project.tripleStore.add(project.projectIdentifier, finalQuestionID, draftValue);
                 copiedAnswersCount++;
             }
         }
