@@ -70,6 +70,11 @@ function optionsForSelect(panelBuilder, model, fieldSpecification, currentValue,
     return options;
 }
 
+var displayTypesWithoutValues = {
+    label: true,
+    header: true
+};
+
 export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecification) {
     var fieldID = fieldSpecification.id;
 
@@ -91,7 +96,11 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
     
     var valueProperty = valuePathResolver.newValuePathForFieldSpecification(panelBuilder, model, fieldSpecification);
 
-    var value = valueProperty();
+    // Only fetch value if the field needs it
+    var value;
+    if (!displayTypesWithoutValues[displayType]) {
+        value = valueProperty();
+    }
     if (value === undefined) value = "";
     
     function change(event, value) {
