@@ -2,20 +2,19 @@ require([
     "js/panelBuilder/PanelBuilder",
     "js/panelBuilder/PanelSpecificationCollection",
     "js/pointrel20141201Client",
-    "dojo/Stateful",
-    "dojo/domReady!"
+    "mithril"
 ], function(
     PanelBuilder,
     PanelSpecificationCollection,
     pointrel20141201Client,
-    Stateful
+    m
 ){
     "use strict";
     
-    console.log("panelWithGridModularSaveLoadTest.js");
+    console.log("panelWithGridModularSaveLoadTest.js", pointrel20141201Client);
     
     function storeModel(model, documentID, previous, committerID, callbackWhenDone) {
-        var contentType = "org.workingwithstories.Test2Model";
+        var contentType = "org.workingwithstories.Test3Model";
         var contentVersion = "0.1.0";
         
         var metadata = {
@@ -65,7 +64,7 @@ require([
             },
             {
                 "id": "project_participantGroupsList",
-                "valueType": "store",
+                "valueType": "array",
                 "required": true,
                 "displayType": "grid",
                 "displayConfiguration": "panel_addParticipantGroup",
@@ -110,38 +109,41 @@ require([
         
         var testModelTemplate = panels.buildModel("Test3Model");
         
-        var testModel = new Stateful(testModelTemplate);
+        // var testModel = "Test3";
+        var testModel = {};
         
         // STOPPED HERE!!! Would need to implement additional support in PanelSpecificationCollection and add_grid for a "store" type in addition to current "array"
-        testModel.set("project_participantGroupsList", {type: "store", itemClass: "ParticipantGroupModel"});
+        // testModel.set("project_participantGroupsList", {type: "store", itemClass: "ParticipantGroupModel"});
         
         console.log("testModel", testModel);
         
         var panelBuilder = new PanelBuilder({panelSpecificationCollection: panels});
         
-        var contentPane = panelBuilder.newContentPane();
-        contentPane.placeAt("pageDiv").startup();
+        function testView() {
         
-        panelBuilder.buildPanel("page_participantGroups", contentPane, testModel);
-        
-        var loadLatestButtonSpecification = {
-            id: "loadButton",
-            displayType: "button",
-            displayPrompt: "Load latest",
-            displayConfiguration: loadLastestModelVersion,
-            displayPreventBreak: true
-        };
-        
-        var loadLatestButton = panelBuilder.buildField(contentPane, testModel, loadLatestButtonSpecification);
-        
-        var storeButtonSpecification = {
-            id: "storeButton",
-            displayType: "button",
-            displayPrompt: "Store",
-            displayConfiguration: storeModelVersion
-        };
-        
-        var storeButton = panelBuilder.buildField(contentPane, testModel, storeButtonSpecification);
+            var page = panelBuilder.buildPanel("page_participantGroups", testModel);
+            
+            var loadLatestButtonSpecification = {
+                id: "loadButton",
+                displayType: "button",
+                displayPrompt: "Load latest",
+                displayConfiguration: loadLastestModelVersion,
+                displayPreventBreak: true
+            };
+            
+            var loadLatestButton = panelBuilder.buildField(testModel, loadLatestButtonSpecification);
+            
+            var storeButtonSpecification = {
+                id: "storeButton",
+                displayType: "button",
+                displayPrompt: "Store",
+                displayConfiguration: storeModelVersion
+            };
+            
+            var storeButton = panelBuilder.buildField(testModel, storeButtonSpecification);
+            
+            return [page, loadLatestButton, storeButton];
+        }
         
         // Thinking project ID should be a UUID?
         var projectID = "TestProject1234";
@@ -179,6 +181,8 @@ require([
                 }
             });
         }
+        
+        m.mount(document.getElementById("pageDiv"), {view: testView});
     }
 
     test();
