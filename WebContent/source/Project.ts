@@ -1,6 +1,7 @@
 import PointrelClient = require("./pointrel20150417/PointrelClient");
 import surveyCollection = require("./surveyCollection");
 import TripleStore = require("./pointrel20150417/TripleStore");
+import PanelSpecificationCollection = require("./panelBuilder/PanelSpecificationCollection");
 
 "use strict";
 
@@ -13,15 +14,16 @@ class Project {
     projectIdentifier: string;
     userIdentifier: any;
     subscriptions = [];
-    projectModel: any = {};
     activeQuestionnaires = {};
     pointrelClient: PointrelClient;
     tripleStore: TripleStore;
+    redrawCallback: Function;
     
-    constructor(journalIdentifier, projectIdentifier, userIdentifier, updateServerStatus) {
+    constructor(journalIdentifier, projectIdentifier, userIdentifier, updateServerStatus, redrawCallback) {
         this.journalIdentifier = journalIdentifier;
         this.projectIdentifier = projectIdentifier;
         this.userIdentifier = userIdentifier;
+        this.redrawCallback = redrawCallback;
     
         this.pointrelClient = new PointrelClient(serverURL, this.journalIdentifier, this.userIdentifier, this.receivedMessage.bind(this), updateServerStatus);
         
@@ -49,12 +51,7 @@ class Project {
     }
     
     getFieldValue(fieldName) {
-        var triple = this.tripleStore.queryLatest(this.projectIdentifier, fieldName, undefined);
-        // console.log("getFieldValue: got triple for query", fieldName, triple);
-        if (triple) {
-            return triple.c;
-        }
-        return undefined;
+        return this.tripleStore.queryLatestC(this.projectIdentifier, fieldName);
     }
     
     setFieldValue(fieldName, newValue, oldValue = undefined) {
@@ -62,18 +59,19 @@ class Project {
         this.tripleStore.add(this.projectIdentifier, fieldName, newValue);
     }
     
-    // callback(triple, message)
-    // Don't forget to "own" the handle in a component or call remove when done to avoid memory leaks
-    watchFieldValue(fieldName, callback) {
-        return this.tripleStore.subscribe(this.projectIdentifier, fieldName, undefined, callback);
-    }
-    
     // TODO: What do do about this function? Especially if want to track chat messages or log messages or undoable changes for project?
     receivedMessage(message) {
-        // console.log("receivedMessage", message);
+        console.log("Project receivedMessage", message);
         if (message.messageType === "questionnairesMessage") {
             // console.log("Project receivedMessage questionnairesMessage", message);
             surveyCollection.updateActiveQuestionnaires(message.change, false);
+        }
+
+        // Since this event came from the network, queue a Mithril redraw
+        // The tripleStore may not be updated yet, so this redraw needs to get queued for later by the application
+        if (this.redrawCallback) {
+            console.log("project calling redrawCallback");
+            this.redrawCallback();
         }
     }
     
@@ -82,27 +80,6 @@ class Project {
             subscription.remove();
         });
         this.subscriptions = [];
-    }
-    
-    // Use all the page specifications to set up the model with current values and start tracking changes in journal
-    initializeProjectModel(panelSpecificationCollection) {
-        // loop through all page specifications and get current value (if available) or default/initial for each field
-    
-        var allPages = panelSpecificationCollection.buildListOfPages();
-        for (var i = 0; i < allPages.length; i++) {
-            var page = allPages[i];
-            var fieldSpecifications = page.panelFields;
-            panelSpecificationCollection.addFieldsToModel(this.projectModel, fieldSpecifications);
-        }
-        
-        for (var fieldName in this.projectModel) {
-            // console.log("model fieldName", fieldName);
-            var value = this.getFieldValue(fieldName);
-            // console.log("got value for query", fieldName, value);
-            if (value !== undefined && value !== null) {
-                this.projectModel[fieldName] = value;
-            }
-        }
     }
 }
 

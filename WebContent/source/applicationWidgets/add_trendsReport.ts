@@ -302,7 +302,7 @@ class PatternBrowser {
     currentCatalysisReportChanged(currentCatalysisReportIdentifier) {
         console.log("currentCatalysisReportChanged", currentCatalysisReportIdentifier);
         
-        var catalysisReport = this.findCatalysisReport(this.project, currentCatalysisReportIdentifier);
+        var catalysisReport = this.findCatalysisReport(currentCatalysisReportIdentifier);
         if (!catalysisReport) {
             // TODO: should clear everything
             return;
@@ -340,8 +340,8 @@ class PatternBrowser {
     }
     
     
-    findCatalysisReport(project, shortName) {
-        var catalysisReports = project.projectModel.project_catalysisReports;
+    findCatalysisReport(shortName) {
+        var catalysisReports = this.project.tripleStore.queryLatestC(this.project.projectIdentifier, "project_catalysisReports");
         for (var i = 0; i < catalysisReports.length; i++) {
             if (catalysisReports[i].catalysisReport_shortName === shortName) {
                 return catalysisReports[i];

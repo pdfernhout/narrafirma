@@ -1,5 +1,6 @@
 import navigationPane = require("./navigationPane");
 import PanelBuilder = require("panelBuilder/PanelBuilder");
+import Project = require("./Project");
 import m = require("mithril");
 
 "use strict";
@@ -13,7 +14,7 @@ var updateHashIfNeededForChangedState;
 
 var panelBuilder: PanelBuilder;
 
-var project;
+var project: Project;
 
 var PageDisplayer: any = {
     controller: function(args) {
@@ -31,7 +32,7 @@ var PageDisplayer: any = {
             try {
                 contentsDiv = m("div", {"class": "narrafirma-" + currentPageID}, [
                     m("div.narrafirma-page-name", currentPageSpecification.displayName),
-                    panelBuilder.buildPanel(currentPageID, project.projectModel)
+                    panelBuilder.buildPanel(currentPageID, project.projectIdentifier)
                 ]);
             } catch (e) {
                 console.log("ERROR: When trying to create page", currentPageID, e);

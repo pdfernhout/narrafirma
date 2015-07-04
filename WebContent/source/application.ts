@@ -38,6 +38,9 @@ var project: Project;
 
 var lastServerError = "";
 
+// The runningAfterIdle falg is used to limit redraws for new project messages until after initial set recevied
+var runningAfterInitialIdle = false;
+
 // m.route.mode = "hash";
 
 function hash(newValue = null) {
@@ -173,24 +176,6 @@ var updateHashTimer = null;
 function updateHashIfNeededForChangedState() {
     var newHash = hashStringForClientState();
     if (newHash !== hash()) hash(newHash);
-}
-
-function startTrackingClientStateChanges() {
-    /* TODO: How to handle this? Just do it on every redraw?
-    // TODO: Should this watch be owned by some component so they can be destroyed when the page closes?
-    (<any>clientState).watch(function () {
-        if (updateHashTimer) clearTimeout(updateHashTimer);
-        // Delay updating hash in case other clientState fields are also changing
-        updateHashTimer = setTimeout(function () {
-            updateHashTimer = null;
-            try {
-                updateHashIfNeededForChangedState();
-            } catch (e) {
-                console.log("Problem calling updateHashIfNeededForChangedState", e);
-            }
-        }, 0);
-    });
-    */
 }
     
 function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecification) {
@@ -625,13 +610,27 @@ function chooseAProjectToOpen(userIdentifierFromServer, projects) {
     }
 }
 
+var pendingRedraw = null;
+function redrawFromProject() {
+    // The tripleStore may not be updated yet, so this redraw needs to get queued for later by the application
+    if (runningAfterInitialIdle) {
+        if (!pendingRedraw) {
+            pendingRedraw = setTimeout(function() {
+                console.log("redrawFromProject");
+                pendingRedraw = null;
+                m.redraw();
+            }, 0);
+        }
+    }
+}
+
 function openProject(userCredentials, projectIdentifier) {
     document.getElementById("pleaseWaitDiv").style.display = "block";
     
     // TODO: Should this be managed separately?
     journalIdentifier = projectIdentifier; 
     
-    project = new Project(journalIdentifier, projectIdentifier, userCredentials, updateServerStatus);
+    project = new Project(journalIdentifier, projectIdentifier, userCredentials, updateServerStatus, redrawFromProject);
     
     console.log("Made project", project);
     
@@ -702,14 +701,9 @@ function loadApplicationDesign() {
         // TODO: This assumes we have picked a project, and are actually loading data and have not errored out
         // TODO: Need some kind of progress indicator of messages loaded...
         project.pointrelClient.idleCallback = function () {
-            // Now that data is presumably loaded, set up the project model to use that data and track ongoing changes to it
-            project.initializeProjectModel(panelSpecificationCollection);
-            panelBuilder.projectModel = project.projectModel;
-
+            // Now that data is presumably loaded into the Project tripleStore, we can proceed with further initialization
             buttonActions.initialize(project, clientState);
             csvImportExport.initialize(project);
-                        
-            startTrackingClientStateChanges();
              
             // Ensure the pageDisplayer will display the first page
             urlHashFragmentChanged();
@@ -721,6 +715,8 @@ function loadApplicationDesign() {
             document.getElementById("pleaseWaitDiv").style.display = "none";
             document.getElementById("navigationDiv").style.display = "block";
             document.getElementById("pageDiv").style.display = "block";
+            
+            runningAfterInitialIdle = true;
             
             // toaster.toast("Started up!!!");
         };
