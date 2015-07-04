@@ -615,6 +615,7 @@ function redrawFromProject() {
     // The tripleStore may not be updated yet, so this redraw needs to get queued for later by the application
     if (runningAfterInitialIdle) {
         if (!pendingRedraw) {
+            console.log("queueing redrawFromProject");
             pendingRedraw = setTimeout(function() {
                 console.log("redrawFromProject");
                 pendingRedraw = null;
