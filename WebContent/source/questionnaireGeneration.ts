@@ -1,6 +1,7 @@
 // TODO: Ensure use strict wrapped in funciton
 
 import kludgeForUseStrict = require("./kludgeForUseStrict");
+import Project = require("./Project");
 "use strict";
 
 function ensureUniqueQuestionIDs(usedIDs, editorQuestions) {
@@ -134,7 +135,7 @@ function buildItemListFromIdList(idToItemMap, idItemList, idField) {
 
 // Are names just hints as to purpose of code? Can never convey all aspects of interrelationships?
 
-function findQuestionnaireTemplate(project, shortName) {
+function findQuestionnaireTemplate(project: Project, shortName) {
     var questionnaires = project.projectModel.project_storyForms;
     for (var i = 0; i < questionnaires.length; i++) {
         if (questionnaires[i].questionForm_shortName === shortName) {
@@ -144,7 +145,7 @@ function findQuestionnaireTemplate(project, shortName) {
     return null;
 }
 
-export function findStoryCollection(project, shortName) {
+export function findStoryCollection(project: Project, shortName) {
     var storyCollections = project.projectModel.project_storyCollections;
     for (var i = 0; i < storyCollections.length; i++) {
         if (storyCollections[i].storyCollection_shortName === shortName) {
@@ -155,7 +156,7 @@ export function findStoryCollection(project, shortName) {
 }
 
 // TODO: How to save the fact we have exported this in the project? Make a copy??? Or keep original in document somewhere? Versus what is returned from server for surveys?
-export function buildQuestionnaire(project, shortName) {
+export function buildQuestionnaire(project: Project, shortName) {
     // TODO: Redo for if questionnaire template is made of triples
     
     var questionnaireTemplate = findQuestionnaireTemplate(project, shortName);
@@ -166,7 +167,7 @@ export function buildQuestionnaire(project, shortName) {
     return buildQuestionnaireFromTemplate(project, questionnaireTemplate);
 }
 
-export function buildQuestionnaireFromTemplate(project, questionnaireTemplate) {
+export function buildQuestionnaireFromTemplate(project: Project, questionnaireTemplate) {
     var usedIDs = {
         __createdIDCount: 0
     };
