@@ -20,7 +20,7 @@ class TripleStore {
         this.pointrelClient = pointrelClient;
         this.topicIdentifier = topicIdentifier;
         
-        this.subscriptions.push(topic.subscribe("messageReceived", this.processMessage.bind(this)));
+        this.subscriptions.push(topic.subscribe("messageReceived", this.messageReceivedFromPointrelClient.bind(this)));
     }
 
     remove() {
@@ -52,18 +52,36 @@ class TripleStore {
             userIdentifier: this.pointrelClient.userIdentifier
         };
         
-        // TODO: Process locally first and track sent and bump and report conflicts
         this.pointrelClient.sendMessage(message, callback);
+        
+        // Process locally to have current value
+        this.addTripleToStore(message);
     }
     
-    processMessage(message) {
-        // console.log("TripleStore.processMessage", message);
+    addTripleToStore(message) {
+        // TODO: Keep the list sorted by time
+        this.tripleMessages.push(message);
+    }
+    
+    messageReceivedFromPointrelClient(message) {
+        // console.log("TripleStore.messageReceivedFromPointrelClient", message);
         if (message.messageType !== "tripleStore") return;
         if (message._topicIdentifier !== this.topicIdentifier) return;
         
-        if (message.change.action === "addTriple") {
-            // TODO: Keep the list sorted by time
-            this.tripleMessages.push(message);
+        if (message.change.action === "addTriple") {                        
+            this.addTripleToStore(message);
+            
+            // Ignore the message if it was previously received (probably because this client sent it)
+            // TODO: Improve this so it is not a loop
+            // TODO: track sent and bump and report conflicts
+            for (var i = this.tripleMessages.length - 1; i >= 0; i--) {
+                var previouslyReceivedMessage = this.tripleMessages[i];
+                if (previouslyReceivedMessage.__pointrel_sha256AndLength === message.__pointrel_sha256AndLength) {
+                    console.log("TripleStore message previously received, so ignoring", message);
+                    return;
+                }
+            }
+            
             var triple = message.change.triple;
             
             // console.log("TripleStore: About to publish changes...");
@@ -78,7 +96,7 @@ class TripleStore {
             topic.publish(makeTopicKey({type: "TripleStore.addForAB", a: triple.a, b: triple.b}), triple, message);
             topic.publish(makeTopicKey({type: "TripleStore.addForBC", b: triple.b, c: triple.c}), triple, message);
         } else {
-            console.log("processMessage: Unsupported action", message);
+            console.log("messageReceivedFromPointrelClient: Unsupported action", message);
         }
     }
     
