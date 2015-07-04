@@ -134,7 +134,7 @@ function makeSuccessResponse(statusCode, description, extra) {
 
 function makeFailureResponse(statusCode, description, extra) {
     var response = makeResponse(false, statusCode, description, extra);
-    // log("makeFailureResponse", response);
+    log("makeFailureResponse", response);
     return response;
 }
 
