@@ -59,7 +59,7 @@ class Project {
     
     setFieldValue(fieldName, newValue, oldValue = undefined) {
         // TODO: Need to add support in tripleStore for oldValue; note callback is the fourth parameter
-        this.tripleStore.add(this.projectIdentifier, fieldName, newValue);
+        this.tripleStore.addTriple(this.projectIdentifier, fieldName, newValue);
     }
     
     // TODO: What do do about this function? Especially if want to track chat messages or log messages or undoable changes for project?

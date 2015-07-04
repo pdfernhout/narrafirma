@@ -251,7 +251,7 @@ function copyDraftPNIQuestionVersionsIntoAnswers_Basic() {
         if (!finalValue) {
             var draftValue = project.tripleStore.queryLatestC(project.projectIdentifier, draftQuestionID);
             if (draftValue) {
-                project.tripleStore.add(project.projectIdentifier, finalQuestionID, draftValue);
+                project.tripleStore.addTriple(project.projectIdentifier, finalQuestionID, draftValue);
                 copiedAnswersCount++;
             }
         }

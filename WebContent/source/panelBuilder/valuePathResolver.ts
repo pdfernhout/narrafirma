@@ -79,7 +79,7 @@ class ValuePathResolver {
             
             // TODO: Need to have hook here to save the data to the server somehow...
             if (modelAndField.useTripleStore) {
-                (<Project>this.context.project).tripleStore.add(modelAndField.model, modelAndField.field, value);
+                (<Project>this.context.project).tripleStore.addTriple(modelAndField.model, modelAndField.field, value);
             } else {
                 modelAndField.model[modelAndField.field] = value;
             }
