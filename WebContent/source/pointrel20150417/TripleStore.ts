@@ -128,6 +128,12 @@ class TripleStore {
         // TODO: Maybe should return empty triple instead?
         return null;
     }
+    
+    queryLatestC(a, b) {
+        var triple = this.queryLatest(a, b, undefined);
+        if (!triple) return undefined;
+        return triple.c;
+    }
 }
    
 export = TripleStore;
