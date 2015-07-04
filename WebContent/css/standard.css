@@ -639,6 +639,7 @@ table.scrolling th {
 table.scrolling td {
     padding: 6px;
     border: 1px solid #3e3739;
+    height: 1em;
 }
 
 table button.fader {
