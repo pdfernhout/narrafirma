@@ -1,4 +1,5 @@
 import PanelBuilder = require("PanelBuilder");
+import Project = require("../Project");
 "use strict";
 
 // TODO: Store a reference to the Project in an intiatilziation step
@@ -15,8 +16,12 @@ class ValuePathResolver {
         // Parse the dependency path
         var pathParts = this.valuePath.split("/");
         
+        var isGlobalReference = false;
+        var useTripleStore = false;
+        
         // If the path starts with "/", use the context as the model
         if (pathParts[0] === "") {
+            isGlobalReference = true;
             pathParts.shift();
             currentKey = pathParts.shift();
             currentModel = this.context[currentKey];
@@ -26,6 +31,10 @@ class ValuePathResolver {
                 console.log("no object for first path segment", currentKey, this.valuePath, this.context);
                 return undefined;
             }
+        } 
+        
+        if (typeof currentModel === "string") {
+            useTripleStore = true;
         }
         
         if (pathParts.length < 1) throw new Error("Incorrect dependency path specified: " + this.valuePath);
@@ -36,7 +45,12 @@ class ValuePathResolver {
             if (currentKey === "currentPattern") {
                 console.log("key is currentPattern");
             }
-            var nextModel = currentModel[currentKey];
+            var nextModel;
+            if (useTripleStore) {
+                nextModel = (<Project>this.context.project).tripleStore.queryLatestC(currentModel, currentKey);
+            } else {
+                nextModel = currentModel[currentKey];
+            }
             if (!nextModel) {
                 // TODO: Needs work!!!
                 // throw new Error("model is null while iterating");
@@ -48,12 +62,14 @@ class ValuePathResolver {
         var field = pathParts[0];
         return {
             model: currentModel,
-            field: field
+            field: field,
+            isGlobalReference: isGlobalReference,
+            useTripleStore: useTripleStore
         };
     }
     
     resolve(value = undefined): any {
-        console.log("resolve", value, this.valuePath);
+        // console.log("resolve", this.valuePath, value, this);
         var modelAndField = this.resolveModelAndField();
         if (value !== undefined) {
             if (modelAndField === undefined) {
@@ -62,26 +78,34 @@ class ValuePathResolver {
             }
             
             // TODO: Need to have hook here to save the data to the server somehow...
-            modelAndField.model[modelAndField.field] = value;
+            if (modelAndField.useTripleStore) {
+                (<Project>this.context.project).tripleStore.add(modelAndField.model, modelAndField.field, value);
+            } else {
+                modelAndField.model[modelAndField.field] = value;
+            }
             
             // TODO: Should a set return this or the value? Using value to me like m.prop, but prevents chaining
             return value;
         } else {
             if (modelAndField === undefined) return undefined;
-            return modelAndField.model[modelAndField.field];
+            if (modelAndField.useTripleStore) {
+                return (<Project>this.context.project).tripleStore.queryLatestC(modelAndField.model, modelAndField.field);
+            } else {
+                return modelAndField.model[modelAndField.field];
+            }
         }
     }
 }
 
 export function newValuePathForFieldSpecification(panelBuilder: PanelBuilder, model, fieldSpecification) {
-    console.log("newValuePathForFieldSpecification", fieldSpecification);
+    // console.log("newValuePathForFieldSpecification", fieldSpecification);
     var valuePath: string = fieldSpecification.valuePath;
     if (!valuePath) valuePath = fieldSpecification.id;
     return newValuePath(panelBuilder, model, valuePath);
 }
 
 export function newValuePath(panelBuilder: PanelBuilder, model, valuePath: string) {
-    console.log("newValuePath", valuePath);
+    // console.log("newValuePath", valuePath);
     var valuePathResolver = new ValuePathResolver(panelBuilder, model, valuePath);
     return valuePathResolver.resolve.bind(valuePathResolver);
 }
