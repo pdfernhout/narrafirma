@@ -35,6 +35,9 @@ class Project {
         // TODO: Change the hardcoded topic here from "testing".
         this.tripleStore = new TripleStore(this.pointrelClient, "testing");
         console.log("tripleStore", this.tripleStore);
+        
+        // Redraw on any new tripleStore message (however, the ones we send will not get callbacks)
+        this.tripleStore.subscribe(undefined, undefined, undefined, this.redrawCallback.bind(this));
     }
 
     startup(callback) {
@@ -62,6 +65,13 @@ class Project {
     // TODO: What do do about this function? Especially if want to track chat messages or log messages or undoable changes for project?
     receivedMessage(message) {
         console.log("Project receivedMessage", message);
+        
+        if (message.change && message.change.action === "addTriple") {
+            // Ignore addTriple messages as we handle only the ones we did not send via a subscription
+            console.log("Ignoring tripleStrore message", message);
+            return;
+        }
+        
         if (message.messageType === "questionnairesMessage") {
             // console.log("Project receivedMessage questionnairesMessage", message);
             surveyCollection.updateActiveQuestionnaires(message.change, false);
