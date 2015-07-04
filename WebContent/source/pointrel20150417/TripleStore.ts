@@ -31,7 +31,7 @@ class TripleStore {
         this.subscriptions = [];
     }
     
-    add(a, b, c, callback = undefined) {
+    addTriple(a, b, c, callback = undefined) {
         var triple = {
             a: a,
             b: b,
@@ -55,10 +55,10 @@ class TripleStore {
         this.pointrelClient.sendMessage(message, callback);
         
         // Process locally to have current value
-        this.addTripleToStore(message);
+        this.processTripleStoreMessage(message);
     }
     
-    addTripleToStore(message) {
+    processTripleStoreMessage(message) {
         // TODO: Keep the list sorted by time
         this.tripleMessages.push(message);
     }
@@ -69,7 +69,7 @@ class TripleStore {
         if (message._topicIdentifier !== this.topicIdentifier) return;
         
         if (message.change.action === "addTriple") {                        
-            this.addTripleToStore(message);
+            this.processTripleStoreMessage(message);
             
             // Ignore the message if it was previously received (probably because this client sent it)
             // TODO: Improve this so it is not a loop
