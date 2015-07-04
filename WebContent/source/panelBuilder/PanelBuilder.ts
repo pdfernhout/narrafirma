@@ -142,7 +142,6 @@ class PanelBuilder {
     // TODO: Maybe these should not be in builder?
     clientState: ClientState = null;
     project = null;
-    projectModel = null;
 
     constructor(kwArgs = {}) {
         
@@ -204,7 +203,7 @@ class PanelBuilder {
             return addFunction(this, model, fieldSpecification);
         } catch (e) {
             console.log("Exception creating widget", fieldSpecification, e);
-            return "Exception creating widget: " + fieldSpecification.displayType + " :: " + fieldSpecification.id + " :: " + e;
+            return m("div", {style: "border: 1px solid red; margin: 10px;"}, ["Problem creating widget type: " + fieldSpecification.displayType + " :: id: " + fieldSpecification.id, m("br"), "Exception: " + e]);
         }
     }
     
