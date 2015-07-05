@@ -30,7 +30,7 @@ require([
             },
             {
                 "id": "project_participantGroupsList",
-                "valueType": "array",
+                "valueType": "set",
                 "required": true,
                 "displayType": "grid",
                 "displayConfiguration": "panel_addParticipantGroup",
@@ -80,12 +80,8 @@ require([
         panels.addPanelSpecification(page_partipantGroupsPanelSpecification);
         
         panels.addPanelSpecification(panel_addParticipantGroupSpecificationTextAbbreviated);
-        
-        var testModelTemplate = panels.buildModel("Test3Model");
-        
+
         var testModel = "Test3";
-        // var testModel = {};
-        
         console.log("testModel", testModel);
         
         var panelBuilder = new PanelBuilder({panelSpecificationCollection: panels});
