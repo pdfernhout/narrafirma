@@ -161,7 +161,7 @@ class GridWithItemPanel {
     gridID = "grid_" + (++gridsMade);
     
     gridConfiguration: GridConfiguration = null;
-    data = [];
+    dataStore: DataStore;
     columns = [];
     fieldSpecification = null;
     itemPanelSpecification = null;
@@ -189,9 +189,9 @@ class GridWithItemPanel {
     constructor(args) {
         console.log("************************************** GridWithItemPanel constructor called");
         this.panelBuilder = args.panelBuilder;
-        this.model = args.model;
         this.fieldSpecification = args.fieldSpecification;
-        
+        this.model = args.model;
+            
         this.updateDisplayConfigurationAndData(this.fieldSpecification.displayConfiguration);
     }
     
@@ -242,33 +242,18 @@ class GridWithItemPanel {
         
         this.isNavigationalScrollingNeeded = null;
         
+        this.dataStore = new DataStore(this.model, this.fieldSpecification.id, this.idProperty);
         this.updateData();
     }
     
     updateData() {
-        this.data_getDataArrayFromModel();
+        this.dataStore.getDataArrayFromModel();
         this.sortData();
     }
       
     private sortData() {
         // TODO: This may need work for set???
-        var list = this.data;
-        var fieldIdentifier = this.sortBy;
-        
-        var first = list[0];
-        list.sort((a, b) => {
-            var aValue = this.data_valueForField(a, fieldIdentifier);
-            var bValue = this.data_valueForField(b, fieldIdentifier);
-            return aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
-        });
-        if (first === list[0]) {
-            console.log("reversing");
-            list.reverse();
-            this.sortDirection = "ascending";
-        } else {
-            this.sortDirection = "descending";
-        }
-        console.log("sorted list", list);
+        this.dataStore.sortData(this.sortBy, this.sortDirection);
     }
     
     static controller(args) {
@@ -283,7 +268,7 @@ class GridWithItemPanel {
     }
     
     calculateView() {
-        console.log("GridWithItemPanel calculateView", this.data);
+        console.log("GridWithItemPanel calculateView", this.dataStore);
         
         var panelBuilder = this.panelBuilder;
         
@@ -305,7 +290,7 @@ class GridWithItemPanel {
         
         var table = m("table.scrolling", this.tableConfigurationWithSortingOnHeaderClick(), [
             m("tr", {"class": "grid-header-row"}, columnHeaders),
-            this.data.map((item, index) => {
+            this.dataStore.map((item, index) => {
                 return this.rowForItem(item, index);
             })
         ]);
@@ -324,7 +309,7 @@ class GridWithItemPanel {
         
         if (this.gridConfiguration.navigationButtons) {
             // TODO: Improve navigation enabling
-            var navigationDisabled = this.isEditing() || this.data.length === 0 || undefined;
+            var navigationDisabled = this.isEditing() || this.dataStore.isEmpty() || undefined;
             buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "start"), disabled: navigationDisabled}, translate("#button_navigateStart|[<<")));
             buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "previous"), disabled: navigationDisabled}, translate("#button_navigatePrevious|<")));
             buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "next"), disabled: navigationDisabled}, translate("#button_navigateNext|>")));
@@ -346,7 +331,7 @@ class GridWithItemPanel {
         // TODO: set class etc.
         return m("div", {"class": "questionExternal narrafirma-question-type-grid"}, parts);
     }
-    
+
     private tableConfigurationWithSortingOnHeaderClick() {
         return {
             onclick: (e) => {
@@ -357,8 +342,19 @@ class GridWithItemPanel {
                     if (this.gridConfiguration.moveUpDownButtons) return;
 
                     console.log("Sorting by", sortBy);
-                    this.sortBy = sortBy;
-                    this.sortData();
+                    if (this.sortBy === sortBy) {
+                        if (this.sortDirection === "ascending") {
+                            this.sortDirection = "descending";
+                            this.dataStore.reverseData();
+                        } else {
+                            this.sortDirection = "ascending";
+                            this.dataStore.reverseData();
+                        }
+                    } else {
+                        this.sortBy = sortBy;
+                        this.sortDirection = "ascending";
+                        this.sortData();
+                    }
                 } else {
                     this.selectItemInList(e);
                 }
@@ -377,19 +373,11 @@ class GridWithItemPanel {
     
     private selectItemInList(e) {
         if (this.isEditing()) return;
-        var list = this.data;
         var itemID = e.target.getAttribute("data-item-index");
         console.log("item clicked", itemID);
-        var itemIndex = null;
-        for (var i = 0; i < list.length; i++) {
-            if (this.data_idForItem(list[i]) === itemID) {
-                itemIndex = i;
-                break;
-            }
-        }
-        console.log("found item at index", itemIndex, list[itemIndex]);
-        if (itemIndex !== null) {
-            this.setSelectedItem(list[itemIndex]);
+        var item = this.dataStore.itemForId(itemID);
+        if (item !== undefined) {
+            this.setSelectedItem(item);
             if (this.gridConfiguration.viewButton) {
                 this.displayMode = "viewing";
             }
@@ -449,16 +437,11 @@ class GridWithItemPanel {
             m("td", {"vertical-align": "top"}, [m("button", {onclick: this.doneClicked.bind(this, item)}, "close")])
         ]);
     }
-    
-    private newIdForItem() {
-        // return new Date().toISOString();
-        return generateRandomUuid();
-    }
-    
+
     // Event handlers
     
     private addItem() {
-        var newItem = this.data_makeNewItem();
+        var newItem = this.dataStore.makeNewItem();
         this.setSelectedItem(newItem);
         this.displayMode = "adding";
     }
@@ -467,17 +450,17 @@ class GridWithItemPanel {
         if (!item) item = this.selectedItem; 
         console.log("deleteItem", item);
 
-        var index = this.data_deleteItem(item);
+        var index = this.dataStore.deleteItem(item);
         
         if (item === this.selectedItem) {
             this.setSelectedItem(null);
             
             if (this.gridConfiguration.shouldNextItemBeSelectedAfterItemRemoved) {
-                if (index === this.data.length) {
+                if (index === this.dataStore.length()) {
                     index = index - 1;
                 }  
-                if (this.data.length) {
-                    this.setSelectedItem(this.data[index]);
+                if (!this.dataStore.isEmpty()) {
+                    this.setSelectedItem(this.dataStore.itemForIndex(index));
                 } else {
                    this.setSelectedItem(null);
                 }
@@ -518,7 +501,7 @@ class GridWithItemPanel {
             return;
         }
         
-        var newItem = this.data_makeCopyOfItemWithNewId(item);
+        var newItem = this.dataStore.makeCopyOfItemWithNewId(item);
         
         this.setSelectedItem(newItem);
         this.displayMode = "adding";
@@ -528,14 +511,14 @@ class GridWithItemPanel {
         if (!item) item = this.selectedItem;
         console.log("up button pressed", item);
         
-        this.data_moveItemUp(item);
+        this.dataStore.moveItemUp(item);
     }
     
     private moveItemDown(item) {
         if (!item) item = this.selectedItem;
         console.log("down button pressed", item);
         
-        this.data_moveItemDown(item);
+        this.dataStore.moveItemDown(item);
     }
     
     private doneClicked(item) {
@@ -553,28 +536,28 @@ class GridWithItemPanel {
     }
     
     private navigateClicked(direction: string) {
-        if (this.data.length === 0) return;
+        if (this.dataStore.isEmpty()) return;
         var newPosition;
         switch (direction) {
             case "start":
                 newPosition = 0;
                 break;
             case "previous":
-                newPosition = this.data.indexOf(this.selectedItem);
+                newPosition = this.dataStore.indexOf(this.selectedItem);
                 if (newPosition === -1) newPosition = 0;
                 if (newPosition > 0) newPosition--;
                 break;
             case "next":
-                newPosition = this.data.indexOf(this.selectedItem);
-                if (newPosition < this.data.length - 1) newPosition++;
+                newPosition = this.dataStore.indexOf(this.selectedItem);
+                if (newPosition < this.dataStore.length() - 1) newPosition++;
                 break;
             case "end":
-                newPosition = this.data.length - 1;
+                newPosition = this.dataStore.length() - 1;
                 break;
             default:
                throw new Error("Unexpected direction: " + direction);
         }
-        this.setSelectedItem(this.data[newPosition]);
+        this.setSelectedItem(this.dataStore.itemForIndex(newPosition));
         this.isNavigationalScrollingNeeded = direction;
     }
     
@@ -655,7 +638,7 @@ class GridWithItemPanel {
         }
         
         var fields = this.columns.map((column) => {
-            return m("td", {"text-overflow": "ellipsis", "data-item-index": this.data_idForItem(item), id: this.makeHtmlIdForItem(item)}, this.data_valueForField(item, column.field));
+            return m("td", {"text-overflow": "ellipsis", "data-item-index": this.dataStore.idForItem(item), id: this.makeHtmlIdForItem(item)}, this.dataStore.valueForField(item, column.field));
         });
         
         if (this.gridConfiguration.inlineButtons) {
@@ -663,7 +646,7 @@ class GridWithItemPanel {
             
             fields = fields.concat(m("td", {nowrap: true}, buttons));
         }
-        return m("tr", {key: this.data_idForItem(item), "class": selectionClass}, fields);
+        return m("tr", {key: this.dataStore.idForItem(item), "class": selectionClass}, fields);
     }
     
     ensureTableRowIsVisibleConfig(tableElement: HTMLElement, isInitialized: boolean, context: any, vdom: _mithril.MithrilVirtualElement) {
@@ -683,23 +666,43 @@ class GridWithItemPanel {
     }
          
     private makeHtmlIdForItem(item): string {
-        return this.gridID + this.data_idForItem(item);
+        return this.gridID + this.dataStore.idForItem(item);
     }
-    
-    // data change handlers
     
     useTriples() {
         return typeof this.model === "string";
     }
+}
+
+class DataStore {
+    data: Array<any>;
     
-    private data_getDataArrayFromModel() {
+    constructor(public model: Array<any> | string, public modelField: string, public idProperty: string) {
+    }
+    
+    private newIdForItem() {
+        // return new Date().toISOString();
+        return generateRandomUuid();
+    }
+    
+    length() {
+        return this.data.length;
+    }
+    
+    isEmpty() {
+        return this.data.length === 0;
+    }
+    
+    // data change handlers
+    
+    getDataArrayFromModel() {
         // TODO: This may need work for set???
         // TODO: May want to use at or similar to get the value in case this is a plain object?
-        var data = this.model[this.fieldSpecification.id];
+        var data = this.model[this.modelField];
         
         if (!data) {
             data = [];
-            this.model[this.fieldSpecification.id] = data;
+            this.model[this.modelField] = data;
         }
         
         // Make a copy of the data because we will be sorting it
@@ -707,7 +710,7 @@ class GridWithItemPanel {
         this.data = data.slice();
     }
 
-    private data_makeCopyOfItemWithNewId(item) {
+    makeCopyOfItemWithNewId(item) {
         // TODO: This needs to create an action that affects original list
         // Make a copy of the selected item
         var newItem = JSON.parse(JSON.stringify(item));
@@ -721,7 +724,7 @@ class GridWithItemPanel {
         return newItem;
     }
     
-    private data_makeNewItem() {
+    makeNewItem() {
         // TODO: This needs to create an action that affects original list
         var newItem = {};
         newItem[this.idProperty] = this.newIdForItem();
@@ -731,7 +734,7 @@ class GridWithItemPanel {
         return newItem;
     }
     
-    private data_deleteItem(item) {
+    deleteItem(item) {
         // TODO: This needs to create an action that affects original list
         var index = this.data.indexOf(item);
         this.data.splice(index, 1);
@@ -739,7 +742,7 @@ class GridWithItemPanel {
         return index;
     }
     
-    private data_moveItemUp(item) {
+    moveItemUp(item) {
         // TODO: How to move this change back to project data???
         var index = this.data.indexOf(item);
         if (index <= 0) return;
@@ -747,7 +750,7 @@ class GridWithItemPanel {
         this.data[index - 1] = item;
     }
     
-    private data_moveItemDown(item) {
+    moveItemDown(item) {
         // TODO: How to move this change back to project data???
         var index = this.data.indexOf(item);
         if (index === -1 || index === this.data.length - 1) return;
@@ -755,12 +758,53 @@ class GridWithItemPanel {
         this.data[index + 1] = item;
     }
     
-    private data_idForItem(item) {
+    idForItem(item) {
         return item[this.idProperty];
     }
     
-    private data_valueForField(item, fieldName) {
+    itemForId(itemID: string) {
+        for (var i = 0; i < this.data.length; i++) {
+            var item = this.data[i];
+            if (this.idForItem(item) === itemID) {
+                return item;
+            }
+        }
+        return undefined;
+    }
+    
+    valueForField(item, fieldName: string) {
         return item[fieldName];
+    }
+    
+    itemForIndex(index: number) {
+        return this.data[index];
+    }
+    
+    map(callback: Function) {
+        return this.data.map(<any>callback);
+    }
+    
+    indexOf(item) {
+        return this.data.indexOf(item);
+    }
+    
+    sortData(fieldIdentifier: string, sortDirection: string) {
+        // TODO: This may need work for set???
+        this.data.sort((a, b) => {
+            var aValue = this.valueForField(a, fieldIdentifier);
+            var bValue = this.valueForField(b, fieldIdentifier);
+            return aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
+        });
+        
+        if (sortDirection === "descending") {
+            console.log("reversing");
+            this.data.reverse();
+        }
+        console.log("sorted list", this.data);
+    }
+    
+    reverseData() {
+        this.data.reverse();
     }
 }
 
