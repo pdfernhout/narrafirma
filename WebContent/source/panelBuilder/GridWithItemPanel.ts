@@ -644,7 +644,7 @@ class GridWithItemPanel {
         }
         
         var fields = this.columns.map((column) => {
-            return m("td", {"text-overflow": "ellipsis", "data-item-index": this.data_idForItem(item), id: this.data_htmlIdForItem(item)}, this.data_valueForField(item, column.field));
+            return m("td", {"text-overflow": "ellipsis", "data-item-index": this.data_idForItem(item), id: this.makeHtmlIdForItem(item)}, this.data_valueForField(item, column.field));
         });
         
         if (this.gridConfiguration.inlineButtons) {
@@ -659,7 +659,7 @@ class GridWithItemPanel {
         // Ensure the selected item is visible in the table
         // TODO: Could improve this so when navigating down the item is still near the bottom
         if (this.selectedItem && this.isNavigationalScrollingNeeded) {
-            var rowElement = document.getElementById(this.data_htmlIdForItem(this.selectedItem));
+            var rowElement = document.getElementById(this.makeHtmlIdForItem(this.selectedItem));
             if (rowElement && !isElementInViewport(tableElement, rowElement)) {
                 if (this.isNavigationalScrollingNeeded === "next" || this.isNavigationalScrollingNeeded === "end") {
                     tableElement.scrollTop = rowElement.offsetTop - tableElement.clientHeight + rowElement.offsetHeight;
@@ -669,6 +669,10 @@ class GridWithItemPanel {
             }
             this.isNavigationalScrollingNeeded = null;
         }
+    }
+         
+    private makeHtmlIdForItem(item): string {
+        return this.gridID + this.data_idForItem(item);
     }
     
     // data change handlers
@@ -746,10 +750,6 @@ class GridWithItemPanel {
     
     private data_valueForField(item, fieldName) {
         return item[fieldName];
-    }
-     
-    private data_htmlIdForItem(item): string {
-        return this.gridID + item[this.idProperty];
     }
 }
 
