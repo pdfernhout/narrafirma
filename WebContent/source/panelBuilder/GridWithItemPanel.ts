@@ -236,7 +236,28 @@ class GridWithItemPanel {
     
     updateData() {
         this.data_getDataArrayFromModel();
-        this.data_sortData();
+        this.sortData();
+    }
+      
+    private sortData() {
+        // TODO: This may need work for set???
+        var list = this.data;
+        var fieldIdentifier = this.sortBy;
+        
+        var first = list[0];
+        list.sort((a, b) => {
+            var aValue = this.data_valueForField(a, fieldIdentifier);
+            var bValue = this.data_valueForField(b, fieldIdentifier);
+            return aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
+        });
+        if (first === list[0]) {
+            console.log("reversing");
+            list.reverse();
+            this.sortDirection = "ascending";
+        } else {
+            this.sortDirection = "descending";
+        }
+        console.log("sorted list", list);
     }
     
     static controller(args) {
@@ -326,7 +347,7 @@ class GridWithItemPanel {
 
                     console.log("Sorting by", sortBy);
                     this.sortBy = sortBy;
-                    this.data_sortData();
+                    this.sortData();
                 } else {
                     this.selectItemInList(e);
                 }
@@ -652,6 +673,10 @@ class GridWithItemPanel {
     
     // data change handlers
     
+    useTriples() {
+        return typeof this.model === "string";
+    }
+    
     private data_getDataArrayFromModel() {
         // TODO: This may need work for set???
         // TODO: May want to use at or similar to get the value in case this is a plain object?
@@ -666,26 +691,7 @@ class GridWithItemPanel {
         // TODO: Copying data creates a problem because up/down movement wil not be reflected in original
         this.data = data.slice();
     }
-     
-    private data_sortData() {
-        // TODO: This may need work for set???
-        var list = this.data;
-        var prop = this.sortBy;
-        
-        var first = list[0];
-        list.sort(function(a, b) {
-            return a[prop] > b[prop] ? 1 : a[prop] < b[prop] ? -1 : 0;
-        });
-        if (first === list[0]) {
-            console.log("reversing");
-            list.reverse();
-            this.sortDirection = "ascending";
-        } else {
-            this.sortDirection = "descending";
-        }
-        console.log("sorted list", list);
-    }
-    
+
     private data_makeCopyOfItemWithNewId(item) {
         // TODO: This needs to create an action that affects original list
         // Make a copy of the selected item
