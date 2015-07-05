@@ -73,6 +73,17 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, gridCon
     return columns;
 }
 
+function isElementInViewport(parent, element) {
+    var elementRect = element.getBoundingClientRect();
+    var parentRect = parent.getBoundingClientRect();
+    return (
+        elementRect.top >= parentRect.top &&
+        elementRect.left >= parentRect.left &&
+        elementRect.bottom <= parentRect.bottom &&
+        elementRect.right <= parentRect.right
+    );
+}
+
 // TODO: This code is not currently used and probably can be removed
 function formatObjectsIfNeeded(item) {
     if (_.isString(item)) return item;
@@ -751,17 +762,6 @@ class GridWithItemPanel {
     private data_valueForField(item, fieldName) {
         return item[fieldName];
     }
-}
-
-function isElementInViewport(parent, element) {
-    var elementRect = element.getBoundingClientRect();
-    var parentRect = parent.getBoundingClientRect();
-    return (
-        elementRect.top >= parentRect.top &&
-        elementRect.left >= parentRect.left &&
-        elementRect.bottom <= parentRect.bottom &&
-        elementRect.right <= parentRect.right
-    );
 }
 
 export = GridWithItemPanel;
