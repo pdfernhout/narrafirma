@@ -706,13 +706,13 @@ class GridWithItemPanel {
 
         var selectionClass = "";
         if (selected) {
-            if (index % 2 == 0) {
+            if (index % 2 === 0) {
                 selectionClass = "narrafirma-grid-row-selected-even";
             } else {
                 selectionClass = "narrafirma-grid-row-selected-odd";
             }
         } else {
-            if (index % 2 == 0) {
+            if (index % 2 === 0) {
                 selectionClass = "narrafirma-grid-row-unselected-even";
             } else {
                 selectionClass = "narrafirma-grid-row-unselected-odd";
