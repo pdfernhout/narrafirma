@@ -235,30 +235,8 @@ class GridWithItemPanel {
     }
     
     updateData() {
-        // TODO: May want to use at or similar to get the value in case this is a plain object?
-        var data = this.model[this.fieldSpecification.id];
-        
-        /*
-        var bigData = [];
-        for (var i = 0; i < 50; i++) {
-            for (var j = 0; j < data.length; j++) {
-                var newItem = JSON.parse(JSON.stringify(data[j]));
-                newItem[idProperty] = "item_" + (i * data.length + j);
-                bigData.push(newItem);
-                console.log("newItem", newItem);
-            }
-        }
-        data = bigData;
-        */
-        
-        if (!data) {
-            data = [];
-            this.model[this.fieldSpecification.id] = data;
-        }
-        
-        // Make a copy of the data because we will be sorting it
-        this.data = data.slice();
-        this.sortData();
+        this.data_getDataArrayFromModel();
+        this.data_sortData();
     }
     
     static controller(args) {
@@ -337,24 +315,6 @@ class GridWithItemPanel {
         return m("div", {"class": "questionExternal narrafirma-question-type-grid"}, parts);
     }
     
-    private sortData() {
-        var list = this.data;
-        var prop = this.sortBy;
-        
-        var first = list[0];
-        list.sort(function(a, b) {
-            return a[prop] > b[prop] ? 1 : a[prop] < b[prop] ? -1 : 0;
-        });
-        if (first === list[0]) {
-            console.log("reversing");
-            list.reverse();
-            this.sortDirection = "ascending";
-        } else {
-            this.sortDirection = "descending";
-        }
-        console.log("sorted list", list);
-    }
-    
     private tableConfigurationWithSortingOnHeaderClick() {
         return {
             onclick: (e) => {
@@ -366,7 +326,7 @@ class GridWithItemPanel {
 
                     console.log("Sorting by", sortBy);
                     this.sortBy = sortBy;
-                    this.sortData();
+                    this.data_sortData();
                 } else {
                     this.selectItemInList(e);
                 }
@@ -390,7 +350,7 @@ class GridWithItemPanel {
         console.log("item clicked", itemID);
         var itemIndex = null;
         for (var i = 0; i < list.length; i++) {
-            if (list[i][this.idProperty] === itemID) {
+            if (this.data_idForItem(list[i]) === itemID) {
                 itemIndex = i;
                 break;
             }
@@ -462,23 +422,11 @@ class GridWithItemPanel {
         // return new Date().toISOString();
         return generateRandomUuid();
     }
-       
-    private data_makeCopyOfItemWithNewId(item) {
-        // Make a copy of the selected item
-        var newItem = JSON.parse(JSON.stringify(item));
-                  
-        // Set new id for copy
-        newItem[this.idProperty] = this.newIdForItem();
-        
-        this.data.push(newItem);
-        
-        return newItem;
-    }
+    
+    // Event handlers
     
     private addItem() {
-        var newItem = {};
-        newItem[this.idProperty] = this.newIdForItem();
-        this.data.push(newItem);
+        var newItem = this.data_makeNewItem();
         this.setSelectedItem(newItem);
         this.displayMode = "adding";
     }
@@ -486,10 +434,8 @@ class GridWithItemPanel {
     private deleteItem(item) {
         if (!item) item = this.selectedItem; 
         console.log("deleteItem", item);
-        
-        // TODO: This needs to create an action that affects original list
-        var index = this.data.indexOf(item);
-        this.data.splice(index, 1);
+
+        var index = this.data_deleteItem(item);
         
         if (item === this.selectedItem) {
             this.setSelectedItem(null);
@@ -550,60 +496,14 @@ class GridWithItemPanel {
         if (!item) item = this.selectedItem;
         console.log("up button pressed", item);
         
-        // TODO: How to move this change back to project data???
-        var index = this.data.indexOf(item);
-        if (index <= 0) return;
-        this.data[index] = this.data[index - 1];
-        this.data[index - 1] = item;
-        
-        /* Code for moving multiple selections up:
-        var items = this.store.data;
-        var lastSelectedObjectLocation = -1;
-        var idProperty = this.store.idProperty;
-        for (var i = 0; i < items.length; i++) {
-            var item = items[i];
-            if (item[idProperty] in this.grid.selection) {
-                if (lastSelectedObjectLocation < i - 1) {
-                    var otherItem = items[i - 1];
-                    items[i - 1] = item;
-                    items[i] = otherItem;
-                    lastSelectedObjectLocation = i - 1;
-                } else {
-                    lastSelectedObjectLocation = i;
-                }
-            }
-        }
-        */
+        this.data_moveItemUp(item);
     }
     
     private moveItemDown(item) {
         if (!item) item = this.selectedItem;
         console.log("down button pressed", item);
         
-        // TODO: How to move this change back to project data???
-        var index = this.data.indexOf(item);
-        if (index === -1 || index === this.data.length - 1) return;
-        this.data[index] = this.data[index + 1];
-        this.data[index + 1] = item;
-        
-        /* code for moving multiple selected items:
-        var items = this.store.data;
-        var lastSelectedObjectLocation = items.length;
-        var idProperty = this.store.idProperty;
-        for (var i = items.length - 1; i >= 0; i--) {
-            var item = items[i];
-            if (item[idProperty] in this.grid.selection) {
-                if (lastSelectedObjectLocation > i + 1) {
-                    var otherItem = items[i + 1];
-                    items[i + 1] = item;
-                    items[i] = otherItem;
-                    lastSelectedObjectLocation = i + 1;
-                } else {
-                    lastSelectedObjectLocation = i;
-                }
-            }
-        }
-        */
+        this.data_moveItemDown(item);
     }
     
     private doneClicked(item) {
@@ -699,11 +599,7 @@ class GridWithItemPanel {
         // console.log("made buttons", buttons, item);
         return buttons;
     }
-    
-    private idForItem(item): string {
-        return this.gridID + item[this.idProperty];
-    }
-    
+
     private rowForItem(item, index) {
         /* TODO: Use inline editor, if some config option is set:
         return inlineEditorForItem(panelBuilder, item, mode);
@@ -727,7 +623,7 @@ class GridWithItemPanel {
         }
         
         var fields = this.columns.map((column) => {
-            return m("td", {"text-overflow": "ellipsis", "data-item-index": item[this.idProperty], id: this.idForItem(item)}, item[column.field]);
+            return m("td", {"text-overflow": "ellipsis", "data-item-index": this.data_idForItem(item), id: this.data_htmlIdForItem(item)}, this.data_valueForField(item, column.field));
         });
         
         if (this.gridConfiguration.inlineButtons) {
@@ -735,15 +631,14 @@ class GridWithItemPanel {
             
             fields = fields.concat(m("td", {nowrap: true}, buttons));
         }
-        // TODO: Probably more efficient way to ensure table row is visible like by doing config just for entire table
-        return m("tr", {key: item[this.idProperty], "class": selectionClass}, fields);
+        return m("tr", {key: this.data_idForItem(item), "class": selectionClass}, fields);
     }
     
     ensureTableRowIsVisibleConfig(tableElement: HTMLElement, isInitialized: boolean, context: any, vdom: _mithril.MithrilVirtualElement) {
         // Ensure the selected item is visible in the table
         // TODO: Could improve this so when navigating down the item is still near the bottom
         if (this.selectedItem && this.isNavigationalScrollingNeeded) {
-            var rowElement = document.getElementById(this.idForItem(this.selectedItem));
+            var rowElement = document.getElementById(this.data_htmlIdForItem(this.selectedItem));
             if (rowElement && !isElementInViewport(tableElement, rowElement)) {
                 if (this.isNavigationalScrollingNeeded === "next" || this.isNavigationalScrollingNeeded === "end") {
                     tableElement.scrollTop = rowElement.offsetTop - tableElement.clientHeight + rowElement.offsetHeight;
@@ -753,7 +648,141 @@ class GridWithItemPanel {
             }
             this.isNavigationalScrollingNeeded = null;
         }
-    }    
+    }
+    
+    // data change handlers
+    
+    private data_getDataArrayFromModel() {
+        // TODO: This may need work for set???
+        // TODO: May want to use at or similar to get the value in case this is a plain object?
+        var data = this.model[this.fieldSpecification.id];
+        
+        if (!data) {
+            data = [];
+            this.model[this.fieldSpecification.id] = data;
+        }
+        
+        // Make a copy of the data because we will be sorting it
+        // TODO: Copying data creates a problem because up/down movement wil not be reflected in original
+        this.data = data.slice();
+    }
+     
+    private data_sortData() {
+        // TODO: This may need work for set???
+        var list = this.data;
+        var prop = this.sortBy;
+        
+        var first = list[0];
+        list.sort(function(a, b) {
+            return a[prop] > b[prop] ? 1 : a[prop] < b[prop] ? -1 : 0;
+        });
+        if (first === list[0]) {
+            console.log("reversing");
+            list.reverse();
+            this.sortDirection = "ascending";
+        } else {
+            this.sortDirection = "descending";
+        }
+        console.log("sorted list", list);
+    }
+    
+    private data_makeCopyOfItemWithNewId(item) {
+        // TODO: This needs to create an action that affects original list
+        // Make a copy of the selected item
+        var newItem = JSON.parse(JSON.stringify(item));
+                  
+        // Set new id for copy
+        newItem[this.idProperty] = this.newIdForItem();
+        
+        this.data.push(newItem);
+        
+        // TODO: This item will not be sorted
+        return newItem;
+    }
+    
+    private data_makeNewItem() {
+        // TODO: This needs to create an action that affects original list
+        var newItem = {};
+        newItem[this.idProperty] = this.newIdForItem();
+        this.data.push(newItem);
+        
+        // TODO: This item will not be sorted
+        return newItem;
+    }
+    
+    private data_deleteItem(item) {
+        // TODO: This needs to create an action that affects original list
+        var index = this.data.indexOf(item);
+        this.data.splice(index, 1);
+        
+        return index;
+    }
+    
+    private data_moveItemUp(item) {
+        // TODO: How to move this change back to project data???
+        var index = this.data.indexOf(item);
+        if (index <= 0) return;
+        this.data[index] = this.data[index - 1];
+        this.data[index - 1] = item;
+        
+        /* Code for moving multiple selections up:
+        var items = this.store.data;
+        var lastSelectedObjectLocation = -1;
+        var idProperty = this.store.idProperty;
+        for (var i = 0; i < items.length; i++) {
+            var item = items[i];
+            if (item[idProperty] in this.grid.selection) {
+                if (lastSelectedObjectLocation < i - 1) {
+                    var otherItem = items[i - 1];
+                    items[i - 1] = item;
+                    items[i] = otherItem;
+                    lastSelectedObjectLocation = i - 1;
+                } else {
+                    lastSelectedObjectLocation = i;
+                }
+            }
+        }
+        */
+    }
+    
+    private data_moveItemDown(item) {
+        // TODO: How to move this change back to project data???
+        var index = this.data.indexOf(item);
+        if (index === -1 || index === this.data.length - 1) return;
+        this.data[index] = this.data[index + 1];
+        this.data[index + 1] = item;
+        
+        /* code for moving multiple selected items:
+        var items = this.store.data;
+        var lastSelectedObjectLocation = items.length;
+        var idProperty = this.store.idProperty;
+        for (var i = items.length - 1; i >= 0; i--) {
+            var item = items[i];
+            if (item[idProperty] in this.grid.selection) {
+                if (lastSelectedObjectLocation > i + 1) {
+                    var otherItem = items[i + 1];
+                    items[i + 1] = item;
+                    items[i] = otherItem;
+                    lastSelectedObjectLocation = i + 1;
+                } else {
+                    lastSelectedObjectLocation = i;
+                }
+            }
+        }
+        */
+    }
+    
+    private data_idForItem(item) {
+        return item[this.idProperty];
+    }
+    
+    private data_valueForField(item, fieldName) {
+        return item[fieldName];
+    }
+     
+    private data_htmlIdForItem(item): string {
+        return this.gridID + item[this.idProperty];
+    }
 }
 
 function isElementInViewport(parent, element) {
