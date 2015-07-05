@@ -32,6 +32,8 @@ class TripleStore {
     }
     
     addTriple(a, b, c, callback = undefined) {
+        console.log("TripleStore addTriple", a, b, c);
+        
         var triple = {
             a: a,
             b: b,
@@ -151,6 +153,25 @@ class TripleStore {
         var triple = this.queryLatest(a, b, undefined);
         if (!triple) return undefined;
         return triple.c;
+    }
+    
+    // TODO: Optimize with indexes
+    // TODO: Ignoring actual timestamps, so only "latest" by receipt is considered, but that is not correct
+    // TODO: need to use actual timestamp in sorted comparison to deal with collissions
+    queryAllLatestBCForA(a) {
+        var result = {};
+        
+        for (var i = this.tripleMessages.length - 1; i >= 0; i--) {
+            var tripleMessage = this.tripleMessages[i];
+            // console.log("queryLatest loop", i, tripleMessage);
+            if (tripleMessage.change.triple.a === a) {
+                var b = tripleMessage.change.triple.b;
+                var c = tripleMessage.change.triple.c;
+                result[JSON.stringify(b)] = tripleMessage.change.triple;
+            }         
+        }
+        
+        return result;
     }
 }
    
