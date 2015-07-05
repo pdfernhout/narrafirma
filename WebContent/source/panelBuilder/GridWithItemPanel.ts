@@ -2,6 +2,7 @@ import m = require("mithril");
 import translate = require("./translate");
 import PanelBuilder = require("panelBuilder/PanelBuilder");
 import generateRandomUuid = require("../pointrel20150417/generateRandomUuid");
+import TripleStore = require("../pointrel20150417/TripleStore");
 
 "use strict";
 
@@ -242,7 +243,11 @@ class GridWithItemPanel {
         
         this.isNavigationalScrollingNeeded = null;
         
-        this.dataStore = new DataStore(this.model, this.fieldSpecification.id, this.idProperty);
+        if (this.useTriples()) {
+            this.dataStore = new TripleSetDataStore(this.model, this.fieldSpecification.id, this.idProperty, this.panelBuilder.project.tripleStore);
+        } else {
+            this.dataStore = new DataStore(this.model, this.fieldSpecification.id, this.idProperty);
+        }
         this.updateData();
     }
     
@@ -674,13 +679,15 @@ class GridWithItemPanel {
     }
 }
 
+// ObjectArray datastore as base
+
 class DataStore {
     data: Array<any>;
     
     constructor(public model: Array<any> | string, public modelField: string, public idProperty: string) {
     }
     
-    private newIdForItem() {
+    newIdForItem() {
         // return new Date().toISOString();
         return generateRandomUuid();
     }
@@ -693,11 +700,7 @@ class DataStore {
         return this.data.length === 0;
     }
     
-    // data change handlers
-    
-    getDataArrayFromModel() {
-        // TODO: This may need work for set???
-        // TODO: May want to use at or similar to get the value in case this is a plain object?
+   getDataArrayFromModel() {
         var data = this.model[this.modelField];
         
         if (!data) {
@@ -805,6 +808,111 @@ class DataStore {
     
     reverseData() {
         this.data.reverse();
+    }
+}
+
+class TripleSetDataStore extends DataStore {    
+    tripleStore: TripleStore;
+    setIdentifier: string;
+    
+    constructor(model: Array<any> | string, modelField: string, idProperty: string, tripleStore: TripleStore) {
+        super(model, modelField, idProperty);
+        this.tripleStore = tripleStore;
+    }
+       
+    getDataArrayFromModel() {
+        this.data = [];
+        this.setIdentifier = this.tripleStore.queryLatestC(this.model, this.modelField);
+        
+        // TODO: Should we make a set if none exists at this time as opposed to lazily at first insertion of data?
+
+        if (this.setIdentifier) {
+            // Iterate over set and get every item from it
+            var triples = this.tripleStore.queryAllLatestBCForA(this.setIdentifier);
+            for (var key in triples) {
+                var triple = triples[key];
+                if (triple.b.setItem) {
+                    this.data.push(triple.c);
+                }
+            }
+        }
+    }
+    
+    // We don't make the set at startup; lazily make it if needed now
+    ensureSetExists() {
+        if (!this.setIdentifier) {
+            // this.setIdentifier = {"type": "set", "id":  generateRandomUuid()};
+            this.setIdentifier = "Set:" + generateRandomUuid();
+            this.tripleStore.addTriple(this.model, this.modelField, this.setIdentifier);
+        }
+    }
+
+    makeCopyOfItemWithNewId(item) {
+        // TODO: This needs to create an action that affects original list
+        // Make a copy of the selected item
+
+        this.ensureSetExists();
+        
+        var newId = this.newIdForItem();
+        
+        this.tripleStore.addTriple(this.setIdentifier, {setItem: newId}, newId);
+        
+        // For every field, copy it...
+        var triples = this.tripleStore.queryAllLatestBCForA(item);
+        for (var key in triples) {
+            var triple = triples[key];
+            this.tripleStore.addTriple(newId, triple.b, triple.c);
+        }
+        
+        this.data.push(newId);
+        
+        // TODO: This item will not be sorted
+        return newId;
+    }
+    
+    makeNewItem() {
+        // TODO: This needs to create an action that affects original list
+
+        this.ensureSetExists();
+        
+        var newId = this.newIdForItem();
+        
+        // TODO: Should there be another layer of indirection with a UUID for the "item" different from idPropery?
+        // this.tripleStore.addTriple(newId????, this.idProperty, newId);
+        this.tripleStore.addTriple(this.setIdentifier, {setItem: newId}, newId);
+        
+        this.data.push(newId);
+        
+        // TODO: This item will not be sorted
+        return newId;
+    }
+    
+    deleteItem(item) {
+        // TODO: This needs to create an action that affects original list
+        
+        // TODO: Should the C be undefined instead of null?
+        this.tripleStore.addTriple(this.setIdentifier, {setItem: item}, null);
+        
+        var index = this.data.indexOf(item);
+        this.data.splice(index, 1);
+         
+        return index;
+    }
+    
+    moveItemUp(item) {
+        throw new Error("TripleSetDataStore moveItemUp Unfinished");
+    }
+    
+    moveItemDown(item) {
+        throw new Error("TripleSetDataStore moveItemDown Unfinished");
+    }
+    
+    idForItem(item) {
+        return item;
+    }
+    
+    valueForField(item, fieldName: string) {
+        return this.tripleStore.queryLatestC(item, fieldName);
     }
 }
 
