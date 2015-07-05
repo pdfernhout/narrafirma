@@ -730,25 +730,6 @@ class GridWithItemPanel {
         if (index <= 0) return;
         this.data[index] = this.data[index - 1];
         this.data[index - 1] = item;
-        
-        /* Code for moving multiple selections up:
-        var items = this.store.data;
-        var lastSelectedObjectLocation = -1;
-        var idProperty = this.store.idProperty;
-        for (var i = 0; i < items.length; i++) {
-            var item = items[i];
-            if (item[idProperty] in this.grid.selection) {
-                if (lastSelectedObjectLocation < i - 1) {
-                    var otherItem = items[i - 1];
-                    items[i - 1] = item;
-                    items[i] = otherItem;
-                    lastSelectedObjectLocation = i - 1;
-                } else {
-                    lastSelectedObjectLocation = i;
-                }
-            }
-        }
-        */
     }
     
     private data_moveItemDown(item) {
@@ -757,25 +738,6 @@ class GridWithItemPanel {
         if (index === -1 || index === this.data.length - 1) return;
         this.data[index] = this.data[index + 1];
         this.data[index + 1] = item;
-        
-        /* code for moving multiple selected items:
-        var items = this.store.data;
-        var lastSelectedObjectLocation = items.length;
-        var idProperty = this.store.idProperty;
-        for (var i = items.length - 1; i >= 0; i--) {
-            var item = items[i];
-            if (item[idProperty] in this.grid.selection) {
-                if (lastSelectedObjectLocation > i + 1) {
-                    var otherItem = items[i + 1];
-                    items[i + 1] = item;
-                    items[i] = otherItem;
-                    lastSelectedObjectLocation = i + 1;
-                } else {
-                    lastSelectedObjectLocation = i;
-                }
-            }
-        }
-        */
     }
     
     private data_idForItem(item) {
