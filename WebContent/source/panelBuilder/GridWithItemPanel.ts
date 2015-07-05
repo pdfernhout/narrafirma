@@ -337,7 +337,7 @@ class GridWithItemPanel {
         return m("div", {"class": "questionExternal narrafirma-question-type-grid"}, parts);
     }
     
-    sortData() {
+    private sortData() {
         var list = this.data;
         var prop = this.sortBy;
         
@@ -355,7 +355,7 @@ class GridWithItemPanel {
         console.log("sorted list", list);
     }
     
-    tableConfigurationWithSortingOnHeaderClick() {
+    private tableConfigurationWithSortingOnHeaderClick() {
         return {
             onclick: (e) => {
                 var sortBy = e.target.getAttribute("data-sort-by");
@@ -383,7 +383,7 @@ class GridWithItemPanel {
         };
     }
     
-    selectItemInList(e) {
+    private selectItemInList(e) {
         if (this.isEditing()) return;
         var list = this.data;
         var itemID = e.target.getAttribute("data-item-index");
@@ -412,11 +412,11 @@ class GridWithItemPanel {
         } 
     }
 
-    isEditing() {
+    private isEditing() {
         return (this.displayMode === "editing" || this.displayMode === "adding") && this.selectedItem;
     }
     
-    isViewing() {
+    private isViewing() {
         return (this.displayMode === "viewing") && this.selectedItem;
     }
     
@@ -424,7 +424,7 @@ class GridWithItemPanel {
         return this.selectedItem;
     }
     
-    validateItem(item) {
+    private validateItem(item) {
         var validationMethodIdentifier = this.gridConfiguration.validateEdit;
         if (this.displayMode === "adding") validationMethodIdentifier = this.gridConfiguration.validateAdd || validationMethodIdentifier;
         if (validationMethodIdentifier) {
@@ -440,7 +440,7 @@ class GridWithItemPanel {
     }
     
     // inlineEditorForItem is not currently used...
-    inlineEditorForItem(panelBuilder, item, mode) {
+    private inlineEditorForItem(panelBuilder, item, mode) {
         return m("tr", [
             m("td", {colSpan: this.columns.length}, [
                 m.component(<any>ItemPanel, {key: this.fieldSpecification.id + "_" + "inlineEditor", panelBuilder: panelBuilder, item: item, grid: this, mode: mode})
@@ -449,7 +449,7 @@ class GridWithItemPanel {
         ]);
     }
     
-    bottomEditorForItem(panelBuilder, item, mode) {
+    private bottomEditorForItem(panelBuilder, item, mode) {
         return m("div", [
             m("td", {colSpan: this.columns.length}, [
                 m.component(<any>ItemPanel, {key: this.fieldSpecification.id + "_" + "bottomEditor", panelBuilder: panelBuilder, item: item, grid: this, mode: mode})
@@ -458,12 +458,24 @@ class GridWithItemPanel {
         ]);
     }
     
-    newIdForItem() {
+    private newIdForItem() {
         // return new Date().toISOString();
         return generateRandomUuid();
     }
+       
+    private data_makeCopyOfItemWithNewId(item) {
+        // Make a copy of the selected item
+        var newItem = JSON.parse(JSON.stringify(item));
+                  
+        // Set new id for copy
+        newItem[this.idProperty] = this.newIdForItem();
+        
+        this.data.push(newItem);
+        
+        return newItem;
+    }
     
-    addItem() {
+    private addItem() {
         var newItem = {};
         newItem[this.idProperty] = this.newIdForItem();
         this.data.push(newItem);
@@ -471,7 +483,7 @@ class GridWithItemPanel {
         this.displayMode = "adding";
     }
     
-    deleteItem(item) {
+    private deleteItem(item) {
         if (!item) item = this.selectedItem; 
         console.log("deleteItem", item);
         
@@ -496,7 +508,7 @@ class GridWithItemPanel {
         }
     }
     
-    editItem(item) {
+    private editItem(item) {
         if (!item) item = this.selectedItem;
         console.log("editItem", item);
         
@@ -505,7 +517,7 @@ class GridWithItemPanel {
         this.displayMode = "editing";
     }
     
-    viewItem(item, index) {
+    private viewItem(item, index) {
         if (!item) item = this.selectedItem;
         console.log("viewItem", item);
         
@@ -513,7 +525,7 @@ class GridWithItemPanel {
         this.displayMode = "viewing";
     }
     
-    duplicateItem(item) {        
+    private duplicateItem(item) {        
         if (!item) item = this.selectedItem;
         console.log("duplicate button pressed", item);
         
@@ -528,18 +540,13 @@ class GridWithItemPanel {
             return;
         }
         
-        // Make a copy of the selected item
-        var newItem = JSON.parse(JSON.stringify(item));
+        var newItem = this.data_makeCopyOfItemWithNewId(item);
         
-        // Set new id for copy
-        newItem[this.idProperty] = this.newIdForItem();
-        
-        this.data.push(newItem);
         this.setSelectedItem(newItem);
         this.displayMode = "adding";
     }
-    
-    moveItemUp(item) {
+
+    private moveItemUp(item) {
         if (!item) item = this.selectedItem;
         console.log("up button pressed", item);
         
@@ -569,7 +576,7 @@ class GridWithItemPanel {
         */
     }
     
-    moveItemDown(item) {
+    private moveItemDown(item) {
         if (!item) item = this.selectedItem;
         console.log("down button pressed", item);
         
@@ -599,7 +606,7 @@ class GridWithItemPanel {
         */
     }
     
-    doneClicked(item) {
+    private doneClicked(item) {
         // TODO: Should ensure the data is saved
         if (this.isEditing) {
             var errors = this.validateItem(item);
@@ -613,7 +620,7 @@ class GridWithItemPanel {
         this.displayMode = null;
     }
     
-    navigateClicked(direction: string) {
+    private navigateClicked(direction: string) {
         if (this.data.length === 0) return;
         var newPosition;
         switch (direction) {
@@ -639,7 +646,7 @@ class GridWithItemPanel {
         this.isNavigationalScrollingNeeded = direction;
     }
     
-    createButtons(item = undefined) {
+    private createButtons(item = undefined) {
         var buttons = [];
        
         var disabled = this.isEditing() || (!item && !this.selectedItem) || undefined;
@@ -693,11 +700,11 @@ class GridWithItemPanel {
         return buttons;
     }
     
-    idForItem(item): string {
+    private idForItem(item): string {
         return this.gridID + item[this.idProperty];
     }
     
-    rowForItem(item, index) {
+    private rowForItem(item, index) {
         /* TODO: Use inline editor, if some config option is set:
         return inlineEditorForItem(panelBuilder, item, mode);
         */
