@@ -88,6 +88,7 @@ class PanelSpecificationCollection {
         if (valueType === "dictionary") return {};
         if (valueType === "object") return {};
         if (valueType === "boolean") return false;
+        if (valueType === "set") return {};
         console.log("ERROR: Unsupported model field valueType", valueType, fieldSpecification);
         throw new Error("Unsupported model field valueType: " + valueType + " for field: " + fieldSpecification.id);
     }
