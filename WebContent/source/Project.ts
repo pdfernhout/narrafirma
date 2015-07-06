@@ -68,7 +68,7 @@ class Project {
         
         if (message.change && message.change.action === "addTriple") {
             // Ignore addTriple messages as we handle only the ones we did not send via a subscription
-            console.log("Ignoring tripleStrore message", message);
+            console.log("Ignoring tripleStore message", message);
             return;
         }
         
