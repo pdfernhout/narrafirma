@@ -147,7 +147,7 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         delete questionLabel[0].attrs["for"];
         if (!value) {
             value = {};
-            model[fieldSpecification.id] = value;
+            change(null, value);
         }
         parts = [
             fieldSpecification.valueOptions.map(function (option, index) {
