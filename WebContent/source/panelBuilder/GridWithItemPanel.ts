@@ -840,7 +840,8 @@ class TripleSetDataStore extends DataStore {
     
     // We don't make the set at startup; lazily make it if needed now
     ensureSetExists() {
-        if (!this.setIdentifier) {
+        // TODO: Remove temporary addition with comparison on string type (for upgrading)
+        if (!this.setIdentifier || typeof this.setIdentifier !== "string") {
             // this.setIdentifier = {"type": "set", "id":  generateRandomUuid()};
             this.setIdentifier = "Set:" + generateRandomUuid();
             this.tripleStore.addTriple(this.model, this.modelField, this.setIdentifier);
