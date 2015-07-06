@@ -71,18 +71,19 @@ class TripleStore {
         if (message._topicIdentifier !== this.topicIdentifier) return;
         
         if (message.change.action === "addTriple") {                        
-            this.processTripleStoreMessage(message);
-            
             // Ignore the message if it was previously received (probably because this client sent it)
             // TODO: Improve this so it is not a loop
             // TODO: track sent and bump and report conflicts
             for (var i = this.tripleMessages.length - 1; i >= 0; i--) {
                 var previouslyReceivedMessage = this.tripleMessages[i];
                 if (previouslyReceivedMessage.__pointrel_sha256AndLength === message.__pointrel_sha256AndLength) {
+                    // console.log("compare previous/new", previouslyReceivedMessage, message);
                     console.log("TripleStore message previously received, so ignoring", message);
                     return;
                 }
             }
+            
+            this.processTripleStoreMessage(message);
             
             var triple = message.change.triple;
             
