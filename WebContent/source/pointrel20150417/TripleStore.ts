@@ -162,7 +162,7 @@ class TripleStore {
     queryAllLatestBCForA(a) {
         var result = {};
         
-        for (var i = this.tripleMessages.length - 1; i >= 0; i--) {
+        for (var i = 0; i < this.tripleMessages.length; i++) {
             var tripleMessage = this.tripleMessages[i];
             // console.log("queryLatest loop", i, tripleMessage);
             if (tripleMessage.change.triple.a === a) {
