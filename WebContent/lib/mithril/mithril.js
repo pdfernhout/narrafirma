@@ -423,6 +423,15 @@ var m = (function app(window, undefined) {
 			// PDF fix for issue #701 https://github.com/lhorie/mithril.js/issues/701
             //#348 dataAttr may not be a string, so use loose comparison (double equal) instead of strict (triple equal)
             // PDF updates per Mithril issue #691 and Issue #701
+			else if (attrName === "value" && (tag === "input" || tag === "textarea") && node.value != dataAttr) {
+			    node[attrName] = dataAttr;
+			}
+			// The below fixes seem to break selects (the "selected" parts) so backing it all out for now, except for the textarea addition above
+			/*
+			else if (attrName === "checked" || attrName === "selected") node[attrName] = !!dataAttr; 
+			else if (node[attrName] != dataAttr) node[attrName] = dataAttr;
+			*/
+			/*
             else if (attrName === "value" && (tag === "input" || tag === "textarea" || tag === "select") && node.value != dataAttr) {
                 node.value = dataAttr;
             }
@@ -449,6 +458,7 @@ var m = (function app(window, undefined) {
             else if (tag === "keygen") {
                 throw new Error("keygen support unfininshed");
             }
+            */
 		}
 		return cachedAttrs
 	}
