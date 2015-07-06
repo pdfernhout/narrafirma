@@ -1,6 +1,5 @@
 import Project = require("./Project");
 import questionnaireGeneration = require("./questionnaireGeneration");
-import topic = require("./pointrel20150417/topic");
 import translate = require("./panelBuilder/translate");
 
 "use strict";
@@ -57,10 +56,10 @@ export function getQuestionnaireForStoryCollection(storyCollectionIdentifier) {
     var storyCollection = questionnaireGeneration.findStoryCollection(project, storyCollectionIdentifier);
     if (!storyCollection) return null;
     
-    var questionnaireName = storyCollection.storyCollection_questionnaireIdentifier;
+    var questionnaireName = project.tripleStore.queryLatestC(storyCollection, "storyCollection_questionnaireIdentifier");
     if (!questionnaireName) return null;
 
-    var questionnaire = storyCollection.questionnaire;
+    var questionnaire = project.tripleStore.queryLatestC(storyCollection, "questionnaire");
     return questionnaire;
 }
 
@@ -72,16 +71,21 @@ function urlForSurvey(storyCollectionName) {
     return baseURL + "/survey.html#project=" + projectName + "&survey=" + storyCollectionName;
 }
 
-export function toggleWebActivationOfSurvey(model, fieldSpecification, value) {
+export function toggleWebActivationOfSurvey(model: string, fieldSpecification, value) {
+    // TODO: Fix this for mover to using triples for projectModel
     var grid = fieldSpecification.grid;
-    var selectedItem = grid.getSelectedItem();
+    var selectedItem: string = grid.getSelectedItem();
     console.log("toggleWebActivationOfSurvey selectedItem", selectedItem, model, fieldSpecification); 
     
-    if (selectedItem.storyCollection_activeOnWeb) {
-        selectedItem.storyCollection_activeOnWeb = "";
+    var shortName = project.tripleStore.queryLatestC(selectedItem, "storyCollection_shortName");
+    var activeOnWeb = project.tripleStore.queryLatestC(selectedItem, "storyCollection_activeOnWeb");
+    activeOnWeb = !activeOnWeb;
+    if (activeOnWeb) {
+        project.tripleStore.addTriple(selectedItem, "storyCollection_activeOnWeb", urlForSurvey(shortName));
     } else {
-        selectedItem.storyCollection_activeOnWeb = urlForSurvey(selectedItem.storyCollection_shortName);
+        project.tripleStore.addTriple(selectedItem, "storyCollection_activeOnWeb", "");
     }
+    
     // TODO: Maybe only want to refresh grid, as there is a seperate update now for questionnaires?
     // broadcast the change to other clients and force grid refresh by recreating entire object
     var storyCollections = model[fieldSpecification.id];
@@ -95,32 +99,24 @@ export function toggleWebActivationOfSurvey(model, fieldSpecification, value) {
         questionnaires[key] = project.activeQuestionnaires[key];
     }
    
-    var questionnaire = selectedItem.questionnaire;
+    var questionnaire = project.tripleStore.queryLatestC(selectedItem, "questionnaire");
     if (!questionnaire) {
-        var questionnaireName = selectedItem.storyCollection_questionnaireIdentifier;
+        var questionnaireName = project.tripleStore.queryLatestC(selectedItem, "storyCollection_questionnaireIdentifier");
         console.log("Could not find questionnnaire for", questionnaireName);
         return;
     }
-    if (selectedItem.storyCollection_activeOnWeb) {
-        questionnaires[selectedItem.storyCollection_shortName] = questionnaire;
+    if (activeOnWeb) {
+        questionnaires[shortName] = questionnaire;
     } else {
-       delete questionnaires[selectedItem.storyCollection_shortName];
+       delete questionnaires[shortName];
     }
-    // TODO: Decide: Publish here to be sure to get updates even when offline or just wait for server to relay it back?
-    // topic.publish("questionnaires", change);
 
-    // Now publish the new or removed questionnaire...
+    // Now publish the new or removed questionnaire so surveys can pick up the change...
     updateActiveQuestionnaires(questionnaires, "sendMessage");
 }
    
 export function updateActiveQuestionnaires(questionnaires, sendMessage) {
     project.activeQuestionnaires = questionnaires;
-   
-    // TODO: Should compare against current canonicalized value to see if anything changed
-    // TODO: and only update then -- assuming updates already issued by code that makes changes
-    // TODO: Does not publish which specific questionnaire changed, so inefficient
-    topic.publish("activeQuestionnaires", project.activeQuestionnaires);
-    topic.publish("isStoryCollectingEnabled", isStoryCollectingEnabled());
    
     if (!sendMessage) return;
    
@@ -144,18 +140,14 @@ export function storyCollectionStop() {
         return;
     }
     if (!confirm("Deactivate all story collection via the web?")) return;
-    var storyCollections = project.projectModel.project_storyCollections;
+    var storyCollections = project.getListForField("project_storyCollections");
     for (var i = 0; i < storyCollections.length; i++) {
-        var storyCollection = storyCollections[i];
-        if (!storyCollection.storyCollection_activeOnWeb) continue;
-        storyCollection.storyCollection_activeOnWeb = "";
+        var storyCollectionIdentifier = storyCollections[i];
+        if (project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_activeOnWeb")) {
+            project.tripleStore.addTriple(storyCollectionIdentifier, "storyCollection_activeOnWeb", "");
+        }
     }
-   
-    // TODO: Need to importve how this is done? Force rMihril redraw?
-    // broadcast the change to other clients and force grid refresh by recreating entire object
-    var recreatedData = JSON.parse(JSON.stringify(storyCollections));
-    project.projectModel.project_storyCollections = recreatedData;
-   
+
     updateActiveQuestionnaires({}, "sendMessage");
     console.log("Deactivated all web questionnaires");
 }

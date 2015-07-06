@@ -112,10 +112,12 @@ function convertEditorQuestions(editorQuestions) {
     return adjustedQuestions;
 }
 
-function buildIdToItemMap(itemList, idField) {
+function buildIdToItemMap(project: Project, itemListField, idField: string) {
+    var itemList = project.getListForField(itemListField);
     var result = {};
     itemList.forEach(function (item) {
-        result[item[idField]] = item;
+        var id = project.tripleStore.queryLatestC(item, idField);
+        result[id] = item;
     });
     return result;
 }
@@ -123,6 +125,7 @@ function buildIdToItemMap(itemList, idField) {
 function buildItemListFromIdList(idToItemMap, idItemList, idField) {
     var result = [];
     idItemList.forEach(function (idItem) {
+        // TODO: Fix access here for tripleStore use
         var item = idToItemMap[idItem[idField]];
         if (item) {
             result.push(item);
@@ -135,20 +138,20 @@ function buildItemListFromIdList(idToItemMap, idItemList, idField) {
 
 // Are names just hints as to purpose of code? Can never convey all aspects of interrelationships?
 
-function findQuestionnaireTemplate(project: Project, shortName) {
-    var questionnaires = project.projectModel.project_storyForms;
+function findQuestionnaireTemplate(project: Project, shortName): string {
+    var questionnaires: Array<string> = project.getListForField("project_storyForms");
     for (var i = 0; i < questionnaires.length; i++) {
-        if (questionnaires[i].questionForm_shortName === shortName) {
+        if (project.tripleStore.queryLatestC(questionnaires[i], "questionForm_shortName") === shortName) {
             return questionnaires[i];
         }
     }
     return null;
 }
 
-export function findStoryCollection(project: Project, shortName) {
-    var storyCollections = project.projectModel.project_storyCollections;
+export function findStoryCollection(project: Project, shortName): string {
+    var storyCollections: Array<string> = project.getListForField("project_storyCollections");
     for (var i = 0; i < storyCollections.length; i++) {
-        if (storyCollections[i].storyCollection_shortName === shortName) {
+        if (project.tripleStore.queryLatestC(storyCollections[i], "storyCollection_shortName") === shortName) {
             return storyCollections[i];
         }
     }
@@ -189,7 +192,7 @@ export function buildQuestionnaireFromTemplate(project: Project, questionnaireTe
     questionnaire.endText = questionnaireTemplate["questionForm_endText"]; 
     
     // TODO: Should maybe ensure unique IDs for eliciting questions?
-    var allElicitingQuestions = buildIdToItemMap(project.projectModel.project_elicitingQuestionsList, "elicitingQuestion_shortName");
+    var allElicitingQuestions = buildIdToItemMap(project, "project_elicitingQuestionsList", "elicitingQuestion_shortName");
     var elicitingQuestions = buildItemListFromIdList(allElicitingQuestions, questionnaireTemplate["questionForm_elicitingQuestions"], "elicitingQuestion");       
     console.log("elicitingQuestions", elicitingQuestions);
     
@@ -206,12 +209,12 @@ export function buildQuestionnaireFromTemplate(project: Project, questionnaireTe
     }
     ensureAtLeastOneElicitingQuestion(questionnaire);
     
-    var allStoryQuestions = buildIdToItemMap(project.projectModel.project_storyQuestionsList, "storyQuestion_shortName");
+    var allStoryQuestions = buildIdToItemMap(project, "project_storyQuestionsList", "storyQuestion_shortName");
     var storyQuestions = buildItemListFromIdList(allStoryQuestions, questionnaireTemplate["questionForm_storyQuestions"], "storyQuestion");       
     ensureUniqueQuestionIDs(usedIDs, storyQuestions);
     questionnaire.storyQuestions = convertEditorQuestions(storyQuestions);
     
-    var allParticipantQuestions = buildIdToItemMap(project.projectModel.project_participantQuestionsList, "participantQuestion_shortName");
+    var allParticipantQuestions = buildIdToItemMap(project, "project_participantQuestionsList", "participantQuestion_shortName");
     var participantQuestions = buildItemListFromIdList(allParticipantQuestions, questionnaireTemplate["questionForm_participantQuestions"], "participantQuestion");       
     ensureUniqueQuestionIDs(usedIDs, participantQuestions);      
     questionnaire.participantQuestions = convertEditorQuestions(participantQuestions);

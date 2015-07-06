@@ -184,7 +184,7 @@ function getQuestionnaireForStoryCollection(storyCollectionName: string) {
         return null;
     }
     
-    var questionnaireName = storyCollection.storyCollection_questionnaireIdentifier;
+    var questionnaireName = project.tripleStore.queryLatestC(storyCollection, "storyCollection_questionnaireIdentifier");
     
     if (!questionnaireName) {
         // TODO: translate
@@ -192,7 +192,7 @@ function getQuestionnaireForStoryCollection(storyCollectionName: string) {
         return null;
     }
     
-    var questionnaire = storyCollection.questionnaire;
+    var questionnaire = project.tripleStore.queryLatestC(storyCollection, "questionnaire");
     
     if (!questionnaire) {
         // TODO: translate

@@ -13,11 +13,12 @@ class Project {
     journalIdentifier: string;
     projectIdentifier: string;
     userIdentifier: any;
-    subscriptions = [];
-    activeQuestionnaires = {};
     pointrelClient: PointrelClient;
     tripleStore: TripleStore;
     redrawCallback: Function;
+    
+    // The activeQuestionnaires field tracks what should be available to survey users and to construct related messages
+    activeQuestionnaires = {};
     
     constructor(journalIdentifier, projectIdentifier, userIdentifier, updateServerStatus, redrawCallback) {
         this.journalIdentifier = journalIdentifier;
@@ -53,6 +54,26 @@ class Project {
         });
     }
     
+    // TODO: Redundant code with what is in GridWithItemPanel
+    getListForField(fieldName) {
+        var result = [];
+        var setIdentifier = this.getFieldValue(fieldName);
+        
+        if (!setIdentifier) return result;
+        
+        // Iterate over set and get every item from it
+        var triples = this.tripleStore.queryAllLatestBCForA(setIdentifier);
+        console.log("Project getSetForField triples", triples);
+        for (var key in triples) {
+            var triple = triples[key];
+            if (triple.b.setItem && (triple.c !== null && triple.c !== undefined)) {
+                result.push(triple.c);
+            }
+        }
+        
+        return result;
+    }
+    
     getFieldValue(fieldName) {
         return this.tripleStore.queryLatestC(this.projectIdentifier, fieldName);
     }
@@ -83,13 +104,6 @@ class Project {
             console.log("project calling redrawCallback");
             this.redrawCallback();
         }
-    }
-    
-    disconnectProjectModel() {
-        this.subscriptions.forEach(function (subscription) {
-            subscription.remove();
-        });
-        this.subscriptions = [];
     }
 }
 
