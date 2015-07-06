@@ -252,6 +252,7 @@ class GridWithItemPanel {
     }
     
     updateData() {
+        console.log("GridWithItemPanel updateData");
         this.dataStore.getDataArrayFromModel();
         this.sortData();
     }
@@ -274,6 +275,10 @@ class GridWithItemPanel {
     
     calculateView() {
         console.log("GridWithItemPanel calculateView", this.dataStore);
+        
+        // Deal with the fact that new items might be added at any time by other users
+        // TODO: This is very inefficient. Alternatives include: listening for changes that add or remove items; or determing nature of change prompting redraw
+        this.updateData();
         
         var panelBuilder = this.panelBuilder;
         
@@ -829,9 +834,10 @@ class TripleSetDataStore extends DataStore {
         if (this.setIdentifier) {
             // Iterate over set and get every item from it
             var triples = this.tripleStore.queryAllLatestBCForA(this.setIdentifier);
+            console.log("getDataArrayFromModel triples", triples);
             for (var key in triples) {
                 var triple = triples[key];
-                if (triple.b.setItem) {
+                if (triple.b.setItem && (triple.c !== null && triple.c !== undefined)) {
                     this.data.push(triple.c);
                 }
             }
