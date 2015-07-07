@@ -106,7 +106,7 @@ function optionsFromQuestion(question, stories) {
     } else if (question.displayType === "boolean") {
         // console.log("boolean", question);
         // TODO; Not sure this will really be right with true/false as booleans instead of strings
-        ["yes", "no"].forEach(function(each) {
+        ["true", "false"].forEach(function(each) {
             // console.log("option", id, each);
             count = totals[each];
             if (!count) count = 0;
