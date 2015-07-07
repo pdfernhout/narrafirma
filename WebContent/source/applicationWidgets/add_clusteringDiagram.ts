@@ -12,19 +12,10 @@ function add_clusteringDiagram(panelBuilder: PanelBuilder, model, fieldSpecifica
     
     var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
         
-    var clusteringDiagram = m.component(<any>ClusteringDiagram, {key: fieldSpecification.id, model: model, id: fieldSpecification.id, diagramName: diagramName, autosave: true});
+    var storageFunction = panelBuilder.project.tripleStore.makeStorageFunction(model, diagramName);
+    var clusteringDiagram = m.component(<any>ClusteringDiagram, {key: fieldSpecification.id, storageFunction: storageFunction, autosave: true});
 
-    /* TODO: Who should be responsible for updating this data? Is redraw called or is that bypassed as an html component?
-    var watcher = model.watch(diagramName, function() {
-        // console.log("updating clusteringDiagram for model field change", model, fieldSpecification);
-        var newData = model[diagramName];
-        clusteringDiagram.updateDiagram(newData);
-    });
-    
-    // Kludge to get the contentPane to free the watcher by calling remove when it is destroyed
-    // This would not work if the content pane continued to exist when replacing this component
-    contentPane.own(watcher);
-    */
+    // TODO: Who should be responsible for updating this data? Is redraw called or is that bypassed as an html component?
     
     return m("div", [
         prompt,

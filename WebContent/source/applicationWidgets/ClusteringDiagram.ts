@@ -92,11 +92,9 @@ function myWrap(text, itemText, textStyle, maxWidth) {
 class ClusteringDiagram {
     mainButtons = [];
     
+    storageFunction: Function;
     autosave: boolean = false;
     lastSelectedItem = null;
-    diagramName: string = null;
-    idOfWidget: string = null;
-    modelForStorage = null;
     diagram = null;
     divForResizing: HTMLElement = null;
     _mainSurface: d3.Selection<any> = null;
@@ -124,14 +122,12 @@ class ClusteringDiagram {
     static defaultTextStyle = {family: "Arial", size: "9pt", weight: "normal"};
     static defaultRadius = 44;
 
-    constructor(model, id, diagramName, autosave) {
-        console.log("Creating ClusteringDiagram", model, id, diagramName);
+    constructor(storageFunction: Function, autosave) {
+        console.log("Creating ClusteringDiagram");
     
+        this.storageFunction = storageFunction;
         this.autosave = autosave;
-        this.diagramName = diagramName;
-        this.idOfWidget = id;
-        this.modelForStorage = model;
-        this.diagram = model[this.diagramName];
+        this.diagram = storageFunction();
         
         // TODO: remove test on Array after demo data gets upgraded
         if (!this.diagram || this.diagram instanceof Array) {
@@ -160,7 +156,7 @@ class ClusteringDiagram {
     
     static controller(args) {
         console.log("Making ClusteringDiagram: ", args);
-        return new ClusteringDiagram(args.model, args.id, args.diagramName, args.autosave);
+        return new ClusteringDiagram(args.storageFunction, args.autosave);
     }
     
     static view(controller, args) {
@@ -170,6 +166,10 @@ class ClusteringDiagram {
     }
     
     calculateView(args) {
+        // Make sure the mdoel is up-to-date
+        // this seems wasteful but there is no toehr way to be sure jave the letstest ada
+        this.updateDiagram(this.storageFunction());
+        
         var entryDialog = [];
         if (this.showEntryDialog) {
             entryDialog.push(this.buildEntryDialog());
@@ -564,6 +564,9 @@ class ClusteringDiagram {
     
     updateDiagram(newDiagram) {
         // console.log("updateDiagram", this.diagram, newDiagram);
+        
+        if (!newDiagram) return;
+        
         if (this.diagram.changesCount === newDiagram.changesCount) {
             // console.log("Changes count match at", newDiagram.changesCount);
             // Optimize out reflections of our changes back to us if the diagrams are the same
@@ -609,7 +612,7 @@ class ClusteringDiagram {
     }
     
     saveChanges() {
-        this.modelForStorage[this.diagramName] = this.diagram;
+        this.storageFunction(this.diagram);
     }
     
     newItem(text = null, url = "") {

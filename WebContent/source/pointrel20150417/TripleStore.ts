@@ -174,6 +174,19 @@ class TripleStore {
         
         return result;
     }
+    
+    // Utility methods
+    
+    // Make a function that either returns the latest value with no arguments or sets it with one argument
+    makeStorageFunction(a, b): Function {
+        return (value: any = undefined) => {
+            if (value === undefined) {
+                return this.queryLatestC(a, b);
+            } else {
+                this.addTriple(a, b, value);
+            }
+        };
+    }
 }
    
 export = TripleStore;
