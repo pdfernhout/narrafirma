@@ -57,26 +57,7 @@ class Project {
     // TODO: Redundant code with what is in GridWithItemPanel
     getListForField(fieldName) {
         var setIdentifier = this.getFieldValue(fieldName);
-        return this.getListForSetIdentifier(setIdentifier);
-    }
-    
-        // TODO: Redundant code with what is in GridWithItemPanel
-    getListForSetIdentifier(setIdentifier) {
-        var result = [];
- 
-        if (!setIdentifier) return result;
-        
-        // Iterate over set and get every item from it
-        var triples = this.tripleStore.queryAllLatestBCForA(setIdentifier);
-        // console.log("Project getListForField triples", triples);
-        for (var key in triples) {
-            var triple = triples[key];
-            if (triple.b.setItem && (triple.c !== null && triple.c !== undefined)) {
-                result.push(triple.c);
-            }
-        }
-        
-        return result;
+        return this.tripleStore.getListForSetIdentifier(setIdentifier);
     }
     
     getFieldValue(fieldName) {

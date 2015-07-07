@@ -18,7 +18,7 @@ function optionsForSelect(panelBuilder: PanelBuilder, model, fieldSpecification,
         if (_.isString(choices)) {
             // Build choices by making items using tripelStore set
             var choiceItems = [];
-            var choiceSet = panelBuilder.project.getListForSetIdentifier(choices);
+            var choiceSet = panelBuilder.project.tripleStore.getListForSetIdentifier(choices);
             for (var i = 0; i < choiceSet.length; i++) {
                 var choiceIdentifier = choiceSet[i];
                 var item = panelBuilder.project.tripleStore.makeObject(choiceIdentifier);

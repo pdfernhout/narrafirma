@@ -194,7 +194,7 @@ export function buildQuestionnaireFromTemplate(project: Project, questionnaireTe
     
     // TODO: Should maybe ensure unique IDs for eliciting questions?
     var allElicitingQuestions = buildIdToItemMap(project, "project_elicitingQuestionsList", "elicitingQuestion_shortName");
-    var elicitingQuestionIdentifiers = project.getListForSetIdentifier(project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_elicitingQuestions"));
+    var elicitingQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_elicitingQuestions"));
     var elicitingQuestions = buildItemListFromIdList(project, allElicitingQuestions, elicitingQuestionIdentifiers, "elicitingQuestion");       
     console.log("elicitingQuestions", elicitingQuestions);
     
@@ -212,13 +212,13 @@ export function buildQuestionnaireFromTemplate(project: Project, questionnaireTe
     ensureAtLeastOneElicitingQuestion(questionnaire);
     
     var allStoryQuestions = buildIdToItemMap(project, "project_storyQuestionsList", "storyQuestion_shortName");
-    var storyQuestionIdentifiers = project.getListForSetIdentifier(project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_storyQuestions"));
+    var storyQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_storyQuestions"));
     var storyQuestions = buildItemListFromIdList(project, allStoryQuestions, storyQuestionIdentifiers, "storyQuestion");       
     ensureUniqueQuestionIDs(usedIDs, storyQuestions);
     questionnaire.storyQuestions = convertEditorQuestions(storyQuestions);
     
     var allParticipantQuestions = buildIdToItemMap(project, "project_participantQuestionsList", "participantQuestion_shortName");
-    var participantQuestionIdentifiers = project.getListForSetIdentifier(project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_participantQuestions"));
+    var participantQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_participantQuestions"));
     var participantQuestions = buildItemListFromIdList(project, allParticipantQuestions, participantQuestionIdentifiers, "participantQuestion");       
     ensureUniqueQuestionIDs(usedIDs, participantQuestions);      
     questionnaire.participantQuestions = convertEditorQuestions(participantQuestions);

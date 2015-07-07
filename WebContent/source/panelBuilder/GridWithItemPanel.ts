@@ -734,7 +734,7 @@ class DataStore {
         return newItem;
     }
     
-    makeNewItem() {
+    makeNewItem(): any {
         // TODO: This needs to create an action that affects original list
         var newItem = {};
         newItem[this.idProperty] = this.newIdForItem();
@@ -828,23 +828,16 @@ class TripleSetDataStore extends DataStore {
         super(model, modelField, idProperty);
         this.tripleStore = tripleStore;
     }
-       
+    
     getDataArrayFromModel() {
-        this.data = [];
         this.setIdentifier = this.tripleStore.queryLatestC(this.model, this.modelField);
         
         // TODO: Should we make a set if none exists at this time as opposed to lazily at first insertion of data?
 
         if (this.setIdentifier) {
-            // Iterate over set and get every item from it
-            var triples = this.tripleStore.queryAllLatestBCForA(this.setIdentifier);
-            console.log("getDataArrayFromModel triples", triples);
-            for (var key in triples) {
-                var triple = triples[key];
-                if (triple.b.setItem && (triple.c !== null && triple.c !== undefined)) {
-                    this.data.push(triple.c);
-                }
-            }
+            this.data = this.tripleStore.getListForSetIdentifier(this.setIdentifier);
+        } else {
+            this.data = [];
         }
     }
     
@@ -852,8 +845,7 @@ class TripleSetDataStore extends DataStore {
     ensureSetExists() {
         // TODO: Remove temporary addition with comparison on string type (for upgrading)
         if (!this.setIdentifier || typeof this.setIdentifier !== "string") {
-            // this.setIdentifier = {"type": "set", "id":  generateRandomUuid()};
-            this.setIdentifier = "Set:" + generateRandomUuid();
+            this.setIdentifier = this.tripleStore.newIdForSet();
             this.tripleStore.addTriple(this.model, this.modelField, this.setIdentifier);
         }
     }
@@ -864,45 +856,30 @@ class TripleSetDataStore extends DataStore {
 
         this.ensureSetExists();
         
-        var newId = this.newIdForItem();
-        
-        this.tripleStore.addTriple(this.setIdentifier, {setItem: newId}, newId);
-        
-        // For every field, copy it...
-        var triples = this.tripleStore.queryAllLatestBCForA(item);
-        for (var key in triples) {
-            var triple = triples[key];
-            this.tripleStore.addTriple(newId, triple.b, triple.c);
-        }
+        var newId = this.tripleStore.makeCopyOfItemWithNewId(this.setIdentifier, item);
         
         this.data.push(newId);
         
-        // TODO: This item will not be sorted
         return newId;
     }
     
-    makeNewItem() {
+    makeNewItem(): any {
         // TODO: This needs to create an action that affects original list
 
         this.ensureSetExists();
-        
-        var newId = this.newIdForItem();
-        
-        // TODO: Should there be another layer of indirection with a UUID for the "item" different from idPropery?
-        // this.tripleStore.addTriple(newId????, this.idProperty, newId);
-        this.tripleStore.addTriple(this.setIdentifier, {setItem: newId}, newId);
+
+        var newId = this.tripleStore.makeNewItem(this.setIdentifier);
         
         this.data.push(newId);
         
-        // TODO: This item will not be sorted
         return newId;
     }
-    
+   
     deleteItem(item) {
         // TODO: This needs to create an action that affects original list
         
         // TODO: Should the C be undefined instead of null?
-        this.tripleStore.addTriple(this.setIdentifier, {setItem: item}, null);
+        this.tripleStore.deleteSetItem(this.setIdentifier, item);
         
         var index = this.data.indexOf(item);
         this.data.splice(index, 1);

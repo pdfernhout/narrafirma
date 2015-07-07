@@ -1,6 +1,7 @@
 // A semantic (sub)web implementation a triple store
 import PointrelClient = require("./PointrelClient");
 import topic = require("./topic");
+import generateRandomUuid = require("./generateRandomUuid");
 
 "use strict";
 
@@ -210,6 +211,66 @@ class TripleStore {
                 var c = tripleMessage.change.triple.c;
                 result[b] = tripleMessage.change.triple.c;
             }         
+        }
+        
+        return result;
+    }
+    
+    // Sets
+    // TODO: Id does not have to be restricted to a string, but doing it for now to catch errors
+
+    newIdForSet() {
+        // var setIdentifier = {"type": "set", "id":  generateRandomUuid()};
+        var setIdentifier = "Set:" + generateRandomUuid();
+        return setIdentifier;
+    }
+    
+    private newIdForItem() {
+        // return new Date().toISOString();
+        return generateRandomUuid();
+    }
+    
+    makeNewItem(setIdentifier: string) { 
+        var newId = this.newIdForItem();
+        
+        // TODO: Should there be another layer of indirection with a UUID for the "item" different from idPropery?
+        // this.tripleStore.addTriple(newId????, this.idProperty, newId);
+        this.addTriple(setIdentifier, {setItem: newId}, newId);
+    }
+    
+    makeCopyOfItemWithNewId(setIdentifier: string, existingItemId: string) {
+        var newId = this.newIdForItem();
+        
+        this.addTriple(setIdentifier, {setItem: newId}, newId);
+        
+        // For every field, copy it...
+        var triples = this.queryAllLatestBCForA(existingItemId);
+        for (var key in triples) {
+            var triple = triples[key];
+            this.addTriple(newId, triple.b, triple.c);
+        }
+
+        return newId;
+    }
+    
+    deleteSetItem(setIdentifier: string, itemIdentifier: string) {
+        // TODO: Should the C be undefined instead of null?
+        this.addTriple(setIdentifier, {setItem: itemIdentifier}, null);
+    }
+
+    getListForSetIdentifier(setIdentifier) {
+        var result = [];
+ 
+        if (!setIdentifier) return result;
+        
+        // Iterate over set and get every item from it
+        var triples = this.queryAllLatestBCForA(setIdentifier);
+        // console.log("TripleStore getListForField triples", triples);
+        for (var key in triples) {
+            var triple = triples[key];
+            if (triple.b.setItem && (triple.c !== null && triple.c !== undefined)) {
+                result.push(triple.c);
+            }
         }
         
         return result;
