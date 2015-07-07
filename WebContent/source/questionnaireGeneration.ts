@@ -67,9 +67,6 @@ function convertEditorQuestions(editorQuestions) {
         // TODO: Maybe should include a survey name here in ID?
         var id = "__survey_" + shortName;
         var type = question.storyQuestion_type || question.participantQuestion_type;
-        // TODO: What to set for initial values?
-        // TODO: Improve how making model...
-        // if (!(type in {label: 1, header: 1})) model[id] = null;
         var prompt = question.storyQuestion_text || question.participantQuestion_text;
         
         var options = [];
@@ -122,13 +119,17 @@ function buildIdToItemMap(project: Project, itemListField, idField: string) {
     return result;
 }
 
-function buildItemListFromIdList(idToItemMap, idItemList, idField) {
+function buildItemListFromIdList(project: Project, idToItemMap, idItemList, idField) {
     var result = [];
     idItemList.forEach(function (idItem) {
         // TODO: Fix access here for tripleStore use
-        var item = idToItemMap[idItem[idField]];
+        var id = project.tripleStore.queryLatestC(idItem, idField);
+        var item = idToItemMap[id];
         if (item) {
-            result.push(item);
+            // Retrieve the latest for all the fields of the object (which will include deteleted/null fields)
+            // TODO: Remove any deleted/null fields
+            var itemObject = project.tripleStore.queryAllLatestBCForA(item);
+            result.push(itemObject);
         } else {
             console.log("Editing error: Missing question definition for", idItem);
         }
@@ -170,7 +171,7 @@ export function buildQuestionnaire(project: Project, shortName) {
     return buildQuestionnaireFromTemplate(project, questionnaireTemplate);
 }
 
-export function buildQuestionnaireFromTemplate(project: Project, questionnaireTemplate) {
+export function buildQuestionnaireFromTemplate(project: Project, questionnaireTemplate: string) {
     var usedIDs = {
         __createdIDCount: 0
     };
@@ -186,17 +187,18 @@ export function buildQuestionnaireFromTemplate(project: Project, questionnaireTe
         participantQuestions: []
     };
  
-    questionnaire.title = questionnaireTemplate["questionForm_title"];
-    questionnaire.image = questionnaireTemplate["questionForm_image"];
-    questionnaire.startText = questionnaireTemplate["questionForm_startText"];
-    questionnaire.endText = questionnaireTemplate["questionForm_endText"]; 
+    questionnaire.title = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_title");
+    questionnaire.image = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_image");
+    questionnaire.startText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_startText");
+    questionnaire.endText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_endText"); 
     
     // TODO: Should maybe ensure unique IDs for eliciting questions?
     var allElicitingQuestions = buildIdToItemMap(project, "project_elicitingQuestionsList", "elicitingQuestion_shortName");
-    var elicitingQuestions = buildItemListFromIdList(allElicitingQuestions, questionnaireTemplate["questionForm_elicitingQuestions"], "elicitingQuestion");       
+    var elicitingQuestionIdentifiers = project.getListForSetIdentifier(project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_elicitingQuestions"));
+    var elicitingQuestions = buildItemListFromIdList(project, allElicitingQuestions, elicitingQuestionIdentifiers, "elicitingQuestion");       
     console.log("elicitingQuestions", elicitingQuestions);
     
-    for (var elicitingQuestionIndex in elicitingQuestions) {
+    for (var elicitingQuestionIndex = 0; elicitingQuestionIndex < elicitingQuestions.length; elicitingQuestionIndex++) {
         var storySolicitationQuestionText = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_text;
         // TODO: var storySolicitationQuestionShortName = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_shortName;
         var storySolicitationQuestionType = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_type;
@@ -210,12 +212,14 @@ export function buildQuestionnaireFromTemplate(project: Project, questionnaireTe
     ensureAtLeastOneElicitingQuestion(questionnaire);
     
     var allStoryQuestions = buildIdToItemMap(project, "project_storyQuestionsList", "storyQuestion_shortName");
-    var storyQuestions = buildItemListFromIdList(allStoryQuestions, questionnaireTemplate["questionForm_storyQuestions"], "storyQuestion");       
+    var storyQuestionIdentifiers = project.getListForSetIdentifier(project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_storyQuestions"));
+    var storyQuestions = buildItemListFromIdList(project, allStoryQuestions, storyQuestionIdentifiers, "storyQuestion");       
     ensureUniqueQuestionIDs(usedIDs, storyQuestions);
     questionnaire.storyQuestions = convertEditorQuestions(storyQuestions);
     
     var allParticipantQuestions = buildIdToItemMap(project, "project_participantQuestionsList", "participantQuestion_shortName");
-    var participantQuestions = buildItemListFromIdList(allParticipantQuestions, questionnaireTemplate["questionForm_participantQuestions"], "participantQuestion");       
+    var participantQuestionIdentifiers = project.getListForSetIdentifier(project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_participantQuestions"));
+    var participantQuestions = buildItemListFromIdList(project, allParticipantQuestions, participantQuestionIdentifiers, "participantQuestion");       
     ensureUniqueQuestionIDs(usedIDs, participantQuestions);      
     questionnaire.participantQuestions = convertEditorQuestions(participantQuestions);
     
