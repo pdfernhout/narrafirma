@@ -63,7 +63,7 @@ class Project {
         
         // Iterate over set and get every item from it
         var triples = this.tripleStore.queryAllLatestBCForA(setIdentifier);
-        console.log("Project getSetForField triples", triples);
+        // console.log("Project getListForField triples", triples);
         for (var key in triples) {
             var triple = triples[key];
             if (triple.b.setItem && (triple.c !== null && triple.c !== undefined)) {
@@ -85,11 +85,11 @@ class Project {
     
     // TODO: What do do about this function? Especially if want to track chat messages or log messages or undoable changes for project?
     receivedMessage(message) {
-        console.log("Project receivedMessage", message);
+        // console.log("Project receivedMessage", message);
         
         if (message.change && message.change.action === "addTriple") {
             // Ignore addTriple messages as we handle only the ones we did not send via a subscription
-            console.log("Ignoring tripleStore message", message);
+            // console.log("Ignoring tripleStore message", message);
             return;
         }
         
@@ -101,7 +101,7 @@ class Project {
         // Since this event came from the network, queue a Mithril redraw
         // The tripleStore may not be updated yet, so this redraw needs to get queued for later by the application
         if (this.redrawCallback) {
-            console.log("project calling redrawCallback");
+            // console.log("project calling redrawCallback");
             this.redrawCallback();
         }
     }
