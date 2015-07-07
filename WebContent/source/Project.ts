@@ -56,9 +56,14 @@ class Project {
     
     // TODO: Redundant code with what is in GridWithItemPanel
     getListForField(fieldName) {
-        var result = [];
         var setIdentifier = this.getFieldValue(fieldName);
-        
+        return this.getListForSetIdentifier(setIdentifier);
+    }
+    
+        // TODO: Redundant code with what is in GridWithItemPanel
+    getListForSetIdentifier(setIdentifier) {
+        var result = [];
+ 
         if (!setIdentifier) return result;
         
         // Iterate over set and get every item from it
