@@ -38,51 +38,54 @@ var add_templateList_activityQuestions = [
     {id: "plan", valueType: "string", displayType: "textarea"}
 ];
 
-function useButtonClicked(templateListChoice, model, hideDialogCallback, gridWithItemPanel: GridWithItemPanel) {
+function useButtonClicked(panelBuilder: PanelBuilder, templateListChoice, model, hideDialogCallback, gridWithItemPanel: GridWithItemPanel) {
    console.log("useButtonClicked", gridWithItemPanel);
    var selectedTemplate = gridWithItemPanel.getSelectedItem();
    console.log("grid selectedTemplate", selectedTemplate);
+    
+    var storeValueInModel = panelBuilder.project.tripleStore.makeModelFunction(model);
    
    if (selectedTemplate) {
        // TODO: not sure whether to confirm?
        // TODO: Translate
        dialogSupport.confirm("Copy selected template '" + selectedTemplate.shortName + "' into question definition?", function () {
+           var uniqueName = selectedTemplate.shortName || selectedTemplate.id || "";
            if (templateListChoice === "elicitationQuestions") {
-               model.elicitingQuestion_text = selectedTemplate.text || "";
-               model.elicitingQuestion_shortName = selectedTemplate.shortName || "";
+               storeValueInModel("elicitingQuestion_text", selectedTemplate.text || "");
+               storeValueInModel("elicitingQuestion_shortName", uniqueName);
                // TODO: No data for type, and would need to copy over settings for checkboxes if such data existed
-               // model.storyQuestion_type = selectedTemplate.text;
-               model.elicitingQuestion_type = {};
+               // modelFunction("storyQuestion_type", selectedTemplate.text);
+               storeValueInModel("elicitingQuestion_type", {});
            } else if (templateListChoice === "storyQuestions") {
-               model.storyQuestion_text = selectedTemplate.text || "";
-               model.storyQuestion_type = selectedTemplate.type || "";
-               model.storyQuestion_shortName = selectedTemplate.shortName || "";
-               model.storyQuestion_options = selectedTemplate.options || "";
+               storeValueInModel("storyQuestion_text", selectedTemplate.text || "");
+               storeValueInModel("storyQuestion_type", selectedTemplate.type || "");
+               storeValueInModel("storyQuestion_shortName", uniqueName);
+               storeValueInModel("storyQuestion_options", selectedTemplate.options || "");
            } else if (templateListChoice === "participantQuestions") {
-               model.participantQuestion_text = selectedTemplate.text || "";
-               model.participantQuestion_type = selectedTemplate.type || "";
-               model.participantQuestion_shortName = selectedTemplate.shortName || "";
-               model.participantQuestion_options = selectedTemplate.options || "";
+               storeValueInModel("participantQuestion_text", selectedTemplate.text || "");
+               storeValueInModel("participantQuestion_type", selectedTemplate.type || "");
+               storeValueInModel("participantQuestion_shortName", uniqueName);
+               storeValueInModel("participantQuestion_options", selectedTemplate.options || "");
            } else if (templateListChoice === "storyCollectionActivities") {
-               model.collectionSessionActivity_name = selectedTemplate.shortName || "";
-               model.collectionSessionActivity_type = selectedTemplate.type || "";
-               model.collectionSessionActivity_plan = selectedTemplate.plan || "";
-               model.collectionSessionActivity_optionalParts = selectedTemplate.optionalParts || "";
-               model.collectionSessionActivity_duration = selectedTemplate.duration || "";
-               model.collectionSessionActivity_recording = selectedTemplate.recording || "";
-               model.collectionSessionActivity_materials = selectedTemplate.materials || "";
-               model.collectionSessionActivity_spaces = selectedTemplate.spaces || "";
-               model.collectionSessionActivity_facilitation = selectedTemplate.facilitation || "";
+               storeValueInModel("collectionSessionActivity_name", uniqueName);
+               storeValueInModel("collectionSessionActivity_type", selectedTemplate.type || "");
+               storeValueInModel("collectionSessionActivity_plan", selectedTemplate.plan || "");
+               storeValueInModel("collectionSessionActivity_optionalParts", selectedTemplate.optionalParts || "");
+               storeValueInModel("collectionSessionActivity_duration", selectedTemplate.duration || "");
+               storeValueInModel("collectionSessionActivity_recording", selectedTemplate.recording || "");
+               storeValueInModel("collectionSessionActivity_materials", selectedTemplate.materials || "");
+               storeValueInModel("collectionSessionActivity_spaces", selectedTemplate.spaces || "");
+               storeValueInModel("collectionSessionActivity_facilitation", selectedTemplate.facilitation || "");
            } else if (templateListChoice === "sensemakingActivities") {
-               model.sensemakingSessionPlan_activity_name = selectedTemplate.shortName || "";
-               model.sensemakingSessionPlan_activity_type = selectedTemplate.type || "";
-               model.sensemakingSessionPlan_activity_plan = selectedTemplate.plan || "";
-               model.sensemakingSessionPlan_activity_optionalParts = selectedTemplate.optionalParts || "";
-               model.sensemakingSessionPlan_activity_duration = selectedTemplate.duration || "";
-               model.sensemakingSessionPlan_activity_recording = selectedTemplate.recording || "";
-               model.sensemakingSessionPlan_activity_materials = selectedTemplate.materials || "";
-               model.sensemakingSessionPlan_activity_spaces = selectedTemplate.spaces || "";
-               model.sensemakingSessionPlan_activity_facilitation = selectedTemplate.facilitation || "";
+               storeValueInModel("sensemakingSessionPlan_activity_name", uniqueName);
+               storeValueInModel("sensemakingSessionPlan_activity_type", selectedTemplate.type || "");
+               storeValueInModel("sensemakingSessionPlan_activity_plan", selectedTemplate.plan || "");
+               storeValueInModel("sensemakingSessionPlan_activity_optionalParts", selectedTemplate.optionalParts || "");
+               storeValueInModel("sensemakingSessionPlan_activity_duration", selectedTemplate.duration || "");
+               storeValueInModel("sensemakingSessionPlan_activity_recording", selectedTemplate.recording || "");
+               storeValueInModel("sensemakingSessionPlan_activity_materials", selectedTemplate.materials || "");
+               storeValueInModel("sensemakingSessionPlan_activity_spaces", selectedTemplate.spaces || "");
+               storeValueInModel("sensemakingSessionPlan_activity_facilitation", selectedTemplate.facilitation || "");
            } else {
                var message = "ERROR: unsupported template type:" +  templateListChoice;
                console.log(message);
@@ -149,7 +152,7 @@ function makeTemplateListChooser(panelBuilder: PanelBuilder, dialogConfiguration
     var customButtonDefinition = {
         id: "useTemplate",
         customButtonLabel: "#button_UseTemplate|Use template",
-        callback: useButtonClicked.bind(null, templateListChoice, dialogConfiguration.dialogModel, hideDialogCallback)
+        callback: useButtonClicked.bind(null, panelBuilder, templateListChoice, dialogConfiguration.dialogModel, hideDialogCallback)
     };
     
     var model = {templates: templateQuestions};
