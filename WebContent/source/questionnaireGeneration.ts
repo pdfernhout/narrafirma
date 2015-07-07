@@ -128,7 +128,7 @@ function buildItemListFromIdList(project: Project, idToItemMap, idItemList, idFi
         if (item) {
             // Retrieve the latest for all the fields of the object (which will include deteleted/null fields)
             // TODO: Remove any deleted/null fields
-            var itemObject = project.tripleStore.queryAllLatestBCForA(item);
+            var itemObject = project.tripleStore.makeObject(item);
             result.push(itemObject);
         } else {
             console.log("Editing error: Missing question definition for", idItem);
