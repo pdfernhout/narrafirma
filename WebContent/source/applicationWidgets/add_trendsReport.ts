@@ -311,10 +311,15 @@ class PatternBrowser {
         // TODO: Handle multiple story collections
         // TODO: Better handling when can't find something
         
-        var storyCollectionPointer = catalysisReport.catalysisReport_storyCollections[catalysisReport.catalysisReport_storyCollections.length - 1];
+        var storyCollectionsIdentifier = this.project.tripleStore.queryLatestC(catalysisReport, "catalysisReport_storyCollections");
+        var storyCollectionItems = this.project.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
+        
+        if (storyCollectionItems.length === 0) return;
+        
+        var storyCollectionPointer = storyCollectionItems[storyCollectionItems.length - 1];
         if (!storyCollectionPointer) return;
     
-        var storyCollectionIdentifier = storyCollectionPointer.storyCollection;
+        var storyCollectionIdentifier = this.project.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
         
         var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
         if (!questionnaire) {
@@ -342,9 +347,12 @@ class PatternBrowser {
     
     findCatalysisReport(shortName) {
         var catalysisReports = this.project.tripleStore.queryLatestC(this.project.projectIdentifier, "project_catalysisReports");
-        for (var i = 0; i < catalysisReports.length; i++) {
-            if (catalysisReports[i].catalysisReport_shortName === shortName) {
-                return catalysisReports[i];
+        if (!catalysisReports) return null;
+        var catalysisReportIdentifiers = this.project.tripleStore.getListForSetIdentifier(catalysisReports);
+        for (var i = 0; i < catalysisReportIdentifiers.length; i++) {
+            var reportShortName = this.project.tripleStore.queryLatestC(catalysisReportIdentifiers[i], "catalysisReport_shortName");
+            if (reportShortName === shortName) {
+                return catalysisReportIdentifiers[i];
             }
         }
         return null;
