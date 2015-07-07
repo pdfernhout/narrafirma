@@ -198,6 +198,22 @@ class TripleStore {
             }
         };
     }
+    
+   makeObject(a) {
+        var result = {};
+        
+        for (var i = 0; i < this.tripleMessages.length; i++) {
+            var tripleMessage = this.tripleMessages[i];
+            // console.log("queryLatest loop", i, tripleMessage);
+            if (tripleMessage.change.triple.a === a) {
+                var b = tripleMessage.change.triple.b;
+                var c = tripleMessage.change.triple.c;
+                result[b] = tripleMessage.change.triple.c;
+            }         
+        }
+        
+        return result;
+    }
 }
    
 export = TripleStore;
