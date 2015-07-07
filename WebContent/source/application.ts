@@ -426,11 +426,11 @@ function calculateFunctionResultForGUI(panelBuilder: PanelBuilder, model, fieldS
     if (functionName === "isStoryCollectingEnabled") {
         return surveyCollection.isStoryCollectingEnabled();
     } else if (functionName === "storeQuestionnaireInStoryCollection") {
-        var storyCollection = fieldSpecification.value;
-        var questionnaireName = storyCollection.storyCollection_questionnaireIdentifier;
+        var storyCollectionIdentifier = fieldSpecification.value;
+        var questionnaireName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_questionnaireIdentifier");
         var questionnaire = questionnaireGeneration.buildQuestionnaire(project, questionnaireName);
         if (!questionnaire) return ["Questionnaire could not be created for: " + questionnaireName];
-        storyCollection.questionnaire = questionnaire;
+        project.tripleStore.addTriple(storyCollectionIdentifier, "questionnaire", questionnaire);
         return null;
     } else {
         console.log("TODO: calculateFunctionResultForGUI ", functionName, fieldSpecification);
