@@ -856,7 +856,7 @@ class TripleSetDataStore extends DataStore {
 
         this.ensureSetExists();
         
-        var newId = this.tripleStore.makeCopyOfItemWithNewId(this.setIdentifier, item);
+        var newId = this.tripleStore.makeCopyOfSetItemWithNewId(this.setIdentifier, item);
         
         this.data.push(newId);
         
@@ -868,7 +868,7 @@ class TripleSetDataStore extends DataStore {
 
         this.ensureSetExists();
 
-        var newId = this.tripleStore.makeNewItem(this.setIdentifier);
+        var newId = this.tripleStore.makeNewSetItem(this.setIdentifier);
         
         this.data.push(newId);
         

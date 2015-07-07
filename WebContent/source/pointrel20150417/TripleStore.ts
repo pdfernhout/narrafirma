@@ -225,21 +225,33 @@ class TripleStore {
         return setIdentifier;
     }
     
-    private newIdForItem() {
+    private newIdForSetItem() {
         // return new Date().toISOString();
         return generateRandomUuid();
     }
     
-    makeNewItem(setIdentifier: string) { 
-        var newId = this.newIdForItem();
+    makeNewSetItem(setIdentifier: string, template = undefined, idProperty = "id") { 
+        var newId;
+        
+        if (template) {
+            newId = template[idProperty];
+        } else {
+            newId = this.newIdForSetItem();
+        }
+        
+       if (template) {
+            for (var key in template) {
+                this.addTriple(newId, key, template[key]);
+            }
+        }
         
         // TODO: Should there be another layer of indirection with a UUID for the "item" different from idPropery?
         // this.tripleStore.addTriple(newId????, this.idProperty, newId);
         this.addTriple(setIdentifier, {setItem: newId}, newId);
     }
     
-    makeCopyOfItemWithNewId(setIdentifier: string, existingItemId: string) {
-        var newId = this.newIdForItem();
+    makeCopyOfSetItemWithNewId(setIdentifier: string, existingItemId: string) {
+        var newId = this.newIdForSetItem();
         
         this.addTriple(setIdentifier, {setItem: newId}, newId);
         
