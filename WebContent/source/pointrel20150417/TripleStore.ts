@@ -248,6 +248,8 @@ class TripleStore {
         // TODO: Should there be another layer of indirection with a UUID for the "item" different from idPropery?
         // this.tripleStore.addTriple(newId????, this.idProperty, newId);
         this.addTriple(setIdentifier, {setItem: newId}, newId);
+        
+        return newId;
     }
     
     makeCopyOfSetItemWithNewId(setIdentifier: string, existingItemId: string) {
