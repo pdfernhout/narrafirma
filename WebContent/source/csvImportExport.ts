@@ -144,7 +144,6 @@ function processCSVContentsForStories(contents) {
         return;
     }
     
-    // TODO: The grid is not updating when these are deleted until page is left and re-entered...
     var newStoryCollection = {
         id: generateRandomUuid(),
         storyCollection_shortName: storyCollectionIdentifier,
@@ -154,10 +153,14 @@ function processCSVContentsForStories(contents) {
         questionnaire: lastQuestionnaireUploaded
     };
     
-    var storyCollections = (project.getFieldValue("project_storyCollections") || []).slice();
-    storyCollections.push(newStoryCollection);
-    project.setFieldValue("project_storyCollections", storyCollections);
+    var storyCollections = project.getFieldValue("project_storyCollections");
+    if (!storyCollections) {
+        storyCollections = project.tripleStore.newIdForSet();
+        project.setFieldValue("project_storyCollections", storyCollections);
+    }
     
+    project.tripleStore.makeNewSetItem(storyCollections, newStoryCollection);
+
     // Send all surveyResults...
     // TODO: Stop on error? Use Dojo Deferred probably
     for (var surveyResultIndex = 0; surveyResultIndex < surveyResults.length; surveyResultIndex++) {
