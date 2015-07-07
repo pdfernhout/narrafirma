@@ -12,7 +12,7 @@ function div_for_value(value) {
 /* TODO: This is only really needed for translation which is not fully worked out, but maybe OK enough without it?
 function calculate_questionAnswer(panelBuilder: PanelBuilder, model, referencedQuestionID) {
     // console.log("calculate_questionAnswer", panelBuilder, model, referencedQuestionID);
-    var value = model[referencedQuestionID];
+    var value = panelBuilder.project.tripleStore.getLastestC(model, referencedQuestionID);
     if (value === undefined) {
         console.log("ERROR: missing question: ", referencedQuestionID);
         // throw new Error("ERROR: missing question: " + referencedQuestionID);  
