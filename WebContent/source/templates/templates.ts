@@ -1,8 +1,10 @@
 import kludgeForUseStrict = require("../kludgeForUseStrict");
 "use strict";
 
-// TODO: Fix mixed tabls and spaces and remove part of next line which disables indent check
+// TODO: Fix mixed tabs and spaces and remove part of next line which disables indent check
 /* tslint:disable:max-line-length indent */
+
+// TODO: Note everything has a shortName; id currently being used in those cases; do we really need both id and shortName?
 
 var templates = [
     {
