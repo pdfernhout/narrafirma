@@ -244,8 +244,10 @@ class GridWithItemPanel {
         this.isNavigationalScrollingNeeded = null;
         
         if (this.useTriples()) {
+            console.log("Grid using triples", this.model);
             this.dataStore = new TripleSetDataStore(this.model, this.fieldSpecification.id, this.idProperty, this.panelBuilder.project.tripleStore);
         } else {
+            console.log("Grid using objects", this.model);
             this.dataStore = new DataStore(this.model, this.fieldSpecification.id, this.idProperty);
         }
         this.updateData();
