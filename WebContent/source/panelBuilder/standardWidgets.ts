@@ -9,12 +9,23 @@ function getIdForText(text) {
     return text;
 }
 
-function optionsForSelect(panelBuilder, model, fieldSpecification, currentValue, addNoSelectionOption) {
+function optionsForSelect(panelBuilder: PanelBuilder, model, fieldSpecification, currentValue, addNoSelectionOption) {
     var specifiedChoices = fieldSpecification.valueOptions;
     var choices = specifiedChoices;
     
     if (_.isString(specifiedChoices)) {
         choices = valuePathResolver.newValuePath(panelBuilder, model, specifiedChoices)();
+        if (_.isString(choices)) {
+            // Build choices by making items using tripelStore set
+            var choiceItems = [];
+            var choiceSet = panelBuilder.project.getListForSetIdentifier(choices);
+            for (var i = 0; i < choiceSet.length; i++) {
+                var choiceIdentifier = choiceSet[i];
+                var item = panelBuilder.project.tripleStore.makeObject(choiceIdentifier);
+                choiceItems.push(item);
+            }
+            choices = choiceItems;
+        }
     }
     
     if (!choices) {
