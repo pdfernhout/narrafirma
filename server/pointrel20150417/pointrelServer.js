@@ -515,6 +515,7 @@ function respondForStoreMessageRequest(userIdentifier, senderIPAddress, journal,
     var sha256AndLength = utility.makeSHA256AndLength(sha256AndLengthObject);
 
     if (oldSHA256AndLength && oldSHA256AndLength !== sha256AndLength) {
+        console.log("Problem with new claculated sha not matching old supplied one:", oldSHA256AndLength, "new:", sha256AndLength, message, JSON.stringify(message));
         throw new Error("respondForStoreMessage: sha256AndLength was supplied in message but it does not match the calculated value; old: " + oldSHA256AndLength + " new: " + sha256AndLength);
     }
     
