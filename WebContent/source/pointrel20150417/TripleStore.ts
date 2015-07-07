@@ -187,6 +187,17 @@ class TripleStore {
             }
         };
     }
+    
+    // Make a function that either returns the latest value for a model field with one argument (fieldName) or sets it with two arguments (fieldName, value)
+    makeModelFunction(a): Function {
+        return (b, value: any = undefined) => {
+            if (value === undefined) {
+                return this.queryLatestC(a, b);
+            } else {
+                this.addTriple(a, b, value);
+            }
+        };
+    }
 }
    
 export = TripleStore;

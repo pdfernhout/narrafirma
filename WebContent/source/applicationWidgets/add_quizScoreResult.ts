@@ -1,16 +1,18 @@
 import translate = require("../panelBuilder/translate");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
+import Project = require("../Project");
 import m = require("mithril");
 
 "use strict";
 
-function calculate_quizScoreResult(panelSpecificationCollection, model, dependsOn) {
+function calculate_quizScoreResult(panelSpecificationCollection, modelFunction: Function, dependsOn) {
     // console.log("quiz score result", dependsOn);
     if (!panelSpecificationCollection) return "ERROR in calculate_quizScoreResult: panelSpecificationCollection is not set";
     var total = 0;
     for (var dependsOnIndex = 0; dependsOnIndex < dependsOn.length; dependsOnIndex++) {
         var questionID = dependsOn[dependsOnIndex];
-        var questionAnswer = model[questionID];
+        var questionAnswer = modelFunction(questionID);
+        console.log("questionAnswer", questionAnswer, questionID);
         var answerWeight = 0;
         var index = 0;
         if (questionAnswer) {
@@ -39,7 +41,8 @@ function calculate_quizScoreResult(panelSpecificationCollection, model, dependsO
 function add_quizScoreResult(panelBuilder: PanelBuilder, model, fieldSpecification) {
     var dependsOn = fieldSpecification.displayConfiguration;
     
-    var calculateResult = calculate_quizScoreResult(panelBuilder.panelSpecificationCollection, model, dependsOn);
+    var modelFunction = (<Project>panelBuilder.project).tripleStore.makeModelFunction(model);
+    var calculateResult = calculate_quizScoreResult(panelBuilder.panelSpecificationCollection, modelFunction, dependsOn);
     
     var baseText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);
     
