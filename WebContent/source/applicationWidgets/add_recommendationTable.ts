@@ -62,7 +62,7 @@ function build_recommendationTable(panelBuilder: PanelBuilder, dialogConfigurati
       Object.keys(recommendations.questions).map(function(questionName) {
           // TODO: Possible should improve this translation default, maybe by retrieving fieldSpecification for question and getting displayPrompt?
           var questionText = translate(questionName + "::prompt", questionName); // "Missing translation for: " + 
-          var yourAnswer = model[questionName];
+          var yourAnswer = panelBuilder.project.getFieldValue(questionName);
           var recommendationsForAnswer = recommendations.recommendations[questionName][yourAnswer];
 
           return m("tr", [[
