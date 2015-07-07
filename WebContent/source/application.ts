@@ -69,7 +69,7 @@ var navigationSections = [];
 var loadingBase = "lib/text!applicationPanelSpecifications/";
 
 // For building panels based on field specifications
-var panelBuilder = new PanelBuilder();
+var panelBuilder: PanelBuilder = new PanelBuilder();
 
 // This will hold information about all the panels used
 var panelSpecificationCollection = new PanelSpecificationCollection();
@@ -678,6 +678,7 @@ function loadApplicationDesign() {
         // Tell the panel builder how to build panels
         panelBuilder.setPanelSpecifications(panelSpecificationCollection);
         panelBuilder.project = project;
+        panelBuilder.projectModel = project.projectIdentifier;
         
         // Tell the panelBuilder what do do if a button is clicked
         panelBuilder.setButtonClickedCallback(buttonClicked);

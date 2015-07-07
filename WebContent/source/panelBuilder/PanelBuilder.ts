@@ -4,6 +4,9 @@ import m = require("mithril");
 import GridWithItemPanel = require("./GridWithItemPanel");
 import standardWidgets = require("./standardWidgets");
 
+// TODO: Ideally shoudl not import Project; also a circular dependency
+import Project = require("../Project");
+
 "use strict";
 
 // Developer local debug flag to cause an Exception if a widget type is missing instead of put in placeholder panel
@@ -141,7 +144,8 @@ class PanelBuilder {
     
     // TODO: Maybe these should not be in builder?
     clientState: ClientState = null;
-    project = null;
+    project: Project = null;
+    projectModel: string;
 
     constructor(kwArgs = {}) {
         
