@@ -17,7 +17,7 @@
 
 // PCE in stored server files stands for "Pointrel Collected Event". :-)
 
-import JS_SHA = require("./JS_SHA");
+import sha256 = require("./sha256");
 import stringToUtf8 = require("./stringToUtf8");
 import generateRandomUuid = require("./generateRandomUuid");
 import topic = require("./topic");
@@ -473,18 +473,38 @@ class PointrelClient {
         if (!doNotSortFlag) someObject = PointrelClient.copyObjectWithSortedKeys(someObject);
         var minimalJSON = JSON.stringify(someObject);
         // var buffer = new Buffer(minimalJSON, "utf8");
+        // console.log("minimalJSON", minimalJSON);
+        
+        //var max = 0;
+        //for (var i = 0; i < minimalJSON.length; i++) {
+        //    var c = minimalJSON.charAt(i);
+        //    if (minimalJSON.charCodeAt(i) > 127) console.log("i # c", i, minimalJSON.charCodeAt(i), c);
+        //    if (minimalJSON.charCodeAt(i) > max) max = minimalJSON.charCodeAt(i);
+        //}
+        //console.log("max", max);
+        
         var utf8String = stringToUtf8(minimalJSON);
-        var sha256 = PointrelClient.calculateSHA256(utf8String);
+        //console.log("utf8String", utf8String);
+        // console.log("match?", minimalJSON === utf8String, "minimal length", minimalJSON.length, "utf8 length", utf8String.length);
+        //for (var i = 0; i < minimalJSON.length; i++) {
+        //    console.log("char at i", i, minimalJSON[i]);
+        //}
+        
+        /*
+        var shaObj = new JS_SHA("SHA-256", "TEXT");
+        shaObj.update(minimalJSON);
+        console.log("Without string conversion", shaObj.getHash("HEX"));
+        */
+        
+        var sha256 = PointrelClient.calculateSHA256(minimalJSON);
         var length = utf8String.length;
         var sha256AndLength = "" + sha256 + "_" + length;
         return {sha256: "" + sha256, length: length};
     }
     
-    static calculateSHA256(utf8Bytes) {
-        // console.log("calculateSHA256", text);
-        var shaObj = new JS_SHA("SHA-256", "BYTES");
-        shaObj.update(utf8Bytes);
-        return shaObj.getHash("HEX");
+    static calculateSHA256(text) {
+        // console.log("calculateSHA256", utf8Bytes);
+        return sha256.SHA256(text);
     }
     
     // Ensure unique timestamps are always incremented from the next by adding values at end...
