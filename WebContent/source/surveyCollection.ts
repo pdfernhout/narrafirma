@@ -86,13 +86,7 @@ export function toggleWebActivationOfSurvey(model: string, fieldSpecification, v
         project.tripleStore.addTriple(selectedItem, "storyCollection_activeOnWeb", "");
     }
     
-    // TODO: Maybe only want to refresh grid, as there is a seperate update now for questionnaires?
-    // broadcast the change to other clients and force grid refresh by recreating entire object
-    var storyCollections = model[fieldSpecification.id];
-    var recreatedData = JSON.parse(JSON.stringify(storyCollections));
-    model[fieldSpecification.id] = recreatedData;
-    
-    // TODO: Potential window of vulnerability here because not making both changes as a single transaction
+    // TODO: Potential window of vulnerability here because not making both changes (to item and survey questionnaires) as a single transaction
     
     var questionnaires = {};
     for (var key in project.activeQuestionnaires) {
