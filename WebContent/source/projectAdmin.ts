@@ -2,69 +2,148 @@ import toaster = require("./panelBuilder/toaster");
 import PanelBuilder = require("./panelBuilder/PanelBuilder");
 import PanelSpecificationCollection = require("./panelBuilder/PanelSpecificationCollection");
 import PointrelClient = require("./pointrel20150417/PointrelClient");
+import m = require("mithril");
 
 "use strict";
 
 var journalIdentifier = "NarraFirma-administration";
 var projectAdministrationTopic = "ProjectAdministration";
+var userIdentifier;
 
 var pointrelClient: PointrelClient;
 
-var allProjectsModel;
+var allProjectsModel = {
+    users: [],
+    projects: []
+};
 
 // GUI
 var serverStatusPane;
 
 // TODO: Change this to use Mithril and update it to use new approach to projects, users, and roles
 console.log("UNFINISHED!!!");
-alert("Unfinished");
+// alert("Unfinished");
 
-/*
+var journalName = m.prop("");
+var userName = m.prop("");
+var userPassword = m.prop("");
+var roleName = m.prop("");
+var topicName = m.prop("");
 
-function initialize(userIdentifier) {
+var AdminPageDisplayer: any = {
+    controller: function(args) {
+        console.log("AdminPageDisplayer created");
+    },
+    
+    view: function(controller, args) {
+        var contentsDiv;
+        
+        console.log("&&&&&&&&&& view called in AdminPageDisplayer");
+        
+        return m("div.pageContents", {key: "pageContents"}, [
+            m("div", [
+                m("b", "Project Administration Tool"),
+                " | Logged in as: " + userIdentifier + " ",
+                m("a", {href: "/logout"}, "Log Out")
+            ]),
+            m("div", "Server status: unknown"),
+            m("br"),
+            m("br"),
+            m("div", [
+                m("label", {"for": "jn1"}, "Journal name: NarraFirma-"),
+                m("input", {id: "jn1", value: journalName(), onchange: m.withAttr("value", journalName)}),
+                m("br"),
+                m("button", {onclick: addJournalClicked}, "Add journal"),
+                m("button", {onclick: grantAnonymousAccessToJournalForSurveysClicked}, "Grant anonymous survey access"),
+                m("br")
+            ]),
+            m("br"),
+            m("br"),
+            m("div", [
+                m("label", {"for": "un2"}, "User name: "),
+                m("input", {id: "un2", value: userName(), onchange: m.withAttr("value", userName)}),
+                m("br"),
+                m("label", {"for": "p2"}, "Password: "),
+                m("input", {id: "p2", value: userPassword(), onchange: m.withAttr("value", userPassword)}),
+                m("br"),
+                m("button", {onclick: addUserClicked}, "Add user"),
+                m("br")
+            ]),
+            m("br"),
+            m("br"),
+            m("div", [
+                m("label", {"for": "un3"}, "User name: "),
+                m("input", {id: "un3", value: userName(), onchange: m.withAttr("value", userName)}),
+                m("br"),
+                m("label", {"for": "r3"}, "Role: "),
+                m("input", {id: "r3", value: roleName(), onchange: m.withAttr("value", roleName)}),
+                m("br"),
+                m("label", {"for": "jn3"}, "Journal: "),
+                m("input", {id: "jn3", value: journalName(), onchange: m.withAttr("value", journalName)}),
+                m("br"),
+                m("label", {"for": "t3"}, "Topic: "),
+                m("input", {id: "t3", value: topicName(), onchange: m.withAttr("value", topicName)}),
+                m("br"),
+                m("button", {onclick: accessClicked.bind(null, "grant")}, "Grant"),
+                m("button", {onclick: accessClicked.bind(null, "evoke")}, "Revoke"),
+                m("br")
+            ])
+        ]);
+    }
+};
+
+function addJournalClicked() {
+    console.log("addJournalClicked", journalName());
+}
+
+function addUserClicked() {
+    console.log("addJournalClicked", userName(), userPassword());
+}
+
+function accessClicked(grantOrRevoke: string) {
+    console.log("accessClicked", grantOrRevoke, userName(), roleName(), journalName(), topicName());
+}
+
+function grantAnonymousAccessToJournalForSurveysClicked() {
+    console.log("grantAnonymousAccessToJournalForSurveysClicked", journalName());
+}
+
+function initialize(theUserIdentifier) {
     console.log("initialize called in site.js");
-    toaster.createToasterWidget(document.getElementById("pleaseWaitDiv"));
+    toaster.createToasterWidget(document.getElementById("toasterDiv"));
     
-    var contentPane = new ContentPane({
-        content: "<b>Project Administration Tool</b> " + " | Logged in as: " + userIdentifier + ' <a href="/logout">Log Out</a>'
-    });
-    contentPane.placeAt(document.body);
-    contentPane.startup();
-    
-    serverStatusPane = new ContentPane({content: "Server status: unknown"});
-    serverStatusPane.placeAt(contentPane);
+    userIdentifier = theUserIdentifier;
     
     // turn off initial "please wait" display
     document.getElementById("pleaseWaitDiv").style.display = "none";
+    document.getElementById("pageDiv").style.display = "block";
+   
+    toaster.toast("Running...");
     
-    // toaster.toast("Running...");
+    m.mount(document.getElementById("pageDiv"), AdminPageDisplayer);
     
     var userCredentials = {userIdentifier: userIdentifier};
     
     pointrelClient = new PointrelClient("/api/pointrel20150417", journalIdentifier, userCredentials, null, updateServerStatus);
 
-    var allProjectsModel = new Stateful({
-        users: [],
-        projects: []
-    });
-    
     pointrelClient.reportJournalStatus(function(error, response) {
         console.log("reportJournalStatus response", error, response);
         if (error) {
             console.log("Failed to startup project", error);
             alert("Problem connecting to journal on server. Application will not run.");
-            document.getElementById("pleaseWaitDiv").style.display = "none";
+            // document.getElementById("pleaseWaitDiv").style.display = "none";
             // TODO: Sanitize journalIdentifier
             document.body.innerHTML += '<br>Problem connecting to project journal on server for: "<b>' + journalIdentifier + '</b>"';
         } else {
             var permissions = response.permissions;
             if (!permissions.read) {
-                alert("No read access");
+                alert("No read access -- try logging in first as an administrator");
                 return;
             }
             if (!permissions.write) {
-                alert("No write access");
+                alert("No write access -- try logging in first as an administrator");
             }
+            /*
             loadAllProjectsModel(allProjectsModel, function (error) {
                 if (error) {
                     // It is possible no data was ever set
@@ -72,7 +151,7 @@ function initialize(userIdentifier) {
                 }
                 buildGUI(contentPane, allProjectsModel, permissions.write);
             });
-            
+            */
         }
     });
 }
@@ -83,6 +162,8 @@ function updateServerStatus(status, text) {
     if (!serverStatusPane) return;
     serverStatusPane.set("content", "Server status: " + text);
 }
+
+/*
 
 function loadAllProjectsModel(model, callback) {
     console.log("loadAllProjectsModel initial", model);
@@ -316,6 +397,7 @@ function buildGUI(mainContentPane, model, writeAccess) {
     panelContentPane.placeAt(mainContentPane);
 }
 
+*/
 // Throwaway single-use pointrel client instance which does not access a specific journal
 var singleUsePointrelClient = new PointrelClient("/api/pointrel20150417", "unused", {});
 singleUsePointrelClient.getCurrentUserInformation(function(error, response) {
@@ -327,4 +409,3 @@ singleUsePointrelClient.getCurrentUserInformation(function(error, response) {
     initialize(response.userIdentifier);
 });
 
-*/
