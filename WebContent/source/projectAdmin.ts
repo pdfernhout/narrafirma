@@ -103,7 +103,7 @@ var AdminPageDisplayer: any = {
                 m("input", {id: "r3", value: roleName(), onchange: m.withAttr("value", roleName)}),
                 m("span", {style: 'float: left; display: inline-block;'}, "Role should be one of: reader, writer, readerWriter, administrator"),
                 m("br"),
-                m("label", {"for": "jn3"}, "Journal: "),
+                m("label", {"for": "jn3"}, "Journal: " + narrafirmaProjectPrefix),
                 m("input", {id: "jn3", value: journalName(), onchange: m.withAttr("value", journalName)}),
                 m("br"),
                 m("label", {"for": "t3"}, "Topic: "),
@@ -119,7 +119,7 @@ var AdminPageDisplayer: any = {
 
 function addJournalClicked() {
     console.log("addJournalClicked", journalName());
-    addJournal(journalName().trim());
+    addJournal(narrafirmaProjectPrefix + journalName().trim());
     allProjectsModel.projects.push({name: journalName().trim()});
 }
 
@@ -133,9 +133,9 @@ function accessClicked(grantOrRevoke: string) {
     console.log("accessClicked", grantOrRevoke, userName(), roleName(), journalName(), topicName());
     
     if (grantOrRevoke === "grant") {
-        grantRole(userName().trim(), roleName().trim(), journalName().trim(), topicName().trim());
+        grantRole(userName().trim(), roleName().trim(), narrafirmaProjectPrefix + journalName().trim(), topicName().trim());
     } else if (grantOrRevoke === "revoke") {
-        revokeRole(userName().trim(), roleName().trim(), journalName().trim(), topicName().trim());
+        revokeRole(userName().trim(), roleName().trim(), narrafirmaProjectPrefix + journalName().trim(), topicName().trim());
     } else {
         throw new Error("Unexpected case for grantOrRevoke: " + grantOrRevoke);
     }
@@ -143,7 +143,7 @@ function accessClicked(grantOrRevoke: string) {
 
 function grantAnonymousAccessToJournalForSurveysClicked() {
     console.log("grantAnonymousAccessToJournalForSurveysClicked", journalName());
-    grantAnonymousSurveyAccessToJournal(journalName().trim());
+    grantAnonymousSurveyAccessToJournal(narrafirmaProjectPrefix + journalName().trim());
 }
 
 function initialize(theUserIdentifier, theProjects) {
