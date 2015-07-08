@@ -112,19 +112,23 @@ var AdminPageDisplayer: any = {
 function addJournalClicked() {
     console.log("addJournalClicked", journalName());
     allProjectsModel.projects.push({name: journalName()});
+    alert("Unfinished");
 }
 
 function addUserClicked() {
     console.log("addJournalClicked", userName(), userPassword());
     userPassword("");
+    alert("Unfinished");
 }
 
 function accessClicked(grantOrRevoke: string) {
     console.log("accessClicked", grantOrRevoke, userName(), roleName(), journalName(), topicName());
+    alert("Unfinished");
 }
 
 function grantAnonymousAccessToJournalForSurveysClicked() {
     console.log("grantAnonymousAccessToJournalForSurveysClicked", journalName());
+    alert("Unfinished");
 }
 
 function initialize(theUserIdentifier, theProjects) {
