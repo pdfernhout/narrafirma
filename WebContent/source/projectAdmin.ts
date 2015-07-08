@@ -119,19 +119,26 @@ var AdminPageDisplayer: any = {
 
 function addJournalClicked() {
     console.log("addJournalClicked", journalName());
-    allProjectsModel.projects.push({name: journalName()});
-    toaster.toast("Unfinished");
+    addJournal(journalName().trim());
+    allProjectsModel.projects.push({name: journalName().trim()});
 }
 
 function addUserClicked() {
     console.log("addJournalClicked", userName(), userPassword());
+    addUser(userName().trim(), userPassword());
     userPassword("");
-    toaster.toast("Unfinished");
 }
 
 function accessClicked(grantOrRevoke: string) {
     console.log("accessClicked", grantOrRevoke, userName(), roleName(), journalName(), topicName());
-    toaster.toast("Unfinished");
+    
+    if (grantOrRevoke === "grant") {
+        grantRole(userName().trim(), roleName().trim(), journalName().trim(), topicName().trim());
+    } else if (grantOrRevoke === "revoke") {
+        revokeRole(userName().trim(), roleName().trim(), journalName().trim(), topicName().trim());
+    } else {
+        throw new Error("Unexpected case for grantOrRevoke: " + grantOrRevoke);
+    }
 }
 
 function grantAnonymousAccessToJournalForSurveysClicked() {
@@ -236,29 +243,204 @@ function updateServerStatus(status, text) {
     clientState.serverStatusText = statusText;
 }
 
-// Throwaway single-use pointrel client instance which does not access a specific journal
-var singleUsePointrelClient = new PointrelClient("/api/pointrel20150417", "unused", {});
-singleUsePointrelClient.getCurrentUserInformation(function(error, response) {
-    if (error) {
-        console.log("error", error, response);
-        alert("Something went wrong determining the current user identifier");
+function addJournal(journalIdentifier) {
+    console.log("add-journal", journalIdentifier);
+    
+    toaster.toast("Unfinished");
+    
+    pointrelServer.addJournalSync(journalIdentifier);
+}
+
+function addUser(userIdentifier, password) {
+    console.log("add-user", userIdentifier, password);
+    
+    if (userIdentifier === "anonymous") {
+        console.log("anonymous user is special and the password will not be used");
+    }
+    
+    // Check if user exists first, as otherwise will remove all roles and override other settings
+    var userInformation = allProjectsModel.users[userIdentifier];
+    if (userInformation) {
+        console.log("Error: user already exists", userIdentifier);
+        toaster.toast("Error: user already exists: " + userIdentifier);
         return;
     }
     
-    // Identical code in applications to get project list
-    var projects = [];
-    for (var key in response.journalPermissions) {
-        if (!_.startsWith(key, narrafirmaProjectPrefix)) continue;
-        var permissions = response.journalPermissions[key];
-        projects.push({
-            id: key,
-            name: key.substring(narrafirmaProjectPrefix.length),
-            read: permissions.read,
-            write: permissions.write,
-            admin: permissions.admin
-        });
+    updateUserInformation(userIdentifier);
+    setUserPassword(userIdentifier, password);
+}
+
+function findIndexForRole(roles, role) {
+    var index = -1;
+    for (var i = 0; i < roles.length; i++) {
+        if (JSON.stringify(roles[i]) === JSON.stringify(role)) {
+            index = i;
+            break;
+        }
+    }
+    return index;
+}
+
+function grantRole(userIdentifier, role, journalIdentifier, topic) {
+    console.log("grant", userIdentifier, role, journalIdentifier, topic);
+    
+    // Make sure the user already exists
+    var userInformation = allProjectsModel.users[userIdentifier];
+    if (!userInformation) {
+        console.log("Error: could not find user", userIdentifier);
+        toaster.toast("Error: could not find user: " + userIdentifier);
+        return;
     }
     
-    initialize(response.userIdentifier, projects);
-});
+    // TODO: Should confirm the journal exists...
+    
+    var roleToAdd;
+    if (topic) {
+        // Fields need to be in alphabetical order for JSON comparison with messages stored in canonical form
+        roleToAdd = {role: role, topic: topic};
+    } else {
+        roleToAdd = role;
+    }
+    var roles = userInformation.rolesForJournals[journalIdentifier];
+    if (!roles) {
+        roles = [];
+        userInformation.rolesForJournals[journalIdentifier] = roles;
+    }
+    
+    if (findIndexForRole(roles, roleToAdd) !== -1) {
+        console.log("Error: User already has role", roleToAdd);
+        toaster.toast("Error: User already has role: " + roleToAdd);
+    } else {
+        roles.push(roleToAdd);
+        updateUserInformation(userIdentifier, userInformation);
+    }
+}
+
+function revokeRole(userIdentifier, role, journalIdentifier, topic) {
+    console.log("revoke", userIdentifier, role, journalIdentifier, topic);
+    
+    // Make sure the user already exists
+    var userInformation = allProjectsModel.users[userIdentifier];
+    if (!userInformation) {
+        console.log("Error: could not find user", userIdentifier);
+        toaster.toast("Error: could not find user: " + userIdentifier);
+        return;
+    }
+    
+    // TODO: Should confirm the journal exists...
+    
+    var roleToRemove;
+    if (topic) {
+        // Fields need to be in alphabetical order for JSON comparison with messages stored in canonical form
+        roleToRemove = {role: role, topic: topic};
+    } else {
+        roleToRemove = role;
+    }
+    var roles = userInformation.rolesForJournals[journalIdentifier];
+    if (!roles) {
+        roles = [];
+        userInformation.rolesForJournals[journalIdentifier] = roles;
+    }
+    
+    var indexToRemove = findIndexForRole(roles, roleToRemove);
+    
+    if (indexToRemove === -1) {
+        console.log("Did not find existing role to revoke", roleToRemove);
+        toaster.toast("Error: Did not find existing role to revoke: " + roleToRemove);
+    } else {
+        roles.splice(indexToRemove, 1);
+        updateUserInformation(userIdentifier, userInformation);
+    }
+}
+
+/// Support functions to change server data
+
+function updateUserInformation(userIdentifier, userInformation = undefined) {
+    if (!userInformation) {
+        userInformation = {
+            userIdentifier: userIdentifier,
+            name: userIdentifier,
+            email: null,
+            rolesForJournals: {
+            }
+        };
+    }
+    var createUserMessage = {
+        "_topicIdentifier": {type: "userInformation", userIdentifier: userIdentifier},
+        "_topicTimestamp": new Date().toISOString(),
+        change: userInformation
+    };
+
+    var apiRequest = {
+        "action": "pointrel20150417_storeMessage",
+        "journalIdentifier": "users",
+        "message": createUserMessage
+    };
+
+    toaster.toast("Unfinished");
+    
+    pointrelServer.processRequest(apiRequest, function(response) {
+        if (!response.success) {
+            console.log("Error:", response);
+        } else {
+            console.log("OK:", JSON.stringify(response, null, 2));
+        }
+    }, serverRequestWithAuthenticatedSuperuser);
+}
+
+function setUserPassword(userIdentifier, password) {
+    var userCredentials = {userIdentifier: userIdentifier, userPassword: password};
+
+    var credentialsMessage = {
+        "_topicIdentifier": {type: "authenticationInformation", userIdentifier: userIdentifier},
+        "_topicTimestamp": new Date().toISOString(),
+        change: userCredentials
+    };
+
+    var apiRequest = {
+        action: "pointrel20150417_storeMessage",
+        journalIdentifier: "credentials",
+        message: credentialsMessage
+    };
+
+    toaster.toast("Unfinished");
+    
+    pointrelServer.processRequest(apiRequest, function(response) {
+        if (!response.success) {
+            console.log("Error:", response);
+        } else {
+            console.log("OK:", JSON.stringify(response, null, 2));
+        }
+    }, serverRequestWithAuthenticatedSuperuser);
+}
+
+function startup() {
+    // Throwaway single-use pointrel client instance which does not access a specific journal
+    var singleUsePointrelClient = new PointrelClient("/api/pointrel20150417", "unused", {});
+    singleUsePointrelClient.getCurrentUserInformation(function(error, response) {
+        if (error) {
+            console.log("error", error, response);
+            alert("Something went wrong determining the current user identifier");
+            return;
+        }
+        
+        // Identical code in applications to get project list
+        var projects = [];
+        for (var key in response.journalPermissions) {
+            if (!_.startsWith(key, narrafirmaProjectPrefix)) continue;
+            var permissions = response.journalPermissions[key];
+            projects.push({
+                id: key,
+                name: key.substring(narrafirmaProjectPrefix.length),
+                read: permissions.read,
+                write: permissions.write,
+                admin: permissions.admin
+            });
+        }
+        
+        initialize(response.userIdentifier, projects);
+    });
+}
+ 
+startup();
 
