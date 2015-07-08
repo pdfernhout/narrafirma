@@ -8,7 +8,7 @@ import m = require("mithril");
 
 var narrafirmaProjectPrefix = "NarraFirmaProject-";
 
-var journalIdentifier = "NarraFirma-administration";
+var usersJournalIdentifier = "users";
 var projectAdministrationTopic = "ProjectAdministration";
 
 var userIdentifier;
@@ -20,8 +20,13 @@ var allProjectsModel = {
     projects: []
 };
 
-// GUI
-var serverStatusPane;
+var lastServerError = "";
+// For this local instance only (not shared with other users or other browser tabs)
+var clientState = {
+    debugMode: null,
+    serverStatus: "narrafirma-serverstatus-ok",
+    serverStatusText: ""
+};
 
 // TODO: Change this to use Mithril and update it to use new approach to projects, users, and roles
 console.log("UNFINISHED!!!");
@@ -45,11 +50,14 @@ var AdminPageDisplayer: any = {
         
         return m("div.pageContents", {key: "pageContents"}, [
             m("div", [
+                m("span[id=narrafirma-name]", {
+                    "class": clientState.serverStatus,
+                    "title": clientState.serverStatusText
+                }, m.trust("NarraFirma&#0153")),
                 m("b", "Project Administration Tool"),
                 " | Logged in as: " + userIdentifier + " ",
                 m("a", {href: "/logout"}, "Log Out")
             ]),
-            m("div", "Server status: unknown"),
             m("br"),
             m("b", "Projects:"),
             m("br"),
@@ -136,7 +144,8 @@ function initialize(theUserIdentifier, theProjects) {
     
     var userCredentials = {userIdentifier: userIdentifier};
     
-    pointrelClient = new PointrelClient("/api/pointrel20150417", journalIdentifier, userCredentials, null, updateServerStatus);
+    pointrelClient = new PointrelClient("/api/pointrel20150417", usersJournalIdentifier, userCredentials, null, updateServerStatus);
+    pointrelClient.startup();
 
     pointrelClient.reportJournalStatus(function(error, response) {
         console.log("reportJournalStatus response", error, response);
@@ -145,7 +154,7 @@ function initialize(theUserIdentifier, theProjects) {
             alert("Problem connecting to journal on server. Application will not run.");
             // document.getElementById("pleaseWaitDiv").style.display = "none";
             // TODO: Sanitize journalIdentifier
-            document.body.innerHTML += '<br>Problem connecting to project journal on server for: "<b>' + journalIdentifier + '</b>"';
+            document.body.innerHTML += '<br>Problem connecting to project journal on server for: "<b>' + usersJournalIdentifier + '</b>"';
         } else {
             var permissions = response.permissions;
             if (!permissions.read) {
@@ -168,11 +177,54 @@ function initialize(theUserIdentifier, theProjects) {
     });
 }
 
+// TODO: Duplicate of what is in application.js
+// TODO: Think more about how to integrate updatedServerStatus this with Mithril
 function updateServerStatus(status, text) {
     console.log("++++++++++++++++++++++++++++++++++++++++ updateServerStatus", text);
     // The serverStatusPane may be created only after we start talking to the server
-    if (!serverStatusPane) return;
-    serverStatusPane.set("content", "Server status: " + text);
+    // if (!serverStatusPane) return;
+    
+    var nameDiv = document.getElementById("narrafirma-name");
+    if (!nameDiv) return;
+    
+    // TODO: Translate
+    
+    var statusText = "Server status: (" + status + ") " + text;
+
+    if (status === "ok") {
+        nameDiv.className = "narrafirma-serverstatus-ok";
+        //nameDiv.style.color = "green";
+        //nameDiv.style.border = "initial";
+        lastServerError = "";
+    } else if (status === "waiting") {
+        //nameDiv.style.color = "yellow";
+        if (lastServerError) {
+            // TODO: Translate
+            nameDiv.className = "narrafirma-serverstatus-waiting-last-error";
+            statusText += "\n" + "Last error: " + lastServerError;
+        } else {
+            nameDiv.className = "narrafirma-serverstatus-waiting";
+        }
+    } else if (status === "failure") {
+        nameDiv.className = "narrafirma-serverstatus-failure";
+        //nameDiv.style.color = "red";
+        lastServerError = text;
+        //nameDiv.style.border = "thick solid #FF0000";
+        console.log("updateServerStatus failure", text);
+    } else {
+        console.log("Unexpected server status", status);
+        nameDiv.className = "narrafirma-serverstatus-unexpected";
+        //nameDiv.style.color = "black";
+        console.log("updateServerStatus unexepected", text);
+    }
+    
+    nameDiv.title = statusText;
+    clientState.serverStatus = nameDiv.className;
+    clientState.serverStatusText = statusText;
+    // TODO: Need to make tooltip text ARIA accessible; suggestion in tooltip docs on setting text in tab order
+    // statusTooltip.set("label", statusText); 
+    
+    // serverStatusPane.set("content", statusText);
 }
 
 /*
