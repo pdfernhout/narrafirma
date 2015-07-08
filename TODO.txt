@@ -12,7 +12,6 @@ BIG OPTIONAL FUNCTIONALITY AREAS
 THINGS CYNTHIA NOTICED WHILE DOING HELP (probably redundant but just in case)
 H Need a way to delete a story from a story collection
 H When import story collection, need to display name of form in select
-H In the story browser, if you look at a story (view), then change the selection of stories, the old story still shows.
 M Slider should have a "does not apply" option
 L After you enter a story, it shows an alert that the story has been saved, but it doesn't get rid of the window. the popup window should go away
 L When you enter a story, it replaces the title of the main web page (Enter stories) with the name of the story form (questionnaire).
@@ -146,7 +145,6 @@ RETURN
 H Implement exportPresentationOutline in domain buttonClicked
 
 GRID
-H Bug if move data item up or down; when you click on an item, it shows you what used to be in that position not what is currently there
 H When viewing grid data, it should not look (or be) editable
     Read-only version of checkboxes and radiobutton widgets, used by grid (assuming that is how the read only data is presented)
 L Add close button to top of item panel
@@ -155,7 +153,6 @@ L When duplicate list item, add "copy" to name (different for each)
 X Popup for add item from grid -- should have better label in title as to what type of thing is added
 X Uncomment and test tooltip code in grid table
 X Get tooltips working in dialogs (maybe Dojo bug?)
-X Bug if viewing data when remove it; the viewing panel remains open with old data
 
 CONFIGURATION
 H Make a Project Administration section to go with home page button for use with import/export/backup/reporting or other settings and functions
@@ -803,3 +800,6 @@ OBSOLETE Have revert button to go back to previous version for each page or clea
 DONE Remove redundant code when calculating survey questions for story and name in survey and story browser [I think this is probably done enough...]
 DONE In the lists of questions while designing a story form (eliciting, story, participant) it needs move up, move down arrows, OR an "order" field [added "order" field]
 DONE The activities list for a story collection or sensemaking session needs move up and move down buttons (since you are supposed to be planning a schedule) OR an "order' field [added "order" field]
+OBSOLETE Bug if move data item up or down; when you click on an item, it shows you what used to be in that position not what is currently there [no longer moving up/down, and probably otherwise not an issue when using Mithril grid]
+DONE In the story browser, if you look at a story (view), then change the selection of stories, the old story still shows.
+DONE Bug if viewing data when remove it; the viewing panel remains open with old data [same as above]
