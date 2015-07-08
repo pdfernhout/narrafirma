@@ -143,7 +143,7 @@ function accessClicked(grantOrRevoke: string) {
 
 function grantAnonymousAccessToJournalForSurveysClicked() {
     console.log("grantAnonymousAccessToJournalForSurveysClicked", journalName());
-    toaster.toast("Unfinished");
+    grantAnonymousSurveyAccessToJournal(journalName().trim());
 }
 
 function initialize(theUserIdentifier, theProjects) {
@@ -200,7 +200,7 @@ function messageReceived(message)  {
 // TODO: Duplicate of what is in application.js
 // TODO: Think more about how to integrate updatedServerStatus this with Mithril
 function updateServerStatus(status, text) {
-    console.log("++++++++++++++++++++++++++++++++++++++++ updateServerStatus", text);
+    // console.log("++++++++++++++++++++++++++++++++++++++++ updateServerStatus", text);
     // The serverStatusPane may be created only after we start talking to the server
     // if (!serverStatusPane) return;
     
@@ -261,8 +261,11 @@ function addUser(userIdentifier, password) {
     // Check if user exists first, as otherwise will remove all roles and override other settings
     var userInformation = allProjectsModel.users[userIdentifier];
     if (userInformation) {
-        console.log("Error: user already exists", userIdentifier);
-        toaster.toast("Error: user already exists: " + userIdentifier);
+        console.log("User already exists", userIdentifier);
+        // toaster.toast("User already exists: " + userIdentifier);
+        if (confirm("User already exists. Do you want to change the password of: " + userIdentifier + "?")) {
+            setUserPassword(userIdentifier, password);
+        }
         return;
     }
     
@@ -272,14 +275,17 @@ function addUser(userIdentifier, password) {
 
 function findIndexForRole(roles, role) {
     var index = -1;
+    var roleStringified = JSON.stringify(role);
     for (var i = 0; i < roles.length; i++) {
-        if (JSON.stringify(roles[i]) === JSON.stringify(role)) {
+        if (JSON.stringify(roles[i]) === roleStringified) {
             index = i;
             break;
         }
     }
     return index;
 }
+
+// TODO: All this role granting and revoking could suffer from multi-user collisions
 
 function grantRole(userIdentifier, role, journalIdentifier, topic) {
     console.log("grant", userIdentifier, role, journalIdentifier, topic);
@@ -313,6 +319,60 @@ function grantRole(userIdentifier, role, journalIdentifier, topic) {
     } else {
         roles.push(roleToAdd);
         updateUserInformation(userIdentifier, userInformation);
+    }
+}
+
+function grantAnonymousSurveyAccessToJournal(journalIdentifier) {
+    console.log("grantAnonymousSurveyAccessToJournal", journalIdentifier);
+    
+    var userIdentifier = "anonymous";
+    
+    // Make sure the user already exists
+    var userInformation = allProjectsModel.users[userIdentifier];
+    if (!userInformation) {
+        console.log("Error: could not find user", userIdentifier);
+        toaster.toast("Error: could not find user: " + userIdentifier);
+        return;
+    }
+    
+    var example = {"NarraFirmaProject-test1": [
+        {
+          "role": "writer",
+          "topic": "surveyResults"
+        },
+        {
+          "role": "reader",
+          "topic": "questionnaires"
+        }
+      ]};
+    
+    // TODO: Should confirm the journal exists...
+    
+    var roles = userInformation.rolesForJournals[journalIdentifier];
+    if (!roles) {
+        roles = [];
+        userInformation.rolesForJournals[journalIdentifier] = roles;
+    }
+
+    // Fields need to be in alphabetical order for JSON comparison with messages stored in canonical form
+    var readerRoleToAdd = {role: "reader", topic: "questionnaires"};
+
+    var changed = false;
+    if (findIndexForRole(roles, readerRoleToAdd) === -1) {
+        roles.push(readerRoleToAdd);
+        changed = true;
+    }
+ 
+    var writerRoleToAdd = {role: "writer", topic: "surveyResults"};
+    if (findIndexForRole(roles, writerRoleToAdd) === -1) {
+        roles.push(writerRoleToAdd);
+        changed = true;
+    }
+    
+    if (changed) {
+        updateUserInformation(userIdentifier, userInformation);
+    } else {
+        toaster.toast("Roles already exist; no changes made.");
     }
 }
 
@@ -371,47 +431,39 @@ function updateUserInformation(userIdentifier, userInformation = undefined) {
         change: userInformation
     };
 
-    var apiRequest = {
-        "action": "pointrel20150417_storeMessage",
-        "journalIdentifier": "users",
-        "message": createUserMessage
-    };
-
-    toaster.toast("Unfinished");
-    
-    pointrelServer.processRequest(apiRequest, function(response) {
-        if (!response.success) {
-            console.log("Error:", response);
+    pointrelClient.sendMessage(createUserMessage, function(error, response) {
+        if (error || !response.success) {
+            console.log("Error updating user information: ", error, response);
+            // TODO: Imporve error reporting
+            toaster.toast("Error updating user information: " + error + " :: " + JSON.stringify(response));
         } else {
-            console.log("OK:", JSON.stringify(response, null, 2));
+            console.log("OK:", response);
+            toaster.toast("Updated user information OK");
         }
-    }, serverRequestWithAuthenticatedSuperuser);
+    });
 }
 
-function setUserPassword(userIdentifier, password) {
-    var userCredentials = {userIdentifier: userIdentifier, userPassword: password};
+function setUserPassword(newUserIdentifier, password) {
+    var userCredentials = {userIdentifier: newUserIdentifier, userPassword: password};
 
     var credentialsMessage = {
-        "_topicIdentifier": {type: "authenticationInformation", userIdentifier: userIdentifier},
+        "_topicIdentifier": {type: "authenticationInformation", userIdentifier: newUserIdentifier},
         "_topicTimestamp": new Date().toISOString(),
         change: userCredentials
     };
 
-    var apiRequest = {
-        action: "pointrel20150417_storeMessage",
-        journalIdentifier: "credentials",
-        message: credentialsMessage
-    };
-
-    toaster.toast("Unfinished");
-    
-    pointrelServer.processRequest(apiRequest, function(response) {
-        if (!response.success) {
-            console.log("Error:", response);
+    // Throwaway single-use pointrel client instance to access credentials journal
+    var singleUsePointrelClient = new PointrelClient("/api/pointrel20150417", "credentials", {userIdentifier: userIdentifier});
+    singleUsePointrelClient.sendMessage(credentialsMessage, function(error, response) {
+        if (error || !response.success) {
+            console.log("Error setting user password:", error, response);
+            // TODO: Improve error reporting
+            toaster.toast("Error: setting user password: " + error + " :: " + JSON.stringify(response));
         } else {
-            console.log("OK:", JSON.stringify(response, null, 2));
+            console.log("Password change OK:", response);
+            toaster.toast("Password changed OK");
         }
-    }, serverRequestWithAuthenticatedSuperuser);
+    });
 }
 
 function startup() {
