@@ -53,10 +53,6 @@ textarea, input, select { /* override because expanded in survey */
     height: 2em;
 }
 
-#navigationDiv .dijitContentPane {
-	overflow: hidden; /* it was making a weird white square at the right edge of the window */
-}
-
 #narrafirma-name {
     margin-left: 0.5em; 
     margin-right: 0.5em; 
@@ -228,10 +224,6 @@ button {
 	margin-top: 10px;
 }
 
-.claro .dijitContentPane .narrafirma-question-type-header { /* contentpane overrides the padding */
-	padding-left: 10px;
-}
-
 .narrafirma-griditempanel-editing .narrafirma-question-type-header.questionExternal { 
 	background-color: #7b8cb2;
 }
@@ -292,10 +284,6 @@ form {
    padding-left: 0.7em;
 }
 
-.dijitButton {
-	margin-bottom: 10px;
-}
-
 .narrafirma-reminder {
 	background-color: #b2c07f;
 	border-radius: 12px;
@@ -339,14 +327,6 @@ form {
 /* hides "copy from template" button when viewing grid item */
 .narrafirma-griditempanel-viewing .narrafirma-template-button {
 	display: none;
-}
-
-.dijitTextArea {
-	font-family: Arial, Helvetica, sans-serif;
-}
-
-.claro .dijitTextBoxReadOnly {
-	background-color: #e4e4e4;
 }
 
 .narrafirma-special-warning {
@@ -399,100 +379,10 @@ form {
     padding: 1em;
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dijit things ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-/* See http://www.sitepen.com/blog/2012/05/03/css-styling-of-dgrid/ */
-/* Make sure grid rows are just one line high and the text is limited with an ellipsis */
-
-.dgrid-row {
-    /*height: 22px;*/
-    height: 1.5em;
-}
-
-.dgrid-cell {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.dijitMultiSelect {
-	font-size: 100%;
-}
-
-.question {
-}
-
-.claro .dijitContentPane {
-	padding-left: 0em;
-}
-
-/* was 15em, not always long enough */
-.dijitTextBox {
-	width: 20em;
-}
-
-.dijitDownArrowButton {
-	width: 1em;
-}
-
-/* Suggestion from: https://bugs.dojotoolkit.org/ticket/17044 and: http://jsfiddle.net/ondrek/3FjLJ/9/ */
-.dijitTextBox .dijitInputInner { 
-    white-space: nowrap; 
-    text-overflow: ellipsis;
-    -o-text-overflow: ellipsis;
-    -ms-text-overflow: ellipsis; 
-    overflow: hidden;
-}
-
-/* So the dgrids show all data up to 400px and then scroll;
-   seems issue if try to get show all data where doesn't refresh as scroll window*/
-.dgrid {
-    height: auto;
-    min-height: 3em;
-}
-
-.dgrid .dgrid-scroller {
-    position: relative;
-    max-height: 400px;
-    overflow: auto;
-}
-
-/* not yet used */
-#templateList .dgrid-scroller {
-    position: relative;
-    max-height: 150px;
-    overflow: auto;
-}
-
-.storyFilterTable-valueCell {
-    width: 50%;
-    max-width: 50%;
-    min-width: 50%;
-}
-
-.dijitComboBox {
-	margin-right: 10px; /* so it's not smack up against a button to its right */
-}
-
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Adjustments for particular pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-/* review incoming stories: too much space before the "filter by" lines */
-/* dijit_layout_ContentPane_9 is the line that says "Collected stories" before the "filter by" part
-.narrafirma-page_reviewIncomingStories #dijit_layout_ContentPane_9 {
-	padding-bottom: 0;
-}
 
 .narrafirma-page_reviewIncomingStories .questionInternal {
 	padding-top: 0;
-}
-
-/* review incoming stories: make the grid a little shorter because the page is so long */
-.narrafirma-page_reviewTrends .dgrid .dgrid-scroller {
-    max-height: 300px;
-}
-
-/* review trends: make the grids shorter because the page is so long */
-.narrafirma-page_reviewTrends .dgrid .dgrid-scroller {
-    max-height: 200px;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Recommendations table ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
