@@ -83,9 +83,6 @@ X Add export button for survey results
 X Add way to clear out or reset old survey results? Or maybe partition them by survey?
 X Backup
 
-LOAD/SAVE
-L Autosave for current textarea or input text based on timer even if you don't leave it
-
 LOGGING
 X Think through logging in the server, perhaps using a library
     Ensure useful server logs are kept
@@ -149,9 +146,6 @@ H When viewing grid data, it should not look (or be) editable
 L Add close button to top of item panel
 L Better information about what is going on in item panel - whether view, edit, duplicate
 L When duplicate list item, add "copy" to name (different for each)
-X Popup for add item from grid -- should have better label in title as to what type of thing is added
-X Uncomment and test tooltip code in grid table
-X Get tooltips working in dialogs (maybe Dojo bug?)
 
 CONFIGURATION
 H Make a Project Administration section to go with home page button for use with import/export/backup/reporting or other settings and functions
@@ -159,7 +153,6 @@ H Make a Project Administration section to go with home page button for use with
 
 DASHBOARD
 H Provide status of whether survey is active on main dashboard
-H Reminder entered (on first planning page) did not show up on planning dashbaord page
 
 ALERTS
 X Look at all alerts in code and make into nicer GUI feedback
@@ -204,6 +197,8 @@ L Improve general CSS styling on all pages (forms)
 X Forgot to put "memorable" in eliciting question types ("What type of question is this?")
 
 ==== Wish list:
+
+Autosave for current textarea or input text based on timer even if you don't leave it
 
 Maybe have a summary page at end of each section (where they put in final notes on that phase)
 Generate HTML reports that can be downloaded
@@ -803,3 +798,7 @@ OBSOLETE Bug if move data item up or down; when you click on an item, it shows y
 DONE In the story browser, if you look at a story (view), then change the selection of stories, the old story still shows.
 DONE Bug if viewing data when remove it; the viewing panel remains open with old data [same as above]
 DONE Deal with Pointrel client receiving response that a resource already exists as a duplicate by discarding queued message
+OBSOLETE Popup for add item from grid -- should have better label in title as to what type of thing is added
+OBSOLETE Uncomment and test tooltip code in grid table
+OBSOLETE Get tooltips working in dialogs (maybe Dojo bug?)
+DONE Reminder entered (on first planning page) did not show up on planning dashbaoard page [probably fixed with Mithril, if not before]
