@@ -5,6 +5,14 @@
     "section": "sensemaking",
     "modelClass": "SensemakingSessionActivityPlan",
     "panelFields": [
+       {
+            "id": "order",
+            "valueType": "string",
+            "required": true,
+            "displayType": "text",
+            "displayName": "Order",
+            "displayPrompt": "Specify the order in which to do this sensemaking activity (e.g. 1, 2a, 2b, 3)"
+        },
         {
             "id": "sensemakingSessionPlan_activity_name",
             "valueType": "string",
