@@ -200,7 +200,7 @@ class TripleStore {
         };
     }
     
-   makeObject(a) {
+   makeObject(a): any {
         var result = {};
         
         for (var i = 0; i < this.tripleMessages.length; i++) {
@@ -219,18 +219,18 @@ class TripleStore {
     // Sets
     // TODO: Id does not have to be restricted to a string, but doing it for now to catch errors
 
-    newIdForSet() {
+    newIdForSet(): string {
         // var setIdentifier = {"type": "set", "id":  generateRandomUuid()};
         var setIdentifier = "Set:" + generateRandomUuid();
         return setIdentifier;
     }
     
-    private newIdForSetItem() {
+    private newIdForSetItem(): string {
         // return new Date().toISOString();
         return generateRandomUuid();
     }
     
-    makeNewSetItem(setIdentifier: string, template = undefined, idProperty = "id") { 
+    makeNewSetItem(setIdentifier: string, template = undefined, idProperty = "id"): string { 
         var newId;
         
         if (template) {
@@ -252,7 +252,7 @@ class TripleStore {
         return newId;
     }
     
-    makeCopyOfSetItemWithNewId(setIdentifier: string, existingItemId: string) {
+    makeCopyOfSetItemWithNewId(setIdentifier: string, existingItemId: string): string {
         var newId = this.newIdForSetItem();
         
         this.addTriple(setIdentifier, {setItem: newId}, newId);
@@ -267,12 +267,12 @@ class TripleStore {
         return newId;
     }
     
-    deleteSetItem(setIdentifier: string, itemIdentifier: string) {
+    deleteSetItem(setIdentifier: string, itemIdentifier: string): void {
         // TODO: Should the C be undefined instead of null?
         this.addTriple(setIdentifier, {setItem: itemIdentifier}, null);
     }
 
-    getListForSetIdentifier(setIdentifier) {
+    getListForSetIdentifier(setIdentifier): Array<string> {
         var result = [];
  
         if (!setIdentifier) return result;
