@@ -94,6 +94,7 @@ var AdminPageDisplayer: any = {
                 m("br"),
                 m("label", {"for": "r3"}, "Role: "),
                 m("input", {id: "r3", value: roleName(), onchange: m.withAttr("value", roleName)}),
+                m("span", {style: 'float: left; display: inline-block;'}, "Role should be one of: reader, writer, readerWriter, administrator"),
                 m("br"),
                 m("label", {"for": "jn3"}, "Journal: "),
                 m("input", {id: "jn3", value: journalName(), onchange: m.withAttr("value", journalName)}),
