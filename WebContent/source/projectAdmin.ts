@@ -120,7 +120,6 @@ var AdminPageDisplayer: any = {
 function addJournalClicked() {
     console.log("addJournalClicked", journalName());
     addJournal(narrafirmaProjectPrefix + journalName().trim());
-    allProjectsModel.projects.push({name: journalName().trim()});
 }
 
 function addUserClicked() {
@@ -246,9 +245,22 @@ function updateServerStatus(status, text) {
 function addJournal(journalIdentifier) {
     console.log("add-journal", journalIdentifier);
     
-    toaster.toast("Unfinished");
-    
-    pointrelServer.addJournalSync(journalIdentifier);
+    pointrelClient.createJournal(journalIdentifier, function(error, response) {
+        if (error || !response.success) {
+            console.log("Error creating journal", journalIdentifier, error, response);
+            var message = "error";
+            if (response) message = response.description;
+            if (error) message = error.description;
+            toaster.toast("Error: creating journal: " + journalIdentifier + " :: " + message);
+        } else {
+            console.log("Created journal OK", journalIdentifier, response);
+            toaster.toast("Created journal OK: " + journalIdentifier);
+            allProjectsModel.projects.push({name: journalIdentifier.substring(narrafirmaProjectPrefix.length)});
+            // Need to call redraw as event changign data was triggered by network
+            m.redraw();
+        }
+    });
+
 }
 
 function addUser(userIdentifier, password) {
