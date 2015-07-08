@@ -10,8 +10,6 @@ BIG OPTIONAL FUNCTIONALITY AREAS
 - theming and tagging
 
 THINGS CYNTHIA NOTICED WHILE DOING HELP (probably redundant but just in case)
-H the activities list for a story collection or sensemaking session needs move up and move down buttons (since you are supposed to be planning a schedule) OR an "order' field
-H in the lists of questions while designing a story form (eliciting, story, participant) it needs move up, move down arrows, OR an "order" field
 H Need a way to delete a story from a story collection
 H When import story collection, need to display name of form in select
 H In the story browser, if you look at a story (view), then change the selection of stories, the old story still shows.
@@ -803,3 +801,5 @@ DONE See if still need so many button functions in domain (or maybe any at all) 
 OBSOLETE Help window displaying HTML instead of alert [now using HTML window for help for entire page]
 OBSOLETE Have revert button to go back to previous version for each page or clear out changes in progress on a page [no longer savign at page level; undo in wishlist though]
 DONE Remove redundant code when calculating survey questions for story and name in survey and story browser [I think this is probably done enough...]
+DONE In the lists of questions while designing a story form (eliciting, story, participant) it needs move up, move down arrows, OR an "order" field [added "order" field]
+DONE The activities list for a story collection or sensemaking session needs move up and move down buttons (since you are supposed to be planning a schedule) OR an "order' field [added "order" field]
