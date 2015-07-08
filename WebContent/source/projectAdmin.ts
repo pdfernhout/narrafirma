@@ -16,7 +16,7 @@ var userIdentifier;
 var pointrelClient: PointrelClient;
 
 var allProjectsModel = {
-    users: [],
+    users: {},
     projects: []
 };
 
@@ -65,6 +65,13 @@ var AdminPageDisplayer: any = {
                return m("div", [project.name]);
             }),
             m("br"),
+            m("b", "Users:"),
+            m("br"),
+            Object.keys(allProjectsModel.users).map(function(userIdentifier) {
+                console.log("userIdentifier", userIdentifier);
+                var user = allProjectsModel.users[userIdentifier];
+                return m("div", [user.userIdentifier, m("pre", JSON.stringify(user.rolesForJournals, null, 4)), m("br")]);
+            }),
             m("br"),
             m("div", [
                 m("label", {"for": "jn1"}, "Journal name: " + narrafirmaProjectPrefix),
@@ -149,7 +156,7 @@ function initialize(theUserIdentifier, theProjects) {
     
     var userCredentials = {userIdentifier: userIdentifier};
     
-    pointrelClient = new PointrelClient("/api/pointrel20150417", usersJournalIdentifier, userCredentials, null, updateServerStatus);
+    pointrelClient = new PointrelClient("/api/pointrel20150417", usersJournalIdentifier, userCredentials, messageReceived, updateServerStatus);
     pointrelClient.startup();
 
     pointrelClient.reportJournalStatus(function(error, response) {
@@ -180,6 +187,16 @@ function initialize(theUserIdentifier, theProjects) {
             */
         }
     });
+}
+
+function messageReceived(message)  {
+    if (message._topicIdentifier && message._topicIdentifier.type === "userInformation") {
+        console.log("userInformation", message.change);
+        // TODO: Should really check timestamps rather than use last...
+        allProjectsModel.users[message.change.userIdentifier] = message.change;
+        // TOOO: Queue a redraw now, but might want to wait until idle instead...
+        m.redraw();
+    }
 }
 
 // TODO: Duplicate of what is in application.js
