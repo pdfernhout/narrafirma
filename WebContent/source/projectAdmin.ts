@@ -81,7 +81,7 @@ var AdminPageDisplayer: any = {
                 m("input", {id: "un2", value: userName(), onchange: m.withAttr("value", userName)}),
                 m("br"),
                 m("label", {"for": "p2"}, "Password: "),
-                m("input", {id: "p2", value: userPassword(), onchange: m.withAttr("value", userPassword)}),
+                m("input", {id: "p2", value: userPassword(), onchange: m.withAttr("value", userPassword), disabled: userName().trim() === "anonymous"}),
                 m("br"),
                 m("button", {onclick: addUserClicked}, "Add user"),
                 m("br")
