@@ -257,6 +257,11 @@ class GridWithItemPanel {
         console.log("GridWithItemPanel updateData");
         this.dataStore.getDataArrayFromModel();
         this.sortData();
+        if (this.selectedItem) {
+            if (this.dataStore.data.indexOf(this.selectedItem) === -1) {
+                this.setSelectedItem(null);
+            }
+        }
     }
       
     private sortData() {
