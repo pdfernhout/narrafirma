@@ -21,9 +21,6 @@ L When you enter a story, it replaces the title of the main web page (Enter stor
 L would like to make "focus rectangle" or "rubber band" over graphs when selecting - see http://bl.ocks.org/mbostock/1667367
 L Histograms should have mean and standard deviation marked (and maybe median and mode, skewness and kurtosis as numbers).
 
-CRASH
-? Story browser (Catalysis section second page, but also review stories during collection) seems to sometimes cause and endless loop in Firexfox or Chrome causing memory use growth and beach ball. Maybe some resize bug in dojo or dgrid?
-
 NAME
 H Add trademark disclaimer/limitation for NarraFirma, perhaps similar to:
     NarraFirma is a trademark of Cynthia F. Kurtz and is used by permission for the main distribution of this software.
@@ -73,7 +70,6 @@ X Survey - start page required (what do do if nothing entered)
 X Survey - improve styling on radio buttons for question or alternative approach (maybe later)
 X Survey - maximum number stories (maybe later)
 X Survey - back button in browser -- deal with so don't lose data
-X Remove redundant code when calculating survey questions for story and name in survey and story browser
 
 IDs
 ? Ensure short name IDs entered by user do not conflict with automatically created ones or story text and story name
@@ -91,11 +87,8 @@ X Add way to clear out or reset old survey results? Or maybe partition them by s
 X Backup
 
 LOAD/SAVE
-H Think about save/load architecture and Pointrel design in relation to handling lots of observations for pattern permutations
 H Deal with Pointrel client receiving response that a resource already exists as a duplicate by discarding queued message
-L More fine-grained update support when updating an item in a grid, like a participant group, rather than update entire item and even list
-X Have revert button to go back to previous version for each page or clear out changes in progress on a page
-X Autosave, perhaps based on time or based on changing pages
+L Autosave for current textarea or input text based on timer even if you don't leave it
 
 LOGGING
 X Think through logging in the server, perhaps using a library
@@ -144,10 +137,7 @@ H Create catalysis report - including results (graphs, statistical results)
 H Print catalysis report
 
 CATALYSIS
-H Need page at start to create new or choose existing catalysis report to work on
 H Remove "review excerpts" page
-H Move "review and intepret observations" functionality to patterns browser
-H Support multiple catalysis reports by choosing questionnaire and data set (survey results)
 X Need to be able to select text in existing story to AddToExcerpts
 X Support storiesList -- for choosing a resonant story
 
@@ -165,49 +155,27 @@ L Add close button to top of item panel
 L Better information about what is going on in item panel - whether view, edit, duplicate
 L When duplicate list item, add "copy" to name (different for each)
 X Popup for add item from grid -- should have better label in title as to what type of thing is added
-X CSS styling of nested box in grid
 X Uncomment and test tooltip code in grid table
 X Get tooltips working in dialogs (maybe Dojo bug?)
-X Sorting issue: Initial sort order in grid may be order of items in underlying array, but you can't get back to that order once you sort by a column
 X Bug if viewing data when remove it; the viewing panel remains open with old data
 
 CONFIGURATION
 H Make a Project Administration section to go with home page button for use with import/export/backup/reporting or other settings and functions
 ? Add project configuration page?
 
-REPORTS
-H Remove all reports
-H Maybe convert reports page to a summary page for each section (where they put in final notes on that phase)
-X Improve reports so look nice
-X Generate HTML reports that can be downloaded
-X Maybe replace reports with one page to export report (or export data)
-
 DASHBOARD
 H Provide status of whether survey is active on main dashboard
 H Reminder entered (on first planning page) did not show up on planning dashbaord page
-X Decide what goes on main home dashboard now that changed from page status to textual reminders
-X Odd behavior under Firefox where did not see a scrollbar until resized text area when had lots of section notes
 
 ALERTS
-X Help window displaying HTML instead of alert
 X Look at all alerts in code and make into nicer GUI feedback
 
 TRANSLATION
 X Translate report answers as needed for those types like selections
 X Final review of all strings in code looking for TODO translate items or similar
 
-REFACTORING
-? Save data for observations and so on as separate documents so can do it incrementally
-? Maybe separate documents for each participant group?
-? Maybe separate documents for each survey question?
-X Rename "questions" with "fieldSpecifications" where appropriate and make similar changes away from using "question" to mean "fieldSpecification" [partly done]
-X See if still need so many button functions in domain (or maybe any at all)
-X Some way only load page and panel files as needed (with help URL being determined by PanelBuilder as it creates panel, and maybe specify panels in section by hand)
-X Load panel widgets only as needed by always creating contentPane for a widget and loading the contents later as available returning a promise, with ready callback in builder when all promises kept
-X Only load panel information as needed for section (or request for specific panel)
-
 BUILD
-X Learn how to use Dojo build process to minimize application
+X Learn how to use some build or packaging process to minimize application for deployment
 
 VALIDATION
 X Think about validation and how or when or if it should be done
@@ -222,10 +190,14 @@ H Print story cards as HTML
 H Page to print story cards
 X Print section reports as HTML
 
+NAVIGATION
+M Back button not working reliablity (especially in Safai 5) since transition from Dojo has
+
+SECURITY
+H Need to hash passwords on client and server instead of using plain text
+
 UNSURE
 X Way to retrieve data about project participant groups [Is this still relevant? Probably yes, if we did "checkboxes with pull" for picking what groups an activity applies to instead of text entry]
-X Support imageUploader
-X Support storyBrowserCount
 
 ======= CYNTHIA
 
@@ -239,11 +211,15 @@ X Forgot to put "memorable" in eliciting question types ("What type of question 
 
 ==== Wish list:
 
+Maybe have a summary page at end of each section (where they put in final notes on that phase)
+Generate HTML reports that can be downloaded
+Maybe replace reports with one page to export report (or export data)
+
+Support Undo (includign multi-user aspects with log)
+Support mult-user chat
+Notify user of multi-user edit conflicts
+
 Copy selected stories to clipboard and/or a popup window
-
-Make survey work as one scrolling page
-
-Project chooser dialog should be centered in page instead of over to the right side of window due to issue with Grind scroller and CSS
 
 Display list of selected stories in spot-checking graph browser in Collection section
 
@@ -280,12 +256,8 @@ Unit tests
 
 Continuous integration server that runs tests
 
-Multi-user aspects [partially done with separate save/load of pages]
-
 Generate PDF reports
 Generate CSV output
-
-Replace Dojo's isString which is deprecated (and similar basic functionality) with lodash calls
 
 ==== Might not do
 
@@ -305,7 +277,8 @@ Make sections optional in loadAllPanelSpecifications to make that code more reus
 
 Remove panel's displayName, isHeader, and section fields since now defined by navigation and that is duplicated information; example regex to find them: ^    "displayName": "[^"]*",
 
-Remove any use of widgets in widgetSupport or other use of Dojo controls (e.g. Button) directly and only use PanelBuilder for creating GUI
+Support imageUploader
+Support storyBrowserCount
 
 ==== DONE
 
@@ -758,6 +731,7 @@ DONE Add page to do import [actually a button]
 DONE Maybe import button for survey results [same as above]
 DONE Review alternate reactive GUI systems like React, Mithril, and Mercury and pick one for testing with survery (for loading speed, memory footprint, and simpler maintenance)
 DONE Convert survey to use Mithril and plain HTML input widgets instead of Dojo/Digit approach
+DONE Make survey work as one scrolling page
 DONE Problem when opened up road block survey with Firefox and developer console and it was too tall and when closed console the top close button became inacessible as offscreen [fixed with move to Mithril]
 DONE Survey - Move to single page scrolling approach for survey
 DONE Survey - Better validation that at least one story entered instead of forcing first story entry pane to have a story even if second or later panes have stories
@@ -795,3 +769,37 @@ DONE Calculate chi-square statistic in trends report
 DONE Calculate Kendall's Tau statistic in trends report (developed using TypeScript from Numerical Recipies / older SciPy version after partial port of code from Apache Commons)
 DONE Convert entire project to TypeScript to help manage complexity
 DONE Fix incorect brush behavior in bar chart and histogram
+DONE Need page at start to create new or choose existing catalysis report to work on
+DONE Support multiple catalysis reports by choosing questionnaire and data set (survey results)
+DONE Move "review and intepret observations" functionality to patterns browser (CFK)
+DONE CSS styling of nested box in grid (CFK)
+DONE Remove all reports (CFK)
+NOT DOING Improve reports so look nice [n longer have reports at end of sections]
+DONE Make screenshots for application (Dojo vesion)
+DONE Convert entire GUI from Dojo/Dijit to Mithril, including Grid [big effort, took a couple weeks]
+DONE Remove any use of widgets in widgetSupport or other use of Dojo controls (e.g. Button) directly and only use PanelBuilder for creating GUI [widgetSupport removed with change to Mithril]
+DONE Project chooser dialog should be centered in page instead of over to the right side of window due to issue with Grind scroller and CSS [fixed with new Mithril dialogs]
+DONE Story browser (Catalysis section second page, but also review stories during collection) seems to sometimes cause and endless loop in Firexfox or Chrome causing memory use growth and beach ball. Maybe some resize bug in dojo or dgrid? [Have not seen in months and move to Mithril would seemingly surely fix this]
+DONE Grid Sorting issue: Initial sort order in grid may be order of items in underlying array, but you can't get back to that order once you sort by a column [now always sorts on first column to start]
+DONE Odd behavior under Firefox where did not see a scrollbar until resized text area when had lots of section notes [have not seen this again]
+SONE Decide what goes on main home dashboard now that changed from page status to textual reminders [main is just simple for now]
+DONE Replace other Dojo functionality like hash change, toaster, and sha256 with non-Dojo alternatives
+DONE Replace Dojo's isString which is deprecated (and similar basic functionality) with lodash calls
+DONE Replace Dojo loader with RequireJS
+DONE Switch entire data storage system from using a projectModel of objects to using Pointrel triple store as almost all levels [took about a week]
+DONE Multi-user aspects (partially done with separate save/load of pages) [could be improved further]
+DONE Save data for observations and so on as separate documents so can do it incrementally [as triples]
+DONE Maybe separate documents for each participant group [as triple]
+DONE Maybe separate documents for each survey question [as triples]
+DONE Think about save/load architecture and Pointrel design in relation to handling lots of observations for pattern permutations [relates to the above use of tripel store]
+DONE More fine-grained update support when updating an item in a grid, like a participant group, rather than update entire item and even list [relates to the above]
+OBSOLETE Autosave, perhaps based on time or based on changing pages [fine-grained triples is goood enough for now]
+DONE Fix sha256 discrepancy between Pointrel client and server by switching to CryptoJS SHA256 for client [hopefully fixes this]
+NOT DOING Some way only load page and panel files as needed (with help URL being determined by PanelBuilder as it creates panel, and maybe specify panels in section by hand)
+NOT DOING Load panel widgets only as needed by always creating contentPane for a widget and loading the contents later as available returning a promise, with ready callback in builder when all promises kept
+NOT DOING Only load panel information as needed for section (or request for specific panel)
+DONE Rename "questions" with "fieldSpecifications" where appropriate and make similar changes away from using "question" to mean "fieldSpecification" [partly done -- seems good enough]
+DONE See if still need so many button functions in domain (or maybe any at all) [seems OK as is now]
+OBSOLETE Help window displaying HTML instead of alert [now using HTML window for help for entire page]
+OBSOLETE Have revert button to go back to previous version for each page or clear out changes in progress on a page [no longer savign at page level; undo in wishlist though]
+DONE Remove redundant code when calculating survey questions for story and name in survey and story browser [I think this is probably done enough...]
