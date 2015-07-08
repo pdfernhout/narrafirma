@@ -1,9 +1,9 @@
 /*jslint node: true */
 "use strict";
 
-var recommendationsFileName = '../design/recommendations.csv';
+var recommendationsFileName = '../design/recommendations_filledin.csv';
 // var recommendationsFileName = './recommendations-test.csv';
-var recommendationsOutputFileName = '../WebContent/js/templates/recommendations.js';
+var recommendationsOutputFileName = '../WebContent/source/templates/recommendations.js';
 
 // Process Recommendations CSV file 
 // File should have category header line to define categories with "# SECTION" to define sections and blank items between sections
@@ -97,11 +97,16 @@ function loadMatrixFromCSVText(text) {
     matrixColumnCount = 0;
     matrixRowCount = 0;
     
-    var lines = text.split("\n");
+    var lines = text.split("\r");
     // console.log(JSON.stringify(lines));
     
     for (var lineIndex in lines) {
         var line = lines[lineIndex];
+        console.log("line:", line.length, line.substring(20), "...");
+        if (line && line.charAt(0) === "#") {
+            console.log("skipping comment line:", line);
+            continue;
+        }
         // TODO: Will not handle embedded commas or quotes
         var splitLine = line.split(",");
         var lineItems = [];
