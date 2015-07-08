@@ -59,7 +59,7 @@ var displayTypeToValueTypeMap = {
 function convertEditorQuestions(editorQuestions) {
     var adjustedQuestions = [];
     
-    for (var questionIndex in editorQuestions) {
+    for (var questionIndex = 0; questionIndex < editorQuestions.length; questionIndex++) {
         var question = editorQuestions[questionIndex];
         // console.log("question", question);
         var shortName = question.storyQuestion_shortName || question.participantQuestion_shortName;
@@ -124,15 +124,22 @@ function buildItemListFromIdList(project: Project, idToItemMap, idItemList, idFi
     idItemList.forEach(function (idItem) {
         // TODO: Fix access here for tripleStore use
         var id = project.tripleStore.queryLatestC(idItem, idField);
+        var order = project.tripleStore.queryLatestC(idItem, "order");
         var item = idToItemMap[id];
         if (item) {
             // Retrieve the latest for all the fields of the object (which will include deteleted/null fields)
             // TODO: Remove any deleted/null fields
             var itemObject = project.tripleStore.makeObject(item);
+            itemObject.order = order;
             result.push(itemObject);
         } else {
             console.log("Editing error: Missing question definition for", idItem);
         }
+    });
+    result.sort(function(a, b) {
+        if (a.order < b.order) return -1;
+        if (a.order > b.order) return 1;
+        return 0;
     });
     return result;
 }
