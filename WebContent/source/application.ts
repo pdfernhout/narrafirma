@@ -383,10 +383,12 @@ function updateServerStatus(status, text) {
         //nameDiv.style.color = "red";
         lastServerError = text;
         //nameDiv.style.border = "thick solid #FF0000";
+        console.log("updateServerStatus failure", text);
     } else {
         console.log("Unexpected server status", status);
         nameDiv.className = "narrafirma-serverstatus-unexpected";
         //nameDiv.style.color = "black";
+        console.log("updateServerStatus unexepected", text);
     }
     
     nameDiv.title = statusText;
