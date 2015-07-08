@@ -113,23 +113,23 @@ var AdminPageDisplayer: any = {
 function addJournalClicked() {
     console.log("addJournalClicked", journalName());
     allProjectsModel.projects.push({name: journalName()});
-    alert("Unfinished");
+    toaster.toast("Unfinished");
 }
 
 function addUserClicked() {
     console.log("addJournalClicked", userName(), userPassword());
     userPassword("");
-    alert("Unfinished");
+    toaster.toast("Unfinished");
 }
 
 function accessClicked(grantOrRevoke: string) {
     console.log("accessClicked", grantOrRevoke, userName(), roleName(), journalName(), topicName());
-    alert("Unfinished");
+    toaster.toast("Unfinished");
 }
 
 function grantAnonymousAccessToJournalForSurveysClicked() {
     console.log("grantAnonymousAccessToJournalForSurveysClicked", journalName());
-    alert("Unfinished");
+    toaster.toast("Unfinished");
 }
 
 function initialize(theUserIdentifier, theProjects) {
@@ -143,7 +143,7 @@ function initialize(theUserIdentifier, theProjects) {
     document.getElementById("pleaseWaitDiv").style.display = "none";
     document.getElementById("pageDiv").style.display = "block";
    
-    toaster.toast("Running...");
+    // toaster.toast("Running...");
     
     m.mount(document.getElementById("pageDiv"), AdminPageDisplayer);
     
