@@ -6,8 +6,11 @@ import m = require("mithril");
 
 "use strict";
 
+var narrafirmaProjectPrefix = "NarraFirmaProject-";
+
 var journalIdentifier = "NarraFirma-administration";
 var projectAdministrationTopic = "ProjectAdministration";
+
 var userIdentifier;
 
 var pointrelClient: PointrelClient;
@@ -48,9 +51,15 @@ var AdminPageDisplayer: any = {
             ]),
             m("div", "Server status: unknown"),
             m("br"),
+            m("b", "Projects:"),
+            m("br"),
+            allProjectsModel.projects.map(function(project) {
+               return m("div", [project.name]);
+            }),
+            m("br"),
             m("br"),
             m("div", [
-                m("label", {"for": "jn1"}, "Journal name: NarraFirma-"),
+                m("label", {"for": "jn1"}, "Journal name: " + narrafirmaProjectPrefix),
                 m("input", {id: "jn1", value: journalName(), onchange: m.withAttr("value", journalName)}),
                 m("br"),
                 m("button", {onclick: addJournalClicked}, "Add journal"),
@@ -85,7 +94,7 @@ var AdminPageDisplayer: any = {
                 m("input", {id: "t3", value: topicName(), onchange: m.withAttr("value", topicName)}),
                 m("br"),
                 m("button", {onclick: accessClicked.bind(null, "grant")}, "Grant"),
-                m("button", {onclick: accessClicked.bind(null, "evoke")}, "Revoke"),
+                m("button", {onclick: accessClicked.bind(null, "revoke")}, "Revoke"),
                 m("br")
             ])
         ]);
@@ -94,10 +103,12 @@ var AdminPageDisplayer: any = {
 
 function addJournalClicked() {
     console.log("addJournalClicked", journalName());
+    allProjectsModel.projects.push({name: journalName()});
 }
 
 function addUserClicked() {
     console.log("addJournalClicked", userName(), userPassword());
+    userPassword("");
 }
 
 function accessClicked(grantOrRevoke: string) {
@@ -108,11 +119,12 @@ function grantAnonymousAccessToJournalForSurveysClicked() {
     console.log("grantAnonymousAccessToJournalForSurveysClicked", journalName());
 }
 
-function initialize(theUserIdentifier) {
+function initialize(theUserIdentifier, theProjects) {
     console.log("initialize called in site.js");
     toaster.createToasterWidget(document.getElementById("toasterDiv"));
     
     userIdentifier = theUserIdentifier;
+    allProjectsModel.projects = theProjects;
     
     // turn off initial "please wait" display
     document.getElementById("pleaseWaitDiv").style.display = "none";
@@ -406,6 +418,21 @@ singleUsePointrelClient.getCurrentUserInformation(function(error, response) {
         alert("Something went wrong determining the current user identifier");
         return;
     }
-    initialize(response.userIdentifier);
+    
+    // Identical code in applications to get project list
+    var projects = [];
+    for (var key in response.journalPermissions) {
+        if (!_.startsWith(key, narrafirmaProjectPrefix)) continue;
+        var permissions = response.journalPermissions[key];
+        projects.push({
+            id: key,
+            name: key.substring(narrafirmaProjectPrefix.length),
+            read: permissions.read,
+            write: permissions.write,
+            admin: permissions.admin
+        });
+    }
+    
+    initialize(response.userIdentifier, projects);
 });
 
