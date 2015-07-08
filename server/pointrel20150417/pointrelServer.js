@@ -387,7 +387,7 @@ function respondForReportJournalStatusRequest(journal, isAuthorizedPartial, call
         response.readOnly = false;
     }
     
-    callback(makeSuccessResponse(200, "Success", response));
+    return callback(makeSuccessResponse(200, "Success", response));
 }
 
 //--- Loading and storing messages on disk
@@ -856,12 +856,13 @@ function processRequest(apiRequest, callback, request) {
         
         // TODO: Could check for security authorization here
         
-        if (!journal) return callback(makeFailureResponse(404, "No such journal", {journalIdentifier: journalIdentifier}));
+        if (!journal && requestType !== "pointrel20150417_createJournal") return callback(makeFailureResponse(404, "No such journal", {journalIdentifier: journalIdentifier}));
         
         if (requestType !== "pointrel20150417_reportJournalStatus") {
             var requestedCapability = "read";
             if (requestType === "pointrel20150417_storeMessage") requestedCapability = "write";
-
+            if (requestType === "pointrel20150417_createJournal") requestedCapability = "administrate";
+            
             var authorized = true;
             if (configuration.isAuthorizedCallback) {
                 // TODO: Could get more fine-grained authorization for messageType
@@ -902,6 +903,13 @@ function processRequest(apiRequest, callback, request) {
                 }
             };
             return respondForReportJournalStatusRequest(journal, isAuthorizedPartial, callback);
+        }
+        
+        if (requestType === "pointrel20150417_createJournal") {
+            if (journal) return callback(makeFailureResponse(409, "Conflict: Journal already exists", {journalIdentifier: journalIdentifier}));
+            // TODO: Should make this all into a funciton, and this call shoudl be asynchronous
+            addJournalSync(apiRequest.journalIdentifier);
+            return callback(makeSuccessResponse(200, "Success", {journalIdentifier: journalIdentifier}));
         }
         
         // Catchall for unsupported request
