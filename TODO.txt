@@ -84,7 +84,6 @@ X Add way to clear out or reset old survey results? Or maybe partition them by s
 X Backup
 
 LOAD/SAVE
-H Deal with Pointrel client receiving response that a resource already exists as a duplicate by discarding queued message
 L Autosave for current textarea or input text based on timer even if you don't leave it
 
 LOGGING
@@ -803,3 +802,4 @@ DONE The activities list for a story collection or sensemaking session needs mov
 OBSOLETE Bug if move data item up or down; when you click on an item, it shows you what used to be in that position not what is currently there [no longer moving up/down, and probably otherwise not an issue when using Mithril grid]
 DONE In the story browser, if you look at a story (view), then change the selection of stories, the old story still shows.
 DONE Bug if viewing data when remove it; the viewing panel remains open with old data [same as above]
+DONE Deal with Pointrel client receiving response that a resource already exists as a duplicate by discarding queued message
