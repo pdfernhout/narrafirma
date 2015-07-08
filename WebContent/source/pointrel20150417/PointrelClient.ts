@@ -597,10 +597,16 @@ class PointrelClient {
                         return;
                     }
                     
-                    // TODO: Need to otherwise decide whether to discard the message based on the nature of the problem
+                    // Need to otherwise decide whether to discard the message based on the nature of the problem
                     // Should leave it in the queue if it is not malformed and it is just a possibly temporary problem with server
-                    // TODO: If the message we sent was rejected because it was malformed or a duplicate, we should discard it
+                    // If the message we sent was rejected because it was malformed or a duplicate, we should discard it
                     // Do not continue with requests until next poll...
+                    
+                    // TODO: Should we not discard messages for an internal server error (500)?
+                    if (response.statusCode !== "403") {
+                        // Discard all problematical messages except for ones that are not authenticated and might succeed if resent after (re)authetication
+                        self.outgoingMessageQueue.shift();
+                    }
                     return;
                 } else {
                     self.okStatus();
