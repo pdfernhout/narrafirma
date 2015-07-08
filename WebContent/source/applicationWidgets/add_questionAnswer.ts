@@ -78,7 +78,7 @@ function add_questionAnswer(panelBuilder: PanelBuilder, model, fieldSpecificatio
     // TODO: Fix styling
     return m("div", {"class": "questionExternal narrafirma-question-type-questionAnswer"}, [
         m.trust(fieldSpecification.displayPrompt),
-        m("span[class=narrafirma-questionAnswer]", calculate())
+        m("div[class=narrafirma-questionAnswer]", calculate())
     ]);
 }
 
