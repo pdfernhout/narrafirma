@@ -18,12 +18,6 @@ L When you enter a story, it replaces the title of the main web page (Enter stor
 L would like to make "focus rectangle" or "rubber band" over graphs when selecting - see http://bl.ocks.org/mbostock/1667367
 L Histograms should have mean and standard deviation marked (and maybe median and mode, skewness and kurtosis as numbers).
 
-NAME
-H Add trademark disclaimer/limitation for NarraFirma, perhaps similar to:
-    NarraFirma is a trademark of Cynthia F. Kurtz and is used by permission for the main distribution of this software.
-    Reference: https://www.mozilla.org/en-US/foundation/trademarks/policy/
-    And: http://wordpressfoundation.org/trademark-policy/
-
 WORDPRESS PLUGIN
 H WordPress plugin support for Pointrel save/load/triples
 H Create entire WordPress plugin based on current stub version
@@ -802,3 +796,4 @@ OBSOLETE Popup for add item from grid -- should have better label in title as to
 OBSOLETE Uncomment and test tooltip code in grid table
 OBSOLETE Get tooltips working in dialogs (maybe Dojo bug?)
 DONE Reminder entered (on first planning page) did not show up on planning dashbaoard page [probably fixed with Mithril, if not before]
+DONE Add trademark disclaimer/limitation for NarraFirma [as README.txt file]
