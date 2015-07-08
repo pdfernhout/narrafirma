@@ -313,9 +313,53 @@ class PointrelClient {
         }        
     }
     
+    createJournal(journalIdentifier, callback) {
+        if (this.apiURL === "loopback") {
+            callback(null, {
+                success: true, 
+                statusCode: 200,
+                description: "Success",
+                timestamp: this.getCurrentUniqueTimestamp(),
+                status: 'OK',
+                version: "PointrelServer-loopback",
+                currentUniqueTimestamp: this.getCurrentUniqueTimestamp(),
+                journalIdentifier: journalIdentifier
+            });
+        } else {
+            // Send to a real server immediately
+    
+            var apiRequest = {
+                action: "pointrel20150417_createJournal",
+                journalIdentifier: journalIdentifier
+            };
+            if (debugMessaging) console.log("sending createJournal request", apiRequest);
+            this.prepareApiRequestForSending(apiRequest);
+            
+            // Do not set outstandingServerRequestSentAtTimestamp as this is an immediate request that does not block polling
+            this.serverStatus("waiting", "requesting createJournal " + new Date().toISOString());
+            
+            var self = this;
+            this.apiRequestSend(apiRequest, 2000, function(response) {
+                if (debugMessaging) console.log("Got createJournal response", response);
+                if (!response.success) {
+                    console.log("ERROR: report createJournal failure", response);
+                    self.serverStatus("failure", "Report createJournal failure: " + response.statusCode + " :: " + response.description);
+                    callback(response);
+                } else {
+                    self.okStatus();
+                    callback(null, response);
+                }
+             }, function(error) {
+                self.serverStatus("failure", "Problem with createJournal from server: " + error.description);
+                console.log("Got server error for createJournal", error.message);
+                callback(error);
+            });
+        }
+    }
+    
     reportJournalStatus(callback) {
         if (this.apiURL === "loopback") {
-            callback({
+            callback(null, {
                 success: true, 
                 statusCode: 200,
                 description: "Success",
@@ -369,7 +413,7 @@ class PointrelClient {
     
     getCurrentUserInformation(callback) {
         if (this.apiURL === "loopback") {
-            callback({
+            callback(null, {
                 success: true, 
                 statusCode: 200,
                 description: "Success",
