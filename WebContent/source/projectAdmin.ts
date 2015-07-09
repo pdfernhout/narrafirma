@@ -38,6 +38,27 @@ var userPassword = m.prop("");
 var roleName = m.prop("");
 var topicName = m.prop("");
 
+var userToDisplay;
+
+(<any>window).projectAdmin_selectRole = function(theRole) {
+    console.log("projectAdmin_selectRole", theRole);
+    roleName(theRole);
+    m.redraw();
+};
+
+(<any>window).projectAdmin_selectJournal = function(theJournal) {
+    console.log("projectAdmin_selectJournal", theJournal);
+    journalName(theJournal);
+    m.redraw();
+};
+
+(<any>window).projectAdmin_selectUser = function(theUser) {
+    console.log("projectAdmin_selectUser", theUser);
+    userToDisplay = theUser;
+    userName(theUser);
+    m.redraw();
+};
+
 var AdminPageDisplayer: any = {
     controller: function(args) {
         console.log("AdminPageDisplayer created");
@@ -59,20 +80,27 @@ var AdminPageDisplayer: any = {
                 m("a", {href: "/logout"}, "Log Out")
             ]),
             m("br"),
+            !!userToDisplay ? m("div", {style: "height: 300px; overflow: auto; float: right; min-width: 75%"}, [
+                "Roles for user: ", 
+                m("b", userToDisplay),
+                m("br"),
+                m("pre", JSON.stringify(allProjectsModel.users[userToDisplay].rolesForJournals, null, 4))
+            ]) : m("div", {style: "height: 300px; overflow: auto; float: right; min-width: 75%"}),
+            m("b", "Choose user:"),
+            m("br"),
+            Object.keys(allProjectsModel.users).map(function(userIdentifier) {
+                var user = allProjectsModel.users[userIdentifier];
+                return m("div", [m("a", {href: "javascript:projectAdmin_selectUser('" +  user.userIdentifier + "')"}, user.userIdentifier)]);
+//                return m("div", [user.userIdentifier, m("pre", JSON.stringify(user.rolesForJournals, null, 4)), m("br")]);
+            }),
+            m("br"),
             m("b", "Projects:"),
             m("br"),
             allProjectsModel.projects.map(function(project) {
-               return m("div", [project.name]);
+               return m("div", [m("a", {href: "javascript:projectAdmin_selectJournal('" +  project.name + "')"}, project.name)]);
             }),
             m("br"),
-            m("b", "Users:"),
-            m("br"),
-            Object.keys(allProjectsModel.users).map(function(userIdentifier) {
-                console.log("userIdentifier", userIdentifier);
-                var user = allProjectsModel.users[userIdentifier];
-                return m("div", [user.userIdentifier, m("pre", JSON.stringify(user.rolesForJournals, null, 4)), m("br")]);
-            }),
-            m("br"),
+            m("hr", {style: "display: block; clear: both;"}),
             m("div", [
                 m("label", {"for": "jn1"}, "Journal name: " + narrafirmaProjectPrefix),
                 m("input", {id: "jn1", value: journalName(), onchange: m.withAttr("value", journalName)}),
@@ -101,7 +129,7 @@ var AdminPageDisplayer: any = {
                 m("br"),
                 m("label", {"for": "r3"}, "Role: "),
                 m("input", {id: "r3", value: roleName(), onchange: m.withAttr("value", roleName)}),
-                m("span", {style: 'float: left; display: inline-block;'}, "Role should be one of: reader, writer, readerWriter, administrator"),
+                m("span", {style: 'float: left; display: inline-block;'}, "Role should be one of: ", r("reader"), ", ", r("writer"), ", ", r("readerWriter"), ", or ", r("administrator")),
                 m("br"),
                 m("label", {"for": "jn3"}, "Journal: " + narrafirmaProjectPrefix),
                 m("input", {id: "jn3", value: journalName(), onchange: m.withAttr("value", journalName)}),
@@ -116,6 +144,10 @@ var AdminPageDisplayer: any = {
         ]);
     }
 };
+
+function r(role) {
+    return m("a", {href: "javascript:projectAdmin_selectRole('" +  role + "')"}, role);
+}
 
 function addJournalClicked() {
     console.log("addJournalClicked", journalName());
