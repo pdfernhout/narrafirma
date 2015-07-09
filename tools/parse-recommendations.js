@@ -3,7 +3,7 @@
 
 var recommendationsFileName = '../design/recommendations_filledin.csv';
 // var recommendationsFileName = './recommendations-test.csv';
-var recommendationsOutputFileName = '../WebContent/source/templates/recommendations.js';
+var recommendationsOutputFileName = '../WebContent/source/templates/recommendations.ts';
 
 // Process Recommendations CSV file 
 // File should have category header line to define categories with "# SECTION" to define sections and blank items between sections
@@ -102,19 +102,17 @@ function loadMatrixFromCSVText(text) {
     
     for (var lineIndex in lines) {
         var line = lines[lineIndex];
-        console.log("line:", line.length, line.substring(20), "...");
-        if (line && line.charAt(0) === "#") {
-            console.log("skipping comment line:", line);
-            continue;
-        }
-        // TODO: Will not handle embedded commas or quotes
+        // console.log("line:", line.length, line.substring(0, 80), "...");
+        // TODO: Will not handle embedded commas
         var splitLine = line.split(",");
         var lineItems = [];
-        for (var index in splitLine) {
+        for (var index = 0; index < splitLine.length; index++) {
             var item = splitLine[index].trim();
             if (startsWith(item, '"') && endsWith(item, '"')) {
                 // console.log("trimming item '%s'", item);
                 item = item.substring(1, item.length - 1);
+                // Replace escaped double quotes
+                item = item.replace(/\"\"/, '"');
             }
             lineItems.push(item);
         }
@@ -165,6 +163,7 @@ function processRecommendationsMatrix() {
         if (rowField === "") continue;
         if (startsWith(rowField, "#")) {
             rowCategory = rowField.substring(1).trim();
+            if (rowCategory === "collectionSessions #sensemakingSessions") rowCategory = "sessions";
             rowField = null;
             continue;
         }
@@ -194,12 +193,15 @@ function buildQuestions() {
         var line = matrix[lineIndex];
         rowField = getMatrixValue(lineIndex, 0).trim();
         if (rowField === "") continue;
+        // console.log("rowField", rowField);
         if (startsWith(rowField, "#")) {
             rowCategory = rowField.substring(1).trim();
+            if (rowCategory === "collectionSessions #sensemakingSessions") rowCategory = "sessions";
             rowField = null;
             result[rowCategory] = [];
             continue;
         }
+        // console.log("pushing", "::", rowCategory, "::", rowField);
         result[rowCategory].push(rowField);
     }
     return result;
@@ -211,6 +213,7 @@ function buildCategories() {
     var columnField = null;
     for (var columnIndex = 1; columnIndex <  matrixColumnCount; columnIndex++) {
         columnField = getMatrixValue(0, columnIndex).trim();
+        // console.log("columnField", columnField);
         if (columnField === "") continue;
         if (startsWith(columnField, "#")) {
             columnCategory = columnField.substring(1).trim();
@@ -232,14 +235,13 @@ function addOutput(output) {
 function writeRecommendationsModule(recommendationsStructure) {
     allOutput = "";
     addOutput("// Generated from design\n");
-    addOutput("\ndefine(function() {\n");
-    addOutput("  \"use strict\";\n");
-    addOutput("\n  var recommendations = ");
+    addOutput('import kludgeForUseStrict = require("../kludgeForUseStrict");\n');
+    addOutput('"use strict\";\n\n');
+    addOutput("var recommendations = ");
     addOutput(JSON.stringify(recommendationsStructure, null, 4));
     addOutput(";\n");
     
-    addOutput("\n  return recommendations;\n");
-    addOutput("});\n");
+    addOutput("\nexport = recommendations;\n");
     
     fs.writeFileSync(recommendationsOutputFileName, allOutput);
     
