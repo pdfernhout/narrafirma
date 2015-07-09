@@ -88,7 +88,7 @@ var AdminPageDisplayer: any = {
             ]) : m("div", {style: "height: 300px; overflow: auto; float: right; min-width: 75%"}),
             m("b", "Choose user:"),
             m("br"),
-            Object.keys(allProjectsModel.users).map(function(userIdentifier) {
+            Object.keys(allProjectsModel.users).sort().map(function(userIdentifier) {
                 var user = allProjectsModel.users[userIdentifier];
                 return m("div", [m("a", {href: "javascript:projectAdmin_selectUser('" +  user.userIdentifier + "')"}, user.userIdentifier)]);
 //                return m("div", [user.userIdentifier, m("pre", JSON.stringify(user.rolesForJournals, null, 4)), m("br")]);
@@ -96,7 +96,7 @@ var AdminPageDisplayer: any = {
             m("br"),
             m("b", "Projects:"),
             m("br"),
-            allProjectsModel.projects.map(function(project) {
+            allProjectsModel.projects.sort(compareProjects).map(function(project) {
                return m("div", [m("a", {href: "javascript:projectAdmin_selectJournal('" +  project.name + "')"}, project.name)]);
             }),
             m("br"),
@@ -144,6 +144,12 @@ var AdminPageDisplayer: any = {
         ]);
     }
 };
+
+function compareProjects(a, b) {
+    if (a.name < b.name) return -1;
+    if (a.name > b.name) return 1;
+    return 0;
+}
 
 function r(role) {
     return m("a", {href: "javascript:projectAdmin_selectRole('" +  role + "')"}, role);
