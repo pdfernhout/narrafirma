@@ -1,5 +1,5 @@
 import dialogSupport = require("../panelBuilder/dialogSupport");
-import recommendations = require("../templates/recommendations");
+import RecommendationsParser = require("../RecommendationsParser");
 import translate = require("../panelBuilder/translate");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import m = require("mithril");
@@ -28,7 +28,7 @@ function build_recommendationTable(panelBuilder: PanelBuilder, dialogConfigurati
     var categoryName = fieldSpecification.displayConfiguration;
     console.log("add_recommendationTable category", categoryName);
     
-    var fieldsForCategory = recommendations.categories[categoryName];
+    var fieldsForCategory = RecommendationsParser.recommendations().categories[categoryName];
     if (!fieldsForCategory) {
         console.log("ERROR: No data for recommendationTable category: ", categoryName);
         fieldsForCategory = [];
@@ -46,7 +46,10 @@ function build_recommendationTable(panelBuilder: PanelBuilder, dialogConfigurati
         return "";
     }
     
-    console.log("recommendations.questions", recommendations.questions);
+    console.log("recommendations.questions", RecommendationsParser.recommendations().questions);
+    
+    // TODO: Replace "sessions" with approriate
+    var recommendationsForTopic = RecommendationsParser.recommendations().recommendations["sessions"];
     
     var table = m("table.recommendationsTable", 
       // Do the header
@@ -59,11 +62,11 @@ function build_recommendationTable(panelBuilder: PanelBuilder, dialogConfigurati
     
       // Now do one data row for each question considered in the recommendation
       // TODO: Maybe keys should be sorted somehow?
-      Object.keys(recommendations.questions).map(function(questionName) {
+      Object.keys(RecommendationsParser.recommendations().questions).map(function(questionName) {
           // TODO: Possible should improve this translation default, maybe by retrieving fieldSpecification for question and getting displayPrompt?
           var questionText = translate(questionName + "::prompt", questionName); // "Missing translation for: " + 
           var yourAnswer = panelBuilder.project.getFieldValue(questionName);
-          var recommendationsForAnswer = recommendations.recommendations[questionName][yourAnswer];
+          var recommendationsForAnswer = RecommendationsParser.recommendations[questionName][yourAnswer];
 
           return m("tr", [[
               m("th", {colspan: 4, align: "right"}, questionText),
