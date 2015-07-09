@@ -155,19 +155,45 @@ function r(role) {
     return m("a", {href: "javascript:projectAdmin_selectRole('" +  role + "')"}, role);
 }
 
+// TODO: Sanitize entered journal names!!!
+
 function addJournalClicked() {
     console.log("addJournalClicked", journalName());
+    if (!journalName().trim()) {
+        toaster.toast("No journal name was specified");
+        return;
+    }
+
     addJournal(narrafirmaProjectPrefix + journalName().trim());
 }
 
 function addUserClicked() {
     console.log("addJournalClicked", userName(), userPassword());
+    if (!userName().trim()) {
+        toaster.toast("No user name was specified");
+        return;
+    }
     addUser(userName().trim(), userPassword());
     userPassword("");
 }
 
 function accessClicked(grantOrRevoke: string) {
     console.log("accessClicked", grantOrRevoke, userName(), roleName(), journalName(), topicName());
+    
+    if (!userName().trim()) {
+        toaster.toast("No user name was specified");
+        return;
+    }
+    
+    if (!roleName().trim()) {
+        toaster.toast("No role was specified");
+        return;
+    }
+    
+    if (!journalName().trim()) {
+        toaster.toast("No journal was specified");
+        return;
+    }
     
     if (grantOrRevoke === "grant") {
         grantRole(userName().trim(), roleName().trim(), narrafirmaProjectPrefix + journalName().trim(), topicName().trim());
