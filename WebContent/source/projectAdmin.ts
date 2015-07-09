@@ -240,11 +240,11 @@ function initialize(theUserIdentifier, theProjects) {
         } else {
             var permissions = response.permissions;
             if (!permissions.read) {
-                alert("No read access -- try logging in first as an administrator");
+                alert("No read access -- try logging in as superuser");
                 return;
             }
             if (!permissions.write) {
-                alert("No write access -- try logging in first as an administrator");
+                alert("No write access -- try logging in as superuser");
             }
         }
     });
