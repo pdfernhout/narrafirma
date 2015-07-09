@@ -1,8 +1,9 @@
 ==== NarraFirma TODO list:
 
 PRIORITY
-- WordPress plugin data save and load
+- export: overall report, print text questionnaires, print story cards, print catalysis report
 - catalysis (at least one step like graph or themer)
+- WordPress plugin data save and load
 
 BIG OPTIONAL FUNCTIONALITY AREAS
 - multiple catalysis reports
@@ -173,6 +174,7 @@ X Print section reports as HTML
 
 NAVIGATION
 M Back button not working reliablity (especially in Safai 5) since transition from Dojo has
+L Way to change project
 
 SECURITY
 H Need to hash passwords on client and server instead of using plain text
