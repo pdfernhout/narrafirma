@@ -140,9 +140,6 @@ CONFIGURATION
 H Make a Project Administration section to go with home page button for use with import/export/backup/reporting or other settings and functions
 ? Add project configuration page?
 
-DASHBOARD
-H Provide status of whether survey is active on main dashboard
-
 ALERTS
 X Look at all alerts in code and make into nicer GUI feedback
 
@@ -802,3 +799,5 @@ DONE Recommendations table needs fixing -- one for each participant group [or ou
 DONE For intervention, the recommendations have to come from a separate file (recommendations_intervention_filledin.csv)
 DONE Improve dialog width sizing for when window is smaller
 DONE Support cancel buttons in dialogs and use that in text editor for clustering diagram
+DONE Don't show navigation buttons for most grids -- just the grids with it specified
+DONE Provide status of whether survey is active on main dashboard
