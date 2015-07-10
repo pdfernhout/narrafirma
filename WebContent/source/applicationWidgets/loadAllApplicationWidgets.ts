@@ -2,6 +2,7 @@ import add_accumulatedItemsGrid = require("./add_accumulatedItemsGrid");
 import add_annotationsGrid = require("./add_annotationsGrid");
 import add_clusteringDiagram = require("./add_clusteringDiagram");
 import add_dashboardSectionStatusDisplay = require("./add_dashboardSectionStatusDisplay");
+import add_dashboardStoryCollectionStatusDisplay = require("./add_dashboardStoryCollectionStatusDisplay");
 import add_excerptsList = require("./add_excerptsList");
 import add_graphBrowser = require("./add_graphBrowser");
 import add_questionAnswer = require("./add_questionAnswer");
@@ -24,6 +25,7 @@ function loadAllApplicationWidgets(PanelBuilder) {
     PanelBuilder.addPlugin("annotationsGrid", add_annotationsGrid);
     PanelBuilder.addPlugin("clusteringDiagram", add_clusteringDiagram);
     PanelBuilder.addPlugin("dashboardSectionStatusDisplay", add_dashboardSectionStatusDisplay);
+    PanelBuilder.addPlugin("dashboardStoryCollectionStatusDisplay", add_dashboardStoryCollectionStatusDisplay);
     PanelBuilder.addPlugin("excerptsList", add_excerptsList);
     PanelBuilder.addPlugin("graphBrowser", add_graphBrowser);
     PanelBuilder.addPlugin("questionAnswer", add_questionAnswer);

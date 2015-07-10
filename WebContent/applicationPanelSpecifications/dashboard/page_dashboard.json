@@ -94,6 +94,12 @@
                 "section": "page_projectReport"
             },
             "displayPrompt": "Administration"
+        },
+        {
+            "id": "project_mainDashboardStoryCollectionStatus",
+            "valueType": "none",
+            "displayType": "dashboardStoryCollectionStatusDisplay",
+            "displayPrompt": "Story collections"
         }
      ]
 }
