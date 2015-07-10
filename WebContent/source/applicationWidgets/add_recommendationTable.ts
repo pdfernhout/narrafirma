@@ -23,12 +23,10 @@ function add_recommendationTable(panelBuilder: PanelBuilder, model, fieldSpecifi
     
 function tagForRecommendationValue(recommendation) {
     if (recommendation === "no") {
-        return "recommendationLow";
+        return "recommendationNo";
     } else if (recommendation === "maybe") {
         return "recommendationLow";
     } else if (recommendation === "good") {
-        return "recommendationMedium";
-    } else if (recommendation === "") {
         return "recommendationMedium";
     } else if (recommendation === "very good") {
         return "recommendationHigh";
@@ -40,7 +38,7 @@ function tagForRecommendationValue(recommendation) {
 function makeTableForParticipantGroup(categoryName: string, project: Project, participantGroupIdentifier: string) {
     var recommendationsObject: RecommendationsParser = RecommendationsParser.recommendations();
     // recommendations -> Question -> Answer -> Category -> Option
-    console.log("recommendationsObject", recommendationsObject);
+    // console.log("recommendationsObject", recommendationsObject);
     
     var optionsForCategory = recommendationsObject.categories[categoryName];
     if (!optionsForCategory) {
@@ -48,7 +46,7 @@ function makeTableForParticipantGroup(categoryName: string, project: Project, pa
         optionsForCategory = [];
     }
     
-    console.log("recommendations.questions", recommendationsObject.questions);
+    // console.log("recommendations.questions", recommendationsObject.questions);
     
     var table = m("table.recommendationsTable", 
         // Do the header
@@ -64,13 +62,19 @@ function makeTableForParticipantGroup(categoryName: string, project: Project, pa
         Object.keys(recommendationsObject.questions).map(function(questionName) {
             // TODO: Possible should improve this translation default, maybe by retrieving fieldSpecification for question and getting displayPrompt?
             var questionText = translate(questionName + "::prompt", questionName); // "Missing translation for: " + 
-            // TODO: Fix this so it goes by participant group
+            
             var yourAnswer = project.tripleStore.queryLatestC(participantGroupIdentifier, questionName);
             if (yourAnswer === undefined) yourAnswer = project.getFieldValue(questionName);
             if (yourAnswer === undefined) yourAnswer = "";
-            console.log("questionName yourAnswer", questionName, yourAnswer);
-            var recommendationsForAnswer = recommendationsObject.recommendations[questionName][yourAnswer];
-
+            // console.log("questionName yourAnswer", questionName, yourAnswer);
+            // Don't put rows where there is no answer
+            if (!yourAnswer) return [];
+            
+            // Drill down into the recommentations if they exists for questioName, yourAnswer, and categoryName
+            var recommendationsForAnswer = recommendationsObject.recommendations[questionName];
+            if (recommendationsForAnswer) recommendationsForAnswer = recommendationsForAnswer[yourAnswer];
+            if (recommendationsForAnswer) recommendationsForAnswer = recommendationsForAnswer[categoryName];
+            
             return m("tr", [[
                 m("th", {colspan: 4, align: "right"}, questionText),
                 m("th", {colspan: 2, align: "right"}, yourAnswer)
@@ -81,8 +85,8 @@ function makeTableForParticipantGroup(categoryName: string, project: Project, pa
                 } else {
                     console.log("Missing recommendations for", questionName, yourAnswer);
                 }
+                if (!recommendationForOption) recommendationForOption = "good";
                 var theClass = tagForRecommendationValue(recommendationForOption);
-                if (!recommendationForOption) recommendationForOption = "*good*";
                 return m("td", {colspan: 1, align: "right", "class": theClass}, recommendationForOption);
             })]);
         })
@@ -98,7 +102,7 @@ function build_recommendationTable(panelBuilder: PanelBuilder, dialogConfigurati
     var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
     
     var categoryName = fieldSpecification.displayConfiguration;
-    console.log("add_recommendationTable category", categoryName);
+    // console.log("add_recommendationTable category", categoryName);
     
     // var recommendationsForTopic = recommendationsObject.recommendations[categoryName];
     

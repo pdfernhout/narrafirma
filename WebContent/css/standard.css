@@ -413,6 +413,11 @@ form {
 }
 
 .recommendationLow {
+    /* pinkish */
+    background-color: #FF6666;
+}
+
+.recommendationNo {
     background-color: DarkRed;
 }
 
