@@ -24,7 +24,7 @@
             "id": "SPECIAL_elicitingQuestionRecommendations",
             "valueType": "none",
             "displayType": "recommendationTable",
-            "displayConfiguration": "Eliciting questions",
+            "displayConfiguration": "elicitingQuestions",
             "displayPrompt": "Recommendations for eliciting questions"
         }
     ]

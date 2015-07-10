@@ -15,7 +15,7 @@
             "id": "SPECIAL_collectionSessionRecommendations",
             "valueType": "none",
             "displayType": "recommendationTable",
-            "displayConfiguration": "collectionSessions",
+            "displayConfiguration": "sessions",
             "displayPrompt": "Recommendations for story collection sessions"
         },
         {

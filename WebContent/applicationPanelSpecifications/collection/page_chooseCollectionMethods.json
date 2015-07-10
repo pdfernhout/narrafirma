@@ -15,7 +15,7 @@
             "id": "SPECIAL_methodRecommendations",
             "valueType": "none",
             "displayType": "recommendationTable",
-            "displayConfiguration": "Venues",
+            "displayConfiguration": "venues",
             "displayPrompt": "Method recommendations"
         },
         {

@@ -15,7 +15,7 @@
             "id": "sensemakingSessionRecommendations",
             "valueType": "none",
             "displayType": "recommendationTable",
-            "displayConfiguration": "sensemakingSessions",
+            "displayConfiguration": "sessions",
             "displayPrompt": "Recommendations for sensemaking sessions"
         },
         {
