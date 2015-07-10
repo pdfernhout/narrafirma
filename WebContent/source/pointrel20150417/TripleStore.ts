@@ -10,6 +10,16 @@ function makeTopicKey(object) {
     return object;
 }
 
+function defensiveCopy(value) {
+    if (value === undefined) return value;
+    if (value === null) return value;
+    if (typeof value === "number") return value;
+    if (typeof value === "string") return value;
+    if (typeof value === "boolean") return value;
+    // Value might be mutable, so returm a copy of it
+    return JSON.parse(JSON.stringify(value));
+}
+
 class TripleStore {
     pointrelClient: PointrelClient = null;
     topicIdentifier = null;
@@ -206,7 +216,7 @@ class TripleStore {
         var bIndex = this.getIndexEntries(a, b);
         if (!bIndex) return undefined;
         console.log("queryLatestC result", a, b, bIndex.latestC);
-        return bIndex.latestC;
+        return defensiveCopy(bIndex.latestC);
     }
     
     // The b keys returned here are stringified objects (could be strings, or other) and should be parsed by called code if needed
@@ -222,7 +232,7 @@ class TripleStore {
         for (var bKey in aIndex) {
             var bIndex = aIndex[bKey];
             if (bIndex && bIndex.latestC !== undefined) {
-                result[bKey] = bIndex.latestC;
+                result[bKey] = defensiveCopy(bIndex.latestC);
             }
         }
         
@@ -271,7 +281,7 @@ class TripleStore {
                 throw new Error("Expected b to be a string");
             }
             if (c !== undefined) {
-                result[b] = c;
+                result[b] = defensiveCopy(c);
             }
         }
 
@@ -361,15 +371,23 @@ class TripleStore {
         }
         var result = [];
  
-        // TODO: Unneeded test; maybe should allow empty setIdentifier?
+        // TODO: Unneeded test if keep initial check; maybe should allow empty setIdentifier?
         if (!setIdentifier) return result;
         
-        var latestBC = this.queryAllLatestBCForA(setIdentifier);
-        for (var bKey in latestBC) {
+        var aIndex = this.getIndexEntries(setIdentifier);
+        if (!aIndex) return result;
+        
+        for (var bKey in aIndex) {
             var b = JSON.parse(bKey);
-            var c = latestBC[bKey];
-            if (b.setItem && (c !== null && c !== undefined)) {
-                result.push(c);
+            // Set items should have a "setItem" field in b key as a "standard"; possible collision with other usages though
+            if (b.setItem) {
+                var bIndex = aIndex[bKey];
+                if (bIndex) {
+                    var c = bIndex.latestC;
+                    if (c !== undefined && c !== null) {
+                        result.push(defensiveCopy(c));
+                    }
+                }
             }
         }
 
