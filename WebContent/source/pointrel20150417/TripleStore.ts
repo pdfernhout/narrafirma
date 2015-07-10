@@ -14,7 +14,8 @@ class TripleStore {
     pointrelClient: PointrelClient = null;
     topicIdentifier = null;
     tripleMessages = [];
-    indexes = {};
+    tripleMessagesBySHA256AndLength = {};
+    indexABC = {};
     subscriptions = [];
 
     constructor(pointrelClient: PointrelClient, topicIdentifier) {
@@ -61,27 +62,68 @@ class TripleStore {
         this.processTripleStoreMessage(message);
     }
     
-    processTripleStoreMessage(message) {
+    private processTripleStoreMessage(message) {
         // TODO: Keep the list sorted by time
         this.tripleMessages.push(message);
+        
+        this.addMessageToIndexes(message);
     }
     
-    messageReceivedFromPointrelClient(message) {
+    private addMessageToIndexes(message) {
+        this.tripleMessagesBySHA256AndLength[message.__pointrel_sha256AndLength] = message;
+        
+        if (message.change.action === "addTriple") {
+            var triple = message.change.triple;
+            var aKey = JSON.stringify(triple.a);
+            var aIndex = this.indexABC[aKey];
+            if (!aIndex) {
+                aIndex = {};
+                this.indexABC[triple.a] = aIndex;
+            }
+            var bKey = JSON.stringify(triple.b);
+            var bIndex = aIndex[bKey];
+            if (!bIndex) {
+                bIndex = {};
+                aIndex[bKey] = bIndex;
+            }
+            var versions = bIndex.versions;
+            if (!versions) {
+                versions = [];
+                bIndex.versions = versions;
+            }
+            versions.push(message);
+            if (!bIndex.latestCTimestamp || bIndex.latestCTimestamp <= message._topicTimestamp) {
+                bIndex.latestCTimestamp = message._topicTimestamp;
+                bIndex.latestC = triple.c;
+            }
+        }
+    }
+    
+    private getIndexEntries(a, b = undefined) {
+        if (a === undefined) throw ("a should not be undefined");
+        var aKey = JSON.stringify(a);
+        var aIndex = this.indexABC[aKey];
+        if (!aIndex) return null;
+        if (b === undefined) return aIndex;
+        var bKey = JSON.stringify(b);
+        var bIndex = aIndex[bKey];
+        if (!bIndex) return null;
+        return bIndex;
+    }
+    
+    private messageReceivedFromPointrelClient(message) {
         // console.log("TripleStore.messageReceivedFromPointrelClient", message);
         if (message.messageType !== "tripleStore") return;
         if (message._topicIdentifier !== this.topicIdentifier) return;
         
         if (message.change.action === "addTriple") {                        
             // Ignore the message if it was previously received (probably because this client sent it)
-            // TODO: Improve this so it is not a loop
             // TODO: track sent and bump and report conflicts
-            for (var i = this.tripleMessages.length - 1; i >= 0; i--) {
-                var previouslyReceivedMessage = this.tripleMessages[i];
-                if (previouslyReceivedMessage.__pointrel_sha256AndLength === message.__pointrel_sha256AndLength) {
-                    // console.log("compare previous/new", previouslyReceivedMessage, message);
-                    console.log("TripleStore message previously received, so ignoring", message);
-                    return;
-                }
+            if (this.tripleMessagesBySHA256AndLength[message.__pointrel_sha256AndLength]) {
+                // MAYBE: Could check JSON of stored and received to confirm they are identical
+                // console.log("compare previous/new", previouslyReceivedMessage, message);
+                console.log("TripleStore message previously received, so ignoring", message);
+                return;
             }
             
             this.processTripleStoreMessage(message);
@@ -131,6 +173,7 @@ class TripleStore {
         throw new Error("TripleStore.subscribe: Unfinished -- subscription type not yet supported");
     }
     
+    /*
     // TODO: Optimize with indexes
     // TODO: Ignoring actual timestamps, so only "latest" by receipt is considered, but that is not correct
     // TODO: need to use actual timestamp in sorted comparison to deal with collissions
@@ -150,27 +193,35 @@ class TripleStore {
         // TODO: Maybe should return empty triple instead?
         return null;
     }
+    */
     
     queryLatestC(a, b) {
-        var triple = this.queryLatest(a, b, undefined);
-        if (!triple) return undefined;
-        return triple.c;
+        if (a === undefined) {
+            throw new Error("a should not be undefined");
+        }
+        if (b === undefined) {
+            throw new Error("b should not be undefined");
+        }    
+        var bIndex = this.getIndexEntries(a, b);
+        if (!bIndex) return undefined;
+        return bIndex.latestC;
     }
     
-    // TODO: Optimize with indexes
-    // TODO: Ignoring actual timestamps, so only "latest" by receipt is considered, but that is not correct
-    // TODO: need to use actual timestamp in sorted comparison to deal with collissions
+    // The b keys returned here are stringified objects (could be strings, or other) and should be parsed by called code if needed
     queryAllLatestBCForA(a) {
+        if (a === undefined) {
+            throw new Error("a should not be undefined");
+        }
         var result = {};
         
-        for (var i = 0; i < this.tripleMessages.length; i++) {
-            var tripleMessage = this.tripleMessages[i];
-            // console.log("queryLatest loop", i, tripleMessage);
-            if (tripleMessage.change.triple.a === a) {
-                var b = tripleMessage.change.triple.b;
-                var c = tripleMessage.change.triple.c;
-                result[JSON.stringify(b)] = tripleMessage.change.triple;
-            }         
+        var aIndex = this.getIndexEntries(a);
+        if (!aIndex) return result;
+        
+        for (var bKey in aIndex) {
+            var bIndex = aIndex[bKey];
+            if (bIndex && bIndex.latestC !== undefined) {
+                result[bKey] = bIndex.latestC;
+            }
         }
         
         return result;
@@ -180,39 +231,48 @@ class TripleStore {
     
     // Make a function that either returns the latest value with no arguments or sets it with one argument
     makeStorageFunction(a, b): Function {
-        return (value: any = undefined) => {
-            if (value === undefined) {
+        return (c: any = undefined) => {
+            if (c === undefined) {
                 return this.queryLatestC(a, b);
             } else {
-                this.addTriple(a, b, value);
+                this.addTriple(a, b, c);
             }
         };
     }
     
     // Make a function that either returns the latest value for a model field with one argument (fieldName) or sets it with two arguments (fieldName, value)
     makeModelFunction(a): Function {
-        return (b, value: any = undefined) => {
-            if (value === undefined) {
+        if (a === undefined) {
+            throw new Error("expected a to be defined");
+        }
+        return (b, c: any = undefined) => {
+            if (c === undefined) {
                 return this.queryLatestC(a, b);
             } else {
-                this.addTriple(a, b, value);
+                this.addTriple(a, b, c);
             }
         };
     }
     
    makeObject(a): any {
-        var result = {};
-        
-        for (var i = 0; i < this.tripleMessages.length; i++) {
-            var tripleMessage = this.tripleMessages[i];
-            // console.log("queryLatest loop", i, tripleMessage);
-            if (tripleMessage.change.triple.a === a) {
-                var b = tripleMessage.change.triple.b;
-                var c = tripleMessage.change.triple.c;
-                result[b] = tripleMessage.change.triple.c;
-            }         
+        if (a === undefined) {
+            throw new Error("expected a to be defined");
         }
-        
+        var result = {};
+       
+        var latestBC = this.queryAllLatestBCForA(a);
+        for (var bKey in latestBC) {
+            var b = JSON.parse(bKey);
+            var c = latestBC[bKey];
+            if (typeof b !== "string") {
+                console.log("Expected b to be a string", a, b);
+                throw new Error("Expected b to be a string");
+            }
+            if (c !== undefined) {
+                result[b] = c;
+            }
+        }
+
         return result;
     }
     
@@ -231,6 +291,10 @@ class TripleStore {
     }
     
     makeNewSetItem(setIdentifier: string, template = undefined, idProperty = "id"): string { 
+        if (setIdentifier === undefined) {
+            throw new Error("expected setIdentifier to be defined");
+        }
+        
         var newId;
         
         if (template) {
@@ -253,40 +317,60 @@ class TripleStore {
     }
     
     makeCopyOfSetItemWithNewId(setIdentifier: string, existingItemId: string): string {
+        if (setIdentifier === undefined) {
+            throw new Error("expected setIdentifier to be defined");
+        }
+        if (existingItemId === undefined) {
+            throw new Error("expected existingItemId to be defined");
+        }
         var newId = this.newIdForSetItem();
         
         this.addTriple(setIdentifier, {setItem: newId}, newId);
         
-        // For every field, copy it...
-        var triples = this.queryAllLatestBCForA(existingItemId);
-        for (var key in triples) {
-            var triple = triples[key];
-            this.addTriple(newId, triple.b, triple.c);
+        var latestBC = this.queryAllLatestBCForA(existingItemId);
+        for (var bKey in latestBC) {
+            // For every field, copy it...
+            var b = JSON.parse(bKey);
+            var c = latestBC[bKey];
+            if (c !== undefined) {
+                this.addTriple(newId, b, c);
+            } else {
+                console.log("Unexpected undefined value when copying list item", setIdentifier, existingItemId);
+            }
         }
 
         return newId;
     }
     
     deleteSetItem(setIdentifier: string, itemIdentifier: string): void {
+        if (setIdentifier === undefined) {
+            throw new Error("expected setIdentifier to be defined");
+        }
+        if (itemIdentifier === undefined) {
+            throw new Error("expected itemIdentifier to be defined");
+        }
         // TODO: Should the C be undefined instead of null?
         this.addTriple(setIdentifier, {setItem: itemIdentifier}, null);
     }
 
     getListForSetIdentifier(setIdentifier): Array<string> {
+        if (setIdentifier === undefined) {
+            throw new Error("expected setIdentifier to be defined");
+        }
         var result = [];
  
+        // TODO: Unneeded test; maybe should allow empty setIdentifier?
         if (!setIdentifier) return result;
         
-        // Iterate over set and get every item from it
-        var triples = this.queryAllLatestBCForA(setIdentifier);
-        // console.log("TripleStore getListForField triples", triples);
-        for (var key in triples) {
-            var triple = triples[key];
-            if (triple.b.setItem && (triple.c !== null && triple.c !== undefined)) {
-                result.push(triple.c);
+        var latestBC = this.queryAllLatestBCForA(setIdentifier);
+        for (var bKey in latestBC) {
+            var b = JSON.parse(bKey);
+            var c = latestBC[bKey];
+            if (b.setItem && (c !== null && c !== undefined)) {
+                result.push(c);
             }
         }
-        
+
         return result;
     }
 }
