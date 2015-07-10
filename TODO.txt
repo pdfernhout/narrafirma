@@ -6,7 +6,6 @@ PRIORITY
 - WordPress plugin data save and load
 
 BIG OPTIONAL FUNCTIONALITY AREAS
-- multiple catalysis reports
 - visual clustering in planning phase
 - theming and tagging
 
@@ -35,11 +34,6 @@ H Finish "Create project story elements" page in planning phase
     OR Move directions for clustering project story elements into help system for next page
 L Change button names from "new item" to "new" - etc
 X Support multiple item selection in clustering diagram
-
-RECOMMENDATIONS
-H Support recommendationTable
-    Recommendations table needs fixing -- one for each participant group
-    For intervention, the recommendations have to come from a separate file (recommendations_intervention_filledin.csv)
 
 TEMPLATES
 W Fix how templates list popup has too much scrolling and is not sized well; perhaps start with grid item view pane open?
@@ -799,3 +793,12 @@ OBSOLETE Get tooltips working in dialogs (maybe Dojo bug?)
 DONE Reminder entered (on first planning page) did not show up on planning dashbaoard page [probably fixed with Mithril, if not before]
 DONE Add trademark disclaimer/limitation for NarraFirma [as README.txt file]
 DONE Get projectAdmin to work again with newer user/role/project system to replace the command line tool
+DONE Remove overly large recommendations CSV file for intervention from Git repository (two copies at about ~100 MB each when shoudl be ~10K)
+DONE Improve Pointrel TripleStore so it uses an index instead of linear lookup to find C values
+DONE Improve Pointrel TripleStore so it returns defensive copies of C values in case user modifies them
+DONE Support styling of dialog using a class
+DONE Support recommendationTable
+DONE Recommendations table needs fixing -- one for each participant group [or outcome]
+DONE For intervention, the recommendations have to come from a separate file (recommendations_intervention_filledin.csv)
+DONE Improve dialog width sizing for when window is smaller
+DONE Support cancel buttons in dialogs and use that in text editor for clustering diagram
