@@ -12,7 +12,7 @@ function add_recommendationTable(panelBuilder: PanelBuilder, model, fieldSpecifi
         fieldSpecification: fieldSpecification,
         dialogModel: model,
         dialogTitle: "#title_recommendationsTable|Recommendations table",
-        dialogStyle: undefined,
+        dialogStyle: "wide",
         dialogConstructionFunction: build_recommendationTable.bind(null, panelBuilder),
         dialogOKButtonLabel: "Close"
     };
@@ -51,10 +51,10 @@ function makeTableForParticipantGroup(categoryName: string, project: Project, pa
     var table = m("table.recommendationsTable", 
         // Do the header
         m("tr", [[
-            m("th", {colspan: 4, align: "right"}, m("i", "Question")),
-            m("th", {colspan: 2, align: "right"}, m("i", "Your answer"))
+            m("th.wwsRecommendationsTable-valueCell", {colspan: 4, align: "right"}, m("i", "Question")),
+            m("th.wwsRecommendationsTable-valueCell", {colspan: 2, align: "right"}, m("i", "Your answer"))
         ], optionsForCategory.map(function(headerFieldName) {
-            return m("th", m("i", {colspan: 1, align: "right"}, headerFieldName));
+            return m("th.wwsRecommendationsTable-valueCell", m("i", {colspan: 1, align: "right"}, headerFieldName));
         })]),
     
         // Now do one data row for each question considered in the recommendation
@@ -76,8 +76,8 @@ function makeTableForParticipantGroup(categoryName: string, project: Project, pa
             if (recommendationsForAnswer) recommendationsForAnswer = recommendationsForAnswer[categoryName];
             
             return m("tr", [[
-                m("th", {colspan: 4, align: "right"}, questionText),
-                m("th", {colspan: 2, align: "right"}, yourAnswer)
+                m("th.wwsRecommendationsTable-valueCell", {colspan: 4, align: "right"}, questionText),
+                m("th.wwsRecommendationsTable-valueCell", {colspan: 2, align: "right"}, yourAnswer)
             ], optionsForCategory.map(function(optionName, index) {
                 var recommendationForOption = "???";
                 if (recommendationsForAnswer) {
@@ -87,7 +87,7 @@ function makeTableForParticipantGroup(categoryName: string, project: Project, pa
                 }
                 if (!recommendationForOption) recommendationForOption = "good";
                 var theClass = tagForRecommendationValue(recommendationForOption);
-                return m("td", {colspan: 1, align: "right", "class": theClass}, recommendationForOption);
+                return m("td.wwsRecommendationsTable-labelCell", {colspan: 1, align: "right", "class": theClass}, recommendationForOption);
             })]);
         })
     );
