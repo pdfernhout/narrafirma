@@ -2,6 +2,7 @@ import dialogSupport = require("../panelBuilder/dialogSupport");
 import RecommendationsParser = require("../RecommendationsParser");
 import translate = require("../panelBuilder/translate");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
+import Project = require("../Project");
 import m = require("mithril");
 
 "use strict";
@@ -19,6 +20,77 @@ function add_recommendationTable(panelBuilder: PanelBuilder, model, fieldSpecifi
     return dialogSupport.addButtonThatLaunchesDialog(fieldSpecification, dialogConfiguration);
 }
 
+    
+function tagForRecommendationValue(recommendation) {
+    if (recommendation === "no") {
+        return "recommendationLow";
+    } else if (recommendation === "maybe") {
+        return "recommendationLow";
+    } else if (recommendation === "good") {
+        return "recommendationMedium";
+    } else if (recommendation === "") {
+        return "recommendationMedium";
+    } else if (recommendation === "very good") {
+        return "recommendationHigh";
+    }
+    console.log("ERROR: Unexpected recommendation value", recommendation);
+    return "";
+}
+
+function makeTableForParticipantGroup(categoryName: string, project: Project, participantGroupIdentifier: string) {
+    var recommendationsObject: RecommendationsParser = RecommendationsParser.recommendations();
+    // recommendations -> Question -> Answer -> Category -> Option
+    console.log("recommendationsObject", recommendationsObject);
+    
+    var optionsForCategory = recommendationsObject.categories[categoryName];
+    if (!optionsForCategory) {
+        console.log("ERROR: No data for recommendationTable category: ", categoryName);
+        optionsForCategory = [];
+    }
+    
+    console.log("recommendations.questions", recommendationsObject.questions);
+    
+    var table = m("table.recommendationsTable", 
+        // Do the header
+        m("tr", [[
+            m("th", {colspan: 4, align: "right"}, m("i", "Question")),
+            m("th", {colspan: 2, align: "right"}, m("i", "Your answer"))
+        ], optionsForCategory.map(function(headerFieldName) {
+            return m("th", m("i", {colspan: 1, align: "right"}, headerFieldName));
+        })]),
+    
+        // Now do one data row for each question considered in the recommendation
+        // TODO: Maybe keys should be sorted somehow?
+        Object.keys(recommendationsObject.questions).map(function(questionName) {
+            // TODO: Possible should improve this translation default, maybe by retrieving fieldSpecification for question and getting displayPrompt?
+            var questionText = translate(questionName + "::prompt", questionName); // "Missing translation for: " + 
+            // TODO: Fix this so it goes by participant group
+            var yourAnswer = project.tripleStore.queryLatestC(participantGroupIdentifier, questionName);
+            if (yourAnswer === undefined) yourAnswer = project.getFieldValue(questionName);
+            if (yourAnswer === undefined) yourAnswer = "";
+            console.log("questionName yourAnswer", questionName, yourAnswer);
+            var recommendationsForAnswer = recommendationsObject.recommendations[questionName][yourAnswer];
+
+            return m("tr", [[
+                m("th", {colspan: 4, align: "right"}, questionText),
+                m("th", {colspan: 2, align: "right"}, yourAnswer)
+            ], optionsForCategory.map(function(optionName, index) {
+                var recommendationForOption = "???";
+                if (recommendationsForAnswer) {
+                    recommendationForOption = recommendationsForAnswer[optionName];
+                } else {
+                    console.log("Missing recommendations for", questionName, yourAnswer);
+                }
+                var theClass = tagForRecommendationValue(recommendationForOption);
+                if (!recommendationForOption) recommendationForOption = "*good*";
+                return m("td", {colspan: 1, align: "right", "class": theClass}, recommendationForOption);
+            })]);
+        })
+    );
+    
+    return table;
+}
+
 function build_recommendationTable(panelBuilder: PanelBuilder, dialogConfiguration, hideDialogCallback) {
     var model = dialogConfiguration.dialogModel;
     var fieldSpecification = dialogConfiguration.fieldSpecification;
@@ -28,78 +100,23 @@ function build_recommendationTable(panelBuilder: PanelBuilder, dialogConfigurati
     var categoryName = fieldSpecification.displayConfiguration;
     console.log("add_recommendationTable category", categoryName);
     
-    var fieldsForCategory = RecommendationsParser.recommendations().categories[categoryName];
-    if (!fieldsForCategory) {
-        console.log("ERROR: No data for recommendationTable category: ", categoryName);
-        fieldsForCategory = [];
-    }
+    // var recommendationsForTopic = recommendationsObject.recommendations[categoryName];
     
-    function tagForRecommendationValue(recommendation) {
-        if (recommendation === 1) {
-            return "recommendationLow";
-        } else if (recommendation === 2) {
-            return "recommendationMedium";
-        } else if (recommendation === 3) {
-            return "recommendationHigh";
-        }
-        console.log("ERROR: Unexpected recommendation value", recommendation);
-        return "";
-    }
-    
-    console.log("recommendations.questions", RecommendationsParser.recommendations().questions);
-    
-    // TODO: Replace "sessions" with approriate
-    var recommendationsForTopic = RecommendationsParser.recommendations().recommendations["sessions"];
-    
-    var table = m("table.recommendationsTable", 
-      // Do the header
-      m("tr", [[
-          m("th", {colspan: 4, align: "right"}, m("i", "Question")),
-          m("th", {colspan: 2, align: "right"}, m("i", "Your answer"))
-      ], fieldsForCategory.map(function(headerFieldName) {
-          return m("th", m("i", {colspan: 1, align: "right"}, headerFieldName));
-      })]),
-    
-      // Now do one data row for each question considered in the recommendation
-      // TODO: Maybe keys should be sorted somehow?
-      Object.keys(RecommendationsParser.recommendations().questions).map(function(questionName) {
-          // TODO: Possible should improve this translation default, maybe by retrieving fieldSpecification for question and getting displayPrompt?
-          var questionText = translate(questionName + "::prompt", questionName); // "Missing translation for: " + 
-          var yourAnswer = panelBuilder.project.getFieldValue(questionName);
-          var recommendationsForAnswer = RecommendationsParser.recommendations[questionName][yourAnswer];
-
-          return m("tr", [[
-              m("th", {colspan: 4, align: "right"}, questionText),
-              m("th", {colspan: 2, align: "right"}, yourAnswer)
-          ], fieldsForCategory.map(function(fieldName, index) {
-              var recommendationNumber = Math.floor((Math.random() * 3) + 1);
-              var recommendationValue = {1: "risky", 2: "maybe", 3: "good"}[recommendationNumber];
-              // TODO: Need to understand this next section
-              if (recommendationsForAnswer) {
-                  var recommendationsForCategory = recommendationsForAnswer[categoryName];
-                  if (recommendationsForCategory) recommendationValue = recommendationsForCategory[fieldName];
-              }
-              var theClass = tagForRecommendationValue(recommendationNumber);
-              return m("td", {colspan: 1, align: "right", "class": theClass}, recommendationValue);
-          })]);
-      })
-    );
-    
-    /*
-    // TO DO WORKING HERE!!!! Experiment -- Trying to get full background color set for a cell
-    for (var i = 0; i < recommendationsValues.length; i++) {
-        var recommendation = recommendationsValues[i];
-        // console.log("recommendation", i, recommendation);
-        var tag = tagForRecommendationValue(recommendation);
-        var widgets = query(".wwsRecommendationsTable-valueCell-" + i, table.domNode);
-        if (widgets && widgets[0] && tag) widgets[0].className += " " + tag;
-    }
-    */
-    
+    var participantGroups = panelBuilder.project.getListForField("project_participantGroupsList");
     // TODO: Set class on div
     return m("div", [
         prompt,
-        table
+        participantGroups.map(function (participantGroupIdentifier) {
+            var participantGroupName = panelBuilder.project.tripleStore.queryLatestC(participantGroupIdentifier, "participantGroup_name");
+            return m("div", [
+                m("b", participantGroupName),
+                m("br"),
+                m("br"),
+                makeTableForParticipantGroup(categoryName, panelBuilder.project, participantGroupIdentifier),
+                m("br"),
+                m("br")
+            ]);
+        })
     ]);
 }
 
