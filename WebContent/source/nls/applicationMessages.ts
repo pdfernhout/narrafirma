@@ -122,7 +122,7 @@ var messages = {
     // For theming
     button_addTheme: "Add theme",
     
-    // For recommendations:
+    // For general recommendations:
     "participantGroup_status::shortName": "Status",
     "participantGroup_confidence::shortName": "Self-confidence",
     "participantGroup_time::shortName": "Free time", 
@@ -143,7 +143,26 @@ var messages = {
     "participantGroup_topic_timeframe::shortName": "Timeframe",
     "aboutYou_experience::shortName": "Your experience with PNI",
     "aboutYou_help::shortName": "Your available help",
-    "aboutYou_tech::shortName": "Your technology experience"
+    "aboutYou_tech::shortName": "Your technology experience",
+    
+    // For interventions recommendations
+    "outcomes_peopleFeltHeard::shortName": "Felt heard",
+    "outcomes_peopleFeltInvolved::shortName": "Felt involved",
+    "outcomes_peopleLearnedAboutCommOrg::shortName": "Learned about community",
+    "outcomes_peopleWantedToTellMoreStories::shortName": "Wanted to tell more",
+    "outcomes_peopleWantedToShareMoreStoriesWithEachOther::shortName": "Wanted to share more",
+    "outcomes_peopleFeltStoriesNeededToBeHeard::shortName": "Felt that stories needed to be heard",
+    "outcomes_peopleFeltNobodyCares::shortName": "Felt that nobody cares",
+    "outcomes_peopleFeltNobodyCanMeetNeeds::shortName": "Needs could not be met",
+    "outcomes_peopleFeltTheyNeedNewStories::shortName": "Needed to tell themselves new stories",
+    "outcomes_peopleWantedToKeepExploring::shortName": "Wanted more exploration",
+    "outcomes_crisisPointsWereFound::shortName": "Crisis points",
+    "outcomes_issuesWereBeyondWords::shortName": "Beyond words",
+    "outcomes_peopleLearnedAboutTopic::shortName": "Learned about topic",
+    "outcomes_issuesNewMembersStruggleWith::shortName": "New members needed help",
+    "outcomes_foundInfoWithoutUnderstanding::shortName": "Had more information than understanding",
+    "outcomes_foundOverConfidence::shortName": "Had more confidence than skill",
+    "outcomes_peopleCuriousAboutStoryWork::shortName": "Wanted to learn about story work"
     }
 };
 

@@ -36,7 +36,12 @@ function tagForRecommendationValue(recommendation) {
 }
 
 function makeTableForParticipantGroup(categoryName: string, project: Project, participantGroupIdentifier: string) {
-    var recommendationsObject: RecommendationsParser = RecommendationsParser.recommendations();
+    var recommendationsObject: RecommendationsParser; 
+    if (categoryName === "interventions") {
+         recommendationsObject = RecommendationsParser.recommendationsIntervention();
+    } else {
+        recommendationsObject = RecommendationsParser.recommendations();
+    }
     // recommendations -> Question -> Answer -> Category -> Option
     // console.log("recommendationsObject", recommendationsObject);
     
@@ -106,12 +111,20 @@ function build_recommendationTable(panelBuilder: PanelBuilder, dialogConfigurati
     
     // var recommendationsForTopic = recommendationsObject.recommendations[categoryName];
     
-    var participantGroups = panelBuilder.project.getListForField("project_participantGroupsList");
+    var participantGroups;
+    var participantGroupNameFieldIdentifier;
+    if (categoryName === "interventions") {
+        participantGroups = panelBuilder.project.getListForField("project_outcomesList");
+        participantGroupNameFieldIdentifier = "outcomes_group";
+    } else {
+        participantGroups = panelBuilder.project.getListForField("project_participantGroupsList");
+        participantGroupNameFieldIdentifier = "participantGroup_name";
+    }
     // TODO: Set class on div
     return m("div", [
         prompt,
         participantGroups.map(function (participantGroupIdentifier) {
-            var participantGroupName = panelBuilder.project.tripleStore.queryLatestC(participantGroupIdentifier, "participantGroup_name");
+            var participantGroupName = panelBuilder.project.tripleStore.queryLatestC(participantGroupIdentifier, participantGroupNameFieldIdentifier);
             return m("div", [
                 m("b", participantGroupName),
                 m("br"),

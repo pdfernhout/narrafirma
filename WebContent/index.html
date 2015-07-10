@@ -43,15 +43,18 @@ var require = {
     require([
         "js/main",
         "lib/text!applicationPanelSpecifications/navigation.json",
-        "lib/text!recommendations/recommendations_filledin.csv"
+        "lib/text!recommendations/recommendations_filledin.csv",
+        "lib/text!recommendations/recommendations_intervention_filledin.csv"
     ], function(
         main,
         navigationJSONText,
-        recommendationsText
+        recommendationsText,
+        recommendationsInterventionText
     ) {
         // Load these here because TypeScript does not like the plugin use
         window["narraFirma_navigationJSONText"] = navigationJSONText;
         window["narraFirma_recommendationsText"] = recommendationsText;
+        window["narraFirma_recommendationsInterventionText"] = recommendationsInterventionText;
         
         console.log("startup recommendationsText", recommendationsText);
         main.run();

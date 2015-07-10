@@ -74,6 +74,7 @@ function endsWith(str, suffix) {
 
 class RecommendationsParser {
     static recommendationsObject: RecommendationsParser;
+    static recommendationsInterventionObject: RecommendationsParser;
     
     matrix = [];
     matrixColumnCount = 0;
@@ -248,6 +249,17 @@ class RecommendationsParser {
         }
         
         return RecommendationsParser.recommendationsObject;
+    }
+    
+    static recommendationsIntervention() {
+        // Lazy parsing of recommendaitons
+        if (!RecommendationsParser.recommendationsInterventionObject) {
+            var recommendationsInterventionText = window["narraFirma_recommendationsInterventionText"];
+            RecommendationsParser.recommendationsInterventionObject = new RecommendationsParser(recommendationsInterventionText);
+            console.log("RecommendationsParser made new recommendationsInterventionObject", RecommendationsParser.recommendationsInterventionObject);
+        }
+        
+        return RecommendationsParser.recommendationsInterventionObject;
     }
 }
 
