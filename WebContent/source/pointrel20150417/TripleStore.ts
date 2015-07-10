@@ -78,7 +78,7 @@ class TripleStore {
             var aIndex = this.indexABC[aKey];
             if (!aIndex) {
                 aIndex = {};
-                this.indexABC[triple.a] = aIndex;
+                this.indexABC[aKey] = aIndex;
             }
             var bKey = JSON.stringify(triple.b);
             var bIndex = aIndex[bKey];
@@ -196,6 +196,7 @@ class TripleStore {
     */
     
     queryLatestC(a, b) {
+        console.log("queryLatestC", a, b);
         if (a === undefined) {
             throw new Error("a should not be undefined");
         }
@@ -204,6 +205,7 @@ class TripleStore {
         }    
         var bIndex = this.getIndexEntries(a, b);
         if (!bIndex) return undefined;
+        console.log("queryLatestC result", a, b, bIndex.latestC);
         return bIndex.latestC;
     }
     
