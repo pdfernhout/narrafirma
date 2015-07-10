@@ -617,6 +617,10 @@ table.filterTable td {
   z-index: 10001;
 }
 
+.modal-content.wide {
+  width: 1100px;
+}
+
 .modal-internal {
     overflow: auto;
     max-height: 550px;

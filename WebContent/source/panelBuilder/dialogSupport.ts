@@ -86,7 +86,7 @@ class MithrilDialog {
                 }
             }}, translate(args.dialogOKButtonLabel || "OK")));
         }
-        return m("div.overlay", m("div.modal-content", parts));
+        return m("div.overlay", m("div.modal-content", {"class": dialogConfiguration.dialogStyle}, parts));
     }
 }
 
