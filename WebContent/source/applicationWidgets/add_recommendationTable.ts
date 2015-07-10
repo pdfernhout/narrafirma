@@ -116,10 +116,13 @@ function build_recommendationTable(panelBuilder: PanelBuilder, dialogConfigurati
     if (categoryName === "interventions") {
         participantGroups = panelBuilder.project.getListForField("project_outcomesList");
         participantGroupNameFieldIdentifier = "outcomes_group";
+        if (!participantGroups || !participantGroups.length) return m("div", "Please enter a project outcome first to get recommendations.");
     } else {
         participantGroups = panelBuilder.project.getListForField("project_participantGroupsList");
         participantGroupNameFieldIdentifier = "participantGroup_name";
+        if (!participantGroups || !participantGroups.length) return m("div", "Please enter a participant group first to get recommendations.");
     }
+    
     // TODO: Set class on div
     return m("div", [
         prompt,
