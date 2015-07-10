@@ -467,6 +467,10 @@ class GridWithItemPanel {
     private deleteItem(item) {
         if (!item) item = this.selectedItem; 
         console.log("deleteItem", item);
+        
+        // TODO: Translate
+        // TODO: Replace this with undo
+        if (!confirm("Are you sure you want to delete this item?")) return;
 
         var index = this.dataStore.deleteItem(item);
         
