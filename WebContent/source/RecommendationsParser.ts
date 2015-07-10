@@ -5,14 +5,14 @@ import kludgeForUseStrict = require("./kludgeForUseStrict");
 // File should have category header line to define categories with "# SECTION" to define sections and blank items between sections
 // Each row should have a header (# SECTION) or item with entries for every regular column with a blank line between sections
 /* Example:
-"",    "#C1", "Ven1", "Ven2", "", "#C2", "Way1", "Way2"
-"#Q1",    "",     "",     "", "",    "",    "",      ""
-"op1",    "",    "1",    "2", "",    "",   "2",     "1"
-"op2",    "",    "3",    "4", "",    "",   "4",     "3"
-   "",    "",     "",     "", "",    "",    "",      ""
-"#Q2",    "",     "",     "", "",    "",    "",      ""
-"op1",    "",    "1",    "4", "",    "",   "3",     "1"
-"op2",    "",    "3",    "2", "",    "",   "4",     "1"
+"",    "#Q1", "a1", "a2", "", "#Q2", "a1", "a2"
+"#C1",    "",   "",   "", "",    "",   "",   ""
+"op1",    "",  "1",  "2", "",    "",  "2",  "1"
+"op2",    "",  "3",  "4", "",    "",  "4",  "3"
+   "",    "",   "",   "", "",    "",   "",   ""
+"#C2",    "",   "",   "", "",    "",   "",   ""
+"op1",    "",  "1",  "4", "",    "",  "3",   "1"
+"op2",    "",  "3",  "2", "",    "",  "4",   "1"
 */
 
 /* The JSON output looks like:
@@ -131,22 +131,22 @@ class RecommendationsParser {
     }
 
     addRecommendation(recommendations, columnCategory, columnField, rowCategory, rowField, item) {
-        var question = recommendations[rowCategory];
+        var question = recommendations[columnCategory];
         if (!question) {
             question = {};
-            recommendations[rowCategory] = question;
+            recommendations[columnCategory] = question;
         }
-        var option = question[rowField];
+        var option = question[columnField];
         if (!option) {
             option = {};
-            question[rowField] = option;
+            question[columnField] = option;
         }
-        var category = option[columnCategory];
+        var category = option[rowCategory];
         if (!category) {
             category = {};
-            option[columnCategory] = category;
+            option[rowCategory] = category;
         }
-        category[columnField] = item;
+        category[rowField] = item;
     }
 
     processRecommendationsMatrix() {
@@ -185,7 +185,7 @@ class RecommendationsParser {
         return recommendations;
     }
 
-    buildQuestions() {
+    buildCategories() {
         var result = {};
         var rowCategory = null;
         var rowField = null;
@@ -208,7 +208,7 @@ class RecommendationsParser {
         return result;
     }
 
-    buildCategories() {
+    buildQuestions() {
         var result = {};
         var columnCategory = null;
         var columnField = null;
