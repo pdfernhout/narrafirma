@@ -131,18 +131,19 @@ var defaultGridConfiguration: GridConfiguration = {
     editButton: true,
     includeAllFields: false,
     inlineButtons: false,
-    navigationButtons: true,
+    navigationButtons: false,
     
     // Flag for whether removing an item then selects the next item after it
     // This flag makes it easy to quickly delete a lot of items, which is maybe not good in some cases
     shouldNextItemBeSelectedAfterItemRemoved: false,
    
-    // TODO: Need to make work:
-    duplicateButton: false,
-    moveUpDownButtons: false,
     customButton: null,
     validateAdd: null,
-    validateEdit: null
+    validateEdit: null,
+    duplicateButton: false,
+
+    // TODO: Need to make work:
+    moveUpDownButtons: false
 };
 
 // Thin arrows
