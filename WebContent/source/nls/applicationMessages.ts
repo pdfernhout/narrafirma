@@ -120,7 +120,30 @@ var messages = {
     projectImportExportDialog_okButtonText: "Import",
     
     // For theming
-    button_addTheme: "Add theme"
+    button_addTheme: "Add theme",
+    
+    // For recommendations:
+    "participantGroup_status::shortName": "Status",
+    "participantGroup_confidence::shortName": "Self-confidence",
+    "participantGroup_time::shortName": "Free time", 
+    "participantGroup_education::shortName": "Education level",
+    "participantGroup_physicalDisabilities::shortName": "Physical disabilities",
+    "participantGroup_emotionalImpairments::shortName": "Emotional impairments",
+    "participantGroup_performing::shortName": "Performance",
+    "participantGroup_conforming::shortName": "Conformance", 
+    "participantGroup_promoting::shortName": "Self-promotion",
+    "participantGroup_venting::shortName": "Speaking out",
+    "participantGroup_interest::shortName": "Motivated",
+    "participantGroup_feelings_project::shortName": "Feelings about project",
+    "participantGroup_feelings_facilitator::shortName": "Feelings about you",
+    "participantGroup_feelings_stories::shortName": "Feelings about stories",
+    "participantGroup_topic_feeling::shortName": "Feelings about topic",
+    "participantGroup_topic_private::shortName": "Privacy of topic",
+    "participantGroup_topic_articulate::shortName": "How articulate",
+    "participantGroup_topic_timeframe::shortName": "Timeframe",
+    "aboutYou_experience::shortName": "Your experience with PNI",
+    "aboutYou_help::shortName": "Your available help",
+    "aboutYou_tech::shortName": "Your technology experience"
     }
 };
 

@@ -1,5 +1,6 @@
 /// <reference path="typings/lodash.d.ts"/>
 // declare var _: _.LoDashStatic;
+import applicationMessages = require("./nls/applicationMessages");
 import buttonActions = require("./buttonActions");
 import csvImportExport = require("./csvImportExport");
 import dialogSupport = require("./panelBuilder/dialogSupport");
@@ -19,7 +20,6 @@ import m = require("mithril");
 
 "use strict";
 
-var applicationMessages: string;
 var navigationJSONText: string;
 
 // TODO: Add page validation
@@ -495,11 +495,12 @@ function setupGlobalFunctions() {
 export function initialize() {
     console.log("=======", new Date().toISOString(), "application.initialize() called");
     
-    // Load these earlier in index.html because TypeScript does not liek the Dojo plugins
-    applicationMessages = window["narraFirma_applicationMessages"];
+    // Load these earlier in index.html because TypeScript does not like the Dojo plugins
     navigationJSONText = window["narraFirma_navigationJSONText"];
-    // console.log("applicationMessages", applicationMessages);
     // console.log("navigationJSONText", navigationJSONText);
+    
+    // Cast to silence TypeScript warning about use of translate.configure
+    (<any>translate).configure({}, applicationMessages.root);
     
     try {
         navigationSections = JSON.parse(navigationJSONText);
@@ -573,9 +574,6 @@ export function initialize() {
 }
 
 function chooseAProjectToOpen(userIdentifierFromServer, projects) {
-    // Cast to silence TypeScript warning about use of translate.configure
-    (<any>translate).configure({}, applicationMessages);
-    
     // Initialize toaster
     toaster.createToasterWidget("toasterDiv");
     

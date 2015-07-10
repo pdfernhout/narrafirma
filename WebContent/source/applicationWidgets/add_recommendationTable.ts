@@ -61,7 +61,7 @@ function makeTableForParticipantGroup(categoryName: string, project: Project, pa
         // TODO: Maybe keys should be sorted somehow?
         Object.keys(recommendationsObject.questions).map(function(questionName) {
             // TODO: Possible should improve this translation default, maybe by retrieving fieldSpecification for question and getting displayPrompt?
-            var questionText = translate(questionName + "::prompt", questionName); // "Missing translation for: " + 
+            var questionText = translate(questionName + "::shortName", questionName);
             
             var yourAnswer = project.tripleStore.queryLatestC(participantGroupIdentifier, questionName);
             if (yourAnswer === undefined) yourAnswer = project.getFieldValue(questionName);
