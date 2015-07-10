@@ -86,6 +86,12 @@ class MithrilDialog {
                 }
             }}, translate(args.dialogOKButtonLabel || "OK")));
         }
+        
+        if (dialogConfiguration.dialogCancelButtonLabel) {
+           parts.push(m("button", {onclick: function() {
+                hideDialogMethod();
+            }}, translate(args.dialogCancelButtonLabel)));
+        }
         return m("div.overlay", m("div.modal-content", {"class": dialogConfiguration.dialogStyle}, parts));
     }
 }
@@ -111,7 +117,8 @@ export function openTextEditorDialog(text, dialogTitle, dialogOKButtonLabel, dia
         dialogStyle: undefined,
         dialogConstructionFunction: build_textEditorDialogContent,
         dialogOKButtonLabel: dialogOKButtonLabel,
-        dialogOKCallback: function(dialogConfiguration, hideDialogMethod) { dialogOKCallback(model.text, hideDialogMethod); }
+        dialogOKCallback: function(dialogConfiguration, hideDialogMethod) { dialogOKCallback(model.text, hideDialogMethod); },
+        dialogCancelButtonLabel: "Cancel"
     };
     
     openDialog(dialogConfiguration);
