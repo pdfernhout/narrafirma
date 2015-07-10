@@ -366,12 +366,8 @@ class TripleStore {
     }
 
     getListForSetIdentifier(setIdentifier): Array<string> {
-        if (setIdentifier === undefined) {
-            throw new Error("expected setIdentifier to be defined");
-        }
         var result = [];
  
-        // TODO: Unneeded test if keep initial check; maybe should allow empty setIdentifier?
         if (!setIdentifier) return result;
         
         var aIndex = this.getIndexEntries(setIdentifier);
