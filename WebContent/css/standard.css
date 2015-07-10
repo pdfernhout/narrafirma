@@ -607,7 +607,8 @@ table.filterTable td {
 
 .modal-content {
   padding: 20px 30px;
-  width: 700px;
+  width: 90%;
+  max-width: 700px;
   position: relative;
   min-height: 400px;
   max-height: 650px;
@@ -618,7 +619,7 @@ table.filterTable td {
 }
 
 .modal-content.wide {
-  width: 1100px;
+  max-width: 95%;
 }
 
 .modal-internal {
