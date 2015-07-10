@@ -421,6 +421,10 @@ form {
     background-color: DarkRed;
 }
 
+.interventions .recommendationLow {
+    background-color: grey;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ d3 charting ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /* A CSS stylesheet is like a GUI control system for twidling with widget options */
 

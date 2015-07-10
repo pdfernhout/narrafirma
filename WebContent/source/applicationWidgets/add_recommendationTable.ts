@@ -28,7 +28,7 @@ function tagForRecommendationValue(recommendation) {
         return "recommendationLow";
     } else if (recommendation === "good") {
         return "recommendationMedium";
-    } else if (recommendation === "very good") {
+    } else if (recommendation === "excellent") {
         return "recommendationHigh";
     }
     console.log("ERROR: Unexpected recommendation value", recommendation);
@@ -90,7 +90,15 @@ function makeTableForParticipantGroup(categoryName: string, project: Project, pa
                 } else {
                     console.log("Missing recommendations for", questionName, yourAnswer);
                 }
-                if (!recommendationForOption) recommendationForOption = "good";
+                if (!recommendationForOption) {
+                    if (categoryName === "interventions") {
+                        recommendationForOption = "maybe";
+                    } else {
+                        recommendationForOption = "good";
+                    }
+                }
+                if (recommendationForOption === "very good") recommendationForOption = "excellent";
+                // TODO: Translate recommendation name 
                 var theClass = tagForRecommendationValue(recommendationForOption);
                 return m("td.wwsRecommendationsTable-labelCell", {colspan: 1, align: "right", "class": theClass}, recommendationForOption);
             })]);
@@ -116,15 +124,17 @@ function build_recommendationTable(panelBuilder: PanelBuilder, dialogConfigurati
     if (categoryName === "interventions") {
         participantGroups = panelBuilder.project.getListForField("project_outcomesList");
         participantGroupNameFieldIdentifier = "outcomes_group";
+        // TODO: Translate
         if (!participantGroups || !participantGroups.length) return m("div", "Please enter a project outcome first to get recommendations.");
     } else {
         participantGroups = panelBuilder.project.getListForField("project_participantGroupsList");
         participantGroupNameFieldIdentifier = "participantGroup_name";
+        // TODO: Translate
         if (!participantGroups || !participantGroups.length) return m("div", "Please enter a participant group first to get recommendations.");
     }
     
     // TODO: Set class on div
-    return m("div", [
+    return m("div", {"class": "narrafirma-recommendations-table " + categoryName}, [
         prompt,
         participantGroups.map(function (participantGroupIdentifier) {
             var participantGroupName = panelBuilder.project.tripleStore.queryLatestC(participantGroupIdentifier, participantGroupNameFieldIdentifier);
