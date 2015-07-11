@@ -84,7 +84,8 @@ function add_functionResult(panelBuilder: PanelBuilder, model, fieldSpecificatio
     
     var newLabelText = panelBuilder.substituteCalculatedResultInBaseText(baseText, calculatedText);
     
-    return m("div.functionResult", newLabelText);
+    // TODO: The m.trust call is needed so HTML like strong will work for whetehr story enabled, but could this be a problem?
+    return m("div.functionResult", m.trust(newLabelText));
 }
 
 /* Defaults for displayConfiguration:
