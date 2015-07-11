@@ -8,6 +8,8 @@ var pointrelServer = require("../server/pointrel20150417/pointrelServer");
 var pointrelAccessControl = require("../server/pointrel20150417/pointrelAccessControl");
 var pointrelUtility = require("../server/pointrel20150417/pointrelUtility");
 
+var fs = require('fs');
+
 // Command line admin tools for creating users and journals and such
 // console.log(process.argv);
 
@@ -18,12 +20,14 @@ function main() {
     var myArgs = process.argv.slice(2);
     //console.log('myArgs: ', myArgs);
     
-    if (myArgs.length < 2) {
+    var command = myArgs[0];
+
+    if (myArgs.length < 2 && command !== "update-superuser") {
         printUsage();
         return;
     }
     
-    var command = myArgs[0];
+    console.log("command: '" + command + "'");
     
     // TODO: Probably should read this from a standard location
     pointrelAccessControl.initialize({"userIdentifier": "superuser"});
@@ -43,8 +47,14 @@ function main() {
     }
     
     if (command === "add-user") {
-        if (myArgs.length < 3 && myArgs[1] !== "anonymous") return console.log("Password is needed as third argument");
+        if (myArgs.length !== 2) return console.log("Needs user identifier as first argument");
         addUser(myArgs[1], myArgs[2]);
+        return;
+    }
+    
+    if (command === "update-superuser") {
+        // if (myArgs.length !== 2) return console.log("Needs superuser name");
+        updateSuperuser(myArgs[1], myArgs[2]);
         return;
     }
     
@@ -64,10 +74,28 @@ function main() {
     printUsage();
 }
 
+
+function readPassword(callback) {
+    // Support for reading passwords from command line
+    process.stdin.resume();
+    process.stdin.setEncoding('utf8');
+    var util = require('util');
+
+    console.log("Type password and then press enter:");
+    process.stdin.on('data', function (password) {
+        process.stdin.pause();
+        // Remove the new line
+        if (password) password = password.substring(0, password.length - 1);
+        // console.log('received data:', util.inspect(password));
+        callback(password);
+    });
+}
+
 function printUsage() {
     console.log("Usage:\n");
     console.log("  add-journal journal\n");
-    console.log("  add-user user password\n");
+    console.log("  add-user user [password, prompts for password if not supplied]\n");
+    console.log("  update-superuser [name, defaults to superuser [password, prompts for password if not supplied]]\n");
     console.log("  grant user role journal topic");
     console.log("  revoke user role journal topic");
     console.log("    roles can be reader, writer, readerWriter, or administrator");
@@ -81,10 +109,6 @@ function addJournal(journalIdentifier) {
 function addUser(userIdentifier, password) {
     console.log("add-user", userIdentifier, password);
     
-    if (userIdentifier === "anonymous") {
-        console.log("anonymous user is special and the password will not be used");
-    }
-    
     // Check if user exists first, as otherwise will remove all roles and override other settings
     var userInformation = pointrelAccessControl.getUserInformation(userIdentifier);
     if (userInformation) {
@@ -92,8 +116,25 @@ function addUser(userIdentifier, password) {
         return;
     }
     
-    updateUserInformation(userIdentifier);
-    setUserPassword(userIdentifier, password);
+    if (userIdentifier === "anonymous") {
+        console.log("anonymous user is special and the password will not be used");
+    } else {
+        if (!password) {
+            readPassword(doUpdate);
+        } else {
+            doUpdate(password);
+        }
+    }
+    
+    function doUpdate(password) {
+        if (!password && (userIdentifier !== "anonymous")) {
+            console.log("no password entered -- doing nothing");   
+        } else {
+            // console.log("using password", "'" + password + "'");
+            updateUserInformation(userIdentifier);
+            setUserPassword(userIdentifier, password);
+        }
+    }
 }
 
 function findIndexForRole(roles, role) {
@@ -218,7 +259,7 @@ function updateUserInformation(userIdentifier, userInformation) {
     }, serverRequestWithAuthenticatedSuperuser);
 }
 
-function setUserPassword(userIdentifier, password) {
+function makeStoredCredentials(userIdentifier, password) {
     var salt = pointrelUtility.calculateSHA256("toolsOfAbundance" + Math.random() + new Date().toISOString());
     // TODO: client-side hashing of password: var hashOfPassword = PointrelClient.calculateSHA256(salt + PointrelClient.calculateSHA256("irony" + newUserIdentifier + password));
     var hashOfPassword = pointrelUtility.calculateSHA256(salt + password);
@@ -227,7 +268,12 @@ function setUserPassword(userIdentifier, password) {
         salt: salt,
         hashOfPassword: hashOfPassword
     };
+    return userCredentials;
+}
 
+function setUserPassword(userIdentifier, password) {
+    var userCredentials = makeStoredCredentials(userIdentifier, password);
+    
     var credentialsMessage = {
         "_topicIdentifier": {type: "authenticationInformation", userIdentifier: userIdentifier},
         "_topicTimestamp": new Date().toISOString(),
@@ -247,6 +293,27 @@ function setUserPassword(userIdentifier, password) {
             console.log("OK:", JSON.stringify(response, null, 2));
         }
     }, serverRequestWithAuthenticatedSuperuser);
+}
+
+function updateSuperuser(superuserIdentifier, password) {
+    if (!superuserIdentifier) superuserIdentifier = "superuser";
+    
+    if (!password) {
+        readPassword(doUpdate);
+    } else {
+        doUpdate(password);
+    }
+    
+    function doUpdate(password) {
+        if (!password) {
+            console.log("no password entered -- doing nothing");   
+        } else {
+            // console.log("using password", "'" + password + "'");
+            var userCredentials = makeStoredCredentials(superuserIdentifier, password);
+            fs.writeFileSync("superuserInformation.json", JSON.stringify(userCredentials));
+            console.log("Wrote file: superuserInformation.json");
+        }
+    }  
 }
 
 main();
