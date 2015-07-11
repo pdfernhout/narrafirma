@@ -281,7 +281,12 @@ function displayQuestion(builder, model, fieldSpecification) {
     return m("div", {key: fieldID, "class": classString}, parts);
 }
 
-export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewMode = null) {  
+interface SurveyOptions {
+    previewMode?: boolean;
+    ignoreTitleChange?: boolean;
+}
+
+export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOptions: SurveyOptions = {}) {  
     console.log("buildSurveyForm questions", questionnaire);
     
     var startText = questionnaire.startText;
@@ -290,13 +295,13 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewM
     
     var startQuestions = [];
     
-    if (previewMode) {
+    if (surveyOptions.previewMode) {
         startQuestions.push({id: "__survey-local_" + "previewMode", displayName: "previewMode", displayClass: "narrafirma-preview", displayPrompt: "Previewing story form; results will not be saved.", displayType: "header", valueOptions: []});
     }
     
     if (questionnaire.title) {
         startQuestions.push({id: "__survey-local_" + "title", displayName: "title", displayPrompt: questionnaire.title, displayType: "header", valueOptions: []});
-        document.title = questionnaire.title;
+        if (!surveyOptions.ignoreTitleChange) document.title = questionnaire.title;
     }
     
     startQuestions.push({id: "__survey-local_" + "startText", displayName: "startText", displayPrompt: startText, displayType: "label", valueOptions: []});
@@ -478,7 +483,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewM
         // TODO: Fix no-longer-correct name from Dojo version
         var wizardPane = {
             forward: function () {
-                console.log("survey sending success" + (previewMode ? " [preview mode only]" : ""));
+                console.log("survey sending success" + (surveyOptions.previewMode ? " [preview mode only]" : ""));
                 submitted = "success";
                 redraw("network");
             },
@@ -497,12 +502,12 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, previewM
     
     function submitButtonOrWaitOrFinal(): any {
         if (submitted === "never") {
-            return m("button", {"class": "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Submit Survey" + (previewMode ? " [preview mode only]" : ""));
+            return m("button", {"class": "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Submit Survey" + (surveyOptions.previewMode ? " [preview mode only]" : ""));
         } else if (submitted === "failed") {
             return m("div", [
                 "Sending to server failed. Please try again...",
                 m("br"),
-                m("button", {"class": "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Resubmit Survey" + (previewMode ? " [preview mode only]" : ""))
+                m("button", {"class": "narrafirma-survey-submit-survey-button", onclick: submitButtonPressed}, "Resubmit Survey" + (surveyOptions.previewMode ? " [preview mode only]" : ""))
             ]);
         } else if (submitted === "pending") {
             return m("div", ["Sending survey result to server... Please wait..."]);

@@ -81,7 +81,7 @@ function openMithrilSurveyDialog(questionnaire, callback, previewModeTitleText =
     console.log("openSurveyDialog questionnaire", questionnaire);
    
     var surveyDiv = document.createElement("div");
-    var surveyViewFunction = surveyBuilder.buildSurveyForm(null, questionnaire, callback, previewModeTitleText);
+    var surveyViewFunction = surveyBuilder.buildSurveyForm(null, questionnaire, callback, {previewMode: !!previewModeTitleText, ignoreTitleChange: true});
     
     var dialogConfiguration = {
         dialogModel: null,
@@ -286,7 +286,7 @@ function previewQuestionForm(model, fieldSpecification) {
     console.log("previewQuestionForm", model);
     var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(project, model);
     
-    var surveyDialog = openMithrilSurveyDialog(questionnaire, finished, " [PREVIEW -- Results not stored]");
+    var surveyDialog = openMithrilSurveyDialog(questionnaire, finished, true);
     
     function finished(status, surveyResult, wizardPane) {
         console.log("surveyResult", status, surveyResult);

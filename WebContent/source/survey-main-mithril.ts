@@ -150,7 +150,7 @@ function initialize() {
         }
         
         var questionnaire = window.opener["narraFirma_previewQuestionnaire"];     
-        surveyBuilder.buildSurveyForm(surveyDiv, questionnaire, finishedPreview, "previewMode");
+        surveyBuilder.buildSurveyForm(surveyDiv, questionnaire, finishedPreview, {previewMode: true});
 
         return;
     }
