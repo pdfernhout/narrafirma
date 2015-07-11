@@ -1,6 +1,8 @@
 /*jslint node: true */
 "use strict";
 
+var utility = require('./pointrelUtility');
+
 // Provides a standard default type of access control based on users with roles per journal
 // Roles define one or more actions a user can perform on a journal
 
@@ -86,8 +88,14 @@ function readSuperuserInformation(superuserInformationFilename) {
 
 // Authentication
 
-function isMatchingPassword(storedAuthenticationInformation, userCredentials) {
-    return storedAuthenticationInformation.userPassword === userCredentials.userPassword;
+// TODO: Should use a CSPRNG instead of Math.random()
+
+function isMatchingPassword(storedAuthenticationInformation, suppliedUserCredentials) {
+    // TODO: client-side hashing of password: var hashOfPassword = PointrelClient.calculateSHA256(salt + PointrelClient.calculateSHA256("irony" + newUserIdentifier + password));
+    // console.log("isMatchingPassword", storedAuthenticationInformation, suppliedUserCredentials);
+    var calculatedHash = utility.calculateSHA256("" + storedAuthenticationInformation.salt + suppliedUserCredentials.userPassword);
+    // console.log("calculatedHash", calculatedHash);
+    return storedAuthenticationInformation.hashOfPassword === calculatedHash;
 }
 
 function isAuthenticated(userIdentifier, userCredentials) {
@@ -96,7 +104,8 @@ function isAuthenticated(userIdentifier, userCredentials) {
     
     if (superuserInformation && userIdentifier === superuserInformation.userIdentifier) {
         // Handle superuser specially
-        result = isMatchingPassword(superuserInformation, userCredentials);
+        result = superuserInformation.userPassword === userCredentials.userPassword;
+        // result = isMatchingPassword(superuserInformation, userCredentials);
     } else {
         // Handle regular user
         var authenticationInformation = getAuthenticationInformationForUser(userIdentifier);
@@ -108,8 +117,10 @@ function isAuthenticated(userIdentifier, userCredentials) {
     return result;
 }
 
-// authenticationInformation should have the form:
-// {userIdentifier: "the-user", userPassword: "secret"}
+// Stored authentication information should have the form:
+// {userIdentifier: "the-user", salt: "someSalt", hashOfPassword: "sha256-hash-of-someSalt+secret"}
+// Supplied credentials should have the form:
+// {userIdentifier: "the-user", userPassword "secret"}
 function getAuthenticationInformationForUser(userIdentifier) {
     var authenticationInformationTopicForUser = {type: "authenticationInformation", userIdentifier: userIdentifier};
     var message = pointrelServer.latestMessageForTopicSync(credentialsJournalIdentifier, authenticationInformationTopicForUser);

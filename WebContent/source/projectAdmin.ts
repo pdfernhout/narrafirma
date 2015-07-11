@@ -520,7 +520,16 @@ function updateUserInformation(userIdentifier, userInformation = undefined) {
 }
 
 function setUserPassword(newUserIdentifier, password) {
-    var userCredentials = {userIdentifier: newUserIdentifier, userPassword: password};
+    var salt = PointrelClient.calculateSHA256("toolsOfAbundance" + Math.random() + new Date().toISOString());
+    // TODO: client-side hashing of password: var hashOfPassword = PointrelClient.calculateSHA256(salt + PointrelClient.calculateSHA256("irony" + newUserIdentifier + password));
+    var hashOfPassword = PointrelClient.calculateSHA256(salt + password);
+    var userCredentials = {
+        userIdentifier: newUserIdentifier,
+        salt: salt,
+        hashOfPassword: hashOfPassword
+    };
+    
+    // console.log("setUserPassword", salt, userCredentials);
 
     var credentialsMessage = {
         "_topicIdentifier": {type: "authenticationInformation", userIdentifier: newUserIdentifier},

@@ -6,6 +6,7 @@
 
 var pointrelServer = require("../server/pointrel20150417/pointrelServer");
 var pointrelAccessControl = require("../server/pointrel20150417/pointrelAccessControl");
+var pointrelUtility = require("../server/pointrel20150417/pointrelUtility");
 
 // Command line admin tools for creating users and journals and such
 // console.log(process.argv);
@@ -218,7 +219,14 @@ function updateUserInformation(userIdentifier, userInformation) {
 }
 
 function setUserPassword(userIdentifier, password) {
-    var userCredentials = {userIdentifier: userIdentifier, userPassword: password};
+    var salt = pointrelUtility.calculateSHA256("toolsOfAbundance" + Math.random() + new Date().toISOString());
+    // TODO: client-side hashing of password: var hashOfPassword = PointrelClient.calculateSHA256(salt + PointrelClient.calculateSHA256("irony" + newUserIdentifier + password));
+    var hashOfPassword = pointrelUtility.calculateSHA256(salt + password);
+    var userCredentials = {
+        userIdentifier: userIdentifier,
+        salt: salt,
+        hashOfPassword: hashOfPassword
+    };
 
     var credentialsMessage = {
         "_topicIdentifier": {type: "authenticationInformation", userIdentifier: userIdentifier},
