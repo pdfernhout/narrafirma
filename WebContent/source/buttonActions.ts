@@ -9,6 +9,8 @@ import surveyBuilder = require("./surveyBuilderMithril");
 import surveyCollection = require("./surveyCollection");
 import surveyStorage = require("./surveyStorage");
 import translate = require("./panelBuilder/translate");
+import storyCardDisplay = require("./storyCardDisplay");
+// import m = require("mithril");
 
 "use strict";
 
@@ -129,17 +131,23 @@ export function guiOpenSection(model, fieldSpecification, value) {
     pageDisplayer.showPage(section);
 }
 
-function generateHTMLForQuestionnaire(questionnaire) {
-     
-    // CFK started on this, but it should be finished with the mithril thing so not finishing
+function generateBoilerplateHTML(title, stylesheet) {
     var output = "";
     output += "<!DOCTYPE html>\n";
     output += "<head>\n";
     output += "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n";
-    output += "<title>" + questionnaire.title + "</title>\n";
-    output += "<link rel=\"stylesheet\" href=\"/css/survey.css\">\n";
+    output += "<title>" + title + "</title>\n";
+    output += "<link rel=\"stylesheet\" href=\"" + stylesheet + "\">\n";
     output += "</head>\n\n";
     output += "<body>\n";
+    
+    return output;
+}
+
+function generateHTMLForQuestionnaire(questionnaire) {
+     
+    // CFK started on this, but it should be finished with the mithril thing so not finishing
+    var output = generateBoilerplateHTML(questionnaire.title, "/css/survey.css");
     output += "<div class=\"narrafirma-survey-print-title\">" + questionnaire.title + "</div>\n";
     output += "<div class=\"narrafirma-survey-print-intro\">" + questionnaire.startText + "</div>\n";
     
@@ -293,6 +301,33 @@ export function previewQuestionForm(model, fieldSpecification) {
     window["narraFirma_previewQuestionnaire"] = questionnaire;
     
     var w = window.open("survey.html#preview=" + (new Date().toISOString()), "_blank");
+}
+
+export function printStoryCards() {
+    console.log("printStoryCards");
+    
+    if (!clientState.storyCollectionIdentifier) {
+        alert("Please select a story collection for which to print story cards");
+        return;
+    }
+    
+    var allStoriesInStoryCollection = surveyCollection.getStoriesForStoryCollection(clientState.storyCollectionIdentifier);
+    console.log("allStoriesInStoryCollection", allStoriesInStoryCollection);
+    
+    var output = generateBoilerplateHTML("Story cards for: " + clientState.storyCollectionIdentifier, "/css/standard.css");
+    
+    for (var storyIndex = 0; storyIndex < allStoriesInStoryCollection.length; storyIndex++) {
+        var storyModel = allStoriesInStoryCollection[storyIndex];
+        var storyContent = storyCardDisplay.generateStoryCardContent(storyModel, storyModel.questionnaire, "includeElicitingQuestion");
+        
+        output += '<div class="storyCardForPrinting">';
+        output += storyContent;
+        output += '</div>';
+    }
+    
+    output += "</body></html>";
+    
+    printHTML(output);
 }
 
 export var enterSurveyResult = openSurveyDialog;

@@ -671,3 +671,9 @@ textarea.textEditorInDialog {
 .chartEnclosure {
     min-height: 200px;
 }
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ story card printing ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.storyCardForPrinting {
+     page-break-after: always;
+}
