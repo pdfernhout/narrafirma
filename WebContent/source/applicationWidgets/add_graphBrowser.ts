@@ -53,18 +53,7 @@ class GraphBrowser {
             allStories: [],
             currentGraph: null,
             currentSelectionExtentPercentages: null
-        };
-        
-        // TODO: Probably need to handle tracking if list changed so can keep sorted list...
-        this.storyCollectionIdentifier = getCurrentStoryCollectionIdentifier(args);
-        console.log("storyCollectionIdentifier", this.storyCollectionIdentifier);
-        
-        // Set up initial data
-        this.currentStoryCollectionChanged(this.storyCollectionIdentifier);
-
-        // title: "Graph results",
-        
-        this.choices = surveyCollection.optionsForAllQuestions(this.questions, "excludeTextQuestions");
+        }; 
     }
     
     static controller(args) {
@@ -85,7 +74,14 @@ class GraphBrowser {
     calculateView(args) {
         console.log("%%%%%%%%%%%%%%%%%%% GraphBrowser view called", this);
 
-        // TODO: Need to track currentQuestionnaire?
+        // Handling of caching of questions and stories
+        var storyCollectionIdentifier = getCurrentStoryCollectionIdentifier(args);
+        if (storyCollectionIdentifier !== this.storyCollectionIdentifier) {
+            // TODO: Maybe need to handle tracking if list changed so can keep sorted list?
+            this.storyCollectionIdentifier = storyCollectionIdentifier;
+            console.log("storyCollectionIdentifier changed", this.storyCollectionIdentifier);
+            this.currentStoryCollectionChanged(this.storyCollectionIdentifier);
+        }
         
         var parts;
         
@@ -206,6 +202,8 @@ class GraphBrowser {
         }
         
         console.log("x y axis values", xAxisQuestion, yAxisQuestion);
+        
+        if (!xAxisQuestion) return;
         
         var xType = "choice";
         var yType = null;
