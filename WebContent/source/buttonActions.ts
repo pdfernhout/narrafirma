@@ -318,7 +318,7 @@ export function printStoryCards() {
     
     for (var storyIndex = 0; storyIndex < allStoriesInStoryCollection.length; storyIndex++) {
         var storyModel = allStoriesInStoryCollection[storyIndex];
-        var storyContent = storyCardDisplay.generateStoryCardContent(storyModel, storyModel.questionnaire, "includeElicitingQuestion");
+        var storyContent = storyCardDisplay.generateStoryCardContent(storyModel, storyModel.questionnaire, {storyTextAtTop: true});
         
         output += '<div class="storyCardForPrinting">';
         output += storyContent;

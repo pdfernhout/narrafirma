@@ -90,7 +90,12 @@ function displayHTMLForField(model, fieldSpecification, nobreak = null) {
     return result + "<br><br>\n";  
 }
 
-export function generateStoryCardContent(storyModel, currentQuestionnaire, includeElicitingQuestion) {
+interface Options {
+    excludeElicitingQuestion?: boolean;
+    storyTextAtTop?: boolean;
+}
+
+export function generateStoryCardContent(storyModel, currentQuestionnaire, options: Options = {}) {
     // Encode all user-supplied text to ensure it does not create HTML issues
     var elicitingQuestion = htmlEncode(storyModel.__survey_elicitingQuestion);
     var storyName = htmlEncode(storyModel.__survey_storyName);
@@ -125,13 +130,25 @@ export function generateStoryCardContent(storyModel, currentQuestionnaire, inclu
     // console.log("otherFields", otherFields);
     
     var textForElicitingQuestion = "";
-    if (includeElicitingQuestion) {
-        textForElicitingQuestion = wrap("div", "narrafirma-story-card-eliciting-question", elicitingQuestion) + "<br>";
+    if (!options.excludeElicitingQuestion) {
+        textForElicitingQuestion = wrap("div", "narrafirma-story-card-eliciting-question", "Eliciting question: " + elicitingQuestion) + "<br>";
     }
     
-    var storyCardContent = wrap("div", "narrafirma-story-card-story-title", storyName) + 
-        "<br>" + 
-        wrap("div", "narrafirma-story-card-story-text", storyText + "<br>" + otherFields + "<hr>" + textForElicitingQuestion);
+    var storyTextAtTop = "";
+    var storyTextAtBottom = wrap("div", "narrafirma-story-card-story-text", storyText);
     
+    if (options.storyTextAtTop) {
+        storyTextAtTop = storyTextAtBottom;
+        storyTextAtBottom = "";
+    }
+    
+    var storyCardContent = wrap("div", "narrafirma-story-card-story-title", storyName)
+        + storyTextAtTop
+        + "<br>"
+        + otherFields
+        + textForElicitingQuestion
+        + storyTextAtBottom
+        + "<hr>";
+   
     return storyCardContent;
 }
