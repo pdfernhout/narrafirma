@@ -119,11 +119,13 @@ function hashStringForClientState() {
 }
 
 function urlHashFragmentChanged() {
-    var newHash = hashStringForClientState();
+    var newHash = hash();
     console.log("urlHashFragmentChanged", newHash);
     
+    console.log("current clientState", clientState);
+    
     var hashParameters = getHashParameters(newHash);
-    console.log("hashParameters", hashParameters, clientState);
+    console.log("new hashParameters", hashParameters);
     
     var currentProjectIdentifier = clientState.projectIdentifier;
     if (currentProjectIdentifier) {
@@ -146,7 +148,7 @@ function urlHashFragmentChanged() {
         selectedPage = "page_" + selectedPage;
     }
     if (selectedPage !== clientState.pageIdentifier) {
-        console.log("changing client state for page", clientState.pageIdentifier, selectedPage);
+        console.log("changing client state for page from:", clientState.pageIdentifier, "to:", selectedPage);
         clientState.pageIdentifier = selectedPage;
     }
     
@@ -173,7 +175,7 @@ function urlHashFragmentChanged() {
 
 var updateHashTimer = null;
 
-function updateHashIfNeededForChangedState() {
+function updateHashIfNeededForChangedClientState() {
     var newHash = hashStringForClientState();
     if (newHash !== hash()) hash(newHash);
 }
@@ -478,8 +480,9 @@ function setupGlobalFunctions() {
     
     window["narrafirma_openPage"] = function (pageIdentifier) {
         clientState.pageIdentifier = pageIdentifier;
-        // TODO: Need better approach for tracking hash changes?
-        urlHashFragmentChanged();
+        updateHashIfNeededForChangedClientState();
+        // Page displayer will handle cases where the hash is not valid and also optimizing out page redraws if staying on same page
+        pageDisplayer.showPage(clientState.pageIdentifier);
     };
     
     window["narrafirma_logoutClicked"] = function () {
@@ -605,7 +608,8 @@ function chooseAProjectToOpen(userIdentifierFromServer, projects) {
         });
         
         // Because we are opening a dialog at startup, not caused by a user event, we need to tell Mithril to redraw.
-        m.redraw();
+        // Safari 5 seems to sometimes get the event sequence wrong at startup, adding 100ms delay to help ensure the redraw is queued after this event is entirely done
+        setTimeout(m.redraw, 100);
     }
 }
 
@@ -690,10 +694,10 @@ function loadApplicationDesign() {
         // Initialize different Mithril components which will be mounted using m.mount
         // Note that dialogSupport has already been initialized and that component mounted
         navigationPane.initializeNavigationPane(panelSpecificationCollection, startPage, userIdentifier, panelBuilder);
-        pageDisplayer.configurePageDisplayer(panelBuilder, startPage, project, updateHashIfNeededForChangedState);
+        pageDisplayer.configurePageDisplayer(panelBuilder, startPage, project, updateHashIfNeededForChangedClientState);
 
         // Fill out initial hash string if needed
-        updateHashIfNeededForChangedState();
+        updateHashIfNeededForChangedClientState();
         
         createLayout();
         
