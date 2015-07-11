@@ -17,9 +17,18 @@ var pointrelServer = require("./pointrel20150417/pointrelServer");
 
 var pointrelAccessControl = require("./pointrel20150417/pointrelAccessControl");
 
-// TODO IMPORTANT: Remove hardcoded superuser credentials -- just for dev testing
-var pointrelUtility = require("./pointrel20150417/pointrelUtility");
-pointrelAccessControl.initialize({"userIdentifier": "superuser", salt: "", "hashOfPassword": pointrelUtility.calculateSHA256("secret")});
+//Use default superuser information
+var superuserInformation = null;
+
+// To calculate hashed "secret" password for developer testing:
+// var pointrelUtility = require("./pointrel20150417/pointrelUtility");
+// console.log("hash of secret", pointrelUtility.calculateSHA256("someSalt" + "secret"));
+
+// Hardcoded superuser credentials are just for developer testing
+var hashOfSaltAndSecret = "2dffee32e6488a85c0717311a82059525c0a9e09248481ea490a41f82adf947d";
+superuserInformation = {"userIdentifier": "superuser", salt: "someSalt", "hashOfPassword": hashOfSaltAndSecret};
+
+pointrelAccessControl.initialize(superuserInformation);
 
 pointrelServer.indexAllJournals();
 
