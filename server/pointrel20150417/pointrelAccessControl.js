@@ -12,7 +12,7 @@
 
 // Right now, only four default roles are supported: read, write, readWrite, and administrate
 // Eventually, these could be stored in a journal if more are required.
-// These are of the form: "roll: {action: true}"
+// These are of the form: "role: {action: true}"
 var allRoles = {
     reader: {read: true},
     writer: {write: true},
@@ -86,18 +86,22 @@ function readSuperuserInformation(superuserInformationFilename) {
 
 // Authentication
 
+function isMatchingPassword(storedAuthenticationInformation, userCredentials) {
+    return storedAuthenticationInformation.userPassword === userCredentials.userPassword;
+}
+
 function isAuthenticated(userIdentifier, userCredentials) {
     console.log("isAuthenticated", userIdentifier, userCredentials);
     var result = false;
     
     if (superuserInformation && userIdentifier === superuserInformation.userIdentifier) {
         // Handle superuser specially
-        result = superuserInformation.userPassword === userCredentials.userPassword;
+        result = isMatchingPassword(superuserInformation, userCredentials);
     } else {
         // Handle regular user
         var authenticationInformation = getAuthenticationInformationForUser(userIdentifier);
         console.log("authenticationInformation", authenticationInformation);
-        if (authenticationInformation && authenticationInformation.userPassword === userCredentials.userPassword) result = true;
+        if (authenticationInformation && isMatchingPassword(authenticationInformation, userCredentials)) result = true;
     }
     
     console.log("isAuthenticated:", result);
