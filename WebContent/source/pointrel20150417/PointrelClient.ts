@@ -548,7 +548,7 @@ class PointrelClient {
     
     static calculateSHA256(text) {
         // console.log("calculateSHA256", utf8Bytes);
-        return sha256.SHA256(text);
+        return "" + sha256.SHA256(text);
     }
     
     // Ensure unique timestamps are always incremented from the next by adding values at end...
