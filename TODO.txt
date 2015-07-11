@@ -164,10 +164,7 @@ H Page to print story cards
 X Print section reports as HTML
 
 NAVIGATION
-L Way to change project
-
-SECURITY
-H Need to hash passwords on client and server instead of using plain text
+L Way to select a different project to switch to (other than editing the URL or logging out)
 
 UNSURE
 X Way to retrieve data about project participant groups [Is this still relevant? Probably yes, if we did "checkboxes with pull" for picking what groups an activity applies to instead of text entry]
@@ -232,6 +229,8 @@ Continuous integration server that runs tests
 
 Generate PDF reports
 Generate CSV output
+
+Hash password when sending from client to server (not strictly needed if use ssh, and without ssh everything is potnetially insecure from MITM attacks)
 
 ==== Might not do
 
@@ -801,3 +800,7 @@ DONE Support cancel buttons in dialogs and use that in text editor for clusterin
 DONE Don't show navigation buttons for most grids -- just the grids with it specified
 DONE Provide status of whether survey is active on main dashboard
 DONE Back button not working reliabley (especially in Safai 5) since transition from Dojo hash
+DONE Need to hash passwords on client and server instead of using plain text [storing hashed values]
+DONE Change server default to read a file for superuser information
+DONE Add command-line server admin command to update superuser information ("update-superuser")
+DONE Read passwords from command line for server admin tool
