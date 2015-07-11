@@ -164,7 +164,6 @@ H Page to print story cards
 X Print section reports as HTML
 
 NAVIGATION
-M Back button not working reliablity (especially in Safai 5) since transition from Dojo has
 L Way to change project
 
 SECURITY
@@ -801,3 +800,4 @@ DONE Improve dialog width sizing for when window is smaller
 DONE Support cancel buttons in dialogs and use that in text editor for clustering diagram
 DONE Don't show navigation buttons for most grids -- just the grids with it specified
 DONE Provide status of whether survey is active on main dashboard
+DONE Back button not working reliabley (especially in Safai 5) since transition from Dojo hash
