@@ -14,7 +14,6 @@ H Need a way to delete a story from a story collection
 H When import story collection, need to display name of form in select
 M Slider should have a "does not apply" option
 L After you enter a story, it shows an alert that the story has been saved, but it doesn't get rid of the window. the popup window should go away
-L When you enter a story, it replaces the title of the main web page (Enter stories) with the name of the story form (questionnaire).
 L would like to make "focus rectangle" or "rubber band" over graphs when selecting - see http://bl.ocks.org/mbostock/1667367
 L Histograms should have mean and standard deviation marked (and maybe median and mode, skewness and kurtosis as numbers).
 
@@ -32,11 +31,7 @@ H Finish "Create project story elements" page in planning phase
         4. list - copy end cluster "story elements" to list, and desribe each (with fields from "enter project story elements" page
     Remove "Enter project story elements" page
     OR Move directions for clustering project story elements into help system for next page
-L Change button names from "new item" to "new" - etc
 X Support multiple item selection in clustering diagram
-
-TEMPLATES
-W Fix how templates list popup has too much scrolling and is not sized well; perhaps start with grid item view pane open?
 
 SURVEY GENERAL
 L Display how many stories and/or survey results have been collected
@@ -84,7 +79,6 @@ PRINTING
 H Implement printStoryForm in domain buttonClicked (what do do about entering multiple stories?)
 H Implement "print session agenda" (to HTML) for story collection
 H Implement "print session agenda" (to HTML) for sensemaking
-H Add page about printing story cards for sensemaking
 
 STORY THEMER
 X Generalize storyThemer into tagging - or researcher added questions
@@ -159,8 +153,6 @@ X Validation of text fields for length
 X Validation for checkBoxes limited by maximum number of choices as validation error
 
 PRINTING
-H Print story cards as HTML
-H Page to print story cards
 X Print section reports as HTML
 
 NAVIGATION
@@ -804,3 +796,9 @@ DONE Need to hash passwords on client and server instead of using plain text [st
 DONE Change server default to read a file for superuser information
 DONE Add command-line server admin command to update superuser information ("update-superuser")
 DONE Read passwords from command line for server admin tool
+DONE Add page about printing story cards for sensemaking
+DONE Page to print story cards [same as above]
+DONE Print story cards as HTML
+OBSOLETE Fix how templates list popup has too much scrolling and is not sized well; perhaps start with grid item view pane open? [Improved with Mithril]
+NOT DOING Change button names from "new item" to "new" - etc [Need to distinguish item from cluster now]
+DONE When you enter a story, it replaces the title of the main web page (Enter stories) with the name of the story form (questionnaire).
