@@ -268,7 +268,9 @@ export function copyDraftPNIQuestionVersionsIntoAnswers() {
 }
 
 export function logoutButtonClicked() {
-    window.location.href = "/logout";
+    if (confirm("Logout?")) {
+        window.location.href = "/logout";
+    }
 }
 
 /*
