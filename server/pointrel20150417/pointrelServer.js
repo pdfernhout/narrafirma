@@ -76,7 +76,7 @@ var configuration = {
     isAnonymousAccessAllowed: true,
     
     // An optional function that should return a boolean if a user is authenticated; userCredentials typically has userIdentifier and userPassword
-    // Typically this should be set to pointrcelAccessControl.isAuthenticated
+    // Typically this should be set to pointrelAccessControl.isAuthenticated
     // isAuthenticated(userIdentifier, userCredentials)
     
     isAuthenticatedCallback: null,
