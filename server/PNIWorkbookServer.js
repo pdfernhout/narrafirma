@@ -23,10 +23,10 @@ var superuserInformation = null;
 // To calculate hashed "secret" password for developer testing:
 // var pointrelUtility = require("./pointrel20150417/pointrelUtility");
 // console.log("hash of secret", pointrelUtility.calculateSHA256("someSalt" + "secret"));
+// var hashOfSaltAndSecret = "2dffee32e6488a85c0717311a82059525c0a9e09248481ea490a41f82adf947d";
 
-// Hardcoded superuser credentials are just for developer testing
-var hashOfSaltAndSecret = "2dffee32e6488a85c0717311a82059525c0a9e09248481ea490a41f82adf947d";
-superuserInformation = {"userIdentifier": "superuser", salt: "someSalt", "hashOfPassword": hashOfSaltAndSecret};
+// Hardcoded superuser credentials are just for developer testing; you can also paste this object into superuserInformation.json
+// superuserInformation = {"userIdentifier": "superuser", "salt": "someSalt", "hashOfPassword": "2dffee32e6488a85c0717311a82059525c0a9e09248481ea490a41f82adf947d"};
 
 pointrelAccessControl.initialize(superuserInformation);
 
