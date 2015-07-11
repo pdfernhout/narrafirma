@@ -104,8 +104,7 @@ function isAuthenticated(userIdentifier, userCredentials) {
     
     if (superuserInformation && userIdentifier === superuserInformation.userIdentifier) {
         // Handle superuser specially
-        result = superuserInformation.userPassword === userCredentials.userPassword;
-        // result = isMatchingPassword(superuserInformation, userCredentials);
+        result = isMatchingPassword(superuserInformation, userCredentials);
     } else {
         // Handle regular user
         var authenticationInformation = getAuthenticationInformationForUser(userIdentifier);
