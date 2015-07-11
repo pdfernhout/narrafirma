@@ -84,8 +84,7 @@ var loginTemplate = '<form action="/login" method="post">\n' +
 '<div>\n' +
 '<input type="submit" value="Login"/>\n' +
 '</div>\n' +
-'</form>\n' +
-'<p><small>Hint - pdfernhout,administrator,cfkurtz,joe,bob:secret</small></p>';
+'</form>\n';
 
 function writeTestPage(request, response, config) {
     // response.sendFile(pointrelConfig.baseDirectory + "index.html");
