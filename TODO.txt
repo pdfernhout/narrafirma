@@ -32,6 +32,7 @@ H Finish "Create project story elements" page in planning phase
     Remove "Enter project story elements" page
     OR Move directions for clustering project story elements into help system for next page
 X Support multiple item selection in clustering diagram
+H Think through diagram sizing issue -- both for internal pane and for external div holder
 
 SURVEY GENERAL
 L Display how many stories and/or survey results have been collected
@@ -103,6 +104,7 @@ L Rename "save current graph selection to observation" buttons under graphs
 
 CLUSTERING (CATALYSIS)
 H Support clustering interpretations into perspectives in catalysis (on page after pattern browser) WITH A TABLE
+H Think about and improve issue of values that can be set only one like catalysis report name and story collection
 
 CATALYSIS REPORT
 H Create catalysis report - including results (graphs, statistical results)
