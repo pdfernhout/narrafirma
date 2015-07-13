@@ -213,7 +213,8 @@ class ClusteringDiagram {
         this.divForResizing = divForResizing;
         var divUUID = "ResizeableCanvasHolder_" + generateRandomUuid(); 
         divForResizing.setAttribute("id", divUUID);
-        divForResizing.setAttribute("style", "width: " + this.diagram.surfaceWidthInPixels + "px; height: " + this.diagram.surfaceHeightInPixels + "px; border: solid 1px; position: relative");
+        //divForResizing.setAttribute("style", "width: " + this.diagram.surfaceWidthInPixels + "px; height: " + this.diagram.surfaceHeightInPixels + "px; border: solid 1px; position: relative");
+        //divForResizing.setAttribute("style", "resize: auto; border: solid 1px");
        
         var width = this.diagram.surfaceWidthInPixels;
         var height = this.diagram.surfaceHeightInPixels;
@@ -228,10 +229,12 @@ class ClusteringDiagram {
         // this._mainSurface.append("circle").attr("cx", 25).attr("cy", 25).attr("r", 25).style("fill", "purple").on("mousedown", function () {console.log("purple circle clicked");});
     
         this.background = this._mainSurface.append("rect")
-            .attr('width', width)
-            .attr('height', height)
+            .attr('width', "100%")
+            .attr('height', "100%")
             .attr('class', 'clusteringDiagramBackground')
             .style('fill', 'white')
+            .style('stroke-width', '3')
+            .style('stroke', 'rgb(0,0,0)')
             .on("mousedown", () => {
                 console.log("mousedown in background");
                 this.selectItem(null);
@@ -247,7 +250,7 @@ class ClusteringDiagram {
             
         this.recreateDisplayObjectsForAllItems();
     
-        /* TODO: What to do ablout handle?
+        /* TODO: What to do about handle?
         var handle = new ResizeHandle({
             targetId: divUUID,
             // Need either activeResize true or animateSizing false so that onResize will only be called when totally done resizing
@@ -333,6 +336,11 @@ class ClusteringDiagram {
             });
         });
         
+        // TODO: Translate
+        this.newButton("canvasSizeButton", "Diagram size", () => {
+            this.openCanvasSizeDialog();
+        });
+        
         if (!this.autosave) {
             // TODO: Translate
             this.newButton("saveChangesButton", "Save Changes", () => {
@@ -388,6 +396,32 @@ class ClusteringDiagram {
         console.log("items", this.diagram.items);
         this.incrementChangesCount();
         this.selectItem(item);
+    }
+    
+     openCanvasSizeDialog() {
+        console.log("openCanvasSizeDialog");  
+        // alert("This should open a dialog");
+        
+        // TODO: Make a single dialog
+        // TODO: Translate
+        var newWidthString = prompt("New width in pixels?", this.diagram.surfaceWidthInPixels);
+        if (!newWidthString) return;
+        var newWidth = parseInt(newWidthString.trim(), 10);
+        if (!newWidth) return;
+         
+        var newHeightString = prompt("New height in pixels?", this.diagram.surfaceHeightInPixels);
+        if (!newHeightString) return;
+        var newHeight = parseInt(newHeightString.trim(), 10);
+        if (!newHeight) return;
+         
+        if (newWidth !== this.diagram.surfaceWidthInPixels || newHeight !== this.diagram.surfaceHeightInPixels) {
+            this.diagram.surfaceWidthInPixels = newWidth;
+            this.diagram.surfaceHeightInPixels = newHeight;
+            this._mainSurface
+                .attr('width', newWidth)
+                .attr('height', newHeight);
+            this.incrementChangesCount();
+        }
     }
     
     openEntryDialog(item, isExistingItem) {
