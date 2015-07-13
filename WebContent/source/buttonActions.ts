@@ -75,6 +75,15 @@ function importExportClicked() {
     // dialogSupport.openTextEditorDialog(projectDefinitionText, "#projectImportExportDialog_title|Project Import/Export", "#projectImportExportDialog_okButtonText|OK", importButtonClicked);
 }
 
+export function exportStoryCollection() {
+    console.log("exportStoryCollection", clientState.storyCollectionIdentifier);
+    var currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(clientState.storyCollectionIdentifier);
+    console.log("currentQuestionnaire", currentQuestionnaire);
+
+    var allStories = surveyCollection.getStoriesForStoryCollection(clientState.storyCollectionIdentifier);
+    console.log("allStories", allStories);
+}
+
 // Caller should call wizard.forward() on successful save to see the last page, and provide a retry message otherwise
 // Caller may also want to call (the returned) surveyDialog.hide() to close the window, or let the user do it.
 function openMithrilSurveyDialog(questionnaire, callback, previewModeTitleText = null) {  

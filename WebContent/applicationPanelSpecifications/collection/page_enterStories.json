@@ -28,6 +28,13 @@
             "displayType": "button",
             "displayConfiguration": "enterSurveyResult",
             "displayPrompt": "Add Story..."
+        },
+        {
+            "id": "project_exportStories",
+            "valueType": "none",
+            "displayType": "button",
+            "displayConfiguration": "exportStoryCollection",
+            "displayPrompt": "Export story collection..."
         }
     ]
 }
