@@ -186,8 +186,8 @@ class ClusteringDiagram {
         return m("div", [
             this.mainButtons,
             m("div", {config: this.configSurface.bind(this)}),
-            m("div", {style: "text-overflow: ellipsis;"}, textForItemName),
-            m("div", {style: "text-overflow: ellipsis;"}, textForItemUrl),
+            // m("div", {style: "text-overflow: ellipsis;"}, textForItemName),
+            // m("div", {style: "text-overflow: ellipsis;"}, textForItemUrl),
             entryDialog 
         ]);
     }
