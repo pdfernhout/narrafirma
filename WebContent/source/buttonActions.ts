@@ -503,6 +503,15 @@ export function printStoryCards() {
     printHTML(output);
 }
 
+export function printCatalysisReport() {
+    console.log("printCatalysisReport", clientState.catalysisReportIdentifier);
+    
+    if (!clientState.catalysisReportIdentifier) {
+        alert("Please pick a catalysis report to print.");
+        return;
+    }
+}
+
 export var enterSurveyResult = openSurveyDialog;
 export var toggleWebActivationOfSurvey = surveyCollection.toggleWebActivationOfSurvey;
 export var storyCollectionStop = surveyCollection.storyCollectionStop;
