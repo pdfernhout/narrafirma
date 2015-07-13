@@ -9,13 +9,32 @@
             "id": "project_projectStoryElementsInstructions",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "Here are some instructions on how to create story elements from your project stories.\nCreating story elements helps you think about what is going on in the stories you told.\nYou can enter your story elements at the bottom of this page."
+            "displayPrompt": "Here are some instructions on how to create story elements from your project stories.\nCreating story elements helps you think about what is going on in the stories you told.\nYou can do the erxercises either using the diagrams below or by using sticky notes. You can enter your story elements at the bottom of this page."
         },
         {
-            "id": "project_projectStoryElementsInstructionsStep1",
-            "valueType": "none",
-            "displayType": "label",
-            "displayPrompt": "Create story answer groups using the diagram below or using sticky notes:\n<ol>\n<li>Choose one or two types of story element (characters, situations, values, themes, relationships, motivations, beliefs, conflicts).</li>\n<li>For each story, come up with as many answers to that element's question as you can. Write the answers on sticky notes.</li>\n<li>The questions are:</li>\n<ul>\n<li>Characters: Who is doing things in this story?</li>\n<li>Situations: What is going on in this story?</li>\n<li>Values: What matters to the characters in this story?</li>\n<li>Themes: What is this story about?</li>\n<li>Relationships: How are the characters related in this story?</li>\n<li>Motivations: Why do the characters do what they do in this story?</li>\n<li>Beliefs: What do people believe in this story?</li>\n<li>Conflicts: Who or what stands in opposition in this story?</li>\n</ul>\n<li>Once you have answered the question(s) you chose for each story, cluster the sticky notes into groups. Place like with like.</li>\n<li>Give each group of sticky notes a name.</li></ol>"
+            "id": "project_projectStoryElementsType",
+            "valueType": "string",
+            "valueOptions": [
+                {"value": "characters", "label": "Characters: Who is doing things in this story?"},
+                {"value": "situations", "label": "Situations: What is going on in this story?"},
+                {"value": "values", "label": "Values: What matters to the characters in this story?"},
+                {"value": "themes", "label": "Themes: What is this story about?"},
+                {"value": "relationships", "label": "Relationships: How are the characters related in this story?"},
+                {"value": "motivations", "label": "Motivations: Why do the characters do what they do in this story?"},
+                {"value": "beliefs", "label": "Beliefs: What do people believe in this story?"},
+                {"value": "conflicts", "label": "Conflicts: Who or what stands in opposition in this story?"}
+            ],
+            "displayDataOptionField": "label",
+            "displayType": "select",
+            "displayPrompt": "Choose a type of story element and question to work with (pick characters or themes if unsure):"
+        },
+        {
+            "id": "project_projectStoryElements_storiesList",
+            "valueType": "object",
+            "required": true,
+            "displayType": "storiesList",
+            "displayConfiguration": "project_projectStoryElementsAnswersClusteringDiagram",
+            "displayPrompt": "For each project story you entered, come up with as many answers to the selected element's question as you can. Write the answers on sticky notes or enter them as items in the clustering diagram below.<br>Once you have answered the question you chose for each story, cluster the sticky notes into groups. Place like with like. Create a new \"cluster\" for each group with a name for the group to produce \"answer cluster names\"."
         },
         {
             "id": "project_projectStoryElementsAnswersClusteringDiagram",
@@ -23,13 +42,13 @@
             "required": true,
             "displayType": "clusteringDiagram",
             "displayConfiguration": "project_projectStoryElementsAnswersClusteringDiagram",
-            "displayPrompt": "You can work on a clustering diagram here:"
+            "displayPrompt": "You can work on answer cluster names here:"
         },
         {
             "id": "project_projectStoryElementsInstructionsStep2",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "Now create attribute group clusters:<ol><li>Clear a \"halo\" of space around each group's name.</li>\n<li>In the halo, write 2-5 good and bad attributes (advantages and disadvantages, opportunities and dangers) of each group of sticky notes.</li></ol>"
+            "displayPrompt": "Now create attribute group clusters:<ol><li>Copy the answer clusters from the above diagram into the diagram below.</li>\n<li>Around each cluster, create items for two to five good and bad attributes (advantages and disadvantages, opportunities and dangers) of each cluster. (Or, for sticky notes, clear a \"halo\" of space around each group's name and do the same.)</li></ol>"
         },
         {
             "id": "project_projectStoryElementsAttributeGroupsClusteringDiagram",
@@ -37,13 +56,13 @@
             "required": true,
             "displayType": "clusteringDiagram",
             "displayConfiguration": "project_projectStoryElementsAttributeGroupsClusteringDiagram",
-            "displayPrompt": "You can work on a clustering diagram here:"
+            "displayPrompt": "You can work on attribute group clusters here:"
         },
         {
             "id": "project_projectStoryElementsInstructionsStep3",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "Create story elements:<ol><li>Copy or move the new good/bad attributes to a new space. Mix them all together.</li>\n<li>Cluster the attributes into groups.</li>\n<li>Name the groups. These are your story elements.</li>\n</ol>"
+            "displayPrompt": "Create story elements:<ol><li>Copy the new good/bad attributes to the diagram below (or do the same with sticky notes). Mix the attributes all together.</li>\n<li>Then, cluster the attributes into new groups.</li>\n<li>Make a named cluster for each of the groups. These new clusters are your story elements.</li>\n</ol>"
         },
         {
             "id": "project_projectStoryElementsClusteringDiagram",
@@ -51,7 +70,7 @@
             "required": true,
             "displayType": "clusteringDiagram",
             "displayConfiguration": "project_projectStoryElementsClusteringDiagram",
-            "displayPrompt": "You can work on a clustering diagram here:"
+            "displayPrompt": "You can work on story elements here:"
         },
         {
             "id": "project_projectStoryElementsList",
@@ -60,7 +79,7 @@
             "displayType": "grid",
             "displayConfiguration": "panel_addStoryElement",
             "displayName": "Story elements",
-            "displayPrompt": "Enter the story elements you created above into the table below."
+            "displayPrompt": "Enter the story elements you created into the table below. Describe each with more details."
         }
     ]
 }
