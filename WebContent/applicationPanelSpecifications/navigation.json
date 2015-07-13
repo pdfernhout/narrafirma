@@ -299,6 +299,10 @@
                         "panelName": "Annotate interpretation for perspective"
                     }
                 ]
+            },
+            {
+                "panelID": "page_printCatalysisReport",
+                "panelName": "Print catalysis report"
             }
         ]
     },
