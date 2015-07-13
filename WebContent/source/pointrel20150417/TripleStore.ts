@@ -206,7 +206,7 @@ class TripleStore {
     */
     
     queryLatestC(a, b) {
-        console.log("queryLatestC", a, b);
+        // console.log("queryLatestC", a, b);
         if (a === undefined) {
             throw new Error("a should not be undefined");
         }
@@ -215,7 +215,7 @@ class TripleStore {
         }    
         var bIndex = this.getIndexEntries(a, b);
         if (!bIndex) return undefined;
-        console.log("queryLatestC result", a, b, bIndex.latestC);
+        // console.log("queryLatestC result", a, b, bIndex.latestC);
         return defensiveCopy(bIndex.latestC);
     }
     
