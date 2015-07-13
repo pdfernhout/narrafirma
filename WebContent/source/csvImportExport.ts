@@ -231,6 +231,17 @@ function processCSVContentsForQuestionnaire(contents) {
             questionnaire.storyQuestions.push(questionForItem(item));
         } else if (about === "participant") {
             questionnaire.participantQuestions.push(questionForItem(item));
+        } else if (about === "eliciting") {
+            var temp = questionForItem(item);
+            temp.valueOptions.forEach(function (elicitingQuestionDefinition) {
+                if (!elicitingQuestionDefinition) elicitingQuestionDefinition = "ERROR:MissingElicitingText";
+                var sections = elicitingQuestionDefinition.split("|");
+                // If only one section, use it as both id and text
+                if (sections.length < 2) {
+                    sections.push(sections[0]);
+                }
+                questionnaire.elicitingQuestions.push({id: sections[0], text: sections[1]});
+            });
         } else {
             console.log("Error: unexpected About type of", about);
         }
@@ -244,30 +255,42 @@ function processCSVContentsForQuestionnaire(contents) {
 
 function questionForItem(item) {
     var valueType = "string";
-    var type = "text";
+    var questionType = "text";
     var valueOptions;
     var displayConfiguration;
     var answers = item["Answers"];
     
     var itemType = item["Type"].trim();
     if (itemType === "Single choice") {
-        type = "select";
+        questionType = "select";
         valueOptions = answers;
     } else if (itemType === "Scale") {
         valueType = "number";
-        type = "slider";
+        questionType = "slider";
         displayConfiguration = [answers[0], answers[1]];
     } else if (itemType === "Multiple choice") {
-        type = "checkboxes";
+        questionType = "checkboxes";
+        valueOptions = item["Answers"];
+    } else if (itemType === "Radiobuttons") {
+        questionType = "radiobuttons";
+        valueOptions = item["Answers"];
+    } else if (itemType === "Boolean") {
+        questionType = "boolean";
+    } else if (itemType === "Text") {
+        questionType = "text";
+    } else if (itemType === "Textarea") {
+        questionType = "textarea";
+    } else if (itemType === "Eliciting question") {
+        questionType = "eliciting";
         valueOptions = item["Answers"];
     } else {
         console.log("IMPORT ERROR: unsupported question type: ", itemType);
     }
     return {
         valueType: valueType,
-        displayType: type,
+        displayType: questionType,
         id: "__survey_" + item["Short name"], 
-        valueOptions: valueOptions, 
+        valueOptions: valueOptions,
         displayName: item["Short name"], 
         displayPrompt: item["Long name"],
         displayConfiguration: displayConfiguration
