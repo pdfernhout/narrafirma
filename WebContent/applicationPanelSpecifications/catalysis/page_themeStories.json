@@ -13,7 +13,7 @@
         },
         {
             "id": "catalysisReportThemeStories",
-            "valuePath": "/clientState/currentCatalysisReport",
+            "valuePath": "/clientState/catalysisReportIdentifier",
             "valueType": "string",
             "valueOptions": "project_catalysisReports",
             "valueOptionsSubfield": "catalysisReport_shortName",
@@ -24,7 +24,7 @@
         },
         {
             "id": "themeStories",
-            "valuePath": "/clientState/currentCatalysisReport",
+            "valuePath": "/clientState/catalysisReportIdentifier",
             "valueType": "none",
             "displayType": "storyThemer",
             "displayPrompt": "Theme stories"

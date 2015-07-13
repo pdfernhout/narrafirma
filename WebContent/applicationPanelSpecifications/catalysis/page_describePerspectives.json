@@ -13,7 +13,7 @@
         },
         {
             "id": "catalysisReportDescriptPerspectives",
-            "valuePath": "/clientState/currentCatalysisReport",
+            "valuePath": "/clientState/catalysisReportIdentifier",
             "valueType": "string",
             "valueOptions": "project_catalysisReports",
             "valueOptionsSubfield": "catalysisReport_shortName",
@@ -24,7 +24,7 @@
         },
         {
             "id": "project_perspectivesList",
-            "valuePath": "/clientState/currentCatalysisReport",
+            "valuePath": "/clientState/catalysisReportIdentifier",
             "valueType": "array",
             "required": true,
             "displayType": "grid",

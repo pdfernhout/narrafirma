@@ -13,7 +13,7 @@
         },
         {
             "id": "catalysisReportReviewTrends",
-            "valuePath": "/clientState/currentCatalysisReport",
+            "valuePath": "/clientState/catalysisReportIdentifier",
             "valueType": "string",
             "valueOptions": "project_catalysisReports",
             "valueOptionsSubfield": "catalysisReport_shortName",
@@ -38,7 +38,7 @@
         },
         {
             "id": "reviewTrends_display",
-            "valuePath": "/clientState/currentCatalysisReport",
+            "valuePath": "/clientState/catalysisReportIdentifier",
             "valueType": "none",
             "displayType": "trendsReport",
             "displayPrompt": "Trends report"
