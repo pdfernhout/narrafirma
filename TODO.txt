@@ -48,8 +48,6 @@ X Improve how options are specified for questions in question designer rather th
 X Make sure that short name IDs entered by user when defining questions are unique among themselves and don't have a leading underscore (or at least aren't "_id")
 
 EXPORT/IMPORT
-H CSV import may no longer be working correctly
-H CSV Import of eliciting questions may not be working
 H Add page to do export
 L Improve import process to remove two seperate buttons as two stages (questionnaire and data) or handle in some other way
 L Add progress bar for import
@@ -799,3 +797,5 @@ DONE Clustering for Planning -- Finish "Create project story elements" page in p
 DONE Export for story collection to CSV format (ideally with questionnaire)
 DONE Add export button for survey results
 DONE Generate CSV output
+DONE CSV import may no longer be working correctly [was importing binary xls file not CSV!]
+DONE CSV Import of eliciting questions may not be working
