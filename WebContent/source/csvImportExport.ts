@@ -111,12 +111,13 @@ function processCSVContentsForStories(contents) {
             importedBy: importedByUserIdentifier
         };
         
+        var elicitingQuestion = item["Eliciting question"] || lastQuestionnaireUploaded.elicitingQuestions[0].id;
         var story = {
             __type: "org.workingwithstories.Story",
             id: generateRandomUuid(),
             _storyID: generateRandomUuid(),
             _participantID: newSurveyResult.participantData._participantID,
-            __survey_elicitingQuestion: lastQuestionnaireUploaded.elicitingQuestions[0].id,
+            __survey_elicitingQuestion: elicitingQuestion,
             __survey_storyText: item["Story text"],
             __survey_storyName: item["Story title"]
         };
