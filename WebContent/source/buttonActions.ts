@@ -78,6 +78,91 @@ function importExportClicked() {
 // Library for saving files, imported by index.html
 declare var saveAs;
 
+function addCSVOutputLine(output, line) {
+    console.log("line", line);
+    var start = true;
+    line.forEach(function (item) {
+        console.log("item", item);
+        if (start) {
+            start = false;
+        } else {
+            output += ",";
+        }
+        if (item && item.indexOf(",") !== -1) {
+            item = item.replace(/"/g, '""');
+            item = '"' + item + '"';
+        }
+        output += item;
+    });
+    output += "\n";
+    return output;
+}
+
+var exportQuestionTypeMap = {
+    "checkboxes": "Multiple choice",
+    "select": "Single choice",
+    "slider": "Scale",
+    "boolean": "Boolean",
+    "radiobuttons": "Radiobuttons",
+    "text": "Text",
+    "textarea": "Textarea"
+};
+
+export function exportQuestionnaire() {
+    var storyCollectionIdentifier = clientState.storyCollectionIdentifier;
+    
+    console.log("exportStoryCollection", storyCollectionIdentifier);
+    var currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+    console.log("exportQuestionnaire", currentQuestionnaire);
+    
+    // Order Long name   Short name  Type    About   Answers
+    var output = "";
+    var lineIndex = 1;
+    function addOutputLine(line) {
+        output = addCSVOutputLine(output, line);
+    }
+    
+    var header = ["Order", "Long name", "Short name", "Type", "About", "Answers"];
+    addOutputLine(header);
+    
+    var elicitingLine = ["1", "Eliciting question", "Eliciting question", "Eliciting question", "eliciting"];
+    currentQuestionnaire.elicitingQuestions.forEach(function (elicitingQuestionSpecification) {
+        elicitingLine.push(elicitingQuestionSpecification.id + "|" + elicitingQuestionSpecification.text);
+    });
+    addOutputLine(elicitingLine);
+    
+    function dataForQuestions(questions, about) {
+        for (var i = 0; i < questions.length; i++) {
+            var outputLine = [];
+            var question = questions[i];
+            outputLine.push("" + (++lineIndex));
+            outputLine.push(question.displayPrompt);
+            outputLine.push(question.displayName);
+            var questionType = exportQuestionTypeMap[question.displayType];
+            if (!questionType) {
+                console.log("EXPORT ERROR: unsupported question type: ", question.displayType);
+                questionType = "UNSUPPORTED:" + question.displayType;
+            }
+            outputLine.push(questionType);
+            outputLine.push(about);
+            if (question.valueOptions) {
+               question.valueOptions.forEach(function(option) {
+                   outputLine.push(option);   
+               });
+            }
+            addOutputLine(outputLine);
+        }
+    }
+    
+    dataForQuestions(currentQuestionnaire.storyQuestions, "story");
+    dataForQuestions(currentQuestionnaire.participantQuestions, "participant");
+    
+     // Export questionnaire
+    var questionnaireBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
+    // TODO: This seems to clear the console in FireFox 40; why?
+    saveAs(questionnaireBlob, "export_story_form_" + storyCollectionIdentifier + ".csv");
+}
+
 export function exportStoryCollection() {
     var storyCollectionIdentifier = clientState.storyCollectionIdentifier;
     
@@ -123,15 +208,7 @@ export function exportStoryCollection() {
     
     var output = "";
     function addOutputLine(line) {
-        line.forEach(function (item) {
-            if (item && item.indexOf(",") !== -1) {
-                item = item.replace(/"/g, '""');
-                item = '"' + item + '"';
-            }
-            output += item;
-            output += ",";
-        });
-        output += "\n";
+        output = addCSVOutputLine(output, line);
     }
     
     addOutputLine(header1);
@@ -139,10 +216,10 @@ export function exportStoryCollection() {
     
     function dataForQuestions(questions, story, outputLine) {
         for (var i = 0; i < questions.length; i++) {
-            var storyQuestion = questions[i];
-            var value = story[storyQuestion.id];
-            if (storyQuestion.valueOptions && storyQuestion.displayType === "checkboxes") {
-               storyQuestion.valueOptions.forEach(function(option) {
+            var question = questions[i];
+            var value = story[question.id];
+            if (question.valueOptions && question.displayType === "checkboxes") {
+               question.valueOptions.forEach(function(option) {
                    outputLine.push(value[option] ? option : "");   
                });
             } else {
@@ -164,10 +241,11 @@ export function exportStoryCollection() {
     // Testing
     //var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
     //saveAs(blob, "hello world.csv");
-    var blob = new Blob([output], {type: "text/csv;charset=utf-8"});
     
+    // Export story collection
+    var storyCollectionBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
     // TODO: This seems to clear the console in FireFox 40; why?
-    saveAs(blob, "export_story_collection_" + storyCollectionIdentifier + ".csv");
+    saveAs(storyCollectionBlob, "export_story_collection_" + storyCollectionIdentifier + ".csv");
 }
 
 // Caller should call wizard.forward() on successful save to see the last page, and provide a retry message otherwise
