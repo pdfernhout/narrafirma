@@ -1,7 +1,7 @@
 ==== NarraFirma TODO list:
 
 PRIORITY
-- export: overall report, print text questionnaires, print story cards, print catalysis report
+- export: overall report, print text questionnaires, print catalysis report
 - catalysis (at least one step like graph or themer)
 - WordPress plugin data save and load
 
@@ -48,11 +48,11 @@ X Improve how options are specified for questions in question designer rather th
 X Make sure that short name IDs entered by user when defining questions are unique among themselves and don't have a leading underscore (or at least aren't "_id")
 
 EXPORT/IMPORT
-H Export for story collection to CSV format (ideally with questionnaire)
+H CSV import may no longer be working correctly
+H CSV Import of eliciting questions may not be working
 H Add page to do export
 L Improve import process to remove two seperate buttons as two stages (questionnaire and data) or handle in some other way
 L Add progress bar for import
-X Add export button for survey results
 X Add way to clear out or reset old survey results? Or maybe partition them by survey?
 X Backup
 
@@ -92,7 +92,7 @@ L Rename "save current graph selection to observation" buttons under graphs
 
 CLUSTERING (CATALYSIS)
 H Support clustering interpretations into perspectives in catalysis (on page after pattern browser) WITH A TABLE
-H Think about and improve issue of values that can be set only one like catalysis report name and story collection
+H Think about and improve issue of values that can be set only once like catalysis report name and story collection
 
 CATALYSIS REPORT
 H Create catalysis report - including results (graphs, statistical results)
@@ -169,7 +169,7 @@ Maybe have a summary page at end of each section (where they put in final notes 
 Generate HTML reports that can be downloaded
 Maybe replace reports with one page to export report (or export data)
 
-Support Undo (includign multi-user aspects with log)
+Support Undo (including multi-user aspects with log)
 Support mult-user chat
 Notify user of multi-user edit conflicts
 
@@ -213,7 +213,6 @@ Unit tests
 Continuous integration server that runs tests
 
 Generate PDF reports
-Generate CSV output
 
 Hash password when sending from client to server (not strictly needed if use ssh, and without ssh everything is potnetially insecure from MITM attacks)
 
@@ -797,3 +796,6 @@ NOT DOING Change button names from "new item" to "new" - etc [Need to distinguis
 DONE When you enter a story, it replaces the title of the main web page (Enter stories) with the name of the story form (questionnaire).
 DONE Think through diagram sizing issue -- both for internal pane and for external div holder [Added a "Diagram Size" button; good enough for now]
 DONE Clustering for Planning -- Finish "Create project story elements" page in planning phase
+DONE Export for story collection to CSV format (ideally with questionnaire)
+DONE Add export button for survey results
+DONE Generate CSV output
