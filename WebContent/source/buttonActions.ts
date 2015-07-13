@@ -75,13 +75,99 @@ function importExportClicked() {
     // dialogSupport.openTextEditorDialog(projectDefinitionText, "#projectImportExportDialog_title|Project Import/Export", "#projectImportExportDialog_okButtonText|OK", importButtonClicked);
 }
 
+// Library for saving files, imported by index.html
+declare var saveAs;
+
 export function exportStoryCollection() {
-    console.log("exportStoryCollection", clientState.storyCollectionIdentifier);
-    var currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(clientState.storyCollectionIdentifier);
+    var storyCollectionIdentifier = clientState.storyCollectionIdentifier;
+    
+    console.log("exportStoryCollection", storyCollectionIdentifier);
+    var currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
     console.log("currentQuestionnaire", currentQuestionnaire);
 
-    var allStories = surveyCollection.getStoriesForStoryCollection(clientState.storyCollectionIdentifier);
+    var allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
     console.log("allStories", allStories);
+    
+    var header1 = [];
+    var header2 = [];
+      
+    function header(contents, secondHeader = "") {
+        header1.push(contents);
+        header2.push(secondHeader);
+    }
+    
+    // Put initial header
+    header("Story title");
+    header("Story text");
+    header("Eliciting question");
+    
+    function headersForQuestions(questions) {
+        for (var i = 0; i < questions.length; i++) {
+            var storyQuestion = questions[i];
+            // TODO: Maybe should export ID instead? Or more header lines with ID and prompt?
+            if (storyQuestion.valueOptions && storyQuestion.displayType === "checkboxes") {
+               storyQuestion.valueOptions.forEach(function(option) {
+                   header(storyQuestion.displayName, option);   
+               });
+            } else {
+                header(storyQuestion.displayName);
+            }
+        }
+    }
+    
+    headersForQuestions(currentQuestionnaire.storyQuestions);
+    headersForQuestions(currentQuestionnaire.participantQuestions);
+    
+    console.log("header1", header1);
+    console.log("header2", header2);
+    
+    var output = "";
+    function addOutputLine(line) {
+        line.forEach(function (item) {
+            if (item && item.indexOf(",") !== -1) {
+                item = item.replace(/"/g, '""');
+                item = '"' + item + '"';
+            }
+            output += item;
+            output += ",";
+        });
+        output += "\n";
+    }
+    
+    addOutputLine(header1);
+    addOutputLine(header2);
+    
+    function dataForQuestions(questions, story, outputLine) {
+        for (var i = 0; i < questions.length; i++) {
+            var storyQuestion = questions[i];
+            var value = story[storyQuestion.id];
+            if (storyQuestion.valueOptions && storyQuestion.displayType === "checkboxes") {
+               storyQuestion.valueOptions.forEach(function(option) {
+                   outputLine.push(value[option] ? option : "");   
+               });
+            } else {
+                outputLine.push(value);
+            }
+        }
+    }
+    
+    allStories.forEach(function (story) {
+        var outputLine = [];
+        outputLine.push(story.__survey_storyName);
+        outputLine.push(story.__survey_storyText);
+        outputLine.push(story.__survey_elicitingQuestion);
+        dataForQuestions(currentQuestionnaire.storyQuestions, story, outputLine);
+        dataForQuestions(currentQuestionnaire.participantQuestions, story, outputLine);
+        addOutputLine(outputLine);
+    }); 
+    
+    // Testing
+    //var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
+    //saveAs(blob, "hello world.csv");
+    var blob = new Blob([output], {type: "text/csv;charset=utf-8"});
+    
+    // TODO: This seems to clear the console in FireFox 40; why?
+    saveAs(blob, "export_story_collection_" + storyCollectionIdentifier + ".csv");
 }
 
 // Caller should call wizard.forward() on successful save to see the last page, and provide a retry message otherwise
