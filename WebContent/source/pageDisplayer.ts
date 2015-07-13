@@ -25,6 +25,10 @@ var PageDisplayer: any = {
         var contentsDiv;
         
         console.log("&&&&&&&&&& view called in PageDisplayer", currentPageID);
+            
+        // Setting the hash may trigger another call to the showPage function eventually, but as the new page will already be set, it should not loop further
+        updateHashIfNeededForChangedState();
+        
         if (!currentPageID) {
             contentsDiv = m("div", "Starting up...");
         } else {
@@ -114,9 +118,6 @@ export function showPage(pageID, forceRefresh = false) {
     navigationPane.setCurrentPageSpecification(pageID, pageSpecification);
 
     m.redraw();
-    
-    // Setting the hash may trigger another call to this function eventually, but as the new page will already be set, it should not loop further
-    updateHashIfNeededForChangedState();
 }
 
 export function getCurrentPageID() {
