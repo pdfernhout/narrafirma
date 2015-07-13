@@ -161,10 +161,11 @@ export function collectQuestionsForQuestionnaire(questionnaire) {
     var storyQuestions = questionnaire.storyQuestions;
    
     // TODO: What about idea of having IDs that go with eliciting questions so store reference to ID not text prompt?
-    var elicitingQuestionPrompts = [];
+    var elicitingQuestionValues = [];
     for (var elicitingQuestionIndex = 0; elicitingQuestionIndex < questionnaire.elicitingQuestions.length; elicitingQuestionIndex++) {
         var elicitingQuestionSpecification = questionnaire.elicitingQuestions[elicitingQuestionIndex];
-        elicitingQuestionPrompts.push(elicitingQuestionSpecification.text);
+        // elicitingQuestionValues.push({value: elicitingQuestionSpecification.id, text: elicitingQuestionSpecification.label});
+        elicitingQuestionValues.push(elicitingQuestionSpecification.id);
     }
    
     // TODO: Remove redundancy
@@ -188,7 +189,7 @@ export function collectQuestionsForQuestionnaire(questionnaire) {
         displayName: "Eliciting Question",
         displayPrompt: "Please choose a question you would like to respond to",
         displayType: "select",
-        valueOptions: elicitingQuestionPrompts
+        valueOptions: elicitingQuestionValues
     });
 
     // console.log("DEBUG questions used by story browser", questions);

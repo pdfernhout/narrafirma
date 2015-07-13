@@ -241,7 +241,7 @@ function processCSVContentsForQuestionnaire(contents) {
                 if (sections.length < 2) {
                     sections.push(sections[0]);
                 }
-                questionnaire.elicitingQuestions.push({id: sections[0], text: sections[1]});
+                questionnaire.elicitingQuestions.push({id: sections[0].trim(), text: sections[1].trim()});
             });
         } else {
             console.log("Error: unexpected About type of", about);

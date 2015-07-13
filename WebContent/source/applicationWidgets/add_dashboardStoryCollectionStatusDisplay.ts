@@ -29,7 +29,9 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
     });
     
     storyCollections.sort(function(a, b) {
-        return a.shortName.localeCompare(b.shortName);
+        var aName = a.shortName || "";
+        var bName = b.shortName || "";
+        return aName.localeCompare(bName);
     });
     
     return m("div.narrafirma-dashboard-story-collection-status", [
