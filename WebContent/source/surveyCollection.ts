@@ -20,7 +20,7 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier) {
         // console.log("message", match, message);
         return match;
     });
-    console.log("getStoriesForStoryCollection filter surveyMessages", surveyMessages);
+    // console.log("getStoriesForStoryCollection surveyMessages", surveyMessages);
     
     surveyMessages.forEach(function (message) {
         // Now add stories in survey to results, with extra participant information
@@ -154,7 +154,7 @@ export function isStoryCollectingEnabled() {
 }
    
 export function collectQuestionsForQuestionnaire(questionnaire) {
-    console.log("questionnaire", questionnaire);
+    // console.log("collectQuestionsForQuestionnaire", questionnaire);
    
     if (!questionnaire) return [];
    
