@@ -78,7 +78,6 @@ GRAPH BROWSER
 H Support graphBrowser contingency table with statistical results
 H Support graphBrowser standard deviation and mean for histograms
 L Support graphBrowser common maximum for multiple histograms
-L Have list of selected stories in graph browser in collection process section
 
 TRENDS REPORT -> PATTERN BROWSER
 H Rename trendsReport to Pattern Browser
@@ -212,7 +211,7 @@ Continuous integration server that runs tests
 
 Generate PDF reports
 
-Hash password when sending from client to server (not strictly needed if use ssh, and without ssh everything is potnetially insecure from MITM attacks)
+Hash password when sending from client to server (not strictly needed if use ssh, and without ssh everything is potentially insecure from MITM attacks)
 
 ==== Might not do
 
@@ -741,6 +740,7 @@ SONE Decide what goes on main home dashboard now that changed from page status t
 DONE Replace other Dojo functionality like hash change, toaster, and sha256 with non-Dojo alternatives
 DONE Replace Dojo's isString which is deprecated (and similar basic functionality) with lodash calls
 DONE Replace Dojo loader with RequireJS
+DONE Have list of selected stories in graph browser in collection process section [Could be better, but in place]
 DONE Switch entire data storage system from using a projectModel of objects to using Pointrel triple store as almost all levels [took about a week]
 DONE Multi-user aspects (partially done with separate save/load of pages) [could be improved further]
 DONE Save data for observations and so on as separate documents so can do it incrementally [as triples]
