@@ -49,7 +49,7 @@ function hash(newValue = null) {
     if (history.pushState) {
         history.pushState(null, null, "#" + newValue);
     } else {
-        location.hash = '#myhash';
+        location.hash = "#" + newValue;
     }
 }
 
