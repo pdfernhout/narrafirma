@@ -165,7 +165,7 @@ export function collectQuestionsForQuestionnaire(questionnaire) {
     for (var elicitingQuestionIndex = 0; elicitingQuestionIndex < questionnaire.elicitingQuestions.length; elicitingQuestionIndex++) {
         var elicitingQuestionSpecification = questionnaire.elicitingQuestions[elicitingQuestionIndex];
         // elicitingQuestionValues.push({value: elicitingQuestionSpecification.id, text: elicitingQuestionSpecification.label});
-        elicitingQuestionValues.push(elicitingQuestionSpecification.id);
+        elicitingQuestionValues.push(elicitingQuestionSpecification.id || elicitingQuestionSpecification.shortName || elicitingQuestionSpecification.text);
     }
    
     // TODO: Remove redundancy
