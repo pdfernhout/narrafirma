@@ -42,6 +42,7 @@ X Survey - maximum number stories (maybe later)
 X Survey - back button in browser -- deal with so don't lose data
 
 IDs
+H Eliciting question choice in survey should be stored as the id (or short name), not the text
 ? Ensure short name IDs entered by user do not conflict with automatically created ones or story text and story name
 L Add support for short names (ids) for eliciting questions
 X Improve how options are specified for questions in question designer rather than use text box
@@ -74,7 +75,8 @@ X Generalize storyThemer into tagging - or researcher added questions
     Need page where user can add new researcher-defined questions and answers to stories (and maybe participants?)
 X Page to cluster themes into final themes
 
-GRAPH BROWSER 
+GRAPH BROWSER
+H Add low and high labels for slider/range questions
 H Support graphBrowser contingency table with statistical results
 H Support graphBrowser standard deviation and mean for histograms
 L Support graphBrowser common maximum for multiple histograms
@@ -799,3 +801,4 @@ DONE Add export button for survey results
 DONE Generate CSV output
 DONE CSV import may no longer be working correctly [was importing binary xls file not CSV!]
 DONE CSV Import of eliciting questions may not be working
+DONE Fix bug where eliciting questions were being displayed as"undefined"
