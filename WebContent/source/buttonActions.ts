@@ -510,6 +510,10 @@ export function printCatalysisReport() {
         alert("Please pick a catalysis report to print.");
         return;
     }
+    
+    // project_catalysisReports
+    // catalysisReport_shortName
+    
 }
 
 export var enterSurveyResult = openSurveyDialog;
