@@ -6,7 +6,13 @@
             {
                 "panelID": "page_dashboard",
                 "panelName": "Dashboard"
-            },
+            }
+        ]
+    },
+    {
+        "section": "administration",
+        "sectionName": "Administration",
+        "pages": [
             {
                 "panelID": "page_introduction",
                 "panelName": "Introduction"
