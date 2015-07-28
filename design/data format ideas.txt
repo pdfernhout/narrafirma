@@ -1,0 +1,133 @@
+{
+  "__pointrel_sha256AndLength": "7bba20d7b524acea32fd1d0b16389dc67e8079d7635cd80eb4c0636ff27710ba_324",
+  "__pointrel_trace": [
+    {
+      "sentByClient": "cfkurtz",
+      "sentTimestamp": "2015-07-21T17:06:48.429001853Z",
+      "sentToJournalIdentifier": "NarraFirmaProject-soccer-pilot",
+      "sentToURL": "/api/pointrel20150417"
+    },
+    {
+      "receivedByJournalIdentifier": "NarraFirmaProject-soccer-pilot",
+      "receivedByServer": "server",
+      "receivedTimestamp": "2015-07-21T17:06:48.806000292Z",
+      "senderIPAddress": "71.17.10.195",
+      "userIdentifier": "cfkurtz"
+    }
+  ],
+  "_topicIdentifier": "testing",
+  "_topicTimestamp": "2015-07-21T17:06:48.429000835Z",
+  "change": {
+    "action": "addTriple",
+    "triple": {
+      "a": "Set:eb2b6acc-ebe2-4c61-87ce-e0082f696a43",
+      "b": {
+        "setItem": "ea62e772-c5d6-43e0-866f-596fd41f44d1"
+      },
+      "c": "ea62e772-c5d6-43e0-866f-596fd41f44d1"
+    }
+  },
+  "messageType": "tripleStore",
+  "userIdentifier": "cfkurtz"
+}
+
+========================
+
+{
+  "__pointrel_sha256AndLength": "7bba20d7b524acea32fd1d0b16389dc67e8079d7635cd80eb4c0636ff27710ba_324",
+  "__pointrel_trace": [
+    {
+      "sentByClient": "cfkurtz",
+      "sentTimestamp": "2015-07-21T17:06:48.429001853Z",
+      "sentToJournalIdentifier": "NarraFirmaProject-soccer-pilot",
+      "sentToURL": "/api/pointrel20150417"
+    },
+    {
+      "receivedByJournalIdentifier": "NarraFirmaProject-soccer-pilot",
+      "receivedByServer": "server",
+      "receivedTimestamp": "2015-07-21T17:06:48.806000292Z",
+      "senderIPAddress": "71.17.10.195",
+      "userIdentifier": "cfkurtz"
+    }
+  ],
+  "_messageType": "TripleStore.addTriple",
+  "_topic": "testing",
+  "_topicTimestamp": "2015-07-21T17:06:48.429000835Z",
+  "_userIdentifier": "cfkurtz",
+  "triple": [
+    "Set:eb2b6acc-ebe2-4c61-87ce-e0082f696a43",
+    {
+      "setItem": "ea62e772-c5d6-43e0-866f-596fd41f44d1"
+    },
+    "ea62e772-c5d6-43e0-866f-596fd41f44d1"
+  ]
+}
+
+
+======================
+
+{
+  "__pointrel_sha256AndLength": "7bba20d7b524acea32fd1d0b16389dc67e8079d7635cd80eb4c0636ff27710ba_324",
+  "__pointrel_trace": [
+    {
+      "_type": "sent",
+      "journal": "NarraFirmaProject-soccer-pilot",
+      "sender": "cfkurtz",
+      "timestamp": "2015-07-21T17:06:48.429001853Z",
+      "url": "/api/pointrel20150417",
+    },
+    {
+      "_type": "received",
+      "journal": "NarraFirmaProject-soccer-pilot",
+      "receiver": "server",
+      "sender": "cfkurtz"
+      "senderIPAddress": "71.17.10.195",
+      "timestamp": "2015-07-21T17:06:48.806000292Z",
+    }
+  ],
+  "_messageType": "TripleStore.addTriple",
+  "_topic": "testing",
+  "_topicTimestamp": "2015-07-21T17:06:48.429000835Z",
+  "_userIdentifier": "cfkurtz",
+  "triple": [
+    "Set:eb2b6acc-ebe2-4c61-87ce-e0082f696a43",
+    {
+      "setItem": "ea62e772-c5d6-43e0-866f-596fd41f44d1"
+    },
+    "ea62e772-c5d6-43e0-866f-596fd41f44d1"
+  ]
+}
+
+====================
+
+{
+  "__pointrel_sha256AndLength": "7bba20d7b524acea32fd1d0b16389dc67e8079d7635cd80eb4c0636ff27710ba_324",
+  "__pointrel_trace": [
+    {
+      "_type": "sent",
+      "journal": "NarraFirmaProject-soccer-pilot",
+      "sender": "cfkurtz",
+      "timestamp": "2015-07-21T17:06:48.429001853Z",
+      "url": "/api/pointrel20150417",
+    },
+    {
+      "_type": "received",
+      "journal": "NarraFirmaProject-soccer-pilot",
+      "receiver": "server",
+      "sender": "cfkurtz"
+      "senderIPAddress": "71.17.10.195",
+      "timestamp": "2015-07-21T17:06:48.806000292Z",
+    }
+  ],
+  "_messageType": "TripleStore.addTriple",
+  "_topic": "testing",
+  "_topicTimestamp": "2015-07-21T17:06:48.429000835Z",
+  "_userIdentifier": "cfkurtz",
+  "triple": {
+    "a": "Set:eb2b6acc-ebe2-4c61-87ce-e0082f696a43",
+    "b": {
+      "setItem": "ea62e772-c5d6-43e0-866f-596fd41f44d1"
+    },
+    "c": "ea62e772-c5d6-43e0-866f-596fd41f44d1"
+  }
+}
