@@ -3,7 +3,7 @@
     "displayName": "Project report",
     "displayType": "page",
     "isHeader": true,
-    "section": "project_report",
+    "section": "dashboard",
     "modelClass": null,
     "panelFields": [
         {

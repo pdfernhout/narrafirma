@@ -2,7 +2,7 @@
     "id": "page_printProjectReport",
     "displayName": "Print project report",
     "displayType": "page",
-    "section": "project_report",
+    "section": "dashboard",
     "modelClass": "PrintProjectReport",
     "panelFields": [
         {
