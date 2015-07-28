@@ -63,14 +63,15 @@ function add_image(panelBuilder: PanelBuilder, model, fieldSpecification, callba
     var imageSource = fieldSpecification.displayConfiguration;
     var questionText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt || "");
 
-    return [
+    return m("div.narrafirma-image", [
+        { key: fieldSpecification.id },
         m.trust(questionText),
         m("br"),
         m("img", {
             src: panelBuilder.applicationDirectory + imageSource,
             alt: "Image for question: " + questionText
         })
-    ];
+    ]);
 }
 
 function add_functionResult(panelBuilder: PanelBuilder, model, fieldSpecification, callback): any {
