@@ -1,0 +1,16 @@
+{
+    "id": "page_administration",
+    "displayName": "Administration",
+    "displayType": "page",
+    "isHeader": true,
+    "section": "administration",
+    "modelClass": null,
+    "panelFields": [
+        {
+            "id": "administrationIntroLabel",
+            "valueType": "none",
+            "displayType": "label",
+            "displayPrompt": "In the administration section, you can do house-keeping actiins like backing up date."
+        }
+    ]
+}

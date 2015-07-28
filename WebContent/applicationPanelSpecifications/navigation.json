@@ -13,6 +13,10 @@
         "section": "administration",
         "sectionName": "Administration",
         "pages": [
+           {
+                "panelID": "page_administration",
+                "panelName": "Administration"
+            },
             {
                 "panelID": "page_introduction",
                 "panelName": "Introduction"

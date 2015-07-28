@@ -85,13 +85,13 @@
             "displayPrompt": "Return"
         },
         {
-            "id": "project_launchSection_projectReport",
+            "id": "project_launchSection_administration",
             "valueType": "none",
             "displayType": "dashboardSectionStatusDisplay",
             "displayPreventBreak": false,
             "displayConfiguration": {
                 "action": "guiOpenSection",
-                "section": "page_projectReport"
+                "section": "page_administration"
             },
             "displayPrompt": "Administration"
         },
