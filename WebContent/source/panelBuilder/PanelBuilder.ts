@@ -63,8 +63,7 @@ function add_image(panelBuilder: PanelBuilder, model, fieldSpecification, callba
     var imageSource = fieldSpecification.displayConfiguration;
     var questionText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt || "");
 
-    return m("div.narrafirma-image", [
-        { key: fieldSpecification.id },
+    return m("div.narrafirma-image", { key: fieldSpecification.id }, [
         m.trust(questionText),
         m("br"),
         m("img", {
