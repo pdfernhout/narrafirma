@@ -9,6 +9,26 @@ BIG OPTIONAL FUNCTIONALITY AREAS
 - visual clustering in planning phase
 - theming and tagging
 
+THINGS CYNTHIA NOTICED DURING PROJECT
+When make story form, need way to copy all questions of a type into form
+Ideally way to do conditional question or answer (piping), especially to pick participant group
+If entering a story and decide not to, can't remove window without adding story. (But seems to work during local test using "CLose" button)
+After enter story in story thing, form contents don't change (in noticeable way). Rest of form looks the same and no indication. Maybe could improve somehow (like clear). Different needs for data entry -- want to clear and enter new one.
+Need "other" field for radiobuttons and checkboxes (maybe dropdown, probably not)
+When you submit survey with multiple stories, it still only said "your story" instead of "you stories"
+Fixing Data -- stage
+  Delete a story you entered wrong
+  Fix something you entered wrong
+  Mark questions as don't pay any attention to question / Discard question from catalysis
+  Add questions and answers as theming (structured annotations)
+  Need to be able to add comment to story
+  Need to be able to scrub user story data
+Sliders
+  Need "does not apply" for sliders
+  Sliders too tiny (hard to see color) 
+  Need to jiggle slider button or it records nothing (needs work)
+  Need a flip axis for slider for catalysis when graphing 
+
 THINGS CYNTHIA NOTICED WHILE DOING HELP (probably redundant but just in case)
 H Need a way to delete a story from a story collection
 H When import story collection, need to display name of form in select
