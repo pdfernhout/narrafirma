@@ -141,9 +141,11 @@ function pointrel20150417_currentUserInformation($request) {
 	
 	// if ($userID == 0) $userID = "anonymous";
 
+    // TODO: Fix hardcoded project
     $response = makeSuccessResponse(200, "Success", array(
 		'status' => 'OK',
-		'userIdentifier' => $currentUser->user_login
+		'userIdentifier' => $currentUser->user_login,
+		'journalPermissions' => array('NarraFirmaProject-test1' => array("read" => true))
 	));
 	
 	wp_send_json( $response );
