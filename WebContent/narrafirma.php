@@ -6,6 +6,10 @@ Author: Cynthia F. Kurtz and Paul D. Fernhout
 Version: 0.2
 */
 
+function add_my_plugin_menu() {
+	add_options_page( 'NarraFirma Options', 'NarraFirma', 'manage_options', 'narrafirma-options-menu', 'create_my_plugin_options_panel' );
+}
+
 function create_my_plugin_options_panel() {
 	if ( !current_user_can( 'manage_options' ) )  {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
@@ -72,14 +76,33 @@ require([
 ENDSCRIPT;
 }
 
-function add_my_plugin_menu() {
-	add_options_page( 'NarraFirma Options', 'NarraFirma', 'manage_options', 'narrafirma-options-menu', 'create_my_plugin_options_panel' );
-}
-
 function add_my_scripts() {
   // wp_enqueue_script( 'pointrel-lodash', plugins_url( 'narrafirma/lib/lodash.js'), array(), '1.0.0', true );
   // wp_enqueue_script( 'pointrel-main', plugins_url( 'narrafirma/js/main.js'), array(), '1.0.0', true );
 }
 
+function pointrel20150417_currentUserInformation() {
+    error_log("Called pointrel20150417_currentUserInformation ajax");
+    
+	// global $wpdb; // this is how you get access to the database
+	// $whatever = intval( $_POST['whatever'] );
+
+    $response = array(
+		'success' => true, 
+		'statusCode' => 200,
+		'description' => "Success",
+		'timestamp' => 'FIXME', // this.getCurrentUniqueTimestamp(),
+		'status' => 'OK',
+		'userIdentifier' => 'FIXME' // this.userIdentifier
+	);
+	
+	wp_send_json( $response );
+}
+
+add_action( 'wp_ajax_pointrel20150417_currentUserInformation', 'pointrel20150417_currentUserInformation' );
+add_action( 'wp_ajax_nopriv_pointrel20150417_currentUserInformation', 'pointrel20150417_currentUserInformation' );
+
 // add_action( 'wp_enqueue_scripts', 'add_my_scripts' );
 add_action( 'admin_menu', 'add_my_plugin_menu' );
+
+error_log("Done adding NarraFirma plugin");
