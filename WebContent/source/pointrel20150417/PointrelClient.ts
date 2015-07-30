@@ -186,8 +186,6 @@ class PointrelClient {
         
         if (isWordPressAJAX) {
             apiURL = apiURL + "?action=pointrel20150417";
-            //contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
-            //data = "action=pointrel20150417_currentUserInformation&data=" + encodeURIComponent(data);
         }
 
         httpRequest.open('POST', apiURL, true);
