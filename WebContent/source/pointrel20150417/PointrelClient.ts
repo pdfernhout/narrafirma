@@ -178,12 +178,22 @@ class PointrelClient {
              errorCallback({status: 0, message: "Timeout"});
         };
         
+        var isWordPressAJAX = !!window["ajaxurl"];
+        
         httpRequest.open('POST', this.apiURL, true);
-        httpRequest.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+        
+        var contentType = 'application/json; charset=utf-8';
+        var data = JSON.stringify(apiRequest);
+        
+        if (isWordPressAJAX) {
+            contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
+            data = "action=pointrel20150417_currentUserInformation&data=" + encodeURIComponent(data);
+        }
+        
+        httpRequest.setRequestHeader('Content-Type', contentType);
         httpRequest.setRequestHeader("Accept", "application/json");
         httpRequest.timeout = timeout_ms;
         
-        var data = JSON.stringify(apiRequest);
         httpRequest.send(data);
     }
     
