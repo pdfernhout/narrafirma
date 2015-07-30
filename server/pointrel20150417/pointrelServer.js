@@ -752,7 +752,7 @@ function respondForCurrentUserInformation(userIdentifierFromServerRequest, callb
         userIdentifier: userIdentifierFromServerRequest
     };
     
-    // TODO: Maybe only do this is a flag is set in the request?
+    // TODO: Maybe only do this if a flag is set in the request?
     if (configuration.determineJournalsAccessibleByUserCallback) {
         var journalPermissions = configuration.determineJournalsAccessibleByUserCallback(userIdentifierFromServerRequest);
         result.journalPermissions = journalPermissions;
