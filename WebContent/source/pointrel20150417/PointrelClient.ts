@@ -101,7 +101,9 @@ class PointrelClient {
             };
         }
         
-        this.apiURL = apiURL;
+        // Use the WordPress AJAX api instead as an override if it is defined
+        this.apiURL = window["ajaxurl"] || apiURL;
+        
         this.journalIdentifier = journalIdentifier;
         this.userIdentifier = userCredentials.userIdentifier;
         
@@ -300,7 +302,7 @@ class PointrelClient {
                 if (!response.success) {
                     console.log("ERROR: report queryForLatestMessage failure", response);
                     self.serverStatus("failure", "Report queryForLatestMessage failure: " + response.statusCode + " :: " + response.description);
-                    callback(response);
+                    callback(response || "Failed");
                 } else {
                     self.okStatus();
                     callback(null, response);
@@ -344,7 +346,7 @@ class PointrelClient {
                 if (!response.success) {
                     console.log("ERROR: report createJournal failure", response);
                     self.serverStatus("failure", "Report createJournal failure: " + response.statusCode + " :: " + response.description);
-                    callback(response);
+                    callback(response || "Failed");
                 } else {
                     self.okStatus();
                     callback(null, response);
@@ -398,7 +400,7 @@ class PointrelClient {
                 if (!response.success) {
                     console.log("ERROR: report journal status failure", response);
                     self.serverStatus("failure", "Report journal status failure: " + response.statusCode + " :: " + response.description);
-                    callback(response);
+                    callback(response || "Failed");
                 } else {
                     self.okStatus();
                     callback(null, response);
@@ -439,7 +441,7 @@ class PointrelClient {
                 if (!response.success) {
                     console.log("ERROR: currentUserInformation request failure", response);
                     self.serverStatus("failure", "Current user information request failure: " + response.statusCode + " :: " + response.description);
-                    callback(response);
+                    callback(response || "Failed");
                 } else {
                     self.okStatus();
                     callback(null, response);
@@ -637,7 +639,7 @@ class PointrelClient {
                     if (callback) {
                         // Discard the message from the queue as presumably the caller will resend it
                         self.outgoingMessageQueue.shift();
-                        callback(response);
+                        callback(response || "Failed");
                         return;
                     }
                     
