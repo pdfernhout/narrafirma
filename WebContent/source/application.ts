@@ -538,6 +538,9 @@ export function initialize() {
     singleUsePointrelClient.getCurrentUserInformation(function(error, response) {
         if (error) {
             console.log("error", error, response);
+            document.getElementById("pleaseWaitDiv").style.display = "none";
+            document.getElementById("pageDiv").innerHTML = "Problem talking to server. Please contact your NarraFirma administrator.";
+            document.getElementById("pageDiv").style.display = "block";
             alert("Something went wrong determining the current user identifier");
             return;
         }
