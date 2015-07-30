@@ -81,38 +81,70 @@ function add_my_scripts() {
   // wp_enqueue_script( 'pointrel-main', plugins_url( 'narrafirma/js/main.js'), array(), '1.0.0', true );
 }
 
+function getCurrentUniqueTimestamp() {
+    return "FIXME_TIMESTAMP";
+}
+
+function makeFailureResponse($statusCode, $description, $extra = false) {
+   $response = array(
+        'success' => false, 
+        'statusCode' => $statusCode,
+        'description' => $description,
+        'timestamp' => getCurrentUniqueTimestamp()
+    );
+    
+    if (is_array($extra)) {
+        $response = array_merge($response, $extra);
+    }
+    
+    return $response;
+}
+
+function makeSuccessResponse($statusCode, $description, $extra = false) {
+   $response = array(
+        'success' => true, 
+        'statusCode' => $statusCode,
+        'description' => $description,
+        'timestamp' => getCurrentUniqueTimestamp()
+    );
+    
+    if (is_array($extra)) {
+        $response = array_merge($response, $extra);
+    }
+    
+    return $response;
+}
+
 function pointrel20150417() {
     error_log("Called pointrel20150417 ajax");
     
     $request = json_decode( file_get_contents( 'php://input' ) );
     
-    $response = array(
-        'success' => true, 
-        'statusCode' => 200,
-        'description' => "Success",
-        'timestamp' => 'FIXME', // this.getCurrentUniqueTimestamp(),
-        'status' => 'OK',
-        'userIdentifier' => 'FIXME', // this.userIdentifier
-        'originalRequest' => $request
-    );
+    $requestType = $request->action;
+    
+    if ($requestType == "pointrel20150417_currentUserInformation") {
+        pointrel20150417_currentUserInformation($request);
+    }
+    
+    $response = makeFailureResponse(501, "Not Implemented: requestType not supported", array("requestType" => $requestType));
     
     wp_send_json( $response );
 }
 
-function pointrel20150417_currentUserInformation() {
-    error_log("Called pointrel20150417_currentUserInformation ajax");
+function pointrel20150417_currentUserInformation($request) {
+    error_log("Called pointrel20150417_currentUserInformation");
     
 	// global $wpdb; // this is how you get access to the database
 	// $whatever = intval( $_POST['whatever'] );
+	
+	$currentUser = wp_get_current_user();
+	
+	// if ($userID == 0) $userID = "anonymous";
 
-    $response = array(
-		'success' => true, 
-		'statusCode' => 200,
-		'description' => "Success",
-		'timestamp' => 'FIXME', // this.getCurrentUniqueTimestamp(),
+    $response = makeSuccessResponse(200, "Success", array(
 		'status' => 'OK',
-		'userIdentifier' => 'FIXME' // this.userIdentifier
-	);
+		'userIdentifier' => $currentUser->user_login
+	));
 	
 	wp_send_json( $response );
 }
