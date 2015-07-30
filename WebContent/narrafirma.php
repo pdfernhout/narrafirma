@@ -81,6 +81,24 @@ function add_my_scripts() {
   // wp_enqueue_script( 'pointrel-main', plugins_url( 'narrafirma/js/main.js'), array(), '1.0.0', true );
 }
 
+function pointrel20150417() {
+    error_log("Called pointrel20150417 ajax");
+    
+    $request = json_decode( file_get_contents( 'php://input' ) );
+    
+    $response = array(
+        'success' => true, 
+        'statusCode' => 200,
+        'description' => "Success",
+        'timestamp' => 'FIXME', // this.getCurrentUniqueTimestamp(),
+        'status' => 'OK',
+        'userIdentifier' => 'FIXME', // this.userIdentifier
+        'originalRequest' => $request
+    );
+    
+    wp_send_json( $response );
+}
+
 function pointrel20150417_currentUserInformation() {
     error_log("Called pointrel20150417_currentUserInformation ajax");
     
@@ -99,8 +117,8 @@ function pointrel20150417_currentUserInformation() {
 	wp_send_json( $response );
 }
 
-add_action( 'wp_ajax_pointrel20150417_currentUserInformation', 'pointrel20150417_currentUserInformation' );
-add_action( 'wp_ajax_nopriv_pointrel20150417_currentUserInformation', 'pointrel20150417_currentUserInformation' );
+add_action( 'wp_ajax_pointrel20150417', 'pointrel20150417' );
+add_action( 'wp_ajax_nopriv_pointrel20150417', 'pointrel20150417' );
 
 // add_action( 'wp_enqueue_scripts', 'add_my_scripts' );
 add_action( 'admin_menu', 'add_my_plugin_menu' );
