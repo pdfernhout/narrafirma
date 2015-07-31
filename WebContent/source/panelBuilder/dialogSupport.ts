@@ -133,7 +133,7 @@ function build_textEditorDialogContent(dialogConfiguration, hideDialogMethod) {
 
 // columns are currently ignored
 // choices should be a list of objects with a name field, like: {name: "test", other: "???}
-export function openListChoiceDialog(initialChoice, choices, columns, dialogTitle, dialogOKButtonLabel, dialogOKCallback) {
+export function openListChoiceDialog(initialChoice, choices, columns, dialogTitle, dialogOKButtonLabel, isNewAllowed, dialogOKCallback) {
     if (!dialogTitle) dialogTitle = "Choices";
     if (!dialogOKButtonLabel) dialogOKButtonLabel = "Choose";
     
@@ -146,7 +146,8 @@ export function openListChoiceDialog(initialChoice, choices, columns, dialogTitl
         dialogOKButtonLabel: dialogOKButtonLabel, 
         dialogOKCallback: dialogOKCallback,
         dialogConstructionFunction: build_listChooserDialogContent,
-        dialogOKButtonHidden: true
+        dialogOKButtonHidden: true,
+        isNewAllowed: isNewAllowed
     };
     
     openDialog(dialogConfiguration);
@@ -159,6 +160,15 @@ function build_listChooserDialogContent(dialogConfiguration, hideDialogMethod) {
         args.dialogOKCallback(choice);
     }
     
+    function makeNewListItem(args, choice) {
+        // TODO: Translate
+        var name = prompt("New project name?");
+        if (!name) return;
+        console.log("make new project", name);
+        hideDialogMethod();
+        args.dialogOKCallback({id: name, name: name, isNew: true});
+    }
+    
     // style: "min-height: 400px; min-width: 600px; max-height: 800px; max-width: 800px; overflow: auto"
     return m("div.overlay", m("div.modal-content", [
         m("b", dialogConfiguration.dialogTitle),
@@ -167,7 +177,12 @@ function build_listChooserDialogContent(dialogConfiguration, hideDialogMethod) {
         m("br"),
         dialogConfiguration.choices.map((choice) => {
             return m("button", {onclick: selectionMade.bind(null, dialogConfiguration, choice)}, choice.name);
-        })
+        }),
+        m("br"),
+        dialogConfiguration.isNewAllowed ?
+            m("button", {onclick: makeNewListItem.bind(null, dialogConfiguration)}, "[Make new project]") 
+        : 
+            m("div")
     ]));
 }
 
