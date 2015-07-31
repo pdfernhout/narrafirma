@@ -17,7 +17,7 @@ function narrafirma_display_page() {
 	
     $baseDirectory = plugins_url( 'narrafirma' );
   
-    add_my_scripts();
+    nararfirma_add_javascript_libraries();
     
     echo <<<ENDSCRIPT
 <link rel="stylesheet" href="$baseDirectory/lib/humane/original.css">
@@ -214,7 +214,8 @@ ctx.fillRect(0,0,150,75);
 }
 
 function narrafirma_admin_add_page() {
-    add_options_page( 'NarraFirma Options', 'NarraFirma', 'manage_options', 'narrafirma-options-menu', 'narrafirma_create_options_panel' );
+    add_menu_page( 'NarraFirma Options', 'NarraFirma', 'manage_options', 'narrafirma-options-menu', 'narrafirma_create_options_panel' );
+    // add_menu_page( 'NarraFirma Options', 'NarraFirma', 'manage_options', 'narrafirma-options-menu', 'narrafirma_display_page' );
 }
 
 // add_action( 'wp_enqueue_scripts', 'nararfirma_add_javascript_libraries' );
