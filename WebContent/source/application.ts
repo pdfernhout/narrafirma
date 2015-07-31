@@ -599,13 +599,24 @@ function chooseAProjectToOpen(userIdentifierFromServer, projects) {
     } else {
         // TODO: Translate
         var columns = {name: "Project name", id: "Project journal", write: "Editable"};
-        dialogSupport.openListChoiceDialog(null, projects, columns, "Projects", "Select a project to work on", function (projectChoice) {
+        // TODO: Only allow new project button for admins
+        var isNewAllowed = true;
+        dialogSupport.openListChoiceDialog(null, projects, columns, "Projects", "Select a project to work on", isNewAllowed, function (projectChoice) {
             if (!projectChoice) return;
             
             projectIdentifier = projectChoice.id;
             if (!projectIdentifier) return;
             
-            clientState.projectIdentifier = projectIdentifier.substring(narrafirmaProjectPrefix.length);
+            if (projectChoice.isNew) {
+                clientState.projectIdentifier = projectIdentifier;
+                projectIdentifier = narrafirmaProjectPrefix + projectIdentifier;
+                journalIdentifier = projectIdentifier; 
+                alert("About to make project: " + projectIdentifier);
+                makeNewProject();
+                return;     
+            } else {
+                clientState.projectIdentifier = projectIdentifier.substring(narrafirmaProjectPrefix.length);
+            }
 
             openProject(userCredentials, projectIdentifier);
         });
@@ -614,6 +625,31 @@ function chooseAProjectToOpen(userIdentifierFromServer, projects) {
         // Safari 5 seems to sometimes get the event sequence wrong at startup, adding 100ms delay to help ensure the redraw is queued after this event is entirely done
         setTimeout(m.redraw, 100);
     }
+}
+
+function makeNewProject() {
+    console.log("add-journal", journalIdentifier);
+    
+    var singleUsePointrelClient = new PointrelClient("/api/pointrel20150417", "unused", {});
+    
+    singleUsePointrelClient.createJournal(journalIdentifier, function(error, response) {
+        if (error || !response.success) {
+            console.log("Error creating journal", journalIdentifier, error, response);
+            var message = "error";
+            if (response) message = response.description;
+            if (error) message = error.description;
+            toaster.toast("Error: creating journal: " + journalIdentifier + " :: " + message);
+            // location.reload();
+        } else {
+            console.log("Created journal OK", journalIdentifier, response);
+            toaster.toast("Created journal OK: " + journalIdentifier);
+            // allProjectsModel.projects.push({name: journalIdentifier.substring(narrafirmaProjectPrefix.length)});
+            // Need to call redraw as event changing data was triggered by network
+            // m.redraw();
+            console.log("About to trigger page reload for changed project");
+            location.reload();
+        }
+    });
 }
 
 var pendingRedraw = null;
