@@ -388,7 +388,7 @@ function updateServerStatus(status, text) {
         console.log("updateServerStatus failure", text);
         if (status === "failure-loss") {
             // Very serious error with data loss -- alert the user
-            toaster.toast("Irrecoverable error with possible data loss:\n" + text);
+            toaster.toast("Server lost recent change:\n" + text);
         }
     } else {
         console.log("Unexpected server status", status);
