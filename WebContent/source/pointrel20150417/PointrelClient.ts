@@ -644,9 +644,9 @@ class PointrelClient {
                 self.outstandingServerRequestSentAtTimestamp = null;
                 if (!response.success) {
                     console.log("ERROR: Message store failure", response, self.outgoingMessageQueue[0]);
-                    self.serverStatus("failure", "Message store failure: " + response.statusCode + " :: " + response.description);
                     
                     if (callback) {
+                        self.serverStatus("failure", "Message store failure: " + response.statusCode + " :: " + response.description);
                         // Discard the message from the queue as presumably the caller will resend it
                         self.outgoingMessageQueue.shift();
                         callback(response || "Failed");
@@ -662,6 +662,7 @@ class PointrelClient {
                     if (response.statusCode !== "403") {
                         // Discard all problematical messages except for ones that are not authenticated and might succeed if resent after (re)authetication
                         self.outgoingMessageQueue.shift();
+                        self.serverStatus("failure-loss", "Data loss from message store failure: " + response.statusCode + " :: " + response.description);
                     }
                     return;
                 } else {

@@ -380,12 +380,16 @@ function updateServerStatus(status, text) {
         } else {
             nameDiv.className = "narrafirma-serverstatus-waiting";
         }
-    } else if (status === "failure") {
+    } else if (status === "failure" || status === "failure-loss") {
         nameDiv.className = "narrafirma-serverstatus-failure";
         //nameDiv.style.color = "red";
         lastServerError = text;
         //nameDiv.style.border = "thick solid #FF0000";
         console.log("updateServerStatus failure", text);
+        if (status === "failure-loss") {
+            // Very serious error with data loss -- alert the user
+            toaster.toast("Irrecoverable error with possible data loss:\n" + text);
+        }
     } else {
         console.log("Unexpected server status", status);
         nameDiv.className = "narrafirma-serverstatus-unexpected";
