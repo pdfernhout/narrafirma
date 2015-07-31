@@ -126,6 +126,10 @@ function pointrel20150417() {
         pointrel20150417_currentUserInformation($request);
     }
     
+    if ($requestType == "pointrel20150417_createJournal") {
+        pointrel20150417_createJournal($request);
+    }
+    
     $response = makeFailureResponse(501, "Not Implemented: requestType not supported", array("requestType" => $requestType));
     
     wp_send_json( $response );
@@ -146,6 +150,27 @@ function pointrel20150417_currentUserInformation($request) {
 		'status' => 'OK',
 		'userIdentifier' => $currentUser->user_login,
 		'journalPermissions' => array('NarraFirmaProject-test1' => array("read" => true))
+	));
+	
+	wp_send_json( $response );
+}
+
+function pointrel20150417_createJournal($request) {
+    error_log("Called pointrel20150417_createJournal");
+    
+	// global $wpdb; // this is how you get access to the database
+	// $whatever = intval( $_POST['whatever'] );
+	
+	if (!current_user_can( 'manage_options' )) {
+	    wp_send_json( makeFailureResponse(403, "Forbidden -- User is not an admin") );
+	}
+	
+	$journalIdentifier = $request->journalIdentifier;
+	
+    // TODO: Actually do something here!!!
+    
+    $response = makeSuccessResponse(200, "Success", array(
+		'journalIdentifier' => $journalIdentifier
 	));
 	
 	wp_send_json( $response );
