@@ -10,6 +10,8 @@ Version: 0.2
 
 defined( 'ABSPATH' ) or die( 'Plugin must be run from inside WordPress' );
 
+$pointrelServerVersion = "pointrel20150417-0.0.4-wp";
+
 function getCurrentUniqueTimestamp() {
     return "FIXME_TIMESTAMP";
 }
@@ -59,6 +61,10 @@ function pointrel20150417() {
         pointrel20150417_createJournal($request);
     }
     
+    if ($requestType == "pointrel20150417_reportJournalStatus") {
+        pointrel20150417_reportJournalStatus($request);
+    }
+    
     $response = makeFailureResponse(501, "Not Implemented: requestType not supported", array("requestType" => $requestType));
     
     wp_send_json( $response );
@@ -103,6 +109,52 @@ function pointrel20150417_createJournal($request) {
 	));
 	
 	wp_send_json( $response );
+}
+
+function pointrel20150417_reportJournalStatus($request) {
+    error_log("Called pointrel20150417_reportJournalStatus");
+    
+    // global $wpdb; // this is how you get access to the database
+    // $whatever = intval( $_POST['whatever'] );
+    
+    if (!current_user_can( 'manage_options' )) {
+        wp_send_json( makeFailureResponse(403, "Forbidden -- User is not an admin") );
+    }
+    
+    $journalIdentifier = $request->journalIdentifier;
+    
+    // TODO: Actually do something here!!!
+    $readAuthorization = true;
+    $writeAuthorization = true;
+    $adminAuthorization = true;
+            
+    $response = makeSuccessResponse(200, "Success", array(
+        'journalIdentifier' => $journalIdentifier,
+        'version' => $pointrelServerVersion,
+        'permissions' => array(
+            // TODO: What about partial authorization for only some messages?
+            'read' => $readAuthorization,
+            'write' => $writeAuthorization,
+            'admin' => $adminAuthorization
+        ),
+    ));
+    
+    if ($readAuthorization) {
+        $earliestRecord = null;
+        $latestRecord = null;
+        $recordCount = 0; // $sortedReceivedRecords.length
+        
+        $response->journalEarliestRecord = $earliestRecord;
+        $response->journalLatestRecord = $latestRecord;
+        $response->journalRecordCount = $recordCount;
+    }
+    
+    if ($writeAuthorization) {
+        // Not sure what I really mean by this flag; sort of that the journal is currently in readOnly mode on the server end?
+        $response->readOnly = false;
+    }
+    
+    wp_send_json( $response );
 }
 
 // Runs when plugin is activated
