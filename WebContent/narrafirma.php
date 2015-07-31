@@ -65,6 +65,10 @@ function pointrel20150417() {
         pointrel20150417_reportJournalStatus($request);
     }
     
+    if ($requestType == "pointrel20150417_queryForNextMessage") {
+        pointrel20150417_queryForNextMessage($request);
+    }
+    
     $response = makeFailureResponse(501, "Not Implemented: requestType not supported", array("requestType" => $requestType));
     
     wp_send_json( $response );
@@ -153,6 +157,31 @@ function pointrel20150417_reportJournalStatus($request) {
         // Not sure what I really mean by this flag; sort of that the journal is currently in readOnly mode on the server end?
         $response->readOnly = false;
     }
+    
+    wp_send_json( $response );
+}
+
+function pointrel20150417_queryForNextMessage($request) {
+    error_log("Called pointrel20150417_queryForNextMessage");
+    
+    // global $wpdb; // this is how you get access to the database
+    // $whatever = intval( $_POST['whatever'] );
+    
+    $journalIdentifier = $request->journalIdentifier;
+    
+    // TODO: Actually do something here!!!
+    
+    $lastReceivedTimestampConsidered = null;
+    $now = getCurrentUniqueTimestamp();
+    $receivedRecordsForClient = array();
+    
+    $response = makeSuccessResponse(200, "Success", array(
+        'detail' => 'revisions',
+        'currentTimestamp' => $now,
+        'lastReceivedTimestampConsidered' => $lastReceivedTimestampConsidered,
+        'receivedRecords' => $receivedRecordsForClient
+        // 'journalIdentifier' => $journalIdentifier
+    ));
     
     wp_send_json( $response );
 }
