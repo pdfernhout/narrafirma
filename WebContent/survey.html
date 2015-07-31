@@ -11,7 +11,35 @@
 
 <title>NarraFirma Survey</title>
 
-<link rel="stylesheet" href="/css/survey.css">
+<link rel="stylesheet" href="css/survey.css">
+
+<script>
+var require = {
+    baseUrl: '',
+    paths: {
+        js: "js",
+        mithril: "lib/mithril/mithril",
+        lib: "lib"
+    }
+};
+</script>
+
+<script src="lib/require.min.js"></script>
+    
+<script>
+    function calculateAjaxPath() {
+        if (!window["ajaxurl"]) {
+            var path = window.location.href;
+            console.log("window.location.href", path);
+            var baseDirectoryPosition = path.indexOf("/wp-content/");
+            if (baseDirectoryPosition !== -1) {
+                window["ajaxurl"] = path.substring(0, baseDirectoryPosition) + "/wp-admin/admin-ajax.php";
+                console.log("set ajaxurl to", window["ajaxurl"]);
+            }
+        }
+    }
+    calculateAjaxPath();
+</script>
 
 </head>
 
@@ -35,19 +63,12 @@
     </script>
     
     <div id="surveyDiv" style="overflow: auto"></div>
- 
+  
     <script>
-    var require = {
-        baseUrl: 'js',
-        paths: {
-            js: ".",
-            // { name: "mithril", location: baseDirectoryFromURL + "/lib/mithril", main: "mithril"},
-            mithril: "/lib/mithril/mithril",
-            lib: "../lib"
-        }
-    };
+    require(["js/survey-main-mithril"], function(surveyMainMithril) {
+        // No need to run anything here as the module will start itself up
+    });
     </script>
-    <script data-main="js/survey-main-mithril" src="lib/require.min.js"></script>
 </body>
 
 </html>

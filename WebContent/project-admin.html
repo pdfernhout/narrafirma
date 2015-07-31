@@ -6,9 +6,9 @@
 
 <title>Project admin for NarraFirma projects</title>
 
-<link rel="stylesheet" href="/lib/humane/original.css">
-<link rel="stylesheet" href="/css/survey.css">
-<link rel="stylesheet" href="/css/standard.css">
+<link rel="stylesheet" href="lib/humane/original.css">
+<link rel="stylesheet" href="css/survey.css">
+<link rel="stylesheet" href="css/standard.css">
 
 <style>
 label {
@@ -32,14 +32,14 @@ input {
 
 <script>
 var require = {
-    baseUrl: 'js',
+    baseUrl: '',
     paths: {
-        js: ".",
-        applicationPanelSpecifications: "/applicationPanelSpecifications",
-        mithril: "../lib/mithril/mithril",
-        d3: "../lib/d3/d3",
-        humane: "../lib/humane/humane",
-        lib: "../lib"
+        js: "js",
+        applicationPanelSpecifications: "applicationPanelSpecifications",
+        mithril: "lib/mithril/mithril",
+        d3: "lib/d3/d3",
+        humane: "lib/humane/humane",
+        lib: "lib"
     }
 };
 </script>
@@ -47,6 +47,20 @@ var require = {
 <script type='text/javascript' src="lib/lodash.js"></script>
 <script src="lib/require.min.js"></script>
 
+<script>
+    function calculateAjaxPath() {
+        if (!window["ajaxurl"]) {
+            var path = window.location.href;
+            console.log("window.location.href", path);
+            var baseDirectoryPosition = path.indexOf("/wp-content/");
+            if (baseDirectoryPosition !== -1) {
+                window["ajaxurl"] = path.substring(0, baseDirectoryPosition) + "/wp-admin/admin-ajax.php";
+                console.log("set ajaxurl to", window["ajaxurl"]);
+            }
+        }
+    }
+    calculateAjaxPath();
+</script>
 
 </head>
 
