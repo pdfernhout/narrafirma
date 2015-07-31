@@ -8,79 +8,7 @@ Version: 0.2
 
 // TODO: Ensure unique prefixed names for all functions or wrap in uniquely named objects
 
-defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
-
-function narrafirma_display_page() {
-	if ( !current_user_can( 'manage_options' ) )  {
-		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-	}
-	
-    $baseDirectory = plugins_url( 'narrafirma' );
-  
-    nararfirma_add_javascript_libraries();
-    
-    echo <<<ENDSCRIPT
-<link rel="stylesheet" href="$baseDirectory/lib/humane/original.css">
-<link rel="stylesheet" href="$baseDirectory/css/survey.css">
-<link rel="stylesheet" href="$baseDirectory/css/standard.css">
-
-<script>
-var require = {
-    baseUrl: '$baseDirectory',
-    paths: {
-        js: "js",
-        applicationPanelSpecifications: "applicationPanelSpecifications",
-        mithril: "lib/mithril/mithril",
-        d3: "lib/d3/d3",
-        humane: "lib/humane/humane",
-        lib: "lib"
-    }
-};
-</script>
-
-<script type='text/javascript' src="$baseDirectory/lib/lodash.js"></script>
-<script type='text/javascript' src="$baseDirectory/lib/fileSaver/Blob.js"></script>
-<script type='text/javascript' src="$baseDirectory/lib/fileSaver/FileSaver.js"></script>
-<script src="$baseDirectory/lib/require.min.js"></script>
-
-<noscript>Please enable JavaScript to use NarraFirma. NarraFirma is companion software to the book Working With Stories in Your Community or Organization.</noscript>
-<div id="pleaseWaitDiv" class="pleaseWaitOverlay" style="display: none">Starting up NarraFirma; please wait...</div>
-<script>console.log("started loading..."); document.getElementById("pleaseWaitDiv").style.display="block";</script>
-
-<div id="navigationDiv" style="display: none"></div>
-<div id="pageDiv" style="overflow: auto; display: none;"></div>
-<div id="toasterDiv"></div>
-<div id="dialogDiv"></div>
-<script>
-// Load text with plugins here because TypeScript IDE does not like it elsehwere
-require([
-    "js/main",
-    "lib/text!applicationPanelSpecifications/navigation.json",
-    "lib/text!recommendations/recommendations_filledin.csv",
-    "lib/text!recommendations/recommendations_intervention_filledin.csv"
-], function(
-    main,
-    navigationJSONText,
-    recommendationsText,
-    recommendationsInterventionText
-) {
-    // Load these here because TypeScript does not like the plugin use
-    window["narraFirma_navigationJSONText"] = navigationJSONText;
-    window["narraFirma_recommendationsText"] = recommendationsText;
-    window["narraFirma_recommendationsInterventionText"] = recommendationsInterventionText;
-    
-    console.log("Launching main application");
-    main.run();
-});
-</script>
-
-ENDSCRIPT;
-}
-
-function nararfirma_add_javascript_libraries() {
-    // wp_enqueue_script( 'pointrel-lodash', plugins_url( 'narrafirma/lib/lodash.js'), array(), '1.0.0', true );
-    // wp_enqueue_script( 'pointrel-main', plugins_url( 'narrafirma/js/main.js'), array(), '1.0.0', true );
-}
+defined( 'ABSPATH' ) or die( 'Plugin must be run from inside WordPress' );
 
 function getCurrentUniqueTimestamp() {
     return "FIXME_TIMESTAMP";
@@ -209,16 +137,13 @@ ctx.fillStyle = "#FF0000";
 ctx.fillRect(0,0,150,75);
 </script>
 
-
 <?php
 }
 
 function narrafirma_admin_add_page() {
     add_menu_page( 'NarraFirma Options', 'NarraFirma', 'manage_options', 'narrafirma-options-menu', 'narrafirma_create_options_panel' );
-    // add_menu_page( 'NarraFirma Options', 'NarraFirma', 'manage_options', 'narrafirma-options-menu', 'narrafirma_display_page' );
 }
 
-// add_action( 'wp_enqueue_scripts', 'nararfirma_add_javascript_libraries' );
 add_action( 'admin_menu', 'narrafirma_admin_add_page' );
 
 register_activation_hook(__FILE__,'narrafirma_plugin_install'); 
