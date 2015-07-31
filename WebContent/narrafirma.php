@@ -69,6 +69,10 @@ function pointrel20150417() {
         pointrel20150417_queryForNextMessage($request);
     }
     
+    if ($requestType == "pointrel20150417_storeMessage") {
+        pointrel20150417_storeMessage($request);
+    }
+    
     $response = makeFailureResponse(501, "Not Implemented: requestType not supported", array("requestType" => $requestType));
     
     wp_send_json( $response );
@@ -167,8 +171,6 @@ function pointrel20150417_queryForNextMessage($request) {
     // global $wpdb; // this is how you get access to the database
     // $whatever = intval( $_POST['whatever'] );
     
-    $journalIdentifier = $request->journalIdentifier;
-    
     // TODO: Actually do something here!!!
     
     $lastReceivedTimestampConsidered = null;
@@ -180,10 +182,33 @@ function pointrel20150417_queryForNextMessage($request) {
         'currentTimestamp' => $now,
         'lastReceivedTimestampConsidered' => $lastReceivedTimestampConsidered,
         'receivedRecords' => $receivedRecordsForClient
-        // 'journalIdentifier' => $journalIdentifier
     ));
     
     wp_send_json( $response );
+}
+
+function pointrel20150417_storeMessage($request) {
+    error_log("Called pointrel20150417_storeMessage");
+    
+    // global $wpdb; // this is how you get access to the database
+    // $whatever = intval( $_POST['whatever'] );
+    
+    // TODO: Actually do something here!!!
+    
+    wp_send_json( makeFailureResponse(500, "Server error: write not yet supported") );
+    
+    /*
+    $receivedTimestamp = "FIXME???";
+    $sha256AndLength = "FIXME";
+    
+    $response = makeSuccessResponse(200, "Success", array(
+        'detail' => 'Wrote content',
+        'sha256AndLength' => $sha256AndLength,
+        'receivedTimestamp' => $receivedTimestamp
+    ));
+    
+    wp_send_json( $response );
+    */
 }
 
 // Runs when plugin is activated
