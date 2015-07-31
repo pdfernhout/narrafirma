@@ -6,19 +6,20 @@ Author: Cynthia F. Kurtz and Paul D. Fernhout
 Version: 0.2
 */
 
-function add_my_plugin_menu() {
-	add_options_page( 'NarraFirma Options', 'NarraFirma', 'manage_options', 'narrafirma-options-menu', 'create_my_plugin_options_panel' );
-}
+// TODO: Ensure unique prefixed names for all functions or wrap in uniquely named objects
 
-function create_my_plugin_options_panel() {
+defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
+
+function narrafirma_display_page() {
 	if ( !current_user_can( 'manage_options' ) )  {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}
-  $baseDirectory = plugins_url( 'narrafirma' );
+	
+    $baseDirectory = plugins_url( 'narrafirma' );
   
-  add_my_scripts();
+    add_my_scripts();
     
-  echo <<<ENDSCRIPT
+    echo <<<ENDSCRIPT
 <link rel="stylesheet" href="$baseDirectory/lib/humane/original.css">
 <link rel="stylesheet" href="$baseDirectory/css/survey.css">
 <link rel="stylesheet" href="$baseDirectory/css/standard.css">
@@ -76,9 +77,9 @@ require([
 ENDSCRIPT;
 }
 
-function add_my_scripts() {
-  // wp_enqueue_script( 'pointrel-lodash', plugins_url( 'narrafirma/lib/lodash.js'), array(), '1.0.0', true );
-  // wp_enqueue_script( 'pointrel-main', plugins_url( 'narrafirma/js/main.js'), array(), '1.0.0', true );
+function nararfirma_add_javascript_libraries() {
+    // wp_enqueue_script( 'pointrel-lodash', plugins_url( 'narrafirma/lib/lodash.js'), array(), '1.0.0', true );
+    // wp_enqueue_script( 'pointrel-main', plugins_url( 'narrafirma/js/main.js'), array(), '1.0.0', true );
 }
 
 function getCurrentUniqueTimestamp() {
@@ -176,10 +177,43 @@ function pointrel20150417_createJournal($request) {
 	wp_send_json( $response );
 }
 
+// Runs when plugin is activated
+function narrafirma_plugin_install() {
+    error_log("narrafirma_plugin_install");
+}
+
+// Runs on plugin deactivation
+function narrafirma_plugin_remove() {
+    error_log("narrafirma_plugin_remove");
+}
+
+function narrafirma_create_options_panel() {
+    if ( !current_user_can( 'manage_options' ) )  {
+        wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+    }
+  
+    $baseDirectory = plugins_url( 'narrafirma' );
+    
+    ?>
+<div>
+<h2>NarraFirma plugin</h2>
+Options relating to the NarraFirma Plugin.
+</div>
+
+<?php
+}
+
+function narrafirma_admin_add_page() {
+    add_options_page( 'NarraFirma Options', 'NarraFirma', 'manage_options', 'narrafirma-options-menu', 'narrafirma_create_options_panel' );
+}
+
+// add_action( 'wp_enqueue_scripts', 'nararfirma_add_javascript_libraries' );
+add_action( 'admin_menu', 'narrafirma_admin_add_page' );
+
+register_activation_hook(__FILE__,'narrafirma_plugin_install'); 
+register_deactivation_hook( __FILE__, 'narrafirma_plugin_remove' );
+
 add_action( 'wp_ajax_pointrel20150417', 'pointrel20150417' );
-add_action( 'wp_ajax_nopriv_pointrel20150417', 'pointrel20150417' );
+// add_action( 'wp_ajax_nopriv_pointrel20150417', 'pointrel20150417' );
 
-// add_action( 'wp_enqueue_scripts', 'add_my_scripts' );
-add_action( 'admin_menu', 'add_my_plugin_menu' );
-
-error_log("Done adding NarraFirma plugin");
+error_log("Finished running NarraFirma plugin module");
