@@ -320,7 +320,7 @@ function addJournal(journalIdentifier) {
             console.log("Created journal OK", journalIdentifier, response);
             toaster.toast("Created journal OK: " + journalIdentifier);
             allProjectsModel.projects.push({name: journalIdentifier.substring(narrafirmaProjectPrefix.length)});
-            // Need to call redraw as event changign data was triggered by network
+            // Need to call redraw as event changing data was triggered by network
             m.redraw();
         }
     });
