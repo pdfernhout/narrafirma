@@ -24,8 +24,6 @@ import topic = require("./topic");
 
 "use strict";
 
-// TODO: Have mode where batches requests to load messages from server to reduce round-trip latency
-
 // TODO: change this default to 15 seconds - shorter now for initial development
 var defaultCheckFrequency_ms = 3000;
 
@@ -37,12 +35,10 @@ var debugMessaging = false;
 // TODO: Handle the queue of outgoing messages better, and don't allow for possibility one could
 // get dropped if timeout or server failure or such
 
-// TODO: Add "credentials" somehow
-
 // TODO: Flag if you don't want to receive incoming messages that you sent if they are in the order sent
-// TODO: (Maybe) Flag if you don't want to recieve any of the messages that you sent...
+// TODO: (Maybe) Flag if you don't want to receive any of the messages that you sent...
 
-// userCredentials have the form {userIdentifier: "some name", userPassword: "some password"}
+// The userCredentials have the form {userIdentifier: "some name", userPassword: "some password"}
 // If a string is passed in, it is assumed just the userIdentifier is being supplied
 
 class PointrelClient {
@@ -197,7 +193,6 @@ class PointrelClient {
         httpRequest.send(data);
     }
     
-    // TODO: No callback?
     createAndSendChangeMessage(topicIdentifier, messageType, change, other, callback) {
         var timestamp = this.getCurrentUniqueTimestamp();
         
@@ -225,7 +220,6 @@ class PointrelClient {
     }
     
     // Deprecated to for client to call directly; use createAndSendMessage
-    // TODO: No callback?
     sendMessage(message, callback) {
         if (debugMessaging) console.log("sendMessage", this.areOutgoingMessagesSuspended, message);
         
