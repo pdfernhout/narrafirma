@@ -195,9 +195,8 @@ function pointrel20150417_storeMessage($request) {
     
     // TODO: Actually do something here!!!
     
-    wp_send_json( makeFailureResponse(500, "Server error: write not yet supported") );
+    // wp_send_json( makeFailureResponse(500, "Server error: write not yet supported") );
     
-    /*
     $receivedTimestamp = "FIXME???";
     $sha256AndLength = "FIXME";
     
@@ -208,7 +207,6 @@ function pointrel20150417_storeMessage($request) {
     ));
     
     wp_send_json( $response );
-    */
 }
 
 // Runs when plugin is activated
