@@ -28,10 +28,6 @@ var clientState = {
     serverStatusText: ""
 };
 
-// TODO: Change this to use Mithril and update it to use new approach to projects, users, and roles
-console.log("UNFINISHED!!!");
-// alert("Unfinished");
-
 var journalName = m.prop("");
 var userName = m.prop("");
 var userPassword = m.prop("");
