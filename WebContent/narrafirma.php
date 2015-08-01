@@ -12,9 +12,182 @@ Version: 0.2
 
 defined( 'ABSPATH' ) or die( 'Plugin must be run from inside WordPress' );
 
-register_activation_hook(__FILE__,'narrafirma_plugin_install'); 
-register_deactivation_hook( __FILE__, 'narrafirma_plugin_remove' );
-add_action( 'admin_menu', 'narrafirma_admin_menu' );
+class NarraFirmaSettingsPage
+{
+    /**
+     * Holds the values to be used in the fields callbacks
+     */
+    private $options;
+
+    /**
+     * Start up
+     */
+    public function __construct() {
+        register_activation_hook(__FILE__, array( $this, 'activate')); 
+        register_deactivation_hook( __FILE__, array( $this, 'deactivate' ));
+        register_uninstall_hook( __FILE__, array( 'NarraFirmaSettingsPage', 'uninstall' ));
+        
+        add_action( 'admin_menu', array( $this, 'add_plugin_page' ) );
+        add_action( 'admin_init', array( $this, 'page_init' ) );
+    }
+    
+    // Runs when plugin is activated
+    function activate() {
+        error_log("narrafirma plugin activate");
+        add_option("narrafirma", '{projects:{}}');
+    }
+    
+    // Runs on plugin deactivation
+    function deactivate() {
+        error_log("narrafirma plugin deactivate");
+    }
+    
+    // Runs on plugin uninstall
+    function uninstall() {
+        error_log("narrafirma plugin uninstall");
+        
+        // Leave the option around for now during testing...
+        // delete_option("narrafirma");
+        
+        // Perhaps should also remove narrafirma/pointrel database table (maybe after warning)
+    }
+
+    /**
+     * Add options page
+     */
+    public function add_plugin_page() {
+        // This page will be a top level menu item
+        add_menu_page( 'NarraFirma Options', 'NarraFirma', 'manage_options', 'narrafirma-settings-admin', array( $this, 'create_admin_page' ));
+    }
+
+    /**
+     * Options page callback
+     */
+    public function create_admin_page()
+    {
+        // Set class property
+        $this->options = get_option( 'narrafirma_admin_settings' );
+        
+        $baseDirectory = plugins_url( 'narrafirma' );
+    
+        $launchLink = $baseDirectory . "/index.html";
+    
+        ?>
+<div class="wrap">
+<h2>NarraFirma plugin</h2>
+Options relating to the NarraFirma Plugin.
+<br>
+The NarraFirma WordPress plugin uses WordPress as an application server, user authentication system, and data store.<br>
+Using the WordPress platform this way makes NarraFirma easy to install and configure for many people.<br>
+The NarraFirma application is not otherwise integrated with WordPress pages and runs in its own web page.<br>
+<br>
+Click this link to <a href="<?php echo $launchLink; ?>">launch the NarraFirma application</a>.
+</div>
+
+You can create projects by editing the NarraFirma configuration data here in JSON format:<br>
+       
+<form method="post" action="options.php">
+<?php
+    // This prints out all hidden setting fields
+    settings_fields( 'narrafirma_option_group' );   
+    do_settings_sections( 'narrafirma-settings-admin' );
+    submit_button(); 
+?>
+</form>
+</div>
+<?php
+    }
+
+    /**
+     * Register and add settings
+     */
+    public function page_init()
+    {        
+        register_setting(
+            'narrafirma_option_group', // Option group
+            'narrafirma_admin_settings', // Option name
+            array( $this, 'sanitize' ) // Sanitize
+        );
+
+        add_settings_section(
+            'narrafirma_setting_section_id', // ID
+            'My Custom Settings', // Title
+            array( $this, 'print_section_info' ), // Callback
+            'narrafirma-settings-admin' // Page
+        );  
+
+        add_settings_field(
+            'id_number', // ID
+            'ID Number', // Title 
+            array( $this, 'id_number_callback' ), // Callback
+            'narrafirma-settings-admin', // Page
+            'narrafirma_setting_section_id' // Section           
+        );      
+
+        add_settings_field(
+            'title', 
+            'Title', 
+            array( $this, 'title_callback' ), 
+            'narrafirma-settings-admin', 
+            'narrafirma_setting_section_id'
+        );      
+    }
+
+    /**
+     * Sanitize each setting field as needed
+     *
+     * @param array $input Contains all settings fields as array keys
+     */
+    public function sanitize( $input )
+    {
+        $new_input = array();
+        if( isset( $input['id_number'] ) )
+            $new_input['id_number'] = absint( $input['id_number'] );
+
+        if( isset( $input['title'] ) )
+            $new_input['title'] = sanitize_text_field( $input['title'] );
+
+        return $new_input;
+    }
+
+    /** 
+     * Print the Section text
+     */
+    public function print_section_info()
+    {
+        print 'Enter your settings below:';
+    }
+
+    /** 
+     * Get the settings option array and print one of its values
+     */
+    public function id_number_callback()
+    {
+        printf(
+            '<input type="text" id="id_number" name="narrafirma_admin_settings[id_number]" value="%s" />',
+            isset( $this->options['id_number'] ) ? esc_attr( $this->options['id_number']) : ''
+        );
+    }
+
+    /** 
+     * Get the settings option array and print one of its values
+     */
+    public function title_callback()
+    {
+        printf(
+            '<input type="text" id="title" name="narrafirma_admin_settings[title]" value="%s" />',
+            isset( $this->options['title'] ) ? esc_attr( $this->options['title']) : ''
+        );
+    }
+}
+
+if ( is_admin() ) {
+    $narrafirma_settings_page = new NarraFirmaSettingsPage();
+}
+
+
+// TODO: Move these functions into a class...
+
 add_action( 'wp_ajax_pointrel20150417', 'pointrel20150417' );
 // add_action( 'wp_ajax_nopriv_pointrel20150417', 'pointrel20150417' );
 
@@ -217,61 +390,6 @@ function pointrel20150417_storeMessage($request) {
     ));
     
     wp_send_json( $response );
-}
-
-// Runs when plugin is activated
-function narrafirma_plugin_install() {
-    error_log("narrafirma_plugin_install");
-    add_option("narrafirma", '{projects:{}}');
-}
-
-// Runs on plugin deactivation
-function narrafirma_plugin_remove() {
-    error_log("narrafirma_plugin_remove");
-    
-    // Leave the option around for now during testing...
-    // delete_option("narrafirma");
-    
-    // Should also remove narrafirma/pointrel database table (after warning)
-}
-
-function narrafirma_admin_menu() {
-    add_menu_page( 'NarraFirma Options', 'NarraFirma', 'manage_options', 'narrafirma-options-menu', 'narrafirma_create_options_panel' );
-}
-
-function narrafirma_create_options_panel() {
-    if ( !current_user_can( 'manage_options' ) )  {
-        wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-    }
-  
-    $baseDirectory = plugins_url( 'narrafirma' );
-    
-    $launchLink = $baseDirectory . "/index.html";
-    
-    ?>
-<div class="wrap">
-<h2>NarraFirma plugin</h2>
-Options relating to the NarraFirma Plugin.
-<br>
-The NarraFirma WordPress plugin uses WordPress as an application server, user authentication system, and data store.<br>
-Using the WordPress platform this way makes NarraFirma easy to install and configure for many people.<br>
-The NarraFirma application is not otherwise integrated with WordPress pages and runs in its own web page.<br>
-<br>
-Click this link to <a href="<?php echo $launchLink; ?>">launch the NarraFirma application</a>.
-</div>
-
-You can create projects by editing the NarraFirma configuratio data here in JSON format:<br>
-<form method="post" action="options.php">
-
-<?php
-settings_fields( 'narrafirma-options-group' );
-do_settings_sections( 'narrafirma-options-group' );
-submit_button();
-?>
-
-</form>
-
-<?php
 }
 
 error_log("Finished running NarraFirma plugin module");
