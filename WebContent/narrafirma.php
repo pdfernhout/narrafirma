@@ -220,6 +220,15 @@ function pointrel20150417() {
     wp_send_json( $response );
 }
 
+function isUserAuthorized($userID, $permissions) {
+    foreach($permissions as $nameOrRole) {
+        if ($nameOrRole === true) return true;
+        if ($nameOrRole == $userID) return true;
+        if (current_user_can($nameOrRole)) return true;
+    }
+    return false;
+}
+
 function pointrel20150417_currentUserInformation($request) {
     error_log("Called pointrel20150417_currentUserInformation");
     
@@ -227,14 +236,28 @@ function pointrel20150417_currentUserInformation($request) {
 	// $whatever = intval( $_POST['whatever'] );
 	
 	$currentUser = wp_get_current_user();
-	
+	$userID = $currentUser->user_login;
+    
 	// if ($userID == 0) $userID = "anonymous";
-
+	
+	$journalPermissions = array();
+	
+	// TODO: Handle errors if missing...
+	$options = get_option( 'narrafirma_admin_settings' );
+	$journals = json_decode( $options['journals'] );
+	
+	foreach($journals as $name => $permissions) {
+        $admin = is_admin();
+        $write = $admin || isUserAuthorized($userID, $permissions['write']);
+	    $read = $write || isUserAuthorized($userID, $permissions['read']);
+	    $journalPermissions[$name] = array("read" => $read, "write" => $write, "admin" => $admin);
+	}
+	
     // TODO: Fix hardcoded project
     $response = makeSuccessResponse(200, "Success", array(
 		'status' => 'OK',
-		'userIdentifier' => $currentUser->user_login,
-		'journalPermissions' => array('NarraFirmaProject-test1' => array("read" => true))
+		'userIdentifier' => $userID,
+		'journalPermissions' => $journalPermissions
 	));
 	
 	wp_send_json( $response );
