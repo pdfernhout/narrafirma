@@ -604,7 +604,7 @@ function chooseAProjectToOpen(userIdentifierFromServer, projects) {
         // TODO: Translate
         var columns = {name: "Project name", id: "Project journal", write: "Editable"};
         // TODO: Only allow new project button for admins
-        var isNewAllowed = true;
+        var isNewAllowed = false;
         dialogSupport.openListChoiceDialog(null, projects, columns, "Projects", "Select a project to work on", isNewAllowed, function (projectChoice) {
             if (!projectChoice) return;
             
