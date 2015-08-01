@@ -8,7 +8,15 @@ Version: 0.2
 
 // TODO: Ensure unique prefixed names for all functions or wrap in uniquely named objects
 
+// Uses an option called "narrafirma" which is JSON text
+
 defined( 'ABSPATH' ) or die( 'Plugin must be run from inside WordPress' );
+
+register_activation_hook(__FILE__,'narrafirma_plugin_install'); 
+register_deactivation_hook( __FILE__, 'narrafirma_plugin_remove' );
+add_action( 'admin_menu', 'narrafirma_admin_menu' );
+add_action( 'wp_ajax_pointrel20150417', 'pointrel20150417' );
+// add_action( 'wp_ajax_nopriv_pointrel20150417', 'pointrel20150417' );
 
 $pointrelServerVersion = "pointrel20150417-0.0.4-wp";
 
@@ -52,6 +60,8 @@ function pointrel20150417() {
     $request = json_decode( file_get_contents( 'php://input' ) );
     
     $requestType = $request->action;
+    
+    // TODO: Check permissions
     
     if ($requestType == "pointrel20150417_currentUserInformation") {
         pointrel20150417_currentUserInformation($request);
@@ -212,11 +222,21 @@ function pointrel20150417_storeMessage($request) {
 // Runs when plugin is activated
 function narrafirma_plugin_install() {
     error_log("narrafirma_plugin_install");
+    add_option("narrafirma", '{projects:{}}');
 }
 
 // Runs on plugin deactivation
 function narrafirma_plugin_remove() {
     error_log("narrafirma_plugin_remove");
+    
+    // Leave the option around for now during testing...
+    // delete_option("narrafirma");
+    
+    // Should also remove narrafirma/pointrel database table (after warning)
+}
+
+function narrafirma_admin_menu() {
+    add_menu_page( 'NarraFirma Options', 'NarraFirma', 'manage_options', 'narrafirma-options-menu', 'narrafirma_create_options_panel' );
 }
 
 function narrafirma_create_options_panel() {
@@ -226,34 +246,32 @@ function narrafirma_create_options_panel() {
   
     $baseDirectory = plugins_url( 'narrafirma' );
     
+    $launchLink = $baseDirectory . "/index.html";
+    
     ?>
-<div>
+<div class="wrap">
 <h2>NarraFirma plugin</h2>
 Options relating to the NarraFirma Plugin.
+<br>
+The NarraFirma WordPress plugin uses WordPress as an application server, user authentication system, and data store.<br>
+Using the WordPress platform this way makes NarraFirma easy to install and configure for many people.<br>
+The NarraFirma application is not otherwise integrated with WordPress pages and runs in its own web page.<br>
+<br>
+Click this link to <a href="<?php echo $launchLink; ?>">launch the NarraFirma application</a>.
 </div>
 
-<canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;">
-</canvas> 
-<script>
-var c = document.getElementById("myCanvas");
-var ctx = c.getContext("2d");
-ctx.fillStyle = "#FF0000";
-ctx.fillRect(0,0,150,75);
-</script>
+You can create projects by editing the NarraFirma configuratio data here in JSON format:<br>
+<form method="post" action="options.php">
+
+<?php
+settings_fields( 'narrafirma-options-group' );
+do_settings_sections( 'narrafirma-options-group' );
+submit_button();
+?>
+
+</form>
 
 <?php
 }
-
-function narrafirma_admin_add_page() {
-    add_menu_page( 'NarraFirma Options', 'NarraFirma', 'manage_options', 'narrafirma-options-menu', 'narrafirma_create_options_panel' );
-}
-
-add_action( 'admin_menu', 'narrafirma_admin_add_page' );
-
-register_activation_hook(__FILE__,'narrafirma_plugin_install'); 
-register_deactivation_hook( __FILE__, 'narrafirma_plugin_remove' );
-
-add_action( 'wp_ajax_pointrel20150417', 'pointrel20150417' );
-// add_action( 'wp_ajax_nopriv_pointrel20150417', 'pointrel20150417' );
 
 error_log("Finished running NarraFirma plugin module");
