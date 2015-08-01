@@ -34,7 +34,7 @@ class NarraFirmaSettingsPage
     // Runs when plugin is activated
     function activate() {
         error_log("narrafirma plugin activate");
-        add_option("narrafirma", '{projects:{}}');
+        // add_option("narrafirma", '{projects:{}}');
     }
     
     // Runs on plugin deactivation
@@ -63,8 +63,7 @@ class NarraFirmaSettingsPage
     /**
      * Options page callback
      */
-    public function create_admin_page()
-    {
+    public function create_admin_page() {
         // Set class property
         $this->options = get_option( 'narrafirma_admin_settings' );
         
@@ -91,92 +90,52 @@ You can create projects by editing the NarraFirma configuration data here in JSO
     // This prints out all hidden setting fields
     settings_fields( 'narrafirma_option_group' );   
     do_settings_sections( 'narrafirma-settings-admin' );
-    submit_button(); 
+    submit_button();
 ?>
 </form>
 </div>
 <?php
     }
 
-    /**
-     * Register and add settings
-     */
-    public function page_init()
-    {        
-        register_setting(
-            'narrafirma_option_group', // Option group
-            'narrafirma_admin_settings', // Option name
-            array( $this, 'sanitize' ) // Sanitize
-        );
+    public function page_init() {        
+        register_setting('narrafirma_option_group', 'narrafirma_admin_settings', array( $this, 'sanitize' ) );
 
         add_settings_section(
-            'narrafirma_setting_section_id', // ID
-            'My Custom Settings', // Title
-            array( $this, 'print_section_info' ), // Callback
-            'narrafirma-settings-admin' // Page
-        );  
+            'narrafirma_setting_section_id',
+            'My Custom Settings',
+            array( $this, 'print_section_info' ),
+            'narrafirma-settings-admin'
+        ); 
 
         add_settings_field(
-            'id_number', // ID
-            'ID Number', // Title 
-            array( $this, 'id_number_callback' ), // Callback
-            'narrafirma-settings-admin', // Page
-            'narrafirma_setting_section_id' // Section           
-        );      
-
-        add_settings_field(
-            'title', 
-            'Title', 
-            array( $this, 'title_callback' ), 
+            'journals', 
+            'Journals', 
+            array( $this, 'display_journals' ), 
             'narrafirma-settings-admin', 
             'narrafirma_setting_section_id'
         );      
     }
 
-    /**
-     * Sanitize each setting field as needed
-     *
-     * @param array $input Contains all settings fields as array keys
-     */
-    public function sanitize( $input )
-    {
+    public function sanitize( $input ) {
         $new_input = array();
-        if( isset( $input['id_number'] ) )
-            $new_input['id_number'] = absint( $input['id_number'] );
-
-        if( isset( $input['title'] ) )
-            $new_input['title'] = sanitize_text_field( $input['title'] );
+        
+        if( isset( $input['journals'] ) ) {
+            // Keep the raw input which is JSON with newlines...
+            // $new_input['journals'] = sanitize_text_field( $input['journals'] );
+            $new_input['journals'] = $input['journals'];
+        }
 
         return $new_input;
     }
 
-    /** 
-     * Print the Section text
-     */
-    public function print_section_info()
-    {
+    public function print_section_info() {
         print 'Enter your settings below:';
     }
 
-    /** 
-     * Get the settings option array and print one of its values
-     */
-    public function id_number_callback()
-    {
-        printf(
-            '<input type="text" id="id_number" name="narrafirma_admin_settings[id_number]" value="%s" />',
-            isset( $this->options['id_number'] ) ? esc_attr( $this->options['id_number']) : ''
-        );
-    }
-
-    /** 
-     * Get the settings option array and print one of its values
-     */
-    public function title_callback()
-    {
-        printf(
-            '<input type="text" id="title" name="narrafirma_admin_settings[title]" value="%s" />',
-            isset( $this->options['title'] ) ? esc_attr( $this->options['title']) : ''
+    public function display_journals() {
+            printf(
+            '<textarea cols="40" rows="5" name="narrafirma_admin_settings[journals]" style="white-space: pre-wrap;">%s</textarea>',
+            isset( $this->options['journals'] ) ? esc_textarea( $this->options['journals']) : ''
         );
     }
 }
