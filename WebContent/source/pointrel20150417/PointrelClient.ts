@@ -27,6 +27,9 @@ import topic = require("./topic");
 // TODO: change this default to 15 seconds - shorter now for initial development
 var defaultCheckFrequency_ms = 3000;
 
+var shortTimeout_ms = 10000;
+var longTimeout_ms = 30000;
+
 var debugMessaging = false;
 
 // TODO: Think more deeply about what server status can be, like states it transitions through
@@ -301,7 +304,7 @@ class PointrelClient {
             // Do not set outstandingServerRequestSentAtTimestamp as this is an immediate request that does not block polling
             this.serverStatus("waiting", "requesting latest message " + new Date().toISOString());
             
-            this.apiRequestSend(apiRequest, 2000, function(response) {
+            this.apiRequestSend(apiRequest, shortTimeout_ms, function(response) {
                 if (debugMessaging) console.log("Got latest message for topic response", response);
                 if (!response.success) {
                     console.log("ERROR: report queryForLatestMessage failure", response);
@@ -345,7 +348,7 @@ class PointrelClient {
             this.serverStatus("waiting", "requesting createJournal " + new Date().toISOString());
             
             var self = this;
-            this.apiRequestSend(apiRequest, 2000, function(response) {
+            this.apiRequestSend(apiRequest, shortTimeout_ms, function(response) {
                 if (debugMessaging) console.log("Got createJournal response", response);
                 if (!response.success) {
                     console.log("ERROR: report createJournal failure", response);
@@ -399,7 +402,7 @@ class PointrelClient {
             this.serverStatus("waiting", "requesting journal status " + new Date().toISOString());
             
             var self = this;
-            this.apiRequestSend(apiRequest, 2000, function(response) {
+            this.apiRequestSend(apiRequest, shortTimeout_ms, function(response) {
                 if (debugMessaging) console.log("Got journal status response", response);
                 if (!response.success) {
                     console.log("ERROR: report journal status failure", response);
@@ -440,7 +443,7 @@ class PointrelClient {
             this.serverStatus("waiting", "requesting current user information " + new Date().toISOString());
             
             var self = this;
-            this.apiRequestSend(apiRequest, 2000, function(response) {
+            this.apiRequestSend(apiRequest, shortTimeout_ms, function(response) {
                 if (debugMessaging) console.log("Got currentUserInformation response", response);
                 if (!response.success) {
                     console.log("ERROR: currentUserInformation request failure", response);
@@ -633,7 +636,7 @@ class PointrelClient {
             this.serverStatus("waiting", "storing " + this.outstandingServerRequestSentAtTimestamp);
             
             var self = this;
-            this.apiRequestSend(apiRequest, 2000, function(response) {
+            this.apiRequestSend(apiRequest, shortTimeout_ms, function(response) {
                 if (debugMessaging) console.log("Got store response", response);
                 self.outstandingServerRequestSentAtTimestamp = null;
                 if (!response.success) {
@@ -816,8 +819,8 @@ class PointrelClient {
         this.serverStatus("waiting", "polling " + this.outstandingServerRequestSentAtTimestamp);
         
         var self = this;
-         // Ten second timeout, longer to account for reading multiple records on server
-        this.apiRequestSend(apiRequest, 10000, function(response) {
+         // Use longer timeout to account for reading multiple records on server
+        this.apiRequestSend(apiRequest, longTimeout_ms, function(response) {
             if (debugMessaging) console.log("Got query response", response);
             if (!response.success) {
                 console.log("Response was a failure", response);
@@ -900,7 +903,7 @@ class PointrelClient {
         this.serverStatus("waiting", "loading " + this.outstandingServerRequestSentAtTimestamp);
         
         var self = this;
-        this.apiRequestSend(apiRequest, 2000, function(response) {
+        this.apiRequestSend(apiRequest, shortTimeout_ms, function(response) {
             self.okStatus();
             if (debugMessaging) console.log("Got load response", response);
             self.outstandingServerRequestSentAtTimestamp = null;
