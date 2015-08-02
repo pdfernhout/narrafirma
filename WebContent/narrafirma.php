@@ -61,18 +61,19 @@ class NarraFirmaSettingsPage
         // Make table fields for messages here...
         // sha256_length max 73 = 64 + 1 + 8 (8 = 16777215 max length)
         // Example timestamp length = 30: "2015-05-23T00:24:56.087000784Z"
-        // TODO: Does not have journal name...
+        // TODO: Need to map journal name to smallint...
         $sql = "CREATE TABLE $table_name (
             id int unsigned NOT NULL AUTO_INCREMENT,
+            journal smallint unsigned NOT NULL,
             sha256_and_length char(73) NOT NULL,
             received_timestamp char(30) NOT NULL, 
             topic_sha256 char(64) NOT NULL,
             topic_timestamp char(30) NOT NULL,
             message mediumtext NOT NULL,
             PRIMARY KEY id (id),
-            UNIQUE KEY sha256_and_length (sha256_and_length),
-            KEY received_timestamp (received_timestamp),
-            KEY topic_by_timestamp (topic_sha256,topic_timestamp)
+            UNIQUE KEY sha256_and_length (journal,sha256_and_length),
+            KEY received_timestamp (journal,received_timestamp),
+            KEY topic_by_timestamp (journal,topic_sha256,topic_timestamp)
         ) $charset_collate;";
     
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
