@@ -55,52 +55,6 @@ class NarraFirmaSettingsPage
         add_option( 'narrafirma_admin_settings', $options );
     }
     
-    // TODO: How to find list of tables to upgrade in future? Perhaps: SHOW TABLES LIKE 'someprefix\_%'
-    
-    function tableNameForJournal($journalName) {
-        $table_name = $wpdb->prefix . 'narrafirma_j_' . journalName;
-        
-        $table_name = strtolower($table_name);
-        
-        // Enforce MySQL limit on table name length
-        if (strlen($table_name) > 64) {
-            throw new Exception('NarraFirma user table name length for journal longer than 64 characters: ' . $table_name);
-        }
-        
-        return $table_name;
-    }
-    
-    function doesJournalTableExist($journalName) {
-        $table_name = tableNameForJournal($journalName);
-        global $wpdb;
-        return ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name);
-    }
-    
-    function makeJournalTable($journalName) {
-        $table_name = tableNameForJournal($journalName);
-        
-        $charset_collate = $wpdb->get_charset_collate();
-
-        // Make table fields for messages here...
-        // sha256_length max 73 = 64 + 1 + 8 (8 = 16777215 max length)
-        // Example timestamp length = 30: "2015-05-23T00:24:56.087000784Z"
-        $sql = "CREATE TABLE $table_name (
-            id int unsigned NOT NULL AUTO_INCREMENT,
-            sha256_and_length char(73) NOT NULL,
-            received_timestamp char(30) NOT NULL, 
-            topic_sha256 char(64) NOT NULL,
-            topic_timestamp char(30) NOT NULL,
-            message mediumtext NOT NULL,
-            PRIMARY KEY id (id),
-            UNIQUE KEY sha256_and_length (sha256_and_length),
-            KEY received_timestamp (received_timestamp),
-            KEY topic_by_timestamp (topic_sha256,topic_timestamp)
-        ) $charset_collate;";
-    
-        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-        dbDelta( $sql );
-    }
-    
     // Runs on plugin uninstall
     function uninstall() {
         error_log("narrafirma plugin uninstall");
@@ -209,7 +163,20 @@ add_action( 'wp_ajax_pointrel20150417', 'pointrel20150417' );
 // add_action( 'wp_ajax_nopriv_pointrel20150417', 'pointrel20150417' );
 
 function getCurrentUniqueTimestamp() {
-    return "FIXME_TIMESTAMP";
+    // TODO: Probably need extra digits and to assure unique...
+    // return gmdate('Y-m-d\TH:i:s.u\Z');
+    // $now = DateTime::createFromFormat('U.u', microtime(true));
+    // return $now->format('Y-m-d\TH:i:s.u\Z');
+    
+    // TODO: Is the random add on really needed; could microtime give more digits of precision?
+    // TODO: No longer enforcing incremental time in final digits four through six to avoid collisions unlike with NodejS -- is this OK enough?
+    $randomDigits = str_pad(rand(0, 999), 3, '0', STR_PAD_LEFT);
+
+    $t = microtime(true);
+    $extra = sprintf("%06d", ($t - floor($t)) * 1000000);
+    $extra = $extra.$randomDigits;
+    $utc = gmdate('Y-m-d\TH:i:s.', $t).$extra.'Z';
+    return $utc;    
 }
 
 function makeFailureResponse($statusCode, $description, $extra = false) {
@@ -240,6 +207,52 @@ function makeSuccessResponse($statusCode, $description, $extra = false) {
     }
     
     return $response;
+}
+
+// TODO: How to find list of tables to upgrade in future? Perhaps: SHOW TABLES LIKE 'someprefix\_%'
+
+function tableNameForJournal($journalName) {
+    $table_name = $wpdb->prefix . 'narrafirma_j_' . journalName;
+    
+    $table_name = strtolower($table_name);
+    
+    // Enforce MySQL limit on table name length
+    if (strlen($table_name) > 64) {
+        throw new Exception('NarraFirma user table name length for journal longer than 64 characters: ' . $table_name);
+    }
+    
+    return $table_name;
+}
+
+function doesJournalTableExist($journalName) {
+    $table_name = tableNameForJournal($journalName);
+    global $wpdb;
+    return ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name);
+}
+
+function makeJournalTable($journalName) {
+    $table_name = tableNameForJournal($journalName);
+    
+    $charset_collate = $wpdb->get_charset_collate();
+
+    // Make table fields for messages here...
+    // sha256_length max 73 = 64 + 1 + 8 (8 = 16777215 max length)
+    // Example timestamp length = 30: "2015-05-23T00:24:56.087000784Z"
+    $sql = "CREATE TABLE $table_name (
+        id int unsigned NOT NULL AUTO_INCREMENT,
+        sha256_and_length char(73) NOT NULL,
+        received_timestamp char(30) NOT NULL, 
+        topic_sha256 char(64) NOT NULL,
+        topic_timestamp char(30) NOT NULL,
+        message mediumtext NOT NULL,
+        PRIMARY KEY id (id),
+        UNIQUE KEY sha256_and_length (sha256_and_length),
+        KEY received_timestamp (received_timestamp),
+        KEY topic_by_timestamp (topic_sha256,topic_timestamp)
+    ) $charset_collate;";
+
+    require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+    dbDelta( $sql );
 }
 
 function pointrel20150417() {
