@@ -12,6 +12,8 @@ Version: 0.2
 
 defined( 'ABSPATH' ) or die( 'Plugin must be run from inside WordPress' );
 
+$pointrelServerVersion = "pointrel20150417-0.0.4-wp";
+
 class NarraFirmaSettingsPage
 {
     /**
@@ -34,12 +36,41 @@ class NarraFirmaSettingsPage
     // Runs when plugin is activated
     function activate() {
         error_log("narrafirma plugin activate");
-        // add_option("narrafirma", '{projects:{}}');
     }
     
     // Runs on plugin deactivation
     function deactivate() {
         error_log("narrafirma plugin deactivate");
+    }
+    
+    function install() {
+        global $wpdb;
+        global $pointrelServerVersion;
+        
+        // Default the options if they are not already defined
+        $options = array (
+            'journals' => '{}',
+            'db_version' => $pointrelServerVersion
+        );
+        add_option( 'narrafirma_admin_settings', $options );
+    
+        $table_name = $wpdb->prefix . 'narrafirma_pointrel20150417_messages';
+        
+        $charset_collate = $wpdb->get_charset_collate();
+    
+        $sql = "CREATE TABLE $table_name (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+            name tinytext NOT NULL,
+            text text NOT NULL,
+            url varchar(55) DEFAULT '' NOT NULL,
+            UNIQUE KEY id (id)
+        ) $charset_collate;";
+    
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+        dbDelta( $sql );
+    
+        add_option( 'narrafirma_db_version', $pointrelServerVersion );
     }
     
     // Runs on plugin uninstall
@@ -149,8 +180,6 @@ if ( is_admin() ) {
 
 add_action( 'wp_ajax_pointrel20150417', 'pointrel20150417' );
 // add_action( 'wp_ajax_nopriv_pointrel20150417', 'pointrel20150417' );
-
-$pointrelServerVersion = "pointrel20150417-0.0.4-wp";
 
 function getCurrentUniqueTimestamp() {
     return "FIXME_TIMESTAMP";
@@ -286,6 +315,8 @@ function pointrel20150417_createJournal($request) {
 
 function pointrel20150417_reportJournalStatus($request) {
     error_log("Called pointrel20150417_reportJournalStatus");
+    
+    global $pointrelServerVersion;
     
     // global $wpdb; // this is how you get access to the database
     // $whatever = intval( $_POST['whatever'] );
