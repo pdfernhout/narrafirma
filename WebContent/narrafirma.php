@@ -175,7 +175,6 @@ if ( is_admin() ) {
     $narrafirma_settings_page = new NarraFirmaSettingsPage();
 }
 
-
 // TODO: Move these functions into a class...
 
 add_action( 'wp_ajax_pointrel20150417', 'pointrel20150417' );
@@ -250,6 +249,7 @@ function pointrel20150417() {
 }
 
 function isUserAuthorized($userID, $permissions) {
+    // error_log("isUserAuthorized " . $userID . " " . print_r($permissions, true));
     foreach($permissions as $nameOrRole) {
         if ($nameOrRole === true) return true;
         if ($nameOrRole == $userID) return true;
@@ -259,13 +259,10 @@ function isUserAuthorized($userID, $permissions) {
 }
 
 function pointrel20150417_currentUserInformation($request) {
-    error_log("Called pointrel20150417_currentUserInformation");
-    
-	// global $wpdb; // this is how you get access to the database
-	// $whatever = intval( $_POST['whatever'] );
-	
 	$currentUser = wp_get_current_user();
 	$userID = $currentUser->user_login;
+	
+	error_log("Called pointrel20150417_currentUserInformation " . $userID . " " . current_user_can( 'manage_options' ));
     
 	// if ($userID == 0) $userID = "anonymous";
 	
@@ -276,10 +273,12 @@ function pointrel20150417_currentUserInformation($request) {
 	$journals = json_decode( $options['journals'] );
 	
 	foreach($journals as $name => $permissions) {
-        $admin = is_admin();
-        $write = $admin || isUserAuthorized($userID, $permissions['write']);
-	    $read = $write || isUserAuthorized($userID, $permissions['read']);
-	    $journalPermissions[$name] = array("read" => $read, "write" => $write, "admin" => $admin);
+        $admin = current_user_can( 'manage_options' );
+        $write = $admin || isUserAuthorized($userID, $permissions->write);
+	    $read = $write || isUserAuthorized($userID, $permissions->read);
+	    if ($read) {
+	        $journalPermissions[$name] = array("read" => $read, "write" => $write, "admin" => $admin);
+	    }
 	}
 	
     // TODO: Fix hardcoded project
@@ -315,32 +314,39 @@ function pointrel20150417_createJournal($request) {
 
 function pointrel20150417_reportJournalStatus($request) {
     error_log("Called pointrel20150417_reportJournalStatus");
+
+    $userID = wp_get_current_user()->user_login;
     
     global $pointrelServerVersion;
     
     // global $wpdb; // this is how you get access to the database
-    // $whatever = intval( $_POST['whatever'] );
-    
-    if (!current_user_can( 'manage_options' )) {
-        wp_send_json( makeFailureResponse(403, "Forbidden -- User is not an admin") );
-    }
     
     $journalIdentifier = $request->journalIdentifier;
     
-    // TODO: Actually do something here!!!
-    $readAuthorization = true;
-    $writeAuthorization = true;
-    $adminAuthorization = true;
-            
+    // TODO: Handle errors if missing...
+    $options = get_option( 'narrafirma_admin_settings' );
+    $journals = json_decode( $options['journals'] );
+    
+    $readAuthorization = false;
+    $writeAuthorization = false;
+    $adminAuthorization = false;
+    
+    if (isset($journals->$journalIdentifier)) {
+        $permissions = $journals->$journalIdentifier;
+        $admin = current_user_can( 'manage_options' );
+        $write = $admin || isUserAuthorized($userID, $permissions->write);
+        $read = $write || isUserAuthorized($userID, $permissions->read);
+    }
+    
     $response = makeSuccessResponse(200, "Success", array(
         'journalIdentifier' => $journalIdentifier,
         'version' => $pointrelServerVersion,
         'permissions' => array(
             // TODO: What about partial authorization for only some messages?
-            'read' => $readAuthorization,
-            'write' => $writeAuthorization,
-            'admin' => $adminAuthorization
-        ),
+            'read' => $read,
+            'write' => $write,
+            'admin' => $admin
+        )
     ));
     
     if ($readAuthorization) {
