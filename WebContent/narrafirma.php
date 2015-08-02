@@ -346,11 +346,15 @@ function pointrel20150417_createJournal($request) {
 	
     // TODO: Actually do something here!!!
     
+    wp_send_json( makeFailureResponse(500, "Creating journal not supported yet") );
+    
+    /*
     $response = makeSuccessResponse(200, "Success", array(
 		'journalIdentifier' => $journalIdentifier
 	));
 	
 	wp_send_json( $response );
+	*/
 }
 
 function pointrel20150417_reportJournalStatus($request) {
@@ -359,26 +363,23 @@ function pointrel20150417_reportJournalStatus($request) {
     $userID = wp_get_current_user()->user_login;
     
     global $pointrelServerVersion;
-    
-    // global $wpdb; // this is how you get access to the database
-    
+    global $wpdb;
+        
     $journalIdentifier = $request->journalIdentifier;
     
     // TODO: Handle errors if missing...
     $options = get_option( 'narrafirma_admin_settings' );
     $journals = json_decode( $options['journals'] );
     
-    $readAuthorization = false;
-    $writeAuthorization = false;
-    $adminAuthorization = false;
-    
-    if (isset($journals->$journalIdentifier)) {
-        $permissions = $journals->$journalIdentifier;
-        $admin = current_user_can( 'manage_options' );
-        $write = $admin || isUserAuthorized($userID, $permissions->write);
-        $read = $write || isUserAuthorized($userID, $permissions->read);
+    if (!isset($journals->$journalIdentifier)) {
+        wp_send_json( makeFailureResponse(404, "No such journal", array( 'journalIdentifier' => $journalIdentifier ) ) );
     }
     
+    $permissions = $journals->$journalIdentifier;
+    $admin = current_user_can( 'manage_options' );
+    $write = $admin || isUserAuthorized($userID, $permissions->write);
+    $read = $write || isUserAuthorized($userID, $permissions->read);
+
     $response = makeSuccessResponse(200, "Success", array(
         'journalIdentifier' => $journalIdentifier,
         'version' => $pointrelServerVersion,
@@ -394,6 +395,18 @@ function pointrel20150417_reportJournalStatus($request) {
         $earliestRecord = null;
         $latestRecord = null;
         $recordCount = 0; // $sortedReceivedRecords.length
+        
+        if (doesJournalTableExist($journalIdentifier)) {
+            $table_name = tableNameForJournal($journalIdentifier);
+            
+            // TODO: Is the journalRecordCount really needed? Looks like maybe not?
+            $wpdb->get_results( 'SELECT COUNT(*) FROM $table_name' );
+            $recordCount = $wpdb->num_rows;
+            
+            // TODO: use database to get earliest and latest record
+            // TODO: Is the earliest record really needed?  Looks like maybe not?
+            // TODO: Is the latest record really needed? Looks like maybe not?
+        }
         
         $response->journalEarliestRecord = $earliestRecord;
         $response->journalLatestRecord = $latestRecord;
