@@ -106,6 +106,19 @@ You can create projects by editing the NarraFirma configuration data here in JSO
     submit_button();
 ?>
 </form>
+<br>
+<br>
+An example:
+<pre>
+{
+    "NarraFirmaProject-test1": {
+         "write": ["editor", "pdfernhout", "cfkurtz"],
+         "read": ["subscriber"],
+         "survey": [true]
+    }
+}
+</pre>
+
 </div>
 <?php
     }
