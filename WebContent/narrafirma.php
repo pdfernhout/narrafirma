@@ -463,22 +463,66 @@ function pointrel20150417_queryForNextMessage($request) {
 }
 
 function pointrel20150417_storeMessage($request) {
+    global $wpdb;
+
     error_log("Called pointrel20150417_storeMessage");
     
-    // global $wpdb; // this is how you get access to the database
-    // $whatever = intval( $_POST['whatever'] );
+    $message = $request->message;
+    $journalIdentifier = $request->journalIdentifier;
     
-    // TODO: Actually do something here!!!
+    // TODO: IMPORTANT --- Need to check permissions for user on journal and topic!!!!
+    
+    if (!doesJournalTableExist($journalIdentifier)) {
+        wp_send_json( makeFailureResponse(404, "No such journal", array( 'journalIdentifier' => $journalIdentifier ) ) );
+    }
     
     // wp_send_json( makeFailureResponse(500, "Server error: write not yet supported") );
     
-    $receivedTimestamp = "FIXME???";
-    $sha256AndLength = "FIXME";
+    $table_name = tableNameForJournal($journalIdentifier);
+    $receivedTimestamp = getCurrentUniqueTimestamp();
     
+    // TODO: Need to update trace...
+    $messageText = json_encode($message);
+  
+    // TODO: IMPORTANT !!!! THIS IS JUST FOR INCREMENTAL TESTING!!!!
+    // TODO: Need to calculate SHA and length without trace and in canonical form as utf-8 encoded
+    $canonicalFormInUTF8 = $messageText;
+    $sha256AndLength = hash( 'sha256', $canonicalFormInUTF8 ) . "_" . strlen($canonicalFormInUTF8);
+    
+    // TODO: Check for empty topic and maybe act differently
+    $topicSHA256 = hash( 'sha256', $message->_topicIdentifier );
+    $topicTimestamp = $message->_topicTimestamp;
+    
+    /*
+        id int(9) UNSIGNED NOT NULL AUTO_INCREMENT,
+        sha256_and_length char(73) NOT NULL,
+        received_timestamp char(30) NOT NULL, 
+        topic_sha256 char(64) NOT NULL,
+        topic_timestamp char(30) NOT NULL,
+        message mediumtext NOT NULL,
+    */
+    
+    $wpdb->insert( 
+        $table_name, 
+        array( 
+            'sha256_and_length' => $sha256AndLength, 
+            'received_timestamp' => $receivedTimestamp,
+            'topic_sha256' => $topicSHA256, 
+            'topic_timestamp' => $topicTimestamp, 
+            'message' => $messageText
+        )
+    );
+    
+    $insert_id = $wpdb->insert_id;
+    
+    error_log("pointrel20150417_storeMessage inserted row " . $insert_id);
+        
     $response = makeSuccessResponse(200, "Success", array(
         'detail' => 'Wrote content',
         'sha256AndLength' => $sha256AndLength,
-        'receivedTimestamp' => $receivedTimestamp
+        'receivedTimestamp' => $receivedTimestamp,
+        // TODO: Adding extra id field for testing...
+        'insert_id' => $insert_id
     ));
     
     wp_send_json( $response );
