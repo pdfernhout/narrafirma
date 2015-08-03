@@ -304,6 +304,11 @@ function pointrel20150417() {
         pointrel20150417_storeMessage($apiRequest);
     }
     
+    if ($requestType == "pointrel20150417_queryForLatestMessage") {
+        pointrel20150417_queryForLatestMessage($apiRequest);
+    }
+    
+    error_log("pointrel20150417 ajax no implemented: $requestType");
     $response = makeFailureResponse(501, "Not Implemented: requestType not supported", array("requestType" => $requestType));
     
     wp_send_json( $response );
@@ -440,6 +445,24 @@ function pointrel20150417_reportJournalStatus($apiRequest) {
     wp_send_json( $response );
 }
 
+function makeRecordForClient($row, $includeMessageContents) {
+    $recordForClient = array(
+        "receivedTimestamp" => $row->received_timestamp,
+        "sha256AndLength" => $row->sha256_and_length,
+        "topicSHA256" => $row->topic_sha256,
+        "topicTimestamp" => $row->topic_timestamp
+        // _debugLoadingSequence: receivedRecord.loadingSequence
+    );
+    
+    if ($includeMessageContents) {
+        // TODO: Error handling if json_decode fails
+        // TODO: Add to message trace
+        $recordForClient["messageContents"] = json_decode($row->message);
+    };
+    
+    return $recordForClient;
+}
+
 function pointrel20150417_queryForNextMessage($apiRequest) {
     global $wpdb;
 
@@ -467,7 +490,7 @@ function pointrel20150417_queryForNextMessage($apiRequest) {
     
     $includeMessageContents = $apiRequest->includeMessageContents;
     
-    // TODO: Handle if topicIdentifier is not defiend to avoid PHP warning
+    // Check if topicIdentifier is not defined to avoid PHP warning
     if (isset($apiRequest->topicIdentifier)) {
         $topicIdentifier = $apiRequest->topicIdentifier;
     } else {
@@ -500,11 +523,12 @@ function pointrel20150417_queryForNextMessage($apiRequest) {
     
     $topicSHA256 = hash( 'sha256', $topicIdentifier );
     
+    // TODO: Maybe just user record id instead of timestamp?
     // TODO: Maybe use prepared query (or two different versions) for speed?
     // Limiting the search to earlier "now" in case another PHP process adds a record while this is running
-    $query = "SELECT * FROM $table_name WHERE received_timestamp > \"$fromTimestampExclusive\" AND received_timestamp < \"$now\"";
+    $query = "SELECT * FROM $table_name WHERE received_timestamp > '$fromTimestampExclusive' AND received_timestamp < '$now'";
     if ($topicIdentifier) {
-        $query = $query . " AND topicSHA256 = " . $topicSHA256;
+        $query = $query . " AND topic_sha256 = '$topicSHA256'";
     }
     
     $rows = $wpdb->get_results("$query LIMIT $limitCount", OBJECT);
@@ -513,22 +537,11 @@ function pointrel20150417_queryForNextMessage($apiRequest) {
     
     $lastReceivedTimestampConsidered = null;
     
-    error_log('rows: ' . print_r($rows, true));
+    // error_log('rows: ' . print_r($rows, true));
     
     // TODO: Put records into result...
     foreach ( $rows as $row ) {
-        $recordForClient = array(
-            "receivedTimestamp" => $row->received_timestamp,
-            "sha256AndLength" => $row->sha256_and_length,
-            "topicSHA256" => $row->topic_sha256,
-            "topicTimestamp" => $row->topic_timestamp
-            // _debugLoadingSequence: receivedRecord.loadingSequence
-        );
-        if ($includeMessageContents) {
-            // TODO: Error handling if json_decode fails
-            // TODO: Add to message trace
-            $recordForClient["messageContents"] = json_decode($row->message);
-        };
+        $recordForClient = makeRecordForClient($row, $includeMessageContents);
         $receivedRecordsForClient[] = $recordForClient;
         $lastReceivedTimestampConsidered = $row->received_timestamp;
     }
@@ -546,6 +559,61 @@ function pointrel20150417_queryForNextMessage($apiRequest) {
     ));
     
     wp_send_json( $response );
+}
+
+function pointrel20150417_queryForLatestMessage($apiRequest) {
+    global $wpdb;
+
+    error_log("Called pointrel20150417_queryForLatestMessage");
+
+    $now = getCurrentUniqueTimestamp();
+    
+    $journalIdentifier = $apiRequest->journalIdentifier;
+    
+    // TODO: IMPORTANT --- Need to check permissions for user on journal and topic!!!!
+    
+    if (!doesJournalTableExist($journalIdentifier)) {
+        wp_send_json( makeFailureResponse(404, "No such journal", array( 'journalIdentifier' => $journalIdentifier ) ) );
+    }
+    
+    // wp_send_json( makeFailureResponse(500, "Server error: write not yet supported") );
+    
+    $table_name = tableNameForJournal($journalIdentifier);
+    
+    // Check if topicIdentifier is not defined to avoid PHP warning
+    if (isset($apiRequest->topicIdentifier)) {
+        $topicIdentifier = $apiRequest->topicIdentifier;
+    } else {
+        $topicIdentifier = null;
+    }
+    
+    $topicSHA256 = hash( 'sha256', $topicIdentifier );
+    
+    // TODO: Maybe use prepared query for speed?
+    // TODO: Maybe just user record id instead of timestamp?
+    $query = "SELECT * FROM $table_name";
+    if ($topicIdentifier) {
+        $query = $query . " WHERE topic_sha256 = '$topicSHA256'";
+    }
+
+    $rows = $wpdb->get_results("$query ORDER BY received_timestamp LIMIT 1", OBJECT);
+    
+    if (count($rows) == 0) {
+        $latestRecord = null;
+        error_log("pointrel20150417_queryForLatestMessage: no match");
+    } else {
+        $includeMessageContents = true;
+        $latestRecord = makeRecordForClient($rows[0], $includeMessageContents);
+        error_log("pointrel20150417_queryForLatestMessage: one match " . print_r($rows[0], true));
+    }
+    
+    $response = makeSuccessResponse(200, "Success", array(
+        'detail' => 'latest',
+        'currentTimestamp' => $now,
+        'latestRecord' => $latestRecord
+    ));
+    
+    wp_send_json( $response );   
 }
 
 function pointrel20150417_storeMessage($apiRequest) {
