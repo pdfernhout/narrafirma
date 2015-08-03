@@ -137,9 +137,22 @@ You can create projects by editing the NarraFirma configuration data here in JSO
             // $new_input['journals'] = sanitize_text_field( $input['journals'] );
             $new_input['journals'] = $input['journals'];
         }
+        
+        $this->ensureAllJournalsExist($new_input['journals']);
 
         return $new_input;
     }
+    
+    public function ensureAllJournalsExist($journalsJSON) {
+        $journals = json_decode( $journalsJSON );
+        
+        foreach($journals as $name => $permissions) {
+            if (!doesJournalTableExist($name)) {
+                error_log("ensureAllJournalsExists about to create table for: " . $name);
+                makeJournalTable($name);
+            }
+        }
+   }
 
     public function print_section_info() {
         print 'Enter your settings below:';
@@ -212,7 +225,11 @@ function makeSuccessResponse($statusCode, $description, $extra = false) {
 // TODO: How to find list of tables to upgrade in future? Perhaps: SHOW TABLES LIKE 'someprefix\_%'
 
 function tableNameForJournal($journalName) {
-    $table_name = $wpdb->prefix . 'narrafirma_j_' . journalName;
+    global $wpdb;
+    
+    $sanitizedJournalName = preg_replace('/[^a-zA-Z0-9_]+/', '_', $journalName);
+    
+    $table_name = $wpdb->prefix . 'narrafirma_j_' . $sanitizedJournalName;
     
     $table_name = strtolower($table_name);
     
@@ -225,12 +242,15 @@ function tableNameForJournal($journalName) {
 }
 
 function doesJournalTableExist($journalName) {
-    $table_name = tableNameForJournal($journalName);
     global $wpdb;
+
+    $table_name = tableNameForJournal($journalName);
     return ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name);
 }
 
 function makeJournalTable($journalName) {
+    global $wpdb;
+    
     $table_name = tableNameForJournal($journalName);
     
     $charset_collate = $wpdb->get_charset_collate();
@@ -239,7 +259,7 @@ function makeJournalTable($journalName) {
     // sha256_length max 73 = 64 + 1 + 8 (8 = 16777215 max length)
     // Example timestamp length = 30: "2015-05-23T00:24:56.087000784Z"
     $sql = "CREATE TABLE $table_name (
-        id int unsigned NOT NULL AUTO_INCREMENT,
+        id int(9) UNSIGNED NOT NULL AUTO_INCREMENT,
         sha256_and_length char(73) NOT NULL,
         received_timestamp char(30) NOT NULL, 
         topic_sha256 char(64) NOT NULL,
@@ -336,7 +356,6 @@ function pointrel20150417_createJournal($request) {
     error_log("Called pointrel20150417_createJournal");
     
 	// global $wpdb; // this is how you get access to the database
-	// $whatever = intval( $_POST['whatever'] );
 	
 	if (!current_user_can( 'manage_options' )) {
 	    wp_send_json( makeFailureResponse(403, "Forbidden -- User is not an admin") );
@@ -358,12 +377,12 @@ function pointrel20150417_createJournal($request) {
 }
 
 function pointrel20150417_reportJournalStatus($request) {
+    global $pointrelServerVersion;
+    global $wpdb;
+    
     error_log("Called pointrel20150417_reportJournalStatus");
 
     $userID = wp_get_current_user()->user_login;
-    
-    global $pointrelServerVersion;
-    global $wpdb;
         
     $journalIdentifier = $request->journalIdentifier;
     
