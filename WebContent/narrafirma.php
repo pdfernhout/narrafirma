@@ -441,21 +441,102 @@ function pointrel20150417_reportJournalStatus($apiRequest) {
 }
 
 function pointrel20150417_queryForNextMessage($apiRequest) {
+    global $wpdb;
+
     error_log("Called pointrel20150417_queryForNextMessage");
     
-    // global $wpdb; // this is how you get access to the database
-    // $whatever = intval( $_POST['whatever'] );
+    $now = getCurrentUniqueTimestamp();
     
-    // apiRequest.topicIdentifier, apiRequest.fromTimestampExclusive, apiRequest.limitCount, apiRequest.includeMessageContents, callback);
+    $journalIdentifier = $apiRequest->journalIdentifier;
+    
+    // TODO: IMPORTANT --- Need to check permissions for user on journal and topic!!!!
+    
+    if (!doesJournalTableExist($journalIdentifier)) {
+        wp_send_json( makeFailureResponse(404, "No such journal", array( 'journalIdentifier' => $journalIdentifier ) ) );
+    }
+    
+    // wp_send_json( makeFailureResponse(500, "Server error: write not yet supported") );
+    
+    $table_name = tableNameForJournal($journalIdentifier);
+    
+    // TODO: Need to sanitize $lastReceivedTimestampConsidered !!!!
+    $fromTimestampExclusive = $apiRequest->fromTimestampExclusive;
+    if (! $fromTimestampExclusive) {
+        $fromTimestampExclusive = "0";
+    }
+    
+    $includeMessageContents = $apiRequest->includeMessageContents;
+    
+    // TODO: Handle if topicIdentifier is not defiend to avoid PHP warning
+    if (isset($apiRequest->topicIdentifier)) {
+        $topicIdentifier = $apiRequest->topicIdentifier;
+    } else {
+        $topicIdentifier = null;
+    }
+    
+    // TODO: Use constant here for maximum
+    $limitCount = max(1, min(100, $apiRequest->limitCount));
     
     /*
-    $lastReceivedTimestampConsidered = $apiRequest.fromTimestampExclusive;
-    $now = getCurrentUniqueTimestamp();
-    $receivedRecordsForClient = array();
-    
-    $limitCount = min(100, $apiRequest.limitCount);
+        id int(9) UNSIGNED NOT NULL AUTO_INCREMENT,
+        sha256_and_length char(73) NOT NULL,
+        received_timestamp char(30) NOT NULL, 
+        topic_sha256 char(64) NOT NULL,
+        topic_timestamp char(30) NOT NULL,
+        message mediumtext NOT NULL,
     */
     
+    // messageContents
+    
+    /*
+    var receivedRecordForClient = {
+        receivedTimestamp: receivedRecord.receivedTimestamp,
+        sha256AndLength: receivedRecord.sha256AndLength,
+        topicSHA256: receivedRecord.topicSHA256,
+        topicTimestamp: receivedRecord.topicTimestamp,
+        _debugLoadingSequence: receivedRecord.loadingSequence
+    };
+    */
+    
+    $topicSHA256 = hash( 'sha256', $topicIdentifier );
+    
+    // TODO: Maybe use prepared query (or two different versions) for speed?
+    // Limiting the search to earlier "now" in case another PHP process adds a record while this is running
+    $query = "SELECT * FROM $table_name WHERE received_timestamp > \"$fromTimestampExclusive\" AND received_timestamp < \"$now\"";
+    if ($topicIdentifier) {
+        $query = $query . " AND topicSHA256 = " . $topicSHA256;
+    }
+    
+    $rows = $wpdb->get_results("$query LIMIT $limitCount", OBJECT);
+    
+    $receivedRecordsForClient = array();
+    
+    $lastReceivedTimestampConsidered = null;
+    
+    error_log('rows: ' . print_r($rows, true));
+    
+    // TODO: Put records into result...
+    foreach ( $rows as $row ) {
+        $recordForClient = array(
+            "receivedTimestamp" => $row->received_timestamp,
+            "sha256AndLength" => $row->sha256_and_length,
+            "topicSHA256" => $row->topic_sha256,
+            "topicTimestamp" => $row->topic_timestamp
+            // _debugLoadingSequence: receivedRecord.loadingSequence
+        );
+        if ($includeMessageContents) {
+            // TODO: Error handling if json_decode fails
+            // TODO: Add to message trace
+            $recordForClient["messageContents"] = json_decode($row->message);
+        };
+        $receivedRecordsForClient[] = $recordForClient;
+        $lastReceivedTimestampConsidered = $row->received_timestamp;
+    }
+    
+    // TODO: Ignoring case of where exactly limitCount new records and so is up to date, leading to unneeded query later by client...
+    if (count($rows) < $limitCount) {
+        $lastReceivedTimestampConsidered = $now;
+    }
     
     $response = makeSuccessResponse(200, "Success", array(
         'detail' => 'revisions',
