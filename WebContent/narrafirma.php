@@ -278,30 +278,30 @@ function makeJournalTable($journalName) {
 function pointrel20150417() {
     error_log("Called pointrel20150417 ajax");
     
-    $request = json_decode( file_get_contents( 'php://input' ) );
+    $apiRequest = json_decode( file_get_contents( 'php://input' ) );
     
-    $requestType = $request->action;
+    $requestType = $apiRequest->action;
     
     // TODO: Check permissions
     
     if ($requestType == "pointrel20150417_currentUserInformation") {
-        pointrel20150417_currentUserInformation($request);
+        pointrel20150417_currentUserInformation($apiRequest);
     }
     
     if ($requestType == "pointrel20150417_createJournal") {
-        pointrel20150417_createJournal($request);
+        pointrel20150417_createJournal($apiRequest);
     }
     
     if ($requestType == "pointrel20150417_reportJournalStatus") {
-        pointrel20150417_reportJournalStatus($request);
+        pointrel20150417_reportJournalStatus($apiRequest);
     }
     
     if ($requestType == "pointrel20150417_queryForNextMessage") {
-        pointrel20150417_queryForNextMessage($request);
+        pointrel20150417_queryForNextMessage($apiRequest);
     }
     
     if ($requestType == "pointrel20150417_storeMessage") {
-        pointrel20150417_storeMessage($request);
+        pointrel20150417_storeMessage($apiRequest);
     }
     
     $response = makeFailureResponse(501, "Not Implemented: requestType not supported", array("requestType" => $requestType));
@@ -319,7 +319,7 @@ function isUserAuthorized($userID, $permissions) {
     return false;
 }
 
-function pointrel20150417_currentUserInformation($request) {
+function pointrel20150417_currentUserInformation($apiRequest) {
 	$currentUser = wp_get_current_user();
 	$userID = $currentUser->user_login;
 	
@@ -352,7 +352,7 @@ function pointrel20150417_currentUserInformation($request) {
 	wp_send_json( $response );
 }
 
-function pointrel20150417_createJournal($request) {
+function pointrel20150417_createJournal($apiRequest) {
     error_log("Called pointrel20150417_createJournal");
     
 	// global $wpdb; // this is how you get access to the database
@@ -361,7 +361,7 @@ function pointrel20150417_createJournal($request) {
 	    wp_send_json( makeFailureResponse(403, "Forbidden -- User is not an admin") );
 	}
 	
-	$journalIdentifier = $request->journalIdentifier;
+	$journalIdentifier = $apiRequest->journalIdentifier;
 	
     // TODO: Actually do something here!!!
     
@@ -376,7 +376,7 @@ function pointrel20150417_createJournal($request) {
 	*/
 }
 
-function pointrel20150417_reportJournalStatus($request) {
+function pointrel20150417_reportJournalStatus($apiRequest) {
     global $pointrelServerVersion;
     global $wpdb;
     
@@ -384,7 +384,7 @@ function pointrel20150417_reportJournalStatus($request) {
 
     $userID = wp_get_current_user()->user_login;
         
-    $journalIdentifier = $request->journalIdentifier;
+    $journalIdentifier = $apiRequest->journalIdentifier;
     
     // TODO: Handle errors if missing...
     $options = get_option( 'narrafirma_admin_settings' );
@@ -440,17 +440,22 @@ function pointrel20150417_reportJournalStatus($request) {
     wp_send_json( $response );
 }
 
-function pointrel20150417_queryForNextMessage($request) {
+function pointrel20150417_queryForNextMessage($apiRequest) {
     error_log("Called pointrel20150417_queryForNextMessage");
     
     // global $wpdb; // this is how you get access to the database
     // $whatever = intval( $_POST['whatever'] );
     
-    // TODO: Actually do something here!!!
+    // apiRequest.topicIdentifier, apiRequest.fromTimestampExclusive, apiRequest.limitCount, apiRequest.includeMessageContents, callback);
     
-    $lastReceivedTimestampConsidered = null;
+    /*
+    $lastReceivedTimestampConsidered = $apiRequest.fromTimestampExclusive;
     $now = getCurrentUniqueTimestamp();
     $receivedRecordsForClient = array();
+    
+    $limitCount = min(100, $apiRequest.limitCount);
+    */
+    
     
     $response = makeSuccessResponse(200, "Success", array(
         'detail' => 'revisions',
@@ -462,13 +467,13 @@ function pointrel20150417_queryForNextMessage($request) {
     wp_send_json( $response );
 }
 
-function pointrel20150417_storeMessage($request) {
+function pointrel20150417_storeMessage($apiRequest) {
     global $wpdb;
 
     error_log("Called pointrel20150417_storeMessage");
     
-    $message = $request->message;
-    $journalIdentifier = $request->journalIdentifier;
+    $message = $apiRequest->message;
+    $journalIdentifier = $apiRequest->journalIdentifier;
     
     // TODO: IMPORTANT --- Need to check permissions for user on journal and topic!!!!
     
