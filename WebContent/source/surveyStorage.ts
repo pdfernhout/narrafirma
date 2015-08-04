@@ -17,7 +17,7 @@ export function storeSurveyResult(pointrelClient: PointrelClient, projectIdentif
             console.log("Problem saving survey result", error);
             // TODO: Translate
             // alert("Problem saving survey result");
-            alert("Problem saving survey result.\nPlease try to submit the survey result later;\nCould not write new survey result to server:\n" + error);
+            alert("Problem saving survey result; check the console for details.\nPlease try to submit the survey result later.");
             if (wizardPane && wizardPane.failed) wizardPane.failed();
             return;
         }
