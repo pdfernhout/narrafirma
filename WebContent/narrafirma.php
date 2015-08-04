@@ -186,7 +186,7 @@ if ( is_admin() ) {
 // TODO: Move these functions into a class...
 
 add_action( 'wp_ajax_pointrel20150417', 'pointrel20150417' );
-// add_action( 'wp_ajax_nopriv_pointrel20150417', 'pointrel20150417' );
+add_action( 'wp_ajax_nopriv_pointrel20150417', 'pointrel20150417' );
 
 function getCurrentUniqueTimestamp() {
     // TODO: Probably need extra digits and to assure unique...
@@ -288,8 +288,89 @@ function makeJournalTable($journalName) {
     dbDelta( $sql );
 }
 
+function isUserAuthorized($userID, $permissions) {
+    // error_log("isUserAuthorized '" . $userID . "' " . print_r($permissions, true));
+    foreach($permissions as $nameOrRole) {
+        // error_log("isUserAuthorized loop '$userID' '$nameOrRole'");
+        if ($nameOrRole === true) return true;
+        if ($nameOrRole == $userID) return true;
+        if (current_user_can($nameOrRole)) return true;
+    }
+    return false;
+}
+
+// Check permissions for user on journal and topic
+// Unlike NodeJS version, does not currently support fine-grained permissions on topic except for survey
+function faiIfNotAuthorized($requestedCapability, $journalIdentifier, $topicIdentifier) {    
+    $userIdentifier = wp_get_current_user()->user_login;
+    
+    // error_log("faiIfNotAuthorized '$userIdentifier' $requestedCapability $journalIdentifier '$topicIdentifier'");
+    
+    // TODO: Handle errors if missing...
+    $options = get_option( 'narrafirma_admin_settings' );
+    $journals = json_decode( $options['journals'] );
+    
+    if (!isset($journals->$journalIdentifier)) {
+        wp_send_json( makeFailureResponse(404, "No such journal", array( 'journalIdentifier' => $journalIdentifier ) ) );
+    }
+    
+    if (!doesJournalTableExist($journalIdentifier)) {
+        wp_send_json( makeFailureResponse(404, "No such journal table", array( 'journalIdentifier' => $journalIdentifier ) ) );
+    }
+    
+    $permissions = $journals->$journalIdentifier;
+    $admin = current_user_can( 'manage_options' );
+    
+    if ($requestedCapability == "admin" && $admin) return;
+    
+    // Need to check if can write always as might be needed for checking if can read
+    $write = $admin || isUserAuthorized($userIdentifier, $permissions->write);
+    
+    if ($requestedCapability == "write") {
+        if ($write) return;
+        
+        // Check if survey access
+        if ($topicIdentifier == "surveyResults" && isUserAuthorized($userIdentifier, $permissions->survey)) return;
+    }
+      
+    if ($requestedCapability == "read") {
+        $read = $write || isUserAuthorized($userIdentifier, $permissions->read);
+        if ($read) return;
+        
+        // Check if survey access
+        if ($topicIdentifier == "questionnaires" && isUserAuthorized($userIdentifier, $permissions->survey)) return;
+    }
+    
+    error_log("faiIfNotAuthorized fail: '" . $userIdentifier . "' " . print_r($permissions, true));
+    
+    $message = 'Forbidden -- user "' . $userIdentifier . '" is not authorized to "' . $requestedCapability . '" in ' . json_encode($journalIdentifier) . " (perhaps for the specific topic, message, and/or api request length)";
+    wp_send_json( makeFailureResponse(403, $message, array(
+        'userIdentifier' => $userIdentifier,
+        'journalIdentifier' => $journalIdentifier,
+        'requestedCapability' => $requestedCapability
+    ) ) );
+}
+
+function makeRecordForClient($row, $includeMessageContents) {
+    $recordForClient = array(
+        "receivedTimestamp" => $row->received_timestamp,
+        "sha256AndLength" => $row->sha256_and_length,
+        "topicSHA256" => $row->topic_sha256,
+        "topicTimestamp" => $row->topic_timestamp
+        // _debugLoadingSequence: receivedRecord.loadingSequence
+    );
+    
+    if ($includeMessageContents) {
+        // TODO: Error handling if json_decode fails
+        // TODO: Add to message trace
+        $recordForClient["messageContents"] = json_decode($row->message);
+    };
+    
+    return $recordForClient;
+}
+
 function pointrel20150417() {
-    error_log("Called pointrel20150417 ajax");
+    error_log("Called pointrel20150417 ajax by '" . wp_get_current_user()->user_login ."'");
     
     $apiRequest = json_decode( file_get_contents( 'php://input' ) );
     
@@ -327,16 +408,6 @@ function pointrel20150417() {
     wp_send_json( $response );
 }
 
-function isUserAuthorized($userID, $permissions) {
-    // error_log("isUserAuthorized " . $userID . " " . print_r($permissions, true));
-    foreach($permissions as $nameOrRole) {
-        if ($nameOrRole === true) return true;
-        if ($nameOrRole == $userID) return true;
-        if (current_user_can($nameOrRole)) return true;
-    }
-    return false;
-}
-
 function pointrel20150417_currentUserInformation($apiRequest) {
 	$currentUser = wp_get_current_user();
 	$userID = $currentUser->user_login;
@@ -360,7 +431,6 @@ function pointrel20150417_currentUserInformation($apiRequest) {
 	    }
 	}
 	
-    // TODO: Fix hardcoded project
     $response = makeSuccessResponse(200, "Success", array(
 		'status' => 'OK',
 		'userIdentifier' => $userID,
@@ -373,8 +443,6 @@ function pointrel20150417_currentUserInformation($apiRequest) {
 function pointrel20150417_createJournal($apiRequest) {
     error_log("Called pointrel20150417_createJournal");
     
-	// global $wpdb; // this is how you get access to the database
-	
 	if (!current_user_can( 'manage_options' )) {
 	    wp_send_json( makeFailureResponse(403, "Forbidden -- User is not an admin") );
 	}
@@ -412,23 +480,32 @@ function pointrel20150417_reportJournalStatus($apiRequest) {
         wp_send_json( makeFailureResponse(404, "No such journal", array( 'journalIdentifier' => $journalIdentifier ) ) );
     }
     
+    if (!doesJournalTableExist($journalIdentifier)) {
+        wp_send_json( makeFailureResponse(404, "No such journal table", array( 'journalIdentifier' => $journalIdentifier ) ) );
+    }
+    
     $permissions = $journals->$journalIdentifier;
     $admin = current_user_can( 'manage_options' );
     $write = $admin || isUserAuthorized($userID, $permissions->write);
     $read = $write || isUserAuthorized($userID, $permissions->read);
+    $survey = $write || isUserAuthorized($userID, $permissions->survey);
 
+    // No support for authorization only for specific topics, other than survey
+    
     $response = makeSuccessResponse(200, "Success", array(
         'journalIdentifier' => $journalIdentifier,
         'version' => $pointrelServerVersion,
         'permissions' => array(
-            // TODO: What about partial authorization for only some messages?
-            'read' => $read,
+            'admin' => $admin,
             'write' => $write,
-            'admin' => $admin
+            'read' => $read,
+            // Added survey which NodeJS version does not have
+            'survey' => $survey
         )
     ));
     
-    if ($readAuthorization) {
+    // TODO: Is this entire clause really needed?
+    if ($read) {
         $earliestRecord = null;
         $latestRecord = null;
         $recordCount = 0; // $sortedReceivedRecords.length
@@ -450,30 +527,12 @@ function pointrel20150417_reportJournalStatus($apiRequest) {
         $response->journalRecordCount = $recordCount;
     }
     
-    if ($writeAuthorization) {
+    if ($write) {
         // Not sure what I really mean by this flag; sort of that the journal is currently in readOnly mode on the server end?
         $response->readOnly = false;
     }
     
     wp_send_json( $response );
-}
-
-function makeRecordForClient($row, $includeMessageContents) {
-    $recordForClient = array(
-        "receivedTimestamp" => $row->received_timestamp,
-        "sha256AndLength" => $row->sha256_and_length,
-        "topicSHA256" => $row->topic_sha256,
-        "topicTimestamp" => $row->topic_timestamp
-        // _debugLoadingSequence: receivedRecord.loadingSequence
-    );
-    
-    if ($includeMessageContents) {
-        // TODO: Error handling if json_decode fails
-        // TODO: Add to message trace
-        $recordForClient["messageContents"] = json_decode($row->message);
-    };
-    
-    return $recordForClient;
 }
 
 function pointrel20150417_queryForNextMessage($apiRequest) {
@@ -484,12 +543,15 @@ function pointrel20150417_queryForNextMessage($apiRequest) {
     $now = getCurrentUniqueTimestamp();
     
     $journalIdentifier = $apiRequest->journalIdentifier;
-    
-    // TODO: IMPORTANT --- Need to check permissions for user on journal and topic!!!!
-    
-    if (!doesJournalTableExist($journalIdentifier)) {
-        wp_send_json( makeFailureResponse(404, "No such journal", array( 'journalIdentifier' => $journalIdentifier ) ) );
+      
+    // Check if topicIdentifier is not defined to avoid PHP warning
+    if (isset($apiRequest->topicIdentifier)) {
+        $topicIdentifier = $apiRequest->topicIdentifier;
+    } else {
+        $topicIdentifier = null;
     }
+    
+    faiIfNotAuthorized("read", $journalIdentifier, $topicIdentifier);
     
     // wp_send_json( makeFailureResponse(500, "Server error: write not yet supported") );
     
@@ -502,13 +564,6 @@ function pointrel20150417_queryForNextMessage($apiRequest) {
     }
     
     $includeMessageContents = $apiRequest->includeMessageContents;
-    
-    // Check if topicIdentifier is not defined to avoid PHP warning
-    if (isset($apiRequest->topicIdentifier)) {
-        $topicIdentifier = $apiRequest->topicIdentifier;
-    } else {
-        $topicIdentifier = null;
-    }
     
     // TODO: Use constant here for maximum
     $limitCount = max(1, min(100, $apiRequest->limitCount));
@@ -582,17 +637,7 @@ function pointrel20150417_queryForLatestMessage($apiRequest) {
     $now = getCurrentUniqueTimestamp();
     
     $journalIdentifier = $apiRequest->journalIdentifier;
-    
-    // TODO: IMPORTANT --- Need to check permissions for user on journal and topic!!!!
-    
-    if (!doesJournalTableExist($journalIdentifier)) {
-        wp_send_json( makeFailureResponse(404, "No such journal", array( 'journalIdentifier' => $journalIdentifier ) ) );
-    }
-    
-    // wp_send_json( makeFailureResponse(500, "Server error: write not yet supported") );
-    
-    $table_name = tableNameForJournal($journalIdentifier);
-    
+      
     // Check if topicIdentifier is not defined to avoid PHP warning
     if (isset($apiRequest->topicIdentifier)) {
         $topicIdentifier = $apiRequest->topicIdentifier;
@@ -600,6 +645,10 @@ function pointrel20150417_queryForLatestMessage($apiRequest) {
         $topicIdentifier = null;
     }
     
+    faiIfNotAuthorized("read", $journalIdentifier, $topicIdentifier);
+    
+    $table_name = tableNameForJournal($journalIdentifier);
+
     $topicSHA256 = hash( 'sha256', $topicIdentifier );
     
     // TODO: Maybe use prepared query for speed?
@@ -613,11 +662,11 @@ function pointrel20150417_queryForLatestMessage($apiRequest) {
     
     if (count($rows) == 0) {
         $latestRecord = null;
-        error_log("pointrel20150417_queryForLatestMessage: no match");
+        // error_log("pointrel20150417_queryForLatestMessage: no match");
     } else {
         $includeMessageContents = true;
         $latestRecord = makeRecordForClient($rows[0], $includeMessageContents);
-        error_log("pointrel20150417_queryForLatestMessage: one match " . print_r($rows[0], true));
+        // error_log("pointrel20150417_queryForLatestMessage: one match " . print_r($rows[0], true));
     }
     
     $response = makeSuccessResponse(200, "Success", array(
@@ -637,13 +686,14 @@ function pointrel20150417_storeMessage($apiRequest) {
     $message = $apiRequest->message;
     $journalIdentifier = $apiRequest->journalIdentifier;
     
-    // TODO: IMPORTANT --- Need to check permissions for user on journal and topic!!!!
-    
-    if (!doesJournalTableExist($journalIdentifier)) {
-        wp_send_json( makeFailureResponse(404, "No such journal", array( 'journalIdentifier' => $journalIdentifier ) ) );
+    // Check if topicIdentifier is not defined to avoid PHP warning
+    if (isset($message->_topicIdentifier)) {
+        $topicIdentifier = $message->_topicIdentifier;
+    } else {
+        $topicIdentifier = null;
     }
     
-    // wp_send_json( makeFailureResponse(500, "Server error: write not yet supported") );
+    faiIfNotAuthorized("write", $journalIdentifier, $topicIdentifier);
     
     $table_name = tableNameForJournal($journalIdentifier);
     $receivedTimestamp = getCurrentUniqueTimestamp();
@@ -657,7 +707,7 @@ function pointrel20150417_storeMessage($apiRequest) {
     $sha256AndLength = hash( 'sha256', $canonicalFormInUTF8 ) . "_" . strlen($canonicalFormInUTF8);
     
     // TODO: Check for empty topic and maybe act differently
-    $topicSHA256 = hash( 'sha256', $message->_topicIdentifier );
+    $topicSHA256 = hash( 'sha256', $topicIdentifier );
     $topicTimestamp = $message->_topicTimestamp;
     
     /*
@@ -695,4 +745,4 @@ function pointrel20150417_storeMessage($apiRequest) {
     wp_send_json( $response );
 }
 
-error_log("Finished running NarraFirma plugin module");
+// error_log("Finished running NarraFirma plugin module");
