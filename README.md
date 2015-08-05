@@ -48,7 +48,7 @@ As Malcom Gladwell has [said](http://venturebeat.com/2015/07/24/gladwell-on-data
 ## Trademark
 
 NarraFirma is a trademark of Cynthia F. Kurtz and is used by permission for the main distribution of this software.
-See [README-narrafirma-tradmark.txt](README-narrafirma-tradmark.txt) for the NarraFirma trademark usage policy.
+See [README-narrafirma-trademark.txt](README-narrafirma-trademark.txt) for the NarraFirma trademark usage policy.
 
 ## Developers
 
