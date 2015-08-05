@@ -4,9 +4,9 @@ NarraFirma is a trademark of Cynthia F. Kurtz and is used by permission for the 
 
 Cynthia F. Kurtz owns and oversees the trademarks for the NarraFirma name and logo. We have developed this trademark usage policy with the following goals in mind:
 
-    We’d like to make it easy for anyone to use theNarraFirma name or logo for community-oriented efforts that help spread and improve NarraFirma.
-    We’d like to make it clear how NarraFirma-related businesses and projects can (and cannot) use the NarraFirma name and logo.
-    We’d like to make it hard for anyone to use the NarraFirma name and logo to unfairly profit from, trick or confuse people who are looking for official NarraFirma resources.
+    We'd like to make it easy for anyone to use theNarraFirma name or logo for community-oriented efforts that help spread and improve NarraFirma.
+    We'd like to make it clear how NarraFirma-related businesses and projects can (and cannot) use the NarraFirma name and logo.
+    We'd like to make it hard for anyone to use the NarraFirma name and logo to unfairly profit from, trick or confuse people who are looking for official NarraFirma resources.
 
 Permission from Cynthia F. Kurtz is required to use the NarraFirma name or logo as part of any project, product, service, domain or company name.
 
@@ -22,9 +22,9 @@ If your project meets these criteria, you will be permitted to use the NarraFirm
 
 All other NarraFirma-related businesses or projects can use the NarraFirma name and logo to refer to and explain their services, but they cannot use them as part of a product, project, service, domain, or company name and they cannot use them in any way that suggests an affiliation with or endorsement by Cynthia F. Kurtz or the NarraFirma open source project.
 
-For example, a consulting company can describe its business as “123 Web Services, offering NarraFirma consulting for small businesses,” but cannot call its business “The NarraFirma Consulting Company.”
+For example, a consulting company can describe its business as '123 Web Services, offering NarraFirma consulting for small businesses,' but cannot call its business 'The NarraFirma Consulting Company.'
 
-Similarly, it’s OK to use the NarraFirma logo as part of a page that describes your products or services, but it is not OK to use it as part of your company or product logo or branding itself. Under no circumstances is it permitted to use NarraFirma as part of a top-level domain name.
+Similarly, it's OK to use the NarraFirma logo as part of a page that describes your products or services, but it is not OK to use it as part of your company or product logo or branding itself. Under no circumstances is it permitted to use NarraFirma as part of a top-level domain name.
 
 We do not allow the use of the trademark in advertising, including AdSense/AdWords.
 
