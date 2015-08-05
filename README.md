@@ -52,6 +52,11 @@ PNI can work as a complement to other methods of market research, business intel
 NarraFirma is a trademark of Cynthia F. Kurtz and is used by permission for the main distribution of this software.
 See [README-narrafirma-tradmark.txt](README-narrafirma-tradmark.txt) for the NarraFirma trademark usage policy.
 
+## Developers
+
+The initial NarraFirma design and some of the intiial implementation was done by Cynthia F. Kurtz.
+Most of the initial NarraFirma implementation was done by Paul D. Fernhout.
+
 ## Screenshots
 
 ![Screenshot of main dashboard](screenshots/screenshots-2015-06-18/NarraFirma Screenshot 03 - Home.png)
