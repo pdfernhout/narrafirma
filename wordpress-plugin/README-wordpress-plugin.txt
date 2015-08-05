@@ -1,7 +1,6 @@
-This was just a test of using the NarraFirma code as a WordPress plugin.
+This is a WordPress plugin which uses WordPress as an application server for the NarraFirma JavaScript code.
 
-The contents of the WebContent directory would need to be copied into the "narrafirma" directory.
+The narrafirma.php code implements a version of the Pointrel20150417 code to handle AJAX calls.
+That PHP code will store messages which can defined triples.
 
-As of this writing (2015-03-11), no data would be saved or loaded yet.
-Also, the images will not show correctly without a couple other minor tweaks 
-not in the current codebase as well as copying the image directory elsewhere on the webserver.
+The WebContent directory need to be copied into the "narrafirma" directory to build an actual working plugin.
