@@ -11,7 +11,7 @@ This is because most of the NarraFirma application runs as client-side JavaScrip
 Alternatively, to make a symbolic link for that directory, from wordpress-plugin/narrafirma do:
     ln -s ../../WebContent/ WebContent
 The symbolic file was not checked in because it still seems to cause potential issues with older git clients.
-This file (or copied directory) will be ignored based on a .gitignore file in the wordpress-plugin/narrafirma directory.
+This file (or copied directory) will be ignored based on a .gitignore file in the wordpress-plugin directory.
 
 This rsync command may be useful when testing the WordPress plugin if you have set up a symbolic link:
     $ pwd
