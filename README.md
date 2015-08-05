@@ -20,13 +20,13 @@ PNI is described in the textbook ["Working With Stories in your Community or Org
 As Malcom Gladwell has [said](http://venturebeat.com/2015/07/24/gladwell-on-data-marketing-the-snapchat-problem-the-facebook-problem-the-airbnb-problem/) about the limits of big data:
 "More data increases our confidence, not our accuracy." When "accuracy" is defined not as measurement but as effective, appropriate, meaningful change, PNI helps to increase accuracy in decision making by grounding actions in the experiences of the community or organization. PNI can also work as a complement to other methods of market research, business intelligence, and community engagement.
 
-![Diagram of the six phases of PNI](WebContent/images/PNIPhasesDiagram.png)
-
 ### Comprehensive
 
 - The NarraFirma software covers all six phases of the PNI process (planning, collection, catalysis, sensemaking, intervention, and return).
 - The application has over forty different input screens.
 - The application can make suggestions for questions to ask and workshops to run based on planning data you supply.
+
+![Diagram of the six phases of PNI](WebContent/images/PNIPhasesDiagram.png)
 
 ### Client-side implementation
 
