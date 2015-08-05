@@ -6,8 +6,12 @@ there is no WordPress-specific integration of the NarraFirma application.
 The major benefit of using WordPress as an application server is that it makes the NarraFirma application easier to install.
 Performance for AJAX calls will likely not be as good as with the NodeJS version, but that may not matter in practice for most projects.
 
-The WebContent directory need to be copied into the "narrafirma" directory to build an actual working plugin.
+The WebContent directory need to be copied manually into the "narrafirma" directory to build an actual working plugin.
 This is because most of the NarraFirma application runs as client-side JavaScript.
+Alternatively, to make a symbolic link for that directory, from wordpress-plugin/narrafirma do:
+    ln -s ../../WebContent/ WebContent
+The symbolic file was not checked in because it still seems to cause potential issues with older git clients.
+This file (or copied directory) will be ignored based on a .gitignore file in the wordpress-plugin/narrafirma directory.
 
 Because the NarraFirma application client is written in TypeScipt, 
 be sure that the WebContent/js directory contains JavaScript files (*.js) built from the TypeScript source (*.ts).
