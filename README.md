@@ -2,8 +2,8 @@
 
 A browser-based single-page application to support "grounding actions in stories"
 
-Install either as a WordPress plugin or a NodeJS application.
-License: GPL v2 or any later version.
+Install either as a WordPress plugin or a NodeJS application.  
+License: GPL v2 or any later version.  
 See the [website](http://narrafirma.com) for more information.
 
 ---
