@@ -13,7 +13,13 @@ Alternatively, to make a symbolic link for that directory, from wordpress-plugin
 The symbolic file was not checked in because it still seems to cause potential issues with older git clients.
 This file (or copied directory) will be ignored based on a .gitignore file in the wordpress-plugin/narrafirma directory.
 
-Because the NarraFirma application client is written in TypeScipt, 
+This rsync command may be useful when testing the WordPress plugin if you have set up a symbolic link:
+    $ pwd
+        [$WORDPRESS_PATH]/wp-content/plugins
+    $ mkdir narrafirma
+    $ rsync -r --copy-links [$REPOSITORY_PATH]/wordpress-plugin/narrafirma/* narrafirma
+
+Because the NarraFirma application client is written in TypeScript, 
 be sure that the WebContent/js directory contains JavaScript files (*.js) built from the TypeScript source (*.ts).
 This will be the case when using Eclipse with the Palantir TypeScript IDE plugin and the Eclipse project in the repository.
 Alternatively, you can run "tsc" in the WebContent directory (or a parent directory).
