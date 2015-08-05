@@ -31,7 +31,7 @@ export function helpButtonClicked() {
         return;
     }
     
-    var helpURL = '/help/' + pageSpecification.section + "/help_" + pageSpecification.id + '.html';
+    var helpURL = 'help/' + pageSpecification.section + "/help_" + pageSpecification.id + '.html';
     
     console.log("opening help url", helpURL);
     
