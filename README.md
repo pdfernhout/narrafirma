@@ -18,9 +18,7 @@ PNI is described in the textbook ["Working With Stories in your Community or Org
 ![Cover of "Working With Stories" textbook](WebContent/images/WWS_BookCover_front_small.png)
 
 As Malcom Gladwell has [said](http://venturebeat.com/2015/07/24/gladwell-on-data-marketing-the-snapchat-problem-the-facebook-problem-the-airbnb-problem/) about the limits of big data:
-"More data increases our confidence, not our accuracy."
-One of the things PNI helps with is increasing accuracy in decision making by "grounding actions in stories".
-PNI can work as a complement to other methods of market research, business intelligence, and community engagement.
+"More data increases our confidence, not our accuracy." When "accuracy" is defined not as measurement but as effective, appropriate, meaningful change, PNI helps to increase accuracy in decision making by grounding actions in the experiences of the community or organization. PNI can also work as a complement to other methods of market research, business intelligence, and community engagement.
 
 ![Diagram of the six phases of PNI](WebContent/images/PNIPhasesDiagram.png)
 
@@ -34,16 +32,16 @@ PNI can work as a complement to other methods of market research, business intel
 
 - Most of the the NarraFirma code implements a web-browser-based single-page application.
 - The client-side code is written in TypeScript which is transpiled to JavaScript.
-- The application supports supports mult-user editing of content using message-based triple store approach called "Pointrel".
+- The application supports supports mult-user editing of content using a message-based triple store approach called "Pointrel".
 - Each change to the application state generates a JSON AJAX message.
 - Interface building is done using [Mithril](https://lhorie.github.io/mithril/index.html) (an earlier version used Dojo).
-- Interactive statistical graphs are drawn using D3.
+- Interactive graphs are drawn using D3.
 
 ### Server-side implementation
 
 - Server support is either via a WordPress plugin (written in PHP) or a NodeJS application (written in JavaScript).
 - The server-side code mainly implements the "Pointrel" AJAX API for messaging and enforces per-project access controls.
-- Data is stored in either SQL database tables (for WordPress, one per project) or flat files (for NodeJS, one dirctory per project with one JSON file per message).
+- Data is stored in either SQL database tables (for WordPress, one per project) or flat files (for NodeJS, one directory per project with one JSON file per message).
 
 ---
 
@@ -54,7 +52,7 @@ See [README-narrafirma-tradmark.txt](README-narrafirma-tradmark.txt) for the Nar
 
 ## Developers
 
-The initial NarraFirma design and some of the intiial implementation was done by Cynthia F. Kurtz.
+The initial NarraFirma design and some of the initial implementation was done by Cynthia F. Kurtz.
 Most of the initial NarraFirma implementation was done by Paul D. Fernhout.
 
 ## Screenshots
