@@ -370,6 +370,14 @@ function makeRecordForClient($row, $includeMessageContents) {
 }
 
 function pointrel20150417() {
+    try {
+        pointrel20150417_dispatch();
+    } catch (Exception $e) {
+        wp_send_json( makeFailureResponse(500, "Server error: caught exception: " . $e->getMessage() ) );
+    }
+}
+
+function pointrel20150417_dispatch() {
     error_log("Called pointrel20150417 ajax by '" . wp_get_current_user()->user_login ."'");
     
     $apiRequest = json_decode( file_get_contents( 'php://input' ) );
@@ -514,22 +522,23 @@ function pointrel20150417_reportJournalStatus($apiRequest) {
             $table_name = tableNameForJournal($journalIdentifier);
             
             // TODO: Is the journalRecordCount really needed? Looks like maybe not?
-            $wpdb->get_results( 'SELECT COUNT(*) FROM $table_name' );
-            $recordCount = $wpdb->num_rows;
+            $rows = $wpdb->get_results( "SELECT COUNT(*) AS num_records FROM $table_name" );
+            // error_log("$rows" . json_encode($rows));
+            $recordCount = $rows[0]->num_records; // $wpdb->num_rows;
             
             // TODO: use database to get earliest and latest record
             // TODO: Is the earliest record really needed?  Looks like maybe not?
             // TODO: Is the latest record really needed? Looks like maybe not?
         }
         
-        $response->journalEarliestRecord = $earliestRecord;
-        $response->journalLatestRecord = $latestRecord;
-        $response->journalRecordCount = $recordCount;
+        $response["journalEarliestRecord"] = $earliestRecord;
+        $response["journalLatestRecord"] = $latestRecord;
+        $response["journalRecordCount"] = $recordCount;
     }
     
     if ($write) {
         // Not sure what I really mean by this flag; sort of that the journal is currently in readOnly mode on the server end?
-        $response->readOnly = false;
+        $response["readOnly"] = false;
     }
     
     wp_send_json( $response );
@@ -678,6 +687,35 @@ function pointrel20150417_queryForLatestMessage($apiRequest) {
     wp_send_json( $response );   
 }
 
+function startsWith($haystack, $needle) {
+     $length = strlen($needle);
+     return (substr($haystack, 0, $length) === $needle);
+}
+
+function isSHA256AndLengthIndexed($journal, $sha256AndLength) {
+    // TODO: Check if message has already been stored so do not store it again
+    return false;
+}
+
+function copyObjectWithSortedKeys($value) {
+    if (is_array($value)) {
+        return array_map("copyObjectWithSortedKeys", $value);
+    } else if (is_object($value)) {
+        $valueCopyWithSortedKeys = array();
+
+        foreach ($value as $key => $value) {
+            $valueCopyWithSortedKeys[$key] = copyObjectWithSortedKeys($value);
+        }
+        
+        ksort($valueCopyWithSortedKeys);
+
+        return $valueCopyWithSortedKeys;
+    
+    } else {
+        return $value;
+    }
+}
+
 function pointrel20150417_storeMessage($apiRequest) {
     global $wpdb;
 
@@ -698,13 +736,77 @@ function pointrel20150417_storeMessage($apiRequest) {
     $table_name = tableNameForJournal($journalIdentifier);
     $receivedTimestamp = getCurrentUniqueTimestamp();
     
-    // TODO: Need to update trace...
-    $messageText = json_encode($message);
-  
-    // TODO: IMPORTANT !!!! THIS IS JUST FOR INCREMENTAL TESTING!!!!
-    // TODO: Need to calculate SHA and length without trace and in canonical form as utf-8 encoded
-    $canonicalFormInUTF8 = $messageText;
+    // Need to calculate SHA and length without trace and in canonical form as utf-8 encoded
+    
+    $oldSHA256AndLength = $message->__pointrel_sha256AndLength;
+    $oldTrace = $message->__pointrel_trace;
+    
+    if ($oldTrace && !is_array($oldTrace)) {
+        wp_send_json( makeFailureResponse(400, "Bad Request: trace field should be an array if it is defined" ) );
+     }
+    
+    if (!$oldTrace) $oldTrace = array();
+    
+    // Calculate the sha256AndLength without the pointrel fields
+    
+    // Remove all "__pointrel_" tags from the top level, which includes sha256AndLength and trace and any other local metadata
+    $cloneArray = $message;
+    foreach( $cloneArray as $key => $value ) {
+        if (startsWith($key, "__pointrel_")) { 
+           unset($message->$key);
+        }
+    }
+
+    $canonicalMessageWithoutHashAndTrace = copyObjectWithSortedKeys($message);
+      
+    // TODO: Ensure json_encode produces utf-8; JSON_UNESCAPED_UNICODE requires later version of PHP than testing with
+    // $canonicalFormInUTF8 = json_encode($canonicalMessageWithoutHashAndTrace, JSON_UNESCAPED_UNICODE);
+    $canonicalFormInUTF8 = json_encode($canonicalMessageWithoutHashAndTrace);
     $sha256AndLength = hash( 'sha256', $canonicalFormInUTF8 ) . "_" . strlen($canonicalFormInUTF8);
+   
+    if ($oldSHA256AndLength && $oldSHA256AndLength !== $sha256AndLength) {
+        error_log("Problem with new calculated SHA not matching old supplied one: $oldSHA256AndLength new: $sha256AndLength " . json_encode($message));
+        wp_send_json( makeFailureResponse(400, "Bad Request: sha256AndLength was supplied in message but it does not match the calculated value; old: $oldSHA256AndLength new: $sha256AndLength" ) );
+    }
+    
+    if (isSHA256AndLengthIndexed($journalIdentifier, $sha256AndLength)) {
+        wp_send_json(makeFailureResponse(409, "Conflict: The message already exists on the server", array("sha256AndLength" => $sha256AndLength)));
+    }
+    
+    $message->__pointrel_sha256AndLength = $sha256AndLength;
+    
+    // TODO: Determine server name
+    $serverName = "UNFINISHED_SERVER_NAME";
+        
+    // Maybe could improve on this; see: http://stackoverflow.com/questions/3003145/how-to-get-the-client-ip-address-in-php
+    $senderIPAddress = $_SERVER['REMOTE_ADDR'];
+    
+    $userIdentifier = wp_get_current_user()->user_login;
+    
+    $receivedTimestamp = getCurrentUniqueTimestamp();
+    
+    // Put in some local information
+    // TODO: More thinking about the meaning of a trace???
+    // TODO: Add more info about who stored this information
+    // TODO: Maybe add other things, like requester IP or user identifier?
+    $traceEntry = array(
+        "receivedByJournalIdentifier" => $journalIdentifier,
+        "receivedByServer" => $serverName,
+        // TODO: How to best identify from where or from whom this is received from???
+        "senderIPAddress" => $senderIPAddress,
+        "userIdentifier" => $userIdentifier,
+        "receivedTimestamp" => $receivedTimestamp
+    );
+    
+    $oldTrace[] = $traceEntry;
+    
+    $message->__pointrel_trace = $oldTrace;
+    
+    $canonicalMessage = copyObjectWithSortedKeys($message);
+    
+    // TODO: Ensure json_encode produces utf-8; JSON_UNESCAPED_UNICODE requires later version of PHP than testing with
+    // $messageText = json_encode($canonicalMessage, JSON_UNESCAPED_UNICODE);
+    $messageText = json_encode($canonicalMessage);
     
     // TODO: Check for empty topic and maybe act differently
     $topicSHA256 = hash( 'sha256', $topicIdentifier );
@@ -718,6 +820,11 @@ function pointrel20150417_storeMessage($apiRequest) {
         topic_timestamp char(30) NOT NULL,
         message mediumtext NOT NULL,
     */
+    
+        
+    // TODO: Remove this
+    // error_log("pointrel20150417_storeMessage: everything OK and ready to store -- but not storing for now as test");
+    // throw new Exception("storing disabled for now while test canonical JSON SHA calculation");
     
     $wpdb->insert( 
         $table_name, 
