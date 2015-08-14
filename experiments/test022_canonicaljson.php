@@ -1,5 +1,7 @@
 <?php
 
+echo "test test022_canonicaljson.php";
+
 // Making a function to create canonical JSON
 
 function copyObjectWithSortedKeys($value) {
