@@ -2,8 +2,10 @@
     "use strict";
     
     // Surprising issue: If you reload this page after making changes, the changes will reappear in Firefox because the textarea's content is carried forward.
-
+   
     console.log("narrafirmaWordpressAdmin called");
+    
+    var narrafirmaProjectPrefix = "NarraFirmaProject-";
     
     // The div containing the form to edit JSON directly
     var jsonForm;
@@ -16,7 +18,6 @@
     var NarraFirmaAdminComponent = {
         controller: function(data) {
             return {
-                greeting: "Hello from NarraFirmaAdminComponent",
                 showJSON: false,
                 // Read JSON twice to ensure changing the second copy won't affect the first
                 originalJournalDefinitions: readJournalDefinitionsFromTextarea(),
@@ -32,28 +33,33 @@
             }
                 
             return m("div", [
-                m("h1", controller.greeting),
-                Object.keys(controller.journalDefinitions).map(function(key) {
-                    var journal = controller.journalDefinitions[key];
-                    return m("div", [
-                        key,
-                        m("button", {onclick: deleteJournal.bind(null, controller, key)}, "delete"),
-                        m("br"),
-                        m("div", "  write: " + journal.write),
-                        m("div", "  read: " + journal.read),
-                        m("div", "  survey: " + journal.survey),
-                        m("div", "  anonymous survey: " + (journal.survey.indexOf(true) !== -1)),
-                    ]);
+                m("h3", "NarraFirma projects and permissions"),
+                Object.keys(controller.journalDefinitions).map(function(journalIdentifier) {
+                    return displayJournal(controller, journalIdentifier);
                 }),
                 m("button", {onclick: newProject.bind(null, controller)}, "New project"),
                 m("br"),
                 m("button", {onclick: cancelChanges.bind(null, controller), disabled: isJSONUnchanged}, "Cancel changes"),
+                m("button", {onclick: saveChanges.bind(null, controller), disabled: isJSONUnchanged}, "Save changes"),
                 m("hr"),
-                m("span", {"for": "narrafirma-displayJSON"}, "Edit JSON directly"),
+                m("span", {"for": "narrafirma-displayJSON"}, "Edit project permissions directly as JSON"),
                 m("input[type=checkbox]", {id: "narrafirma-displayJSON", onclick: m.withAttr("checked", showJSONChecked.bind(null, controller)), checked: controller.showJSON})
             ]);
         }
     };
+    
+    function displayJournal(controller, journalIdentifier) {
+        var journalDefinition = controller.journalDefinitions[journalIdentifier];
+        return m("div", [
+            journalIdentifier.substring(narrafirmaProjectPrefix.length),
+            m("button", {onclick: deleteJournal.bind(null, controller, journalIdentifier)}, "delete"),
+            m("br"),
+            m("div", "  write: " + journalDefinition.write),
+            m("div", "  read: " + journalDefinition.read),
+            m("div", "  survey: " + journalDefinition.survey),
+            m("div", "  anonymous survey: " + (journalDefinition.survey.indexOf(true) !== -1)),
+        ]);
+    }
     
     function deleteJournal(controller, key) {
         if (!confirm("Are you sure you want to delete: " + key + "?")) return;
@@ -64,7 +70,7 @@
     function newProject(controller) {
         var newName = prompt("New project name?");
         if (!newName) return;
-        var key = "NarraFirmaProject-" + newName;
+        var key = narrafirmaProjectPrefix + newName;
         if (controller.journalDefinitions[key]) {
             alert("A project with that name already exists");
             return;
@@ -81,6 +87,10 @@
         if (!confirm("Are you sure you want to discard recent changes?")) return;
         writeJournalDefinitionsToTextarea(controller.originalJournalDefinitions);
         controller.journalDefinitions = readJournalDefinitionsFromTextarea();
+    }
+    
+    function saveChanges(controller) {
+        document.getElementById("submit").click();
     }
     
     function showJSONChecked(controller, checked) {
