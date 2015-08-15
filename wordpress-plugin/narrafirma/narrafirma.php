@@ -135,7 +135,7 @@ class NarraFirmaSettingsPage
 
         add_settings_section(
             'narrafirma_setting_section_id',
-            'My Custom Settings',
+            'NarraFirma Settings',
             array( $this, 'print_section_info' ),
             'narrafirma-settings-admin'
         ); 
@@ -150,6 +150,8 @@ class NarraFirmaSettingsPage
     }
 
     public function sanitize( $input ) {
+        // error_log("Called NarraFirma sanitize");
+    
         $new_input = array();
         
         if( isset( $input['journals'] ) ) {
