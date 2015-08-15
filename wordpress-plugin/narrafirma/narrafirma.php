@@ -183,6 +183,17 @@ if ( is_admin() ) {
     $narrafirma_settings_page = new NarraFirmaSettingsPage();
 }
 
+function nararfirma_admin_enqueue_scripts($hook) {
+    error_log("nararfirma_admin_enqueue_scripts $hook");
+    
+    // TODO: Maybe this name chould be assigned to a global on page creation?
+    if ($hook != "toplevel_page_narrafirma-settings-admin") return;
+        
+    wp_enqueue_script( 'mithril', plugin_dir_url( __FILE__ ) . 'WebContent/lib/mithril/mithril.js' );
+    wp_enqueue_script( 'narrafirma-admin-js', plugin_dir_url( __FILE__ ) . 'narrafirmaWordpressAdmin.js' );
+}
+add_action( 'admin_enqueue_scripts', 'nararfirma_admin_enqueue_scripts' );
+
 // TODO: Move these functions into a class...
 
 add_action( 'wp_ajax_pointrel20150417', 'pointrel20150417' );
