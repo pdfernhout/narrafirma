@@ -86,44 +86,45 @@ class NarraFirmaSettingsPage
     
         ?>
 <div class="wrap">
-<h2>NarraFirma plugin</h2>
-Options relating to the NarraFirma Plugin.
-<br>
-The NarraFirma WordPress plugin uses WordPress as an application server, user authentication system, and data store.<br>
-Using the WordPress platform this way makes NarraFirma easy to install and configure for many people.<br>
-The NarraFirma application is not otherwise integrated with WordPress pages and runs in its own web page.<br>
-<br>
-Click this link to <a href="<?php echo $launchLink; ?>">launch the NarraFirma application</a>.
-</div>
 
-<div id="narrafirma-project-list-editor">
-</div>
-
-<div id="narrafirma-json-form">
-<form method="post" action="options.php">
-<?php
-    // This prints out all hidden setting fields
-    settings_fields( 'narrafirma_option_group' );   
-    do_settings_sections( 'narrafirma-settings-admin' );
-    submit_button();
-?>
-</form>
-
-<div id="narrafirma-example">
-You can create projects by editing the NarraFirma configuration data here in JSON format.<br>
-<br>
-An example:
-<pre>
-{
-    "NarraFirmaProject-test1": {
-         "write": ["editor", "pdfernhout", "cfkurtz"],
-         "read": ["subscriber"],
-         "survey": [true]
-    }
-}
-</pre>
-</div>
-</div>
+    <h2>NarraFirma plugin</h2>
+    Options relating to the NarraFirma Plugin.
+    <br>
+    The NarraFirma WordPress plugin uses WordPress as an application server, user authentication system, and data store.<br>
+    Using the WordPress platform this way makes NarraFirma easy to install and configure for many people.<br>
+    The NarraFirma application is not otherwise integrated with WordPress pages and runs in its own web page.<br>
+    <br>
+    Click this link to <a href="<?php echo $launchLink; ?>">launch the NarraFirma application</a>.
+    <hr>
+    
+    <div id="narrafirma-project-list-editor">
+    </div>
+    
+    <div id="narrafirma-json-form">
+        <form method="post" action="options.php">
+        <?php
+            // This prints out all hidden setting fields
+            settings_fields( 'narrafirma_option_group' );   
+            do_settings_sections( 'narrafirma-settings-admin' );
+            submit_button();
+        ?>
+        </form>
+        
+        <div id="narrafirma-example">
+            You can create projects by editing the NarraFirma configuration data here in JSON format.<br>
+            <br>
+            An example:
+            <pre>
+            {
+                "NarraFirmaProject-test1": {
+                     "write": ["editor", "pdfernhout", "cfkurtz"],
+                     "read": ["subscriber"],
+                     "survey": [true]
+                }
+            }
+            </pre>
+        </div>
+    </div>
 
 </div>
 <?php
