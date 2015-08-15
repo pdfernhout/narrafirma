@@ -96,8 +96,10 @@ The NarraFirma application is not otherwise integrated with WordPress pages and 
 Click this link to <a href="<?php echo $launchLink; ?>">launch the NarraFirma application</a>.
 </div>
 
-You can create projects by editing the NarraFirma configuration data here in JSON format:<br>
-       
+<div id="narrafirma-project-list-editor">
+</div>
+
+<div id="narrafirma-json-form">
 <form method="post" action="options.php">
 <?php
     // This prints out all hidden setting fields
@@ -106,7 +108,9 @@ You can create projects by editing the NarraFirma configuration data here in JSO
     submit_button();
 ?>
 </form>
-<br>
+
+<div id="narrafirma-example">
+You can create projects by editing the NarraFirma configuration data here in JSON format.<br>
 <br>
 An example:
 <pre>
@@ -118,6 +122,8 @@ An example:
     }
 }
 </pre>
+</div>
+</div>
 
 </div>
 <?php
