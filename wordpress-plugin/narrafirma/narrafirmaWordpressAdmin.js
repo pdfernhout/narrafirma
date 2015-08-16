@@ -52,12 +52,14 @@
         var journalDefinition = controller.journalDefinitions[journalIdentifier];
         return m("div", [
             journalIdentifier.substring(narrafirmaProjectPrefix.length),
+            "  ",
             m("button", {onclick: deleteJournal.bind(null, controller, journalIdentifier)}, "delete"),
             m("br"),
             m("div", "  write: " + journalDefinition.write),
             m("div", "  read: " + journalDefinition.read),
             m("div", "  survey: " + journalDefinition.survey),
             m("div", "  anonymous survey: " + (journalDefinition.survey.indexOf(true) !== -1)),
+            m("br")
         ]);
     }
     
