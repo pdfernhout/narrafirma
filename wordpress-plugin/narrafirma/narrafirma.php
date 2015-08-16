@@ -199,7 +199,7 @@ function nararfirma_admin_enqueue_scripts($hook) {
     if ($hook != "toplevel_page_narrafirma-settings-admin") return;
         
     wp_enqueue_script( 'mithril', plugin_dir_url( __FILE__ ) . 'WebContent/lib/mithril/mithril.js' );
-    wp_enqueue_script( 'narrafirma-admin-js', plugin_dir_url( __FILE__ ) . 'narrafirmaWordpressAdmin.js' );
+    wp_enqueue_script( 'narrafirma-admin-js', plugin_dir_url( __FILE__ ) . 'narrafirmaWordPressAdmin.js' );
 }
 add_action( 'admin_enqueue_scripts', 'nararfirma_admin_enqueue_scripts' );
 
