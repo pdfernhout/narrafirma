@@ -18,7 +18,13 @@
     </div>
     
     <div id="narrafirma-json-form">
-       <textarea name="narrafirma_admin_settings[journals]">{}</textarea>
+       <textarea name="narrafirma_admin_settings[journals]">{
+    "NarraFirmaProject-test1": {
+         "write": ["editor", "pdfernhout", "cfkurtz"],
+         "read": ["subscriber"],
+         "survey": [true]
+    }
+}</textarea>
        <input name="submit" id="submit" class="button button-primary" value="Save Changes" type="submit">
     </div>
 </body>
