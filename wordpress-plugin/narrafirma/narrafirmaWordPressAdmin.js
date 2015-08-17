@@ -34,6 +34,7 @@
                 
             return m("div", [
                 m("h3", "NarraFirma projects and permissions"),
+                "To specify permissions, enter one or more space-separated user IDs (e.g. cfkurtz) or roles (e.g. administrator, editor, author, contributor, subscriber). Write access also grants read access and survey access.",
                 Object.keys(controller.journalDefinitions).map(function(journalIdentifier) {
                     return displayJournal(controller, journalIdentifier);
                 }),
@@ -76,11 +77,13 @@
         var checked = journalDefinition[field].indexOf(true) !== -1;
         return m("label", [
             field + ": ",
-            m("input[type=text]", {style: "width: 95%", value: permissionsToDisplay.join(" "), onchange: function (event) {
-                var items = event.currentTarget.value.split("\\s+");
-                if (checked) items.push("true");
+            m("input[type=text]", {style: "width: 90%", value: permissionsToDisplay.join(" "), onchange: function (event) {
+                var items = event.currentTarget.value.trim().split(/\s+/g);
+                if (checked) items.push(true);
                 journalDefinition[field] = items;
-            }})
+                console.log("on change", items);
+            }}),
+            m("br")
         ]);
     }
     
