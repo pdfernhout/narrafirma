@@ -39,7 +39,9 @@
                 }),
                 m("button", {onclick: newProject.bind(null, controller)}, "New project"),
                 m("br"),
+                m("br"),
                 m("button", {onclick: cancelChanges.bind(null, controller), disabled: isJSONUnchanged}, "Cancel changes"),
+                " ",
                 m("button", {onclick: saveChanges.bind(null, controller), disabled: isJSONUnchanged}, "Save changes"),
                 m("hr"),
                 m("span", {"for": "narrafirma-displayJSON"}, "Edit project permissions directly as JSON"),
@@ -67,20 +69,41 @@
         ]);
     }
     
+    function permissionsEditor(journalIdentifier, journalDefinition, field) {
+        var permissionsToDisplay = journalDefinition[field].filter(function (each) {
+            return each !== true;
+        });
+        var checked = journalDefinition[field].indexOf(true) !== -1;
+        return m("label", [
+            field + ": ",
+            m("input[type=text]", {style: "width: 95%", value: permissionsToDisplay.join(" "), onchange: function (event) {
+                var items = event.currentTarget.value.split("\\s+");
+                if (checked) items.push("true");
+                journalDefinition[field] = items;
+            }})
+        ]);
+    }
+    
     function displayJournal(controller, journalIdentifier) {
         var journalDefinition = controller.journalDefinitions[journalIdentifier];
         return m(".narrafirma-project", [
-            journalIdentifier.substring(narrafirmaProjectPrefix.length),
-            "  ",
-            m("button.delete-button", {onclick: deleteJournal.bind(null, controller, journalIdentifier)}, "delete"),
-            m("br"),
-            m("div", "  write: ", [journalDefinition.write]),
+            m("h3", [
+                 journalIdentifier.substring(narrafirmaProjectPrefix.length),
+                 "  ",
+                 m("button.delete-button", {onclick: deleteJournal.bind(null, controller, journalIdentifier)}, "delete")
+            ]),
+            permissionsEditor(journalIdentifier, journalDefinition, "write"),
             anonymousAccessCheckbox(journalIdentifier, journalDefinition, "write"),
-            m("div", "  read: ", [journalDefinition.read]),
+            m("br"),
+            m("br"),
+            permissionsEditor(journalIdentifier, journalDefinition, "read"),
             anonymousAccessCheckbox(journalIdentifier, journalDefinition, "read"),
-            m("div", "  survey: ", [journalDefinition.survey]),
+            m("br"),
+            m("br"),
+            permissionsEditor(journalIdentifier, journalDefinition, "survey"),
             anonymousAccessCheckbox(journalIdentifier, journalDefinition, "survey"),
-            m("br")
+            m("br"),
+            m("hr")
         ]);
     }
     
