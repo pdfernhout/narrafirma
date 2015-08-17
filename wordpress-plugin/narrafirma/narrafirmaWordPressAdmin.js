@@ -48,17 +48,38 @@
         }
     };
     
+    function anonymousAccessCheckbox(journalIdentifier, journalDefinition, field) {
+        var checked = journalDefinition[field].indexOf(true) !== -1;
+        var updateAnonymousAccess = function(newCheckedValue) {
+            if (newCheckedValue) {
+                if (journalDefinition[field].indexOf(true) === -1) {
+                    journalDefinition[field].push(true);
+                }
+            } else {
+                journalDefinition[field] = journalDefinition[field].filter(function (each) {
+                    return each !== true;
+                });
+            }
+        };
+        return m("label", [
+            "anonymous " + field,
+            m("input[type=checkbox]", {onclick: m.withAttr("checked", updateAnonymousAccess), checked: checked})
+        ]);
+    }
+    
     function displayJournal(controller, journalIdentifier) {
         var journalDefinition = controller.journalDefinitions[journalIdentifier];
-        return m("div", [
+        return m(".narrafirma-project", [
             journalIdentifier.substring(narrafirmaProjectPrefix.length),
             "  ",
-            m("button", {onclick: deleteJournal.bind(null, controller, journalIdentifier)}, "delete"),
+            m("button.delete-button", {onclick: deleteJournal.bind(null, controller, journalIdentifier)}, "delete"),
             m("br"),
-            m("div", "  write: " + journalDefinition.write),
-            m("div", "  read: " + journalDefinition.read),
-            m("div", "  survey: " + journalDefinition.survey),
-            m("div", "  anonymous survey: " + (journalDefinition.survey.indexOf(true) !== -1)),
+            m("div", "  write: ", [journalDefinition.write]),
+            anonymousAccessCheckbox(journalIdentifier, journalDefinition, "write"),
+            m("div", "  read: ", [journalDefinition.read]),
+            anonymousAccessCheckbox(journalIdentifier, journalDefinition, "read"),
+            m("div", "  survey: ", [journalDefinition.survey]),
+            anonymousAccessCheckbox(journalIdentifier, journalDefinition, "survey"),
             m("br")
         ]);
     }
