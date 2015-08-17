@@ -51,7 +51,7 @@
         }
     };
     
-    function anonymousAccessCheckbox(journalIdentifier, journalDefinition, field) {
+    function anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, field) {
         var checked = journalDefinition[field].indexOf(true) !== -1;
         var updateAnonymousAccess = function(newCheckedValue) {
             if (newCheckedValue) {
@@ -63,6 +63,7 @@
                     return each !== true;
                 });
             }
+            writeJournalDefinitionsToTextarea(controller.journalDefinitions);
         };
         return m("label", [
             "anonymous " + field,
@@ -70,7 +71,7 @@
         ]);
     }
     
-    function permissionsEditor(journalIdentifier, journalDefinition, field) {
+    function permissionsEditor(controller, journalIdentifier, journalDefinition, field) {
         var permissionsToDisplay = journalDefinition[field].filter(function (each) {
             return each !== true;
         });
@@ -82,6 +83,7 @@
                 if (checked) items.push(true);
                 journalDefinition[field] = items;
                 console.log("on change", items);
+                writeJournalDefinitionsToTextarea(controller.journalDefinitions);
             }}),
             m("br")
         ]);
@@ -95,16 +97,16 @@
                  "  ",
                  m("button.delete-button", {onclick: deleteJournal.bind(null, controller, journalIdentifier)}, "delete")
             ]),
-            permissionsEditor(journalIdentifier, journalDefinition, "write"),
-            anonymousAccessCheckbox(journalIdentifier, journalDefinition, "write"),
+            permissionsEditor(controller, journalIdentifier, journalDefinition, "write"),
+            anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, "write"),
             m("br"),
             m("br"),
-            permissionsEditor(journalIdentifier, journalDefinition, "read"),
-            anonymousAccessCheckbox(journalIdentifier, journalDefinition, "read"),
+            permissionsEditor(controller, journalIdentifier, journalDefinition, "read"),
+            anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, "read"),
             m("br"),
             m("br"),
-            permissionsEditor(journalIdentifier, journalDefinition, "survey"),
-            anonymousAccessCheckbox(journalIdentifier, journalDefinition, "survey"),
+            permissionsEditor(controller, journalIdentifier, journalDefinition, "survey"),
+            anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, "survey"),
             m("br"),
             m("hr")
         ]);
