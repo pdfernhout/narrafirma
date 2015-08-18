@@ -3,7 +3,6 @@
 PRIORITY
 - export: overall report, print text questionnaires, print catalysis report
 - catalysis (at least one step like graph or themer)
-- WordPress plugin data save and load
 
 BIG OPTIONAL FUNCTIONALITY AREAS
 - visual clustering in planning phase
@@ -38,9 +37,7 @@ L would like to make "focus rectangle" or "rubber band" over graphs when selecti
 L Histograms should have mean and standard deviation marked (and maybe median and mode, skewness and kurtosis as numbers).
 
 WORDPRESS PLUGIN
-H WordPress plugin support for Pointrel save/load/triples
-H Create entire WordPress plugin based on current stub version
-H WordPress Roles/Accounts & Security
+H Procedure for making WordPress plugin zip file
 
 SURVEY GENERAL
 L Display how many stories and/or survey results have been collected
@@ -176,11 +173,14 @@ H Create help
 H On Story question page, move "what type of question is this" extra text to help
 H Clean up introduction page
 H Fix wording on dashboard pages (and all wording related to reminders)
+H Create full demo project to go with sampel data
 L Fix CSS styling so reminder section of page is different
 L Improve general CSS styling on all pages (forms)
 X Forgot to put "memorable" in eliciting question types ("What type of question is this?")
 
 ==== Wish list:
+
+Ensure timestamp for latest triple store messages is being set on server and not client
 
 Autosave for current textarea or input text based on timer even if you don't leave it
 
@@ -822,3 +822,9 @@ DONE Generate CSV output
 DONE CSV import may no longer be working correctly [was importing binary xls file not CSV!]
 DONE CSV Import of eliciting questions may not be working
 DONE Fix bug where eliciting questions were being displayed as"undefined"
+DONE WordPress plugin support for Pointrel save/load/triples
+DONE Create entire WordPress plugin based on current stub version
+DONE WordPress Roles/Accounts & Security
+DONE Use Mithril in WordPress admin page to add projects and set permissions
+DONE Upload to GitHub
+DONE Improve README file for GitHub in Markdown and with screenshots
