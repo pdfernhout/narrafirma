@@ -1,0 +1,157 @@
+<!DOCTYPE HTML> 
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Mithril sanitization issue test</title>
+
+<script src="../WebContent/lib/mithril/mithril.js"></script>
+
+</head>
+
+<body>
+
+<div id="output"></div>
+
+<script>
+
+var stack = [];
+
+// Initially based on: http://meta.stackexchange.com/questions/1777/what-html-tags-are-allowed-on-stack-exchange-sites
+// Adding: http://nodsw.com/blog/leeland/2010/09/20-semi-safe-html-tags
+
+// 1 is normal tag that needs to be closed; 2 is self-closing tag (br and hr)
+var allowedHTMLTags = {
+    // a
+    address: 1,
+    article: 1,
+    b: 1,
+    big: 1,
+    blockquote: 1,
+    br: 2,
+    caption: 1,
+    cite: 1,
+    code: 1,
+    del: 1,
+    dd: 1,
+    d1: 1,
+    dt: 1,
+    em: 1,
+    h1: 1,
+    h2: 1,
+    h3: 1,
+    h4: 1,
+    h5: 1,
+    h6: 1,
+    hr: 2,
+    i: 1,
+    // img
+    kbd: 1,
+    li: 1,
+    ol: 1,
+    p: 1,
+    pre: 1,
+    s: 1,
+    small: 1,
+    sup: 1,
+    sub: 1,
+    strong: 1,
+    strike: 1,
+    table: 1,
+    td: 1,
+    th: 1,
+    tr: 1,
+    u: 1,
+    ul: 1
+};
+
+function generateSanitizedHTML(html) {
+    var hasMarkup = html.indexOf("<") !== -1;
+    // console.log("has markup", hasMarkup);
+    if (!hasMarkup) return html;
+    // return m.trust(text);
+    
+    // Use a fake div tag as a conceptual placeholder
+    var tags = ["div"];
+    var output = [[]];
+    var text = ""; 
+    
+    for (var i = 0, l = html.length; i < l; i++) {
+        var c = html.charAt(i);
+
+        if (c === "<") {
+            if (text !== "") {
+                output[output.length - 1].push(text);
+                text = "";
+            }
+            
+            var closing = html.charAt(i + 1) === "/";
+            if (closing) i++;
+            
+            var pos = html.indexOf(">", i + 1);
+            if (pos < 0) {
+                throw new Error("no closing angle bracket found after position: " + i);
+            }
+            var tagName = html.substring(i + 1, pos);
+            i = pos;
+            
+            console.log("tagName", tagName);
+            
+            if (/[^A-Za-z0-9]/.test(tagName)) {
+                throw new Error("tag is not alphanumeric: " + tagName);
+            }
+            
+            if (closing && tags.pop() !== tagName) {
+                throw new Error("closing tag does not match opening tag for: " + tagName);
+            }
+            
+            if (!allowedHTMLTags[tagName]) {
+                throw new Error("tag is not allowed: " + tagName);
+            }
+            
+            if (allowedHTMLTags[tagName] == 2) {
+                // self-closing tag like BR
+                output.push([]);
+                closing = true;
+            }
+            
+            if (closing) { 
+                var newTag = m(tagName, output.pop());
+                output[output.length - 1].push(newTag);
+            } else {
+                tags.push(tagName);
+                output.push([]);
+            }
+        } else {
+            text = text + c;
+        }
+    }
+    
+    if (text) output[output.length - 1].push(text);
+    
+    if (tags.length !== 1 || output.length !== 1) {
+        throw new Error("Unmatched start tag: " + tags.pop());
+    }
+    
+    // Don't return the fake div tag, just the contents
+    return output.pop(); 
+}
+
+// var testString = "This is a <strong>bold</strong> test with <i>other</i> stuff.";
+// var testString = "This is a <strong>bold</strong> test with <i>other</i> stuff and <b><i>nesting</i></b>.";
+//var testString = "<b><i>nesting</i></b>";
+// var testString = "This is a test";
+var testString = "A table:<br><table><tr><th>A</th><th>B</th></tr><tr><td>C</td><td>D</td></tr></table>";
+// var testString = '<script>alert("gotcha!");<\/script>';
+
+function generateOutput() {
+    return m("div", generateSanitizedHTML(testString));
+}
+
+m.render(document.getElementById("output"), generateOutput());
+
+</script>
+
+</body>
+</html>
+
