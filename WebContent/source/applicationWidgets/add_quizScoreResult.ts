@@ -2,6 +2,7 @@ import translate = require("../panelBuilder/translate");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import Project = require("../Project");
 import m = require("mithril");
+import sanitizeHTML = require("../sanitizeHTML");
 
 "use strict";
 
@@ -48,7 +49,7 @@ function add_quizScoreResult(panelBuilder: PanelBuilder, model, fieldSpecificati
     
     var labelText = panelBuilder.substituteCalculatedResultInBaseText(baseText, calculateResult);
     
-    return m("div", {"class": "questionExternal narrafirma-question-type-quizScoreResult"}, m.trust(labelText));
+    return m("div", {"class": "questionExternal narrafirma-question-type-quizScoreResult"}, sanitizeHTML.generateSanitizedHTMLForMithril(labelText));
 }
 
 // Make this function available for report generation

@@ -3,6 +3,7 @@ import translate = require("./translate");
 import m = require("mithril");
 import GridWithItemPanel = require("./GridWithItemPanel");
 import standardWidgets = require("./standardWidgets");
+import sanitizeHTML = require("../sanitizeHTML");
 
 // TODO: Ideally shoudl not import Project; also a circular dependency
 import Project = require("../Project");
@@ -85,8 +86,7 @@ function add_functionResult(panelBuilder: PanelBuilder, model, fieldSpecificatio
     
     var newLabelText = panelBuilder.substituteCalculatedResultInBaseText(baseText, calculatedText);
     
-    // TODO: The m.trust call is needed so HTML like strong will work for whether story enabled, but could this be a problem for untrusted user-supplied code? Or are all funcitons safe?
-    return m("div.functionResult", m.trust(newLabelText));
+    return m("div.functionResult", this.addAllowedHTMLToPrompt(newLabelText));
 }
 
 /* Defaults for displayConfiguration:
@@ -362,58 +362,8 @@ class PanelBuilder {
         return replace(template, replacements);
     }
     
-    /* TODO: Work in progress....
-    function recursivelyReplace(tag, item) {
-        if (item instanceof Array) {
-            return item.map(function (item) {
-                recursivelyReplace(tag, item);
-            });
-        } else {
-            return item;
-       }
-    }
-    
-    function addAllowedHTMLToPrompt(text) {
-        var result = [];
-        
-        var tags = text.match(/<.+?>/g);
-        // tags.push(null);
-        var tagStack = [];
-        while (tags.length) {
-            var tag = tags.shift();
-            if (! _.startsWith(tag, "</")) {
-                tagStack.push(tag);
-                continue;
-            }
-            var endTag = tag;
-            var endPos = text.indexOf(endTag);
-            var startTag = tagStack.pop();
-            var startPos = text.indexOf(startTag);
-            
-            var beginString = text.substring(0, startPos);
-            var middleString = text.substring(startPos + startTag.length, endPos);
-            var endString = text.substring(endPos + endTag.length);
-            
-            if (startTag === "<strong>") {
-                result.children.push(m("strong", middleString));
-                text = beginString + endString;
-            }
-            
-        }
-    
-        
-        // var result = text; 
-        // result = recursivelyReplace("strong", result);
-    
-    // TODO: Should track earliest start of tag and have array of m virtual nodes, and if new item starts before earliest tag then wrap all the tags in the new one as children
-        
-        return JSON.stringify(tags);
-    }
-    */
-    
     private addAllowedHTMLToPrompt(text) {
-        // TODO: Sanitize this html, making something like the above work
-        return m.trust(text);
+        return sanitizeHTML.generateSanitizedHTMLForMithril(text);
     }
     
     substituteCalculatedResultInBaseText(baseText: string, calculatedText: string): string {

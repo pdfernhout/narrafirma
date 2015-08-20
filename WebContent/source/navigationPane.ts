@@ -31,8 +31,8 @@ var Navigation: any = {
             m("span[id=narrafirma-name]", {
                 "class": controller.panelBuilder.clientState.serverStatus,
                 "title": controller.panelBuilder.clientState.serverStatusText
-            }, m.trust("NarraFirma&#0153")),
-            m("span[id=narrafirma-breadcrumbs]", m.trust(buildBreadcrumbs(controller))),
+            }, "NarraFirma™"),
+            m("span[id=narrafirma-breadcrumbs]", buildBreadcrumbs(controller)),
             m("a[id=narrafirma-help-link]", {href: launchHelpCommand}, "(Help)"),
             m("a[id=narrafirma-logout-link]", {href: logoutCommand}, 'Logout (' + userIdentifier + ')')
         ]);
@@ -61,30 +61,30 @@ function buildBreadcrumbs(controller) {
     
     currentPageSpecification = pageSpecification;
     
-    if (!pageSpecification) return "Starting up...";
+    if (!pageSpecification) return ["Starting up..."];
 
-    var html = "";
+    var breadcrumbs = [];
     if (pageID !== startPage) {
-        html = htmlForBreadcrumb(startPage, "Home");
-        html += " > ";
+        breadcrumbs.push(htmlForBreadcrumb(startPage, "Home"));
+        breadcrumbs .push(" > ");
         console.log("pageSpecification", pageSpecification);
         // TODO: Should lookup name of section
         if (!pageSpecification.isHeader) {
             var sectionPageSpecification = panelSpecificationCollection.getPageSpecificationForPageID("page_" + pageSpecification.section);
             if (sectionPageSpecification) {
-                html += htmlForBreadcrumb(sectionPageSpecification.id, sectionPageSpecification.displayName);
-                html += " > ";
+                breadcrumbs.push(htmlForBreadcrumb(sectionPageSpecification.id, sectionPageSpecification.displayName));
+                breadcrumbs.push(" > ");
             } else {
                 console.log("ERROR: could not find sectionPageSpecification for: ", pageSpecification.section, pageSpecification);
             }
         }
     }
-    html += '<span id="narrafirma-breadcrumb-current">' + pageSpecification.displayName + '</span>';
-    return html;
+    breadcrumbs.push(m("span", {id: "narrafirma-breadcrumb-current"}, pageSpecification.displayName));
+    return breadcrumbs;
 }
 
 function htmlForBreadcrumb(pageIdentifier, pageName) {
-    return '<a href="javascript:narrafirma_openPage(\'' + pageIdentifier + '\')">' + pageName + '</a>';
+    return m("a", {href: "javascript:narrafirma_openPage(\'" + pageIdentifier + "\')"}, pageName);
 }
 
 export function getCurrentPageSpecification() {

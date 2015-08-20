@@ -358,7 +358,7 @@
                 "assessment_silencing",
                 "assessment_conflict"
             ],
-            "displayPrompt": "&nbsp;&nbsp;&nbsp;&nbsp;Narrative <strong>freedom</strong>:"
+            "displayPrompt": "Narrative <strong>freedom</strong>:"
         },
         {
             "id": "assessment_result_flowSubscore",
@@ -371,7 +371,7 @@
                 "assessment_storyTypes",
                 "assessment_sensemaking"
             ],
-            "displayPrompt": "&nbsp;&nbsp;&nbsp;&nbsp;Narrative <strong>flow</strong>:"
+            "displayPrompt": "Narrative <strong>flow</strong>:"
         },
         {
             "id": "assessment_result_knowledgeSubscore",
@@ -384,7 +384,7 @@
                 "assessment_blunders",
                 "assessment_accounting"
             ],
-            "displayPrompt": "&nbsp;&nbsp;&nbsp;&nbsp;Narrative <strong>knowledge</strong>:"
+            "displayPrompt": "Narrative <strong>knowledge</strong>:"
         },
         {
             "id": "assessment_result_unitySubscore",
@@ -397,7 +397,7 @@
                 "assessment_intermingling",
                 "assessment_culture"
             ],
-            "displayPrompt": "&nbsp;&nbsp;&nbsp;&nbsp;Narrative <strong>unity</strong>:"
+            "displayPrompt": "Narrative <strong>unity</strong>:"
         },
         {
             "id": "assessment_result_grandTotal",

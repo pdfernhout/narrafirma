@@ -1,6 +1,7 @@
 import m = require("mithril");
 
 import generateRandomUuid = require("./pointrel20150417/generateRandomUuid");
+import sanitizeHTML = require("./sanitizeHTML");
 
 "use strict";
 
@@ -54,58 +55,8 @@ function globalRedraw(source = undefined) {
     globalRedrawCallback(source);
 }
 
-/* TODO: Work in progress....
-function recursivelyReplace(tag, item) {
-    if (item instanceof Array) {
-        return item.map(function (item) {
-            recursivelyReplace(tag, item);
-        });
-    } else {
-        return item;
-   }
-}
-
 function addAllowedHTMLToPrompt(text) {
-    var result = [];
-    
-    var tags = text.match(/<.+?>/g);
-    // tags.push(null);
-    var tagStack = [];
-    while (tags.length) {
-        var tag = tags.shift();
-        if (! _.startsWith(tag, "</")) {
-            tagStack.push(tag);
-            continue;
-        }
-        var endTag = tag;
-        var endPos = text.indexOf(endTag);
-        var startTag = tagStack.pop();
-        var startPos = text.indexOf(startTag);
-        
-        var beginString = text.substring(0, startPos);
-        var middleString = text.substring(startPos + startTag.length, endPos);
-        var endString = text.substring(endPos + endTag.length);
-        
-        if (startTag === "<strong>") {
-            result.children.push(m("strong", middleString));
-            text = beginString + endString;
-        }
-        
-    }
-
-    
-    // var result = text; 
-    // result = recursivelyReplace("strong", result);
-
-// TODO: Should track earliest start of tag and have array of m virtual nodes, and if new item starts before earliest tag then wrap all the tags in the new one as children
-    
-    return JSON.stringify(tags);
-}
-*/
-
-function addAllowedHTMLToPrompt(text) {
-    // TODO: Sanitize this html, making something like the above work
-    return m.trust(text);  
+    return sanitizeHTML.generateSanitizedHTMLForMithril(text);  
 }
 
 function buildQuestionLabel(fieldSpecification) {

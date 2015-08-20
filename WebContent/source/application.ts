@@ -242,15 +242,15 @@ function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecificati
                 if (childPageSpecification && childPageSpecification.displayType === "page") {
                     var prompt = translate(childPageID + "::title", childPageSpecification.displayName);
                     // Wrap the prompt as a link to the page
-                    prompt = '<a href="javascript:narrafirma_openPage(\'' + childPageID + '\')">' + prompt + '</a>';
+                    prompt = m("a", {href: "javascript:narrafirma_openPage('" + childPageID + "')"}, prompt);
                     // + " " + translate("#dashboard_status_label", "reminders:")
-                    prompt = prompt  + " ";
+                    // prompt = prompt  + " ";
                     // console.log("about to call panelBuilder to add one questionAnswer for child page's status", childPageID);
                     var completionStatusDisplayFieldSpecification = {
                         id: statusViewID,
                         valueType: "none",
                         displayType: "questionAnswer",
-                        displayName: prompt,
+                        // displayName: prompt,
                         displayPrompt: prompt,
                         displayConfiguration: childPageID + "_reminders"
                     };

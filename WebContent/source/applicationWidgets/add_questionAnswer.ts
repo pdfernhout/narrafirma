@@ -1,6 +1,7 @@
 import translate = require("../panelBuilder/translate");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import m = require("mithril");
+import sanitizeHTML = require("../sanitizeHTML");
 
 "use strict";
 
@@ -77,7 +78,7 @@ function add_questionAnswer(panelBuilder: PanelBuilder, model, fieldSpecificatio
     
     // TODO: Fix styling
     return m("div", {"class": "questionExternal narrafirma-question-type-questionAnswer"}, [
-        m.trust(fieldSpecification.displayPrompt),
+        sanitizeHTML.generateSanitizedHTMLForMithril(fieldSpecification.displayPrompt),
         m("div[class=narrafirma-questionAnswer]", calculate())
     ]);
 }

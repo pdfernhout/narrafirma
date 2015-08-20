@@ -70,7 +70,7 @@ var AdminPageDisplayer: any = {
                 m("span[id=narrafirma-name]", {
                     "class": clientState.serverStatus,
                     "title": clientState.serverStatusText
-                }, m.trust("NarraFirma&#0153")),
+                }, "NarraFirma™"),
                 m("b", "Project Administration Tool"),
                 " | Logged in as: " + userIdentifier + " ",
                 m("a", {href: "/logout"}, "Log Out")
