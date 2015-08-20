@@ -62,9 +62,9 @@ function collectValues(dict) {
 // TODO: Next two functions from add_storyBrowser and so are duplicate code
 
 function buildStoryDisplayPanel(panelBuilder: PanelBuilder, model) {
-    var storyContent = storyCardDisplay.generateStoryCardContent(model, model.questionnaire);
+    var storyCardDiv = storyCardDisplay.generateStoryCardContent(model, model.questionnaire);
     
-     return m("div[class=storyCard]", m.trust(storyContent));
+     return storyCardDiv;
 }
 
 function makeItemPanelSpecificationForQuestions(questions) {

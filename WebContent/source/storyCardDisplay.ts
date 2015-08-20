@@ -1,19 +1,20 @@
-import kludgeForUseStrict = require("./kludgeForUseStrict");
+import m = require("mithril");
+
 "use strict";
 
 function wrap(elementType, cssClass, text) {
-    return '<' + elementType + ' class="' + cssClass + '">' + text + '</' + elementType + '>';
+    return m(elementType, {"class": cssClass}, text);
 }
 
 function displayHTMLForSlider(fieldSpecification, fieldName, value) {
     if (fieldSpecification.displayConfiguration.length !== 2) {
         console.log("missing displayConfiguration for slider", fieldSpecification);
-        return "ERROR: Problem displaying slider " + fieldSpecification.id;
+        return m("div", "ERROR: Problem displaying slider " + fieldSpecification.id);
     }
     // Assumes values go from 0 to 100; places 100.0 in last bucket
     var lowLabel = fieldSpecification.displayConfiguration[0];
     var highLabel = fieldSpecification.displayConfiguration[1];
-    var sliderText = "";
+    var sliderText = [];
     var bucketCount = 40;
     var bucketSize = 100.0 / bucketCount;
     var placed = false;
@@ -21,53 +22,49 @@ function displayHTMLForSlider(fieldSpecification, fieldName, value) {
         var bucketLow = i * bucketSize;
         var bucketHigh = i * bucketSize + bucketSize;
         if (!placed && ((value < bucketHigh) || (value && i === bucketCount - 1))) {
-            sliderText += "<b>|</b>";
+            sliderText.push(m("b", "|"));
             placed = true;
         } else {
-            sliderText += "-";
+            sliderText.push("-");
         }
     }
-    return '<tr>' +
-        wrap("td", "narrafirma-story-card-slider-name", fieldName) +
-        wrap("td", "narrafirma-story-card-slider-label-left", lowLabel) +
-        wrap("td", "narrafirma-story-card-slider-contents", sliderText) +
-        wrap("td", "narrafirma-story-card-slider-label-right", highLabel) +
-        '</tr>\n'; 
+    return m("tr", [
+        wrap("td", "narrafirma-story-card-slider-name", fieldName),
+        wrap("td", "narrafirma-story-card-slider-label-left", lowLabel),
+        wrap("td", "narrafirma-story-card-slider-contents", sliderText),
+        wrap("td", "narrafirma-story-card-slider-label-right", highLabel)
+     ]); 
 }
 
 function displayHTMLForCheckboxes(fieldSpecification, fieldName, value) {
-    var result = "";
+    var options = [];
     // TODO: What if value is not current available option?
     for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
         var option = fieldSpecification.valueOptions[i];
         // console.log("checkboxes", option, fieldSpecification, value);
-        if (result) result += ", ";
+        if (options.length) options.push(", ");
         if (value && value[option]) {
-            result += wrap("span", "narrafirma-story-card-checkboxes-selected", option);
+            options.push(wrap("span", "narrafirma-story-card-checkboxes-selected", option));
         } else {
-            result += wrap("span", "narrafirma-story-card-checkboxes-unselected", option);
+            options.push(wrap("span", "narrafirma-story-card-checkboxes-unselected", option));
         }
     }
-    return fieldName + ": " + result;
+    return [fieldName + ": ", options];
 }
 
 function displayHTMLForSelect(fieldSpecification, fieldName, value) {
-    var result = "";
+    var options = [];
     // TODO: What if value is not current available option?
     for (var i = 0; i < fieldSpecification.valueOptions.length; i++) {
         var option = fieldSpecification.valueOptions[i];
-        if (result) result += ", ";
+        if (options.length) options.push(", ");
         if (value === option) {
-            result += wrap("span", "narrafirma-story-card-select-selected", option);
+            options.push(wrap("span", "narrafirma-story-card-select-selected", option));
         } else {
-            result += wrap("span", "narrafirma-story-card-select-unselected", option);
+            options.push(wrap("span", "narrafirma-story-card-select-unselected", option));
         }
     }
-    return fieldName + ": " + result;
-}
-
-function htmlEncode(text) {
-    return _.escape(text);
+    return [fieldName + ": ", options];
 }
 
 function displayHTMLForField(model, fieldSpecification, nobreak = null) {
@@ -75,19 +72,23 @@ function displayHTMLForField(model, fieldSpecification, nobreak = null) {
     var value = model[fieldSpecification.id];
     // TODO: extra checking here for problems with test data -- could probably be changed back to just displayName eventually
     var fieldName = fieldSpecification.displayName || fieldSpecification.displayPrompt;
-    var result;
+    var result = [];
     if (fieldSpecification.displayType === "slider") {
-        result =  displayHTMLForSlider(fieldSpecification, fieldName, value);
+        result.push(displayHTMLForSlider(fieldSpecification, fieldName, value));
     } else if (fieldSpecification.displayType === "checkboxes") {
-        result = displayHTMLForCheckboxes(fieldSpecification, fieldName, value);
+        result.push(displayHTMLForCheckboxes(fieldSpecification, fieldName, value));
     } else if (fieldSpecification.displayType === "select") {
-        result = displayHTMLForSelect(fieldSpecification, fieldName, value);
+        result.push(displayHTMLForSelect(fieldSpecification, fieldName, value));
     } else {
         // TODO: May need more handling here for other cases
-        result = fieldName + ": " + htmlEncode(value);
+        result.push(fieldName + ": ");
+        result.push(value);
     }
-    if (nobreak) return result;
-    return result + "<br><br>\n";  
+    if (!nobreak) {
+        result.push(m("br"));
+        result.push(m("br"));
+    }
+    return result;  
 }
 
 interface Options {
@@ -97,10 +98,11 @@ interface Options {
 
 export function generateStoryCardContent(storyModel, currentQuestionnaire, options: Options = {}) {
     // Encode all user-supplied text to ensure it does not create HTML issues
-    var elicitingQuestion = htmlEncode(storyModel.__survey_elicitingQuestion);
-    var storyName = htmlEncode(storyModel.__survey_storyName);
-    var storyText = htmlEncode(storyModel.__survey_storyText);
-    var otherFields = "";
+    var elicitingQuestion = storyModel.__survey_elicitingQuestion;
+    console.log("elicitingQuestion", elicitingQuestion);
+    var storyName = storyModel.__survey_storyName;
+    var storyText = storyModel.__survey_storyText;
+    var otherFields = [];
     
     var questions = [];
     if (currentQuestionnaire) questions = questions.concat(currentQuestionnaire.storyQuestions);
@@ -115,40 +117,41 @@ export function generateStoryCardContent(storyModel, currentQuestionnaire, optio
         question = questions[i];
         if (question.displayType !== "slider") continue;
         // console.log("making slider", question);
-        if (!otherFields) otherFields += "<table>\n";
-        otherFields += displayHTMLForField(storyModel, question, "nobreak");
+        otherFields.push(displayHTMLForField(storyModel, question, "nobreak"));
     }
-    if (otherFields) otherFields += "\n</table>\n<br>\n";
+    if (otherFields.length) otherFields = [m("table", otherFields), m("br")];
     
     for (i = 0; i < questions.length; i++) {
         question = questions[i];
         if (question.displayType === "slider") continue;
         // console.log("making other than slider", question);
-        otherFields += displayHTMLForField(storyModel, question);
+        otherFields.push(displayHTMLForField(storyModel, question));
     }
     
     // console.log("otherFields", otherFields);
     
-    var textForElicitingQuestion = "";
+    var textForElicitingQuestion: any = [];
     if (!options.excludeElicitingQuestion) {
-        textForElicitingQuestion = wrap("div", "narrafirma-story-card-eliciting-question", "Eliciting question: " + elicitingQuestion) + "<br>";
+        textForElicitingQuestion = m(".narrafirma-story-card-eliciting-question", ["Eliciting question: ", elicitingQuestion, m("br")]);
     }
     
-    var storyTextAtTop = "";
+    var storyTextAtTop: any = [];
     var storyTextAtBottom = wrap("div", "narrafirma-story-card-story-text", storyText);
     
     if (options.storyTextAtTop) {
         storyTextAtTop = storyTextAtBottom;
-        storyTextAtBottom = "";
+        storyTextAtBottom = [];
     }
     
-    var storyCardContent = wrap("div", "narrafirma-story-card-story-title", storyName)
-        + storyTextAtTop
-        + "<br>"
-        + otherFields
-        + textForElicitingQuestion
-        + storyTextAtBottom
-        + "<hr>";
-   
+    var storyCardContent = m("div[class=storyCard]", [
+        wrap("div", "narrafirma-story-card-story-title", storyName),
+        storyTextAtTop,
+        m("br"),
+        otherFields,
+        textForElicitingQuestion,
+        storyTextAtBottom,
+        m("hr")
+    ]);
+    
     return storyCardContent;
 }
