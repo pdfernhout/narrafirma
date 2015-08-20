@@ -56,6 +56,7 @@ function addButton(panelBuilder: PanelBuilder, model, fieldSpecification, callba
 }
 
 function add_html(panelBuilder: PanelBuilder, model, fieldSpecification, callback): any {
+    // add_html should only be called for NarraFirma application-supplied code, so trusting this should be OK
     return m.trust(fieldSpecification.displayPrompt);
 }
 
@@ -64,7 +65,7 @@ function add_image(panelBuilder: PanelBuilder, model, fieldSpecification, callba
     var questionText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt || "");
 
     return m("div.narrafirma-image", { key: fieldSpecification.id }, [
-        m.trust(questionText),
+        this.addAllowedHTMLToPrompt(questionText),
         m("br"),
         m("img", {
             src: panelBuilder.applicationDirectory + imageSource,
@@ -84,7 +85,7 @@ function add_functionResult(panelBuilder: PanelBuilder, model, fieldSpecificatio
     
     var newLabelText = panelBuilder.substituteCalculatedResultInBaseText(baseText, calculatedText);
     
-    // TODO: The m.trust call is needed so HTML like strong will work for whetehr story enabled, but could this be a problem?
+    // TODO: The m.trust call is needed so HTML like strong will work for whether story enabled, but could this be a problem for untrusted user-supplied code? Or are all funcitons safe?
     return m("div.functionResult", m.trust(newLabelText));
 }
 
