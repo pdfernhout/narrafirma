@@ -138,7 +138,9 @@ class PanelBuilder {
     addHelpIcons = false;
     currentHelpPage = null;
     currentHelpSection = null;
-    applicationDirectory = "/";
+    
+    // TODO: Should this be an absolute path based on whether running as WordPress plugin or NodeJS?
+    applicationDirectory = "";
     
     idsMade = {};
     idCount = 0;
