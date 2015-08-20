@@ -22,7 +22,7 @@ export function storeSurveyResult(pointrelClient: PointrelClient, projectIdentif
             return;
         }
         console.log("Survey result stored");
-        if (wizardPane) alert("Your story has been added to the story collection.");
+        if (wizardPane) alert("Your contribution has been added to the story collection. Thank you.");
         if (wizardPane) wizardPane.forward();
     });
 }
