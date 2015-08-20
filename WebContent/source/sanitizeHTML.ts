@@ -50,7 +50,7 @@ var allowedHTMLTags = {
 };
 
 export function generateSanitizedHTMLForMithril(html) {
-    console.log("html", html);
+    // console.log("html", html);
     
     // Handle case where is already a Mithril object
     if (html.tag) return html;
@@ -83,7 +83,7 @@ export function generateSanitizedHTMLForMithril(html) {
             var tagName = html.substring(i + 1, pos);
             i = pos;
             
-            console.log("tagName", tagName);
+            // console.log("tagName", tagName);
             
             if (/[^A-Za-z0-9]/.test(tagName)) {
                 throw new Error("tag is not alphanumeric: " + tagName);
