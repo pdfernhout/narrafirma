@@ -6,7 +6,7 @@ PRIORITY
 
 BIG OPTIONAL FUNCTIONALITY AREAS
 - visual clustering in planning phase
-- theming and tagging
+- theming and tagging (now to be in story browser)
 
 THINGS CYNTHIA NOTICED DURING PROJECT
 When make story form, need way to copy all questions of a type into form
@@ -15,12 +15,12 @@ If entering a story and decide not to, can't remove window without adding story.
 After enter story in story thing, form contents don't change (in noticeable way). Rest of form looks the same and no indication. Maybe could improve somehow (like clear). Different needs for data entry -- want to clear and enter new one.
 Need "other" field for radiobuttons and checkboxes (maybe dropdown, probably not)
 Fixing Data -- stage
-  Delete a story you entered wrong
-  Fix something you entered wrong
+  Delete a story you entered wrong (probably by setting an "ignore" tag in the story browser)
+  Fix something you entered wrong (only by deleting, or perhaps overriding using extra tags in the story browser)
   Mark questions as don't pay any attention to question / Discard question from catalysis
-  Add questions and answers as theming (structured annotations)
-  Need to be able to add comment to story
-  Need to be able to scrub user story data
+  Add questions and answers as theming (structured annotations) (by adding a tag in story browser)
+  Need to be able to add comment to story (by adding a tag in story browser)
+  Need to be able to scrub user story data (by adding overrides using tags in story browser)
 Sliders
   Need "does not apply" for sliders
   Sliders too tiny (hard to see color) 
@@ -34,10 +34,6 @@ M Slider should have a "does not apply" option
 L After you enter a story, it shows an alert that the story has been saved, but it doesn't get rid of the window. the popup window should go away
 L would like to make "focus rectangle" or "rubber band" over graphs when selecting - see http://bl.ocks.org/mbostock/1667367
 L Histograms should have mean and standard deviation marked (and maybe median and mode, skewness and kurtosis as numbers).
-
-WORDPRESS PLUGIN
-H Procedure for making WordPress plugin zip file
-H Improve WordPress install directions
 
 SURVEY GENERAL
 L Display how many stories and/or survey results have been collected
@@ -86,6 +82,7 @@ H Implement "print session agenda" (to HTML) for story collection
 H Implement "print session agenda" (to HTML) for sensemaking
 
 STORY THEMER
+H Move theming/tagging (and ignore/delete) functionality into story browser
 X Generalize storyThemer into tagging - or researcher added questions
     Support storyThemer -- a widget where people look at each story, give it 1-3 themes, then merge the themes into smaller numbers of themes
     Page to enter themes for stories
@@ -104,6 +101,7 @@ H Move options (how large should subsets, what significance threshold) to popup 
 H Support trendsReport -- shows text and graphs in report based on top differences in statistical tests
 H Save and load pattern list with observations on trends report
 H Support adding interpretations to observations in trendsReport (pattern browser)
+H Ignore stories that have an ignore tag set (like if a test story or a duplicate)
 L Rename "save current graph selection to observation" buttons under graphs
 
 CLUSTERING (CATALYSIS)
@@ -830,3 +828,5 @@ DONE Upload to GitHub
 DONE Improve README file for GitHub in Markdown and with screenshots
 DONE When you submit survey with multiple stories, it still only said "your story" instead of "your stories"
 DONE Improve how sanitizing of user-supplied content is done and remove most uses of m.trust to help prevent XSS
+DONE Procedure for making WordPress plugin zip file [use: "npm run build-wp" from the project root directory]
+DONE Improve WordPress plugin install directions
