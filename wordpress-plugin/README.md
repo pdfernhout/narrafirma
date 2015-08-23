@@ -1,11 +1,33 @@
 ## Installing the NarraFirma WordPress plugin
 
 The "narrafirma" directory contains a WordPress plugin php script (narrafirma.php) which uses WordPress as an application server for the NarraFirma JavaScript code.
-The NarraFirma application itself essentially runs in its own browser window and only uses the server to store data.
-Other than the NarraFirma admin page to create projects,
-there is no WordPress-specific integration of the NarraFirma application.
+The NarraFirma application itself essentially runs in its own browser window as a single-page application (SPA) and only uses the server to store data.
+Other than the NarraFirma admin page to create projects, there is no WordPress-specific integration of the NarraFirma application.
 
-Until the plugin build process is improved, installing a working WordPress plugin currently requires these manual steps:  
+### Automatic build and installation
+
+The easiest way to build the WordPress plugin is under Linux of Mac using an npm command to create "distribution/narrafirma.zip".
+
+To do that, enter the following command on the command line in the NarraFirma project's top-level directory:
+
+        $ npm run build-wp
+        
+You can then install the zip file in the usual way by uploading it to WordPress.
+
+Developers can also unzip the file directly in your WordPress plugins directory. Here is an example of unzipping the file for the Mac with assuming a "_www" Apache user:
+
+        $ cd [PathToWordPressInstall]/wordpress/wp-content/plugins
+        
+        $ sudo -u _www unzip [PathToNarraFirmaProject]/distribution/narrafirma.zip
+        
+If you are reinstalling the plugin, you may need to delete the "narrafirma" plugin directory from WordPress first before unzipping the new version.
+
+After installing the plugin, you can then follow the directions in the section below on activating the plugin and creating your first project.  
+
+### Manual build and installation
+
+Alternatively, particularly under Windows which may not have command-line commands available used by build-wp
+like "cp", "rm", "mkdir" and such, installing a working WordPress plugin can be done with the following manual steps:  
 
 1. ensure the TypeScript files are compiled with the output under WebContent/js,
 2. copy the WebContent directory to under the wordpress-plugin/narrafirma directory,
@@ -13,7 +35,7 @@ Until the plugin build process is improved, installing a working WordPress plugi
 
 After installation, you then need to activate the plugin, create your first project in the plugin's admin interface, and then use the link from the plugin's admin interface to open the application.
 
-These steps are explained in more detail below.
+These manual steps are explained in more detail below.
 
 #### Step 1: Ensure the TypeScript files are compiled to JavaScript
 
@@ -33,7 +55,7 @@ the WebContent directory needs to be copied manually into the "narrafirma" direc
 This is because most of the NarraFirma application runs as client-side JavaScript.
 Alternatively, to make a symbolic link for that directory, from wordpress-plugin/narrafirma do:
 
-        ln -s ../../WebContent/ WebContent
+        $ ln -s ../../WebContent/ WebContent
         
 The symbolic file was not checked in because it still seems to cause potential issues with older git clients.
 This file (or copied directory) will be ignored based on a .gitignore file in the wordpress-plugin directory.
@@ -49,11 +71,15 @@ to the WordPress' wordpress-plugin directory using a stanadard copy command.
 You would need to be sure the copied files have permissions or a owner such that they can be read by your web server.
 
 The following rsync command may be useful when testing the WordPress plugin if you have set up a symbolic link in the narrafirma directory to the WebContent directory.
+You would need to replace "_www" with whatever your web server needs as a user for permissions.
 
         $ pwd
-            [$WORDPRESS_PATH]/wp-content/plugins
+        
+            [PathToWordPress]/wp-content/plugins
+            
         $ mkdir narrafirma
-        $ rsync -r --copy-links [$REPOSITORY_PATH]/wordpress-plugin/narrafirma/* narrafirma
+        
+        $ sudo -u _www rsync -r --copy-links [PathToNarraFirmaProject]/wordpress-plugin/narrafirma/* narrafirma
 
 Make sure you are running rsync as a user who has appropriate permissions to create files readable by your web server -- or alternatively you may need to use chown or chmod to make the files readabel by your web server.
 
@@ -68,7 +94,7 @@ To do this, cd into the "wordpress-plugin" directory and run:
         
 You can then copy "narrafirma.zip" to WordPress' wordpress-plugin directory and extract it.
 
-#### Step 4: Activate the plugin and create your first project
+### Activate the plugin and create your first project
 
 After any of these approaches, you would then need to activate the plugin within the WordPress admin interface.
 Once the plugin is activated, it will create a new menu item called "NarraFirma" at the top level of the WordPress admin menu.
