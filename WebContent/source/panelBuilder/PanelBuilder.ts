@@ -66,7 +66,7 @@ function add_image(panelBuilder: PanelBuilder, model, fieldSpecification, callba
     var questionText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt || "");
 
     return m("div.narrafirma-image", { key: fieldSpecification.id }, [
-        this.addAllowedHTMLToPrompt(questionText),
+        panelBuilder.addAllowedHTMLToPrompt(questionText),
         m("br"),
         m("img", {
             src: panelBuilder.applicationDirectory + imageSource,
@@ -86,7 +86,7 @@ function add_functionResult(panelBuilder: PanelBuilder, model, fieldSpecificatio
     
     var newLabelText = panelBuilder.substituteCalculatedResultInBaseText(baseText, calculatedText);
     
-    return m("div.functionResult", this.addAllowedHTMLToPrompt(newLabelText));
+    return m("div.functionResult", panelBuilder.addAllowedHTMLToPrompt(newLabelText));
 }
 
 /* Defaults for displayConfiguration:
@@ -362,7 +362,7 @@ class PanelBuilder {
         return replace(template, replacements);
     }
     
-    private addAllowedHTMLToPrompt(text) {
+    addAllowedHTMLToPrompt(text) {
         return sanitizeHTML.generateSanitizedHTMLForMithril(text);
     }
     
