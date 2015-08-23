@@ -10,5 +10,7 @@
     }],
     "main": "src",
     "homepage": "http://workingwithstories.com/",
-    "dojoBuild": "app.profile.js"
+    "scripts": {
+        "build-wp": "rm -rf distribution/narrafirma.zip && rm -rf distribution/narrafirma && mkdir distribution/narrafirma && tsc && cp -r WebContent wordpress-plugin/narrafirma/* distribution/narrafirma && cd distribution && zip -qr narrafirma.zip narrafirma/* && cd .. && rm -rf distribution/narrafirma"
+     }
 }
