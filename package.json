@@ -1,7 +1,7 @@
 {
     "name": "PNIWorkbook",
     "description": "PNIWorkbook Application",
-    "version": "0.0.1",
+    "version": "0.2.0",
     "keywords": ["JavaScript", "Dojo", "Toolkit", "DojoX"],
     "maintainers": [{
         "name": "Paul D. Fernhout"
