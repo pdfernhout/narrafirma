@@ -13,15 +13,17 @@ To do that, enter the following command on the command line in the NarraFirma pr
         $ npm run build-wp
         
 You can then install the zip file in the usual way by uploading it to WordPress.
-Because the zip file is currently a little over 2 megabytes in size, you may see this error message when uploading or installing:
+
+Depending on the zip file size and your PHP configuration,
+it is possible you may see this error message when uploading or installing:
     
     > The uploaded file exceeds the upload_max_filesize directive in php.ini.
     
-If you see that error related to the standard 2MB PHP upload limit,
-you can either increase your upload file size like to 3 megabytes or you can unzip the files yourself.
+If you see that error related to the default 2MB PHP upload limit, and assuming the NarraFirma zip file exceeds it,
+you can either [increase your PHP upload file size](https://wordpress.org/support/topic/how-to-increase-the-max-upload-size) like to 3 megabyte,
+or you can unzip the files yourself directly in your WordPress plugins directory.
 
-Instead of uploading the zip file, you can also unzip the file directly in your WordPress plugins directory.
-Here is an example of unzipping the file for the Mac with assuming a "_www" Apache user:
+Here is an example of unzipping the narrafirma.zip file directly for the Mac with assuming a "_www" Apache user:
 
         $ cd [PathToWordPressInstall]/wordpress/wp-content/plugins
         
