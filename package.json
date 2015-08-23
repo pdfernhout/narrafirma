@@ -1,6 +1,6 @@
 {
-    "name": "PNIWorkbook",
-    "description": "PNIWorkbook Application",
+    "name": "NarraFirma",
+    "description": "NarraFirma webapp for Participatory Narrative Inquiry",
     "version": "0.2.0",
     "keywords": ["JavaScript", "Dojo", "Toolkit", "DojoX"],
     "maintainers": [{
