@@ -12,10 +12,10 @@ import GridWithItemPanel = require("../panelBuilder/GridWithItemPanel");
 
 "use strict";
 
-// TODO: retrieve from UI
-var minStoriesForTest = 20;
+// TODO: retrieve value from UI
+var minimumStoryCountRequiredForTest = 20;
 
-// Types of questions that have data associated with them for filters and graphs
+// Question types that have data associated with them for filters and graphs
 var nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons"];
 
 // TODO: Duplicate code for this function copied from charting
@@ -51,10 +51,10 @@ function countsForFieldChoices(stories, field1, field2) {
     return counts;
 }
 
-function collectValues(dict) {
+function collectValues(valueHolder) {
     var values = [];
-    for (var key in dict) {
-        values.push(dict[key]);
+    for (var key in valueHolder) {
+        values.push(valueHolder[key]);
     }
     return values;
 }
@@ -120,7 +120,6 @@ class PatternBrowser {
     graphHolder: GraphHolder;
     
     questions = [];
-    // allStories = [];
     
     modelForStoryGrid = {storiesSelectedInGraph: []};
     storyGridFieldSpecification: GridDisplayConfiguration = null;
@@ -131,12 +130,8 @@ class PatternBrowser {
     
     observationPanelSpecification = null;
     
-    // TODO: Track currentCatalysisReportChanged
-    // TODO: Update questions and allStories based on selection
-    
     constructor(args) {
         this.project = args.panelBuilder.project;
-        // this.catalysisReportIdentifier = getCurrentCatalysisReportIdentifier(args);
         
        // Graph display initializaiton
         
@@ -423,14 +418,14 @@ class PatternBrowser {
         */
     
         result.forEach((pattern) => {
-            this.calculateStatisticsForPattern(pattern, minStoriesForTest);        
+            this.calculateStatisticsForPattern(pattern, minimumStoryCountRequiredForTest);        
         });
         
         console.log("buildPatternsList", result);
         return result;
     }
     
-    calculateStatisticsForPattern(pattern, minStoriesForTest) {
+    calculateStatisticsForPattern(pattern, minimumStoryCountRequiredForTest) {
         var graphType = pattern.graphType;
         var significance;
         var statResult;
@@ -446,7 +441,7 @@ class PatternBrowser {
             console.log("counts", counts);
             var values = collectValues(counts);
             console.log("values", values);
-            if (values.length < minStoriesForTest) {
+            if (values.length < minimumStoryCountRequiredForTest) {
                 significance = "";
             } else {
                 // return {chi_squared: chi_squared, testSignificance: testSignificance}
