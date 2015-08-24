@@ -335,7 +335,7 @@ form {
 	margin-left: 5em;
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Story card display ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Story card display ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-story-card-story-title {
     font-size: 2em;
@@ -385,44 +385,47 @@ form {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Recommendations table ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+.recommendationsTable {
+	 border-collapse: collapse;
+	}
+	
+.recommendationsTable th, td {
+	border: 1px solid black;
+	text-align: left;
+	padding: 0.2em 0.2em 0.2em 0.3em;
+}
+
 .narrafirma-dialog-launching-button {
 	margin-bottom: 10px;
 }
 
-.wwsRecommendationsTable-labelCell {
-  /* background-color: lightgrey; */
-  /* padding-left: 5px; */
-  border-style: solid;
-  border-width: thin;
+.wwsRecommendationsTable-valueCell {
+	font-weight: normal;
 }
 
-.wwsRecommendationsTable-valueCell {
-  /* padding-left: 20px; */
-  /* background-color: lightblue; */
-  border-style: solid;
-  border-width: thin;
+.wwsRecommendationsTable-labelCell {
+  font-weight: normal;
 }
 
 .recommendationHigh {
-    background-color: LightGreen;
+    background-color: #8db500;
 }
 
 .recommendationMedium {
-    /* dark yellow */
-    background-color: #CCCC00;
+    background-color: #b2c07f;
 }
 
 .recommendationLow {
-    /* pinkish */
-    background-color: #FF6666;
+    background-color: #d3d2d2;
 }
 
 .recommendationNo {
-    background-color: DarkRed;
+    background-color: #3e3739;
+    color: white;
 }
 
 .interventions .recommendationLow {
-    background-color: grey;
+    background-color: #d3d2d2;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ d3 charting ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
