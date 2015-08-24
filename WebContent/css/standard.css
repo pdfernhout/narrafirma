@@ -39,6 +39,10 @@ textarea, input, select { /* override because expanded in survey */
 	margin-top: 0;
 }
 
+table { /* all tables should not have spaces between cells */
+	border-collapse: collapse;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Navigation bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #navigationDiv {
@@ -209,6 +213,10 @@ button {
 
 .narrafirma-dashboardSectionStatusDisplayCompletion {
     margin-left: 1.0em;
+}
+
+.narrafirma-dashboard-story-collection-status {
+	padding-top: 1em;
 }
 
 
@@ -385,10 +393,6 @@ form {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Recommendations table ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-.recommendationsTable {
-	 border-collapse: collapse;
-	}
-	
 .recommendationsTable th, td {
 	border: 1px solid black;
 	text-align: left;
