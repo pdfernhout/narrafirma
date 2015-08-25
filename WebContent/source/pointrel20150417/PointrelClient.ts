@@ -24,8 +24,7 @@ import topic = require("./topic");
 
 "use strict";
 
-// TODO: change this default to 15 seconds - shorter now for initial development
-var defaultCheckFrequency_ms = 3000;
+var defaultCheckFrequency_ms = 15000;
 
 var shortTimeout_ms = 10000;
 var longTimeout_ms = 30000;
