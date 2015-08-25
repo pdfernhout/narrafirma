@@ -9,7 +9,7 @@
             "id": "project_projectStoryElementsInstructions",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "Here are some instructions on how to create story elements from your project stories.\nCreating story elements helps you think about what is going on in the stories you told.\nYou can do the erxercises either using the diagrams below or by using sticky notes. You can enter your story elements at the bottom of this page."
+            "displayPrompt": "On this page you will use your project stories to create <b>story elements</b>. Story elements are abstract representations of the meanings found in stories. You can use story elements to help you plan your project. (You can also do this exercise on paper. If you do that, skip to the bottom of this page to enter the story elements you created.)"
         },
         {
             "id": "project_projectStoryElementsType",
@@ -26,7 +26,7 @@
             ],
             "displayDataOptionField": "label",
             "displayType": "select",
-            "displayPrompt": "Choose a type of story element and question to work with (pick characters or themes if unsure):"
+            "displayPrompt": "<b>1</b>. Choose a <b>type</b> of story element to create."
         },
         {
             "id": "project_projectStoryElements_storiesList",
@@ -34,7 +34,7 @@
             "required": true,
             "displayType": "storiesList",
             "displayConfiguration": "project_projectStoryElementsAnswersClusteringDiagram",
-            "displayPrompt": "For each project story you entered, come up with as many answers to the selected element's question as you can. Write the answers on sticky notes or enter them as items in the clustering diagram below.<br>Once you have answered the question you chose for each story, cluster the sticky notes into groups. Place like with like. Create a new \"cluster\" for each group with a name for the group to produce \"answer cluster names\"."
+            "displayPrompt": "<b>2</b>. For each project story, come up with as many <b>answers</b> to the above question as you can. For each answer, click the <b>New item</b> button to represent it in the diagram below."
         },
         {
             "id": "project_projectStoryElementsAnswersClusteringDiagram",
@@ -42,13 +42,13 @@
             "required": true,
             "displayType": "clusteringDiagram",
             "displayConfiguration": "project_projectStoryElementsAnswersClusteringDiagram",
-            "displayPrompt": "You can work on answer cluster names here:"
+            "displayPrompt": "<p><b>3</b>. When you have considered all of your project stories, <b>cluster</b> your answers together. Drag the circles to place like with like.</p> <p><b>4</b>. Give each cluster of answers a <b>name</b>. Click the <b>New cluster</b> button to represent each cluster name on the diagram.</p>"
         },
         {
             "id": "project_projectStoryElementsInstructionsStep2",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "Now create attribute group clusters:<ol><li>Copy the answer clusters from the above diagram into the diagram below.</li>\n<li>Around each cluster, create items for two to five good and bad attributes (advantages and disadvantages, opportunities and dangers) of each cluster. (Or, for sticky notes, clear a \"halo\" of space around each group's name and do the same.)</li></ol>"
+            "displayPrompt": "<p><b>5</b>. <b>Copy</b> the clusters from the diagram above to the diagram below.</p><p><b>6</b>. Describe each cluster by adding <b>attributes</b> to it. Ask yourself: What is good and bad about this cluster? What helps you, and what works against you? Where is the opportunity, and where is the challenge? Create at least two positive and two negative attributes for each cluster. (If you can't think of both positive and negative attributes, keep trying. The exercise depends on the attributes being balanced.)</p><p><b>7</b>. <b>Delete</b> the original cluster names from the diagram below. (Go ahead, don't worry. You'll be replacing them with something better.)</p><p><b>8</b>. <b>Rearrange</b> the attributes into <em>new</em> clusters, placing like with like as you did before.</p><p><b>9</b>. <b>Create new clusters</b> with new names. These are your story elements.</p>"
         },
         {
             "id": "project_projectStoryElementsAttributeGroupsClusteringDiagram",
@@ -56,21 +56,7 @@
             "required": true,
             "displayType": "clusteringDiagram",
             "displayConfiguration": "project_projectStoryElementsAttributeGroupsClusteringDiagram",
-            "displayPrompt": "You can work on attribute group clusters here:"
-        },
-        {
-            "id": "project_projectStoryElementsInstructionsStep3",
-            "valueType": "none",
-            "displayType": "label",
-            "displayPrompt": "Create story elements:<ol><li>Copy the new good/bad attributes to the diagram below (or do the same with sticky notes). Mix the attributes all together.</li>\n<li>Then, cluster the attributes into new groups.</li>\n<li>Make a named cluster for each of the groups. These new clusters are your story elements.</li>\n</ol>"
-        },
-        {
-            "id": "project_projectStoryElementsClusteringDiagram",
-            "valueType": "object",
-            "required": true,
-            "displayType": "clusteringDiagram",
-            "displayConfiguration": "project_projectStoryElementsClusteringDiagram",
-            "displayPrompt": "You can work on story elements here:"
+            "displayPrompt": ""
         },
         {
             "id": "project_projectStoryElementsList",
@@ -79,7 +65,7 @@
             "displayType": "grid",
             "displayConfiguration": "panel_addStoryElement",
             "displayName": "Story elements",
-            "displayPrompt": "Enter the story elements you created into the table below. Describe each with more details."
+            "displayPrompt": "<p><b>10</b>. Finally, enter the story elements (final cluster names) you created into the table below.</p>"
         }
     ]
 }

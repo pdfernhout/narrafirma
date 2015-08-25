@@ -11,7 +11,7 @@ import m = require("mithril");
 // TODO: Does surface need to be "destroy"-ed when changing page to prevent memory leak?
 
 var defaultSurfaceWidthInPixels = 800;
-var defaultSurfaceHeightInPixels = 400;
+var defaultSurfaceHeightInPixels = 500;
 
 function uuidFast() {
     return generateRandomUuid();
@@ -112,9 +112,9 @@ class ClusteringDiagram {
     itemBeingEditedCopy = null;
     isEditedItemNew = false;
 
-    static defaultBodyColor = "#00009B"; // light blue
+    static defaultBodyColor = "#abb6ce"; // light blue
     // var defaultBodyColor = [0, 0, 155, 0.5]; // light blue, transparent
-    static defaultBorderColor = "black";
+    static defaultBorderColor = "#2e4a85";
     // var defaultBorderColor = "green";
     static defaultBorderWidth = 1;
     // var defaultHasNoteBorderColor = "green";
@@ -125,7 +125,7 @@ class ClusteringDiagram {
     constructor(storageFunction: Function, autosave) {
         console.log("Creating ClusteringDiagram");
     
-        this.storageFunction = storageFunction;
+        this.storageFunction = storageFunction; 
         this.autosave = autosave;
         this.diagram = storageFunction();
         
@@ -234,7 +234,7 @@ class ClusteringDiagram {
             .attr('class', 'clusteringDiagramBackground')
             .style('fill', 'white')
             .style('stroke-width', '3')
-            .style('stroke', 'rgb(0,0,0)')
+            .style('stroke', '#a7a5a5')
             .on("mousedown", () => {
                 console.log("mousedown in background");
                 this.selectItem(null);
@@ -325,10 +325,10 @@ class ClusteringDiagram {
         this.newButton("deleteButton", "Delete", () => {
             if (!this.lastSelectedItem) {
                 // TODO: Translate
-                alert("Please select an item to delete first");
+                alert("Please select an item to delete first.");
                 return;
             }
-            dialogSupport.confirm("Confirm removal of: '" + this.lastSelectedItem.text + "'?", () => {
+            dialogSupport.confirm("Are you sure you want to delete the item or cluster called '" + this.lastSelectedItem.text + "'?", () => {
                 this.updateDisplayForChangedItem(this.lastSelectedItem, "delete");
                 removeItemFromArray(this.lastSelectedItem, this.diagram.items);
                 this.clearSelection();
@@ -404,12 +404,12 @@ class ClusteringDiagram {
         
         // TODO: Make a single dialog
         // TODO: Translate
-        var newWidthString = prompt("New width in pixels?", this.diagram.surfaceWidthInPixels);
+        var newWidthString = prompt("How wide (in pixels) would you like this clustering diagram to be?", this.diagram.surfaceWidthInPixels);
         if (!newWidthString) return;
         var newWidth = parseInt(newWidthString.trim(), 10);
         if (!newWidth) return;
          
-        var newHeightString = prompt("New height in pixels?", this.diagram.surfaceHeightInPixels);
+        var newHeightString = prompt("How high (in pixels) would you like this clustering diagram to be?", this.diagram.surfaceHeightInPixels);
         if (!newHeightString) return;
         var newHeight = parseInt(newHeightString.trim(), 10);
         if (!newHeight) return;
@@ -687,7 +687,7 @@ class ClusteringDiagram {
             var displayObject = this.itemToDisplayObjectMap[item.uuid];
             displayObject.circle
                 // .style("stroke", lastSelectedDisplayObject.borderColor)
-                .style("stroke-width", displayObject.borderWidth * 2);
+                .style("stroke-width", displayObject.borderWidth * 5);
         }
         this.lastSelectedItem = item;
         
@@ -738,7 +738,7 @@ class ClusteringDiagram {
                 .attr("r", radius * 3)
                 .attr("cx", 0)
                 .attr("cy", 0)
-                .style("fill", d3.rgb(bodyColor).brighter())
+                .style("fill", bodyColor) // d3.rgb(bodyColor).brighter())
                 // Make translucent
                 .style("opacity", 0.25)
                 .style("stroke", d3.rgb(borderColor))

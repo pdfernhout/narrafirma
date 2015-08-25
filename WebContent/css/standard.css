@@ -610,9 +610,26 @@ table.filterTable td {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Stories list ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-.narrafirma-stories-list td {
-    border: 1px solid #3e3739;
+.narrafirma-stories-list table {
+  margin: 10px;
+  display: block;
+  max-height: 400px;
+  overflow-y: scroll;
+  border-collapse: collapse;
 }
+
+.narrafirma-stories-list th {
+	background-color: #7b8cb2;
+	padding: 10px;
+	border: 1px solid #3e3739;
+}
+
+.narrafirma-stories-list td {
+    padding: 6px;
+    border: 1px solid #3e3739;
+    height: 1em;
+}
+
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dialogs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 

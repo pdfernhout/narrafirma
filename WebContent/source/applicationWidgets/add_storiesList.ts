@@ -22,15 +22,16 @@ function add_storiesList(panelBuilder: PanelBuilder, model, fieldSpecification) 
     
     return m("div.narrafirma-stories-list", [
         prompt,
-        m("i", "Project stories:"),
-        m("br"),
+       // m("div.narrafirma-stories-list-title", "Project stories:"),
+        //m("br"),
         m("table", [
             m("tr", [m("th", "Story name"), m("th", "Story text")]),
             storyIdentifierList.map((storyIdentifier) => {
                 console.log("storyIdentifier", storyIdentifier);
                 return [
-                    m("td", tripleStore.queryLatestC(storyIdentifier, storyNameField)),
-                    m("td", tripleStore.queryLatestC(storyIdentifier, storyTextField))
+                    m("tr"),
+                    [m("td", tripleStore.queryLatestC(storyIdentifier, storyNameField)),
+                    m("td", tripleStore.queryLatestC(storyIdentifier, storyTextField))]
                 ];
             })
         ])
