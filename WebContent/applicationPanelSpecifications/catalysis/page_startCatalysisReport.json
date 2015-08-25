@@ -23,7 +23,7 @@
                     "editButton": true,
                     "addButton": true,
                     "removeButton": true,
-                    "includeAllFields": ["catalysisReport_shortName", "catalysisReport_notes"]
+                    "columnsToDisplay": ["catalysisReport_shortName", "catalysisReport_notes"]
                 }
             },
             "displayName": "Catalysis reports",

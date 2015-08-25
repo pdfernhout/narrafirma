@@ -73,7 +73,7 @@ function buildThemerPanel(panelBuilder: PanelBuilder, model) {
     var storyThemes = [];
     var storyThemesStore = GridWithItemPanel["newMemoryTrackableStore"](storyThemes, "id");
     
-    var configuration2 = {removeButton: true, moveUpDownButtons: true, includeAllFields: true};
+    var configuration2 = {removeButton: true, moveUpDownButtons: true, columnsToDisplay: true};
     var itemPanelSpecification2 = {
         "id": "storyThemeQuestions",
         panelFields: [
@@ -130,7 +130,7 @@ function insertStoryThemer(panelBuilder: PanelBuilder, pagePane, model, fieldSpe
     var dataStore = GridWithItemPanel["newMemoryTrackableStore"](allStories, "_storyID");
     
     // Only allow view button for stories
-    var configuration = {viewButton: true, navigationButtons: true, includeAllFields: ["__survey_storyName", "__survey_storyText"]};
+    var configuration = {viewButton: true, navigationButtons: true, columnsToDisplay: ["__survey_storyName", "__survey_storyText"]};
     var storyList = new GridWithItemPanel(panelBuilder, pagePane, fieldSpecification.id, dataStore, itemPanelSpecification, configuration, model);
     storyList.grid.set("selectionMode", "single");
     

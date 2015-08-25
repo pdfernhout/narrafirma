@@ -33,11 +33,11 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, gridCon
     
     var fieldsToInclude = [];
     
-    var includeAllFields = gridConfiguration.includeAllFields;
+    var columnsToDisplay = gridConfiguration.columnsToDisplay;
     
-    // Put the columns in the order supplied if using includeAllFields, otherwise put them in order of panel specification
-    if (includeAllFields && includeAllFields.constructor === Array) {
-        (<Array<string>>includeAllFields).forEach(function (fieldName) {
+    // Put the columns in the order supplied if using columnsToDisplay, otherwise put them in order of panel specification
+    if (columnsToDisplay && columnsToDisplay.constructor === Array) {
+        (<Array<string>>columnsToDisplay).forEach(function (fieldName) {
             panelFields.forEach(function (fieldSpecification) {
                 if (fieldSpecification.id === fieldName) fieldsToInclude.push(fieldSpecification);
             });
@@ -45,7 +45,7 @@ function computeColumnsForItemPanelSpecification(itemPanelSpecification, gridCon
     } else {
         panelFields.forEach(function (fieldSpecification) {
             var includeField = false;
-            if (includeAllFields) {
+            if (columnsToDisplay) {
                 // TODO: improve this check if need to exclude other fields?
                 if (fieldSpecification.displayType !== "label" && fieldSpecification.displayType !== "header") {
                     fieldsToInclude.push(fieldSpecification);
@@ -129,7 +129,7 @@ var defaultGridConfiguration: GridConfiguration = {
     addButton: true,
     removeButton: true,
     editButton: true,
-    includeAllFields: false,
+    columnsToDisplay: false,
     inlineButtons: false,
     navigationButtons: false,
     

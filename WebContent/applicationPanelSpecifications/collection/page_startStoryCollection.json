@@ -25,7 +25,7 @@
                     "addButton": true,
                     "removeButton": true,
                     "customButton": {"customButtonLabel": "Activate or Deactivate Web Form", "callback": "toggleWebActivationOfSurvey"},
-                    "includeAllFields": ["storyCollection_shortName", "storyCollection_questionnaireIdentifier", "storyCollection_activeOnWeb", "storyCollection_notes"]
+                    "columnsToDisplay": ["storyCollection_shortName", "storyCollection_questionnaireIdentifier", "storyCollection_activeOnWeb", "storyCollection_notes"]
                 }
             },
             "displayName": "Story collections",

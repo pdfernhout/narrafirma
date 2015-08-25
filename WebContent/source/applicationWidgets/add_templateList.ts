@@ -163,7 +163,7 @@ function makeTemplateListChooser(panelBuilder: PanelBuilder, dialogConfiguration
             itemPanelSpecification: itemPanelSpecification,
             gridConfiguration: {
                 idProperty: "id",
-                includeAllFields: false,
+                columnsToDisplay: false,
                 // viewButton: true,
                 customButton: customButtonDefinition,
                 navigationButtons: true

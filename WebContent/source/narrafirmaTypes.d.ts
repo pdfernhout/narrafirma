@@ -39,7 +39,7 @@ interface GridConfiguration {
     moveUpDownButtons?: boolean;
     navigationButtons?: boolean;
     // For next field, Array could be ["fieldName1", "fieldName2", ...]
-    includeAllFields?: boolean | Array<String>;
+    columnsToDisplay?: boolean | Array<String>;
     customButton?: any;
     validateAdd?: string;
     validateEdit?: string;

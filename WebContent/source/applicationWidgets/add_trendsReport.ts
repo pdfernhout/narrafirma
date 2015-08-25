@@ -149,7 +149,7 @@ class PatternBrowser {
 
         var storyGridConfiguration = {
             idProperty: "_storyID",
-            includeAllFields: ["__survey_storyName", "__survey_storyText"],
+            columnsToDisplay: ["__survey_storyName", "__survey_storyText"],
             viewButton: true,
             navigationButtons: true
         };
@@ -222,7 +222,7 @@ class PatternBrowser {
         
         var patternsGridConfiguration = {
             idProperty: "id",
-            includeAllFields: true,
+            columnsToDisplay: true,
             navigationButtons: true,
             selectCallback: this.patternSelected.bind(this)
         };
