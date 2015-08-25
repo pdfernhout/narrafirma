@@ -1,12 +1,7 @@
-To run the conversion script or the test server:
+Install node.js to run the tools.
 
-Install node.js
-Run to install json-server globally: $sudo npm install -g json-server
-Set up local external tools (under .settings, "node.js.launch" and "test server.launch")
-
-Obsolete: To do the conversion, select the file convert_design_to_code.js and pick external tool to run node.js
-Obsolete: To run the test server, select the external tool to run the "test server".
+To run the tools from Eclipse, set up local external tools.
+These are stored in the project's .settings directory, such as "node.js.launch".
 
 References:
 http://nodejs.org/download/
-https://www.npmjs.org/package/json-server
