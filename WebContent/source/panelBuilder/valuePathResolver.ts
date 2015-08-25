@@ -2,9 +2,6 @@ import PanelBuilder = require("PanelBuilder");
 import Project = require("../Project");
 "use strict";
 
-// TODO: Store a reference to the Project in an intiatilziation step
-// TODO: Use the tripel store to store all this data
-
 class ValuePathResolver {
     constructor(public context: any, public baseModel: any, public valuePath: string) {
     }
@@ -26,8 +23,6 @@ class ValuePathResolver {
             currentKey = pathParts.shift();
             currentModel = this.context[currentKey];
             if (!currentModel) {
-                // TODO: Needs work!!!
-                // throw new Error("model is null");
                 console.log("no object for first path segment", currentKey, this.valuePath, this.context);
                 return undefined;
             }
@@ -40,7 +35,6 @@ class ValuePathResolver {
         if (pathParts.length < 1) throw new Error("Incorrect dependency path specified: " + this.valuePath);
        
         while (pathParts.length > 1) {
-            // TODO: Should ideally establish dependencies all along the line in case something along path changes
             currentKey = pathParts.shift();
             if (currentKey === "currentPattern") {
                 console.log("key is currentPattern");
@@ -52,8 +46,6 @@ class ValuePathResolver {
                 nextModel = currentModel[currentKey];
             }
             if (!nextModel) {
-                // TODO: Needs work!!!
-                // throw new Error("model is null while iterating");
                 console.log("model is null while iterating", currentKey, pathParts.length, this.valuePath, currentModel);
                 return undefined;
             }
@@ -77,14 +69,13 @@ class ValuePathResolver {
                 return undefined; 
             }
             
-            // TODO: Need to have hook here to save the data to the server somehow...
             if (modelAndField.useTripleStore) {
                 (<Project>this.context.project).tripleStore.addTriple(modelAndField.model, modelAndField.field, value);
             } else {
                 modelAndField.model[modelAndField.field] = value;
             }
             
-            // TODO: Should a set return this or the value? Using value to me like m.prop, but prevents chaining
+            // Design issue: Should a set return this or the value? Using value to me like m.prop, but prevents chaining
             return value;
         } else {
             if (modelAndField === undefined) return undefined;
