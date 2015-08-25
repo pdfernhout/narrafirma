@@ -2,6 +2,32 @@ import PanelBuilder = require("PanelBuilder");
 import Project = require("../Project");
 "use strict";
 
+/*
+ValuePathResolver helps with getting and setting values that are nested inside multiple objects.
+It also helps with getting and setting valeus stores in a triple store.
+
+ValuePathResolver will start from a supplied baseModel and sequentially move along a series of fields
+defined in a valuePath string and separated by slashes.
+It resolves the object at each position in the path and uses that to resolve the next part of the valuePath.
+
+If the baseModel is a string instead of a JavaScript objects,
+it uses that as the "A" field of a triple to use with a triple store lookup.
+In that case, the "B" field of the tripel is the field in the value path.
+If a value is beign set, the "C" field in the triple is the new value being set, and A and B are the same as for the lookup.
+
+If part of a path is a function, it uses that function to get the field's value -- or set the value, if it is the final field.
+
+If the valuePath starts with "/", the resolution process will use an optional supplied context object instead of the baseModel.
+This is useful when building a panel where most of the panel fields use the same model,
+but one or two fields or options may relay on values in the project or configuration or such.
+
+An example valuePath starting from the baseModel with three segments is "a/b/c".
+That would resolve to "baseModel.a.b.c" or set as "baseModel.a.b.c = newValue".
+
+An example valuePath starting from the context with two segments is: "/project/userIdentifier".
+That would resolve to "context.project.userIdentifier".
+*/
+
 class ValuePathResolver {
     constructor(public context: any, public baseModel: any, public valuePath: string) {
     }
@@ -40,8 +66,12 @@ class ValuePathResolver {
                 console.log("key is currentPattern");
             }
             var nextModel;
+            var useAccessorFunction = !useTripleStore && typeof currentModel[currentKey] === "function";
+
             if (useTripleStore) {
                 nextModel = (<Project>this.context.project).tripleStore.queryLatestC(currentModel, currentKey);
+            } if (useAccessorFunction) {
+                nextModel = currentModel[currentKey]();
             } else {
                 nextModel = currentModel[currentKey];
             }
@@ -69,8 +99,12 @@ class ValuePathResolver {
                 return undefined; 
             }
             
+            var useAccessorFunction = !modelAndField.useTripleStore && typeof modelAndField.model[modelAndField.field] === "function";
+            
             if (modelAndField.useTripleStore) {
                 (<Project>this.context.project).tripleStore.addTriple(modelAndField.model, modelAndField.field, value);
+            } else if (useAccessorFunction) {
+                modelAndField.model[modelAndField.field](value);
             } else {
                 modelAndField.model[modelAndField.field] = value;
             }
@@ -81,6 +115,8 @@ class ValuePathResolver {
             if (modelAndField === undefined) return undefined;
             if (modelAndField.useTripleStore) {
                 return (<Project>this.context.project).tripleStore.queryLatestC(modelAndField.model, modelAndField.field);
+            } else if (useAccessorFunction) {
+                return modelAndField.model[modelAndField.field]();
             } else {
                 return modelAndField.model[modelAndField.field];
             }
