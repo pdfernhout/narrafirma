@@ -9,7 +9,7 @@
             "id": "project_projectStoryElementsInstructions",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "On this page you will use your project stories to create <b>story elements</b>. Story elements are abstract representations of the meanings found in stories. You can use story elements to help you plan your project. (You can also do this exercise on paper. If you do that, skip to the bottom of this page to enter the story elements you created.)"
+            "displayPrompt": "On this page you will use your project stories to create <b>story elements</b>. Story elements are abstract representations of the meanings found in stories. Going through this exercise can help you think about what you want to happen in your project. (You can also do this exercise on paper. If you do that, skip to the bottom of this page to enter the story elements you created.)"
         },
         {
             "id": "project_projectStoryElementsType",
