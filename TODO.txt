@@ -68,6 +68,7 @@ H Make a SIMPLE Project Administration section to go with home page button for u
 
 GENERAL
 H Think about and improve issue of values that can be set only once like catalysis report name and story collection
+H Create script or procedure to deal with SVN for WordPress
 
 ERRORS
 H On "Start story collection" page, when looking at collection, this error: "Problem creating widget type: text :: id: storyCollection_shortName
