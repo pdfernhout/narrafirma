@@ -9,7 +9,7 @@
             "id": "storyForms_Label",
             "valueType": "none",
             "displayType": "label",
-            "displayPrompt": "On this page you will design one or more <strong>story forms</strong> for your project. Choose from the library of questions you already created to create the form your participants will use to tell their stories and answer questions about them.</p>"
+            "displayPrompt": "<p>On this page you will design one or more <strong>story forms</strong> for your project. Choose from the library of questions you already created to create the form your participants will use to tell their stories and answer questions about them.</p>"
         },
         {
             "id": "project_storyForms",
