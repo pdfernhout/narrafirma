@@ -3,37 +3,85 @@
 PRIORITY
 - export: overall report, print text questionnaires, print catalysis report
 - catalysis (at least one step like graph or themer)
-
-BIG OPTIONAL FUNCTIONALITY AREAS
-- visual clustering in planning phase
 - theming and tagging (now to be in story browser)
 
-THINGS CYNTHIA NOTICED DURING PROJECT
-When make story form, need way to copy all questions of a type into form
-Ideally way to do conditional question or answer (piping), especially to pick participant group
-If entering a story and decide not to, can't remove window without adding story. (But seems to work during local test using "CLose" button)
-After enter story in story thing, form contents don't change (in noticeable way). Rest of form looks the same and no indication. Maybe could improve somehow (like clear). Different needs for data entry -- want to clear and enter new one.
-Need "other" field for radiobuttons and checkboxes (maybe dropdown, probably not)
-Fixing Data -- stage
+IDs
+H Eliciting question choice in survey should be stored as the id (or short name), not the text
+
+EXPORT/IMPORT
+H Add page to do export
+H When import story collection, need to display name of form in select
+H Move "export story form" and story collection buttons from "Enter stories" page to "review incoming" page
+
+PRINTING
+H Implement printStoryForm in domain buttonClicked (what do do about entering multiple stories?) - make better looking
+H Implement "export session agenda" (to HTML) for story collection
+H Implement "export session agenda" (to HTML) for sensemaking
+H Implement exportPresentationOutline in domain buttonClicked - in Return, "Prepare outline of project presentation"
+
+STORY THEMER
+H Move theming/tagging (and ignore/delete) functionality into story browser
+  Fixing Data -- stage
   Delete a story you entered wrong (probably by setting an "ignore" tag in the story browser)
   Fix something you entered wrong (only by deleting, or perhaps overriding using extra tags in the story browser)
   Mark questions as don't pay any attention to question / Discard question from catalysis
   Add questions and answers as theming (structured annotations) (by adding a tag in story browser)
   Need to be able to add comment to story (by adding a tag in story browser)
   Need to be able to scrub user story data (by adding overrides using tags in story browser)
-Sliders
-  Need "does not apply" for sliders
-  Sliders too tiny (hard to see color) 
-  Need to jiggle slider button or it records nothing (needs work)
-  Need a flip axis for slider for catalysis when graphing 
 
-THINGS CYNTHIA NOTICED WHILE DOING HELP (probably redundant but just in case)
-H Need a way to delete a story from a story collection
-H When import story collection, need to display name of form in select
-M Slider should have a "does not apply" option
-L After you enter a story, it shows an alert that the story has been saved, but it doesn't get rid of the window. the popup window should go away
-L would like to make "focus rectangle" or "rubber band" over graphs when selecting - see http://bl.ocks.org/mbostock/1667367
-L Histograms should have mean and standard deviation marked (and maybe median and mode, skewness and kurtosis as numbers).
+GRAPH BROWSER
+H Add low and high labels for slider/range questions (on graphs)
+H Support graphBrowser contingency table with statistical results - chi squared
+H Finish Mann-Whitney U test
+H Test statistical tests for validity - run same tests in spreadsheet on same data
+H Support graphBrowser standard deviation and mean for histograms
+
+TRENDS REPORT -> PATTERN BROWSER
+L Move options (how large should subsets, what significance threshold) to popup under patterns list
+H Save and load pattern list with observations on trends report
+H Support adding interpretations to observations in trendsReport (pattern browser)
+H Ignore stories that have an ignore tag set (like if a test story or a duplicate)
+
+CLUSTERING (CATALYSIS)
+H Populate clustering space in "Cluster interpretations" page with all entered interpretations (names) (with button)
+H Support clustering interpretations into perspectives in catalysis (on page after pattern browser) (with table?)
+
+CATALYSIS REPORT
+H Create catalysis report - including results (graphs, statistical results)
+   Perspective
+       Interpretation
+           Observation
+               Pattern (graph)
+H Print catalysis report
+
+CATALYSIS
+H Remove "Theme stories" page
+H Remove "review excerpts" page
+H Remove "Review and interpret observations" page
+
+GRID
+H When viewing grid data, it should not look (or be) editable
+    Read-only version of checkboxes and radiobutton widgets, used by grid (assuming that is how the read only data is presented)
+
+CONFIGURATION
+H Make a SIMPLE Project Administration section to go with home page button for use with import/export/backup/reporting or other settings and functions
+
+GENERAL
+H Think about and improve issue of values that can be set only once like catalysis report name and story collection
+
+ERRORS
+H On "Start story collection" page, when looking at collection, this error: "Problem creating widget type: text :: id: storyCollection_shortName
+Exception: Error: tag is not alphanumeric: span class="narrafirma-special-warning""
+
+======= CYNTHIA
+
+H Create help
+H On Story question page, move "what type of question is this" extra text to help
+H Clean up introduction page
+H Fix wording on dashboard pages (and all wording related to reminders) - finish this
+H Create full demo project to go with sample data
+
+----------------------- THINGS REMOVED FROM HIGH PRIORITY LIST
 
 SURVEY GENERAL
 L Display how many stories and/or survey results have been collected
@@ -55,14 +103,12 @@ X Survey - maximum number stories (maybe later)
 X Survey - back button in browser -- deal with so don't lose data
 
 IDs
-H Eliciting question choice in survey should be stored as the id (or short name), not the text
 ? Ensure short name IDs entered by user do not conflict with automatically created ones or story text and story name
 L Add support for short names (ids) for eliciting questions
 X Improve how options are specified for questions in question designer rather than use text box
 X Make sure that short name IDs entered by user when defining questions are unique among themselves and don't have a leading underscore (or at least aren't "_id")
 
 EXPORT/IMPORT
-H Add page to do export
 L Improve import process to remove two seperate buttons as two stages (questionnaire and data) or handle in some other way
 L Add progress bar for import
 X Add way to clear out or reset old survey results? Or maybe partition them by survey?
@@ -76,13 +122,7 @@ X Think through logging in the client, perhaps using a library
     Client application could report errors to server or another service
     Client application could report usage metrics to server or another service
 
-PRINTING
-H Implement printStoryForm in domain buttonClicked (what do do about entering multiple stories?)
-H Implement "print session agenda" (to HTML) for story collection
-H Implement "print session agenda" (to HTML) for sensemaking
-
 STORY THEMER
-H Move theming/tagging (and ignore/delete) functionality into story browser
 X Generalize storyThemer into tagging - or researcher added questions
     Support storyThemer -- a widget where people look at each story, give it 1-3 themes, then merge the themes into smaller numbers of themes
     Page to enter themes for stories
@@ -90,52 +130,30 @@ X Generalize storyThemer into tagging - or researcher added questions
 X Page to cluster themes into final themes
 
 GRAPH BROWSER
-H Add low and high labels for slider/range questions
-H Support graphBrowser contingency table with statistical results
-H Support graphBrowser standard deviation and mean for histograms
 L Support graphBrowser common maximum for multiple histograms
 
 TRENDS REPORT -> PATTERN BROWSER
-H Rename trendsReport to Pattern Browser
-H Move options (how large should subsets, what significance threshold) to popup under patterns list
-H Support trendsReport -- shows text and graphs in report based on top differences in statistical tests
-H Save and load pattern list with observations on trends report
-H Support adding interpretations to observations in trendsReport (pattern browser)
-H Ignore stories that have an ignore tag set (like if a test story or a duplicate)
+L Rename trendsReport to Pattern Browser
 L Rename "save current graph selection to observation" buttons under graphs
 
 CLUSTERING (CATALYSIS)
-H Support clustering interpretations into perspectives in catalysis (on page after pattern browser) WITH A TABLE
-H Think about and improve issue of values that can be set only once like catalysis report name and story collection
 
 CATALYSIS REPORT
-H Create catalysis report - including results (graphs, statistical results)
-   Perspective
-       Interpretation
-           Observation
-               Pattern (graph)
-H Print catalysis report
 
 CATALYSIS
-H Remove "review excerpts" page
 X Need to be able to select text in existing story to AddToExcerpts
 X Support storiesList -- for choosing a resonant story
 
 SENSEMAKING
-H Change "storiesList" functionality to - they have to paste in the name/text of the story. with a textarea
 
 RETURN
-H Implement exportPresentationOutline in domain buttonClicked
 
 GRID
-H When viewing grid data, it should not look (or be) editable
-    Read-only version of checkboxes and radiobutton widgets, used by grid (assuming that is how the read only data is presented)
 L Add close button to top of item panel
 L Better information about what is going on in item panel - whether view, edit, duplicate
 L When duplicate list item, add "copy" to name (different for each)
 
 CONFIGURATION
-H Make a Project Administration section to go with home page button for use with import/export/backup/reporting or other settings and functions
 ? Add project configuration page?
 
 ALERTS
@@ -167,14 +185,28 @@ X Way to retrieve data about project participant groups [Is this still relevant?
 
 ======= CYNTHIA
 
-H Create help
-H On Story question page, move "what type of question is this" extra text to help
-H Clean up introduction page
-H Fix wording on dashboard pages (and all wording related to reminders)
-H Create full demo project to go with sampel data
 L Fix CSS styling so reminder section of page is different
 L Improve general CSS styling on all pages (forms)
 X Forgot to put "memorable" in eliciting question types ("What type of question is this?")
+
+THINGS CYNTHIA NOTICED DURING PROJECT
+W When make story form, need way to copy all questions of a type into form
+W Ideally way to do conditional question or answer (piping), especially to pick participant group
+W If entering a story and decide not to, can't remove window without adding story. (But seems to work during local test using "CLose" button)
+W After enter story in story thing, form contents don't change (in noticeable way). Rest of form looks the same and no indication. Maybe could improve somehow (like clear). Different needs for data entry -- want to clear and enter new one.
+W Need "other" field for radiobuttons and checkboxes (maybe dropdown, probably not)
+W Sliders
+  Need "does not apply" for sliders
+  Sliders too tiny (hard to see color) 
+  Need to jiggle slider button or it records nothing (needs work)
+  Need a flip axis for slider for catalysis when graphing 
+
+THINGS CYNTHIA NOTICED WHILE DOING HELP (probably redundant but just in case)
+M Slider should have a "does not apply" option
+L After you enter a story, it shows an alert that the story has been saved, but it doesn't get rid of the window. the popup window should go away
+L would like to make "focus rectangle" or "rubber band" over graphs when selecting - see http://bl.ocks.org/mbostock/1667367
+L Histograms should have mean and standard deviation marked (and maybe median and mode, skewness and kurtosis as numbers).
+
 
 ==== Wish list:
 
@@ -830,3 +862,6 @@ DONE When you submit survey with multiple stories, it still only said "your stor
 DONE Improve how sanitizing of user-supplied content is done and remove most uses of m.trust to help prevent XSS
 DONE Procedure for making WordPress plugin zip file [use: "npm run build-wp" from the project root directory]
 DONE Improve WordPress plugin install directions
+DONE - visual clustering in planning phase - CFK
+DONE Support trendsReport -- shows text and graphs in report based on top differences in statistical tests
+DONE Change "storiesList" functionality to - they have to paste in the name/text of the story. with a textarea
