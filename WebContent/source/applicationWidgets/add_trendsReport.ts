@@ -222,7 +222,6 @@ class PatternBrowser {
  
         this.patternsGrid = new GridWithItemPanel({panelBuilder: args.panelBuilder, model: this.modelForPatternsGrid, fieldSpecification: patternsGridFieldSpecification});
         
-        
         // TODO: selections in observation should be stored in original domain units, not scaled display units
  
         // Put up a "please pick pattern" message
@@ -255,16 +254,18 @@ class PatternBrowser {
         var parts;
         
         if (!this.catalysisReportIdentifier) {
-            parts = [m("div", "Please select a catalysis report to work with")];
+            parts = [m("div.narrafirma-choose-catalysis-report", "Please select a catalysis report to work with")];
         } else {
             parts = [
                 this.patternsGrid.calculateView(),
                 this.currentPattern ?
-                    m("div", {config: this.insertGraphResultsPaneConfig.bind(this)}) :
-                   // TODO: Translate
-                    m("div", "Please select a pattern to view as a graph"),
-                this.storyGrid.calculateView(),
-                panelBuilder.buildPanel(this.observationPanelSpecification, this)
+                    [
+                        m("div", {config: this.insertGraphResultsPaneConfig.bind(this)}),
+                        this.storyGrid.calculateView(),
+                        panelBuilder.buildPanel(this.observationPanelSpecification, this)
+                    ] :
+                    // TODO: Translate
+                    m("div.narrafirma-choose-pattern", "Please select a pattern to view as a graph")
             ];
         }
         
@@ -290,7 +291,8 @@ class PatternBrowser {
     
     currentObservation(newObservation) {
         if (!this.currentPattern) {
-            throw new Error("pattern is not defined");
+            return "";
+            // throw new Error("pattern is not defined");
         }
         return this.observationAccessor(this.currentPattern.questions, newObservation);
     }
