@@ -450,7 +450,12 @@ export function copyDraftPNIQuestionVersionsIntoAnswers() {
 
 export function logoutButtonClicked() {
     if (confirm("Logout?")) {
-        window.location.href = "/logout";
+        var isWordPressAJAX = !!window["ajaxurl"];
+        if (isWordPressAJAX) {
+            window.location.href = window.location.href.split("wp-content")[0] + "wp-login.php?action=logout";
+        } else {
+            window.location.href = "/logout";
+        }
     }
 }
 
