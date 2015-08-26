@@ -46,10 +46,9 @@ class ValuePathResolver {
         if (pathParts[0] === "") {
             isGlobalReference = true;
             pathParts.shift();
-            currentKey = pathParts.shift();
-            currentModel = this.context[currentKey];
+            currentModel = this.context;
             if (!currentModel) {
-                console.log("no object for first path segment", currentKey, this.valuePath, this.context);
+                console.log("no object for context", currentKey, this.valuePath, this.context);
                 return undefined;
             }
         } 
@@ -93,14 +92,14 @@ class ValuePathResolver {
     resolve(value = undefined): any {
         // console.log("resolve", this.valuePath, value, this);
         var modelAndField = this.resolveModelAndField();
+        var useAccessorFunction = !modelAndField.useTripleStore && typeof modelAndField.model[modelAndField.field] === "function";
+        
         if (value !== undefined) {
             if (modelAndField === undefined) {
                 console.log("Model missing; can't set value", this.valuePath, this.baseModel, this.context);
                 return undefined; 
             }
-            
-            var useAccessorFunction = !modelAndField.useTripleStore && typeof modelAndField.model[modelAndField.field] === "function";
-            
+                        
             if (modelAndField.useTripleStore) {
                 (<Project>this.context.project).tripleStore.addTriple(modelAndField.model, modelAndField.field, value);
             } else if (useAccessorFunction) {
