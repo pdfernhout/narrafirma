@@ -793,7 +793,10 @@ class DataStore {
     }
     
     valueForField(item, fieldName: string) {
-        return item[fieldName];
+        var value = item[fieldName];
+        // Resolve accessing functions
+        if (typeof value === "function") value = value();
+        return value;
     }
     
     itemForIndex(index: number) {
