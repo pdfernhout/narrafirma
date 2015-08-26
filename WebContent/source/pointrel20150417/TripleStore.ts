@@ -276,12 +276,13 @@ class TripleStore {
         for (var bKey in latestBC) {
             var b = JSON.parse(bKey);
             var c = latestBC[bKey];
-            if (typeof b !== "string") {
+            if (typeof b === "string") {
+                if (c !== undefined) {
+                    result[b] = defensiveCopy(c);
+                }                
+            } else {
                 console.log("Expected b to be a string", a, b);
-                throw new Error("Expected b to be a string");
-            }
-            if (c !== undefined) {
-                result[b] = defensiveCopy(c);
+                // throw new Error("Expected b to be a string");
             }
         }
 
