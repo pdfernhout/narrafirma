@@ -96,20 +96,6 @@ function createGraphResultsPane(): HTMLElement {
     return pane;
 }
 
-// TODO: Similar to what is in add_graphBrowser
-function getCurrentCatalysisReportIdentifier(args) {
-    var panelBuilder = args.panelBuilder;
-    var model = args.model;
-    var fieldSpecification = args.fieldSpecification;
-    
-    // Get selected catalysis report
-    var catalysisReportIdentifier = valuePathResolver.newValuePathForFieldSpecification(panelBuilder, model, fieldSpecification)();
-
-    console.log("catalysisReportIdentifier", catalysisReportIdentifier);
-    
-    return catalysisReportIdentifier;
-}
-
 class PatternBrowser {
     project: Project = null;
     catalysisReportIdentifier: string = null;
@@ -125,7 +111,6 @@ class PatternBrowser {
     storyGridFieldSpecification: GridDisplayConfiguration = null;
     storyGrid: GridWithItemPanel = null;
      
-    // modelForObservation = {observation: ""};
     currentPattern = null;
     
     observationPanelSpecification = null;
@@ -187,7 +172,7 @@ class PatternBrowser {
                 },
                 {
                     id: "observationPanel_observation",
-                    valuePath: "currentPattern/observation",
+                    valuePath: "currentObservation",
                     displayName: "Observation",
                     displayPrompt: "If this pattern is noteworthy, enter an <strong>observation</strong> about the pattern here.",
                     displayType: "textarea"
@@ -260,7 +245,7 @@ class PatternBrowser {
         var panelBuilder: PanelBuilder = args.panelBuilder;
         
         // Handling of caching of questions and stories
-        var catalysisReportIdentifier = getCurrentCatalysisReportIdentifier(args);
+        var catalysisReportIdentifier = this.getCurrentCatalysisReportIdentifier(args);
         if (catalysisReportIdentifier !== this.catalysisReportIdentifier) {
             this.catalysisReportIdentifier = catalysisReportIdentifier;
             console.log("storyCollectionIdentifier changed", this.catalysisReportIdentifier);
@@ -294,11 +279,26 @@ class PatternBrowser {
         }       
     }
     
-    currentCatalysisReportChanged(currentCatalysisReportIdentifier) {
-        console.log("currentCatalysisReportChanged", currentCatalysisReportIdentifier);
+    observationAccessor(questions, newObservation = undefined) {
+        console.log("observationAccessor", questions, newObservation);
+        if (newObservation === undefined) {
+            return this.getObservationForQuestions(questions);
+        } else { 
+            return this.setObservationForQuestions(questions, newObservation);
+        }
+    }
+    
+    currentObservation(newObservation) {
+        if (!this.currentPattern) {
+            throw new Error("pattern is not defined");
+        }
+        return this.observationAccessor(this.currentPattern.questions, newObservation);
+    }
+    
+    currentCatalysisReportChanged(catalysisReportIdentifier) {
+        console.log("currentCatalysisReportChanged", catalysisReportIdentifier);
         
-        var catalysisReport = this.findCatalysisReport(currentCatalysisReportIdentifier);
-        if (!catalysisReport) {
+        if (!catalysisReportIdentifier) {
             // TODO: should clear everything
             return;
         }
@@ -306,7 +306,7 @@ class PatternBrowser {
         // TODO: Handle multiple story collections
         // TODO: Better handling when can't find something
         
-        var storyCollectionsIdentifier = this.project.tripleStore.queryLatestC(catalysisReport, "catalysisReport_storyCollections");
+        var storyCollectionsIdentifier = this.project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
         var storyCollectionItems = this.project.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
         
         if (storyCollectionItems.length === 0) return;
@@ -339,7 +339,6 @@ class PatternBrowser {
         this.chooseGraph(null);     
     }
     
-    
     findCatalysisReport(shortName) {
         var catalysisReports = this.project.tripleStore.queryLatestC(this.project.projectIdentifier, "project_catalysisReports");
         if (!catalysisReports) return null;
@@ -351,6 +350,78 @@ class PatternBrowser {
             }
         }
         return null;
+    }
+    
+    // TODO: Similar to what is in add_graphBrowser
+    getCurrentCatalysisReportIdentifier(args) {
+        var panelBuilder = args.panelBuilder;
+        var model = args.model;
+        var fieldSpecification = args.fieldSpecification;
+        
+        // Get selected catalysis report
+        var catalysisReportShortName = valuePathResolver.newValuePathForFieldSpecification(panelBuilder, model, fieldSpecification)();
+    
+        console.log("catalysisReportShortName", catalysisReportShortName);
+        
+        if (!catalysisReportShortName) return null;
+        
+        return this.findCatalysisReport(catalysisReportShortName);
+    }
+    
+    patternReferenceForQuestions(questions) {
+        // TODO: Maybe should be object instead of array?
+        var result = [];
+        questions.forEach(function (question) {
+            result.push(question.id);
+        });
+        return result;
+    }
+    
+    getObservationForQuestions(questions) {
+        var patternReference = this.patternReferenceForQuestions(questions);
+        
+        // TODO: Maybe observations should be in a nested list instead of attached directly to report?
+        var observation = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, patternReference);
+        
+        if (observation === undefined || observation === null) observation = "";
+        
+        console.log("getObservationForQuestions", this.catalysisReportIdentifier, patternReference, observation);
+        return observation;
+    }
+    
+    setObservationForQuestions(questions, newObservation) {
+        var patternReference = this.patternReferenceForQuestions(questions);
+    
+        // TODO: Maybe observations should be in a nested list instead of attached directly to report?
+        this.project.tripleStore.addTriple(this.catalysisReportIdentifier, patternReference, newObservation);
+        
+        return newObservation;
+    }
+    
+    makePattern(id, graphType, questions) {
+        // For bar and table
+        var q1Type = "C";
+        // Some graphs don't use q2Type and it is left as the default, used by table
+        var q2Type = "C";
+        
+        if (graphType === "histogram" || graphType === "multiple histogram" || graphType === "scatter" || graphType === "multiple scatter") {
+            q1Type = "S";
+        }
+        
+        if (graphType === "scatter" || graphType === "multiple scatter") {
+            q2Type = "S";
+        }
+            
+        var observation = this.observationAccessor.bind(this, questions);
+        
+        if (questions.length === 1) {
+            return {id: id, observation: observation, graphType: graphType, patternName: nameForQuestion(questions[0]) + " (" + q1Type + ")", questions: questions};
+        } else if (questions.length === 2) {
+            return {id: id, observation: observation, graphType: graphType, patternName: nameForQuestion(questions[0]) + " (" + q1Type + ") vs. " + nameForQuestion(questions[1]) + " (" + q2Type + ")", questions: questions};
+        } else {
+            console.log("Unexpected number of questions", questions);
+            throw new Error("Unexpected number of questions: " + questions.length);
+        }
     }
 
     buildPatternList() {
@@ -372,46 +443,46 @@ class PatternBrowser {
             return ("00000" + questionCount++).slice(-5);
         }
      
-        nominalQuestions.forEach(function (question1) {
-            result.push({id: nextID(), observation: "", graphType: "bar", patternName: nameForQuestion(question1) + " (C)", questions: [question1]});
+        nominalQuestions.forEach((question1) => {
+            result.push(this.makePattern(nextID(), "bar", [question1]));
         });
         
         // Prevent mirror duplicates and self-matching questions
         var usedQuestions;
         
         usedQuestions = [];
-        nominalQuestions.forEach(function (question1) {
+        nominalQuestions.forEach((question1) => {
             usedQuestions.push(question1);
-            nominalQuestions.forEach(function (question2) {
+            nominalQuestions.forEach((question2) => {
                 if (usedQuestions.indexOf(question2) !== -1) return;
-                result.push({id: nextID(), observation: "", graphType: "table", patternName: nameForQuestion(question1) + " (C) vs. " + nameForQuestion(question2) + " (C)", questions: [question1, question2]});
+                result.push(this.makePattern(nextID(), "table", [question1, question2]));
             });
         });
         
-        ratioQuestions.forEach(function (question1) {
-            result.push({id: nextID(), observation: "", graphType: "histogram", patternName: nameForQuestion(question1) + " (S)", questions: [question1]});
+        ratioQuestions.forEach((question1) => {
+            result.push(this.makePattern(nextID(), "histogram", [question1]));
         });
         
-        ratioQuestions.forEach(function (question1) {
-            nominalQuestions.forEach(function (question2) {
-                result.push({id: nextID(), observation: "", graphType: "multiple histogram", patternName: nameForQuestion(question1) + " (S) vs. " + nameForQuestion(question2) + " (C)", questions: [question1, question2]});
+        ratioQuestions.forEach((question1) => {
+            nominalQuestions.forEach((question2) => {
+                result.push(this.makePattern(nextID(), "multiple histogram", [question1, question2]));
             });
         });
         
         usedQuestions = [];
-        ratioQuestions.forEach(function (question1) {
+        ratioQuestions.forEach((question1) => {
             usedQuestions.push(question1);
-            ratioQuestions.forEach(function (question2) {
+            ratioQuestions.forEach((question2) => {
                 if (usedQuestions.indexOf(question2) !== -1) return;
-                result.push({id: nextID(), observation: "", graphType: "scatter", patternName: nameForQuestion(question1) + " (S) vs. " + nameForQuestion(question2) + " (S)", questions: [question1, question2]});
+                result.push(this.makePattern(nextID(), "scatter", [question1, question2]));
             });
         });
         
         /* TODO: For later
-        ratioQuestions.forEach(function (question1) {
-            ratioQuestions.forEach(function (question2) {
-                nominalQuestions.forEach(function (question3) {
-                    result.push({id: nextID(), observation: "", graphType: "multiple scatter", patternName: nameForQuestion(question1) + " (S)" + " vs. " + nameForQuestion(question2) + " (S) vs. " + nameForQuestion(question3) + " (C)", questions: [question1, question2, question3]});
+        ratioQuestions.forEach((question1) => {
+            ratioQuestions.forEach((question2) => {
+                nominalQuestions.forEach((question3) => {
+                    result.push(this.makePattern(nextID(), "multiple scatter", [question1, question2, question3]});
                 });
             });
         });
@@ -493,12 +564,12 @@ class PatternBrowser {
         }
         
         var name = pattern.patternName;
-        var type = pattern.graphType;
-        console.log("pattern", name, type);
+        var graphType = pattern.graphType;
+        console.log("patternName", name, graphType);
         var q1 = pattern.questions[0];
         var q2 = pattern.questions[1];
         var currentGraph = null;
-        switch (type) {
+        switch (graphType) {
             case "bar":
                 currentGraph = charting.d3BarChart(this.graphHolder, q1, this.updateStoriesPane.bind(this));
                 break;
@@ -531,7 +602,7 @@ class PatternBrowser {
     }
     
     patternSelected(selectedPattern) {
-        console.log("Select in pattern grid", selectedPattern);
+        console.log("selectedPattern in pattern grid", selectedPattern);
         this.chooseGraph(selectedPattern);
         this.currentPattern = selectedPattern;
         
@@ -563,7 +634,6 @@ class PatternBrowser {
         if (!this.currentPattern) return;
         
         // Find observation textarea and other needed data
-        // TODO: Fix this for Mithril conversion
         var textarea = <HTMLTextAreaElement>document.getElementById("observationPanel_observation");
         var selection = this.graphHolder.currentSelectionExtentPercentages;
         var textToInsert = JSON.stringify(selection);
@@ -571,10 +641,11 @@ class PatternBrowser {
         // Replace the currently selected text in the textarea (or insert at caret if nothing selected)
         var selectionStart = textarea.selectionStart;
         var selectionEnd = textarea.selectionEnd;
-        var oldText = this.currentPattern.observation;
+        var oldText = this.observationAccessor(this.currentPattern.questions);
         var newText = oldText.substring(0, selectionStart) + textToInsert + oldText.substring(selectionEnd);
-        this.currentPattern.observation = newText;
-        // Set the new explicitly here rather than waiting for a Mithril redraw so that we can then select it
+        this.observationAccessor(this.currentPattern.questions, newText);
+        
+        // Set the new value explicitly here rather than waiting for a Mithril redraw so that we can then select it
         textarea.value = newText;
         textarea.selectionStart = selectionStart;
         textarea.selectionEnd = selectionStart + textToInsert.length;
@@ -586,7 +657,7 @@ class PatternBrowser {
         // TODO: Fix this for Mithril conversion
         var textarea = <HTMLTextAreaElement>document.getElementById("observationPanel_observation");
         if (!this.currentPattern) return;
-        var text = this.currentPattern.observation;
+        var text = this.observationAccessor(this.currentPattern.questions);
     
         if (doFocus) textarea.focus();
     
