@@ -38,7 +38,6 @@ H Support graphBrowser standard deviation and mean for histograms
 
 TRENDS REPORT -> PATTERN BROWSER
 L Move options (how large should subsets, what significance threshold) to popup under patterns list
-H Save and load pattern list with observations on trends report
 H Support adding interpretations to observations in trendsReport (pattern browser)
 H Ignore stories that have an ignore tag set (like if a test story or a duplicate)
 
@@ -452,19 +451,17 @@ DONE Add version format (1.2.3) information to saved resources
 DONE Add revision UUID for document version to documents (or sha256AndLength reference?) [Using sha256AndLength for now]
 DONE Add reference to previous version (or versions) when save resources to get tree or chain of versions [only for main project answers for now]
 DONE Update application code to track versions [only for main project answers]
-  <Out of order Cynthia>
-NOT DOING Change dashboards to a special widget with list of pages in options [id|dashboard|page1;page2] (Cynthia)
-DONE Change all items that start with "list_" (Cynthia)
-DONE Remove all "I'm done with this" checkboxes (Cynthia)
-DONE Fix all things that say "These are the project stories you have told so far." with explanation of task (Cynthia)
-DONE Templates for activities (Cynthia)
-DONE Figure out what to do with finalize your questions (Cynthia)
-DONE Intro for reports (Cynthia)
-DONE Prototype concept images for demo (Cynthia)
-DONE Change "Sensemaking sessions" and all other too short labels for lists near end of file (Cynthia)
-DONE Every question must have short name - except labels and complicated widgets (Cynthia)
-DONE Story collection sessions -- change question to label (Cynthia)
-  </Out of order Cynthia>
+NOT DOING (earlier) Change dashboards to a special widget with list of pages in options [id|dashboard|page1;page2] (Cynthia)
+DONE (earlier) Change all items that start with "list_" (Cynthia)
+DONE (earlier) Remove all "I'm done with this" checkboxes (Cynthia)
+DONE (earlier) Fix all things that say "These are the project stories you have told so far." with explanation of task (Cynthia)
+DONE (earlier) Templates for activities (Cynthia)
+DONE (earlier) Figure out what to do with finalize your questions (Cynthia)
+DONE (earlier) Intro for reports (Cynthia)
+DONE (earlier) Prototype concept images for demo (Cynthia)
+DONE (earlier) Change "Sensemaking sessions" and all other too short labels for lists near end of file (Cynthia)
+DONE (earlier) Every question must have short name - except labels and complicated widgets (Cynthia)
+DONE (earlier) Story collection sessions -- change question to label (Cynthia)
 DONE Fix how selected eliciting question in select box is not entirely visible
 DONE Indenting question entry areas under question text using CSS for questionInternal and questionExternal classes
 DONE Support adding more than one story in survey form GUI
@@ -863,6 +860,8 @@ DONE When you submit survey with multiple stories, it still only said "your stor
 DONE Improve how sanitizing of user-supplied content is done and remove most uses of m.trust to help prevent XSS
 DONE Procedure for making WordPress plugin zip file [use: "npm run build-wp" from the project root directory]
 DONE Improve WordPress plugin install directions
-DONE - visual clustering in planning phase - CFK
-DONE Support trendsReport -- shows text and graphs in report based on top differences in statistical tests
-DONE Change "storiesList" functionality to - they have to paste in the name/text of the story. with a textarea
+DONE visual clustering in planning phase (Cynthia improved)
+DONE (earlier) Support trendsReport -- shows text and graphs in report based on top differences in statistical tests
+DONE (earlier) Change "storiesList" functionality to - they have to paste in the name/text of the story. with a textarea
+DONE Logout link does not work in WordPress plugin webapp
+DONE Save and load pattern list with observations on trends report
