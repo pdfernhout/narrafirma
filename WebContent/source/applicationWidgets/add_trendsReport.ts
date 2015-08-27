@@ -9,6 +9,7 @@ import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import m = require("mithril");
 import Project = require("../Project");
 import GridWithItemPanel = require("../panelBuilder/GridWithItemPanel");
+import generateRandomUuid = require("../pointrel20150417/generateRandomUuid");
 
 "use strict";
 
@@ -99,6 +100,7 @@ function createGraphResultsPane(): HTMLElement {
 class PatternBrowser {
     project: Project = null;
     catalysisReportIdentifier: string = null;
+    catalysisReportObservationSetIdentifier: string = null;
     
     modelForPatternsGrid = {patterns: []};
     patternsGrid: GridWithItemPanel;
@@ -297,6 +299,22 @@ class PatternBrowser {
         return this.observationAccessor(this.currentPattern.questions, newObservation);
     }
     
+    // We don't make the set when the report is created; lazily make it if needed now
+    getObservationSetIdentifier(catalysisReportIdentifier) {
+        if (!catalysisReportIdentifier) {
+            throw new Error("getObservationSetIdentifier: catalysisReportIdentifier is not defined"); 
+        }
+        
+        var setIdentifier = this.project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
+        
+        if (!setIdentifier) {
+            setIdentifier = "ObservationSet:" + generateRandomUuid();
+            this.project.tripleStore.addTriple(catalysisReportIdentifier, "catalysisReport_observations", setIdentifier);
+        }
+
+        return setIdentifier;
+    }
+    
     currentCatalysisReportChanged(catalysisReportIdentifier) {
         console.log("currentCatalysisReportChanged", catalysisReportIdentifier);
         
@@ -307,6 +325,8 @@ class PatternBrowser {
         
         // TODO: Handle multiple story collections
         // TODO: Better handling when can't find something
+        
+        this.catalysisReportObservationSetIdentifier = this.getObservationSetIdentifier(catalysisReportIdentifier);
         
         var storyCollectionsIdentifier = this.project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
         var storyCollectionItems = this.project.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
@@ -380,22 +400,24 @@ class PatternBrowser {
     }
     
     getObservationForQuestions(questions) {
+        if (!this.catalysisReportObservationSetIdentifier) throw new Error("getObservationForQuestions: this.catalysisReportObservationSetIdentifier is undefined");
+        
         var patternReference = this.patternReferenceForQuestions(questions);
         
-        // TODO: Maybe observations should be in a nested list instead of attached directly to report?
-        var observation = this.project.tripleStore.queryLatestC(this.catalysisReportIdentifier, patternReference);
+        var observation = this.project.tripleStore.queryLatestC(this.catalysisReportObservationSetIdentifier, patternReference);
         
         if (observation === undefined || observation === null) observation = "";
         
-        console.log("getObservationForQuestions", this.catalysisReportIdentifier, patternReference, observation);
+        console.log("getObservationForQuestions", this.catalysisReportIdentifier, this.catalysisReportObservationSetIdentifier, patternReference, observation);
         return observation;
     }
     
     setObservationForQuestions(questions, newObservation) {
+        if (!this.catalysisReportObservationSetIdentifier) throw new Error("setObservationForQuestions: this.catalysisReportObservationSetIdentifier is undefined");
+
         var patternReference = this.patternReferenceForQuestions(questions);
     
-        // TODO: Maybe observations should be in a nested list instead of attached directly to report?
-        this.project.tripleStore.addTriple(this.catalysisReportIdentifier, patternReference, newObservation);
+        this.project.tripleStore.addTriple(this.catalysisReportObservationSetIdentifier, patternReference, newObservation);
         
         return newObservation;
     }
