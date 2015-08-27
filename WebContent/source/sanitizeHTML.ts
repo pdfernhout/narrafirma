@@ -3,6 +3,9 @@ import m = require("mithril");
 "use strict";
 
 // This constructs a nested Mithril object with only specific HTML tags allowed
+// No attributes are allowed.
+// A css class (from a short approved list) can be set on a tag using a ".className" after the opening tag name.
+// For example: <span.narrafirma-special-warning>Warning!!!<span>
 
 // 1 is normal tag that needs to be closed; 2 is self-closing tag (br and hr)
 var allowedHTMLTags = {
@@ -17,6 +20,7 @@ var allowedHTMLTags = {
     cite: 1,
     code: 1,
     del: 1,
+    div: 1,
     dd: 1,
     d1: 1,
     dt: 1,
@@ -37,6 +41,7 @@ var allowedHTMLTags = {
     pre: 1,
     s: 1,
     small: 1,
+    span: 1,
     sup: 1,
     sub: 1,
     strong: 1,
@@ -47,6 +52,10 @@ var allowedHTMLTags = {
     tr: 1,
     u: 1,
     ul: 1
+};
+
+var allowedCSSClasses = {
+    "narrafirma-special-warning": 1
 };
 
 export function generateSanitizedHTMLForMithril(html) {
@@ -60,7 +69,7 @@ export function generateSanitizedHTMLForMithril(html) {
     if (!hasMarkup) return html;
     
     // Use a fake div tag as a conceptual placeholder
-    var tags = ["div"];
+    var tags = [{tagName: "div", cssClass: undefined}];
     var output = [[]];
     var text = ""; 
     
@@ -85,12 +94,29 @@ export function generateSanitizedHTMLForMithril(html) {
             
             // console.log("tagName", tagName);
             
+            var cssClass;
+            var parts = tagName.split(".");
+            if (parts.length > 1) {
+                tagName = parts[0];
+                cssClass = parts[1];
+            } else {
+                cssClass = undefined;
+            }
+            
             if (/[^A-Za-z0-9]/.test(tagName)) {
                 throw new Error("tag is not alphanumeric: " + tagName);
             }
             
-            if (closing && tags.pop() !== tagName) {
-                throw new Error("closing tag does not match opening tag for: " + tagName);
+            if (cssClass && !allowedCSSClasses[cssClass]) {
+                throw new Error("css class is not allowed: " + cssClass);
+            }
+            
+            if (closing) {
+                var startTag = tags.pop();
+                if (startTag.tagName !== tagName) {
+                    throw new Error("closing tag does not match opening tag for: " + tagName);
+                }
+                cssClass = startTag.cssClass;
             }
             
             if (!allowedHTMLTags[tagName]) {
@@ -103,11 +129,16 @@ export function generateSanitizedHTMLForMithril(html) {
                 closing = true;
             }
             
-            if (closing) { 
-                var newTag = m(tagName, output.pop());
+            if (closing) {
+                var newTag;
+                if (cssClass) {
+                    newTag = m(tagName, {"class": cssClass}, output.pop());
+                } else {
+                    newTag = m(tagName, output.pop());
+                }
                 output[output.length - 1].push(newTag);
             } else {
-                tags.push(tagName);
+                tags.push({tagName: tagName, cssClass: cssClass});
                 output.push([]);
             }
         } else {
