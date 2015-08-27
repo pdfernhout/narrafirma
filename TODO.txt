@@ -70,8 +70,6 @@ H Think about and improve issue of values that can be set only once like catalys
 H Create script or procedure to deal with SVN for WordPress
 
 ERRORS
-H On "Start story collection" page, when looking at collection, this error: "Problem creating widget type: text :: id: storyCollection_shortName
-Exception: Error: tag is not alphanumeric: span class="narrafirma-special-warning""
 
 ======= CYNTHIA
 
@@ -865,3 +863,5 @@ DONE (earlier) Support trendsReport -- shows text and graphs in report based on 
 DONE (earlier) Change "storiesList" functionality to - they have to paste in the name/text of the story. with a textarea
 DONE Logout link does not work in WordPress plugin webapp
 DONE Save and load pattern list with observations on trends report
+DONE Add support in sanitize HTML for allowing specific whitelisted CSS classes sing "tag.className" notation
+DONE Error on "Start story collection" page, when looking at collection: "Exception: Error: tag is not alphanumeric: span class="narrafirma-special-warning"" [now uses <span.narrafirma-special-warning>]
