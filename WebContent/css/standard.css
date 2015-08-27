@@ -39,10 +39,6 @@ textarea, input, select { /* override because expanded in survey */
 	margin-top: 0;
 }
 
-table { /* all tables should not have spaces between cells */
-	border-collapse: collapse;
-}
-
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Navigation bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #navigationDiv {
@@ -215,10 +211,20 @@ button {
     margin-left: 1.0em;
 }
 
-.narrafirma-dashboard-story-collection-status {
-	padding-top: 1em;
-}
+.narrafirma-dashboard-story-collection-status table {
+	border-collapse: collapse;
+	}
 
+.narrafirma-dashboard-story-collection-status th {
+	font-weight: normal;
+	border: 1px solid #3e3739;
+	padding: 4px;
+	}
+
+.narrafirma-dashboard-story-collection-status td {
+	border: 1px solid #3e3739;
+	padding: 4px;
+	}
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Pages with entry fields ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
@@ -602,12 +608,6 @@ table.filterTable td {
     width: 50%;
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dashboard story collection ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-.narrafirma-dashboard-story-collection-status td {
-    border: 1px solid #3e3739;
-}
-
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Stories list ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .narrafirma-stories-list table {
@@ -629,7 +629,6 @@ table.filterTable td {
     border: 1px solid #3e3739;
     height: 1em;
 }
-
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Dialogs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 

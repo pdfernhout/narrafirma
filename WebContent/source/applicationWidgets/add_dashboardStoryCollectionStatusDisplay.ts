@@ -35,10 +35,9 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
     });
     
     return m("div.narrafirma-dashboard-story-collection-status", [
-        m("i", "Story collections:"),
-        m("br"),
+        m("p", "Story collections:"),
         m("table", 
-            m("tr", [m("th", "Name"), m("th", "Count"), m("th", "Active?")]),
+            m("tr", [m("th", "Name"), m("th", "#"), m("th", "Active?")]),
             storyCollections.map(function(storyCollection) {
                 var surveyActive = storyCollection.activeOnWeb ? m("a", {href: storyCollection.activeOnWeb, target: "_blank"}, "active") : "";
                 return m("tr", [
