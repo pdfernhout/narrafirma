@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: NarraFirma
-Description: Grounding your action on stories
+Description: Participatory Narrative Inquiry in a box. Gather stories and make sense of challenges and opportunities in your community or organization.
 Author: Cynthia F. Kurtz and Paul D. Fernhout
 Version: 0.2
 */
@@ -87,15 +87,19 @@ class NarraFirmaSettingsPage
         ?>
 <div class="wrap">
 
-    <h2>NarraFirma plugin</h2>
-    Options relating to the NarraFirma Plugin.
-    <br>
-    The NarraFirma WordPress plugin uses WordPress as an application server, user authentication system, and data store.<br>
-    Using the WordPress platform this way makes NarraFirma easy to install and configure for many people.<br>
-    The NarraFirma application is not otherwise integrated with WordPress pages and runs in its own web page.<br>
-    <br>
-    Click this link to <a href="<?php echo $launchLink; ?>">launch the NarraFirma application</a>.
-    <hr>
+    <h2>NarraFirma</h2>
+    <p>NarraFirma is a web application that supports Participatory Narrative Inquiry (PNI). 
+    PNI is a method in which ordinary people share ordinary stories in a way that helps them 
+    discover insights they can use. To learn more about PNI, visit <a href="http://www.narrafirma.com" target="_blank">narrafirma.com</a>
+    and <a href="http://www.workingwithstories.org" target="_blank">workingwithstories.org</a>.
+    </p>
+    <p>
+    <i>Note: The NarraFirma plugin uses WordPress as an application server, 
+    user authentication system, and data store. Using WordPress in this way makes NarraFirma easier to install and 
+    configure. The NarraFirma application is not otherwise integrated with WordPress pages 
+    and runs in its own web page.</i>
+    </p>
+    <h2><a href="<?php echo $launchLink; ?>" target="_blank">Click here to launch the NarraFirma application</a></h2>
     
     <div id="narrafirma-project-list-editor">
     </div>

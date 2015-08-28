@@ -33,7 +33,7 @@
             }
                 
             return m("div", [
-                m("h3", "NarraFirma projects and permissions"),
+                m("h3", "NarraFirma projects and permissions"), 
                 "To specify permissions, enter one or more space-separated user IDs (e.g. cfkurtz) or roles (e.g. administrator, editor, author, contributor, subscriber). Write access also grants read access and survey access.",
                 Object.keys(controller.journalDefinitions).map(function(journalIdentifier) {
                     return displayJournal(controller, journalIdentifier);
@@ -44,6 +44,8 @@
                 m("button", {onclick: cancelChanges.bind(null, controller), disabled: isJSONUnchanged}, "Cancel changes"),
                 " ",
                 m("button", {onclick: saveChanges.bind(null, controller), disabled: isJSONUnchanged}, "Save changes"),
+                m("br"),
+                "Note: New projects are not saved until you click the \"Save changes\" button.",
                 m("hr"),
                 m("span", {"for": "narrafirma-displayJSON"}, "Edit project permissions directly as JSON"),
                 m("input[type=checkbox]", {id: "narrafirma-displayJSON", onclick: m.withAttr("checked", showJSONChecked.bind(null, controller)), checked: controller.showJSON})
@@ -65,7 +67,7 @@
             }
             writeJournalDefinitionsToTextarea(controller.journalDefinitions);
         };
-        return m("label", [
+        return m("label", {style: "margin-left: 2em"}, [
             "anonymous " + field,
             m("input[type=checkbox]", {onclick: m.withAttr("checked", updateAnonymousAccess), checked: checked})
         ]);
@@ -76,7 +78,7 @@
             return each !== true;
         });
         var checked = journalDefinition[field].indexOf(true) !== -1;
-        return m("label", [
+        return m("label", {style: "margin-left: 2em"}, [
             field + ": ",
             m("input[type=text]", {style: "width: 90%", value: permissionsToDisplay.join(" "), onchange: function (event) {
                 var items = event.currentTarget.value.trim().split(/\s+/g);
@@ -92,11 +94,14 @@
     function displayJournal(controller, journalIdentifier) {
         var journalDefinition = controller.journalDefinitions[journalIdentifier];
         return m(".narrafirma-project", [
-            m("h3", [
-                 journalIdentifier.substring(narrafirmaProjectPrefix.length),
-                 "  ",
-                 m("button.delete-button", {onclick: deleteJournal.bind(null, controller, journalIdentifier)}, "delete")
+            m("br"),
+            m("span", {style: "font-size: 1.3em; font-weight: 600"}, [
+                 'Project: ',
+                 journalIdentifier.substring(narrafirmaProjectPrefix.length)
             ]),
+            m("button.delete-button", {style: "margin-left: 0.5em", onclick: deleteJournal.bind(null, controller, journalIdentifier)}, "Delete"),
+            m("br"),
+            m("br"),
             permissionsEditor(controller, journalIdentifier, journalDefinition, "write"),
             anonymousAccessCheckbox(controller, journalIdentifier, journalDefinition, "write"),
             m("br"),
@@ -119,7 +124,7 @@
     }
     
     function newProject(controller) {
-        var newName = prompt("New project name?");
+        var newName = prompt("Please enter a short name for the new project.");
         if (!newName) return;
         var key = narrafirmaProjectPrefix + newName;
         if (controller.journalDefinitions[key]) {
