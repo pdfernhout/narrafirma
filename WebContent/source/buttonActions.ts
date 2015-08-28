@@ -301,7 +301,10 @@ export function copyStoryFormURL() {
 export function guiOpenSection(model, fieldSpecification, value) {
     var section = fieldSpecification.displayConfiguration.section;
     console.log("guiOpenSection", section, fieldSpecification);
-    pageDisplayer.showPage(section);
+    
+    // Don't queue an extra redraw as one is already queued since this code get called by a button press
+    var isRedrawAlreadyQueued = true;
+    pageDisplayer.showPage(section, false, isRedrawAlreadyQueued);
 }
 
 function generateBoilerplateHTML(title, stylesheet) {

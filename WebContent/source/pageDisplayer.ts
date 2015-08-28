@@ -59,7 +59,7 @@ export function configurePageDisplayer(thePanelBuilder: PanelBuilder, theStartPa
     m.mount(document.getElementById("pageDiv"), PageDisplayer);
 }
 
-export function showPage(pageID, forceRefresh = false) {
+export function showPage(pageID, forceRefresh = false, isRedrawAlreadyQueued = false) {
     // console.log("showPage", pageID, forceRefresh);
     
     if (!pageID) pageID = startPage;
@@ -117,7 +117,7 @@ export function showPage(pageID, forceRefresh = false) {
 
     navigationPane.setCurrentPageSpecification(pageID, pageSpecification);
 
-    m.redraw();
+    if (!isRedrawAlreadyQueued) m.redraw();
 }
 
 export function getCurrentPageID() {
