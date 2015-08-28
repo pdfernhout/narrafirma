@@ -9,14 +9,14 @@
         {
             "id": "project_introductionLabel",
             "valueType": "none",
-            "displayType": "label",
-            "displayPrompt": "Welcome to NarraFirma. This page provides a brief overview to using the NarraFirma&#0153; software."
+            "displayType": "html",
+            "displayPrompt": "<br>Welcome to NarraFirma. This page provides a brief overview to using the NarraFirma&#0153; software.<br>"
         },
         {
             "id": "project_wwsBookLabel",
             "valueType": "none",
-            "displayType": "label",
-            "displayPrompt": "This software is a companion for the book \"Working with Stories in Your Community or Organization\" (WWS) by Cynthia F. Kurtz. That book describes on approach to a process called \"Participatory Narrative Inquiry\" or \"PNI\" for short. You can get a copy of that book <a href=\"http://workingwithstories.org/\">here</a>."
+            "displayType": "html",
+            "displayPrompt": "<br>This software is a companion for the book \"Working with Stories in Your Community or Organization\" (WWS) by Cynthia F. Kurtz. That book describes on approach to a process called \"Participatory Narrative Inquiry\" or \"PNI\" for short. You can get a copy of that book <a href=\"http://workingwithstories.org/\">here</a>.<br><br>"
         },
         {
             "id": "project_wwsBookImage",
@@ -34,8 +34,8 @@
         {
             "id": "project_usesLabel",
             "valueType": "none",
-            "displayType": "label",
-            "displayPrompt": "\"NarraFirma\" is software designed to support people using the PNI approach described in the WWS book. You can use the NarraFirma&#0153; software to:\n<ul>\n<li>plan your Participatory Narrative Inquiry (PNI) project</li>\n<li>decide how you will collect stories</li>\n<li>write questions about stories</li>\n<li>plan group story sessions (and record what went on in them)</li>\n<li>collect or enter stories (and answers to questions)</li>\n<li>look at patterns in collected stories and answers</li>\n<li>build \"catalytic\" material</li>\n<li>plan sensemaking sessions (and record what went on in them)</li>\n<li>plan interventions (and record what went on in them)</li>\n<li>gather project feedback</li>\n<li>reflect on the project</li>\n<li>present the project to others</li>\n<li>preserve what you learned so you can use it on the next project</li>\n</ul>"
+            "displayType": "html",
+            "displayPrompt": "<br>\"NarraFirma\" is software designed to support people using the PNI approach described in the WWS book. You can use the NarraFirma&#0153; software to:\n<ul>\n<li>plan your Participatory Narrative Inquiry (PNI) project</li>\n<li>decide how you will collect stories</li>\n<li>write questions about stories</li>\n<li>plan group story sessions (and record what went on in them)</li>\n<li>collect or enter stories (and answers to questions)</li>\n<li>look at patterns in collected stories and answers</li>\n<li>build \"catalytic\" material</li>\n<li>plan sensemaking sessions (and record what went on in them)</li>\n<li>plan interventions (and record what went on in them)</li>\n<li>gather project feedback</li>\n<li>reflect on the project</li>\n<li>present the project to others</li>\n<li>preserve what you learned so you can use it on the next project</li>\n</ul>"
         },
         {
             "id": "project_pniPhasesDiagramLabel",
