@@ -233,7 +233,7 @@ class PanelBuilder {
     
     // Build an entire panel; panel can be either a string ID referring to a panel or it can be a panel definition itself
     buildPanel(panelOrPanelID, model) {
-        console.log("buildPanel", panelOrPanelID);
+        // console.log("buildPanel", panelOrPanelID);
         var fieldSpecifications;
         if (_.isString(panelOrPanelID)) {
             var panel = this.getPanelDefinitionForPanelID(panelOrPanelID);
@@ -266,7 +266,7 @@ class PanelBuilder {
             throw new Error("No panelSpecification found by PanelBuilder for panelID: " + panelID);
         }
         
-        console.log("getPanelDefinitionForPanelID", panelID, panelSpecification);
+        // console.log("getPanelDefinitionForPanelID", panelID, panelSpecification);
         return panelSpecification;
     }
     
@@ -282,7 +282,7 @@ class PanelBuilder {
             throw new Error("No pageSpecification found by PanelBuilder for pageID: " + pageID);
         }
         
-        console.log("getPageSpecificationForPageID", pageID, pageSpecification);
+        // console.log("getPageSpecificationForPageID", pageID, pageSpecification);
         return pageSpecification;
     }
     

@@ -50,7 +50,7 @@ function calculate_questionAnswer(panelBuilder: PanelBuilder, model, referencedQ
 
 // TODO: This will not work when questions are on other pages with newer system
 function add_questionAnswer(panelBuilder: PanelBuilder, model, fieldSpecification) {
-    console.log("add_questionAnswer", fieldSpecification);
+    // console.log("add_questionAnswer", fieldSpecification);
     var referencedQuestionID = fieldSpecification.displayConfiguration;
     if (!referencedQuestionID) throw new Error("missing referencedQuestionID for field: " + fieldSpecification.id + " all: " + JSON.stringify(fieldSpecification));
 

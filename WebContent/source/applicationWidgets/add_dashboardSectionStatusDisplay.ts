@@ -28,7 +28,7 @@ function add_dashboardSectionStatusDisplay(panelBuilder: PanelBuilder, model, fi
     }
     
     childPageIDs = panelSpecificationCollection.getChildPageIDListForHeaderID(pageID);
-    console.log("child pages", pageID, childPageIDs);
+    // console.log("child pages", pageID, childPageIDs);
     if (!childPageIDs) childPageIDs = [];
     
     var pageStatus = {
@@ -70,7 +70,7 @@ function add_dashboardSectionStatusDisplay(panelBuilder: PanelBuilder, model, fi
     
     if (pageCount === 0) statusText = "";
     
-    console.log("statusText for pageStatus", statusText, pageStatus);
+    // console.log("statusText for pageStatus", statusText, pageStatus);
     
     // if (fieldSpecification.displayClass) options.class = fieldSpecification.displayClass;
     // if (fieldSpecification.displayIconClass) options.iconClass = fieldSpecification.displayIconClass;

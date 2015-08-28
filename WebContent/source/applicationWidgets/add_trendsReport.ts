@@ -36,7 +36,7 @@ function collectDataForField(stories, fieldName) {
 }
 
 function countsForFieldChoices(stories, field1, field2) {
-    console.log("countsForFieldChoices", stories, field1, field2);
+    // console.log("countsForFieldChoices", stories, field1, field2);
     // TODO: Need to add in fields that were not selected with a zero count, using definition from questionnaire
     var counts = {};
     for (var i = 0; i < stories.length; i++) {
@@ -231,25 +231,25 @@ class PatternBrowser {
     }
     
     static controller(args) {
-        console.log("Making PatternBrowser: ", args);
+        // console.log("Making PatternBrowser: ", args);
         return new PatternBrowser(args);
     }
     
     static view(controller, args) {
-        console.log("PatternBrowser view called");
+        // console.log("PatternBrowser view called");
         
         return controller.calculateView(args);
     }
     
     calculateView(args) {
-        console.log("%%%%%%%%%%%%%%%%%%% PatternBrowser view called");
+        // console.log("%%%%%%%%%%%%%%%%%%% PatternBrowser view called");
         var panelBuilder: PanelBuilder = args.panelBuilder;
         
         // Handling of caching of questions and stories
         var catalysisReportIdentifier = this.getCurrentCatalysisReportIdentifier(args);
         if (catalysisReportIdentifier !== this.catalysisReportIdentifier) {
             this.catalysisReportIdentifier = catalysisReportIdentifier;
-            console.log("storyCollectionIdentifier changed", this.catalysisReportIdentifier);
+            // console.log("storyCollectionIdentifier changed", this.catalysisReportIdentifier);
             this.currentCatalysisReportChanged(this.catalysisReportIdentifier);
         }
         
@@ -277,13 +277,13 @@ class PatternBrowser {
     
     insertGraphResultsPaneConfig(element: HTMLElement, isInitialized: boolean, context: any, vdom: _mithril.MithrilVirtualElement) {
         if (!isInitialized) {
-            console.log("appending graph element");
+            // console.log("appending graph element");
             element.appendChild(this.graphHolder.graphResultsPane);
         }       
     }
     
     observationAccessor(questions, newObservation = undefined) {
-        console.log("observationAccessor", questions, newObservation);
+        // console.log("observationAccessor", questions, newObservation);
         if (newObservation === undefined) {
             return this.getObservationForQuestions(questions);
         } else { 
@@ -316,7 +316,7 @@ class PatternBrowser {
     }
     
     currentCatalysisReportChanged(catalysisReportIdentifier) {
-        console.log("currentCatalysisReportChanged", catalysisReportIdentifier);
+        // console.log("currentCatalysisReportChanged", catalysisReportIdentifier);
         
         if (!catalysisReportIdentifier) {
             // TODO: should clear everything
@@ -345,13 +345,13 @@ class PatternBrowser {
         }
         
         this.graphHolder.allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
-        console.log("allStories", this.graphHolder.allStories);
+        // console.log("allStories", this.graphHolder.allStories);
         
         this.questions = surveyCollection.collectQuestionsForQuestionnaire(questionnaire);
-        console.log("questions", this.questions);
+        // console.log("questions", this.questions);
         
         this.modelForPatternsGrid.patterns = this.buildPatternList();
-        console.log("patterns", this.modelForPatternsGrid.patterns);
+        // console.log("patterns", this.modelForPatternsGrid.patterns);
         this.patternsGrid.updateData();
 
         // Update item panel in story list so it has the correct header
@@ -383,7 +383,7 @@ class PatternBrowser {
         // Get selected catalysis report
         var catalysisReportShortName = valuePathResolver.newValuePathForFieldSpecification(panelBuilder, model, fieldSpecification)();
     
-        console.log("catalysisReportShortName", catalysisReportShortName);
+        // console.log("catalysisReportShortName", catalysisReportShortName);
         
         if (!catalysisReportShortName) return null;
         
@@ -408,7 +408,7 @@ class PatternBrowser {
         
         if (observation === undefined || observation === null) observation = "";
         
-        console.log("getObservationForQuestions", this.catalysisReportIdentifier, this.catalysisReportObservationSetIdentifier, patternReference, observation);
+        // console.log("getObservationForQuestions", this.catalysisReportIdentifier, this.catalysisReportObservationSetIdentifier, patternReference, observation);
         return observation;
     }
     
@@ -516,7 +516,7 @@ class PatternBrowser {
             this.calculateStatisticsForPattern(pattern, minimumStoryCountRequiredForTest);        
         });
         
-        console.log("buildPatternsList", result);
+        // console.log("buildPatternsList", result);
         return result;
     }
     
@@ -533,9 +533,9 @@ class PatternBrowser {
             // TODO: Fix this
             // TODO: test for missing patterns[1]
             var counts = countsForFieldChoices(stories, pattern.questions[0].id, pattern.questions[1].id);
-            console.log("counts", counts);
+            // console.log("counts", counts);
             var values = collectValues(counts);
-            console.log("values", values);
+            // console.log("values", values);
             if (values.length < minimumStoryCountRequiredForTest) {
                 significance = "";
             } else {
@@ -567,7 +567,7 @@ class PatternBrowser {
     }
     
     chooseGraph(pattern) {
-        console.log("chooseGraph", pattern);
+        // console.log("chooseGraph", pattern);
         
         // Remove old graph(s)
         while (this.graphHolder.chartPanes.length) {
@@ -589,7 +589,7 @@ class PatternBrowser {
         
         var name = pattern.patternName;
         var graphType = pattern.graphType;
-        console.log("patternName", name, graphType);
+        // console.log("patternName", name, graphType);
         var q1 = pattern.questions[0];
         var q2 = pattern.questions[1];
         var currentGraph = null;
@@ -626,7 +626,7 @@ class PatternBrowser {
     }
     
     patternSelected(selectedPattern) {
-        console.log("selectedPattern in pattern grid", selectedPattern);
+        // console.log("selectedPattern in pattern grid", selectedPattern);
         this.chooseGraph(selectedPattern);
         this.currentPattern = selectedPattern;
         
@@ -635,7 +635,7 @@ class PatternBrowser {
     }
     
     insertGraphSelection() {
-        console.log("insertGraphSelection");
+        // console.log("insertGraphSelection");
         if (!this.graphHolder.currentGraph) {
             // TODO: Translated
             alert("Please select a pattern first");
@@ -647,7 +647,7 @@ class PatternBrowser {
             return;
         }
         
-        console.log("PatternsBrowser currentGraph", this.graphHolder.currentGraph);
+        // console.log("PatternsBrowser currentGraph", this.graphHolder.currentGraph);
         
         if (this.scanForSelectionJSON()) {
             // TODO: Translate
@@ -677,7 +677,7 @@ class PatternBrowser {
     }
     
     scanForSelectionJSON(doFocus = false) {
-        console.log("scanForSelectionJSON");
+        // console.log("scanForSelectionJSON");
         // TODO: Fix this for Mithril conversion
         var textarea = <HTMLTextAreaElement>document.getElementById("observationPanel_observation");
         if (!this.currentPattern) return;
@@ -714,7 +714,7 @@ class PatternBrowser {
     }
     
     resetGraphSelection() {
-        console.log("resetGraphSelection");
+        // console.log("resetGraphSelection");
         if (!this.graphHolder.currentGraph) {
             // TODO: Translate
             alert("Please select a pattern first");
@@ -745,7 +745,7 @@ class PatternBrowser {
             return;
         }
         
-        console.log("selection from user", selection);
+        // console.log("selection from user", selection);
         
         var graph = this.graphHolder.currentGraph;
         if (_.isArray(graph)) {

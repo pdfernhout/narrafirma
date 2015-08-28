@@ -19,14 +19,14 @@ var Navigation: any = {
     panelBuilder: null,
     
     controller: function(args) {
-        console.log("********************** Making new navigation pane");
+        // console.log("********************** Making new navigation pane");
         this.pageID = null;
         this.pageSpecification = null;
         this.panelBuilder = Navigation.panelBuilder;
     },
     
     view: function(controller, args) {
-        console.log("&&&&&&&&&&&&&&&&&&&&&&&&&& View called for navigation pane");
+        // console.log("&&&&&&&&&&&&&&&&&&&&&&&&&& View called for navigation pane");
         return m("div[id=narrafirma-navigation]", [
             m("span[id=narrafirma-name]", {
                 "class": controller.panelBuilder.clientState.serverStatus,
@@ -67,7 +67,7 @@ function buildBreadcrumbs(controller) {
     if (pageID !== startPage) {
         breadcrumbs.push(htmlForBreadcrumb(startPage, "Home"));
         breadcrumbs .push(" > ");
-        console.log("pageSpecification", pageSpecification);
+        // console.log("pageSpecification", pageSpecification);
         // TODO: Should lookup name of section
         if (!pageSpecification.isHeader) {
             var sectionPageSpecification = panelSpecificationCollection.getPageSpecificationForPageID("page_" + pageSpecification.section);

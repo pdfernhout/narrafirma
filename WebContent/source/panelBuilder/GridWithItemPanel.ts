@@ -96,18 +96,18 @@ function formatObjectsIfNeeded(item) {
 class ItemPanel {
     
     static controller(args) {
-        console.log("Making ItemPanel: ", args);
+        // console.log("Making ItemPanel: ", args);
         return new ItemPanel();
     }
     
     static view(controller, args) {
-        console.log("ItemPanel view called");
+        // console.log("ItemPanel view called");
         
         return controller.calculateView(args);
     }
     
     calculateView(args) {
-        console.log("%%%%%%%%%%%%%%%%%%% ItemPanel view called");
+        // console.log("%%%%%%%%%%%%%%%%%%% ItemPanel view called");
         // return m("div", "work in progress");
         // TODO: Should provide copy of item?
         var panelBuilder: PanelBuilder = args.panelBuilder;
@@ -185,11 +185,11 @@ class GridWithItemPanel {
     sortDirection: string = "ascending";
     
     onunload() {
-        console.log("+++++++++++++++++++++++++++++++++++++ unloading GridWithItemPanel");
+        // console.log("+++++++++++++++++++++++++++++++++++++ unloading GridWithItemPanel");
     }
     
     constructor(args) {
-        console.log("************************************** GridWithItemPanel constructor called");
+        // console.log("************************************** GridWithItemPanel constructor called");
         this.panelBuilder = args.panelBuilder;
         this.fieldSpecification = args.fieldSpecification;
         this.model = args.model;
@@ -245,17 +245,17 @@ class GridWithItemPanel {
         this.isNavigationalScrollingNeeded = null;
         
         if (this.useTriples()) {
-            console.log("Grid using triples", this.model);
+            // console.log("Grid using triples", this.model);
             this.dataStore = new TripleSetDataStore(this.model, this.fieldSpecification.id, this.idProperty, this.panelBuilder.project.tripleStore);
         } else {
-            console.log("Grid using objects", this.model);
+            // console.log("Grid using objects", this.model);
             this.dataStore = new DataStore(this.model, this.fieldSpecification.id, this.idProperty);
         }
         this.updateData();
     }
     
     updateData() {
-        console.log("GridWithItemPanel updateData");
+        // console.log("GridWithItemPanel updateData");
         this.dataStore.getDataArrayFromModel();
         this.sortData();
         if (this.selectedItem) {
@@ -271,18 +271,18 @@ class GridWithItemPanel {
     }
     
     static controller(args) {
-        console.log("Making ItemPanel: ", args);
+        // console.log("Making ItemPanel: ", args);
         return new GridWithItemPanel(args);
     }
     
     static view(controller: GridWithItemPanel, args) {
-        console.log("Grid view called");
+        // console.log("Grid view called");
         
         return controller.calculateView();
     }
     
     calculateView() {
-        console.log("GridWithItemPanel calculateView", this.dataStore);
+        // console.log("GridWithItemPanel calculateView", this.dataStore);
         
         // Deal with the fact that new items might be added at any time by other users
         // TODO: This is very inefficient. Alternatives include: listening for changes that add or remove items; or determing nature of change prompting redraw
@@ -359,7 +359,7 @@ class GridWithItemPanel {
                     // Don't sort if have move up/down buttons
                     if (this.gridConfiguration.moveUpDownButtons) return;
 
-                    console.log("Sorting by", sortBy);
+                    // console.log("Sorting by", sortBy);
                     if (this.sortBy === sortBy) {
                         if (this.sortDirection === "ascending") {
                             this.sortDirection = "descending";
@@ -392,7 +392,7 @@ class GridWithItemPanel {
     private selectItemInList(e) {
         if (this.isEditing()) return;
         var itemID = e.target.getAttribute("data-item-index");
-        console.log("item clicked", itemID);
+        // console.log("item clicked", itemID);
         var item = this.dataStore.itemForId(itemID);
         if (item !== undefined) {
             this.setSelectedItem(item);
@@ -466,7 +466,7 @@ class GridWithItemPanel {
     
     private deleteItem(item) {
         if (!item) item = this.selectedItem; 
-        console.log("deleteItem", item);
+        // console.log("deleteItem", item);
         
         // TODO: Translate
         // TODO: Replace this with undo
@@ -493,7 +493,7 @@ class GridWithItemPanel {
     
     private editItem(item) {
         if (!item) item = this.selectedItem;
-        console.log("editItem", item);
+        // console.log("editItem", item);
         
        // TODO: This needs to create an action that affects original list  
         this.setSelectedItem(item);
@@ -502,7 +502,7 @@ class GridWithItemPanel {
     
     private viewItem(item, index) {
         if (!item) item = this.selectedItem;
-        console.log("viewItem", item);
+        // console.log("viewItem", item);
         
         this.setSelectedItem(item);
         this.displayMode = "viewing";
@@ -510,7 +510,7 @@ class GridWithItemPanel {
     
     private duplicateItem(item) {        
         if (!item) item = this.selectedItem;
-        console.log("duplicate button pressed", item);
+        // console.log("duplicate button pressed", item);
         
         // TODO: May not need this
         if (this.isEditing) {
@@ -531,14 +531,14 @@ class GridWithItemPanel {
 
     private moveItemUp(item) {
         if (!item) item = this.selectedItem;
-        console.log("up button pressed", item);
+        // console.log("up button pressed", item);
         
         this.dataStore.moveItemUp(item);
     }
     
     private moveItemDown(item) {
         if (!item) item = this.selectedItem;
-        console.log("down button pressed", item);
+        // console.log("down button pressed", item);
         
         this.dataStore.moveItemDown(item);
     }
@@ -822,10 +822,10 @@ class DataStore {
         });
         
         if (sortDirection === "descending") {
-            console.log("reversing");
+            // console.log("reversing");
             this.data.reverse();
         }
-        console.log("sorted list", this.data);
+        // console.log("sorted list", this.data);
     }
     
     reverseData() {

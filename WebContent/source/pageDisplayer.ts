@@ -18,13 +18,13 @@ var project: Project;
 
 var PageDisplayer: any = {
     controller: function(args) {
-        console.log("PageDisplayer created");
+        // console.log("PageDisplayer created");
     },
     
     view: function(controller, args) {
         var contentsDiv;
         
-        console.log("&&&&&&&&&& view called in PageDisplayer", currentPageID);
+        console.log("========== view called in PageDisplayer ==========", currentPageID);
             
         // Setting the hash may trigger another call to the showPage function eventually, but as the new page will already be set, it should not loop further
         updateHashIfNeededForChangedState();
@@ -60,11 +60,11 @@ export function configurePageDisplayer(thePanelBuilder: PanelBuilder, theStartPa
 }
 
 export function showPage(pageID, forceRefresh = false) {
-    console.log("showPage", pageID, forceRefresh);
+    // console.log("showPage", pageID, forceRefresh);
     
     if (!pageID) pageID = startPage;
     if (currentPageID === pageID && !forceRefresh) {
-        console.log("Page is already current; returning");
+        // console.log("Page is already current; returning");
         return;
     }
     

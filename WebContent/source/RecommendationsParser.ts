@@ -125,10 +125,10 @@ class RecommendationsParser {
         this.matrixRowCount = this.matrix.length;
         if (this.matrixRowCount > 0) this.matrixColumnCount = this.matrix[0].length;
         
-        console.log("matrixColumnCount %s, matrixRowCount %s", this.matrixColumnCount, this.matrixRowCount);
+        // console.log("matrixColumnCount %s, matrixRowCount %s", this.matrixColumnCount, this.matrixRowCount);
         // console.log("matrix", JSON.stringify(matrix, null, 2));
-        console.log("test retrieval 5,5", this.getMatrixValue(5, 5));
-        console.log("test retrieval 6,3", this.getMatrixValue(6, 6));
+        // console.log("test retrieval 5,5", this.getMatrixValue(5, 5));
+        // console.log("test retrieval 6,3", this.getMatrixValue(6, 6));
     }
 
     addRecommendation(recommendations, columnCategory, columnField, rowCategory, rowField, item) {
@@ -229,7 +229,7 @@ class RecommendationsParser {
     }
     
     parse(csvText: string) {
-        console.log("Parsing recommendations", csvText);
+        // console.log("Parsing recommendations", csvText);
         this.loadMatrixFromCSVText(csvText);
         this.categories = this.buildCategories();
         this.questions = this.buildQuestions();
@@ -245,7 +245,7 @@ class RecommendationsParser {
         if (!RecommendationsParser.recommendationsObject) {
             var recommendationsText = window["narraFirma_recommendationsText"];
             RecommendationsParser.recommendationsObject = new RecommendationsParser(recommendationsText);
-            console.log("RecommendationsParser made new recommendationsObject", RecommendationsParser.recommendationsObject);
+            // console.log("RecommendationsParser made new recommendationsObject", RecommendationsParser.recommendationsObject);
         }
         
         return RecommendationsParser.recommendationsObject;
@@ -256,7 +256,7 @@ class RecommendationsParser {
         if (!RecommendationsParser.recommendationsInterventionObject) {
             var recommendationsInterventionText = window["narraFirma_recommendationsInterventionText"];
             RecommendationsParser.recommendationsInterventionObject = new RecommendationsParser(recommendationsInterventionText);
-            console.log("RecommendationsParser made new recommendationsInterventionObject", RecommendationsParser.recommendationsInterventionObject);
+            // console.log("RecommendationsParser made new recommendationsInterventionObject", RecommendationsParser.recommendationsInterventionObject);
         }
         
         return RecommendationsParser.recommendationsInterventionObject;

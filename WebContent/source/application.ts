@@ -113,7 +113,7 @@ function hashStringForClientState() {
         result += field.key + "=" + encodeURIComponent(value);
     }
     
-    console.log("hashStringForClientState", result, clientState);
+    // console.log("hashStringForClientState", result, clientState);
     
     return result;
 }
@@ -122,10 +122,10 @@ function urlHashFragmentChanged() {
     var newHash = hash();
     console.log("urlHashFragmentChanged", newHash);
     
-    console.log("current clientState", clientState);
+    // console.log("current clientState", clientState);
     
     var hashParameters = getHashParameters(newHash);
-    console.log("new hashParameters", hashParameters);
+    // console.log("new hashParameters", hashParameters);
     
     var currentProjectIdentifier = clientState.projectIdentifier;
     if (currentProjectIdentifier) {
@@ -137,7 +137,7 @@ function urlHashFragmentChanged() {
             return;
         }
     } else {
-        console.log("changing client state for page", clientState.projectIdentifier, hashParameters.project);
+        // console.log("changing client state for page", clientState.projectIdentifier, hashParameters.project);
         clientState.projectIdentifier = hashParameters.project;
     }
      
@@ -148,29 +148,29 @@ function urlHashFragmentChanged() {
         selectedPage = "page_" + selectedPage;
     }
     if (selectedPage !== clientState.pageIdentifier) {
-        console.log("changing client state for page from:", clientState.pageIdentifier, "to:", selectedPage);
+        // console.log("changing client state for page from:", clientState.pageIdentifier, "to:", selectedPage);
         clientState.pageIdentifier = selectedPage;
     }
     
     if (hashParameters.storyCollection && hashParameters.storyCollection !== clientState.storyCollectionIdentifier) {
-        console.log("changing client state for storyCollection", clientState.storyCollectionIdentifier, hashParameters.storyCollection);
+        // console.log("changing client state for storyCollection", clientState.storyCollectionIdentifier, hashParameters.storyCollection);
         clientState.storyCollectionIdentifier = hashParameters.storyCollection;
     }
     
     if (hashParameters.catalysisReport && hashParameters.catalysisReport !== clientState.catalysisReportIdentifier) {
-        console.log("changing client state for catalysisReport", clientState.catalysisReportIdentifier, hashParameters.catalysisReport);
+        // console.log("changing client state for catalysisReport", clientState.catalysisReportIdentifier, hashParameters.catalysisReport);
         clientState.catalysisReportIdentifier = hashParameters.catalysisReport;
     }
     
     if (hashParameters.debugMode && hashParameters.debugMode !== clientState.debugMode) {
-        console.log("changing client state for debugMode", clientState.debugMode, hashParameters.debugMode);
+        // console.log("changing client state for debugMode", clientState.debugMode, hashParameters.debugMode);
         clientState.debugMode = hashParameters.debugMode;
     }
     
     // Page displayer will handle cases where the hash is not valid and also optimizing out page redraws if staying on same page
     pageDisplayer.showPage(clientState.pageIdentifier);
 
-    console.log("done with urlHashFragmentChanged");
+    // console.log("done with urlHashFragmentChanged");
 }
 
 var updateHashTimer = null;
@@ -336,7 +336,7 @@ function processAllPanels() {
 
 // Make all of the application pages selectable from the dropdown list and back/next buttons and put them in a TabContainer
 function createLayout() {
-    console.log("createLayout start");
+    // console.log("createLayout start");
 
     // TODO: Improve status reporting
     // serverStatusPane = panelBuilder.newContentPane({content: "Server status: unknown"});
@@ -351,7 +351,7 @@ function createLayout() {
     
     // updateServerStatus("Server status: unknown");
     
-    console.log("createLayout end");
+    // console.log("createLayout end");
 }
 
 // TODO: Think more about how to integrate updatedServerStatus this with Mithril
@@ -394,7 +394,7 @@ function updateServerStatus(status, text) {
         console.log("Unexpected server status", status);
         nameDiv.className = "narrafirma-serverstatus-unexpected";
         //nameDiv.style.color = "black";
-        console.log("updateServerStatus unexepected", text);
+        console.log("updateServerStatus unexpected", text);
     }
     
     nameDiv.title = statusText;
@@ -453,7 +453,7 @@ function generateNavigationDataInJSON() {
     var pageBeingProcessed;
     var allPanels = panelSpecificationCollection.buildListOfPanels();
     allPanels.forEach(function(panel) {
-        console.log("panel", panel.displayType, panel.id, panel.section, panel.displayName);
+        // console.log("panel", panel.displayType, panel.id, panel.section, panel.displayName);
         if (panel.isHeader) {
             if (sectionBeingProcessed) sections.push(sectionBeingProcessed);
             sectionBeingProcessed = {
@@ -475,8 +475,8 @@ function generateNavigationDataInJSON() {
         }
     });
     
-    console.log("JSON for navigation:");
-    console.log(JSON.stringify(sections, null, 4));
+    // console.log("JSON for navigation:");
+    // console.log(JSON.stringify(sections, null, 4));
 }
     
 function setupGlobalFunctions() {
@@ -521,7 +521,7 @@ export function initialize() {
     }
     
     var fragment = hash();
-    console.log("fragment when page first loaded", fragment);
+    // console.log("fragment when page first loaded", fragment);
     var initialHashParameters = getHashParameters(fragment);
     if (initialHashParameters["project"]) clientState.projectIdentifier = initialHashParameters["project"];
     if (initialHashParameters["page"]) clientState.pageIdentifier = "page_" + initialHashParameters["page"];
@@ -661,9 +661,9 @@ function redrawFromProject() {
     // The tripleStore may not be updated yet, so this redraw needs to get queued for later by the application
     if (runningAfterInitialIdle) {
         if (!pendingRedraw) {
-            console.log("queueing redrawFromProject");
+            // console.log("queueing redrawFromProject");
             pendingRedraw = setTimeout(function() {
-                console.log("redrawFromProject");
+                // console.log("redrawFromProject");
                 pendingRedraw = null;
                 m.redraw();
             }, 0);
@@ -679,7 +679,7 @@ function openProject(userCredentials, projectIdentifier) {
     
     project = new Project(journalIdentifier, projectIdentifier, userCredentials, updateServerStatus, redrawFromProject);
     
-    console.log("Made project", project);
+    console.log("openProject", project);
     
     surveyCollection.setProject(project);
     

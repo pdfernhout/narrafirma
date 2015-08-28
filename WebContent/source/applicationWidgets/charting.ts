@@ -167,7 +167,7 @@ function createBrush(chartBody, xScale, yScale, brushendCallback) {
         brushGroup.selectAll("rect")
             .attr("y", 0)
             .attr("height", chartBody.attr("height"));
-        console.log("********** chart height", chartBody.attr("height"), chartBody);
+        // console.log("********** chart height", chartBody.attr("height"), chartBody);
     }
 
     return {brush: brush, brushGroup: brushGroup};
@@ -1047,7 +1047,7 @@ function setCurrentSelection(chart, graphBrowserInstance: GraphHolder, extent) {
 function updateSelectedStories(chart, storyDisplayItemsOrClusters, graphBrowserInstance: GraphHolder, storiesSelectedCallback, selectionTestFunction) {
     var extent = chart.brush.brush.extent();
     
-    console.log("updateSelectedStories extent", extent);
+    // console.log("updateSelectedStories extent", extent);
     
     setCurrentSelection(chart, graphBrowserInstance, extent);
     
@@ -1070,7 +1070,7 @@ function updateSelectedStories(chart, storyDisplayItemsOrClusters, graphBrowserI
         return selected;
     });
     if (storiesSelectedCallback) {
-        console.log("updateSelectedStories doing callback", selectedStories);
+        // console.log("updateSelectedStories doing callback", selectedStories);
         
         storiesSelectedCallback(selectedStories);
         
