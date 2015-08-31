@@ -3,6 +3,7 @@ import translate = require("./translate");
 import PanelBuilder = require("panelBuilder/PanelBuilder");
 import generateRandomUuid = require("../pointrel20150417/generateRandomUuid");
 import TripleStore = require("../pointrel20150417/TripleStore");
+import valuePathResolver = require("./valuePathResolver");
 
 "use strict";
 
@@ -169,6 +170,7 @@ class GridWithItemPanel {
     itemPanelSpecification = null;
     idProperty: string = "_id";
     model = null;
+    valueProperty: Function;
     panelBuilder: PanelBuilder = null;
     
     // viewing, editing, adding
@@ -244,12 +246,14 @@ class GridWithItemPanel {
         
         this.isNavigationalScrollingNeeded = null;
         
+        this.valueProperty = valuePathResolver.newValuePathForFieldSpecification(this.panelBuilder, this.model, this.fieldSpecification);
+        
         if (this.useTriples()) {
             // console.log("Grid using triples", this.model);
-            this.dataStore = new TripleSetDataStore(this.model, this.fieldSpecification.id, this.idProperty, this.panelBuilder.project.tripleStore);
+            this.dataStore = new TripleSetDataStore(this.valueProperty, this.idProperty, this.panelBuilder.project.tripleStore);
         } else {
             // console.log("Grid using objects", this.model);
-            this.dataStore = new DataStore(this.model, this.fieldSpecification.id, this.idProperty);
+            this.dataStore = new DataStore(this.valueProperty, this.idProperty);
         }
         this.updateData();
     }
@@ -692,7 +696,7 @@ class GridWithItemPanel {
     }
     
     useTriples() {
-        return typeof this.model === "string";
+        return typeof this.valueProperty() === "string";
     }
 }
 
@@ -701,7 +705,7 @@ class GridWithItemPanel {
 class DataStore {
     data: Array<any>;
     
-    constructor(public model: Array<any> | string, public modelField: string, public idProperty: string) {
+    constructor(public valueProperty: Function, public idProperty: string) {
     }
     
     newIdForItem() {
@@ -718,11 +722,11 @@ class DataStore {
     }
     
    getDataArrayFromModel() {
-        var data = this.model[this.modelField];
+        var data = this.valueProperty();
         
         if (!data) {
             data = [];
-            this.model[this.modelField] = data;
+            this.valueProperty(data);
         }
         
         // Make a copy of the data because we will be sorting it
@@ -837,15 +841,15 @@ class TripleSetDataStore extends DataStore {
     tripleStore: TripleStore;
     setIdentifier: string;
     
-    constructor(model: Array<any> | string, modelField: string, idProperty: string, tripleStore: TripleStore) {
-        super(model, modelField, idProperty);
+    constructor(valueProperty: Function, idProperty: string, tripleStore: TripleStore) {
+        super(valueProperty, idProperty);
         this.tripleStore = tripleStore;
     }
     
     getDataArrayFromModel() {
-        this.setIdentifier = this.tripleStore.queryLatestC(this.model, this.modelField);
+        this.setIdentifier = this.valueProperty();
         
-        // TODO: Should we make a set if none exists at this time as opposed to lazily at first insertion of data?
+        // Design issue: Should we make a set if none exists at this time as opposed to lazily at first insertion of data?
 
         if (this.setIdentifier) {
             this.data = this.tripleStore.getListForSetIdentifier(this.setIdentifier);
@@ -856,10 +860,10 @@ class TripleSetDataStore extends DataStore {
     
     // We don't make the set at startup; lazily make it if needed now
     ensureSetExists() {
-        // TODO: Remove temporary addition with comparison on string type (for upgrading)
+        // TODO: Remove temporary addition with comparison on string type (for upgrading old data)
         if (!this.setIdentifier || typeof this.setIdentifier !== "string") {
             this.setIdentifier = this.tripleStore.newIdForSet();
-            this.tripleStore.addTriple(this.model, this.modelField, this.setIdentifier);
+            this.valueProperty(this.setIdentifier);
         }
     }
 
