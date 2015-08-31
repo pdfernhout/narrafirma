@@ -316,19 +316,11 @@ class PatternBrowser {
         if (newValue === undefined) {
             var result = this.project.tripleStore.queryLatestC(observationIdentifier, field);
             if (result === undefined || result === null) {
-                if (field === "observationInterpretations") {
-                    // Lazily create set of interpretations
-                    var interpetationsSetIdentifier = this.project.tripleStore.newIdForSet();
-                    this.project.tripleStore.addTriple(observationIdentifier, field, interpetationsSetIdentifier);
-                    result = interpetationsSetIdentifier;
-                } else {
-                    result = "";
-                }
+                result = "";
             }
             // console.log("observationAccessor", this.catalysisReportIdentifier, this.catalysisReportObservationSetIdentifier, patternReference, observation);
             return result;
         } else {
-            if (field === "observationInterpretations") throw new Error("observationAccessor: should not be setting interpretaions set"); 
             this.project.tripleStore.addTriple(observationIdentifier, field, newValue);
             return newValue;
         }
@@ -350,12 +342,12 @@ class PatternBrowser {
         return this.observationAccessor(this.currentPattern.questions, "observationTitle", newValue);
     }
     
-    currentObservationInterpretations() {
+    currentObservationInterpretations(newValue = undefined) {
         if (!this.currentPattern) {
             return "";
             // throw new Error("pattern is not defined");
         }
-        return this.observationAccessor(this.currentPattern.questions, "observationInterpretations");
+        return this.observationAccessor(this.currentPattern.questions, "observationInterpretations", newValue);
     }
     
     // We don't make the set when the report is created; lazily make it if needed now
