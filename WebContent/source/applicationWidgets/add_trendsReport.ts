@@ -173,14 +173,22 @@ class PatternBrowser {
                     displayConfiguration: this.resetGraphSelection.bind(this)
                 },
                 {
-                    id: "observationPanel_observation",
-                    valuePath: "currentObservation",
+                    id: "observationPanel_description",
+                    valuePath: "currentObservationDescription",
                     displayName: "Observation",
                     displayPrompt: "If this pattern is noteworthy, enter an <strong>observation</strong> about the pattern here.",
                     displayType: "textarea"
                 },
                 {
+                    id: "observationPanel_title",
+                    valuePath: "currentObservationTitle",
+                    displayName: "Observation",
+                    displayPrompt: "Enter an <strong>summary title</strong> about the pattern here.",
+                    displayType: "text"
+                },
+                {
                     id: "observationPanel_interpretationsList",
+                    valuePath: "currentObservationInterpretations",
                     valueType: "array",
                     required: true,
                     displayType: "grid",
@@ -282,21 +290,72 @@ class PatternBrowser {
         }       
     }
     
-    observationAccessor(questions, newObservation = undefined) {
-        // console.log("observationAccessor", questions, newObservation);
-        if (newObservation === undefined) {
-            return this.getObservationForQuestions(questions);
-        } else { 
-            return this.setObservationForQuestions(questions, newObservation);
+    observationAccessor(questions, field: string, newValue = undefined) {
+        if (!this.catalysisReportObservationSetIdentifier) throw new Error("observationAccessor: this.catalysisReportObservationSetIdentifier is undefined");
+        var patternReference = this.patternReferenceForQuestions(questions);
+         
+        var observationIdentifier: string = this.project.tripleStore.queryLatestC(this.catalysisReportObservationSetIdentifier, patternReference);
+        
+        // TODO: Remove temporary kludge for old test data
+        if (observationIdentifier && observationIdentifier.substring(0, "Observation:".length) !== "Observation:") {
+            console.log("Temporary fixup kludge for old data", patternReference, observationIdentifier);
+            var existingDescription = observationIdentifier;
+            observationIdentifier = "Observation:" + generateRandomUuid();
+            this.project.tripleStore.addTriple(this.catalysisReportObservationSetIdentifier, patternReference, observationIdentifier);
+            this.project.tripleStore.addTriple(observationIdentifier, "observationDescription", existingDescription);                        
+        }
+        
+        if (!observationIdentifier) {
+            if (field !== "observationInterpretations" && newValue === undefined) return "";
+            // Lazy initialize the observation as will need to return a list which might be empty but could get used
+            observationIdentifier = "Observation:" + generateRandomUuid();
+            this.project.tripleStore.addTriple(this.catalysisReportObservationSetIdentifier, patternReference, observationIdentifier);
+        }
+
+        console.log("observationAccessor", questions, observationIdentifier, newValue);
+        if (newValue === undefined) {
+            var result = this.project.tripleStore.queryLatestC(observationIdentifier, field);
+            if (result === undefined || result === null) {
+                if (field === "observationInterpretations") {
+                    // Lazily create set of interpretations
+                    var interpetationsSetIdentifier = this.project.tripleStore.newIdForSet();
+                    this.project.tripleStore.addTriple(observationIdentifier, field, interpetationsSetIdentifier);
+                    result = interpetationsSetIdentifier;
+                } else {
+                    result = "";
+                }
+            }
+            // console.log("observationAccessor", this.catalysisReportIdentifier, this.catalysisReportObservationSetIdentifier, patternReference, observation);
+            return result;
+        } else {
+            if (field === "observationInterpretations") throw new Error("observationAccessor: should not be setting interpretaions set"); 
+            this.project.tripleStore.addTriple(observationIdentifier, field, newValue);
+            return newValue;
         }
     }
     
-    currentObservation(newObservation) {
+    currentObservationDescription(newValue = undefined) {
         if (!this.currentPattern) {
             return "";
             // throw new Error("pattern is not defined");
         }
-        return this.observationAccessor(this.currentPattern.questions, newObservation);
+        return this.observationAccessor(this.currentPattern.questions, "observationDescription", newValue);
+    }
+    
+    currentObservationTitle(newValue = undefined) {
+        if (!this.currentPattern) {
+            return "";
+            // throw new Error("pattern is not defined");
+        }
+        return this.observationAccessor(this.currentPattern.questions, "observationTitle", newValue);
+    }
+    
+    currentObservationInterpretations() {
+        if (!this.currentPattern) {
+            return "";
+            // throw new Error("pattern is not defined");
+        }
+        return this.observationAccessor(this.currentPattern.questions, "observationInterpretations");
     }
     
     // We don't make the set when the report is created; lazily make it if needed now
@@ -399,29 +458,6 @@ class PatternBrowser {
         return result;
     }
     
-    getObservationForQuestions(questions) {
-        if (!this.catalysisReportObservationSetIdentifier) throw new Error("getObservationForQuestions: this.catalysisReportObservationSetIdentifier is undefined");
-        
-        var patternReference = this.patternReferenceForQuestions(questions);
-        
-        var observation = this.project.tripleStore.queryLatestC(this.catalysisReportObservationSetIdentifier, patternReference);
-        
-        if (observation === undefined || observation === null) observation = "";
-        
-        // console.log("getObservationForQuestions", this.catalysisReportIdentifier, this.catalysisReportObservationSetIdentifier, patternReference, observation);
-        return observation;
-    }
-    
-    setObservationForQuestions(questions, newObservation) {
-        if (!this.catalysisReportObservationSetIdentifier) throw new Error("setObservationForQuestions: this.catalysisReportObservationSetIdentifier is undefined");
-
-        var patternReference = this.patternReferenceForQuestions(questions);
-    
-        this.project.tripleStore.addTriple(this.catalysisReportObservationSetIdentifier, patternReference, newObservation);
-        
-        return newObservation;
-    }
-    
     makePattern(id, graphType, questions) {
         // For bar and table
         var q1Type = "C";
@@ -436,7 +472,7 @@ class PatternBrowser {
             q2Type = "S";
         }
             
-        var observation = this.observationAccessor.bind(this, questions);
+        var observation = this.observationAccessor.bind(this, questions, "observationDescription");
         
         if (questions.length === 1) {
             return {id: id, observation: observation, graphType: graphType, patternName: nameForQuestion(questions[0]) + " (" + q1Type + ")", questions: questions};
@@ -665,9 +701,9 @@ class PatternBrowser {
         // Replace the currently selected text in the textarea (or insert at caret if nothing selected)
         var selectionStart = textarea.selectionStart;
         var selectionEnd = textarea.selectionEnd;
-        var oldText = this.observationAccessor(this.currentPattern.questions);
+        var oldText = this.currentObservationDescription();
         var newText = oldText.substring(0, selectionStart) + textToInsert + oldText.substring(selectionEnd);
-        this.observationAccessor(this.currentPattern.questions, newText);
+        this.currentObservationDescription(newText);
         
         // Set the new value explicitly here rather than waiting for a Mithril redraw so that we can then select it
         textarea.value = newText;
@@ -681,7 +717,7 @@ class PatternBrowser {
         // TODO: Fix this for Mithril conversion
         var textarea = <HTMLTextAreaElement>document.getElementById("observationPanel_observation");
         if (!this.currentPattern) return;
-        var text = this.observationAccessor(this.currentPattern.questions);
+        var text = this.currentObservationDescription();
     
         if (doFocus) textarea.focus();
     
