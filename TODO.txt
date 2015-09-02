@@ -38,7 +38,6 @@ H Support graphBrowser standard deviation and mean for histograms
 
 TRENDS REPORT -> PATTERN BROWSER
 L Move options (how large should subsets, what significance threshold) to popup under patterns list
-H Support adding interpretations to observations in trendsReport (pattern browser)
 H Ignore stories that have an ignore tag set (like if a test story or a duplicate)
 
 CLUSTERING (CATALYSIS)
@@ -57,10 +56,6 @@ CATALYSIS
 H Remove "Theme stories" page
 H Remove "review excerpts" page
 H Remove "Review and interpret observations" page
-
-GRID
-H When viewing grid data, it should not look (or be) editable
-    Read-only version of checkboxes and radiobutton widgets, used by grid (assuming that is how the read only data is presented)
 
 CONFIGURATION
 H Make a SIMPLE Project Administration section to go with home page button for use with import/export/backup/reporting or other settings and functions
@@ -865,3 +860,7 @@ DONE Logout link does not work in WordPress plugin webapp
 DONE Save and load pattern list with observations on trends report
 DONE Add support in sanitize HTML for allowing specific whitelisted CSS classes sing "tag.className" notation
 DONE Error on "Start story collection" page, when looking at collection: "Exception: Error: tag is not alphanumeric: span class="narrafirma-special-warning"" [now uses <span.narrafirma-special-warning>]
+DONE Support adding interpretations to observations in trendsReport (pattern browser)
+DONE When viewing grid data, it should not look (or be) editable
+DONE Read-only version of checkboxes and radiobutton widgets
+DONE Read-only flag passed reursively through nested GridWithItemPanels
