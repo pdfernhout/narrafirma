@@ -120,8 +120,9 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         valueProperty(value);
     }
     
-    var readOnly = fieldSpecification.displayReadOnly || (fieldSpecification.valueImmutable && value) || undefined;
-    var disabled = (readOnly && displayType === "select") || undefined;
+    var readOnly = panelBuilder.readOnly || fieldSpecification.displayReadOnly || (fieldSpecification.valueImmutable && value) || undefined;
+    // var disabled = (readOnly && displayType === "select") || undefined;
+    var disabled = readOnly || undefined;
 
     var standardValueOptions = {
         value: value,
@@ -150,7 +151,7 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
     } else if (displayType === "checkbox") {
         makeLabel();
         parts = [
-             m("input[type=checkbox]", {id: getIdForText(fieldID), checked: value, onchange: function(event) {change(null, event.target.checked); }}),
+             m("input[type=checkbox]", {id: getIdForText(fieldID), disabled: disabled, checked: value, onchange: function(event) {change(null, event.target.checked); }}),
              m("br")
          ];
     } else if (displayType === "checkboxes") {
@@ -164,7 +165,7 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
             fieldSpecification.valueOptions.map(function (option, index) {
                 var optionID = getIdForText(fieldID + "_" + option);
                 return [
-                    m("input[type=checkbox]", {id: optionID, checked: !!value[option], onchange: function(event) {value[option] = event.target.checked; change(null, value); } }),
+                    m("input[type=checkbox]", {id: optionID, disabled: disabled, checked: !!value[option], onchange: function(event) {value[option] = event.target.checked; change(null, value); } }),
                     m("label", {"for": optionID}, option),
                     m("br")
                 ];
@@ -179,7 +180,7 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
             fieldSpecification.valueOptions.map(function (option, index) {
                 var optionID = getIdForText(fieldID + "_" + option);
                 return [
-                    m("input[type=radio]", {id: optionID, value: option, name: fieldSpecification.id, checked: value === option, onchange: change.bind(null, null, option) }),
+                    m("input[type=radio]", {id: optionID, value: option, name: fieldSpecification.id, disabled: disabled, checked: value === option, onchange: change.bind(null, null, option) }),
                     m("label", {"for": optionID}, option), 
                     m("br")
                 ];
@@ -191,10 +192,10 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         // The for attribute of the label element must refer to a form control.
         delete questionLabel[0].attrs["for"];
         parts = [
-            m("input[type=radio]", {id: getIdForText(fieldID + "_yes"), value: true, name: fieldSpecification.id, checked: value === true, onchange: change.bind(null, null, true) }),
+            m("input[type=radio]", {id: getIdForText(fieldID + "_yes"), value: true, name: fieldSpecification.id, disabled: disabled, checked: value === true, onchange: change.bind(null, null, true) }),
             m("label", {"for": getIdForText(fieldID + "_yes")}, "yes"),
             m("br"),
-            m("input[type=radio]", {id: getIdForText(fieldID + "_no"), value: false, name: fieldSpecification.id, checked: value === true, onchange: change.bind(null, null, false) }),
+            m("input[type=radio]", {id: getIdForText(fieldID + "_no"), value: false, name: fieldSpecification.id, disabled: disabled, checked: value === true, onchange: change.bind(null, null, false) }),
             m("label", {"for": getIdForText(fieldID + "_no")}, "no"),
             m("br")
         ];

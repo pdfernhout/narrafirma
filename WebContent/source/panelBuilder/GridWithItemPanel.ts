@@ -118,8 +118,17 @@ class ItemPanel {
         if (args.mode === "edit") {
             theClass = "narrafirma-griditempanel-editing";  
         }
-        return m("div", {"class": theClass}, panelBuilder.buildPanel(args.grid.itemPanelSpecification, args.item));
-
+        
+        var oldReadOnly = panelBuilder.readOnly;
+        if (args.mode === "view") {
+            panelBuilder.readOnly = true;
+        }
+        try {
+            var div = m("div", {"class": theClass}, panelBuilder.buildPanel(args.grid.itemPanelSpecification, args.item));
+            return div;
+        } finally {
+            panelBuilder.readOnly = oldReadOnly;
+        }
     }
 }
 
@@ -186,6 +195,8 @@ class GridWithItemPanel {
     sortBy: string = null;
     sortDirection: string = "ascending";
     
+    readOnly = false;
+    
     onunload() {
         // console.log("+++++++++++++++++++++++++++++++++++++ unloading GridWithItemPanel");
     }
@@ -195,6 +206,7 @@ class GridWithItemPanel {
         this.panelBuilder = args.panelBuilder;
         this.fieldSpecification = args.fieldSpecification;
         this.model = args.model;
+        this.readOnly = args.readOnly;
             
         this.updateDisplayConfigurationAndData(this.fieldSpecification.displayConfiguration);
     }
@@ -317,7 +329,7 @@ class GridWithItemPanel {
             })
         ]);
         
-        var addButtonDisabled = this.isEditing() || undefined;
+        var addButtonDisabled = this.readOnly || this.isEditing() || undefined;
         
         var buttons = [];
         if (this.gridConfiguration.addButton) {
@@ -590,7 +602,9 @@ class GridWithItemPanel {
     private createButtons(item = undefined) {
         var buttons = [];
        
-        var disabled = this.isEditing() || (!item && !this.selectedItem) || undefined;
+        var unavailable = this.isEditing() || (!item && !this.selectedItem) || undefined;
+        var disabled = this.readOnly || unavailable;
+        
         // console.log("createButtons disabled", disabled, item, this.selectedItem, (!item && !this.selectedItem) );
          
         if (this.gridConfiguration.removeButton) {
@@ -604,7 +618,7 @@ class GridWithItemPanel {
         }
         
         if (this.gridConfiguration.viewButton) {
-            var viewButton = m("button", {onclick: this.viewItem.bind(this, item), disabled: disabled, "class": "fader"}, translate("#button_View|View"));
+            var viewButton = m("button", {onclick: this.viewItem.bind(this, item), disabled: unavailable, "class": "fader"}, translate("#button_View|View"));
             buttons.push(viewButton); 
         }
         
