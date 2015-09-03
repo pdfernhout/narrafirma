@@ -37,7 +37,6 @@ H Test statistical tests for validity - run same tests in spreadsheet on same da
 H Support graphBrowser standard deviation and mean for histograms
 
 TRENDS REPORT -> PATTERN BROWSER
-L Move options (how large should subsets, what significance threshold) to popup under patterns list
 H Ignore stories that have an ignore tag set (like if a test story or a duplicate)
 
 CLUSTERING (CATALYSIS)
@@ -126,6 +125,7 @@ GRAPH BROWSER
 L Support graphBrowser common maximum for multiple histograms
 
 TRENDS REPORT -> PATTERN BROWSER
+L Move options (how large should subsets, what significance threshold) to popup under patterns list
 L Rename trendsReport to Pattern Browser
 L Rename "save current graph selection to observation" buttons under graphs
 
