@@ -2,24 +2,24 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
 var panel: Panel = {
-    "id": "panel_addStoryElement",
-    "displayName": "Add story element",
-    "displayType": "panel",
-    "section": "planning",
-    "modelClass": "StoryElement",
-    "panelFields": [
+    id: "panel_addStoryElement",
+    displayName: "Add story element",
+    displayType: "panel",
+    section: "planning",
+    modelClass: "StoryElement",
+    panelFields: [
         {
-            "id": "storyElement_name",
-            "valueType": "string",
-            "required": true,
-            "displayType": "text",
-            "displayName": "Name",
-            "displayPrompt": "What is the name of the story element?"
+            id: "storyElement_name",
+            valueType: "string",
+            required: true,
+            displayType: "text",
+            displayName: "Name",
+            displayPrompt: "What is the name of the story element?"
         },
         {
-            "id": "storyElement_type",
-            "valueType": "string",
-            "valueOptions": [
+            id: "storyElement_type",
+            valueType: "string",
+            valueOptions: [
                 "character",
                 "situation",
                 "value",
@@ -29,18 +29,18 @@ var panel: Panel = {
                 "belief",
                 "conflict"
             ],
-            "required": true,
-            "displayType": "select",
-            "displayName": "Type",
-            "displayPrompt": "What type of story element is this?"
+            required: true,
+            displayType: "select",
+            displayName: "Type",
+            displayPrompt: "What type of story element is this?"
         },
         {
-            "id": "storyElement_description",
-            "valueType": "string",
-            "required": true,
-            "displayType": "textarea",
-            "displayName": "Description",
-            "displayPrompt": "You can describe the story element more fully here."
+            id: "storyElement_description",
+            valueType: "string",
+            required: true,
+            displayType: "textarea",
+            displayName: "Description",
+            displayPrompt: "You can describe the story element more fully here."
         }
     ]
 };

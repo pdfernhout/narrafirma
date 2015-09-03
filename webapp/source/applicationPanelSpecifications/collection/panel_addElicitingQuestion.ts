@@ -2,32 +2,32 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
 var panel: Panel = {
-    "id": "panel_addElicitingQuestion",
-    "displayName": "Add story eliciting question",
-    "displayType": "panel",
-    "section": "collection",
-    "modelClass": "ElicitingQuestion",
-    "panelFields": [
+    id: "panel_addElicitingQuestion",
+    displayName: "Add story eliciting question",
+    displayType: "panel",
+    section: "collection",
+    modelClass: "ElicitingQuestion",
+    panelFields: [
         {
-            "id": "elicitingQuestion_text",
-            "valueType": "string",
-            "required": true,
-            "displayType": "textarea",
-            "displayName": "Question",
-            "displayPrompt": "What <strong>question</strong> will you ask? (Remember to write a question whose answer is a story.)"
+            id: "elicitingQuestion_text",
+            valueType: "string",
+            required: true,
+            displayType: "textarea",
+            displayName: "Question",
+            displayPrompt: "What <strong>question</strong> will you ask? (Remember to write a question whose answer is a story.)"
         },
         {
-            "id": "elicitingQuestion_shortName",
-            "valueType": "string",
-            "required": true,
-            "displayType": "text",
-            "displayName": "Short Name",
-            "displayPrompt": "Enter a short <strong>name</strong> for this question, to use as a reference."
+            id: "elicitingQuestion_shortName",
+            valueType: "string",
+            required: true,
+            displayType: "text",
+            displayName: "Short Name",
+            displayPrompt: "Enter a short <strong>name</strong> for this question, to use as a reference."
         },
         {
-            "id": "elicitingQuestion_type",
-            "valueType": "dictionary",
-            "valueOptions": [
+            id: "elicitingQuestion_type",
+            valueType: "dictionary",
+            valueOptions: [
                 "what happened",
                 "directed question",
                 "undirected question",
@@ -39,16 +39,16 @@ var panel: Panel = {
                 "fictional scenario",
                 "other"
             ],
-            "displayType": "checkboxes",
-            "displayName": "Type",
-            "displayPrompt": "What <strong>type</strong> of question is this?"
+            displayType: "checkboxes",
+            displayName: "Type",
+            displayPrompt: "What <strong>type</strong> of question is this?"
         },
         {
-            "id": "SPECIAL_templates_elicitingQuestions",
-            "valueType": "none",
-            "displayType": "templateList",
-            "displayConfiguration": "elicitationQuestions",
-            "displayPrompt": "Copy a question from a template"
+            id: "SPECIAL_templates_elicitingQuestions",
+            valueType: "none",
+            displayType: "templateList",
+            displayConfiguration: "elicitationQuestions",
+            displayPrompt: "Copy a question from a template"
         }
     ]
 };
