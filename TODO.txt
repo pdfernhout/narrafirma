@@ -865,3 +865,7 @@ DONE Support adding interpretations to observations in trendsReport (pattern bro
 DONE When viewing grid data, it should not look (or be) editable
 DONE Read-only version of checkboxes and radiobutton widgets
 DONE Read-only flag passed reursively through nested GridWithItemPanels
+DONE Improve file names so WebContent is webapp, index.html is narrafirma.hthml, and project-admin.html is admin.html
+DONE Remove obsolete out-of-date text files that defined the original questions and templates used to generate the code to avoid confusing new developers or code searching
+DONE Load panel definitions and navigation data from TypeScript modules instead of JSON (so it is easier to read and validate)
+DONE Create "Panel" TypesScript definition to validate panel definitions
