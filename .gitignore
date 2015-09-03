@@ -4,5 +4,5 @@
 /server-data-old/
 /server-data-old2
 .DS_Store
-/WebContent/js
+/webapp/js
 /distribution

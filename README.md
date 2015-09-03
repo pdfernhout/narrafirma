@@ -15,7 +15,7 @@ The NarraFirma&trade; software helps people who want to use Participatory Narrat
 PNI methods help people discover insights, catch emerging trends, make decisions, generate ideas, resolve conflicts, and connect people.
 PNI is described in the textbook ["Working With Stories in your Community or Organization"](http://workingwithstories.org/) by [Cynthia F. Kurtz](http://cfkurtz.com/).
 
-![Cover of "Working With Stories" textbook](WebContent/images/WWS_BookCover_front_small.png)
+![Cover of "Working With Stories" textbook](webapp/images/WWS_BookCover_front_small.png)
 
 As Malcom Gladwell has [said](http://venturebeat.com/2015/07/24/gladwell-on-data-marketing-the-snapchat-problem-the-facebook-problem-the-airbnb-problem/) about the limits of big data:
 "More data increases our confidence, not our accuracy." When "accuracy" is defined not as measurement but as effective, appropriate, meaningful change, PNI helps to increase accuracy in decision making by grounding actions in the experiences of the community or organization. PNI can also work as a complement to other methods of market research, business intelligence, and community engagement.
@@ -26,7 +26,7 @@ As Malcom Gladwell has [said](http://venturebeat.com/2015/07/24/gladwell-on-data
 - The application has over forty different input screens.
 - The application can make suggestions for questions to ask and workshops to run based on planning data you supply.
 
-![Diagram of the six phases of PNI](WebContent/images/PNIPhasesDiagram.png)
+![Diagram of the six phases of PNI](webapp/images/PNIPhasesDiagram.png)
 
 ### Client-side implementation
 

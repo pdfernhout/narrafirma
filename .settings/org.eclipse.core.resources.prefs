@@ -1,4 +1,4 @@
 eclipse.preferences.version=1
 encoding/.jshintrc=UTF-8
-encoding//WebContent/source/pointrel20150417/PointrelClient.ts=UTF-8
-encoding//WebContent/testing/unicodeSHA256Tests.js=UTF-8
+encoding//webapp/source/pointrel20150417/PointrelClient.ts=UTF-8
+encoding//webapp/testing/unicodeSHA256Tests.js=UTF-8

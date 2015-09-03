@@ -5,7 +5,7 @@
 
 // The design file to be read
 var templateFileName = '../design/templates.txt';
-var allTemplatesFileName = '../WebContent/js/templates/templates.js';
+var allTemplatesFileName = '../webapp/js/templates/templates.js';
 
 var fs = require('fs');
 

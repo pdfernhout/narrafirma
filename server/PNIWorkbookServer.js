@@ -97,7 +97,7 @@ app.use("/$", authentication.ensureAuthenticated, function(req, res) {
     res.redirect('/index.html');
 });
 
-app.use("/", authentication.ensureAuthenticated, express.static(__dirname + "/../WebContent"));
+app.use("/", authentication.ensureAuthenticated, express.static(__dirname + "/../webapp"));
 
 app.use(function(err, req, res, next){
     console.error(err.stack);

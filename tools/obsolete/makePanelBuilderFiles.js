@@ -58,7 +58,7 @@ var filesToMake = {
     "quizScoreResult": "add_quizScoreResult"
 };
 
-var builderSource = fs.readFileSync(__dirname + "/../WebContent/js/panelBuilder/PanelBuilder.js").toString();
+var builderSource = fs.readFileSync(__dirname + "/../webapp/js/panelBuilder/PanelBuilder.js").toString();
 var lines = builderSource.split("\n");
 
 // console.log("builderSource", builderSource);

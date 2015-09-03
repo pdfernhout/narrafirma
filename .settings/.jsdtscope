@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="lib/" kind="src" path="WebContent"/>
+	<classpathentry excluding="lib/" kind="src" path="webapp"/>
 	<classpathentry kind="src" path="experiments"/>
 	<classpathentry kind="src" path="tools"/>
 	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.baseBrowserLibrary"/>

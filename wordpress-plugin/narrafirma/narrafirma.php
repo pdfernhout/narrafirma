@@ -82,7 +82,7 @@ class NarraFirmaSettingsPage
         
         $baseDirectory = plugins_url( 'narrafirma' );
     
-        $launchLink = $baseDirectory . "/WebContent/index.html";
+        $launchLink = $baseDirectory . "/webapp/index.html";
     
         ?>
 <div class="wrap">
@@ -202,7 +202,7 @@ function nararfirma_admin_enqueue_scripts($hook) {
     // TODO: Maybe this name chould be assigned to a global on page creation?
     if ($hook != "toplevel_page_narrafirma-settings-admin") return;
         
-    wp_enqueue_script( 'mithril', plugin_dir_url( __FILE__ ) . 'WebContent/lib/mithril/mithril.js' );
+    wp_enqueue_script( 'mithril', plugin_dir_url( __FILE__ ) . 'webapp/lib/mithril/mithril.js' );
     wp_enqueue_script( 'narrafirma-admin-js', plugin_dir_url( __FILE__ ) . 'narrafirmaWordPressAdmin.js' );
 }
 add_action( 'admin_enqueue_scripts', 'nararfirma_admin_enqueue_scripts' );

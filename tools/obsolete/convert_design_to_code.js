@@ -9,8 +9,8 @@
 // It generates js/nls/pageMessages.js translation file
 
 // Various files to be written and their locations
-var translationFileName = "../WebContent/js/nls/pageMessages.js";
-var pagesFolder = "../WebContent/js/pages/";
+var translationFileName = "../webapp/js/nls/pageMessages.js";
+var pagesFolder = "../webapp/js/pages/";
 var allPagesFileName = pagesFolder + "allPages.js";
 var allPagesSummaryFileName = pagesFolder +  "allPagesSummary.js";
 

@@ -1,5 +1,5 @@
 build.path.exportedFolder=
-build.path.sourceFolder=WebContent/source
+build.path.sourceFolder=webapp/source
 compiler.codeGenTarget=ECMASCRIPT5
 compiler.compileOnSave=true
 compiler.generateDeclarationFiles=false
@@ -7,7 +7,7 @@ compiler.mapSourceFiles=false
 compiler.moduleGenTarget=ASYNCHRONOUS
 compiler.noImplicitAny=false
 compiler.noLib=false
-compiler.outputDirOption=WebContent/js
+compiler.outputDirOption=webapp/js
 compiler.outputFileOption=
 compiler.removeComments=false
 eclipse.preferences.version=1

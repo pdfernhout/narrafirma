@@ -38,8 +38,8 @@ After installing the plugin, you can then follow the directions in the section b
 Alternatively, particularly under Windows which may not have command-line commands available used by build-wp
 like "cp", "rm", "mkdir" and such, installing a working WordPress plugin can be done with the following manual steps:  
 
-1. ensure the TypeScript files are compiled with the output under WebContent/js,
-2. copy the WebContent directory to under the wordpress-plugin/narrafirma directory,
+1. ensure the TypeScript files are compiled with the output under webapp/js,
+2. copy the webapp directory to under the wordpress-plugin/narrafirma directory,
 3. copy the combined files to your WordPress installation.  
 
 After installation, you then need to activate the plugin, create your first project in the plugin's admin interface, and then use the link from the plugin's admin interface to open the application.
@@ -49,22 +49,22 @@ These manual steps are explained in more detail below.
 #### Step 1: Ensure the TypeScript files are compiled to JavaScript
 
 First, because the NarraFirma application client is written in TypeScript, 
-be sure that the WebContent/js directory contains JavaScript files (\*.js) built from the TypeScript source files (\*.ts). This would be the case when using Eclipse with the Palantir TypeScript IDE plugin and the Eclipse project in the repository.
-If you are not using an IDE, you can run "tsc" in the WebContent directory (or a parent directory).
+be sure that the webapp/js directory contains JavaScript files (\*.js) built from the TypeScript source files (\*.ts). This would be the case when using Eclipse with the Palantir TypeScript IDE plugin and the Eclipse project in the repository.
+If you are not using an IDE, you can run "tsc" in the webapp directory (or a parent directory).
 That will use the tsconfig.json to compile the "*.ts" files.
 That assumes you have the TypeScript compiler installed.
 The TypeScript compiled "tsc" be installed using: "npm install -g typescript".
 That command in turn assumes you have Node.js and npm installed first, like explained [here](https://docs.npmjs.com/getting-started/installing-node).
 You will need to rerun "tsc" after any changes to the TypeScript files (including after a git pull).
 
-#### Step 2: Make a copy of WebContent under the narrafirma directory
+#### Step 2: Make a copy of webapp under the narrafirma directory
 
 After you are sure the *.js files have been generated in the right place,
-the WebContent directory needs to be copied manually into the "narrafirma" directory to build an actual working plugin.
+the webapp directory needs to be copied manually into the "narrafirma" directory to build an actual working plugin.
 This is because most of the NarraFirma application runs as client-side JavaScript.
 Alternatively, to make a symbolic link for that directory, from wordpress-plugin/narrafirma do:
 
-        $ ln -s ../../WebContent/ WebContent
+        $ ln -s ../../webapp/ webapp
         
 The symbolic file was not checked in because it still seems to cause potential issues with older git clients.
 This file (or copied directory) will be ignored based on a .gitignore file in the wordpress-plugin directory.
@@ -75,11 +75,11 @@ After you have doen the previus two steps, setting the files into WordPress can 
 symbolicly linking from the WordPress plugin direcotry to the source code,
 or by making them into a zip file and extracting them.
 
-If you copied the WebContent directory under nararfirma, then it should be straighforward to copy all that
+If you copied the webapp directory under nararfirma, then it should be straighforward to copy all that
 to the WordPress' wordpress-plugin directory using a stanadard copy command.
 You would need to be sure the copied files have permissions or a owner such that they can be read by your web server.
 
-The following rsync command may be useful when testing the WordPress plugin if you have set up a symbolic link in the narrafirma directory to the WebContent directory.
+The following rsync command may be useful when testing the WordPress plugin if you have set up a symbolic link in the narrafirma directory to the webapp directory.
 You would need to replace "_www" with whatever your web server needs as a user for permissions.
 
         $ pwd

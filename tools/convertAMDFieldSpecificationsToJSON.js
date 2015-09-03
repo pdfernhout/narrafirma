@@ -17,8 +17,8 @@ require = require('amdrequire');
 var outputDirectory = __dirname + "/output/";
 
 require([
-   "../WebContent/js/panelBuilder/PanelSpecificationCollection.js",
-   "../WebContent/js/applicationPanelSpecifications/loadAllPanelSpecifications.js"
+   "../webapp/js/panelBuilder/PanelSpecificationCollection.js",
+   "../webapp/js/applicationPanelSpecifications/loadAllPanelSpecifications.js"
 ], function(
     PanelSpecificationCollection,
     loadAllPanelSpecifications

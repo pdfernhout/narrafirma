@@ -3,7 +3,7 @@
 
 var recommendationsFileName = '../design/recommendations_filledin.csv';
 // var recommendationsFileName = './recommendations-test.csv';
-var recommendationsOutputFileName = '../WebContent/source/templates/recommendations.ts';
+var recommendationsOutputFileName = '../webapp/source/templates/recommendations.ts';
 
 // Process Recommendations CSV file 
 // File should have category header line to define categories with "# SECTION" to define sections and blank items between sections

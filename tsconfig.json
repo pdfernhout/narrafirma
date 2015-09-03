@@ -1,12 +1,12 @@
 {
     "compilerOptions": {
-        "rootDir": "./WebContent/source",  
+        "rootDir": "./webapp/source",  
         "target": "es5",
         "module": "amd",
         "declaration": false,
         "noImplicitAny": false,
         "removeComments": false,
         "noLib": false,
-        "outDir": "./WebContent/js/"
+        "outDir": "./webapp/js/"
     }
 }
