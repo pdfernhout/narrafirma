@@ -381,7 +381,7 @@ class StoryBrowser {
     buildStoryDisplayPanel(panelBuilder, model) {
         var storyCardDiv = storyCardDisplay.generateStoryCardContent(model, this.currentQuestionnaire);
         
-        return storyCardDiv;
+        return m("div", [storyCardDiv, m("br"), m("pre", "A per story div: " + JSON.stringify(model, null, 4))]);
     }
     
     makeItemPanelSpecificationForQuestions(questions) {
