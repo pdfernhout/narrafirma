@@ -59,17 +59,14 @@ var require = {
     // Load text with plugins here because TypeScript IDE does not like it elsehwere
     require([
         "js/main",
-        "lib/text!applicationPanelSpecifications/navigation.json",
         "lib/text!recommendations/recommendations_filledin.csv",
         "lib/text!recommendations/recommendations_intervention_filledin.csv"
     ], function(
         main,
-        navigationJSONText,
         recommendationsText,
         recommendationsInterventionText
     ) {
-        // Load these here because TypeScript does not like the plugin use
-        window["narraFirma_navigationJSONText"] = navigationJSONText;
+        // Load these here because TypeScript does not like the plugin use for the text plugin
         window["narraFirma_recommendationsText"] = recommendationsText;
         window["narraFirma_recommendationsInterventionText"] = recommendationsInterventionText;
         

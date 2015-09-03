@@ -5,7 +5,7 @@ import kludgeForUseStrict = require("../kludgeForUseStrict");
 declare var require: (moduleId: string[], any) => any;
 
 // Load all the panels from JSON files specified in navigationSections array
-// see navigation.json for an example of the format
+// see navigation.ts for an example of the format
 // The "extraPanels" are child panels used by grids and similar widgets on the page (including recursively)
 /*
  [
@@ -43,13 +43,13 @@ function loadAllPanelSpecifications(panelSpecificationCollection, navigationSect
         var sectionInfo = navigationSections[sectionIndex];
         for (var pageIndex = 0; pageIndex < sectionInfo.pages.length; pageIndex++) {
             var page = sectionInfo.pages[pageIndex];
-            requireList.push(loadingBase + sectionInfo.section + "/" + page.panelID + ".json");
+            requireList.push(loadingBase + sectionInfo.section + "/" + page.panelID + ".js");
             page.section = sectionInfo.section;
             panelMetadata.push(page);
             if (page.extraPanels) {
                 for (var extraPanelIndex = 0; extraPanelIndex < page.extraPanels.length; extraPanelIndex++) {
                     var extraPanel = page.extraPanels[extraPanelIndex];
-                    requireList.push(loadingBase + sectionInfo.section + "/" + extraPanel.panelID + ".json");
+                    requireList.push(loadingBase + sectionInfo.section + "/" + extraPanel.panelID + ".js");
                     extraPanel.section = sectionInfo.section;
                     panelMetadata.push(extraPanel);
                 }
@@ -63,15 +63,9 @@ function loadAllPanelSpecifications(panelSpecificationCollection, navigationSect
     require(requireList, function() {
         // Using "arguments" to get the results
         for (var panelIndex = 0; panelIndex < requireList.length; panelIndex++) {
-            var panelJSONText = arguments[panelIndex];
             var panelInfo = panelMetadata[panelIndex];
-            var panelSpecification;
-            try {
-                panelSpecification = JSON.parse(panelJSONText);
-            } catch (e) {
-                console.log("Parsing problem for page or panel", panelInfo);
-                throw e;
-            }
+            var panelSpecification = arguments[panelIndex];
+
             if (panelSpecification.id !== panelInfo.panelID) {
                 console.log("panelID mismatch", panelInfo, panelSpecification);
                 throw new Error("panelID does not match id in file for panel: " + panelInfo.panelID);

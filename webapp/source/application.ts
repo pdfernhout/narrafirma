@@ -17,10 +17,9 @@ import surveyCollection = require("./surveyCollection");
 import toaster = require("./panelBuilder/toaster");
 import translate = require("./panelBuilder/translate");
 import m = require("mithril");
+import navigationSections = require("./applicationPanelSpecifications/navigation");
 
 "use strict";
-
-var navigationJSONText: string;
 
 // TODO: Add page validation
 
@@ -64,9 +63,7 @@ var clientState: ClientState = {
     serverStatusText: ""
 };
 
-var navigationSections = [];
-
-var loadingBase = "lib/text!applicationPanelSpecifications/";
+var loadingBase = "js/applicationPanelSpecifications/";
 
 // For building panels based on field specifications
 var panelBuilder: PanelBuilder = new PanelBuilder();
@@ -502,23 +499,8 @@ function setupGlobalFunctions() {
 export function initialize() {
     console.log("=======", new Date().toISOString(), "application.initialize() called");
     
-    // Load these earlier in narrafirma.html because TypeScript does not like the Dojo plugins
-    navigationJSONText = window["narraFirma_navigationJSONText"];
-    // console.log("navigationJSONText", navigationJSONText);
-    
     // Cast to silence TypeScript warning about use of translate.configure
     (<any>translate).configure({}, applicationMessages.root);
-    
-    try {
-        navigationSections = JSON.parse(navigationJSONText);
-    } catch (e) {
-        console.log("problem parsing navigationJSONText", navigationJSONText);
-        console.log("Error", e);
-        alert('There was a problem parsing the file "navigation.json"; the application can not run.');
-        document.getElementById("pleaseWaitDiv").style.display = "none";
-        document.body.appendChild(document.createTextNode("Startup failed! Please contact your NarraFirma hosting provider."));
-        throw new Error("Unable to start due to malformed navigation.json file");
-    }
     
     var fragment = hash();
     // console.log("fragment when page first loaded", fragment);
