@@ -52,3 +52,28 @@ interface GridDisplayConfiguration {
     itemPanelSpecification: any;
     gridConfiguration: GridConfiguration;
 }
+
+// For Panels
+
+interface PanelField {
+    id: string;
+    valueType: string;
+    displayType: string;
+    displayPrompt: string;
+    valuePath?: string;
+    valueOptions?: string | string[];
+    valueOptionsSubfield?: string;
+    required?: boolean;
+    displayName?: string;
+    displayConfiguration?: string;
+}
+
+interface Panel {
+    id: string;
+    displayName: string;
+    displayType: string;
+    isHeader?: boolean;
+    section: string;
+    modelClass?: any;
+    panelFields: PanelField[];
+}
