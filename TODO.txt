@@ -64,6 +64,7 @@ H Think about and improve issue of values that can be set only once like catalys
 H Create script or procedure to deal with SVN for WordPress
 
 ERRORS
+H Resolve issue with SHA256 calculation mismatch for content which has escaped JSON tect like slashes
 
 ======= CYNTHIA
 
