@@ -75,7 +75,7 @@ function importExportClicked() {
     // dialogSupport.openTextEditorDialog(projectDefinitionText, "#projectImportExportDialog_title|Project Import/Export", "#projectImportExportDialog_okButtonText|OK", importButtonClicked);
 }
 
-// Library for saving files, imported by index.html
+// Library for saving files, imported by narrafirma.html
 declare var saveAs;
 
 function addCSVOutputLine(output, line) {

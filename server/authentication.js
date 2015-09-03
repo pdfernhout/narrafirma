@@ -59,7 +59,7 @@ function writePageStart(request, response, pageType) {
         if (pageType !== "login") response.write(' Please <b><a href="/login">log in</a></b>.');
     } else {
         response.write("<p>");
-        // response.write('<a href="/index.html">Start NarraFirma</a>');
+        // response.write('<a href="/narrafirma.html">Start NarraFirma</a>');
         // if (pageType !== "login") response.write('<a href="/login">Log In</a> | ');
         response.write('<a href="/logout">Logout</a>');
         if (pageType !== "account") response.write(' | <a href="/account">Account</a>');
@@ -87,12 +87,12 @@ var loginTemplate = '<form action="/login" method="post">\n' +
 '</form>\n';
 
 function writeTestPage(request, response, config) {
-    // response.sendFile(pointrelConfig.baseDirectory + "index.html");
-    // response.sendFile(baseDirectoryNormalized + "index.html");
+    // response.sendFile(pointrelConfig.baseDirectory + "narrafirma.html");
+    // response.sendFile(baseDirectoryNormalized + "narrafirma.html");
     writePageStart(request, response, "start");
     // response.write("Example of authentication with passport; authenticated " + request.isAuthenticated());
-    if (request.isAuthenticated()) response.write('<br><a href="/index.html">Start NarraFirma project application</a>');
-    if (request.isAuthenticated()) response.write('<br><a href="/project-admin.html">Start NarraFirma administration</a>');
+    if (request.isAuthenticated()) response.write('<br><a href="/narrafirma.html">Start NarraFirma project application</a>');
+    if (request.isAuthenticated()) response.write('<br><a href="/admin.html">Start NarraFirma administration</a>');
     writePageEnd(request, response);
 }
 

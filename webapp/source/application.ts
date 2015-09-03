@@ -502,7 +502,7 @@ function setupGlobalFunctions() {
 export function initialize() {
     console.log("=======", new Date().toISOString(), "application.initialize() called");
     
-    // Load these earlier in index.html because TypeScript does not like the Dojo plugins
+    // Load these earlier in narrafirma.html because TypeScript does not like the Dojo plugins
     navigationJSONText = window["narraFirma_navigationJSONText"];
     // console.log("navigationJSONText", navigationJSONText);
     

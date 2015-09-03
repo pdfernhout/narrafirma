@@ -82,7 +82,7 @@ class NarraFirmaSettingsPage
         
         $baseDirectory = plugins_url( 'narrafirma' );
     
-        $launchLink = $baseDirectory . "/webapp/index.html";
+        $launchLink = $baseDirectory . "/webapp/narrafirma.html";
     
         ?>
 <div class="wrap">

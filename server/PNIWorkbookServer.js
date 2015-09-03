@@ -94,7 +94,7 @@ app.post("/api/pointrel20150417", authentication.ensureAuthenticatedForJSON, fun
 });
 
 app.use("/$", authentication.ensureAuthenticated, function(req, res) {
-    res.redirect('/index.html');
+    res.redirect('/narrafirma.html');
 });
 
 app.use("/", authentication.ensureAuthenticated, express.static(__dirname + "/../webapp"));
