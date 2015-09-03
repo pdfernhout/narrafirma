@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_writeStoryElicitingQuestions",
     "displayName": "Write story eliciting questions",
     "displayType": "page",
@@ -28,4 +31,7 @@
             "displayPrompt": "Recommendations for eliciting questions"
         }
     ]
-}
+};
+
+export = panel;
+

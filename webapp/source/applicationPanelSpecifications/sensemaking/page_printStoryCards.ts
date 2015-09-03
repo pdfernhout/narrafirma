@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_printStoryCards",
     "displayName": "Print story cards",
     "displayType": "page",
@@ -36,4 +39,7 @@
             "displayPrompt": "Print Story Cards"
         }
     ]
-}
+};
+
+export = panel;
+

@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_participantGroups",
     "displayName": "Describe participant groups",
     "displayType": "page",
@@ -27,4 +30,7 @@
             "displayPrompt": "Please add participant <strong>groups</strong> in the list below (typically up to three groups)."
         }
     ]
-}
+};
+
+export = panel;
+

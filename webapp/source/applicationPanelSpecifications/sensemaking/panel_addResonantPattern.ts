@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_addResonantPattern",
     "displayName": "Add resonant pattern",
     "displayType": "panel",
@@ -59,4 +62,7 @@
             "displayPrompt": "You can enter any other <strong>notes</strong> about this pattern here."
         }
     ]
-}
+};
+
+export = panel;
+

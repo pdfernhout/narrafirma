@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_planStoryCollectionSessions",
     "displayName": "Plan story collection sessions",
     "displayType": "page",
@@ -28,4 +31,7 @@
             "displayPrompt": "<strong>Plans</strong> for story collection sessions lay out what you will do and how. Each plan can be used in multiple sessions."
         }
     ]
-}
+};
+
+export = panel;
+

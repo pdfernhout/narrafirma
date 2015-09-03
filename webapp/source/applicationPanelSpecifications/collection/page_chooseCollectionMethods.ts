@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_chooseCollectionMethods",
     "displayName": "Choose collection methods",
     "displayType": "page",
@@ -28,4 +31,7 @@
             "displayPrompt": "These are the ways you will be collecting stories."
         }
     ]
-}
+};
+
+export = panel;
+

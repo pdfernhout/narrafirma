@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_planning",
     "displayName": "Planning",
     "displayType": "page",
@@ -19,4 +22,7 @@
             "displayPrompt": "Below are links to each step of the planning phase, along with any reminders you may have entered on them."
         }
     ]
-}
+};
+
+export = panel;
+

@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_printCatalysisReport",
     "displayName": "Print catalysis report",
     "displayType": "page",
@@ -31,4 +34,7 @@
             "displayConfiguration": "printCatalysisReport"
         }
     ]
-}
+};
+
+export = panel;
+

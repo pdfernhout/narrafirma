@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_clusterInterpretations",
     "displayName": "Cluster interpretations",
     "displayType": "page",
@@ -32,4 +35,7 @@
             "displayPrompt": "Cluster interpretations into perspectives"
         }
     ]
-}
+};
+
+export = panel;
+

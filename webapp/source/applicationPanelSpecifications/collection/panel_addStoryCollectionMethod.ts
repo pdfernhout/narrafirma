@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_addStoryCollectionMethod",
     "displayName": "Plan story collection method",
     "displayType": "panel",
@@ -89,4 +92,7 @@
             "displayPrompt": "Describe any other <strong>details</strong> of your story collection plans for this method."
         }
     ]
-}
+};
+
+export = panel;
+

@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_newSensemakingSessionOutcome",
     "displayName": "Sensemaking session outcome",
     "displayType": "panel",
@@ -40,4 +43,7 @@
             "displayPrompt": "<strong>Describe</strong> the outcome."
         }
     ]
-}
+};
+
+export = panel;
+

@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_assessStorySharing",
     "displayName": "Assess story sharing",
     "displayType": "page",
@@ -435,4 +438,7 @@
             "displayPrompt": "Here you can record some <strong>notes</strong> or comments about this assessment."
         }
     ]
-}
+};
+
+export = panel;
+

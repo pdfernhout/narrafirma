@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_addResonantStory",
     "displayName": "Add resonant story",
     "displayType": "panel",
@@ -58,4 +61,7 @@
             "displayPrompt": "You can enter any other <strong>notes</strong> about this story here."
         }
     ]
-}
+};
+
+export = panel;
+

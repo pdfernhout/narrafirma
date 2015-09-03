@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_addSensemakingSessionRecord",
     "displayName": "Add sensemaking session record",
     "displayType": "panel",
@@ -201,4 +204,7 @@
             "displayPrompt": "<strong>What else</strong> do you want to remember about this session?"
         }
     ]
-}
+};
+
+export = panel;
+

@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_addStoryForm",
     "displayName": "Add story form",
     "displayType": "panel",
@@ -97,4 +100,7 @@
             "displayPrompt": "Preview question form"
         }        
     ]
-}
+};
+
+export = panel;
+

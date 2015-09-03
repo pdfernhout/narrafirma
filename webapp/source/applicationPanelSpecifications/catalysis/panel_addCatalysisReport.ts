@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_addCatalysisReport",
     "displayName": "Add catalysis report",
     "displayType": "panel",
@@ -39,4 +42,7 @@
             "displayPrompt": "You can enter any extra notes on the catalysis report here."
         }
     ]
-}
+};
+
+export = panel;
+

@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_selectExcerpt",
     "displayName": "Add excerpt to interpretation",
     "displayType": "panel",
@@ -18,4 +21,7 @@
             "displayPrompt": "Add selected excerpt to interpretation"
         }
     ]
-}
+};
+
+export = panel;
+

@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_newSensemakingSessionConstruction",
     "displayName": "Sensemaking construction",
     "displayType": "panel",
@@ -37,4 +40,7 @@
             "displayPrompt": "Please <strong>describe</strong> the construction (or include a description given by participants). Your description can include links to images or documents."
         }
     ]
-}
+};
+
+export = panel;
+

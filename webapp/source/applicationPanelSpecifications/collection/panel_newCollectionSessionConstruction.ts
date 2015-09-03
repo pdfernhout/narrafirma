@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_newCollectionSessionConstruction",
     "displayName": "Story collection construction",
     "displayType": "panel",
@@ -35,4 +38,7 @@
             "displayPrompt": "Please <strong>describe</strong> the construction (or include a description given by participants). Your description can include links to images or other documents."
         }
     ]
-}
+};
+
+export = panel;
+

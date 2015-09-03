@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_addToExcerpt",
     "displayName": "Add text to excerpt",
     "displayType": "panel",
@@ -25,4 +28,7 @@
             "displayPrompt": "Create new excerpt with this text"
         }
     ]
-}
+};
+
+export = panel;
+

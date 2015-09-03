@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_describeYourResources",
     "displayName": "Describe your resources",
     "displayType": "page",
@@ -54,4 +57,7 @@
             "displayPrompt": "How many <strong>technological resources</strong> will you be able to use in carrying out this project?"
         }
     ]
-}
+};
+
+export = panel;
+

@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_chooseStoryCollection",
     "displayName": "Choose a story collection",
     "displayType": "panel",
@@ -16,4 +19,7 @@
             "displayPrompt": "Choose a story collection."
         }
     ]
-}
+};
+
+export = panel;
+

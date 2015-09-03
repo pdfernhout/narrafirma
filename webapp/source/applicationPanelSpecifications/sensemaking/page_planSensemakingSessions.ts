@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_planSensemakingSessions",
     "displayName": "Plan sensemaking sessions",
     "displayType": "page",
@@ -28,4 +31,7 @@
             "displayPrompt": "These are the session plans you have created so far."
         }
     ]
-}
+};
+
+export = panel;
+

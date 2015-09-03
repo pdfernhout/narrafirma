@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_prepareProjectPresentation",
     "displayName": "Prepare outline of project presentation",
     "displayType": "page",
@@ -27,4 +30,7 @@
             "displayPrompt": "Export Outline"
         }
     ]
-}
+};
+
+export = panel;
+

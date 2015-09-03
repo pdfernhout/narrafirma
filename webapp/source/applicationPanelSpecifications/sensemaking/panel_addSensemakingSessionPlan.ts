@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_addSensemakingSessionPlan",
     "displayName": "Enter sensemaking session plan",
     "displayType": "panel",
@@ -93,4 +96,7 @@
             "displayPrompt": "Export session agenda"
         }
     ]
-}
+};
+
+export = panel;
+

@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_stopStoryCollection",
     "displayName": "Stop story collection",
     "displayType": "page",
@@ -26,4 +29,7 @@
             "displayPrompt": "Web story collection enabled: <strong>{{result}}</strong>"
         }
     ]
-}
+};
+
+export = panel;
+

@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_addStoryCollection",
     "displayName": "Add story collection",
     "displayType": "panel",
@@ -42,4 +45,7 @@
             "displayPrompt": "You can enter <strong>notes</strong> on the story collection here."
         }
     ]
-}
+};
+
+export = panel;
+

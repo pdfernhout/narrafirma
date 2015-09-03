@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_interpretObservations",
     "displayName": "Review and interpret observations",
     "displayType": "page",
@@ -27,4 +30,7 @@
             "displayPrompt": "These are the observations you have collected from the\nbrowse, graph, and trends pages."
         }
     ]
-}
+};
+
+export = panel;
+

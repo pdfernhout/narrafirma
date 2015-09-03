@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_addCollectionSessionActivity",
     "displayName": "Add story collection session activity",
     "displayType": "panel",
@@ -104,4 +107,7 @@
             "displayPrompt": "Copy an activity from a template"
         }
     ]
-}
+};
+
+export = panel;
+

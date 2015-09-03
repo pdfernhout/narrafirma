@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_addCollectionSessionRecord",
     "displayName": "Add story collection session record",
     "displayType": "panel",
@@ -174,4 +177,7 @@
             "displayPrompt": "<strong>What else</strong> do you want to remember about this session?"
         }
     ]
-}
+};
+
+export = panel;
+

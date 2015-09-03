@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_addPerspective",
     "displayName": "Add or change perspective",
     "displayType": "panel",
@@ -43,4 +46,7 @@
             "displayPrompt": "Interpretations linked to this perspective"
         }
     ]
-}
+};
+
+export = panel;
+

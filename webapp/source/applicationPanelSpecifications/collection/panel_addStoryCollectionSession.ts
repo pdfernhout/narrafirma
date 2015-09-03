@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_addStoryCollectionSession",
     "displayName": "Design story collection session",
     "displayType": "panel",
@@ -101,4 +104,7 @@
             "displayPrompt": "Export session agenda"
         }
     ]
-}
+};
+
+export = panel;
+

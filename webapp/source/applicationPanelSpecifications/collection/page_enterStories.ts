@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_enterStories",
     "displayName": "Enter stories",
     "displayType": "page",
@@ -44,4 +47,7 @@
             "displayPrompt": "Export story collection..."
         }
     ]
-}
+};
+
+export = panel;
+

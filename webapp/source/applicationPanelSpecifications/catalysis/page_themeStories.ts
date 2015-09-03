@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_themeStories",
     "displayName": "Theme stories",
     "displayType": "page",
@@ -36,4 +39,7 @@
             "displayPrompt": "(Unfinished: The user will use this area to theme stories.)"
         }
     ]
-}
+};
+
+export = panel;
+

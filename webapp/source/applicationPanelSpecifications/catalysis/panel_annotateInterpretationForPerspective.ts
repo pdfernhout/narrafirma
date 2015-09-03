@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_annotateInterpretationForPerspective",
     "displayName": "Annotate interpretation for perspective",
     "displayType": "panel",
@@ -13,4 +16,7 @@
             "displayPrompt": "Enter any notes you want to remember about this interpretation as it is linked to this perspective."
         }
     ]
-}
+};
+
+export = panel;
+

@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_importExport",
     "displayName": "Import & Export",
     "displayType": "page",
@@ -27,4 +30,6 @@
             "displayPrompt": "Import/Export (old approach)"
         }
     ]
-}
+};
+
+export = panel;

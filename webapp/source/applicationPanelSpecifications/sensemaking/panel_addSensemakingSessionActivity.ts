@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_addSensemakingSessionActivity",
     "displayName": "Add sensemaking session activity",
     "displayType": "panel",
@@ -106,4 +109,7 @@
             "displayPrompt": "Copy activity from template"
         }
     ]
-}
+};
+
+export = panel;
+

@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_addStoryElement",
     "displayName": "Add story element",
     "displayType": "panel",
@@ -40,4 +43,7 @@
             "displayPrompt": "You can describe the story element more fully here."
         }
     ]
-}
+};
+
+export = panel;
+

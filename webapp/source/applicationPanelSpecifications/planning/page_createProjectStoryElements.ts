@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_createProjectStoryElements",
     "displayName": "Create project story elements",
     "displayType": "page",
@@ -68,4 +71,7 @@
             "displayPrompt": "<p><b>10</b>. Finally, enter the story elements (final cluster names) you created into the table below.</p>"
         }
     ]
-}
+};
+
+export = panel;
+

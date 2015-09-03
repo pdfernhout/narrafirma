@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_addInterventionRecord",
     "displayName": "Add intervention record",
     "displayType": "panel",
@@ -166,4 +169,7 @@
             "displayPrompt": "<strong>What else</strong> do you want to remember about this intervention?"
         }
     ]
-}
+};
+
+export = panel;
+

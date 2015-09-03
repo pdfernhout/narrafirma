@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_startCatalysisReport",
     "displayName": "Start catalysis report",
     "displayType": "page",
@@ -30,4 +33,7 @@
             "displayPrompt": "Add one or more catalysis reports"
         }
     ]
-}
+};
+
+export = panel;
+

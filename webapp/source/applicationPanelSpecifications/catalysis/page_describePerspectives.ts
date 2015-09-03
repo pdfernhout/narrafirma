@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_describePerspectives",
     "displayName": "Describe perspectives",
     "displayType": "page",
@@ -33,4 +36,7 @@
             "displayPrompt": "These are the perspectives you have created from interpretations."
         }
     ]
-}
+};
+
+export = panel;
+

@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_addElicitingQuestion",
     "displayName": "Add story eliciting question",
     "displayType": "panel",
@@ -48,4 +51,7 @@
             "displayPrompt": "Copy a question from a template"
         }
     ]
-}
+};
+
+export = panel;
+

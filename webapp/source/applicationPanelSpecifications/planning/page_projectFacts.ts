@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_projectFacts",
     "displayName": "Enter project facts",
     "displayType": "page",
@@ -76,4 +79,7 @@
             "displayPrompt": "Enter any other information you want to appear at the end of your project report."
         }
     ]
-}
+};
+
+export = panel;
+

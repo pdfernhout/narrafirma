@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_writeQuestionsAboutStories",
     "displayName": "Write questions about stories",
     "displayType": "page",
@@ -28,4 +31,7 @@
             "displayPrompt": "Recommendations for story questions"
         }
     ]
-}
+};
+
+export = panel;
+

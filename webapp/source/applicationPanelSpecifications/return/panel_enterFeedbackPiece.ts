@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_enterFeedbackPiece",
     "displayName": "Enter piece of feedback on project",
     "displayType": "panel",
@@ -71,4 +74,7 @@
             "displayPrompt": "Please enter any other <strong>notes</strong> you would like to remember about this piece of feedback."
         }
     ]
-}
+};
+
+export = panel;
+

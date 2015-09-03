@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_projectStory",
     "displayName": "Project story",
     "displayType": "panel",
@@ -75,4 +78,7 @@
             "displayPrompt": "Now that you've told and thought about this story, are there any <strong>changes</strong> you want to make to your project plans because of it?"
         }
     ]
-}
+};
+
+export = panel;
+

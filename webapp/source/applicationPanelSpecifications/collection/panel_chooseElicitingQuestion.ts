@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_chooseElicitingQuestion",
     "displayName": "Choose a story eliciting question",
     "displayType": "panel",
@@ -24,4 +27,7 @@
             "displayPrompt": "Choose a story-eliciting question."
         }
     ]
-}
+};
+
+export = panel;
+

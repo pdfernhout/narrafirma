@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_projectStories",
     "displayName": "Tell project stories",
     "displayType": "page",
@@ -21,4 +24,7 @@
             "displayPrompt": "These are the project stories you have told so far."
         }
     ]
-}
+};
+
+export = panel;
+

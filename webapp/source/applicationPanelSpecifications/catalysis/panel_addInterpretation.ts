@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_addInterpretation",
     "displayName": "Add interpretation",
     "displayType": "panel",
@@ -30,4 +33,7 @@
             "displayPrompt": "If you like, you can record an <strong>idea</strong> that follows from this interpretation."
         }
     ]
-}
+};
+
+export = panel;
+

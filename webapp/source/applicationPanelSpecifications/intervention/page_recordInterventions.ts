@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_recordInterventions",
     "displayName": "Enter intervention records",
     "displayType": "page",
@@ -21,4 +24,7 @@
             "displayPrompt": "These are the intervention records you have created so far."
         }
     ]
-}
+};
+
+export = panel;
+

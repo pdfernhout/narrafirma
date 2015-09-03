@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_annotateExcerptForPerspective",
     "displayName": "Annotate excerpt for perspective",
     "displayType": "panel",
@@ -13,4 +16,7 @@
             "displayPrompt": "Enter any notes you want to remember about this excerpt with respect to this perspective."
         }
     ]
-}
+};
+
+export = panel;
+

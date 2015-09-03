@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_addToObservation",
     "displayName": "Add to observation",
     "displayType": "panel",
@@ -31,4 +34,7 @@
             "displayPrompt": "Create new observation with this result"
         }
     ]
-}
+};
+
+export = panel;
+

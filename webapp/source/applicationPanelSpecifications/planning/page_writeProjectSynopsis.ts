@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_writeProjectSynopsis",
     "displayName": "Write project synopsis",
     "displayType": "page",
@@ -20,4 +23,7 @@
             "displayPrompt": "Your synopsis should briefly <strong>summarize</strong> the project, so that anyone who hears about it can quickly understand what you are doing and why."
         }
     ]
-}
+};
+
+export = panel;
+

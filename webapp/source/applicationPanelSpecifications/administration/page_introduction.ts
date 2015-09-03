@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_introduction",
     "displayName": "Introduction",
     "displayType": "page",
@@ -77,4 +80,7 @@
             "displayPrompt": "Now that you have finished with this page, you can click the \"home\" button to go back to the main dashboard. The home button is to the left of the dropdown box in the navigation section at the top of the page; the home button has an icon of a house. Then from the home dashboard page, click the \"Planning\" button to begin the first phase of the PNI process and start \"Working with Stories in Your Community or Organization\"."
         }
     ]
-}
+};
+
+export = panel;
+

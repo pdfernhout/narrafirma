@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_createOrEditObservation",
     "displayName": "Create new observation",
     "displayType": "panel",
@@ -129,4 +132,7 @@
             "displayPrompt": "You can add excerpts to the third interpretation."
         }
     ]
-}
+};
+
+export = panel;
+

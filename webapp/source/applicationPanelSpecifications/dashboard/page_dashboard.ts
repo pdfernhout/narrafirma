@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_dashboard",
     "displayName": "Home",
     "displayType": "page",
@@ -102,4 +105,7 @@
             "displayPrompt": "Story collections"
         }
      ]
-}
+};
+
+export = panel;
+

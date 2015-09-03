@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_projectRequests",
     "displayName": "Respond to requests for post-project support",
     "displayType": "page",
@@ -21,4 +24,7 @@
             "displayPrompt": "These are the requests you have recorded so far."
         }
     ]
-}
+};
+
+export = panel;
+

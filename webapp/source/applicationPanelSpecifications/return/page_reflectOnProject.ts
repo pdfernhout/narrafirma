@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_reflectOnProject",
     "displayName": "Reflect on the project",
     "displayType": "page",
@@ -235,4 +238,7 @@
             "displayPrompt": "Enter any <strong>general notes</strong> you'd like to remember about the project."
         }
     ]
-}
+};
+
+export = panel;
+

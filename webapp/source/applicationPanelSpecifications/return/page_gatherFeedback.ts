@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_gatherFeedback",
     "displayName": "Gather feedback",
     "displayType": "page",
@@ -28,4 +31,7 @@
             "displayPrompt": "If you would like to enter any <strong>general notes</strong> on the feedback you've received about the project, you can write them here."
         }
     ]
-}
+};
+
+export = panel;
+

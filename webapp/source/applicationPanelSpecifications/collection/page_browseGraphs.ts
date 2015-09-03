@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_browseGraphs",
     "displayName": "Spot-check graphs",
     "displayType": "page",
@@ -30,4 +33,7 @@
             "displayPrompt": "Choose one or two <strong>questions</strong> to explore."
         }
     ]
-}
+};
+
+export = panel;
+

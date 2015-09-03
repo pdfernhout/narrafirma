@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_reviewTrends",
     "displayName": "Review trends",
     "displayType": "page",
@@ -44,4 +47,7 @@
             "displayPrompt": "Trends report"
         }
     ]
-}
+};
+
+export = panel;
+

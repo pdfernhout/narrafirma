@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_addPresentationElement",
     "displayName": "Add element to project presentation outline",
     "displayType": "panel",
@@ -63,4 +66,7 @@
             "displayPrompt": "Enter any other <strong>notes</strong> you want to include about this presentation element."
         }
     ]
-}
+};
+
+export = panel;
+

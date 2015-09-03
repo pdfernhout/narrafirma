@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_projectOutcomesForIntervention",
     "displayName": "Answer questions about project outcomes",
     "displayType": "page",
@@ -21,4 +24,7 @@
             "displayPrompt": "These are the participant groups for which you have entered outcomes so far."
         }
     ]
-}
+};
+
+export = panel;
+

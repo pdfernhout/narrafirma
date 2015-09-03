@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_revisePNIPlanningQuestions",
     "displayName": "Revise PNI planning questions",
     "displayType": "page",
@@ -67,4 +70,7 @@
             "displayPrompt": "What is the project's <strong>emphasis</strong>? Which phases of PNI (planning, collection, catalysis, sensemaking, intervention, return) will be important to the project?"
         }
     ]
-}
+};
+
+export = panel;
+

@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_reviewExcerpts",
     "displayName": "Review excerpts",
     "displayType": "page",
@@ -27,4 +30,7 @@
             "displayPrompt": "These are the story excerpts you have saved."
         }
     ]
-}
+};
+
+export = panel;
+

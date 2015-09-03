@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_startStoryCollection",
     "displayName": "Start story collection",
     "displayType": "page",
@@ -52,4 +55,7 @@
             "displayPrompt": "Import Story Data from CSV File into Story Collection ..."
         }
     ]
-}
+};
+
+export = panel;
+

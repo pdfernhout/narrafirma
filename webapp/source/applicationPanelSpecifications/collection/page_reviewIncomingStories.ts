@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_reviewIncomingStories",
     "displayName": "Review incoming stories",
     "displayType": "page",
@@ -30,4 +33,7 @@
             "displayPrompt": "Collected stories"
         }
     ]
-}
+};
+
+export = panel;
+

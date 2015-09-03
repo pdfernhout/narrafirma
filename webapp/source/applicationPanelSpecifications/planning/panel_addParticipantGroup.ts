@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_addParticipantGroup",
     "displayName": "Participant group",
     "displayType": "panel",
@@ -349,4 +352,7 @@
             "displayPrompt": "Enter any additional <strong>notes</strong> you want to remember about this group of participants."
         }
     ]
-}
+};
+
+export = panel;
+

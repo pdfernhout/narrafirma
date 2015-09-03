@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_printQuestionForms",
     "displayName": "Print story forms",
     "displayType": "page",
@@ -36,4 +39,7 @@
             "displayPrompt": "Print Story Form"
         }
     ]
-}
+};
+
+export = panel;
+

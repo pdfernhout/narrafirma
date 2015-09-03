@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "panel_addNewReturnRequest",
     "displayName": "Enter project request",
     "displayType": "panel",
@@ -52,4 +55,7 @@
             "displayPrompt": "Enter any other <strong>notes</strong> about the request here."
         }
     ]
-}
+};
+
+export = panel;
+

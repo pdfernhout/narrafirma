@@ -1,4 +1,7 @@
-{
+import kludgeForUseStrict = require("../../kludgeForUseStrict");
+"use strict";
+
+var panel: Panel = {
     "id": "page_designInterventions",
     "displayName": "Design intervention plans",
     "displayType": "page",
@@ -28,4 +31,7 @@
             "displayPrompt": "These are the intervention plans you have created so far."
         }
     ]
-}
+};
+
+export = panel;
+
