@@ -207,6 +207,8 @@ class GridWithItemPanel {
         this.fieldSpecification = args.fieldSpecification;
         this.model = args.model;
         this.readOnly = args.readOnly;
+        
+        // console.log("Grid readOnly =", this.readOnly, this.fieldSpecification.id);
             
         this.updateDisplayConfigurationAndData(this.fieldSpecification.displayConfiguration);
     }
@@ -457,7 +459,7 @@ class GridWithItemPanel {
     private inlineEditorForItem(panelBuilder, item, mode) {
         return m("tr", [
             m("td", {colSpan: this.columns.length}, [
-                m.component(<any>ItemPanel, {key: this.fieldSpecification.id + "_" + "inlineEditor", panelBuilder: panelBuilder, item: item, grid: this, mode: mode})
+                m.component(<any>ItemPanel, {key: this.fieldSpecification.id + "_" + "inlineEditor" + "_" + mode, panelBuilder: panelBuilder, item: item, grid: this, mode: mode})
             ]),
             m("td", {"vertical-align": "top"}, [m("button", {onclick: this.doneClicked.bind(this, item)}, "close")])
         ]);
@@ -466,7 +468,7 @@ class GridWithItemPanel {
     private bottomEditorForItem(panelBuilder, item, mode) {
         return m("div", [
             m("td", {colSpan: this.columns.length}, [
-                m.component(<any>ItemPanel, {key: this.fieldSpecification.id + "_" + "bottomEditor", panelBuilder: panelBuilder, item: item, grid: this, mode: mode})
+                m.component(<any>ItemPanel, {key: this.fieldSpecification.id + "_" + "bottomEditor" + "_" + mode, panelBuilder: panelBuilder, item: item, grid: this, mode: mode})
             ]),
             m("td", {"vertical-align": "top"}, [m("button", {onclick: this.doneClicked.bind(this, item)}, "close")])
         ]);
