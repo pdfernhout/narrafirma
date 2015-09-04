@@ -36,6 +36,8 @@ class ValuePathResolver {
         var currentModel = this.baseModel;
         var currentKey: string;
         
+        // console.log("++++++++++++++ resolveModelAndField start", this.valuePath, this.baseModel, this.context);
+        
         // Parse the dependency path
         var pathParts = this.valuePath.split("/");
         
@@ -53,20 +55,21 @@ class ValuePathResolver {
             }
         } 
         
-        if (typeof currentModel === "string") {
-            useTripleStore = true;
-        }
-        
         if (pathParts.length < 1) throw new Error("Incorrect dependency path specified: " + this.valuePath);
        
         while (pathParts.length > 1) {
             currentKey = pathParts.shift();
-            if (currentKey === "currentPattern") {
-                console.log("key is currentPattern");
+            
+            // console.log("resolveModelAndField", currentModel, currentKey);
+            
+            // TODO: Hard to distinguish with this between an incorrect path that might reference a field set somewhere to a string
+            if (typeof currentModel === "string") {
+                useTripleStore = true;
             }
+            
             var nextModel;
             var useAccessorFunction = !useTripleStore && typeof currentModel[currentKey] === "function";
-
+            
             if (useTripleStore) {
                 nextModel = (<Project>this.context.project).tripleStore.queryLatestC(currentModel, currentKey);
             } if (useAccessorFunction) {
@@ -79,14 +82,28 @@ class ValuePathResolver {
                 return undefined;
             }
             currentModel = nextModel;
+            
+            if (typeof currentModel === "string") {
+                useTripleStore = true;
+            }
+            
+        }  
+        
+        if (typeof currentModel === "string") {
+            useTripleStore = true;
         }
+        
         var field = pathParts[0];
-        return {
+        var result = {
             model: currentModel,
             field: field,
             isGlobalReference: isGlobalReference,
             useTripleStore: useTripleStore
         };
+        
+        // console.log("resolveModelAndField result", result);
+        
+        return result;
     }
     
     resolve(value = undefined): any {
@@ -108,17 +125,23 @@ class ValuePathResolver {
                 modelAndField.model[modelAndField.field] = value;
             }
             
+            // console.log("resolve-set", this.valuePath, value, modelAndField, this);
+            
             // Design issue: Should a set return this or the value? Using value to me like m.prop, but prevents chaining
             return value;
         } else {
             if (modelAndField === undefined) return undefined;
             if (modelAndField.useTripleStore) {
-                return (<Project>this.context.project).tripleStore.queryLatestC(modelAndField.model, modelAndField.field);
+                value = (<Project>this.context.project).tripleStore.queryLatestC(modelAndField.model, modelAndField.field);
             } else if (useAccessorFunction) {
-                return modelAndField.model[modelAndField.field]();
+                value = modelAndField.model[modelAndField.field]();
             } else {
-                return modelAndField.model[modelAndField.field];
+                value = modelAndField.model[modelAndField.field];
             }
+            
+            // console.log("resolve-get", this.valuePath, value, modelAndField, this);
+            
+            return value;
         }
     }
 }
