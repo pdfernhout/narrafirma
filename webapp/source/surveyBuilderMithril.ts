@@ -275,22 +275,22 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     var startQuestions = [];
     
     if (surveyOptions.previewMode) {
-        startQuestions.push({id: "__survey-local_" + "previewMode", displayName: "previewMode", displayClass: "narrafirma-preview", displayPrompt: "Previewing story form; results will not be saved.", displayType: "header", valueOptions: []});
+        startQuestions.push({id: "previewMode_header", displayName: "previewMode", displayClass: "narrafirma-preview", displayPrompt: "Previewing story form; results will not be saved.", displayType: "header", valueOptions: []});
     }
     
     if (questionnaire.title) {
-        startQuestions.push({id: "__survey-local_" + "title", displayName: "title", displayPrompt: questionnaire.title, displayType: "header", valueOptions: []});
+        startQuestions.push({id: "title_header", displayName: "title", displayPrompt: questionnaire.title, displayType: "header", valueOptions: []});
         if (!surveyOptions.ignoreTitleChange) document.title = questionnaire.title;
     }
     
-    startQuestions.push({id: "__survey-local_" + "startText", displayName: "startText", displayPrompt: startText, displayType: "label", valueOptions: []});
+    startQuestions.push({id: "startText_label", displayName: "startText", displayPrompt: startText, displayType: "label", valueOptions: []});
 
     var endText = questionnaire.endText;
      // TODO: Translate
     if (!endText) endText = "Thank you for taking the survey.";
         
     var endQuestions = [];
-    endQuestions.push({id: "__survey-local_" + "endText", displayName: "endText", displayPrompt: endText, displayType: "label", valueOptions: []});
+    endQuestions.push({id: "endText_label", displayName: "endText", displayPrompt: endText, displayType: "label", valueOptions: []});
 
     // TODO: What about idea of having IDs that go with eliciting questions so store reference to ID not text prompt?
     var elicitingQuestionOptions = [];
