@@ -63,15 +63,14 @@ function convertEditorQuestions(editorQuestions) {
         var question = editorQuestions[questionIndex];
         // console.log("question", question);
         var shortName = question.storyQuestion_shortName || question.participantQuestion_shortName;
-        // Including prefix for question ID so extra translations going with id will not collide with main application IDs
-        // TODO: Maybe should include a survey name here in ID?
-        var id = "__survey_" + shortName;
-        var type = question.storyQuestion_type || question.participantQuestion_type;
+        var id = shortName;
+        var questionType = question.storyQuestion_type || question.participantQuestion_type;
         var prompt = question.storyQuestion_text || question.participantQuestion_text;
         
         var options = [];
         var optionsString = question.storyQuestion_options || question.participantQuestion_options;
         if (optionsString) {
+            // TODO: Improve option handling so can have standard IDs for options
             var splitOptions = optionsString.split("\n");
             // Make sure options don't have leading or trailing space and are not otherwise blank
             for (var index in splitOptions) {
@@ -82,11 +81,11 @@ function convertEditorQuestions(editorQuestions) {
             }
         }
         // TODO: valueType might be a number or boolean sometimes
-        var valueType = displayTypeToValueTypeMap[type];
+        var valueType = displayTypeToValueTypeMap[questionType];
         if (!valueType) console.log("ERROR: Could not resolve valueType for ", question);
         var valueOptions;
         var displayConfiguration;
-        if (type === "select" || type === "checkboxes" || type === "radiobuttons") {
+        if (questionType === "select" || questionType === "checkboxes" || questionType === "radiobuttons") {
             valueOptions = options;
         } else {
             if (options.length === 1) {
@@ -97,7 +96,7 @@ function convertEditorQuestions(editorQuestions) {
         }
         adjustedQuestions.push({
             valueType: valueType,
-            displayType: type,
+            displayType: questionType,
             id: id, 
             valueOptions: valueOptions, 
             displayName: shortName, 

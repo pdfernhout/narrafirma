@@ -101,7 +101,7 @@ function displayQuestion(builder, model, fieldSpecification) {
         // TODO: redraw on value change seems not needed in this survey case, since values do not affect anything about rest of application?
         // redraw();
         // Except for one case. Could there be more?
-        if (fieldSpecification.id === "__survey_storyName") globalRedraw();
+        if (fieldSpecification.id === "storyName") globalRedraw();
     }
     
     var standardValueOptions = {
@@ -304,19 +304,19 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     // TODO: What if these IDs for storyText and storyName are not unique?
     var initialStoryQuestions = [];
     var singlePrompt = null;
-    // initialStoryQuestions.push({id: "__survey_" + "questionHeader", displayName: "questionHeader", displayPrompt: "Story", displayType: "header", valueOptions: []});
+    // initialStoryQuestions.push({id: "questionHeader", displayName: "questionHeader", displayPrompt: "Story", displayType: "header", valueOptions: []});
     if (elicitingQuestionOptions.length !== 1) {
-        initialStoryQuestions.push({id: "__survey_" + "elicitingQuestion", displayName: "elicitingQuestion", displayPrompt: "Please choose a question to which you would like to respond:", displayType: "radiobuttons", valueOptions: elicitingQuestionOptions});
-        initialStoryQuestions.push({id: "__survey_" + "storyText", displayName: "storyText", displayPrompt: "Please enter your response in the box below:", displayType: "textarea", valueOptions: []});
+        initialStoryQuestions.push({id: "elicitingQuestion", displayName: "elicitingQuestion", displayPrompt: "Please choose a question to which you would like to respond:", displayType: "radiobuttons", valueOptions: elicitingQuestionOptions});
+        initialStoryQuestions.push({id: "storyText", displayName: "storyText", displayPrompt: "Please enter your response in the box below:", displayType: "textarea", valueOptions: []});
     } else {
         singlePrompt = elicitingQuestionOptions[0];
-        initialStoryQuestions.push({id: "__survey_" + "storyText", displayName: "storyText", displayPrompt: singlePrompt.text, displayType: "textarea", valueOptions: []});
+        initialStoryQuestions.push({id: "storyText", displayName: "storyText", displayPrompt: singlePrompt.text, displayType: "textarea", valueOptions: []});
     }
-    initialStoryQuestions.push({id: "__survey_" + "storyName", displayName: "storyName", displayPrompt: "Please give your story a name.", displayType: "text", valueOptions: []});
+    initialStoryQuestions.push({id: "storyName", displayName: "storyName", displayPrompt: "Please give your story a name.", displayType: "text", valueOptions: []});
     
     var allStoryQuestions = initialStoryQuestions.concat(questionnaire.storyQuestions);
             
-    var participantQuestions = [{id: "__survey_" + "participantHeader", displayName: "participantHeader", displayPrompt: "About you", displayType: "header", valueOptions: []}];
+    var participantQuestions = [{id: "participantHeader", displayName: "participantHeader", displayPrompt: "About you", displayType: "header", valueOptions: []}];
     participantQuestions = participantQuestions.concat(questionnaire.participantQuestions);
 
     // TODO: For testing
@@ -355,17 +355,17 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
             __type: "org.workingwithstories.Story",
             _storyID: generateRandomUuid(),
             _participantID: participantID,
-            __survey_elicitingQuestion: undefined
+            elicitingQuestion: undefined
         };
 
-        if (singlePrompt) storyQuestionsModel.__survey_elicitingQuestion = singlePrompt.value;         
+        if (singlePrompt) storyQuestionsModel.elicitingQuestion = singlePrompt.value;         
         stories.push(storyQuestionsModel);
     }
         
     addStory();
     
     function makeLabelForStory(story, index) {
-        var storyLabel = story.__survey_storyName;
+        var storyLabel = story.storyName;
         if (storyLabel) storyLabel = storyLabel.trim();
         if (!storyLabel) {
             storyLabel = 'untitled story #' + (index + 1);
@@ -395,9 +395,9 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         var storyIndex = "story #" + (index + 1);
         
         // TODO: Translate
-        var elicitingQuestion = storyQuestionsModel.__survey_elicitingQuestion;
-        var storyName = storyQuestionsModel.__survey_storyName;
-        var storyText = storyQuestionsModel.__survey_storyText;
+        var elicitingQuestion = storyQuestionsModel.elicitingQuestion;
+        var storyName = storyQuestionsModel.storyName;
+        var storyText = storyQuestionsModel.storyText;
 
         if (!elicitingQuestion) {
             alert("Before proceeding, please select the question to which you are responding for " + storyIndex);

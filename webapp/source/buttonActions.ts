@@ -230,9 +230,9 @@ export function exportStoryCollection() {
     
     allStories.forEach(function (story) {
         var outputLine = [];
-        outputLine.push(story.__survey_storyName);
-        outputLine.push(story.__survey_storyText);
-        outputLine.push(story.__survey_elicitingQuestion);
+        outputLine.push(story.storyName);
+        outputLine.push(story.storyText);
+        outputLine.push(story.elicitingQuestion);
         dataForQuestions(currentQuestionnaire.storyQuestions, story, outputLine);
         dataForQuestions(currentQuestionnaire.participantQuestions, story, outputLine);
         addOutputLine(outputLine);

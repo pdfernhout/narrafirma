@@ -55,8 +55,8 @@ function addThemeButtonPressed(themeEntryComboBox, storyThemesStore, allThemes) 
 
 function buildThemerPanel(panelBuilder: PanelBuilder, model) {    
     // Encode all user-supplied text to ensure it does not create HTML issues
-    var storyName = _.escape(model.__survey_storyName);
-    var storyText = _.escape(model.__survey_storyText);
+    var storyName = _.escape(model.storyName);
+    var storyText = _.escape(model.storyText);
     
     var storyContent = "<b><h2>" + storyName + "</h2></b>" + storyText;
     
@@ -130,7 +130,7 @@ function insertStoryThemer(panelBuilder: PanelBuilder, pagePane, model, fieldSpe
     var dataStore = GridWithItemPanel["newMemoryTrackableStore"](allStories, "_storyID");
     
     // Only allow view button for stories
-    var configuration = {viewButton: true, navigationButtons: true, columnsToDisplay: ["__survey_storyName", "__survey_storyText"]};
+    var configuration = {viewButton: true, navigationButtons: true, columnsToDisplay: ["storyName", "storyText"]};
     var storyList = new GridWithItemPanel(panelBuilder, pagePane, fieldSpecification.id, dataStore, itemPanelSpecification, configuration, model);
     storyList.grid.set("selectionMode", "single");
     

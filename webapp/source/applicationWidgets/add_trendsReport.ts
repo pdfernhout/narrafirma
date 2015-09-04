@@ -136,7 +136,7 @@ class PatternBrowser {
 
         var storyGridConfiguration = {
             idProperty: "_storyID",
-            columnsToDisplay: ["__survey_storyName", "__survey_storyText"],
+            columnsToDisplay: ["storyName", "storyText"],
             viewButton: true,
             navigationButtons: true
         };

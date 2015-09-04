@@ -449,10 +449,10 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
         .text(function(storyItem: PlotItem) {
             var story = storyItem.story;
             var tooltipText =
-                "Title: " + story.__survey_storyName +
+                "Title: " + story.storyName +
                 // "\nID: " + story._storyID + 
                 "\n" + nameForQuestion(question) + ": " + displayTextForAnswer(story[question.id]) +
-                "\nText: " + limitStoryTextLength(story.__survey_storyText);
+                "\nText: " + limitStoryTextLength(story.storyText);
             return tooltipText;
         });
     
@@ -611,9 +611,9 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
         .text(function(plotItem: PlotItem) {
             var story = plotItem.story;
             var tooltipText =
-                "Title: " + story.__survey_storyName +
+                "Title: " + story.storyName +
                 "\n" + nameForQuestion(scaleQuestion) + ": " + plotItem.value +
-                "\nText: " + limitStoryTextLength(story.__survey_storyText);
+                "\nText: " + limitStoryTextLength(story.storyText);
             return tooltipText;
         });
     
@@ -767,11 +767,11 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
         .append("svg:title")
         .text(function(plotItem) {
             var tooltipText =
-                "Title: " + plotItem.story.__survey_storyName +
+                "Title: " + plotItem.story.storyName +
                 // "\nID: " + plotItem.story._storyID + 
                 "\nX (" + nameForQuestion(xAxisQuestion) + "): " + plotItem.x +
                 "\nY (" + nameForQuestion(yAxisQuestion) + "): " + plotItem.y +
-                "\nText: " + limitStoryTextLength(plotItem.story.__survey_storyText);
+                "\nText: " + limitStoryTextLength(plotItem.story.storyText);
             return tooltipText;
         });
     
@@ -946,7 +946,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
                 tooltipText += "\n------ Stories (" + plotItem.stories.length + ") ------";
                 for (var i = 0; i < plotItem.stories.length; i++) {
                     var story = plotItem.stories[i];
-                    tooltipText += "\n" + story.__survey_storyName;
+                    tooltipText += "\n" + story.storyName;
                 }
             }
             return tooltipText;

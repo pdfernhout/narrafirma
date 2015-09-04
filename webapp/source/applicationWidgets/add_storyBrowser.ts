@@ -287,7 +287,7 @@ class StoryBrowser {
                 itemPanelSpecification: this.itemPanelSpecification,
                 gridConfiguration: {
                     idProperty: "_storyID",
-                    columnsToDisplay: ["__survey_storyName", "__survey_storyText"],
+                    columnsToDisplay: ["storyName", "storyText"],
                     viewButton: true,
                     navigationButtons: true
                }

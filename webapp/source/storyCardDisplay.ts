@@ -98,10 +98,10 @@ interface Options {
 
 export function generateStoryCardContent(storyModel, currentQuestionnaire, options: Options = {}) {
     // Encode all user-supplied text to ensure it does not create HTML issues
-    var elicitingQuestion = storyModel.__survey_elicitingQuestion;
+    var elicitingQuestion = storyModel.elicitingQuestion;
     console.log("elicitingQuestion", elicitingQuestion);
-    var storyName = storyModel.__survey_storyName;
-    var storyText = storyModel.__survey_storyText;
+    var storyName = storyModel.storyName;
+    var storyText = storyModel.storyText;
     var otherFields = [];
     
     var questions = [];

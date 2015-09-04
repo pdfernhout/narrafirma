@@ -171,21 +171,21 @@ export function collectQuestionsForQuestionnaire(questionnaire) {
     // TODO: Remove redundancy
     var leadingStoryQuestions = [];
     leadingStoryQuestions.unshift({
-        id: "__survey_" + "storyName",
+        id: "storyName",
         displayName: "Story Name",
         displayPrompt: "Please give your story a name",
         displayType: "text",
         valueOptions: []
     });
     leadingStoryQuestions.unshift({
-        id: "__survey_" + "storyText",
+        id: "storyText",
         displayName: "Story Text",
         displayPrompt: "Please enter your response to the question above in the space below",
         displayType: "textarea",
         valueOptions: []
     });
     leadingStoryQuestions.unshift({
-        id: "__survey_" + "elicitingQuestion",
+        id: "elicitingQuestion",
         displayName: "Eliciting Question",
         displayPrompt: "Please choose a question you would like to respond to",
         displayType: "select",
@@ -196,7 +196,7 @@ export function collectQuestionsForQuestionnaire(questionnaire) {
           
     var questions = [].concat(leadingStoryQuestions, storyQuestions);
     questions.push({
-        id: "__survey_" + "participantData",
+        id: "participantData_header",
         displayName: "Participant Data",
         displayPrompt: "---- participant data below ----",
         displayType: "header",

@@ -101,7 +101,8 @@ function processCSVContentsForStories(contents) {
             stories: [],
             participantData: {
                 __type: "org.workingwithstories.ParticipantData",
-                _participantID: generateRandomUuid()
+                _participantID: generateRandomUuid(),
+                surveyAnswers: {}
             },
             // TODO: Should have timestamp in CSV file!!!
             timestampStart: "" + new Date().toISOString(),
@@ -117,21 +118,22 @@ function processCSVContentsForStories(contents) {
             id: generateRandomUuid(),
             _storyID: generateRandomUuid(),
             _participantID: newSurveyResult.participantData._participantID,
-            __survey_elicitingQuestion: elicitingQuestion,
-            __survey_storyText: item["Story text"],
-            __survey_storyName: item["Story title"]
+            elicitingQuestion: elicitingQuestion,
+            storyText: item["Story text"],
+            storyName: item["Story title"],
+            surveyAnswers: {}
         };
     
         var i;
         var question;
         for (i = 0; i < lastQuestionnaireUploaded.storyQuestions.length; i++) {
             question = lastQuestionnaireUploaded.storyQuestions[i];
-            story[question.id] = item[question.id.substring("__survey_".length)];
+            story.surveyAnswers[question.id] = item[question.id];
         }
         newSurveyResult.stories.push(story);
         for (i = 0; i < lastQuestionnaireUploaded.participantQuestions.length; i++) {
             question = lastQuestionnaireUploaded.participantQuestions[i];
-            newSurveyResult.participantData[question.id] = item[question.id.substring("__survey_".length)];
+            newSurveyResult.participantData.surveyAnswers[question.id] = item[question.id];
         }
         console.log("newSurveyResult", newSurveyResult);
         surveyResults.push(newSurveyResult);
@@ -290,7 +292,7 @@ function questionForItem(item) {
     return {
         valueType: valueType,
         displayType: questionType,
-        id: "__survey_" + item["Short name"], 
+        id: item["Short name"], 
         valueOptions: valueOptions,
         displayName: item["Short name"], 
         displayPrompt: item["Long name"],
