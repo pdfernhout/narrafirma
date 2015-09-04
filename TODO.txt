@@ -61,7 +61,7 @@ H Think about and improve issue of values that can be set only once like catalys
 H Create script or procedure to deal with SVN for WordPress
 
 ERRORS
-H Resolve issue with SHA256 calculation mismatch for content which has escaped JSON tect like slashes
+H Resolve issue with SHA256 calculation mismatch for content which has escaped JSON text like slashes
 
 ======= CYNTHIA
 
@@ -93,7 +93,6 @@ X Survey - maximum number stories (maybe later)
 X Survey - back button in browser -- deal with so don't lose data
 
 IDs
-? Ensure short name IDs entered by user do not conflict with automatically created ones or story text and story name
 X Improve how options are specified for questions in question designer rather than use text box
 X Make sure that short name IDs entered by user when defining questions are unique among themselves and don't have a leading underscore (or at least aren't "_id")
 
@@ -869,4 +868,6 @@ DONE Fix bugs with path resolution for triple store fields in value path resolve
 DONE Fix bug where nested grids did not transition correctly from readonly to editable
 DONE Eliciting question choice in survey should be stored as the id (or short name), not the text
 DONE Add support for short names (ids) for eliciting questions [same as above]
-
+DONE Ensure short name IDs entered by user do not conflict with automatically created ones or story text and story name [Adding "Q_" prefix]
+DONE Remove user of "__survey_" from application fields like storyText and use shorter "Q_" for user supplied fields
+DONE Simplify _storyID and _participantID to not have leading underscores
