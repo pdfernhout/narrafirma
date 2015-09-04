@@ -141,10 +141,19 @@ function displayQuestion(builder, model, fieldSpecification) {
         }
         parts = [
             fieldSpecification.valueOptions.map(function (option, index) {
+                var optionName;
+                var optionValue;
+                if (typeof option === "string") {
+                    optionName = option;
+                    optionValue = option;
+                } else {
+                    optionName = option.name;
+                    optionValue = option.value;                    
+                }
                 var optionID = getIdForText(fieldID + "_" + option);
                 return [
-                    m("input[type=checkbox]", {id: optionID, checked: !!value[option], onchange: function(event) {value[option] = event.target.checked; change(null, value); } }),
-                    m("label", {"for": optionID}, option),
+                    m("input[type=checkbox]", {id: optionID, checked: !!value[optionValue], onchange: function(event) {value[optionValue] = event.target.checked; change(null, optionValue); } }),
+                    m("label", {"for": optionID}, optionName),
                     m("br")
                 ];
             })
@@ -156,10 +165,19 @@ function displayQuestion(builder, model, fieldSpecification) {
         delete questionLabel[0].attrs["for"];
         parts = [
             fieldSpecification.valueOptions.map(function (option, index) {
-                var optionID = getIdForText(fieldID + "_" + option);
+                var optionName;
+                var optionValue;
+                if (typeof option === "string") {
+                    optionName = option;
+                    optionValue = option;
+                } else {
+                    optionName = option.name;
+                    optionValue = option.value;                    
+                }
+                var optionID = getIdForText(fieldID + "_" + optionValue);
                 return [
-                    m("input[type=radio]", {id: optionID, value: option, name: fieldSpecification.id, checked: value === option, onchange: change.bind(null, null, option) }),
-                    m("label", {"for": optionID}, option), 
+                    m("input[type=radio]", {id: optionID, value: optionValue, name: fieldSpecification.id, checked: value === optionValue, onchange: change.bind(null, null, optionValue) }),
+                    m("label", {"for": optionID}, optionName), 
                     m("br")
                 ];
             })
@@ -183,17 +201,27 @@ function displayQuestion(builder, model, fieldSpecification) {
         makeLabel();
         var selectOptions = [];
         var defaultOptions = {
+            name: '',
             value: '',
             selected: undefined
         };
         if (!value) defaultOptions.selected = 'selected';
         selectOptions.push(m("option", defaultOptions, '-- select --'));
         selectOptions = selectOptions.concat(
-            fieldSpecification.valueOptions.map(function (optionValue, index) {
+            fieldSpecification.valueOptions.map(function (option, index) {
+                var optionName;
+                var optionValue;
+                if (typeof option === "string") {
+                    optionName = option;
+                    optionValue = option;
+                } else {
+                    optionName = option.name;
+                    optionValue = option.value;                    
+                }
                 var optionOptions = {value: optionValue, selected: undefined};
                 // console.log("optionValue, value", optionValue, value, optionValue === value);
                 if (optionValue === value) optionOptions.selected = 'selected';
-                return m("option", optionOptions, optionValue);
+                return m("option", optionOptions, optionName);
             })
         );
         
@@ -265,22 +293,24 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     endQuestions.push({id: "__survey-local_" + "endText", displayName: "endText", displayPrompt: endText, displayType: "label", valueOptions: []});
 
     // TODO: What about idea of having IDs that go with eliciting questions so store reference to ID not text prompt?
-    var elicitingQuestionPrompts = [];
+    var elicitingQuestionOptions = [];
     for (var elicitingQuestionIndex in questionnaire.elicitingQuestions) {
         var elicitingQuestionSpecification = questionnaire.elicitingQuestions[elicitingQuestionIndex];
-        elicitingQuestionPrompts.push(elicitingQuestionSpecification.text);
+        var value = elicitingQuestionSpecification.id || elicitingQuestionSpecification.text;
+        var option = {name: elicitingQuestionSpecification.text, value: value};
+        elicitingQuestionOptions.push(option);
     }
     
     // TODO: What if these IDs for storyText and storyName are not unique?
     var initialStoryQuestions = [];
     var singlePrompt = null;
     // initialStoryQuestions.push({id: "__survey_" + "questionHeader", displayName: "questionHeader", displayPrompt: "Story", displayType: "header", valueOptions: []});
-    if (elicitingQuestionPrompts.length !== 1) {
-        initialStoryQuestions.push({id: "__survey_" + "elicitingQuestion", displayName: "elicitingQuestion", displayPrompt: "Please choose a question to which you would like to respond:", displayType: "radiobuttons", valueOptions: elicitingQuestionPrompts});
+    if (elicitingQuestionOptions.length !== 1) {
+        initialStoryQuestions.push({id: "__survey_" + "elicitingQuestion", displayName: "elicitingQuestion", displayPrompt: "Please choose a question to which you would like to respond:", displayType: "radiobuttons", valueOptions: elicitingQuestionOptions});
         initialStoryQuestions.push({id: "__survey_" + "storyText", displayName: "storyText", displayPrompt: "Please enter your response in the box below:", displayType: "textarea", valueOptions: []});
     } else {
-        singlePrompt = elicitingQuestionPrompts[0];
-        initialStoryQuestions.push({id: "__survey_" + "storyText", displayName: "storyText", displayPrompt: singlePrompt, displayType: "textarea", valueOptions: []});
+        singlePrompt = elicitingQuestionOptions[0];
+        initialStoryQuestions.push({id: "__survey_" + "storyText", displayName: "storyText", displayPrompt: singlePrompt.text, displayType: "textarea", valueOptions: []});
     }
     initialStoryQuestions.push({id: "__survey_" + "storyName", displayName: "storyName", displayPrompt: "Please give your story a name.", displayType: "text", valueOptions: []});
     
@@ -328,7 +358,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
             __survey_elicitingQuestion: undefined
         };
 
-        if (singlePrompt) storyQuestionsModel.__survey_elicitingQuestion = singlePrompt;         
+        if (singlePrompt) storyQuestionsModel.__survey_elicitingQuestion = singlePrompt.value;         
         stories.push(storyQuestionsModel);
     }
         
