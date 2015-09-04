@@ -207,12 +207,12 @@ export function buildQuestionnaireFromTemplate(project: Project, questionnaireTe
     
     for (var elicitingQuestionIndex = 0; elicitingQuestionIndex < elicitingQuestions.length; elicitingQuestionIndex++) {
         var storySolicitationQuestionText = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_text;
-        // TODO: var storySolicitationQuestionShortName = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_shortName;
+        var storySolicitationQuestionShortName = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_shortName;
         var storySolicitationQuestionType = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_type;
         var elicitingQuestionInfo = {
             text: storySolicitationQuestionText,
-            // TODO: id: storySolicitationQuestionShortName,
-            type: storySolicitationQuestionType
+            id: storySolicitationQuestionShortName,
+            "type": storySolicitationQuestionType
         };
         questionnaire.elicitingQuestions.push(elicitingQuestionInfo);
     }
