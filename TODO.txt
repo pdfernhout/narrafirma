@@ -5,9 +5,6 @@ PRIORITY
 - catalysis (at least one step like graph or themer)
 - theming and tagging (now to be in story browser)
 
-IDs
-H Eliciting question choice in survey should be stored as the id (or short name), not the text
-
 EXPORT/IMPORT
 H Add page to do export
 H When import story collection, need to display name of form in select
@@ -97,7 +94,6 @@ X Survey - back button in browser -- deal with so don't lose data
 
 IDs
 ? Ensure short name IDs entered by user do not conflict with automatically created ones or story text and story name
-L Add support for short names (ids) for eliciting questions
 X Improve how options are specified for questions in question designer rather than use text box
 X Make sure that short name IDs entered by user when defining questions are unique among themselves and don't have a leading underscore (or at least aren't "_id")
 
@@ -869,3 +865,8 @@ DONE Improve file names so WebContent is webapp, index.html is narrafirma.hthml,
 DONE Remove obsolete out-of-date text files that defined the original questions and templates used to generate the code to avoid confusing new developers or code searching
 DONE Load panel definitions and navigation data from TypeScript modules instead of JSON (so it is easier to read and validate)
 DONE Create "Panel" TypesScript definition to validate panel definitions
+DONE Fix bugs with path resolution for triple store fields in value path resolver and grid
+DONE Fix bug where nested grids did not transition correctly from readonly to editable
+DONE Eliciting question choice in survey should be stored as the id (or short name), not the text
+DONE Add support for short names (ids) for eliciting questions [same as above]
+
