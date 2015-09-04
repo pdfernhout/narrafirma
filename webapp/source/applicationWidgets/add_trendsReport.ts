@@ -135,7 +135,7 @@ class PatternBrowser {
         var storyItemPanelSpecification = makeItemPanelSpecificationForQuestions(this.questions);
 
         var storyGridConfiguration = {
-            idProperty: "_storyID",
+            idProperty: "storyID",
             columnsToDisplay: ["storyName", "storyText"],
             viewButton: true,
             navigationButtons: true

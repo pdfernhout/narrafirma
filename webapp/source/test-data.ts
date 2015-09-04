@@ -157,8 +157,8 @@ function makeResponse(responseNumber) {
             "stories": [
                 {
                     "__type": "org.workingwithstories.Story",
-                    "_storyID": "storyID-" + responseNumber,
-                    "_participantID": "ParticipantID-" + responseNumber,
+                    "storyID": "storyID-" + responseNumber,
+                    "participantID": "ParticipantID-" + responseNumber,
                     "storyText": lorumText,
                     "storyName": "StoryName-" + responseNumber,
                     "elicitingQuestion": testSurvey.content.elicitingQuestions[0].text,
@@ -177,7 +177,7 @@ function makeResponse(responseNumber) {
             ],
             "participantData": {
                 "__type": "org.workingwithstories.ParticipantData",
-                "_participantID": "participantID-" + responseNumber,
+                "participantID": "participantID-" + responseNumber,
                 surveyAnswers: {
                     "Age": testSurvey.content.participantQuestions[0].options[responseNumber % 6],
                     // TODO: Problem with test design as missing the name here..!!!!

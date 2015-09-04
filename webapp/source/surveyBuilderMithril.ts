@@ -71,7 +71,7 @@ function buildQuestionLabel(fieldSpecification) {
 function displayQuestion(builder, model, fieldSpecification) {
     var fieldID = fieldSpecification.id;
     if (model) {
-        fieldID = (model._storyID || model._participantID) + "__" + fieldID;
+        fieldID = (model.storyID || model.participantID) + "__" + fieldID;
     }
 
     var displayType = fieldSpecification.displayType;
@@ -339,7 +339,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     var participantID = generateRandomUuid();
     var participantDataModel = {
         __type: "org.workingwithstories.ParticipantData",
-        _participantID: participantID
+        participantID: participantID
     };
     
     surveyResult.participantData = participantDataModel;
@@ -353,8 +353,8 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
     function addStory() {
         var storyQuestionsModel = {
             __type: "org.workingwithstories.Story",
-            _storyID: generateRandomUuid(),
-            _participantID: participantID,
+            storyID: generateRandomUuid(),
+            participantID: participantID,
             elicitingQuestion: undefined
         };
 
@@ -440,7 +440,7 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
         
         var evenOrOdd = (index % 2 === 1) ? "narrafirma-survey-story-odd" : "narrafirma-survey-story-even";
         // A locally unique key needs to be defined so Mithril can track deletions and inserts without rebuilding DOM nodes
-        return m("div", {key: story._storyID, "class": "narrafirma-survey-story " + evenOrOdd}, result); 
+        return m("div", {key: story.storyID, "class": "narrafirma-survey-story " + evenOrOdd}, result); 
     }
     
     function validate() {

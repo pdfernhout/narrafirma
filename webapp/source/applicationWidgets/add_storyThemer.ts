@@ -127,7 +127,7 @@ function insertStoryThemer(panelBuilder: PanelBuilder, pagePane, model, fieldSpe
     };
 
     // Store will modify underlying array
-    var dataStore = GridWithItemPanel["newMemoryTrackableStore"](allStories, "_storyID");
+    var dataStore = GridWithItemPanel["newMemoryTrackableStore"](allStories, "storyID");
     
     // Only allow view button for stories
     var configuration = {viewButton: true, navigationButtons: true, columnsToDisplay: ["storyName", "storyText"]};

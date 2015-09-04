@@ -450,7 +450,7 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
             var story = storyItem.story;
             var tooltipText =
                 "Title: " + story.storyName +
-                // "\nID: " + story._storyID + 
+                // "\nID: " + story.storyID + 
                 "\n" + nameForQuestion(question) + ": " + displayTextForAnswer(story[question.id]) +
                 "\nText: " + limitStoryTextLength(story.storyText);
             return tooltipText;
@@ -768,7 +768,7 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
         .text(function(plotItem) {
             var tooltipText =
                 "Title: " + plotItem.story.storyName +
-                // "\nID: " + plotItem.story._storyID + 
+                // "\nID: " + plotItem.story.storyID + 
                 "\nX (" + nameForQuestion(xAxisQuestion) + "): " + plotItem.x +
                 "\nY (" + nameForQuestion(yAxisQuestion) + "): " + plotItem.y +
                 "\nText: " + limitStoryTextLength(plotItem.story.storyText);

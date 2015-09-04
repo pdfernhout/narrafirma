@@ -101,7 +101,7 @@ function processCSVContentsForStories(contents) {
             stories: [],
             participantData: {
                 __type: "org.workingwithstories.ParticipantData",
-                _participantID: generateRandomUuid(),
+                participantID: generateRandomUuid(),
                 surveyAnswers: {}
             },
             // TODO: Should have timestamp in CSV file!!!
@@ -116,8 +116,8 @@ function processCSVContentsForStories(contents) {
         var story = {
             __type: "org.workingwithstories.Story",
             id: generateRandomUuid(),
-            _storyID: generateRandomUuid(),
-            _participantID: newSurveyResult.participantData._participantID,
+            storyID: generateRandomUuid(),
+            participantID: newSurveyResult.participantData.participantID,
             elicitingQuestion: elicitingQuestion,
             storyText: item["Story text"],
             storyName: item["Story title"],
