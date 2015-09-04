@@ -162,28 +162,24 @@ function makeResponse(responseNumber) {
                     "storyText": lorumText,
                     "storyName": "StoryName-" + responseNumber,
                     "elicitingQuestion": testSurvey.content.elicitingQuestions[0].text,
-                    surveyAnswers: {
-                        "Groups need to hear story": {
-                            "dog owners": (responseNumber + 0) % 4 === 0,
-                            "cat owners": (responseNumber + 1) % 4 === 0,
-                            "ASPCA": (responseNumber + 2) % 4 === 0,
-                            "public officials": (responseNumber + 3) % 4 === 0
-                        },
-                        "remember": responseNumber % 100,
-                        "Feel about": testSurvey.content.storyQuestions[0].options[responseNumber % 7],
-                        "Common or rare": responseNumber % 100
-                    }
+                    "Q_Groups need to hear story": {
+                        "dog owners": (responseNumber + 0) % 4 === 0,
+                        "cat owners": (responseNumber + 1) % 4 === 0,
+                        "ASPCA": (responseNumber + 2) % 4 === 0,
+                        "public officials": (responseNumber + 3) % 4 === 0
+                    },
+                    "Q_remember": responseNumber % 100,
+                    "Q_Feel about": testSurvey.content.storyQuestions[0].options[responseNumber % 7],
+                    "Q_Common or rare": responseNumber % 100
                 }
             ],
             "participantData": {
                 "__type": "org.workingwithstories.ParticipantData",
                 "participantID": "participantID-" + responseNumber,
-                surveyAnswers: {
-                    "Age": testSurvey.content.participantQuestions[0].options[responseNumber % 6],
-                    // TODO: Problem with test design as missing the name here..!!!!
-                    "Feel about rules": responseNumber % 100,
-                    "Location": testSurvey.content.participantQuestions[2].options[responseNumber % 5]
-                }
+                "Q_Age": testSurvey.content.participantQuestions[0].options[responseNumber % 6],
+                // TODO: Problem with test design as missing the name here..!!!!
+                "Q_Feel about rules": responseNumber % 100,
+                "Q_Location": testSurvey.content.participantQuestions[2].options[responseNumber % 5]
             },
             "timestampStart": "2014-12-13T04:14:02.916Z",
             "timestampEnd": "2014-12-13T04:18:27.286Z",

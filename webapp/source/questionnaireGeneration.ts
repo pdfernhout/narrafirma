@@ -63,7 +63,8 @@ function convertEditorQuestions(editorQuestions) {
         var question = editorQuestions[questionIndex];
         // console.log("question", question);
         var shortName = question.storyQuestion_shortName || question.participantQuestion_shortName;
-        var id = shortName;
+        // Including "Q_" prefix for user-supplied question ID to prevent collisions with application fields like storyText and JavaScript functions and __proto__
+        var id = "Q_" + shortName;
         var questionType = question.storyQuestion_type || question.participantQuestion_type;
         var prompt = question.storyQuestion_text || question.participantQuestion_text;
         

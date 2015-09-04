@@ -101,8 +101,7 @@ function processCSVContentsForStories(contents) {
             stories: [],
             participantData: {
                 __type: "org.workingwithstories.ParticipantData",
-                participantID: generateRandomUuid(),
-                surveyAnswers: {}
+                participantID: generateRandomUuid()
             },
             // TODO: Should have timestamp in CSV file!!!
             timestampStart: "" + new Date().toISOString(),
@@ -120,20 +119,19 @@ function processCSVContentsForStories(contents) {
             participantID: newSurveyResult.participantData.participantID,
             elicitingQuestion: elicitingQuestion,
             storyText: item["Story text"],
-            storyName: item["Story title"],
-            surveyAnswers: {}
+            storyName: item["Story title"]
         };
     
         var i;
         var question;
         for (i = 0; i < lastQuestionnaireUploaded.storyQuestions.length; i++) {
             question = lastQuestionnaireUploaded.storyQuestions[i];
-            story.surveyAnswers[question.id] = item[question.id];
+            story[question.id] = item[question.id.substring("Q_".length)];
         }
         newSurveyResult.stories.push(story);
         for (i = 0; i < lastQuestionnaireUploaded.participantQuestions.length; i++) {
             question = lastQuestionnaireUploaded.participantQuestions[i];
-            newSurveyResult.participantData.surveyAnswers[question.id] = item[question.id];
+            newSurveyResult.participantData[question.id] = item[question.id.substring("Q_".length)];
         }
         console.log("newSurveyResult", newSurveyResult);
         surveyResults.push(newSurveyResult);
@@ -292,7 +290,7 @@ function questionForItem(item) {
     return {
         valueType: valueType,
         displayType: questionType,
-        id: item["Short name"], 
+        id: "Q_" + item["Short name"], 
         valueOptions: valueOptions,
         displayName: item["Short name"], 
         displayPrompt: item["Long name"],
