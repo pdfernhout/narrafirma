@@ -710,7 +710,9 @@ class GridWithItemPanel {
     }
     
     useTriples() {
-        return typeof this.valueProperty() === "string";
+        if (typeof this.model === "string") return true;
+        var storage = this.valueProperty(); 
+        return typeof storage === "string";
     }
 }
 
@@ -740,6 +742,7 @@ class DataStore {
         
         if (!data) {
             data = [];
+            // console.log("Grid datastore getDataArrayFromModel defaulting data to empty array");
             this.valueProperty(data);
         }
         
@@ -877,6 +880,7 @@ class TripleSetDataStore extends DataStore {
         // TODO: Remove temporary addition with comparison on string type (for upgrading old data)
         if (!this.setIdentifier || typeof this.setIdentifier !== "string") {
             this.setIdentifier = this.tripleStore.newIdForSet();
+            // console.log("Grid triplestore getDataArrayFromModel defaulting data to empty set with id", this.setIdentifier);
             this.valueProperty(this.setIdentifier);
         }
     }
