@@ -4,6 +4,7 @@ import generateRandomUuid = require("./pointrel20150417/generateRandomUuid");
 import questionnaireGeneration = require("./questionnaireGeneration");
 import surveyCollection = require("./surveyCollection");
 import surveyStorage = require("./surveyStorage");
+import dialogSupport = require("./panelBuilder/dialogSupport");
 
 "use strict";
 
@@ -59,6 +60,16 @@ function processCSVContents(contents, callbackForItem) {
 }
 
 function processCSVContentsForStories(contents) {
+    var storyCollectionIdentifier = prompt("Please give this new story collection a name.");
+    if (!storyCollectionIdentifier) return;
+    
+    if (surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier)) {
+        alert("A story collection with that name already exists: " + storyCollectionIdentifier);
+        return;
+    }
+    
+    var progressModel = dialogSupport.openProgressDialog("Processing CSV file...", "Progress writing imported stories", "Cancel", dialogCancelled);
+  
     // Throws away line after header which starts with a blank
     var headerAndItems = processCSVContents(contents, function (header, row) {
         var newItem = {};
@@ -137,14 +148,6 @@ function processCSVContentsForStories(contents) {
         surveyResults.push(newSurveyResult);
     }
     
-    var storyCollectionIdentifier = prompt("Please give this new story collection a name.");
-    if (!storyCollectionIdentifier) return;
-    
-    if (surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier)) {
-        alert("A story collection with that name already exists: " + storyCollectionIdentifier);
-        return;
-    }
-    
     var newStoryCollection = {
         id: generateRandomUuid(),
         storyCollection_shortName: storyCollectionIdentifier,
@@ -160,14 +163,59 @@ function processCSVContentsForStories(contents) {
         project.setFieldValue("project_storyCollections", storyCollections);
     }
     
-    project.tripleStore.makeNewSetItem(storyCollections, newStoryCollection);
-
-    // Send all surveyResults...
-    // TODO: Stop on error? Use Dojo Deferred probably
-    for (var surveyResultIndex = 0; surveyResultIndex < surveyResults.length; surveyResultIndex++) {
-        var surveyResult = surveyResults[surveyResultIndex];
-        surveyStorage.storeSurveyResult(project.pointrelClient, project.projectIdentifier, storyCollectionIdentifier, surveyResult, null);
+    if (!surveyResults.length) {
+        alert("No stories to write");
+        progressModel.hideDialogMethod();
+        progressModel.redraw();
+        return;
     }
+    
+    project.tripleStore.makeNewSetItem(storyCollections, newStoryCollection);
+     
+    var totalStoryCount = surveyResults.length;
+
+    function dialogCancelled(dialogConfiguration, hideDialogMethod) {
+        progressModel.cancelled = true;
+        hideDialogMethod();
+    }
+    
+    var wizardPane = {
+        forward: function () {
+            console.log("survey sending success");
+            if (progressModel.failed) return;
+            sendNextSurveyResult();
+        },
+        failed: function () {
+            console.log("survey sending failed");
+            if (progressModel.failed) return;
+            progressModel.failed = true;
+            // TODO: Translate
+            alert("Problem saving survey result; check the console for details.");
+            progressModel.hideDialogMethod();
+            progressModel.redraw();
+        }
+    };
+    
+    var storyIndexToSend = 0;
+    
+    function sendNextSurveyResult() {
+        if (progressModel.cancelled) {
+            alert("Cancelled after sending " + storyIndexToSend + " stories");
+        } else if (storyIndexToSend >= surveyResults.length) {
+            alert("Done sending stores");
+            progressModel.hideDialogMethod();
+            progressModel.redraw();
+        } else {
+            var surveyResult = surveyResults[storyIndexToSend++];
+            // TODO: Translate
+            progressModel.progressText = "Sending " + storyIndexToSend + " of " + totalStoryCount + " stories";
+            progressModel.redraw();
+            surveyStorage.storeSurveyResult(project.pointrelClient, project.projectIdentifier, storyCollectionIdentifier, surveyResult, wizardPane);
+        }
+    }
+    
+    // Start sending survey results
+    sendNextSurveyResult();
 }
 
 function processCSVContentsForQuestionnaire(contents) {

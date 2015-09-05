@@ -131,6 +131,39 @@ function build_textEditorDialogContent(dialogConfiguration, hideDialogMethod) {
     ]);
 }
 
+// Caller needs to call the hideDialogMethod returned as the second arg of dialogOKCallback to close the dialog
+export function openProgressDialog(progressText, dialogTitle, cancelButtonLabel, dialogCancelCallback) {
+    // console.log("openProgressDialog called");
+    if (!dialogTitle) dialogTitle = "Progress";
+    if (!cancelButtonLabel) cancelButtonLabel = "Cancel";
+    
+    var model = {
+        progressText: progressText,
+        hideDialogMethod: hideDialogMethod,
+        redraw: m.redraw,
+        cancelled: false,
+        failed: false
+    };
+    
+    var dialogConfiguration = {
+        dialogModel: model,
+        dialogTitle: dialogTitle,
+        dialogStyle: undefined,
+        dialogConstructionFunction: build_progressDialogContent,
+        // Use OK button isntead of Cancel because it has a callback and represents the action button
+        dialogOKButtonLabel: cancelButtonLabel,
+        dialogOKCallback: function(dialogConfiguration, hideDialogMethod) { dialogCancelCallback(dialogConfiguration, hideDialogMethod); }
+    };
+    
+    openDialog(dialogConfiguration);
+    
+    return model;
+}
+
+function build_progressDialogContent(dialogConfiguration, hideDialogMethod) {
+    return m("div", dialogConfiguration.dialogModel.progressText);
+}
+
 // columns are currently ignored
 // choices should be a list of objects with a name field, like: {name: "test", other: "???}
 export function openListChoiceDialog(initialChoice, choices, columns, dialogTitle, dialogOKButtonLabel, isNewAllowed, dialogOKCallback) {
