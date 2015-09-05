@@ -15,14 +15,20 @@ export function storeSurveyResult(pointrelClient: PointrelClient, projectIdentif
     pointrelClient.createAndSendChangeMessage("surveyResults", "surveyResult", surveyResultWrapper, null, function(error, result) {
         if (error) {
             console.log("Problem saving survey result", error);
-            // TODO: Translate
-            // alert("Problem saving survey result");
-            alert("Problem saving survey result; check the console for details.\nPlease try to submit the survey result later.");
-            if (wizardPane && wizardPane.failed) wizardPane.failed();
+            if (wizardPane && wizardPane.failed) {
+                wizardPane.failed();
+            } else {
+                // TODO: Translate
+                alert("Problem saving survey result; check the console for details.\nPlease try to submit the survey result later.");
+            }
             return;
         }
         console.log("Survey result stored");
-        if (wizardPane) alert("Your contribution has been added to the story collection. Thank you.");
-        if (wizardPane) wizardPane.forward();
+        if (wizardPane) {
+            wizardPane.forward();
+        } else {
+            // TODO: Translate
+            alert("Your contribution has been added to the story collection. Thank you.");
+        }
     });
 }

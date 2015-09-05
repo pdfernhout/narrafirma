@@ -466,11 +466,15 @@ export function buildSurveyForm(surveyDiv, questionnaire, doneCallback, surveyOp
             forward: function () {
                 console.log("survey sending success" + (surveyOptions.previewMode ? " [preview mode only]" : ""));
                 submitted = "success";
+                // TODO: Translate
+                alert("Your contribution has been added to the story collection. Thank you.");
                 redraw("network");
             },
             failed: function () {
                 console.log("survey sending failed");
                 submitted = "failed";
+                // TODO: Translate
+                alert("Problem saving survey result; check the console for details.\nPlease try to submit the survey result later.");
                 redraw("network");
             }
         };
