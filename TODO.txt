@@ -61,7 +61,6 @@ H Think about and improve issue of values that can be set only once like catalys
 H Create script or procedure to deal with SVN for WordPress
 
 ERRORS
-H Resolve issue with SHA256 calculation mismatch for content which has escaped JSON text like slashes
 
 ======= CYNTHIA
 
@@ -98,7 +97,6 @@ X Make sure that short name IDs entered by user when defining questions are uniq
 
 EXPORT/IMPORT
 L Improve import process to remove two seperate buttons as two stages (questionnaire and data) or handle in some other way
-L Add progress bar for import
 X Add way to clear out or reset old survey results? Or maybe partition them by survey?
 X Backup
 
@@ -871,3 +869,5 @@ DONE Add support for short names (ids) for eliciting questions [same as above]
 DONE Ensure short name IDs entered by user do not conflict with automatically created ones or story text and story name [Adding "Q_" prefix]
 DONE Remove user of "__survey_" from application fields like storyText and use shorter "Q_" for user supplied fields
 DONE Simplify _storyID and _participantID to not have leading underscores
+DONE Add progress bar for import
+DONE Resolve issue with SHA256 calculation mismatch for content which has escaped JSON text like slashes [in WordPress PHP plugin]
