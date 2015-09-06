@@ -367,7 +367,7 @@ function faiIfNotAuthorized($requestedCapability, $journalIdentifier, $topicIden
     
     error_log("faiIfNotAuthorized fail: '" . $userIdentifier . "' " . print_r($permissions, true));
     
-    $message = 'Forbidden -- user "' . $userIdentifier . '" is not authorized to "' . $requestedCapability . '" in ' . json_encode($journalIdentifier) . " (perhaps for the specific topic, message, and/or api request length)";
+    $message = 'Forbidden -- user "' . $userIdentifier . '" is not authorized to "' . $requestedCapability . '" in ' . my_json_encode($journalIdentifier) . " (perhaps for the specific topic, message, and/or api request length)";
     wp_send_json( makeFailureResponse(403, $message, array(
         'userIdentifier' => $userIdentifier,
         'journalIdentifier' => $journalIdentifier,
@@ -547,7 +547,7 @@ function pointrel20150417_reportJournalStatus($apiRequest) {
             
             // TODO: Is the journalRecordCount really needed? Looks like maybe not?
             $rows = $wpdb->get_results( "SELECT COUNT(*) AS num_records FROM $table_name" );
-            // error_log("$rows" . json_encode($rows));
+            // error_log("$rows" . my_json_encode($rows));
             $recordCount = $rows[0]->num_records; // $wpdb->num_rows;
             
             // TODO: use database to get earliest and latest record
@@ -733,7 +733,7 @@ function copyObjectWithSortedKeys($value) {
         
         ksort($valueCopyWithSortedKeys);
 
-        return $valueCopyWithSortedKeys;
+        return  (object) $valueCopyWithSortedKeys;
     
     } else {
         return $value;
@@ -743,9 +743,9 @@ function copyObjectWithSortedKeys($value) {
 function pointrel20150417_storeMessage($apiRequest) {
     global $wpdb;
 
-    error_log("Called pointrel20150417_storeMessage");
-    
     $message = $apiRequest->message;
+    error_log("Called pointrel20150417_storeMessage with: " . json_encode($message));
+    
     $journalIdentifier = $apiRequest->journalIdentifier;
     
     // Check if topicIdentifier is not defined to avoid PHP warning
@@ -783,13 +783,13 @@ function pointrel20150417_storeMessage($apiRequest) {
 
     $canonicalMessageWithoutHashAndTrace = copyObjectWithSortedKeys($message);
       
-    // TODO: Ensure json_encode produces utf-8; JSON_UNESCAPED_UNICODE requires later version of PHP than testing with
-    // $canonicalFormInUTF8 = json_encode($canonicalMessageWithoutHashAndTrace, JSON_UNESCAPED_UNICODE);
-    $canonicalFormInUTF8 = json_encode($canonicalMessageWithoutHashAndTrace);
+    // $canonicalFormInUTF8 = my_json_encode($canonicalMessageWithoutHashAndTrace, JSON_UNESCAPED_UNICODE);
+    $canonicalFormInUTF8 = my_json_encode($canonicalMessageWithoutHashAndTrace);
     $sha256AndLength = hash( 'sha256', $canonicalFormInUTF8 ) . "_" . strlen($canonicalFormInUTF8);
    
     if ($oldSHA256AndLength && $oldSHA256AndLength !== $sha256AndLength) {
-        error_log("Problem with new calculated SHA not matching old supplied one: $oldSHA256AndLength new: $sha256AndLength " . json_encode($message));
+        error_log("Problem with new calculated SHA not matching old supplied one: $oldSHA256AndLength new: $sha256AndLength ");
+        error_log("canonicalFormInUTF8 was: $canonicalFormInUTF8");
         wp_send_json( makeFailureResponse(400, "Bad Request: sha256AndLength was supplied in message but it does not match the calculated value; old: $oldSHA256AndLength new: $sha256AndLength" ) );
     }
     
@@ -828,9 +828,8 @@ function pointrel20150417_storeMessage($apiRequest) {
     
     $canonicalMessage = copyObjectWithSortedKeys($message);
     
-    // TODO: Ensure json_encode produces utf-8; JSON_UNESCAPED_UNICODE requires later version of PHP than testing with
-    // $messageText = json_encode($canonicalMessage, JSON_UNESCAPED_UNICODE);
-    $messageText = json_encode($canonicalMessage);
+    // $messageText = my_json_encode($canonicalMessage, JSON_UNESCAPED_UNICODE);
+    $messageText = my_json_encode($canonicalMessage);
     
     // TODO: Check for empty topic and maybe act differently
     $topicSHA256 = hash( 'sha256', $topicIdentifier );
@@ -874,6 +873,19 @@ function pointrel20150417_storeMessage($apiRequest) {
     ));
     
     wp_send_json( $response );
+}
+
+// This is to support PHP 5.3 which does not support JSON_UNESCAPED_UNICODE or JSON_UNESCAPED_SLASHES
+// TODO: Ensure json_encode produces utf-8
+function my_json_encode($data) {
+   $result = json_encode($data);
+   // To act like JSON_UNESCAPED_UNICODE
+   $result = preg_replace_callback('/\\\\u([0-9a-f]{4})/i', function($matches) {
+       return mb_convert_encoding(pack('H*', $matches[1]), 'UTF-8', 'UTF-16');
+   }, $result);
+   // To act like JSON_UNESCAPED_SLASHES
+   $result = str_replace('\\/', '/', $result);
+   return $result;
 }
 
 // error_log("Finished running NarraFirma plugin module");
