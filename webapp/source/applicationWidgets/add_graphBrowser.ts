@@ -97,9 +97,9 @@ class GraphBrowser {
                 this.selectedStories.map((story) => {
                     console.log("story", story);
                     return m("div", [
-                        m("b", story.storyName),
+                        m("b", story.storyName()),
                         m("br"),
-                        m("blockquote", story.storyText)
+                        m("blockquote", story.storyText())
                     ]);
                 })
             ];

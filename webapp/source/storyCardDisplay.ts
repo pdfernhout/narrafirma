@@ -1,4 +1,5 @@
 import m = require("mithril");
+import surveyCollection = require("surveyCollection");
 
 "use strict";
 
@@ -67,9 +68,9 @@ function displayHTMLForSelect(fieldSpecification, fieldName, value) {
     return [fieldName + ": ", options];
 }
 
-function displayHTMLForField(model, fieldSpecification, nobreak = null) {
+function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecification, nobreak = null) {
     // if (!model[fieldSpecification.id]) return "";
-    var value = model[fieldSpecification.id];
+    var value = storyModel.answer(fieldSpecification.id);
     // TODO: extra checking here for problems with test data -- could probably be changed back to just displayName eventually
     var fieldName = fieldSpecification.displayName || fieldSpecification.displayPrompt;
     var result = [];
@@ -98,10 +99,10 @@ interface Options {
 
 export function generateStoryCardContent(storyModel, currentQuestionnaire, options: Options = {}) {
     // Encode all user-supplied text to ensure it does not create HTML issues
-    var elicitingQuestion = storyModel.elicitingQuestion;
+    var elicitingQuestion = storyModel.elicitingQuestion();
     console.log("elicitingQuestion", elicitingQuestion);
-    var storyName = storyModel.storyName;
-    var storyText = storyModel.storyText;
+    var storyName = storyModel.storyName();
+    var storyText = storyModel.storyText();
     var otherFields = [];
     
     var questions = [];

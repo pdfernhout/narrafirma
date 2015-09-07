@@ -349,7 +349,7 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
     var stories = graphBrowserInstance.allStories;
     for (var storyIndex in stories) {
         var story = stories[storyIndex];
-        var xValue = correctForUnanswered(question, story[question.id]);
+        var xValue = correctForUnanswered(question, story.answer(question.id));
         
         var xHasCheckboxes = _.isObject(xValue);
         // fast path
@@ -449,10 +449,10 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
         .text(function(storyItem: PlotItem) {
             var story = storyItem.story;
             var tooltipText =
-                "Title: " + story.storyName +
-                // "\nID: " + story.storyID + 
-                "\n" + nameForQuestion(question) + ": " + displayTextForAnswer(story[question.id]) +
-                "\nText: " + limitStoryTextLength(story.storyText);
+                "Title: " + story.storyName() +
+                // "\nID: " + story.storyID() + 
+                "\n" + nameForQuestion(question) + ": " + displayTextForAnswer(story.answer(question.id)) +
+                "\nText: " + limitStoryTextLength(story.storyText());
             return tooltipText;
         });
     
@@ -489,10 +489,10 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
     var stories = graphBrowserInstance.allStories;
     for (var storyIndex in stories) {
         var story = stories[storyIndex];
-        var xValue = correctForUnanswered(scaleQuestion, story[scaleQuestion.id]);
+        var xValue = correctForUnanswered(scaleQuestion, story.answer(scaleQuestion.id));
         if (choiceQuestion) {
             // Only count results where the choice matches
-            var choiceValue = correctForUnanswered(choiceQuestion, story[choiceQuestion.id]);
+            var choiceValue = correctForUnanswered(choiceQuestion, story.answer(choiceQuestion.id));
             var skip = false;
             if (choiceQuestion.displayType === "checkboxes") {
                 if (!choiceValue[choice]) skip = true;
@@ -611,9 +611,9 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
         .text(function(plotItem: PlotItem) {
             var story = plotItem.story;
             var tooltipText =
-                "Title: " + story.storyName +
+                "Title: " + story.storyName() +
                 "\n" + nameForQuestion(scaleQuestion) + ": " + plotItem.value +
-                "\nText: " + limitStoryTextLength(story.storyText);
+                "\nText: " + limitStoryTextLength(story.storyText());
             return tooltipText;
         });
     
@@ -705,8 +705,8 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     var stories = graphBrowserInstance.allStories;
     for (var index in stories) {
         var story = stories[index];
-        var xValue = correctForUnanswered(xAxisQuestion, story[xAxisQuestion.id]);
-        var yValue = correctForUnanswered(yAxisQuestion, story[yAxisQuestion.id]);
+        var xValue = correctForUnanswered(xAxisQuestion, story.answer(xAxisQuestion.id));
+        var yValue = correctForUnanswered(yAxisQuestion, story.answer(yAxisQuestion.id));
         
         // TODO: What do do about unanswered?
         if (xValue === unansweredKey || yValue === unansweredKey) continue;
@@ -767,11 +767,11 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
         .append("svg:title")
         .text(function(plotItem) {
             var tooltipText =
-                "Title: " + plotItem.story.storyName +
-                // "\nID: " + plotItem.story.storyID + 
+                "Title: " + plotItem.story.storyName() +
+                // "\nID: " + plotItem.story.storyID() + 
                 "\nX (" + nameForQuestion(xAxisQuestion) + "): " + plotItem.x +
                 "\nY (" + nameForQuestion(yAxisQuestion) + "): " + plotItem.y +
-                "\nText: " + limitStoryTextLength(plotItem.story.storyText);
+                "\nText: " + limitStoryTextLength(plotItem.story.storyText());
             return tooltipText;
         });
     
@@ -808,8 +808,8 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     var stories = graphBrowserInstance.allStories;
     for (var index in stories) {
         var story = stories[index];
-        var xValue = correctForUnanswered(xAxisQuestion, story[xAxisQuestion.id]);
-        var yValue = correctForUnanswered(yAxisQuestion, story[yAxisQuestion.id]);
+        var xValue = correctForUnanswered(xAxisQuestion, story.answer(xAxisQuestion.id));
+        var yValue = correctForUnanswered(yAxisQuestion, story.answer(yAxisQuestion.id));
         
         var xHasCheckboxes = _.isObject(xValue);
         var yHasCheckboxes = _.isObject(yValue);
@@ -946,7 +946,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
                 tooltipText += "\n------ Stories (" + plotItem.stories.length + ") ------";
                 for (var i = 0; i < plotItem.stories.length; i++) {
                     var story = plotItem.stories[i];
-                    tooltipText += "\n" + story.storyName;
+                    tooltipText += "\n" + story.storyName();
                 }
             }
             return tooltipText;

@@ -230,9 +230,9 @@ export function exportStoryCollection() {
     
     allStories.forEach(function (story) {
         var outputLine = [];
-        outputLine.push(story.storyName);
-        outputLine.push(story.storyText);
-        outputLine.push(story.elicitingQuestion);
+        outputLine.push(story.storyName());
+        outputLine.push(story.storyText());
+        outputLine.push(story.elicitingQuestion());
         dataForQuestions(currentQuestionnaire.storyQuestions, story, outputLine);
         dataForQuestions(currentQuestionnaire.participantQuestions, story, outputLine);
         addOutputLine(outputLine);
@@ -499,7 +499,7 @@ export function printStoryCards() {
     
     for (var storyIndex = 0; storyIndex < allStoriesInStoryCollection.length; storyIndex++) {
         var storyModel = allStoriesInStoryCollection[storyIndex];
-        var storyContent = storyCardDisplay.generateStoryCardContent(storyModel, storyModel.questionnaire, {storyTextAtTop: true});
+        var storyContent = storyCardDisplay.generateStoryCardContent(storyModel, storyModel.questionnaire(), {storyTextAtTop: true});
         
         output += '<div class="storyCardForPrinting">';
         output += storyContent;

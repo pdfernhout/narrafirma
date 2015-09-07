@@ -10,7 +10,58 @@ export function setProject(theProject) {
     project = theProject;
 }
 
-export function getStoriesForStoryCollection(storyCollectionIdentifier) {
+// TODO: Just for testing!!!
+var TestDataToRemove = {};
+
+function getStoryField(storyID, fieldName, defaultValue) {
+    var extra = TestDataToRemove[storyID] || {};
+    var result = extra[fieldName];
+    if (result === undefined) result = defaultValue;
+    return result;
+}
+
+function setStoryField(storyID, fieldName, value) {
+    var extra = TestDataToRemove[storyID] || {};
+    extra[fieldName] = value;
+    TestDataToRemove[storyID] = extra;
+    return value;
+}
+
+// A Story class where data can be overriden
+export class Story {
+    constructor(public model) {
+    }
+    
+    storyID() {
+        return this.model.storyID;
+    }
+     
+    questionnaire() {
+        return this.model.questionnaire;
+    }
+    
+    storyText() {
+        return getStoryField(this.model.storyID, "storyText", this.model.storyText);
+    }
+    
+    storyName() {
+        return getStoryField(this.model.storyID, "storyName", this.model.storyName);
+    }
+    
+    elicitingQuestion() {
+        return getStoryField(this.model.storyID, "elicitingQuestion", this.model.elicitingQuestion);
+    }
+    
+    answer(questionIdentifier, newValue = undefined) {
+        if (newValue === undefined) {
+            return getStoryField(this.model.storyID, questionIdentifier, this.model[questionIdentifier]) || "";
+        } else {
+            return setStoryField(this.model.storyID, questionIdentifier, newValue);
+        }
+    }
+}
+
+export function getStoriesForStoryCollection(storyCollectionIdentifier): Story[] {
     var result = [];
     var surveyMessages = project.pointrelClient.filterMessages(function (message) {
         var match = (message._topicIdentifier === "surveyResults" &&
@@ -41,7 +92,7 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier) {
                 
                 // Add questionnaire for display
                 story.questionnaire = surveyResult.questionnaire;
-                result.push(story);
+                result.push(new Story(story));
             }
         } catch (e) {
             console.log("Problem processing survey result", message, e);
