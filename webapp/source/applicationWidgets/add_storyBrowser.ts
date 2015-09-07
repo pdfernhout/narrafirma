@@ -362,7 +362,7 @@ class StoryBrowser {
         this.choices = surveyCollection.optionsForAllQuestions(this.questions);
         
         // update all stories for the specific collection
-        this.allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+        this.allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier, true);
         
         this.itemPanelSpecification = this.makeItemPanelSpecificationForQuestions(this.questions);
         

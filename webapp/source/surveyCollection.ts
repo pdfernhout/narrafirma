@@ -35,6 +35,10 @@ export class Story {
     storyID() {
         return this.model.storyID;
     }
+    
+    ignore(): boolean {
+        return getStoryField(this.model.storyID, "ignore", "").trim() !== "";
+    }
      
     questionnaire() {
         return this.model.questionnaire;
@@ -61,7 +65,7 @@ export class Story {
     }
 }
 
-export function getStoriesForStoryCollection(storyCollectionIdentifier): Story[] {
+export function getStoriesForStoryCollection(storyCollectionIdentifier, includeIgnored = false): Story[] {
     var result = [];
     var surveyMessages = project.pointrelClient.filterMessages(function (message) {
         var match = (message._topicIdentifier === "surveyResults" &&
@@ -92,7 +96,10 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier): Story[]
                 
                 // Add questionnaire for display
                 story.questionnaire = surveyResult.questionnaire;
-                result.push(new Story(story));
+                var wrappedStory = new Story(story);
+                if (includeIgnored || !wrappedStory.ignore()) { 
+                    result.push(wrappedStory);
+                }
             }
         } catch (e) {
             console.log("Problem processing survey result", message, e);

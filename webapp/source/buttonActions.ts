@@ -170,7 +170,7 @@ export function exportStoryCollection() {
     var currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
     console.log("currentQuestionnaire", currentQuestionnaire);
 
-    var allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+    var allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier, true);
     console.log("allStories", allStories);
     
     var header1 = [];
