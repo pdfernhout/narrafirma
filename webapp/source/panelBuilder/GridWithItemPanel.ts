@@ -759,6 +759,7 @@ class DataStore {
         var newItem = JSON.parse(JSON.stringify(item));
                   
         // Set new id for copy
+        // TODO: Will not work right if item is an object with some class
         newItem[this.idProperty] = this.newIdForItem();
         
         this.data.push(newItem);
@@ -770,6 +771,7 @@ class DataStore {
     makeNewItem(): any {
         // TODO: This needs to create an action that affects original list
         var newItem = {};
+        // TODO: Will not work right if item is an object with some class
         newItem[this.idProperty] = this.newIdForItem();
         this.data.push(newItem);
         
@@ -802,7 +804,11 @@ class DataStore {
     }
     
     idForItem(item) {
-        return item[this.idProperty];
+        var value = item[this.idProperty];
+        if (typeof value === "function") {
+            value = value.bind(item)();
+        }
+        return value;
     }
     
     itemForId(itemID: string) {
@@ -818,7 +824,7 @@ class DataStore {
     valueForField(item, fieldName: string) {
         var value = item[fieldName];
         // Resolve accessing functions
-        if (typeof value === "function") value = value();
+        if (typeof value === "function") value = value.bind(item)();
         return value;
     }
     
