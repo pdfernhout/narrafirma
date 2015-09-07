@@ -264,6 +264,9 @@ function getCurrentStoryCollectionIdentifier(args) {
     return storyCollectionIdentifier;
 }
 
+// TODO: Just for testing!!!
+var TestDataToRemove = {};
+
 class StoryBrowser {
     storyCollectionIdentifier: string = null;
     currentQuestionnaire = null;
@@ -381,7 +384,29 @@ class StoryBrowser {
     buildStoryDisplayPanel(panelBuilder, model) {
         var storyCardDiv = storyCardDisplay.generateStoryCardContent(model, this.currentQuestionnaire);
         
-        return m("div", [storyCardDiv, m("br"), m("pre", "A per story div: " + JSON.stringify(model, null, 4))]);
+        var storyID = model.storyID;
+        
+        function accessor(fieldName, value = undefined) {
+            var extra = TestDataToRemove[storyID] || {};
+            if (value === undefined) {
+                return extra[fieldName] || "";
+            } else {
+                extra[fieldName] = value;
+                TestDataToRemove[storyID] = extra;
+            }
+        }
+        
+        return m("div", [
+            storyCardDiv,
+            m("br"),
+            "Ignore reason:",
+            m("input", {onchange: m.withAttr("value", accessor.bind(null, "ignore")), value: accessor("ignore")}),
+            m("br"),
+            "Field 1:",
+            m("input", {onchange: m.withAttr("value", accessor.bind(null, "f1")), value: accessor("f1")}),
+            m("br"),
+            m("pre", "A per story div: " + JSON.stringify(model, null, 4))
+        ]);
     }
     
     makeItemPanelSpecificationForQuestions(questions) {
