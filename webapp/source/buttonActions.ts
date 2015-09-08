@@ -512,21 +512,96 @@ export function printStoryCards() {
 }
 
 export function printCatalysisReport() {
-    console.log("printCatalysisReport", clientState.catalysisReportIdentifier);
+    var catalysisReportIdentifier = clientState.catalysisReportIdentifier;
+    console.log("printCatalysisReport", catalysisReportIdentifier);
     
-    if (!clientState.catalysisReportIdentifier) {
+    if (!catalysisReportIdentifier) {
         alert("Please pick a catalysis report to print.");
         return;
     }
     
     // project_catalysisReports
     // catalysisReport_shortName
-    
+}
+
+// TOOD: Copied from add_trendsReport so duplicate code, except removed "this." for project access
+function findCatalysisReport(shortName) {
+    var catalysisReports = project.tripleStore.queryLatestC(project.projectIdentifier, "project_catalysisReports");
+    if (!catalysisReports) return null;
+    var catalysisReportIdentifiers = project.tripleStore.getListForSetIdentifier(catalysisReports);
+    for (var i = 0; i < catalysisReportIdentifiers.length; i++) {
+        var reportShortName = project.tripleStore.queryLatestC(catalysisReportIdentifiers[i], "catalysisReport_shortName");
+        if (reportShortName === shortName) {
+            return catalysisReportIdentifiers[i];
+        }
+    }
+    return null;
 }
 
 export function copyInterpretationsToClusteringDiagram() {
     // TODO: Finish this
-    console.log("copyInterpretationsToClusteringDiagram", clientState.catalysisReportIdentifier);
+    var shortName = clientState.catalysisReportIdentifier;
+    console.log("copyInterpretationsToClusteringDiagram", shortName);
+    
+    if (!shortName) {
+        alert("Please pick a catalysis report to work with.");
+        return;
+    }
+    
+    var catalysisReportIdentifier = findCatalysisReport(shortName);
+    if (!catalysisReportIdentifier) {
+        alert("Problem finding catalysisReportIdentifier");
+        return;
+    }
+    
+    // Collect all interpretations
+    var allInterpretations = [];
+        
+    var observationSetIdentifier = project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_observations");
+    console.log("observationSetIdentifier", observationSetIdentifier);
+    
+    if (!observationSetIdentifier) {
+        alert("No observations have been made yet in the Pattern Browser");
+        return;
+    }
+    
+    var observations = project.tripleStore.queryAllLatestBCForA(observationSetIdentifier);
+    
+    // console.log("observations", observations);
+    
+    for (var key in observations) {
+        var observationIdentifier = observations[key];
+        // console.log("observationIdentifier", key, observationIdentifier);
+        
+        var interpretationsSetIdentifier = project.tripleStore.queryLatestC(observationIdentifier, "observationInterpretations");
+        // console.log("interpretationsSetIdentifier", key, observationIdentifier, interpretationsSetIdentifier);
+        
+        if (interpretationsSetIdentifier) {
+            var interpretations = project.tripleStore.getListForSetIdentifier(interpretationsSetIdentifier);
+            // console.log("interpretations", interpretations);
+            
+            for (var i = 0; i < interpretations.length; i++) {
+                var interpretationIdentifier = interpretations[i];
+                // "interpretation_name", "interpretation_text"
+                var interpretationName = project.tripleStore.queryLatestC(interpretationIdentifier, "interpretation_name");
+                var interpretationText = project.tripleStore.queryLatestC(interpretationIdentifier, "interpretation_text");
+                // console.log("interpretationIdentifier", interpretationIdentifier, interpretationName, interpretationText);
+                allInterpretations.push({
+                    "type": "Interpretation",
+                    id: interpretationIdentifier,
+                    name: interpretationName,
+                    text: interpretationText
+                });
+            }
+        }
+    }
+    
+    if (allInterpretations.length === 0) {
+        alert("No interpretations have been found for this catalysis report");
+    }
+    
+    console.log("allInterpretations", allInterpretations);
+    
     alert("Unfinished");
 }
 
