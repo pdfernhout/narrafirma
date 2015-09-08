@@ -155,7 +155,7 @@ function insertStoryThemer(panelBuilder: PanelBuilder, pagePane, model, fieldSpe
 // TODO: Next two functions from add_storyBrowser and so are duplicate code
 
 function buildStoryDisplayPanel(panelBuilder: PanelBuilder, model) {
-    var storyCardDiv = storyCardDisplay.generateStoryCardContent(model, model.questionnaire);
+    var storyCardDiv = storyCardDisplay.generateStoryCardContent(model, model.questionnaire());
     
      return storyCardDiv;
 }

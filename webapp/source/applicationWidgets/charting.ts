@@ -349,7 +349,7 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
     var stories = graphBrowserInstance.allStories;
     for (var storyIndex in stories) {
         var story = stories[storyIndex];
-        var xValue = correctForUnanswered(question, story.answer(question.id));
+        var xValue = correctForUnanswered(question, story.fieldValue(question.id));
         
         var xHasCheckboxes = _.isObject(xValue);
         // fast path
@@ -451,7 +451,7 @@ export function d3BarChart(graphBrowserInstance: GraphHolder, question, storiesS
             var tooltipText =
                 "Title: " + story.storyName() +
                 // "\nID: " + story.storyID() + 
-                "\n" + nameForQuestion(question) + ": " + displayTextForAnswer(story.answer(question.id)) +
+                "\n" + nameForQuestion(question) + ": " + displayTextForAnswer(story.fieldValue(question.id)) +
                 "\nText: " + limitStoryTextLength(story.storyText());
             return tooltipText;
         });
@@ -489,10 +489,10 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
     var stories = graphBrowserInstance.allStories;
     for (var storyIndex in stories) {
         var story = stories[storyIndex];
-        var xValue = correctForUnanswered(scaleQuestion, story.answer(scaleQuestion.id));
+        var xValue = correctForUnanswered(scaleQuestion, story.fieldValue(scaleQuestion.id));
         if (choiceQuestion) {
             // Only count results where the choice matches
-            var choiceValue = correctForUnanswered(choiceQuestion, story.answer(choiceQuestion.id));
+            var choiceValue = correctForUnanswered(choiceQuestion, story.fieldValue(choiceQuestion.id));
             var skip = false;
             if (choiceQuestion.displayType === "checkboxes") {
                 if (!choiceValue[choice]) skip = true;
@@ -705,8 +705,8 @@ export function d3ScatterPlot(graphBrowserInstance: GraphHolder, xAxisQuestion, 
     var stories = graphBrowserInstance.allStories;
     for (var index in stories) {
         var story = stories[index];
-        var xValue = correctForUnanswered(xAxisQuestion, story.answer(xAxisQuestion.id));
-        var yValue = correctForUnanswered(yAxisQuestion, story.answer(yAxisQuestion.id));
+        var xValue = correctForUnanswered(xAxisQuestion, story.fieldValue(xAxisQuestion.id));
+        var yValue = correctForUnanswered(yAxisQuestion, story.fieldValue(yAxisQuestion.id));
         
         // TODO: What do do about unanswered?
         if (xValue === unansweredKey || yValue === unansweredKey) continue;
@@ -808,8 +808,8 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
     var stories = graphBrowserInstance.allStories;
     for (var index in stories) {
         var story = stories[index];
-        var xValue = correctForUnanswered(xAxisQuestion, story.answer(xAxisQuestion.id));
-        var yValue = correctForUnanswered(yAxisQuestion, story.answer(yAxisQuestion.id));
+        var xValue = correctForUnanswered(xAxisQuestion, story.fieldValue(xAxisQuestion.id));
+        var yValue = correctForUnanswered(yAxisQuestion, story.fieldValue(yAxisQuestion.id));
         
         var xHasCheckboxes = _.isObject(xValue);
         var yHasCheckboxes = _.isObject(yValue);
