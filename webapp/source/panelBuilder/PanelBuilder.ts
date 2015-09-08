@@ -189,6 +189,11 @@ class PanelBuilder {
     buildField(model, fieldSpecification) {
         // console.log("buildField", fieldSpecification);
         
+        var displayVisible = fieldSpecification.displayVisible;
+        if (displayVisible === undefined) displayVisible = true;
+        if (typeof displayVisible === "function") displayVisible = displayVisible(this, model, fieldSpecification);
+        if (!displayVisible) return m("div");
+
         var addFunction = buildingFunctions[fieldSpecification.displayType];
         if (!addFunction) {
             if (debugFailIfMissingWidgets) {
