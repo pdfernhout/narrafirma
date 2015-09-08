@@ -10,20 +10,14 @@ export function setProject(theProject) {
     project = theProject;
 }
 
-// TODO: Just for testing!!!
-var TestDataToRemove = {};
-
 function getStoryField(storyID, fieldName, defaultValue) {
-    var extra = TestDataToRemove[storyID] || {};
-    var result = extra[fieldName];
-    if (result === undefined) result = defaultValue;
+    var result = project.tripleStore.queryLatestC(storyID, fieldName);
+    if (result === undefined || result === null) result = defaultValue;
     return result;
 }
 
 function setStoryField(storyID, fieldName, value) {
-    var extra = TestDataToRemove[storyID] || {};
-    extra[fieldName] = value;
-    TestDataToRemove[storyID] = extra;
+    project.tripleStore.addTriple(storyID, fieldName, value);
     return value;
 }
 
