@@ -68,12 +68,15 @@ class ValuePathResolver {
             }
             
             var nextModel;
-            var useAccessorFunction = !useTripleStore && typeof currentModel[currentKey] === "function";
+            var currentModelDirectFieldValue = currentModel[currentKey];
+            var useAccessorFunction = !useTripleStore && typeof currentModelDirectFieldValue === "function";
             
             if (useTripleStore) {
                 nextModel = (<Project>this.context.project).tripleStore.queryLatestC(currentModel, currentKey);
-            } if (useAccessorFunction) {
+            } else if (useAccessorFunction) {
                 nextModel = currentModel[currentKey]();
+            } else if (currentModelDirectFieldValue === undefined && currentModel.fieldValue && typeof currentModel.fieldValue === "function") {
+                nextModel = currentModel.fieldValue(currentKey);
             } else {
                 nextModel = currentModel[currentKey];
             }
@@ -109,7 +112,8 @@ class ValuePathResolver {
     resolve(value = undefined): any {
         // console.log("resolve", this.valuePath, value, this);
         var modelAndField = this.resolveModelAndField();
-        var useAccessorFunction = !modelAndField.useTripleStore && typeof modelAndField.model[modelAndField.field] === "function";
+        var modelFieldDirectValue = modelAndField.model[modelAndField.field];
+        var useAccessorFunction = !modelAndField.useTripleStore && typeof modelFieldDirectValue === "function";
         
         if (value !== undefined) {
             if (modelAndField === undefined) {
@@ -121,6 +125,8 @@ class ValuePathResolver {
                 (<Project>this.context.project).tripleStore.addTriple(modelAndField.model, modelAndField.field, value);
             } else if (useAccessorFunction) {
                 modelAndField.model[modelAndField.field](value);
+            } else if (modelFieldDirectValue === undefined && modelAndField.model.fieldValue && typeof modelAndField.model.fieldValue === "function") {
+                modelAndField.model.fieldValue(modelAndField.field, value);
             } else {
                 modelAndField.model[modelAndField.field] = value;
             }
@@ -135,6 +141,8 @@ class ValuePathResolver {
                 value = (<Project>this.context.project).tripleStore.queryLatestC(modelAndField.model, modelAndField.field);
             } else if (useAccessorFunction) {
                 value = modelAndField.model[modelAndField.field]();
+            } else if (modelFieldDirectValue === undefined && modelAndField.model.fieldValue && typeof modelAndField.model.fieldValue === "function") {
+                return modelAndField.model.fieldValue(modelAndField.field);
             } else {
                 value = modelAndField.model[modelAndField.field];
             }
