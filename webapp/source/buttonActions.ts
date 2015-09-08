@@ -527,6 +527,7 @@ export function printCatalysisReport() {
 export function copyInterpretationsToClusteringDiagram() {
     // TODO: Finish this
     console.log("copyInterpretationsToClusteringDiagram", clientState.catalysisReportIdentifier);
+    alert("Unfinished");
 }
 
 export var enterSurveyResult = openSurveyDialog;
