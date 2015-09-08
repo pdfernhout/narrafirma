@@ -10,6 +10,8 @@ import surveyCollection = require("./surveyCollection");
 import surveyStorage = require("./surveyStorage");
 import translate = require("./panelBuilder/translate");
 import storyCardDisplay = require("./storyCardDisplay");
+import generateRandomUuid = require("./pointrel20150417/generateRandomUuid");
+import toaster = require("./panelBuilder/toaster");
 // import m = require("mithril");
 
 "use strict";
@@ -602,7 +604,37 @@ export function copyInterpretationsToClusteringDiagram() {
     
     console.log("allInterpretations", allInterpretations);
     
-    alert("Unfinished");
+    var clusteringDiagram = project.tripleStore.queryLatestC(shortName, "interpretationsClusteringDiagram");
+    
+    console.log("clusteringDiagram before", clusteringDiagram);
+    
+    if (!clusteringDiagram) {
+        // TODO: This shoudl be done by clustering diagram library -- redundant code
+        clusteringDiagram = {
+            surfaceWidthInPixels: 800,
+            surfaceHeightInPixels: 500,
+            items: [],
+            changesCount: 0
+        };
+    }
+    
+    allInterpretations.forEach((interpretation) => {
+        // TODO: Do not make duplicates by name
+        clusteringDiagram.items.push({
+            text: interpretation.name,
+            "type": "item",
+            url: interpretation.text,
+            uuid: generateRandomUuid(),
+            x: 100,
+            y: 100
+        });
+    });
+
+    console.log("clusteringDiagram after", clusteringDiagram);
+    
+    project.tripleStore.addTriple(shortName, "interpretationsClusteringDiagram", clusteringDiagram);
+
+    toaster.toast("Added " + allInterpretations.length + " interpretations");
 }
 
 export var enterSurveyResult = openSurveyDialog;
