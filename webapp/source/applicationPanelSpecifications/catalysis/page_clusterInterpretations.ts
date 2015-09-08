@@ -26,6 +26,13 @@ var panel: Panel = {
             displayPrompt: "Choose a catalysis report to work on"
         },
         {
+            id: "project_copyInterpretations",
+            valueType: "none",
+            displayType: "button",
+            displayConfiguration: "copyInterpretationsToClusteringDiagram",
+            displayPrompt: "Copy interpretations to clustering diagram"
+        },
+        {
             id: "project_interpretationsClusteringDiagram",
             valueType: "object",
             valuePath: "/clientState/catalysisReportIdentifier",

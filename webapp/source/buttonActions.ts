@@ -524,6 +524,11 @@ export function printCatalysisReport() {
     
 }
 
+export function copyInterpretationsToClusteringDiagram() {
+    // TODO: Finish this
+    console.log("copyInterpretationsToClusteringDiagram", clientState.catalysisReportIdentifier);
+}
+
 export var enterSurveyResult = openSurveyDialog;
 export var toggleWebActivationOfSurvey = surveyCollection.toggleWebActivationOfSurvey;
 export var storyCollectionStop = surveyCollection.storyCollectionStop;
