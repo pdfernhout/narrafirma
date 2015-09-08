@@ -20,6 +20,7 @@ STORY THEMER
 H Move theming/tagging functionality into story browser
 H Add questions and answers as theming (structured annotations) (by adding a tag in story browser)
 H Need to be able to add comment to story (by adding a tag in story browser)
+H Add button to export data with themes
 
 GRAPH BROWSER
 H Add low and high labels for slider/range questions (on graphs)
@@ -47,6 +48,8 @@ H Make a SIMPLE Project Administration section to go with home page button for u
 GENERAL
 H Think about and improve issue of values that can be set only once like catalysis report name and story collection
 H Create script or procedure to deal with SVN for WordPress
+H Test readonly use as anonymous under WordPress
+H Make panels read only when user permissions are read only
 
 ERRORS
 
@@ -175,7 +178,7 @@ W Sliders
   Need "does not apply" for sliders
   Sliders too tiny (hard to see color) 
   Need to jiggle slider button or it records nothing (needs work)
-  Need a flip axis for slider for catalysis when graphing 
+  Need a flip axis for slider for catalysis when graphing
 
 THINGS CYNTHIA NOTICED WHILE DOING HELP (probably redundant but just in case)
 M Slider should have a "does not apply" option
@@ -185,6 +188,8 @@ L Histograms should have mean and standard deviation marked (and maybe median an
 
 
 ==== Wish list:
+
+Recommendation button has different shape than others
 
 Ensure timestamp for latest triple store messages is being set on server and not client
 
@@ -849,7 +854,7 @@ DONE Read-only version of checkboxes and radiobutton widgets
 DONE Read-only flag passed reursively through nested GridWithItemPanels
 DONE Improve file names so WebContent is webapp, index.html is narrafirma.hthml, and project-admin.html is admin.html
 DONE Remove obsolete out-of-date text files that defined the original questions and templates used to generate the code to avoid confusing new developers or code searching
-DONE Load panel definitions and navigation data from TypeScript modules instead of JSON (so it is easier to read and validate)
+DONE Load panel definitions and navigation data to TypeScript modules instead of JSON (so it is easier to read and validate)
 DONE Create "Panel" TypesScript definition to validate panel definitions
 DONE Fix bugs with path resolution for triple store fields in value path resolver and grid
 DONE Fix bug where nested grids did not transition correctly from readonly to editable
@@ -866,7 +871,8 @@ DONE Fix something you entered wrong (only by deleting, or perhaps overriding us
 DONE Need to be able to scrub user story data (by adding overrides using tags in story browser)
 DONE Move ignore/delete functionality into story browser
 DONE Ignore stories that have an ignore tag set (like if a test story or a duplicate)
-DONE Imporve clustering diagram to use value path
+DONE Improve clustering diagram to use value path
 DONE Add support for displayVisible field in field specification which can be a function
 DONE Support clustering interpretations into perspectives in catalysis (on page after pattern browser) (with table?) [using diagram]
 DONE Populate clustering space in "Cluster interpretations" page with all entered interpretations (names) (with button)
+DONE Shorten title on pages to NarraFirma
