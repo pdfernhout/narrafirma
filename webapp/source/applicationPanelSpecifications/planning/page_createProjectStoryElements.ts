@@ -44,7 +44,6 @@ var panel: Panel = {
             valueType: "object",
             required: true,
             displayType: "clusteringDiagram",
-            displayConfiguration: "project_projectStoryElementsAnswersClusteringDiagram",
             displayPrompt: "<p><b>3</b>. When you have considered all of your project stories, <b>cluster</b> your answers together. Drag the circles to place like with like.</p> <p><b>4</b>. Give each cluster of answers a <b>name</b>. Click the <b>New cluster</b> button to represent each cluster name on the diagram.</p>"
         },
         {
@@ -58,7 +57,6 @@ var panel: Panel = {
             valueType: "object",
             required: true,
             displayType: "clusteringDiagram",
-            displayConfiguration: "project_projectStoryElementsAttributeGroupsClusteringDiagram",
             displayPrompt: ""
         },
         {

@@ -33,12 +33,11 @@ var panel: Panel = {
             displayPrompt: "Copy interpretations to clustering diagram"
         },
         {
-            id: "project_interpretationsClusteringDiagram",
+            id: "interpretationsClusteringDiagram",
             valueType: "object",
-            valuePath: "/clientState/catalysisReportIdentifier",
+            valuePath: "/clientState/catalysisReportIdentifier/interpretationsClusteringDiagram",
             required: true,
             displayType: "clusteringDiagram",
-            displayConfiguration: "project_interpretationsClusteringDiagram",
             displayPrompt: "Cluster interpretations into perspectives"
         }
     ]
