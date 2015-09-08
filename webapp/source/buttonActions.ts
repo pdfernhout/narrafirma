@@ -604,6 +604,8 @@ export function copyInterpretationsToClusteringDiagram() {
     
     console.log("allInterpretations", allInterpretations);
     
+    if (!confirm("Copy intepretations for this catalysys report into clustering diagram?")) return;
+    
     var clusteringDiagram = project.tripleStore.queryLatestC(shortName, "interpretationsClusteringDiagram");
     
     console.log("clusteringDiagram before", clusteringDiagram);
@@ -618,23 +620,34 @@ export function copyInterpretationsToClusteringDiagram() {
         };
     }
     
+    var existingItemNames = {};
+    
+    clusteringDiagram.items.forEach((item) => {
+        existingItemNames[item.text] = true;
+    });
+    
+    var addedItemCount = 0;
+    var shiftPerItem = 3;
+    
     allInterpretations.forEach((interpretation) => {
-        // TODO: Do not make duplicates by name
-        clusteringDiagram.items.push({
-            text: interpretation.name,
-            "type": "item",
-            url: interpretation.text,
-            uuid: generateRandomUuid(),
-            x: 100,
-            y: 100
-        });
+        if (!existingItemNames[interpretation.name]) {
+            addedItemCount++;
+            clusteringDiagram.items.push({
+                text: interpretation.name,
+                "type": "item",
+                url: interpretation.text,
+                uuid: generateRandomUuid(),
+                x: 100 + addedItemCount * shiftPerItem,
+                y: 100 + addedItemCount * shiftPerItem
+            });
+        }
     });
 
     console.log("clusteringDiagram after", clusteringDiagram);
     
     project.tripleStore.addTriple(shortName, "interpretationsClusteringDiagram", clusteringDiagram);
 
-    toaster.toast("Added " + allInterpretations.length + " interpretations");
+    toaster.toast("Added " + addedItemCount + " interpretations");
 }
 
 export var enterSurveyResult = openSurveyDialog;
