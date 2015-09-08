@@ -17,14 +17,9 @@ H Implement "export session agenda" (to HTML) for sensemaking
 H Implement exportPresentationOutline in domain buttonClicked - in Return, "Prepare outline of project presentation"
 
 STORY THEMER
-H Move theming/tagging (and ignore/delete) functionality into story browser
-  Fixing Data -- stage
-  Delete a story you entered wrong (probably by setting an "ignore" tag in the story browser)
-  Fix something you entered wrong (only by deleting, or perhaps overriding using extra tags in the story browser)
-  Mark questions as don't pay any attention to question / Discard question from catalysis
-  Add questions and answers as theming (structured annotations) (by adding a tag in story browser)
-  Need to be able to add comment to story (by adding a tag in story browser)
-  Need to be able to scrub user story data (by adding overrides using tags in story browser)
+H Move theming/tagging functionality into story browser
+H Add questions and answers as theming (structured annotations) (by adding a tag in story browser)
+H Need to be able to add comment to story (by adding a tag in story browser)
 
 GRAPH BROWSER
 H Add low and high labels for slider/range questions (on graphs)
@@ -128,6 +123,7 @@ CLUSTERING (CATALYSIS)
 CATALYSIS REPORT
 
 CATALYSIS
+M Mark questions as don't pay any attention to question / Discard question from catalysis
 X Need to be able to select text in existing story to AddToExcerpts
 X Support storiesList -- for choosing a resonant story
 
@@ -852,7 +848,7 @@ DONE (earlier) Support trendsReport -- shows text and graphs in report based on 
 DONE (earlier) Change "storiesList" functionality to - they have to paste in the name/text of the story. with a textarea
 DONE Logout link does not work in WordPress plugin webapp
 DONE Save and load pattern list with observations on trends report
-DONE Add support in sanitize HTML for allowing specific whitelisted CSS classes sing "tag.className" notation
+DONE Add support in sanitize HTML for allowing specific whitelisted CSS classes using "tag.className" notation
 DONE Error on "Start story collection" page, when looking at collection: "Exception: Error: tag is not alphanumeric: span class="narrafirma-special-warning"" [now uses <span.narrafirma-special-warning>]
 DONE Support adding interpretations to observations in trendsReport (pattern browser)
 DONE When viewing grid data, it should not look (or be) editable
@@ -871,3 +867,8 @@ DONE Remove user of "__survey_" from application fields like storyText and use s
 DONE Simplify _storyID and _participantID to not have leading underscores
 DONE Add progress bar for import
 DONE Resolve issue with SHA256 calculation mismatch for content which has escaped JSON text like slashes [in WordPress PHP plugin]
+DONE Fixing Data -- stage [by editing Story]
+DONE Delete a story you entered wrong (probably by setting an "ignore" tag in the story browser)
+DONE Fix something you entered wrong (only by deleting, or perhaps overriding using extra tags in the story browser)
+DONE Need to be able to scrub user story data (by adding overrides using tags in story browser)
+DONE Move ignore/delete functionality into story browser
