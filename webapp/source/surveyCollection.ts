@@ -36,7 +36,7 @@ export class Story {
         return this.model.storyID;
     }
     
-    ignore(): boolean {
+    isIgnored(): boolean {
         return getStoryField(this.model.storyID, "ignore", "").trim() !== "";
     }
      
@@ -44,23 +44,27 @@ export class Story {
         return this.model.questionnaire;
     }
     
-    storyText() {
-        return getStoryField(this.model.storyID, "storyText", this.model.storyText);
+    ignore(newValue = undefined) {
+        return this.fieldValue("ignore", newValue);
     }
     
-    storyName() {
-        return getStoryField(this.model.storyID, "storyName", this.model.storyName);
+    storyText(newValue = undefined) {
+        return this.fieldValue("storyText", newValue);
     }
     
-    elicitingQuestion() {
-        return getStoryField(this.model.storyID, "elicitingQuestion", this.model.elicitingQuestion);
+    storyName(newValue = undefined) {
+        return this.fieldValue("storyName", newValue);
     }
     
-    answer(questionIdentifier, newValue = undefined) {
+    elicitingQuestion(newValue = undefined) {
+        return this.fieldValue("elicitingQuestion", newValue);
+    }
+    
+    fieldValue(fieldName, newValue = undefined) {
         if (newValue === undefined) {
-            return getStoryField(this.model.storyID, questionIdentifier, this.model[questionIdentifier]) || "";
+            return getStoryField(this.model.storyID, fieldName, this.model[fieldName]) || "";
         } else {
-            return setStoryField(this.model.storyID, questionIdentifier, newValue);
+            return setStoryField(this.model.storyID, fieldName, newValue);
         }
     }
 }
@@ -97,7 +101,7 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier, includeI
                 // Add questionnaire for display
                 story.questionnaire = surveyResult.questionnaire;
                 var wrappedStory = new Story(story);
-                if (includeIgnored || !wrappedStory.ignore()) { 
+                if (includeIgnored || !wrappedStory.isIgnored()) { 
                     result.push(wrappedStory);
                 }
             }

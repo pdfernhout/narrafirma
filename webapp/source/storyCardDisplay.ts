@@ -70,7 +70,7 @@ function displayHTMLForSelect(fieldSpecification, fieldName, value) {
 
 function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecification, nobreak = null) {
     // if (!model[fieldSpecification.id]) return "";
-    var value = storyModel.answer(fieldSpecification.id);
+    var value = storyModel.fieldValue(fieldSpecification.id);
     // TODO: extra checking here for problems with test data -- could probably be changed back to just displayName eventually
     var fieldName = fieldSpecification.displayName || fieldSpecification.displayPrompt;
     var result = [];

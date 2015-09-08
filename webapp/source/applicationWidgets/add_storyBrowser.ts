@@ -287,8 +287,9 @@ class StoryBrowser {
                 itemPanelSpecification: this.itemPanelSpecification,
                 gridConfiguration: {
                     idProperty: "storyID",
-                    columnsToDisplay: ["storyName", "storyText"],
+                    columnsToDisplay: ["storyName", "storyText", "ignore"],
                     viewButton: true,
+                    editButton: true,
                     navigationButtons: true
                }
             }
@@ -366,6 +367,14 @@ class StoryBrowser {
         
         this.itemPanelSpecification = this.makeItemPanelSpecificationForQuestions(this.questions);
         
+        this.itemPanelSpecification.panelFields.unshift({
+            id: "ignore",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Ignore",
+            displayPrompt: "Reason to ignore this story?"
+        });
+        
         /*
         // TODO: What to do about current selection in filter widgets?
         
@@ -378,20 +387,15 @@ class StoryBrowser {
         */
     }
     
-    buildStoryDisplayPanel(panelBuilder, storyModel: surveyCollection.Story) {
-        var storyCardDiv = storyCardDisplay.generateStoryCardContent(storyModel, this.currentQuestionnaire);
+    buildStoryDisplayPanel(panelBuilder: PanelBuilder, storyModel: surveyCollection.Story) {
+        var storyDisplay;
+        if (panelBuilder.readOnly) {
+            storyDisplay = storyCardDisplay.generateStoryCardContent(storyModel, this.currentQuestionnaire);
+        } else {
+            storyDisplay = panelBuilder.buildFields(this.questions, storyModel);
+        }
         
-        return m("div", [
-            storyCardDiv,
-            m("br"),
-            "Ignore reason:",
-            m("input", {onchange: m.withAttr("value", storyModel.answer.bind(storyModel, "ignore")), value: storyModel.answer("ignore")}),
-            m("br"),
-            "Q_Ended well:",
-            m("input", {onchange: m.withAttr("value", storyModel.answer.bind(storyModel, "Q_Ended well")), value: storyModel.answer("Q_Ended well")}),
-            m("br"),
-            m("pre", "A per story div: " + JSON.stringify(storyModel.model, null, 4))
-        ]);
+        return storyDisplay;
     }
     
     makeItemPanelSpecificationForQuestions(questions) {
