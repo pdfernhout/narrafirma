@@ -26,11 +26,23 @@ var panel: Panel = {
             displayPrompt: "Choose a catalysis report to work on"
         },
         {
-            id: "project_copyInterpretations",
+            id: "promptToSelectCatalysisReportForInterpretations",
+            valueType: "none",
+            displayType: "label",
+            displayPrompt: "<strong>Please select a catalysis report above to get a clustering diagram here.</strong>",
+            displayVisible: function(panelBuilder, model) {
+                return !panelBuilder.clientState.catalysisReportIdentifier;
+            }
+        },
+        {
+            id: "copyInterpretationsButton",
             valueType: "none",
             displayType: "button",
             displayConfiguration: "copyInterpretationsToClusteringDiagram",
-            displayPrompt: "Copy interpretations to clustering diagram"
+            displayPrompt: "Copy interpretations to clustering diagram",
+            displayVisible: function(panelBuilder, model) {
+                return !!panelBuilder.clientState.catalysisReportIdentifier;
+            }
         },
         {
             id: "interpretationsClusteringDiagram",
@@ -38,7 +50,10 @@ var panel: Panel = {
             valuePath: "/clientState/catalysisReportIdentifier/interpretationsClusteringDiagram",
             required: true,
             displayType: "clusteringDiagram",
-            displayPrompt: "Cluster interpretations into perspectives"
+            displayPrompt: "Cluster interpretations into perspectives",
+            displayVisible: function(panelBuilder, model) {
+                return !!panelBuilder.clientState.catalysisReportIdentifier;
+            }
         }
     ]
 };
