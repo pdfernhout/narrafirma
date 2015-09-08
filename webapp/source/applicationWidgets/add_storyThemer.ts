@@ -4,6 +4,10 @@ import topic = require("../pointrel20150417/topic");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import m = require("mithril");
+import GridWithItemPanel = require("../panelBuilder/GridWithItemPanel");
+import Project = require("../Project");
+import storyCardDisplay = require("../storyCardDisplay");
+
 
 "use strict";
 
@@ -148,16 +152,185 @@ function insertStoryThemer(panelBuilder: PanelBuilder, pagePane, model, fieldSpe
 }
 */
 
+// TODO: Next two functions from add_storyBrowser and so are duplicate code
+
+function buildStoryDisplayPanel(panelBuilder: PanelBuilder, model) {
+    var storyCardDiv = storyCardDisplay.generateStoryCardContent(model, model.questionnaire);
+    
+     return storyCardDiv;
+}
+
+function makeItemPanelSpecificationForQuestions(questions) {
+    // TODO: add more participant and survey info, like timestamps and participant ID
+    
+    var storyItemPanelSpecification = {
+         id: "patternBrowserQuestions",
+         panelFields: questions,
+         buildPanel: buildStoryDisplayPanel
+    };
+    
+    return storyItemPanelSpecification;
+}
+
+class StoryThemer {
+    project: Project = null;
+    catalysisReportIdentifier: string = null;
+    
+    allStories = [];
+    questions = [];
+    
+    modelForStoryGrid = {storiesSelectedInGraph: []};
+    storyGridFieldSpecification: GridDisplayConfiguration = null;
+    storyGrid: GridWithItemPanel = null;
+     
+    constructor(args) {
+        this.project = args.panelBuilder.project;
+        
+        // Story grid initialization
+        
+        var storyItemPanelSpecification = makeItemPanelSpecificationForQuestions(this.questions);
+
+        var storyGridConfiguration = {
+            idProperty: "storyID",
+            columnsToDisplay: ["storyName", "storyText"],
+            viewButton: true,
+            navigationButtons: true
+        };
+        
+        this.storyGridFieldSpecification = {
+            id: "storiesSelectedInGraph",
+            itemPanelID: undefined,
+            itemPanelSpecification: storyItemPanelSpecification,
+            displayConfiguration: {
+                itemPanelSpecification: storyItemPanelSpecification,
+                gridConfiguration: storyGridConfiguration
+            },
+            gridConfiguration: storyGridConfiguration
+        };
+
+        this.storyGrid = new GridWithItemPanel({panelBuilder: args.panelBuilder, model: this.modelForStoryGrid, fieldSpecification: this.storyGridFieldSpecification});
+    }
+    
+    static controller(args) {
+        // console.log("Making PatternBrowser: ", args);
+        return new StoryThemer(args);
+    }
+    
+    static view(controller, args) {
+        // console.log("PatternBrowser view called");
+        
+        return controller.calculateView(args);
+    }
+    
+    calculateView(args) {
+        // console.log("%%%%%%%%%%%%%%%%%%% PatternBrowser view called");
+        var panelBuilder: PanelBuilder = args.panelBuilder;
+        
+        // Handling of caching of questions and stories
+        var catalysisReportIdentifier = this.getCurrentCatalysisReportIdentifier(args);
+        if (catalysisReportIdentifier !== this.catalysisReportIdentifier) {
+            this.catalysisReportIdentifier = catalysisReportIdentifier;
+            // console.log("storyCollectionIdentifier changed", this.catalysisReportIdentifier);
+            this.currentCatalysisReportChanged(this.catalysisReportIdentifier);
+        }
+        
+        var parts;
+        
+        if (!this.catalysisReportIdentifier) {
+            parts = [m("div.narrafirma-choose-catalysis-report", "Please select a catalysis report to work with")];
+        } else {
+            parts = [
+                this.storyGrid.calculateView()
+            ];
+        }
+        
+        // TODO: Need to set class
+        return m("div", parts);
+    }
+    
+    currentCatalysisReportChanged(catalysisReportIdentifier) {
+        // console.log("currentCatalysisReportChanged", catalysisReportIdentifier);
+        
+        if (!catalysisReportIdentifier) {
+            // TODO: should clear everything
+            return;
+        }
+        
+        // TODO: Handle multiple story collections
+        // TODO: Better handling when can't find something
+        
+        var storyCollectionsIdentifier = this.project.tripleStore.queryLatestC(catalysisReportIdentifier, "catalysisReport_storyCollections");
+        var storyCollectionItems = this.project.tripleStore.getListForSetIdentifier(storyCollectionsIdentifier);
+        
+        if (storyCollectionItems.length === 0) return;
+        
+        var storyCollectionPointer = storyCollectionItems[storyCollectionItems.length - 1];
+        if (!storyCollectionPointer) return;
+    
+        var storyCollectionIdentifier = this.project.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
+        
+        var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+        if (!questionnaire) {
+            // TODO: Should clear more stuff?
+            return;
+        }
+        
+        this.allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
+        // console.log("allStories", this.allStories);
+        
+        this.questions = surveyCollection.collectQuestionsForQuestionnaire(questionnaire);
+        // console.log("questions", this.questions);
+        
+        // Update item panel in story list so it has the correct header
+        this.storyGridFieldSpecification.itemPanelSpecification = makeItemPanelSpecificationForQuestions(this.questions);
+        this.storyGrid.updateDisplayConfigurationAndData(this.storyGridFieldSpecification);
+        this.updateStoriesPane(this.allStories);
+    }
+    
+    findCatalysisReport(shortName) {
+        var catalysisReports = this.project.tripleStore.queryLatestC(this.project.projectIdentifier, "project_catalysisReports");
+        if (!catalysisReports) return null;
+        var catalysisReportIdentifiers = this.project.tripleStore.getListForSetIdentifier(catalysisReports);
+        for (var i = 0; i < catalysisReportIdentifiers.length; i++) {
+            var reportShortName = this.project.tripleStore.queryLatestC(catalysisReportIdentifiers[i], "catalysisReport_shortName");
+            if (reportShortName === shortName) {
+                return catalysisReportIdentifiers[i];
+            }
+        }
+        return null;
+    }
+    
+    // TODO: Similar to what is in add_graphBrowser
+    getCurrentCatalysisReportIdentifier(args) {
+        var panelBuilder = args.panelBuilder;
+        var model = args.model;
+        var fieldSpecification = args.fieldSpecification;
+        
+        // Get selected catalysis report
+        var catalysisReportShortName = valuePathResolver.newValuePathForFieldSpecification(panelBuilder, model, fieldSpecification)();
+    
+        // console.log("catalysisReportShortName", catalysisReportShortName);
+        
+        if (!catalysisReportShortName) return null;
+        
+        return this.findCatalysisReport(catalysisReportShortName);
+    }
+    
+    updateStoriesPane(stories) {
+        this.modelForStoryGrid.storiesSelectedInGraph = stories;
+        this.storyGrid.updateData();
+    }
+}
+
 function add_storyThemer(panelBuilder: PanelBuilder, model, fieldSpecification) {
-    /*
-    var questionContentPane = panelBuilder.createQuestionContentPaneWithPrompt(fieldSpecification);
+    var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
     
-    var storyThemerInstance = insertStoryThemer(panelBuilder, questionContentPane, model, fieldSpecification);
-    questionContentPane.resize();
-    return storyThemerInstance;
-    */
-    
-    return m("div", "Need to convert story themer to Mithril");
+    var patternBrowser = m.component(<any>StoryThemer, {key: fieldSpecification.id, panelBuilder: panelBuilder, model: model, fieldSpecification: fieldSpecification});
+ 
+    return m("div", [
+        prompt,
+        patternBrowser
+     ]);
 }
 
 export = add_storyThemer;

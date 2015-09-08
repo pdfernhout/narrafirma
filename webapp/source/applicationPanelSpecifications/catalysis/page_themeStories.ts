@@ -31,12 +31,6 @@ var panel: Panel = {
             valueType: "none",
             displayType: "storyThemer",
             displayPrompt: "Theme stories"
-        },
-        {
-            id: "mockupThemingLabel_unfinished",
-            valueType: "none",
-            displayType: "label",
-            displayPrompt: "(Unfinished: The user will use this area to theme stories.)"
         }
     ]
 };
