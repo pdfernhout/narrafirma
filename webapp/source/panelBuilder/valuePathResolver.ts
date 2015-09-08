@@ -112,6 +112,10 @@ class ValuePathResolver {
     resolve(value = undefined): any {
         // console.log("resolve", this.valuePath, value, this);
         var modelAndField = this.resolveModelAndField();
+        if (!modelAndField) {
+            console.log("ERROR: modelAndField is undefined or null", this);
+            return null;
+        }
         var modelFieldDirectValue = modelAndField.model[modelAndField.field];
         var useAccessorFunction = !modelAndField.useTripleStore && typeof modelFieldDirectValue === "function";
         
