@@ -214,10 +214,10 @@ export function exportStoryCollection() {
     addOutputLine(header1);
     addOutputLine(header2);
     
-    function dataForQuestions(questions, story, outputLine) {
+    function dataForQuestions(questions, story: surveyCollection.Story, outputLine) {
         for (var i = 0; i < questions.length; i++) {
             var question = questions[i];
-            var value = story[question.id];
+            var value = story.fieldValue(question.id);
             if (question.valueOptions && question.displayType === "checkboxes") {
                question.valueOptions.forEach(function(option) {
                    outputLine.push(value[option] ? option : "");   

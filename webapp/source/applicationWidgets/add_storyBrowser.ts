@@ -9,13 +9,15 @@ import GridWithItemPanel = require("../panelBuilder/GridWithItemPanel");
 
 // story browser support
 
+// TODO: Need to update answer counts in filters if change value in story that affectes selected filter question
+
 // TODO: Translate
 var unansweredIndicator = "{Unanswered}";
 
-function isMatch(story, questionChoice, selectedAnswerChoices) {
+function isMatch(story: surveyCollection.Story, questionChoice, selectedAnswerChoices) {
     // console.log("isMatch", questionChoice, selectedAnswerChoices);
     if (!questionChoice) return true;
-    var questionAnswer = story[questionChoice.id];
+    var questionAnswer = story.fieldValue(questionChoice.id);
     if (questionAnswer === undefined || questionAnswer === null || questionAnswer === "") {
         questionAnswer = unansweredIndicator;
     } else if (typeof questionAnswer === "object") {
@@ -40,9 +42,9 @@ function optionsFromQuestion(question, stories) {
     
     // Compute how many of each answer -- assumes typically less than 200-1000 stories
     var totals = {};
-    stories.forEach(function(item) {
+    stories.forEach(function(story: surveyCollection.Story) {
         // console.log("optionsFromQuestion item", item, question.id, item[question.id]);
-        var choice = item[question.id];
+        var choice = story.fieldValue(question.id);
         if (choice === undefined || choice === null || choice === "") {
             // Do not include "0" as unanswered
             // console.log("&&&& Undefined or empty choice", choice);
