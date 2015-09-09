@@ -299,6 +299,15 @@ class GridWithItemPanel {
         return controller.calculateView();
     }
     
+    addNavigationButtons(buttons) {
+        // TODO: Improve navigation enabling
+        var navigationDisabled = this.isEditing() || this.dataStore.isEmpty() || undefined;
+        buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "start"), disabled: navigationDisabled}, translate("#button_navigateStart|[<<")));
+        buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "previous"), disabled: navigationDisabled}, translate("#button_navigatePrevious|<")));
+        buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "next"), disabled: navigationDisabled}, translate("#button_navigateNext|>")));
+        buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "end"), disabled: navigationDisabled}, translate("#button_navigateEnd|>>]")));
+    }
+    
     calculateView() {
         // console.log("GridWithItemPanel calculateView", this.dataStore);
         
@@ -344,12 +353,7 @@ class GridWithItemPanel {
         }
         
         if (this.gridConfiguration.navigationButtons) {
-            // TODO: Improve navigation enabling
-            var navigationDisabled = this.isEditing() || this.dataStore.isEmpty() || undefined;
-            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "start"), disabled: navigationDisabled}, translate("#button_navigateStart|[<<")));
-            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "previous"), disabled: navigationDisabled}, translate("#button_navigatePrevious|<")));
-            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "next"), disabled: navigationDisabled}, translate("#button_navigateNext|>")));
-            buttons.push(m("button", {onclick: this.navigateClicked.bind(this, "end"), disabled: navigationDisabled}, translate("#button_navigateEnd|>>]")));
+            this.addNavigationButtons(buttons);
         }
         
         var buttonPanel = m("div.narrafirma-button-panel", buttons);
@@ -575,7 +579,7 @@ class GridWithItemPanel {
         this.displayMode = null;
     }
     
-    private navigateClicked(direction: string) {
+    navigateClicked(direction: string) {
         if (this.dataStore.isEmpty()) return;
         var newPosition;
         switch (direction) {
