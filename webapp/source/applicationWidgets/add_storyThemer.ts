@@ -57,100 +57,6 @@ function addThemeButtonPressed(themeEntryComboBox, storyThemesStore, allThemes) 
     
     storyThemesStore.add(existingTheme);
 }
-
-function buildThemerPanel(panelBuilder: PanelBuilder, model) {    
-    // Encode all user-supplied text to ensure it does not create HTML issues
-    var storyName = _.escape(model.storyName);
-    var storyText = _.escape(model.storyText);
-    
-    var storyContent = "<b><h2>" + storyName + "</h2></b>" + storyText;
-    
-    var storyPane = new ContentPane({
-        content: storyContent           
-    });
-    storyPane.placeAt(contentPane);
-    
-    var themesPane = new ContentPane();
-    themesPane.placeAt(contentPane);
-    
-    // TODO: Need to hook up this with stories somehow, especially given they are loaded and saved outside the project
-    // var testItem = {id: "test", name: "test"};
-    var storyThemes = [];
-    var storyThemesStore = GridWithItemPanel["newMemoryTrackableStore"](storyThemes, "id");
-    
-    var configuration2 = {removeButton: true, moveUpDownButtons: true, columnsToDisplay: true};
-    var itemPanelSpecification2 = {
-        "id": "storyThemeQuestions",
-        panelFields: [
-            {id: "name", displayName: "Theme", displayPrompt: "Theme", displayType: "text", valueOptions: []}
-        ]
-    };
-    var themeList = new GridWithItemPanel(panelBuilder, themesPane, "storyThemeList", storyThemesStore, itemPanelSpecification2, configuration2, model);
-    console.log("themeList", themeList);
-    
-    var allThemes = [];
-    var allThemesStore = new Memory({
-        data: allThemes,
-        idProperty: "id"
-    });
-    
-    var themeEntryComboBox = new ComboBox({
-        store: allThemesStore,
-        style: {width: "50%"}
-    });
-    themeEntryComboBox.placeAt(themesPane);
-    
-    var addThemeButton = widgetSupport.newButton(themesPane, "#button_addTheme|Add theme", addThemeButtonPressed.bind(null, themeEntryComboBox, storyThemesStore, allThemes));
-    addThemeButton.placeAt(themesPane);
-}
-
-function currentCatalysisReportChanged(graphBrowserInstance, fieldName, oldValue, currentCatalysisReport) {
-    console.log("currentCatalysisReportChanged", graphBrowserInstance, currentCatalysisReport);
-    
-}
-
-// TODO: Fix so the filters get updated as the story questions get changed
-function insertStoryThemer(panelBuilder: PanelBuilder, pagePane, model, fieldSpecification) {
-    console.log("insertStoryThemer start", fieldSpecification.id);
-    
-    var choiceModelAndField = valuePathResolver.resolveModelAndFieldForFieldSpecification(panelBuilder, model, fieldSpecification);
-    console.log("choiceModelAndField", choiceModelAndField);
-    var choiceModel = choiceModelAndField.model;
-    var choiceField = choiceModelAndField.field; 
-    var catalysisReportIdentifier = choiceModel.get(choiceField);
-    
-    console.log("catalysisReportIdentifier", catalysisReportIdentifier);
-    
-    //  TODO: Update these based on selection
-    var questions = [];
-    var allStories = [];
-    
-    var itemPanelSpecification = {
-         id: "storyBrowserQuestions",
-         panelFields: questions,
-         buildPanel: buildThemerPanel 
-    };
-
-    // Store will modify underlying array
-    var dataStore = GridWithItemPanel["newMemoryTrackableStore"](allStories, "storyID");
-    
-    // Only allow view button for stories
-    var configuration = {viewButton: true, navigationButtons: true, columnsToDisplay: ["storyName", "storyText"]};
-    var storyList = new GridWithItemPanel(panelBuilder, pagePane, fieldSpecification.id, dataStore, itemPanelSpecification, configuration, model);
-    storyList.grid.set("selectionMode", "single");
-    
-    var storyThemerInstance = {
-        itemPanelSpecification: itemPanelSpecification,
-        dataStore: dataStore, 
-        storyList: storyList
-    };
-    
- var currentCatalysisReportSubscription = choiceModel.watch(choiceField, currentCatalysisReportChanged.bind(null, storyThemerInstance));        
-    // TODO: Kludge to get this other previous created widget to destroy a subscription when the page is destroyed...
-    pagePane.own(currentCatalysisReportSubscription);
-    
-    console.log("insertStoryThemer finished");
-}
 */
 
 // TODO: Next two functions from add_storyBrowser and so are duplicate code
@@ -171,6 +77,25 @@ function makeItemPanelSpecificationForQuestions(questions) {
     };
     
     return storyItemPanelSpecification;
+}
+
+// TODO: Temporary for testing
+var tagTypes = [];
+var tags = {};
+
+function editTagTypes() {
+    var name = prompt("new tag type?");
+    if (!name || !name.trim()) return;
+    tagTypes.push({
+        name: name.trim(),
+        options: [""]
+    });
+}
+
+function addOptionForTagType(tagType)  {
+    var name = prompt("new tag type?");
+    if (!name || !name.trim()) return;
+    tagType.options.push(name);
 }
 
 class StoryThemer {
@@ -245,7 +170,7 @@ class StoryThemer {
             parts = [
                 this.storyGrid.calculateView(),
                 selectedStory ?
-                    m("div", "Story themer goes here for: " + selectedStory.storyName()) :
+                    this.themePanelView(selectedStory) :
                     m("div", "Please select a story to theme")
             ];
         }
@@ -255,7 +180,32 @@ class StoryThemer {
     }
     
     themePanelView(story: Story) {
-        return m("div", "Story themer goes here for: " + story.storyName());
+        var storyTags = tags[story.storyID()] || {};
+        tags[story.storyID()] = storyTags;
+        
+        return m("div", [
+            m("button", {onclick: () => { this.storyGrid.navigateClicked.bind(this.storyGrid)("previous"); } }, "<-- Previous"),
+            m("button", {onclick: () => { this.storyGrid.navigateClicked.bind(this.storyGrid)("next"); } }, "Next -->"),
+            m("br"),
+            m("i", story.storyName()),
+            m("br"),
+            tagTypes.map((tagType) => {
+                return m("div", [
+                    tagType.name,
+                    " ",
+                    m("select", { onchange : function(event) { storyTags[tagType.name] = event.target.value; } }, tagType.options.map((option) => {
+                        var selected = undefined;
+                        if (storyTags[tagType.name] === option) {
+                            selected = "selected";
+                        }
+                        return m('option', { value : option, selected: selected }, option);
+                    })),
+                    m("button", {onclick: addOptionForTagType.bind(this, tagType)}, "New option"),
+                    m("br")
+                ]);
+            }),
+            m("button", {onclick: editTagTypes}, "New tag")
+        ]);
     }
     
     currentCatalysisReportChanged(catalysisReportIdentifier) {
