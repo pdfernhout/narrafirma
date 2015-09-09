@@ -8,6 +8,7 @@ import GridWithItemPanel = require("../panelBuilder/GridWithItemPanel");
 import Project = require("../Project");
 import storyCardDisplay = require("../storyCardDisplay");
 
+import Story = surveyCollection.Story;
 
 "use strict";
 
@@ -157,7 +158,7 @@ function insertStoryThemer(panelBuilder: PanelBuilder, pagePane, model, fieldSpe
 function buildStoryDisplayPanel(panelBuilder: PanelBuilder, model) {
     var storyCardDiv = storyCardDisplay.generateStoryCardContent(model, model.questionnaire());
     
-     return storyCardDiv;
+    return storyCardDiv;
 }
 
 function makeItemPanelSpecificationForQuestions(questions) {
@@ -236,16 +237,25 @@ class StoryThemer {
         
         var parts;
         
+        var selectedStory: Story = this.storyGrid.getSelectedItem();
+        
         if (!this.catalysisReportIdentifier) {
             parts = [m("div.narrafirma-choose-catalysis-report", "Please select a catalysis report to work with")];
         } else {
             parts = [
-                this.storyGrid.calculateView()
+                this.storyGrid.calculateView(),
+                selectedStory ?
+                    m("div", "Story themer goes here for: " + selectedStory.storyName()) :
+                    m("div", "Please select a story to theme")
             ];
         }
         
         // TODO: Need to set class
         return m("div", parts);
+    }
+    
+    themePanelView(story: Story) {
+        return m("div", "Story themer goes here for: " + story.storyName());
     }
     
     currentCatalysisReportChanged(catalysisReportIdentifier) {
