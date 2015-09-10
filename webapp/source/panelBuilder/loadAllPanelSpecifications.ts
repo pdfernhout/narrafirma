@@ -4,29 +4,23 @@ import kludgeForUseStrict = require("../kludgeForUseStrict");
 // To suppress TypeScript error on require statement
 declare var require: (moduleId: string[], any) => any;
 
-// Load all the panels from JSON files specified in navigationSections array
+// Load all the panels from TypeScript files specified in navigationSections array
 // see navigation.ts for an example of the format
-// The "extraPanels" are child panels used by grids and similar widgets on the page (including recursively)
+// The "panels" are child panels used by grids and similar widgets on the page (including recursively)
 /*
  [
      {
         "section": "planning",
         "sectionName": "Planning",
         "pages": [
-            {
-                "panelID": "page_planning",
-                "panelName": "Planning"
-            },
-            {
-                "panelID": "page_participantGroups",
-                "panelName": "Describe participant groups",
-                "extraPanels": [
-                    {
-                        "panelID": "panel_addParticipantGroup",
-                        "panelName": "Participant group"
-                    }
-                ]
-            }, ...
+            "page_planning",
+             "page_participantGroups",
+             ...
+        ],
+        "panels": [
+            "panel_addParticipantGroup",
+            ...
+        ]
      }, ...
  ]
  */
@@ -42,17 +36,21 @@ function loadAllPanelSpecifications(panelSpecificationCollection, navigationSect
     for (var sectionIndex = 0; sectionIndex < navigationSections.length; sectionIndex++) {
         var sectionInfo = navigationSections[sectionIndex];
         for (var pageIndex = 0; pageIndex < sectionInfo.pages.length; pageIndex++) {
-            var page = sectionInfo.pages[pageIndex];
-            requireList.push(loadingBase + sectionInfo.section + "/" + page.panelID + ".js");
-            page.section = sectionInfo.section;
-            panelMetadata.push(page);
-            if (page.extraPanels) {
-                for (var extraPanelIndex = 0; extraPanelIndex < page.extraPanels.length; extraPanelIndex++) {
-                    var extraPanel = page.extraPanels[extraPanelIndex];
-                    requireList.push(loadingBase + sectionInfo.section + "/" + extraPanel.panelID + ".js");
-                    extraPanel.section = sectionInfo.section;
-                    panelMetadata.push(extraPanel);
-                }
+            var pageID = sectionInfo.pages[pageIndex];
+            requireList.push(loadingBase + sectionInfo.section + "/" + pageID + ".js");
+            panelMetadata.push({
+                panelID: pageID,
+                section: sectionInfo.section
+            });
+        }
+        if (sectionInfo.panels) {
+            for (var extraPanelIndex = 0; extraPanelIndex < sectionInfo.panels.length; extraPanelIndex++) {
+                var extraPanelID = sectionInfo.panels[extraPanelIndex];
+                requireList.push(loadingBase + sectionInfo.section + "/" + extraPanelID + ".js");
+                panelMetadata.push({
+                    panelID: extraPanelID,
+                    section: sectionInfo.section
+                });
             }
         }
     }
