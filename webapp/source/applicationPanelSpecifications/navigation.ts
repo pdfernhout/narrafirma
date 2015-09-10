@@ -156,7 +156,7 @@ var sections = [
                         panelName: "Add participant question"
                     }
                 ]
-            },
+            },           
             {
                 panelID: "page_designStoryForms",
                 panelName: "Design questionnaires",
@@ -197,6 +197,16 @@ var sections = [
                 panelID: "page_enterStories",
                 panelName: "Enter stories"
             },
+            {
+                panelID: "page_writeAnnotationsAboutStories",
+                panelName: "Write annotations about stories",
+                extraPanels: [
+                    {
+                        panelID: "panel_addAnnotationQuestion",
+                        panelName: "Add annotation question"
+                    }
+                ]
+            }, 
             {
                 panelID: "page_reviewIncomingStories",
                 panelName: "Review incoming stories"
