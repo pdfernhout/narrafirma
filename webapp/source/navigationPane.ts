@@ -1,9 +1,9 @@
 import m = require("mithril");
+import PanelSetup = require("./PanelSetup");
 
 "use strict";
 
 var panelSpecificationCollection;
-var startPage;
 
 var currentSectionID;
 var currentPageSpecification;
@@ -39,9 +39,8 @@ var Navigation: any = {
     }
 };
 
-export function initializeNavigationPane(thePanelSpecificationCollection, theStartPage, theUserIdentifier, panelBuilder) {
+export function initializeNavigationPane(thePanelSpecificationCollection, theUserIdentifier, panelBuilder) {
     panelSpecificationCollection = thePanelSpecificationCollection;
-    startPage = theStartPage;
     userIdentifier = theUserIdentifier;
     
     Navigation.panelBuilder = panelBuilder;
@@ -64,8 +63,8 @@ function buildBreadcrumbs(controller) {
     if (!pageSpecification) return ["Starting up..."];
 
     var breadcrumbs = [];
-    if (pageID !== startPage) {
-        breadcrumbs.push(htmlForBreadcrumb(startPage, "Home"));
+    if (pageID !== PanelSetup.startPage()) {
+        breadcrumbs.push(htmlForBreadcrumb(PanelSetup.startPage(), "Home"));
         breadcrumbs .push(" > ");
         // console.log("pageSpecification", pageSpecification);
         // TODO: Should lookup name of section

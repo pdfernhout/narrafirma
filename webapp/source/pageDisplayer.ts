@@ -9,7 +9,6 @@ import m = require("mithril");
 var currentPageID = null;
 var currentPageSpecification = null;
 var currentPage;
-var startPage;
 var updateHashIfNeededForChangedState;
 
 var panelBuilder: PanelBuilder;
@@ -50,9 +49,8 @@ var PageDisplayer: any = {
 };
 
 // Call this once at the beginning of the application
-export function configurePageDisplayer(thePanelBuilder: PanelBuilder, theStartPage, theProject, updateHashIfNeededForChangedStateCallback) {
+export function configurePageDisplayer(thePanelBuilder: PanelBuilder, theProject, updateHashIfNeededForChangedStateCallback) {
     panelBuilder = thePanelBuilder;
-    startPage = theStartPage;
     project = theProject;
     updateHashIfNeededForChangedState = updateHashIfNeededForChangedStateCallback;
     
@@ -62,7 +60,7 @@ export function configurePageDisplayer(thePanelBuilder: PanelBuilder, theStartPa
 export function showPage(pageID, forceRefresh = false, isRedrawAlreadyQueued = false) {
     // console.log("showPage", pageID, forceRefresh);
     
-    if (!pageID) pageID = startPage;
+    if (!pageID) pageID = PanelSetup.startPage();
     if (currentPageID === pageID && !forceRefresh) {
         // console.log("Page is already current; returning");
         return;
@@ -83,7 +81,7 @@ export function showPage(pageID, forceRefresh = false, isRedrawAlreadyQueued = f
         if (currentPageID !== null && currentPageID !== pageID) {
             panelBuilder.clientState.pageIdentifier = currentPageID;
         } else {
-            panelBuilder.clientState.pageIdentifier = startPage;
+            panelBuilder.clientState.pageIdentifier = PanelSetup.startPage();
         }
         updateHashIfNeededForChangedState();
         return;

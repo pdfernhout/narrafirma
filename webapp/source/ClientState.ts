@@ -1,5 +1,4 @@
-// TODO: Duplicate fo what is in application
-var startPage = "page_dashboard";
+import PanelSetup = require("./PanelSetup");
 
 // m.route.mode = "hash";
 
@@ -98,7 +97,7 @@ class ClientState {
         if (initialHashParameters["debugMode"]) this._debugMode = initialHashParameters["debugMode"];
         
         // Ensure defaults
-        if (!initialHashParameters["page"]) this._pageIdentifier = startPage;
+        if (!initialHashParameters["page"]) this._pageIdentifier = PanelSetup.startPage();
     }
     
     hashStringForClientState() {
@@ -154,7 +153,7 @@ class ClientState {
          
         var selectedPage = hashParameters.page;
         if (!selectedPage) {
-            selectedPage = startPage;
+            selectedPage = PanelSetup.startPage();
         } else {
             selectedPage = "page_" + selectedPage;
         }
