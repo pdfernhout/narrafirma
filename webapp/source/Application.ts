@@ -179,18 +179,18 @@ class Application {
     setupGlobalFunctions() {
         // Set up global function used by section dashboard links
         
-        window["narrafirma_openPage"] = function (pageIdentifier) {
+        window["narrafirma_openPage"] = (pageIdentifier) => {
             this._clientState.pageIdentifier(pageIdentifier);
             this._clientState.updateHashIfNeededForChangedClientState();
             // Page displayer will handle cases where the hash is not valid and also optimizing out page redraws if staying on same page
             pageDisplayer.showPage(this._clientState.pageIdentifier());
         };
         
-        window["narrafirma_logoutClicked"] = function () {
+        window["narrafirma_logoutClicked"] = () => {
             buttonActions.logoutButtonClicked();
         };
         
-        window["narrafirma_helpClicked"] = function (pageIdentifier) {
+        window["narrafirma_helpClicked"] = (pageIdentifier) => {
             buttonActions.helpButtonClicked();
         };
     }
@@ -211,7 +211,7 @@ class Application {
         
         // Throwaway single-use pointrel client instance which does not access a specific journal and for which polling is not started
         var singleUsePointrelClient = new PointrelClient("/api/pointrel20150417", "unused", {});
-        singleUsePointrelClient.getCurrentUserInformation(function(error, response) {
+        singleUsePointrelClient.getCurrentUserInformation((error, response) => {
             if (error) {
                 console.log("error", error, response);
                 document.getElementById("pleaseWaitDiv").style.display = "none";
@@ -277,7 +277,7 @@ class Application {
             var columns = {name: "Project name", id: "Project journal", write: "Editable"};
             // TODO: Only allow new project button for admins
             var isNewAllowed = false;
-            dialogSupport.openListChoiceDialog(null, projects, columns, "Projects", "Select a project to work on", isNewAllowed, function (projectChoice) {
+            dialogSupport.openListChoiceDialog(null, projects, columns, "Projects", "Select a project to work on", isNewAllowed, (projectChoice) => {
                 if (!projectChoice) return;
                 
                 this.projectIdentifier = projectChoice.id;
@@ -308,7 +308,7 @@ class Application {
         
         var singleUsePointrelClient = new PointrelClient("/api/pointrel20150417", "unused", {});
         
-        singleUsePointrelClient.createJournal(this.journalIdentifier, function(error, response) {
+        singleUsePointrelClient.createJournal(this.journalIdentifier, (error, response) => {
             if (error || !response.success) {
                 console.log("Error creating journal", this.journalIdentifier, error, response);
                 var message = "error";
@@ -333,7 +333,7 @@ class Application {
         if (this.runningAfterInitialIdle) {
             if (!this.pendingRedraw) {
                 // console.log("queueing redrawFromProject");
-                this.pendingRedraw = setTimeout(function() {
+                this.pendingRedraw = setTimeout(() => {
                     // console.log("redrawFromProject");
                     this.pendingRedraw = null;
                     m.redraw();
@@ -354,7 +354,7 @@ class Application {
         
         surveyCollection.setProject(this.project);
         
-        this.project.startup(function (error) {
+        this.project.startup((error) => {
             if (error) {
                 document.getElementById("pleaseWaitDiv").style.display = "none";
                 // TODO: Sanitize journalIdentifier
@@ -371,7 +371,7 @@ class Application {
         var panelSpecificationCollection = PanelSetup.panelSpecificationCollection();
         
         // Load the application design
-        loadAllPanelSpecifications(panelSpecificationCollection, navigationSections, loadingBase, function() {
+        loadAllPanelSpecifications(panelSpecificationCollection, navigationSections, loadingBase, () => {
             // generateNavigationDataInJSON();
      
             PanelSetup.processAllPanels();
@@ -391,7 +391,7 @@ class Application {
             // Initialize different Mithril components which will be mounted using m.mount
             // Note that dialogSupport has already been initialized and that component mounted
             navigationPane.initializeNavigationPane(panelSpecificationCollection, this.userIdentifier, this.panelBuilder);
-            pageDisplayer.configurePageDisplayer(this.panelBuilder, this.project, this._clientState.updateHashIfNeededForChangedClientState);
+            pageDisplayer.configurePageDisplayer(this.panelBuilder, this.project, this._clientState);
     
             // Fill out initial hash string if needed
             this._clientState.updateHashIfNeededForChangedClientState();
@@ -402,7 +402,7 @@ class Application {
             
             // TODO: This assumes we have picked a project, and are actually loading data and have not errored out
             // TODO: Need some kind of progress indicator of messages loaded...
-            this.project.pointrelClient.idleCallback = function () {
+            this.project.pointrelClient.idleCallback = () => {
                 // Now that data is presumably loaded into the Project tripleStore, we can proceed with further initialization
                 buttonActions.initialize(this.project, this._clientState);
                 csvImportExport.initialize(this.project);
@@ -424,7 +424,7 @@ class Application {
             };
             
             // From: https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload
-            window.addEventListener("beforeunload", function (e) {
+            window.addEventListener("beforeunload", (e) => {
                 // TODO: IMPORTANT Ensure the current text field if any does the equivalent of a blur to commit its data...
                 // TODO: But may not be reliable: http://stackoverflow.com/questions/18718494/will-onblur-event-trigger-when-window-closes
                 return null;
@@ -447,7 +447,7 @@ class Application {
         console.log("Using pointrel20141201");
         var currentLocalTimestamp = new Date().toISOString();
         var currentLocalTimestampMinusTenSeconds = new Date(new Date().getTime() - 10000).toISOString();
-        pointrel20141201Client.getServerStatus(function (error, serverResponse) {
+        pointrel20141201Client.getServerStatus((error, serverResponse) => {
             if (error) {
                 // TODO: translate
                 var message = "Problem checking server status so application may not work correctly if server is unavailable: " + error;
