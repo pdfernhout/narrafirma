@@ -2,6 +2,7 @@ import translate = require("../panelBuilder/translate");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import m = require("mithril");
 import sanitizeHTML = require("../sanitizeHTML");
+import Globals = require("../Globals");
 
 "use strict";
 
@@ -55,7 +56,7 @@ function add_questionAnswer(panelBuilder: PanelBuilder, model, fieldSpecificatio
     if (!referencedQuestionID) throw new Error("missing referencedQuestionID for field: " + fieldSpecification.id + " all: " + JSON.stringify(fieldSpecification));
 
     var calculate = function () {
-        var value = panelBuilder.project.getFieldValue(referencedQuestionID);
+        var value = Globals.project().getFieldValue(referencedQuestionID);
         if (value === undefined || value === null) value = "";
         return value;
     };

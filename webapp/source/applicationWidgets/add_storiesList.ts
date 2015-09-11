@@ -1,16 +1,17 @@
 import kludgeForUseStrict = require("../kludgeForUseStrict");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import m = require("mithril");
+import Globals = require("../Globals");
 
 "use strict";
 
 function add_storiesList(panelBuilder: PanelBuilder, model, fieldSpecification) {
     var prompt = panelBuilder.buildQuestionLabel(fieldSpecification);
 
-    var tripleStore = panelBuilder.project.tripleStore;
+    var tripleStore = Globals.project().tripleStore;
 
     // TODO: Generalize this so it can be abut more than just project stories
-    var storyIdentifierList = panelBuilder.project.getListForField("project_projectStoriesList");
+    var storyIdentifierList = Globals.project().getListForField("project_projectStoriesList");
     var storyNameField = "projectStory_name";
     var storyTextField = "projectStory_text";
    

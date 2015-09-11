@@ -4,6 +4,7 @@ import translate = require("../panelBuilder/translate");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import Project = require("../Project");
 import m = require("mithril");
+import Globals = require("../Globals");
 
 "use strict";
 
@@ -122,12 +123,12 @@ function build_recommendationTable(panelBuilder: PanelBuilder, dialogConfigurati
     var participantGroups;
     var participantGroupNameFieldIdentifier;
     if (categoryName === "interventions") {
-        participantGroups = panelBuilder.project.getListForField("project_outcomesList");
+        participantGroups = Globals.project().getListForField("project_outcomesList");
         participantGroupNameFieldIdentifier = "outcomes_group";
         // TODO: Translate
         if (!participantGroups || !participantGroups.length) return m("div", "Please enter a project outcome first to get recommendations.");
     } else {
-        participantGroups = panelBuilder.project.getListForField("project_participantGroupsList");
+        participantGroups = Globals.project().getListForField("project_participantGroupsList");
         participantGroupNameFieldIdentifier = "participantGroup_name";
         // TODO: Translate
         if (!participantGroups || !participantGroups.length) return m("div", "Please enter a participant group first to get recommendations.");
@@ -137,12 +138,12 @@ function build_recommendationTable(panelBuilder: PanelBuilder, dialogConfigurati
     return m("div", {"class": "narrafirma-recommendations-table " + categoryName}, [
         prompt,
         participantGroups.map(function (participantGroupIdentifier) {
-            var participantGroupName = panelBuilder.project.tripleStore.queryLatestC(participantGroupIdentifier, participantGroupNameFieldIdentifier);
+            var participantGroupName = Globals.project().tripleStore.queryLatestC(participantGroupIdentifier, participantGroupNameFieldIdentifier);
             return m("div", [
                 m("b", participantGroupName),
                 m("br"),
                 m("br"),
-                makeTableForParticipantGroup(categoryName, panelBuilder.project, participantGroupIdentifier),
+                makeTableForParticipantGroup(categoryName, Globals.project(), participantGroupIdentifier),
                 m("br"),
                 m("br")
             ]);

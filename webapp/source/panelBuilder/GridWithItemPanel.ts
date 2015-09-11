@@ -4,6 +4,7 @@ import PanelBuilder = require("panelBuilder/PanelBuilder");
 import generateRandomUuid = require("../pointrel20150417/generateRandomUuid");
 import TripleStore = require("../pointrel20150417/TripleStore");
 import valuePathResolver = require("./valuePathResolver");
+import Globals = require("../Globals");
 
 "use strict";
 
@@ -260,11 +261,11 @@ class GridWithItemPanel {
         
         this.isNavigationalScrollingNeeded = null;
         
-        this.valueProperty = valuePathResolver.newValuePathForFieldSpecification(this.panelBuilder, this.model, this.fieldSpecification);
+        this.valueProperty = valuePathResolver.newValuePathForFieldSpecification(this.model, this.fieldSpecification);
         
         if (this.useTriples()) {
             // console.log("Grid using triples", this.model);
-            this.dataStore = new TripleSetDataStore(this.valueProperty, this.idProperty, this.panelBuilder.project.tripleStore);
+            this.dataStore = new TripleSetDataStore(this.valueProperty, this.idProperty, Globals.project().tripleStore);
         } else {
             // console.log("Grid using objects", this.model);
             this.dataStore = new DataStore(this.valueProperty, this.idProperty);

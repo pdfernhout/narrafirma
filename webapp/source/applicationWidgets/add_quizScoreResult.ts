@@ -3,6 +3,7 @@ import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import Project = require("../Project");
 import m = require("mithril");
 import sanitizeHTML = require("../sanitizeHTML");
+import Globals = require("../Globals");
 
 "use strict";
 
@@ -42,7 +43,7 @@ function calculate_quizScoreResult(panelSpecificationCollection, modelFunction: 
 function add_quizScoreResult(panelBuilder: PanelBuilder, model, fieldSpecification) {
     var dependsOn = fieldSpecification.displayConfiguration;
     
-    var modelFunction = (<Project>panelBuilder.project).tripleStore.makeModelFunction(model);
+    var modelFunction = Globals.project().tripleStore.makeModelFunction(model);
     var calculateResult = calculate_quizScoreResult(panelBuilder.panelSpecificationCollection, modelFunction, dependsOn);
     
     var baseText = translate(fieldSpecification.id + "::prompt", fieldSpecification.displayPrompt);

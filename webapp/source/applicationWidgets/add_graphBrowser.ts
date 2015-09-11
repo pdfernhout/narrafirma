@@ -24,7 +24,7 @@ function getCurrentStoryCollectionIdentifier(args) {
     
     // Get questionnaire for selected story collection
     // TODO: What if the value is an array of stories to display directly?
-    var storyCollectionIdentifier = valuePathResolver.newValuePathForFieldSpecification(panelBuilder, model, fieldSpecification)();
+    var storyCollectionIdentifier = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification)();
     
     return storyCollectionIdentifier;
 }

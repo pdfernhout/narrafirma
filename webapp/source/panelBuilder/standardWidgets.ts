@@ -2,6 +2,7 @@ import m = require("mithril");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import valuePathResolver = require("./valuePathResolver");
 import translate = require("./translate");
+import Globals = require("../Globals");
 
 "use strict";
 
@@ -14,14 +15,14 @@ function optionsForSelect(panelBuilder: PanelBuilder, model, fieldSpecification,
     var choices = specifiedChoices;
     
     if (_.isString(specifiedChoices)) {
-        choices = valuePathResolver.newValuePath(panelBuilder, model, specifiedChoices)();
+        choices = valuePathResolver.newValuePath(model, specifiedChoices)();
         if (_.isString(choices)) {
             // Build choices by making items using tripelStore set
             var choiceItems = [];
-            var choiceSet = panelBuilder.project.tripleStore.getListForSetIdentifier(choices);
+            var choiceSet = Globals.project().tripleStore.getListForSetIdentifier(choices);
             for (var i = 0; i < choiceSet.length; i++) {
                 var choiceIdentifier = choiceSet[i];
-                var item = panelBuilder.project.tripleStore.makeObject(choiceIdentifier);
+                var item = Globals.project().tripleStore.makeObject(choiceIdentifier);
                 choiceItems.push(item);
             }
             choices = choiceItems;
@@ -105,7 +106,7 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
         questionLabel = [];
     }
     
-    var valueProperty = valuePathResolver.newValuePathForFieldSpecification(panelBuilder, model, fieldSpecification);
+    var valueProperty = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification);
 
     // Only fetch value if the field needs it
     var value;

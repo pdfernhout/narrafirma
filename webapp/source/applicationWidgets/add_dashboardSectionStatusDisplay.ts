@@ -2,6 +2,7 @@ import translate = require("../panelBuilder/translate");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import Project = require("../Project");
 import m = require("mithril");
+import Globals = require("../Globals");
 
 "use strict";
 
@@ -44,7 +45,7 @@ function add_dashboardSectionStatusDisplay(panelBuilder: PanelBuilder, model, fi
         var statusViewID = childPageID + "_pageStatus";
         // console.log("statusViewID", fieldSpecification.id, statusViewID);
         // TODO: Fix if different sections get split up
-        var status = (<Project>panelBuilder.project).tripleStore.queryLatestC(model, statusViewID);
+        var status = Globals.project().tripleStore.queryLatestC(model, statusViewID);
         var count = pageStatus["" + status] || 0;
         count++;
         pageStatus["" + status] = count;

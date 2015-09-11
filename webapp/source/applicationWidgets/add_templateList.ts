@@ -3,6 +3,7 @@ import templates = require("../templates/templates");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import GridWithItemPanel = require("../panelBuilder/GridWithItemPanel");
 import m = require("mithril");
+import Globals = require("../Globals");
 
 "use strict";
 
@@ -43,7 +44,7 @@ function useButtonClicked(panelBuilder: PanelBuilder, templateListChoice, model,
    var selectedTemplate = gridWithItemPanel.getSelectedItem();
    console.log("grid selectedTemplate", selectedTemplate);
     
-    var storeValueInModel = panelBuilder.project.tripleStore.makeModelFunction(model);
+    var storeValueInModel = Globals.project().tripleStore.makeModelFunction(model);
    
    if (selectedTemplate) {
        // TODO: not sure whether to confirm?

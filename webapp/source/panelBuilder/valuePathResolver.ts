@@ -1,5 +1,6 @@
-import PanelBuilder = require("PanelBuilder");
 import Project = require("../Project");
+import Globals = require("../Globals");
+
 "use strict";
 
 /*
@@ -29,7 +30,8 @@ That would resolve to "context.project.userIdentifier".
 */
 
 class ValuePathResolver {
-    constructor(public context: any, public baseModel: any, public valuePath: string, public isAccessFunctionRequired = true) {
+    
+    constructor(public baseModel: any, public valuePath: string, public isAccessFunctionRequired = true) {
     }
     
     failIfAccessFunctionRequired() {
@@ -44,7 +46,7 @@ class ValuePathResolver {
         var currentModel = this.baseModel;
         var currentKey: string;
         
-        // console.log("++++++++++++++ resolveModelAndField start", this.valuePath, this.baseModel, this.context);
+        // console.log("++++++++++++++ resolveModelAndField start", this.valuePath, this.baseModel, Globals);
         
         // Parse the dependency path
         var pathParts = this.valuePath.split("/");
@@ -56,9 +58,9 @@ class ValuePathResolver {
         if (pathParts[0] === "") {
             isGlobalReference = true;
             pathParts.shift();
-            currentModel = this.context;
+            currentModel = Globals;
             if (!currentModel) {
-                console.log("no object for context", currentKey, this.valuePath, this.context);
+                console.log("no object for context", currentKey, this.valuePath, Globals);
                 return undefined;
             }
         } 
@@ -81,7 +83,7 @@ class ValuePathResolver {
             
             if (useTripleStore) {
                 this.failIfAccessFunctionRequired();
-                nextModel = (<Project>this.context.project).tripleStore.queryLatestC(currentModel, currentKey);
+                nextModel = Globals.project().tripleStore.queryLatestC(currentModel, currentKey);
             } else if (useAccessorFunction) {
                 nextModel = currentModel[currentKey]();
             } else if (currentModelDirectFieldValue === undefined && currentModel.fieldValue && typeof currentModel.fieldValue === "function") {
@@ -131,13 +133,13 @@ class ValuePathResolver {
         
         if (value !== undefined) {
             if (modelAndField === undefined) {
-                console.log("Model missing; can't set value", this.valuePath, this.baseModel, this.context);
+                console.log("Model missing; can't set value", this.valuePath, this.baseModel, Globals);
                 return undefined; 
             }
                         
             if (modelAndField.useTripleStore) {
-                 this.failIfAccessFunctionRequired();
-                (<Project>this.context.project).tripleStore.addTriple(modelAndField.model, modelAndField.field, value);
+                this.failIfAccessFunctionRequired();
+                Globals.project().tripleStore.addTriple(modelAndField.model, modelAndField.field, value);
             } else if (useAccessorFunction) {
                 modelAndField.model[modelAndField.field](value);
             } else if (modelFieldDirectValue === undefined && modelAndField.model.fieldValue && typeof modelAndField.model.fieldValue === "function") {
@@ -155,7 +157,7 @@ class ValuePathResolver {
             if (modelAndField === undefined) return undefined;
             if (modelAndField.useTripleStore) {
                 this.failIfAccessFunctionRequired();
-                value = (<Project>this.context.project).tripleStore.queryLatestC(modelAndField.model, modelAndField.field);
+                value = Globals.project().tripleStore.queryLatestC(modelAndField.model, modelAndField.field);
             } else if (useAccessorFunction) {
                 value = modelAndField.model[modelAndField.field]();
             } else if (modelFieldDirectValue === undefined && modelAndField.model.fieldValue && typeof modelAndField.model.fieldValue === "function") {
@@ -172,15 +174,15 @@ class ValuePathResolver {
     }
 }
 
-export function newValuePathForFieldSpecification(panelBuilder: PanelBuilder, model, fieldSpecification) {
+export function newValuePathForFieldSpecification(model, fieldSpecification) {
     // console.log("newValuePathForFieldSpecification", fieldSpecification);
     var valuePath: string = fieldSpecification.valuePath;
     if (!valuePath) valuePath = fieldSpecification.id;
-    return newValuePath(panelBuilder, model, valuePath);
+    return newValuePath(model, valuePath);
 }
 
-export function newValuePath(panelBuilder: PanelBuilder, model, valuePath: string) {
+export function newValuePath(model, valuePath: string): Function {
     // console.log("newValuePath", valuePath);
-    var valuePathResolver = new ValuePathResolver(panelBuilder, model, valuePath);
+    var valuePathResolver = new ValuePathResolver(model, valuePath);
     return valuePathResolver.resolve.bind(valuePathResolver);
 }

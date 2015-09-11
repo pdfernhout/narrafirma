@@ -3,12 +3,13 @@ import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import surveyCollection = require("../surveyCollection");
 import Project = require("../Project");
 import m = require("mithril");
+import Globals = require("../Globals");
 
 "use strict";
 
 function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, model, fieldSpecification): any {
-    var tripleStore = panelBuilder.project.tripleStore;
-    var storyCollectionsIdentifiers = panelBuilder.project.getListForField("project_storyCollections");
+    var tripleStore = Globals.project().tripleStore;
+    var storyCollectionsIdentifiers = Globals.project().getListForField("project_storyCollections");
     if (!storyCollectionsIdentifiers || !storyCollectionsIdentifiers.length) {
         // TODO: Translate
         return m("div", ["No story collections defined"]);

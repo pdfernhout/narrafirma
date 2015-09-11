@@ -267,7 +267,7 @@ class StoryThemer {
         var fieldSpecification = args.fieldSpecification;
         
         // Get selected catalysis report
-        var catalysisReportShortName = valuePathResolver.newValuePathForFieldSpecification(panelBuilder, model, fieldSpecification)();
+        var catalysisReportShortName = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification)();
     
         // console.log("catalysisReportShortName", catalysisReportShortName);
         
