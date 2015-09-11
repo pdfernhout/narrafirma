@@ -19,9 +19,18 @@ var panel: Panel = {
             valueType: "array",
             required: true,
             displayType: "grid",
-            displayConfiguration: "panel_addNewReturnRequest",
+            displayConfiguration: {
+                itemPanelID: "panel_addNewReturnRequest",
+                gridConfiguration: {
+                    viewButton: true,
+                    editButton: true,
+                    addButton: true,
+                    removeButton: true,
+                    columnsToDisplay: ["returnRequest_description", "returnRequest_type", "returnRequest_isMet"]
+                }
+            },
             displayName: "Help requests",
-            displayPrompt: "These are the requests you have recorded so far."
+            displayPrompt: "These are the requests you have recorded so far.",
         }
     ]
 };
