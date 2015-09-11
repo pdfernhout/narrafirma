@@ -12,6 +12,7 @@ import translate = require("./panelBuilder/translate");
 import storyCardDisplay = require("./storyCardDisplay");
 import generateRandomUuid = require("./pointrel20150417/generateRandomUuid");
 import toaster = require("./panelBuilder/toaster");
+import ClientState = require("./ClientState");
 // import m = require("mithril");
 
 "use strict";
@@ -273,7 +274,7 @@ function openMithrilSurveyDialog(questionnaire, callback, previewModeTitleText =
 function openSurveyDialog() {
     console.log("openSurveyDialog");
     
-    var storyCollectionIdentifier = clientState.storyCollectionIdentifier;
+    var storyCollectionIdentifier: string = clientState.storyCollectionIdentifier();
     
     if (!storyCollectionIdentifier) {
         // TODO: translate
@@ -392,7 +393,7 @@ function getQuestionnaireForStoryCollection(storyCollectionName: string) {
 export function printStoryForm(model, fieldSpecification, value) {
     console.log("printStoryForm unfinished");
     
-    var storyCollectionIdentifier = clientState.storyCollectionIdentifier;
+    var storyCollectionIdentifier: string = clientState.storyCollectionIdentifier();
     
     if (!storyCollectionIdentifier) {
         // TODO: translate
