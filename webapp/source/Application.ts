@@ -467,3 +467,5 @@ class Application {
     }
     */
 }
+
+export = Application;
