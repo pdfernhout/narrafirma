@@ -1,5 +1,7 @@
 import PanelSetup = require("./PanelSetup");
 
+"use strict";
+
 // m.route.mode = "hash";
 
 function hash(newValue = null) {
