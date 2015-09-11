@@ -18,6 +18,7 @@ import toaster = require("./panelBuilder/toaster");
 import translate = require("./panelBuilder/translate");
 import m = require("mithril");
 import navigationSections = require("./applicationPanelSpecifications/navigation");
+import ClientState = require("./ClientState");
 
 "use strict";
 
@@ -35,148 +36,35 @@ var userIdentifier;
 
 var project: Project;
 
+/*
+export function project() {
+    return _project;
+}
+*/
+
 var lastServerError = "";
 
 // The runningAfterIdle falg is used to limit redraws for new project messages until after initial set recevied
 var runningAfterInitialIdle = false;
 
-// m.route.mode = "hash";
-
-function hash(newValue = null) {
-    if (newValue === null) return window.location.hash.substr(1);
-    
-    if (history.pushState) {
-        history.pushState(null, null, "#" + newValue);
-    } else {
-        location.hash = "#" + newValue;
-    }
-}
-
 // For this local instance only (not shared with other users or other browser tabs)
-var clientState: ClientState = {
-    projectIdentifier: null,
-    pageIdentifier: null,
-    storyCollectionIdentifier: null,
-    catalysisReportIdentifier: null,
-    debugMode: null,
-    serverStatus: "narrafirma-serverstatus-ok",
-    serverStatusText: ""
-};
+var _clientState: ClientState  = new ClientState();
+
+export function clientState(): ClientState {
+    return _clientState;
+}
 
 var loadingBase = "js/applicationPanelSpecifications/";
 
 // For building panels based on field specifications
-var panelBuilder: PanelBuilder = new PanelBuilder();
+// TODO: Replace null
+var panelBuilder: PanelBuilder = new PanelBuilder(null);
 
 // This will hold information about all the panels used
 var panelSpecificationCollection = new PanelSpecificationCollection();
 
-// getHashParameters derived from: http://stackoverflow.com/questions/4197591/parsing-url-hash-fragment-identifier-with-javascript
-function getHashParameters(hash): any {
-    var result = {};
-    var match;
-    // Regex for replacing addition symbol with a space
-    var plusMatcher = /\+/g;
-    var parameterSplitter = /([^&;=]+)=?([^&;]*)/g;
-    var decode = function (s) { return decodeURIComponent(s.replace(plusMatcher, " ")); };
-    while (true) {
-        match = parameterSplitter.exec(hash);
-        if (!match) break;
-        result[decode(match[1])] = decode(match[2]);
-    }
-    return result;
-}
-    
-function hashStringForClientState() {
-    var result = "";
-    
-    var fields = [
-        {id: "projectIdentifier", key: "project"},
-        {id: "pageIdentifier", key: "page"},
-        {id: "storyCollectionIdentifier", key: "storyCollection"},
-        {id: "catalysisReportIdentifier", key: "catalysisReport"},
-        {id: "debugMode", key: "debugMode"}
-    ];
-    
-    for (var i = 0; i < fields.length; i++) {
-        var field = fields[i];
-
-        var value = clientState[field.id];
-        if (!value) continue;
-        
-        if (field.key === "page" && value) value = value.substring("page_".length);
-        
-        if (result) result += "&";
-        result += field.key + "=" + encodeURIComponent(value);
-    }
-    
-    // console.log("hashStringForClientState", result, clientState);
-    
-    return result;
-}
-
-function urlHashFragmentChanged() {
-    var newHash = hash();
-    console.log("urlHashFragmentChanged", newHash);
-    
-    // console.log("current clientState", clientState);
-    
-    var hashParameters = getHashParameters(newHash);
-    // console.log("new hashParameters", hashParameters);
-    
-    var currentProjectIdentifier = clientState.projectIdentifier;
-    if (currentProjectIdentifier) {
-        if (hashParameters.project && hashParameters.project !== currentProjectIdentifier) {
-            // Force a complete page reload for now, as needs to create a new Pointrel client
-            // TODO: Should we shut down the current Pointrel client first?
-            alert("About to trigger page reload for changed project");
-            location.reload();
-            return;
-        }
-    } else {
-        // console.log("changing client state for page", clientState.projectIdentifier, hashParameters.project);
-        clientState.projectIdentifier = hashParameters.project;
-    }
-     
-    var selectedPage = hashParameters.page;
-    if (!selectedPage) {
-        selectedPage = startPage;
-    } else {
-        selectedPage = "page_" + selectedPage;
-    }
-    if (selectedPage !== clientState.pageIdentifier) {
-        // console.log("changing client state for page from:", clientState.pageIdentifier, "to:", selectedPage);
-        clientState.pageIdentifier = selectedPage;
-    }
-    
-    if (hashParameters.storyCollection && hashParameters.storyCollection !== clientState.storyCollectionIdentifier) {
-        // console.log("changing client state for storyCollection", clientState.storyCollectionIdentifier, hashParameters.storyCollection);
-        clientState.storyCollectionIdentifier = hashParameters.storyCollection;
-    }
-    
-    if (hashParameters.catalysisReport && hashParameters.catalysisReport !== clientState.catalysisReportIdentifier) {
-        // console.log("changing client state for catalysisReport", clientState.catalysisReportIdentifier, hashParameters.catalysisReport);
-        clientState.catalysisReportIdentifier = hashParameters.catalysisReport;
-    }
-    
-    if (hashParameters.debugMode && hashParameters.debugMode !== clientState.debugMode) {
-        // console.log("changing client state for debugMode", clientState.debugMode, hashParameters.debugMode);
-        clientState.debugMode = hashParameters.debugMode;
-    }
-    
-    // Page displayer will handle cases where the hash is not valid and also optimizing out page redraws if staying on same page
-    pageDisplayer.showPage(clientState.pageIdentifier);
-
-    // console.log("done with urlHashFragmentChanged");
-}
-
 var updateHashTimer = null;
 
-function updateHashIfNeededForChangedClientState() {
-    var newHash = hashStringForClientState();
-    if (newHash !== hash()) hash(newHash);
-}
-    
 function addExtraFieldSpecificationsForPageSpecification(pageID, pageSpecification) {
     // console.log("addExtraFieldSpecificationsForPageSpecification", pageSpecification.section, pageID, pageSpecification);
     
@@ -395,8 +283,8 @@ function updateServerStatus(status, text) {
     }
     
     nameDiv.title = statusText;
-    clientState.serverStatus = nameDiv.className;
-    clientState.serverStatusText = statusText;
+    _clientState.serverStatus(nameDiv.className);
+    _clientState.serverStatusText(statusText);
     // TODO: Need to make tooltip text ARIA accessible; suggestion in tooltip docs on setting text in tab order
     // statusTooltip.set("label", statusText); 
     
@@ -480,10 +368,10 @@ function setupGlobalFunctions() {
     // Set up global function used by section dashboard links
     
     window["narrafirma_openPage"] = function (pageIdentifier) {
-        clientState.pageIdentifier = pageIdentifier;
-        updateHashIfNeededForChangedClientState();
+        _clientState.pageIdentifier(pageIdentifier);
+        _clientState.updateHashIfNeededForChangedClientState();
         // Page displayer will handle cases where the hash is not valid and also optimizing out page redraws if staying on same page
-        pageDisplayer.showPage(clientState.pageIdentifier);
+        pageDisplayer.showPage(_clientState.pageIdentifier());
     };
     
     window["narrafirma_logoutClicked"] = function () {
@@ -502,18 +390,8 @@ export function initialize() {
     // Cast to silence TypeScript warning about use of translate.configure
     (<any>translate).configure({}, applicationMessages.root);
     
-    var fragment = hash();
-    // console.log("fragment when page first loaded", fragment);
-    var initialHashParameters = getHashParameters(fragment);
-    if (initialHashParameters["project"]) clientState.projectIdentifier = initialHashParameters["project"];
-    if (initialHashParameters["page"]) clientState.pageIdentifier = "page_" + initialHashParameters["page"];
-    if (initialHashParameters["storyCollection"]) clientState.storyCollectionIdentifier = initialHashParameters["storyCollection"];
-    if (initialHashParameters["catalysisReport"]) clientState.catalysisReportIdentifier = initialHashParameters["catalysisReport"];
-    if (initialHashParameters["debugMode"]) clientState.debugMode = initialHashParameters["debugMode"];
-        
-    // Ensure defaults
-    if (!initialHashParameters["page"]) clientState.pageIdentifier = startPage;
-    
+    _clientState.initialize();
+
     setupGlobalFunctions();
     
     // mount Mithril dialog support now, as it may be needed in choosing a project
@@ -577,7 +455,7 @@ function chooseAProjectToOpen(userIdentifierFromServer, projects) {
         userIdentifier: userIdentifier
     };
     
-    var projectIdentifierSupplied = clientState.projectIdentifier;
+    var projectIdentifierSupplied = _clientState.projectIdentifier();
     console.log("projectIdentifierSupplied", projectIdentifierSupplied);
     if (projectIdentifierSupplied) {
         // TODO: Could put up project chooser if the supplied project is invalid...
@@ -594,14 +472,14 @@ function chooseAProjectToOpen(userIdentifierFromServer, projects) {
             if (!projectIdentifier) return;
             
             if (projectChoice.isNew) {
-                clientState.projectIdentifier = projectIdentifier;
+                _clientState.projectIdentifier(projectIdentifier);
                 projectIdentifier = narrafirmaProjectPrefix + projectIdentifier;
                 journalIdentifier = projectIdentifier; 
                 alert("About to make project: " + projectIdentifier);
                 makeNewProject();
                 return;     
             } else {
-                clientState.projectIdentifier = projectIdentifier.substring(narrafirmaProjectPrefix.length);
+                _clientState.projectIdentifier(projectIdentifier.substring(narrafirmaProjectPrefix.length));
             }
 
             openProject(userCredentials, projectIdentifier);
@@ -706,23 +584,19 @@ function loadApplicationDesign() {
 
         // Tell the panel builder how to build panels
         panelBuilder.setPanelSpecifications(panelSpecificationCollection);
-        panelBuilder.project = project;
-        panelBuilder.projectModel = project.projectIdentifier;
         
         // Tell the panelBuilder what do do if a button is clicked
         panelBuilder.setButtonClickedCallback(buttonClicked);
         
         panelBuilder.setCalculateFunctionResultCallback(calculateFunctionResultForGUI);
 
-        panelBuilder.clientState = clientState;
-        
         // Initialize different Mithril components which will be mounted using m.mount
         // Note that dialogSupport has already been initialized and that component mounted
         navigationPane.initializeNavigationPane(panelSpecificationCollection, startPage, userIdentifier, panelBuilder);
-        pageDisplayer.configurePageDisplayer(panelBuilder, startPage, project, updateHashIfNeededForChangedClientState);
+        pageDisplayer.configurePageDisplayer(panelBuilder, startPage, project, _clientState.updateHashIfNeededForChangedClientState);
 
         // Fill out initial hash string if needed
-        updateHashIfNeededForChangedClientState();
+        _clientState.updateHashIfNeededForChangedClientState();
         
         createLayout();
         
@@ -736,10 +610,10 @@ function loadApplicationDesign() {
             csvImportExport.initialize(project);
              
             // Ensure the pageDisplayer will display the first page
-            urlHashFragmentChanged();
+            this._clientState.urlHashFragmentChanged(pageDisplayer);
             
             // Update if the URL hash fragment is changed by hand
-            window.onhashchange = urlHashFragmentChanged;
+            window.onhashchange = _clientState.urlHashFragmentChanged.bind(_clientState, pageDisplayer);
             
             // turn off initial "please wait" display
             document.getElementById("pleaseWaitDiv").style.display = "none";
