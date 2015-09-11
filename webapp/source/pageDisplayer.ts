@@ -3,6 +3,7 @@ import PanelBuilder = require("panelBuilder/PanelBuilder");
 import Project = require("./Project");
 import m = require("mithril");
 import PanelSetup = require("./PanelSetup");
+import ClientState = require("./ClientState");
 
 "use strict";
 
@@ -10,11 +11,11 @@ import PanelSetup = require("./PanelSetup");
 var currentPageID = null;
 var currentPageSpecification = null;
 var currentPage;
-var updateHashIfNeededForChangedState;
 
 var panelBuilder: PanelBuilder;
 
 var project: Project;
+var clientState: ClientState;
 
 var PageDisplayer: any = {
     controller: function(args) {
@@ -27,7 +28,7 @@ var PageDisplayer: any = {
         console.log("========== view called in PageDisplayer ==========", currentPageID);
             
         // Setting the hash may trigger another call to the showPage function eventually, but as the new page will already be set, it should not loop further
-        updateHashIfNeededForChangedState();
+        clientState.updateHashIfNeededForChangedClientState();
         
         if (!currentPageID) {
             contentsDiv = m("div", "Starting up...");
@@ -50,10 +51,10 @@ var PageDisplayer: any = {
 };
 
 // Call this once at the beginning of the application
-export function configurePageDisplayer(thePanelBuilder: PanelBuilder, theProject, updateHashIfNeededForChangedStateCallback) {
+export function configurePageDisplayer(thePanelBuilder: PanelBuilder, theProject, theClientState) {
     panelBuilder = thePanelBuilder;
     project = theProject;
-    updateHashIfNeededForChangedState = updateHashIfNeededForChangedStateCallback;
+    clientState = theClientState;
     
     m.mount(document.getElementById("pageDiv"), PageDisplayer);
 }
@@ -80,11 +81,11 @@ export function showPage(pageID, forceRefresh = false, isRedrawAlreadyQueued = f
         alert("No such page: " + pageID);
         // Put back the hash if there was a valid one there already
         if (currentPageID !== null && currentPageID !== pageID) {
-            panelBuilder.clientState.pageIdentifier = currentPageID;
+            clientState.pageIdentifier(currentPageID);
         } else {
-            panelBuilder.clientState.pageIdentifier = PanelSetup.startPage();
+            clientState.pageIdentifier(PanelSetup.startPage());
         }
-        updateHashIfNeededForChangedState();
+        clientState.updateHashIfNeededForChangedClientState();
         return;
     }
     
@@ -109,7 +110,7 @@ export function showPage(pageID, forceRefresh = false, isRedrawAlreadyQueued = f
         console.log("setting currentPageID to", pageID);
         currentPageID = pageID;
         currentPageSpecification = pageSpecification;
-        panelBuilder.clientState.pageIdentifier = currentPageID;
+        clientState.pageIdentifier = currentPageID;
     }
     
     // TODO: document.body.scrollTop = document.documentElement.scrollTop = 0;
