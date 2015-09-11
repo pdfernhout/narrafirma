@@ -37,20 +37,27 @@ var panel: Panel = {
             required: true,
             displayType: "storiesList",
             displayConfiguration: "project_projectStoryElementsAnswersClusteringDiagram",
-            displayPrompt: "<b>2</b>. For each project story, come up with as many <b>answers</b> to the above question as you can. For each answer, click the <b>New item</b> button to represent it in the diagram below."
+            displayPrompt: 
+`<b>2</b>. These are your project stories. For each story, come up with as many <b>answers</b> 
+to the above question as you can. For each answer, click the <b>New item</b> button to add it to the diagram below.`
         },
         {
             id: "project_projectStoryElementsAnswersClusteringDiagram",
             valueType: "object",
             required: true,
             displayType: "clusteringDiagram",
-            displayPrompt: "<p><b>3</b>. When you have considered all of your project stories, <b>cluster</b> your answers together. Drag the circles to place like with like.</p> <p><b>4</b>. Give each cluster of answers a <b>name</b>. Click the <b>New cluster</b> button to represent each cluster name on the diagram.</p>"
+            displayPrompt: ""
         },
         {
-            id: "project_projectStoryElementsInstructionsStep2",
+            id: "project_projectStoryElementsInstructionsStep34",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "<p><b>5</b>. <b>Copy</b> the clusters from the diagram above to the diagram below.</p><p><b>6</b>. Describe each cluster by adding <b>attributes</b> to it. Ask yourself: What is good and bad about this cluster? What helps you, and what works against you? Where is the opportunity, and where is the challenge? Create at least two positive and two negative attributes for each cluster. (If you can't think of both positive and negative attributes, keep trying. The exercise depends on the attributes being balanced.)</p><p><b>7</b>. <b>Delete</b> the original cluster names from the diagram below. (Go ahead, don't worry. You'll be replacing them with something better.)</p><p><b>8</b>. <b>Rearrange</b> the attributes into <em>new</em> clusters, placing like with like as you did before.</p><p><b>9</b>. <b>Create new clusters</b> with new names. These are your story elements.</p>"
+            displayPrompt: 
+ `<p><b>3</b>. When you have considered all of your project stories, <b>cluster</b> your answers together. 
+Drag the circles to place like with like.</p> 
+<p><b>4</b>. Give each cluster of answers a <b>name</b>. 
+Click the <b>New cluster</b> button to represent each cluster name on the diagram.</p>
+<p><b>5</b>. <b>Copy</b> the cluster names from the diagram above to the diagram below.</p>`
         },
         {
             id: "project_projectStoryElementsAttributeGroupsClusteringDiagram",
@@ -60,13 +67,29 @@ var panel: Panel = {
             displayPrompt: ""
         },
         {
+            id: "project_projectStoryElementsInstructionsStep6789",
+            valueType: "none",
+            displayType: "label",
+            displayPrompt: 
+ `<p><b>6</b>. Describe each cluster by adding <b>attributes</b> to it. 
+ Ask yourself: What is good and bad about this cluster? What helps you, and what works against you? 
+Where is the opportunity, and where is the challenge? Create at least two positive and two negative 
+attributes for each cluster. (If you can't think of both positive and negative attributes, keep trying. 
+The exercise depends on the attributes being balanced.)</p>
+<p><b>7</b>. <b>Delete</b> the original cluster names from the diagram above. 
+(Go ahead, don't worry. You'll be replacing them with something better.)</p>
+<p><b>8</b>. <b>Rearrange</b> the attributes into <em>new</em> clusters, placing like with like as you did before.</p>
+<p><b>9</b>. <b>Create new clusters</b> with new names. These are your story elements.</p>
+<p><b>10</b>. Finally, enter the story elements (final cluster names) you created into the table below.</p>`
+            },
+        {
             id: "project_projectStoryElementsList",
             valueType: "array",
             required: true,
             displayType: "grid",
             displayConfiguration: "panel_addStoryElement",
             displayName: "Story elements",
-            displayPrompt: "<p><b>10</b>. Finally, enter the story elements (final cluster names) you created into the table below.</p>"
+            displayPrompt: "These are the story elements you have entered so far."
         }
     ]
 };
