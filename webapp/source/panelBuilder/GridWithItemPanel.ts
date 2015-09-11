@@ -696,7 +696,7 @@ class GridWithItemPanel {
         return m("tr", {key: this.dataStore.idForItem(item), "class": selectionClass}, fields);
     }
     
-    ensureTableRowIsVisibleConfig(tableElement: HTMLElement, isInitialized: boolean, context: any, vdom: _mithril.MithrilVirtualElement) {
+    ensureTableRowIsVisibleConfig(tableElement: HTMLElement, isInitialized: boolean, context: any) {
         // Ensure the selected item is visible in the table
         // TODO: Could improve this so when navigating down the item is still near the bottom
         if (this.selectedItem && this.isNavigationalScrollingNeeded) {

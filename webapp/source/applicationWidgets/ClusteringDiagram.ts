@@ -194,7 +194,7 @@ class ClusteringDiagram {
         ]);
     }
     
-    configSurface(element: HTMLElement, isInitialized: boolean, context: any, vdom: _mithril.MithrilVirtualElement) {
+    configSurface(element: HTMLElement, isInitialized: boolean, context: any) {
         console.log("configSurface called");
         if (!isInitialized) {
             element.appendChild(this.divForResizing);

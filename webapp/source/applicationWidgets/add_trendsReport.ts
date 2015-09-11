@@ -283,7 +283,7 @@ class PatternBrowser {
         return m("div", parts);
     }
     
-    insertGraphResultsPaneConfig(element: HTMLElement, isInitialized: boolean, context: any, vdom: _mithril.MithrilVirtualElement) {
+    insertGraphResultsPaneConfig(element: HTMLElement, isInitialized: boolean, context: any) {
         if (!isInitialized) {
             // console.log("appending graph element");
             element.appendChild(this.graphHolder.graphResultsPane);

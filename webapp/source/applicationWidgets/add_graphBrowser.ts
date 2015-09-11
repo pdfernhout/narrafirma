@@ -121,7 +121,7 @@ class GraphBrowser {
         */
     }
     
-    insertGraphResultsPaneConfig(element: HTMLElement, isInitialized: boolean, context: any, vdom: _mithril.MithrilVirtualElement) {
+    insertGraphResultsPaneConfig(element: HTMLElement, isInitialized: boolean, context: any) {
         if (!isInitialized) {
             element.appendChild(this.graphHolder.graphResultsPane);
         }       
