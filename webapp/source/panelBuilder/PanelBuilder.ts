@@ -146,18 +146,9 @@ class PanelBuilder {
     idsMade = {};
     idCount = 0;
     
-    // TODO: Maybe these should not be in builder?
-    clientState: ClientState = null;
-    project: Project = null;
-    projectModel: string;
-    
     readOnly = false;
 
-    constructor(kwArgs = {}) {
-        
-        for (var key in kwArgs) {
-            this[key] = kwArgs[key];
-        }
+    constructor(public application) {
     }
     
     static addPlugin(name, callback) {

@@ -29,7 +29,15 @@ That would resolve to "context.project.userIdentifier".
 */
 
 class ValuePathResolver {
-    constructor(public context: any, public baseModel: any, public valuePath: string) {
+    constructor(public context: any, public baseModel: any, public valuePath: string, public isAccessFunctionRequired = true) {
+    }
+    
+    failIfAccessFunctionRequired() {
+        if (this.isAccessFunctionRequired) {
+            console.log("access function required", this);
+            alert("access function required");
+            throw new Error("access function required " + this.valuePath);
+        }
     }
     
     resolveModelAndField() {
@@ -72,12 +80,14 @@ class ValuePathResolver {
             var useAccessorFunction = !useTripleStore && typeof currentModelDirectFieldValue === "function";
             
             if (useTripleStore) {
+                this.failIfAccessFunctionRequired();
                 nextModel = (<Project>this.context.project).tripleStore.queryLatestC(currentModel, currentKey);
             } else if (useAccessorFunction) {
                 nextModel = currentModel[currentKey]();
             } else if (currentModelDirectFieldValue === undefined && currentModel.fieldValue && typeof currentModel.fieldValue === "function") {
                 nextModel = currentModel.fieldValue(currentKey);
             } else {
+                this.failIfAccessFunctionRequired();
                 nextModel = currentModel[currentKey];
             }
             if (!nextModel) {
@@ -126,12 +136,14 @@ class ValuePathResolver {
             }
                         
             if (modelAndField.useTripleStore) {
+                 this.failIfAccessFunctionRequired();
                 (<Project>this.context.project).tripleStore.addTriple(modelAndField.model, modelAndField.field, value);
             } else if (useAccessorFunction) {
                 modelAndField.model[modelAndField.field](value);
             } else if (modelFieldDirectValue === undefined && modelAndField.model.fieldValue && typeof modelAndField.model.fieldValue === "function") {
                 modelAndField.model.fieldValue(modelAndField.field, value);
             } else {
+                this.failIfAccessFunctionRequired();
                 modelAndField.model[modelAndField.field] = value;
             }
             
@@ -142,12 +154,14 @@ class ValuePathResolver {
         } else {
             if (modelAndField === undefined) return undefined;
             if (modelAndField.useTripleStore) {
+                this.failIfAccessFunctionRequired();
                 value = (<Project>this.context.project).tripleStore.queryLatestC(modelAndField.model, modelAndField.field);
             } else if (useAccessorFunction) {
                 value = modelAndField.model[modelAndField.field]();
             } else if (modelFieldDirectValue === undefined && modelAndField.model.fieldValue && typeof modelAndField.model.fieldValue === "function") {
                 return modelAndField.model.fieldValue(modelAndField.field);
             } else {
+                this.failIfAccessFunctionRequired();
                 value = modelAndField.model[modelAndField.field];
             }
             

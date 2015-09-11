@@ -272,7 +272,7 @@ class StoryBrowser {
     questions = [];
     choices = [];
     allStories = [];
-    modelForGrid = {stories: []};
+    filteredStories = [];
     itemPanelSpecification = {panelFields: []};
     gridFieldSpecification = null;
     
@@ -299,7 +299,7 @@ class StoryBrowser {
         
         this.filter1 = new Filter({key: "Filter 1", name: "Filter 1", storyBrowser: this});
         this.filter2 = new Filter({key: "Filter 2", name: "Filter 2", storyBrowser: this});
-        this.grid = new GridWithItemPanel({panelBuilder: args.panelBuilder, model: this.modelForGrid, fieldSpecification: this.gridFieldSpecification});
+        this.grid = new GridWithItemPanel({panelBuilder: args.panelBuilder, model: this, fieldSpecification: this.gridFieldSpecification});
     }
 
     static controller(args) {
@@ -331,7 +331,7 @@ class StoryBrowser {
             
             // Need to update grid for change
             this.gridFieldSpecification.displayConfiguration.itemPanelSpecification = this.itemPanelSpecification;
-            this.modelForGrid.stories = this.allStories;
+            this.filteredStories = this.allStories;
             this.grid.updateDisplayConfigurationAndData(this.gridFieldSpecification.displayConfiguration);
         }
         
@@ -351,6 +351,11 @@ class StoryBrowser {
         }
         
         return m("div", {"class": "questionExternal narrafirma-question-type-questionAnswer"}, parts);
+    }
+    
+    // Not using m.prop for stories property as it makes debugging harder?
+    stories() {
+        return this.filteredStories;
     }
     
     currentStoryCollectionChanged(storyCollectionIdentifier) {
@@ -433,7 +438,7 @@ class StoryBrowser {
     setStoryListForCurrentFilters() {
         var filteredResults = this.getFilteredStoryList();
         console.log("Filtered results", filteredResults);
-        this.modelForGrid.stories = filteredResults;
+        this.filteredStories = filteredResults;
         this.grid.updateData();
         // console.log("finished setting list with filtered results", filteredResults);
     }
