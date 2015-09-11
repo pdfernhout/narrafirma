@@ -17,8 +17,8 @@ import toaster = require("./panelBuilder/toaster");
 import translate = require("./panelBuilder/translate");
 import m = require("mithril");
 import navigationSections = require("./applicationPanelSpecifications/navigation");
-import ClientState = require("./ClientState");
 import PanelSetup = require("./PanelSetup");
+import Globals = require("./Globals");
 
 "use strict";
 
@@ -32,9 +32,7 @@ class Application {
     private journalIdentifier: string;
     private projectIdentifier: string;
     private userIdentifier: string;
-    
-    private project: Project;
-    
+        
     /*
     export function project() {
         return _project;
@@ -47,13 +45,6 @@ class Application {
     private runningAfterInitialIdle: boolean = false;
     
     private pendingRedraw = null;
-    
-    // For this local instance only (not shared with other users or other browser tabs)
-    private _clientState: ClientState  = new ClientState();
-    
-    clientState(): ClientState {
-        return this._clientState;
-    }
     
     // For building panels based on field specifications
     private panelBuilder: PanelBuilder;
@@ -94,7 +85,7 @@ class Application {
         
         // TODO: Translate
         
-        var statusText = "Project: " + this.project.journalIdentifier.substring(narrafirmaProjectPrefix.length) + "; Server status: (" + status + ") " + text;
+        var statusText = "Project: " + Globals.project().journalIdentifier.substring(narrafirmaProjectPrefix.length) + "; Server status: (" + status + ") " + text;
     
         if (status === "ok") {
             nameDiv.className = "narrafirma-serverstatus-ok";
@@ -128,8 +119,8 @@ class Application {
         }
         
         nameDiv.title = statusText;
-        this._clientState.serverStatus(nameDiv.className);
-        this._clientState.serverStatusText(statusText);
+        Globals.clientState().serverStatus(nameDiv.className);
+        Globals.clientState().serverStatusText(statusText);
         // TODO: Need to make tooltip text ARIA accessible; suggestion in tooltip docs on setting text in tab order
         // statusTooltip.set("label", statusText); 
         
@@ -165,10 +156,10 @@ class Application {
             return surveyCollection.isStoryCollectingEnabled();
         } else if (functionName === "storeQuestionnaireInStoryCollection") {
             var storyCollectionIdentifier = fieldSpecification.value;
-            var questionnaireName = this.project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_questionnaireIdentifier");
-            var questionnaire = questionnaireGeneration.buildQuestionnaire(this.project, questionnaireName);
+            var questionnaireName = Globals.project().tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_questionnaireIdentifier");
+            var questionnaire = questionnaireGeneration.buildQuestionnaire(Globals.project(), questionnaireName);
             if (!questionnaire) return ["Questionnaire could not be created for: " + questionnaireName];
-            this.project.tripleStore.addTriple(storyCollectionIdentifier, "questionnaire", questionnaire);
+            Globals.project().tripleStore.addTriple(storyCollectionIdentifier, "questionnaire", questionnaire);
             return null;
         } else {
             console.log("TODO: calculateFunctionResultForGUI ", functionName, fieldSpecification);
@@ -180,10 +171,10 @@ class Application {
         // Set up global function used by section dashboard links
         
         window["narrafirma_openPage"] = (pageIdentifier) => {
-            this._clientState.pageIdentifier(pageIdentifier);
-            this._clientState.updateHashIfNeededForChangedClientState();
+            Globals.clientState().pageIdentifier(pageIdentifier);
+            Globals.clientState().updateHashIfNeededForChangedClientState();
             // Page displayer will handle cases where the hash is not valid and also optimizing out page redraws if staying on same page
-            pageDisplayer.showPage(this._clientState.pageIdentifier());
+            pageDisplayer.showPage(Globals.clientState().pageIdentifier());
         };
         
         window["narrafirma_logoutClicked"] = () => {
@@ -202,7 +193,7 @@ class Application {
         // Cast to silence TypeScript warning about use of translate.configure
         (<any>translate).configure({}, applicationMessages.root);
         
-        this._clientState.initialize();
+        Globals.clientState().initialize();
     
         this.setupGlobalFunctions();
         
@@ -267,7 +258,7 @@ class Application {
             userIdentifier: this.userIdentifier
         };
         
-        var projectIdentifierSupplied = this._clientState.projectIdentifier();
+        var projectIdentifierSupplied = Globals.clientState().projectIdentifier();
         console.log("projectIdentifierSupplied", projectIdentifierSupplied);
         if (projectIdentifierSupplied) {
             // TODO: Could put up project chooser if the supplied project is invalid...
@@ -284,14 +275,14 @@ class Application {
                 if (!this.projectIdentifier) return;
                 
                 if (projectChoice.isNew) {
-                    this._clientState.projectIdentifier(this.projectIdentifier);
+                    Globals.clientState().projectIdentifier(this.projectIdentifier);
                     this.projectIdentifier = narrafirmaProjectPrefix + this.projectIdentifier;
                     this.journalIdentifier = this.projectIdentifier; 
                     alert("About to make project: " + this.projectIdentifier);
                     this.makeNewProject();
                     return;     
                 } else {
-                    this._clientState.projectIdentifier(this.projectIdentifier.substring(narrafirmaProjectPrefix.length));
+                    Globals.clientState().projectIdentifier(this.projectIdentifier.substring(narrafirmaProjectPrefix.length));
                 }
     
                 this.openProject(userCredentials, this.projectIdentifier);
@@ -348,13 +339,13 @@ class Application {
         // TODO: Should this be managed separately?
         this.journalIdentifier = projectIdentifier; 
         
-        this.project = new Project(this.journalIdentifier, projectIdentifier, userCredentials, this.updateServerStatus.bind(this), this.redrawFromProject.bind(this));
+        Globals.project(new Project(this.journalIdentifier, projectIdentifier, userCredentials, this.updateServerStatus.bind(this), this.redrawFromProject.bind(this)));
         
-        console.log("openProject", this.project);
+        console.log("openProject", Globals.project());
         
-        surveyCollection.setProject(this.project);
+        surveyCollection.setProject(Globals.project());
         
-        this.project.startup((error) => {
+        Globals.project().startup((error) => {
             if (error) {
                 document.getElementById("pleaseWaitDiv").style.display = "none";
                 // TODO: Sanitize journalIdentifier
@@ -391,10 +382,10 @@ class Application {
             // Initialize different Mithril components which will be mounted using m.mount
             // Note that dialogSupport has already been initialized and that component mounted
             navigationPane.initializeNavigationPane(panelSpecificationCollection, this.userIdentifier, this.panelBuilder);
-            pageDisplayer.configurePageDisplayer(this.panelBuilder, this.project, this._clientState);
+            pageDisplayer.configurePageDisplayer(this.panelBuilder, Globals.project(), Globals.clientState());
     
             // Fill out initial hash string if needed
-            this._clientState.updateHashIfNeededForChangedClientState();
+            Globals.clientState().updateHashIfNeededForChangedClientState();
             
             this.createLayout();
             
@@ -402,16 +393,16 @@ class Application {
             
             // TODO: This assumes we have picked a project, and are actually loading data and have not errored out
             // TODO: Need some kind of progress indicator of messages loaded...
-            this.project.pointrelClient.idleCallback = () => {
+            Globals.project().pointrelClient.idleCallback = () => {
                 // Now that data is presumably loaded into the Project tripleStore, we can proceed with further initialization
-                buttonActions.initialize(this.project, this._clientState);
-                csvImportExport.initialize(this.project);
+                buttonActions.initialize(Globals.project(), Globals.clientState());
+                csvImportExport.initialize(Globals.project());
                  
                 // Ensure the pageDisplayer will display the first page
-                this._clientState.urlHashFragmentChanged(pageDisplayer);
+                Globals.clientState().urlHashFragmentChanged(pageDisplayer);
                 
                 // Update if the URL hash fragment is changed by hand
-                window.onhashchange = this._clientState.urlHashFragmentChanged.bind(this._clientState, pageDisplayer);
+                window.onhashchange = Globals.clientState().urlHashFragmentChanged.bind(Globals.clientState(), pageDisplayer);
                 
                 // turn off initial "please wait" display
                 document.getElementById("pleaseWaitDiv").style.display = "none";
