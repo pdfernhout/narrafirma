@@ -13,7 +13,11 @@ var panel: Panel = {
             id: "catalysisIntro",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "In the catalysis phase of your PNI project, you will look for patterns\nand prepare materials for use in sensemaking.<br><br>Below are links to each step of this phase, along with any reminders you may have entered on them."
+            displayPrompt: 
+`In the catalysis phase of your PNI project, you will look for <strong>patterns</strong>
+in the stories people told and in their answers to questions. You will build on these
+patterns by adding <strong>observations</strong>, <strong>interpretations</strong> and <strong>ideas</strong> that will be of use
+during the sensemaking phase.`
         }
     ]
 };

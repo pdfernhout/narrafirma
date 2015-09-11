@@ -13,7 +13,11 @@ var panel: Panel = {
             id: "interventionIntroLabel",
             valueType: "none",
             displayType: "label",
-            displayPrompt: "In the intervention phase of your PNI project, you will <strong>plan interventions</strong> and record information about them. An intervention is an action that has an impact on the stories people tell.<br><br>Below are links to each step of this phase, along with any reminders you may have entered on them."
+            displayPrompt: 
+`In the intervention phase of your PNI project, you will describe your project <strong>outcomes</strong> 
+so you can get recommendations for useful narrative interventions (like story sharing spaces or narrative therapy). 
+Then you might <strong>plan</strong> interventions 
+and <strong>record</strong> what happened when you carried them out.`
         }
     ]
 };
