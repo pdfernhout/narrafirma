@@ -31,7 +31,7 @@ That would resolve to "context.project.userIdentifier".
 
 class ValuePathResolver {
     
-    constructor(public baseModel: any, public valuePath: string, public isAccessFunctionRequired = true) {
+    constructor(public baseModel: any, public valuePath: string, public isAccessFunctionRequired = false) {
     }
     
     failIfAccessFunctionRequired() {
