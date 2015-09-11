@@ -1,5 +1,6 @@
 import m = require("mithril");
 import PanelSetup = require("./PanelSetup");
+import Globals = require("./Globals");
 
 "use strict";
 
@@ -29,8 +30,8 @@ var Navigation: any = {
         // console.log("&&&&&&&&&&&&&&&&&&&&&&&&&& View called for navigation pane");
         return m("div[id=narrafirma-navigation]", [
             m("span[id=narrafirma-name]", {
-                "class": controller.panelBuilder.clientState.serverStatus,
-                "title": controller.panelBuilder.clientState.serverStatusText
+                "class": Globals.clientState().serverStatus(),
+                "title": Globals.clientState().serverStatusText()
             }, "NarraFirma™"),
             m("span[id=narrafirma-breadcrumbs]", buildBreadcrumbs(controller)),
             m("a[id=narrafirma-help-link]", {href: launchHelpCommand}, "(Help)"),
