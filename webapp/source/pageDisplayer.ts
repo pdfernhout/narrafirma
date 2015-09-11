@@ -2,6 +2,7 @@ import navigationPane = require("./navigationPane");
 import PanelBuilder = require("panelBuilder/PanelBuilder");
 import Project = require("./Project");
 import m = require("mithril");
+import PanelSetup = require("./PanelSetup");
 
 "use strict";
 
