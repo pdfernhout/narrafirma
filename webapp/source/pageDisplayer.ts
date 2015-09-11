@@ -40,10 +40,10 @@ var PageDisplayer: any = {
                     panelBuilder.buildPanel(currentPageID, project.projectIdentifier)
                 ]);
             } catch (e) {
-                console.log("ERROR: When trying to create page", currentPageID, e);
+                console.log("ERROR: When trying to view page", currentPageID, e);
                 // TODO: Translate
                 // alert("Something when wrong trying to create this page");
-                contentsDiv = m("div", "PROBLEM: Failed to build page: " + currentPageID);
+                contentsDiv = m("div", "PROBLEM: Failed to view page: " + currentPageID);
             }
          }
         return m("div.pageContents", {key: "pageContents"}, contentsDiv);
@@ -117,7 +117,13 @@ export function showPage(pageID, forceRefresh = false, isRedrawAlreadyQueued = f
 
     navigationPane.setCurrentPageSpecification(pageID, pageSpecification);
 
-    if (!isRedrawAlreadyQueued) m.redraw();
+    if (!isRedrawAlreadyQueued) {
+        try {
+            m.redraw();
+        } catch (e) {
+            console.log("ERROR: When trying to redraw page", currentPageID, e);
+        }
+    }
 }
 
 export function getCurrentPageID() {
