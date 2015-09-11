@@ -97,7 +97,7 @@ export function showPage(pageID, forceRefresh = false, isRedrawAlreadyQueued = f
         var confirmResult = confirm("You have unsaved changes. Proceed anyway?");
         if (!confirmResult) {
             // Put back the old hash if it is valid and changed
-            if (currentPageID !== null && currentPageID !== pageID) panelBuilder.clientState.pageIdentifier = currentPageID);
+            if (currentPageID !== null && currentPageID !== pageID) panelBuilder.clientState.pageIdentifier(currentPageID));
             return;
         }
     }
@@ -110,7 +110,7 @@ export function showPage(pageID, forceRefresh = false, isRedrawAlreadyQueued = f
         console.log("setting currentPageID to", pageID);
         currentPageID = pageID;
         currentPageSpecification = pageSpecification;
-        clientState.pageIdentifier = currentPageID;
+        clientState.pageIdentifier(currentPageID);
     }
     
     // TODO: document.body.scrollTop = document.documentElement.scrollTop = 0;
