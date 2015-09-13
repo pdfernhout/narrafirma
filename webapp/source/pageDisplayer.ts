@@ -88,20 +88,6 @@ export function showPage(pageID, forceRefresh = false, isRedrawAlreadyQueued = f
         clientState.updateHashIfNeededForChangedClientState();
         return;
     }
-    
-    // TODO: Check for unsaved changes before changing page (like in Grid)
-    /*
-    if (currentPageID !== null && hasUnsavedChangesForCurrentPage()) {
-        // TODO: Fix this so requests you either revert or save changes first?
-        // TODO: Translate
-        var confirmResult = confirm("You have unsaved changes. Proceed anyway?");
-        if (!confirmResult) {
-            // Put back the old hash if it is valid and changed
-            if (currentPageID !== null && currentPageID !== pageID) panelBuilder.clientState.pageIdentifier(currentPageID));
-            return;
-        }
-    }
-    */
  
     // Just going to assume we will be redrawing later via Mithril...
     
