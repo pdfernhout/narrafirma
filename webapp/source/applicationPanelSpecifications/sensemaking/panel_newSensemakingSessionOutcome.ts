@@ -3,10 +3,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 var panel: Panel = {
     id: "panel_newSensemakingSessionOutcome",
-    displayName: "Sensemaking session outcome",
-    displayType: "panel",
-    section: "sensemaking",
-    modelClass: "NewSensemakingSessionOutcome",
+    modelClass: "SensemakingSessionOutcome",
     panelFields: [
         {
             id: "sensemakingSessionRecord_outcome_name",

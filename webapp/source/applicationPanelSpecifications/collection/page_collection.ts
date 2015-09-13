@@ -4,10 +4,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_collection",
     displayName: "Collection",
-    displayType: "page",
-    isHeader: true,
-    section: "collection",
-    modelClass: null,
     panelFields: [
         {
             id: "project_collectionPhaseDescriptionLabel",

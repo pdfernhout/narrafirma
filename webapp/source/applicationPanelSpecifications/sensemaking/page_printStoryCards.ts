@@ -4,9 +4,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_printStoryCards",
     displayName: "Print story cards",
-    displayType: "page",
-    section: "sensemaking",
-    modelClass: "PrintStoryCardsActivity",
     panelFields: [
         {
             id: "printStoryCards_introduction",

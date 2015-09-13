@@ -4,10 +4,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_dashboard",
     displayName: "Home",
-    displayType: "page",
-    isHeader: true,
-    section: "dashboard",
-    modelClass: null,
     panelFields: [
         {
             id: "project_mainDashboardPNIPhasesDiagram",

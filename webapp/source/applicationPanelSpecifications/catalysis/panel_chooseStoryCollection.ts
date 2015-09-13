@@ -3,9 +3,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 var panel: Panel = {
     id: "panel_chooseStoryCollection",
-    displayName: "Choose a story collection",
-    displayType: "panel",
-    section: "catalysis",
     modelClass: "StoryCollectionChoice",
     panelFields: [
         {

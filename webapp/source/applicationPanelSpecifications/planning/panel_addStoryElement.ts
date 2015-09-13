@@ -3,9 +3,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 var panel: Panel = {
     id: "panel_addStoryElement",
-    displayName: "Add story element",
-    displayType: "panel",
-    section: "planning",
     modelClass: "StoryElement",
     panelFields: [
         {

@@ -61,10 +61,6 @@ interface PanelField {
 
 interface Panel {
     id: string;
-    displayName: string;
-    displayType: string;
-    isHeader?: boolean;
-    section: string;
-    modelClass?: any;
+    displayName?: string;
     panelFields: PanelField[];
 }

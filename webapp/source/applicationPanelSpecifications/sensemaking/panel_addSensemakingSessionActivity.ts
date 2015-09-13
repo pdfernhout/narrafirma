@@ -3,9 +3,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 var panel: Panel = {
     id: "panel_addSensemakingSessionActivity",
-    displayName: "Add sensemaking session activity",
-    displayType: "panel",
-    section: "sensemaking",
     modelClass: "SensemakingSessionActivityPlan",
     panelFields: [
        {

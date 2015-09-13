@@ -3,9 +3,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 var panel: Panel = {
     id: "panel_addParticipantQuestion",
-    displayName: "Add participant question",
-    displayType: "panel",
-    section: "collection",
     modelClass: "ParticipantQuestion",
     panelFields: [
         {

@@ -4,9 +4,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_stopStoryCollection",
     displayName: "Stop story collection",
-    displayType: "page",
-    section: "collection",
-    modelClass: "StopStoryCollectionActivity",
     panelFields: [
         {
             id: "webStoryCollection_stopCollectionLabel2",

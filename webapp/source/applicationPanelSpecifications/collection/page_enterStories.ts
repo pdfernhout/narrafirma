@@ -4,9 +4,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_enterStories",
     displayName: "Enter stories",
-    displayType: "page",
-    section: "collection",
-    modelClass: "EnterStoriesActivity",
     panelFields: [
         {
             id: "enterStories_Label",

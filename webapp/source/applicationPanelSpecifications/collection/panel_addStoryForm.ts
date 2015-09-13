@@ -3,10 +3,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 var panel: Panel = {
     id: "panel_addStoryForm",
-    displayName: "Add story form",
-    displayType: "panel",
-    section: "collection",
-    modelClass: "DesignStoryForms",
+    modelClass: "StoryForm",
     panelFields: [
         {
             id: "questionForm_shortName",

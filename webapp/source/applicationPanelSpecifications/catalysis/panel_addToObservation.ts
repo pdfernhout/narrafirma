@@ -3,10 +3,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 var panel: Panel = {
     id: "panel_addToObservation",
-    displayName: "Add to observation",
-    displayType: "panel",
-    section: "catalysis",
-    modelClass: null,
     panelFields: [
         {
             id: "addToObservation_introduction",

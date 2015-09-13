@@ -3,9 +3,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 var panel: Panel = {
     id: "panel_addStoryCollectionMethod",
-    displayName: "Plan story collection method",
-    displayType: "panel",
-    section: "collection",
     modelClass: "Venue",
     panelFields: [
         {

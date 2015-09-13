@@ -10,9 +10,6 @@ var templates = [
     {
         "id": "elicitationQuestions",
         "name": "Elicitation questions",
-        "description": "",
-        "isHeader": false,
-        "type": "page",
         "questions": [
             {
                 "id": "topic_timeWhenYouFelt",
@@ -411,9 +408,6 @@ var templates = [
     {
         "id": "storyQuestions",
         "name": "Story questions",
-        "description": "",
-        "isHeader": false,
-        "type": "page",
         "questions": [
             {
                 "id": "howFeel",
@@ -920,9 +914,6 @@ var templates = [
     {
         "id": "participantQuestions",
         "name": "Participant questions",
-        "description": "",
-        "isHeader": false,
-        "type": "page",
         "questions": [
             {
                 "id": "ageRange",
@@ -1064,9 +1055,6 @@ var templates = [
     {
         "id": "storyCollectionActivities",
         "name": "Story Collection Activities",
-        "description": "",
-        "isHeader": false,
-        "type": "page",
         "questions": [
               {
                   "id": "twoTrueStoriesAndATallTale",
@@ -1389,9 +1377,6 @@ var templates = [
     {
 	    "id": "sensemakingActivities",
 	    "name": "Sensemaking Activities",
-	    "description": "",
-	    "isHeader": false,
-	    "type": "page",
 	    "questions": [
               {
             	  "id": "encounterStories",

@@ -4,9 +4,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_projectRequests",
     displayName: "Respond to requests for post-project support",
-    displayType: "page",
-    section: "return",
-    modelClass: "ProjectRequestsActivity",
     panelFields: [
         {
             id: "project_returnRequestsLabel",

@@ -4,10 +4,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_importExport",
     displayName: "Import & Export",
-    displayType: "page",
-    isHeader: false,
-    modelClass: null,
-    section: "administration",
     panelFields: [
         {
             id: "project_importExport_header",

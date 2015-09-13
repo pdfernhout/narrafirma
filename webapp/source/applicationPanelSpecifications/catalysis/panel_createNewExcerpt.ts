@@ -3,9 +3,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 var panel: Panel = {
     id: "panel_createNewExcerpt",
-    displayName: "Create new excerpt",
-    displayType: "panel",
-    section: "catalysis",
     modelClass: "Excerpt",
     panelFields: [
         {

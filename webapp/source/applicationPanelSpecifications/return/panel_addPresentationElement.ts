@@ -3,9 +3,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 var panel: Panel = {
     id: "panel_addPresentationElement",
-    displayName: "Add element to project presentation outline",
-    displayType: "panel",
-    section: "return",
     modelClass: "PresentationElement",
     panelFields: [
         {

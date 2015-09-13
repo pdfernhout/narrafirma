@@ -4,9 +4,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_createProjectStoryElements",
     displayName: "Create project story elements",
-    displayType: "page",
-    section: "planning",
-    modelClass: "CreateProjectStoryElementsActivity",
     panelFields: [
         {
             id: "project_projectStoryElementsInstructions",

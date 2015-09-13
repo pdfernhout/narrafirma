@@ -40,7 +40,9 @@ function loadAllPanelSpecifications(panelSpecificationCollection, navigationSect
             requireList.push(loadingBase + sectionInfo.section + "/" + pageID + ".js");
             panelMetadata.push({
                 panelID: pageID,
-                section: sectionInfo.section
+                displayType: "page",
+                section: sectionInfo.section,
+                isHeader: pageIndex === 0
             });
         }
         if (sectionInfo.panels) {
@@ -49,6 +51,7 @@ function loadAllPanelSpecifications(panelSpecificationCollection, navigationSect
                 requireList.push(loadingBase + sectionInfo.section + "/" + extraPanelID + ".js");
                 panelMetadata.push({
                     panelID: extraPanelID,
+                    displayType: "panel",
                     section: sectionInfo.section
                 });
             }
@@ -63,13 +66,13 @@ function loadAllPanelSpecifications(panelSpecificationCollection, navigationSect
         for (var panelIndex = 0; panelIndex < requireList.length; panelIndex++) {
             var panelInfo = panelMetadata[panelIndex];
             var panelSpecification = arguments[panelIndex];
-
             if (panelSpecification.id !== panelInfo.panelID) {
                 console.log("panelID mismatch", panelInfo, panelSpecification);
                 throw new Error("panelID does not match id in file for panel: " + panelInfo.panelID);
             }
-            // panelSpecification.section = panelInfo.section;
-            // panelSpecification.displayName = panelInfo.panelName;
+            panelSpecification.section = panelInfo.section;
+            panelSpecification.isHeader = panelInfo.isHeader || false;
+            panelSpecification.displayType = panelInfo.displayType;
             panelSpecificationCollection.addPanelSpecification(panelSpecification);
         }
         callback();

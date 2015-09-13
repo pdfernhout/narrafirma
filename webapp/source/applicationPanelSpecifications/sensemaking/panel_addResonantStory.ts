@@ -3,9 +3,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 var panel: Panel = {
     id: "panel_addResonantStory",
-    displayName: "Add resonant story",
-    displayType: "panel",
-    section: "sensemaking",
     modelClass: "ResonantStory",
     panelFields: [
         {

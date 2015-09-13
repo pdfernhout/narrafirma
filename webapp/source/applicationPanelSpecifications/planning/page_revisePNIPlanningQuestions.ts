@@ -4,9 +4,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_revisePNIPlanningQuestions",
     displayName: "Revise PNI planning questions",
-    displayType: "page",
-    section: "planning",
-    modelClass: "PlanningQuestionsRevisedActivity",
     panelFields: [
         {
             id: "project_improvePlanningDrafts",

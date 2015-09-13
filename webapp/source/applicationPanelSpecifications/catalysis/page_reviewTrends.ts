@@ -4,9 +4,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_reviewTrends",
     displayName: "Review trends",
-    displayType: "page",
-    section: "catalysis",
-    modelClass: "ReviewTrendsActivity",
     panelFields: [
         {
             id: "reviewTrendsLabel",

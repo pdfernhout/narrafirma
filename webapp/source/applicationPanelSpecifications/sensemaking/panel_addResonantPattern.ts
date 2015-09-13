@@ -3,10 +3,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 var panel: Panel = {
     id: "panel_addResonantPattern",
-    displayName: "Add resonant pattern",
-    displayType: "panel",
-    section: "sensemaking",
-    modelClass: "resonantPattern",
+    modelClass: "ResonantPattern",
     panelFields: [
         {
             id: "sensemakingSessionRecord_resonantPattern_name",

@@ -3,9 +3,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 var panel: Panel = {
     id: "panel_addInterpretation",
-    displayName: "Add interpretation",
-    displayType: "panel",
-    section: "catalysis",
     modelClass: "Interpretation",
     panelFields: [
         {

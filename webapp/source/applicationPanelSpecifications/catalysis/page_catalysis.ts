@@ -4,10 +4,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_catalysis",
     displayName: "Catalysis",
-    displayType: "page",
-    isHeader: true,
-    section: "catalysis",
-    modelClass: null,
     panelFields: [
         {
             id: "catalysisIntro",

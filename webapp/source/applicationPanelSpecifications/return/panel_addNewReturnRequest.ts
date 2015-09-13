@@ -3,9 +3,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 var panel: Panel = {
     id: "panel_addNewReturnRequest",
-    displayName: "Enter project request",
-    displayType: "panel",
-    section: "return",
     modelClass: "ReturnRequest",
     panelFields: [
         {

@@ -4,9 +4,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_clusterInterpretations",
     displayName: "Cluster interpretations",
-    displayType: "page",
-    section: "catalysis",
-    modelClass: "ClusterInterpretationsActivity",
     panelFields: [
         {
             id: "project_interpretationsClusteringLabel",

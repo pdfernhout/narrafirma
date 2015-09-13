@@ -4,9 +4,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_chooseCollectionMethods",
     displayName: "Choose collection methods",
-    displayType: "page",
-    section: "collection",
-    modelClass: "ChooseCollectionMethodsActivity",
     panelFields: [
         {
             id: "project_methodsIntro",

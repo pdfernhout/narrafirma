@@ -4,9 +4,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_printProjectReport",
     displayName: "Print project report",
-    displayType: "page",
-    section: "administration",
-    modelClass: "PrintProjectReport",
     panelFields: [
         {
             id: "wholeProjectReportLabel",

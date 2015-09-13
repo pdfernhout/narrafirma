@@ -4,9 +4,6 @@ import surveyCollection = require("../../surveyCollection");
 
 var panel: Panel = {
     id: "panel_addStoryCollection",
-    displayName: "Add story collection",
-    displayType: "panel",
-    section: "collection",
     modelClass: "StoryCollection",
     panelFields: [
         {

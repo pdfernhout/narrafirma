@@ -4,9 +4,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_prepareProjectPresentation",
     displayName: "Prepare outline of project presentation",
-    displayType: "page",
-    section: "return",
-    modelClass: "PrepareProjectPresentationActivity",
     panelFields: [
         {
             id: "project_presentationLabel",

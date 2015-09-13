@@ -4,9 +4,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_enterSensemakingSessionRecords",
     displayName: "Enter sensemaking session records",
-    displayType: "page",
-    section: "sensemaking",
-    modelClass: "EnterSensemakingSessionRecordsActivity",
     panelFields: [
         {
             id: "project_sensemakingSessionRecordsLabel",

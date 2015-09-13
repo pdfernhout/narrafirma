@@ -4,10 +4,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_return",
     displayName: "Return",
-    displayType: "page",
-    isHeader: true,
-    section: "return",
-    modelClass: null,
     panelFields: [
         {
             id: "returnIntroLabel",

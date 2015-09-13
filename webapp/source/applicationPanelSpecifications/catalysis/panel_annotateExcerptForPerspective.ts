@@ -3,9 +3,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 var panel: Panel = {
     id: "panel_annotateExcerptForPerspective",
-    displayName: "Annotate excerpt for perspective",
-    displayType: "panel",
-    section: "catalysis",
     modelClass: "ExcerptAnnotationForPerspective",
     panelFields: [
         {

@@ -3,9 +3,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 var panel: Panel = {
     id: "panel_addPerspective",
-    displayName: "Add or change perspective",
-    displayType: "panel",
-    section: "catalysis",
     modelClass: "Perspective",
     panelFields: [
         {

@@ -4,8 +4,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "panel_addInterventionRecord",
     displayName: "Add intervention record",
-    displayType: "panel",
-    section: "intervention",
     modelClass: "InterventionRecord",
     panelFields: [
         {

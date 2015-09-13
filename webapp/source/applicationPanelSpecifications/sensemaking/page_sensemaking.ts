@@ -4,10 +4,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_sensemaking",
     displayName: "Sensemaking",
-    displayType: "page",
-    isHeader: true,
-    section: "sensemaking",
-    modelClass: null,
     panelFields: [
         {
             id: "sensemakingIntroLabel",

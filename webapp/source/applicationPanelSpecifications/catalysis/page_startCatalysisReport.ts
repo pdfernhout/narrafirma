@@ -4,9 +4,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_startCatalysisReport",
     displayName: "Start catalysis report",
-    displayType: "page",
-    section: "catalysis",
-    modelClass: "StartCatalysisReportActivity",
     panelFields: [
         {
             id: "catalysis_createCatalysisReportLabel",

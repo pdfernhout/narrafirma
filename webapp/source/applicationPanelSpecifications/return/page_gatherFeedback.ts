@@ -4,9 +4,6 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 var panel: Panel = {
     id: "page_gatherFeedback",
     displayName: "Gather feedback",
-    displayType: "page",
-    section: "return",
-    modelClass: "GatherFeedbackActivity",
     panelFields: [
         {
             id: "project_feedbackLabel",
