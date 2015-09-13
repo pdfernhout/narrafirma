@@ -81,7 +81,7 @@ class Project {
         
         if (message.messageType === "questionnairesMessage") {
             // console.log("Project receivedMessage questionnairesMessage", message);
-            surveyCollection.updateActiveQuestionnaires(message.change, false);
+            surveyCollection.updateActiveQuestionnaires(message.change, false, null);
         }
 
         // Since this event came from the network, queue a Mithril redraw

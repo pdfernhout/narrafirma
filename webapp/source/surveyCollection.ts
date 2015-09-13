@@ -162,10 +162,10 @@ export function toggleWebActivationOfSurvey(model: string, fieldSpecification, v
     }
 
     // Now publish the new or removed questionnaire so surveys can pick up the change...
-    updateActiveQuestionnaires(questionnaires, "sendMessage");
+    updateActiveQuestionnaires(questionnaires, "sendMessage", activeOnWeb);
 }
    
-export function updateActiveQuestionnaires(questionnaires, sendMessage) {
+export function updateActiveQuestionnaires(questionnaires, sendMessage, activeOnWeb) {
     project.activeQuestionnaires = questionnaires;
    
     if (!sendMessage) return;
@@ -174,11 +174,15 @@ export function updateActiveQuestionnaires(questionnaires, sendMessage) {
     project.pointrelClient.createAndSendChangeMessage("questionnaires", "questionnairesMessage", questionnaires, null, function(error, result) {
        if (error) {
            // TODO: Translate
-           alert("Problem activating or deactivating web form");
+           var errorMessage = "Problem activating web form";
+           if (!activeOnWeb) errorMessage = "Problem deactivating web form";
+           alert(errorMessage);
            return;
        }
        // TODO: Translate
-       alert("The web form has been activated or deactivated.");
+       var message = "The web form has been activated.";
+       if (!activeOnWeb) message = "The web form has been deactivated.";
+       alert(message);
     });
 }
    
@@ -198,7 +202,7 @@ export function storyCollectionStop() {
         }
     }
 
-    updateActiveQuestionnaires({}, "sendMessage");
+    updateActiveQuestionnaires({}, "sendMessage", false);
     console.log("Deactivated all web questionnaires");
 }
    
