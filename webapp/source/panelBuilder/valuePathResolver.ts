@@ -37,7 +37,7 @@ class ValuePathResolver {
     failIfAccessFunctionRequired() {
         if (this.isAccessFunctionRequired) {
             console.log("access function required", this);
-            alert("access function required");
+            // alert("access function required");
             throw new Error("access function required " + this.valuePath);
         }
     }
