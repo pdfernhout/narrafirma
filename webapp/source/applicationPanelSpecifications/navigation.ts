@@ -80,7 +80,6 @@ var sections = [
         pages: [
             "page_catalysis",
             "page_startCatalysisReport",
-            "page_themeStories",
             "page_reviewTrends",
             "page_reviewExcerpts",
             "page_interpretObservations",

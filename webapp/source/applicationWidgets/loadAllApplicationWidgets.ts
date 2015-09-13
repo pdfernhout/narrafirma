@@ -12,7 +12,6 @@ import add_recommendationTable = require("./add_recommendationTable");
 import add_report = require("./add_report");
 import add_storiesList = require("./add_storiesList");
 import add_storyBrowser = require("./add_storyBrowser");
-import add_storyThemer = require("./add_storyThemer");
 import add_templateList = require("./add_templateList");
 import add_trendsReport = require("./add_trendsReport");
 
@@ -35,7 +34,6 @@ function loadAllApplicationWidgets(PanelBuilder) {
     PanelBuilder.addPlugin("report", add_report);
     PanelBuilder.addPlugin("storiesList", add_storiesList);
     PanelBuilder.addPlugin("storyBrowser", add_storyBrowser);
-    PanelBuilder.addPlugin("storyThemer", add_storyThemer);
     PanelBuilder.addPlugin("templateList", add_templateList);
     PanelBuilder.addPlugin("trendsReport", add_trendsReport);
 }

@@ -46,7 +46,6 @@ var displayTypeToValueTypeMap = {
     templateList: "none",
     "function": "none",
     storyBrowser: 'none',
-    storyThemer: 'none',
     graphBrowser: 'none',
     trendsReport: 'none',
     observationsList: 'none',
