@@ -119,12 +119,13 @@ export function getQuestionnaireForStoryCollection(storyCollectionIdentifier) {
     return questionnaire;
 }
 
-function urlForSurvey(storyCollectionName) {
+export function urlForSurvey(storyCollectionIdentifier) {
     var href = window.location.href;
     var baseURL = href.substring(0, href.lastIndexOf("/"));
     // TODO: Duplicated project prefix; should refactor to have it in one place
     var projectName = project.journalIdentifier.substring("NarraFirmaProject-".length);
-    return baseURL + "/survey.html#project=" + projectName + "&survey=" + storyCollectionName;
+    var shortName = project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_shortName");
+    return baseURL + "/survey.html#project=" + projectName + "&survey=" + shortName;
 }
 
 export function toggleWebActivationOfSurvey(model: string, fieldSpecification, value) {
@@ -137,9 +138,10 @@ export function toggleWebActivationOfSurvey(model: string, fieldSpecification, v
     var activeOnWeb = project.tripleStore.queryLatestC(selectedItem, "storyCollection_activeOnWeb");
     activeOnWeb = !activeOnWeb;
     if (activeOnWeb) {
-        project.tripleStore.addTriple(selectedItem, "storyCollection_activeOnWeb", urlForSurvey(shortName));
+        // urlForSurvey(shortName)
+        project.tripleStore.addTriple(selectedItem, "storyCollection_activeOnWeb", true);
     } else {
-        project.tripleStore.addTriple(selectedItem, "storyCollection_activeOnWeb", "");
+        project.tripleStore.addTriple(selectedItem, "storyCollection_activeOnWeb", false);
     }
     
     // TODO: Potential window of vulnerability here because not making both changes (to item and survey questionnaires) as a single transaction
@@ -198,7 +200,7 @@ export function storyCollectionStop() {
     for (var i = 0; i < storyCollections.length; i++) {
         var storyCollectionIdentifier = storyCollections[i];
         if (project.tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_activeOnWeb")) {
-            project.tripleStore.addTriple(storyCollectionIdentifier, "storyCollection_activeOnWeb", "");
+            project.tripleStore.addTriple(storyCollectionIdentifier, "storyCollection_activeOnWeb", false);
         }
     }
 

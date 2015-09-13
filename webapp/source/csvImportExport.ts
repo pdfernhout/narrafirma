@@ -152,7 +152,7 @@ function processCSVContentsForStories(contents) {
         id: generateRandomUuid(),
         storyCollection_shortName: storyCollectionIdentifier,
         storyCollection_questionnaireIdentifier: lastQuestionnaireUploaded.title,
-        storyCollection_activeOnWeb: "",
+        storyCollection_activeOnWeb: false,
         storyCollection_notes: "imported by: " + importedByUserIdentifier + " at: " + new Date().toISOString(),
         questionnaire: lastQuestionnaireUploaded
     };

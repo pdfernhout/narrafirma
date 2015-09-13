@@ -1,4 +1,5 @@
-import kludgeForUseStrict = require("../../kludgeForUseStrict");
+import surveyCollection = require("../../surveyCollection");
+
 "use strict";
 
 var panel: Panel = {
@@ -30,11 +31,23 @@ var panel: Panel = {
         },
         {
             id: "storyCollection_activeOnWeb",
-            valueType: "test",
-            displayType: "text",
+            valueType: "boolean",
+            displayType: "checkbox",
             displayReadOnly: true,
+            displayName: "Active on web?",
+            displayPrompt: "Is this survey currently active on the web server?"
+        },
+        {
+            id: "storyCollection_webFormAddress",
+            valueType: "none",
+            displayType: "questionAnswer",
             displayName: "Web form address",
-            displayPrompt: "The <strong>web address</strong> (URL) of this story collection is:"
+            displayPrompt: "The <strong>web address</strong> (URL) of this story collection is:",
+            displayConfiguration: "storyCollection_activeOnWeb",
+            displayTransformValue: function (value, model) {
+                if (!value) return "";
+                return surveyCollection.urlForSurvey(model);
+            }
         },
         {
             id: "storyCollection_notes",

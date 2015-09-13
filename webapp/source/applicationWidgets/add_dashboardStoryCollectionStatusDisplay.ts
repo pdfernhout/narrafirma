@@ -20,12 +20,16 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
         var allStoriesInStoryCollection = surveyCollection.getStoriesForStoryCollection(shortName);
         var storyCount = allStoriesInStoryCollection.length;
         var activeOnWeb = tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_activeOnWeb");
-        var surveyActive = activeOnWeb ? m("a", {href: activeOnWeb, target: "_blank"}, "active") : "";
+        if (activeOnWeb) {
+            console.log("active on web: ", shortName, storyCollectionIdentifier);
+        }
+        var surveyURL = activeOnWeb ? surveyCollection.urlForSurvey(storyCollectionIdentifier) : "";
         return {
             id: storyCollectionIdentifier,
             shortName: shortName,
             storyCount: storyCount,
-            activeOnWeb: activeOnWeb
+            activeOnWeb: activeOnWeb,
+            surveyURL: surveyURL
         };
     });
     
@@ -40,7 +44,7 @@ function add_dashboardStoryCollectionStatusDisplay(panelBuilder: PanelBuilder, m
         m("table", 
             m("tr", [m("th", "Name"), m("th", "#"), m("th", "Active?")]),
             storyCollections.map(function(storyCollection) {
-                var surveyActive = storyCollection.activeOnWeb ? m("a", {href: storyCollection.activeOnWeb, target: "_blank"}, "active") : "";
+                var surveyActive = storyCollection.activeOnWeb ? m("a", {href: storyCollection.surveyURL, target: "_blank"}, "active") : "";
                 return m("tr", [
                     m("td", storyCollection.shortName),
                     m("td", {style: "text-align: right;"}, storyCollection.storyCount),
