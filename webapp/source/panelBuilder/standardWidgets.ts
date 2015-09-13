@@ -196,7 +196,7 @@ export function displayQuestion(panelBuilder: PanelBuilder, model, fieldSpecific
             m("input[type=radio]", {id: getIdForText(fieldID + "_yes"), value: true, name: fieldSpecification.id, disabled: disabled, checked: value === true, onchange: change.bind(null, null, true) }),
             m("label", {"for": getIdForText(fieldID + "_yes")}, "yes"),
             m("br"),
-            m("input[type=radio]", {id: getIdForText(fieldID + "_no"), value: false, name: fieldSpecification.id, disabled: disabled, checked: value === true, onchange: change.bind(null, null, false) }),
+            m("input[type=radio]", {id: getIdForText(fieldID + "_no"), value: false, name: fieldSpecification.id, disabled: disabled, checked: value === false, onchange: change.bind(null, null, false) }),
             m("label", {"for": getIdForText(fieldID + "_no")}, "no"),
             m("br")
         ];

@@ -191,7 +191,7 @@ function displayQuestion(builder, model, fieldSpecification) {
             m("input[type=radio]", {id: getIdForText(fieldID + "_yes"), value: true, name: fieldSpecification.id, checked: value === true, onchange: change.bind(null, null, true) }),
             m("label", {"for": getIdForText(fieldID + "_yes")}, "yes"),
             m("br"),
-            m("input[type=radio]", {id: getIdForText(fieldID + "_no"), value: false, name: fieldSpecification.id, checked: value === true, onchange: change.bind(null, null, false) }),
+            m("input[type=radio]", {id: getIdForText(fieldID + "_no"), value: false, name: fieldSpecification.id, checked: value === false, onchange: change.bind(null, null, false) }),
             m("label", {"for": getIdForText(fieldID + "_no")}, "no"),
             m("br")
         ];
