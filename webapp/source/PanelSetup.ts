@@ -207,6 +207,7 @@ function generateNavigationDataInJSON() {
 
 // TODO: For helping create all the models -- temporary
 function printModels() {
+    console.log("-------------------------------------------------");
     console.log("panelSpecificationCollection", _panelSpecificationCollection);
     
     console.log("models", _panelSpecificationCollection.modelClassToModelFieldSpecificationsMap);
@@ -218,5 +219,6 @@ function printModels() {
     // window.open('data:text/plain;charset=utf-8,' + escape(allModels));
     
     console.log("stop");
+    console.log("-------------------------------------------------");
 }
     
