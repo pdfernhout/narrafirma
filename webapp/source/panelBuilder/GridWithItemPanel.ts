@@ -265,10 +265,10 @@ class GridWithItemPanel {
         
         if (this.useTriples()) {
             // console.log("Grid using triples", this.model);
-            this.dataStore = new TripleSetDataStore(this.valueProperty, this.idProperty, Globals.project().tripleStore);
+            this.dataStore = new TripleSetDataStore(this.valueProperty, this.idProperty, this.gridConfiguration.transformDisplayedValues, Globals.project().tripleStore);
         } else {
             // console.log("Grid using objects", this.model);
-            this.dataStore = new DataStore(this.valueProperty, this.idProperty);
+            this.dataStore = new DataStore(this.valueProperty, this.idProperty, this.gridConfiguration.transformDisplayedValues);
         }
         this.updateData();
     }
@@ -728,7 +728,7 @@ class GridWithItemPanel {
 class DataStore {
     data: Array<any>;
     
-    constructor(public valueProperty: Function, public idProperty: string) {
+    constructor(public valueProperty: Function, public idProperty: string, public valueTransform: Function) {
     }
     
     newIdForItem() {
@@ -830,6 +830,7 @@ class DataStore {
         var value = item[fieldName];
         // Resolve accessing functions
         if (typeof value === "function") value = value.bind(item)();
+        if (this.valueTransform) value = this.valueTransform(value, fieldName);
         return value;
     }
     
@@ -871,8 +872,8 @@ class TripleSetDataStore extends DataStore {
     tripleStore: TripleStore;
     setIdentifier: string;
     
-    constructor(valueProperty: Function, idProperty: string, tripleStore: TripleStore) {
-        super(valueProperty, idProperty);
+    constructor(valueProperty: Function, idProperty: string, valueTransform: Function, tripleStore: TripleStore) {
+        super(valueProperty, idProperty, valueTransform);
         this.tripleStore = tripleStore;
     }
     
@@ -948,7 +949,9 @@ class TripleSetDataStore extends DataStore {
     }
     
     valueForField(item, fieldName: string) {
-        return this.tripleStore.queryLatestC(item, fieldName);
+        var value = this.tripleStore.queryLatestC(item, fieldName);
+        if (this.valueTransform) value = this.valueTransform(value, fieldName);
+        return value;
     }
 }
 
