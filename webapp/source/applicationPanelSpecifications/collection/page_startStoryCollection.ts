@@ -28,7 +28,11 @@ var panel: Panel = {
                     addButton: true,
                     removeButton: true,
                     customButton: {customButtonLabel: "Activate or Deactivate Web Form", callback: "toggleWebActivationOfSurvey"},
-                    columnsToDisplay: ["storyCollection_shortName", "storyCollection_questionnaireIdentifier", "storyCollection_activeOnWeb", "storyCollection_notes"]
+                    columnsToDisplay: ["storyCollection_shortName", "storyCollection_questionnaireIdentifier", "storyCollection_activeOnWeb", "storyCollection_notes"],
+                    transformDisplayedValues: function (value, fieldName) {
+                        if (fieldName !== "storyCollection_activeOnWeb") return value;
+                        return value ? "active" : "";
+                    }
                 }
             },
             displayName: "Story collections",
