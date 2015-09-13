@@ -8,7 +8,6 @@ var panel: Panel = {
         {
             id: "participantGroup_name",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Name",
             displayPrompt: "Please <strong>name</strong> this group of participants (for example, \"doctors\", \"students\", \"staff\")."
@@ -16,7 +15,6 @@ var panel: Panel = {
         {
             id: "participantGroup_description",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Description",
             displayPrompt: "Please <strong>describe</strong> this group of participants."
@@ -39,7 +37,6 @@ var panel: Panel = {
                 "mixed",
                 "unknown"
             ],
-            required: true,
             displayType: "select",
             displayName: "Status",
             displayPrompt: "What is the <strong>status</strong> of these participants in the community or organization?"
@@ -56,7 +53,6 @@ var panel: Panel = {
                 "mixed",
                 "unknown"
             ],
-            required: true,
             displayType: "select",
             displayName: "Self-confidence",
             displayPrompt: "How much <strong>self-confidence</strong> do these participants have?"
@@ -78,7 +74,6 @@ var panel: Panel = {
                 "mixed",
                 "unknown"
             ],
-            required: true,
             displayType: "select",
             displayName: "Free time",
             displayPrompt: "How much free <strong>time</strong> do these participants have?"
@@ -95,7 +90,6 @@ var panel: Panel = {
                 "mixed",
                 "unknown"
             ],
-            required: true,
             displayType: "select",
             displayName: "Education level",
             displayPrompt: "What is the <strong>education</strong> level of these participants?"
@@ -111,7 +105,6 @@ var panel: Panel = {
                 "mixed",
                 "unknown"
             ],
-            required: true,
             displayType: "select",
             displayName: "Physical limitations",
             displayPrompt: "Do these participants have <strong>physical limitations</strong> that will impact their participation?"
@@ -127,7 +120,6 @@ var panel: Panel = {
                 "mixed",
                  "unknown"
            ],
-            required: true,
             displayType: "select",
             displayName: "Emotional limitations",
             displayPrompt: "Do these participants have <strong>emotional impairments</strong> that will impact their participation (such as mental illness or traumatic stress)?"
@@ -149,7 +141,6 @@ var panel: Panel = {
                 "mixed",
                 "unknown"
             ],
-            required: true,
             displayType: "select",
             displayName: "Performance",
             displayPrompt: "For these participants, how important is <strong>performing</strong> well (with \"high marks\")?"
@@ -165,7 +156,6 @@ var panel: Panel = {
                 "mixed",
                 "unknown"
             ],
-            required: true,
             displayType: "select",
             displayName: "Conformance",
             displayPrompt: "For these participants, how important is <strong>conforming</strong> (to what is \"normal\" or expected)?"
@@ -181,7 +171,6 @@ var panel: Panel = {
                 "mixed",
                 "unknown"
             ],
-            required: true,
             displayType: "select",
             displayName: "Self-promotion",
             displayPrompt: "For these participants, how important is <strong>self-promotion</strong> (competing with others)?"
@@ -197,7 +186,6 @@ var panel: Panel = {
                 "mixed",
                 "unknown"
             ],
-            required: true,
             displayType: "select",
             displayName: "Speaking out",
             displayPrompt: "For these participants, how important is <strong>speaking out</strong> (having a say, venting, sounding off)?"
@@ -220,7 +208,6 @@ var panel: Panel = {
                 "mixed",
                 "unknown"
             ],
-            required: true,
             displayType: "select",
             displayName: "Motivated",
             displayPrompt: "How <strong>motivated</strong> are these people to participate in the project?"
@@ -235,7 +222,6 @@ var panel: Panel = {
                 "mixed",
                 "unknown"
             ],
-            required: true,
             displayType: "select",
             displayName: "Feelings about project",
             displayPrompt: "How are these participants likely to <strong>feel</strong> about the project? Will they see it as a good or bad thing?"
@@ -250,7 +236,6 @@ var panel: Panel = {
                 "mixed",
                  "unknown"
            ],
-            required: true,
             displayType: "select",
             displayName: "Feelings about you",
             displayPrompt: "How do these participants feel about <strong>you</strong>?"
@@ -265,7 +250,6 @@ var panel: Panel = {
                 "mixed",
                  "unknown"
            ],
-            required: true,
             displayType: "select",
             displayName: "Feel about stories",
             displayPrompt: "How do these participants feel about the idea of collecting <strong>stories</strong>?"
@@ -288,7 +272,6 @@ var panel: Panel = {
                 "mixed",
                 "unknown"
             ],
-            required: true,
             displayType: "select",
             displayName: "Experiences with topic",
             displayPrompt: "What experiences have these participants had with the project's <strong>topic</strong>?"
@@ -303,7 +286,6 @@ var panel: Panel = {
                 "mixed",
                  "unknown"
            ],
-            required: true,
             displayType: "select",
             displayName: "How private",
             displayPrompt: "How <strong>private</strong> do these participants consider the topic to be?"
@@ -318,7 +300,6 @@ var panel: Panel = {
                 "mixed",
                  "unknown"
            ],
-            required: true,
             displayType: "select",
             displayName: "Articulation",
             displayPrompt: "How hard will it be for these participants to <strong>articulate</strong> their feelings about the topic? Do they know how they feel?"
@@ -335,7 +316,6 @@ var panel: Panel = {
                 "mixed",
                  "unknown"
            ],
-            required: true,
             displayType: "select",
             displayName: "Time period",
             displayPrompt: "How long of a <strong>time period</strong> do you need these participants to look back on?"
@@ -343,7 +323,6 @@ var panel: Panel = {
         {
             id: "participantGroup_notes",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Notes",
             displayPrompt: "Enter any additional <strong>notes</strong> you want to remember about this group of participants."

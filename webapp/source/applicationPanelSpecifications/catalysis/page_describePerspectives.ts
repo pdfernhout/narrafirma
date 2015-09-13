@@ -17,7 +17,6 @@ var panel: Panel = {
             valueType: "string",
             valueOptions: "project_catalysisReports",
             valueOptionsSubfield: "catalysisReport_shortName",
-            required: true,
             displayType: "select",
             displayName: "Catalysis report",
             displayPrompt: "Choose a catalysis report to work on"
@@ -26,7 +25,6 @@ var panel: Panel = {
             id: "project_perspectivesList",
             valuePath: "/clientState/catalysisReportIdentifier",
             valueType: "array",
-            required: true,
             displayType: "grid",
             displayConfiguration: "panel_addPerspective",
             displayName: "Catalysis perspectives",

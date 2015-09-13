@@ -8,7 +8,6 @@ var panel: Panel = {
         {
             id: "returnRequest_description",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Description",
             displayPrompt: "Please <strong>describe</strong> the request."
@@ -23,7 +22,6 @@ var panel: Panel = {
                 "help learning about story work",
                 "other"
             ],
-            required: true,
             displayType: "select",
             displayName: "Type",
             displayPrompt: "What <strong>type</strong> of request is this?"
@@ -31,7 +29,6 @@ var panel: Panel = {
         {
             id: "returnRequest_isMet",
             valueType: "boolean",
-            required: true,
             displayType: "boolean",
             displayName: "Satisfied",
             displayPrompt: "Do you consider this request to have been <strong>satisfied</strong>?"
@@ -39,7 +36,6 @@ var panel: Panel = {
         {
             id: "returnRequest_whatHappened",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "What happened",
             displayPrompt: "<strong>What has happened</strong> in relation to this request? What discussions took place? Who did what?"

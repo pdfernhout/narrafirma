@@ -14,7 +14,6 @@ var panel: Panel = {
         {
             id: "project_returnRequestsList",
             valueType: "array",
-            required: true,
             displayType: "grid",
             displayConfiguration: {
                 itemPanelID: "panel_addNewReturnRequest",

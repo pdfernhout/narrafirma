@@ -20,7 +20,6 @@ var panel: Panel = {
         {
             id: "project_participantGroupsList",
             valueType: "array",
-            required: true,
             displayType: "grid",
             displayConfiguration: "panel_addParticipantGroup",
             displayName: "Participant groups",

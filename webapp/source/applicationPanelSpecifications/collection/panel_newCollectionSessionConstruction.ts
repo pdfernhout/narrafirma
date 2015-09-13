@@ -8,7 +8,6 @@ var panel: Panel = {
         {
             id: "collectionSessionRecord_construction_name",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Name",
             displayPrompt: "Please give this construction a <strong>name</strong>."
@@ -21,7 +20,6 @@ var panel: Panel = {
                 "landscape",
                 "other"
             ],
-            required: true,
             displayType: "select",
             displayName: "Type",
             displayPrompt: "What <strong>type</strong> of construction is it?"
@@ -29,7 +27,6 @@ var panel: Panel = {
         {
             id: "collectionSessionRecord_construction_description",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Description",
             displayPrompt: "Please <strong>describe</strong> the construction (or include a description given by participants). Your description can include links to images or other documents."

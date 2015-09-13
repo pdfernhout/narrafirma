@@ -14,7 +14,6 @@ var panel: Panel = {
         {
             id: "project_projectStoriesList",
             valueType: "array",
-            required: true,
             displayType: "grid",
             displayConfiguration: "panel_projectStory",
             displayName: "Project stories",

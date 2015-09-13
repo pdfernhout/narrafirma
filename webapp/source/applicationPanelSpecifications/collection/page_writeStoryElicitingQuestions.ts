@@ -14,7 +14,6 @@ var panel: Panel = {
         {
             id: "project_elicitingQuestionsList",
             valueType: "array",
-            required: true,
             displayType: "grid",
             displayConfiguration: "panel_addElicitingQuestion",
             displayName: "Story eliciting questions",

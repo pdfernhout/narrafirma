@@ -21,7 +21,6 @@ var panel: Panel = {
                 "discovery",
                 "other"
             ],
-            required: true,
             displayType: "select",
             displayName: "Type",
             displayPrompt: "Which <strong>type</strong> of resonant story is this?"
@@ -29,7 +28,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionRecord_resonantStory_text",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Story text",
             displayPrompt: "You can type (or paste) the story <strong>text</strong> (or description) here."
@@ -37,7 +35,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionRecord_resonantStory_reason",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Why",
             displayPrompt: "Why did this story <strong>stand out</strong>?"
@@ -45,7 +42,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionRecord_resonantStory_groups",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Groups",
             displayPrompt: "For which participant <strong>group</strong>  (or groups) was this story important?"

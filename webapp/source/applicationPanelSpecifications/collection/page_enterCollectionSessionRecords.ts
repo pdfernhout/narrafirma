@@ -14,7 +14,6 @@ var panel: Panel = {
         {
             id: "project_collectionSessionRecordsList",
             valueType: "array",
-            required: true,
             displayType: "grid",
             displayConfiguration: "panel_addCollectionSessionRecord",
             displayName: "Story collection session records",

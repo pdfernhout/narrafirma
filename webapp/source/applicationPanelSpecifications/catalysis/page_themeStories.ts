@@ -17,7 +17,6 @@ var panel: Panel = {
             valueType: "string",
             valueOptions: "project_catalysisReports",
             valueOptionsSubfield: "catalysisReport_shortName",
-            required: true,
             displayType: "select",
             displayName: "Catalysis report",
             displayPrompt: "Choose a catalysis report to work on"

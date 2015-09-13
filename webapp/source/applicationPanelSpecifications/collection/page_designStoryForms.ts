@@ -14,7 +14,6 @@ var panel: Panel = {
         {
             id: "project_storyForms",
             valueType: "array",
-            required: true,
             displayType: "grid",
             displayConfiguration: "panel_addStoryForm",
             displayName: "Questionnaires",

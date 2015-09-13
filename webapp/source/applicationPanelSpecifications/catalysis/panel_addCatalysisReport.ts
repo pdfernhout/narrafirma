@@ -8,7 +8,6 @@ var panel: Panel = {
         {
             id: "catalysisReport_shortName",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Name",
             displayPrompt: "Please give this catalysis report a short name."
@@ -16,7 +15,6 @@ var panel: Panel = {
         {
             id: "catalysisReport_storyCollections",
             valueType: "array",
-            required: true,
             displayType: "grid",
             displayConfiguration: {
                 itemPanelID: "panel_chooseStoryCollection",
@@ -33,7 +31,6 @@ var panel: Panel = {
         {
             id: "catalysisReport_notes",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Notes",
             displayPrompt: "You can enter any extra notes on the catalysis report here."

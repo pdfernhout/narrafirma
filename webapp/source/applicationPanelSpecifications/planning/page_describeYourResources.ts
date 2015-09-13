@@ -20,7 +20,6 @@ var panel: Panel = {
                 "some",
                 "a lot"
             ],
-            required: true,
             displayType: "select",
             displayName: "Experience",
             displayPrompt: "How much <strong>experience</strong> do you have facilitating PNI projects?"
@@ -34,7 +33,6 @@ var panel: Panel = {
                 "some",
                 "a lot"
             ],
-            required: true,
             displayType: "select",
             displayName: "Help",
             displayPrompt: "How much <strong>help</strong> will you have carrying out this project?"
@@ -48,7 +46,6 @@ var panel: Panel = {
                 "some",
                 "a lot"
             ],
-            required: true,
             displayType: "select",
             displayName: "Technology",
             displayPrompt: "How many <strong>technological resources</strong> will you be able to use in carrying out this project?"

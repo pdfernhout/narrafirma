@@ -21,7 +21,6 @@ var panel: Panel = {
         {
             id: "project_methodsList",
             valueType: "array",
-            required: true,
             displayType: "grid",
             displayConfiguration: "panel_addStoryCollectionMethod",
             displayName: "Story collection methods",

@@ -8,7 +8,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionRecord_resonantPattern_name",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Why",
             displayPrompt: "Please give this resonant pattern a <strong>name</strong>."
@@ -22,7 +21,6 @@ var panel: Panel = {
                 "discovery",
                 "other"
             ],
-            required: true,
             displayType: "select",
             displayName: "Type",
             displayPrompt: "Which <strong>type</strong> of resonant pattern is this?"
@@ -30,7 +28,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionRecord_resonantPattern_description",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Description",
             displayPrompt: "Please <strong>describe</strong> the pattern."
@@ -38,7 +35,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionRecord_resonantPattern_reason",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Why",
             displayPrompt: "Why did this pattern <strong>stand out</strong>?"
@@ -46,7 +42,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionRecord_resonantPattern_groups",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Groups",
             displayPrompt: "For which participant <strong>group</strong>  (or groups) was this pattern important?"

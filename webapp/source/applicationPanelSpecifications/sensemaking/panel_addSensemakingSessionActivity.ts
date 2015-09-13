@@ -8,7 +8,6 @@ var panel: Panel = {
        {
             id: "order",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Order",
             displayPrompt: "Specify the order in which to do this sensemaking activity (e.g. 1, 2a, 2b, 3)"
@@ -16,7 +15,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionPlan_activity_name",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Name",
             displayPrompt: "Please give this activity a <strong>name</strong>."
@@ -37,7 +35,6 @@ var panel: Panel = {
                 "my own exercise",
                 "other"
             ],
-            required: true,
             displayType: "select",
             displayName: "Type",
             displayPrompt: "What <strong>type</strong> of activity is this?"
@@ -45,7 +42,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionPlan_activity_plan",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Plan",
             displayPrompt: "Describe the <strong>plan</strong> for this activity."
@@ -53,7 +49,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionPlan_activity_optionalParts",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Optional elaborations",
             displayPrompt: "Describe any optional <strong>elaborations</strong> you might or might not use in this activity."
@@ -61,7 +56,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionPlan_activity_duration",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Length",
             displayPrompt: "<strong>How long</strong> will this activity take?"
@@ -69,7 +63,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionPlan_activity_recording",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "New stories",
             displayPrompt: "Will new stories be <strong>recorded</strong> during this activity? If so, how?"
@@ -77,7 +70,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionPlan_activity_materials",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Materials",
             displayPrompt: "What materials (including catalytic materials, e.g., graphs and story cards) will this session plan require?"
@@ -85,7 +77,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionPlan_activity_spaces",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Spaces",
             displayPrompt: "What <strong>spaces</strong> will be used for this activity?"
@@ -93,7 +84,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionPlan_activity_facilitation",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Facilitation",
             displayPrompt: "What sort of <strong>facilitation</strong> will be necessary for this activity?"

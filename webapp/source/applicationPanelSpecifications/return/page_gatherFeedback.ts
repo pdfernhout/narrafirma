@@ -14,7 +14,6 @@ var panel: Panel = {
         {
             id: "project_feedbackItemsList",
             valueType: "array",
-            required: true,
             displayType: "grid",
             displayConfiguration: "panel_enterFeedbackPiece",
             displayName: "Pieces of feedback",

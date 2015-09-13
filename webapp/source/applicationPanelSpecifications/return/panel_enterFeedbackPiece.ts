@@ -8,7 +8,6 @@ var panel: Panel = {
         {
             id: "feedback_name",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Name",
             displayPrompt: "Please give this piece of feedback a <strong>name</strong>."
@@ -16,7 +15,6 @@ var panel: Panel = {
         {
             id: "feedback_text",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Feedback",
             displayPrompt: "What did someone <strong>say or do</strong>?"
@@ -34,7 +32,6 @@ var panel: Panel = {
                 "an action",
                 "other"
             ],
-            required: true,
             displayType: "select",
             displayName: "Type",
             displayPrompt: "What <strong>type</strong> of feedback was it?"
@@ -42,7 +39,6 @@ var panel: Panel = {
         {
             id: "feedback_who",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Source",
             displayPrompt: "<strong>Who</strong> said or did this?"
@@ -50,7 +46,6 @@ var panel: Panel = {
         {
             id: "feedback_prompt",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Prompt",
             displayPrompt: "What did you say or do (if anything) that <strong>led to</strong> this feedback?"
@@ -58,7 +53,6 @@ var panel: Panel = {
         {
             id: "feedback_response",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Response",
             displayPrompt: "What did you say or do (if anything) <strong>in response</strong>?"

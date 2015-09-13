@@ -8,7 +8,6 @@ var panel: Panel = {
         {
             id: "elicitingQuestion_text",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Question",
             displayPrompt: "What <strong>question</strong> will you ask? (Remember to write a question whose answer is a story.)"
@@ -16,7 +15,6 @@ var panel: Panel = {
         {
             id: "elicitingQuestion_shortName",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Short Name",
             displayPrompt: "Enter a short <strong>name</strong> for this question, to use as a reference."

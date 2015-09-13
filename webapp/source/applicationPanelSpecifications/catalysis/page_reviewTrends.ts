@@ -17,7 +17,6 @@ var panel: Panel = {
             valueType: "string",
             valueOptions: "project_catalysisReports",
             valueOptionsSubfield: "catalysisReport_shortName",
-            required: true,
             displayType: "select",
             displayName: "Catalysis report",
             displayPrompt: "Choose a catalysis report to work on"
@@ -31,7 +30,6 @@ var panel: Panel = {
                 "40",
                 "50"
             ],
-            required: true,
             displayType: "select",
             displayName: "Minimum subset size",
             displayPrompt: "How large should subsets of stories be to be considered for comparison?"

@@ -15,7 +15,6 @@ var panel: Panel = {
                 "project aspects",
                 "my own scenario type"
             ],
-            required: true,
             displayType: "select",
             displayName: "Scenario",
             displayPrompt: "Start by choosing a <strong>scenario</strong> for your project story. (Click the Help button for explanations of these scenario types.)"
@@ -29,7 +28,6 @@ var panel: Panel = {
                 "acceptable outcome",
                 "my own outcome"
             ],
-            required: true,
             displayType: "select",
             displayName: "Outcome",
             displayPrompt: "Now choose an <strong>outcome</strong> for your story. How will it end?"
@@ -37,7 +35,6 @@ var panel: Panel = {
         {
             id: "projectStory_text",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Story",
             displayPrompt: "Now tell your project story. Tell it as a <strong>future history</strong>, as though it has already happened."
@@ -45,7 +42,6 @@ var panel: Panel = {
         {
             id: "projectStory_name",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Name",
             displayPrompt: "Please <strong>name</strong> your project story."
@@ -53,7 +49,6 @@ var panel: Panel = {
         {
             id: "projectStory_surprise",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Project story surprise",
             displayPrompt: "What <strong>surprised</strong> you about this story?"
@@ -61,7 +56,6 @@ var panel: Panel = {
         {
             id: "projectStory_dangers",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Project story opportunities or dangers",
             displayPrompt: "Describe any <strong>opportunities</strong> or <strong>dangers</strong> you see in the story."
@@ -69,7 +63,6 @@ var panel: Panel = {
         {
             id: "projectStory_changes",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Project story changes",
             displayPrompt: "Now that you've told and thought about this story, are there any <strong>changes</strong> you want to make to your project plans because of it?"

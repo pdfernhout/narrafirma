@@ -14,7 +14,6 @@ var panel: Panel = {
         {
             id: "project_interventionRecordsList",
             valueType: "array",
-            required: true,
             displayType: "grid",
             displayConfiguration: "panel_addInterventionRecord",
             displayName: "Intervention records",

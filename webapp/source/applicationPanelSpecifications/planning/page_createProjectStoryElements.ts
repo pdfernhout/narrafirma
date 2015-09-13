@@ -31,7 +31,6 @@ var panel: Panel = {
         {
             id: "project_projectStoryElements_storiesList",
             valueType: "object",
-            required: true,
             displayType: "storiesList",
             displayConfiguration: "project_projectStoryElementsAnswersClusteringDiagram",
             displayPrompt: 
@@ -41,7 +40,6 @@ to the above question as you can. For each answer, click the <b>New item</b> but
         {
             id: "project_projectStoryElementsAnswersClusteringDiagram",
             valueType: "object",
-            required: true,
             displayType: "clusteringDiagram",
             displayPrompt: ""
         },
@@ -59,7 +57,6 @@ Click the <b>New cluster</b> button to represent each cluster name on the diagra
         {
             id: "project_projectStoryElementsAttributeGroupsClusteringDiagram",
             valueType: "object",
-            required: true,
             displayType: "clusteringDiagram",
             displayPrompt: ""
         },
@@ -82,7 +79,6 @@ The exercise depends on the attributes being balanced.)</p>
         {
             id: "project_projectStoryElementsList",
             valueType: "array",
-            required: true,
             displayType: "grid",
             displayConfiguration: "panel_addStoryElement",
             displayName: "Story elements",

@@ -21,7 +21,6 @@ var panel: Panel = {
         {
             id: "project_sensemakingSessionPlansList",
             valueType: "array",
-            required: true,
             displayType: "grid",
             displayConfiguration: "panel_addSensemakingSessionPlan",
             displayName: "Sensemaking session plans",

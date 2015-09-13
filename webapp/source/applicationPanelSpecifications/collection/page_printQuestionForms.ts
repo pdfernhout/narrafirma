@@ -17,7 +17,6 @@ var panel: Panel = {
             valueType: "string",
             valueOptions: "project_storyCollections",
             valueOptionsSubfield: "storyCollection_shortName",
-            required: true,
             displayType: "select",
             displayName: "Story collection",
             displayPrompt: "Choose the <strong>story collection</strong> whose story form you want to print."

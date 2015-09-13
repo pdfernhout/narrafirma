@@ -8,7 +8,6 @@ var panel: Panel = {
         {
             id: "collectionSessionRecord_name",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Name",
             displayPrompt: "Please give this session record a <strong>name</strong>."
@@ -16,7 +15,6 @@ var panel: Panel = {
         {
             id: "collectionSessionRecord_whenWhere",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "When and where",
             displayPrompt: "<strong>When and where</strong> did the session take place?"
@@ -24,7 +22,6 @@ var panel: Panel = {
         {
             id: "collectionSessionRecord_groups",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Participant groups",
             displayPrompt: "Which participant <strong>groups</strong> were involved in this session?"
@@ -32,7 +29,6 @@ var panel: Panel = {
         {
             id: "collectionSessionRecord_participants",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Who attended",
             displayPrompt: "Describe the <strong>participants</strong> at this session."
@@ -40,7 +36,6 @@ var panel: Panel = {
         {
             id: "collectionSessionRecord_plan",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Plan",
             displayPrompt: "Which of your collection session <strong>plans</strong> did you follow in this session? (And did you stick to the plan?)"
@@ -55,7 +50,6 @@ var panel: Panel = {
         {
             id: "collectionSessionRecord_constructionsList",
             valueType: "array",
-            required: true,
             displayType: "grid",
             displayConfiguration: "panel_newCollectionSessionConstruction",
             displayName: "Story collection session constructions",
@@ -76,7 +70,6 @@ var panel: Panel = {
         {
             id: "collectionSessionRecord_reflections_change_participantPerceptions",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Change in participant perceptions",
             displayPrompt: "How did the perceptions of the <strong>participants</strong> change from the start to the end of the session?"
@@ -84,7 +77,6 @@ var panel: Panel = {
         {
             id: "collectionSessionRecord_reflections_change_yourPerceptions",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Change in facilitator perceptions",
             displayPrompt: "How did <strong>your</strong> perceptions change?"
@@ -92,7 +84,6 @@ var panel: Panel = {
         {
             id: "collectionSessionRecord_reflections_change_project",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Changes to the project",
             displayPrompt: "How has the overall <strong>project</strong> changed as a result of this session?"
@@ -106,7 +97,6 @@ var panel: Panel = {
         {
             id: "collectionSessionRecord_reflections_interaction_participants",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Interactions among participants",
             displayPrompt: "Describe the interactions <strong>among participants</strong> in this session."
@@ -114,7 +104,6 @@ var panel: Panel = {
         {
             id: "collectionSessionRecord_reflections_interaction_participantsAndFacilitator",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Interactions between participants and facilitators",
             displayPrompt: "Describe the interactions <strong>between participants and facilitators</strong>."
@@ -122,7 +111,6 @@ var panel: Panel = {
         {
             id: "collectionSessionRecord_reflections_interaction_stories",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Stories",
             displayPrompt: "What did you notice about the <strong>stories</strong> people told, retold, chose, and worked with during the session?"
@@ -136,7 +124,6 @@ var panel: Panel = {
         {
             id: "collectionSessionRecord_reflections_learning_special",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Unique features",
             displayPrompt: "What was <strong>special</strong> about these people, in this place, on this day?"
@@ -144,7 +131,6 @@ var panel: Panel = {
         {
             id: "collectionSessionRecord_reflections_learning_surprise",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Surprise",
             displayPrompt: "What <strong>surprised</strong> you about this session?"
@@ -152,7 +138,6 @@ var panel: Panel = {
         {
             id: "collectionSessionRecord_reflections_learning_workedWell",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Worked and didn't work",
             displayPrompt: "Which parts of your <strong>plans</strong> for this session worked out well? Which parts didn't?"
@@ -160,7 +145,6 @@ var panel: Panel = {
         {
             id: "collectionSessionRecord_reflections_learning_newIdeas",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "New ideas",
             displayPrompt: "What <strong>new ideas</strong> did you gain from this session? What did you <strong>learn</strong> from it?"
@@ -168,7 +152,6 @@ var panel: Panel = {
         {
             id: "collectionSessionRecord_reflections_learning_wantToRemember",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Other",
             displayPrompt: "<strong>What else</strong> do you want to remember about this session?"

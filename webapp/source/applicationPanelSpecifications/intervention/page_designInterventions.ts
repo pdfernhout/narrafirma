@@ -21,7 +21,6 @@ var panel: Panel = {
         {
             id: "project_interventionPlansList",
             valueType: "array",
-            required: true,
             displayType: "grid",
             displayConfiguration: "panel_addIntervention",
             displayName: "Intervention plans",

@@ -8,7 +8,6 @@ var panel: Panel = {
         {
             id: "storyElement_name",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Name",
             displayPrompt: "What is the name of the story element?"
@@ -26,7 +25,6 @@ var panel: Panel = {
                 "belief",
                 "conflict"
             ],
-            required: true,
             displayType: "select",
             displayName: "Type",
             displayPrompt: "What type of story element is this?"
@@ -34,7 +32,6 @@ var panel: Panel = {
         {
             id: "storyElement_description",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Description",
             displayPrompt: "You can describe the story element more fully here."

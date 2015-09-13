@@ -21,7 +21,6 @@ var panel: Panel = {
         {
             id: "project_collectionSessionPlansList",
             valueType: "array",
-            required: true,
             displayType: "grid",
             displayConfiguration: "panel_addStoryCollectionSession",
             displayName: "Story collection session plans",

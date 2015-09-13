@@ -14,7 +14,6 @@ var panel: Panel = {
         {
             id: "project_outcomesList",
             valueType: "array",
-            required: true,
             displayType: "grid",
             displayConfiguration: "panel_projectOutcome",
             displayName: "Project outcomes",

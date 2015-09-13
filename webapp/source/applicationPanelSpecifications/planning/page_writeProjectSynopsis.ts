@@ -14,7 +14,6 @@ var panel: Panel = {
         {
             id: "project_synopsis",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Project synopsis",
             displayPrompt: "Your synopsis should briefly <strong>summarize</strong> the project, so that anyone who hears about it can quickly understand what you are doing and why."

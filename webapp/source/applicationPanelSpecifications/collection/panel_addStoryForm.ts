@@ -8,7 +8,6 @@ var panel: Panel = {
         {
             id: "questionForm_shortName",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Title",
             displayPrompt: "Please enter a short <strong>name</strong> for the story form, so we can refer to it elsewhere in the project. (It must be unique within the project.)"
@@ -16,7 +15,6 @@ var panel: Panel = {
         {
             id: "questionForm_title",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Title",
             displayPrompt: "Please enter a <strong>title</strong> to be shown at the top of the story form."
@@ -24,7 +22,6 @@ var panel: Panel = {
         {
             id: "questionForm_startText",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Introduction",
             displayPrompt: "Please enter an <strong>introduction</strong> to be shown at the start of the story form, after the title."
@@ -32,7 +29,6 @@ var panel: Panel = {
         {
             id: "questionForm_image",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Image",
             displayPrompt: "You can link to a <strong>logo</strong> or other image to show at the top of the form."
@@ -40,7 +36,6 @@ var panel: Panel = {
         {
             id: "questionForm_elicitingQuestions",
             valueType: "array",
-            required: true,
             displayType: "grid",
             displayConfiguration: "panel_chooseElicitingQuestion",
             displayName: "Eliciting questions",
@@ -49,7 +44,6 @@ var panel: Panel = {
         {
             id: "questionForm_storyQuestions",
             valueType: "array",
-            required: true,
             displayType: "grid",
             displayConfiguration: "panel_chooseStoryQuestion",
             displayName: "Story questions",
@@ -58,7 +52,6 @@ var panel: Panel = {
         {
             id: "questionForm_participantQuestions",
             valueType: "array",
-            required: true,
             displayType: "grid",
             displayConfiguration: "panel_chooseParticipantQuestion",
             displayName: "Participant questions",
@@ -67,7 +60,6 @@ var panel: Panel = {
         {
             id: "questionForm_endText",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "End of form text",
             displayPrompt: "Please enter any <strong>closing text</strong> to be shown at the end of the form."
@@ -75,7 +67,6 @@ var panel: Panel = {
         {
             id: "questionForm_participantGroups",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Participant groups",
             displayPrompt: "Which participant <strong>groups</strong> is this story form intended for? (This information will not appear on the form; it's just for your records.)"
@@ -83,7 +74,6 @@ var panel: Panel = {
         {
             id: "questionForm_notes",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Notes",
             displayPrompt: "If you'd like to make any <strong>notes</strong> to yourself about this form, you can make them here. (They won't appear on the form.)"

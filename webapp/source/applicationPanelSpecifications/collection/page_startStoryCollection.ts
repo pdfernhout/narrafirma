@@ -14,7 +14,6 @@ var panel: Panel = {
         {
             id: "project_storyCollections",
             valueType: "array",
-            required: true,
             displayType: "grid",
             displayConfiguration: {
                 itemPanelID: "panel_addStoryCollection",

@@ -8,7 +8,6 @@ var panel: Panel = {
         {
             id: "order",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Order",
             displayPrompt: "Specify the order to present this eliciting question (e.g. 1, 2a, 2b, 3)"
@@ -18,7 +17,6 @@ var panel: Panel = {
             valueType: "string",
             valueOptions: "/projectModel/project_elicitingQuestionsList",
             valueOptionsSubfield: "elicitingQuestion_shortName",
-            required: true,
             displayType: "select",
             displayName: "Question choice",
             displayPrompt: "Choose a story-eliciting question."

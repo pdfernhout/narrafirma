@@ -190,7 +190,6 @@ class PatternBrowser {
                     id: "observationPanel_interpretationsList",
                     valuePath: "currentObservationInterpretations",
                     valueType: "array",
-                    required: true,
                     displayType: "grid",
                     displayConfiguration: "panel_addInterpretation",
                     displayName: "Interpretation",

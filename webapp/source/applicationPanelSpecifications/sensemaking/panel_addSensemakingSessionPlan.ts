@@ -8,7 +8,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionPlan_name",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Name",
             displayPrompt: "Please give this session plan a <strong>name</strong>."
@@ -16,7 +15,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionPlan_groups",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Participant groups",
             displayPrompt: "Which participant <strong>group</strong> (or groups) will be involved?"
@@ -24,7 +22,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionPlan_repetitions",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Repetitions",
             displayPrompt: "How many <strong>repetitions</strong> of the session will there be?"
@@ -32,7 +29,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionPlan_duration",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Length",
             displayPrompt: "<strong>How long</strong> will this session last?"
@@ -40,7 +36,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionPlan_times",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Time",
             displayPrompt: "<strong>When</strong> will the sessions take place?"
@@ -48,7 +43,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionPlan_location",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Location",
             displayPrompt: "<strong>Where</strong> will these sessions take place?"
@@ -56,7 +50,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionPlan_numPeople",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Number of people",
             displayPrompt: "<strong>How many people</strong> will be invited to each repetition of this session?"
@@ -64,7 +57,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionPlan_materials",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Materials",
             displayPrompt: "What <strong>materials</strong> will this session plan require?"
@@ -72,7 +64,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionPlan_details",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Other",
             displayPrompt: "Enter other <strong>details</strong> about this session."
@@ -80,7 +71,6 @@ var panel: Panel = {
         {
             id: "sensemakingSessionPlan_activitiesList",
             valueType: "array",
-            required: true,
             displayType: "grid",
             displayConfiguration: "panel_addSensemakingSessionActivity",
             displayName: "Sensemaking session activities",

@@ -33,7 +33,6 @@ var panel: Panel = {
                 "often",
                 "I don't know"
            ],
-            required: true,
             displayType: "select",
             displayName: "Countering",
             displayPrompt: "As you listened to people talk, how often did you hear a person respond to a story with another story that <strong>countered</strong> it in some way?"
@@ -48,7 +47,6 @@ var panel: Panel = {
                 "nothing special",
                 "I don't know"
             ],
-            required: true,
             displayType: "select",
             displayName: "Authority",
             displayPrompt: "When someone who was obviously in <strong>authority</strong> was telling stories, how much time and attention did they get?"
@@ -63,7 +61,6 @@ var panel: Panel = {
                 "often",
                 "I don't know"
             ],
-            required: true,
             displayType: "select",
             displayName: "Mistakes",
             displayPrompt: "How many times did you hear people tell stories about <strong>mistakes</strong>?"
@@ -78,7 +75,6 @@ var panel: Panel = {
                 "joke",
                 "I don't know"
             ],
-            required: true,
             displayType: "select",
             displayName: "Stepping in",
             displayPrompt: "When somebody started telling a story and another person <strong>stopped</strong> them, <em>how</em> did they stop them?"
@@ -93,7 +89,6 @@ var panel: Panel = {
                 "joke",
                 "I don't know"
             ],
-            required: true,
             displayType: "select",
             displayName: "Disagreement",
             displayPrompt: "When somebody was telling a story and another person <strong>disagreed</strong> with the storyteller, <em>how</em> did they disagree?"
@@ -114,7 +109,6 @@ var panel: Panel = {
                 "often",
                 "I don't know"
             ],
-            required: true,
             displayType: "select",
             displayName: "Reminding",
             displayPrompt: "When you listened to people telling stories, did you ever hear people say \"that reminds me of the time\" and then tell a story <strong>in response</strong>?"
@@ -129,7 +123,6 @@ var panel: Panel = {
                 "often",
                 "I don't know"
             ],
-            required: true,
             displayType: "select",
             displayName: "Passing on stories",
             displayPrompt: "How often did you hear people <strong>pass on</strong> stories they heard from other people?"
@@ -144,7 +137,6 @@ var panel: Panel = {
                 "strong",
                 "I don't know"
             ],
-            required: true,
             displayType: "select",
             displayName: "Folklore",
             displayPrompt: "How much evidence did you find for a <strong>narrative folklore</strong> in your community or organization?"
@@ -159,7 +151,6 @@ var panel: Panel = {
                 "definitely",
                 "I don't know"
             ],
-            required: true,
             displayType: "select",
             displayName: "Story types",
             displayPrompt: "Did you hear these story <strong>genres</strong>: comic stories, tragic stories, epic stories, and funny stories?"
@@ -174,7 +165,6 @@ var panel: Panel = {
                 "often",
                 "I don't know"
             ],
-            required: true,
             displayType: "select",
             displayName: "Decision making",
             displayPrompt: "Did you ever see people sharing stories as they prepared to make <strong>decisions</strong>?"
@@ -195,7 +185,6 @@ var panel: Panel = {
                 "often",
                 "I don't know"
             ],
-            required: true,
             displayType: "select",
             displayName: "Recountings of events",
             displayPrompt: "Did you see people tell stories that were <strong>recountings of events</strong> based on emotional experiences from particular perspectives?"
@@ -210,7 +199,6 @@ var panel: Panel = {
                 "often",
                 "I don't know"
             ],
-            required: true,
             displayType: "select",
             displayName: "Vitality",
             displayPrompt: "How lively were the <strong>negotiations</strong> you heard going on between storytellers and audiences?"
@@ -225,7 +213,6 @@ var panel: Panel = {
                 "often",
                 "I don't know"
             ],
-            required: true,
             displayType: "select",
             displayName: "Sharing storytelling",
             displayPrompt: "Did you ever see two or more people tell a story <strong>together</strong>?"
@@ -240,7 +227,6 @@ var panel: Panel = {
                 "never",
                 "I don't know"
             ],
-            required: true,
             displayType: "select",
             displayName: "Blunders",
             displayPrompt: "How often did you see someone start telling the <strong>wrong</strong> story, to the wrong people, at the wrong time?"
@@ -255,7 +241,6 @@ var panel: Panel = {
                 "often",
                 "I don't know"
             ],
-            required: true,
             displayType: "select",
             displayName: "Accountability",
             displayPrompt: "Did you see people <strong>account</strong> for their actions and choices by telling each other stories?"
@@ -276,7 +261,6 @@ var panel: Panel = {
                 "easy",
                 "I don't know"
             ],
-            required: true,
             displayType: "select",
             displayName: "Common stories",
             displayPrompt: "How easy would it be to create a list of <strong>common stories</strong>, those any member of your community or organization could be expected to know?"
@@ -291,7 +275,6 @@ var panel: Panel = {
                 "easy",
                 "I don't know"
             ],
-            required: true,
             displayType: "select",
             displayName: "Sacred stories",
             displayPrompt: "How easy would it be to create a list of <strong>sacred stories</strong>, those important to understanding the community or organization?"
@@ -306,7 +289,6 @@ var panel: Panel = {
                 "easy",
                 "I don't know"
             ],
-            required: true,
             displayType: "select",
             displayName: "Condensed stories",
             displayPrompt: "How easy would it be to create a list of <strong>condensed stories</strong>, in the form of proverbs or references?"
@@ -321,7 +303,6 @@ var panel: Panel = {
                 "often",
                 "I don't know"
             ],
-            required: true,
             displayType: "select",
             displayName: "Intermingling",
             displayPrompt: "How often were the stories you heard <strong>intermingled</strong> with each other?"
@@ -336,7 +317,6 @@ var panel: Panel = {
                 "easy",
                 "I don't know"
             ],
-            required: true,
             displayType: "select",
             displayName: "Culture",
             displayPrompt: "How easy would it be to describe the unique story sharing <strong>culture</strong> of your community or organization?"

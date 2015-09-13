@@ -54,7 +54,6 @@ interface PanelField {
     valuePath?: string;
     valueOptions?: string | string[];
     valueOptionsSubfield?: string;
-    required?: boolean;
     displayName?: string;
     displayConfiguration?: string;
 }

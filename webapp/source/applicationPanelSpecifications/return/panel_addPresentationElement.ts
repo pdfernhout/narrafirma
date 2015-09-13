@@ -8,7 +8,6 @@ var panel: Panel = {
         {
             id: "projectPresentationElement_name",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Name",
             displayPrompt: "Please give this presentation element a <strong>name</strong>."
@@ -16,7 +15,6 @@ var panel: Panel = {
         {
             id: "projectPresentationElement_description",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Description",
             displayPrompt: "<strong>Describe</strong> this presentation element. What do you want to tell people about?"
@@ -34,7 +32,6 @@ var panel: Panel = {
                 "a proposal for the future",
                 "other"
             ],
-            required: true,
             displayType: "select",
             displayName: "Type",
             displayPrompt: "What <strong>type</strong> of element is this?"
@@ -42,7 +39,6 @@ var panel: Panel = {
         {
             id: "projectPresentationElement_examples",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Examples",
             displayPrompt: "Here you can list some <strong>stories and/or patterns</strong> that illustrate this presentation element."
@@ -50,7 +46,6 @@ var panel: Panel = {
         {
             id: "projectPresentationElement_QA",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Q&A",
             displayPrompt: "What <strong>questions</strong> do you anticipate about this element? How would you like to answer them?"

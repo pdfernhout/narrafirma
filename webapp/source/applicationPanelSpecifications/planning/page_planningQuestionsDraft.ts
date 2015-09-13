@@ -14,7 +14,6 @@ var panel: Panel = {
         {
             id: "project_pniQuestions_goal_draft",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Project goal",
             displayPrompt: "What is the <strong>goal</strong> of the project? Why are you doing it? What will be achieved if it succeeds?"
@@ -22,7 +21,6 @@ var panel: Panel = {
         {
             id: "project_pniQuestions_relationships_draft",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Project relationships",
             displayPrompt: "What <strong>relationships</strong> are important to the project? Who will connect with whom, how, and why? Who will tell stories, listen to stories, make sense of stories, facilitate, and so on?"
@@ -30,7 +28,6 @@ var panel: Panel = {
         {
             id: "project_pniQuestions_focus_draft",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Project focus",
             displayPrompt: "What is the <strong>focus</strong> of the project? What is it about? What is its subject matter?"
@@ -38,7 +35,6 @@ var panel: Panel = {
         {
             id: "project_pniQuestions_range_draft",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Project range",
             displayPrompt: "What <strong>range</strong> (or ranges) of experience will the project cover? Which perspectives will be explored? (Perhaps multiple groups, or locations, or time frames.)"
@@ -46,7 +42,6 @@ var panel: Panel = {
         {
             id: "project_pniQuestions_scope_draft",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Project scope",
             displayPrompt: "What is the project's <strong>scope</strong>? How many people will be involved? How many stories? How many questions? How many sessions?"
@@ -54,7 +49,6 @@ var panel: Panel = {
         {
             id: "project_pniQuestions_emphasis_draft",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Project emphasis",
             displayPrompt: "What is the project's <strong>emphasis</strong>? Which phases of PNI (planning, collection, catalysis, sensemaking, intervention, return) will be important to the project?"

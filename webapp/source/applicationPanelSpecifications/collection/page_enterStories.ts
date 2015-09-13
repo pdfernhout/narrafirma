@@ -17,7 +17,6 @@ var panel: Panel = {
             valueType: "string",
             valueOptions: "project_storyCollections",
             valueOptionsSubfield: "storyCollection_shortName",
-            required: true,
             displayType: "select",
             displayName: "Story collection",
             displayPrompt: "Choose a <strong>story collection</strong> to add a story to."

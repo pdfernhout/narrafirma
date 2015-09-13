@@ -8,7 +8,6 @@ var panel: Panel = {
         {
             id: "excerpt_name",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Name",
             displayPrompt: "Please give this excerpt a name."
@@ -16,7 +15,6 @@ var panel: Panel = {
         {
             id: "excerpt_text",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Excerpt",
             displayPrompt: "You can edit the excerpt here."

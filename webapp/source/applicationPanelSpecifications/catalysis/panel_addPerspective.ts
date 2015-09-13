@@ -8,7 +8,6 @@ var panel: Panel = {
         {
             id: "perspective_name",
             valueType: "string",
-            required: true,
             displayType: "text",
             displayName: "Name",
             displayPrompt: "Please give this perspective a name."
@@ -16,7 +15,6 @@ var panel: Panel = {
         {
             id: "perspective_description",
             valueType: "string",
-            required: true,
             displayType: "textarea",
             displayName: "Perspective",
             displayPrompt: "Describe this perspective."
