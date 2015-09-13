@@ -3,6 +3,7 @@ import PanelBuilder = require("../panelBuilder/PanelBuilder");
 import m = require("mithril");
 import sanitizeHTML = require("../sanitizeHTML");
 import Globals = require("../Globals");
+import valuePathResolver = require("../panelBuilder/valuePathResolver");
 
 "use strict";
 
@@ -56,8 +57,10 @@ function add_questionAnswer(panelBuilder: PanelBuilder, model, fieldSpecificatio
     if (!referencedQuestionID) throw new Error("missing referencedQuestionID for field: " + fieldSpecification.id + " all: " + JSON.stringify(fieldSpecification));
 
     var calculate = function () {
-        var value = Globals.project().getFieldValue(referencedQuestionID);
+        var valueProperty = valuePathResolver.newValuePath(model, referencedQuestionID);
+        var value = valueProperty();
         if (value === undefined || value === null) value = "";
+        if (fieldSpecification.displayTransformValue) value = fieldSpecification.displayTransformValue(value, model, fieldSpecification, panelBuilder);
         return value;
     };
     
