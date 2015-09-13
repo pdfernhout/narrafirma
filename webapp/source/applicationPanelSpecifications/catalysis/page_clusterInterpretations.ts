@@ -1,4 +1,4 @@
-import kludgeForUseStrict = require("../../kludgeForUseStrict");
+import Globals = require("../../Globals");
 "use strict";
 
 var panel: Panel = {
@@ -27,7 +27,7 @@ var panel: Panel = {
             displayType: "label",
             displayPrompt: "<strong>Please select a catalysis report above to get a clustering diagram here.</strong>",
             displayVisible: function(panelBuilder, model) {
-                return !panelBuilder.clientState.catalysisReportIdentifier;
+                return !Globals.clientState().catalysisReportIdentifier();
             }
         },
         {
@@ -37,7 +37,7 @@ var panel: Panel = {
             displayConfiguration: "copyInterpretationsToClusteringDiagram",
             displayPrompt: "Copy interpretations to clustering diagram",
             displayVisible: function(panelBuilder, model) {
-                return !!panelBuilder.clientState.catalysisReportIdentifier;
+                return !!Globals.clientState().catalysisReportIdentifier();
             }
         },
         {
@@ -47,7 +47,7 @@ var panel: Panel = {
             displayType: "clusteringDiagram",
             displayPrompt: "Cluster interpretations into perspectives",
             displayVisible: function(panelBuilder, model) {
-                return !!panelBuilder.clientState.catalysisReportIdentifier;
+                return !!Globals.clientState().catalysisReportIdentifier();
             }
         }
     ]
