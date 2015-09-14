@@ -1,5 +1,4 @@
 import Project = require("./Project");
-import questionnaireGeneration = require("./questionnaireGeneration");
 import translate = require("./panelBuilder/translate");
 
 "use strict";
@@ -109,7 +108,7 @@ export function getStoriesForStoryCollection(storyCollectionIdentifier, includeI
 
 // TODO: Similar to function in buttonActions except no alerts
 export function getQuestionnaireForStoryCollection(storyCollectionIdentifier) {
-    var storyCollection = questionnaireGeneration.findStoryCollection(project, storyCollectionIdentifier);
+    var storyCollection = project.findStoryCollection(storyCollectionIdentifier);
     if (!storyCollection) return null;
     
     var questionnaireName = project.tripleStore.queryLatestC(storyCollection, "storyCollection_questionnaireIdentifier");

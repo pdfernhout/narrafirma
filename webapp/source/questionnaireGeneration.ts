@@ -143,31 +143,11 @@ function buildItemListFromIdList(project: Project, idToItemMap, idItemList, idFi
 
 // Are names just hints as to purpose of code? Can never convey all aspects of interrelationships?
 
-function findQuestionnaireTemplate(project: Project, shortName): string {
-    var questionnaires: Array<string> = project.getListForField("project_storyForms");
-    for (var i = 0; i < questionnaires.length; i++) {
-        if (project.tripleStore.queryLatestC(questionnaires[i], "questionForm_shortName") === shortName) {
-            return questionnaires[i];
-        }
-    }
-    return null;
-}
-
-export function findStoryCollection(project: Project, shortName): string {
-    var storyCollections: Array<string> = project.getListForField("project_storyCollections");
-    for (var i = 0; i < storyCollections.length; i++) {
-        if (project.tripleStore.queryLatestC(storyCollections[i], "storyCollection_shortName") === shortName) {
-            return storyCollections[i];
-        }
-    }
-    return null;
-}
-
 // TODO: How to save the fact we have exported this in the project? Make a copy??? Or keep original in document somewhere? Versus what is returned from server for surveys?
 export function buildQuestionnaire(project: Project, shortName) {
     // TODO: Redo for if questionnaire template is made of triples
     
-    var questionnaireTemplate = findQuestionnaireTemplate(project, shortName);
+    var questionnaireTemplate = project.findQuestionnaireTemplate(shortName);
     if (!questionnaireTemplate) return null;
     
     console.log("questionnaireTemplate", questionnaireTemplate);

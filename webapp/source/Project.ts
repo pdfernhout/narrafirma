@@ -106,6 +106,26 @@ class Project {
         }
         return null;
     }
+    
+    findQuestionnaireTemplate(shortName): string {
+        var questionnaires: Array<string> = this.getListForField("project_storyForms");
+        for (var i = 0; i < questionnaires.length; i++) {
+            if (this.tripleStore.queryLatestC(questionnaires[i], "questionForm_shortName") === shortName) {
+                return questionnaires[i];
+            }
+        }
+        return null;
+    }
+    
+    findStoryCollection(shortName): string {
+        var storyCollections: Array<string> = this.getListForField("project_storyCollections");
+        for (var i = 0; i < storyCollections.length; i++) {
+            if (this.tripleStore.queryLatestC(storyCollections[i], "storyCollection_shortName") === shortName) {
+                return storyCollections[i];
+            }
+        }
+        return null;
+    }
 }
 
 export = Project;

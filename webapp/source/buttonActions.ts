@@ -363,7 +363,7 @@ function generateHTMLForQuestionnaire(questionnaire) {
 }
 
 function getQuestionnaireForStoryCollection(storyCollectionName: string) {
-    var storyCollection = questionnaireGeneration.findStoryCollection(project, storyCollectionName);
+    var storyCollection = project.findStoryCollection(storyCollectionName);
     
     if (!storyCollection) {
         // TODO: translate
