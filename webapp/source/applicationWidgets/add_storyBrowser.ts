@@ -385,7 +385,7 @@ class StoryBrowser {
     buildStoryDisplayPanel(panelBuilder: PanelBuilder, storyModel: surveyCollection.Story) {
         var storyDisplay;
         if (panelBuilder.readOnly) {
-            storyDisplay = storyCardDisplay.generateStoryCardContent(storyModel, this.currentQuestionnaire);
+            storyDisplay = storyCardDisplay.generateStoryCardContent(storyModel);
         } else {
             storyDisplay = panelBuilder.buildFields(this.questions, storyModel);
         }

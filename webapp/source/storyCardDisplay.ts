@@ -95,9 +95,10 @@ function displayHTMLForField(storyModel: surveyCollection.Story, fieldSpecificat
 interface Options {
     excludeElicitingQuestion?: boolean;
     storyTextAtTop?: boolean;
+    questionnaire?: any;
 }
 
-export function generateStoryCardContent(storyModel, currentQuestionnaire, options: Options = {}) {
+export function generateStoryCardContent(storyModel, options: Options = {}) {
     // Encode all user-supplied text to ensure it does not create HTML issues
     var elicitingQuestion = storyModel.elicitingQuestion();
     console.log("elicitingQuestion", elicitingQuestion);
@@ -106,8 +107,12 @@ export function generateStoryCardContent(storyModel, currentQuestionnaire, optio
     var otherFields = [];
     
     var questions = [];
-    if (currentQuestionnaire) questions = questions.concat(currentQuestionnaire.storyQuestions);
-    if (currentQuestionnaire) questions = questions.concat(currentQuestionnaire.participantQuestions);
+    
+    var questionnaire = storyModel.questionnaire();
+    if (options.questionnaire) questionnaire = options.questionnaire;
+    
+    if (questionnaire) questions = questions.concat(questionnaire.storyQuestions);
+    if (questionnaire) questions = questions.concat(questionnaire.participantQuestions);
     
     var question;
     var i;
