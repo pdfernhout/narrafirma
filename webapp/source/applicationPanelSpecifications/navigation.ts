@@ -81,8 +81,6 @@ var sections = [
             "page_catalysis",
             "page_startCatalysisReport",
             "page_reviewTrends",
-            "page_reviewExcerpts",
-            "page_interpretObservations",
             "page_clusterInterpretations",
             "page_describePerspectives",
             "page_printCatalysisReport"
@@ -91,14 +89,7 @@ var sections = [
             "panel_addCatalysisReport",
             "panel_chooseStoryCollection",
             "panel_addInterpretation",
-            "panel_addToObservation",
-            "panel_createOrEditObservation",
-            "panel_selectExcerpt",
-            "panel_addToExcerpt",
-            "panel_createNewExcerpt",
             "panel_addPerspective",
-            "panel_annotateResultForPerspective",
-            "panel_annotateExcerptForPerspective",
             "panel_annotateInterpretationForPerspective"
         ]
     },

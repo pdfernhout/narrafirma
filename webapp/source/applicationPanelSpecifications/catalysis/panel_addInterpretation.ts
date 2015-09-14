@@ -20,7 +20,7 @@ var panel: Panel = {
             displayPrompt: "Please <strong>describe</strong> this interpretation. What does the pattern mean, from this perspective?"
         },
         {
-            id: "interpretation_idez",
+            id: "interpretation_idea",
             valueType: "string",
             displayType: "textarea",
             displayName: "First interpretation idea",

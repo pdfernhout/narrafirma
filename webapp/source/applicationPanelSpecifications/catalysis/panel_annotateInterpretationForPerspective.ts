@@ -6,6 +6,13 @@ var panel: Panel = {
     modelClass: "InterpretationAnnotationForPerspective",
     panelFields: [
         {
+            id: "perspective_interpretation_name",
+            valueType: "string",
+            displayType: "text",
+            displayName: "Name",
+            displayPrompt: "Interpretation name (as previously entered)"
+        },
+        {
             id: "perspective_interpretationLinkageNotes",
             valueType: "string",
             displayType: "textarea",

@@ -50,8 +50,6 @@ var displayTypeToValueTypeMap = {
     trendsReport: 'none',
     observationsList: 'none',
     accumulatedItemsGrid: 'none',
-    excerptsList: 'none',
-    annotationsGrid: 'none',
     storiesList: 'none'
 };
 

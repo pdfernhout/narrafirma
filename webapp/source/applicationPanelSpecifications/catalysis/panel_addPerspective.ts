@@ -20,23 +20,9 @@ var panel: Panel = {
             displayPrompt: "Describe this perspective."
         },
         {
-            id: "perspective_linkedResultsList",
-            valueType: "none",
-            displayType: "annotationsGrid",
-            displayConfiguration: "panel_annotateResultForPerspective",
-            displayPrompt: "Results linked to this perspective"
-        },
-        {
-            id: "perspective_linkedExcerptsList",
-            valueType: "none",
-            displayType: "annotationsGrid",
-            displayConfiguration: "panel_annotateExcerptForPerspective",
-            displayPrompt: "Excerpts linked to this perspective"
-        },
-        {
             id: "perspective_linkedInterpretationsList",
             valueType: "none",
-            displayType: "annotationsGrid",
+            displayType: "grid",
             displayConfiguration: "panel_annotateInterpretationForPerspective",
             displayPrompt: "Interpretations linked to this perspective"
         }
