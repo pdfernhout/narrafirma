@@ -78,7 +78,7 @@ function convertEditorQuestions(editorQuestions, prefixQPA) {
             displayType: questionType,
             id: id, 
             valueOptions: valueOptions, 
-            displayName: shortName, 
+            displayName: prefixQPA + shortName, 
             displayPrompt: prompt,
             displayConfiguration: displayConfiguration
         });
@@ -107,9 +107,9 @@ function buildItemListFromIdList(idToItemMap, idItemList, idField) {
         var order = project.tripleStore.queryLatestC(idItem, "order");
         var item = idToItemMap[id];
         if (item) {
-            // Retrieve the latest for all the fields of the object (which will include deteleted/null fields)
+            // Retrieve the latest for all the fields of the object (which will include deleted/null fields)
             // TODO: Remove any deleted/null fields
-            var itemObject = project.tripleStore.makeObject(item);
+            var itemObject = project.tripleStore.makeObject(item, true);
             itemObject.order = order;
             result.push(itemObject);
         } else {
@@ -126,6 +126,65 @@ function buildItemListFromIdList(idToItemMap, idItemList, idField) {
 
 // Are names just hints as to purpose of code? Can never convey all aspects of interrelationships?
 
+export function collectAllQuestions(): any[]  {
+    var project = Globals.project();
+    
+    var elicitingQuestions = project.collectAllElicitingQuestions();
+    elicitingQuestions = convertElicitingQuestions(elicitingQuestions);
+    
+    var storyQuestions = project.collectAllStoryQuestions();
+    storyQuestions = convertEditorQuestions(storyQuestions, "S_");
+    
+    var participantQuestions = project.collectAllParticipantQuestions();
+    participantQuestions = convertEditorQuestions(participantQuestions, "P_");
+    
+    var annotationQuestions = project.collectAllAnnotationQuestions();
+    annotationQuestions = convertEditorQuestions(annotationQuestions, "A_");
+        
+    var allQuestions = getLeadingStoryQuestions(elicitingQuestions);
+    allQuestions = allQuestions.concat(storyQuestions, participantQuestions, annotationQuestions);
+    
+    console.log("collectAllQuestions", allQuestions);
+    return allQuestions;
+}
+
+export function getLeadingStoryQuestions(elicitingQuestions) {
+    
+    // TODO: What about idea of having IDs that go with eliciting questions so store reference to ID not text prompt?
+    var elicitingQuestionValues = [];
+    for (var elicitingQuestionIndex = 0; elicitingQuestionIndex < elicitingQuestions.length; elicitingQuestionIndex++) {
+        var elicitingQuestionSpecification = elicitingQuestions[elicitingQuestionIndex];
+        // elicitingQuestionValues.push({value: elicitingQuestionSpecification.id, text: elicitingQuestionSpecification.label});
+        elicitingQuestionValues.push(elicitingQuestionSpecification.id || elicitingQuestionSpecification.shortName || elicitingQuestionSpecification.text);
+    }
+    
+    // TODO: Remove redundancy
+    var leadingStoryQuestions = [];
+    leadingStoryQuestions.unshift({
+        id: "storyName",
+        displayName: "Story Name",
+        displayPrompt: "Please give your story a name",
+        displayType: "text",
+        valueOptions: []
+    });
+    leadingStoryQuestions.unshift({
+        id: "storyText",
+        displayName: "Story Text",
+        displayPrompt: "Please enter your response to the question above in the space below",
+        displayType: "textarea",
+        valueOptions: []
+    });
+    leadingStoryQuestions.unshift({
+        id: "elicitingQuestion",
+        displayName: "Eliciting Question",
+        displayPrompt: "Please choose a question you would like to respond to",
+        displayType: "select",
+        valueOptions: elicitingQuestionValues
+    });
+    
+    return leadingStoryQuestions;
+}
+
 // TODO: How to save the fact we have exported this in the project? Make a copy??? Or keep original in document somewhere? Versus what is returned from server for surveys?
 export function buildQuestionnaire(shortName) {
     // TODO: Redo for if questionnaire template is made of triples
@@ -137,6 +196,23 @@ export function buildQuestionnaire(shortName) {
     console.log("questionnaireTemplate", questionnaireTemplate);
     
     return buildQuestionnaireFromTemplate(questionnaireTemplate);
+}
+
+function convertElicitingQuestions(elicitingQuestions) {
+    var result = [];
+    for (var elicitingQuestionIndex = 0; elicitingQuestionIndex < elicitingQuestions.length; elicitingQuestionIndex++) {
+        var storySolicitationQuestionText = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_text;
+        var storySolicitationQuestionShortName = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_shortName;
+        var storySolicitationQuestionType = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_type;
+        var elicitingQuestionInfo = {
+            text: storySolicitationQuestionText,
+            id: storySolicitationQuestionShortName,
+            "type": storySolicitationQuestionType
+        };
+        result.push(elicitingQuestionInfo);
+    }
+    ensureAtLeastOneElicitingQuestion(result);
+    return result;
 }
 
 export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
@@ -168,18 +244,7 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
     var elicitingQuestions = buildItemListFromIdList(allElicitingQuestions, elicitingQuestionIdentifiers, "elicitingQuestion");       
     console.log("elicitingQuestions", elicitingQuestions);
     
-    for (var elicitingQuestionIndex = 0; elicitingQuestionIndex < elicitingQuestions.length; elicitingQuestionIndex++) {
-        var storySolicitationQuestionText = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_text;
-        var storySolicitationQuestionShortName = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_shortName;
-        var storySolicitationQuestionType = elicitingQuestions[elicitingQuestionIndex].elicitingQuestion_type;
-        var elicitingQuestionInfo = {
-            text: storySolicitationQuestionText,
-            id: storySolicitationQuestionShortName,
-            "type": storySolicitationQuestionType
-        };
-        questionnaire.elicitingQuestions.push(elicitingQuestionInfo);
-    }
-    ensureAtLeastOneElicitingQuestion(questionnaire);
+    questionnaire.elicitingQuestions = convertElicitingQuestions(elicitingQuestions);
     
     var allStoryQuestions = buildIdToItemMap("project_storyQuestionsList", "storyQuestion_shortName");
     var storyQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_storyQuestions"));
@@ -215,9 +280,9 @@ function ensureUniqueQuestionIDs(usedIDs, editorQuestions) {
     }
 }
 
-export function ensureAtLeastOneElicitingQuestion(questionnaire) {
+export function ensureAtLeastOneElicitingQuestion(elicitingQuestions) {
     // TODO: How to prevent this potential problem of no eliciting questions during questionnaire design in GUI?
-    if (questionnaire.elicitingQuestions.length === 0) {
+    if (elicitingQuestions.length === 0) {
         // TODO: Translate
         var message = "No eliciting questions were defined! Adding one with 'What happened?' for testing.";
         console.log("PROBLEM", message);
@@ -227,6 +292,6 @@ export function ensureAtLeastOneElicitingQuestion(questionnaire) {
             id: "what happened",
             type: {"what happened": true}
         };
-        questionnaire.elicitingQuestions.push(testElicitingQuestionInfo);
+        elicitingQuestions.push(testElicitingQuestionInfo);
     }
 }

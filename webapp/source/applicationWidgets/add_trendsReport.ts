@@ -2,6 +2,7 @@ import charting = require("./charting");
 import kendallsTau = require("../statistics/kendallsTau");
 import simpleStatistics = require("../statistics/simple_statistics");
 import storyCardDisplay = require("../storyCardDisplay");
+import questionnaireGeneration = require("../questionnaireGeneration");
 import surveyCollection = require("../surveyCollection");
 import topic = require("../pointrel20150417/topic");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
@@ -389,16 +390,11 @@ class PatternBrowser {
     
         var storyCollectionIdentifier = this.project.tripleStore.queryLatestC(storyCollectionPointer, "storyCollection");
         
-        var questionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
-        if (!questionnaire) {
-            // TODO: Should clear more stuff?
-            return;
-        }
-        
         this.graphHolder.allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier);
         // console.log("allStories", this.graphHolder.allStories);
         
-        this.questions = surveyCollection.collectQuestionsForQuestionnaire(questionnaire);
+        // TODO: Filter these questions by ones of interest for specific catalysis report
+        this.questions = questionnaireGeneration.collectAllQuestions();
         // console.log("questions", this.questions);
         
         this.modelForPatternsGrid.patterns = this.buildPatternList();

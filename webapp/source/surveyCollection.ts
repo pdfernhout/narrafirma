@@ -1,5 +1,6 @@
 import Project = require("./Project");
 import translate = require("./panelBuilder/translate");
+import questionnaireGeneration = require("./questionnaireGeneration");
 
 "use strict";
     
@@ -213,49 +214,17 @@ export function isStoryCollectingEnabled() {
     }
     return false;
 }
-   
+
 export function collectQuestionsForQuestionnaire(questionnaire) {
     // console.log("collectQuestionsForQuestionnaire", questionnaire);
    
     if (!questionnaire) return [];
    
-    var storyQuestions = questionnaire.storyQuestions;
-   
-    // TODO: What about idea of having IDs that go with eliciting questions so store reference to ID not text prompt?
-    var elicitingQuestionValues = [];
-    for (var elicitingQuestionIndex = 0; elicitingQuestionIndex < questionnaire.elicitingQuestions.length; elicitingQuestionIndex++) {
-        var elicitingQuestionSpecification = questionnaire.elicitingQuestions[elicitingQuestionIndex];
-        // elicitingQuestionValues.push({value: elicitingQuestionSpecification.id, text: elicitingQuestionSpecification.label});
-        elicitingQuestionValues.push(elicitingQuestionSpecification.id || elicitingQuestionSpecification.shortName || elicitingQuestionSpecification.text);
-    }
-   
-    // TODO: Remove redundancy
-    var leadingStoryQuestions = [];
-    leadingStoryQuestions.unshift({
-        id: "storyName",
-        displayName: "Story Name",
-        displayPrompt: "Please give your story a name",
-        displayType: "text",
-        valueOptions: []
-    });
-    leadingStoryQuestions.unshift({
-        id: "storyText",
-        displayName: "Story Text",
-        displayPrompt: "Please enter your response to the question above in the space below",
-        displayType: "textarea",
-        valueOptions: []
-    });
-    leadingStoryQuestions.unshift({
-        id: "elicitingQuestion",
-        displayName: "Eliciting Question",
-        displayPrompt: "Please choose a question you would like to respond to",
-        displayType: "select",
-        valueOptions: elicitingQuestionValues
-    });
+    var leadingStoryQuestions = questionnaireGeneration.getLeadingStoryQuestions(questionnaire.elicitingQuestions);
 
     // console.log("DEBUG questions used by story browser", questions);
           
-    var questions = [].concat(leadingStoryQuestions, storyQuestions);
+    var questions = [].concat(leadingStoryQuestions, questionnaire.storyQuestions);
     questions.push({
         id: "participantData_header",
         displayName: "Participant Data",

@@ -1,4 +1,5 @@
 import storyCardDisplay = require("../storyCardDisplay");
+import questionnaireGeneration = require("../questionnaireGeneration");
 import surveyCollection = require("../surveyCollection");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
@@ -256,7 +257,6 @@ function getQuestionDataForSelection(questions, event) {
 
 class StoryBrowser {
     storyCollectionIdentifier: string = null;
-    currentQuestionnaire = null;
     questions = [];
     choices = [];
     allStories = [];
@@ -349,12 +349,9 @@ class StoryBrowser {
     currentStoryCollectionChanged(storyCollectionIdentifier) {
         console.log("currentStoryCollectionChanged", this, storyCollectionIdentifier);
         
-        this.currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
-        // console.log("this.currentQuestionnaire", this.currentQuestionnaire);
-        
         // Update filters
-        this.questions = surveyCollection.collectQuestionsForQuestionnaire(this.currentQuestionnaire);
-        
+        this.questions = questionnaireGeneration.collectAllQuestions();
+                
         this.choices = surveyCollection.optionsForAllQuestions(this.questions);
         
         // update all stories for the specific collection

@@ -126,6 +126,36 @@ class Project {
         }
         return null;
     }
+    
+    private collectAllQuestionsForQuestionList(questionListName: string) {
+        var questionIdentifiers: Array<string> = this.getListForField(questionListName);
+        var questions = [];
+        questionIdentifiers.forEach((questionIdentifier) => {
+            var question = this.tripleStore.makeObject(questionIdentifier, true);
+            questions.push(question);
+        });
+        return questions;
+    }
+    
+    collectAllElicitingQuestions() {
+        var questions = this.collectAllQuestionsForQuestionList("project_elicitingQuestionsList");
+        return questions;
+    }
+    
+    collectAllStoryQuestions() {
+        var questions = this.collectAllQuestionsForQuestionList("project_storyQuestionsList");
+        return questions;
+    }
+    
+    collectAllParticipantQuestions() {
+        var questions = this.collectAllQuestionsForQuestionList("project_participantQuestionsList");
+        return questions;
+    }
+    
+    collectAllAnnotationQuestions() {
+        var questions = this.collectAllQuestionsForQuestionList("project_storyAnnotationsList");
+        return questions;
+    }
 }
 
 export = Project;

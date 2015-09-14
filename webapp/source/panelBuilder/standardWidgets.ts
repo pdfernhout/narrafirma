@@ -22,7 +22,7 @@ function optionsForSelect(panelBuilder: PanelBuilder, model, fieldSpecification,
             var choiceSet = Globals.project().tripleStore.getListForSetIdentifier(choices);
             for (var i = 0; i < choiceSet.length; i++) {
                 var choiceIdentifier = choiceSet[i];
-                var item = Globals.project().tripleStore.makeObject(choiceIdentifier);
+                var item = Globals.project().tripleStore.makeObject(choiceIdentifier, true);
                 choiceItems.push(item);
             }
             choices = choiceItems;

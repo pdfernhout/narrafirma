@@ -61,6 +61,12 @@ var allowedCSSClasses = {
 export function generateSanitizedHTMLForMithril(html) {
     // console.log("html", html);
     
+    if (html === undefined || html === null) {
+        console.log("Undefined or null html", html);
+        html = "";
+        // throw new Error("Undefined or null html");
+    }
+    
     // Handle case where is already a Mithril object
     if (html.tag) return html;
     

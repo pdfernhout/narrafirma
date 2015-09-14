@@ -1,4 +1,5 @@
 import charting = require("./charting");
+import questionnaireGeneration = require("../questionnaireGeneration");
 import surveyCollection = require("../surveyCollection");
 import valuePathResolver = require("../panelBuilder/valuePathResolver");
 import PanelBuilder = require("../panelBuilder/PanelBuilder");
@@ -27,7 +28,6 @@ class GraphBrowser {
     yAxisSelectValue = null;
     questions = [];
     choices = [];
-    currentQuestionnaire = null;
     storyCollectionIdentifier: string = null;
     selectedStories = [];
     
@@ -135,11 +135,8 @@ class GraphBrowser {
     currentStoryCollectionChanged(storyCollectionIdentifier) {
         this.storyCollectionIdentifier = storyCollectionIdentifier;
         
-        this.currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
-        console.log("graphBrowserInstance.currentQuestionnaire", this.currentQuestionnaire);
-        
         // Update selects for new question choices
-        this.questions = surveyCollection.collectQuestionsForQuestionnaire(this.currentQuestionnaire);
+        this.questions = questionnaireGeneration.collectAllQuestions();
         console.log("----------- questions", this.questions);
         
         this.choices = surveyCollection.optionsForAllQuestions(this.questions, "excludeTextQuestions");
