@@ -10,6 +10,7 @@ import m = require("mithril");
 import Project = require("../Project");
 import GridWithItemPanel = require("../panelBuilder/GridWithItemPanel");
 import generateRandomUuid = require("../pointrel20150417/generateRandomUuid");
+import Globals = require("../Globals");
 
 "use strict";
 
@@ -118,7 +119,7 @@ class PatternBrowser {
     observationPanelSpecification = null;
     
     constructor(args) {
-        this.project = args.panelBuilder.project;
+        this.project = Globals.project();
         
        // Graph display initializaiton
         
