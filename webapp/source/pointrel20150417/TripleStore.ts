@@ -266,7 +266,7 @@ class TripleStore {
         };
     }
     
-   makeObject(a): any {
+   makeObject(a, isKeyJSON = false): any {
         if (a === undefined) {
             throw new Error("expected a to be defined");
         }
@@ -274,7 +274,10 @@ class TripleStore {
        
         var latestBC = this.queryAllLatestBCForA(a);
         for (var bKey in latestBC) {
-            var b = JSON.parse(bKey);
+            var b = bKey;
+            if (isKeyJSON) {
+                b = JSON.parse(bKey);
+            }
             var c = latestBC[bKey];
             if (typeof b === "string") {
                 if (c !== undefined) {
