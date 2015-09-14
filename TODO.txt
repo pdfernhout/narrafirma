@@ -17,10 +17,8 @@ H Implement "export session agenda" (to HTML) for sensemaking
 H Implement exportPresentationOutline in domain buttonClicked - in Return, "Prepare outline of project presentation"
 
 STORY ANNOTATION
-H Move theming/tagging functionality into story browser
-H Add questions and answers as structured annotations (by adding a quesiton in annotation section and using it in story browser)
-H Need to be able to add comment to story (by adding an annotation in story browser)
 H Include annotations in export and import
+H Use string annotations in pattern browser
 
 GRAPH BROWSER
 H Add low and high labels for slider/range questions (on graphs)
@@ -42,15 +40,9 @@ H Make a SIMPLE Project Administration section to go with home page button for u
 
 GENERAL
 H Think about and improve issue of values that can be set only once like catalysis report name and story collection
-H Create script or procedure to deal with SVN for WordPress
 H Test readonly use as anonymous under WordPress
 H Make panels read only when user permissions are read only
-H Display total count of all answers when displaying question name in Story Browser or Catalysys Report configuration
-
-MODELS
-H Make Model classes using a tripleStore for all models as a way of documenting and organizing core code
-
-ERRORS
+H Display total count of all answers when displaying question name in Story Browser or Catalysis Report configuration
 
 ======= CYNTHIA
 
@@ -157,6 +149,9 @@ X Print section reports as HTML
 
 NAVIGATION
 L Way to select a different project to switch to (other than editing the URL or logging out)
+
+GENERAL
+M Create script or procedure to deal with SVN for WordPress
 
 UNSURE
 X Way to retrieve data about project participant groups [Is this still relevant? Probably yes, if we did "checkboxes with pull" for picking what groups an activity applies to instead of text entry]
@@ -882,3 +877,7 @@ DONE Remove unneeded fields from panel specifications to make them easier to rea
 DONE Remove "Theme stories" page
 DONE Remove "review excerpts" page
 DONE Remove "Review and interpret observations" page
+NOT DOING Make Model classes using a tripleStore for all models as a way of documenting and organizing core code
+DONE Move theming/tagging functionality into story browser
+DONE Add questions and answers as structured annotations (by adding a question in annotation section and using it in story browser)
+DONE Need to be able to add comment to story (by adding an annotation in story browser)
