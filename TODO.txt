@@ -16,11 +16,11 @@ H Implement "export session agenda" (to HTML) for story collection
 H Implement "export session agenda" (to HTML) for sensemaking
 H Implement exportPresentationOutline in domain buttonClicked - in Return, "Prepare outline of project presentation"
 
-STORY THEMER
+STORY ANNOTATION
 H Move theming/tagging functionality into story browser
-H Add questions and answers as theming (structured annotations) (by adding a tag in story browser)
-H Need to be able to add comment to story (by adding a tag in story browser)
-H Add button to export data with themes
+H Add questions and answers as structured annotations (by adding a quesiton in annotation section and using it in story browser)
+H Need to be able to add comment to story (by adding an annotation in story browser)
+H Include annotations in export and import
 
 GRAPH BROWSER
 H Add low and high labels for slider/range questions (on graphs)
@@ -36,11 +36,6 @@ H Create catalysis report - including results (graphs, statistical results)
            Observation
                Pattern (graph)
 H Print catalysis report
-
-CATALYSIS
-H Remove "Theme stories" page
-H Remove "review excerpts" page
-H Remove "Review and interpret observations" page
 
 CONFIGURATION
 H Make a SIMPLE Project Administration section to go with home page button for use with import/export/backup/reporting or other settings and functions
@@ -883,3 +878,7 @@ DONE Shorten title on pages to NarraFirma
 DONE Make variant of valueRathResolver specific to model classes that throws errors for missing field functions
 DONE Refactor Application into class and move ClientState and PanelSetup into seperate classes
 DONE Add Globals class to simplify passing around of ClientState and Project
+DONE Remove unneeded fields from panel specifications to make them easier to read
+DONE Remove "Theme stories" page
+DONE Remove "review excerpts" page
+DONE Remove "Review and interpret observations" page
