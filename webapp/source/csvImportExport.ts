@@ -137,12 +137,12 @@ function processCSVContentsForStories(contents) {
         var question;
         for (i = 0; i < lastQuestionnaireUploaded.storyQuestions.length; i++) {
             question = lastQuestionnaireUploaded.storyQuestions[i];
-            story[question.id] = item[question.id.substring("Q_".length)];
+            story[question.id] = item[question.id.substring("S_".length)];
         }
         newSurveyResult.stories.push(story);
         for (i = 0; i < lastQuestionnaireUploaded.participantQuestions.length; i++) {
             question = lastQuestionnaireUploaded.participantQuestions[i];
-            newSurveyResult.participantData[question.id] = item[question.id.substring("Q_".length)];
+            newSurveyResult.participantData[question.id] = item[question.id.substring("P_".length)];
         }
         console.log("newSurveyResult", newSurveyResult);
         surveyResults.push(newSurveyResult);
@@ -277,11 +277,11 @@ function processCSVContentsForQuestionnaire(contents) {
         var item = items[itemIndex];
         var about = item.About;
         if (about === "story") {
-            questionnaire.storyQuestions.push(questionForItem(item));
+            questionnaire.storyQuestions.push(questionForItem(item, "S_"));
         } else if (about === "participant") {
-            questionnaire.participantQuestions.push(questionForItem(item));
+            questionnaire.participantQuestions.push(questionForItem(item, "P_"));
         } else if (about === "eliciting") {
-            var temp = questionForItem(item);
+            var temp = questionForItem(item, "");
             temp.valueOptions.forEach(function (elicitingQuestionDefinition) {
                 if (!elicitingQuestionDefinition) elicitingQuestionDefinition = "ERROR:MissingElicitingText";
                 var sections = elicitingQuestionDefinition.split("|");
@@ -302,7 +302,7 @@ function processCSVContentsForQuestionnaire(contents) {
     return questionnaire;
 }
 
-function questionForItem(item) {
+function questionForItem(item, prefixQPA: string) {
     var valueType = "string";
     var questionType = "text";
     var valueOptions;
@@ -338,7 +338,7 @@ function questionForItem(item) {
     return {
         valueType: valueType,
         displayType: questionType,
-        id: "Q_" + item["Short name"], 
+        id: prefixQPA + item["Short name"], 
         valueOptions: valueOptions,
         displayName: item["Short name"], 
         displayPrompt: item["Long name"],

@@ -34,15 +34,15 @@ var displayTypeToValueTypeMap = {
     storiesList: 'none'
 };
 
-function convertEditorQuestions(editorQuestions) {
+function convertEditorQuestions(editorQuestions, prefixQPA) {
     var adjustedQuestions = [];
     
     for (var questionIndex = 0; questionIndex < editorQuestions.length; questionIndex++) {
         var question = editorQuestions[questionIndex];
         // console.log("question", question);
         var shortName = question.storyQuestion_shortName || question.participantQuestion_shortName;
-        // Including "Q_" prefix for user-supplied question ID to prevent collisions with application fields like storyText and JavaScript functions and __proto__
-        var id = "Q_" + shortName;
+        // Including "S_" or "P_" or "A_" prefix for user-supplied question ID to prevent collisions with application fields like storyText and JavaScript functions and __proto__
+        var id = prefixQPA + shortName;
         var questionType = question.storyQuestion_type || question.participantQuestion_type;
         var prompt = question.storyQuestion_text || question.participantQuestion_text;
         
@@ -185,13 +185,13 @@ export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
     var storyQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_storyQuestions"));
     var storyQuestions = buildItemListFromIdList(allStoryQuestions, storyQuestionIdentifiers, "storyQuestion");       
     ensureUniqueQuestionIDs(usedIDs, storyQuestions);
-    questionnaire.storyQuestions = convertEditorQuestions(storyQuestions);
+    questionnaire.storyQuestions = convertEditorQuestions(storyQuestions, "S_");
     
     var allParticipantQuestions = buildIdToItemMap("project_participantQuestionsList", "participantQuestion_shortName");
     var participantQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_participantQuestions"));
     var participantQuestions = buildItemListFromIdList(allParticipantQuestions, participantQuestionIdentifiers, "participantQuestion");       
     ensureUniqueQuestionIDs(usedIDs, participantQuestions);      
-    questionnaire.participantQuestions = convertEditorQuestions(participantQuestions);
+    questionnaire.participantQuestions = convertEditorQuestions(participantQuestions, "P_");
     
     console.log("buildQuestionnaire result", questionnaire);
     return questionnaire;
