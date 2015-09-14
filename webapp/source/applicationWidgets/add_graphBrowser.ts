@@ -18,7 +18,6 @@ function questionForID(questions, id) {
 
 // TODO: duplicate code copied from add_storyBrowser.ts
 function getCurrentStoryCollectionIdentifier(args) {
-    var panelBuilder = args.panelBuilder;
     var model = args.model;
     var fieldSpecification = args.fieldSpecification;
     

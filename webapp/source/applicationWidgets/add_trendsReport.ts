@@ -427,7 +427,6 @@ class PatternBrowser {
     
     // TODO: Similar to what is in add_graphBrowser
     getCurrentCatalysisReportIdentifier(args) {
-        var panelBuilder = args.panelBuilder;
         var model = args.model;
         var fieldSpecification = args.fieldSpecification;
         

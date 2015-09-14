@@ -255,7 +255,6 @@ function getQuestionDataForSelection(questions, event) {
 }
 
 function getCurrentStoryCollectionIdentifier(args) {
-    var panelBuilder = args.panelBuilder;
     var model = args.model;
     var fieldSpecification = args.fieldSpecification;
     
@@ -335,7 +334,7 @@ class StoryBrowser {
             this.grid.updateDisplayConfigurationAndData(this.gridFieldSpecification.displayConfiguration);
         }
         
-        var prompt = args.panelBuilder.buildQuestionLabel(args.fieldSpecification);
+        var prompt = panelBuilder.buildQuestionLabel(args.fieldSpecification);
         
         var parts;
         
