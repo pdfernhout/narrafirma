@@ -527,20 +527,6 @@ export function printCatalysisReport() {
     // catalysisReport_shortName
 }
 
-// TOOD: Copied from add_trendsReport so duplicate code, except removed "this." for project access
-function findCatalysisReport(shortName) {
-    var catalysisReports = project.tripleStore.queryLatestC(project.projectIdentifier, "project_catalysisReports");
-    if (!catalysisReports) return null;
-    var catalysisReportIdentifiers = project.tripleStore.getListForSetIdentifier(catalysisReports);
-    for (var i = 0; i < catalysisReportIdentifiers.length; i++) {
-        var reportShortName = project.tripleStore.queryLatestC(catalysisReportIdentifiers[i], "catalysisReport_shortName");
-        if (reportShortName === shortName) {
-            return catalysisReportIdentifiers[i];
-        }
-    }
-    return null;
-}
-
 export function copyInterpretationsToClusteringDiagram() {
     // TODO: Finish this
     var shortName = clientState.catalysisReportIdentifier;
@@ -551,7 +537,7 @@ export function copyInterpretationsToClusteringDiagram() {
         return;
     }
     
-    var catalysisReportIdentifier = findCatalysisReport(shortName);
+    var catalysisReportIdentifier = project.findCatalysisReport(shortName);
     if (!catalysisReportIdentifier) {
         alert("Problem finding catalysisReportIdentifier");
         return;

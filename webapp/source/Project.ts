@@ -91,6 +91,21 @@ class Project {
             this.redrawCallback();
         }
     }
+    
+    // Project-specific data lookup
+    
+    findCatalysisReport(shortName) {
+        var catalysisReports = this.tripleStore.queryLatestC(this.projectIdentifier, "project_catalysisReports");
+        if (!catalysisReports) return null;
+        var catalysisReportIdentifiers = this.tripleStore.getListForSetIdentifier(catalysisReports);
+        for (var i = 0; i < catalysisReportIdentifiers.length; i++) {
+            var reportShortName = this.tripleStore.queryLatestC(catalysisReportIdentifiers[i], "catalysisReport_shortName");
+            if (reportShortName === shortName) {
+                return catalysisReportIdentifiers[i];
+            }
+        }
+        return null;
+    }
 }
 
 export = Project;

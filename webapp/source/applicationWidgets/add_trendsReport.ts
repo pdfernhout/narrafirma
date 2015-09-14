@@ -412,19 +412,6 @@ class PatternBrowser {
         this.chooseGraph(null);     
     }
     
-    findCatalysisReport(shortName) {
-        var catalysisReports = this.project.tripleStore.queryLatestC(this.project.projectIdentifier, "project_catalysisReports");
-        if (!catalysisReports) return null;
-        var catalysisReportIdentifiers = this.project.tripleStore.getListForSetIdentifier(catalysisReports);
-        for (var i = 0; i < catalysisReportIdentifiers.length; i++) {
-            var reportShortName = this.project.tripleStore.queryLatestC(catalysisReportIdentifiers[i], "catalysisReport_shortName");
-            if (reportShortName === shortName) {
-                return catalysisReportIdentifiers[i];
-            }
-        }
-        return null;
-    }
-    
     // TODO: Similar to what is in add_graphBrowser
     getCurrentCatalysisReportIdentifier(args) {
         var model = args.model;
@@ -437,7 +424,7 @@ class PatternBrowser {
         
         if (!catalysisReportShortName) return null;
         
-        return this.findCatalysisReport(catalysisReportShortName);
+        return this.project.findCatalysisReport(catalysisReportShortName);
     }
     
     patternReferenceForQuestions(questions) {
