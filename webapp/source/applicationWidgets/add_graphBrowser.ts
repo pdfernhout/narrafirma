@@ -16,18 +16,6 @@ function questionForID(questions, id) {
     return null;
 }
 
-// TODO: duplicate code copied from add_storyBrowser.ts
-function getCurrentStoryCollectionIdentifier(args) {
-    var model = args.model;
-    var fieldSpecification = args.fieldSpecification;
-    
-    // Get questionnaire for selected story collection
-    // TODO: What if the value is an array of stories to display directly?
-    var storyCollectionIdentifier = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification)();
-    
-    return storyCollectionIdentifier;
-}
-
 function createGraphResultsPane(): HTMLElement {
     var pane = document.createElement("div");
     pane.className = "narrafirma-graph-results-pane";
@@ -74,7 +62,8 @@ class GraphBrowser {
         console.log("%%%%%%%%%%%%%%%%%%% GraphBrowser view called", this);
 
         // Handling of caching of questions and stories
-        var storyCollectionIdentifier = getCurrentStoryCollectionIdentifier(args);
+        var storyCollectionIdentifier = valuePathResolver.newValuePathForFieldSpecification(args.model, args.fieldSpecification)();
+        
         if (storyCollectionIdentifier !== this.storyCollectionIdentifier) {
             // TODO: Maybe need to handle tracking if list changed so can keep sorted list?
             this.storyCollectionIdentifier = storyCollectionIdentifier;

@@ -254,17 +254,6 @@ function getQuestionDataForSelection(questions, event) {
     return question; 
 }
 
-function getCurrentStoryCollectionIdentifier(args) {
-    var model = args.model;
-    var fieldSpecification = args.fieldSpecification;
-    
-    // Get questionnaire for selected story collection
-    // TODO: What if the value is an array of stories to display directly?
-    var storyCollectionIdentifier = valuePathResolver.newValuePathForFieldSpecification(model, fieldSpecification)();
-    
-    return storyCollectionIdentifier;
-}
-
 class StoryBrowser {
     storyCollectionIdentifier: string = null;
     currentQuestionnaire = null;
@@ -317,7 +306,7 @@ class StoryBrowser {
         var panelBuilder = args.panelBuilder;
         
         // Handling of caching of questions and stories
-        var storyCollectionIdentifier = getCurrentStoryCollectionIdentifier(args);
+        var storyCollectionIdentifier = valuePathResolver.newValuePathForFieldSpecification(args.model, args.fieldSpecification)();
         if (storyCollectionIdentifier !== this.storyCollectionIdentifier) {
             // TODO: Maybe need to handle tracking if list changed so can keep sorted list?
             this.storyCollectionIdentifier = storyCollectionIdentifier;
