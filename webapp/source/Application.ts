@@ -157,7 +157,7 @@ class Application {
         } else if (functionName === "storeQuestionnaireInStoryCollection") {
             var storyCollectionIdentifier = fieldSpecification.value;
             var questionnaireName = Globals.project().tripleStore.queryLatestC(storyCollectionIdentifier, "storyCollection_questionnaireIdentifier");
-            var questionnaire = questionnaireGeneration.buildQuestionnaire(Globals.project(), questionnaireName);
+            var questionnaire = questionnaireGeneration.buildQuestionnaire(questionnaireName);
             if (!questionnaire) return ["Questionnaire could not be created for: " + questionnaireName];
             Globals.project().tripleStore.addTriple(storyCollectionIdentifier, "questionnaire", questionnaire);
             return null;

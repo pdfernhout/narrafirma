@@ -252,7 +252,7 @@ function processCSVContentsForQuestionnaire(contents) {
     
     var shortName = prompt("Please enter a short name for this story form.");
     if (!shortName) return;
-    if (questionnaireGeneration.buildQuestionnaire(project, shortName)) {
+    if (questionnaireGeneration.buildQuestionnaire(shortName)) {
         alert('A story form already exists with that name: "' + shortName + '"');
         return;
     }

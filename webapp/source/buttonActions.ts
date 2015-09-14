@@ -481,7 +481,7 @@ function previewQuestionForm(model, fieldSpecification) {
 
 export function previewQuestionForm(model, fieldSpecification) {
     console.log("previewQuestionForm", model);
-    var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(project, model);
+    var questionnaire = questionnaireGeneration.buildQuestionnaireFromTemplate(model);
     window["narraFirma_previewQuestionnaire"] = questionnaire;
     
     var w = window.open("survey.html#preview=" + (new Date().toISOString()), "_blank");

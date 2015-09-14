@@ -1,26 +1,7 @@
-// TODO: Ensure use strict wrapped in funciton
-
-import kludgeForUseStrict = require("./kludgeForUseStrict");
 import Project = require("./Project");
-"use strict";
+import Globals = require("./Globals");
 
-function ensureUniqueQuestionIDs(usedIDs, editorQuestions) {
-    // Validate the survey ids to prevent duplicates and missing ones; ideally this should be done in GUI somehow
-    for (var index in editorQuestions) {
-        var editorQuestion = editorQuestions[index];
-        if (!editorQuestion.id) {
-            editorQuestion.id = "question " + (++(usedIDs.__createdIDCount));
-            console.log("SURVEY DESIGN ERROR: question had missing ID and one was assigned", editorQuestion);
-        }
-        while (usedIDs[editorQuestion.id]) {
-            // ID already exists
-            console.log("SURVEY DESIGN ERROR: duplicate ID", editorQuestion.id);
-            editorQuestion.id = "question " + (++(usedIDs.__createdIDCount));
-            console.log("SURVEY DESIGN ERROR: question had duplicate ID and a new one was assigned", editorQuestion);
-       }
-         usedIDs[editorQuestion.id] = true;
-    }
-}
+"use strict";
 
 var displayTypeToValueTypeMap = {
     // Used in questionnaire and other parts of the application
@@ -106,7 +87,8 @@ function convertEditorQuestions(editorQuestions) {
     return adjustedQuestions;
 }
 
-function buildIdToItemMap(project: Project, itemListField, idField: string) {
+function buildIdToItemMap(itemListField, idField: string) {
+    var project = Globals.project();
     var itemList = project.getListForField(itemListField);
     var result = {};
     itemList.forEach(function (item) {
@@ -116,7 +98,8 @@ function buildIdToItemMap(project: Project, itemListField, idField: string) {
     return result;
 }
 
-function buildItemListFromIdList(project: Project, idToItemMap, idItemList, idField) {
+function buildItemListFromIdList(idToItemMap, idItemList, idField) {
+    var project = Globals.project();
     var result = [];
     idItemList.forEach(function (idItem) {
         // TODO: Fix access here for tripleStore use
@@ -144,18 +127,21 @@ function buildItemListFromIdList(project: Project, idToItemMap, idItemList, idFi
 // Are names just hints as to purpose of code? Can never convey all aspects of interrelationships?
 
 // TODO: How to save the fact we have exported this in the project? Make a copy??? Or keep original in document somewhere? Versus what is returned from server for surveys?
-export function buildQuestionnaire(project: Project, shortName) {
+export function buildQuestionnaire(shortName) {
     // TODO: Redo for if questionnaire template is made of triples
+    var project = Globals.project();
     
     var questionnaireTemplate = project.findQuestionnaireTemplate(shortName);
     if (!questionnaireTemplate) return null;
     
     console.log("questionnaireTemplate", questionnaireTemplate);
     
-    return buildQuestionnaireFromTemplate(project, questionnaireTemplate);
+    return buildQuestionnaireFromTemplate(questionnaireTemplate);
 }
 
-export function buildQuestionnaireFromTemplate(project: Project, questionnaireTemplate: string) {
+export function buildQuestionnaireFromTemplate(questionnaireTemplate: string) {
+    var project = Globals.project();
+    
     var usedIDs = {
         __createdIDCount: 0
     };
@@ -177,9 +163,9 @@ export function buildQuestionnaireFromTemplate(project: Project, questionnaireTe
     questionnaire.endText = project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_endText"); 
     
     // TODO: Should maybe ensure unique IDs for eliciting questions?
-    var allElicitingQuestions = buildIdToItemMap(project, "project_elicitingQuestionsList", "elicitingQuestion_shortName");
+    var allElicitingQuestions = buildIdToItemMap("project_elicitingQuestionsList", "elicitingQuestion_shortName");
     var elicitingQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_elicitingQuestions"));
-    var elicitingQuestions = buildItemListFromIdList(project, allElicitingQuestions, elicitingQuestionIdentifiers, "elicitingQuestion");       
+    var elicitingQuestions = buildItemListFromIdList(allElicitingQuestions, elicitingQuestionIdentifiers, "elicitingQuestion");       
     console.log("elicitingQuestions", elicitingQuestions);
     
     for (var elicitingQuestionIndex = 0; elicitingQuestionIndex < elicitingQuestions.length; elicitingQuestionIndex++) {
@@ -195,22 +181,40 @@ export function buildQuestionnaireFromTemplate(project: Project, questionnaireTe
     }
     ensureAtLeastOneElicitingQuestion(questionnaire);
     
-    var allStoryQuestions = buildIdToItemMap(project, "project_storyQuestionsList", "storyQuestion_shortName");
+    var allStoryQuestions = buildIdToItemMap("project_storyQuestionsList", "storyQuestion_shortName");
     var storyQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_storyQuestions"));
-    var storyQuestions = buildItemListFromIdList(project, allStoryQuestions, storyQuestionIdentifiers, "storyQuestion");       
+    var storyQuestions = buildItemListFromIdList(allStoryQuestions, storyQuestionIdentifiers, "storyQuestion");       
     ensureUniqueQuestionIDs(usedIDs, storyQuestions);
     questionnaire.storyQuestions = convertEditorQuestions(storyQuestions);
     
-    var allParticipantQuestions = buildIdToItemMap(project, "project_participantQuestionsList", "participantQuestion_shortName");
+    var allParticipantQuestions = buildIdToItemMap("project_participantQuestionsList", "participantQuestion_shortName");
     var participantQuestionIdentifiers = project.tripleStore.getListForSetIdentifier(project.tripleStore.queryLatestC(questionnaireTemplate, "questionForm_participantQuestions"));
-    var participantQuestions = buildItemListFromIdList(project, allParticipantQuestions, participantQuestionIdentifiers, "participantQuestion");       
+    var participantQuestions = buildItemListFromIdList(allParticipantQuestions, participantQuestionIdentifiers, "participantQuestion");       
     ensureUniqueQuestionIDs(usedIDs, participantQuestions);      
     questionnaire.participantQuestions = convertEditorQuestions(participantQuestions);
     
     console.log("buildQuestionnaire result", questionnaire);
     return questionnaire;
- }
- 
+}
+
+function ensureUniqueQuestionIDs(usedIDs, editorQuestions) {
+    // Validate the survey ids to prevent duplicates and missing ones; ideally this should be done in GUI somehow
+    for (var index in editorQuestions) {
+        var editorQuestion = editorQuestions[index];
+        if (!editorQuestion.id) {
+            editorQuestion.id = "question " + (++(usedIDs.__createdIDCount));
+            console.log("SURVEY DESIGN ERROR: question had missing ID and one was assigned", editorQuestion);
+        }
+        while (usedIDs[editorQuestion.id]) {
+            // ID already exists
+            console.log("SURVEY DESIGN ERROR: duplicate ID", editorQuestion.id);
+            editorQuestion.id = "question " + (++(usedIDs.__createdIDCount));
+            console.log("SURVEY DESIGN ERROR: question had duplicate ID and a new one was assigned", editorQuestion);
+       }
+         usedIDs[editorQuestion.id] = true;
+    }
+}
+
 export function ensureAtLeastOneElicitingQuestion(questionnaire) {
     // TODO: How to prevent this potential problem of no eliciting questions during questionnaire design in GUI?
     if (questionnaire.elicitingQuestions.length === 0) {
