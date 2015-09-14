@@ -399,7 +399,7 @@ form {
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Recommendations table ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-.recommendationsTable th, td {
+.recommendationsTable th, .recommendationsTable td {
 	border: 1px solid black;
 	text-align: left;
 	padding: 0.2em 0.2em 0.2em 0.3em;
