@@ -189,6 +189,6 @@ class ClientState {
         var newHash = this.hashStringForClientState();
         if (newHash !== hash()) hash(newHash);
     }  
-};
+}
 
 export = ClientState;
