@@ -27,7 +27,7 @@ var panel: Panel = {
                     columnsToDisplay: ["storyCollection_shortName", "storyCollection_questionnaireIdentifier", "storyCollection_activeOnWeb", "storyCollection_notes"],
                     transformDisplayedValues: function (value, fieldName) {
                         if (fieldName !== "storyCollection_activeOnWeb") return value;
-                        return value ? "active" : "";
+                        return value ? "yes" : "no";
                     }
                 }
             },
