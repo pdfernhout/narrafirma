@@ -2,7 +2,7 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 "use strict";
 
 var panel: Panel = {
-    id: "page_reviewTrends",
+    id: "page_explorePatterns",
     displayName: "Review trends",
     panelFields: [
         {
