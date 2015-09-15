@@ -154,8 +154,9 @@ button {
     vertical-align: middle;
 }
 
-#narrafirma-help-link {
-    padding: 16px;
+#narrafirma-help-link, #narrafirma-next-page, #narrafirma-previous-page {
+    padding-right: 16px;
+    float: right;
     font-size: 0.9em;
 }
 

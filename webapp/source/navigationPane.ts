@@ -34,11 +34,23 @@ var Navigation: any = {
                 "title": Globals.clientState().serverStatusText()
             }, "NarraFirma™"),
             m("span[id=narrafirma-breadcrumbs]", buildBreadcrumbs(controller)),
+            m("a[id=narrafirma-logout-link]", {href: logoutCommand}, 'Logout (' + userIdentifier + ')'),
             m("a[id=narrafirma-help-link]", {href: launchHelpCommand}, "(Help)"),
-            m("a[id=narrafirma-logout-link]", {href: logoutCommand}, 'Logout (' + userIdentifier + ')')
+            m("a[id=narrafirma-next-page]", {href: nextPageLink(), title: "Next page"}, "=>"),
+            m("a[id=narrafirma-previous-page]", {href: previousPageLink(), title: "Previous page"}, "<=")
         ]);
     }
 };
+
+function previousPageLink() {
+    if (!currentPageSpecification) return "#";
+    return linkForPage(currentPageSpecification.previousPageID);
+}
+
+function nextPageLink() {
+    if (!currentPageSpecification) return "#";
+    return linkForPage(currentPageSpecification.nextPageID);
+}
 
 export function initializeNavigationPane(thePanelSpecificationCollection, theUserIdentifier, panelBuilder) {
     panelSpecificationCollection = thePanelSpecificationCollection;
@@ -83,8 +95,13 @@ function buildBreadcrumbs(controller) {
     return breadcrumbs;
 }
 
+function linkForPage(pageIdentifier) {
+    if (!pageIdentifier) return "javascript:void(0)";
+    return "javascript:narrafirma_openPage(\'" + pageIdentifier + "\')";
+}
+
 function htmlForBreadcrumb(pageIdentifier, pageName) {
-    return m("a", {href: "javascript:narrafirma_openPage(\'" + pageIdentifier + "\')"}, pageName);
+    return m("a", {href: linkForPage(pageIdentifier)}, pageName);
 }
 
 export function getCurrentPageSpecification() {
