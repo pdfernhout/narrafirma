@@ -781,6 +781,12 @@ class PointrelClient {
     // End boilerplate for timer management
     
     private pollServerForNewMessages() {
+        // Do not poll if the document is not visible
+        if (document.hidden === true) {
+            // console.log("pollServerForNewMessages: not polling because not visible");
+            return;
+        }
+        
         if (this.outstandingServerRequestSentAtTimestamp) {
             // TODO: Warn if connection seems to have failed
             console.log("Still waiting on previous server request");
