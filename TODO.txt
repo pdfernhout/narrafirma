@@ -3,7 +3,6 @@
 PRIORITY
 - export: overall report, print text questionnaires, print catalysis report
 - catalysis (at least one step like graph or themer)
-- theming and tagging (now to be in story browser)
 
 EXPORT/IMPORT
 H Add page to do export
@@ -18,7 +17,6 @@ H Implement exportPresentationOutline in domain buttonClicked - in Return, "Prep
 
 STORY ANNOTATION
 H Include annotations in export and import
-H Use string annotations in pattern browser
 
 GRAPH BROWSER
 H Add low and high labels for slider/range questions (on graphs)
@@ -91,10 +89,8 @@ X Think through logging in the client, perhaps using a library
     Client application could report usage metrics to server or another service
 
 STORY THEMER
-X Generalize storyThemer into tagging - or researcher added questions
-    Support storyThemer -- a widget where people look at each story, give it 1-3 themes, then merge the themes into smaller numbers of themes
-    Page to enter themes for stories
-    Need page where user can add new researcher-defined questions and answers to stories (and maybe participants?)
+X Support storyThemer -- a widget where people look at each story, give it 1-3 themes, then merge the themes into smaller numbers of themes
+X Page to enter themes for stories
 X Page to cluster themes into final themes
 
 GRAPH BROWSER
@@ -186,6 +182,7 @@ L Histograms should have mean and standard deviation marked (and maybe median an
 Recommendation button has different shape than others
 
 Ensure timestamp for latest triple store messages is being set on server and not client
+Simplify Pointrel system further, like to not have message trace adding so PHP WordPress plugin code can be simpler and quicker
 
 Autosave for current textarea or input text based on timer even if you don't leave it
 
@@ -881,3 +878,9 @@ NOT DOING Make Model classes using a tripleStore for all models as a way of docu
 DONE Move theming/tagging functionality into story browser
 DONE Add questions and answers as structured annotations (by adding a question in annotation section and using it in story browser)
 DONE Need to be able to add comment to story (by adding an annotation in story browser)
+DONE Need page where user can add new researcher-defined questions and answers to stories (and maybe participants?)
+NOT DOING Generalize storyThemer into tagging - or researcher added questions [May do storyThemer eventually, but it will be different from tagging now done in story browser]
+DONE Do not poll for new messages if application document is hidden, meaning not the primary browser tab or window
+DONE Use true and false instead of yes and now for boolean and checkbox options in graphs
+DONE Support using string annotations in pattern browser
+DONE Fix bug with old references to storyModel caused by other recent changes
