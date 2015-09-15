@@ -18,7 +18,7 @@ var panel: Panel = {
             id: "storyCollection_questionnaireIdentifier",
             valueType: "string",
             valueImmutable: true,
-            valueOptions: "/projectModel/project_storyForms",
+            valueOptions: "/project/project_storyForms",
             valueOptionsSubfield: "questionForm_shortName",
             displayType: "select",
             displayName: "Story form",

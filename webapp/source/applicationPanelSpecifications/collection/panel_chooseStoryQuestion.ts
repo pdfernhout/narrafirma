@@ -15,7 +15,7 @@ var panel: Panel = {
         {
             id: "storyQuestion",
             valueType: "string",
-            valueOptions: "/projectModel/project_storyQuestionsList",
+            valueOptions: "/project/project_storyQuestionsList",
             valueOptionsSubfield: "storyQuestion_shortName",
             displayType: "select",
             displayName: "Question choice",

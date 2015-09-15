@@ -8,7 +8,7 @@ var panel: Panel = {
         {
             id: "storyCollection",
             valueType: "string",
-            valueOptions: "/projectModel/project_storyCollections",
+            valueOptions: "/project/project_storyCollections",
             valueOptionsSubfield: "storyCollection_shortName",
             displayType: "select",
             displayName: "Story collection",

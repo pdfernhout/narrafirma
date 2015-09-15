@@ -15,7 +15,7 @@ var panel: Panel = {
         {
             id: "elicitingQuestion",
             valueType: "string",
-            valueOptions: "/projectModel/project_elicitingQuestionsList",
+            valueOptions: "/project/project_elicitingQuestionsList",
             valueOptionsSubfield: "elicitingQuestion_shortName",
             displayType: "select",
             displayName: "Question choice",
