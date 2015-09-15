@@ -34,17 +34,38 @@ var Navigation: any = {
                 "title": Globals.clientState().serverStatusText()
             }, "NarraFirma™"),
             m("span[id=narrafirma-breadcrumbs]", buildBreadcrumbs(controller)),
+            // These next four links float right and so are added in reverse order
             m("a[id=narrafirma-logout-link]", {href: logoutCommand}, 'Logout (' + userIdentifier + ')'),
             m("a[id=narrafirma-help-link]", {href: launchHelpCommand}, "(Help)"),
-            m("a[id=narrafirma-next-page]", {href: nextPageLink(), title: "Next page"}, "=>"),
-            m("a[id=narrafirma-previous-page]", {href: previousPageLink(), title: "Previous page"}, "<=")
+            m("a[id=narrafirma-next-page]", {href: nextPageLink(), title: nextPageTitle(), "class": nextPageClass()}, "=>"),
+            m("a[id=narrafirma-previous-page]", {href: previousPageLink(), title:  previousPageTitle(), "class": previousPageClass()}, "<=")
         ]);
     }
 };
 
+function previousPageTitle() {
+    if (!currentPageSpecification || !currentPageSpecification.previousPageID) return "No previous page";
+    return "Previous page";
+}
+
+function previousPageClass() {
+    if (!currentPageSpecification || !currentPageSpecification.previousPageID) return "narrafirma-link-disabled";
+    return "narrafirma-link-enabled";
+}
+
 function previousPageLink() {
     if (!currentPageSpecification) return "#";
     return linkForPage(currentPageSpecification.previousPageID);
+}
+
+function nextPageTitle() {
+    if (!currentPageSpecification || !currentPageSpecification.nextPageID) return "No next page";
+    return "N ext page";
+}
+
+function nextPageClass() {
+    if (!currentPageSpecification || !currentPageSpecification.nextPageID) return "narrafirma-link-disabled";
+    return "narrafirma-link-enabled";
 }
 
 function nextPageLink() {

@@ -160,6 +160,10 @@ button {
     font-size: 0.9em;
 }
 
+#narrafirma-next-page.narrafirma-link-disabled,  #narrafirma-previous-page.narrafirma-link-disabled {
+    color: black;
+}
+
 #narrafirma-logout-link {
     float: right;
     font-size: 0.9em;
