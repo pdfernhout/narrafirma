@@ -171,10 +171,15 @@ class Application {
         // Set up global function used by section dashboard links
         
         window["narrafirma_openPage"] = (pageIdentifier) => {
+            // console.log("narrafirma_openPage", pageIdentifier);
+            if (!pageIdentifier) return;
             Globals.clientState().pageIdentifier(pageIdentifier);
             Globals.clientState().updateHashIfNeededForChangedClientState();
             // Page displayer will handle cases where the hash is not valid and also optimizing out page redraws if staying on same page
             pageDisplayer.showPage(Globals.clientState().pageIdentifier());
+            // document.body.scrollTop = 0;
+            // document.documentElement.scrollTop = 0;
+            window.scrollTo(0, 0);
         };
         
         window["narrafirma_logoutClicked"] = () => {

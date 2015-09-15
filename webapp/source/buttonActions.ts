@@ -308,6 +308,9 @@ export function guiOpenSection(model, fieldSpecification, value) {
     // Don't queue an extra redraw as one is already queued since this code get called by a button press
     var isRedrawAlreadyQueued = true;
     pageDisplayer.showPage(section, false, isRedrawAlreadyQueued);
+    // document.body.scrollTop = 0;
+    // document.documentElement.scrollTop = 0;
+    window.scrollTo(0, 0);
 }
 
 function generateBoilerplateHTML(title, stylesheet) {

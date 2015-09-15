@@ -99,8 +99,6 @@ export function showPage(pageID, forceRefresh = false, isRedrawAlreadyQueued = f
         clientState.pageIdentifier(currentPageID);
     }
     
-    // TODO: document.body.scrollTop = document.documentElement.scrollTop = 0;
-
     navigationPane.setCurrentPageSpecification(pageID, pageSpecification);
 
     if (!isRedrawAlreadyQueued) {
