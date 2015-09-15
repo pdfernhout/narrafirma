@@ -29,8 +29,8 @@ function positionForQuestionAnswer(question, answer) {
     
     // TODO: Confirm checkbox values are also yes/no...
     if (question.displayType === "boolean" || question.displayType === "checkbox") {
-        if (answer === "no") return 0;
-        if (answer === "yes") return 100;
+        if (answer === false) return 0;
+        if (answer === true) return 100;
         return -100;
     }
     
@@ -100,8 +100,8 @@ function preloadResultsForQuestionOptions(results, question) {
     var type = question.displayType;
     results[unansweredKey] = 0;
     if (type === "boolean" || type === "checkbox") {
-        results["no"] = 0;
-        results["yes"] = 0;
+        results["false"] = 0;
+        results["true"] = 0;
     } else if (question.valueOptions) {
         for (var i = 0; i < question.valueOptions.length; i++) {
             results[question.valueOptions[i]] = 0;
@@ -657,8 +657,8 @@ export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQues
         options.push(unansweredKey);
     }
     if (choiceQuestion.displayType === "boolean" || choiceQuestion.displayType === "checkbox") {
-        options.push("no");
-        options.push("yes");
+        options.push("false");
+        options.push("true");
     } else if (choiceQuestion.valueOptions) {
         for (index in choiceQuestion.valueOptions) {
             options.push(choiceQuestion.valueOptions[index]);
