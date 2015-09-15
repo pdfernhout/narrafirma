@@ -884,3 +884,7 @@ DONE Do not poll for new messages if application document is hidden, meaning not
 DONE Use true and false instead of yes and now for boolean and checkbox options in graphs
 DONE Support using string annotations in pattern browser
 DONE Fix bug with old references to storyModel caused by other recent changes
+DONE Scroll page top top when change page using button or link
+DONE Put help button to right before logout in navigation section
+DONE Add links for previous or next page on right before help and logout links in navigation section
+DONE Use yes/no instead of active/blank for displaying survey status if active on web (E)
