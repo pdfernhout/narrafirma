@@ -208,10 +208,10 @@ class TripleStore {
     queryLatestC(a, b) {
         // console.log("queryLatestC", a, b);
         if (a === undefined) {
-            throw new Error("a should not be undefined");
+            throw new Error("a should not be undefined; b: " + b);
         }
         if (b === undefined) {
-            throw new Error("b should not be undefined");
+            throw new Error("b should not be undefined; a: " + a);
         }    
         var bIndex = this.getIndexEntries(a, b);
         if (!bIndex) return undefined;
