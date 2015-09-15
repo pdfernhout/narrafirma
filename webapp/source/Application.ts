@@ -32,6 +32,7 @@ class Application {
     private journalIdentifier: string;
     private projectIdentifier: string;
     private userIdentifier: string;
+    private readOnly: boolean = false;
         
     /*
     export function project() {
@@ -109,7 +110,13 @@ class Application {
             console.log("updateServerStatus failure", text);
             if (status === "failure-loss") {
                 // Very serious error with data loss -- alert the user
-                toaster.toast("Server lost recent change:\n" + text);
+                if (this.readOnly) {
+                    // toaster.toast("Project is read only; changes are not being saved.");
+                    nameDiv.className = "narrafirma-serverstatus-ok";
+                    this.lastServerError = "Read only OK";
+                } else {
+                    toaster.toast("Server lost recent change:\n" + text);
+                }
             }
         } else {
             console.log("Unexpected server status", status);
@@ -265,9 +272,10 @@ class Application {
         
         var projectIdentifierSupplied = Globals.clientState().projectIdentifier();
         console.log("projectIdentifierSupplied", projectIdentifierSupplied);
+        
         if (projectIdentifierSupplied) {
             // TODO: Could put up project chooser if the supplied project is invalid...
-            this.openProject(userCredentials, narrafirmaProjectPrefix + projectIdentifierSupplied);
+            this.openProject(userCredentials, narrafirmaProjectPrefix + projectIdentifierSupplied, projects);
         } else {
             // TODO: Translate
             var columns = {name: "Project name", id: "Project journal", write: "Editable"};
@@ -290,7 +298,7 @@ class Application {
                     Globals.clientState().projectIdentifier(this.projectIdentifier.substring(narrafirmaProjectPrefix.length));
                 }
     
-                this.openProject(userCredentials, this.projectIdentifier);
+                this.openProject(userCredentials, this.projectIdentifier, projects);
             });
             
             // Because we are opening a dialog at startup, not caused by a user event, we need to tell Mithril to redraw.
@@ -338,7 +346,7 @@ class Application {
         }
     }
     
-    openProject(userCredentials, projectIdentifier) {
+    openProject(userCredentials, projectIdentifier, projects) {            
         document.getElementById("pleaseWaitDiv").style.display = "block";
         
         // TODO: Should this be managed separately?
@@ -358,6 +366,16 @@ class Application {
                 alert("Problem connecting to project journal on server. Application will not run.");
                 return;
             } else {
+                projects.forEach((project) => {
+                    if (project.id !== projectIdentifier) return;
+                    this.readOnly = !project.write;
+                    Globals.project().readOnly = this.readOnly;
+                    // this.panelBuilder.readOnly = isReadOnly;
+                    if (this.readOnly) {
+                        toaster.toast("Project is read only for this user");
+                        Globals.project().pointrelClient.suspendOutgoingMessages(true);
+                    }
+                });
                 this.loadApplicationDesign();
             }
         });

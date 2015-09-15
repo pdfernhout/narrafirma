@@ -13,6 +13,7 @@ class Project {
     journalIdentifier: string;
     projectIdentifier: string;
     userIdentifier: any;
+    readOnly: boolean = false;
     pointrelClient: PointrelClient;
     tripleStore: TripleStore;
     redrawCallback: Function;

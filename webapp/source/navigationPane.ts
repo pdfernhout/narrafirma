@@ -34,9 +34,10 @@ var Navigation: any = {
                 "title": Globals.clientState().serverStatusText()
             }, "NarraFirma™"),
             m("span[id=narrafirma-breadcrumbs]", buildBreadcrumbs(controller)),
+            Globals.project().readOnly ? m("span[id=narrafirma-read-only]", {title: "Project is read only for this user. Local changes can be made, but changes will not be saved on the server."}, "[READONLY!]") : [],
             // These next four links float right and so are added in reverse order
-            m("a[id=narrafirma-logout-link]", {href: logoutCommand}, 'Logout (' + userIdentifier + ')'),
-            m("a[id=narrafirma-help-link]", {href: launchHelpCommand}, "(Help)"),
+            m("a[id=narrafirma-logout-link]", {href: logoutCommand, title: "Logout the current user"}, 'Logout (' + userIdentifier + ')'),
+            m("a[id=narrafirma-help-link]", {href: launchHelpCommand, title: "Open online help for this page"}, "Help"),
             m("a[id=narrafirma-next-page]", {href: nextPageLink(), title: nextPageTitle(), "class": nextPageClass()}, "=>"),
             m("a[id=narrafirma-previous-page]", {href: previousPageLink(), title:  previousPageTitle(), "class": previousPageClass()}, "<=")
         ]);
@@ -60,7 +61,7 @@ function previousPageLink() {
 
 function nextPageTitle() {
     if (!currentPageSpecification || !currentPageSpecification.nextPageID) return "No next page";
-    return "N ext page";
+    return "Next page";
 }
 
 function nextPageClass() {

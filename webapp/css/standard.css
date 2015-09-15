@@ -160,6 +160,12 @@ button {
     font-size: 0.9em;
 }
 
+#narrafirma-read-only {
+    padding-left: 16px;
+    float: right;
+    font-size: 0.9em;
+}
+
 #narrafirma-next-page.narrafirma-link-disabled,  #narrafirma-previous-page.narrafirma-link-disabled {
     color: black;
 }
