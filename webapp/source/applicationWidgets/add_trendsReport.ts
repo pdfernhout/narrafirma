@@ -19,7 +19,7 @@ import Globals = require("../Globals");
 var minimumStoryCountRequiredForTest = 20;
 
 // Question types that have data associated with them for filters and graphs
-var nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons"];
+var nominalQuestionTypes = ["select", "boolean", "checkbox", "checkboxes", "radiobuttons", "text"];
 
 // TODO: Duplicate code for this function copied from charting
 function nameForQuestion(question) {
