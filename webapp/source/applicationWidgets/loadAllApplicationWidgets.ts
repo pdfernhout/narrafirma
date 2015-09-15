@@ -10,7 +10,7 @@ import add_report = require("./add_report");
 import add_storiesList = require("./add_storiesList");
 import add_storyBrowser = require("./add_storyBrowser");
 import add_templateList = require("./add_templateList");
-import add_trendsReport = require("./add_trendsReport");
+import add_patternExplorer = require("./add_patternExplorer");
 
 "use strict";
     
@@ -29,7 +29,7 @@ function loadAllApplicationWidgets(PanelBuilder) {
     PanelBuilder.addPlugin("storiesList", add_storiesList);
     PanelBuilder.addPlugin("storyBrowser", add_storyBrowser);
     PanelBuilder.addPlugin("templateList", add_templateList);
-    PanelBuilder.addPlugin("trendsReport", add_trendsReport);
+    PanelBuilder.addPlugin("patternExplorer", add_patternExplorer);
 }
 
 export = loadAllApplicationWidgets;

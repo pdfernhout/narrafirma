@@ -3,16 +3,16 @@ import kludgeForUseStrict = require("../../kludgeForUseStrict");
 
 var panel: Panel = {
     id: "page_explorePatterns",
-    displayName: "Review trends",
+    displayName: "Explore patterns",
     panelFields: [
         {
-            id: "reviewTrendsLabel",
+            id: "explorePatternsLabel",
             valueType: "none",
             displayType: "label",
             displayPrompt: "On this page you will look over the most significant statistical results\nand save some to observations for later use."
         },
         {
-            id: "catalysisReportReviewTrends",
+            id: "catalysisReportExplorePatterns",
             valuePath: "/clientState/catalysisReportIdentifier",
             valueType: "string",
             valueOptions: "project_catalysisReports",
@@ -22,7 +22,7 @@ var panel: Panel = {
             displayPrompt: "Choose a catalysis report to work on"
         },
         {
-            id: "reviewTrends_minSubsetSize",
+            id: "explorePatterns_minSubsetSize",
             valueType: "string",
             valueOptions: [
                 "20",
@@ -35,11 +35,11 @@ var panel: Panel = {
             displayPrompt: "How large should subsets of stories be to be considered for comparison?"
         },
         {
-            id: "reviewTrends_display",
+            id: "explorePatterns_display",
             valuePath: "/clientState/catalysisReportIdentifier",
             valueType: "none",
-            displayType: "trendsReport",
-            displayPrompt: "Trends report"
+            displayType: "patternExplorer",
+            displayPrompt: "Pattern explorer"
         }
     ]
 };

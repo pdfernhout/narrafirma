@@ -22,7 +22,7 @@ var panel: Panel = {
             displayType: "grid",
             displayConfiguration: "panel_createOrEditObservation",
             displayName: "Catalysis observations",
-            displayPrompt: "These are the observations you have collected from the\nbrowse, graph, and trends pages."
+            displayPrompt: "These are the observations you have collected from the\nbrowse, graph, and pattern explorer pages."
         }
     ]
 };

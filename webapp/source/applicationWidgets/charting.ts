@@ -649,7 +649,7 @@ export function d3HistogramChart(graphBrowserInstance: GraphHolder, scaleQuestio
 }
 
 // TODO: Need to update this to pass instance for self into histograms so they can clear the selections in other histograms
-// TODO: Also need to track the most recent histogram with an actual selection so can save and restore that from trends report
+// TODO: Also need to track the most recent histogram with an actual selection so can save and restore that from patterns browser
 export function multipleHistograms(graphBrowserInstance: GraphHolder, choiceQuestion, scaleQuestion, storiesSelectedCallback) {
     var options = [];
     var index;
@@ -971,7 +971,7 @@ export function d3ContingencyTable(graphBrowserInstance: GraphHolder, xAxisQuest
 
 // ---- Support updating stories in browser
 
-// The complementary decodeBraces function is in add_trendsReport.js
+// The complementary decodeBraces function is in add_patternExplorer.js
 function encodeBraces(optionText) {
     return optionText.replace("{", "&#123;").replace("}", "&#125;"); 
 }

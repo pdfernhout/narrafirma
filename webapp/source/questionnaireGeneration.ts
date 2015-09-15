@@ -28,7 +28,7 @@ var displayTypeToValueTypeMap = {
     "function": "none",
     storyBrowser: 'none',
     graphBrowser: 'none',
-    trendsReport: 'none',
+    patternExplorer: 'none',
     observationsList: 'none',
     accumulatedItemsGrid: 'none',
     storiesList: 'none'
