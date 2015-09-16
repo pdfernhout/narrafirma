@@ -5,6 +5,7 @@ import questionnaireGeneration = require("./questionnaireGeneration");
 import surveyCollection = require("./surveyCollection");
 import surveyStorage = require("./surveyStorage");
 import dialogSupport = require("./panelBuilder/dialogSupport");
+import Globals = require("./Globals");
 
 "use strict";
 
@@ -373,4 +374,177 @@ export function importCSVStories() {
 
 export function importCSVQuestionnaire() {
     chooseCSVFileToImport(processCSVContentsForQuestionnaire);
+}
+
+// Library for saving files, imported by narrafirma.html
+declare var saveAs;
+
+function addCSVOutputLine(output, line) {
+    console.log("line", line);
+    var start = true;
+    line.forEach(function (item) {
+        console.log("item", item);
+        if (start) {
+            start = false;
+        } else {
+            output += ",";
+        }
+        if (item && item.indexOf(",") !== -1) {
+            item = item.replace(/"/g, '""');
+            item = '"' + item + '"';
+        }
+        output += item;
+    });
+    output += "\n";
+    return output;
+}
+
+var exportQuestionTypeMap = {
+    "checkboxes": "Multiple choice",
+    "select": "Single choice",
+    "slider": "Scale",
+    "boolean": "Boolean",
+    "radiobuttons": "Radiobuttons",
+    "text": "Text",
+    "textarea": "Textarea"
+};
+
+export function exportQuestionnaire() {
+    var storyCollectionIdentifier = Globals.clientState().storyCollectionIdentifier;
+    
+    console.log("exportStoryCollection", storyCollectionIdentifier);
+    var currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+    console.log("exportQuestionnaire", currentQuestionnaire);
+    
+    // Order Long name   Short name  Type    About   Answers
+    var output = "";
+    var lineIndex = 1;
+    function addOutputLine(line) {
+        output = addCSVOutputLine(output, line);
+    }
+    
+    var header = ["Order", "Long name", "Short name", "Type", "About", "Answers"];
+    addOutputLine(header);
+    
+    var elicitingLine = ["1", "Eliciting question", "Eliciting question", "Eliciting question", "eliciting"];
+    currentQuestionnaire.elicitingQuestions.forEach(function (elicitingQuestionSpecification) {
+        elicitingLine.push(elicitingQuestionSpecification.id + "|" + elicitingQuestionSpecification.text);
+    });
+    addOutputLine(elicitingLine);
+    
+    function dataForQuestions(questions, about) {
+        for (var i = 0; i < questions.length; i++) {
+            var outputLine = [];
+            var question = questions[i];
+            outputLine.push("" + (++lineIndex));
+            outputLine.push(question.displayPrompt);
+            outputLine.push(question.displayName);
+            var questionType = exportQuestionTypeMap[question.displayType];
+            if (!questionType) {
+                console.log("EXPORT ERROR: unsupported question type: ", question.displayType);
+                questionType = "UNSUPPORTED:" + question.displayType;
+            }
+            outputLine.push(questionType);
+            outputLine.push(about);
+            if (question.valueOptions) {
+               question.valueOptions.forEach(function(option) {
+                   outputLine.push(option);   
+               });
+            }
+            addOutputLine(outputLine);
+        }
+    }
+    
+    dataForQuestions(currentQuestionnaire.storyQuestions, "story");
+    dataForQuestions(currentQuestionnaire.participantQuestions, "participant");
+    
+     // Export questionnaire
+    var questionnaireBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
+    // TODO: This seems to clear the console in FireFox 40; why?
+    saveAs(questionnaireBlob, "export_story_form_" + storyCollectionIdentifier + ".csv");
+}
+
+export function exportStoryCollection() {
+    var storyCollectionIdentifier = Globals.clientState().storyCollectionIdentifier;
+    
+    console.log("exportStoryCollection", storyCollectionIdentifier);
+    var currentQuestionnaire = surveyCollection.getQuestionnaireForStoryCollection(storyCollectionIdentifier);
+    console.log("currentQuestionnaire", currentQuestionnaire);
+
+    var allStories = surveyCollection.getStoriesForStoryCollection(storyCollectionIdentifier, true);
+    console.log("allStories", allStories);
+    
+    var header1 = [];
+    var header2 = [];
+      
+    function header(contents, secondHeader = "") {
+        header1.push(contents);
+        header2.push(secondHeader);
+    }
+    
+    // Put initial header
+    header("Story title");
+    header("Story text");
+    header("Eliciting question");
+    
+    function headersForQuestions(questions) {
+        for (var i = 0; i < questions.length; i++) {
+            var storyQuestion = questions[i];
+            // TODO: Maybe should export ID instead? Or more header lines with ID and prompt?
+            if (storyQuestion.valueOptions && storyQuestion.displayType === "checkboxes") {
+               storyQuestion.valueOptions.forEach(function(option) {
+                   header(storyQuestion.displayName, option);   
+               });
+            } else {
+                header(storyQuestion.displayName);
+            }
+        }
+    }
+    
+    headersForQuestions(currentQuestionnaire.storyQuestions);
+    headersForQuestions(currentQuestionnaire.participantQuestions);
+    
+    console.log("header1", header1);
+    console.log("header2", header2);
+    
+    var output = "";
+    function addOutputLine(line) {
+        output = addCSVOutputLine(output, line);
+    }
+    
+    addOutputLine(header1);
+    addOutputLine(header2);
+    
+    function dataForQuestions(questions, story: surveyCollection.Story, outputLine) {
+        for (var i = 0; i < questions.length; i++) {
+            var question = questions[i];
+            var value = story.fieldValue(question.id);
+            if (question.valueOptions && question.displayType === "checkboxes") {
+               question.valueOptions.forEach(function(option) {
+                   outputLine.push(value[option] ? option : "");   
+               });
+            } else {
+                outputLine.push(value);
+            }
+        }
+    }
+    
+    allStories.forEach(function (story) {
+        var outputLine = [];
+        outputLine.push(story.storyName());
+        outputLine.push(story.storyText());
+        outputLine.push(story.elicitingQuestion());
+        dataForQuestions(currentQuestionnaire.storyQuestions, story, outputLine);
+        dataForQuestions(currentQuestionnaire.participantQuestions, story, outputLine);
+        addOutputLine(outputLine);
+    }); 
+    
+    // Testing
+    //var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
+    //saveAs(blob, "hello world.csv");
+    
+    // Export story collection
+    var storyCollectionBlob = new Blob([output], {type: "text/csv;charset=utf-8"});
+    // TODO: This seems to clear the console in FireFox 40; why?
+    saveAs(storyCollectionBlob, "export_story_collection_" + storyCollectionIdentifier + ".csv");
 }
