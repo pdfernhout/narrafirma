@@ -19,7 +19,6 @@ STORY ANNOTATION
 H Include annotations in export and import
 
 GRAPH BROWSER
-H Add low and high labels for slider/range questions (on graphs)
 H Support graphBrowser contingency table with statistical results - chi squared
 H Finish Mann-Whitney U test
 H Test statistical tests for validity - run same tests in spreadsheet on same data
@@ -889,3 +888,5 @@ DONE Use yes/no instead of active/blank for displaying survey status if active o
 DONE Make panels read only when user permissions are read only [leaving editable, but indicating project is read only in navigation bar and via a toast at startup]
 DONE Rename trendsReport to Pattern Browser [Actually, called it Pattern Explorer]
 DONE Fix issue where bad page id on startup left app in bad state
+DONE Add low and high labels for slider/range questions (on graphs)
+DONE Add hover title text for ellipsed graph labels
