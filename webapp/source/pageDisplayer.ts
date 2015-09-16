@@ -75,24 +75,31 @@ export function showPage(pageID, forceRefresh = false, isRedrawAlreadyQueued = f
         console.log("Problem finding pageSpecification for", pageID);
     }
     
+    var badPage = null;
+    
     // Assume that if we have a panel specification for a page that it is OK to go to it
     if (!pageSpecification || pageSpecification.displayType !== "page") {
         console.log("no such page", pageID);
         alert("No such page: " + pageID);
+        badPage = pageID;
         // Put back the hash if there was a valid one there already
         if (currentPageID !== null && currentPageID !== pageID) {
-            clientState.pageIdentifier(currentPageID);
+            pageID = currentPageID;
         } else {
-            clientState.pageIdentifier(PanelSetup.startPage());
+            pageID = PanelSetup.startPage();
         }
-        clientState.updateHashIfNeededForChangedClientState();
-        return;
+        // clientState.updateHashIfNeededForChangedClientState();
+        try {
+            pageSpecification = panelBuilder.getPageSpecificationForPageID(pageID);
+        } catch (e) {
+            console.log("Problem finding pageSpecification for", pageID);
+        }
     }
  
     // Just going to assume we will be redrawing later via Mithril...
     
     // Make sure the hash is pointing to this page if this is not a forced refresh
-    if (currentPageID !== pageID) {
+    if (currentPageID !== pageID || badPage) {
         console.log("setting currentPageID to", pageID);
         currentPageID = pageID;
         currentPageSpecification = pageSpecification;
